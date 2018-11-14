@@ -3,22 +3,45 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import store from '../reducers/index'; //index would contain const createStoreWithMiddleware = applyMiddleware(thunkMiddleware,promise)(createStore); export default createStoreWithMiddleware(reducers);
 
+/* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
+const openEndPoint = (resReqArr, e) => {
+  // OLD CODE BEFORE REQ/RES Array 
+  // const form = e.target;
+  // const data = new FormData(form);
 
-const endPointIntake = (e) => {
-  const form = e.target;
-  const data = new FormData(form);
+  // for (let name of data.keys()) {
+  //   const endPoint = form.elements[endpoint];
+  //   const method = form.elements[method];
+  //   const serverType = form.elements[servertype];
+  // }
 
-  for (let name of data.keys()) {
-    const endPoint = form.elements[endpoint];
-    const method = form.elements[method];
-    const serverType = form.elements[servertype];
-  }
-
-  fetchController(endPoint, method, serverType);
+  fetchController(resReqArr.endPoint, resReqArr.method, resReqArr.serverType);
 };
 
+/* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
 
-const fetchController = (endPoint, method) => {
+const openEndPoints = (resReqArr, e) => {
+  for(let resReqObj of resReqArr) {
+    endPointIntake(resReqObj);
+  }
+};
+
+/* Closes open endpoint */
+
+const closeEndpoint = (resReqArr, e) => {
+  resReqArr[0].close();
+}
+
+/* Closes all open endpoint */
+
+const closeEndpoints = (resReqArr, e) => {
+  for(let resReqObj of resReqArr) {
+    closeEndpoint(resReqObj);
+  }
+}
+
+
+const fetchController = (endPoint, method, serverType) => {
   return fetch(endPoint, method, serverType, {
       method: method,
       mode: "cors", // no-cors, cors, *same-origin
@@ -46,15 +69,14 @@ class ReqRestCtrl extends Component {
       console.log('Open a Req/Res connection');
       endPointIntake(e);
     },
-    closeConnection(e) {
-      e.preventDefault();
-      console.log('Close a Req/Res connection');
-
-    },
     openAllConntections(e) {
       e.preventDefault();
       console.log('Open all Req/Res connections');
       endPointsIntake(e);
+    },
+    closeConnection(e) {
+      e.preventDefault();
+      console.log('Close a Req/Res connection');
     },
     closeAllConnections(e) {
       e.preventDefault();
