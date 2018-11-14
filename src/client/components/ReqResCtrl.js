@@ -11,7 +11,7 @@ const openEndPoint = (resReqArr, e) => {
 /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
 const openEndPoints = (resReqArr, e) => {
   for(let resReqObj of resReqArr) {
-    endPointIntake(resReqObj);
+    fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
   }
 };
 
@@ -51,35 +51,34 @@ class ReqRestCtrl extends Component {
 
     store.subscribe(() => {
       /* when store updates we map nessesary data to local component state */
-
       this.setState({
         resReqArr: store.getState().resReqArr
       });
     });
   }
 
-  openConnection(this.state.resReqArr, e) {
+  openConnection(e) {
       e.preventDefault();
       console.log('Open a Req/Res connection');
-      endPointIntake(e);
+      openEndPoint(this.state.resReqArr, e);
     }
 
-    openAllConntections(this.state.resReqArr, e) {
+    openAllConntections(e) {
       e.preventDefault();
       console.log('Open all Req/Res connections');
-      endPointsIntake(e);
+      openEndPoints(this.state.resReqArr, e);
     }
 
-    closeConnection(this.state.resReqArr, e) {
+    closeConnection(e) {
       e.preventDefault();
       console.log('Close a Req/Res connection');
-      closeEndpoint(e);
+      closeEndpoint(this.state.resReqArr, e);
     }
 
-    closeAllConnections(this.state.resReqArr, e) {
+    closeAllConnections(e) {
       e.preventDefault();
       console.log('Close all Req/Res connection');
-      closeEndpoints(e);
+      closeEndpoints(this.state.resReqArr, e);
     }
 
   render() {
