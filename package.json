@@ -10,12 +10,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon src/server/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "electron": "electron ."
+    "electron": "electron .",    
+    "tserver": "concurrently \"npm run dev\" \"nodemon test-server/index.js\""
   },
   "author": "Schno Mozingo",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "concurrently": "^4.0.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "html-webpack-plugin": "^3.2.0",
