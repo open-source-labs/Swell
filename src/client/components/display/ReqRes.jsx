@@ -21,11 +21,12 @@ class ReqRes extends Component {
 
   render() {
     return(
-      <div>
+      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         {this.props.content.url}
         {this.props.content.request.method}
         {/* <Request/>
         <Response/> */}
+        
       </div>
     )
   }

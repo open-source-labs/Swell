@@ -58,6 +58,8 @@ class ModalNewRequest extends Component {
       url : this.state.url,
       timeSent : null,
       timeReceived : null,
+      connection : 'uninitialized',
+      connectionType : null,
       request: {
         method : this.state.method,
         headers : JSON.parse(this.state.headers),
@@ -66,7 +68,6 @@ class ModalNewRequest extends Component {
       response : {
         headers : null,
         data : null,
-        type : null,
       }
     }
 
