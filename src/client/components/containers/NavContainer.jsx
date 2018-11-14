@@ -20,7 +20,7 @@ class Nav extends Component {
   render() {
     return(
       <div>
-        Nav
+        NavContainer
       </div>
     )
   }
