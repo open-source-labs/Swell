@@ -7,7 +7,9 @@
     "build": "webpack",
     "start": "webpack-dev-server --hot --inline --progress --colors --watch --content-base ./",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon src/server/server.js"
+    "server": "nodemon src/server/server.js",
+    "dev": "concurrently \"npm run server\" \"npm run start\"", 
+    "tserver": "concurrently \"npm run server\" \"npm run start\" \"nodemon test-server/index.js\""
   },
   "author": "Schno Mozingo",
   "license": "MIT",
