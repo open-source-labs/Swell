@@ -22,11 +22,15 @@ class ReqRes extends Component {
   render() {
     return(
       <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+        {this.props.content.id}
         {this.props.content.url}
-        {this.props.content.request.method}
+        {this.props.content.timeSent}
+        {this.props.content.timeReceived}
+        {this.props.content.connectionType}
         {/* <Request/>
         <Response/> */}
-        
+        <button>Send</button>
+        <button>Close</button>
       </div>
     )
   }
