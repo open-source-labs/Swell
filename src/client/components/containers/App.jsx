@@ -7,7 +7,7 @@ import ContentsContainer from './ContentsContainer.jsx';
 import ModalContainer from './ModalContainer.jsx';
 
 const mapStateToProps = store => ({
- 
+  store: store,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -18,7 +18,6 @@ class App extends Component {
   constructor(props) {
     super(props);
   }
-
 
   render() {
     return(
