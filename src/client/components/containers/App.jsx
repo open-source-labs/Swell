@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
+import NavContainer from './NavContainer.jsx';
+import ContentsContainer from './ContentsContainer.jsx';
+import ModalContainer from './ModalContainer.jsx';
 
 const mapStateToProps = store => ({
  
@@ -21,6 +24,9 @@ class App extends Component {
     return(
       <div id='app'>
         App
+        <NavContainer/>
+        <ContentsContainer/>
+        <ModalContainer/>
       </div>
     )
   }
