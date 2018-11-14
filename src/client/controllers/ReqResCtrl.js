@@ -1,9 +1,11 @@
 import * as actions from '../actions';
 
+
 const serverController = {
   openConnection(e) {
     e.preventDefault();
     console.log('Open a Req/Res connection');
+    endPointIntake(e);
   },
   closeConnection(e) {
     e.preventDefault();
@@ -21,22 +23,23 @@ const serverController = {
   }
 };
 
+const endPointIntake = (e) => {
+  const form = e.target;
+  const data = new FormData(form);
 
-const methodController = {
-  get() {},
-  head() {},
-  post() {},
-  put() {},
-  delete() {},
-  connect() {},
-  options() {},
-  trace() {},
-  patch()
-}
+  for (let name of data.keys()) {
+    const endPoint = form.elements[endpoint];
+    const method = form.elements[method];
+    const serverType = form.elements[servertype];
+  }
 
-const fetchController = {
-  return fetch(url, {
-      method: submittedMethod,
+  fetchController(endPoint, method, serverType);
+};
+
+
+const fetchController = (endPoint, method) => {
+  return fetch(endPoint, method, serverType,  {
+      method: method,
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, *same-origin, omit
@@ -49,6 +52,6 @@ const fetchController = {
       body: JSON.stringify(data), // body data type must match "Content-Type" header
     })
     .then(response => response.json()); // parses response to JSON
-}
+};
 
-export default controller(serverActions, methodOperator, fetchOperator);
+export default controller(serverController, fetchController);
