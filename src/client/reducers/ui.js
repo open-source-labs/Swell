@@ -3,6 +3,7 @@ import * as types from '../actions/actionTypes';
 
 const initialState = { 
   isDisplayedModal : false,
+  modalDisplay : 'Request'
 };
 
 const uiReducer = (state=initialState, action) => {
