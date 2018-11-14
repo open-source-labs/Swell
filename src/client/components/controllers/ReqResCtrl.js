@@ -5,21 +5,10 @@ import store from '../reducers/index'; //index would contain const createStoreWi
 
 /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
 const openEndPoint = (resReqArr, e) => {
-  // OLD CODE BEFORE REQ/RES Array 
-  // const form = e.target;
-  // const data = new FormData(form);
-
-  // for (let name of data.keys()) {
-  //   const endPoint = form.elements[endpoint];
-  //   const method = form.elements[method];
-  //   const serverType = form.elements[servertype];
-  // }
-
-  fetchController(resReqArr.endPoint, resReqArr.method, resReqArr.serverType);
+  fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
 };
 
 /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-
 const openEndPoints = (resReqArr, e) => {
   for(let resReqObj of resReqArr) {
     endPointIntake(resReqObj);
@@ -27,20 +16,18 @@ const openEndPoints = (resReqArr, e) => {
 };
 
 /* Closes open endpoint */
-
 const closeEndpoint = (resReqArr, e) => {
-  resReqArr[0].close();
+  resReqArr[e.id].close();
 }
 
 /* Closes all open endpoint */
-
 const closeEndpoints = (resReqArr, e) => {
   for(let resReqObj of resReqArr) {
     closeEndpoint(resReqObj);
   }
 }
 
-
+/* Utility function to open fetches */
 const fetchController = (endPoint, method, serverType) => {
   return fetch(endPoint, method, serverType, {
       method: method,
@@ -61,30 +48,43 @@ const fetchController = (endPoint, method, serverType) => {
 class ReqRestCtrl extends Component {
   constructor(props) {
     super(props);
+
+    store.subscribe(() => {
+      /* when store updates we map nessesary data to local component state */
+
+      this.setState({
+        resReqArr: store.getState().resReqArr
+      });
+    });
   }
 
-  serverController = {
-    openConnection(e) {
+  openConnection(this.state.resReqArr, e) {
       e.preventDefault();
       console.log('Open a Req/Res connection');
       endPointIntake(e);
-    },
-    openAllConntections(e) {
+    }
+
+    openAllConntections(this.state.resReqArr, e) {
       e.preventDefault();
       console.log('Open all Req/Res connections');
       endPointsIntake(e);
-    },
-    closeConnection(e) {
+    }
+
+    closeConnection(this.state.resReqArr, e) {
       e.preventDefault();
       console.log('Close a Req/Res connection');
-    },
-    closeAllConnections(e) {
+      closeEndpoint(e);
+    }
+
+    closeAllConnections(this.state.resReqArr, e) {
       e.preventDefault();
       console.log('Close all Req/Res connection');
+      closeEndpoints(e);
     }
-  };
 
-  render() { return null; }
+  render() {
+    return null;
+  }
 }
 
 export default connect(endPointIntake, fetchController)(ReqRestCtrl);
