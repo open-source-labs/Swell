@@ -22,9 +22,10 @@ class ReqRes extends Component {
   render() {
     return(
       <div>
-        ReqRes
-        <Request/>
-        <Response/>
+        {this.props.content.url}
+        {this.props.content.request.method}
+        {/* <Request/>
+        <Response/> */}
       </div>
     )
   }

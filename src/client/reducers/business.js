@@ -17,9 +17,13 @@ const businessReducer = (state=initialState, action) => {
 
     case types.REQRES_ADD:{
       console.log('action',action);
+
+      let reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
+      reqResArray.push(action.payload);
+
       return {
         ...state,
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)).push(action.payload),
+        reqResArray
       }
     }
 
