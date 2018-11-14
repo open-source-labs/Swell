@@ -1,5 +1,5 @@
 {
-  "name": "Swell",
+  "name": "swell",
   "version": "1.0.0",
   "description": "Swell",
   "main": "index.js",
@@ -46,5 +46,13 @@
     "style-loader": "^0.19.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getswell/getswell.git"
+  },
+  "bugs": {
+    "url": "https://github.com/getswell/getswell/issues"
+  },
+  "homepage": "https://github.com/getswell/getswell#readme"
 }
