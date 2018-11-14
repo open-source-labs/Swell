@@ -54,7 +54,7 @@ class ModalNewRequest extends Component {
 
   addNewRequest() {
     let reqRes = {
-      id : Math.random() * 100000,
+      id : Math.floor(Math.random() * 100000),
       url : this.state.url,
       timeSent : null,
       timeReceived : null,
