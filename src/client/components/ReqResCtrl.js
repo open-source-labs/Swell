@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { store } from '../store';
 import * as actions from '../actions';
-import store from '../reducers/index'; //index would contain const createStoreWithMiddleware = applyMiddleware(thunkMiddleware,promise)(createStore); export default createStoreWithMiddleware(reducers);
 
 /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
 const openEndPoint = (resReqArr, e) => {
@@ -45,45 +45,6 @@ const fetchController = (endPoint, method, serverType) => {
     .then(response => response.json()); // parses response to JSON
 };
 
-class ReqRestCtrl extends Component {
-  constructor(props) {
-    super(props);
 
-    store.subscribe(() => {
-      /* when store updates we map nessesary data to local component state */
-      this.setState({
-        resReqArr: store.getState().resReqArr
-      });
-    });
-  }
-
-  openConnection(e) {
-      e.preventDefault();
-      console.log('Open a Req/Res connection');
-      openEndPoint(this.state.resReqArr, e);
-    }
-
-    openAllConntections(e) {
-      e.preventDefault();
-      console.log('Open all Req/Res connections');
-      openEndPoints(this.state.resReqArr, e);
-    }
-
-    closeConnection(e) {
-      e.preventDefault();
-      console.log('Close a Req/Res connection');
-      closeEndpoint(this.state.resReqArr, e);
-    }
-
-    closeAllConnections(e) {
-      e.preventDefault();
-      console.log('Close all Req/Res connection');
-      closeEndpoints(this.state.resReqArr, e);
-    }
-
-  render() {
-    return null;
-  }
-}
 
 export default connect(endPointIntake, fetchController)(ReqRestCtrl);
