@@ -5,7 +5,7 @@ import * as actions from '../../actions/actions';
 import ReqRes from '../display/ReqRes.jsx';
 
 const mapStateToProps = store => ({
- 
+  reqRes : store.business.reqResArray,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -19,12 +19,14 @@ class ReqResContainer extends Component {
 
 
   render() {
+
+    let reqResArr = this.props.reqRes.map((reqRes,index) => {
+      return <ReqRes content={reqRes} key={index}></ReqRes>
+    });
     return(
       <div>
         ReqResContainer
-        <ReqRes/>
-        <ReqRes/>
-        <ReqRes/>
+        {reqResArr}
       </div>
     )
   }
