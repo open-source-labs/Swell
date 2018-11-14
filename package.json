@@ -1,16 +1,18 @@
 {
-  "name": "swell",
+  "name": "Swell",
   "version": "1.0.0",
   "description": "Swell",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --hot --inline --progress --colors --watch --content-base ./",
+    "build": "webpack --mode production",
+    "start": "npm run build && node src/server/server.js",
+    "client": "webpack-dev-server --hot --inline --progress --colors --watch --content-base ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon src/server/server.js",
-    "dev": "concurrently \"npm run server\" \"npm run start\"", 
+    "dev": "concurrently \"npm npm run server\" \"npm run client\"",
+    "electron": "electron .",
     "tserver": "concurrently \"npm run server\" \"npm run start\" \"nodemon test-server/index.js\""
-  },
+  }, 
   "author": "Schno Mozingo",
   "license": "MIT",
   "dependencies": {
@@ -43,18 +45,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.11",
+    "electron": "^3.0.9",
     "json-loader": "^0.5.7",
     "redux-devtools-extension": "^2.13.2",
     "style-loader": "^0.19.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/getswell/getswell.git"
-  },
-  "bugs": {
-    "url": "https://github.com/getswell/getswell/issues"
-  },
-  "homepage": "https://github.com/getswell/getswell#readme"
+  }
 }
