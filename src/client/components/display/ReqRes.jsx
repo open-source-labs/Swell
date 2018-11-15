@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import Response from './Response.jsx';
+import ToggleBtn from './ToggleBtn.jsx';
+
 import ReqResCtrl from '../ReqResCtrl';
 
 import * as actions from '../../actions/actions';
@@ -35,6 +37,8 @@ class ReqRes extends Component {
         {this.props.content.timeReceived}
         {this.props.content.connectionType}
         {contentBody}
+        <ToggleBtn onClick={ ReqResCtrl.toggleEndPoint } />
+      
         <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
         <button onClick={() => {
           console.log(`aborting fetch for ReqRes ${this.props.content.id}.`);
