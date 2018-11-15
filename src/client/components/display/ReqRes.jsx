@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import Response from './Response.jsx';
+import ReqResCtrl from '../ReqResCtrl';
 
 import * as actions from '../../actions/actions';
 
@@ -29,7 +30,7 @@ class ReqRes extends Component {
         {this.props.content.connectionType}
         {/* <Request/>
         <Response/> */}
-        <button>Send</button>
+        <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
         <button>Close</button>
       </div>
     )
