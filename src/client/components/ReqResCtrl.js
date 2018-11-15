@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import * as actionTypes from '../actions/actionTypes';
 
 const ReqResCtrl = {
   parseReqObject(object) {
     let { id, url, timeSent, timeReceived, connection, conntectionType, request: { method }, request: { headers }, request: { body} } = object;
 
+    console.log('origHeads', headers)
     method = method.toUpperCase();
+    let formattedHeaders = {};
+    headers.forEach(head => {
+      formattedHeaders[head.key] = head.value
+    })
 
     let outputObj = {
       method: method,
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json'
+      headers: formattedHeaders,
+
+        // 'Content-Type': 'application/json; charset=utf-8',
+        // 'Accept': 'application/json'
         // "Content-Type": "application/x-www-form-urlencoded",
-      },
+
       redirect: "follow", // manual, *follow, error
       referrer: "no-referrer", // no-referrer, *client
     };
+
+    console.log(outputObj);
 
     if (method !== 'GET' && method !== 'HEAD') {
       outputObj.body = JSON.stringify(body)
