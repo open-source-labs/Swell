@@ -20,6 +20,12 @@ class ReqRes extends Component {
 
 
   render() {
+    let contentBody = [];
+    contentBody.push(<Request content={this.props.content.request}/>);
+    if (this.props.content.connection !== 'uninitialized') {
+      contentBody.push(<Response content={this.props.content.response}/>)
+    };
+
     return(
       <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         {this.props.content.id}
@@ -27,8 +33,7 @@ class ReqRes extends Component {
         {this.props.content.timeSent}
         {this.props.content.timeReceived}
         {this.props.content.connectionType}
-        {/* <Request/>
-        <Response/> */}
+        {contentBody}
         <button>Send</button>
         <button>Close</button>
       </div>
