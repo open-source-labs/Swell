@@ -3,8 +3,8 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 
 const ReqResCtrl = {
-  parseReqObject(object) {
-    let { abortController, url, request: { method }, request: { headers }, request: { body } } = object;
+  parseReqObject(object, abortController) {
+    let { url, request: { method }, request: { headers }, request: { body } } = object;
 
     console.log(headers);
 
@@ -144,7 +144,7 @@ const ReqResCtrl = {
   },
 
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
-  openEndPoint(e) {
+  openEndPoint(e, abortController) {
     const reqResComponentID = e.target.id;
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
@@ -152,7 +152,7 @@ const ReqResCtrl = {
     // Search the store for the passed in ID
     const reqResObj = reqResArr.find((el) => el.id == reqResComponentID);
 
-    ReqResCtrl.parseReqObject(reqResObj);
+    ReqResCtrl.parseReqObject(reqResObj, abortController);
   },
 
   /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */

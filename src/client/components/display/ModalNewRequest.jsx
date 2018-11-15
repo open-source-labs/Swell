@@ -80,7 +80,6 @@ class ModalNewRequest extends Component {
         headers : null,
         events : null,
       },
-      abortController : new AbortController(),
     };
     this.props.reqResAdd(reqRes);
   }
