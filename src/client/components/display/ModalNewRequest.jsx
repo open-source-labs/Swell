@@ -65,7 +65,8 @@ class ModalNewRequest extends Component {
   addNewRequest() {
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
-      url : this.state.url,
+      url: 'http://localhost:8080/sse',
+      // url : this.state.url,
       timeSent : null,
       timeReceived : null,
       connection : 'uninitialized',
@@ -79,7 +80,6 @@ class ModalNewRequest extends Component {
         headers : null,
         events : null,
       },
-      abortController : new AbortController(),
     };
     this.props.reqResAdd(reqRes);
   }
@@ -102,6 +102,8 @@ class ModalNewRequest extends Component {
         <input type='text' placeholder='URL' onChange={(e) => {
           this.urlOnChange(e)
         }}></input>
+
+         {/* value={'http://localhost:8080/sse'}  */}
         
         <HeaderEntryForm updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
         
