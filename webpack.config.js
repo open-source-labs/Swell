@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-const entry = [
+const entryArr = [
   './src/client/index.js',
   './public/styles.css'
 ];
@@ -11,10 +11,10 @@ module.exports = {
   devServer: {
     port: 3000,
   },
-  entry,
+  entry: entryArr,
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist/')
+    path: path.resolve(__dirname, 'dist/'),
+    filename: 'bundle.js'
   },
   devtool: "eval-source-map",
   module: {
