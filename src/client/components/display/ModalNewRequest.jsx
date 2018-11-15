@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Request from './Request.jsx';
-import Response from './Response.jsx';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Request from "./Request.jsx";
+import Response from "./Response.jsx";
 
 import * as actions from '../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 
-const mapStateToProps = store => ({
- 
-});
+const mapStateToProps = store => ({});
 
 const mapDispatchToProps = dispatch => ({
-  reqResAdd : (reqRes) => {
+  reqResAdd: reqRes => {
     dispatch(actions.reqResAdd(reqRes));
   }
 });
@@ -32,15 +30,15 @@ class ModalNewRequest extends Component {
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
-  methodOnChange (e) {
+  methodOnChange(e) {
     this.setState({
-      method : e.target.value,
-    })
+      method: e.target.value
+    });
   }
-  urlOnChange (e) {
+  urlOnChange(e) {
     this.setState({
-      url : e.target.value,
-    })
+      url: e.target.value
+    });
   }
   updateHeaders (headers) {
     console.log('UPDATE HEADERS CALLED', headers);
@@ -52,10 +50,10 @@ class ModalNewRequest extends Component {
       console.log(this.state.headers)
     });
   }
-  bodyOnChange (e) {
+  bodyOnChange(e) {
     this.setState({
-      body : e.target.value,
-    })
+      body: e.target.value
+    });
   }
 
   addNewRequest() {
@@ -76,7 +74,7 @@ class ModalNewRequest extends Component {
         headers : null,
         events : null,
       }
-    }
+    };
 
     this.props.reqResAdd(reqRes);
   }
@@ -107,8 +105,11 @@ class ModalNewRequest extends Component {
 
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalNewRequest);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ModalNewRequest);
