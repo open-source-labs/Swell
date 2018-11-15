@@ -21,6 +21,11 @@ class ReqRes extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.setState({
+      abortController : new AbortController(),
+    })
+  }
 
   render() {
     let contentBody = [];
@@ -38,11 +43,10 @@ class ReqRes extends Component {
         {this.props.content.connectionType}
         {contentBody}
         <ToggleBtn onClick={ ReqResCtrl.toggleEndPoint } />
-      
         <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
         <button onClick={() => {
           console.log(`aborting fetch for ReqRes ${this.props.content.id}.`);
-          this.props.content.abortController.abort();
+          this.state.abortController.abort();
         }}>Close</button>
       </div>
     )
