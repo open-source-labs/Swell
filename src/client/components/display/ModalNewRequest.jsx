@@ -4,6 +4,7 @@ import Request from './Request.jsx';
 import Response from './Response.jsx';
 
 import * as actions from '../../actions/actions';
+import HeaderEntryForm from './HeaderEntryForm.jsx';
 
 const mapStateToProps = store => ({
  
@@ -19,13 +20,13 @@ class ModalNewRequest extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      method : '',
-      headers : '',
+      method : 'GET',
+      headers : [],
       body : '',
       url : '',
     }
     this.methodOnChange = this.methodOnChange.bind(this);
-    this.headersOnChange = this.headersOnChange.bind(this);
+    this.updateHeaders = this.updateHeaders.bind(this);
     this.bodyOnChange = this.bodyOnChange.bind(this);
     this.urlOnChange = this.urlOnChange.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
@@ -41,10 +42,15 @@ class ModalNewRequest extends Component {
       url : e.target.value,
     })
   }
-  headersOnChange (e) {
+  updateHeaders (headers) {
+    console.log('UPDATE HEADERS CALLED', headers);
     this.setState({
-      headers : e.target.value,
-    })
+      headers: headers.filter(header => {
+        return header.active;
+      }),
+    },() => {
+      console.log(this.state.headers)
+    });
   }
   bodyOnChange (e) {
     this.setState({
@@ -53,6 +59,7 @@ class ModalNewRequest extends Component {
   }
 
   addNewRequest() {
+    console.log(this.state.headers)
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
       url : this.state.url,
@@ -62,12 +69,12 @@ class ModalNewRequest extends Component {
       connectionType : null,
       request: {
         method : this.state.method,
-        headers : JSON.parse(this.state.headers),
+        headers : this.state.headers,
         body : JSON.parse(this.state.body),
       },
       response : {
         headers : null,
-        data : null,
+        events : null,
       }
     }
 
@@ -75,22 +82,29 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    console.log(this.state);
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
-        <input type='text' placeholder='Method' onChange={(e) => {
+        <select onChange={(e) => {
           this.methodOnChange(e)
-        }}></input>
+        }}>
+          <option value='GET'>GET</option>
+          <option value='POST'>POST</option>
+          <option value='PUT'>PUT</option>
+          <option value='PATCH'>PATCH</option>
+          <option value='DELETE'>DELETE</option>
+        </select>
+
         <input type='text' placeholder='URL' onChange={(e) => {
           this.urlOnChange(e)
         }}></input>
-        <textarea type='text' placeholder='Headers' onChange={(e) => {
-          this.headersOnChange(e)
-        }}></textarea>
+        
+        <HeaderEntryForm updateHeaders={this.updateHeaders}></HeaderEntryForm>
+
         <textarea type='text' placeholder='Body' onChange={(e) => {
           this.bodyOnChange(e)
         }}></textarea>
+
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>
     )

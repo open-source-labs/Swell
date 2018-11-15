@@ -19,8 +19,10 @@ class Response extends Component {
 
   render() {
     return(
-      <div>
+      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         Response
+        {this.props.content.headers}
+        {this.props.content.data}
       </div>
     )
   }
