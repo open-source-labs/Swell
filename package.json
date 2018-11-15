@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon src/server/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "electron": "electron .",    
+    "electron": "electron .",
     "tserver": "concurrently \"npm run dev\" \"nodemon test-server/index.js\""
   },
   "author": "Schno Mozingo",
