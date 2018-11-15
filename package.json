@@ -2,7 +2,7 @@
   "name": "Swell",
   "version": "1.0.0",
   "description": "Swell",
-  "main": "src/client/main.js",
+  "main": "src/client/electron.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "npm run build && node src/server/server.js",

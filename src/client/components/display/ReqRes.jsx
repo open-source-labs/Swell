@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import Response from './Response.jsx';
+import ReqResCtrl from '../ReqResCtrl';
 
 import * as actions from '../../actions/actions';
 
@@ -20,12 +21,22 @@ class ReqRes extends Component {
 
 
   render() {
+    let contentBody = [];
+    contentBody.push(<Request content={this.props.content.request}/>);
+    if (this.props.content.connection !== 'uninitialized') {
+      contentBody.push(<Response content={this.props.content.response}/>)
+    };
+
     return(
-      <div>
+      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+        {this.props.content.id}
         {this.props.content.url}
-        {this.props.content.request.method}
-        {/* <Request/>
-        <Response/> */}
+        {this.props.content.timeSent}
+        {this.props.content.timeReceived}
+        {this.props.content.connectionType}
+        {contentBody}
+        <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
+        <button>Close</button>
       </div>
     )
   }

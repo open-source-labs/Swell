@@ -1,6 +1,12 @@
-const express = require('express')
-const app = express()
-const port = 8080
+const express = require('express');
+const app = express();
+const port = 8080;
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 app.get('/', (req, res) => res.send('Test server running...'))
     
@@ -20,7 +26,8 @@ app.get('/sse', (req, res, next) => {
 
     setTimeout(() => {
         let respObj = {
-            event : 'testEvent',
+            id : 2,
+            eventType : 'testEvent',
             data : 'hi2',
         }
         res.write(JSON.stringify(respObj));
