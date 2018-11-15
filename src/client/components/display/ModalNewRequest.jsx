@@ -5,6 +5,7 @@ import Response from "./Response.jsx";
 
 import * as actions from '../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
+import BodyEntryForm from "./BodyEntryForm.jsx";
 
 const mapStateToProps = store => ({});
 
@@ -20,12 +21,14 @@ class ModalNewRequest extends Component {
     this.state = {
       method : 'GET',
       headers : [],
-      body : '',
+      contentTypeHeader: undefined,
+      body : {},
       url : '',
     }
     this.methodOnChange = this.methodOnChange.bind(this);
     this.updateHeaders = this.updateHeaders.bind(this);
-    this.bodyOnChange = this.bodyOnChange.bind(this);
+    this.updateBody = this.updateBody.bind(this);
+    this.updateContentTypeHeader = this .updateContentTypeHeader.bind(this);
     this.urlOnChange = this.urlOnChange.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
@@ -41,23 +44,33 @@ class ModalNewRequest extends Component {
     });
   }
   updateHeaders (headers) {
+<<<<<<< HEAD
     // console.log('UPDATE HEADERS CALLED', headers);
+=======
+>>>>>>> dev
     this.setState({
       headers: headers.filter(header => {
         return header.active;
       }),
     },() => {
+<<<<<<< HEAD
       // console.log(this.state.headers)
+=======
+>>>>>>> dev
     });
   }
-  bodyOnChange(e) {
+  updateBody (body) {
     this.setState({
-      body: e.target.value
+      body: body,
+    });
+  }
+  updateContentTypeHeader (header) {
+    this.setState({
+      contentTypeHeader : header
     });
   }
 
   addNewRequest() {
-    console.log(this.state.headers)
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
       url: 'http://localhost:8080/sse',
@@ -69,18 +82,19 @@ class ModalNewRequest extends Component {
       request: {
         method : this.state.method,
         headers : this.state.headers,
-        body : JSON.parse(this.state.body),
+        body : this.state.body,
       },
       response : {
         headers : null,
         events : null,
-      }
+      },
+      abortController : new AbortController(),
     };
-
     this.props.reqResAdd(reqRes);
   }
 
   render() {
+    console.log(this.state)
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
@@ -100,11 +114,9 @@ class ModalNewRequest extends Component {
 
          {/* value={'http://localhost:8080/sse'}  */}
         
-        <HeaderEntryForm updateHeaders={this.updateHeaders}></HeaderEntryForm>
-
-        <textarea type='text' placeholder='Body' onChange={(e) => {
-          this.bodyOnChange(e)
-        }}></textarea>
+        <HeaderEntryForm updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
+        
+        <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader}></BodyEntryForm>
 
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>
