@@ -72,7 +72,7 @@ class HeaderEntryForm extends Component {
           headers: headersDeepCopy,
           count: this.state.count+1,
         }, () => {
-          console.log(this.state.headers);
+          this.props.updateHeaders(this.state.headers);
         });
       }
     }
