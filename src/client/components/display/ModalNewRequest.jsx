@@ -44,19 +44,11 @@ class ModalNewRequest extends Component {
     });
   }
   updateHeaders (headers) {
-<<<<<<< HEAD
-    // console.log('UPDATE HEADERS CALLED', headers);
-=======
->>>>>>> dev
     this.setState({
       headers: headers.filter(header => {
         return header.active;
       }),
     },() => {
-<<<<<<< HEAD
-      // console.log(this.state.headers)
-=======
->>>>>>> dev
     });
   }
   updateBody (body) {
