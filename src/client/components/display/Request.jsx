@@ -18,8 +18,8 @@ class Request extends Component {
 
 
   render() {
-    let headerArr = this.props.content.headers.map(header => {
-      return (<div style={{'display' : 'flex'}}>
+    let headerArr = this.props.content.headers.map((header, index) => {
+      return (<div key={index} style={{'display' : 'flex'}}>
         <div style={{'width' : '50%'}}>{header.key}</div>
         <div style={{'width' : '50%'}}>{header.value}</div>
       </div>)

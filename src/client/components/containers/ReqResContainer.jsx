@@ -17,9 +17,7 @@ class ReqResContainer extends Component {
     super(props);
   }
 
-
   render() {
-
     let reqResArr = this.props.reqRes.map((reqRes,index) => {
       return <ReqRes content={reqRes} key={index}></ReqRes>
     });

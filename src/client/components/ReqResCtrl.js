@@ -29,7 +29,6 @@ const ReqResCtrl = {
     }
 
     ReqResCtrl.fetchController(outputObj, url, object)
-
   },
 
   /* Utility function to open fetches */
@@ -39,10 +38,10 @@ const ReqResCtrl = {
     return fetch(url, parsedObj)
       .then(response => {
         let reader = response.body.getReader();
-        console.log(reader);
+        // console.log(reader);
         read();
 
-        console.log(originalObj);
+        // console.log(originalObj);
         const newObj = JSON.parse(JSON.stringify(originalObj));
 
         newObj.timeSent = timeSentSnap;
@@ -52,14 +51,14 @@ const ReqResCtrl = {
           events: [],
         };
 
-        newObj.connection = 'open...';
-        newObj.connectionType = 'open...';
+        newObj.connection = 'open';
+        newObj.connectionType = 'SSE';
 
         function read() {
           reader.read().then(obj => {
-            console.log(obj);
+            // console.log(obj);
             if (obj.done) {
-              console.log('finished');
+              // console.log('finished');
               return;
             } else {
               let string = new TextDecoder("utf-8").decode(obj.value);
@@ -67,7 +66,7 @@ const ReqResCtrl = {
                 data: string,
                 timeReceived: Date.now()
               });
-              console.log(string);
+              // console.log(string);
               store.default.dispatch( actions.reqResUpdate(newObj) );
               read();
             }
