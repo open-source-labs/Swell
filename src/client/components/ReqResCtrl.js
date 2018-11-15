@@ -4,7 +4,7 @@ import * as actions from '../actions/actions';
 
 const ReqResCtrl = {
   parseReqObject(object) {
-    let { id, url, request: { method }, request: { headers }, request: { body } } = object;
+    let { abortController, url, request: { method }, request: { headers }, request: { body } } = object;
 
     console.log(headers);
 
@@ -28,26 +28,25 @@ const ReqResCtrl = {
       outputObj.body = body;
     }
 
-    this.fetchController(outputObj, url, object, id)
+    this.fetchController(outputObj, url, object, abortController)
   },
 
   /* Utility function to open fetches */
-  fetchController(parsedObj, url, originalObj) {
+  fetchController(parsedObj, url, originalObj, abortController) {
     let timeSentSnap = Date.now();
-
-    const controller = new AbortController();
-    const signal = controller.signal;
+    // const controller = new AbortController();
+    const signal = abortController.signal;
 
     console.log(signal);
 
     parsedObj.signal = signal; 
 
-    const abortBtn = document.getElementById(`${originalObj.id}close`);
+    // const abortBtn = document.getElementById(`${originalObj.id}close`);
 
-    abortBtn.addEventListener('click', function() {
-      controller.abort();
-      console.log('Download aborted');
-    });
+    // abortBtn.addEventListener('click', function() {
+    //   controller.abort();
+    //   console.log('Download aborted');
+    // });
 
     return fetch(url, parsedObj)
     .then(response => {

@@ -38,6 +38,7 @@ class ReqRes extends Component {
         <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
         <button onClick={() => {
           console.log(`aborting fetch for ReqRes ${this.props.content.id}.`);
+          console.log(this.props.content.abortController);
           this.props.content.abortController.abort();
         }}>Close</button>
       </div>
