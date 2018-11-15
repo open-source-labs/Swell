@@ -41,13 +41,13 @@ class ModalNewRequest extends Component {
     });
   }
   updateHeaders (headers) {
-    console.log('UPDATE HEADERS CALLED', headers);
+    // console.log('UPDATE HEADERS CALLED', headers);
     this.setState({
       headers: headers.filter(header => {
         return header.active;
       }),
     },() => {
-      console.log(this.state.headers)
+      // console.log(this.state.headers)
     });
   }
   bodyOnChange(e) {
@@ -60,6 +60,7 @@ class ModalNewRequest extends Component {
     console.log(this.state.headers)
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
+      // url: 'http://localhost:8080/sse',
       url : this.state.url,
       timeSent : null,
       timeReceived : null,
@@ -96,6 +97,8 @@ class ModalNewRequest extends Component {
         <input type='text' placeholder='URL' onChange={(e) => {
           this.urlOnChange(e)
         }}></input>
+
+         {/* value={'http://localhost:8080/sse'}  */}
         
         <HeaderEntryForm updateHeaders={this.updateHeaders}></HeaderEntryForm>
 
