@@ -34,8 +34,7 @@ class ReqRes extends Component {
         {this.props.content.timeSent}
         {this.props.content.timeReceived}
         {this.props.content.connectionType}
-        {/* <Request/>
-        <Response/> */}
+        {contentBody}
         <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
         <button>Close</button>
       </div>
