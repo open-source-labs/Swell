@@ -36,7 +36,7 @@ class ReqRes extends Component {
         {this.props.content.connectionType}
         {contentBody}
         <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
-        <button>Close</button>
+        <button id={`${this.props.content.id}close`}>Close</button>
       </div>
     )
   }

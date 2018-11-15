@@ -4,7 +4,9 @@ import * as actions from '../actions/actions';
 
 const ReqResCtrl = {
   parseReqObject(object) {
-    let { id, url, timeSent, timeReceived, connection, conntectionType, request: { method }, request: { headers }, request: { body} } = object;
+    let { id, url, request: { method }, request: { headers }, request: { body } } = object;
+
+    console.log(headers);
 
     method = method.toUpperCase();
     let formattedHeaders = {};
@@ -23,15 +25,29 @@ const ReqResCtrl = {
     };
 
     if (method !== 'GET' && method !== 'HEAD') {
-      outputObj.body = JSON.stringify(body)
+      outputObj.body = body;
     }
 
-    this.fetchController(outputObj, url, object)
+    this.fetchController(outputObj, url, object, id)
   },
 
   /* Utility function to open fetches */
   fetchController(parsedObj, url, originalObj) {
     let timeSentSnap = Date.now();
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    console.log(signal);
+
+    parsedObj.signal = signal; 
+
+    const abortBtn = document.getElementById(`${originalObj.id}close`);
+
+    abortBtn.addEventListener('click', function() {
+      controller.abort();
+      console.log('Download aborted');
+    });
 
     return fetch(url, parsedObj)
     .then(response => {
@@ -83,8 +99,6 @@ const ReqResCtrl = {
       }
     })
     .catch(err => console.log(err))
-
-
   },
 
   handleSingleEvent() {
@@ -151,7 +165,12 @@ const ReqResCtrl = {
 
   /* Closes open endpoint */
   closeEndpoint(e) {
-    resReqArr[e.id].close();
+    console.log('closeEndpoint', e.target);
+    const reqResComponentID = e.target.id;
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+
+    reqResArr[e.target.id].close();
   },
 
   /* Closes all open endpoint */
