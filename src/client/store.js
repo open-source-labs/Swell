@@ -20,8 +20,4 @@ const store = createStore(
   composeWithDevTools()
 );
 
-window.addEventListener('resize', () => {
-  store.dispatch(actions.screenResize(window.innerWidth));
-});
-
 export default store;
