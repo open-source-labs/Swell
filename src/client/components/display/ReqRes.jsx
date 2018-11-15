@@ -22,9 +22,9 @@ class ReqRes extends Component {
 
   render() {
     let contentBody = [];
-    contentBody.push(<Request content={this.props.content.request}/>);
+    contentBody.push(<Request content={this.props.content.request} key={0}/>);
     if (this.props.content.connection !== 'uninitialized') {
-      contentBody.push(<Response content={this.props.content.response}/>)
+      contentBody.push(<Response content={this.props.content.response} key={1}/>)
     };
 
     return(

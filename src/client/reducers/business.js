@@ -45,15 +45,15 @@ const businessReducer = (state=initialState, action) => {
 
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
 
-      let indexToBeUpdated;
+      let indexToBeUpdated = undefined;
       reqResDeepCopy.forEach((reqRes, index) => {
         if(reqRes.id === action.payload.id) {
           indexToBeUpdated = index;
         }
       });
 
-      if (indexToBeUpdated) {
-        reqResDeepCopy.splice(indexToBeUpdated, 1, action.payload);
+      if (indexToBeUpdated !== undefined) {
+        reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload)));
       }
 
       return {
