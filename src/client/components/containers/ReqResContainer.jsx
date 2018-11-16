@@ -17,14 +17,12 @@ class ReqResContainer extends Component {
     super(props);
   }
 
-
   render() {
-
     let reqResArr = this.props.reqRes.map((reqRes,index) => {
-      return <ReqRes content={reqRes} key={index}></ReqRes>
+      return <ReqRes className="reqResChild" content={reqRes} key={index}></ReqRes>
     });
     return(
-      <div style={{'border' : '1px solid black'}}>
+      <div id="reqResContainer" style={{'border' : '1px solid black'}}>
         ReqResContainer
         {reqResArr}
       </div>

@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "chart.js": "^2.7.3",
     "concurrently": "^4.0.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",

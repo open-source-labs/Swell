@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Chart from '../display/Chart.jsx';
+import GraphLine from '../display/Chart.jsx';
 
 import * as actions from '../../actions/actions';
 
@@ -23,7 +23,7 @@ class Graph extends Component {
     return(
       <div>
         GraphContainer
-        <Chart />
+        <GraphLine />
       </div>
     )
   }
