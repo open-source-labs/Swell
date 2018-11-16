@@ -59,7 +59,6 @@ class ModalNewRequest extends Component {
       contentTypeHeader : header
     });
   }
-
   addNewRequest() {
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
