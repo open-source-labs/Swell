@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Chart from '../display/Chart.jsx';
+
 import * as actions from '../../actions/actions';
 
 const mapStateToProps = store => ({
@@ -21,6 +23,7 @@ class Graph extends Component {
     return(
       <div>
         GraphContainer
+        <Chart />
       </div>
     )
   }

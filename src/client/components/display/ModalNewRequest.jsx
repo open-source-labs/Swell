@@ -40,16 +40,16 @@ class ModalNewRequest extends Component {
       url: e.target.value
     });
   }
-      }),
-    },() => {
-      console.log(this.state.headers)
-    });
-  }
+  //     }),
+  //   },() => {
+  //     console.log(this.state.headers)
+  //   });
+  // }
   bodyOnChange(e) {
     this.setState({
       body: e.target.value
+    })
   }
-
   addNewRequest() {
     console.log(this.state.headers)
     let reqRes = {
