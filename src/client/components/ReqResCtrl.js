@@ -177,7 +177,13 @@ const ReqResCtrl = {
     console.log('sup')
     const reqResContainer = document.querySelector('#reqResContainer');
 
+    if (reqResContainer.hasChildNodes()) {
+      let children = reqResContainer.childNodes;
     
+      for (let i = 0; i < children.length; i++) {
+        console.log(children[i])
+      }
+    }
     // for (let resReqObj of resReqArr) {
     //   fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
     // }

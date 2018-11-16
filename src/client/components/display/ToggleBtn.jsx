@@ -21,7 +21,6 @@ class ToggleBtn extends Component {
       }
     
       handleToggleClick(e, abortCtrl, props) {
-          console.log(this.props.reqResState.content.id)
         /* On Click if Toggle isn't open yet, OPEN IT*/
         if (this.state.isToggled) {
           ReqResCtrl.toggleOpenEndPoint(e, abortCtrl);
@@ -33,6 +32,8 @@ class ToggleBtn extends Component {
           const targetReqResObj = reqResArr.find(obj => obj.id == reqResComponentID); 
     
           targetReqResObj.connection = 'closed';
+          store.default.dispatch(actions.reqResUpdate(targetReqResObj));
+
           this.state.abortController.abort();
           this.setState({
             abortController : new AbortController(),
@@ -43,14 +44,11 @@ class ToggleBtn extends Component {
             isToggled: !prevState.isToggled
         }));
       }
-    
-      
+
     render(props) {
       return (
         <button id={this.props.reqResState.content.id} onClick={
-            (e) => { 
-              this.handleToggleClick(e, this.state.abortController)
-            }
+            (e) => this.handleToggleClick(e, this.state.abortController)
           }>
             {this.state.isToggled ? 'OPEN CONNECTION' : 'CLOSE CONNECTION'}
           </button>
