@@ -1,4 +1,3 @@
-import { connect } from 'react-redux';
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
@@ -14,7 +13,7 @@ const ReqResCtrl = {
       formattedHeaders[head.key] = head.value
     })
 
-    console.log(formattedHeaders);
+    // formattedHeaders["Access-Control-Allow-Origin"] = '*';
 
     let outputObj = {
       method: method,
@@ -36,8 +35,9 @@ const ReqResCtrl = {
   /* Utility function to open fetches */
   fetchController(parsedObj, url, originalObj, abortController) {
     let timeSentSnap = Date.now();
-    // const controller = new AbortController();
+
     const signal = abortController.signal;
+
     parsedObj.signal = signal; 
 
     return fetch(url, parsedObj)
@@ -48,62 +48,46 @@ const ReqResCtrl = {
       }
 
       const contentType = heads['content-type'];
+      const isStream = contentType.includes('stream');
 
-      switch (contentType) {
-        case 'text/event-stream' :
-          console.log('text/event-stream');
-          this.handleSSE(response, originalObj, timeSentSnap, heads);
-          break;
-
-        case 'text/event-stream; charset=UTF-8' :
-          console.log('text/event-stream');
-          this.handleSSE(response, originalObj, timeSentSnap);
-          break;
-
-        case 'text/plain' :
-          console.log('text/plain');
-          this.handleSingleEvent();
-          break;
-
-        case 'application/json' :
-          console.log('application/json');
-          this.handleSSE(response, originalObj, timeSentSnap);
-          break;
-
-        case 'application/javascript' :
-          console.log('application/javascript');
-          this.handleSingleEvent();
-          break;
-
-        case 'application/xml' :
-          console.log('application/xml');
-          this.handleSingleEvent();
-          break;
-
-        case 'text/xml' :
-          console.log('text/xml');
-          this.handleSingleEvent();
-          break;
-
-        case 'text/html' :
-          console.log('text/html');
-          this.handleSingleEvent();
-          break;
-
-        default :
-          console.log('content-type not recognized')
-      }
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap);
     })
     .catch(err => console.log(err))
   },
 
-  handleSingleEvent() {
-    console.log('Single Event')
+  handleSingleEvent(response, originalObj, timeSentSnap) {
+    console.log('Handling Single Event')
+    console.log('response', response);
+
+    const newObj = JSON.parse(JSON.stringify(originalObj));
+    
+    newObj.connection = 'closed';
+    newObj.connectionType = 'plain';
+    newObj.timeSent = timeSentSnap;
+    newObj.timeReceived = Date.now();
+    newObj.response = {
+      headers: [response.headers],
+      events: [],
+    };
+
+    console.log(response);
+
+    response.then((res) => {
+      newObj.response.events.push({
+        data: res,
+        timeReceived: Date.now()
+      });
+      store.default.dispatch(actions.reqResUpdate(newObj));
+    })
+
+    
+
   },
 
   /* handle SSE Streams */
   handleSSE(response, originalObj, timeSentSnap, headers) {
     let reader = response.body.getReader();
+    console.log('Handling Stream')
     console.log('response', response);
 
     read();
@@ -158,7 +142,11 @@ const ReqResCtrl = {
       });
     }
   },
-  
+
+  toggleEndPoint(e) {
+    console.log('log')
+  },
+
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
   toggleOpenEndPoint(e, abortController) {
     console.log('e', e);
