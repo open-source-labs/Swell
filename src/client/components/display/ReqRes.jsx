@@ -20,7 +20,7 @@ class ReqRes extends Component {
     this.state = {
       isToggled: true
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleToggleClick = this.handleToggleClick.bind(this);
 }
 
   componentDidMount() {
