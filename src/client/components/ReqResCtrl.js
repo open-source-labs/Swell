@@ -14,7 +14,7 @@ const ReqResCtrl = {
       formattedHeaders[head.key] = head.value
     })
 
-    formattedHeaders["Access-Control-Allow-Origin"] = '*';
+    // formattedHeaders["Access-Control-Allow-Origin"] = '*';
 
     console.log(formattedHeaders);
 
@@ -41,16 +41,7 @@ const ReqResCtrl = {
     // const controller = new AbortController();
     const signal = abortController.signal;
 
-    console.log(signal);
-
     parsedObj.signal = signal; 
-
-    // const abortBtn = document.getElementById(`${originalObj.id}close`);
-
-    // abortBtn.addEventListener('click', function() {
-    //   controller.abort();
-    //   console.log('Download aborted');
-    // });
 
     return fetch(url, parsedObj)
     .then(response => {
@@ -58,64 +49,34 @@ const ReqResCtrl = {
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
+      console.log(response.body instanceof ReadableStream);
+      const isStream = response.body instanceof ReadableStream;
 
-      const contentType = heads['content-type'];
-
-      switch (contentType) {
-        case 'text/event-stream' :
-          console.log('text/event-stream');
-          this.handleSSE(response, originalObj, timeSentSnap);
-          break;
-
-        case 'text/event-stream; charset=UTF-8' :
-          console.log('text/event-stream');
-          this.handleSSE(response, originalObj, timeSentSnap);
-          break;
-
-        case 'text/plain' :
-          console.log('text/plain');
-          this.handleSingleEvent();
-          break;
-
-        case 'application/json' :
-          console.log('application/json');
-          this.handleSSE(response, originalObj, timeSentSnap);
-          break;
-
-        case 'application/javascript' :
-          console.log('application/javascript');
-          this.handleSingleEvent();
-          break;
-
-        case 'application/xml' :
-          console.log('application/xml');
-          this.handleSingleEvent();
-          break;
-
-        case 'text/xml' :
-          console.log('text/xml');
-          this.handleSingleEvent();
-          break;
-
-        case 'text/html' :
-          console.log('text/html');
-          this.handleSingleEvent();
-          break;
-
-        default :
-          console.log('content-type not recognized')
-      }
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap) : this.handleSingleEvent(response, originalObj, timeSentSnap)
     })
-    .catch(err => console.log(err))
   },
 
-  handleSingleEvent() {
+  handleSingleEvent(response, originalObj, timeSentSnap) {
     console.log('Single Event')
+
+    const newObj = JSON.parse(JSON.stringify(originalObj));
+
+    newObj.connection = 'closed';
+    newObj.connectionType = 'plain'
+    newObj.timeSent = timeSentSnap;
+    newObj.timeReceived = Date.now();
+    newObj.response = {
+      headers: [response.headers],
+      events: [response.body],
+    };
+
+    store.default.dispatch(actions.reqResUpdate(newObj));
   },
 
   /* handle SSE Streams */
   handleSSE(response, originalObj, timeSentSnap) {
     let reader = response.body.getReader();
+    console.log('Handling Readable Stream');
     console.log('response', response);
 
     read();
@@ -134,9 +95,7 @@ const ReqResCtrl = {
 
     function read() {
       reader.read().then(obj => {
-        // console.log(obj);
         if (obj.done) {
-          // console.log('finished');
           return;
         } else {
           let string = new TextDecoder("utf-8").decode(obj.value);
@@ -144,16 +103,17 @@ const ReqResCtrl = {
             data: string,
             timeReceived: Date.now()
           });
-          // console.log(string);
           store.default.dispatch(actions.reqResUpdate(newObj));
           read();
         }
       });
     }
   },
+
   toggleEndPoint(e) {
     console.log('log')
   },
+
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
   openEndPoint(e, abortController) {
     const reqResComponentID = e.target.id;
