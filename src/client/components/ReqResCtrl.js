@@ -153,6 +153,7 @@ const ReqResCtrl = {
   
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
   toggleOpenEndPoint(e, abortController) {
+    console.log('e', e);
     const reqResComponentID = e.target.id;
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
@@ -164,14 +165,18 @@ const ReqResCtrl = {
   },
 
   /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-  openEndPoints(e) {
-    for (let resReqObj of resReqArr) {
-      fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
-    }
+  openAllEndPoints(e) {
+    console.log('sup')
+    const reqResContainer = document.querySelector('#reqResContainer');
+
+    
+    // for (let resReqObj of resReqArr) {
+    //   fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
+    // }
   },
 
   /* Closes all open endpoint */
-  closeEndpoints(resReqArr, e) {
+  closeAllEndpoints(resReqArr, e) {
     for (let resReqObj of resReqArr) {
       closeEndpoint(resReqObj);
     }
