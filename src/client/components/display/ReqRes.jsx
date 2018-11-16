@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import Response from './Response.jsx';
-import ToggleBtn from './ToggleBtn.jsx';
-
 import ReqResCtrl from '../ReqResCtrl';
 
 import * as actions from '../../actions/actions';
@@ -19,12 +17,29 @@ const mapDispatchToProps = dispatch => ({
 class ReqRes extends Component {
   constructor(props) {
     super(props);
-  }
+    this.state = {
+      isToggled: true
+    };
+    this.handleClick = this.handleClick.bind(this);
+}
 
   componentDidMount() {
     this.setState({
       abortController : new AbortController(),
     })
+  }
+
+  handleToggleClick(e, abortCtrl) {
+    console.log('isToggled', this.state.isToggled);
+    if (this.state.isToggled) {
+      ReqResCtrl.toggleOpenEndPoint(e, abortCtrl)
+    } else {
+      this.state.abortController.abort()
+    }
+
+    this.setState(prevState => ({
+        isToggled: !prevState.isToggled
+    }));
   }
 
   render() {
@@ -42,12 +57,14 @@ class ReqRes extends Component {
         {this.props.content.timeReceived}
         {this.props.content.connectionType}
         {contentBody}
-        <ToggleBtn onClick={ ReqResCtrl.toggleEndPoint } />
-        <button id={this.props.content.id} onClick={(e) => ReqResCtrl.openEndPoint(e, this.state.abortController)}>Send</button>
-        <button onClick={() => {
-          console.log(`aborting fetch for ReqRes ${this.props.content.id}.`);
-          this.state.abortController.abort();
-        }}>Close</button>
+        
+
+        <button id={this.props.content.id}  onClick={(e) => { 
+          this.handleToggleClick(e, this.state.abortController)
+          }
+          }>
+          {this.state.isToggled ? 'OPEN CONNECTION' : 'CLOSE CONNECTION'}
+        </button>
       </div>
     )
   }

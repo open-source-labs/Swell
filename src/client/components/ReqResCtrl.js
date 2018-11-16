@@ -14,8 +14,6 @@ const ReqResCtrl = {
       formattedHeaders[head.key] = head.value
     })
 
-    formattedHeaders["Access-Control-Allow-Origin"] = '*';
-
     console.log(formattedHeaders);
 
     let outputObj = {
@@ -151,11 +149,9 @@ const ReqResCtrl = {
       });
     }
   },
-  toggleEndPoint(e) {
-    console.log('log')
-  },
+  
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
-  openEndPoint(e, abortController) {
+  toggleOpenEndPoint(e, abortController) {
     const reqResComponentID = e.target.id;
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
@@ -171,16 +167,6 @@ const ReqResCtrl = {
     for (let resReqObj of resReqArr) {
       fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
     }
-  },
-
-  /* Closes open endpoint */
-  closeEndpoint(e) {
-    console.log('closeEndpoint', e.target);
-    const reqResComponentID = e.target.id;
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-
-    reqResArr[e.target.id].close();
   },
 
   /* Closes all open endpoint */
