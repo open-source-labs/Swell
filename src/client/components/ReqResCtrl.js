@@ -36,17 +36,7 @@ const ReqResCtrl = {
     let timeSentSnap = Date.now();
     // const controller = new AbortController();
     const signal = abortController.signal;
-
-    console.log(signal);
-
     parsedObj.signal = signal; 
-
-    // const abortBtn = document.getElementById(`${originalObj.id}close`);
-
-    // abortBtn.addEventListener('click', function() {
-    //   controller.abort();
-    //   console.log('Download aborted');
-    // });
 
     return fetch(url, parsedObj)
     .then(response => {
@@ -60,7 +50,7 @@ const ReqResCtrl = {
       switch (contentType) {
         case 'text/event-stream' :
           console.log('text/event-stream');
-          this.handleSSE(response, originalObj, timeSentSnap);
+          this.handleSSE(response, originalObj, timeSentSnap, heads);
           break;
 
         case 'text/plain' :
@@ -105,7 +95,7 @@ const ReqResCtrl = {
   },
 
   /* handle SSE Streams */
-  handleSSE(response, originalObj, timeSentSnap) {
+  handleSSE(response, originalObj, timeSentSnap, headers) {
     let reader = response.body.getReader();
     console.log('response', response);
 
@@ -116,7 +106,7 @@ const ReqResCtrl = {
     newObj.timeSent = timeSentSnap;
     newObj.timeReceived = Date.now();
     newObj.response = {
-      headers: [response.headers],
+      headers,
       events: [],
     };
 
@@ -179,7 +169,5 @@ const ReqResCtrl = {
     }
   }
 };
-
-
 
 export default ReqResCtrl;
