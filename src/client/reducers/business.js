@@ -41,7 +41,7 @@ const businessReducer = (state=initialState, action) => {
     }
 
     case types.REQRES_UPDATE:{
-      // console.log('action',action);
+      console.log('action',action);
 
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
 

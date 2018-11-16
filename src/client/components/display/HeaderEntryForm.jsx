@@ -42,12 +42,6 @@ class HeaderEntryForm extends Component {
           let filtered = this.state.headers.filter(header => {
             return header.key !== 'content-type';
           });
-          // filtered.push({
-          //   id : this.state.count,
-          //   active : true,
-          //   key : 'content-type',
-          //   value : this.props.contentTypeHeader,
-          // })
 
           this.setState({
             headers: filtered
