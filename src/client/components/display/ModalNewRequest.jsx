@@ -62,8 +62,8 @@ class ModalNewRequest extends Component {
   addNewRequest() {
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
-      url: 'http://localhost:8888/events',
-      // url : this.state.url,
+      // url: 'http://localhost:8888/events',
+      url : this.state.url,
       timeSent : null,
       timeReceived : null,
       connection : 'uninitialized',
@@ -82,7 +82,6 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    console.log(this.state)
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
