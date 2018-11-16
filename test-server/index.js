@@ -19,24 +19,21 @@ app.get('/sse', (req, res, next) => {
 
     setTimeout(() => {
         res.write(
-            'data: hello \n'
+            'data: hello\n'
           );
         res.write('\n\n');
-    }, 3000);
+    }, 1000);
 
     setTimeout(() => {
-        let respObj = {
-            id : 2,
-            eventType : 'testEvent',
-            data : 'hi2',
-        }
-        res.write(JSON.stringify(respObj));
+        res.write('id : 2\n');
+        res.write('event : testEvent\n');
+        res.write('data : {"name" : "jason"}\n');
         res.write('\n\n');
-    }, 6000);
+    }, 2000);
 
     setTimeout(() => {
-        res.end('bye');
-    }, 9000);
+        res.end('data : bye\n\n');
+    }, 3000);
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}!`))

@@ -115,17 +115,36 @@ const ReqResCtrl = {
 
     function read() {
       reader.read().then(obj => {
-        // console.log(obj);
         if (obj.done) {
-          // console.log('finished');
           return;
-        } else {
-          let string = new TextDecoder("utf-8").decode(obj.value);
-          newObj.response.events.push({
-            data: string,
-            timeReceived: Date.now()
+        } 
+
+        //decode and recursively call
+        else {
+          let receivedEventFields = new TextDecoder("utf-8").decode(obj.value)
+          //since the string is multi line, each for a different field, split by line
+          .split('\n')
+          //remove empty lines
+          .filter(field => field != '')
+          //massage fields so they can be parsed into JSON
+          .map(field => {
+            let fieldColonSplit = field
+            .replace(/:/,'&&&&')
+            .split('&&&&')
+            .map(kv => kv.trim().charAt(0) === '{' ? kv.trim() : `\"${kv.trim()}\"`)
+            .join(' : ');
+
+            fieldColonSplit = `{${fieldColonSplit}}`
+            
+            return JSON.parse(fieldColonSplit);
           });
-          // console.log(string);
+
+          //merge all fields into a single object
+          let parsedEventObject = (Object.assign({},...receivedEventFields));
+          parsedEventObject.timeReceived = Date.now();
+          
+          newObj.response.events.push(parsedEventObject);
+
           store.default.dispatch(actions.reqResUpdate(newObj));
           read();
         }

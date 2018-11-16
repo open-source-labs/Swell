@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Request from "./Request.jsx";
-import Response from "./Response.jsx";
 
 import * as actions from '../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
