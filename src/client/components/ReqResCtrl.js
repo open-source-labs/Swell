@@ -14,6 +14,8 @@ const ReqResCtrl = {
       formattedHeaders[head.key] = head.value
     })
 
+    console.log(formattedHeaders);
+
     let outputObj = {
       method: method,
       mode: "cors", // no-cors, cors, *same-origin
@@ -53,6 +55,11 @@ const ReqResCtrl = {
           this.handleSSE(response, originalObj, timeSentSnap, heads);
           break;
 
+        case 'text/event-stream; charset=UTF-8' :
+          console.log('text/event-stream');
+          this.handleSSE(response, originalObj, timeSentSnap);
+          break;
+
         case 'text/plain' :
           console.log('text/plain');
           this.handleSingleEvent();
@@ -60,7 +67,7 @@ const ReqResCtrl = {
 
         case 'application/json' :
           console.log('application/json');
-          this.handleSingleEvent();
+          this.handleSSE(response, originalObj, timeSentSnap);
           break;
 
         case 'application/javascript' :
@@ -151,9 +158,10 @@ const ReqResCtrl = {
       });
     }
   },
-
+  
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
-  openEndPoint(e, abortController) {
+  toggleOpenEndPoint(e, abortController) {
+    console.log('e', e);
     const reqResComponentID = e.target.id;
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
@@ -165,24 +173,18 @@ const ReqResCtrl = {
   },
 
   /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-  openEndPoints(e) {
-    for (let resReqObj of resReqArr) {
-      fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
-    }
-  },
+  openAllEndPoints(e) {
+    console.log('sup')
+    const reqResContainer = document.querySelector('#reqResContainer');
 
-  /* Closes open endpoint */
-  closeEndpoint(e) {
-    console.log('closeEndpoint', e.target);
-    const reqResComponentID = e.target.id;
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-
-    reqResArr[e.target.id].close();
+    
+    // for (let resReqObj of resReqArr) {
+    //   fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
+    // }
   },
 
   /* Closes all open endpoint */
-  closeEndpoints(resReqArr, e) {
+  closeAllEndpoints(resReqArr, e) {
     for (let resReqObj of resReqArr) {
       closeEndpoint(resReqObj);
     }

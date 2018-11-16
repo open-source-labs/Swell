@@ -1,39 +1,43 @@
-const express = require('express');
-const app = express();
-const port = 8080;
+var fs = require('fs');
+var http = require('http');
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+var connectionCounter = 1;
 
-app.get('/', (req, res) => res.send('Test server running...'))
-    
-app.get('/sse', (req, res, next) => {
-    res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
-    })
+http.createServer(function(request, response) {
 
-    setTimeout(() => {
-        res.write(
-            'data: hello\n'
-          );
-        res.write('\n\n');
-    }, 1000);
+    if (request.url === '/') {
+        response.end();
 
-    setTimeout(() => {
-        res.write('id : 2\n');
-        res.write('event : testEvent\n');
-        res.write('data : {"name" : "jason"}\n');
-        res.write('\n\n');
-    }, 2000);
+    } else if (request.url === '/events') {
 
-    setTimeout(() => {
-        res.end('data : bye\n\n');
-    }, 3000);
-})
+        var thisConnection = connectionCounter++;
+        var thisEvent = 1;
 
-app.listen(port, () => console.log(`Listening on port ${port}!`))
+        console.log('Client connected to event stream (connection #' + thisConnection + ', Last-Event-Id: ' + request.headers['last-event-id'] + ')');
+        response.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache' // let intermediaries know to NOT cache anything
+        });
+
+        var ticker = setInterval(function() {
+            response.write('event: my-custom-event\n');
+            response.write('id: ' + (thisConnection * 1000 + thisEvent) + '\n');
+            response.write('data: Server says hi! (event #' + thisEvent++ +' of connection #' + thisConnection + ')\n\n');
+        }, 2500);
+
+        request.on('close', function() {
+            console.log('Client disconnected from event stream (connection #' + thisConnection + ')');
+            response.end();
+            clearInterval(ticker);
+        });
+
+    } else {
+
+        response.writeHead(404);
+        response.end();
+
+    }
+
+}).listen(8888);
