@@ -1,4 +1,3 @@
-import { connect } from 'react-redux';
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
@@ -15,8 +14,6 @@ const ReqResCtrl = {
     })
 
     // formattedHeaders["Access-Control-Allow-Origin"] = '*';
-
-    console.log(formattedHeaders);
 
     let outputObj = {
       method: method,
@@ -38,7 +35,7 @@ const ReqResCtrl = {
   /* Utility function to open fetches */
   fetchController(parsedObj, url, originalObj, abortController) {
     let timeSentSnap = Date.now();
-    // const controller = new AbortController();
+
     const signal = abortController.signal;
 
     parsedObj.signal = signal; 
@@ -49,34 +46,48 @@ const ReqResCtrl = {
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
-      console.log(response.body instanceof ReadableStream);
-      const isStream = response.body instanceof ReadableStream;
 
-      isStream ? this.handleSSE(response, originalObj, timeSentSnap) : this.handleSingleEvent(response, originalObj, timeSentSnap)
+      const contentType = heads['content-type'];
+      const isStream = contentType.includes('stream');
+
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap);
     })
+    .catch(err => console.log(err))
   },
 
   handleSingleEvent(response, originalObj, timeSentSnap) {
-    console.log('Single Event')
+    console.log('Handling Single Event')
+    console.log('response', response);
 
     const newObj = JSON.parse(JSON.stringify(originalObj));
-
+    
     newObj.connection = 'closed';
-    newObj.connectionType = 'plain'
+    newObj.connectionType = 'plain';
     newObj.timeSent = timeSentSnap;
     newObj.timeReceived = Date.now();
     newObj.response = {
       headers: [response.headers],
-      events: [response.body],
+      events: [],
     };
 
-    store.default.dispatch(actions.reqResUpdate(newObj));
+    console.log(response);
+
+    response.then((res) => {
+      newObj.response.events.push({
+        data: res,
+        timeReceived: Date.now()
+      });
+      store.default.dispatch(actions.reqResUpdate(newObj));
+    })
+
+    
+
   },
 
   /* handle SSE Streams */
   handleSSE(response, originalObj, timeSentSnap) {
     let reader = response.body.getReader();
-    console.log('Handling Readable Stream');
+    console.log('Handling Stream')
     console.log('response', response);
 
     read();
