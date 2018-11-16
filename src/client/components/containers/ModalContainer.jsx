@@ -19,7 +19,6 @@ class ModalContainer extends Component {
     super(props);
     console.log(this.props)
     this.state = {};
-
   }
 
   componentDidMount() {

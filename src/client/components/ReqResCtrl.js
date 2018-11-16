@@ -39,6 +39,7 @@ const ReqResCtrl = {
     // const controller = new AbortController();
     const signal = abortController.signal;
 
+    console.log('abortController', abortController);
     console.log(signal);
 
     parsedObj.signal = signal; 

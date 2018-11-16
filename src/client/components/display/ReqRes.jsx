@@ -18,7 +18,8 @@ class ReqRes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isToggled: true
+      isToggled: true,
+      prevContentBody: [],
     };
     this.handleToggleClick = this.handleToggleClick.bind(this);
 }
@@ -32,9 +33,12 @@ class ReqRes extends Component {
   handleToggleClick(e, abortCtrl) {
     console.log('isToggled', this.state.isToggled);
     if (this.state.isToggled) {
-      ReqResCtrl.toggleOpenEndPoint(e, abortCtrl)
+      ReqResCtrl.toggleOpenEndPoint(e, abortCtrl);
     } else {
-      this.state.abortController.abort()
+      this.state.abortController.abort();
+      this.setState({
+        abortController : new AbortController(),
+      })
     }
 
     this.setState(prevState => ({
@@ -58,11 +62,11 @@ class ReqRes extends Component {
         {this.props.content.connectionType}
         {contentBody}
         
-
-        <button id={this.props.content.id}  onClick={(e) => { 
-          this.handleToggleClick(e, this.state.abortController)
+        <button id={this.props.content.id}  onClick={
+          (e) => { 
+            this.handleToggleClick(e, this.state.abortController)
           }
-          }>
+        }>
           {this.state.isToggled ? 'OPEN CONNECTION' : 'CLOSE CONNECTION'}
         </button>
       </div>
