@@ -36,6 +36,10 @@ const ReqResCtrl = {
   fetchController(parsedObj, url, originalObj, abortController) {
     let timeSentSnap = Date.now();
 
+    const newObj = JSON.parse(JSON.stringify(originalObj));
+    newObj.connection = 'pending';
+    store.default.dispatch(actions.reqResUpdate(newObj));
+
     const signal = abortController.signal;
 
     parsedObj.signal = signal; 
