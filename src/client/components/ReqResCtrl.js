@@ -14,6 +14,10 @@ const ReqResCtrl = {
       formattedHeaders[head.key] = head.value
     })
 
+    formattedHeaders["Access-Control-Allow-Origin"] = '*';
+
+    console.log(formattedHeaders);
+
     let outputObj = {
       method: method,
       mode: "cors", // no-cors, cors, *same-origin
@@ -63,6 +67,11 @@ const ReqResCtrl = {
           this.handleSSE(response, originalObj, timeSentSnap);
           break;
 
+        case 'text/event-stream; charset=UTF-8' :
+          console.log('text/event-stream');
+          this.handleSSE(response, originalObj, timeSentSnap);
+          break;
+
         case 'text/plain' :
           console.log('text/plain');
           this.handleSingleEvent();
@@ -70,7 +79,7 @@ const ReqResCtrl = {
 
         case 'application/json' :
           console.log('application/json');
-          this.handleSingleEvent();
+          this.handleSSE(response, originalObj, timeSentSnap);
           break;
 
         case 'application/javascript' :
