@@ -33,7 +33,7 @@ class SSERow extends Component {
               <div style={{'width' : '50%'}}>{this.props.content.event}</div>
             </div>
             <div style={{'width' : '33%'}}>
-              <div style={{'width' : '50%'}}>ID</div>
+              <div style={{'width' : '50%'}}>Time Received</div>
               <div style={{'width' : '50%'}}>{this.props.content.timeReceived}</div>
             </div>
           </div>
