@@ -71,8 +71,6 @@ const ReqResCtrl = {
           console.log('text/event-stream');
           this.handleSSE(response, originalObj, timeSentSnap);
           break;
-          
-
 
         case 'text/plain' :
           console.log('text/plain');

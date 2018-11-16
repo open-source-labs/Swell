@@ -43,7 +43,7 @@ class ReqRes extends Component {
         {this.props.content.connectionType}
         {contentBody}
         <ToggleBtn onClick={ ReqResCtrl.toggleEndPoint } />
-        <button id={this.props.content.id} onClick={ReqResCtrl.openEndPoint}>Send</button>
+        <button id={this.props.content.id} onClick={(e) => ReqResCtrl.openEndPoint(e, this.state.abortController)}>Send</button>
         <button onClick={() => {
           console.log(`aborting fetch for ReqRes ${this.props.content.id}.`);
           this.state.abortController.abort();
