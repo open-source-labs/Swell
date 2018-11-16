@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Request from "./Request.jsx";
-import Response from "./Response.jsx";
 
 import * as actions from '../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
@@ -65,8 +63,8 @@ class ModalNewRequest extends Component {
   addNewRequest() {
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
-      // url: 'http://localhost:8888/events',
-      url : this.state.url,
+      url: 'http://localhost:8888/events',
+      // url : this.state.url,
       timeSent : null,
       timeReceived : null,
       connection : 'uninitialized',
