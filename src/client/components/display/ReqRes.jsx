@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import Response from './Response.jsx';
 import ToggleBtn from './ToggleBtn.jsx';
-
 import ReqResCtrl from '../ReqResCtrl';
-
 import * as actions from '../../actions/actions';
 
 const mapStateToProps = store => ({
@@ -19,12 +17,6 @@ const mapDispatchToProps = dispatch => ({
 class ReqRes extends Component {
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    this.setState({
-      abortController : new AbortController(),
-    })
   }
 
   render() {
@@ -42,12 +34,7 @@ class ReqRes extends Component {
         {this.props.content.timeReceived}
         {this.props.content.connectionType}
         {contentBody}
-        <ToggleBtn onClick={ ReqResCtrl.toggleEndPoint } />
-        <button id={this.props.content.id} onClick={(e) => ReqResCtrl.openEndPoint(e, this.state.abortController)}>Send</button>
-        <button onClick={() => {
-          console.log(`aborting fetch for ReqRes ${this.props.content.id}.`);
-          this.state.abortController.abort();
-        }}>Close</button>
+        <ToggleBtn reqResState={this.props}/>
       </div>
     )
   }

@@ -14,8 +14,6 @@ const ReqResCtrl = {
       formattedHeaders[head.key] = head.value
     })
 
-    formattedHeaders["Access-Control-Allow-Origin"] = '*';
-
     console.log(formattedHeaders);
 
     let outputObj = {
@@ -41,6 +39,7 @@ const ReqResCtrl = {
     // const controller = new AbortController();
     const signal = abortController.signal;
 
+    console.log('abortController', abortController);
     console.log(signal);
 
     parsedObj.signal = signal; 
@@ -151,11 +150,10 @@ const ReqResCtrl = {
       });
     }
   },
-  toggleEndPoint(e) {
-    console.log('log')
-  },
+  
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
-  openEndPoint(e, abortController) {
+  toggleOpenEndPoint(e, abortController) {
+    console.log('e', e);
     const reqResComponentID = e.target.id;
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
@@ -167,24 +165,18 @@ const ReqResCtrl = {
   },
 
   /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-  openEndPoints(e) {
-    for (let resReqObj of resReqArr) {
-      fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
-    }
-  },
+  openAllEndPoints(e) {
+    console.log('sup')
+    const reqResContainer = document.querySelector('#reqResContainer');
 
-  /* Closes open endpoint */
-  closeEndpoint(e) {
-    console.log('closeEndpoint', e.target);
-    const reqResComponentID = e.target.id;
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-
-    reqResArr[e.target.id].close();
+    
+    // for (let resReqObj of resReqArr) {
+    //   fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
+    // }
   },
 
   /* Closes all open endpoint */
-  closeEndpoints(resReqArr, e) {
+  closeAllEndpoints(resReqArr, e) {
     for (let resReqObj of resReqArr) {
       closeEndpoint(resReqObj);
     }
