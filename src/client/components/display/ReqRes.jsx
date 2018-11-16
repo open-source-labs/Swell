@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+
+import * as store from '../../store';
+
 import Request from './Request.jsx';
 import Response from './Response.jsx';
 import ReqResCtrl from '../ReqResCtrl';
@@ -35,6 +38,13 @@ class ReqRes extends Component {
     if (this.state.isToggled) {
       ReqResCtrl.toggleOpenEndPoint(e, abortCtrl);
     } else {
+      console.log('closeEndpoint', e.target);
+      const reqResComponentID = e.target.id;
+      const gotState = store.default.getState();
+      const reqResArr = gotState.business.reqResArray;
+      const targetReqResObj = reqResArr.find(obj => obj.id == reqResComponentID); 
+
+      targetReqResObj.connection = 'closed';
       this.state.abortController.abort();
       this.setState({
         abortController : new AbortController(),
