@@ -36,6 +36,7 @@
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "square-connect": "^2.20180918.1",
+    "status-indicator": "^1.0.9",
     "thunk": "0.0.1",
     "uuid": "^3.3.2"
   },
