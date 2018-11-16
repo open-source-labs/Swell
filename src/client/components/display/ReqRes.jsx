@@ -21,7 +21,7 @@ class ReqRes extends Component {
 
   render() {
     let contentBody = [];
-    console.log(this.props.content.connection);
+
     let statusLight;
     switch (this.props.content.connection) {
       case 'uninitialized' :
