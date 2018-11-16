@@ -153,7 +153,9 @@ const ReqResCtrl = {
       });
     }
   },
-
+  toggleEndPoint(e) {
+    console.log('log')
+  },
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
   openEndPoint(e, abortController) {
     const reqResComponentID = e.target.id;
