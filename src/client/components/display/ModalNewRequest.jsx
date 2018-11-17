@@ -8,8 +8,14 @@ import BodyEntryForm from "./BodyEntryForm.jsx";
 const mapStateToProps = store => ({});
 
 const mapDispatchToProps = dispatch => ({
-  reqResAdd: reqRes => {
+  reqResAdd: (reqRes) => {
     dispatch(actions.reqResAdd(reqRes));
+  },
+  setWarningModalMessage : (message) => {
+    dispatch(actions.setWarningModalMessage(message));
+  },
+  setModalDisplay : (modalDisplay) => {
+    dispatch(actions.setModalDisplay(modalDisplay));
   }
 });
 
@@ -73,27 +79,49 @@ class ModalNewRequest extends Component {
     });
   }
 
+  requestValidationCheck () {
+    let validationMessage = undefined;
+
+    console.log(this.state.url)
+    //Error conditions...
+    if(this.state.url === 'http://' || this.state.url === 'https://') {
+      validationMessage = "Please enter a valid URL.";
+    }
+
+    console.log(validationMessage);
+    
+    return validationMessage ? validationMessage : true;
+  }
 
   addNewRequest() {
-    let reqRes = {
-      id : Math.floor(Math.random() * 100000),
-      // url: 'http://localhost:80/events',
-      url : this.state.url,
-      timeSent : null,
-      timeReceived : null,
-      connection : 'uninitialized',
-      connectionType : null,
-      request: {
-        method : this.state.method,
-        headers : this.state.headers,
-        body : this.state.body,
-      },
-      response : {
-        headers : null,
-        events : null,
-      },
-    };
-    this.props.reqResAdd(reqRes);
+    let validated = this.requestValidationCheck();
+
+    if (validated === true) {
+      let reqRes = {
+        id : Math.floor(Math.random() * 100000),
+        // url: 'http://localhost:80/events',
+        url : this.state.url,
+        timeSent : null,
+        timeReceived : null,
+        connection : 'uninitialized',
+        connectionType : null,
+        request: {
+          method : this.state.method,
+          headers : this.state.headers,
+          body : this.state.body,
+        },
+        response : {
+          headers : null,
+          events : null,
+        },
+      };
+
+      this.props.reqResAdd(reqRes)
+    } 
+    else {
+      this.props.setWarningModalMessage(validated);
+      this.props.setModalDisplay('Warning');
+    }
   }
 
   render() {

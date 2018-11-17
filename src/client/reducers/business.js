@@ -3,6 +3,7 @@ import * as types from '../actions/actionTypes';
 
 const initialState = { 
   reqResArray : [],
+  warningModalMessage : "",
 };
 
 const businessReducer = (state=initialState, action) => {
@@ -59,6 +60,16 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         reqResArray : reqResDeepCopy,
+      }
+    }
+
+    case types.SET_WARNING_MODAL_MESSAGE:{
+      console.log('action',action);
+      
+      return {
+        ...state,
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        warningModalMessage : action.payload
       }
     }
 
