@@ -44,7 +44,6 @@ class ModalNewRequest extends Component {
     this.setState({
       [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/h?t?t?p?s?:\/?\/?/, '') : e.target.value
     }, () => {
-      console.log(property);
       if(property === 'protocol') {
         this.setState ({
           'url' : this.state.protocol + this.state.url.replace(/h?t?t?p?s?:\/?\/?/, ''),
@@ -98,7 +97,6 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    console.log(this.state);
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
