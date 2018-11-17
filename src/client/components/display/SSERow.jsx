@@ -48,8 +48,8 @@ class SSERow extends Component {
             Data
             {/* <ObjectInspector data={ json } /> */}
             {/* <JSONTree data={json} hideRoot={true} /> */}
-            {/* <ReactJson src={{json}} name={false} displayDataTypes={false} /> */}
-            <JSONPretty id="json-pretty" json={JSON.stringify(this.props.content.data)}></JSONPretty>
+            <ReactJson src={{json}} name={false} displayDataTypes={false} />
+            {/* <JSONPretty id="json-pretty" json={JSON.stringify(this.props.content.data)}></JSONPretty> */}
             {/* <div>{JSON.stringify(this.props.content.data)}</div> */}
           </div>
         </div>
