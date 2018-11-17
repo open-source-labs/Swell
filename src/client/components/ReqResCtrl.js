@@ -120,19 +120,27 @@ const ReqResCtrl = {
             let fieldColonSplit = field
             .replace(/:/,'&&&&')
             .split('&&&&')
-            .map(kv => kv.trim().charAt(0) === '{' ? kv.trim() : `\"${kv.trim()}\"`)
-            .join(' : ');
+            .map(kv => kv.trim());
 
-            fieldColonSplit = `{${fieldColonSplit}}`
-            
-            return JSON.parse(fieldColonSplit);
-          });
+            let fieldObj = {
+              [fieldColonSplit[0]] : fieldColonSplit[1],
+            }
 
-          //merge all fields into a single object
-          let parsedEventObject = (Object.assign({},...receivedEventFields));
-          parsedEventObject.timeReceived = Date.now();
+            return fieldObj;
+          })
+          .reduce((acc, cur) => {
+            let key = Object.keys(cur)[0];
+            if (acc[key]) {
+              acc[key] = acc[key] + '\n' + cur[key];
+            } else {
+              acc[key] = cur[key];
+            }
+            return acc;
+          },{})
+
+          receivedEventFields.timeReceived = Date.now();
           
-          newObj.response.events.push(parsedEventObject);
+          newObj.response.events.push(receivedEventFields);
 
           store.default.dispatch(actions.reqResUpdate(newObj));
           read();
