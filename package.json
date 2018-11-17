@@ -29,6 +29,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.1.0",
     "react-dom": "^16.1.0",
+    "react-json-pretty": "^1.7.9",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.3.0",
@@ -51,8 +52,13 @@
     "css-loader": "^0.28.11",
     "electron": "^3.0.9",
     "json-loader": "^0.5.7",
+    "react-json-tree": "^0.11.0",
+    "react-json-view": "^1.19.1",
+    "react-object-inspector": "^0.2.1",
     "redux-devtools-extension": "^2.13.2",
     "style-loader": "^0.19.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   }
