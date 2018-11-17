@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
 import ToggleBtn from './ToggleBtn.jsx';
+import 'status-indicator/styles.css'
 
 import * as actions from '../../actions/actions';
 
