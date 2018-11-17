@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
 import ResponseSSE from '../display/ResponseSSE.jsx';
+import ResponsePlain from '../display/ResponsePlain.jsx';
 
 const mapStateToProps = store => ({
  
@@ -39,6 +40,10 @@ class ResponseContainer extends Component {
     switch (this.state.responseDisplay) {
       case 'SSE' : {
         responseContents = <ResponseSSE content={this.props.content}/>
+        break;
+      }
+      case 'plain' : {
+        responseContents = <ResponsePlain content={this.props.content}/>
         break;
       }
     }

@@ -62,7 +62,7 @@ class ModalNewRequest extends Component {
   addNewRequest() {
     let reqRes = {
       id : Math.floor(Math.random() * 100000),
-      // url: 'http://localhost:8888/events',
+      // url: 'http://localhost:80/events',
       url : this.state.url,
       timeSent : null,
       timeReceived : null,
