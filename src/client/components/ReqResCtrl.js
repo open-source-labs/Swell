@@ -54,38 +54,32 @@ const ReqResCtrl = {
       const contentType = heads['content-type'];
       const isStream = contentType.includes('stream');
 
-      isStream ? this.handleSSE(response, originalObj, timeSentSnap) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap);
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap, heads) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap, heads);
     })
     .catch(err => console.log(err))
   },
 
-  handleSingleEvent(response, originalObj, timeSentSnap) {
+  handleSingleEvent(response, originalObj, timeSentSnap, headers) {
     console.log('Handling Single Event')
-    console.log('response', response);
 
     const newObj = JSON.parse(JSON.stringify(originalObj));
-    
-    newObj.connection = 'closed';
-    newObj.connectionType = 'plain';
-    newObj.timeSent = timeSentSnap;
-    newObj.timeReceived = Date.now();
-    newObj.response = {
-      headers: [response.headers],
-      events: [],
-    };
-
-    console.log(response);
 
     response.then((res) => {
+      newObj.connection = 'closed';
+      newObj.connectionType = 'plain';
+      newObj.timeSent = timeSentSnap;
+      newObj.timeReceived = Date.now();
+      newObj.response = {
+        headers: headers,
+        events: [],
+      };
+
       newObj.response.events.push({
         data: res,
-        timeReceived: Date.now()
+        timeReceived: Date.now(),
       });
       store.default.dispatch(actions.reqResUpdate(newObj));
     })
-
-    
-
   },
 
   /* handle SSE Streams */
@@ -145,10 +139,6 @@ const ReqResCtrl = {
         }
       });
     }
-  },
-
-  toggleEndPoint(e) {
-    console.log('log')
   },
 
   /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
