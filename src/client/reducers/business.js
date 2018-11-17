@@ -35,7 +35,7 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
-        reqResArray : reqResArray.filter(reqRes => {
+        reqResArray : state.reqResArray.filter(reqRes => {
           return reqRes.id !== deleteId;
         })
       }
@@ -65,7 +65,7 @@ const businessReducer = (state=initialState, action) => {
 
     case types.SET_WARNING_MODAL_MESSAGE:{
       console.log('action',action);
-      
+
       return {
         ...state,
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
