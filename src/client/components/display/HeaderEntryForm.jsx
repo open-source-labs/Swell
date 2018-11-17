@@ -70,6 +70,16 @@ class HeaderEntryForm extends Component {
         });
       }
     }
+    //remove content-type header
+    else {
+      if(this.state.headers.find(header => header.key === 'content-type')){
+        this.setState({
+          headers: JSON.parse(JSON.stringify(this.state.headers)).filter(header => header.key != 'content-type'),
+        }, () => {
+          this.props.updateHeaders(this.state.headers);
+        });
+      }
+    }
   }
 
   addHeader (cb) {
