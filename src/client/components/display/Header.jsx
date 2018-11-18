@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Header = ({content, changeHandler, Key, value}) => (
   <div style={styles}>
-    <input type='checkbox' placeholder='Key' checked={content.active} onChange={(e) => changeHandler(content.id, 'active', e.target.checked)}></input>
+    <input type='checkbox' checked={content.active} onChange={(e) => changeHandler(content.id, 'active', e.target.checked)}></input>
 
     <input type='text' placeholder='Key' value={Key}onChange={(e) => changeHandler(content.id, 'key', e.target.value)}></input>
 

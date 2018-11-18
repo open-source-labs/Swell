@@ -1,96 +1,59 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Header from './Header.jsx';
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+import WWWForm from './WWWForm.jsx';
 
 class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      bodyType : 'none',
-      rawType : 'Text (text/plain)',
-    }
     this.bodyTypeChangeHandler = this.bodyTypeChangeHandler.bind(this);
     this.rawTypeChangeHandler = this.rawTypeChangeHandler.bind(this);
   }
 
-  componentDidMount () {
-  
-  }
-
   bodyTypeChangeHandler (e) {
-    let value = e.target.value
-    this.setState({
-      bodyType : value
-    },() => {
-      if(value === 'x-www-form-urlencoded') {
-        this.props.updateContentTypeHeader(value);
-      } else if (value === 'raw') {
-        this.props.updateContentTypeHeader('text/plain');
-      } else if (value === 'none') {
-        this.props.updateContentTypeHeader(undefined);
+    switch (e.target.value) {
+      case 'x-www-form-urlencoded' : {
+        this.props.updateContentTypeHeader(e.target.value);
+        break
       }
-    })
+      case 'raw' : {
+        this.props.updateContentTypeHeader('text/plain');
+        break
+      }
+      case 'none' : {
+        this.props.updateContentTypeHeader('');
+        break;
+      }
+    }
   }
 
   rawTypeChangeHandler (e) {
-    let value = e.target.value
-    this.setState({
-      rawType : value
-    },() => {
-      let contentTypeHeader;
-      switch(value){
-        case 'Text (text/plain)' : {
-          contentTypeHeader = 'text/plain';
-          break;
-        }
-        case 'JSON (application/json)' : {
-          contentTypeHeader = 'application/json';
-          break;
-        }
-        case 'Javascript (application/javascript)' : {
-          contentTypeHeader = 'application/javascript';
-          break;
-        }
-        case 'XML (application/xml)' : {
-          contentTypeHeader = 'application/xml';
-          break;
-        }
-        case 'XML (text/xml)' : {
-          contentTypeHeader = 'text/xml';
-          break;
-        }
-        case 'HTML (text/html)' : {
-          contentTypeHeader = 'text/html';
-          break;
-        }
-      }
-      this.props.updateContentTypeHeader(contentTypeHeader);
-    })
+    this.props.updateContentTypeHeader(e.target.value);
   }
 
   render() {
-    console.log(this.state);
-
     let styles = {
       'display' : this.props.method === 'GET' ? 'none' : 'flex',
       'flexDirection' : 'column'
     }
+
     let rawTypeStyles = {
-      'display' : this.state.bodyType === 'raw' ? 'block' : 'none',
-    }
-    let bodyInputStyles = {
-      'display' : this.state.bodyType === 'raw' ? 'block' : 'none',
+      'display' : this.props.contentTypeHeader.includes('/') ? 'block' : 'none',
     }
 
+    let bodyEntryArea = (() => {
+      switch (this.props.contentTypeHeader) {
+        case 'x-www-form-urlencoded' :{
+          return (<WWWForm updateBody={this.props.updateBody}/>)
+        }
+        case 'raw' : {
+          return (
+            <textarea type='text' placeholder='Body' onChange={(e) => {
+              this.props.updateBody(e.target.value)
+            }} ></textarea>
+          )
+        }
+      }
+    })()
+  
     return(
       <div style={styles}>
 
@@ -103,20 +66,19 @@ class BodyEntryForm extends Component {
 
         <select onChange={(e) => this.rawTypeChangeHandler(e)} style={rawTypeStyles} >
           Raw Type:
-          <option value='Text (text/plain)'>Text (text/plain)</option>
-          <option value='JSON (application/json)'>JSON (application/json</option>
-          <option value='Javascript (application/javascript)'>Javascript (application/javascript)</option>
-          <option value='XML (application/xml)'>XML (application/xml)</option>
-          <option value='XML (text/xml)'>XML (text/xml)</option>
-          <option value='HTML (text/html)'>HTML (text/html)</option>
+          <option value='text/plain'>Text (text/plain)</option>
+          <option value='application/json'>JSON (application/json</option>
+          <option value='application/javascript'>Javascript (application/javascript)</option>
+          <option value='application/xml'>XML (application/xml)</option>
+          <option value='text/xml'>XML (text/xml)</option>
+          <option value='text/html'>HTML (text/html)</option>
         </select>
 
-        <textarea type='text' placeholder='Body' onChange={(e) => {
-          this.props.updateBody(e.target.value)
-        }} style={bodyInputStyles}></textarea>
+        {bodyEntryArea}
+
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BodyEntryForm);
+export default BodyEntryForm;

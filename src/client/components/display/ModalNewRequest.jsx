@@ -26,7 +26,7 @@ class ModalNewRequest extends Component {
       method : 'GET',
       protocol : 'http://',
       headers : [],
-      contentTypeHeader: undefined,
+      contentTypeHeader: "",
       body : {},
       url : 'http://',
     };
@@ -39,9 +39,9 @@ class ModalNewRequest extends Component {
   }
 
   componentDidUpdate () {
-    if (this.state.method === 'GET' && this.state.contentTypeHeader != undefined) {
+    if (this.state.method === 'GET' && this.state.contentTypeHeader != '') {
       this.setState({
-        contentTypeHeader : undefined,
+        contentTypeHeader : '',
       })
     }
   }
@@ -69,9 +69,11 @@ class ModalNewRequest extends Component {
     });
   }
   updateBody (body) {
-    this.setState({
-      body: body,
-    });
+    if (this.state.body !== body){
+      this.setState({
+        body,
+      });
+    }
   }
   updateContentTypeHeader (header) {
     this.setState({
@@ -125,6 +127,7 @@ class ModalNewRequest extends Component {
   }
 
   render() {
+    console.log(this.state);
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
@@ -148,12 +151,10 @@ class ModalNewRequest extends Component {
         <input type='text' placeholder='URL' value={this.state.url} onChange={(e) => {
           this.onChangeHandler(e, 'url')
         }}></input>
-
-         {/* value={'http://localhost:8080/sse'}  */}
         
         <HeaderEntryForm updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
         
-        <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader}></BodyEntryForm>
+        <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader}></BodyEntryForm>
 
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>
