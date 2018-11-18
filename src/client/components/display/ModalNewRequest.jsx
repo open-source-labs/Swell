@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -22,7 +24,7 @@ class ModalNewRequest extends Component {
       contentTypeHeader: undefined,
       body : {},
       url : '',
-    }
+    };
     this.methodOnChange = this.methodOnChange.bind(this);
     this.updateHeaders = this.updateHeaders.bind(this);
     this.updateBody = this.updateBody.bind(this);
@@ -82,6 +84,7 @@ class ModalNewRequest extends Component {
   }
 
   render() {
+    /* jshint ignore: start */
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
@@ -108,6 +111,7 @@ class ModalNewRequest extends Component {
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>
     );
+    /* jshint ignore: end */
   }
 }
 

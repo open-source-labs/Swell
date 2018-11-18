@@ -78,7 +78,7 @@ class BodyEntryForm extends Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
 
     let styles = {
       'display' : this.props.method === 'GET' ? 'none' : 'flex',

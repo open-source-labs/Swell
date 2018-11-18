@@ -1,7 +1,9 @@
+/* jshint esversion: 6 */
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import GraphLine from '../display/Chart.jsx';
+import LineGraph from '../display/Graph.jsx';
 
 import * as actions from '../../actions/actions';
 
@@ -13,20 +15,22 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-class Graph extends Component {
+class GraphContainer extends Component {
   constructor(props) {
     super(props);
   }
 
 
   render() {
+    /* jshint ignore: start */
     return(
       <div>
         GraphContainer
-        <GraphLine />
+        <LineGraph />
       </div>
-    )
+    );
+    /* jshint ignore: end */
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Graph);
+export default connect(mapStateToProps, mapDispatchToProps)(GraphContainer);
