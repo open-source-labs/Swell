@@ -4,8 +4,13 @@ export const REQRES_ADD = "REQRES_ADD";
 export const REQRES_DELETE = "REQRES_DELETE";
 export const REQRES_UPDATE = "REQRES_UPDATE";
 
+export const SET_WARNING_MODAL_MESSAGE = "SET_WARNING_MODAL_MESSAGE";
+
+
+
 //UI ACTIONS
 export const SHOW_MODAL = "SHOW_MODAL";
 export const HIDE_MODAL = "HIDE_MODAL";
+export const SET_MODAL_DISPLAY = "SET_MODAL_DISPLAY";
 
 

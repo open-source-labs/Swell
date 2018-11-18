@@ -20,6 +20,11 @@ export const reqResUpdate = (reqRes) => ({
   payload : reqRes
 });
 
+export const setWarningModalMessage = (message) => ({
+  type: types.SET_WARNING_MODAL_MESSAGE,
+  payload : message
+});
+
 //UI ACTIONS
 export const showModal = () => ({
   type: types.SHOW_MODAL,
@@ -28,6 +33,14 @@ export const showModal = () => ({
 export const hideModal = () => ({
   type: types.HIDE_MODAL,
 });
+
+export const setModalDisplay = (modalDisplay) => ({
+  type: types.SET_MODAL_DISPLAY,
+  payload : modalDisplay
+});
+
+
+
 
 
 
