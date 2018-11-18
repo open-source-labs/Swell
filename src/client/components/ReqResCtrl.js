@@ -14,6 +14,7 @@ const ReqResCtrl = {
     })
 
     // formattedHeaders["Access-Control-Allow-Origin"] = '*';
+    // formattedHeaders['Referrer-Policy'] = 'origin'
 
     let outputObj = {
       method: method,
@@ -50,6 +51,7 @@ const ReqResCtrl = {
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
+      heads["Access-Control-Allow-Origin"] = '*';
 
       const contentType = heads['content-type'];
       const isStream = contentType.includes('stream');
