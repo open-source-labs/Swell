@@ -147,7 +147,6 @@ class HeaderEntryForm extends Component {
     });
     return(
       <div>
-        HeaderEntryForm
         {headersArr}
       </div>
     )

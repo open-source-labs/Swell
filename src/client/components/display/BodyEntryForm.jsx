@@ -44,7 +44,11 @@ class BodyEntryForm extends Component {
         case 'x-www-form-urlencoded' :{
           return (<WWWForm updateBody={this.props.updateBody}/>)
         }
-        case 'raw' : {
+        //for none
+        case '' : {
+          return;
+        }
+        default : {
           return (
             <textarea type='text' placeholder='Body' onChange={(e) => {
               this.props.updateBody(e.target.value)
@@ -67,7 +71,7 @@ class BodyEntryForm extends Component {
         <select onChange={(e) => this.rawTypeChangeHandler(e)} style={rawTypeStyles} >
           Raw Type:
           <option value='text/plain'>Text (text/plain)</option>
-          <option value='application/json'>JSON (application/json</option>
+          <option value='application/json'>JSON (application/json)</option>
           <option value='application/javascript'>Javascript (application/javascript)</option>
           <option value='application/xml'>XML (application/xml)</option>
           <option value='text/xml'>XML (text/xml)</option>

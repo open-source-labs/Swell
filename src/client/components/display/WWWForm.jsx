@@ -81,7 +81,6 @@ class WWWForm extends Component {
 
     return(
       <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        WWWForm
         {wwwFieldsReactArr}
       </div>
     )
