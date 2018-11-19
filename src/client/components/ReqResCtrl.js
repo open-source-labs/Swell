@@ -112,6 +112,7 @@ const ReqResCtrl = {
     })
 
     // formattedHeaders["Access-Control-Allow-Origin"] = '*';
+    // formattedHeaders['Referrer-Policy'] = 'origin'
 
     let outputObj = {
       method: method,
@@ -149,36 +150,56 @@ const ReqResCtrl = {
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
+      heads["Access-Control-Allow-Origin"] = '*';
 
       const contentType = heads['content-type'];
       const isStream = contentType.includes('stream');
 
-      isStream ? this.handleSSE(response, originalObj, timeSentSnap, heads) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap, heads);
+      console.log(response);
+
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap, heads) : this.handleSingleEvent(response, originalObj, timeSentSnap, heads);
     })
     .catch(err => console.log(err))
   },
 
   handleSingleEvent(response, originalObj, timeSentSnap, headers) {
     console.log('Handling Single Event')
-
     const newObj = JSON.parse(JSON.stringify(originalObj));
 
-    response.then((res) => {
-      newObj.connection = 'closed';
-      newObj.connectionType = 'plain';
-      newObj.timeSent = timeSentSnap;
-      newObj.timeReceived = Date.now();
-      newObj.response = {
-        headers: headers,
-        events: [],
-      };
+    let reader = response.body.getReader();
+    let bodyContent = "";
+    read();
 
-      newObj.response.events.push({
-        data: res,
-        timeReceived: Date.now(),
+    function read() {
+      reader.read().then(obj => {
+        console.log(obj)
+        if (obj.done) {
+          newObj.connection = 'closed';
+          newObj.connectionType = 'plain';
+          newObj.timeSent = timeSentSnap;
+          newObj.timeReceived = Date.now();
+          newObj.response = {
+            headers: headers,
+            events: [],
+          };
+          console.log('after', bodyContent)
+          newObj.response.events.push({
+            data: bodyContent,
+            timeReceived: Date.now(),
+          });
+          store.default.dispatch(actions.reqResUpdate(newObj));
+          return;
+        } 
+
+        //decode and recursively call
+        else {
+          bodyContent += new TextDecoder("utf-8").decode(obj.value);
+          console.log(bodyContent);
+
+          read();
+        }
       });
-      store.default.dispatch(actions.reqResUpdate(newObj));
-    })
+    }
   },
 
   /* handle SSE Streams */
