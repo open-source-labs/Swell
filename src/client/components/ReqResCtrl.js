@@ -2,12 +2,110 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 
 const ReqResCtrl = {
+  openConnectionArray:[],
+
+
+  /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
+  openAllEndPoints(e) {
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+    this.closeAllEndpoints(e);
+
+    reqResArr.forEach(reqResObj => {
+      const reqResId = reqResObj.id;
+        this.setAbortCtrl(reqResId);
+    })
+  },
+
+  closeConnection(e, all) {
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+
+
+    reqResArr.forEach((el) => {
+      if(el.id == e.target.id) {
+        el.connection = 'closed';
+        store.default.dispatch(actions.reqResUpdate(el));
+      } else if(all) {
+        el.connection = 'closed';
+        store.default.dispatch(actions.reqResUpdate(el));
+      }
+    });
+  },
+
+  closeEndPoint(e) {
+    let all = false;
+    // const gotState = store.default.getState();
+    // const reqResArr = gotState.business.reqResArray;
+    let reqResObj;
+    this.openConnectionArray.forEach((el) => {
+      if(el.id == e.target.id){
+        this.closeConnection(e)
+        reqResObj = el;
+      }
+    });
+
+    // reqResArr.forEach((el) => {
+    //   if(el.id == e.target.id) {
+    //     el.connection = 'closed';
+    //     store.default.dispatch(actions.reqResUpdate(el));
+    //   }
+    // });
+
+    reqResObj.abort.abort();
+    const openConnectionObj = {
+      abort : new AbortController(),
+    }
+    this.openConnectionArray.push(openConnectionObj);
+  },
+
+  /* Closes all open endpoint */
+  closeAllEndpoints(e) {
+    let all = true;
+
+    this.openConnectionArray.forEach(abortObject => {
+      abortObject.abort.abort();
+      let openConnectionObj = {
+        abort: new AbortController(),
+      }
+      this.closeConnection(e, all)
+      this.openConnectionArray.push(openConnectionObj);
+    });
+  },
+
+  clearAllEndPoints(e) {
+    let all = true;
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+    store.default.dispatch(actions.reqResClear());
+    this.closeAllEndpoints(e, all);
+
+    reqResArr.forEach((el) => {
+      if (el.id == e.target.id) {
+        el.connection = 'closed';
+        store.default.dispatch(actions.reqResUpdate(el));
+      }
+    });
+  },
+
+  setAbortCtrl(id) {
+    const openConnectionObj = {
+      abort : new AbortController(),
+      id: id,
+    }
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+    // Search the store for the passed in ID
+    const reqResObj = reqResArr.find((el) => el.id == openConnectionObj.id);
+    this.openConnectionArray.push(openConnectionObj);
+    this.parseReqObject (reqResObj, openConnectionObj.abort);
+  },
+
   parseReqObject(object, abortController) {
     let { url, request: { method }, request: { headers }, request: { body } } = object;
 
-    console.log(headers);
-
     method = method.toUpperCase();
+    
     let formattedHeaders = {};
     headers.forEach(head => {
       formattedHeaders[head.key] = head.value
@@ -48,6 +146,7 @@ const ReqResCtrl = {
     return fetch(url, parsedObj)
     .then(response => {
       let heads = {};
+
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
@@ -87,8 +186,6 @@ const ReqResCtrl = {
   /* handle SSE Streams */
   handleSSE(response, originalObj, timeSentSnap, headers) {
     let reader = response.body.getReader();
-    console.log('Handling Stream')
-    console.log('response', response);
 
     read();
 
@@ -149,44 +246,8 @@ const ReqResCtrl = {
         }
       });
     }
-  },
-
-  /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
-  toggleOpenEndPoint(e, abortController) {
-    console.log('e', e);
-    const reqResComponentID = e.target.id;
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-
-    // Search the store for the passed in ID
-    const reqResObj = reqResArr.find((el) => el.id == reqResComponentID);
-
-    ReqResCtrl.parseReqObject(reqResObj, abortController);
-  },
-
-  /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-  openAllEndPoints(e) {
-    console.log('sup')
-    const reqResContainer = document.querySelector('#reqResContainer');
-
-    if (reqResContainer.hasChildNodes()) {
-      let children = reqResContainer.childNodes;
-    
-      for (let i = 0; i < children.length; i++) {
-        console.log(children[i])
-      }
-    }
-    // for (let resReqObj of resReqArr) {
-    //   fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
-    // }
-  },
-
-  /* Closes all open endpoint */
-  closeAllEndpoints(resReqArr, e) {
-    for (let resReqObj of resReqArr) {
-      closeEndpoint(resReqObj);
-    }
   }
 };
+
 
 export default ReqResCtrl;

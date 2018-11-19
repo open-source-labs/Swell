@@ -30,6 +30,7 @@
     "react": "^16.1.0",
     "react-dom": "^16.1.0",
     "react-json-pretty": "^1.7.9",
+    "react-json-view": "latest",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.3.0",
