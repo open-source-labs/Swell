@@ -10,11 +10,8 @@ class SSERow extends Component {
   }
 
   render() {
-<<<<<<< HEAD
-=======
     const json = this.props.content.data;
 
->>>>>>> dev
     return(
       <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         SSERow

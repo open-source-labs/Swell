@@ -2,14 +2,10 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
-<<<<<<< HEAD
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
-=======
-import ToggleBtn from './ToggleBtn.jsx';
 import 'status-indicator/styles.css'
 
->>>>>>> dev
 import * as actions from '../../actions/actions';
 
 const mapStateToProps = store => ({
