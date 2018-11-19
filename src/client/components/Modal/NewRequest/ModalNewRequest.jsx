@@ -107,6 +107,7 @@ class ModalNewRequest extends Component {
         timeReceived : null,
         connection : 'uninitialized',
         connectionType : null,
+        checkSelected : false,
         request: {
           method : this.state.method,
           headers : this.state.headers,

@@ -3,78 +3,103 @@ import * as actions from '../actions/actions';
 
 const ReqResCtrl = {
   openConnectionArray:[],
+  selectedArray:[],
 
+  selectAllResReq() {
+    const allResReq = document.body.querySelectorAll('.resreq-select');
+    allResReq.forEach(resReq => {
+      resReq.checked = true;
+      this.logSelected(resReq.id)
+    })
+  },
+
+  deselectAllResReq() {
+    const allResReq = document.body.querySelectorAll('.resreq-select');
+    this.selectedArray = [];
+    allResReq.forEach(resReq => {
+      resReq.checked = false;
+      this.logSelected(resReq.id)
+    })
+  },
+
+  logSelected(id) {
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+    let reqResObj = reqResArr.find((el) => el.id == id);
+
+    if (!reqResObj.checkSelected) {
+      reqResObj.checkSelected = true;
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+      this.selectedArray.push(Number(id));
+    } else if (reqResObj.checkSelected) {
+      reqResObj.checkSelected = false;
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+      this.selectedArray = this.selectedArray.filter(item => item !== id);
+      reqResObj.checkSelected = !reqResObj.checkSelected;
+    }
+  },
 
   /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
   openAllEndPoints(e) {
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
     this.closeAllEndpoints(e);
-
+    
     reqResArr.forEach(reqResObj => {
       const reqResId = reqResObj.id;
+      if (this.selectedArray.includes(reqResId)) {
         this.setAbortCtrl(reqResId);
+      }
     })
   },
 
-  closeConnection(e, all) {
+  closeConnection(abortId) {
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
 
-
     reqResArr.forEach((el) => {
-      if(el.id == e.target.id) {
-        el.connection = 'closed';
-        store.default.dispatch(actions.reqResUpdate(el));
-      } else if(all) {
+      if(el.id == abortId) {
         el.connection = 'closed';
         store.default.dispatch(actions.reqResUpdate(el));
       }
     });
   },
 
-  closeEndPoint(e) {
-    let all = false;
-    // const gotState = store.default.getState();
-    // const reqResArr = gotState.business.reqResArray;
+  closeEndPoint(e, abortId, selected) {
     let reqResObj;
-    this.openConnectionArray.forEach((el) => {
-      if(el.id == e.target.id){
-        this.closeConnection(e)
-        reqResObj = el;
-      }
+    this.openConnectionArray.forEach( el => {
+        if (el.id == e.target.id) {
+          reqResObj = el;
+          this.closeConnection(el.id);
+        }
     });
-
-    // reqResArr.forEach((el) => {
-    //   if(el.id == e.target.id) {
-    //     el.connection = 'closed';
-    //     store.default.dispatch(actions.reqResUpdate(el));
-    //   }
-    // });
 
     reqResObj.abort.abort();
     const openConnectionObj = {
-      abort : new AbortController(),
+      abort: new AbortController(),
     }
     this.openConnectionArray.push(openConnectionObj);
   },
 
   /* Closes all open endpoint */
-  closeAllEndpoints(e) {
-    let all = true;
-
+  closeAllEndpoints() {
+    let selected = true
     this.openConnectionArray.forEach(abortObject => {
-      abortObject.abort.abort();
-      let openConnectionObj = {
-        abort: new AbortController(),
+      if (this.selectedArray.includes(abortObject.id)) {
+        this.selectedArray.forEach(abortId => {
+          if (abortObject.id == abortId) {
+            abortObject.abort.abort();
+            const openConnectionObj = {
+              abort : new AbortController(),
+            }
+            this.closeConnection(abortId)
+          }
+        })
       }
-      this.closeConnection(e, all)
-      this.openConnectionArray.push(openConnectionObj);
     });
   },
 
-  clearAllEndPoints(e) {
-    let all = true;
+  clearAllEndPoints() {
     const gotState = store.default.getState();
     const reqResArr = gotState.business.reqResArray;
     store.default.dispatch(actions.reqResClear());
@@ -101,21 +126,6 @@ const ReqResCtrl = {
     this.parseReqObject (reqResObj, openConnectionObj.abort);
   },
 
-  selectAllResReq() {
-    const allResReq = document.body.querySelectorAll('.resreq-select');
-
-    allResReq.forEach(resReq => {
-      resReq.checked = true;
-    })
-  },
-
-  deselectAllResReq() {
-    const allResReq = document.body.querySelectorAll('.resreq-select');
-
-    allResReq.forEach(resReq => {
-      resReq.checked = false;
-    })
-  },
 
   parseReqObject(object, abortController) {
     let { url, request: { method }, request: { headers }, request: { body } } = object;
