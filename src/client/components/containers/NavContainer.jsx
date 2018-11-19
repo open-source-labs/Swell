@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import OpenAllBtn from '../display/OpenAllBtn.jsx';
 import CloseAllBtn from '../display/CloseAllBtn.jsx';
 import ClearBtn from '../display/ClearBtn.jsx';
-
+// import ToggleAllBtn from '../display/ToggleAllBtn.jsx';
 import * as actions from '../../actions/actions';
-
 
 const mapStateToProps = store => ({
  
@@ -20,13 +19,14 @@ class Nav extends Component {
     super(props);
   }
 
-
-  render() {
+  render(props) {
     return(
       <div>
         NavContainer
-        <OpenAllBtn />
-        <CloseAllBtn />
+        {/* <ToggleAllBtn connectionStatus={this.props}/> */}
+
+        <OpenAllBtn connectionStatus={this.props}/>
+        <CloseAllBtn connectionStatus={this.props}/>
         <ClearBtn />
       </div>
     )

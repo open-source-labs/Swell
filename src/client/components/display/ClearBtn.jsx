@@ -1,8 +1,13 @@
 import React from 'react';
+import ReqResCtrl from '../ReqResCtrl';
 
 const ClearBtn = () => {
   return (
-    <button type='button'>ClearBtn</button>
+    <button type='button'onClick={
+      (e) => {
+        ReqResCtrl.clearAllEndPoints(e)
+      }
+    }>ClearBtn</button>
   );
 };
 

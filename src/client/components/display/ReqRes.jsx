@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
-import ToggleBtn from './ToggleBtn.jsx';
+import OpenBtn from './OpenBtn.jsx';
+import CloseBtn from './CloseBtn.jsx';
 import * as actions from '../../actions/actions';
 
 const mapStateToProps = store => ({
@@ -26,7 +27,7 @@ class ReqRes extends Component {
     };
 
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div className="resreq_component" style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         {this.props.content.id}
         {this.props.content.url}
         {this.props.content.timeSent}
@@ -35,10 +36,13 @@ class ReqRes extends Component {
         
         {contentBody}
 
-        <ToggleBtn reqResState={this.props}/>
+        <OpenBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
+        <CloseBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
+        
       </div>
     )
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReqRes);
+
