@@ -15,7 +15,7 @@ class ResponsePlain extends Component {
       <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ResponsePlain
 
-        <ReactJson src={json} name={false} collapsed={1} />
+        <ReactJson src={{json}} name={false} collapsed={1} />
  
       </div>
     )
