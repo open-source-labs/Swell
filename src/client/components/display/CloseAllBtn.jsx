@@ -19,7 +19,7 @@ class CloseAllBtn extends Component {
   render(props) {
     return (<button type='button' onClick={
       (e) => this.handleCloseAllClick(e)
-    }>Force Close All</button>
+    }>Close All</button>
     );
   }
 };

@@ -19,7 +19,7 @@ class OpenAllBtn extends Component {
       (e) => {
         ReqResCtrl.openAllEndPoints(e)
       }
-    }>Force Open All</button>
+    }>Open All</button>
     );
   }
 };
