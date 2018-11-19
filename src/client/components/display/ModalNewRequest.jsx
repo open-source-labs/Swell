@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -84,7 +82,6 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    /* jshint ignore: start */
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
@@ -111,7 +108,6 @@ class ModalNewRequest extends Component {
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>
     );
-    /* jshint ignore: end */
   }
 }
 

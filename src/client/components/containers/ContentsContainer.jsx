@@ -1,33 +1,31 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import * as actions from '../../actions/actions';
-import GraphContainer from './GraphContainer.jsx';
-import ReqResContainer from './ReqResContainer.jsx';
+import * as actions from '../../actions/actions'
+import GraphContainer from './GraphContainer.jsx'
+import ReqResContainer from './ReqResContainer.jsx'
 
-const mapStateToProps = store => ({
- 
-});
+const mapStateToProps = store => ({})
 
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => ({})
 
 class Contents extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
   }
 
-
-  render() {
-    return(
+  render () {
+    return (
       <div>
         ContentsContainer
-        <GraphContainer/>
-        <ReqResContainer/>
+        <GraphContainer />
+        <ReqResContainer />
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contents);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Contents)

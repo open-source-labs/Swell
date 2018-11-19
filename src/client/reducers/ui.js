@@ -1,27 +1,26 @@
-import * as types from '../actions/actionTypes';
+import * as types from "../actions/actionTypes";
 
-
-const initialState = { 
-  isDisplayedModal : false,
-  modalDisplay : 'Request'
+const initialState = {
+  isDisplayedModal: false,
+  modalDisplay: "Request"
 };
 
-const uiReducer = (state=initialState, action) => {
-  switch(action.type) {
-    case types.SHOW_MODAL:{
-      console.log('action',action);
+const uiReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.SHOW_MODAL: {
+      console.log("action", action);
       return {
         ...state,
-        isDisplayedModal : true,
-      }
+        isDisplayedModal: true
+      };
     }
 
-    case types.HIDE_MODAL:{
-      console.log('action',action);
+    case types.HIDE_MODAL: {
+      console.log("action", action);
       return {
         ...state,
-        isDisplayedModal : false,
-      }
+        isDisplayedModal: false
+      };
     }
 
     default:

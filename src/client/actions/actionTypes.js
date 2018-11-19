@@ -7,5 +7,3 @@ export const REQRES_UPDATE = "REQRES_UPDATE";
 //UI ACTIONS
 export const SHOW_MODAL = "SHOW_MODAL";
 export const HIDE_MODAL = "HIDE_MODAL";
-
-

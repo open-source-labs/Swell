@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import * as actions from '../../actions/actions';
-import NavContainer from './NavContainer.jsx';
-import ContentsContainer from './ContentsContainer.jsx';
-import ModalContainer from './ModalContainer.jsx';
+import * as actions from "../../actions/actions";
+import NavContainer from "./NavContainer.jsx";
+import ContentsContainer from "./ContentsContainer.jsx";
+import ModalContainer from "./ModalContainer.jsx";
 
 const mapStateToProps = store => ({
-  store: store,
+  store: store
 });
 
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => ({});
 
 class App extends Component {
   constructor(props) {
@@ -21,15 +19,18 @@ class App extends Component {
   }
 
   render() {
-    return(
-      <div id='app'>
+    return (
+      <div id="app">
         App
-        <NavContainer/>
-        <ContentsContainer/>
-        <ModalContainer/>
+        <NavContainer />
+        <ContentsContainer />
+        <ModalContainer />
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

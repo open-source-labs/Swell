@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 import React, {Component} from 'react';
 import store from '../../store';
 import { connect } from 'react-redux';
@@ -68,14 +66,12 @@ class Graph extends Component {
   render() {
     // console.log('props >>>>>>>>>>', this.props.reqRes[0].response.events);
     // this.addData(this.state.lineChart, 'label1', 888 );
-    /* jshint ignore:start */
     return (
       <div style={{'width': '50%', 'height': '50%'}}>
         <div>Chart</div>
         <canvas id='line-chart'></canvas>
       </div>
     )
-    /* jshint ignore:end */
   }
 }
 

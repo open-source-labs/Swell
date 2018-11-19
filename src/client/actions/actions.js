@@ -1,36 +1,30 @@
-import * as types from './actionTypes'
+import * as types from "./actionTypes";
 
 //BUSINESS LOGIC ACTIONS
 export const reqResClear = () => ({
-  type: types.REQRES_CLEAR,
+  type: types.REQRES_CLEAR
 });
 
-export const reqResAdd = (reqRes) => ({
+export const reqResAdd = reqRes => ({
   type: types.REQRES_ADD,
-  payload : reqRes
+  payload: reqRes
 });
 
-export const reqResDelete = (reqRes) => ({
+export const reqResDelete = reqRes => ({
   type: types.REQRES_DELETE,
-  payload : reqRes
+  payload: reqRes
 });
 
-export const reqResUpdate = (reqRes) => ({
+export const reqResUpdate = reqRes => ({
   type: types.REQRES_UPDATE,
-  payload : reqRes
+  payload: reqRes
 });
 
 //UI ACTIONS
 export const showModal = () => ({
-  type: types.SHOW_MODAL,
+  type: types.SHOW_MODAL
 });
 
 export const hideModal = () => ({
-  type: types.HIDE_MODAL,
+  type: types.HIDE_MODAL
 });
-
-
-
-
-
-

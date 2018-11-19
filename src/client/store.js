@@ -9,15 +9,12 @@
  * ************************************
  */
 
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import reducers from './reducers/index';
-import * as actions from './actions/actions';
+import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import reducers from "./reducers/index";
+import * as actions from "./actions/actions";
 
 // we are adding composeWithDevTools here to get easy access to the Redux dev tools
-const store = createStore(
-  reducers,
-  composeWithDevTools()
-);
+const store = createStore(reducers, composeWithDevTools());
 
 export default store;
