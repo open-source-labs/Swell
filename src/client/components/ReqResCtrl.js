@@ -99,6 +99,14 @@ const ReqResCtrl = {
   /* Utility function to open fetches */
   fetchController(parsedObj, url, originalObj, abortController) {
     let timeSentSnap = Date.now();
+<<<<<<< HEAD
+=======
+
+    const newObj = JSON.parse(JSON.stringify(originalObj));
+    newObj.connection = 'pending';
+    store.default.dispatch(actions.reqResUpdate(newObj));
+
+>>>>>>> dev
     const signal = abortController.signal;
 
     parsedObj.signal = signal; 
@@ -114,11 +122,12 @@ const ReqResCtrl = {
       const contentType = heads['content-type'];
       const isStream = contentType.includes('stream');
 
-      isStream ? this.handleSSE(response, originalObj, timeSentSnap) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap);
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap, heads) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap, heads);
     })
     .catch(err => console.log(err))
   },
 
+<<<<<<< HEAD
   handleSingleEvent(response, originalObj, timeSentSnap) {
     const newObj = JSON.parse(JSON.stringify(originalObj));
     
@@ -130,11 +139,26 @@ const ReqResCtrl = {
       headers: [response.headers],
       events: [],
     };
+=======
+  handleSingleEvent(response, originalObj, timeSentSnap, headers) {
+    console.log('Handling Single Event')
+
+    const newObj = JSON.parse(JSON.stringify(originalObj));
+>>>>>>> dev
 
     response.then((res) => {
+      newObj.connection = 'closed';
+      newObj.connectionType = 'plain';
+      newObj.timeSent = timeSentSnap;
+      newObj.timeReceived = Date.now();
+      newObj.response = {
+        headers: headers,
+        events: [],
+      };
+
       newObj.response.events.push({
         data: res,
-        timeReceived: Date.now()
+        timeReceived: Date.now(),
       });
       store.default.dispatch(actions.reqResUpdate(newObj));
     })
@@ -176,25 +200,73 @@ const ReqResCtrl = {
             let fieldColonSplit = field
             .replace(/:/,'&&&&')
             .split('&&&&')
-            .map(kv => kv.trim().charAt(0) === '{' ? kv.trim() : `\"${kv.trim()}\"`)
-            .join(' : ');
+            .map(kv => kv.trim());
 
-            fieldColonSplit = `{${fieldColonSplit}}`
-            
-            return JSON.parse(fieldColonSplit);
-          });
+            let fieldObj = {
+              [fieldColonSplit[0]] : fieldColonSplit[1],
+            }
 
-          //merge all fields into a single object
-          let parsedEventObject = (Object.assign({},...receivedEventFields));
-          parsedEventObject.timeReceived = Date.now();
+            return fieldObj;
+          })
+          .reduce((acc, cur) => {
+            let key = Object.keys(cur)[0];
+            if (acc[key]) {
+              acc[key] = acc[key] + '\n' + cur[key];
+            } else {
+              acc[key] = cur[key];
+            }
+            return acc;
+          },{})
+
+          receivedEventFields.timeReceived = Date.now();
           
-          newObj.response.events.push(parsedEventObject);
+          newObj.response.events.push(receivedEventFields);
 
           store.default.dispatch(actions.reqResUpdate(newObj));
           read();
         }
       });
     }
+<<<<<<< HEAD
+=======
+  },
+
+  /* Creates a REQ/RES Obj based on event data and passes the object to fetchController */
+  toggleOpenEndPoint(e, abortController) {
+    console.log('e', e);
+    const reqResComponentID = e.target.id;
+    const gotState = store.default.getState();
+    const reqResArr = gotState.business.reqResArray;
+
+    // Search the store for the passed in ID
+    const reqResObj = reqResArr.find((el) => el.id == reqResComponentID);
+
+    ReqResCtrl.parseReqObject(reqResObj, abortController);
+  },
+
+  /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
+  openAllEndPoints(e) {
+    console.log('sup')
+    const reqResContainer = document.querySelector('#reqResContainer');
+
+    if (reqResContainer.hasChildNodes()) {
+      let children = reqResContainer.childNodes;
+    
+      for (let i = 0; i < children.length; i++) {
+        console.log(children[i])
+      }
+    }
+    // for (let resReqObj of resReqArr) {
+    //   fetchController(resReqArr[e.id].endPoint, resReqArr[e.id].method, resReqArr[e.id].serverType);
+    // }
+  },
+
+  /* Closes all open endpoint */
+  closeAllEndpoints(resReqArr, e) {
+    for (let resReqObj of resReqArr) {
+      closeEndpoint(resReqObj);
+    }
+>>>>>>> dev
   }
 };
 

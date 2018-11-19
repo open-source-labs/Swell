@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+import 'react-json-pretty/JSONPretty.monikai.styl';
+import ReactJson from 'react-json-view'
 
 class SSERow extends Component {
   constructor(props) {
@@ -18,6 +10,11 @@ class SSERow extends Component {
   }
 
   render() {
+<<<<<<< HEAD
+=======
+    const json = this.props.content.data;
+
+>>>>>>> dev
     return(
       <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         SSERow
@@ -32,13 +29,13 @@ class SSERow extends Component {
               <div style={{'width' : '50%'}}>{this.props.content.event}</div>
             </div>
             <div style={{'width' : '33%'}}>
-              <div style={{'width' : '50%'}}>ID</div>
+              <div style={{'width' : '50%'}}>Time Received</div>
               <div style={{'width' : '50%'}}>{this.props.content.timeReceived}</div>
             </div>
           </div>
           <div>
             Data
-            <div>{JSON.stringify(this.props.content.data)}</div>
+            <ReactJson src={{json}} name={false} displayDataTypes={false} />
           </div>
         </div>
       </div>
@@ -46,4 +43,4 @@ class SSERow extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SSERow);
+export default SSERow;

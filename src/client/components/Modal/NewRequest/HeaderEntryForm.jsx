@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Header from './Header.jsx';
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -65,6 +55,16 @@ class HeaderEntryForm extends Component {
         this.setState({
           headers: headersDeepCopy,
           count: this.state.count+1,
+        }, () => {
+          this.props.updateHeaders(this.state.headers);
+        });
+      }
+    }
+    //remove content-type header
+    else {
+      if(this.state.headers.find(header => header.key === 'content-type')){
+        this.setState({
+          headers: JSON.parse(JSON.stringify(this.state.headers)).filter(header => header.key != 'content-type'),
         }, () => {
           this.props.updateHeaders(this.state.headers);
         });
@@ -144,4 +144,4 @@ class HeaderEntryForm extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderEntryForm);
+export default (HeaderEntryForm);
