@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import 'react-json-pretty/JSONPretty.monikai.styl';
 import ReactJson from 'react-json-view'
 
 class SSERow extends Component {
