@@ -1,21 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/JSONPretty.monikai.styl';
 import ReactJson from 'react-json-view'
-import JSONTree from 'react-json-tree'
-import ObjectInspector from 'react-object-inspector';
-
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class ResponsePlain extends Component {
   constructor(props) {
@@ -39,4 +24,4 @@ class ResponsePlain extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResponsePlain);
+export default ResponsePlain;

@@ -4,8 +4,15 @@ import WWWForm from './WWWForm.jsx';
 class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      lastParseWasSuccess : false,
+    }
     this.bodyTypeChangeHandler = this.bodyTypeChangeHandler.bind(this);
     this.rawTypeChangeHandler = this.rawTypeChangeHandler.bind(this);
+  }
+  
+  generateJSONEntryForm (content) {
+
   }
 
   bodyTypeChangeHandler (e) {
@@ -41,12 +48,32 @@ class BodyEntryForm extends Component {
 
     let bodyEntryArea = (() => {
       switch (this.props.contentTypeHeader) {
-        case 'x-www-form-urlencoded' :{
-          return (<WWWForm updateBody={this.props.updateBody}/>)
-        }
         //for none
         case '' : {
           return;
+        }
+        case 'x-www-form-urlencoded' :{
+          return (<WWWForm updateBody={this.props.updateBody}/>)
+        }
+        case 'application/json' : {
+          return (
+            <textarea type='text' value={this.state.lastParseWasSuccess ? JSON.stringify(this.props.bodyContent,undefined,4) : this.props.bodyContent} placeholder='Body' onChange={(e) => {
+              let parsedValue;
+              try {
+                parsedValue = JSON.parse(e.target.value,undefined,4);
+                this.setState({
+                  lastParseWasSuccess : true,
+                })
+              }
+              catch (error) {
+                parsedValue = e.target.value;
+                this.setState({
+                  lastParseWasSuccess : false,
+                })
+              }
+              this.props.updateBody(parsedValue);
+            }}></textarea>
+          )
         }
         default : {
           return (
@@ -79,7 +106,6 @@ class BodyEntryForm extends Component {
         </select>
 
         {bodyEntryArea}
-
       </div>
     )
   }

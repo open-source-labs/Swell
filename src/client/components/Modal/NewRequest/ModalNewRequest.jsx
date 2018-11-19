@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import * as actions from '../../actions/actions';
+import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 
@@ -154,7 +154,7 @@ class ModalNewRequest extends Component {
         
         <HeaderEntryForm updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
         
-        <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader}></BodyEntryForm>
+        <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader} bodyContent={this.state.body} ></BodyEntryForm>
 
         <button onClick={this.addNewRequest}>Add New Request</button>
       </div>

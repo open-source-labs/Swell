@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import NavContainer from './NavContainer.jsx';
 import ContentsContainer from './ContentsContainer.jsx';
-import ModalContainer from './ModalContainer.jsx';
+import ModalContainer from '../Modal/ModalContainer.jsx';
 
 const mapStateToProps = store => ({
   store: store,

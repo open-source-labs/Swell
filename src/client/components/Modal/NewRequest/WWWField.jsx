@@ -9,7 +9,6 @@ class WWWForm extends Component {
   }
 
   render () {
-
     return(
       <div style={{ 'display' : 'flex'}}>
         <input type='checkbox' checked={this.props.active} onChange={() => {

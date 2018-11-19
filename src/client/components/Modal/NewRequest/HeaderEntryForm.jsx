@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Header from './Header.jsx';
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -147,10 +137,11 @@ class HeaderEntryForm extends Component {
     });
     return(
       <div>
+        HeaderEntryForm
         {headersArr}
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderEntryForm);
+export default (HeaderEntryForm);
