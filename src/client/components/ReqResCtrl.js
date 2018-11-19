@@ -101,6 +101,22 @@ const ReqResCtrl = {
     this.parseReqObject (reqResObj, openConnectionObj.abort);
   },
 
+  selectAllResReq() {
+    const allResReq = document.body.querySelectorAll('.resreq-select');
+
+    allResReq.forEach(resReq => {
+      resReq.checked = true;
+    })
+  },
+
+  deselectAllResReq() {
+    const allResReq = document.body.querySelectorAll('.resreq-select');
+
+    allResReq.forEach(resReq => {
+      resReq.checked = false;
+    })
+  },
+
   parseReqObject(object, abortController) {
     let { url, request: { method }, request: { headers }, request: { body } } = object;
 

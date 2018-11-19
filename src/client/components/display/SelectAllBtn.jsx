@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReqResCtrl from '../ReqResCtrl';
 
-const CloseAllBtn = props => {
+const SelectAllBtn = props => {
   return (<button type='button' onClick={
-    (e) => ReqResCtrl.closeAllEndpoints(e)
-  }>Close All</button>
+    (e) => {
+      ReqResCtrl.selectAllResReq(e)
+    }
+  }>Select All</button>
   );
 };
 
-export default CloseAllBtn;
+export default SelectAllBtn;
