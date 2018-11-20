@@ -41,7 +41,6 @@ class HeaderEntryForm extends Component {
         }
       }
       if(!foundHeader) {
-        console.log('NO CONTENT TYPE HEADER FOUND');
         //create new header
         let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
 

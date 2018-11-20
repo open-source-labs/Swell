@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReqResCtrl from '../ReqResCtrl';
 
-const CloseAllBtn = props => {
-  return (<button type='button' onClick={
-    (e) => ReqResCtrl.closeAllEndpoints(e)
-  }>Close All</button>
+const CloseAllBtn = () => {
+  return (
+    <button type='button' onClick={ ReqResCtrl.closeAllReqRes }>Close All</button>
   );
 };
 

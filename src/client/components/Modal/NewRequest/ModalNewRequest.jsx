@@ -5,7 +5,9 @@ import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 
-const mapStateToProps = store => ({});
+const mapStateToProps = store => ({
+  newResponseFields : store.business.newResponseFields
+});
 
 const mapDispatchToProps = dispatch => ({
   reqResAdd: (reqRes) => {
@@ -16,6 +18,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setModalDisplay : (modalDisplay) => {
     dispatch(actions.setModalDisplay(modalDisplay));
+  },
+  setNewResponseFields : (responseObj) => {
+    dispatch(actions.setNewResponseFields(responseObj));
   }
 });
 
@@ -29,6 +34,7 @@ class ModalNewRequest extends Component {
       contentTypeHeader: "",
       body : {},
       url : 'http://',
+      JSONProperlyFormatted : false,
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -38,11 +44,36 @@ class ModalNewRequest extends Component {
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
+  componentDidMount () {
+    this.setState(this.props.newResponseFields)
+  }
+
   componentDidUpdate () {
+    if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
+      this.props.setNewResponseFields(this.state);
+    }
+  
     if (this.state.method === 'GET' && this.state.contentTypeHeader != '') {
       this.setState({
         contentTypeHeader : '',
       })
+    }
+    if (this.state.contentTypeHeader === 'application/json') {
+      try {
+        let tryParse = JSON.parse(this.state.body);
+        if(this.state.JSONProperlyFormatted !== true){
+          this.setState({
+            JSONProperlyFormatted : true,
+          })
+        }
+      }
+      catch(error) {
+        if(this.state.JSONProperlyFormatted !== false){
+          this.setState({
+            JSONProperlyFormatted : false,
+          })
+        }
+      }
     }
   }
 
@@ -89,9 +120,9 @@ class ModalNewRequest extends Component {
     if(this.state.url === 'http://' || this.state.url === 'https://') {
       validationMessage = "Please enter a valid URL.";
     }
-
-    console.log(validationMessage);
-    
+    if (!this.state.JSONProperlyFormatted && this.state.contentTypeHeader === 'application/json'){
+      validationMessage = "Please fix JSON body formatting errors.";
+    }
     return validationMessage ? validationMessage : true;
   }
 
@@ -111,15 +142,25 @@ class ModalNewRequest extends Component {
         request: {
           method : this.state.method,
           headers : this.state.headers,
-          body : this.state.body,
+          body : JSON.stringify(this.state.body)
         },
         response : {
           headers : null,
           events : null,
         },
+        checked : false,
       };
 
-      this.props.reqResAdd(reqRes)
+      this.props.reqResAdd(reqRes);
+      this.setState({
+        method : 'GET',
+        protocol : 'http://',
+        headers : [],
+        contentTypeHeader: "",
+        body : {},
+        url : 'http://',
+        JSONProperlyFormatted : false,
+      });
     } 
     else {
       this.props.setWarningModalMessage(validated);
@@ -128,9 +169,12 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    console.log(this.state);
     return(
-      <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
+        if (event.key === 'Enter') {
+          this.addNewRequest();
+        }
+      }}>
         ModalNewRequest
         <div onChange={(e) => {
           this.onChangeHandler(e, 'protocol')

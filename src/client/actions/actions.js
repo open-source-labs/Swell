@@ -25,6 +25,11 @@ export const setWarningModalMessage = (message) => ({
   payload : message
 });
 
+export const setNewResponseFields = (responseObj) => ({
+  type: types.SET_NEW_RESPONSE_FIELDS,
+  payload : responseObj
+});
+
 //UI ACTIONS
 export const showModal = () => ({
   type: types.SHOW_MODAL,

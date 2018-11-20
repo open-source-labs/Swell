@@ -4,8 +4,8 @@ import ReqResCtrl from '../ReqResCtrl';
 
 const CloseBtn = props => {
     return (
-    <button type='button' id={props.reqResState.content.id}  onClick={
-      (e) => ReqResCtrl.closeEndPoint(e)
+    <button type='button' onClick={
+      () => ReqResCtrl.closeReqRes(props.content.id)
     }>Close</button>
     );
 };
