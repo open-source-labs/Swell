@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReqResCtrl from '../ReqResCtrl';
 
-const OpenAllBtn = props => {
+const SelectAllBtn = props => {
   return (<button type='button' onClick={
     (e) => {
-      ReqResCtrl.openAllEndPoints()
+      ReqResCtrl.selectAllResReq(e)
     }
-  }>Open All</button>
+  }>Select All</button>
   );
 };
 
-export default OpenAllBtn;
+export default SelectAllBtn;

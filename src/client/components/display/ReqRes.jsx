@@ -5,6 +5,7 @@ import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
 import 'status-indicator/styles.css'
+import ReqResCtrl from '../ReqResCtrl';
 
 import * as actions from '../../actions/actions';
 
@@ -54,6 +55,11 @@ class ReqRes extends Component {
     return(
       <div className="resreq_component" style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ReqRes
+        <input 
+        id={this.props.content.id} 
+        className="resreq-select" type="checkbox" 
+        onClick={(e) => ReqResCtrl.logSelected(this.props.content.id)}
+        />
         <button onClick={this.removeReqRes}>Remove</button>
         {this.props.content.id}
         {this.props.content.url}

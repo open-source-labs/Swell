@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import SelectAllBtn from '../display/SelectAllBtn.jsx';
+import DeselectAllBtn from '../display/DeselectAllBtn.jsx';
+
 import OpenAllBtn from '../display/OpenAllBtn.jsx';
 import CloseAllBtn from '../display/CloseAllBtn.jsx';
 import ClearBtn from '../display/ClearBtn.jsx';
@@ -24,6 +27,9 @@ class Nav extends Component {
       <div>
         NavContainer
         {/* <ToggleAllBtn connectionStatus={this.props}/> */}
+
+        <SelectAllBtn connectionStatus={this.props}/>
+        <DeselectAllBtn connectionStatus={this.props}/>
 
         <OpenAllBtn connectionStatus={this.props}/>
         <CloseAllBtn connectionStatus={this.props}/>
