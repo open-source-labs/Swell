@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReqResCtrl from '../ReqResCtrl';
+import ReqResCtrl from '../../controllers/connectionController';
 
 class OpenBtn extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class OpenBtn extends Component {
 
   render() {
     return (
-      <button className={'btn'} type='button' onClick={ () => ReqResCtrl.openReqRes(this.props.content.id)}>Open</button>
+      <button className={'btn'} style={this.props.stylesObj} type='button' onClick={ () => ReqResCtrl.openReqRes(this.props.content.id)}>Open</button>
     );
   }
 };

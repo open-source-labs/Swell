@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const WebSocket = require ('ws');
+
 
 const app = express();
 const path = require('path');
@@ -49,21 +51,37 @@ app.post('/events', (req, res) => {
     }, 2500);
 });
 
-app.patch('/events', (req, res) => {
-    console.log('headers', req.headers);
-    console.log("body", req.body);
-    res.header('Content-Type', 'text/event-stream');
-    res.header('Cache-Control', 'no-cache');
+const wss = new WebSocket.Server({ port: 5000 });
 
-    let id=0;
+function heartbeat () {
+    this.isAlive = true;
+}
 
-    setInterval(function() {
-        res.write('event: my-custom-event\n');
-        res.write('id: ' + id++ + '\n');
-        res.write(`data: Your headers: ${JSON.stringify(req.headers)}\n`);
-        res.write(`data: Your body: ${JSON.stringify(req.body)}\n`);
-        res.write('\n\n')
-    }, 2500);
-});
+wss.on('connection',  (wsClient) => {
+    wsClient.send('You are connected to WS.');
+
+    wsClient.isAlive = true;
+    wsClient.on('pong', heartbeat);
+
+    //ping
+    setInterval(() => {
+        wss.clients.forEach(client => {
+            if(client.isAlive === false) {
+                return client.terminate();
+            }
+
+            wsClient.isAlive = false;
+            wsClient.ping(() => {});
+        })
+    })
+
+    wsClient.on('message', (message) => {
+        console.log ('received message');
+        
+        wss.clients.forEach(client => {
+            client.send(message);
+        })
+    })
+})
 
 module.exports = app;

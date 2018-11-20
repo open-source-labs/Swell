@@ -1,15 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class Request extends Component {
   constructor(props) {
@@ -36,4 +25,4 @@ class Request extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Request);
+export default (Request);

@@ -79,11 +79,11 @@ class ModalNewRequest extends Component {
 
   onChangeHandler(e, property) {
     this.setState({
-      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/h?t?t?p?s?:\/?\/?/, '') : e.target.value
+      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/(h?t?t?p?s?|w?s?):\/?\/?/, '') : e.target.value
     }, () => {
       if(property === 'protocol') {
         this.setState ({
-          'url' : this.state.protocol + this.state.url.replace(/h?t?t?p?s?:\/?\/?/, ''),
+          'url' : this.state.protocol + this.state.url.replace(/(h?t?t?p?s?|w?s?):\/?\/?/, ''),
         });
       }
     }) 
@@ -117,10 +117,10 @@ class ModalNewRequest extends Component {
 
     console.log(this.state.url)
     //Error conditions...
-    if(this.state.url === 'http://' || this.state.url === 'https://') {
-      validationMessage = "Please enter a valid URL.";
+    if(this.state.url === 'http://' || this.state.url === 'https://' || this.state.url === 'ws://') {
+      validationMessage = "Please enter a valid URI.";
     }
-    if (!this.state.JSONProperlyFormatted && this.state.contentTypeHeader === 'application/json'){
+    else if (!this.state.JSONProperlyFormatted && this.state.contentTypeHeader === 'application/json'){
       validationMessage = "Please fix JSON body formatting errors.";
     }
     return validationMessage ? validationMessage : true;
@@ -130,28 +130,52 @@ class ModalNewRequest extends Component {
     let validated = this.requestValidationCheck();
 
     if (validated === true) {
-      let reqRes = {
-        id : Math.floor(Math.random() * 100000),
-        // url: 'http://localhost:80/events',
-        url : this.state.url,
-        timeSent : null,
-        timeReceived : null,
-        connection : 'uninitialized',
-        connectionType : null,
-        checkSelected : false,
-        request: {
-          method : this.state.method,
-          headers : this.state.headers,
-          body : JSON.stringify(this.state.body)
-        },
-        response : {
-          headers : null,
-          events : null,
-        },
-        checked : false,
-      };
+      let reqRes;
+      if(this.state.protocol !== 'ws://'){
+        reqRes = {
+          id : Math.floor(Math.random() * 100000),
+          protocol : this.state.protocol,
+          // url: 'http://localhost:80/events',
+          url : this.state.url,
+          timeSent : null,
+          timeReceived : null,
+          connection : 'uninitialized',
+          connectionType : null,
+          checkSelected : false,
+          request: {
+            method : this.state.method,
+            headers : this.state.headers,
+            body : JSON.stringify(this.state.body)
+          },
+          response : {
+            headers : null,
+            events : null,
+          },
+          checked : false,
+        };
+      } else {
+        reqRes = {
+          id : Math.floor(Math.random() * 100000),
+          protocol : this.state.protocol,
+          url : this.state.url,
+          timeSent : null,
+          timeReceived : null,
+          connection : 'uninitialized',
+          connectionType : 'WebSocket',
+          checkSelected : false,
+          request: {
+            messages : [],
+          },
+          response : {
+            messages : [],
+          },
+          checked : false,
+        };
+      }
 
       this.props.reqResAdd(reqRes);
+
+      //reset state for next request
       this.setState({
         method : 'GET',
         protocol : 'http://',
@@ -169,6 +193,17 @@ class ModalNewRequest extends Component {
   }
 
   render() {
+    let HTTPMethodStyle = {
+      display : this.state.protocol !== 'ws://' ? 'block' : 'none',
+    }
+    let HeaderEntryFormStyle = {
+      display : this.state.protocol !== 'ws://' ? 'block' : 'none',
+    }
+    let BodyEntryFormStyle = {
+      'display' : (this.state.method !== 'GET' && this.state.protocol !== 'ws://') ? 'flex' : 'none',
+      'flexDirection' : 'column'
+    }
+
     return(
       <div style={{'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
         if (event.key === 'Enter') {
@@ -184,9 +219,13 @@ class ModalNewRequest extends Component {
 
           <input className={'navbar_radio'} name='protocol' type='radio' value='https://' />
           <label className={'navbar_radio-label'} for="https://">HTTPS</label>
+
+          <input name='protocol' type='radio' value='ws://'></input>
+          <label className={'navbar_radio-label'} for="ws">WS</label>
+
         </div>
 
-        <select className={"modal_select"} onChange={(e) => {
+        <select className={'HTTPMethodStyle modal_select'} onChange={(e) => {
           this.onChangeHandler(e, 'method')
         }}>
           <option value='GET'>GET</option>
@@ -200,9 +239,9 @@ class ModalNewRequest extends Component {
           this.onChangeHandler(e, 'url')
         }}></input>
         
-        <HeaderEntryForm updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
+        <HeaderEntryForm stylesObj={HeaderEntryFormStyle} updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
         
-        <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader} bodyContent={this.state.body} ></BodyEntryForm>
+        <BodyEntryForm stylesObj={BodyEntryFormStyle} method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader} bodyContent={this.state.body} ></BodyEntryForm>
 
         <button className={'modal_submit'} onClick={this.addNewRequest}>Add New Request</button>
       </div>
