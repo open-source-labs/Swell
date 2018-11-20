@@ -7,6 +7,7 @@ import CloseBtn from './CloseBtn.jsx';
 import 'status-indicator/styles.css'
 
 import * as actions from '../../actions/actions';
+import ReqResCtrl from '../ReqResCtrl';
 
 const mapStateToProps = store => ({
  
@@ -25,6 +26,7 @@ class ReqRes extends Component {
   }
 
   removeReqRes () {
+    // ReqResCtrl.closeEndPoint(this.props.content.id); 
     this.props.reqResDelete(this.props.content);
   }
 

@@ -14,7 +14,7 @@ class OpenBtn extends Component {
     ReqResCtrl.setAbortCtrl(e.target.id);
   }
   
-  render(props) {
+  render() {
     return (<button id={this.props.reqResState.content.id}  type='button' onClick={
         (e) => this.handleOpenClick(e)
       }>Open</button>
