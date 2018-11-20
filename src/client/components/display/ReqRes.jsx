@@ -5,9 +5,9 @@ import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
 import 'status-indicator/styles.css'
+import ReqResCtrl from '../ReqResCtrl';
 
 import * as actions from '../../actions/actions';
-import ReqResCtrl from '../ReqResCtrl';
 
 const mapStateToProps = store => ({
  
@@ -17,12 +17,21 @@ const mapDispatchToProps = dispatch => ({
   reqResDelete: (reqRes) => {
     dispatch(actions.reqResDelete(reqRes));
   },
+  reqResUpdate: (reqRes) => {
+    dispatch(actions.reqResUpdate(reqRes));
+  }
 });
 
 class ReqRes extends Component {
   constructor(props) {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
+    this.onCheckHandler = this.onCheckHandler.bind(this);
+  }
+
+  onCheckHandler () {
+    this.props.content.checked = !this.props.content.checked;
+    this.props.reqResUpdate(this.props.content);
   }
 
   removeReqRes () {
@@ -56,6 +65,13 @@ class ReqRes extends Component {
     return(
       <div className="resreq_component" style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ReqRes
+
+        <input 
+        id={this.props.content.id} checked={this.props.content.checked}
+        className="resreq-select" type="checkbox" 
+        onChange={this.onCheckHandler}
+        />
+
         <button onClick={this.removeReqRes}>Remove</button>
         {this.props.content.id}
         {this.props.content.url}
@@ -65,8 +81,8 @@ class ReqRes extends Component {
         {statusLight}
         {contentBody}
 
-        <OpenBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
-        <CloseBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
+        <OpenBtn content={this.props.content} connectionStatus={this.props.content.connection}/>
+        <CloseBtn content={this.props.content} connectionStatus={this.props.content.connection}/>
         
       </div>
     )

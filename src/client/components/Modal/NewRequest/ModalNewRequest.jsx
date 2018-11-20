@@ -138,6 +138,7 @@ class ModalNewRequest extends Component {
         timeReceived : null,
         connection : 'uninitialized',
         connectionType : null,
+        checkSelected : false,
         request: {
           method : this.state.method,
           headers : this.state.headers,
@@ -147,6 +148,7 @@ class ModalNewRequest extends Component {
           headers : null,
           events : null,
         },
+        checked : false,
       };
 
       this.props.reqResAdd(reqRes);
