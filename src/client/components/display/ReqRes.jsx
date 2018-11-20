@@ -17,15 +17,25 @@ const mapDispatchToProps = dispatch => ({
   reqResDelete: (reqRes) => {
     dispatch(actions.reqResDelete(reqRes));
   },
+  reqResUpdate: (reqRes) => {
+    dispatch(actions.reqResUpdate(reqRes));
+  }
 });
 
 class ReqRes extends Component {
   constructor(props) {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
+    this.onCheckHandler = this.onCheckHandler.bind(this);
+  }
+
+  onCheckHandler () {
+    this.props.content.checked = !this.props.content.checked;
+    this.props.reqResUpdate(this.props.content);
   }
 
   removeReqRes () {
+    // ReqResCtrl.closeEndPoint(this.props.content.id); 
     this.props.reqResDelete(this.props.content);
   }
 
@@ -55,11 +65,13 @@ class ReqRes extends Component {
     return(
       <div className="resreq_component" style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ReqRes
+
         <input 
-        id={this.props.content.id} 
+        id={this.props.content.id} checked={this.props.content.checked}
         className="resreq-select" type="checkbox" 
-        onClick={(e) => ReqResCtrl.logSelected(this.props.content.id)}
+        onChange={this.onCheckHandler}
         />
+
         <button onClick={this.removeReqRes}>Remove</button>
         {this.props.content.id}
         {this.props.content.url}
@@ -69,8 +81,8 @@ class ReqRes extends Component {
         {statusLight}
         {contentBody}
 
-        <OpenBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
-        <CloseBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
+        <OpenBtn content={this.props.content} connectionStatus={this.props.content.connection}/>
+        <CloseBtn content={this.props.content} connectionStatus={this.props.content.connection}/>
         
       </div>
     )

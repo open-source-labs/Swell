@@ -31,6 +31,10 @@ class ModalNewRequest extends Component {
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
+  componentDidUpdate(){
+    
+  }
+
   methodOnChange(e) {
     this.setState({
       method: e.target.value

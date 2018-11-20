@@ -5,28 +5,27 @@ class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastParseWasSuccess : false,
+      lastParseWasSuccess : true,
     }
     this.bodyTypeChangeHandler = this.bodyTypeChangeHandler.bind(this);
     this.rawTypeChangeHandler = this.rawTypeChangeHandler.bind(this);
-  }
-  
-  generateJSONEntryForm (content) {
-
   }
 
   bodyTypeChangeHandler (e) {
     switch (e.target.value) {
       case 'x-www-form-urlencoded' : {
         this.props.updateContentTypeHeader(e.target.value);
+        this.props.updateBody("");
         break
       }
       case 'raw' : {
         this.props.updateContentTypeHeader('text/plain');
+        this.props.updateBody("");
         break
       }
       case 'none' : {
         this.props.updateContentTypeHeader('');
+        this.props.updateBody("");
         break;
       }
     }
@@ -56,28 +55,35 @@ class BodyEntryForm extends Component {
           return (<WWWForm updateBody={this.props.updateBody}/>)
         }
         case 'application/json' : {
+          if (this.props.bodyContent === "") {
+            this.props.updateBody({});
+            return;
+          }
           return (
-            <textarea type='text' value={this.state.lastParseWasSuccess ? JSON.stringify(this.props.bodyContent,undefined,4) : this.props.bodyContent} placeholder='Body' onChange={(e) => {
-              let parsedValue;
-              try {
-                parsedValue = JSON.parse(e.target.value,undefined,4);
-                this.setState({
-                  lastParseWasSuccess : true,
-                })
-              }
-              catch (error) {
-                parsedValue = e.target.value;
-                this.setState({
-                  lastParseWasSuccess : false,
-                })
-              }
-              this.props.updateBody(parsedValue);
-            }}></textarea>
+            <div>
+              <div>{this.state.lastParseWasSuccess ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
+              <textarea style={{'resize' : 'none'}} type='text' rows={8} value={this.state.lastParseWasSuccess ? JSON.stringify(this.props.bodyContent,undefined,4) : this.props.bodyContent} placeholder='Body' onChange={(e) => {
+                let parsedValue;
+                try {
+                  parsedValue = JSON.parse(e.target.value,undefined,4);
+                  this.setState({
+                    lastParseWasSuccess : true,
+                  })
+                }
+                catch (error) {
+                  parsedValue = e.target.value;
+                  this.setState({
+                    lastParseWasSuccess : false,
+                  })
+                }
+                this.props.updateBody(parsedValue);
+              }}></textarea>
+            </div>
           )
         }
         default : {
           return (
-            <textarea type='text' placeholder='Body' onChange={(e) => {
+            <textarea style={{'resize' : 'none'}} type='text' placeholder='Body' rows={5} onChange={(e) => {
               this.props.updateBody(e.target.value)
             }} ></textarea>
           )
