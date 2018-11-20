@@ -30,7 +30,7 @@ const httpController = {
 
       const isStream = heads['content-type'].includes('stream');
 
-      isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response.json(), reqResObj, heads);
+      isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
     })
     .catch(err => console.log(err))
 
@@ -70,21 +70,39 @@ const httpController = {
 
     const newObj = JSON.parse(JSON.stringify(originalObj));
 
-    response.then((res) => {
-      newObj.connection = 'closed';
-      newObj.connectionType = 'plain';
-      newObj.timeReceived = Date.now();
-      newObj.response = {
-        headers: headers,
-        events: [],
-      };
+    let reader = response.body.getReader();
+    let bodyContent = "";
+    read();
 
-      newObj.response.events.push({
-        data: res,
-        timeReceived: Date.now(),
+    function read() {
+      reader.read().then(obj => {
+        console.log(obj)
+        if (obj.done) {
+          newObj.connection = 'closed';
+          newObj.connectionType = 'plain';
+          newObj.timeReceived = Date.now();
+          newObj.response = {
+            headers: headers,
+            events: [],
+          };
+          console.log('after', bodyContent)
+          newObj.response.events.push({
+            data: bodyContent,
+            timeReceived: Date.now(),
+          });
+          store.default.dispatch(actions.reqResUpdate(newObj));
+          return;
+        } 
+
+        //decode and recursively call
+        else {
+          bodyContent += new TextDecoder("utf-8").decode(obj.value);
+          console.log(bodyContent);
+
+          read();
+        }
       });
-      store.default.dispatch(actions.reqResUpdate(newObj));
-    })
+    }
   },
 
   /* handle SSE Streams */
