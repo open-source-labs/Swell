@@ -1,7 +1,8 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
+import httpController from './httpController.js'
 
-const ReqResCtrl = {
+const connectionController = {
   openConnectionArray:[],
   // selectedArray:[],
 
@@ -27,63 +28,27 @@ const ReqResCtrl = {
     })
   },
 
-  // logSelected(id) {
-  //   const gotState = store.default.getState();
-  //   const reqResArr = gotState.business.reqResArray;
-  //   let reqResObj = reqResArr.find((el) => el.id == id);
-
-  //   if (!reqResObj.checkSelected) {
-  //     reqResObj.checkSelected = true;
-  //     store.default.dispatch(actions.reqResUpdate(reqResObj));
-  //     this.selectedArray.push(Number(id));
-  //   } else if (reqResObj.checkSelected) {
-  //     reqResObj.checkSelected = false;
-  //     store.default.dispatch(actions.reqResUpdate(reqResObj));
-  //     this.selectedArray = this.selectedArray.filter(item => item !== id);
-  //     reqResObj.checkSelected = !reqResObj.checkSelected;
-  //   }
-  // },
-
-  /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-
   openReqRes(id) {
-    console.log(id);
-    const openConnectionObj = {
-      abort : new AbortController(),
-      id: id,
-    }
-
     const reqResArr = store.default.getState().business.reqResArray;
-
-    // Search the store for the passed in ID
     const reqResObj = reqResArr.find((el) => el.id == id);
-    
-    //clear the existing events
-    reqResObj.response.headers = {};
-    reqResObj.response.events = [];
-    store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-    this.openConnectionArray.push(openConnectionObj);
-    this.parseReqObject (reqResObj, openConnectionObj.abort);
+    let connectionObject = reqResObj.protocol === 'ws://' ? wsControl() : httpController.openHTTPconnection(reqResObj);
+
+    console.log(connectionObject);
+
+    this.openConnectionArray.push(connectionObject);
   },
 
   openAllSelectedReqRes() {
-    ReqResCtrl.closeAllReqRes();
+    connectionController.closeAllReqRes();
 
     const reqResArr = store.default.getState().business.reqResArray;
     
     reqResArr.forEach(reqRes => {
       if(reqRes.checked) {
-        ReqResCtrl.openReqRes(reqRes.id);
+        connectionController.openReqRes(reqRes.id);
       }
     });
-
-    // reqResArr.forEach(reqResObj => {
-    //   const reqResId = reqResObj.id;
-    //   if (this.selectedArray.includes(reqResId)) {
-    //     this.openReqRes(reqResId);
-    //   }
-    // })
   },
 
   setReqResConnectionToClosed(id) {
@@ -96,12 +61,12 @@ const ReqResCtrl = {
   },
 
   closeReqRes(id) {
-
     this.setReqResConnectionToClosed(id);
     let foundAbortController = this.openConnectionArray.find(obj => obj.id = id);
-
+    console.log(foundAbortController);
     if (foundAbortController) {
       foundAbortController.abort.abort();
+      console.log('aborted');
     }
     
     this.openConnectionArray = this.openConnectionArray.filter(obj => obj.id !== id);
@@ -113,46 +78,14 @@ const ReqResCtrl = {
 
     reqResArr.forEach(reqRes => {
       if (reqRes.checked) {
-        ReqResCtrl.closeReqRes(reqRes.id);
-
-        // let matchedAbortObject = ReqResCtrl.openConnectionArray.find(connObj => connObj.id === reqRes.id);
-
-        // if (matchedAbortObject) {
-        //   matchedAbortObject.abort.abort();
-        //   ReqResCtrl.setReqResConnectionToClosed(reqRes.id);
-
-        //   ReqResCtrl.openConnectionArray = ReqResCtrl.openConnectionArray.filter(obj => obj.id !== reqRes.id);
-        // }
+        connectionController.closeReqRes(reqRes.id);
       }
     });
-
-    // this.openConnectionArray.forEach(abortObject => {
-    //   if (this.selectedArray.includes(abortObject.id)) {
-    //     this.selectedArray.forEach(abortId => {
-    //       if (abortObject.id == abortId) {
-    //         abortObject.abort.abort();
-    //         const openConnectionObj = {
-    //           abort : new AbortController(),
-    //         }
-    //         this.closeConnection(abortId)
-    //       }
-    //     })
-    //   }
-    // });
   },
 
   clearAllReqRes() {
-    // const reqResArr = store.default.getState().business.reqResArray;
-    ReqResCtrl.closeAllReqRes();
+    connectionController.closeAllReqRes();
     store.default.dispatch(actions.reqResClear());
-
-
-    // reqResArr.forEach((el) => {
-    //   if (el.id == e.target.id) {
-    //     el.connection = 'closed';
-    //     store.default.dispatch(actions.reqResUpdate(el));
-    //   }
-    // });
   },
 
   parseReqObject(object, abortController) {
@@ -255,6 +188,8 @@ const ReqResCtrl = {
 
     function read() {
       reader.read().then(obj => {
+
+        //base case
         if (obj.done) {
           return;
         } 
@@ -276,10 +211,10 @@ const ReqResCtrl = {
             let fieldObj = {
               [fieldColonSplit[0]] : fieldColonSplit[1],
             }
-
             return fieldObj;
           })
           .reduce((acc, cur) => {
+            //handles if there are multiple fields of the same type, for example two data fields.
             let key = Object.keys(cur)[0];
             if (acc[key]) {
               acc[key] = acc[key] + '\n' + cur[key];
@@ -288,12 +223,12 @@ const ReqResCtrl = {
             }
             return acc;
           },{})
-
           receivedEventFields.timeReceived = Date.now();
           
           newObj.response.events.push(receivedEventFields);
-
           store.default.dispatch(actions.reqResUpdate(newObj));
+
+          //recursive call
           read();
         }
       });
@@ -301,5 +236,4 @@ const ReqResCtrl = {
   }
 };
 
-
-export default ReqResCtrl;
+export default connectionController;

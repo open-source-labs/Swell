@@ -36,11 +36,6 @@ class BodyEntryForm extends Component {
   }
 
   render() {
-    let styles = {
-      'display' : this.props.method === 'GET' ? 'none' : 'flex',
-      'flexDirection' : 'column'
-    }
-
     let rawTypeStyles = {
       'display' : this.props.contentTypeHeader.includes('/') ? 'block' : 'none',
     }
@@ -92,7 +87,7 @@ class BodyEntryForm extends Component {
     })()
   
     return(
-      <div style={styles}>
+      <div style={this.props.stylesObj}>
 
         <div onChange={(e) => this.bodyTypeChangeHandler(e)}>
           Body Type:
