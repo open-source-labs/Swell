@@ -135,7 +135,7 @@ class HeaderEntryForm extends Component {
       return (<Header content={header} changeHandler={this.onChangeUpdateHeader} key={index} Key={header.key} value={header.value}></Header>)
     });
     return(
-      <div>
+      <div style={this.props.stylesObj}>
         HeaderEntryForm
         {headersArr}
       </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReqResCtrl from '../ReqResCtrl';
+import ReqResCtrl from '../../controllers/connectionController';
 
 const OpenAllBtn = () => {
   return (
