@@ -130,16 +130,16 @@ class ModalNewRequest extends Component {
   render() {
     console.log(this.state);
     return(
-      <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div>
         ModalNewRequest
-        <div onChange={(e) => {
+        <div className={"modal_http-radios"} onChange={(e) => {
           this.onChangeHandler(e, 'protocol')
         }}>
           <input name='protocol' type='radio' value='http://' defaultChecked={true}></input>HTTP
           <input name='protocol' type='radio' value='https://'></input>HTTPS
         </div>
 
-        <select onChange={(e) => {
+        <select className={"modal_select"} onChange={(e) => {
           this.onChangeHandler(e, 'method')
         }}>
           <option value='GET'>GET</option>
@@ -149,7 +149,7 @@ class ModalNewRequest extends Component {
           <option value='DELETE'>DELETE</option>
         </select>
 
-        <input type='text' placeholder='URL' value={this.state.url} onChange={(e) => {
+        <input className={'modal_url-input'} type='text' placeholder='URL' value={this.state.url} onChange={(e) => {
           this.onChangeHandler(e, 'url')
         }}></input>
         
@@ -157,7 +157,7 @@ class ModalNewRequest extends Component {
         
         <BodyEntryForm method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader} bodyContent={this.state.body} ></BodyEntryForm>
 
-        <button onClick={this.addNewRequest}>Add New Request</button>
+        <button className={'modal_submit'} onClick={this.addNewRequest}>Add New Request</button>
       </div>
     );
   }

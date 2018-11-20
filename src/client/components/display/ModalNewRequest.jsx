@@ -86,7 +86,7 @@ class ModalNewRequest extends Component {
     return(
       <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
         ModalNewRequest
-        <select onChange={(e) => {
+        <select className={'modal-select'} onChange={(e) => {
           this.methodOnChange(e)
         }}>
           <option value='GET'>GET</option>

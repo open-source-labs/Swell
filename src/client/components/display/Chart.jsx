@@ -7,6 +7,10 @@ class Graph extends Component {
 
   componentDidMount() {
     const context = document.querySelector('#line-chart');
+    const ctx = document.querySelector("canvas").getContext("2d");
+    ctx.canvas.width = 300;
+    ctx.canvas.height = 40;
+
     const lineChart = new Chart(context, {
         type: "line",
         data: {
@@ -40,6 +44,8 @@ class Graph extends Component {
               fill: false,
               backgroundColor: 'rgba(244, 119, 119, 0.1)',
               borderColor: 'rgba(255, 0, 46, 1)',
+              responsive: true,
+              maintainAspectRatio: true
             }
           ]
         },
@@ -48,8 +54,7 @@ class Graph extends Component {
 
   render() {
     return (
-      <div style={{'width': '50%', 'height': '50%'}}>
-        <div>Chart</div>
+      <div>
         <canvas id='line-chart'></canvas>
       </div>
     )

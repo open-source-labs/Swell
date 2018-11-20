@@ -1,0 +1,110 @@
+$navy: #001e38;
+$green: #15b78f;
+$litegray: #F2F5F5;
+$medgray: #E6EBEC;
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:500');
+
+*{
+  box-sizing: border-box;
+}
+
+// html {
+//   background-color: $navy;
+// }
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+// h1 {
+//   color: $green;
+//   font-weight: bold;
+//   font-size: 3.5rem;
+
+//   &:after {
+//     content: '👋';
+//     display: inline-block;
+//     transform: rotate(-20deg);
+//     animation: wave .75s infinite linear alternate;
+//   }
+// }
+
+// @keyframes wave {
+//   100% {
+//     transform: rotate(20deg);
+//   }
+// }
+
+#reqResContainer {
+  border: 1px solid black;
+  position: absolute;
+  bottom: 0;
+  width: 360px;
+  margin: 50px;
+  height: auto;
+}
+
+.navbar_modal-console {
+  width:320px;
+  height: 100vh;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: $litegray;
+}
+
+.navbar_resreq-console {
+  width:100%;
+  height: auto;
+  display: block;
+  position: relative;
+  bottom: 0;
+  border: lime solid 1px;
+}
+
+.btn {
+  width: 100%;
+  height: 30px;
+  margin: 15px 15px;
+  display: block;
+}
+
+.contents{
+  width: calc(100vw - 320px);
+  height: 100vh;
+  display: block;
+  position: absolute;
+  left: 320px;
+  top: 0;
+  background: white;
+}
+
+.modalContents{
+  width: 100%;
+  font-size: 1.2rem;
+  padding: 15px;
+}
+
+.modal_http-radios, .modal_select, .modal_url-input, .modal_submit {
+  width: 100%;
+  height: 30px;
+  margin: 15px 0;
+  display: block;
+}
+
+.modal_http-radios input {}
+
+
+#line-chart{
+  width: 100%;
+  height:250px;
+  border:$medgray 1px solid;
+}

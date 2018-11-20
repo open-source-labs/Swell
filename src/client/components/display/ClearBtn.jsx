@@ -3,7 +3,7 @@ import ReqResCtrl from '../ReqResCtrl';
 
 const ClearBtn = () => {
   return (
-    <button type='button'onClick={
+    <button className={'btn'} type='button'onClick={
       (e) => {
         ReqResCtrl.clearAllEndPoints(e)
       }
