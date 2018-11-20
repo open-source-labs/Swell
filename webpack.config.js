@@ -3,7 +3,7 @@ const path = require('path');
 
 const entryArr = [
   './src/client/index.js',
-  './public/styles.css'
+  './public/style/App.scss'
 ];
 
 
@@ -34,6 +34,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: [ 'style-loader', 'css-loader' ]
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ],
   },

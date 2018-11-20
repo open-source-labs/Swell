@@ -23,7 +23,7 @@ class ReqResContainer extends Component {
     });
     return(
       <div id="reqResContainer" style={{'border' : '1px solid black'}}>
-        ReqResContainer
+        {/* ReqResContainer */}
         {reqResArr}
       </div>
     )

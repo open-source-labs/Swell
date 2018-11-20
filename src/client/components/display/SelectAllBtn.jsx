@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ReqResCtrl from '../../controllers/connectionController.js';
 
 const SelectAllBtn = props => {
-  return (<button type='button' onClick={ ReqResCtrl.selectAllResReq }>Select All</button>
+  return (<button className={'btn'} type='button' onClick={ ReqResCtrl.selectAllResReq }>Select All</button>
   );
 };
 

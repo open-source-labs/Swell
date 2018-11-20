@@ -23,10 +23,9 @@ class App extends Component {
   render() {
     return(
       <div id='app'>
-        App
+        {/* App */}
         <NavContainer/>
         <ContentsContainer/>
-        <ModalContainer/>
       </div>
     )
   }

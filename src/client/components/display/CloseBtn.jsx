@@ -4,7 +4,7 @@ import ReqResCtrl from '../../controllers/connectionController';
 
 const CloseBtn = props => {
     return (
-    <button style={props.stylesObj} type='button' onClick={
+    <button className={'btn'} style={props.stylesObj} type='button' onClick={
       () => ReqResCtrl.closeReqRes(props.content.id)
     }>Close</button>
     );

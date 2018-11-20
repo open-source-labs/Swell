@@ -48,8 +48,7 @@ class ModalContainer extends Component {
     }
 
     return(
-      <div style={{'border' : '1px solid black', 'width' : 'auto'}}>
-        ModalContainer
+      <div className={'modalContents'}>
         {modalContents}
       </div>
     )
