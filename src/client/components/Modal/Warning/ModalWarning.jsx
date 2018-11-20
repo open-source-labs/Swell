@@ -26,7 +26,11 @@ class ModalWarning extends Component {
 
   render() {
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
+        if (event.key === 'Enter') {
+          this.hideWarning();
+        }
+      }}>
         ModalWarning
         <div>{this.props.warningModalMessage}</div>
         <button onClick={this.hideWarning}>Ok</button>

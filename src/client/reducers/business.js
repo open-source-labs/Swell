@@ -4,6 +4,7 @@ import * as types from '../actions/actionTypes';
 const initialState = { 
   reqResArray : [],
   warningModalMessage : "",
+  newResponseFields : {},
 };
 
 const businessReducer = (state=initialState, action) => {
@@ -12,6 +13,7 @@ const businessReducer = (state=initialState, action) => {
       console.log('action',action);
       return {
         ...state,
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         reqResArray : [],
       }
     }
@@ -24,6 +26,7 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         reqResArray
       }
     }
@@ -35,6 +38,7 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         reqResArray : state.reqResArray.filter(reqRes => {
           return reqRes.id !== deleteId;
         })
@@ -43,7 +47,6 @@ const businessReducer = (state=initialState, action) => {
 
     case types.REQRES_UPDATE:{
       console.log('action',action);
-
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
 
       let indexToBeUpdated = undefined;
@@ -59,19 +62,30 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         reqResArray : reqResDeepCopy,
       }
     }
 
     case types.SET_WARNING_MODAL_MESSAGE:{
       console.log('action',action);
-
       return {
         ...state,
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         warningModalMessage : action.payload
       }
     }
+
+    case types.SET_NEW_RESPONSE_FIELDS:{
+      console.log('action',action);
+      return {
+        ...state,
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newResponseFields : JSON.parse(JSON.stringify(action.payload)),
+      }
+    }
+    
 
     default:
       return state;

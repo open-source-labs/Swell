@@ -26,8 +26,8 @@ class Request extends Component {
     })
 
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        Request
+      <div className={'resreq-res-header'}>
+        <h1 className={'resreq_title'}>Request</h1>
         {this.props.content.method}
         {headerArr}
         {/* {this.props.content.body} */}

@@ -3,129 +3,157 @@ import * as actions from '../actions/actions';
 
 const ReqResCtrl = {
   openConnectionArray:[],
-  selectedArray:[],
+  // selectedArray:[],
 
   selectAllResReq() {
-    const allResReq = document.body.querySelectorAll('.resreq-select');
-    allResReq.forEach(resReq => {
-      resReq.checked = true;
-      this.logSelected(resReq.id)
+    const reqResArr = store.default.getState().business.reqResArray;
+
+    reqResArr.forEach(resReq => {
+      if (!resReq.checked) {
+        resReq.checked = true;
+        store.default.dispatch(actions.reqResUpdate(resReq));
+      }
     })
   },
 
   deselectAllResReq() {
-    const allResReq = document.body.querySelectorAll('.resreq-select');
-    this.selectedArray = [];
-    allResReq.forEach(resReq => {
-      resReq.checked = false;
-      this.logSelected(resReq.id)
+    const reqResArr = store.default.getState().business.reqResArray;
+
+    reqResArr.forEach(resReq => {
+      if (resReq.checked) {
+        resReq.checked = false;
+        store.default.dispatch(actions.reqResUpdate(resReq));
+      }
     })
   },
 
-  logSelected(id) {
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-    let reqResObj = reqResArr.find((el) => el.id == id);
+  // logSelected(id) {
+  //   const gotState = store.default.getState();
+  //   const reqResArr = gotState.business.reqResArray;
+  //   let reqResObj = reqResArr.find((el) => el.id == id);
 
-    if (!reqResObj.checkSelected) {
-      reqResObj.checkSelected = true;
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
-      this.selectedArray.push(Number(id));
-    } else if (reqResObj.checkSelected) {
-      reqResObj.checkSelected = false;
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
-      this.selectedArray = this.selectedArray.filter(item => item !== id);
-      reqResObj.checkSelected = !reqResObj.checkSelected;
-    }
-  },
+  //   if (!reqResObj.checkSelected) {
+  //     reqResObj.checkSelected = true;
+  //     store.default.dispatch(actions.reqResUpdate(reqResObj));
+  //     this.selectedArray.push(Number(id));
+  //   } else if (reqResObj.checkSelected) {
+  //     reqResObj.checkSelected = false;
+  //     store.default.dispatch(actions.reqResUpdate(reqResObj));
+  //     this.selectedArray = this.selectedArray.filter(item => item !== id);
+  //     reqResObj.checkSelected = !reqResObj.checkSelected;
+  //   }
+  // },
 
   /* Iterates across REQ/RES Array and opens connections for each object and passes each object to fetchController */
-  openAllEndPoints(e) {
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-    this.closeAllEndpoints(e);
-    
-    reqResArr.forEach(reqResObj => {
-      const reqResId = reqResObj.id;
-      if (this.selectedArray.includes(reqResId)) {
-        this.setAbortCtrl(reqResId);
-      }
-    })
-  },
 
-  closeConnection(abortId) {
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-
-    reqResArr.forEach((el) => {
-      if(el.id == abortId) {
-        el.connection = 'closed';
-        store.default.dispatch(actions.reqResUpdate(el));
-      }
-    });
-  },
-
-  closeEndPoint(e, abortId, selected) {
-    let reqResObj;
-    this.openConnectionArray.forEach( el => {
-        if (el.id == e.target.id) {
-          reqResObj = el;
-          this.closeConnection(el.id);
-        }
-    });
-
-    reqResObj.abort.abort();
-    const openConnectionObj = {
-      abort: new AbortController(),
-    }
-    this.openConnectionArray.push(openConnectionObj);
-  },
-
-  /* Closes all open endpoint */
-  closeAllEndpoints() {
-    let selected = true
-    this.openConnectionArray.forEach(abortObject => {
-      if (this.selectedArray.includes(abortObject.id)) {
-        this.selectedArray.forEach(abortId => {
-          if (abortObject.id == abortId) {
-            abortObject.abort.abort();
-            const openConnectionObj = {
-              abort : new AbortController(),
-            }
-            this.closeConnection(abortId)
-          }
-        })
-      }
-    });
-  },
-
-  clearAllEndPoints() {
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
-    store.default.dispatch(actions.reqResClear());
-    this.closeAllEndpoints(e, all);
-
-    reqResArr.forEach((el) => {
-      if (el.id == e.target.id) {
-        el.connection = 'closed';
-        store.default.dispatch(actions.reqResUpdate(el));
-      }
-    });
-  },
-
-  setAbortCtrl(id) {
+  openReqRes(id) {
+    console.log(id);
     const openConnectionObj = {
       abort : new AbortController(),
       id: id,
     }
-    const gotState = store.default.getState();
-    const reqResArr = gotState.business.reqResArray;
+
+    const reqResArr = store.default.getState().business.reqResArray;
+
     // Search the store for the passed in ID
-    const reqResObj = reqResArr.find((el) => el.id == openConnectionObj.id);
+    const reqResObj = reqResArr.find((el) => el.id == id);
+    
+    //clear the existing events
+    reqResObj.response.headers = {};
+    reqResObj.response.events = [];
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
+
     this.openConnectionArray.push(openConnectionObj);
     this.parseReqObject (reqResObj, openConnectionObj.abort);
   },
 
+  openAllSelectedReqRes() {
+    ReqResCtrl.closeAllReqRes();
+
+    const reqResArr = store.default.getState().business.reqResArray;
+    
+    reqResArr.forEach(reqRes => {
+      if(reqRes.checked) {
+        ReqResCtrl.openReqRes(reqRes.id);
+      }
+    });
+
+    // reqResArr.forEach(reqResObj => {
+    //   const reqResId = reqResObj.id;
+    //   if (this.selectedArray.includes(reqResId)) {
+    //     this.openReqRes(reqResId);
+    //   }
+    // })
+  },
+
+  setReqResConnectionToClosed(id) {
+    const reqResArr = store.default.getState().business.reqResArray;
+
+    let foundReqRes = reqResArr.find(reqRes => reqRes.id == id);
+    foundReqRes.connection = 'closed';
+    store.default.dispatch(actions.reqResUpdate(foundReqRes));
+
+  },
+
+  closeReqRes(id) {
+
+    this.setReqResConnectionToClosed(id);
+    let foundAbortController = this.openConnectionArray.find(obj => obj.id = id);
+
+    if (foundAbortController) {
+      foundAbortController.abort.abort();
+    }
+    
+    this.openConnectionArray = this.openConnectionArray.filter(obj => obj.id !== id);
+  },
+
+  /* Closes all open endpoint */
+  closeAllReqRes() {
+    const reqResArr = store.default.getState().business.reqResArray;
+
+    reqResArr.forEach(reqRes => {
+      if (reqRes.checked) {
+        ReqResCtrl.closeReqRes(reqRes.id);
+
+        // let matchedAbortObject = ReqResCtrl.openConnectionArray.find(connObj => connObj.id === reqRes.id);
+
+        // if (matchedAbortObject) {
+        //   matchedAbortObject.abort.abort();
+        //   ReqResCtrl.setReqResConnectionToClosed(reqRes.id);
+
+        //   ReqResCtrl.openConnectionArray = ReqResCtrl.openConnectionArray.filter(obj => obj.id !== reqRes.id);
+        // }
+      }
+    });
+
+    // this.openConnectionArray.forEach(abortObject => {
+    //   if (this.selectedArray.includes(abortObject.id)) {
+    //     this.selectedArray.forEach(abortId => {
+    //       if (abortObject.id == abortId) {
+    //         abortObject.abort.abort();
+    //         const openConnectionObj = {
+    //           abort : new AbortController(),
+    //         }
+    //         this.closeConnection(abortId)
+    //       }
+    //     })
+    //   }
+    // });
+  },
+
+  clearAllReqRes() {
+    // const reqResArr = store.default.getState().business.reqResArray;
+    ReqResCtrl.closeAllReqRes();
+    store.default.dispatch(actions.reqResClear());
+
+
+    // reqResArr.forEach((el) => {
+    //   if (el.id == e.target.id) {
+    //     el.connection = 'closed';
+    //     store.default.dispatch(actions.reqResUpdate(el));
+    //   }
+    // });
+  },
 
   parseReqObject(object, abortController) {
     let { url, request: { method }, request: { headers }, request: { body } } = object;
@@ -138,7 +166,6 @@ const ReqResCtrl = {
     })
 
     // formattedHeaders["Access-Control-Allow-Origin"] = '*';
-    // formattedHeaders['Referrer-Policy'] = 'origin'
 
     let outputObj = {
       method: method,
@@ -176,56 +203,36 @@ const ReqResCtrl = {
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
-      heads["Access-Control-Allow-Origin"] = '*';
 
       const contentType = heads['content-type'];
       const isStream = contentType.includes('stream');
 
-      console.log(response);
-
-      isStream ? this.handleSSE(response, originalObj, timeSentSnap, heads) : this.handleSingleEvent(response, originalObj, timeSentSnap, heads);
+      isStream ? this.handleSSE(response, originalObj, timeSentSnap, heads) : this.handleSingleEvent(response.json(), originalObj, timeSentSnap, heads);
     })
     .catch(err => console.log(err))
   },
 
   handleSingleEvent(response, originalObj, timeSentSnap, headers) {
     console.log('Handling Single Event')
+
     const newObj = JSON.parse(JSON.stringify(originalObj));
 
-    let reader = response.body.getReader();
-    let bodyContent = "";
-    read();
+    response.then((res) => {
+      newObj.connection = 'closed';
+      newObj.connectionType = 'plain';
+      newObj.timeSent = timeSentSnap;
+      newObj.timeReceived = Date.now();
+      newObj.response = {
+        headers: headers,
+        events: [],
+      };
 
-    function read() {
-      reader.read().then(obj => {
-        console.log(obj)
-        if (obj.done) {
-          newObj.connection = 'closed';
-          newObj.connectionType = 'plain';
-          newObj.timeSent = timeSentSnap;
-          newObj.timeReceived = Date.now();
-          newObj.response = {
-            headers: headers,
-            events: [],
-          };
-          console.log('after', bodyContent)
-          newObj.response.events.push({
-            data: bodyContent,
-            timeReceived: Date.now(),
-          });
-          store.default.dispatch(actions.reqResUpdate(newObj));
-          return;
-        } 
-
-        //decode and recursively call
-        else {
-          bodyContent += new TextDecoder("utf-8").decode(obj.value);
-          console.log(bodyContent);
-
-          read();
-        }
+      newObj.response.events.push({
+        data: res,
+        timeReceived: Date.now(),
       });
-    }
+      store.default.dispatch(actions.reqResUpdate(newObj));
+    })
   },
 
   /* handle SSE Streams */

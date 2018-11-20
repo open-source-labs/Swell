@@ -31,6 +31,10 @@ class ModalNewRequest extends Component {
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
+  componentDidUpdate(){
+    
+  }
+
   methodOnChange(e) {
     this.setState({
       method: e.target.value
@@ -84,8 +88,7 @@ class ModalNewRequest extends Component {
 
   render() {
     return(
-      <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        ModalNewRequest
+      <div style={{'display' : 'flex', 'flexDirection' : 'column'}}>
         <select className={'modal-select'} onChange={(e) => {
           this.methodOnChange(e)
         }}>

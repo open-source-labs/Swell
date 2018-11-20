@@ -17,15 +17,25 @@ const mapDispatchToProps = dispatch => ({
   reqResDelete: (reqRes) => {
     dispatch(actions.reqResDelete(reqRes));
   },
+  reqResUpdate: (reqRes) => {
+    dispatch(actions.reqResUpdate(reqRes));
+  }
 });
 
 class ReqRes extends Component {
   constructor(props) {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
+    this.onCheckHandler = this.onCheckHandler.bind(this);
+  }
+
+  onCheckHandler () {
+    this.props.content.checked = !this.props.content.checked;
+    this.props.reqResUpdate(this.props.content);
   }
 
   removeReqRes () {
+    // ReqResCtrl.closeEndPoint(this.props.content.id); 
     this.props.reqResDelete(this.props.content);
   }
 
@@ -53,24 +63,33 @@ class ReqRes extends Component {
     };
 
     return(
-      <div className="resreq_component" style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        ReqRes
-        <input 
-        id={this.props.content.id} 
-        className="resreq-select" type="checkbox" 
-        onClick={(e) => ReqResCtrl.logSelected(this.props.content.id)}
-        />
-        <button onClick={this.removeReqRes}>Remove</button>
-        {this.props.content.id}
-        {this.props.content.url}
-        {this.props.content.timeSent}
-        {this.props.content.timeReceived}
-        {this.props.content.connectionType}
-        {statusLight}
+      <div className={"resreq_wrap"} style={{'border' : '1px solid red', 'margin' : '10px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+        {/* ReqRes */}
+      
+
+      <div className={'nested-grid-8'}>
+        <div>
+          <input 
+            id={this.props.content.id} checked={this.props.content.checked}
+            className="resreq_select-radio" name='resreq-select' type="checkbox" 
+            onChange={this.onCheckHandler}
+          />
+          {/* <label className={'resreq_select-radio-label'} for="resreq-select">Select</label> */}
+        </div>
+        <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
+        <div>{statusLight}</div>
+        <div><span className={'tertiary-title'}>{this.props.content.connectionType}</span></div>
+        <div><span className={'tertiary-title'}>RESPONSE ID: {this.props.content.id}</span></div>
+        <div><span className={'tertiary-title'}>URL:{this.props.content.url}</span></div>
+        <div><span className={'tertiary-title'}>Request Sent: {this.props.content.timeSent}</span></div>
+        <div><span className={'tertiary-title'}>Response Recieved: {this.props.content.timeReceived}</span></div>
+      </div>
+
+ 
         {contentBody}
 
-        <OpenBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
-        <CloseBtn reqResState={this.props} connectionStatus={this.props.content.connection}/>
+        <OpenBtn content={this.props.content} connectionStatus={this.props.content.connection}/>
+        <CloseBtn content={this.props.content} connectionStatus={this.props.content.connection}/>
         
       </div>
     )

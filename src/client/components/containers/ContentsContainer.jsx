@@ -23,7 +23,7 @@ class Contents extends Component {
     return(
       <div className={'contents'}>
         {/* ContentsContainer */}
-        {/* <GraphContainer/> */}
+        <GraphContainer/>
         <ReqResContainer/>
       </div>
     )
