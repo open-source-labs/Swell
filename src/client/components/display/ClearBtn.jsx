@@ -1,5 +1,5 @@
 import React from 'react';
-import ReqResCtrl from '../ReqResCtrl';
+import ReqResCtrl from '../../controllers/connectionController';
 
 const ClearBtn = () => {
   return (
