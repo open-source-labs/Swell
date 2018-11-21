@@ -1,6 +1,7 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import httpController from './httpController.js'
+import httpController from './httpController.js';
+import wsController from './wsController.js'
 
 const connectionController = {
   openConnectionArray:[],
@@ -32,7 +33,7 @@ const connectionController = {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id == id);
 
-    let connectionObject = reqResObj.protocol === 'ws://' ? wsControl() : httpController.openHTTPconnection(reqResObj);
+    let connectionObject = reqResObj.protocol === 'ws://' ? wsController.openWSconnection(reqResObj) : httpController.openHTTPconnection(reqResObj);
 
     this.openConnectionArray.push(connectionObject);
   },
@@ -49,6 +50,10 @@ const connectionController = {
     });
   },
 
+  getConnectionObject(id) {
+    return this.openConnectionArray.find(obj => obj.id = id);
+  },
+
   setReqResConnectionToClosed(id) {
     const reqResArr = store.default.getState().business.reqResArray;
 
@@ -60,11 +65,21 @@ const connectionController = {
 
   closeReqRes(id) {
     this.setReqResConnectionToClosed(id);
+
     let foundAbortController = this.openConnectionArray.find(obj => obj.id = id);
     console.log(foundAbortController);
     if (foundAbortController) {
-      foundAbortController.abort.abort();
-      console.log('aborted');
+      switch (foundAbortController.protocol) {
+        case 'HTTP': {
+          foundAbortController.abort.abort();
+          break;
+        }
+        case 'WS': {
+          foundAbortController.socket.close();
+          break;
+        }
+      }
+      console.log('Connection aborted.');
     }
     
     this.openConnectionArray = this.openConnectionArray.filter(obj => obj.id !== id);
