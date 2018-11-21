@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Store from '../../store';
 import { connect } from 'react-redux';
+import { Chart } from 'chart.js';
 
 const mapStateToProps = Store => ({
   reqRes : Store.business.reqResArray,
