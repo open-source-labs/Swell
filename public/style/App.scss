@@ -153,11 +153,7 @@ body {
 }
 
 
-#line-chart{
-  width: 100%;
-  height:250px;
-  border:$medgray 1px solid;
-}
+
 
 
 .header_entry-form {
@@ -277,3 +273,25 @@ body {
   margin: 0;
   padding: 0;
 }
+
+
+
+
+
+.chartWrapper {
+  position: relative;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+// .chartWrapper > canvas {
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   pointer-events:none;
+// }
+
+// .chartAreaWrapper {
+//   width: 600px;
+//   overflow-x: scroll;
+// }

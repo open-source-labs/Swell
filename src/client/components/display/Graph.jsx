@@ -9,6 +9,9 @@ const mapStateToProps = Store => ({
 const mapDispatchToProps = dispatch => ({
   reqResAdd : reqRes => {
     dispatch(actions.reqResAdd(reqRes));
+  },
+  reqResDelete : reqRes => {
+    dispatch(actions.reqResDelete(reqRes));
   }
 });
 
@@ -17,6 +20,8 @@ class Graph extends Component {
     super(props);
     this.state = {
       lineCharts: [],
+      ctxWidth: 300,
+      eventsLength: 0,
     }
   }
 
@@ -25,15 +30,22 @@ class Graph extends Component {
     chart.data.datasets.forEach( dataset => {
       dataset.data.push(inputData);
       dataset.label = legend;
-    });
+      if (this.props.reqRes[0].response.events.length === this.state.eventsLength + 1) {
+        console.log('updated')
+        this.setState({
+          ctxWidth: this.state.ctxWidth + 150,
+          eventsLength: this.state.eventsLength + 1,
+        })
 
+      }
+    });
     chart.update();
   }
 
   componentDidMount() {
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector("canvas").getContext("2d");
-    ctx.canvas.width = 300;
+    ctx.canvas.width = this.state.ctxWidth;
     ctx.canvas.height = 40;
 
     const lineChart = new Chart(context, {
@@ -46,13 +58,26 @@ class Graph extends Component {
               data: [],
               lineTension: 0.1,
               fill: true,
-              backgroundColor: 'rgba(119, 119, 244, 0.1)',
-              borderColor: 'rgba(46, 0, 255, 1)',
+              fillColor: "rgba(rgb(212, 220, 236),0.2)",
+              strokeColor: "rgb(212, 220, 236,1)",
+              pointColor: "rgba(151,187,205,1)",
             }
           ]
         },
+        options: {
+          showLines: true,
+          scales: {
+            yAxes: [{
+              display: true,
+              ticks: {
+                beginAtZero:true,
+                min: 0,
+                max: 100  
+              }
+            }]
+          }
+        }
       });
-
 
       this.state.lineCharts.push(lineChart);
   }
@@ -68,8 +93,8 @@ class Graph extends Component {
 
   render() {
     return (
-      <div>
-        <canvas id='line-chart'></canvas>
+      <div className="chartWrapper">
+          <canvas id='line-chart'></canvas>
       </div>
     )
   }
