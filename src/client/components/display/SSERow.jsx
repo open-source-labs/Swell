@@ -12,7 +12,7 @@ class SSERow extends Component {
     const json = this.props.content.data;
 
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div className={'response_sse'}>
         SSERow
         <div style={{'display' : 'flex', 'flexDirection' : 'column'}}>
           <div style={{'display' : 'flex'}}>

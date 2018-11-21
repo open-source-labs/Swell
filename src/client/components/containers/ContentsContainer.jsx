@@ -21,8 +21,8 @@ class Contents extends Component {
 
   render() {
     return(
-      <div>
-        ContentsContainer
+      <div className={'contents'}>
+        {/* ContentsContainer */}
         <GraphContainer/>
         <ReqResContainer/>
       </div>
