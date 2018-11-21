@@ -10,7 +10,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --out=./builds",
     "server": "nodemon src/server/server.js",
-    "tserver": "nodemon test-server/index.js"
+    "tserver": "nodemon test-server/server.js"
   },
   "author": "Schno Mozingo",
   "license": "MIT",

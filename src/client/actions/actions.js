@@ -30,6 +30,11 @@ export const setNewResponseFields = (responseObj) => ({
   payload : responseObj
 });
 
+export const setCurrentTab = (tab) => ({
+  type: types.SET_CURRENT_TAB,
+  payload : tab
+});
+
 //UI ACTIONS
 export const showModal = () => ({
   type: types.SHOW_MODAL,
@@ -38,6 +43,7 @@ export const showModal = () => ({
 export const hideModal = () => ({
   type: types.HIDE_MODAL,
 });
+
 
 export const setModalDisplay = (modalDisplay) => ({
   type: types.SET_MODAL_DISPLAY,

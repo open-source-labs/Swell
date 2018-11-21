@@ -2,6 +2,7 @@ import * as types from '../actions/actionTypes';
 
 
 const initialState = { 
+  currentTab : 'First Tab',
   reqResArray : [],
   warningModalMessage : "",
   newResponseFields : {},
@@ -83,6 +84,16 @@ const businessReducer = (state=initialState, action) => {
         ...state,
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
         newResponseFields : JSON.parse(JSON.stringify(action.payload)),
+      }
+    }
+
+    case types.SET_CURRENT_TAB:{
+      console.log('action',action);
+      return {
+        ...state,
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        currentTab : action.payload,
       }
     }
     

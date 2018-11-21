@@ -9,18 +9,20 @@ import CloseAllBtn from '../display/CloseAllBtn.jsx';
 import ClearBtn from '../display/ClearBtn.jsx';
 // import ToggleAllBtn from '../display/ToggleAllBtn.jsx';
 import * as actions from '../../actions/actions';
+import TabContainer from '../display/TabContainer.jsx';
 
 const mapStateToProps = store => ({
  
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  
 });
 
 class Nav extends Component {
   constructor(props) {
     super(props);
+
   }
 
   render(props) {
@@ -31,12 +33,12 @@ class Nav extends Component {
         {/* NavContainer */}
         {/* <ToggleAllBtn connectionStatus={this.props}/> */}
 
-          <SelectAllBtn connectionStatus={this.props}/>
-          <DeselectAllBtn connectionStatus={this.props}/>
+        <SelectAllBtn connectionStatus={this.props}/>
+        <DeselectAllBtn connectionStatus={this.props}/>
 
-          <OpenAllBtn connectionStatus={this.props}/>
-          <CloseAllBtn connectionStatus={this.props}/>
-          <ClearBtn />
+        <OpenAllBtn connectionStatus={this.props}/>
+        <CloseAllBtn connectionStatus={this.props}/>
+        <ClearBtn />
       </div>
 
     )
