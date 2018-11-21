@@ -59,8 +59,8 @@ class Graph extends Component {
   }
 
   componentDidUpdate(props){
-    console.log('Updated')
-    console.log('mapDispatchToProps', props)
+    // console.log('Updated')
+    // console.log('mapDispatchToProps', props)
     if ( props.reqRes.length > 0) {
       this.addData(this.state.lineCharts[0], props.reqRes[0].timeReceived, props.reqRes[0].id, props.reqRes[0].url);
     }
