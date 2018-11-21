@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Store from '../../store';
 import { connect } from 'react-redux';
+import { Chart } from 'chart.js';
 
 const mapStateToProps = Store => ({
   reqRes : Store.business.reqResArray,
@@ -9,9 +10,6 @@ const mapStateToProps = Store => ({
 const mapDispatchToProps = dispatch => ({
   reqResAdd : reqRes => {
     dispatch(actions.reqResAdd(reqRes));
-  },
-  reqResDelete : reqRes => {
-    dispatch(actions.reqResDelete(reqRes));
   }
 });
 
@@ -20,33 +18,34 @@ class Graph extends Component {
     super(props);
     this.state = {
       lineCharts: [],
-      ctxWidth: 300,
-      eventsLength: 0,
     }
   }
 
   addData(chart, label, inputData, legend) {
-    chart.data.labels.push(label);
+    let i = 0;
+    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', chart.data.labels.length)
+    if (chart.data.labels.length > 10) {
+      i+=1;
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>grreater', i);
+      chart.data.labels.push(label + i);
+      chart.data.labels.splice(0, 1);
+    } else {
+      chart.data.labels.push(label);
+    }
+
     chart.data.datasets.forEach( dataset => {
       dataset.data.push(inputData);
       dataset.label = legend;
-      if (this.props.reqRes[0].response.events.length === this.state.eventsLength + 1) {
-        console.log('updated')
-        this.setState({
-          ctxWidth: this.state.ctxWidth + 150,
-          eventsLength: this.state.eventsLength + 1,
-        })
-
-      }
     });
+
     chart.update();
   }
 
   componentDidMount() {
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector("canvas").getContext("2d");
-    ctx.canvas.width = this.state.ctxWidth;
-    ctx.canvas.height = 40;
+    ctx.canvas.width = 30;
+    ctx.canvas.height = 4;
 
     const lineChart = new Chart(context, {
         type: "line",
@@ -56,23 +55,49 @@ class Graph extends Component {
             {
               label: '',
               data: [],
-              lineTension: 0.1,
-              fill: true,
-              fillColor: "rgba(rgb(212, 220, 236),0.2)",
-              strokeColor: "rgb(212, 220, 236,1)",
-              pointColor: "rgba(151,187,205,1)",
+              lineTension: 0,
+              backgroundColor: "rgba(13,217,192, 0.1)",
+              borderColor: "rgba(13,217,192, 0.9)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgb(13,217,192)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 5,
+              pointHitRadius: 10,
             }
           ]
         },
         options: {
           showLines: true,
+          tooltips: {
+            xPadding: 30
+          },
+          legend: {
+            labels: {
+              boxWidth: 11,
+            }
+          },
           scales: {
             yAxes: [{
-              display: true,
+              display: false,
               ticks: {
-                beginAtZero:true,
+                beginAtZero: false,
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+              },
+              ticks: {
                 min: 0,
-                max: 100  
+                max: 10 
               }
             }]
           }
@@ -80,21 +105,29 @@ class Graph extends Component {
       });
 
       this.state.lineCharts.push(lineChart);
+      console.log('option >>>>>>>>>>>>>>>>>>', lineChart.options);
+
   }
 
   componentDidUpdate(props){
-    console.log('Updated')
-    console.log('mapDispatchToProps', props)
     if ( props.reqRes.length > 0) {
-      this.addData(this.state.lineCharts[0], props.reqRes[0].timeReceived, props.reqRes[0].id, props.reqRes[0].url);
+      if (props.reqRes[0].response.events.length > 0 ) {
+        // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>> hit')
+        // console.log('mapDispatchToProps >>>>>>>>>>>>>>>>>>>>>', props.reqRes[0].response.events[i].timeReceived)
+        let timeString =  props.reqRes[0].response.events[props.reqRes[0].response.events.length - 1].timeReceived - props.reqRes[0].timeSent; 
+        timeString = `${timeString} ms`
+        console.log('?????', timeString)
+        this.addData(this.state.lineCharts[0], timeString, props.reqRes[0].id, props.reqRes[0].url);
+      }
     }
     // this.addData(lineChart, 'label1', 10);
   }
 
   render() {
+    
     return (
-      <div className="chartWrapper">
-          <canvas id='line-chart'></canvas>
+      <div>
+        <canvas id='line-chart'></canvas>
       </div>
     )
   }
