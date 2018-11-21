@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import '../../assets/style/App.scss'
 import * as actions from '../../actions/actions';
 import NavContainer from './NavContainer.jsx';
 import ContentsContainer from './ContentsContainer.jsx';
