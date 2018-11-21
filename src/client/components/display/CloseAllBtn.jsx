@@ -4,7 +4,7 @@ import ReqResCtrl from '../../controllers/connectionController';
 
 const CloseAllBtn = () => {
   return (
-    <button type='button' onClick={ ReqResCtrl.closeAllReqRes }>Close All</button>
+    <button className={'btn'} type='button' onClick={ ReqResCtrl.closeAllReqRes }>Close Selected</button>
   );
 };
 

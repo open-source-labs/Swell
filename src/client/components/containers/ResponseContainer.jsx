@@ -61,8 +61,8 @@ class ResponseContainer extends Component {
     }
    
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        ResponseContainer
+      <div className={'resreq_res-container'}>
+        {/* ResponseContainer */}
         {headersArr}
         {responseContents}
       </div>

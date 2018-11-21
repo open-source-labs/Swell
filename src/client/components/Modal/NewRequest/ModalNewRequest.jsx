@@ -205,21 +205,27 @@ class ModalNewRequest extends Component {
     }
 
     return(
-      <div style={{'border' : '1px solid black', 'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
+      <div style={{'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
         if (event.key === 'Enter') {
           this.addNewRequest();
         }
       }}>
-        ModalNewRequest
-        <div onChange={(e) => {
+        <h1 className={'navbar_title'}>Create New Request</h1>
+        <div className={"modal_http-radios"} onChange={(e) => {
           this.onChangeHandler(e, 'protocol')
         }}>
-          <input name='protocol' type='radio' value='http://' defaultChecked={true}></input>HTTP
-          <input name='protocol' type='radio' value='https://'></input>HTTPS
-          <input name='protocol' type='radio' value='ws://'></input>WS
+          <input className={'navbar_radio'} name='protocol' type='radio' value='http://' defaultChecked={true} />
+          <label className={'navbar_radio-label'} for="http://">HTTP</label>
+
+          <input className={'navbar_radio'} name='protocol' type='radio' value='https://' />
+          <label className={'navbar_radio-label'} for="https://">HTTPS</label>
+
+          <input name='protocol' type='radio' value='ws://'></input>
+          <label className={'navbar_radio-label'} for="ws">WS</label>
+
         </div>
 
-        <select style={HTTPMethodStyle} onChange={(e) => {
+        <select className={'HTTPMethodStyle modal_select'} onChange={(e) => {
           this.onChangeHandler(e, 'method')
         }}>
           <option value='GET'>GET</option>
@@ -229,7 +235,7 @@ class ModalNewRequest extends Component {
           <option value='DELETE'>DELETE</option>
         </select>
 
-        <input type='text' placeholder='URL' value={this.state.url} onChange={(e) => {
+        <input className={'modal_url-input'} type='text' placeholder='URL' value={this.state.url} onChange={(e) => {
           this.onChangeHandler(e, 'url')
         }}></input>
         
@@ -237,7 +243,7 @@ class ModalNewRequest extends Component {
         
         <BodyEntryForm stylesObj={BodyEntryFormStyle} method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader} bodyContent={this.state.body} ></BodyEntryForm>
 
-        <button onClick={this.addNewRequest}>Add New Request</button>
+        <button className={'modal_submit'} onClick={this.addNewRequest}>Add New Request</button>
       </div>
     );
   }

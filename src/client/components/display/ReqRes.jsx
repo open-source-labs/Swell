@@ -88,25 +88,30 @@ class ReqRes extends Component {
     }
 
     return(
-      <div className="resreq_component" style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        ReqRes
+      <div className={"resreq_wrap"} style={{'border' : '1px solid red', 'margin' : '10px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+        {/* ReqRes */}
+      
 
-        <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
+      <div className={'nested-grid-8'}>
+        <div>
+          <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
+          <input 
+            id={this.props.content.id} checked={this.props.content.checked}
+            className="resreq_select-radio" name='resreq-select' type="checkbox" 
+            onChange={this.onCheckHandler}
+          />
+          {/* <label className={'resreq_select-radio-label'} for="resreq-select">Select</label> */}
+        </div>
+        <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
+        <div>{statusLight}</div>
+        <div><span className={'tertiary-title'}>{this.props.content.connectionType}</span></div>
+        <div><span className={'tertiary-title'}>RESPONSE ID: {this.props.content.id}</span></div>
+        <div><span className={'tertiary-title'}>URL:{this.props.content.url}</span></div>
+        <div><span className={'tertiary-title'}>Request Sent: {this.props.content.timeSent}</span></div>
+        <div><span className={'tertiary-title'}>Response Recieved: {this.props.content.timeReceived}</span></div>
+      </div>
 
-        <input 
-        id={this.props.content.id} checked={this.props.content.checked}
-        className="resreq-select" type="checkbox" 
-        onChange={this.onCheckHandler}
-        />
-
-        <button onClick={this.removeReqRes}>Remove</button>
-        
-        {this.props.content.id}
-        {this.props.content.url}
-        {this.props.content.timeSent}
-        {this.props.content.timeReceived}
-        {this.props.content.connectionType}
-        {statusLight}
+ 
         {contentBody}
 
         <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection}/>

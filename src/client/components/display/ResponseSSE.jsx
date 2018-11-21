@@ -24,8 +24,8 @@ class ResponseSSE extends Component {
     let SSEEventsArr = this.props.content.events.map((event, index) => <SSERow key={index} content={event}></SSERow>);
   
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        ResponseSSE
+      <div className={'response_event'}>
+        {/* ResponseSSE */}
         {SSEEventsArr}
       </div>
     )

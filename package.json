@@ -22,6 +22,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.10.0",
     "nodemon": "^1.18.4",
     "prop-types": "^15.6.2",
     "react": "^16.1.0",
@@ -30,6 +31,7 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "request": "^2.88.0",
+    "sass-loader": "^7.1.0",
     "status-indicator": "^1.0.9",
     "uuid": "^3.3.2",
     "ws": "^6.1.2"
