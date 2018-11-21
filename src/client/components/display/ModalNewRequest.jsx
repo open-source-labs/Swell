@@ -87,12 +87,16 @@ class ModalNewRequest extends Component {
   }
 
   render() {
+    let HTTPMethodStyles = {
+      'display' : this.state.protocol === 'ws://' ? 'none' : 'block',
+    }
+
     return(
       <div style={{'display' : 'flex', 'flexDirection' : 'column'}}>
-        <select className={'modal-select'} onChange={(e) => {
+        <select style={HTTPMethodStyles} className={'modal-select'} onChange={(e) => {
           this.methodOnChange(e)
         }}>
-          <option value='GET'>GET</option>
+          <option value='GET'>GT</option>
           <option value='POST'>POST</option>
           <option value='PUT'>PUT</option>
           <option value='PATCH'>PATCH</option>
