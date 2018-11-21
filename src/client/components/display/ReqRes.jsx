@@ -5,7 +5,7 @@ import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
 import WebSocketWindow from "./WebSocketWindow.jsx";
-import 'status-indicator/styles.css'
+// import 'status-indicator/styles.css'
 
 import * as actions from '../../actions/actions';
 
