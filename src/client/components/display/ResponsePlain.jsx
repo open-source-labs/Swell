@@ -9,12 +9,12 @@ class ResponsePlain extends Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
 
-    const json = this.props.content.events[0].data
+    // const json = this.props.content.events[0].data
 
     let contentBody;
-    if (this.props.content.events[0].data) {
+    if (this.props.content.events[0]) {
       try {
         let json = JSON.parse(this.props.content.events[0].data);
         contentBody = <ReactJson src={json} name={false} collapsed={1} />

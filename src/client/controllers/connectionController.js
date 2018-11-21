@@ -7,13 +7,23 @@ const connectionController = {
   openConnectionArray:[],
   // selectedArray:[],
 
+  getReqRes_CurrentTabAndSelected () {
+    const reqResArr = store.default.getState().business.reqResArray;
+
+    const currentTab = store.default.getState().business.currentTab;
+
+    return reqResArr.filter(reqRes => reqRes.tab === currentTab && reqRes.checked);
+  },
+
   selectAllResReq() {
     const reqResArr = store.default.getState().business.reqResArray;
 
-    reqResArr.forEach(resReq => {
-      if (!resReq.checked) {
-        resReq.checked = true;
-        store.default.dispatch(actions.reqResUpdate(resReq));
+    const currentTab = store.default.getState().business.currentTab;
+
+    reqResArr.forEach(reqRes => {
+      if (!reqRes.checked && reqRes.tab === currentTab) {
+        reqRes.checked = true;
+        store.default.dispatch(actions.reqResUpdate(reqRes));
       }
     })
   },
@@ -21,10 +31,12 @@ const connectionController = {
   deselectAllResReq() {
     const reqResArr = store.default.getState().business.reqResArray;
 
-    reqResArr.forEach(resReq => {
-      if (resReq.checked) {
-        resReq.checked = false;
-        store.default.dispatch(actions.reqResUpdate(resReq));
+    const currentTab = store.default.getState().business.currentTab;
+
+    reqResArr.forEach(reqRes => {
+      if (reqRes.checked && reqRes.tab === currentTab) {
+        reqRes.checked = false;
+        store.default.dispatch(actions.reqResUpdate(reqRes));
       }
     })
   },
@@ -41,13 +53,9 @@ const connectionController = {
   openAllSelectedReqRes() {
     connectionController.closeAllReqRes();
 
-    const reqResArr = store.default.getState().business.reqResArray;
+    let selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
     
-    reqResArr.forEach(reqRes => {
-      if(reqRes.checked) {
-        connectionController.openReqRes(reqRes.id);
-      }
-    });
+    selectedAndCurrentTabReqResArr.forEach(reqRes => connectionController.openReqRes(reqRes.id));
   },
 
   getConnectionObject(id) {
@@ -87,13 +95,9 @@ const connectionController = {
 
   /* Closes all open endpoint */
   closeAllReqRes() {
-    const reqResArr = store.default.getState().business.reqResArray;
+    let selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
 
-    reqResArr.forEach(reqRes => {
-      if (reqRes.checked) {
-        connectionController.closeReqRes(reqRes.id);
-      }
-    });
+    selectedAndCurrentTabReqResArr.forEach(reqRes => connectionController.closeReqRes(reqRes.id));
   },
 
   clearAllReqRes() {

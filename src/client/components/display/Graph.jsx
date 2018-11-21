@@ -110,6 +110,8 @@ class Graph extends Component {
   }
 
   componentDidUpdate(props){
+    // console.log('Updated')
+    // console.log('mapDispatchToProps', props)
     if ( props.reqRes.length > 0) {
       if (props.reqRes[0].response.events.length > 0 ) {
         // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>> hit')
