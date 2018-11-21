@@ -80,7 +80,7 @@ class ModalNewRequest extends Component {
 
   onChangeHandler(e, property) {
     this.setState({
-      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/(h?t?t?p?s?|w?s?):\/?\/?/, '') : e.target.value
+      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:.?\/?.?\/?)/, '') : e.target.value
     }, () => {
       if(property === 'protocol') {
         this.setState ({
