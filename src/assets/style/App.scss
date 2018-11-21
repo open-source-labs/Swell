@@ -1,6 +1,6 @@
 $navy: #001e38;
 $green: #15b78f;
-$litegray: #F3F4FC;
+$litegray: #fafafa;
 $medgray: #E6EBEC;
 $liteblack: #212121;
 $litebluegray: #D4DCEC;
@@ -94,11 +94,13 @@ body {
   color: #212121;
   font-weight: bold;
   border: none;
-  background-color: $litebluegray;
+  background-color: #04D4BC;
+  color: white;
   cursor: pointer;
 
   &:hover {
-    border: solid 1px $litebluegray;
+    color: #04D4BC;
+    border: solid 1px #04D4BC;
     background: transparent;
   }
 }
@@ -209,7 +211,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  border: 3px solid #2C5EF3;
+  border: 3px solid #15b78f;
 }
 
 .resreq-res-header {
@@ -217,7 +219,7 @@ body {
   padding: 10px;
   display: flex;
   flex-direction: column;
-  background: #2C5EF3;
+  background: #15b78f;
 }
 
 .resreq_title {
@@ -232,15 +234,24 @@ body {
 
 }
 
+.nested-grid-2 {
+  width: 100%;
+  height: 30px;
+  border: red solid 1px;
+  display: grid;
+  grid-template-columns: repeat(2, 50%); 
+  border:1px solid #ddd;
+}
 
-// .nested-grid-4 {
-//   width: 100%;
-//   height: 30px;
-//   border: red solid 1px;
-//   display: grid;
-//   grid-template-columns: repeat(4, 25%); 
-//   border:1px solid #ddd;
-// }
+
+.nested-grid-4 {
+  width: 100%;
+  height: 30px;
+  border: red solid 1px;
+  display: grid;
+  grid-template-columns: repeat(4, 25%); 
+  border:1px solid #ddd;
+}
 
 .nested-grid-8 {
   width: 100%;
