@@ -32,7 +32,10 @@ const httpController = {
 
       isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      reqResObj.connection = 'error';
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+    })
 
     return openConnectionObj;
   },
