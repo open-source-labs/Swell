@@ -44,7 +44,12 @@ class ReqRes extends Component {
     let contentBody = [];
 
     if(this.props.content.protocol === 'ws://') {
-      contentBody.push(<WebSocketWindow key={0} >WS</WebSocketWindow>)
+      contentBody.push(<WebSocketWindow 
+        key={0} 
+        outgoingMessages={this.props.content.request.messages}
+        incomingMessages={this.props.content.response.messages}
+        id={this.props.content.id} 
+        connection={this.props.content.connection}/>)
     } else {
       contentBody.push(<Request content={this.props.content.request} key={0}/>);
       if (this.props.content.connection !== 'uninitialized') {
@@ -52,13 +57,15 @@ class ReqRes extends Component {
       };
     }
 
-   
-
     let openButtonStyles = {
-      display : (this.props.content.connection === 'uninitialized' || this.props.content.connection === 'closed') ? 'block' : 'none',
+      display : (this.props.content.connection === 'uninitialized' || this.props.content.connection === 'closed' || this.props.content.connection === 'error') ? 'block' : 'none',
     }
     let closeButtonStyles = {
       display : (this.props.content.connection === 'pending' || this.props.content.connection === 'open') ? 'block' : 'none',
+    }
+    let errorStyles = {
+      'display' : this.props.content.connection === 'error' ? 'block' : 'none',
+      'color' : 'red',
     }
 
     let statusLight;
@@ -75,6 +82,9 @@ class ReqRes extends Component {
       case 'closed' :
         statusLight = <status-indicator negative></status-indicator>
         break;
+      case 'error' :
+        statusLight = <status-indicator negative></status-indicator>
+        break;
     }
 
     return(
@@ -84,6 +94,7 @@ class ReqRes extends Component {
 
       <div className={'nested-grid-8'}>
         <div>
+          <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
           <input 
             id={this.props.content.id} checked={this.props.content.checked}
             className="resreq_select-radio" name='resreq-select' type="checkbox" 
