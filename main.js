@@ -1,13 +1,33 @@
 'use strict'
 
 // Import parts of electron to use
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, TouchBar } = require('electron')
 const path = require('path')
 const url = require('url')
+
+const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+
+const tbButton = new TouchBarButton({
+  label: 'Update',
+  backgroundColor: '#00E28B',
+  click: () => {
+    app.relaunch();
+    app.exit(0)
+  }
+
+})
+
+const tbSpacer = new TouchBarSpacer();
+
+const tbLabel = new TouchBarLabel({
+  label: 'Swell Touch Bar'
+})
+
+const touchBar = new TouchBar([ tbLabel, tbSpacer, tbButton ]);
 
 // Keep a reference for dev mode
 let dev = false
@@ -29,7 +49,9 @@ function createWindow() {
     width: 1024,
     height: 768,
     show: false,
-    webPreferences: { webSecurity: false }
+    title: 'Swell',
+    webPreferences: { webSecurity: false },
+    icon: `${__dirname}/icons/64x64.png`
   })
 
   // and load the index.html of the app.
@@ -51,6 +73,11 @@ function createWindow() {
   }
 
   mainWindow.loadURL(indexPath)
+
+  mainWindow.setTouchBar(touchBar);
+
+  // prevent webpack-dev-server from setting new title
+  mainWindow.on('page-title-updated', (e) => e.preventDefault());
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
