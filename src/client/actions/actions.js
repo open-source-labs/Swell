@@ -52,13 +52,6 @@ export const setModalDisplay = (modalDisplay) => ({
   payload : modalDisplay
 });
 
-// TOUCHBAR ACTIONS
-
-// export const openAllTouchBar = () => {
-//   ipcRenderer.on('openAllSelected', e => {
-//     ReqResCtrl.openAllSelectedReqRes()
-//   })
-// }
 
 
 
