@@ -136,7 +136,6 @@ class HeaderEntryForm extends Component {
     });
     return(
       <div style={this.props.stylesObj}>
-        HeaderEntryForm
         {headersArr}
       </div>
     )

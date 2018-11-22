@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 
-import WWWField from './WWWField.jsx';
 
-class WWWForm extends Component {
+class WWWField extends Component {
   constructor(props) {
     super(props)
   }
@@ -27,7 +26,7 @@ class WWWForm extends Component {
   }
 }
 
-WWWForm.propTypes = {
+WWWField.propTypes = {
   id : PropTypes.number.isRequired,
   active : PropTypes.bool.isRequired,
   Key : PropTypes.string.isRequired,
@@ -35,4 +34,4 @@ WWWForm.propTypes = {
   updateCallback : PropTypes.func.isRequired,
 };
 
-export default WWWForm
+export default WWWField
