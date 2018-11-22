@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-const ReqResCtrl = require('./src/client/controllers/connectionController')
+const ReqResCtrl = require('../controllers/connectionController')
 
 ipcRenderer.on('openAllSelected', () => {
   console.log('here')
