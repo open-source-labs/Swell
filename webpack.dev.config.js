@@ -11,28 +11,24 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: defaultInclude
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'postcss-loader' }],
-        include: defaultInclude
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
       },
       {
-        test: /\.jsx?$/,
-        use: [{ loader: 'babel-loader' }],
-        include: defaultInclude
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [{ loader: 'babel-loader' }]
       },
       {
         test: /\.(jpe?g|png|gif)$/,
-        use: [{ loader: 'file-loader?name=img/[name]__[hash:base64:5].[ext]' }],
-        include: defaultInclude
+        use: [{ loader: 'file-loader?name=img/[name]__[hash:base64:5].[ext]' }]
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
-        include: defaultInclude
+        use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }]
       }
     ]
   },
