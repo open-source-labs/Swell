@@ -1,20 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import JSONPretty from 'react-json-pretty';
-import 'react-json-pretty/JSONPretty.monikai.styl';
 import ReactJson from 'react-json-view'
-import JSONTree from 'react-json-tree'
-import ObjectInspector from 'react-object-inspector';
-
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class SSERow extends Component {
   constructor(props) {
@@ -23,11 +9,10 @@ class SSERow extends Component {
   }
 
   render() {
-    console.log(this.props.content)
     const json = this.props.content.data;
-    console.log(json);
+
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div className={'response_sse'}>
         SSERow
         <div style={{'display' : 'flex', 'flexDirection' : 'column'}}>
           <div style={{'display' : 'flex'}}>
@@ -46,11 +31,7 @@ class SSERow extends Component {
           </div>
           <div>
             Data
-            {/* <ObjectInspector data={ json } /> */}
-            {/* <JSONTree data={json} hideRoot={true} /> */}
-            {/* <ReactJson src={{json}} name={false} displayDataTypes={false} /> */}
-            <JSONPretty id="json-pretty" json={JSON.stringify(this.props.content.data)}></JSONPretty>
-            {/* <div>{JSON.stringify(this.props.content.data)}</div> */}
+            <ReactJson src={{json}} name={false} displayDataTypes={false} />
           </div>
         </div>
       </div>
@@ -58,4 +39,4 @@ class SSERow extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SSERow);
+export default SSERow;

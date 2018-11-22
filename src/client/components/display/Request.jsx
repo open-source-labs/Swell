@@ -1,15 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class Request extends Component {
   constructor(props) {
@@ -26,9 +15,8 @@ class Request extends Component {
     })
 
     return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
-        Request
-        {this.props.content.method}
+      <div className={'resreq-res-header'}>
+        <h1 className={'resreq_title'}>{this.props.content.method} Request</h1>
         {headerArr}
         {/* {this.props.content.body} */}
       </div>
@@ -36,4 +24,4 @@ class Request extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Request);
+export default (Request);

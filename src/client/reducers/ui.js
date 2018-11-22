@@ -1,8 +1,9 @@
 import * as types from "../actions/actionTypes";
 
-const initialState = {
-  isDisplayedModal: false,
-  modalDisplay: "Request"
+
+const initialState = { 
+  isDisplayedModal : true,
+  modalDisplay : 'Request'
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -21,6 +22,14 @@ const uiReducer = (state = initialState, action) => {
         ...state,
         isDisplayedModal: false
       };
+    }
+
+    case types.SET_MODAL_DISPLAY:{
+      console.log('action',action);
+      return {
+        ...state,
+        modalDisplay : action.payload,
+      }
     }
 
     default:

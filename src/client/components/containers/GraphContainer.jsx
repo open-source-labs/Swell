@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import GraphLine from '../display/Graph.jsx';
+import * as actions from '../../actions/actions';
 
-import LineGraph from "../display/Graph.jsx";
+const mapStateToProps = store => ({
+});
 
-import * as actions from "../../actions/actions";
-
-const mapStateToProps = store => ({});
-
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+});
 
 class GraphContainer extends Component {
   constructor(props) {
@@ -17,14 +17,11 @@ class GraphContainer extends Component {
   render() {
     return (
       <div>
-        GraphContainer
-        <LineGraph />
+        {/* GraphContainer */}
+        <GraphLine />
       </div>
     );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GraphContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(GraphContainer);

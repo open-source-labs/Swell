@@ -5,7 +5,8 @@ import * as actions from "../../actions/actions";
 import ReqRes from "../display/ReqRes.jsx";
 
 const mapStateToProps = store => ({
-  reqRes: store.business.reqResArray
+  reqRes : store.business.reqResArray,
+  currentTab : store.business.currentTab,
 });
 
 const mapDispatchToProps = dispatch => ({});
@@ -16,12 +17,12 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    let reqResArr = this.props.reqRes.map((reqRes, index) => {
-      return <ReqRes className="reqResChild" content={reqRes} key={index} />;
+    let reqResArr = this.props.reqRes.filter(reqRes => reqRes.tab === this.props.currentTab).map((reqRes,index) => {
+      return <ReqRes className="reqResChild" content={reqRes} key={index}></ReqRes>
     });
-    return (
-      <div id="reqResContainer" style={{ border: "1px solid black" }}>
-        ReqResContainer
+    return(
+      <div id="reqResContainer" style={{'border' : '1px solid black'}}>
+        {/* ReqResContainer */}
         {reqResArr}
       </div>
     );

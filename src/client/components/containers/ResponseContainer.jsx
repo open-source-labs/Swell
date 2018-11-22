@@ -48,30 +48,20 @@ class ResponseContainer extends Component {
     let index = 0;
     if (this.props.content.headers) {
       for (let header in this.props.content.headers) {
-        headersArr.push(
-          <div style={{ display: "flex" }} key={index}>
-            <div style={{ width: "50%" }}>{header}</div>
-            <div style={{ width: "50%" }}>
-              {this.props.content.headers[header]}
-            </div>
-          </div>
-        );
+        headersArr.push(<div className={'nested-grid-4'} key={index}>
+          <div>{header}</div>
+          <div>{this.props.content.headers[header]}</div>
+        </div>);
         index++;
       }
     }
+   
+    return(
+      <div className={'resreq_res-container'}>
+        {/* ResponseContainer */}
+        <div>{headersArr}</div>
+        <div>{responseContents}</div>
 
-    return (
-      <div
-        style={{
-          border: "1px solid black",
-          margin: "3px",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
-        ResponseContainer
-        {headersArr}
-        {responseContents}
       </div>
     );
   }

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 
-import ModalNewRequest from "../display/ModalNewRequest.jsx";
-import ModalWarning from "../display/ModalWarning.jsx";
+import ModalNewRequest from './NewRequest/ModalNewRequest.jsx';
+import ModalWarning from './Warning/ModalWarning.jsx';
 
 const mapStateToProps = store => ({
   reqResArray: store.business.reqResArray,
@@ -44,9 +44,9 @@ class ModalContainer extends Component {
         modalContents = <ModalWarning />;
       }
     }
-    return (
-      <div style={{ border: "1px solid black", width: "auto" }}>
-        ModalContainer
+
+    return(
+      <div className={'modalContents'}>
         {modalContents}
       </div>
     );

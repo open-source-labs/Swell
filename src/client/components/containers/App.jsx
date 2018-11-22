@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import * as actions from "../../actions/actions";
-import NavContainer from "./NavContainer.jsx";
-import ContentsContainer from "./ContentsContainer.jsx";
-import ModalContainer from "./ModalContainer.jsx";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import '../../../assets/style/App.scss'
+import * as actions from '../../actions/actions';
+import NavContainer from './NavContainer.jsx';
+import ContentsContainer from './ContentsContainer.jsx';
+import ModalContainer from '../Modal/ModalContainer.jsx';
 
 const mapStateToProps = store => ({
   store: store
@@ -19,12 +19,11 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div id="app">
-        App
-        <NavContainer />
-        <ContentsContainer />
-        <ModalContainer />
+    return(
+      <div id='app'>
+        {/* App */}
+        <NavContainer/>
+        <ContentsContainer/>
       </div>
     );
   }

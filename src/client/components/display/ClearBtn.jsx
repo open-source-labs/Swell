@@ -1,8 +1,9 @@
 import React from 'react';
+import ReqResCtrl from '../../controllers/connectionController';
 
 const ClearBtn = () => {
   return (
-    <button type='button'>ClearBtn</button>
+    <button className={'btn'} type='button'onClick={ ReqResCtrl.clearAllReqRes }>ClearBtn</button>
   );
 };
 

@@ -1,13 +1,9 @@
-import React from 'react';
-import ReqResCtrl from '../ReqResCtrl';
+import React, { Component } from 'react';
+import ReqResCtrl from '../../controllers/connectionController';
 
 const OpenAllBtn = () => {
   return (
-    <button type='button' onClick={
-      (e) => { 
-        ReqResCtrl.openAllEndPoints(e)
-      }
-    }>OpenAllBtn</button>
+    <button className={'btn'} type='button' onClick={ ReqResCtrl.openAllSelectedReqRes }>Open Selected</button>
   );
 };
 

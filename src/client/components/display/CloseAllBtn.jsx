@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import ReqResCtrl from '../../controllers/connectionController';
 
 const CloseAllBtn = () => {
   return (
-    <button type='button'>CloseAllBtn</button>
+    <button className={'btn'} type='button' onClick={ ReqResCtrl.closeAllReqRes }>Close Selected</button>
   );
 };
 

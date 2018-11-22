@@ -1,33 +1,35 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import OpenAllBtn from "../display/OpenAllBtn.jsx";
-import CloseAllBtn from "../display/CloseAllBtn.jsx";
-import ClearBtn from "../display/ClearBtn.jsx";
+import React, { Component } from 'react';
+import SelectAllBtn from '../display/SelectAllBtn.jsx';
+import DeselectAllBtn from '../display/DeselectAllBtn.jsx';
+import ModalContainer from '../Modal/ModalContainer.jsx';
 
-import * as actions from "../../actions/actions";
+import OpenAllBtn from '../display/OpenAllBtn.jsx';
+import CloseAllBtn from '../display/CloseAllBtn.jsx';
+import ClearBtn from '../display/ClearBtn.jsx';
 
-const mapStateToProps = store => ({});
-
-const mapDispatchToProps = dispatch => ({});
 
 class Nav extends Component {
   constructor(props) {
     super(props);
+
   }
 
-  render() {
-    return (
-      <div>
-        NavContainer
-        <OpenAllBtn />
-        <CloseAllBtn />
+  render(props) {
+    return(
+      <div className={'navbar_modal-console'}>
+
+        <ModalContainer/>
+
+        <SelectAllBtn connectionStatus={this.props}/>
+        <DeselectAllBtn connectionStatus={this.props}/>
+
+        <OpenAllBtn connectionStatus={this.props}/>
+        <CloseAllBtn connectionStatus={this.props}/>
         <ClearBtn />
       </div>
-    );
+
+    )
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Nav);
+export default (Nav);
