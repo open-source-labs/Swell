@@ -15,7 +15,7 @@ const tbButton = new TouchBarButton({
   label: 'Update',
   backgroundColor: '#00E28B',
   click: () => {
-    app.reload();
+    app.relaunch();
     app.exit(0)
   }
 
