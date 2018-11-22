@@ -5,29 +5,71 @@ const { app, BrowserWindow, TouchBar } = require('electron')
 const path = require('path')
 const url = require('url')
 
-const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar;
+const { TouchBarLabel, TouchBarButton, TouchBarSpacer, TouchBarColorPicker, TouchBarSlider, TouchBarPopover } = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let winHeight
 
-const tbButton = new TouchBarButton({
+const tbRefreshButton = new TouchBarButton({
   label: 'Update',
-  backgroundColor: '#00E28B',
+  iconPosition: 'right',
+  // backgroundColor: '#00E28B',
   click: () => {
-    app.relaunch();
+    app.relaunch()
     app.exit(0)
   }
-
 })
 
+const tbOpenAllButton = new TouchBarButton({
+  label: 'Open All',
+  backgroundColor: '#00E28B',
+  click: () => {
+    console.log('opening all selected')
+    mainWindow.webContents.send('openAllSelected')
+  }
+})
+
+const tbCloseAllButton = new TouchBarButton({
+  label: 'Close All',
+  backgroundColor: '#DB5D58',
+  click: () => {
+    console.log('closing all selected')
+    mainWindow.webContents.send('closeAllSelected')
+  }
+})
+
+const tbSlider = new TouchBarSlider({
+  label: 'Size',
+  minValue: 500,
+  maxValue: 2000,
+  value: 1024,
+  change: (val) => { mainWindow.setSize(val, winHeight, true) }
+})
+
+const tbPopover = new TouchBarPopover({
+  items: new TouchBar([tbSlider]),
+  label: 'Size'
+})
+
+const tbPicker = new TouchBarColorPicker({
+  change: (color) => {
+    mainWindow.webContents.insertCSS(`.btn{background-color:${color};`)
+  }
+});
+
 const tbSpacer = new TouchBarSpacer();
+
+const tbFlexSpacer = new TouchBarSpacer({
+  size: 'flexible'
+})
 
 const tbLabel = new TouchBarLabel({
   label: 'Swell Touch Bar'
 })
 
-const touchBar = new TouchBar([ tbLabel, tbSpacer, tbButton ]);
+const touchBar = new TouchBar([ tbLabel, tbSpacer, tbOpenAllButton, tbCloseAllButton, tbFlexSpacer, tbRefreshButton ]);
 
 // Keep a reference for dev mode
 let dev = false
@@ -82,6 +124,7 @@ function createWindow() {
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
+    winHeight = mainWindow.getSize()[1]
 
     // Open the DevTools automatically if developing
     if (dev) {
