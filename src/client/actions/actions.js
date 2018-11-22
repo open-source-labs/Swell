@@ -1,4 +1,6 @@
 import * as types from './actionTypes'
+import { ipcRenderer } from 'electron';
+import ReqResCtrl from '../controllers/connectionController'
 
 //BUSINESS LOGIC ACTIONS
 export const reqResClear = () => ({
@@ -50,6 +52,13 @@ export const setModalDisplay = (modalDisplay) => ({
   payload : modalDisplay
 });
 
+// TOUCHBAR ACTIONS
+
+// export const openAllTouchBar = () => {
+//   ipcRenderer.on('openAllSelected', e => {
+//     ReqResCtrl.openAllSelectedReqRes()
+//   })
+// }
 
 
 
