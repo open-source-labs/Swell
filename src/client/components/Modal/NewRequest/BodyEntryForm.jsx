@@ -60,7 +60,7 @@ class BodyEntryForm extends Component {
               <textarea style={{'resize' : 'none'}} type='text' rows={8} value={this.state.lastParseWasSuccess ? JSON.stringify(this.props.bodyContent,undefined,4) : this.props.bodyContent} placeholder='Body' onChange={(e) => {
                 let parsedValue;
                 try {
-                  parsedValue = JSON.parse(e.target.value,undefined,4);
+                  parsedValue = JSON.parse(e.target.value);
                   this.setState({
                     lastParseWasSuccess : true,
                   })

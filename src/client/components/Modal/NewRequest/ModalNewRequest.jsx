@@ -61,17 +61,28 @@ class ModalNewRequest extends Component {
     }
     if (this.state.contentTypeHeader === 'application/json') {
       try {
-        let tryParse = JSON.parse(this.state.body);
+        console.log('before parse');
+        let tryParse = JSON.parse(JSON.stringify(this.state.body));
+        console.log(tryParse)
+        console.log('after parse');
+
         if(this.state.JSONProperlyFormatted !== true){
+          console.log('if');
           this.setState({
             JSONProperlyFormatted : true,
+          }, () => {
+            console.log('set to true');
           })
         }
       }
       catch(error) {
+        console.log('in catch');
+
         if(this.state.JSONProperlyFormatted !== false){
           this.setState({
             JSONProperlyFormatted : false,
+          }, () => {
+            console.log('set to false');
           })
         }
       }
@@ -195,6 +206,7 @@ class ModalNewRequest extends Component {
   }
 
   render() {
+    console.log(this.state);
     let HTTPMethodStyle = {
       display : this.state.protocol !== 'ws://' ? 'block' : 'none',
     }

@@ -37,7 +37,7 @@ class ReqRes extends Component {
   }
 
   removeReqRes () {
-    connectionController.closeReqRes(this.props.content.id); 
+    connectionController.closeReqRes(this.props.content.id);  
     this.props.reqResDelete(this.props.content);
   }
 
