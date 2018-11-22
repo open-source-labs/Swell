@@ -6,6 +6,7 @@ import ReqRes from '../display/ReqRes.jsx';
 
 const mapStateToProps = store => ({
   reqRes : store.business.reqResArray,
+  currentTab : store.business.currentTab,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -18,7 +19,7 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    let reqResArr = this.props.reqRes.map((reqRes,index) => {
+    let reqResArr = this.props.reqRes.filter(reqRes => reqRes.tab === this.props.currentTab).map((reqRes,index) => {
       return <ReqRes className="reqResChild" content={reqRes} key={index}></ReqRes>
     });
     return(

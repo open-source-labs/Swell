@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
 import GraphContainer from './GraphContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+import TabContainer from '../display/TabContainer.jsx';
 
 class Contents extends Component {
   constructor(props) {
     super(props);
   }
-
 
   render() {
     return(
@@ -25,9 +16,11 @@ class Contents extends Component {
         {/* ContentsContainer */}
         <GraphContainer/>
         <ReqResContainer/>
+        <TabContainer></TabContainer>
+
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contents);
+export default (Contents);

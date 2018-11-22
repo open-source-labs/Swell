@@ -6,7 +6,8 @@ import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 
 const mapStateToProps = store => ({
-  newResponseFields : store.business.newResponseFields
+  newResponseFields : store.business.newResponseFields,
+  currentTab : store.business.currentTab,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -79,7 +80,7 @@ class ModalNewRequest extends Component {
 
   onChangeHandler(e, property) {
     this.setState({
-      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/(h?t?t?p?s?|w?s?):\/?\/?/, '') : e.target.value
+      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '') : e.target.value
     }, () => {
       if(property === 'protocol') {
         this.setState ({
@@ -115,7 +116,6 @@ class ModalNewRequest extends Component {
   requestValidationCheck () {
     let validationMessage = undefined;
 
-    console.log(this.state.url)
     //Error conditions...
     if(this.state.url === 'http://' || this.state.url === 'https://' || this.state.url === 'ws://') {
       validationMessage = "Please enter a valid URI.";
@@ -152,6 +152,7 @@ class ModalNewRequest extends Component {
             events : null,
           },
           checked : false,
+          tab : this.props.currentTab,
         };
       } else {
         reqRes = {
@@ -170,6 +171,7 @@ class ModalNewRequest extends Component {
             messages : [],
           },
           checked : false,
+          tab : this.props.currentTab,
         };
       }
 
@@ -225,7 +227,7 @@ class ModalNewRequest extends Component {
 
         </div>
 
-        <select className={'HTTPMethodStyle modal_select'} onChange={(e) => {
+        <select style={HTTPMethodStyle} className={'HTTPMethodStyle modal_select'} onChange={(e) => {
           this.onChangeHandler(e, 'method')
         }}>
           <option value='GET'>GET</option>
