@@ -5,6 +5,8 @@ import * as actions from '../../actions/actions';
 import NavContainer from './NavContainer.jsx';
 import ContentsContainer from './ContentsContainer.jsx';
 import ModalContainer from '../Modal/ModalContainer.jsx';
+import { ipcRenderer } from 'electron';
+import ReqResCtrl from '../../controllers/connectionController'
 
 const mapStateToProps = store => ({
   store: store,
@@ -18,6 +20,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     console.log(this.props.store);
+  }
+
+  componentDidMount() {
+    ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
+    ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
+    ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
   }
 
   render() {

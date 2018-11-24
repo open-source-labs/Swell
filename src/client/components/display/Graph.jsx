@@ -23,7 +23,7 @@ class Graph extends Component {
 
   addData(chart, label, inputData, legend) {
     let i = 0;
-    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', chart.data.labels.length)
+    // console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', chart.data.labels.length)
     if (chart.data.labels.length > 10) {
       i+=1;
       console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>grreater', i);
