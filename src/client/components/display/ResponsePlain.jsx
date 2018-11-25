@@ -20,6 +20,7 @@ class ResponsePlain extends Component {
         contentBody = <ReactJson src={json} name={false} collapsed={1} />
       } 
       catch(err) {
+        console.log(err);
         contentBody = <ReactJson src={{json}} name={false} collapsed={1} />
       }
     }

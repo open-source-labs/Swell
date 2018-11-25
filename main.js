@@ -40,6 +40,15 @@ const tbCloseAllButton = new TouchBarButton({
   }
 })
 
+const tbClearAllButton = new TouchBarButton({
+  label: 'Clear All',
+  backgroundColor: '#708090',
+  click: () => {
+    console.log('clearing all')
+    mainWindow.webContents.send('clearAll')
+  }
+})
+
 const tbSlider = new TouchBarSlider({
   label: 'Size',
   minValue: 500,
@@ -69,7 +78,7 @@ const tbLabel = new TouchBarLabel({
   label: 'Swell Touch Bar'
 })
 
-const touchBar = new TouchBar([ tbLabel, tbSpacer, tbOpenAllButton, tbCloseAllButton, tbFlexSpacer, tbRefreshButton ]);
+const touchBar = new TouchBar([ tbLabel, tbSpacer, tbOpenAllButton, tbCloseAllButton, tbClearAllButton, tbFlexSpacer, tbRefreshButton ]);
 
 // Keep a reference for dev mode
 let dev = false
