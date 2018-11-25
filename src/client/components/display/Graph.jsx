@@ -113,6 +113,10 @@ class Graph extends Component {
     // console.log('Updated')
     // console.log('mapDispatchToProps', props)
     if ( props.reqRes.length > 0) {
+
+      // SETUP SWITCH STATEMENT****
+      // Use protocol for if statement
+      // Check messages for events
       if (props.reqRes[0].response.events.length > 0 ) {
         // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>> hit')
         // console.log('mapDispatchToProps >>>>>>>>>>>>>>>>>>>>>', props.reqRes[0].response.events[i].timeReceived)
