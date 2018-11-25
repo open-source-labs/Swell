@@ -5,6 +5,9 @@ const { app, BrowserWindow, TouchBar } = require('electron')
 const path = require('path')
 const url = require('url')
 
+// const player = require('play-sound')
+// const wave = new Audio('./src/assets/audio/wavebig.mpg')
+
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer, TouchBarColorPicker, TouchBarSlider, TouchBarPopover } = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -133,6 +136,12 @@ function createWindow() {
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
+    // wave.play()
+    // play wave crash on open
+    // player.Play('./src/assets/audio/wavebig.mpg', (err) => {
+    //   if (err) throw err
+    // })
+
     winHeight = mainWindow.getSize()[1]
 
     // Open the DevTools automatically if developing
