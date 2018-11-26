@@ -10,7 +10,7 @@ const wsController = {
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-    let socket
+    let socket;
     try {
       socket = new WebSocket(reqResObj.url);
     } catch (err) {

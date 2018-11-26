@@ -27,19 +27,55 @@ const httpController = {
       If not, create connection, push to array, and then initiate request
     */
 
-    let foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.id === reqResObj.id);
+    let foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
 
     //existing HTTP2 connection is found, attach a request to it.
     if (foundHTTP2Connection) {
       const client = foundHTTP2Connection.client;
-      this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
+
+      //periodically check if the client is open or destroyed, and attach if conditions are met
+
+      let interval = setInterval(() => {
+        if(foundHTTP2Connection.status === 'connected') {
+          console.log('Existing HTTP2 Conn:', reqResObj.host);
+          this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
+          clearInterval(interval);
+        }
+        //if failed, could because of protocol error. try HTTP1
+        else if (foundHTTP2Connection.status === 'failed') {
+          httpController.establishHTTP1connection(reqResObj, connectionArray);
+          clearInterval(interval);
+        }
+      }, 50); 
+      setTimeout(() => {
+        clearInterval(interval);
+        if (foundHTTP2Connection.status === 'initialized') {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        }
+      }, 10000);
     } 
+
     //no existing HTTP2 connection, make it before attaching request.
     else {
+      console.log('New HTTP2 Conn:', reqResObj.host);
       let id = Math.random() * 100000;
+
       const client = http2.connect(reqResObj.host);
+
+      //push HTTP2 connection to array
+      let http2Connection = {
+        client : client,
+        id : id,
+        host : reqResObj.host,
+        status : 'initialized',
+      };
+      httpController.openHTTP2Connections.push(http2Connection);
+
       client.on('error', (err) => {
         console.error('HTTP2 FAILED...trying HTTP1\n',err);
+        http2Connection.status = 'failed';
+        client.destroy();
   
         //if it exists in the openHTTP2Connections array, remove it
         httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(conn => conn.id !== id);
@@ -56,11 +92,7 @@ const httpController = {
       });
 
       client.on('connect', () => {
-        //push HTTP2 connection to array
-        httpController.openHTTP2Connections.push({
-          client : client,
-          id : id,
-        });
+        http2Connection.status = 'connected';
 
         //attach request
         this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
@@ -141,14 +173,13 @@ const httpController = {
     });
     reqStream.on('end', () => {
       if(isSSE) {
-        console.log('SSE')
         let receivedEventFields = this.parseSSEFields(data);
         receivedEventFields.timeReceived = Date.now();
-
+        reqResObj.connection = 'closed';
         reqResObj.response.events.push(receivedEventFields);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       } else {
-        console.log('Plain')
+        reqResObj.connection = 'closed';
         reqResObj.response.events.push(data);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       }
