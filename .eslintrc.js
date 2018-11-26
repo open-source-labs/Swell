@@ -15,7 +15,7 @@ export default {
 		"no-unused-vars": 0,
 		"strict": 0,
 		"dot-notation": 0,
-		"max-len": 0,
-		"object-curly-newline": 0
+		// "max-len": 0,
+		// "object-curly-newline": 0
 	}
 };

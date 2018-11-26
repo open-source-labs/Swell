@@ -8,7 +8,14 @@ const { app, BrowserWindow, TouchBar } = require('electron');
 const path = require('path');
 const url = require('url');
 
-const { TouchBarLabel, TouchBarButton, TouchBarSpacer, TouchBarColorPicker, TouchBarSlider, TouchBarPopover } = TouchBar;
+const { 
+  TouchBarLabel, 
+  TouchBarButton, 
+  TouchBarSpacer, 
+  TouchBarColorPicker, 
+  TouchBarSlider, 
+  TouchBarPopover 
+} = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
