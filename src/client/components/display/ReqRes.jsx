@@ -68,6 +68,11 @@ class ReqRes extends Component {
       'display' : this.props.content.connection === 'error' ? 'block' : 'none',
       'color' : 'red',
     }
+    let http2Display = {
+      'display' : this.props.content.isHTTP2 ? 'block' : 'none',
+      'color' : 'green',
+      'border' : '1px solid black',
+    }
 
     let statusLight;
     switch (this.props.content.connection) {
@@ -93,6 +98,7 @@ class ReqRes extends Component {
         {/* ReqRes */}
       
 
+
       <div className={'nested-grid-8'}>
         <div>
           <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
@@ -112,6 +118,7 @@ class ReqRes extends Component {
         <div><span className={'tertiary-title'}>Response Recieved: {this.props.content.timeReceived}</span></div>
       </div>
 
+        <div style={http2Display}>HTTP2 connection: Requests with the same host will share a single HTTP2 connection</div>
  
         {contentBody}
 

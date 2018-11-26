@@ -34,7 +34,6 @@ const httpController = {
       const client = foundHTTP2Connection.client;
 
       //periodically check if the client is open or destroyed, and attach if conditions are met
-
       let interval = setInterval(() => {
         if(foundHTTP2Connection.status === 'connected') {
           console.log('Existing HTTP2 Conn:', reqResObj.host);
@@ -47,6 +46,7 @@ const httpController = {
           clearInterval(interval);
         }
       }, 50); 
+      //if hasnt changed in 10 seconds, mark as error
       setTimeout(() => {
         clearInterval(interval);
         if (foundHTTP2Connection.status === 'initialized') {
@@ -59,8 +59,8 @@ const httpController = {
     //no existing HTTP2 connection, make it before attaching request.
     else {
       console.log('New HTTP2 Conn:', reqResObj.host);
-      let id = Math.random() * 100000;
 
+      let id = Math.random() * 100000;
       const client = http2.connect(reqResObj.host);
 
       //push HTTP2 connection to array
@@ -144,6 +144,7 @@ const httpController = {
         reqResObj.connectionType = 'plain';
       }
       
+      reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response = {
         headers: headers,
@@ -207,10 +208,10 @@ const httpController = {
     connectionArray.push(openConnectionObj);
     // console.log(connectionArray);
 
-    let parsedObj = this.parseHTTPObjectFromReqRes(reqResObj);
-    parsedObj.signal = openConnectionObj.abort.signal;
+    let parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
+    parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
-    fetch(reqResObj.url, parsedObj)
+    fetch(reqResObj.url, parsedFetchOptions)
     .then(response => {
 
       //Parse response headers now to decide if SSE or not.
@@ -229,7 +230,7 @@ const httpController = {
     })
   },
 
-  parseHTTPObjectFromReqRes (reqResObject) {
+  parseFetchOptionsFromReqRes (reqResObject) {
     let { request: { method }, request: { headers }, request: { body } } = reqResObject;
 
     method = method.toUpperCase();
@@ -312,7 +313,6 @@ const httpController = {
 
     function read() {
       reader.read().then(obj => {
-
         //base case
         if (obj.done) {
           return;
@@ -320,33 +320,7 @@ const httpController = {
 
         //decode and recursively call
         else {
-          let receivedEventFields = new TextDecoder("utf-8").decode(obj.value)
-          //since the string is multi line, each for a different field, split by line
-          .split('\n')
-          //remove empty lines
-          .filter(field => field != '')
-          //massage fields so they can be parsed into JSON
-          .map(field => {
-            let fieldColonSplit = field
-            .replace(/:/,'&&&&')
-            .split('&&&&')
-            .map(kv => kv.trim());
-
-            let fieldObj = {
-              [fieldColonSplit[0]] : fieldColonSplit[1],
-            }
-            return fieldObj;
-          })
-          .reduce((acc, cur) => {
-            //handles if there are multiple fields of the same type, for example two data fields.
-            let key = Object.keys(cur)[0];
-            if (acc[key]) {
-              acc[key] = acc[key] + '\n' + cur[key];
-            } else {
-              acc[key] = cur[key];
-            }
-            return acc;
-          },{})
+          let receivedEventFields = httpController.parseSSEFields(new TextDecoder("utf-8").decode(obj.value));
           receivedEventFields.timeReceived = Date.now();
           
           newObj.response.events.push(receivedEventFields);
