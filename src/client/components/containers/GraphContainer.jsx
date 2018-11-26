@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import GraphLine from '../display/Graph.jsx';
+import Graph from '../display/Graph.jsx';
 import * as actions from '../../actions/actions';
 
 const mapStateToProps = store => ({
@@ -17,8 +17,7 @@ class GraphContainer extends Component {
   render() {
     return(
       <div>
-        {/* GraphContainer */}
-        {/* <GraphLine /> */}
+        <Graph />
       </div>
     )
   }
