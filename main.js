@@ -1,5 +1,8 @@
 'use strict'
 
+//Allow self-signing HTTPS over TLS
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 // Import parts of electron to use
 const { app, BrowserWindow, TouchBar } = require('electron')
 const path = require('path')
