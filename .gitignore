@@ -8,6 +8,7 @@ builds/
 dist/
 node_modules/
 *.compiled.*
+package-lock.json
 
 # Folder config file #
 ######################

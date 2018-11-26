@@ -20,7 +20,6 @@ class ResponseSSE extends Component {
 
   render() {
 
-
     let SSEEventsArr = this.props.content.events.map((event, index) => <SSERow key={index} content={event}></SSERow>);
   
     return(

@@ -46,7 +46,8 @@ class ResponseContainer extends Component {
 
     let headersArr = [];
     let index = 0;
-    if (this.props.content.headers) {
+    
+    if(this.props.content.headers){
       for (let header in this.props.content.headers) {
         headersArr.push(<div className={'nested-grid-4'} key={index}>
           <div>{header}</div>
