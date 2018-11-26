@@ -125,11 +125,12 @@ server.on('stream', (stream, headers) => {
     ':status': 200
   });
 
-  setInterval(() => {
+  let interval = setInterval(() => {
     stream.write('event: my-custom-event\n');
     stream.write('id: ' + id++ + '\n');
     stream.write('data : Your headers... ' + JSON.stringify(headers) + '\n');
     stream.write('data : Your body... ' + receivedData + '\n');
+    stream.write('\n\n');
   }, 2000)
 
 
@@ -137,6 +138,12 @@ server.on('stream', (stream, headers) => {
   stream.on('data', (chunk) => {
     console.log('chunk', chunk);
     receivedData += chunk;
+  })
+
+  stream.on('error', err => {
+    console.warn(err);
+    stream.close();
+    clearInterval(interval);
   })
 });
 

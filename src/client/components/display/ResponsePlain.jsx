@@ -9,10 +9,6 @@ class ResponsePlain extends Component {
   }
 
   render() {
-    // console.log(this.props);
-
-    // const json = this.props.content.events[0].data
-
     let contentBody;
     if (this.props.content.events[0]) {
       try {
@@ -20,7 +16,9 @@ class ResponsePlain extends Component {
         contentBody = <ReactJson src={json} name={false} collapsed={1} />
       } 
       catch(err) {
-        console.log(err);
+        // console.log(err);
+        // console.log(this.props.content.events);
+        let json = this.props.content.events[0];
         contentBody = <ReactJson src={{json}} name={false} collapsed={1} />
       }
     }
