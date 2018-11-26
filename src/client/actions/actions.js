@@ -1,4 +1,6 @@
-import * as types from "./actionTypes";
+import * as types from './actionTypes'
+import { ipcRenderer } from 'electron';
+import ReqResCtrl from '../controllers/connectionController'
 
 //BUSINESS LOGIC ACTIONS
 export const reqResClear = () => ({

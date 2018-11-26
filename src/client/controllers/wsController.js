@@ -3,14 +3,14 @@ import * as actions from '../actions/actions';
 import connectionController from './connectionController.js'
 
 const wsController = {
-  openWSconnection(reqResObj) {
+  openWSconnection(reqResObj, connectionArray) {
     reqResObj.response.messages = [];
     reqResObj.request.messages = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-    let socket
+    let socket;
     try {
       socket = new WebSocket(reqResObj.url);
     } catch (err) {
@@ -58,7 +58,7 @@ const wsController = {
       protocol : 'WS',
       id : reqResObj.id,
     }
-    return openConnectionObj;
+    connectionArray.push(openConnectionObj);
   },
   
   sendWebSocketMessage (reqResId, message) {

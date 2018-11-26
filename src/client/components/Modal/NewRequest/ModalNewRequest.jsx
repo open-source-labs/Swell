@@ -61,17 +61,28 @@ class ModalNewRequest extends Component {
     }
     if (this.state.contentTypeHeader === 'application/json') {
       try {
-        let tryParse = JSON.parse(this.state.body);
+        console.log('before parse');
+        let tryParse = JSON.parse(JSON.stringify(this.state.body));
+        console.log(tryParse)
+        console.log('after parse');
+
         if(this.state.JSONProperlyFormatted !== true){
+          console.log('if');
           this.setState({
             JSONProperlyFormatted : true,
+          }, () => {
+            console.log('set to true');
           })
         }
       }
       catch(error) {
+        console.log('in catch');
+
         if(this.state.JSONProperlyFormatted !== false){
           this.setState({
             JSONProperlyFormatted : false,
+          }, () => {
+            console.log('set to false');
           })
         }
       }
@@ -131,11 +142,23 @@ class ModalNewRequest extends Component {
 
     if (validated === true) {
       let reqRes;
+      //HTTP REQUESTS
       if(this.state.protocol !== 'ws://'){
+        let URIWithoutProtocol = this.state.url.split(this.state.protocol)[1] + '/';
+        if (URIWithoutProtocol.charAt(URIWithoutProtocol.length-1) !== '/') {
+          URIWithoutProtocol = URIWithoutProtocol + '/';
+        }
+        let host = this.state.protocol + URIWithoutProtocol.split('/')[0];
+        let path = '/' + URIWithoutProtocol.split('/').splice(1).join('/').replace(/\/{2,}/g, '/');
+        if (path.charAt(path.length - 1) === '/' && path.length >1) {
+          path = path.substring(0, path.length - 1);
+        }
+
         reqRes = {
           id : Math.floor(Math.random() * 100000),
           protocol : this.state.protocol,
-          // url: 'http://localhost:80/events',
+          host : host,
+          path : path,
           url : this.state.url,
           timeSent : null,
           timeReceived : null,
@@ -154,7 +177,9 @@ class ModalNewRequest extends Component {
           checked : false,
           tab : this.props.currentTab,
         };
-      } else {
+      }
+      //WEBSOCKET REQUESTS 
+      else {
         reqRes = {
           id : Math.floor(Math.random() * 100000),
           protocol : this.state.protocol,
@@ -195,6 +220,7 @@ class ModalNewRequest extends Component {
   }
 
   render() {
+    // console.log(this.state);
     let HTTPMethodStyle = {
       display : this.state.protocol !== 'ws://' ? 'block' : 'none',
     }

@@ -18,7 +18,7 @@ class GraphContainer extends Component {
     return (
       <div>
         {/* GraphContainer */}
-        <GraphLine />
+        {/* <GraphLine /> */}
       </div>
     );
   }
