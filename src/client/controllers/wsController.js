@@ -3,7 +3,7 @@ import * as actions from '../actions/actions';
 import connectionController from './connectionController.js'
 
 const wsController = {
-  openWSconnection(reqResObj) {
+  openWSconnection(reqResObj, connectionArray) {
     reqResObj.response.messages = [];
     reqResObj.request.messages = [];
     reqResObj.connection = 'pending';
@@ -58,7 +58,7 @@ const wsController = {
       protocol : 'WS',
       id : reqResObj.id,
     }
-    return openConnectionObj;
+    connectionArray.push(openConnectionObj);
   },
   
   sendWebSocketMessage (reqResId, message) {
