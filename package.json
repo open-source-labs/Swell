@@ -15,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "babili-webpack-plugin": "^0.1.2",
     "chart.js": "^2.7.3",
     "concurrently": "^4.0.1",
     "cookie-parser": "^1.4.3",
@@ -22,6 +23,7 @@
     "express": "^4.16.4",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.10.0",
+    "mini-css-extract-plugin": "^0.4.4",
     "nodemon": "^1.18.4",
     "path": "^0.12.7",
     "prop-types": "^15.6.2",
@@ -33,7 +35,8 @@
     "sass-loader": "^7.1.0",
     "status-indicator": "^1.0.9",
     "uuid": "^3.3.2",
-    "ws": "^6.1.2"
+    "ws": "^6.1.2",
+    "webpack": "^4.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -41,7 +44,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
-    "babili-webpack-plugin": "^0.1.2",
     "concurrently": "^4.0.1",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
@@ -54,7 +56,6 @@
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.4",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
@@ -63,7 +64,6 @@
     "react-json-view": "^1.19.1",
     "redux-devtools-extension": "^2.13.2",
     "style-loader": "^0.23.1",
-    "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
   }
