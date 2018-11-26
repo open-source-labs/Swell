@@ -17,7 +17,6 @@ class Contents extends Component {
         <GraphContainer/>
         <ReqResContainer/>
         <TabContainer></TabContainer>
-
       </div>
     )
   }
