@@ -45,9 +45,7 @@ const connectionController = {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id == id);
 
-    let connectionObject = reqResObj.protocol === 'ws://' ? wsController.openWSconnection(reqResObj) : httpController.openHTTPconnection(reqResObj);
-
-    this.openConnectionArray.push(connectionObject);
+    reqResObj.protocol === 'ws://' ? wsController.openWSconnection(reqResObj, this.openConnectionArray) : httpController.openHTTPconnection(reqResObj, this.openConnectionArray);  
   },
 
   openAllSelectedReqRes() {
@@ -75,11 +73,18 @@ const connectionController = {
     this.setReqResConnectionToClosed(id);
 
     let foundAbortController = this.openConnectionArray.find(obj => obj.id = id);
+
+    console.log(this.openConnectionArray);
     console.log(foundAbortController);
+    
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
-        case 'HTTP': {
+        case 'HTTP1': {
           foundAbortController.abort.abort();
+          break;
+        }
+        case 'HTTP2': {
+          foundAbortController.stream.close();
           break;
         }
         case 'WS': {

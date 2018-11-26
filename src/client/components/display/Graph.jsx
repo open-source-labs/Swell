@@ -23,7 +23,7 @@ class Graph extends Component {
 
   addData(chart, label, inputData, legend) {
     let i = 0;
-    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', chart.data.labels.length)
+    // console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', chart.data.labels.length)
     if (chart.data.labels.length > 10) {
       i+=1;
       console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>grreater', i);
@@ -112,6 +112,7 @@ class Graph extends Component {
   componentDidUpdate(props){
     // console.log('Updated')
     // console.log('mapDispatchToProps', props)
+    // 
     if ( props.reqRes.length > 0) {
 
       // SETUP SWITCH STATEMENT****

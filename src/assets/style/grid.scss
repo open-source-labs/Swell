@@ -1,0 +1,41 @@
+
+
+.nested-grid-2 {
+    width: 100%;
+    height: 30px;
+    border: red solid 1px;
+    display: grid;
+    grid-template-columns: repeat(2, 50%); 
+    border:1px solid #ddd;
+  }
+  
+  
+  .nested-grid-4 {
+    width: 100%;
+    height: 30px;
+    border: red solid 1px;
+    display: grid;
+    grid-template-columns: repeat(4, 25%); 
+    border:1px solid #ddd;
+  }
+  
+  .nested-grid-8 {
+    width: 100%;
+    height: 30px;
+    border: red solid 1px;
+    display: grid;
+    grid-template-columns:2.5% 5% 2.5% 10% 15% 25% 20% 20%; 
+    border:1px solid #ddd;
+    div {
+      padding: 0 15px;
+      border-right:1px solid #ddd;
+      position: relative;
+      &:nth-child(-n+2) {
+        padding: 0;
+      }
+  
+      &:nth-child(3) {
+        padding: 4px 10px;
+      }
+    }
+  }
