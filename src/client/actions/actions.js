@@ -1,6 +1,6 @@
 import * as types from './actionTypes'
 import { ipcRenderer } from 'electron';
-import ReqResCtrl from '../controllers/connectionController'
+import ReqResCtrl from '../controllers/connectionController';
 
 //BUSINESS LOGIC ACTIONS
 export const reqResClear = () => ({
@@ -22,17 +22,17 @@ export const reqResUpdate = reqRes => ({
   payload: reqRes
 });
 
-export const setWarningModalMessage = (message) => ({
+export const setWarningModalMessage = message => ({
   type: types.SET_WARNING_MODAL_MESSAGE,
   payload : message
 });
 
-export const setNewResponseFields = (responseObj) => ({
+export const setNewResponseFields = responseObj => ({
   type: types.SET_NEW_RESPONSE_FIELDS,
   payload : responseObj
 });
 
-export const setCurrentTab = (tab) => ({
+export const setCurrentTab = tab => ({
   type: types.SET_CURRENT_TAB,
   payload : tab
 });
@@ -47,7 +47,7 @@ export const hideModal = () => ({
 });
 
 
-export const setModalDisplay = (modalDisplay) => ({
+export const setModalDisplay = modalDisplay => ({
   type: types.SET_MODAL_DISPLAY,
   payload : modalDisplay
 });
