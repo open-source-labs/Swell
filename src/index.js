@@ -4,6 +4,12 @@ import { Provider } from 'react-redux';
 import App from './client/components/containers/App.jsx';
 import store from './client/store';
 
+const fs = require('fs')
+
+const fsroot = fs.readdirSync('/')
+console.log(fsroot)
+
+
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our own root node in the body element before rendering into it
 let root = document.createElement('div')
 
