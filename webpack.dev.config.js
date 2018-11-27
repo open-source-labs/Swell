@@ -3,7 +3,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { spawn } = require('child_process');
 
-// Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
+// Any directories you will be adding code/files into, 
+// need to be added to this array so webpack will pick them up
 const defaultInclude = path.resolve(__dirname, 'src');
 
 module.exports = {
