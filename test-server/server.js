@@ -20,35 +20,47 @@ app.listen(80, "0.0.0.0", () => {
     console.log('Express server on 80, 0.0.0.0');
 });
 
+let eventsArr = [];
 app.get('/events', (req, res) => {
     res.header('Content-Type', 'text/event-stream');
     res.header('Cache-Control', 'no-cache');
 
     let id=0;
 
-    setInterval(function() {
-        res.write('event: my-custom-event\n');
-        res.write('id: ' + id++ + '\n');
-        res.write(`data: Your headers: ${JSON.stringify(req.headers)}\n`);
-        res.write('\n\n')
-    }, 2000);
+    setInterval(() => {
+        if(eventsArr.length > id) {
+            res.write('event: my-custom-event\n');
+            res.write('id: ' + id + '\n');
+            res.write('data :' + JSON.stringify(eventsArr[id])+'\n');
+            res.write('\n\n');
+            id++;
+        }
+    }, 50)
+
+    // setInterval(function() {
+    //     res.write('event: my-custom-event\n');
+    //     res.write('id: ' + id++ + '\n');
+    //     res.write(`data: Your headers: ${JSON.stringify(req.headers)}\n`);
+    //     res.write('\n\n')
+    // }, 2000);
 });
 
 app.post('/events', (req, res) => {
     console.log('headers', req.headers);
     console.log("body", req.body);
-    res.header('Content-Type', 'text/event-stream');
     res.header('Cache-Control', 'no-cache');
 
-    let id=0;
+    eventsArr.push(req.body);
+    res.end('Body Received: ' + JSON.stringify(req.body));
 
-    setInterval(function() {
-        res.write('event: my-custom-event\n');
-        res.write('id: ' + id++ + '\n');
-        res.write(`data: Your headers: ${JSON.stringify(req.headers)}\n`);
-        res.write(`data: Your body: ${JSON.stringify(req.body)}\n`);
-        res.write('\n\n')
-    }, 2500);
+    // let id=0;
+    // setInterval(function() {
+    //     res.write('event: my-custom-event\n');
+    //     res.write('id: ' + id++ + '\n');
+    //     res.write(`data: Your headers: ${JSON.stringify(req.headers)}\n`);
+    //     res.write(`data: Your body: ${JSON.stringify(req.body)}\n`);
+    //     res.write('\n\n')
+    // }, 2500);
 });
 
 
