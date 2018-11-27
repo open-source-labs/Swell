@@ -158,17 +158,15 @@ const httpController = {
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => { 
-      console.log('isSSE', isSSE);
-      console.log('chunk received');
       console.log(chunk);
+      console.log('hi');
       if (isSSE) {
         if(chunk.includes('\n\n')) {
           data = data + chunk;
 
+          //split data by double line, send each
           let receivedEventFields = this.parseSSEFields(data);
           receivedEventFields.timeReceived = Date.now();
-
-          console.log(receivedEventFields)
 
           reqResObj.response.events.push(receivedEventFields);
           store.default.dispatch(actions.reqResUpdate(reqResObj));
