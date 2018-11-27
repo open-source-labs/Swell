@@ -20,7 +20,8 @@ app.listen(80, "0.0.0.0", () => {
     console.log('Express server on 80, 0.0.0.0');
 });
 
-let eventsArr = [];
+let eventsArr = [{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'}];
+
 app.get('/events', (req, res) => {
     res.header('Content-Type', 'text/event-stream');
     res.header('Cache-Control', 'no-cache');
@@ -35,7 +36,7 @@ app.get('/events', (req, res) => {
             res.write('\n\n');
             id++;
         }
-    }, 50)
+    }, 25)
 
     // setInterval(function() {
     //     res.write('event: my-custom-event\n');
