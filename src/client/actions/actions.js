@@ -1,62 +1,53 @@
-import * as types from './actionTypes'
 import { ipcRenderer } from 'electron';
+import * as types from './actionTypes';
 import ReqResCtrl from '../controllers/connectionController';
 
-//BUSINESS LOGIC ACTIONS
+// BUSINESS LOGIC ACTIONS
 export const reqResClear = () => ({
-  type: types.REQRES_CLEAR
+  type: types.REQRES_CLEAR,
 });
 
 export const reqResAdd = reqRes => ({
   type: types.REQRES_ADD,
-  payload: reqRes
+  payload: reqRes,
 });
 
 export const reqResDelete = reqRes => ({
   type: types.REQRES_DELETE,
-  payload: reqRes
+  payload: reqRes,
 });
 
 export const reqResUpdate = reqRes => ({
   type: types.REQRES_UPDATE,
-  payload: reqRes
+  payload: reqRes,
 });
 
 export const setWarningModalMessage = message => ({
   type: types.SET_WARNING_MODAL_MESSAGE,
-  payload : message
+  payload: message,
 });
 
 export const setNewResponseFields = responseObj => ({
   type: types.SET_NEW_RESPONSE_FIELDS,
-  payload : responseObj
+  payload: responseObj,
 });
 
 export const setCurrentTab = tab => ({
   type: types.SET_CURRENT_TAB,
-  payload : tab
+  payload: tab,
 });
 
-//UI ACTIONS
+// UI ACTIONS
 export const showModal = () => ({
-  type: types.SHOW_MODAL
+  type: types.SHOW_MODAL,
 });
 
 export const hideModal = () => ({
-  type: types.HIDE_MODAL
+  type: types.HIDE_MODAL,
 });
 
 
 export const setModalDisplay = modalDisplay => ({
   type: types.SET_MODAL_DISPLAY,
-  payload : modalDisplay
+  payload: modalDisplay,
 });
-
-
-
-
-
-
-
-
-
