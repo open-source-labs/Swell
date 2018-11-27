@@ -1,0 +1,42 @@
+.navbar-console {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.btn {
+  width: auto;
+  height: 40px;
+  // padding: 0px 10px;
+  display: block;
+  border-radius: 2px;
+  font-weight: bold;
+  border: none;
+  background-color: #04D4BC;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: #04D4BC;
+    border: solid 1px #04D4BC;
+    background: transparent;
+  }
+}
+
+.btn-sm {
+  width:100%;
+  height: 30px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 2px;
+  color: #212121;
+  font-weight: bold;
+  border: none;
+  background-color: $litebluegray;
+  cursor: pointer;
+
+  &:hover {
+    border: solid 1px $litebluegray;
+    background: transparent;
+  }
+}

@@ -9,7 +9,13 @@ class SSERow extends Component {
   }
 
   render() {
-    const json = this.props.content.data;
+    let contentBody;
+    try {
+      let json = JSON.parse(this.props.content.data);
+      contentBody = <ReactJson src={json} name={false} displayDataTypes={false} />
+    } catch (err) {
+      contentBody = this.props.content.data;
+    }
 
     return(
       <div className={'response_sse'}>
@@ -30,8 +36,7 @@ class SSERow extends Component {
             </div>
           </div>
           <div>
-            Data
-            <ReactJson src={{json}} name={false} displayDataTypes={false} />
+            {contentBody}
           </div>
         </div>
       </div>
