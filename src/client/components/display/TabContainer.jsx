@@ -19,39 +19,24 @@ class TabContainer extends Component {
     super(props);
     this.state = {
       tabArr : [],
-      tabInput : "",
-      invalidTabInput : false,
+      newTabCounter : 1,
     }
     this.handleTabInput = this.handleTabInput.bind(this);
     this.addTab = this.addTab.bind(this);
   }
 
   componentDidMount () {
-    let tabArrCopy = this.state.tabArr.slice();
-    tabArrCopy.push('First Tab');
-
-    this.setState({
-      tabArr : tabArrCopy,
-    });
-
-    this.props.setCurrentTab('First Tab');
+    this.addTab();
+    this.props.setCurrentTab('Tab 1');
   }
 
   addTab () {
-    if (this.state.tabInput === '') {
-      this.setState({
-        invalidTabInput : true,
-      });
-      return;
-    }
-
     let tabArrCopy = this.state.tabArr.slice();
-    tabArrCopy.push(this.state.tabInput);
+    tabArrCopy.push('Tab ' + this.state.newTabCounter);
 
     this.setState({
       tabArr : tabArrCopy,
-      tabInput : "",
-      invalidTabInput : false,
+      newTabCounter : this.state.newTabCounter + 1,
     })
   }
 
@@ -70,21 +55,13 @@ class TabContainer extends Component {
     }
 
     return(
-      <div style={{'border' : '1px solid black', }}>
-        TabContainer
-
+      <div style={{'display' : 'flex', }}>
         <div style={invalidDisplayStyles}>Invalid tab input.</div>
 
-        <input type='text' value={this.state.tabInput} onChange={this.handleTabInput} onKeyPress={event => {
-        if (event.key === 'Enter') {
-          this.addTab();
-        }
-        
-      }}></input>
-
-        <button onClick={this.addTab}>Add Tab</button>
+   
 
         {tabReactArr}
+        <button onClick={this.addTab}>Add Tab</button>
       </div>
     )
   }

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import SelectAllBtn from '../display/SelectAllBtn.jsx';
 import DeselectAllBtn from '../display/DeselectAllBtn.jsx';
-import ModalContainer from '../Modal/ModalContainer.jsx';
-
 import OpenAllBtn from '../display/OpenAllBtn.jsx';
 import CloseAllBtn from '../display/CloseAllBtn.jsx';
 import ClearBtn from '../display/ClearBtn.jsx';
 
 
-class Nav extends Component {
+class NavBarContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -16,15 +14,12 @@ class Nav extends Component {
 
   render(props) {
     return(
-      <div className={'navbar_modal-console'}>
+      <div className={'navbar-console'}>
+        <SelectAllBtn />
+        <DeselectAllBtn />
 
-        <ModalContainer/>
-
-        <SelectAllBtn connectionStatus={this.props}/>
-        <DeselectAllBtn connectionStatus={this.props}/>
-
-        <OpenAllBtn connectionStatus={this.props}/>
-        <CloseAllBtn connectionStatus={this.props}/>
+        <OpenAllBtn />
+        <CloseAllBtn />
         <ClearBtn />
       </div>
 
@@ -32,4 +27,4 @@ class Nav extends Component {
   }
 }
 
-export default (Nav);
+export default (NavBarContainer);

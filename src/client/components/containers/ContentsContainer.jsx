@@ -4,6 +4,7 @@ import * as actions from '../../actions/actions';
 import GraphContainer from './GraphContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
 import TabContainer from '../display/TabContainer.jsx';
+import NavBarContainer from './NavBarContainer.jsx';
 
 class Contents extends Component {
   constructor(props) {
@@ -13,10 +14,10 @@ class Contents extends Component {
   render() {
     return(
       <div className={'contents'}>
-        {/* ContentsContainer */}
         <GraphContainer/>
+        <NavBarContainer/>
+        <TabContainer/>
         <ReqResContainer/>
-        <TabContainer></TabContainer>
       </div>
     )
   }
