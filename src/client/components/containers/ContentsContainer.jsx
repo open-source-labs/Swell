@@ -7,7 +7,7 @@ import TabContainer from '../display/TabContainer.jsx';
 
 class Contents extends Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
 
   render() {

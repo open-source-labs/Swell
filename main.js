@@ -8,13 +8,13 @@ const { app, BrowserWindow, TouchBar } = require('electron');
 const path = require('path');
 const url = require('url');
 
-const { 
-  TouchBarLabel, 
-  TouchBarButton, 
-  TouchBarSpacer, 
-  TouchBarColorPicker, 
-  TouchBarSlider, 
-  TouchBarPopover 
+const {
+  TouchBarLabel,
+  TouchBarButton,
+  TouchBarSpacer,
+  TouchBarColorPicker,
+  TouchBarSlider,
+  TouchBarPopover,
 } = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -88,7 +88,15 @@ const tbLabel = new TouchBarLabel({
   label: 'Swell Touch Bar',
 });
 
-const touchBar = new TouchBar([tbLabel, tbSpacer, tbOpenAllButton, tbCloseAllButton, tbClearAllButton, tbFlexSpacer, tbRefreshButton]);
+const touchBar = new TouchBar([
+  tbLabel,
+  tbSpacer,
+  tbOpenAllButton,
+  tbCloseAllButton,
+  tbClearAllButton,
+  tbFlexSpacer,
+  tbRefreshButton,
+]);
 
 // Keep a reference for dev mode
 let dev = false;
