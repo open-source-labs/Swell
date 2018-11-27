@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import uuid from "uuid/v4"
 
 import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
+
 
 const mapStateToProps = store => ({
   newResponseFields : store.business.newResponseFields,
@@ -156,7 +158,8 @@ class ModalNewRequest extends Component {
         path = path.replace(/https?:\//g,'http://')
 
         reqRes = {
-          id : Math.floor(Math.random() * 100000),
+          id : uuid(), // Math.floor(Math.random() * 100000),
+          created_at : new Date,
           protocol : this.state.protocol,
           host : host,
           path : path,
@@ -182,7 +185,8 @@ class ModalNewRequest extends Component {
       //WEBSOCKET REQUESTS 
       else {
         reqRes = {
-          id : Math.floor(Math.random() * 100000),
+          id : uuid(), // Math.floor(Math.random() * 100000),
+          created_at : new Date,
           protocol : this.state.protocol,
           url : this.state.url,
           timeSent : null,
