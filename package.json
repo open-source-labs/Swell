@@ -31,6 +31,7 @@
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "request": "^2.88.0",
     "sass-loader": "^7.1.0",
     "status-indicator": "^1.0.9",
@@ -62,7 +63,6 @@
     "postcss-nested": "^4.1.0",
     "postcss-pxtorem": "^4.0.1",
     "react-json-view": "^1.19.1",
-    "redux-devtools-extension": "^2.13.2",
     "style-loader": "^0.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
