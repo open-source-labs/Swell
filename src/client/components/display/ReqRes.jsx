@@ -12,7 +12,6 @@ import * as actions from '../../actions/actions';
 
 
 const mapStateToProps = store => ({
- 
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -43,6 +42,10 @@ class ReqRes extends Component {
 
   render() {
     let contentBody = [];
+    // let resReqContainer = document.querySelector('.resreq_res-container');
+    // resReqContainer[0].scrollTop = resReqContainer[0].scrollHeight;
+
+
 
     if(this.props.content.protocol === 'ws://') {
       contentBody.push(<WebSocketWindow 
@@ -52,6 +55,7 @@ class ReqRes extends Component {
         id={this.props.content.id} 
         connection={this.props.content.connection}/>)
     } else {
+      console.log('>>>>>>>>>> FOOO')
       contentBody.push(<Request content={this.props.content.request} key={0}/>);
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1}/>)
@@ -94,37 +98,42 @@ class ReqRes extends Component {
     }
 
     return(
-      <div className={"resreq_wrap"} style={{'border' : '1px solid red', 'margin' : '10px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+      <div className={"resreq_wrap"}>
         {/* ReqRes */}
-      
 
+        <div className={'title-row'}>
+          <div>
+          <span className={'primary-title'}>{this.props.content.request.method}</span>
 
-      <div className={'nested-grid-8'}>
-        <div>
-          <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
-          <input 
-            id={this.props.content.id} checked={this.props.content.checked}
-            className="resreq_select-radio" name='resreq-select' type="checkbox" 
-            onChange={this.onCheckHandler}
-          />
-          {/* <label className={'resreq_select-radio-label'} for="resreq-select">Select</label> */}
+          <span className={'primary-title'}> {this.props.content.url}</span></div>
         </div>
-        <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
-        <div>{statusLight}</div>
-        <div><span className={'tertiary-title'}>{this.props.content.connectionType}</span></div>
-        <div><span className={'tertiary-title'}>RESPONSE ID: {this.props.content.id}</span></div>
-        <div><span className={'tertiary-title'}>URL:{this.props.content.url}</span></div>
-        <div><span className={'tertiary-title'}>Request Sent: {this.props.content.timeSent}</span></div>
-        <div><span className={'tertiary-title'}>Response Recieved: {this.props.content.timeReceived}</span></div>
-      </div>
+
+        <div className={'nested-grid-6'}>
+          <div>
+            <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
+            <input
+              id={this.props.content.id} checked={this.props.content.checked}
+              className="resreq_select-radio" name='resreq-select' type="checkbox"
+              onChange={this.onCheckHandler}
+            />
+            {/* <label className={'resreq_select-radio-label'} for="resreq-select">Select</label> */}
+          </div>
+          <div className={'btn-sm'}>
+            <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+            <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+          </div>
+          <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
+          <div>{statusLight}</div>
+          <div><span className={'tertiary-title'}>{this.props.content.connectionType}</span></div>
+          <div><span className={'tertiary-title'}>Round Trip: {(this.props.content.timeReceived) - (this.props.content.timeSent)}</span></div>
+        </div>
 
         <div style={http2Display}>HTTP2 connection: Requests with the same host will share a single HTTP2 connection</div>
- 
+
         {contentBody}
 
-        <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection}/>
-        <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection}/>
         
+
       </div>
     )
   }

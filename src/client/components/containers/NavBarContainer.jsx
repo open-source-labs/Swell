@@ -15,12 +15,13 @@ class NavBarContainer extends Component {
   render(props) {
     return(
       <div className={'navbar-console'}>
-        <SelectAllBtn />
-        <DeselectAllBtn />
-
-        <OpenAllBtn />
-        <CloseAllBtn />
-        <ClearBtn />
+        <div className={'navbar-console_inner'}>
+          <SelectAllBtn />
+          <DeselectAllBtn />
+          <OpenAllBtn />
+          <CloseAllBtn />
+          <ClearBtn />
+        </div>
       </div>
 
     )

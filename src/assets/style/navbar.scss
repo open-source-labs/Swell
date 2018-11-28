@@ -4,21 +4,23 @@
   justify-content: space-between;
 }
 
-.btn {
+.btn {    
   width: auto;
   height: 40px;
-  // padding: 0px 10px;
   display: block;
   border-radius: 2px;
   font-weight: bold;
   border: none;
-  background-color: #04D4BC;
+  background-color: $teal;
   color: white;
   cursor: pointer;
+  font-size: 1rem;
+  padding: 0 1.5rem;
+  margin: 25px auto;
 
   &:hover {
-    color: #04D4BC;
-    border: solid 1px #04D4BC;
+    color: $teal;
+    border: solid 1px $teal;
     background: transparent;
   }
 }
@@ -39,4 +41,23 @@
     border: solid 1px $litebluegray;
     background: transparent;
   }
+}
+
+.navbar-console {
+  background: #4e4e4e;
+}
+
+.navbar-console_inner {
+  max-width: 600px;
+  padding: 0 15px;
+  
+  .btn {
+    padding: .5rem;
+    font-size: .6rem;
+    background: $darkgraygreen;
+    display: inline;
+    margin:1px;
+    border: solid 1px #4e4e4e;
+  }
+
 }

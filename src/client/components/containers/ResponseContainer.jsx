@@ -53,9 +53,9 @@ class ResponseContainer extends Component {
     
     if(this.props.content.headers){
       for (let header in this.props.content.headers) {
-        headersArr.push(<div className={'nested-grid-4'} key={index}>
-          <div>{header}</div>
-          <div>{this.props.content.headers[header]}</div>
+        headersArr.push(<div className={'headers nested-grid-2'} key={index}>
+          <div><span className={'tertiary-title'}>{header}</span></div>
+          <div><span className={'tertiary-title'}>{this.props.content.headers[header]}</span></div>
         </div>);
         index++;
       }
@@ -64,9 +64,11 @@ class ResponseContainer extends Component {
     return(
       <div className={'resreq_res-container'}>
         {/* ResponseContainer */}
-        <div>{headersArr}</div>
         <div>{responseContents}</div>
+        <span className={'secondary-title highlighter'}>Events</span>
 
+        <div>{headersArr}</div>
+        <span className={'secondary-title highlighter'}>Headers</span>
       </div>
     )
   }
