@@ -41,7 +41,7 @@ const httpController = {
           clearInterval(interval);
         }
         //if failed, could because of protocol error. try HTTP1
-        else if (foundHTTP2Connection.status === 'failed') {
+        else if (foundHTTP2Connection.status === 'failed' || client.destroyed) {
           httpController.establishHTTP1connection(reqResObj, connectionArray);
           clearInterval(interval);
         }
