@@ -114,6 +114,7 @@ const httpController = {
     });
     formattedHeaders[':path'] = reqResObj.path;
 
+    console.log('path', reqResObj.path);
     //initiate request
     const reqStream = client.request(formattedHeaders, { endStream : false });
     //endStream false means we can continue to send more data, which we would for a body;
@@ -133,6 +134,7 @@ const httpController = {
     connectionArray.push(openConnectionObj);
 
     let isSSE;
+    
     reqStream.on('response', (headers, flags) => {
       isSSE = headers['content-type'].includes('stream');
 
@@ -156,8 +158,13 @@ const httpController = {
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => { 
+      console.log(chunk);
+      console.log('hi');
       if (isSSE) {
-        if(chunk === '\n\n') {
+        if(chunk.includes('\n\n')) {
+          data = data + chunk;
+
+          //split data by double line, send each
           let receivedEventFields = this.parseSSEFields(data);
           receivedEventFields.timeReceived = Date.now();
 
@@ -220,11 +227,18 @@ const httpController = {
         heads[entry[0].toLowerCase()] = entry[1];
       }
 
-      const isStream = heads['content-type'].includes('stream');
 
+      let isStream;
+      if (heads['content-type'] && heads['content-type'].includes('stream')) {
+        isStream = true;
+      } else {
+        isStream = false;
+      }
+      
       isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
     })
     .catch(err => {
+      console.log(err);
       reqResObj.connection = 'error';
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     })

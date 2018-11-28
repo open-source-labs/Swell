@@ -153,6 +153,7 @@ class ModalNewRequest extends Component {
         if (path.charAt(path.length - 1) === '/' && path.length >1) {
           path = path.substring(0, path.length - 1);
         }
+        path = path.replace(/https?:\//g,'http://')
 
         reqRes = {
           id : Math.floor(Math.random() * 100000),
