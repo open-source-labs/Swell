@@ -3,6 +3,11 @@ import { ipcRenderer } from 'electron';
 import ReqResCtrl from '../controllers/connectionController'
 
 //BUSINESS LOGIC ACTIONS
+export const getHistory = (history) => ({
+  type: types.GET_HISTORY,
+  payload: history
+});
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
