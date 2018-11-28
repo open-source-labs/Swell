@@ -8,32 +8,47 @@ class SSERow extends Component {
     this.state = {};
   }
 
+  handleClick(e) {
+    let expandable = e.target.closest('.response_sse').getElementsByClassName('data-inner').item(0);
+    let expandBtn = e.target;
+
+    expandBtn.classList.toggle('expand-active')
+    expandable.classList.toggle('expanded');
+  }
+
+
   render() {
     const json = this.props.content.data;
 
     return(
       <div className={'response_sse'}>
-        SSERow
-        <div style={{'display' : 'flex', 'flexDirection' : 'column'}}>
-          <div style={{'display' : 'flex'}}>
-            <div style={{'width' : '33%'}}>
-              <div style={{'width' : '50%'}}>ID</div>
-              <div style={{'width' : '50%'}}>{this.props.content.id}</div>
-            </div>
-            <div style={{'width' : '33%'}}>
-              <div style={{'width' : '50%'}}>Event</div>
-              <div style={{'width' : '50%'}}>{this.props.content.event}</div>
-            </div>
-            <div style={{'width' : '33%'}}>
-              <div style={{'width' : '50%'}}>Time Received</div>
-              <div style={{'width' : '50%'}}>{this.props.content.timeReceived}</div>
-            </div>
-          </div>
+        <div className={'nested-grid-4'}>
           <div>
-            Data
-            <ReactJson src={{json}} name={false} displayDataTypes={false} />
+            <span className={'tertiary-title'}>ID {this.props.content.id}</span>
+          </div>
+
+          <div>
+            <span className={'tertiary-title'}>Event {this.props.content.event}</span>
+          </div>
+
+          <div>
+            <span className={'tertiary-title'}>Time Received {this.props.content.timeReceived}</span>
+          </div>
+
+          <div>
+            <span onClick={(e) => this.handleClick(e)} className={'tertiary-title expand-btn'}></span>
+          </div>
+
+        </div>
+
+        <div className={'title-row data-inner'}>
+          <div>
+            <span className={'tertiary-title'}>
+              Data<ReactJson src={{ json }} name={false} displayDataTypes={false} />
+            </span>
           </div>
         </div>
+
       </div>
     )
   }

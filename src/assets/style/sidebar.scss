@@ -1,0 +1,53 @@
+
+.sidebar_title {
+    font-size:1.1rem;
+    font-weight: bold;
+  }
+  
+.sidebar_radio-label {
+  font-size:.9rem;
+  font-weight: bold;
+}
+
+.sidebar_modal-console {        
+  width: 320px;
+  height: 100vh;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;    
+  background: #282828;
+  padding: 15px 25px;
+  color: #FCF7F8;
+}
+
+.contents{
+  width: calc(100vw - 320px);
+  height: 100vh;
+  display: block;
+  position: absolute;
+  left: 320px;
+  top: 0;
+  background: white;
+}
+
+.modalContents{
+  width: 100%;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  list-style: none;
+  padding: 0 0 15px 0;
+}
+
+.modal_http-radios, .modal_select, .modal_url-input, .modal_submit {
+  width: 100%;
+  height: 30px;
+  margin: 5px 0;
+  display: block;
+  padding: 8px;
+}
+
+.modal_http-radios input {
+  
+}

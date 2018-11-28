@@ -123,7 +123,7 @@ class Graph extends Component {
           // console.log('mapDispatchToProps >>>>>>>>>>>>>>>>>>>>>', props.reqRes[0].response.events[i].timeReceived)
           let timeString = props.reqRes[0].response.events[props.reqRes[0].response.events.length - 1].timeReceived - props.reqRes[0].timeSent;
           timeString = `${timeString} ms`
-          console.log('?????', timeString)
+          // console.log('?????', timeString)
           this.addData(this.state.lineCharts[0], timeString, props.reqRes[0].id, props.reqRes[0].url);
         }
       }

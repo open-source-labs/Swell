@@ -238,18 +238,18 @@ class ModalNewRequest extends Component {
           this.addNewRequest();
         }
       }}>
-        <h1 className={'navbar_title'}>Create New Request</h1>
+        <h1 className={'sidebar_title'}>Create New Request</h1>
         <div className={"modal_http-radios"} onChange={(e) => {
           this.onChangeHandler(e, 'protocol')
         }}>
-          <input className={'navbar_radio'} name='protocol' type='radio' value='http://' defaultChecked={true} />
-          <label className={'navbar_radio-label'} for="http://">HTTP</label>
+          <input className={'sidebar_radio'} name='protocol' type='radio' value='http://' defaultChecked={true} />
+          <label className={'sidebar_radio-label'}>HTTP</label>
 
-          <input className={'navbar_radio'} name='protocol' type='radio' value='https://' />
-          <label className={'navbar_radio-label'} for="https://">HTTPS</label>
+          <input className={'sidebar_radio'} name='protocol' type='radio' value='https://' />
+          <label className={'sidebar_radio-label'}>HTTPS</label>
 
-          <input name='protocol' type='radio' value='ws://'></input>
-          <label className={'navbar_radio-label'} for="ws">WS</label>
+          <input className={'sidebar_radio'} name='protocol' type='radio' value='ws://'></input>
+          <label className={'sidebar_radio-label'}>WS</label>
 
         </div>
 

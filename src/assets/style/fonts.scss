@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:500');
 
 .primary-title {
-
+    font-size: 1.1rem;
+    font-weight: bold;
+    line-height: 40px;
 }
 
 .secondary-title {
     font-size: 1rem;
     font-weight: bold;
     line-height: 30px;
-    margin: 0;
 }
     
 .tertiary-title {
@@ -17,4 +17,11 @@
     line-height: 30px;
     margin: 0;
     padding: 0;
+}
+
+.highlighter {    
+    background: #8FF7A7;
+    padding: 5px 15px;
+    display: inline-block;
+    width: auto;
 }
