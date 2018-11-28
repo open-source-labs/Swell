@@ -16,7 +16,7 @@ class Contents extends Component {
       <div className={'contents'}>
         <GraphContainer/>
         <NavBarContainer/>
-        <TabContainer/>
+        {/* <TabContainer/> */}
         <ReqResContainer/>
       </div>
     )

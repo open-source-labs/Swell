@@ -31,8 +31,29 @@ const tbRefreshButton = new TouchBarButton({
   }
 })
 
-const tbOpenAllButton = new TouchBarButton({
-  label: 'Open All',
+
+
+
+const tbSelectAllButton = new TouchBarButton({
+  label: 'Select All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    console.log('select all')
+    mainWindow.webContents.send('selectAll')
+  }
+})
+
+const tbDeselectAllButton = new TouchBarButton({
+  label: 'Deselect All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    console.log('deselect all')
+    mainWindow.webContents.send('deselectAll')
+  }
+})
+
+const tbOpenSelectedButton = new TouchBarButton({
+  label: 'Open Selected',
   backgroundColor: '#00E28B',
   click: () => {
     console.log('opening all selected')
@@ -40,8 +61,8 @@ const tbOpenAllButton = new TouchBarButton({
   }
 })
 
-const tbCloseAllButton = new TouchBarButton({
-  label: 'Close All',
+const tbCloseSelectedButton = new TouchBarButton({
+  label: 'Close Selected',
   backgroundColor: '#DB5D58',
   click: () => {
     console.log('closing all selected')
@@ -87,7 +108,7 @@ const tbLabel = new TouchBarLabel({
   label: 'Swell Touch Bar'
 })
 
-const touchBar = new TouchBar([ tbLabel, tbSpacer, tbOpenAllButton, tbCloseAllButton, tbClearAllButton, tbFlexSpacer, tbRefreshButton ]);
+const touchBar = new TouchBar([ tbLabel, tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbClearAllButton, tbFlexSpacer, tbRefreshButton ]);
 
 // Keep a reference for dev mode
 let dev = false
