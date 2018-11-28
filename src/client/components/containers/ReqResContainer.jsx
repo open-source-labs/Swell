@@ -23,7 +23,7 @@ class ReqResContainer extends Component {
       return <ReqRes className="reqResChild" content={reqRes} key={index}></ReqRes>
     });
     return(
-      <div id="reqResContainer" style={{'border' : '1px solid black'}}>
+      <div id="reqResContainer">
         {/* ReqResContainer */}
         {reqResArr}
       </div>
