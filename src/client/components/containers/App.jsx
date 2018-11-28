@@ -22,6 +22,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // const wave = new Audio('../../../assets/audio/wavebig.mp3');
+    // wave.play();
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);

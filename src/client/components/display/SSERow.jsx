@@ -18,7 +18,13 @@ class SSERow extends Component {
 
 
   render() {
-    const json = this.props.content.data;
+    let contentBody;
+    try {
+      let json = JSON.parse(this.props.content.data);
+      contentBody = <ReactJson src={json} name={false} displayDataTypes={false} />
+    } catch (err) {
+      contentBody = this.props.content.data;
+    }
 
     return(
       <div className={'response_sse'}>
@@ -37,6 +43,7 @@ class SSERow extends Component {
 
           <div>
             <span onClick={(e) => this.handleClick(e)} className={'tertiary-title expand-btn'}></span>
+            
           </div>
 
         </div>
@@ -44,7 +51,7 @@ class SSERow extends Component {
         <div className={'title-row data-inner'}>
           <div>
             <span className={'tertiary-title'}>
-              Data<ReactJson src={{ json }} name={false} displayDataTypes={false} />
+              Data {contentBody}
             </span>
           </div>
         </div>

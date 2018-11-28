@@ -6,7 +6,13 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 // Import parts of electron to use
 const { app, BrowserWindow, TouchBar } = require('electron')
 const path = require('path')
-const url = require('url')
+const url = require('url') 
+
+const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+
+
+// const player = require('play-sound')
+// const wave = new Audio('./src/assets/audio/wavebig.mpg')
 
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer, TouchBarColorPicker, TouchBarSlider, TouchBarPopover } = TouchBar;
 
@@ -108,6 +114,15 @@ function createWindow() {
     icon: `${__dirname}/icons/64x64.png`
   })
 
+  // Adding React & Redux DevTools to Electon App
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
+
+  installExtension(REDUX_DEVTOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
+
   // and load the index.html of the app.
   let indexPath
 
@@ -131,11 +146,18 @@ function createWindow() {
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
-  mainWindow.on('page-title-updated', (e) => e.preventDefault());
-
+  mainWindow.on('page-title-updated', (e) => e.preventDefault())
+  
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
+    console.log('app data path', app.getPath('appData'));
+    // wave.play()
+    // play wave crash on open
+    // player.Play('./src/assets/audio/wavebig.mpg', (err) => {
+    //   if (err) throw err
+    // })
+
     winHeight = mainWindow.getSize()[1]
 
     // Open the DevTools automatically if developing
