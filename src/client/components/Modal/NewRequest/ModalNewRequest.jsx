@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
+import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const mapStateToProps = store => ({
   newResponseFields : store.business.newResponseFields,
@@ -32,16 +33,19 @@ class ModalNewRequest extends Component {
       method : 'GET',
       protocol : 'http://',
       headers : [],
-      contentTypeHeader: "",
-      body : {},
+      bodyType : 'none',
+      rawType : 'Text (text/plain)',
+      contentTypeHeader: "none",
+      body : '',
       url : 'http://',
-      JSONProperlyFormatted : false,
+      JSONFormatted : true,
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.updateHeaders = this.updateHeaders.bind(this);
     this.updateBody = this.updateBody.bind(this);
-    this.updateContentTypeHeader = this .updateContentTypeHeader.bind(this);
+    this.updateBodyType = this.updateBodyType.bind(this);
+    this.updateRawType = this.updateRawType.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
@@ -61,28 +65,20 @@ class ModalNewRequest extends Component {
     }
     if (this.state.contentTypeHeader === 'application/json') {
       try {
-        console.log('before parse');
         let tryParse = JSON.parse(JSON.stringify(this.state.body));
-        console.log(tryParse)
-        console.log('after parse');
 
         if(this.state.JSONProperlyFormatted !== true){
-          console.log('if');
           this.setState({
             JSONProperlyFormatted : true,
           }, () => {
-            console.log('set to true');
           })
         }
       }
       catch(error) {
-        console.log('in catch');
-
         if(this.state.JSONProperlyFormatted !== false){
           this.setState({
             JSONProperlyFormatted : false,
           }, () => {
-            console.log('set to false');
           })
         }
       }
@@ -101,7 +97,29 @@ class ModalNewRequest extends Component {
     }) 
   };
   
+  updateBodyType(bodyType) {
+    if(this.state.bodyType !== bodyType){
+      this.setState({
+        bodyType : bodyType,
+      });
+    }
+  }
 
+  updateRawType(rawType) {
+    if(this.state.rawType !== rawType){
+      this.setState({
+        rawType : rawType,
+      });
+    }
+  }
+
+  updateJSONFormatted(isJSONFormatted) {
+    if(this.state.JSONFormatted !== isJSONFormatted){
+      this.setState({
+        JSONFormatted : isJSONFormatted,
+      });
+    }
+  }
 
   updateHeaders (headers) {
     this.setState({
@@ -111,17 +129,13 @@ class ModalNewRequest extends Component {
     },() => {
     });
   }
+
   updateBody (body) {
     if (this.state.body !== body){
       this.setState({
         body,
       });
     }
-  }
-  updateContentTypeHeader (header) {
-    this.setState({
-      contentTypeHeader : header
-    });
   }
 
   requestValidationCheck () {
@@ -240,21 +254,10 @@ class ModalNewRequest extends Component {
         }
       }}>
         <h1 className={'sidebar_title'}>Create New Request</h1>
-        <div className={"modal_http-radios"} onChange={(e) => {
-          this.onChangeHandler(e, 'protocol')
-        }}>
-          <input className={'sidebar_radio'} name='protocol' type='radio' value='http://' defaultChecked={true} />
-          <label className={'sidebar_radio-label'}>HTTP</label>
 
-          <input className={'sidebar_radio'} name='protocol' type='radio' value='https://' />
-          <label className={'sidebar_radio-label'}>HTTPS</label>
+        <ProtocolSelect currentProtocol={this.state.protocol} onChangeHandler={this.onChangeHandler}/>
 
-          <input className={'sidebar_radio'} name='protocol' type='radio' value='ws://'></input>
-          <label className={'sidebar_radio-label'}>WS</label>
-
-        </div>
-
-        <select style={HTTPMethodStyle} className={'HTTPMethodStyle modal_select'} onChange={(e) => {
+        <select style={HTTPMethodStyle} value={this.state.method} className={'HTTPMethodStyle modal_select'} onChange={(e) => {
           this.onChangeHandler(e, 'method')
         }}>
           <option value='GET'>GET</option>
@@ -268,9 +271,19 @@ class ModalNewRequest extends Component {
           this.onChangeHandler(e, 'url')
         }}></input>
         
-        <HeaderEntryForm stylesObj={HeaderEntryFormStyle} updateHeaders={this.updateHeaders} contentTypeHeader={this.state.contentTypeHeader}></HeaderEntryForm>
+        <HeaderEntryForm stylesObj={HeaderEntryFormStyle} updateHeaders={this.updateHeaders} bodyType={this.state.bodyType} rawType={this.state.rawType}></HeaderEntryForm>
         
-        <BodyEntryForm stylesObj={BodyEntryFormStyle} method={this.state.method} updateBody={this.updateBody} updateContentTypeHeader={this.updateContentTypeHeader} contentTypeHeader={this.state.contentTypeHeader} bodyContent={this.state.body} ></BodyEntryForm>
+        <BodyEntryForm 
+          stylesObj={BodyEntryFormStyle} 
+          bodyContent={this.state.body}
+          updateBodyContent={this.updateBody} 
+          bodyType={this.state.bodyType}
+          updateBodyType={this.updateBodyType}
+          rawType={this.state.rawType}
+          updateRawType={this.updateRawType}
+          JSONFormatted={this.state.JSONFormatted}
+          updateJSONFormatted={this.updateJSONFormatted}
+        />
 
         <button className={'modal_submit'} onClick={this.addNewRequest}>Add New Request</button>
       </div>
