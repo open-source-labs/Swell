@@ -17,7 +17,7 @@
     "body-parser": "^1.18.3",
     "babili-webpack-plugin": "^0.1.2",
     "chart.js": "^2.7.3",
-    "concurrently": "^4.0.1",
+    "classnames": "^2.2.6",
     "cookie-parser": "^1.4.3",
     "electron": "^3.0.6",
     "electron-devtools-installer": "^2.2.4",

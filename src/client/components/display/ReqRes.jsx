@@ -53,8 +53,8 @@ class ReqRes extends Component {
           connection={this.props.content.connection}
         />,
       );
-    } else {
-      console.log('>>>>>>>>>> FOOO');
+    }
+    else {
       contentBody.push(<Request content={this.props.content.request} key={0} />);
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(

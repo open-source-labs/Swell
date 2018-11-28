@@ -21,7 +21,7 @@ class Request extends Component {
 Request
         </span>
         {headerArr}
-        {/* {this.props.content.body} */}
+        {JSON.stringify(this.props.content.body)}
       </div>
     );
   }

@@ -113,12 +113,7 @@ const tbFlexSpacer = new TouchBarSpacer({
   size: 'flexible',
 });
 
-const tbLabel = new TouchBarLabel({
-  label: 'Swell Touch Bar',
-});
-
 const touchBar = new TouchBar([
-  tbLabel,
   tbSpacer,
   tbSelectAllButton,
   tbDeselectAllButton,
