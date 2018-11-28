@@ -8,6 +8,11 @@ export const getHistory = (history) => ({
   payload: history
 });
 
+export const deleteFromHistory = (reqRes) => ({
+  type: types.DELETE_HISTORY,
+  payload: reqRes
+})
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
@@ -32,9 +37,9 @@ export const setWarningModalMessage = (message) => ({
   payload : message
 });
 
-export const setNewResponseFields = (responseObj) => ({
+export const setNewRequestFields = (requestObj) => ({
   type: types.SET_NEW_RESPONSE_FIELDS,
-  payload : responseObj
+  payload : requestObj
 });
 
 export const setCurrentTab = (tab) => ({

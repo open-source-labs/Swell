@@ -24,8 +24,8 @@ const mapDispatchToProps = dispatch => ({
   setModalDisplay : (modalDisplay) => {
     dispatch(actions.setModalDisplay(modalDisplay));
   },
-  setNewResponseFields : (responseObj) => {
-    dispatch(actions.setNewResponseFields(responseObj));
+  setNewRequestFields : (requestObj) => {
+    dispatch(actions.setNewRequestFields(requestObj));
   }
 });
 
@@ -55,7 +55,8 @@ class ModalNewRequest extends Component {
 
   componentDidUpdate () {
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
-      this.props.setNewResponseFields(this.state);
+      console.log('here')
+      this.props.newResponseFields.override ? this.setState(this.props.newResponseFields) : console.log('now in here');
     }
   
     if (this.state.method === 'GET' && this.state.contentTypeHeader != '') {
@@ -197,6 +198,7 @@ class ModalNewRequest extends Component {
           connectionType : 'WebSocket',
           checkSelected : false,
           request: {
+            method: 'WS',
             messages : [],
           },
           response : {

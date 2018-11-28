@@ -2,7 +2,7 @@ import Dexie from 'dexie';
 
 const db = new Dexie('Swell');
 db.version(1).stores({ 
-  history: 'created_at' 
+  history: 'id, created_at' 
 });
 
 export default db;

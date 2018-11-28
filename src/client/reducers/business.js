@@ -27,6 +27,21 @@ const businessReducer = (state=initialState, action) => {
       }
     }
 
+    case types.DELETE_HISTORY:{
+      console.log('action',action);
+
+      let deleteId = action.payload.id;
+
+      return {
+        ...state,
+        history: state.history.filter(history => {
+          return history.id !== deleteId;
+        }),
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray))
+      }
+    }
+
     case types.REQRES_CLEAR:{
       console.log('action',action);
       return {

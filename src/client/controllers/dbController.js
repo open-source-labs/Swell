@@ -7,6 +7,14 @@ const dbController = {
   addToHistory (reqRes) {
     db.history.put(reqRes)
       .then(() => console.log('added to indexedDb'))
+      .catch((err) => console.log('Error in addToHistory', err))
+
+  },
+
+  deleteFromHistory (id) {
+    db.history.delete(id)
+      .then(() => console.log('deleted from indexedDb'))
+      .catch((err) => console.log('Error in deleteFromHistory', err))
   },
 
   getHistory () { 
@@ -17,7 +25,7 @@ const dbController = {
         console.log('HISTORY', history);
         store.default.dispatch(actions.getHistory(history));
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('Error in getHistory', err));
   }
 
 }
