@@ -41,7 +41,7 @@ const httpController = {
           clearInterval(interval);
         }
         //if failed, could because of protocol error. try HTTP1
-        else if (foundHTTP2Connection.status === 'failed') {
+        else if (foundHTTP2Connection.status === 'failed' || client.destroyed) {
           httpController.establishHTTP1connection(reqResObj, connectionArray);
           clearInterval(interval);
         }
@@ -158,25 +158,32 @@ const httpController = {
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => { 
-      console.log(chunk);
-      console.log('hi');
+      data += chunk;
       if (isSSE) {
-        if(chunk.includes('\n\n')) {
-          data = data + chunk;
+        let couldBeEvents = true;
+        let wouldBeTimeReceived = Date.now();
 
-          //split data by double line, send each
-          let receivedEventFields = this.parseSSEFields(data);
-          receivedEventFields.timeReceived = Date.now();
+        console.log('data', [data]);
+        while (couldBeEvents) {
+          let possibleEventArr = data.match(/[\s\S]*\n\n/g);
+          console.log('possibleEventArr', possibleEventArr);
+          //if the array has a match, send it to be parsed, and send back to store
+          if (possibleEventArr && possibleEventArr[0]) {
+            let receivedEventFields = httpController.parseSSEFields(possibleEventArr[0]);
+            receivedEventFields.timeReceived = wouldBeTimeReceived;
 
-          reqResObj.response.events.push(receivedEventFields);
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
+            reqResObj.response.events.push(receivedEventFields);
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-          data = '';
-        } else {
-          data = data + chunk;
+            //splice possibleEventArr, recombine with \n\n to reconstruct original, minus what was already parsed.
+            possibleEventArr.splice(0,1);
+            data = possibleEventArr.join('\n\n');
+          } 
+          //if does not contain, end while loop
+          else {
+            couldBeEvents = false;
+          }
         }
-      } else {
-        data += chunk;
       }
     });
     reqStream.on('end', () => {
@@ -312,35 +319,56 @@ const httpController = {
   handleSSE(response, originalObj, headers) {
     let reader = response.body.getReader();
 
+    let data = "";
     read();
 
     const newObj = JSON.parse(JSON.stringify(originalObj));
 
+    //okay to set these after the read since read is async
     newObj.timeReceived = Date.now();
     newObj.response = {
       headers,
       events: [],
     };
-
     newObj.connection = 'open';
     newObj.connectionType = 'SSE';
 
+    let decoder = new TextDecoder('utf-8');
     function read() {
       reader.read().then(obj => {
+        //check if there is new info to add to data
+        if (decoder.decode(obj.value) !== '') {
+          data += decoder.decode(obj.value);
+        }
+
+        //check if there are double new lines to parse...
+        let couldBeEvents = true;
+        let wouldBeTimeReceived = Date.now();
+        while (couldBeEvents) {
+          let possibleEventArr = data.split(/\n\n/g);
+          
+          //if the array has a match, send it to be parsed, and send back to store
+          if (possibleEventArr && possibleEventArr[0]) {
+            let receivedEventFields = httpController.parseSSEFields(possibleEventArr[0]);
+            receivedEventFields.timeReceived = wouldBeTimeReceived;
+
+            newObj.response.events.push(receivedEventFields);
+            store.default.dispatch(actions.reqResUpdate(newObj));
+
+            //splice possibleEventArr, recombine with \n\n to reconstruct original, minus what was already parsed.
+            possibleEventArr.splice(0,1);
+            data = possibleEventArr.join('\n\n');
+          } 
+          //if does not contain, end while loop
+          else {
+            couldBeEvents = false;
+          }
+        }
+
         //base case
         if (obj.done) {
           return;
-        } 
-
-        //decode and recursively call
-        else {
-          let receivedEventFields = httpController.parseSSEFields(new TextDecoder("utf-8").decode(obj.value));
-          receivedEventFields.timeReceived = Date.now();
-          
-          newObj.response.events.push(receivedEventFields);
-          store.default.dispatch(actions.reqResUpdate(newObj));
-
-          //recursive call
+        } else {
           read();
         }
       });

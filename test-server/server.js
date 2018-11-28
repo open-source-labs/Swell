@@ -32,8 +32,7 @@ app.get('/events', (req, res) => {
         if(eventsArr.length > id) {
             res.write('event: my-custom-event\n');
             res.write('id: ' + id + '\n');
-            res.write('data :' + JSON.stringify(eventsArr[id])+'\n');
-            res.write('\n\n');
+            res.write('data :' + JSON.stringify(eventsArr[id])+'\n\n');
             id++;
         }
     }, 25)
@@ -142,8 +141,7 @@ server.on('stream', (stream, headers) => {
     stream.write('event: my-custom-event\n');
     stream.write('id: ' + id++ + '\n');
     stream.write('data : Your headers... ' + JSON.stringify(headers) + '\n');
-    stream.write('data : Your body... ' + receivedData + '\n');
-    stream.write('\n\n');
+    stream.write('data : Your body... ' + receivedData + '\n\n');
   }, 2000)
 
 
