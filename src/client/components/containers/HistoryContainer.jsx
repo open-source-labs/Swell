@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 
-const mapStateToProps = store => ({
-});
+const mapStateToProps = store => ({});
 
-const mapDispatchToProps = dispatch => ({
-});
+const mapDispatchToProps = dispatch => ({});
 
 class HistoryContainer extends Component {
   constructor(props) {
@@ -14,11 +12,11 @@ class HistoryContainer extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
         HISTORY GOES HERE
       </div>
-    )
+    );
   }
 }
 

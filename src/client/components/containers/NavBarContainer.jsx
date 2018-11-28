@@ -9,12 +9,11 @@ import ClearBtn from '../display/ClearBtn.jsx';
 class NavBarContainer extends Component {
   constructor(props) {
     super(props);
-
   }
 
   render(props) {
-    return(
-      <div className={'navbar-console'}>
+    return (
+      <div className="navbar-console">
         <SelectAllBtn />
         <DeselectAllBtn />
 
@@ -23,7 +22,7 @@ class NavBarContainer extends Component {
         <ClearBtn />
       </div>
 
-    )
+    );
   }
 }
 

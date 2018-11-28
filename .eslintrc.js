@@ -16,7 +16,7 @@ module.exports = {
 		"strict": 0,
 		"dot-notation": 0,
 		"import/extensions": 0,
-		// "max-len": 0,
-		// "object-curly-newline": 0
+		"no-useless-constructor": 0,
+		"react/prefer-stateless-function": 0,
 	}
 };
