@@ -31,7 +31,7 @@ class Graph extends Component {
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector("canvas").getContext("2d");
     ctx.canvas.width = 7;
-    ctx.canvas.height = 2;
+    ctx.canvas.height = 1;
     this.lineChart = new Chart(context, {
       type: "scatter",
       data: {
