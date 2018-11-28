@@ -5,23 +5,26 @@ class Request extends Component {
     super(props);
   }
 
-
   render() {
-    let headerArr = this.props.content.headers.map((header, index) => {
-      return (<div key={index} style={{'display' : 'flex'}}>
-        <div style={{'width' : '50%'}}>{header.key}</div>
-        <div style={{'width' : '50%'}}>{header.value}</div>
-      </div>)
-    })
+    const headerArr = this.props.content.headers.map((header, index) => (
+      <div key={index} style={{ display: 'flex' }}>
+        <div style={{ width: '50%' }}>{header.key}</div>
+        <div style={{ width: '50%' }}>{header.value}</div>
+      </div>
+    ));
 
-    return(
-      <div className={'resreq-res-header'}>
-        <span className={'tertiary-title'}>{this.props.content.method} Request</span>
+    return (
+      <div className="resreq-res-header">
+        <span className="tertiary-title">
+          {this.props.content.method}
+          {' '}
+Request
+        </span>
         {headerArr}
         {/* {this.props.content.body} */}
       </div>
-    )
+    );
   }
 }
 
-export default (Request);
+export default Request;

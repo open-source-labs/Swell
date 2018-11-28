@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import * as actions from "../../actions/actions";
-import ResponseSSE from "../display/ResponseSSE.jsx";
-import ResponsePlain from "../display/ResponsePlain.jsx";
+import * as actions from '../../actions/actions';
+import ResponseSSE from '../display/ResponseSSE.jsx';
+import ResponsePlain from '../display/ResponsePlain.jsx';
 
 const mapStateToProps = store => ({});
 
@@ -18,7 +18,7 @@ class ResponseContainer extends Component {
   componentDidMount() {
     if (this.state.responseDisplay !== this.props.connectionType) {
       this.setState({
-        responseDisplay: this.props.connectionType
+        responseDisplay: this.props.connectionType,
       });
     }
   }
@@ -26,7 +26,7 @@ class ResponseContainer extends Component {
   componentDidUpdate() {
     if (this.state.responseDisplay !== this.props.connectionType) {
       this.setState({
-        responseDisplay: this.props.connectionType
+        responseDisplay: this.props.connectionType,
       });
     }
   }
@@ -34,37 +34,47 @@ class ResponseContainer extends Component {
   render() {
     let responseContents;
     switch (this.state.responseDisplay) {
-      case "SSE": {
+      case 'SSE': {
         responseContents = <ResponseSSE content={this.props.content} />;
         break;
       }
-      case "plain": {
+      case 'plain': {
         responseContents = <ResponsePlain content={this.props.content} />;
         break;
       }
+      default:
+        console.log('Sorry this is an invalid response type');
     }
 
-    let headersArr = [];
+    const headersArr = [];
     let index = 0;
-    
-    if(this.props.content.headers){
-      for (let header in this.props.content.headers) {
-        headersArr.push(<div className={'headers nested-grid-2'} key={index}>
-          <div><span className={'tertiary-title'}>{header}</span></div>
-          <div><span className={'tertiary-title'}>{this.props.content.headers[header]}</span></div>
-        </div>);
-        index++;
+
+    if (this.props.content.headers) {
+      for (const header in this.props.content.headers) {
+        if (Object.prototype.hasOwnProperty.call(this.props.content.headers, header)) {
+          headersArr.push(
+            <div className="headers nested-grid-2" key={index}>
+              <div>
+                <span className="tertiary-title">{header}</span>
+              </div>
+              <div>
+                <span className="tertiary-title">{this.props.content.headers[header]}</span>
+              </div>
+            </div>,
+          );
+          index += 1;
+        }
       }
     }
-   
-    return(
-      <div className={'resreq_res-container'}>
+
+    return (
+      <div className="resreq_res-container">
         {/* ResponseContainer */}
         <div>{responseContents}</div>
-        <span className={'secondary-title highlighter'}>Events</span>
+        <span className="secondary-title highlighter">Events</span>
 
         <div>{headersArr}</div>
-        <span className={'secondary-title highlighter'}>Headers</span>
+        <span className="secondary-title highlighter">Headers</span>
       </div>
     );
   }
@@ -72,5 +82,5 @@ class ResponseContainer extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ResponseContainer);

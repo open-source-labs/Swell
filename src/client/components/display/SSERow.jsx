@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactJson from 'react-json-view'
+import ReactJson from 'react-json-view';
 
 class SSERow extends Component {
   constructor(props) {
@@ -8,56 +8,67 @@ class SSERow extends Component {
     this.state = {};
   }
 
-  handleClick(e) {
-    let expandable = e.target.closest('.response_sse').getElementsByClassName('data-inner').item(0);
-    let expandBtn = e.target;
+  static handleClick(e) {
+    const expandable = e.target
+      .closest('.response_sse')
+      .getElementsByClassName('data-inner')
+      .item(0);
+    const expandBtn = e.target;
 
-    expandBtn.classList.toggle('expand-active')
+    expandBtn.classList.toggle('expand-active');
     expandable.classList.toggle('expanded');
   }
-
 
   render() {
     let contentBody;
     try {
-      let json = JSON.parse(this.props.content.data);
-      contentBody = <ReactJson src={json} name={false} displayDataTypes={false} />
-    } catch (err) {
+      const json = JSON.parse(this.props.content.data);
+      contentBody = <ReactJson src={json} name={false} displayDataTypes={false} />;
+    }
+    catch (err) {
       contentBody = this.props.content.data;
     }
 
-    return(
-      <div className={'response_sse'}>
-        <div className={'nested-grid-4'}>
+    return (
+      <div className="response_sse">
+        <div className="nested-grid-4">
           <div>
-            <span className={'tertiary-title'}>ID {this.props.content.id}</span>
+            <span className="tertiary-title">
+ID
+              {this.props.content.id}
+            </span>
           </div>
 
           <div>
-            <span className={'tertiary-title'}>Event {this.props.content.event}</span>
+            <span className="tertiary-title">
+Event
+              {this.props.content.event}
+            </span>
           </div>
 
           <div>
-            <span className={'tertiary-title'}>Time Received {this.props.content.timeReceived}</span>
+            <span className="tertiary-title">
+              Time Received
+              {' '}
+              {this.props.content.timeReceived}
+            </span>
           </div>
 
           <div>
-            <span onClick={(e) => this.handleClick(e)} className={'tertiary-title expand-btn'}></span>
-            
+            <span onClick={e => this.handleClick(e)} className="tertiary-title expand-btn" />
           </div>
-
         </div>
 
-        <div className={'title-row data-inner'}>
+        <div className="title-row data-inner">
           <div>
-            <span className={'tertiary-title'}>
-              Data {contentBody}
+            <span className="tertiary-title">
+Data
+              {contentBody}
             </span>
           </div>
         </div>
-
       </div>
-    )
+    );
   }
 }
 

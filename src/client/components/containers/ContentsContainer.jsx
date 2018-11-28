@@ -7,20 +7,20 @@ import TabContainer from '../display/TabContainer.jsx';
 import NavBarContainer from './NavBarContainer.jsx';
 
 class Contents extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
   }
 
   render() {
-    return(
-      <div className={'contents'}>
-        <GraphContainer/>
-        <NavBarContainer/>
+    return (
+      <div className="contents">
+        <GraphContainer />
+        <NavBarContainer />
         {/* <TabContainer/> */}
-        <ReqResContainer/>
+        <ReqResContainer />
       </div>
-    )
+    );
   }
 }
 
-export default (Contents);
+export default Contents;

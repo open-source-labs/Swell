@@ -177,7 +177,8 @@ function createWindow() {
       pathname: 'index.html',
       slashes: true,
     });
-  } else {
+  }
+  else {
     indexPath = url.format({
       protocol: 'file:',
       pathname: path.join(__dirname, 'dist', 'index.html'),
@@ -205,9 +206,9 @@ function createWindow() {
     [winHeight] = mainWindow.getSize();
 
     // Open the DevTools automatically if developing
-    if (dev) {
-      mainWindow.webContents.openDevTools();
-    }
+    // if (dev) {
+    //   mainWindow.webContents.openDevTools();
+    // }
   });
 
   // Emitted when the window is closed.

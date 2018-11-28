@@ -12,12 +12,11 @@ class HistoryContainer extends Component {
   }
 
   render() {
-    return (
-      <div>
-        HISTORY GOES HERE
-      </div>
-    );
+    return <div>HISTORY GOES HERE</div>;
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HistoryContainer);

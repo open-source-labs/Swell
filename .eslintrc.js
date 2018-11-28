@@ -18,5 +18,20 @@ module.exports = {
 		"import/extensions": 0,
 		"no-useless-constructor": 0,
 		"react/prefer-stateless-function": 0,
+		"react/prop-types": 0,
+		"react/destructuring-assignment": 0,
+		"react/no-array-index-key": 0,
+		"react/no-did-update-set-state": 0,
+		"no-restricted-syntax": 0,
+		"import/no-unresolved": 0,
+		"no-shadow": 0,
+		"brace-style": [2, "stroustrup"],
+		"react/sort-comp": [2, {
+			order: [
+				"lifecycle",
+				"static-methods",
+				"rendering",
+			]
+		}]
 	}
 };

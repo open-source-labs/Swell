@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import * as actions from "../../actions/actions";
-import ReqRes from "../display/ReqRes.jsx";
+import * as actions from '../../actions/actions';
+import ReqRes from '../display/ReqRes.jsx';
 
 const mapStateToProps = store => ({
-  reqRes : store.business.reqResArray,
-  currentTab : store.business.currentTab,
+  reqRes: store.business.reqResArray,
+  currentTab: store.business.currentTab,
 });
 
 const mapDispatchToProps = dispatch => ({});
@@ -17,10 +17,10 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    let reqResArr = this.props.reqRes.filter(reqRes => reqRes.tab === this.props.currentTab).map((reqRes,index) => {
-      return <ReqRes className="reqResChild" content={reqRes} key={index}></ReqRes>
-    });
-    return(
+    const reqResArr = this.props.reqRes
+      .filter(reqRes => reqRes.tab === this.props.currentTab)
+      .map((reqRes, index) => <ReqRes className="reqResChild" content={reqRes} key={index} />);
+    return (
       <div id="reqResContainer">
         {/* ReqResContainer */}
         {reqResArr}
@@ -31,5 +31,5 @@ class ReqResContainer extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ReqResContainer);
