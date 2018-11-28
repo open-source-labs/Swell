@@ -9,6 +9,15 @@ const path = require('path');
 const url = require('url');
 
 const {
+  default: installExtension,
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} = require('electron-devtools-installer');
+
+// const player = require('play-sound')
+// const wave = new Audio('./src/assets/audio/wavebig.mpg')
+
+const {
   TouchBarLabel,
   TouchBarButton,
   TouchBarSpacer,
@@ -32,8 +41,26 @@ const tbRefreshButton = new TouchBarButton({
   },
 });
 
-const tbOpenAllButton = new TouchBarButton({
-  label: 'Open All',
+const tbSelectAllButton = new TouchBarButton({
+  label: 'Select All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    console.log('select all');
+    mainWindow.webContents.send('selectAll');
+  },
+});
+
+const tbDeselectAllButton = new TouchBarButton({
+  label: 'Deselect All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    console.log('deselect all');
+    mainWindow.webContents.send('deselectAll');
+  },
+});
+
+const tbOpenSelectedButton = new TouchBarButton({
+  label: 'Open Selected',
   backgroundColor: '#00E28B',
   click: () => {
     console.log('opening all selected');
@@ -41,8 +68,8 @@ const tbOpenAllButton = new TouchBarButton({
   },
 });
 
-const tbCloseAllButton = new TouchBarButton({
-  label: 'Close All',
+const tbCloseSelectedButton = new TouchBarButton({
+  label: 'Close Selected',
   backgroundColor: '#DB5D58',
   click: () => {
     console.log('closing all selected');
@@ -64,7 +91,9 @@ const tbSlider = new TouchBarSlider({
   minValue: 500,
   maxValue: 2000,
   value: 1024,
-  change: (val) => { mainWindow.setSize(val, winHeight, true); },
+  change: (val) => {
+    mainWindow.setSize(val, winHeight, true);
+  },
 });
 
 const tbPopover = new TouchBarPopover({
@@ -91,8 +120,10 @@ const tbLabel = new TouchBarLabel({
 const touchBar = new TouchBar([
   tbLabel,
   tbSpacer,
-  tbOpenAllButton,
-  tbCloseAllButton,
+  tbSelectAllButton,
+  tbDeselectAllButton,
+  tbOpenSelectedButton,
+  tbCloseSelectedButton,
   tbClearAllButton,
   tbFlexSpacer,
   tbRefreshButton,
@@ -101,7 +132,11 @@ const touchBar = new TouchBar([
 // Keep a reference for dev mode
 let dev = false;
 
-if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
+if (
+  process.defaultApp
+  || /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
+  || /[\\/]electron[\\/]/.test(process.execPath)
+) {
   dev = true;
 }
 
@@ -122,6 +157,15 @@ function createWindow() {
     webPreferences: { webSecurity: false },
     icon: `${__dirname}/icons/64x64.png`,
   });
+
+  // Adding React & Redux DevTools to Electon App
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then(name => console.log(`Added Extension:  ${name}`))
+    .catch(err => console.log('An error occurred: ', err));
+
+  installExtension(REDUX_DEVTOOLS)
+    .then(name => console.log(`Added Extension:  ${name}`))
+    .catch(err => console.log('An error occurred: ', err));
 
   // and load the index.html of the app.
   let indexPath;
@@ -151,6 +195,13 @@ function createWindow() {
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
+    console.log('app data path', app.getPath('appData'));
+    // wave.play()
+    // play wave crash on open
+    // player.Play('./src/assets/audio/wavebig.mpg', (err) => {
+    //   if (err) throw err
+    // })
+
     [winHeight] = mainWindow.getSize();
 
     // Open the DevTools automatically if developing

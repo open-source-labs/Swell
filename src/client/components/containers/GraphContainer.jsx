@@ -15,7 +15,6 @@ class GraphContainer extends Component {
   render() {
     return (
       <div>
-        {/* GraphContainer */}
         <Graph />
       </div>
     );
