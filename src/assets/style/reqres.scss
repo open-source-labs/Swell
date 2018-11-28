@@ -57,13 +57,15 @@
 .expand-btn {
   padding:3px;
   display:block;
+  cursor: pointer;
   &:before {
     content: "+";
     font-size:1.5em;
     line-height:0.5em;
     float:left; 
     transition: transform 0.3s ease-in-out;
-    transform-origin: 30% 30%;
+    height: 14px;
+    margin-top: 5px;
    }
 }
 
