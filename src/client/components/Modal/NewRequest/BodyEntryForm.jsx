@@ -1,102 +1,55 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import WWWForm from './WWWForm.jsx';
+import BodyTypeSelect from './BodyTypeSelect.jsx';
+import JSONTextArea from './JSONTextArea.jsx';
 
 class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      lastParseWasSuccess : true,
-    }
-    this.bodyTypeChangeHandler = this.bodyTypeChangeHandler.bind(this);
-    this.rawTypeChangeHandler = this.rawTypeChangeHandler.bind(this);
-  }
-
-  bodyTypeChangeHandler (e) {
-    switch (e.target.value) {
-      case 'x-www-form-urlencoded' : {
-        this.props.updateContentTypeHeader(e.target.value);
-        this.props.updateBody("");
-        break
-      }
-      case 'raw' : {
-        this.props.updateContentTypeHeader('text/plain');
-        this.props.updateBody("");
-        break
-      }
-      case 'none' : {
-        this.props.updateContentTypeHeader('');
-        this.props.updateBody("");
-        break;
-      }
-    }
-  }
-
-  rawTypeChangeHandler (e) {
-    this.props.updateContentTypeHeader(e.target.value);
   }
 
   render() {
     let rawTypeStyles = {
-      'display' : this.props.contentTypeHeader.includes('/') ? 'block' : 'none',
+      'display' : this.props.bodyType === 'raw' ? 'block' : 'none',
     }
 
     let bodyEntryArea = (() => {
-      switch (this.props.contentTypeHeader) {
-        //for none
-        case '' : {
-          return;
-        }
-        case 'x-www-form-urlencoded' :{
-          return (<WWWForm updateBody={this.props.updateBody}/>)
-        }
-        case 'application/json' : {
-          if (this.props.bodyContent === "") {
-            this.props.updateBody({});
-            return;
-          }
-          return (
-            <div>
-              <div>{this.state.lastParseWasSuccess ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
-              <textarea style={{'resize' : 'none'}} type='text' rows={8} value={this.state.lastParseWasSuccess ? JSON.stringify(this.props.bodyContent,undefined,4) : this.props.bodyContent} placeholder='Body' onChange={(e) => {
-                let parsedValue;
-                try {
-                  parsedValue = JSON.parse(e.target.value);
-                  this.setState({
-                    lastParseWasSuccess : true,
-                  })
-                }
-                catch (error) {
-                  parsedValue = e.target.value;
-                  this.setState({
-                    lastParseWasSuccess : false,
-                  })
-                }
-                this.props.updateBody(parsedValue);
-              }}></textarea>
-            </div>
-          )
-        }
-        default : {
-          return (
-            <textarea style={{'resize' : 'none'}} type='text' placeholder='Body' rows={5} onChange={(e) => {
-              this.props.updateBody(e.target.value)
-            }} ></textarea>
-          )
-        }
+      //BodyType of none : display nothing
+      if (this.props.bodyType === 'none'){
+        return;
+      }
+      //BodyType of XWWW... : display WWWForm entry
+      else if (this.props.bodyType === 'x-www-form-urlencoded'){
+        return (<WWWForm updateBody={this.props.updateBodyContent}/>)
+      }
+      //RawType of application/json : Text area box with error checking
+      else if (this.props.rawType === 'application/json') {
+        return (
+          <JSONTextArea 
+            JSONFormatted={this.props.JSONFormatted} 
+            updateJSONFormatted={this.props.updateJSONFormatted}
+            bodyContent={this.props.bodyContent}
+            updateBodyContent={this.props.updateBodyContent} 
+          />
+        )
+      }
+      //all other cases..just plain text area
+      else {
+        return (
+          <textarea style={{'resize' : 'none'}} type='text' placeholder='Body' rows={5} onChange={(e) => {
+            this.props.updateBodyContent(e.target.value)
+          }} ></textarea>
+        )
       }
     })()
   
     return(
       <div style={this.props.stylesObj}>
 
-        <div onChange={(e) => this.bodyTypeChangeHandler(e)}>
-          Body Type:
-          <input name='bodyType' type='radio' value='none' defaultChecked={true}></input>none
-          <input name='bodyType' type='radio' value='x-www-form-urlencoded'></input>x-www-form-urlencoded
-          <input name='bodyType' type='radio' value='raw'></input>raw
-        </div>
+        <BodyTypeSelect updateBodyType={this.props.updateBodyType} bodyType={this.props.bodyType}/>
 
-        <select onChange={(e) => this.rawTypeChangeHandler(e)} style={rawTypeStyles} >
+        <select onChange={(e) => this.props.updateRawType(e.target.value)} style={rawTypeStyles} value={this.props.rawType}>
           Raw Type:
           <option value='text/plain'>Text (text/plain)</option>
           <option value='application/json'>JSON (application/json)</option>
@@ -111,5 +64,17 @@ class BodyEntryForm extends Component {
     )
   }
 }
+
+BodyEntryForm.propTypes = {
+  stylesObj : PropTypes.object.isRequired,
+  bodyContent : PropTypes.string.isRequired,
+  updateBodyContent : PropTypes.func.isRequired,
+  bodyType : PropTypes.string.isRequired,
+  updateBodyType : PropTypes.func.isRequired,
+  rawType : PropTypes.string.isRequired,
+  updateRawType : PropTypes.func.isRequired,
+  JSONFormatted : PropTypes.bool.isRequired,
+  updateJSONFormatted : PropTypes.func.isRequired,
+};
 
 export default BodyEntryForm;

@@ -18,7 +18,7 @@ class Request extends Component {
       <div className={'resreq-res-header'}>
         <span className={'tertiary-title'}>{this.props.content.method} Request</span>
         {headerArr}
-        {/* {this.props.content.body} */}
+        {JSON.stringify(this.props.content.body)}
       </div>
     )
   }
