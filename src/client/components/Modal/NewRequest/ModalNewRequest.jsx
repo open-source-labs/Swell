@@ -5,6 +5,8 @@ import uuid from "uuid/v4"
 import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
+import dbController from '../../../controllers/dbController'
+import db from "../../../db";
 
 
 const mapStateToProps = store => ({
@@ -205,6 +207,7 @@ class ModalNewRequest extends Component {
         };
       }
 
+      dbController.addToHistory(reqRes);
       this.props.reqResAdd(reqRes);
 
       //reset state for next request
