@@ -36,13 +36,14 @@ class History extends Component {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol : this.props.content.protocol ? this.props.content.protocol : 'http://',
       headers : this.props.content.request.headers ? this.props.content.request.headers : [],
+      bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
+      rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       body : this.props.content.request.body ? this.props.content.request.body : {},
-      url : this.props.content.host ? this.props.content.host : 'http://',
-      JSONFormatted : this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : false,
-      bodyType: 'none',
-      rawType: 'Text (text/plain)',
+      url : this.props.content.url ? this.props.content.url : 'http://',
+      JSONFormatted : this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
       override: true
     }
+
     console.log(requestObj);
     console.log(this.props.content);
     this.props.setNewRequestFields(requestObj);
