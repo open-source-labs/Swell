@@ -16,7 +16,7 @@ class Request extends Component {
 
     return(
       <div className={'resreq-res-header'}>
-        <h1 className={'resreq_title'}>{this.props.content.method} Request</h1>
+        <span className={'tertiary-title'}>{this.props.content.method} Request</span>
         {headerArr}
         {/* {this.props.content.body} */}
       </div>
