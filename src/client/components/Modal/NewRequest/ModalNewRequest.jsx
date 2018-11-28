@@ -61,34 +61,11 @@ class ModalNewRequest extends Component {
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
       console.log('this.props.newResponseFields', this.props.newResponseFields);
       console.log('this.state', this.state);
-      this.props.newResponseFields.override ? this.setState(this.props.newResponseFields) : console.log('now in here');
+      if (this.props.newResponseFields.override) {
+        this.props.newResponseFields.override = false;
+        this.setState(this.props.newResponseFields)
+      } else { this.props.setNewRequestFields(this.state) }
     }
-  
-    // if (this.state.method === 'GET' && this.state.contentTypeHeader != '') {
-    //   this.setState({
-    //     contentTypeHeader : '',
-    //   })
-    // }
-    // if (this.state.contentTypeHeader === 'application/json') {
-    //   try {
-    //     let tryParse = JSON.parse(JSON.stringify(this.state.body));
-
-    //     if(this.state.JSONProperlyFormatted !== true){
-    //       this.setState({
-    //         JSONProperlyFormatted : true,
-    //       }, () => {
-    //       })
-    //     }
-    //   }
-    //   catch(error) {
-    //     if(this.state.JSONProperlyFormatted !== false){
-    //       this.setState({
-    //         JSONProperlyFormatted : false,
-    //       }, () => {
-    //       })
-    //     }
-    //   }
-    // }
   }
 
   onChangeHandler(e, property) {
