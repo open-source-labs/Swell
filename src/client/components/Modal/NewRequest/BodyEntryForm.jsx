@@ -25,10 +25,6 @@ class BodyEntryForm extends Component {
       }
       //RawType of application/json : Text area box with error checking
       else if (this.props.rawType === 'application/json') {
-        if (this.props.bodyContent === "") {
-          this.props.updateBodyContent({});
-          return;
-        }
         return (
           <JSONTextArea 
             JSONFormatted={this.props.JSONFormatted} 

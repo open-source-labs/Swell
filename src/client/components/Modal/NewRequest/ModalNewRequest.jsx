@@ -35,7 +35,6 @@ class ModalNewRequest extends Component {
       headers : [],
       bodyType : 'none',
       rawType : 'Text (text/plain)',
-      contentTypeHeader: "none",
       body : '',
       url : 'http://',
       JSONFormatted : true,
@@ -46,6 +45,7 @@ class ModalNewRequest extends Component {
     this.updateBody = this.updateBody.bind(this);
     this.updateBodyType = this.updateBodyType.bind(this);
     this.updateRawType = this.updateRawType.bind(this);
+    this.updateJSONFormatted = this.updateJSONFormatted.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
@@ -221,11 +221,12 @@ class ModalNewRequest extends Component {
       this.setState({
         method : 'GET',
         protocol : 'http://',
-        headers : [],
-        contentTypeHeader: "",
-        body : {},
+        headers : [],      
+        bodyType : 'none',
+        rawType : 'Text (text/plain)',
+        body : '',
         url : 'http://',
-        JSONProperlyFormatted : false,
+        JSONProperlyFormatted : true,
       });
     } 
     else {

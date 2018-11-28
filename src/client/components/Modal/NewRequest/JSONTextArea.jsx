@@ -6,14 +6,27 @@ class JSONTextArea extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastParseWasSuccess : true,
+      lastParseWasSuccess : null,
     }
   }
 
   componentDidMount () {
-    if (this.props.bodyContent === "") {
-      this.props.updateBodyContent({});
-    }
+    console.log('hhi');
+    this.setState({
+      lastParseWasSuccess : true,
+    }, () => {
+      if (this.props.bodyContent === "") {
+        this.props.updateBodyContent({});
+      }
+
+      try {
+        JSON.parse(this.props.bodyContent);
+        this.props.updateJSONFormatted(true);
+      }
+      catch (error) {
+        this.props.updateJSONFormatted(true);
+      }
+    });
   }
 
   render() {
@@ -21,6 +34,7 @@ class JSONTextArea extends Component {
       'modal_protocol_button' : true,
     });
 
+    console.log(this.props.bodyContent)
     return(
       <div>
         <div>{this.props.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
@@ -32,20 +46,24 @@ class JSONTextArea extends Component {
           placeholder='Body' 
           onChange={(e) => {
             let parsedValue;
+            let isJSONFormatted;
             try {
               parsedValue = JSON.parse(e.target.value);
               this.setState({
                 lastParseWasSuccess : true,
               })
-              this.props.updateJSONFormatted(true)
+              isJSONFormatted = true;
             }
             catch (error) {
+              console.log('error')
               parsedValue = e.target.value;
               this.setState({
                 lastParseWasSuccess : false,
               });
-              this.props.updateJSONFormatted(false)
+              isJSONFormatted = false;
             }
+            console.log(parsedValue);
+            this.props.updateJSONFormatted(isJSONFormatted);
             this.props.updateBodyContent(parsedValue);
           }}></textarea>
       </div>
