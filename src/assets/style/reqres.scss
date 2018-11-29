@@ -43,6 +43,7 @@
   overflow: hidden;
   animation: fadeIn 400ms ease-in;
   border: solid 1px $bordergray;
+  background: #fff;
 }
 
 .response_sse:nth-of-type(odd){
@@ -131,7 +132,6 @@
 
 .resreq_wrap {
   margin: 15px;
-  padding-bottom: 10px;
   background: white;
 }
 
@@ -144,6 +144,9 @@
   overflow: scroll;
   flex-direction: column-reverse;
   position: relative;
+  border-bottom: solid 1px $bordergray;
+  border-left: solid 1px $bordergray;
+  border-right: solid 1px $bordergray;
   // border: 3px solid #15b78f;
   // div {
   //   width: 100%;

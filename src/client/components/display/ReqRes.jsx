@@ -103,7 +103,7 @@ class ReqRes extends Component {
 
         <div className={'title-row'}>
           <div>
-            <span className={'primary-title'}>{this.props.content.request.method}</span>
+            <span className={'primary-title highlighter title_reverse-offset'}>{this.props.content.request.method}</span>
             <span className={'primary-title'}> {this.props.content.url}</span></div>
         </div>
 
@@ -117,10 +117,14 @@ class ReqRes extends Component {
             />
             {/* <label className={'resreq_select-radio-label'} for="resreq-select">Select</label> */}
           </div>
+
+
           <div className={'btn-sm'}>
             <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
             <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
           </div>
+
+
           <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
           <div>{statusLight}</div>
           <div><span className={'tertiary-title'}>{this.props.content.connectionType}</span></div>

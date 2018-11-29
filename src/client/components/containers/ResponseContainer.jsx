@@ -65,7 +65,7 @@ class ResponseContainer extends Component {
     return(
       <div className={'resreq_res-container'}>
         {/* ResponseContainer */}
-        <ResponseTabs />
+        <ResponseTabs responseContent={this.props.content}/>
         {/* <div>{responseContents}</div>
         <span className={'secondary-title highlighter'}>Events</span>
 

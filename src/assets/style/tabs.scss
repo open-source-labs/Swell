@@ -31,7 +31,11 @@
     border-width: 1px 1px 0 1px;
   }
 
-  .tab_content {
-      width: 100%;
-      height: auto;
+  .tab_content {    
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 10px 10px;
+    background: $graythree;
+    border: solid 1px $bordergray;
   }
