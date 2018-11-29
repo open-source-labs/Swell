@@ -20,8 +20,19 @@
 }
 
 .highlighter {    
-    background: #8FF7A7;
+    background: $greensix;
+    color: white;
     padding: 5px 15px;
     display: inline-block;
     width: auto;
+}
+
+.title_offset {
+    padding-left: 15px;
+}
+
+.title_reverse-offset {
+    margin-left: -15px;
+    margin-right: 20px;
+    border-radius: 3px 0 0 0;
 }
