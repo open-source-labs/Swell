@@ -43,10 +43,8 @@ class BodyEntryForm extends Component {
       else if (this.props.newRequestBody.rawType === 'application/json') {
         return (
           <JSONTextArea 
-            JSONFormatted={this.props.JSONFormatted} 
-            updateJSONFormatted={this.props.updateJSONFormatted}
-            bodyContent={this.props.bodyContent}
-            updateBodyContent={this.props.updateBodyContent} 
+            setNewRequestBody={this.props.setNewRequestBody} 
+            newRequestBody={this.props.newRequestBody}
           />
         )
       }
