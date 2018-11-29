@@ -11,19 +11,31 @@ const dbController = {
 
   },
 
-  deleteFromHistory (id) {
+  deleteFromIndexDb (id) {
     db.history.delete(id)
       .then(() => console.log('deleted from indexedDb'))
       .catch((err) => console.log('Error in deleteFromHistory', err))
   },
 
   getHistory () { 
-    console.log('in getHistory');
     db.table('history')
       .toArray()
       .then(history => { 
-        console.log('HISTORY', history);
-        store.default.dispatch(actions.getHistory(history));
+        const historyGroupsObj = history.reduce((groups, hist) => {
+          const date = JSON.stringify(hist.created_at).split('T')[0].substr(1);
+          if (!groups[date]) {
+            groups[date] = [];
+          }
+          groups[date].push(hist);
+          return groups;
+        }, {});
+        const historyGroupsArr = Object.keys(historyGroupsObj).reverse().map(date => {
+          return {
+            date: date,
+            history: historyGroupsObj[date]
+          };
+        });
+        store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
       .catch(err => console.log('Error in getHistory', err));
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
-import History from '../display/History.jsx'
+import HistoryDate from '../display/HistoryDate.jsx'
 
 const mapStateToProps = store => ({
   history : store.business.history,
@@ -17,14 +17,13 @@ class HistoryContainer extends Component {
 
   render() {
 
-    let historyArray = this.props.history.map((history, i) => {
-      return <History className="historyChild" content={history} key={i}></History>
-    }).reverse();
-
+    let historyDates = this.props.history.map((date, i) => {
+      return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate>
+    })
 
     return(
       <div>
-        {historyArray}
+        {historyDates}
       </div>
     )
   }

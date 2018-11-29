@@ -31,12 +31,16 @@ const businessReducer = (state=initialState, action) => {
       console.log('action',action);
 
       let deleteId = action.payload.id;
+      let deleteDate = JSON.stringify(action.payload.created_at).split('T')[0].substr(1);
+      let newHistory = JSON.parse(JSON.stringify(state.history));
+      newHistory.forEach(obj => {
+        if (obj.date === deleteDate)
+          obj.history = obj.history.filter(hist => hist.id !== deleteId);
+      })
 
       return {
         ...state,
-        history: state.history.filter(history => {
-          return history.id !== deleteId;
-        }),
+        history: newHistory,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray))
       }
