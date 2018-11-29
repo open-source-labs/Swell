@@ -16,31 +16,64 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidUpdate () {
-    this.checkForContentTypeHeader();
+    this.updateContentType();
   }
 
-  checkForContentTypeHeader () {
+  updateContentType () {
+    let contentType;
+    if (this.props.bodyType === 'none'){
+      contentType = '';
+    }
+    else if (this.props.bodyType === 'x-www-form-urlencoded'){
+      contentType = 'x-www-form-urlencoded';
+    }
+    else {
+      contentType = this.props.rawType;
+    }
+
+    //Attempt to update header in these conditions:
+    //if there is no existing content type header 
+    //if there is a existing content type header AND if the value does not match
+    let foundHeader = this.state.headers.find(header => {
+      return header.key.toLowerCase() === 'content-type'
+    });
+
+    if (!foundHeader || (foundHeader && foundHeader.value !== contentType)) {
+      this.updateContentTypeHeader(contentType, foundHeader);
+    }
+  }
+
+  updateContentTypeHeader (contentType, foundHeader) {
+
     //if user has selected a bodyType or rawType in body...
-    if (this.props.contentTypeHeader) {
-      //try to find a header that has key of content-type
-      let foundHeader = this.state.headers.find(header => {
-        return header.key.toLowerCase() === 'content-type'
-      });
-
+    if (contentType !== '') {
+      //if found, remove it, and readd.
       if(foundHeader) {
-        if(foundHeader.value !== this.props.contentTypeHeader) {
-          let filtered = this.state.headers.filter(header => {
-            return header.key !== 'content-type';
-          });
+        let filtered = this.state.headers.filter(header => {
+          return header.key !== 'content-type';
+        });
 
+        this.setState({
+          headers: filtered
+        }, () => {
+          let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
+
+          headersDeepCopy.unshift({
+            id : this.state.count,
+            active : true,
+            key : 'content-type',
+            value : contentType,
+          })
+          
           this.setState({
-            headers: filtered
+            headers: headersDeepCopy,
+            count: this.state.count+1,
           }, () => {
-            console.log(this.state.headers);
+            this.props.updateHeaders(this.state.headers);
           });
-        }
+        });
       }
-      if(!foundHeader) {
+      else {
         //create new header
         let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
 
@@ -48,7 +81,7 @@ class HeaderEntryForm extends Component {
           id : this.state.count,
           active : true,
           key : 'content-type',
-          value : this.props.contentTypeHeader,
+          value : contentType,
         })
         
         this.setState({
@@ -86,7 +119,7 @@ class HeaderEntryForm extends Component {
       count: this.state.count+1,
     }, () => {
       if(cb) {
-        cb()
+        cb();
       }
     });
   }
@@ -121,9 +154,7 @@ class HeaderEntryForm extends Component {
       
 
       if (emptyHeadersCount === 0) {
-        this.addHeader(() => {
-          this.props.updateHeaders(this.state.headers);
-        });
+        this.addHeader();
       } else {
         this.props.updateHeaders(this.state.headers);
       }

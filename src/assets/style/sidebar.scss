@@ -40,7 +40,7 @@
   padding: 0 0 15px 0;
 }
 
-.modal_http-radios, .modal_select, .modal_url-input, .modal_submit {
+.modal_select, .modal_url-input, .modal_submit {
   width: 100%;
   height: 30px;
   margin: 5px 0;
@@ -48,6 +48,23 @@
   padding: 8px;
 }
 
-.modal_http-radios input {
-  
+.modal_protocol_container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 5px 0;
+}
+.modal_protocol_button {
+  border-radius: 2px;
+  background-color: teal;
+  padding: 5px;
+  width: 32%;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background: green;
+  }
+}
+.modal_protocol_button-selected {
+  background: green;
 }

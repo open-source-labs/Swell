@@ -104,11 +104,8 @@ const tbFlexSpacer = new TouchBarSpacer({
   size: 'flexible'
 })
 
-const tbLabel = new TouchBarLabel({
-  label: 'Swell Touch Bar'
-})
 
-const touchBar = new TouchBar([ tbLabel, tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbClearAllButton, tbFlexSpacer, tbRefreshButton ]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbClearAllButton, tbFlexSpacer, tbRefreshButton ]);
 
 // Keep a reference for dev mode
 let dev = false
@@ -182,9 +179,9 @@ function createWindow() {
     winHeight = mainWindow.getSize()[1]
 
     // Open the DevTools automatically if developing
-    if (dev) {
-      mainWindow.webContents.openDevTools()
-    }
+    // if (dev) {
+    //   mainWindow.webContents.openDevTools()
+    // }
   })
 
   // Emitted when the window is closed.

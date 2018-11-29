@@ -16,6 +16,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "chart.js": "^2.7.3",
+    "classnames": "^2.2.6",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "html-webpack-plugin": "^3.2.0",
@@ -41,6 +42,7 @@
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
+    "dexie": "^2.0.4",
     "electron": "^3.0.6",
     "electron-devtools-installer": "^2.2.4",
     "electron-packager": "^12.2.0",
