@@ -21,7 +21,7 @@ class ResponseTabs extends Component {
   }
 
   handleTabSelect(val) {
-    console.log("handleTabSelect");
+    // console.log("handleTabSelect");
     switch (val) {
       case "Cookies":
         this.setState({
@@ -39,7 +39,7 @@ class ResponseTabs extends Component {
         });
         break;
       default:
-        console.log(`There was an error with ${val}`);
+        // console.log(`There was an error with ${val}`);
     }
   }
 

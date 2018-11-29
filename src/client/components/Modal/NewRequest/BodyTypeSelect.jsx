@@ -8,34 +8,45 @@ class BodyTypeSelect extends Component {
   }
 
   render() {
+    // console.log(this.props)
     let NoneStyleClasses = classNames({
       'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.bodyType === 'none'
+      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'none'
     });
     let XWWWFormUrlEncodedStyleClasses = classNames({
       'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.bodyType === 'x-www-form-urlencoded'
+      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
     });
     let RawStyleClasses = classNames({
       'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.bodyType === 'raw'
+      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'raw'
     });
 
     return(
       <div className={"modal_protocol_container"}>
         <div 
           className={NoneStyleClasses} 
-          onMouseDown={() => this.props.updateBodyType('none')}>
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType : 'none',
+            bodyContent : ''
+          })}>
           none
         </div>
         <div 
           className={XWWWFormUrlEncodedStyleClasses} 
-          onMouseDown={() => this.props.updateBodyType('x-www-form-urlencoded')}>
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType : 'x-www-form-urlencoded'
+          })}>
           x-www-form-urlencoded
         </div>
         <div 
           className={RawStyleClasses} 
-          onMouseDown={() => this.props.updateBodyType('raw')}>
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType : 'raw'
+          })}>
           raw
         </div>
       </div>
@@ -44,8 +55,8 @@ class BodyTypeSelect extends Component {
 }
 
 BodyTypeSelect.propTypes = {
-  bodyType : PropTypes.string.isRequired,
-  updateBodyType : PropTypes.func.isRequired,
+  newRequestBody : PropTypes.object.isRequired,
+  setNewRequestBody : PropTypes.func.isRequired,
 };
 
 export default (BodyTypeSelect);

@@ -225,6 +225,8 @@ const httpController = {
     let parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
+    console.log(parsedFetchOptions);
+
     fetch(reqResObj.url, parsedFetchOptions)
     .then(response => {
 
@@ -258,7 +260,9 @@ const httpController = {
     
     let formattedHeaders = {};
     headers.forEach(head => {
-      formattedHeaders[head.key] = head.value
+      if (head.active) {
+        formattedHeaders[head.key] = head.value;
+      }
     })
 
     let outputObj = {
