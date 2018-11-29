@@ -59,8 +59,6 @@ class ModalNewRequest extends Component {
 
   componentDidUpdate () {
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
-      console.log('this.props.newResponseFields', this.props.newResponseFields);
-      console.log('this.state', this.state);
       if (this.props.newResponseFields.override) {
         this.props.newResponseFields.override = false;
         this.setState(this.props.newResponseFields)
@@ -203,7 +201,7 @@ class ModalNewRequest extends Component {
         };
       }
 
-      dbController.addToHistory(reqRes);
+      dbController.addToIndexDb(reqRes);
       this.props.reqResAdd(reqRes);
 
       //reset state for next request

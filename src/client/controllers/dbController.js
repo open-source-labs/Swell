@@ -4,7 +4,7 @@ import db from '../db';
 
 const dbController = {
 
-  addToHistory (reqRes) {
+  addToIndexDb (reqRes) {
     db.history.put(reqRes)
       .then(() => console.log('added to indexedDb'))
       .catch((err) => console.log('Error in addToHistory', err))
@@ -29,10 +29,10 @@ const dbController = {
           groups[date].push(hist);
           return groups;
         }, {});
-        const historyGroupsArr = Object.keys(historyGroupsObj).reverse().map(date => {
+        const historyGroupsArr = Object.keys(historyGroupsObj).map(date => {
           return {
             date: date,
-            history: historyGroupsObj[date]
+            history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
           };
         });
         store.default.dispatch(actions.getHistory(historyGroupsArr));
