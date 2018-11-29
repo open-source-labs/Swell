@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Tab from './Tab.jsx';
+import RequestTabs from './RequestTabs.jsx';
+
 
 class Request extends Component {
   constructor(props) {
@@ -15,9 +18,10 @@ class Request extends Component {
     })
 
     return(
-      <div className={'resreq-res-header'}>
-        <span className={'tertiary-title'}>{this.props.content.method} Request</span>
-        {headerArr}
+      <div className={'res_header'}>
+        <span className={'title_offset tertiary-title'}>{this.props.content.method} Request</span>
+        {/* {headerArr} */}
+        <RequestTabs />
         {/* {this.props.content.body} */}
       </div>
     )

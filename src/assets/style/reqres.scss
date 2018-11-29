@@ -98,6 +98,11 @@
     font-size: .7rem;
     font-weight: bold;
     line-height: 1;
+    &:hover {
+      background: $teal;
+      color: $litegray;
+      border: none;
+    }
   }
 }
 
@@ -155,11 +160,11 @@
   border-top: solid 1px $bordergray;
 }
 
-.resreq-res-header {
+.res_header {
+  width: 100%;
   // margin: 10px 0 0;
-  padding: 0 15px;
-  display: flex;
-  flex-direction: column;    
+  // display: flex;
+  // flex-direction: column;    
   border-bottom: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;

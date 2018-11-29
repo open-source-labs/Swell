@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import ResponseSSE from '../display/ResponseSSE.jsx';
 import ResponsePlain from '../display/ResponsePlain.jsx';
+import ResponseTabs from './../display/ResponseTabs.jsx';
 
 const mapStateToProps = store => ({
  
@@ -64,11 +65,12 @@ class ResponseContainer extends Component {
     return(
       <div className={'resreq_res-container'}>
         {/* ResponseContainer */}
-        <div>{responseContents}</div>
+        <ResponseTabs />
+        {/* <div>{responseContents}</div>
         <span className={'secondary-title highlighter'}>Events</span>
 
         <div>{headersArr}</div>
-        <span className={'secondary-title highlighter'}>Headers</span>
+        <span className={'secondary-title highlighter'}>Headers</span> */}
       </div>
     )
   }

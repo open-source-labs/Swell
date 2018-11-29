@@ -4,6 +4,7 @@ import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
+
 import WebSocketWindow from "./WebSocketWindow.jsx";
 import connectionController from '../../controllers/connectionController';
 // import 'status-indicator/styles.css'
@@ -30,13 +31,13 @@ class ReqRes extends Component {
     this.onCheckHandler = this.onCheckHandler.bind(this);
   }
 
-  onCheckHandler () {
+  onCheckHandler() {
     this.props.content.checked = !this.props.content.checked;
     this.props.reqResUpdate(this.props.content);
   }
 
-  removeReqRes () {
-    connectionController.closeReqRes(this.props.content.id);  
+  removeReqRes() {
+    connectionController.closeReqRes(this.props.content.id);
     this.props.reqResDelete(this.props.content);
   }
 
@@ -47,65 +48,63 @@ class ReqRes extends Component {
 
 
 
-    if(this.props.content.protocol === 'ws://') {
-      contentBody.push(<WebSocketWindow 
-        key={0} 
+    if (this.props.content.protocol === 'ws://') {
+      contentBody.push(<WebSocketWindow
+        key={0}
         outgoingMessages={this.props.content.request.messages}
         incomingMessages={this.props.content.response.messages}
-        id={this.props.content.id} 
-        connection={this.props.content.connection}/>)
+        id={this.props.content.id}
+        connection={this.props.content.connection} />)
     } else {
-      console.log('>>>>>>>>>> FOOO')
-      contentBody.push(<Request content={this.props.content.request} key={0}/>);
+      contentBody.push(<Request content={this.props.content.request} key={0} />);
       if (this.props.content.connection !== 'uninitialized') {
-        contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1}/>)
+        contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
       };
     }
 
     let openButtonStyles = {
-      display : (this.props.content.connection === 'uninitialized' || this.props.content.connection === 'closed' || this.props.content.connection === 'error') ? 'block' : 'none',
+      display: (this.props.content.connection === 'uninitialized' || this.props.content.connection === 'closed' || this.props.content.connection === 'error') ? 'block' : 'none',
     }
     let closeButtonStyles = {
-      display : (this.props.content.connection === 'pending' || this.props.content.connection === 'open') ? 'block' : 'none',
+      display: (this.props.content.connection === 'pending' || this.props.content.connection === 'open') ? 'block' : 'none',
     }
     let errorStyles = {
-      'display' : this.props.content.connection === 'error' ? 'block' : 'none',
-      'color' : 'red',
+      'display': this.props.content.connection === 'error' ? 'block' : 'none',
+      'color': 'red',
     }
     let http2Display = {
-      'display' : this.props.content.isHTTP2 ? 'block' : 'none',
-      'color' : 'green',
-      'border' : '1px solid black',
+      'display': this.props.content.isHTTP2 ? 'block' : 'none',
+      'color': 'green',
+      'border': '1px solid black',
     }
 
     let statusLight;
     switch (this.props.content.connection) {
-      case 'uninitialized' :
+      case 'uninitialized':
         statusLight = <status-indicator></status-indicator>
         break;
-      case 'pending' :
+      case 'pending':
         statusLight = <status-indicator intermediary pulse></status-indicator>
         break;
-      case 'open' :
+      case 'open':
         statusLight = <status-indicator positive pulse></status-indicator>
         break;
-      case 'closed' :
+      case 'closed':
         statusLight = <status-indicator negative></status-indicator>
         break;
-      case 'error' :
+      case 'error':
         statusLight = <status-indicator negative></status-indicator>
         break;
     }
 
-    return(
+    return (
       <div className={"resreq_wrap"}>
         {/* ReqRes */}
 
         <div className={'title-row'}>
           <div>
-          <span className={'primary-title'}>{this.props.content.request.method}</span>
-
-          <span className={'primary-title'}> {this.props.content.url}</span></div>
+            <span className={'primary-title'}>{this.props.content.request.method}</span>
+            <span className={'primary-title'}> {this.props.content.url}</span></div>
         </div>
 
         <div className={'nested-grid-6'}>
@@ -131,8 +130,6 @@ class ReqRes extends Component {
         <div style={http2Display}>HTTP2 connection: Requests with the same host will share a single HTTP2 connection</div>
 
         {contentBody}
-
-        
 
       </div>
     )
