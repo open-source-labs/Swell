@@ -15,19 +15,30 @@ class WWWForm extends Component {
   }
 
   componentDidMount () {
-    if (this.props.newRequestBody.bodyContent !== '') {
+    let matches = this.props.newRequestBody.bodyContent.match(/(([^(&|\n)]+=[^(&|\n)]+)&?)+/g);
+    if (matches) {
+      this.props.setNewRequestBody({
+        ...this.props.newRequestBody,
+        bodyContent : matches.join(''),
+      });
+    } else {
       this.props.setNewRequestBody({
         ...this.props.newRequestBody,
         bodyContent : '',
-      })
-      return;
+      });
+      
     }
+    // if (this.props.newRequestBody.bodyContent !== '') {
+    //   this.props.setNewRequestBody({
+    //     ...this.props.newRequestBody,
+    //     bodyContent : '',
+    //   })
+    //   return;
+    // }
     this.addFieldIfNeeded ();
   }
 
   componentDidUpdate () {
-    // console.log(this.props.newRequestBody.bodyContent);
-    // console.log(this.props.newRequestBody.bodyContent);
     //create state from the incoming string, 
     if (this.props.newRequestBody.bodyContent !== this.state.rawString) {
       //if there is only one k/v pair...
@@ -76,7 +87,6 @@ class WWWForm extends Component {
 
   updateWwwField (id, changeField, value) {
 
-    console.log('stateArr', this.state.wwwFields);
     let wwwFieldsDeepCopy = this.state.wwwFields.map(wwwField => {
       if(wwwField.id === id) {
         wwwField[changeField] = value;
@@ -84,9 +94,6 @@ class WWWForm extends Component {
       }
       return wwwField;
     });
-
-    console.log('id', id);
-    console.log('updatedFields', wwwFieldsDeepCopy);
 
     let bodyContent = wwwFieldsDeepCopy
     .filter(wwwField => wwwField.active)
@@ -97,11 +104,6 @@ class WWWForm extends Component {
       ...this.props.newRequestBody,
       bodyContent,
     });
-    // this.setState({
-    //   wwwFields : wwwFieldsDeepCopy,
-    // }, () => {
-    //   this.addFieldIfNeeded()
-    // })
   }
 
   addFieldIfNeeded () {
@@ -134,7 +136,6 @@ class WWWForm extends Component {
   }
 
   render () {
-    console.log(this.state.wwwFields)
     let wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
       return (
         <WWWField key={index} id={wwwField.id} active={wwwField.active} Key={wwwField.key} value={wwwField.value} updateCallback={this.updateWwwField} />

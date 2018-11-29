@@ -181,14 +181,17 @@ class ModalNewRequest extends Component {
         count : 0,
       });
 
+      this.props.setNewRequestBody({
+        bodyContent : '',
+        bodyType : 'none',
+        rawType : 'Text (text/plain)',
+        JSONFormatted : true,
+      });
+
       this.setState({
         method : 'GET',
         protocol : 'http://',
-        bodyType : 'none',
-        rawType : 'Text (text/plain)',
-        body : '',
         url : 'http://',
-        JSONFormatted : true,
       }, () => {
         // console.log('after clearing', this.state);
       });

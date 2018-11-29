@@ -22,6 +22,9 @@ const mapDispatchToProps = dispatch => ({
   setNewRequestHeaders : (requestHeadersObj) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },
+  setNewRequestBody : (requestBodyObj) => {
+    dispatch(actions.setNewRequestBody(requestBodyObj));
+  },
 })
 
 class History extends Component {
@@ -38,21 +41,23 @@ class History extends Component {
     const requestFieldObj = {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol : this.props.content.protocol ? this.props.content.protocol : 'http://',
-      bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
-      rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
-      body : this.props.content.request.body ? this.props.content.request.body : {},
       url : this.props.content.url ? this.props.content.url : 'http://',
-      JSONFormatted : this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
       override: true,
-      headersOverride : true,
     }
     const requestHeadersObj = {
       headersArr : this.props.content.request.headers ? this.props.content.request.headers : [],
       count : this.props.content.request.headers.length,
     }
+    const requestBodyObj = {
+      bodyContent : this.props.content.request.body ? this.props.content.request.body : '',
+      bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
+      rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
+      JSONFormatted : this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
+    }
 
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
+    this.props.setNewRequestBody(requestBodyObj);
   }
 
   deleteHistory (e) {

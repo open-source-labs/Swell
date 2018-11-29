@@ -28,7 +28,8 @@ class BodyTypeSelect extends Component {
           className={NoneStyleClasses} 
           onMouseDown={() => this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyType : 'none'
+            bodyType : 'none',
+            bodyContent : ''
           })}>
           none
         </div>
