@@ -13,6 +13,11 @@ const initialState = {
     headersArr : [],
     count : 0,
   },
+  newRequestBody : {
+    bodyContent : '',
+    bodyType,
+    rawType
+  }
 };
 
 const businessReducer = (state=initialState, action) => {
