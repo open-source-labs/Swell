@@ -14,21 +14,11 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = req
 // const player = require('play-sound')
 // const wave = new Audio('./src/assets/audio/wavebig.mpg')
 
-const { TouchBarLabel, TouchBarButton, TouchBarSpacer, TouchBarColorPicker, TouchBarSlider, TouchBarPopover } = TouchBar;
+const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-
-const tbRefreshButton = new TouchBarButton({
-  label: 'Update',
-  iconPosition: 'right',
-  // backgroundColor: '#00E28B',
-  click: () => {
-    app.relaunch()
-    app.exit(0)
-  }
-})
 
 const tbSelectAllButton = new TouchBarButton({
   label: 'Select All',

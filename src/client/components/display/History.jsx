@@ -46,7 +46,7 @@ class History extends Component {
     }
     const requestHeadersObj = {
       headersArr : this.props.content.request.headers ? this.props.content.request.headers : [],
-      count : this.props.content.request.headers.length,
+      count : this.props.content.request.headers ? this.props.content.request.headers.length : 0,
     }
     const requestBodyObj = {
       bodyContent : this.props.content.request.body ? this.props.content.request.body : '',
@@ -62,7 +62,7 @@ class History extends Component {
 
   deleteHistory (e) {
     this.props.deleteFromHistory(this.props.content);
-    dbController.deleteFromHistory(e.target.id);
+    dbController.deleteFromIndexDb(e.target.id);
   }
 
 

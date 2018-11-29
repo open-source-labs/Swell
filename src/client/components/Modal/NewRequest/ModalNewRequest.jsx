@@ -57,7 +57,6 @@ class ModalNewRequest extends Component {
   componentDidUpdate () {
     // console.log('ModalNewReqest begin cDU');
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
-      // console.log('ModalNewRequest begin diff');
       if (this.props.newResponseFields.override) {
         // console.log('ModalNewRequest store override');
         this.props.newResponseFields.override = false;
@@ -172,7 +171,7 @@ class ModalNewRequest extends Component {
         };
       }
 
-      dbController.addToHistory(reqRes);
+      dbController.addToIndexDb(reqRes);
       this.props.reqResAdd(reqRes);
 
       //reset for next request

@@ -4,14 +4,14 @@ import db from '../db';
 
 const dbController = {
 
-  addToHistory (reqRes) {
+  addToIndexDb (reqRes) {
     db.history.put(reqRes)
       .then(() => {})
       .catch((err) => console.log('Error in addToHistory', err))
 
   },
 
-  deleteFromHistory (id) {
+  deleteFromIndexDb (id) {
     db.history.delete(id)
       .then(() => {})
       .catch((err) => console.log('Error in deleteFromHistory', err))
@@ -21,7 +21,21 @@ const dbController = {
     db.table('history')
       .toArray()
       .then(history => { 
-        store.default.dispatch(actions.getHistory(history));
+        const historyGroupsObj = history.reduce((groups, hist) => {
+          const date = JSON.stringify(hist.created_at).split('T')[0].substr(1);
+          if (!groups[date]) {
+            groups[date] = [];
+          }
+          groups[date].push(hist);
+          return groups;
+        }, {});
+        const historyGroupsArr = Object.keys(historyGroupsObj).map(date => {
+          return {
+            date: date,
+            history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
+          };
+        });
+        store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
       .catch(err => console.log('Error in getHistory', err));
   }
