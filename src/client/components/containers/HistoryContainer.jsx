@@ -21,7 +21,6 @@ class HistoryContainer extends Component {
       return <History className="historyChild" content={history} key={i}></History>
     }).reverse();
 
-
     return(
       <div>
         {historyArray}

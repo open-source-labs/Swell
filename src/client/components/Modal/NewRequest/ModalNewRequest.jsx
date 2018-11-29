@@ -59,12 +59,13 @@ class ModalNewRequest extends Component {
 
   componentDidUpdate () {
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
-      console.log('this.props.newResponseFields', this.props.newResponseFields);
-      console.log('this.state', this.state);
       if (this.props.newResponseFields.override) {
         this.props.newResponseFields.override = false;
         this.setState(this.props.newResponseFields)
-      } else { this.props.setNewRequestFields(this.state) }
+      } 
+      else { 
+        this.props.setNewRequestFields(this.state) 
+      }
     }
   }
 
@@ -216,6 +217,8 @@ class ModalNewRequest extends Component {
         body : '',
         url : 'http://',
         JSONFormatted : true,
+      }, () => {
+        console.log('after clearing', this.state);
       });
     } 
     else {
@@ -225,7 +228,7 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    console.log('render',this.state);
     let HTTPMethodStyle = {
       display : this.state.protocol !== 'ws://' ? 'block' : 'none',
     }
@@ -261,7 +264,13 @@ class ModalNewRequest extends Component {
           this.onChangeHandler(e, 'url')
         }}></input>
         
-        <HeaderEntryForm stylesObj={HeaderEntryFormStyle} updateHeaders={this.updateHeaders} bodyType={this.state.bodyType} rawType={this.state.rawType}></HeaderEntryForm>
+        <HeaderEntryForm 
+          stylesObj={HeaderEntryFormStyle} 
+          headers={this.state.headers} 
+          updateHeaders={this.updateHeaders} 
+          bodyType={this.state.bodyType} 
+          rawType={this.state.rawType}
+        />
         
         <BodyEntryForm 
           stylesObj={BodyEntryFormStyle} 

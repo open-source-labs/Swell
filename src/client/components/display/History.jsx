@@ -31,7 +31,7 @@ class History extends Component {
   }
 
   handleClick () {
-    console.log('clicked', this.props.content);
+    
     const requestObj = {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol : this.props.content.protocol ? this.props.content.protocol : 'http://',
@@ -44,13 +44,10 @@ class History extends Component {
       override: true
     }
 
-    console.log(requestObj);
-    console.log(this.props.content);
     this.props.setNewRequestFields(requestObj);
   }
 
   deleteHistory (e) {
-    console.log('deleting from history', e.target);
     this.props.deleteFromHistory(this.props.content);
     dbController.deleteFromHistory(e.target.id);
   }
