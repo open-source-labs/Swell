@@ -18,7 +18,10 @@ const mapDispatchToProps = dispatch => ({
   },
   setNewRequestFields : (requestObj) => {
     dispatch(actions.setNewRequestFields(requestObj));
-  }
+  },
+  setNewRequestHeaders : (requestHeadersObj) => {
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  },
 })
 
 class History extends Component {
@@ -32,19 +35,24 @@ class History extends Component {
 
   handleClick () {
     
-    const requestObj = {
+    const requestFieldObj = {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol : this.props.content.protocol ? this.props.content.protocol : 'http://',
-      headers : this.props.content.request.headers ? this.props.content.request.headers : [],
       bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       body : this.props.content.request.body ? this.props.content.request.body : {},
       url : this.props.content.url ? this.props.content.url : 'http://',
       JSONFormatted : this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
-      override: true
+      override: true,
+      headersOverride : true,
+    }
+    const requestHeadersObj = {
+      headersArr : this.props.content.request.headers ? this.props.content.request.headers : [],
+      count : this.props.content.request.headers.length,
     }
 
-    this.props.setNewRequestFields(requestObj);
+    this.props.setNewRequestFields(requestFieldObj);
+    this.props.setNewRequestHeaders(requestHeadersObj);
   }
 
   deleteHistory (e) {

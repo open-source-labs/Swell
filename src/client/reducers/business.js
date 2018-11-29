@@ -9,6 +9,10 @@ const initialState = {
   history : [],
   warningModalMessage : "",
   newResponseFields : {},
+  newRequestHeaders : {
+    headersArr : [],
+    count : 0,
+  },
 };
 
 const businessReducer = (state=initialState, action) => {
@@ -22,6 +26,7 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         reqResArray : [],
         history
       }
@@ -38,6 +43,7 @@ const businessReducer = (state=initialState, action) => {
           return history.id !== deleteId;
         }),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray))
       }
     }
@@ -47,6 +53,7 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         reqResArray : [],
       }
     }
@@ -62,6 +69,7 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         reqResArray,
         history
       }
@@ -76,6 +84,7 @@ const businessReducer = (state=initialState, action) => {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         reqResArray : state.reqResArray.filter(reqRes => {
           return reqRes.id !== deleteId;
         })
@@ -100,6 +109,7 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         reqResArray : reqResDeepCopy,
         history : JSON.parse(JSON.stringify(state.history)),
       }
@@ -112,17 +122,31 @@ const businessReducer = (state=initialState, action) => {
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         warningModalMessage : action.payload
       }
     }
 
     case types.SET_NEW_RESPONSE_FIELDS:{
-      // console.log('action',action);
+      console.log('action',action);
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
         newResponseFields : JSON.parse(JSON.stringify(action.payload)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+      }
+    }
+
+    case types.SET_NEW_REQUEST_HEADERS:{
+      console.log('action',action);
+      return {
+        ...state,
+        history : JSON.parse(JSON.stringify(state.history)),
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+
+        newRequestHeaders : JSON.parse(JSON.stringify(action.payload)),
       }
     }
 
@@ -133,6 +157,7 @@ const businessReducer = (state=initialState, action) => {
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         currentTab : action.payload,
       }
     }

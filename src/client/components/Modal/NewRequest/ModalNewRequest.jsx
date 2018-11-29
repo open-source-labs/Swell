@@ -6,12 +6,12 @@ import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import dbController from '../../../controllers/dbController'
-import db from "../../../db";
 
 import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const mapStateToProps = store => ({
   newResponseFields : store.business.newResponseFields,
+  newRequestHeaders : store.business.newRequestHeaders,
   currentTab : store.business.currentTab,
 });
 
@@ -27,7 +27,10 @@ const mapDispatchToProps = dispatch => ({
   },
   setNewRequestFields : (requestObj) => {
     dispatch(actions.setNewRequestFields(requestObj));
-  }
+  },
+  setNewRequestHeaders : (requestHeadersObj) => {
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  },
 });
 
 class ModalNewRequest extends Component {
@@ -36,7 +39,6 @@ class ModalNewRequest extends Component {
     this.state = {
       method : 'GET',
       protocol : 'http://',
-      headers : [],
       bodyType : 'none',
       rawType : 'Text (text/plain)',
       body : '',
@@ -45,7 +47,6 @@ class ModalNewRequest extends Component {
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.updateHeaders = this.updateHeaders.bind(this);
     this.updateBody = this.updateBody.bind(this);
     this.updateBodyType = this.updateBodyType.bind(this);
     this.updateRawType = this.updateRawType.bind(this);
@@ -58,12 +59,16 @@ class ModalNewRequest extends Component {
   }
 
   componentDidUpdate () {
+    // console.log('ModalNewReqest begin cDU');
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
+      // console.log('ModalNewRequest begin diff');
       if (this.props.newResponseFields.override) {
+        // console.log('ModalNewRequest store override');
         this.props.newResponseFields.override = false;
         this.setState(this.props.newResponseFields)
       } 
       else { 
+        // console.log('ModalNewRequest state priority');
         this.props.setNewRequestFields(this.state) 
       }
     }
@@ -105,14 +110,14 @@ class ModalNewRequest extends Component {
     }
   }
 
-  updateHeaders (headers) {
-    this.setState({
-      headers: headers.filter(header => {
-        return header.active;
-      }),
-    },() => {
-    });
-  }
+  // updateHeaders (headers) {
+  //   this.setState({
+  //     headers: headers.filter(header => {
+  //       return header.active;
+  //     }),
+  //   },() => {
+  //   });
+  // }
 
   updateBody (body) {
     if (this.state.body !== body){
@@ -167,7 +172,7 @@ class ModalNewRequest extends Component {
           checkSelected : false,
           request: {
             method : this.state.method,
-            headers : this.state.headers,
+            headers : this.props.newRequestHeaders.headersArr,
             body : JSON.stringify(this.state.body),
             bodyType: this.state.bodyType,
             rawType: this.state.rawType
@@ -207,11 +212,15 @@ class ModalNewRequest extends Component {
       dbController.addToHistory(reqRes);
       this.props.reqResAdd(reqRes);
 
-      //reset state for next request
+      //reset for next request
+      this.props.setNewRequestHeaders({
+        headersArr : [],
+        count : 0,
+      });
+
       this.setState({
         method : 'GET',
         protocol : 'http://',
-        headers : [],
         bodyType : 'none',
         rawType : 'Text (text/plain)',
         body : '',
@@ -228,7 +237,8 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    console.log('render',this.state);
+    console.log('ModalNewRequest Begin Render', this.state);
+
     let HTTPMethodStyle = {
       display : this.state.protocol !== 'ws://' ? 'block' : 'none',
     }
@@ -266,8 +276,6 @@ class ModalNewRequest extends Component {
         
         <HeaderEntryForm 
           stylesObj={HeaderEntryFormStyle} 
-          headers={this.state.headers} 
-          updateHeaders={this.updateHeaders} 
           bodyType={this.state.bodyType} 
           rawType={this.state.rawType}
         />

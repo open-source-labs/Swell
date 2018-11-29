@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import * as actions from '../../../actions/actions';
 import Header from './Header.jsx';
+
+const mapStateToProps = store => ({
+  newResponseFields : store.business.newResponseFields,
+  newRequestHeaders : store.business.newRequestHeaders,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setNewRequestFields : (requestObj) => {
+    dispatch(actions.setNewRequestFields(requestObj));
+  },
+  setNewRequestHeaders : (requestHeadersObj) => {
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  },
+});
 
 class HeaderEntryForm extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      headers : [],
-      count : 1,
-    }
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
   }
 
   componentDidMount () {
-    this.addHeader ();
+    let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+    this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate () {
-    this.updateContentType();
+    if (this.props.newRequestHeaders.headersArr.length == 0) {
+      let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+      this.addHeader(headersDeepCopy);
+    }
+    this.checkContentTypeHeaderUpdate();
   }
 
-  updateContentType () {
+  checkContentTypeHeaderUpdate () {
     let contentType;
     if (this.props.bodyType === 'none'){
       contentType = '';
@@ -32,101 +49,93 @@ class HeaderEntryForm extends Component {
     }
 
     //Attempt to update header in these conditions:
-    //if there is no existing content type header 
-    //if there is a existing content type header AND if the value does not match
-    let foundHeader = this.state.headers.find(header => {
+    let foundHeader = this.props.newRequestHeaders.headersArr.find(header => {
       return header.key.toLowerCase() === 'content-type'
     });
 
-    if (!foundHeader || (foundHeader && foundHeader.value !== contentType)) {
+    //1. if there is no contentTypeHeader, but there should be
+    if (!foundHeader && contentType !== '') {
+      this.addContentTypeHeader(contentType);
+    }
+    //2. if there is a contentTypeHeader, but there SHOULDNT be
+    else if (foundHeader && contentType === '') {
+      this.removeContentTypeHeader();
+    }
+    //3. if there is a contentTypeHeader, needs to update
+    else if (foundHeader && foundHeader.value !== contentType) {
       this.updateContentTypeHeader(contentType, foundHeader);
     }
+    //Error
+    else {
+      console.warn('ERROR UPDATING CONTENT TYPE HEADER');
+    }
+  }
+
+  addContentTypeHeader (contentType){
+    let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+
+    headersDeepCopy.unshift({
+      id : this.props.newRequestHeaders.count,
+      active : true,
+      key : 'content-type',
+      value : contentType,
+    })
+    
+    this.props.setNewRequestHeaders({
+      headersArr : headersDeepCopy,
+      count : headersDeepCopy.length,
+    });
+  }
+
+  removeContentTypeHeader (){
+    let filtered = this.props.newRequestHeaders.headersArr.filter(header => {
+      return header.key !== 'content-type';
+    });
+
+    this.props.setNewRequestHeaders({
+      headersArr : filtered,
+      count : filtered.length,
+    });
   }
 
   updateContentTypeHeader (contentType, foundHeader) {
+    let filtered = this.props.newRequestHeaders.headersArr.filter(header => {
+      return header.key !== 'content-type';
+    });
 
-    //if user has selected a bodyType or rawType in body...
-    if (contentType !== '') {
-      //if found, remove it, and readd.
-      if(foundHeader) {
-        let filtered = this.state.headers.filter(header => {
-          return header.key !== 'content-type';
-        });
+    filtered.unshift({
+      id : this.props.newRequestHeaders.count,
+      active : true,
+      key : 'content-type',
+      value : contentType,
+    })
 
-        this.setState({
-          headers: filtered
-        }, () => {
-          let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
-
-          headersDeepCopy.unshift({
-            id : this.state.count,
-            active : true,
-            key : 'content-type',
-            value : contentType,
-          })
-          
-          this.setState({
-            headers: headersDeepCopy,
-            count: this.state.count+1,
-          }, () => {
-            this.props.updateHeaders(this.state.headers);
-          });
-        });
-      }
-      else {
-        //create new header
-        let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
-
-        headersDeepCopy.unshift({
-          id : this.state.count,
-          active : true,
-          key : 'content-type',
-          value : contentType,
-        })
-        
-        this.setState({
-          headers: headersDeepCopy,
-          count: this.state.count+1,
-        }, () => {
-          this.props.updateHeaders(this.state.headers);
-        });
-      }
-    }
-    //remove content-type header
-    else {
-      if(this.state.headers.find(header => header.key === 'content-type')){
-        this.setState({
-          headers: JSON.parse(JSON.stringify(this.state.headers)).filter(header => header.key != 'content-type'),
-        }, () => {
-          this.props.updateHeaders(this.state.headers);
-        });
-      }
-    }
+    this.props.setNewRequestHeaders({
+      headersArr : filtered,
+      count : filtered.length,
+    });
   }
+  
 
-  addHeader (cb) {
-    let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
-
+  addHeader (headersDeepCopy) {
     headersDeepCopy.push({
-      id : this.state.count,
+      id : this.props.newRequestHeaders.count,
       active : false,
       key : '',
       value : ''
     })
 
-    this.setState({
-      headers: headersDeepCopy,
-      count: this.state.count+1,
-    }, () => {
-      if(cb) {
-        cb();
-      }
+    this.props.setNewRequestHeaders({
+      headersArr : headersDeepCopy,
+      override : false,
+      count : headersDeepCopy.length,
     });
   }
 
   onChangeUpdateHeader(id, field, value) {
-    let headersDeepCopy = JSON.parse(JSON.stringify(this.state.headers));
+    let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
 
+    //find header to update
     let indexToBeUpdated = undefined;
     for(let i = 0; i < headersDeepCopy.length; i++) {
       if (headersDeepCopy[i].id === id) {
@@ -134,7 +143,7 @@ class HeaderEntryForm extends Component {
         break;
       }
     }
-
+    //update
     headersDeepCopy[indexToBeUpdated][field] = value;
 
     //also switch checkbox if they are typing
@@ -142,29 +151,31 @@ class HeaderEntryForm extends Component {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
     
-    this.setState({
-      headers: headersDeepCopy,
-    }, () => {
+    //determine if new header needs to be added
+    let emptyHeadersCount = headersDeepCopy.map(header => {
+      return (!header.key && !header.value) ? 1 : 0
+    }).reduce((acc, cur) => {
+      return acc + cur;
+    });
 
-      let emptyHeadersCount = this.state.headers.map(header => {
-        return (!header.key && !header.value) ? 1 : 0
-      }).reduce((acc, cur) => {
-        return acc + cur;
+    //depending on if headers is empty, update store, or first add a new header
+    if (emptyHeadersCount === 0) {
+      this.addHeader(headersDeepCopy);
+    } 
+    else {
+      this.props.setNewRequestHeaders({
+        headersArr : headersDeepCopy,
+        count : headersDeepCopy.length,
       });
-      
-
-      if (emptyHeadersCount === 0) {
-        this.addHeader();
-      } else {
-        this.props.updateHeaders(this.state.headers);
-      }
-    })
+    }
   }
 
   render() {
-    let headersArr = this.state.headers.map((header, index) => {
+    // console.log('HeaderEntryForm Begin Render', this.state.headers);
+    let headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => {
       return (<Header content={header} changeHandler={this.onChangeUpdateHeader} key={index} Key={header.key} value={header.value}></Header>)
     });
+    
     return(
       <div style={this.props.stylesObj}>
         {headersArr}
@@ -173,4 +184,7 @@ class HeaderEntryForm extends Component {
   }
 }
 
-export default (HeaderEntryForm);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderEntryForm);
