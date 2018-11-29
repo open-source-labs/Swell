@@ -4,14 +4,11 @@ import * as actions from '../../../actions/actions';
 import Header from './Header.jsx';
 
 const mapStateToProps = store => ({
-  newResponseFields : store.business.newResponseFields,
   newRequestHeaders : store.business.newRequestHeaders,
+  newRequestBody : store.business.newRequestBody,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setNewRequestFields : (requestObj) => {
-    dispatch(actions.setNewRequestFields(requestObj));
-  },
   setNewRequestHeaders : (requestHeadersObj) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },
@@ -38,14 +35,14 @@ class HeaderEntryForm extends Component {
 
   checkContentTypeHeaderUpdate () {
     let contentType;
-    if (this.props.bodyType === 'none'){
+    if (this.props.newRequestBody.bodyType === 'none'){
       contentType = '';
     }
-    else if (this.props.bodyType === 'x-www-form-urlencoded'){
+    else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'){
       contentType = 'x-www-form-urlencoded';
     }
     else {
-      contentType = this.props.rawType;
+      contentType = this.props.newRequestBody.rawType;
     }
 
     //Attempt to update header in these conditions:
@@ -65,10 +62,7 @@ class HeaderEntryForm extends Component {
     else if (foundHeader && foundHeader.value !== contentType) {
       this.updateContentTypeHeader(contentType, foundHeader);
     }
-    //Error
-    else {
-      console.warn('ERROR UPDATING CONTENT TYPE HEADER');
-    }
+    
   }
 
   addContentTypeHeader (contentType){

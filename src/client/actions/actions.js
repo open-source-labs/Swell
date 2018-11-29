@@ -47,6 +47,11 @@ export const setNewRequestHeaders = (headers) => ({
   payload : headers
 });
 
+export const setNewRequestBody = (body) => ({
+  type: types.SET_NEW_REQUEST_BODY,
+  payload : body
+});
+
 export const setCurrentTab = (tab) => ({
   type: types.SET_CURRENT_TAB,
   payload : tab
