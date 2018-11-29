@@ -9,6 +9,16 @@ const initialState = {
   history : [],
   warningModalMessage : "",
   newResponseFields : {},
+  newRequestHeaders : {
+    headersArr : [],
+    count : 0,
+  },
+  newRequestBody : {
+    bodyContent : '',
+    bodyType : 'none',
+    rawType : 'Text (text/plain)',
+    JSONFormatted : true,
+  }
 };
 
 const businessReducer = (state=initialState, action) => {
@@ -17,13 +27,14 @@ const businessReducer = (state=initialState, action) => {
     case types.GET_HISTORY:{
       console.log('action',action);
 
-      let history = action.payload;
-
       return {
         ...state,
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
         reqResArray : [],
-        history
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
+        history : action.payload
       }
     }
 
@@ -40,9 +51,12 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
-        history: newHistory,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray))
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+
+        history: newHistory, 
       }
     }
 
@@ -51,6 +65,9 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
         reqResArray : [],
       }
     }
@@ -70,6 +87,9 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
         reqResArray,
         history : newHistory
       }
@@ -84,6 +104,9 @@ const businessReducer = (state=initialState, action) => {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
         reqResArray : state.reqResArray.filter(reqRes => {
           return reqRes.id !== deleteId;
         })
@@ -108,8 +131,11 @@ const businessReducer = (state=initialState, action) => {
       return {
         ...state,
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
-        reqResArray : reqResDeepCopy,
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
         history : JSON.parse(JSON.stringify(state.history)),
+
+        reqResArray : reqResDeepCopy,
       }
     }
 
@@ -120,17 +146,50 @@ const businessReducer = (state=initialState, action) => {
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
         warningModalMessage : action.payload
       }
     }
 
     case types.SET_NEW_RESPONSE_FIELDS:{
-      // console.log('action',action);
+      console.log('action',action);
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
         newResponseFields : JSON.parse(JSON.stringify(action.payload)),
+      }
+    }
+
+    case types.SET_NEW_REQUEST_HEADERS:{
+      console.log('action',action);
+      return {
+        ...state,
+        history : JSON.parse(JSON.stringify(state.history)),
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
+        newRequestHeaders : JSON.parse(JSON.stringify(action.payload)),
+      }
+    }
+
+    case types.SET_NEW_REQUEST_BODY:{
+      console.log('action',action);
+
+      return {
+        ...state,
+        history : JSON.parse(JSON.stringify(state.history)),
+        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+
+        newRequestBody : JSON.parse(JSON.stringify(action.payload)),
       }
     }
 
@@ -141,6 +200,9 @@ const businessReducer = (state=initialState, action) => {
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
         newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
         currentTab : action.payload,
       }
     }

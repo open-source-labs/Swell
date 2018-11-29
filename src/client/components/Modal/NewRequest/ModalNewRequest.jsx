@@ -6,12 +6,13 @@ import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import dbController from '../../../controllers/dbController'
-import db from "../../../db";
 
 import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const mapStateToProps = store => ({
   newResponseFields : store.business.newResponseFields,
+  newRequestHeaders : store.business.newRequestHeaders,
+  newRequestBody : store.business.newRequestBody,
   currentTab : store.business.currentTab,
 });
 
@@ -27,7 +28,13 @@ const mapDispatchToProps = dispatch => ({
   },
   setNewRequestFields : (requestObj) => {
     dispatch(actions.setNewRequestFields(requestObj));
-  }
+  },
+  setNewRequestHeaders : (requestHeadersObj) => {
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  },
+  setNewRequestBody : (requestBodyObj) => {
+    dispatch(actions.setNewRequestBody(requestBodyObj));
+  },
 });
 
 class ModalNewRequest extends Component {
@@ -36,20 +43,10 @@ class ModalNewRequest extends Component {
     this.state = {
       method : 'GET',
       protocol : 'http://',
-      headers : [],
-      bodyType : 'none',
-      rawType : 'Text (text/plain)',
-      body : '',
       url : 'http://',
-      JSONFormatted : true,
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.updateHeaders = this.updateHeaders.bind(this);
-    this.updateBody = this.updateBody.bind(this);
-    this.updateBodyType = this.updateBodyType.bind(this);
-    this.updateRawType = this.updateRawType.bind(this);
-    this.updateJSONFormatted = this.updateJSONFormatted.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
@@ -58,66 +55,39 @@ class ModalNewRequest extends Component {
   }
 
   componentDidUpdate () {
+    // console.log('ModalNewReqest begin cDU');
     if(JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)){
       if (this.props.newResponseFields.override) {
+        // console.log('ModalNewRequest store override');
         this.props.newResponseFields.override = false;
         this.setState(this.props.newResponseFields)
-      } else { this.props.setNewRequestFields(this.state) }
+      } 
+      else { 
+        // console.log('ModalNewRequest state priority');
+        this.props.setNewRequestFields(this.state) 
+      }
     }
   }
 
   onChangeHandler(e, property) {
+    let value = e.target.value;
     this.setState({
-      [property]: property === 'url' ? this.state.protocol + e.target.value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '') : e.target.value
+      [property]: property === 'url' 
+      ? this.state.protocol + e.target.value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '') 
+      : e.target.value,
     }, () => {
       if(property === 'protocol') {
         this.setState ({
           'url' : this.state.protocol + this.state.url.replace(/(h?t?t?p?s?|w?s?):\/?\/?/, ''),
         });
+      } else if (property === 'method' && value === 'GET') {
+        this.props.setNewRequestBody ({
+          ...this.props.newRequestBody,
+          bodyContent : '',
+        })
       }
     }) 
   };
-  
-  updateBodyType(bodyType) {
-    if(this.state.bodyType !== bodyType){
-      this.setState({
-        bodyType : bodyType,
-      });
-    }
-  }
-
-  updateRawType(rawType) {
-    if(this.state.rawType !== rawType){
-      this.setState({
-        rawType : rawType,
-      });
-    }
-  }
-
-  updateJSONFormatted(isJSONFormatted) {
-    if(this.state.JSONFormatted !== isJSONFormatted){
-      this.setState({
-        JSONFormatted : isJSONFormatted,
-      });
-    }
-  }
-
-  updateHeaders (headers) {
-    this.setState({
-      headers: headers.filter(header => {
-        return header.active;
-      }),
-    },() => {
-    });
-  }
-
-  updateBody (body) {
-    if (this.state.body !== body){
-      this.setState({
-        body,
-      });
-    }
-  }
 
   requestValidationCheck () {
     let validationMessage = undefined;
@@ -126,7 +96,7 @@ class ModalNewRequest extends Component {
     if(this.state.url === 'http://' || this.state.url === 'https://' || this.state.url === 'ws://') {
       validationMessage = "Please enter a valid URI.";
     }
-    else if (!this.state.JSONProperlyFormatted && this.state.contentTypeHeader === 'application/json'){
+    else if (!this.props.newRequestBody.JSONFormatted && this.state.contentTypeHeader === 'application/json'){
       validationMessage = "Please fix JSON body formatting errors.";
     }
     return validationMessage ? validationMessage : true;
@@ -164,10 +134,10 @@ class ModalNewRequest extends Component {
           checkSelected : false,
           request: {
             method : this.state.method,
-            headers : this.state.headers,
-            body : JSON.stringify(this.state.body),
-            bodyType: this.state.bodyType,
-            rawType: this.state.rawType
+            headers : this.props.newRequestHeaders.headersArr,
+            body : this.props.newRequestBody.bodyContent,
+            bodyType: this.props.newRequestBody.bodyType,
+            rawType: this.props.newRequestBody.rawType
           },
           response : {
             headers : null,
@@ -204,16 +174,25 @@ class ModalNewRequest extends Component {
       dbController.addToIndexDb(reqRes);
       this.props.reqResAdd(reqRes);
 
-      //reset state for next request
+      //reset for next request
+      this.props.setNewRequestHeaders({
+        headersArr : [],
+        count : 0,
+      });
+
+      this.props.setNewRequestBody({
+        bodyContent : '',
+        bodyType : 'none',
+        rawType : 'Text (text/plain)',
+        JSONFormatted : true,
+      });
+
       this.setState({
         method : 'GET',
         protocol : 'http://',
-        headers : [],
-        bodyType : 'none',
-        rawType : 'Text (text/plain)',
-        body : '',
         url : 'http://',
-        JSONFormatted : true,
+      }, () => {
+        // console.log('after clearing', this.state);
       });
     } 
     else {
@@ -223,7 +202,8 @@ class ModalNewRequest extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    // console.log('ModalNewRequest Begin Render', this.state);
+
     let HTTPMethodStyle = {
       display : this.state.protocol !== 'ws://' ? 'block' : 'none',
     }
@@ -259,18 +239,12 @@ class ModalNewRequest extends Component {
           this.onChangeHandler(e, 'url')
         }}></input>
         
-        <HeaderEntryForm stylesObj={HeaderEntryFormStyle} updateHeaders={this.updateHeaders} bodyType={this.state.bodyType} rawType={this.state.rawType}></HeaderEntryForm>
+        <HeaderEntryForm 
+          stylesObj={HeaderEntryFormStyle} 
+        />
         
         <BodyEntryForm 
           stylesObj={BodyEntryFormStyle} 
-          bodyContent={this.state.body}
-          updateBodyContent={this.updateBody} 
-          bodyType={this.state.bodyType}
-          updateBodyType={this.updateBodyType}
-          rawType={this.state.rawType}
-          updateRawType={this.updateRawType}
-          JSONFormatted={this.state.JSONFormatted}
-          updateJSONFormatted={this.updateJSONFormatted}
         />
 
         <button className={'modal_submit'} onClick={this.addNewRequest}>Add New Request</button>

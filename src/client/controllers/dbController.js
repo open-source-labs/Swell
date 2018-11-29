@@ -6,14 +6,14 @@ const dbController = {
 
   addToIndexDb (reqRes) {
     db.history.put(reqRes)
-      .then(() => console.log('added to indexedDb'))
+      .then(() => {})
       .catch((err) => console.log('Error in addToHistory', err))
 
   },
 
   deleteFromIndexDb (id) {
     db.history.delete(id)
-      .then(() => console.log('deleted from indexedDb'))
+      .then(() => {})
       .catch((err) => console.log('Error in deleteFromHistory', err))
   },
 
