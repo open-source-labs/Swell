@@ -6,18 +6,22 @@ class SSERow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(e) {
     let expandable = e.target.closest('.response_sse').getElementsByClassName('data-inner').item(0);
     let expandBtn = e.target;
 
+    console.log('expandBtn', expandBtn)
+    console.log('expandable', expandable)
+    
     expandBtn.classList.toggle('expand-active')
     expandable.classList.toggle('expanded');
   }
 
-
   render() {
+    console.log('>>>>', this.props)
     let contentBody;
     try {
       let json = JSON.parse(this.props.content.data);
@@ -26,7 +30,7 @@ class SSERow extends Component {
       contentBody = this.props.content.data;
     }
 
-    return(
+    return (
       <div className={'response_sse'}>
         <div className={'nested-grid-4'}>
           <div>
@@ -40,22 +44,19 @@ class SSERow extends Component {
           <div>
             <span className={'tertiary-title'}>Time Received {this.props.content.timeReceived}</span>
           </div>
-
           <div>
-            <span onClick={(e) => this.handleClick(e)} className={'tertiary-title expand-btn'}></span>
-            
-          </div>
 
+            <span className={'tertiary-title expand-btn'} onClick={(e) => this.handleClick(e)} ></span>
+          </div>
         </div>
 
         <div className={'title-row data-inner'}>
-          <div>
-            <span className={'tertiary-title'}>
-              Data {contentBody}
-            </span>
-          </div>
+            <div>
+              <span className={'tertiary-title'}>
+                Data {contentBody}
+              </span>
+            </div>
         </div>
-
       </div>
     )
   }
