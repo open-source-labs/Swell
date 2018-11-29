@@ -24,6 +24,7 @@ module.exports = {
 		"react/no-did-update-set-state": 0,
 		"no-restricted-syntax": 0,
 		"import/no-unresolved": 0,
+		"react/no-unused-state": 0,
 		"no-shadow": 0,
 		"brace-style": [2, "stroustrup"],
 		"react/sort-comp": [2, {

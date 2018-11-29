@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import ReqResCtrl from "../ReqResCtrl";
-import * as store from "../../store";
-import * as actions from "../../actions/actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import ReqResCtrl from '../ReqResCtrl';
+import * as store from '../../store';
+import * as actions from '../../actions/actions';
 
 class ToggleAllBtn extends Component {
   constructor(props) {
@@ -10,39 +10,34 @@ class ToggleAllBtn extends Component {
     this.state = {
       isClosed: true,
       prevContentBody: [],
-      abortController: {}
+      abortController: {},
     };
     this.handleToggleClick = this.handleToggleClick.bind(this);
   }
 
   componentDidMount(props) {
     this.setState({
-      abortController: new AbortController()
+      abortController: new AbortController(),
     });
   }
 
   handleToggleClick(e) {
     if (this.state.isClosed) {
       console.log('opening all');
-      let abortCtrlArray = ReqResCtrl.abortControllsArray;
-      console.log("abortCtrlArray>>>>>>", ReqResCtrl.abortControllsArray);
+      const abortCtrlArray = ReqResCtrl.abortControllsArray;
+      console.log('abortCtrlArray>>>>>>', ReqResCtrl.abortControllsArray);
       // console.log('/////', e)
-      const reqResContainer = document.querySelector("#reqResContainer");
+      const reqResContainer = document.querySelector('#reqResContainer');
 
       if (reqResContainer.hasChildNodes()) {
         // console.log('has children')
         // let children = reqResContainer.querySelectorAll('.resreq_component');
-        let children = Array.prototype.slice.call(
-          document.querySelectorAll(".resreq_component")
-        );
+        const children = Array.prototype.slice.call(document.querySelectorAll('.resreq_component'));
 
         for (let i = 0; i < children.length; i++) {
           // console.log('looping...')
           // console.log('children...', children[i].querySelector("button").id);
-          ReqResCtrl.toggleOpenEndPoint(
-            children[i].querySelector("button").id,
-            abortCtrlArray[i]
-          );
+          ReqResCtrl.toggleOpenEndPoint(children[i].querySelector('button').id, abortCtrlArray[i]);
         }
       }
       // for (let resReqObj of resReqArr) {
@@ -50,20 +45,21 @@ class ToggleAllBtn extends Component {
       // }
 
       this.setState({
-        isClosed: !this.state.isClosed
+        isClosed: !this.state.isClosed,
       });
-    } else {
-      console.log("close toggle all");
-      ReqResCtrl.abortControllsArray.forEach( abortObject =>{
+    }
+    else {
+      console.log('close toggle all');
+      ReqResCtrl.abortControllsArray.forEach((abortObject) => {
         abortObject.abort();
-      })
+      });
     }
   }
 
   render() {
     return (
       <button onClick={this.handleToggleClick}>
-        {this.state.isClosed ? "OPEN ALL" : "CLOSE ALL"}
+        {this.state.isClosed ? 'OPEN ALL' : 'CLOSE ALL'}
       </button>
     );
   }

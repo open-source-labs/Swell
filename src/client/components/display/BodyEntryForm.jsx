@@ -21,7 +21,7 @@ class BodyEntryForm extends Component {
   componentDidMount() {}
 
   bodyTypeChangeHandler(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState(
       {
         bodyType: value,
@@ -29,9 +29,11 @@ class BodyEntryForm extends Component {
       () => {
         if (value === 'x-www-form-urlencoded') {
           this.props.updateContentTypeHeader(value);
-        } else if (value === 'raw') {
+        }
+        else if (value === 'raw') {
           this.props.updateContentTypeHeader('text/plain');
-        } else if (value === 'none') {
+        }
+        else if (value === 'none') {
           this.props.updateContentTypeHeader(undefined);
         }
       },
@@ -39,7 +41,7 @@ class BodyEntryForm extends Component {
   }
 
   rawTypeChangeHandler(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState(
       {
         rawType: value,
@@ -71,6 +73,8 @@ class BodyEntryForm extends Component {
             contentTypeHeader = 'text/html';
             break;
           }
+          default:
+            console.log('Invalid ContentType for Header');
         }
         this.props.updateContentTypeHeader(contentTypeHeader);
       },
@@ -96,11 +100,11 @@ class BodyEntryForm extends Component {
         <div onChange={e => this.bodyTypeChangeHandler(e)}>
           Body Type:
           <input name="bodyType" type="radio" value="none" defaultChecked />
-none
+          none
           <input name="bodyType" type="radio" value="x-www-form-urlencoded" />
-x-www-form-urlencoded
+          x-www-form-urlencoded
           <input name="bodyType" type="radio" value="raw" />
-raw
+          raw
         </div>
 
         <select onChange={e => this.rawTypeChangeHandler(e)} style={rawTypeStyles}>

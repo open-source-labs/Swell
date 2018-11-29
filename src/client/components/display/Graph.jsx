@@ -18,12 +18,12 @@ class Graph extends Component {
     super(props);
     // linechart cannot be stored in state...
     // as there is no way to make a duplicate of it due to circular structure
-    (this.state = {
+    this.state = {
       // use the event counter as a 'hack' to force rerenders
       eventCounter: 0,
       currentTime: null,
       timeSet: false,
-    });
+    };
   }
 
   componentDidMount() {
@@ -70,7 +70,8 @@ class Graph extends Component {
       this.setState({
         timeSet: false,
       });
-    } else if (openRequestCount >= 1 && !this.state.timeSet) {
+    }
+    else if (openRequestCount >= 1 && !this.state.timeSet) {
       // console.log('Reset time and graph')
       this.lineChart.data.datasets = [];
       this.lineChart.update();
@@ -85,7 +86,8 @@ class Graph extends Component {
           this.updateGraphWithStoreData();
         },
       );
-    } else {
+    }
+    else {
       this.updateGraphWithStoreData();
     }
   }

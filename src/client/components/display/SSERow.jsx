@@ -9,6 +9,7 @@ class SSERow extends Component {
   }
 
   static handleClick(e) {
+    console.log('events obj >>>>>>>>>>>>>>>>>>', e);
     const expandable = e.target
       .closest('.response_sse')
       .getElementsByClassName('data-inner')
@@ -34,14 +35,14 @@ class SSERow extends Component {
         <div className="nested-grid-4">
           <div>
             <span className="tertiary-title">
-ID
+              ID
               {this.props.content.id}
             </span>
           </div>
 
           <div>
             <span className="tertiary-title">
-Event
+              Event
               {this.props.content.event}
             </span>
           </div>
@@ -49,20 +50,19 @@ Event
           <div>
             <span className="tertiary-title">
               Time Received
-              {' '}
               {this.props.content.timeReceived}
             </span>
           </div>
 
           <div>
-            <span onClick={e => this.handleClick(e)} className="tertiary-title expand-btn" />
+            <span onClick={(e) => {this.handleClick(e)}} className="tertiary-title expand-btn" />
           </div>
         </div>
 
         <div className="title-row data-inner">
           <div>
             <span className="tertiary-title">
-Data
+              Data
               {contentBody}
             </span>
           </div>
