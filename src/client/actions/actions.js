@@ -3,6 +3,16 @@ import * as types from './actionTypes';
 import ReqResCtrl from '../controllers/connectionController';
 
 // BUSINESS LOGIC ACTIONS
+export const getHistory = history => ({
+  type: types.GET_HISTORY,
+  payload: history,
+});
+
+export const deleteFromHistory = reqRes => ({
+  type: types.DELETE_HISTORY,
+  payload: reqRes,
+});
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
@@ -27,9 +37,9 @@ export const setWarningModalMessage = message => ({
   payload: message,
 });
 
-export const setNewResponseFields = responseObj => ({
+export const setNewRequestFields = requestObj => ({
   type: types.SET_NEW_RESPONSE_FIELDS,
-  payload: responseObj,
+  payload: requestObj,
 });
 
 export const setCurrentTab = tab => ({
@@ -45,7 +55,6 @@ export const showModal = () => ({
 export const hideModal = () => ({
   type: types.HIDE_MODAL,
 });
-
 
 export const setModalDisplay = modalDisplay => ({
   type: types.SET_MODAL_DISPLAY,

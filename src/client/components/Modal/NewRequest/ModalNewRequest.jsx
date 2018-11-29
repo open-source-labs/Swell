@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import uuid from 'uuid/v4';
 
 import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from './BodyEntryForm.jsx';
+import dbController from '../../../controllers/dbController';
+import db from '../../../db';
+
 import ProtocolSelect from './ProtocolSelect.jsx';
 
 const mapStateToProps = store => ({
@@ -21,8 +25,8 @@ const mapDispatchToProps = dispatch => ({
   setModalDisplay: (modalDisplay) => {
     dispatch(actions.setModalDisplay(modalDisplay));
   },
-  setNewResponseFields: (responseObj) => {
-    dispatch(actions.setNewResponseFields(responseObj));
+  setNewRequestFields: (requestObj) => {
+    dispatch(actions.setNewRequestFields(requestObj));
   },
 });
 
@@ -55,36 +59,14 @@ class ModalNewRequest extends Component {
 
   componentDidUpdate() {
     if (JSON.stringify(this.state) !== JSON.stringify(this.props.newResponseFields)) {
-      this.props.setNewResponseFields(this.state);
-    }
-
-    if (this.state.method === 'GET' && this.state.contentTypeHeader !== '') {
-      this.setState({
-        contentTypeHeader: '',
-      });
-    }
-    if (this.state.contentTypeHeader === 'application/json') {
-      try {
-        const tryParse = JSON.parse(JSON.stringify(this.state.body));
-
-        if (this.state.JSONProperlyFormatted !== true) {
-          this.setState(
-            {
-              JSONProperlyFormatted: true,
-            },
-            () => {},
-          );
-        }
+      console.log('this.props.newResponseFields', this.props.newResponseFields);
+      console.log('this.state', this.state);
+      if (this.props.newResponseFields.override) {
+        this.props.newResponseFields.override = false;
+        this.setState(this.props.newResponseFields);
       }
-      catch (error) {
-        if (this.state.JSONProperlyFormatted !== false) {
-          this.setState(
-            {
-              JSONProperlyFormatted: false,
-            },
-            () => {},
-          );
-        }
+      else {
+        this.props.setNewRequestFields(this.state);
       }
     }
   }
@@ -181,18 +163,18 @@ class ModalNewRequest extends Component {
           URIWithoutProtocol += '/';
         }
         const host = this.state.protocol + URIWithoutProtocol.split('/')[0];
-        let path = `/${
-          URIWithoutProtocol.split('/')
-            .splice(1)
-            .join('/')
-            .replace(/\/{2,}/g, '/')}`;
+        let path = `/${URIWithoutProtocol.split('/')
+          .splice(1)
+          .join('/')
+          .replace(/\/{2,}/g, '/')}`;
         if (path.charAt(path.length - 1) === '/' && path.length > 1) {
           path = path.substring(0, path.length - 1);
         }
         path = path.replace(/https?:\//g, 'http://');
 
         reqRes = {
-          id: Math.floor(Math.random() * 100000),
+          id: uuid(), // Math.floor(Math.random() * 100000),
+          created_at: new Date(),
           protocol: this.state.protocol,
           host,
           path,
@@ -206,6 +188,8 @@ class ModalNewRequest extends Component {
             method: this.state.method,
             headers: this.state.headers,
             body: JSON.stringify(this.state.body),
+            bodyType: this.state.bodyType,
+            rawType: this.state.rawType,
           },
           response: {
             headers: null,
@@ -218,7 +202,8 @@ class ModalNewRequest extends Component {
       // WEBSOCKET REQUESTS
       else {
         reqRes = {
-          id: Math.floor(Math.random() * 100000),
+          id: uuid(), // Math.floor(Math.random() * 100000),
+          created_at: new Date(),
           protocol: this.state.protocol,
           url: this.state.url,
           timeSent: null,
@@ -227,6 +212,7 @@ class ModalNewRequest extends Component {
           connectionType: 'WebSocket',
           checkSelected: false,
           request: {
+            method: 'WS',
             messages: [],
           },
           response: {
@@ -237,6 +223,7 @@ class ModalNewRequest extends Component {
         };
       }
 
+      dbController.addToHistory(reqRes);
       this.props.reqResAdd(reqRes);
 
       // reset state for next request
@@ -248,7 +235,7 @@ class ModalNewRequest extends Component {
         rawType: 'Text (text/plain)',
         body: '',
         url: 'http://',
-        JSONProperlyFormatted: true,
+        JSONFormatted: true,
       });
     }
     else {

@@ -6,6 +6,8 @@ import * as actions from '../../actions/actions';
 import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/connectionController';
 import SidebarContainer from './SidebarContainer.jsx';
+import dbController from '../../controllers/dbController'
+import db from '../../db';
 
 const mapStateToProps = store => ({
   store,
@@ -26,6 +28,7 @@ class App extends Component {
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
+    dbController.getHistory();
   }
 
   render() {

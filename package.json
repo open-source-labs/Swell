@@ -50,6 +50,7 @@
     "concurrently": "^4.0.1",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
+    "dexie": "^2.0.4",
     "electron": "^3.0.6",
     "electron-packager": "^12.2.0",
     "eslint": "^5.9.0",
