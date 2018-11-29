@@ -8,8 +8,7 @@ class SSERow extends Component {
     this.state = {};
   }
 
-  static handleClick(e) {
-    console.log('events obj >>>>>>>>>>>>>>>>>>', e);
+  handleClick(e) {
     const expandable = e.target
       .closest('.response_sse')
       .getElementsByClassName('data-inner')
@@ -18,6 +17,19 @@ class SSERow extends Component {
 
     expandBtn.classList.toggle('expand-active');
     expandable.classList.toggle('expanded');
+  }
+
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      const expandable = e.target
+        .closest('.response_sse')
+        .getElementsByClassName('data-inner')
+        .item(0);
+      const expandBtn = e.target;
+
+      expandBtn.classList.toggle('expand-active');
+      expandable.classList.toggle('expanded');
+    }
   }
 
   render() {
@@ -55,7 +67,13 @@ class SSERow extends Component {
           </div>
 
           <div>
-            <span onClick={(e) => {this.handleClick(e)}} className="tertiary-title expand-btn" />
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={e => this.handleClick(e)}
+              onKeyPress={this.handleKeyPress}
+              className="tertiary-title expand-btn"
+            />
           </div>
         </div>
 

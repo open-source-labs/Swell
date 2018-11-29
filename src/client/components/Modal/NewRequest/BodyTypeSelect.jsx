@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+
 const classNames = require('classnames');
 
 class BodyTypeSelect extends Component {
@@ -8,44 +9,43 @@ class BodyTypeSelect extends Component {
   }
 
   render() {
-    let NoneStyleClasses = classNames({
-      'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.bodyType === 'none'
+    const NoneStyleClasses = classNames({
+      modal_protocol_button: true,
+      'modal_protocol_button-selected': this.props.bodyType === 'none',
     });
-    let XWWWFormUrlEncodedStyleClasses = classNames({
-      'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.bodyType === 'x-www-form-urlencoded'
+    const XWWWFormUrlEncodedStyleClasses = classNames({
+      modal_protocol_button: true,
+      'modal_protocol_button-selected': this.props.bodyType === 'x-www-form-urlencoded',
     });
-    let RawStyleClasses = classNames({
-      'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.bodyType === 'raw'
+    const RawStyleClasses = classNames({
+      modal_protocol_button: true,
+      'modal_protocol_button-selected': this.props.bodyType === 'raw',
     });
 
-    return(
-      <div className={"modal_protocol_container"}>
-        <div 
-          className={NoneStyleClasses} 
-          onMouseDown={() => this.props.updateBodyType('none')}>
+    return (
+      <div className="modal_protocol_container">
+        <div role="button" tabIndex={0} className={NoneStyleClasses} onMouseDown={() => this.props.updateBodyType('none')}>
           none
         </div>
-        <div 
-          className={XWWWFormUrlEncodedStyleClasses} 
-          onMouseDown={() => this.props.updateBodyType('x-www-form-urlencoded')}>
+        <div
+          role="button"
+          tabIndex={0}
+          className={XWWWFormUrlEncodedStyleClasses}
+          onMouseDown={() => this.props.updateBodyType('x-www-form-urlencoded')}
+        >
           x-www-form-urlencoded
         </div>
-        <div 
-          className={RawStyleClasses} 
-          onMouseDown={() => this.props.updateBodyType('raw')}>
+        <div role="button" tabIndex={0} className={RawStyleClasses} onMouseDown={() => this.props.updateBodyType('raw')}>
           raw
         </div>
       </div>
-    )
+    );
   }
 }
 
 BodyTypeSelect.propTypes = {
-  bodyType : PropTypes.string.isRequired,
-  updateBodyType : PropTypes.func.isRequired,
+  bodyType: PropTypes.string.isRequired,
+  updateBodyType: PropTypes.func.isRequired,
 };
 
-export default (BodyTypeSelect);
+export default BodyTypeSelect;
