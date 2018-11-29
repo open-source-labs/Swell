@@ -179,9 +179,9 @@ function createWindow() {
     winHeight = mainWindow.getSize()[1]
 
     // Open the DevTools automatically if developing
-    if (dev) {
-      mainWindow.webContents.openDevTools()
-    }
+    // if (dev) {
+    //   mainWindow.webContents.openDevTools()
+    // }
   })
 
   // Emitted when the window is closed.
