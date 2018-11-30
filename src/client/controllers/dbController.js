@@ -1,6 +1,7 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import db from '../db';
+import format from 'date-fns/format';
 
 const dbController = {
 
@@ -22,7 +23,7 @@ const dbController = {
       .toArray()
       .then(history => { 
         const historyGroupsObj = history.reduce((groups, hist) => {
-          const date = JSON.stringify(hist.created_at).split('T')[0].substr(1);
+          const date = format(hist.created_at, 'MM/DD/YYYY')
           if (!groups[date]) {
             groups[date] = [];
           }
@@ -35,6 +36,7 @@ const dbController = {
             history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
           };
         });
+        console.log('historyGroupsArr', historyGroupsArr)
         store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
       .catch(err => console.log('Error in getHistory', err));
