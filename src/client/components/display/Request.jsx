@@ -8,7 +8,6 @@ class Request extends Component {
     super(props);
   }
 
-
   render() {
     let headerArr = this.props.content.headers.map((header, index) => {
       return (<div key={index} style={{'display' : 'flex'}}>
