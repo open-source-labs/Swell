@@ -23,13 +23,12 @@ class HistoryDate extends Component {
 
   render() {
     let current = this.props.history.find(a => a.date === this.props.content.date);
-    // let dateArr = current.date.split('-');
-    // let date = new Date(dateArr[0], dateArr[1]-1, dateArr[2]);
     let date = parse(current.date);
+    
     if (isToday(date)) { date = 'Today' }
     else if (isYesterday(date)) { date = 'Yesterday' }
-    else { date = format(date, 'ddd, MMM D, YYYY')}
-    console.log(date);
+    else { date = format(date, 'ddd, MMM D, YYYY') }
+
     let histArray = current.history.map((history, i) => {
       return <History className="historyChild" content={history} key={i}></History>
     })

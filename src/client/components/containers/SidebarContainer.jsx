@@ -14,7 +14,7 @@ class SidebarContainer extends Component {
       <div className={'sidebar_modal-console'}>
 
         <ModalContainer/>
-        <HistoryContainer className='historyContainer' />
+        <HistoryContainer />
       </div>
 
     )
