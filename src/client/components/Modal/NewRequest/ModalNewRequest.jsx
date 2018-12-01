@@ -101,7 +101,7 @@ class ModalNewRequest extends Component {
 
           request: {
             method : this.props.newRequestFields.method,
-            headers : this.props.newRequestHeaders.headersArr,
+            headers : this.props.newRequestHeaders.headersArr.filter(header => header.active),
             body : this.props.newRequestBody.bodyContent,
             bodyType: this.props.newRequestBody.bodyType,
             rawType: this.props.newRequestBody.rawType
