@@ -22,6 +22,7 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     this.addHeader(headersDeepCopy);
   }
@@ -112,23 +113,13 @@ class HeaderEntryForm extends Component {
       value: '',
     });
 
+    console.log(headersDeepCopy);
+
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
       override: false,
       count: headersDeepCopy.length,
     });
-
-    this.setState(
-      {
-        headers: headersDeepCopy,
-        count: this.state.count + 1,
-      },
-      () => {
-        if (cb) {
-          cb();
-        }
-      },
-    );
   }
 
   onChangeUpdateHeader(id, field, value) {
