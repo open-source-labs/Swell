@@ -11,7 +11,7 @@
   border-radius: 2px;
   font-weight: bold;
   border: none;
-  background-color: $teal;
+  background-color: $greenfive;
   color: white;
   cursor: pointer;
   font-size: 1rem;
@@ -20,28 +20,43 @@
 
   &:hover {
     color: $teal;
-    border: solid 1px $teal;
+    border: solid 1px $greenfive;
     background: transparent;
   }
 }
 
 .btn-sm {
-  width:100%;
-  height: 30px;
-  margin: 0 auto;
-  display: block;
-  border-radius: 2px;
-  color: #212121;
-  font-weight: bold;
-  border: none;
-  background-color: $litebluegray;
-  cursor: pointer;
-
-  &:hover {
-    border: solid 1px $litebluegray;
-    background: transparent;
+  .btn {
+    margin: 0;
+    width: 100%;
+    height: 28px;
+    font-size: .7rem;
+    font-weight: bold;
+    line-height: 1;
+    &:hover {
+      background-color: $greensix;
+      border: none;
+    }
   }
 }
+
+// .btn-sm {
+//   width:100%;
+//   height: 28px;
+//   margin: 0 auto;
+//   display: block;
+//   border-radius: 2px;
+//   color: #212121;
+//   font-weight: bold;
+//   border: none;
+//   background-color: $litebluegray;
+//   cursor: pointer;
+
+//   &:hover {
+//     border: solid 1px $litebluegray;
+//     background: transparent;
+//   }
+// }
 
 .navbar-console {
   background: #4e4e4e;

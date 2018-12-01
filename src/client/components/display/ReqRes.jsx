@@ -67,8 +67,6 @@ class ReqRes extends Component {
     }
     let http2Display = {
       'display': this.props.content.isHTTP2 ? 'block' : 'none',
-      'color': 'green',
-      'border': '1px solid black',
     }
 
     let statusLight;
@@ -98,8 +96,8 @@ class ReqRes extends Component {
 
         <div className="title-row">
           <div>
-            <span className={'primary-title highlighter title_reverse-offset'}>{this.props.content.request.method}</span>
-            <span className={'primary-title'}> {this.props.content.url}</span></div>
+            <span className={'primary-title title-offset_top highlighter title_reverse-offset'}>{this.props.content.request.method}</span>
+            <span className={'primary-title title-offset_top'}> {this.props.content.url}</span></div>
         </div>
 
         <div className="nested-grid-6">
@@ -119,8 +117,9 @@ class ReqRes extends Component {
             <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
             <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
           </div>
-
-          <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
+          <div className={'btn-sm '}>
+            <button className={'btn resreq_remove'} onClick={this.removeReqRes}>Remove</button>
+          </div>
           <div>{statusLight}</div>
           <div>
             <span className="tertiary-title">{this.props.content.connectionType}</span>
@@ -135,7 +134,7 @@ class ReqRes extends Component {
           </div>
         </div>
 
-        <div style={http2Display}>
+        <div style={http2Display} className={'httptwo'}>
           HTTP2 connection: Requests with the same host will share a single HTTP2 connection
         </div>
 

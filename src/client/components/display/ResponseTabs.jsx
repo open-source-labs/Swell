@@ -65,8 +65,7 @@ class ResponseTabs extends Component {
       const responseHeaders = cur.responseContent.headers;
       if (responseHeaders) {
         const responseContentType = responseHeaders['content-type'];
-
-        let tabState = this.state.openTabs;
+        const tabState = this.state.openTabs;
 
         // console.log('CURRENT OBJ', cur);
         // console.log('~~~~~~RE', responseEvents);
@@ -74,21 +73,15 @@ class ResponseTabs extends Component {
         // console.log('~~~~~~RCT', responseContentType);
         // console.log('~~~~~~TABSTATE', tabState);
 
-        // Step 3  - Check content type of each response
-        if (tabState === 'Events') { 
-          switch (responseContentType) {
-            case 'text/event-stream':
+        // Step 3  - Check content type of each response Update to use includes
+        if (tabState === 'Events') {
+          if (responseContentType) {
+            if (responseContentType.includes('text/event-stream')) {
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
               });
-              break;
-            case 'text/event-stream; charset=utf-8':
-              responseEvents.forEach((cur, idx) => {
-                tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
-              });
-              break;
-            case 'text/html; charset=UTF-8':
-              // console.log('single response');
+            }
+            else if (responseContentType.includes('text/html')) {
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(
                   <SyntaxHighlighter key={idx} language="htmlbars" style={solarizedDark}>
@@ -96,14 +89,14 @@ class ResponseTabs extends Component {
                   </SyntaxHighlighter>,
                 );
               });
-              break;
-            default:
+            }
           }
         }
         else if (this.state.openTabs === 'Headers') {
           const headerObj = this.props.responseContent.headers;
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
+              // Fail safe for for in loop
               if (!Array.isArray(cur)) {
                 tabContentShownEvents.push(
                   <div className="nested-grid-2">
@@ -113,6 +106,9 @@ class ResponseTabs extends Component {
                     </span>
                   </div>,
                 );
+              }
+              else {
+                console.log('Header Object was incorrect');
               }
             }
           }

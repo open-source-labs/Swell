@@ -5,7 +5,6 @@ import * as actions from '../../actions/actions';
 import SSERow from './SSERow.jsx';
 
 const mapStateToProps = store => ({});
-
 const mapDispatchToProps = dispatch => ({});
 
 class ResponseSSE extends Component {

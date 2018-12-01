@@ -17,11 +17,6 @@ class Request extends Component {
 
     return (
       <div className="res_header">
-        <span className="title_offset tertiary-title">
-          {this.props.content.method}
-          {' '}
-Request
-        </span>
         {/* {headerArr} */}
         <RequestTabs requestContent={this.props.content} />
       </div>
