@@ -17,29 +17,11 @@ const {
 // const player = require('play-sound')
 // const wave = new Audio('./src/assets/audio/wavebig.mpg')
 
-const {
-  TouchBarLabel,
-  TouchBarButton,
-  TouchBarSpacer,
-  TouchBarColorPicker,
-  TouchBarSlider,
-  TouchBarPopover,
-} = TouchBar;
+const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
-let winHeight;
-
-const tbRefreshButton = new TouchBarButton({
-  label: 'Update',
-  iconPosition: 'right',
-  // backgroundColor: '#00E28B',
-  click: () => {
-    app.relaunch();
-    app.exit(0);
-  },
-});
+let mainWindow
 
 const tbSelectAllButton = new TouchBarButton({
   label: 'Select All',
@@ -86,43 +68,13 @@ const tbClearAllButton = new TouchBarButton({
   },
 });
 
-const tbSlider = new TouchBarSlider({
-  label: 'Size',
-  minValue: 500,
-  maxValue: 2000,
-  value: 1024,
-  change: (val) => {
-    mainWindow.setSize(val, winHeight, true);
-  },
-});
-
-const tbPopover = new TouchBarPopover({
-  items: new TouchBar([tbSlider]),
-  label: 'Size',
-});
-
-const tbPicker = new TouchBarColorPicker({
-  change: (color) => {
-    mainWindow.webContents.insertCSS(`.btn{background-color:${color};`);
-  },
-});
-
 const tbSpacer = new TouchBarSpacer();
 
 const tbFlexSpacer = new TouchBarSpacer({
   size: 'flexible',
 });
 
-const touchBar = new TouchBar([
-  tbSpacer,
-  tbSelectAllButton,
-  tbDeselectAllButton,
-  tbOpenSelectedButton,
-  tbCloseSelectedButton,
-  tbClearAllButton,
-  tbFlexSpacer,
-  tbRefreshButton,
-]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbClearAllButton]);
 
 // Keep a reference for dev mode
 let dev = false;
@@ -150,8 +102,8 @@ function createWindow() {
     show: false,
     title: 'Swell',
     webPreferences: { webSecurity: false },
-    icon: `${__dirname}/icons/64x64.png`,
-  });
+    icon: `${__dirname}/src/assets/icons/png/64x64.png`
+  })
 
   // Adding React & Redux DevTools to Electon App
   installExtension(REACT_DEVELOPER_TOOLS)
@@ -190,21 +142,18 @@ function createWindow() {
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
-    console.log('app data path', app.getPath('appData'));
+    mainWindow.show()
     // wave.play()
     // play wave crash on open
     // player.Play('./src/assets/audio/wavebig.mpg', (err) => {
     //   if (err) throw err
     // })
 
-    [winHeight] = mainWindow.getSize();
-
     // Open the DevTools automatically if developing
-    // if (dev) {
-    //   mainWindow.webContents.openDevTools();
-    // }
-  });
+    if (dev) {
+      mainWindow.webContents.openDevTools()
+    }
+  })
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -215,10 +164,22 @@ function createWindow() {
   });
 }
 
+// function createLoadingScreen() {
+//   loadingScreen = new BrowserWindow(Object.assign(windowParams, {parent: mainWindow}));
+//   loadingScreen.loadURL('file://' + __dirname + '/loading.html');
+//   loadingScreen.on('closed', () => loadingScreen = null);
+//   loadingScreen.webContents.on('did-finish-load', () => {
+//       loadingScreen.show();
+//   });
+// }
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  // createLoadingScreen();
+  createWindow();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

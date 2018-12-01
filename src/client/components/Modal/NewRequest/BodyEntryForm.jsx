@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import * as actions from '../../../actions/actions';
+import PropTypes from "prop-types";
 import WWWForm from './WWWForm.jsx';
 import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
+
+const mapStateToProps = store => ({
+  newRequestBody : store.business.newRequestBody,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setNewRequestBody : (requestBodyObj) => {
+    dispatch(actions.setNewRequestBody(requestBodyObj));
+  },
+});
 
 class BodyEntryForm extends Component {
   constructor(props) {
@@ -10,56 +22,64 @@ class BodyEntryForm extends Component {
   }
 
   render() {
-    const rawTypeStyles = {
-      display: this.props.bodyType === 'raw' ? 'block' : 'none',
-    };
+    let rawTypeStyles = {
+      'display' : this.props.newRequestBody.bodyType === 'raw' ? 'block' : 'none',
+    }
 
-    const bodyEntryArea = (() => {
-      // BodyType of none : display nothing
-
-      // if (this.props.bodyType === 'none') {
-
-      // }
-
-      // BodyType of XWWW... : display WWWForm entry
-      if (this.props.bodyType === 'x-www-form-urlencoded') {
-        return <WWWForm updateBody={this.props.updateBodyContent} />;
+    let bodyEntryArea = (() => {
+      //BodyType of none : display nothing
+      if (this.props.newRequestBody.bodyType === 'none'){
+        return;
       }
-      // RawType of application/json : Text area box with error checking
-      if (this.props.rawType === 'application/json') {
+      //BodyType of XWWW... : display WWWForm entry
+      else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'){
         return (
-          <JSONTextArea
-            JSONFormatted={this.props.JSONFormatted}
-            updateJSONFormatted={this.props.updateJSONFormatted}
-            bodyContent={this.props.bodyContent}
-            updateBodyContent={this.props.updateBodyContent}
+          <WWWForm 
+            setNewRequestBody={this.props.setNewRequestBody} 
+            newRequestBody={this.props.newRequestBody}
+          />)
+      }
+      //RawType of application/json : Text area box with error checking
+      else if (this.props.newRequestBody.rawType === 'application/json') {
+        return (
+          <JSONTextArea 
+            setNewRequestBody={this.props.setNewRequestBody} 
+            newRequestBody={this.props.newRequestBody}
           />
         );
       }
-      // all other cases..just plain text area
-
-      return (
-        <textarea
-          style={{ resize: 'none' }}
-          type="text"
-          placeholder="Body"
-          rows={5}
-          onChange={(e) => {
-            this.props.updateBodyContent(e.target.value);
-          }}
-        />
-      );
-    })();
-
-    return (
+      //all other cases..just plain text area
+      else {
+        return (
+          <textarea
+            value={this.props.newRequestBody.bodyContent} 
+            style={{'resize' : 'none'}} 
+            type='text' 
+            placeholder='Body' 
+            rows={5} 
+            onChange={(e) => {
+              this.props.setNewRequestBody({
+                ...this.props.newRequestBody,
+                bodyContent : e.target.value
+              })
+            }}
+          ></textarea>
+        )
+      }
+    })()
+  
+    return(
       <div style={this.props.stylesObj}>
-        <BodyTypeSelect updateBodyType={this.props.updateBodyType} bodyType={this.props.bodyType} />
 
-        <select
-          onChange={e => this.props.updateRawType(e.target.value)}
-          style={rawTypeStyles}
-          value={this.props.rawType}
-        >
+        <BodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody}/>
+
+        <select 
+          style={rawTypeStyles} 
+          onChange={(e) => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            rawType : e.target.value,
+          })} 
+          value={this.props.newRequestBody.rawType}>
           Raw Type:
           <option value="text/plain">Text (text/plain)</option>
           <option value="application/json">JSON (application/json)</option>
@@ -76,15 +96,10 @@ class BodyEntryForm extends Component {
 }
 
 BodyEntryForm.propTypes = {
-  stylesObj: PropTypes.object.isRequired,
-  bodyContent: PropTypes.string.isRequired,
-  updateBodyContent: PropTypes.func.isRequired,
-  bodyType: PropTypes.string.isRequired,
-  updateBodyType: PropTypes.func.isRequired,
-  rawType: PropTypes.string.isRequired,
-  updateRawType: PropTypes.func.isRequired,
-  JSONFormatted: PropTypes.bool.isRequired,
-  updateJSONFormatted: PropTypes.func.isRequired,
+  stylesObj : PropTypes.object.isRequired,
 };
 
-export default BodyEntryForm;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BodyEntryForm);

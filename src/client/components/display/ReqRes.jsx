@@ -4,7 +4,8 @@ import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
-import WebSocketWindow from './WebSocketWindow.jsx';
+
+import WebSocketWindow from "./WebSocketWindow.jsx";
 import connectionController from '../../controllers/connectionController';
 // import 'status-indicator/styles.css'
 
@@ -43,88 +44,67 @@ class ReqRes extends Component {
     // let resReqContainer = document.querySelector('.resreq_res-container');
     // resReqContainer[0].scrollTop = resReqContainer[0].scrollHeight;
 
+
+
     if (this.props.content.protocol === 'ws://') {
-      contentBody.push(
-        <WebSocketWindow
-          key={0}
-          outgoingMessages={this.props.content.request.messages}
-          incomingMessages={this.props.content.response.messages}
-          id={this.props.content.id}
-          connection={this.props.content.connection}
-        />,
-      );
-    }
-    else {
-      contentBody.push(<Request content={this.props.content.request} key={0} />);
+      contentBody.push(<WebSocketWindow
+        key={0}
+        outgoingMessages={this.props.content.request.messages}
+        incomingMessages={this.props.content.response.messages}
+        id={this.props.content.id}
+        connection={this.props.content.connection} />)
+    } else {
+      contentBody.push(<Request content={this.props.content.request} key={0}/>);
       if (this.props.content.connection !== 'uninitialized') {
-        contentBody.push(
-          <ResponseContainer
-            content={this.props.content.response}
-            connectionType={this.props.content.connectionType}
-            key={1}
-          />,
-        );
-      }
+        contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
+      };
     }
 
-    const openButtonStyles = {
-      display:
-        this.props.content.connection === 'uninitialized'
-        || this.props.content.connection === 'closed'
-        || this.props.content.connection === 'error'
-          ? 'block'
-          : 'none',
-    };
-    const closeButtonStyles = {
-      display:
-        this.props.content.connection === 'pending' || this.props.content.connection === 'open'
-          ? 'block'
-          : 'none',
-    };
-    const errorStyles = {
-      display: this.props.content.connection === 'error' ? 'block' : 'none',
-      color: 'red',
-    };
-    const http2Display = {
-      display: this.props.content.isHTTP2 ? 'block' : 'none',
-      color: 'green',
-      border: '1px solid black',
-    };
+    let openButtonStyles = {
+      display: (this.props.content.connection === 'uninitialized' || this.props.content.connection === 'closed' || this.props.content.connection === 'error') ? 'block' : 'none',
+    }
+    let closeButtonStyles = {
+      display: (this.props.content.connection === 'pending' || this.props.content.connection === 'open') ? 'block' : 'none',
+    }
+    let errorStyles = {
+      'display': this.props.content.connection === 'error' ? 'block' : 'none',
+      'color': 'red',
+    }
+    let http2Display = {
+      'display': this.props.content.isHTTP2 ? 'block' : 'none',
+      'color': 'green',
+      'border': '1px solid black',
+    }
 
     let statusLight;
     switch (this.props.content.connection) {
       case 'uninitialized':
-        statusLight = <status-indicator />;
+        statusLight = <status-indicator></status-indicator>
         break;
       case 'pending':
-        statusLight = <status-indicator intermediary pulse />;
+        statusLight = <status-indicator intermediary pulse></status-indicator>
         break;
       case 'open':
-        statusLight = <status-indicator positive pulse />;
+        statusLight = <status-indicator positive pulse></status-indicator>
         break;
       case 'closed':
-        statusLight = <status-indicator negative />;
+        statusLight = <status-indicator negative></status-indicator>
         break;
       case 'error':
-        statusLight = <status-indicator negative />;
+        statusLight = <status-indicator negative></status-indicator>
         break;
       default:
         console.log('not a valid connection for content object');
     }
 
     return (
-      <div className="resreq_wrap">
+      <div className={"resreq_wrap"}>
         {/* ReqRes */}
 
         <div className="title-row">
           <div>
-            <span className="primary-title">{this.props.content.request.method}</span>
-
-            <span className="primary-title">
-              {' '}
-              {this.props.content.url}
-            </span>
-          </div>
+            <span className={'primary-title highlighter title_reverse-offset'}>{this.props.content.request.method}</span>
+            <span className={'primary-title'}> {this.props.content.url}</span></div>
         </div>
 
         <div className="nested-grid-6">
@@ -139,21 +119,15 @@ class ReqRes extends Component {
               onChange={this.onCheckHandler}
             />
           </div>
-          <div className="btn-sm">
-            <OpenBtn
-              stylesObj={openButtonStyles}
-              content={this.props.content}
-              connectionStatus={this.props.content.connection}
-            />
-            <CloseBtn
-              stylesObj={closeButtonStyles}
-              content={this.props.content}
-              connectionStatus={this.props.content.connection}
-            />
+
+
+          <div className={'btn-sm'}>
+            <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+            <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
           </div>
-          <button className="btn-sm resreq_remove" onClick={this.removeReqRes} type="button">
-            Remove
-          </button>
+
+
+          <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
           <div>{statusLight}</div>
           <div>
             <span className="tertiary-title">{this.props.content.connectionType}</span>

@@ -235,6 +235,8 @@ const httpController = {
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
+    console.log(parsedFetchOptions);
+
     fetch(reqResObj.url, parsedFetchOptions)
       .then((response) => {
         // Parse response headers now to decide if SSE or not.
@@ -273,7 +275,9 @@ const httpController = {
 
     const formattedHeaders = {};
     headers.forEach((head) => {
-      formattedHeaders[head.key] = head.value;
+      if (head.active) {
+        formattedHeaders[head.key] = head.value;
+      }
     });
 
     const outputObj = {

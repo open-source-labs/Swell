@@ -12,7 +12,9 @@
     display: grid;
     grid-template-columns: repeat(2, 50%); 
     border-bottom:1px solid $bordergray;
-
+    border-left:1px solid $bordergray;
+    border-right:1px solid $bordergray;
+    background: white;
     div {
       padding: 0 15px;
       border-right:1px solid $bordergray;
@@ -53,8 +55,8 @@
     height: 30px;
     display: grid;
     grid-template-columns:3% 10% 10% 2% 27% 28% 30%; 
-    border-bottom:1px solid $bordergray;
-    border-top:1px solid $bordergray;
+    border:1px solid $bordergray;
+
     div {
       padding: 0 15px;
       border-right:1px solid $bordergray;

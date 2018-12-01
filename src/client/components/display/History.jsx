@@ -18,7 +18,13 @@ const mapDispatchToProps = dispatch => ({
   },
   setNewRequestFields : (requestObj) => {
     dispatch(actions.setNewRequestFields(requestObj));
-  }
+  },
+  setNewRequestHeaders : (requestHeadersObj) => {
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  },
+  setNewRequestBody : (requestBodyObj) => {
+    dispatch(actions.setNewRequestBody(requestBodyObj));
+  },
 })
 
 class History extends Component {
@@ -31,28 +37,32 @@ class History extends Component {
   }
 
   handleClick () {
-    console.log('clicked', this.props.content);
-    const requestObj = {
+    
+    const requestFieldObj = {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol : this.props.content.protocol ? this.props.content.protocol : 'http://',
-      headers : this.props.content.request.headers ? this.props.content.request.headers : [],
+      url : this.props.content.url ? this.props.content.url : 'http://',
+      override: true,
+    }
+    const requestHeadersObj = {
+      headersArr : this.props.content.request.headers ? this.props.content.request.headers : [],
+      count : this.props.content.request.headers ? this.props.content.request.headers.length : 0,
+    }
+    const requestBodyObj = {
+      bodyContent : this.props.content.request.body ? this.props.content.request.body : '',
       bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
-      body : this.props.content.request.body ? this.props.content.request.body : {},
-      url : this.props.content.url ? this.props.content.url : 'http://',
       JSONFormatted : this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
-      override: true
     }
 
-    console.log(requestObj);
-    console.log(this.props.content);
-    this.props.setNewRequestFields(requestObj);
+    this.props.setNewRequestFields(requestFieldObj);
+    this.props.setNewRequestHeaders(requestHeadersObj);
+    this.props.setNewRequestBody(requestBodyObj);
   }
 
   deleteHistory (e) {
-    console.log('deleting from history', e.target);
     this.props.deleteFromHistory(this.props.content);
-    dbController.deleteFromHistory(e.target.id);
+    dbController.deleteFromIndexDb(e.target.id);
   }
 
 

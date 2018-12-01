@@ -43,6 +43,7 @@
   overflow: hidden;
   animation: fadeIn 400ms ease-in;
   border: solid 1px $bordergray;
+  background: #fff;
 }
 
 .response_sse:nth-of-type(odd){
@@ -98,6 +99,11 @@
     font-size: .7rem;
     font-weight: bold;
     line-height: 1;
+    &:hover {
+      background: $teal;
+      color: $litegray;
+      border: none;
+    }
   }
 }
 
@@ -126,7 +132,6 @@
 
 .resreq_wrap {
   margin: 15px;
-  padding-bottom: 10px;
   background: white;
 }
 
@@ -139,6 +144,9 @@
   overflow: scroll;
   flex-direction: column-reverse;
   position: relative;
+  border-bottom: solid 1px $bordergray;
+  border-left: solid 1px $bordergray;
+  border-right: solid 1px $bordergray;
   // border: 3px solid #15b78f;
   // div {
   //   width: 100%;
@@ -155,11 +163,11 @@
   border-top: solid 1px $bordergray;
 }
 
-.resreq-res-header {
+.res_header {
+  width: 100%;
   // margin: 10px 0 0;
-  padding: 0 15px;
-  display: flex;
-  flex-direction: column;    
+  // display: flex;
+  // flex-direction: column;    
   border-bottom: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;

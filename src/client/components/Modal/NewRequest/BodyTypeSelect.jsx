@@ -9,33 +9,45 @@ class BodyTypeSelect extends Component {
   }
 
   render() {
-    const NoneStyleClasses = classNames({
-      modal_protocol_button: true,
-      'modal_protocol_button-selected': this.props.bodyType === 'none',
+    // console.log(this.props)
+    let NoneStyleClasses = classNames({
+      'modal_protocol_button' : true,
+      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'none'
     });
-    const XWWWFormUrlEncodedStyleClasses = classNames({
-      modal_protocol_button: true,
-      'modal_protocol_button-selected': this.props.bodyType === 'x-www-form-urlencoded',
+    let XWWWFormUrlEncodedStyleClasses = classNames({
+      'modal_protocol_button' : true,
+      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
     });
-    const RawStyleClasses = classNames({
-      modal_protocol_button: true,
-      'modal_protocol_button-selected': this.props.bodyType === 'raw',
+    let RawStyleClasses = classNames({
+      'modal_protocol_button' : true,
+      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'raw'
     });
 
-    return (
-      <div className="modal_protocol_container">
-        <div role="button" tabIndex={0} className={NoneStyleClasses} onMouseDown={() => this.props.updateBodyType('none')}>
+    return(
+      <div className={"modal_protocol_container"}>
+        <div 
+          className={NoneStyleClasses} 
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType : 'none',
+            bodyContent : ''
+          })}>
           none
         </div>
-        <div
-          role="button"
-          tabIndex={0}
-          className={XWWWFormUrlEncodedStyleClasses}
-          onMouseDown={() => this.props.updateBodyType('x-www-form-urlencoded')}
-        >
+        <div 
+          className={XWWWFormUrlEncodedStyleClasses} 
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType : 'x-www-form-urlencoded'
+          })}>
           x-www-form-urlencoded
         </div>
-        <div role="button" tabIndex={0} className={RawStyleClasses} onMouseDown={() => this.props.updateBodyType('raw')}>
+        <div 
+          className={RawStyleClasses} 
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType : 'raw'
+          })}>
           raw
         </div>
       </div>
@@ -44,8 +56,8 @@ class BodyTypeSelect extends Component {
 }
 
 BodyTypeSelect.propTypes = {
-  bodyType: PropTypes.string.isRequired,
-  updateBodyType: PropTypes.func.isRequired,
+  newRequestBody : PropTypes.object.isRequired,
+  setNewRequestBody : PropTypes.func.isRequired,
 };
 
 export default BodyTypeSelect;

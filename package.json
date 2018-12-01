@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "webpack --config webpack.build.config.js --mode production",
     "package": "npm run build",
-    "postpackage": "electron-packager ./ --out=./builds",
+    "postpackage": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js"
   },
   "author": "Schno Mozingo",
@@ -19,7 +19,6 @@
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "cookie-parser": "^1.4.3",
-    "electron": "^3.0.6",
     "electron-devtools-installer": "^2.2.4",
     "express": "^4.16.4",
     "html-webpack-plugin": "^3.2.0",

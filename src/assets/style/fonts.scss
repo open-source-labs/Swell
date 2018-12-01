@@ -20,8 +20,29 @@
 }
 
 .highlighter {    
-    background: #8FF7A7;
+    background: $greensix;
+    color: white;
     padding: 5px 15px;
     display: inline-block;
     width: auto;
+}
+
+.history {
+    font-size: .8rem;
+}
+
+.historyDate h1 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.title_offset {
+    padding-left: 15px;
+}
+
+.title_reverse-offset {
+    margin-left: -15px;
+    margin-right: 20px;
+    border-radius: 3px 0 0 0;
 }

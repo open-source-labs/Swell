@@ -6,6 +6,7 @@ class SSERow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(e) {
@@ -15,24 +16,15 @@ class SSERow extends Component {
       .item(0);
     const expandBtn = e.target;
 
-    expandBtn.classList.toggle('expand-active');
+    console.log('expandBtn', expandBtn)
+    console.log('expandable', expandable)
+    
+    expandBtn.classList.toggle('expand-active')
     expandable.classList.toggle('expanded');
   }
 
-  handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      const expandable = e.target
-        .closest('.response_sse')
-        .getElementsByClassName('data-inner')
-        .item(0);
-      const expandBtn = e.target;
-
-      expandBtn.classList.toggle('expand-active');
-      expandable.classList.toggle('expanded');
-    }
-  }
-
   render() {
+    console.log('>>>>', this.props)
     let contentBody;
     try {
       const json = JSON.parse(this.props.content.data);
@@ -43,8 +35,8 @@ class SSERow extends Component {
     }
 
     return (
-      <div className="response_sse">
-        <div className="nested-grid-4">
+      <div className={'response_sse'}>
+        <div className={'nested-grid-4'}>
           <div>
             <span className="tertiary-title">
               ID
@@ -65,25 +57,18 @@ class SSERow extends Component {
               {this.props.content.timeReceived}
             </span>
           </div>
-
           <div>
-            <span
-              role="button"
-              tabIndex={0}
-              onClick={e => this.handleClick(e)}
-              onKeyPress={this.handleKeyPress}
-              className="tertiary-title expand-btn"
-            />
+
+            <span className={'tertiary-title expand-btn'} onClick={(e) => this.handleClick(e)} ></span>
           </div>
         </div>
 
-        <div className="title-row data-inner">
-          <div>
-            <span className="tertiary-title">
-              Data
-              {contentBody}
-            </span>
-          </div>
+        <div className={'title-row data-inner'}>
+            <div>
+              <span className={'tertiary-title'}>
+                Data {contentBody}
+              </span>
+            </div>
         </div>
       </div>
     );

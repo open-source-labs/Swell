@@ -1,0 +1,41 @@
+.tab_list {
+    width: 100%;
+    height: 42px;
+    position: relative;
+    top: 0;
+    border-bottom: 1px solid $bordergray;
+    background-color: $medgray;
+}
+
+// .tab-list {
+//     border-bottom: 1px solid #ccc;
+//     padding-left: 0;
+//   }
+  
+  .tab-list-item {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: -1px;
+    padding: 0.4rem 0.95rem;
+    font-size: .6rem;    
+    line-height: 25px;
+    // border: 1px solid $mediumgray;
+    font-weight: 800;
+    margin: 1px;
+    cursor: pointer;
+  }
+  
+  .tab-list-active {
+    background-color: white;
+    border: solid #ccc;
+    border-width: 1px 1px 0 1px;
+  }
+
+  .tab_content {    
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 10px 10px;
+    background: $graythree;
+    border: solid 1px $bordergray;
+  }

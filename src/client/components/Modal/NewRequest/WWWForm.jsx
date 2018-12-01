@@ -8,23 +8,82 @@ class WWWForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wwwFields: [],
-      fieldCount: 0,
-    };
+      wwwFields : [],
+      fieldCount : 0,
+      rawString : '',
+    }
     this.updateWwwField = this.updateWwwField.bind(this);
   }
 
-  componentDidMount() {
-    this.addFieldIfNeeded();
+  componentDidMount () {
+    let matches = this.props.newRequestBody.bodyContent.match(/(([^(&|\n)]+=[^(&|\n)]+)&?)+/g);
+    if (matches) {
+      this.props.setNewRequestBody({
+        ...this.props.newRequestBody,
+        bodyContent : matches.join(''),
+      });
+    } else {
+      this.props.setNewRequestBody({
+        ...this.props.newRequestBody,
+        bodyContent : '',
+      });
+      
+    }
+    // if (this.props.newRequestBody.bodyContent !== '') {
+    //   this.props.setNewRequestBody({
+    //     ...this.props.newRequestBody,
+    //     bodyContent : '',
+    //   })
+    //   return;
+    // }
+    this.addFieldIfNeeded ();
   }
 
-  componentDidUpdate() {
-    this.props.updateBody(
-      this.state.wwwFields
-        .filter(wwwField => wwwField.active)
-        .map(wwwField => `${wwwField.key}=${wwwField.value}`)
-        .join('&'),
-    );
+  componentDidUpdate () {
+    //create state from the incoming string, 
+    if (this.props.newRequestBody.bodyContent !== this.state.rawString) {
+      //if there is only one k/v pair...
+      if (!this.props.newRequestBody.bodyContent.includes('&')) {
+        let key = this.props.newRequestBody.bodyContent.split('=')[0];
+        let value = this.props.newRequestBody.bodyContent.split('=')[1];
+
+        this.setState({
+          wwwFields : [{
+            id : Math.floor(Math.random() * 100000),
+            active : true,
+            key,
+            value,
+          }],
+          fieldCount : 1,
+          rawString : this.props.newRequestBody.bodyContent
+        }, () => {
+          this.addFieldIfNeeded ();
+        })
+      } 
+      //more than one k/v pair
+      else if (this.props.newRequestBody.bodyContent.includes('&')) {
+        let fields = this.props.newRequestBody.bodyContent.split('&')
+        .map(field => {
+          let key = field.split('=')[0];
+          let value = field.split('=')[1];
+          return {
+            id : Math.floor(Math.random() * 100000),
+            active : true,
+            key,
+            value,
+          }
+        })
+        .filter(field => field.key !== '' || field.value !== '');
+
+        this.setState({
+          wwwFields : fields,
+          fieldCount : fields.length - 1,
+          rawString : this.props.newRequestBody.bodyContent
+        },() => {
+          this.addFieldIfNeeded ();
+        });
+      }
+    }
   }
 
   updateWwwField(id, changeField, value) {
@@ -36,14 +95,15 @@ class WWWForm extends Component {
       return wwwField;
     });
 
-    this.setState(
-      {
-        wwwFields: wwwFieldsDeepCopy,
-      },
-      () => {
-        this.addFieldIfNeeded();
-      },
-    );
+    let bodyContent = wwwFieldsDeepCopy
+    .filter(wwwField => wwwField.active)
+    .map(wwwField => `${wwwField.key}=${wwwField.value}`)
+    .join('&');
+
+    this.props.setNewRequestBody({
+      ...this.props.newRequestBody,
+      bodyContent,
+    });
   }
 
   addFieldIfNeeded() {
@@ -56,13 +116,10 @@ class WWWForm extends Component {
         key: '',
         value: '',
       });
-
-      this.setState(
-        {
-          wwwFields: wwwFieldsDeepCopy,
-        },
-        () => {},
-      );
+  
+      this.setState ({
+        wwwFields : wwwFieldsDeepCopy,
+      });
     }
   }
 
@@ -76,18 +133,12 @@ class WWWForm extends Component {
       .reduce((acc, cur) => acc + cur) === 0;
   }
 
-  render() {
-    // console.log(this.state.wwwFields)
-    const wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => (
-      <WWWField
-        key={index}
-        id={wwwField.id}
-        active={wwwField.active}
-        Key={wwwField.key}
-        value={wwwField.value}
-        updateCallback={this.updateWwwField}
-      />
-    ));
+  render () {
+    let wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
+      return (
+        <WWWField key={index} id={wwwField.id} active={wwwField.active} Key={wwwField.key} value={wwwField.value} updateCallback={this.updateWwwField} />
+      )
+  })
 
     return (
       <div
@@ -105,7 +156,8 @@ class WWWForm extends Component {
 }
 
 WWWForm.propTypes = {
-  updateBody: PropTypes.func.isRequired,
+  newRequestBody: PropTypes.object.isRequired,
+  setNewRequestBody: PropTypes.func.isRequired,
 };
 
 export default WWWForm;

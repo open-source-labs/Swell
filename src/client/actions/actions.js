@@ -42,7 +42,17 @@ export const setNewRequestFields = requestObj => ({
   payload: requestObj,
 });
 
-export const setCurrentTab = tab => ({
+export const setNewRequestHeaders = (headers) => ({
+  type: types.SET_NEW_REQUEST_HEADERS,
+  payload : headers
+});
+
+export const setNewRequestBody = (body) => ({
+  type: types.SET_NEW_REQUEST_BODY,
+  payload : body
+});
+
+export const setCurrentTab = (tab) => ({
   type: types.SET_CURRENT_TAB,
   payload: tab,
 });

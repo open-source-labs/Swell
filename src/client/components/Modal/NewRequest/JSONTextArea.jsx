@@ -6,89 +6,110 @@ const classNames = require('classnames');
 class JSONTextArea extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      lastParseWasSuccess: null,
-    };
+    // this.state = {
+    //   lastParseWasSuccess : true,
+    // }
   }
 
-  componentDidMount() {
-    console.log('hhi');
-    this.setState(
-      {
-        lastParseWasSuccess: true,
-      },
-      () => {
-        if (this.props.bodyContent === '') {
-          this.props.updateBodyContent({});
-        }
+  componentDidMount () {
+    if (this.props.newRequestBody.bodyContent === "") {
+      this.props.setNewRequestBody({
+        ...this.props.newRequestBody,
+        bodyContent : '{}',
+      });
+      return;
+    }
+    try {
+      JSON.parse(this.props.newRequestBody.bodyContent);
+      if(!this.props.newRequestBody.JSONFormatted) {
+        this.props.setNewRequestBody({
+          ...this.props.newRequestBody,
+          JSONFormatted : true
+        });
+      }
+    }
+    catch (error) {
+      if(this.props.newRequestBody.JSONFormatted) {
+        this.props.setNewRequestBody({
+          ...this.props.newRequestBody,
+          JSONFormatted : false,
+        });
+      }
+    }
+  }
 
-        try {
-          JSON.parse(this.props.bodyContent);
-          this.props.updateJSONFormatted(true);
-        }
-        catch (error) {
-          this.props.updateJSONFormatted(true);
-        }
-      },
-    );
+  componentDidUpdate () {
+    if (this.props.newRequestBody.bodyContent === "") {
+      this.props.setNewRequestBody({
+        ...this.props.newRequestBody,
+        bodyContent : '{}',
+      });
+      return;
+    }
+    try {
+      console.log('intry');
+      JSON.parse(this.props.newRequestBody.bodyContent);
+      if(!this.props.newRequestBody.JSONFormatted) {
+        this.props.setNewRequestBody({
+          ...this.props.newRequestBody,
+          JSONFormatted : true
+        });
+      }
+    }
+    catch (error) {
+      if(this.props.newRequestBody.JSONFormatted) {
+        this.props.setNewRequestBody({
+          ...this.props.newRequestBody,
+          JSONFormatted : false,
+        });
+      }
+    }
   }
 
   render() {
-    const NoneStyleClasses = classNames({
-      modal_protocol_button: true,
-    });
-
-    console.log(this.props.bodyContent);
-    return (
+    return(
       <div>
-        <div>
-          {this.props.JSONFormatted
-            ? 'JSON correctly formatted.'
-            : 'JSON incorrectly formatted (double quotes only).'}
-        </div>
-        <textarea
-          style={{ resize: 'none' }}
-          type="text"
-          rows={8}
-          value={
-            this.state.lastParseWasSuccess
-              ? JSON.stringify(this.props.bodyContent, undefined, 4)
-              : this.props.bodyContent
-          }
-          placeholder="Body"
+        <div>{this.props.newRequestBody.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
+        <textarea 
+          style={{'resize' : 'none'}} 
+          type='text' 
+          rows={8} 
+          value={this.props.newRequestBody.JSONFormatted ? JSON.stringify(this.props.newRequestBody.bodyContent,undefined,4) : this.props.newRequestBody.bodyContent}
+          placeholder='Body' 
           onChange={(e) => {
-            let parsedValue;
-            let isJSONFormatted;
-            try {
-              parsedValue = JSON.parse(e.target.value);
-              this.setState({
-                lastParseWasSuccess: true,
-              });
-              isJSONFormatted = true;
-            }
-            catch (error) {
-              console.log('error');
-              parsedValue = e.target.value;
-              this.setState({
-                lastParseWasSuccess: false,
-              });
-              isJSONFormatted = false;
-            }
-            console.log(parsedValue);
-            this.props.updateJSONFormatted(isJSONFormatted);
-            this.props.updateBodyContent(parsedValue);
-          }}
-        />
+            this.props.setNewRequestBody({
+              ...this.props.newRequestBody,
+              bodyContent : e.target.value,
+            });
+            // let parsedValue;
+            // let isJSONFormatted;
+            // try {
+            //   parsedValue = JSON.parse(e.target.value);
+            //   this.setState({
+            //     lastParseWasSuccess : true,
+            //   })
+            //   isJSONFormatted = true;
+            // }
+            // catch (error) {
+            //   console.log('error')
+            //   parsedValue = e.target.value;
+            //   this.setState({
+            //     lastParseWasSuccess : false,
+            //   });
+            //   isJSONFormatted = false;
+            // }
+            // console.log(parsedValue);
+            // this.props.updateJSONFormatted(isJSONFormatted);
+            // this.props.updateBodyContent(parsedValue);
+          }}></textarea>
       </div>
     );
   }
 }
 
 JSONTextArea.propTypes = {
-  JSONFormatted: PropTypes.bool.isRequired,
-  updateJSONFormatted: PropTypes.func.isRequired,
-  bodyContent: PropTypes.string.isRequired,
-  updateBodyContent: PropTypes.func.isRequired,
+  setNewRequestBody : PropTypes.func.isRequired,
+  newRequestBody : PropTypes.object.isRequired,
 };
 
 export default JSONTextArea;
