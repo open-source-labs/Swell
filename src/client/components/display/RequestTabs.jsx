@@ -49,13 +49,6 @@ class RequestTabs extends Component {
         this.handleTabSelect('Headers')
     }
 
-    componentDidUpdate() {
-        if (this.state.tabContentShown[0]) {
-            console.log(this.state.tabContentShown[0].key);
-            console.log(this.state.tabContentShown[0].value);
-        }
-    }
-
     render() {
         let body = 'Body';
         // let cookies = 'Cookies';

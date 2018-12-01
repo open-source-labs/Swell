@@ -75,8 +75,8 @@ const connectionController = {
 
     const foundAbortController = this.openConnectionArray.find(obj => (obj.id = id));
 
-    console.log(this.openConnectionArray);
-    console.log(foundAbortController);
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.openConnectionArray);
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', foundAbortController);
 
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
@@ -104,8 +104,10 @@ const connectionController = {
   /* Closes all open endpoint */
   closeAllReqRes() {
     const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
-
-    selectedAndCurrentTabReqResArr.forEach(reqRes => connectionController.closeReqRes(reqRes.id));
+    selectedAndCurrentTabReqResArr.forEach(reqRes => {
+      console.log(reqRes);
+      connectionController.closeReqRes(reqRes.id)
+    });
   },
 
   clearAllReqRes() {
