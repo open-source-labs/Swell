@@ -38,7 +38,7 @@ export const setWarningModalMessage = (message) => ({
 });
 
 export const setNewRequestFields = (requestObj) => ({
-  type: types.SET_NEW_RESPONSE_FIELDS,
+  type: types.SET_NEW_REQUEST_FIELDS,
   payload : requestObj
 });
 
@@ -50,6 +50,11 @@ export const setNewRequestHeaders = (headers) => ({
 export const setNewRequestBody = (body) => ({
   type: types.SET_NEW_REQUEST_BODY,
   payload : body
+});
+
+export const setNewRequestCookies = (cookies) => ({
+  type: types.SET_NEW_REQUEST_COOKIES,
+  payload : cookies
 });
 
 export const setCurrentTab = (tab) => ({

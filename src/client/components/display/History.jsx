@@ -42,7 +42,6 @@ class History extends Component {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol : this.props.content.protocol ? this.props.content.protocol : 'http://',
       url : this.props.content.url ? this.props.content.url : 'http://',
-      override: true,
     }
     const requestHeadersObj = {
       headersArr : this.props.content.request.headers ? this.props.content.request.headers : [],
