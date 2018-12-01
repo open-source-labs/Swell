@@ -119,8 +119,8 @@ class ModalNewRequest extends Component {
         reqRes = {
           id: uuid(), // Math.floor(Math.random() * 100000),
           created_at: new Date(),
-          protocol: this.state.protocol,
-          url: this.state.url,
+          protocol: this.props.newRequestFields.protocol,
+          url: this.props.newRequestFields.url,
           timeSent: null,
           timeReceived: null,
           connection: 'uninitialized',
@@ -139,7 +139,7 @@ class ModalNewRequest extends Component {
         };
       }
 
-      console.log(this.props);
+      // console.log(this.props);
 
       dbController.addToIndexDb(reqRes);
       this.props.reqResAdd(reqRes);

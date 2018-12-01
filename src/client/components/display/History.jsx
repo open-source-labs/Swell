@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import * as actions from '../../actions/actions';
 import dbController from '../../controllers/dbController';
+const path = require('path');
 
 const mapStateToProps = store => ({
 });
@@ -32,11 +33,11 @@ class History extends Component {
     super(props);
     this.state = {};
 
-    this.handleClick = this.handleClick.bind(this); 
+    this.addHistoryToNewRequest = this.addHistoryToNewRequest.bind(this); 
     this.deleteHistory = this.deleteHistory.bind(this);
   }
 
-  handleClick () {
+  addHistoryToNewRequest () {
     
     const requestFieldObj = {
       method : this.props.content.request.method ? this.props.content.request.method : 'GET',
@@ -66,17 +67,22 @@ class History extends Component {
 
 
   render() {
-
+    let trashcan = path.join('file://'+'../../../' + __dirname + '/assets/icons/Trashcan.png');
     return(
-      <div className={'history'}>
-        <span className={'history-text'} onClick={this.handleClick}>
-          <span className={'history-method'}>{this.props.content.request.method} - </span>
-          <span className={'history-url'}>{this.props.content.url} - </span>
-        </span>
-        <span className={'history-btns'}>
-          <button className={"history-add-btn"} onClick={this.handleClick}>+</button> - 
-          <button id={this.props.content.id} className={'history-delete-btn'} onClick={this.deleteHistory}>X</button>
-        </span>   
+      <div className={'history-container'} onClick={this.addHistoryToNewRequest}>
+        <div className={'history-text-container'}>
+          <div className={'history-method'}>{this.props.content.request.method}
+          </div>
+          <div className={'history-url'}> {this.props.content.url}
+          </div>
+        </div>
+        <div className='history-delete-container'>
+          <div className='history-delete-fade'>
+          </div>
+          <div className={'history-delete-button'} onClick={this.deleteHistory}>
+            <img className='history-delete-image' src={'https://i.imgur.com/GiMa26l.png'} id={this.props.content.id} ></img>
+          </div>
+        </div>
       </div>
     )
   }

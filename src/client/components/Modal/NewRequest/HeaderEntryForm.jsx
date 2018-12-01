@@ -22,7 +22,7 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     this.addHeader(headersDeepCopy);
   }
@@ -113,7 +113,7 @@ class HeaderEntryForm extends Component {
       value: '',
     });
 
-    console.log(headersDeepCopy);
+    // console.log(headersDeepCopy);
 
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,

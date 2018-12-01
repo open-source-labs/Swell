@@ -40,12 +40,12 @@ class RequestTabs extends Component {
                     });
                 break;
             default:
-                console.log(`There was an error with ${val}`);
+                // console.log(`There was an error with ${val}`);
         }
     }
 
     componentDidMount() {
-        console.log('requestContent', this.props.requestContent);
+        // console.log('requestContent', this.props.requestContent);
         this.handleTabSelect('Headers')
     }
 

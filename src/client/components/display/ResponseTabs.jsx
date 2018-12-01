@@ -44,7 +44,7 @@ class ResponseTabs extends Component {
         });
         break;
       default:
-        console.log(`There was an error with ${val}`);
+        // console.log(`There was an error with ${val}`);
     }
   }
 
@@ -68,11 +68,11 @@ class ResponseTabs extends Component {
 
         let tabState = this.state.openTabs;
 
-        console.log('CURRENT OBJ', cur);
-        console.log('~~~~~~RE', responseEvents);
-        console.log('~~~~~~RH', responseHeaders);
-        console.log('~~~~~~RCT', responseContentType);
-        console.log('~~~~~~TABSTATE', tabState);
+        // console.log('CURRENT OBJ', cur);
+        // console.log('~~~~~~RE', responseEvents);
+        // console.log('~~~~~~RH', responseHeaders);
+        // console.log('~~~~~~RCT', responseContentType);
+        // console.log('~~~~~~TABSTATE', tabState);
 
         // Step 3  - Check content type of each response
         if (tabState === 'Events') { 
@@ -88,7 +88,7 @@ class ResponseTabs extends Component {
               });
               break;
             case 'text/html; charset=UTF-8':
-              console.log('single response');
+              // console.log('single response');
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(
                   <SyntaxHighlighter key={idx} language="htmlbars" style={solarizedDark}>

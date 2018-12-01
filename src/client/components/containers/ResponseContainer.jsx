@@ -44,7 +44,7 @@ class ResponseContainer extends Component {
         break;
       }
       default:
-        console.log('Sorry this is an invalid response type');
+        // console.log('Sorry this is an invalid response type');
     }
 
     const headersArr = [];

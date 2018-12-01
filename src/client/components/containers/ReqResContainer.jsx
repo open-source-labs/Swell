@@ -22,7 +22,7 @@ class ReqResContainer extends Component {
     });
 
     let dynamicCols;
-    console.log('>', this.props.reqRes.length);
+    // console.log('>', this.props.reqRes.length);
     
     let requestInstances = this.props.reqRes.length;
 
@@ -46,7 +46,7 @@ class ReqResContainer extends Component {
           dynamicCols = {'display' : 'grid', 'gridTemplateColumns' : 'repeat(6, 16.666%)'}
           break;
       default:
-          console.log(`There was an error`);
+          // console.log(`There was an error`);
   }
 
 
