@@ -44,7 +44,7 @@ class ResponseTabs extends Component {
         });
         break;
       default:
-        console.log(`There was an error with ${val}`);
+        // console.log(`There was an error with ${val}`);
     }
   }
 

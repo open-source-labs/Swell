@@ -73,10 +73,7 @@ const connectionController = {
   closeReqRes(id) {
     this.setReqResConnectionToClosed(id);
 
-    const foundAbortController = this.openConnectionArray.find(obj => (obj.id = id));
-
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.openConnectionArray);
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', foundAbortController);
+    const foundAbortController = this.openConnectionArray.find(obj => (obj.id === id));
 
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
@@ -105,7 +102,7 @@ const connectionController = {
   closeAllReqRes() {
     const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
     selectedAndCurrentTabReqResArr.forEach(reqRes => {
-      console.log(reqRes);
+      // console.log(reqRes);
       connectionController.closeReqRes(reqRes.id)
     });
   },

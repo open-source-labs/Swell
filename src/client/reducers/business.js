@@ -85,21 +85,22 @@ const businessReducer = (state = initialState, action) => {
 
     case types.REQRES_ADD: {
       console.log('action', action);
-      console.log(action.payload);
+
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
+
       const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
+
       const newHistory = JSON.parse(JSON.stringify(state.history));
+      
       let updated = false;
       newHistory.forEach((obj) => {
-        console.log('in forEach');
         if (obj.date === addDate) {
           obj.history.unshift(action.payload);
           updated = true;
         }
       });
       if (!updated) {
-        console.log('here');
         newHistory.unshift({
           date: addDate,
           history: [action.payload],
