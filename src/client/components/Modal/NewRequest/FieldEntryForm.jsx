@@ -20,9 +20,11 @@ const mapDispatchToProps = dispatch => ({
 class FieldEntryForm extends Component {
   constructor(props) {
     super(props);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
   }
 
   onChangeHandler(e, property) {
+    console.log(this.props);
     let value = e.target.value;
     switch (property) {
       case 'url' : {
