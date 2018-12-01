@@ -21,14 +21,6 @@
   color: #FCF7F8;
 }
 
-.sidebar_history {
-  height: 70vh;
-  overflow-y: scroll;
-}
-
-.sidebar_history-inner {
-  padding: 0 0 25px 0;
-}
 
 .contents{
   width: calc(100vw - 320px);
@@ -76,4 +68,77 @@
 }
 .modal_protocol_button-selected {
   background: green;
+}
+
+.historyDate h1 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.history-container {
+  font-size: .9rem;
+  border: 1px solid #282828;
+  border-radius: 3px;
+  margin : 1px 0px 1px 0px;
+  color : white;
+  display : flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+  height : 28px;
+  
+  &:hover {
+    border: 1px solid #808080;
+  }
+  &:hover .history-method {
+    background-color: #2F4858;
+  }
+  &:hover .history-delete-image {
+    opacity: 1;
+  }
+}
+
+.history-text-container {
+  display: flex;
+  align-items: center;
+  flex-shrink: 100;
+  // overflow: hidden;
+}
+
+.history-method {
+  padding: 4px;
+  height: 28px;
+  line-height: 20px;
+}
+
+.history-url {
+  margin-left: 4px;
+}
+
+.history-delete-container {
+  display: flex;
+  position: absolute;
+  right : 26px;
+  height: 26px;
+}
+.history-delete-fade {
+  color: white;
+  height: 26px;
+  width: 40px;
+  background:linear-gradient(to right, rgba(40, 40, 40, 0), rgba(40, 40, 40, 1));
+}
+.history-delete-button {
+  // flex-grow: 1;
+  height : 100%;
+  width : 20px;
+  background: rgba(40, 40, 40, 1)
+}
+.history-delete-image {
+  margin-top: 2px;
+  margin-left: 2px;
+  height: 22px;
+  width: 16px;
+  opacity: 0;
 }

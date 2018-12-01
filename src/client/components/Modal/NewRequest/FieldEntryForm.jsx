@@ -24,7 +24,7 @@ class FieldEntryForm extends Component {
   }
 
   onChangeHandler(e, property) {
-    console.log(this.props);
+    // console.log(this.props);
     let value = e.target.value;
     switch (property) {
       case 'url' : {
