@@ -30,14 +30,18 @@ class Graph extends Component {
     // set up lineChart
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector('canvas').getContext('2d');
-    ctx.canvas.width = 7;
-    ctx.canvas.height = 1;
+    ctx.canvas.width = '100%';
+    ctx.canvas.height = 150;
     this.lineChart = new Chart(context, {
       type: 'scatter',
       data: {
         datasets: [],
       },
       options: {
+        animation : {
+          duration : 0,
+        },
+        maintainAspectRatio : false,
         showLines: true,
         scales: {
           xAxes: [
@@ -49,6 +53,9 @@ class Graph extends Component {
               },
             },
           ],
+          yAxes: [{
+            display: false,
+          }]
         },
       },
     });
@@ -61,10 +68,6 @@ class Graph extends Component {
         openRequestCount += 1;
       }
     });
-
-    // console.log(this.props.reqResArray);
-    // console.log('openRequestCount',openRequestCount);
-    // console.log(this.state.timeSet);
 
     if (openRequestCount === 0 && this.state.timeSet) {
       this.setState({
@@ -152,9 +155,6 @@ class Graph extends Component {
       }
     });
 
-    // console.log('stateCounter', this.state.eventCounter);
-    // console.log('newCounter', newEventCounter);
-    // force a rerender...
     if (this.state.eventCounter !== newEventCounter) {
       this.setState(
         {
@@ -170,9 +170,21 @@ class Graph extends Component {
   }
 
   render() {
+    let chartDisplayStyles = {
+      'display' : this.state.eventCounter > 0 ? 'block' : 'none',
+    }
+    let warningDisplayStyles = {
+      'display' : this.state.eventCounter === 0 ? 'block' : 'none',
+    }
+
     return (
       <div>
-        <canvas id="line-chart" />
+        <div style={warningDisplayStyles} className={'warningContainer'}>
+          <div className={'warning'}>
+            Please add a request and hit the Open button to see response timing information.
+          </div>
+        </div>
+        <canvas className={'chart'} style={chartDisplayStyles} id="line-chart" />
       </div>
     );
   }
