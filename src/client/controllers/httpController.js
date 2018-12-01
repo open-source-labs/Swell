@@ -257,17 +257,19 @@ const httpController = {
       } else {
         isStream = false;
       }
-      console.log('before', JSON.stringify(reqResObj))
-      let sesh = session.defaultSession;
-      sesh.cookies.get({}, (err, cookies) => {
-        console.log('cookies', cookies)
-        reqResObj.response.cookies = JSON.parse(JSON.stringify(cookies))
-        console.log('after', JSON.stringify(reqResObj))
+      let sesh = session.defaultSession; 
+      let domain = reqResObj.host.split('//')
+      domain.shift();
+      domain = domain.join('').split('.').splice(-2).join('.')
+      let dotDomain = `.${domain}`;
+      console.log(domain, dotDomain);
+
+      sesh.cookies.get({domain: domain, path: reqResObj.path}, (err, cookies) => {
+        reqResObj.response.cookies = cookies;
         store.default.dispatch(actions.reqResUpdate(reqResObj))
+        sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
         isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
       })
-      sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
-
     })
   },
 
