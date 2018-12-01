@@ -1,6 +1,6 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-
+const session = require('electron').remote.session;
 const http2 = require('http2');
 
 const httpController = {
@@ -237,31 +237,39 @@ const httpController = {
 
     // console.log(parsedFetchOptions);
 
+    // const sesh = session.fromPartition(`${reqResObj.id}`, {cache: true});
+    // console.log('agent', sesh.getUserAgent())
+
     fetch(reqResObj.url, parsedFetchOptions)
-      .then((response) => {
-        // Parse response headers now to decide if SSE or not.
-        const heads = {};
-        for (const entry of response.headers.entries()) {
-          heads[entry[0].toLowerCase()] = entry[1];
-        }
+    .then(response => {
+      console.log('RESPONSE ::', response)
+      //Parse response headers now to decide if SSE or not.
+      let heads = {};
+      for (let entry of response.headers.entries()) {
+        heads[entry[0].toLowerCase()] = entry[1];
+      }
+      reqResObj.response.headers = heads;
 
-        let isStream;
-        if (heads['content-type'] && heads['content-type'].includes('stream')) {
-          isStream = true;
-        }
-        else {
-          isStream = false;
-        }
+      let isStream;
+      if (heads['content-type'] && heads['content-type'].includes('stream')) {
+        isStream = true;
+      } else {
+        isStream = false;
+      }
+      let sesh = session.defaultSession; 
+      let domain = reqResObj.host.split('//')
+      domain.shift();
+      domain = domain.join('').split('.').splice(-2).join('.')
+      let dotDomain = `.${domain}`;
+      console.log(domain, dotDomain);
 
-        isStream
-          ? this.handleSSE(response, reqResObj, heads)
-          : this.handleSingleEvent(response, reqResObj, heads);
+      sesh.cookies.get({domain: domain, path: reqResObj.path}, (err, cookies) => {
+        reqResObj.response.cookies = cookies;
+        store.default.dispatch(actions.reqResUpdate(reqResObj))
+        sesh.clearStorageData({storages: ['cookies']}, (x, y) => console.log(x, y))
+        isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
       })
-      .catch((err) => {
-        console.log(err);
-        reqResObj.connection = 'error';
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
-      });
+    })
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
@@ -308,16 +316,16 @@ const httpController = {
 
     function read() {
       reader.read().then((obj) => {
-        // console.log(obj)
-        if (obj.done) {
+         if (obj.done) {
           newObj.connection = 'closed';
           newObj.connectionType = 'plain';
           newObj.timeReceived = Date.now();
-          newObj.response = {
-            headers,
-            events: [],
-          };
+          // newObj.response = {
+          //   headers: headers,
+          //   events: [],
+          // };
           // console.log('after', bodyContent)
+          // newObj.response.headers = headers;
           newObj.response.events.push(bodyContent);
           store.default.dispatch(actions.reqResUpdate(newObj));
         }

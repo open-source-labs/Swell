@@ -1,18 +1,12 @@
-'use strict';
-
 // Allow self-signing HTTPS over TLS
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 // Import parts of electron to use
-const { app, BrowserWindow, TouchBar } = require('electron');
-const path = require('path');
-const url = require('url');
+const { app, BrowserWindow, TouchBar, session } = require('electron')
+const path = require('path')
+const url = require('url') 
 
-const {
-  default: installExtension,
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS,
-} = require('electron-devtools-installer');
+const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
 // const player = require('play-sound')
 // const wave = new Audio('./src/assets/audio/wavebig.mpg')
@@ -134,6 +128,13 @@ function createWindow() {
   }
 
   mainWindow.loadURL(indexPath);
+
+  // const sesh = mainWindow.webContents.session;
+  // sesh.cookies.get({}, (err, cookies) => {
+  //   console.log(cookies)
+  // })
+  // sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
+
 
   mainWindow.setTouchBar(touchBar);
 

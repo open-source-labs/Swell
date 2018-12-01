@@ -51,13 +51,12 @@ const businessReducer = (state = initialState, action) => {
       const deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       newHistory.forEach((obj, i) => {
-        if (obj.date === deleteDate) obj.history = obj.history.filter(hist => hist.id !== deleteId);
-        if (obj.history.length === 0) {
-          console.log('here dude');
-          newHistory.splice(i, 1);
-        }
-      });
-      console.log(newHistory);
+        if (obj.date === deleteDate)
+          obj.history = obj.history.filter(hist => hist.id !== deleteId);
+          if (obj.history.length === 0) {
+            newHistory.splice(i, 1) 
+          }
+      })
 
       return {
         ...state,
@@ -136,9 +135,10 @@ const businessReducer = (state = initialState, action) => {
       }
     }
 
-    case types.REQRES_UPDATE: {
-      console.log('action', action);
-      const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
+    case types.REQRES_UPDATE:{
+      console.log('action',action);
+      console.log('action payload', action.payload)
+      let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
 
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
