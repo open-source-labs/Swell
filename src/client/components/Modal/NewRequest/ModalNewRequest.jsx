@@ -70,12 +70,12 @@ class ModalNewRequest extends Component {
       let reqRes;
       
       // HTTP REQUESTS
-      if (this.state.protocol !== 'ws://') {
-        let URIWithoutProtocol = `${this.state.url.split(this.state.protocol)[1]}/`;
+      if (this.props.newRequestFields.protocol !== 'ws://') {
+        let URIWithoutProtocol = `${this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1]}/`;
         if (URIWithoutProtocol.charAt(URIWithoutProtocol.length - 1) !== '/') {
           URIWithoutProtocol += '/';
         }
-        const host = this.state.protocol + URIWithoutProtocol.split('/')[0];
+        const host = this.props.newRequestFields.protocol + URIWithoutProtocol.split('/')[0];
         let path = `/${URIWithoutProtocol.split('/')
           .splice(1)
           .join('/')
@@ -89,10 +89,10 @@ class ModalNewRequest extends Component {
 
           id: uuid(), // Math.floor(Math.random() * 100000),
           created_at: new Date(),
-          protocol: this.state.protocol,
+          protocol: this.props.newRequestFields.protocol,
           host,
           path,
-          url: this.state.url,
+          url: this.props.newRequestFields.url,
           timeSent: null,
           timeReceived: null,
           connection: 'uninitialized',
