@@ -1,6 +1,7 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 const http2 = require('http2');
+const session = require('electron').remote.session;
 
 
 const httpController = {
@@ -226,17 +227,10 @@ const httpController = {
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
     console.log('REQ OBJ', parsedFetchOptions);
+    console.log(reqResObj);
 
-    parsedFetchOptions = {
-      "async": true,
-      "crossDomain": true,
-      "url": "http://google.com",
-      "method": "GET",
-      "headers": {
-        "cache-control": "no-cache",
-        "Postman-Token": "390f47f7-7c8c-4f63-b527-1b28028cad99"
-      }
-    }
+    // const sesh = session.fromPartition(`${reqResObj.id}`, {cache: true});
+    // console.log('agent', sesh.getUserAgent())
 
     fetch(reqResObj.url, parsedFetchOptions)
     .then(response => {
@@ -246,7 +240,7 @@ const httpController = {
       for (let entry of response.headers.entries()) {
         heads[entry[0].toLowerCase()] = entry[1];
       }
-
+      reqResObj.response.headers = heads;
 
       let isStream;
       if (heads['content-type'] && heads['content-type'].includes('stream')) {
@@ -254,8 +248,20 @@ const httpController = {
       } else {
         isStream = false;
       }
+      console.log('before', JSON.stringify(reqResObj))
+      let sesh = session.defaultSession;
+      sesh.cookies.get({}, (err, cookies) => {
+        console.log('cookies', cookies)
+        reqResObj.response.cookies = JSON.parse(JSON.stringify(cookies))
+        console.log('after', JSON.stringify(reqResObj))
+        store.default.dispatch(actions.reqResUpdate(reqResObj))
+        isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+      })
+      sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
       
-      isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+
+
+      
     })
     .catch(err => {
       console.log(err);
@@ -300,20 +306,21 @@ const httpController = {
 
     let reader = response.body.getReader();
     let bodyContent = "";
+
     read();
 
     function read() {
       reader.read().then(obj => {
-        console.log('READ', obj)
         if (obj.done) {
           newObj.connection = 'closed';
           newObj.connectionType = 'plain';
           newObj.timeReceived = Date.now();
-          newObj.response = {
-            headers: headers,
-            events: [],
-          };
+          // newObj.response = {
+          //   headers: headers,
+          //   events: [],
+          // };
           // console.log('after', bodyContent)
+          // newObj.response.headers = headers;
           newObj.response.events.push(bodyContent);
           store.default.dispatch(actions.reqResUpdate(newObj));
           return;

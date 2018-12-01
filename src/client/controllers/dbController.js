@@ -36,7 +36,6 @@ const dbController = {
             history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
           };
         });
-        console.log('historyGroupsArr', historyGroupsArr)
         store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
       .catch(err => console.log('Error in getHistory', err));

@@ -49,11 +49,9 @@ const businessReducer = (state=initialState, action) => {
         if (obj.date === deleteDate)
           obj.history = obj.history.filter(hist => hist.id !== deleteId);
           if (obj.history.length === 0) {
-            console.log('here dude');
             newHistory.splice(i, 1) 
           }
       })
-      console.log(newHistory);
 
       return {
         ...state,
@@ -87,14 +85,12 @@ const businessReducer = (state=initialState, action) => {
       let newHistory = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       newHistory.forEach(obj => {
-        console.log('in forEach')
         if (obj.date === addDate) {
           obj.history.unshift(action.payload);
           updated = true;
         }
       })
       if (!updated) {
-        console.log('here');
         newHistory.unshift({
           date: addDate,
           history: [action.payload]
@@ -132,6 +128,7 @@ const businessReducer = (state=initialState, action) => {
 
     case types.REQRES_UPDATE:{
       console.log('action',action);
+      console.log('action payload', action.payload)
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
 
       let indexToBeUpdated = undefined;

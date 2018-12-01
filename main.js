@@ -4,7 +4,7 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 // Import parts of electron to use
-const { app, BrowserWindow, TouchBar } = require('electron')
+const { app, BrowserWindow, TouchBar, session } = require('electron')
 const path = require('path')
 const url = require('url') 
 
@@ -128,6 +128,13 @@ function createWindow() {
 
   mainWindow.loadURL(indexPath)
 
+  // const sesh = mainWindow.webContents.session;
+  // sesh.cookies.get({}, (err, cookies) => {
+  //   console.log(cookies)
+  // })
+  // sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
+
+
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -190,3 +197,4 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
