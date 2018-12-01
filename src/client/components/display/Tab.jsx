@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 
-
 class Tab extends Component {
   constructor(props) {
     super(props);
