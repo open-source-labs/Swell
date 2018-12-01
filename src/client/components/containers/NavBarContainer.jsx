@@ -5,17 +5,15 @@ import OpenAllBtn from '../display/OpenAllBtn.jsx';
 import CloseAllBtn from '../display/CloseAllBtn.jsx';
 import ClearBtn from '../display/ClearBtn.jsx';
 
-
 class NavBarContainer extends Component {
   constructor(props) {
     super(props);
-
   }
 
   render(props) {
-    return(
-      <div className={'navbar-console'}>
-        <div className={'navbar-console_inner'}>
+    return (
+      <div className="navbar-console">
+        <div className="navbar-console_inner">
           <SelectAllBtn />
           <DeselectAllBtn />
           <OpenAllBtn />
@@ -23,9 +21,8 @@ class NavBarContainer extends Component {
           <ClearBtn />
         </div>
       </div>
-
-    )
+    );
   }
 }
 
-export default (NavBarContainer);
+export default NavBarContainer;

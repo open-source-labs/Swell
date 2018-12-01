@@ -7,14 +7,12 @@ import * as actions from '../../actions/actions';
 class Btn extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render(props) {
-    return (<button type='button'></button>
-    );
+    return <button type="button" />;
   }
-};
+}
 
 export default Btn;

@@ -1,41 +1,42 @@
-import * as types from './actionTypes'
 import { ipcRenderer } from 'electron';
-import ReqResCtrl from '../controllers/connectionController'
+import * as types from './actionTypes';
+import ReqResCtrl from '../controllers/connectionController';
 
-//BUSINESS LOGIC ACTIONS
-export const getHistory = (history) => ({
+// BUSINESS LOGIC ACTIONS
+export const getHistory = history => ({
   type: types.GET_HISTORY,
-  payload: history
+  payload: history,
 });
 
-export const deleteFromHistory = (reqRes) => ({
+export const deleteFromHistory = reqRes => ({
   type: types.DELETE_HISTORY,
-  payload: reqRes
-})
+  payload: reqRes,
+});
 
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
 
-export const reqResAdd = (reqRes) => ({
+export const reqResAdd = reqRes => ({
   type: types.REQRES_ADD,
-  payload : reqRes
+  payload: reqRes,
 });
 
-export const reqResDelete = (reqRes) => ({
+export const reqResDelete = reqRes => ({
   type: types.REQRES_DELETE,
-  payload : reqRes
+  payload: reqRes,
 });
 
-export const reqResUpdate = (reqRes) => ({
+export const reqResUpdate = reqRes => ({
   type: types.REQRES_UPDATE,
-  payload : reqRes
+  payload: reqRes,
 });
 
-export const setWarningModalMessage = (message) => ({
+export const setWarningModalMessage = message => ({
   type: types.SET_WARNING_MODAL_MESSAGE,
-  payload : message
+  payload: message,
 });
+
 
 export const setNewRequestFields = (requestObj) => ({
   type: types.SET_NEW_REQUEST_FIELDS,
@@ -59,10 +60,10 @@ export const setNewRequestCookies = (cookies) => ({
 
 export const setCurrentTab = (tab) => ({
   type: types.SET_CURRENT_TAB,
-  payload : tab
+  payload: tab,
 });
 
-//UI ACTIONS
+// UI ACTIONS
 export const showModal = () => ({
   type: types.SHOW_MODAL,
 });
@@ -71,17 +72,7 @@ export const hideModal = () => ({
   type: types.HIDE_MODAL,
 });
 
-
-export const setModalDisplay = (modalDisplay) => ({
+export const setModalDisplay = modalDisplay => ({
   type: types.SET_MODAL_DISPLAY,
-  payload : modalDisplay
+  payload: modalDisplay,
 });
-
-
-
-
-
-
-
-
-

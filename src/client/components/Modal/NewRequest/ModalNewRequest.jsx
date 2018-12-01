@@ -1,12 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import uuid from "uuid/v4"
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import uuid from 'uuid/v4';
 
 import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
-
 import dbController from '../../../controllers/dbController'
 
 const mapStateToProps = store => ({
@@ -20,12 +19,13 @@ const mapDispatchToProps = dispatch => ({
   reqResAdd: (reqRes) => {
     dispatch(actions.reqResAdd(reqRes));
   },
-  setWarningModalMessage : (message) => {
+  setWarningModalMessage: (message) => {
     dispatch(actions.setWarningModalMessage(message));
   },
-  setModalDisplay : (modalDisplay) => {
+  setModalDisplay: (modalDisplay) => {
     dispatch(actions.setModalDisplay(modalDisplay));
   },
+
   setNewRequestHeaders : (requestHeadersObj) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },
@@ -50,29 +50,8 @@ class ModalNewRequest extends Component {
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
-  // componentDidMount () {
-  //   this.setState(this.props.newRequestFields)
-  // }
-
-  // componentDidUpdate () {
-  //   // console.log('ModalNewReqest begin cDU');
-  //   if(JSON.stringify(this.state) !== JSON.stringify(this.props.newRequestFields)){
-  //     if (this.props.newRequestFields.override) {
-  //       // console.log('ModalNewRequest store override');
-  //       this.props.newRequestFields.override = false;
-  //       this.setState(this.props.newRequestFields)
-  //     } 
-  //     else { 
-  //       // console.log('ModalNewRequest state priority');
-  //       this.props.setNewRequestFields(this.state) 
-  //     }
-  //   }
-  // }
-
-  
-
-  requestValidationCheck () {
-    let validationMessage = undefined;
+  requestValidationCheck() {
+    let validationMessage;
 
     //Error conditions...
     if(this.props.newRequestFields.url === 'http://' || this.props.newRequestFields.url === 'https://' || this.props.newRequestFields.url === 'ws://') {
@@ -81,41 +60,45 @@ class ModalNewRequest extends Component {
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json'){
       validationMessage = "Please fix JSON body formatting errors.";
     }
-    return validationMessage ? validationMessage : true;
+    return validationMessage || true;
   }
 
   addNewRequest() {
-    let validated = this.requestValidationCheck();
+    const validated = this.requestValidationCheck();
 
     if (validated === true) {
       let reqRes;
-      //HTTP REQUESTS
-      if(this.props.newRequestFields.protocol !== 'ws://'){
-        let URIWithoutProtocol = this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1] + '/';
-        if (URIWithoutProtocol.charAt(URIWithoutProtocol.length-1) !== '/') {
-          URIWithoutProtocol = URIWithoutProtocol + '/';
+      
+      // HTTP REQUESTS
+      if (this.state.protocol !== 'ws://') {
+        let URIWithoutProtocol = `${this.state.url.split(this.state.protocol)[1]}/`;
+        if (URIWithoutProtocol.charAt(URIWithoutProtocol.length - 1) !== '/') {
+          URIWithoutProtocol += '/';
         }
-        
-        let host = this.props.newRequestFields.protocol + URIWithoutProtocol.split('/')[0];
-
-        let path = '/' + URIWithoutProtocol.split('/').splice(1).join('/').replace(/\/{2,}/g, '/');
-        if (path.charAt(path.length - 1) === '/' && path.length >1) {
+        const host = this.state.protocol + URIWithoutProtocol.split('/')[0];
+        let path = `/${URIWithoutProtocol.split('/')
+          .splice(1)
+          .join('/')
+          .replace(/\/{2,}/g, '/')}`;
+        if (path.charAt(path.length - 1) === '/' && path.length > 1) {
           path = path.substring(0, path.length - 1);
         }
-        path = path.replace(/https?:\//g,'http://')
+        path = path.replace(/https?:\//g, 'http://');
 
         reqRes = {
-          id : uuid(), // Math.floor(Math.random() * 100000),
-          created_at : new Date,
-          protocol : this.props.newRequestFields.protocol,
-          host : host,
-          path : path,
-          url : this.props.newRequestFields.url,
-          timeSent : null,
-          timeReceived : null,
-          connection : 'uninitialized',
-          connectionType : null,
-          checkSelected : false,
+
+          id: uuid(), // Math.floor(Math.random() * 100000),
+          created_at: new Date(),
+          protocol: this.state.protocol,
+          host,
+          path,
+          url: this.state.url,
+          timeSent: null,
+          timeReceived: null,
+          connection: 'uninitialized',
+          connectionType: null,
+          checkSelected: false,
+
           request: {
             method : this.props.newRequestFields.method,
             headers : this.props.newRequestHeaders.headersArr,
@@ -123,35 +106,36 @@ class ModalNewRequest extends Component {
             bodyType: this.props.newRequestBody.bodyType,
             rawType: this.props.newRequestBody.rawType
           },
-          response : {
-            headers : null,
-            events : null,
+          response: {
+            headers: null,
+            events: null,
           },
-          checked : false,
-          tab : this.props.currentTab,
+          checked: false,
+          tab: this.props.currentTab,
         };
       }
-      //WEBSOCKET REQUESTS 
+      // WEBSOCKET REQUESTS
       else {
         reqRes = {
-          id : uuid(), // Math.floor(Math.random() * 100000),
-          created_at : new Date,
-          protocol : this.props.newRequestFields.protocol,
-          url : this.props.newRequestFields.url,
-          timeSent : null,
-          timeReceived : null,
-          connection : 'uninitialized',
-          connectionType : 'WebSocket',
-          checkSelected : false,
+          id: uuid(), // Math.floor(Math.random() * 100000),
+          created_at: new Date(),
+          protocol: this.state.protocol,
+          url: this.state.url,
+          timeSent: null,
+          timeReceived: null,
+          connection: 'uninitialized',
+          connectionType: 'WebSocket',
+          checkSelected: false,
+
           request: {
             method: 'WS',
-            messages : [],
+            messages: [],
           },
-          response : {
-            messages : [],
+          response: {
+            messages: [],
           },
-          checked : false,
-          tab : this.props.currentTab,
+          checked: false,
+          tab: this.props.currentTab,
         };
       }
 
@@ -194,13 +178,19 @@ class ModalNewRequest extends Component {
       'flexDirection' : 'column'
     }
 
-    return(
-      <div style={{'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
-        if (event.key === 'Enter') {
-          this.addNewRequest();
-        }
-      }}>
-        <h1 className={'sidebar_title'}>Create New Request</h1>
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        style={{ display: 'flex', flexDirection: 'column' }}
+        onKeyPress={(event) => {
+          if (event.key === 'Enter') {
+            this.addNewRequest();
+          }
+        }}
+      >
+        <h1 className="sidebar_title">Create New Request</h1>
+
 
         <FieldEntryForm />
         
@@ -212,7 +202,9 @@ class ModalNewRequest extends Component {
           stylesObj={BodyEntryFormStyle} 
         />
 
-        <button className={'modal_submit'} onClick={this.addNewRequest}>Add New Request</button>
+        <button className="modal_submit" onClick={this.addNewRequest} type="button">
+          Add New Request
+        </button>
       </div>
     );
   }
@@ -220,5 +212,5 @@ class ModalNewRequest extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ModalNewRequest);
