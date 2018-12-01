@@ -18,6 +18,7 @@ class ResponsePlain extends Component {
       catch(err) {
         // console.log(err);
         // console.log(this.props.content.events);
+        // TODO :lock postion to bottom
         let json = this.props.content.events[0];
         contentBody = <ReactJson src={{json}} name={false} collapsed={1} />
       }

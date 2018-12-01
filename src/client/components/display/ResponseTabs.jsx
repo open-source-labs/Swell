@@ -63,8 +63,10 @@ class ResponseTabs extends Component {
         tabContentShown = this.props.responseContent.events;
         tabContentShown.forEach((cur, idx) => {
             if (this.props.store.business.reqResArray[0].connectionType === 'SSE') {
+                console.log('TESTING 1')
                 tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
             } else if (this.props.store.business.reqResArray[0].connectionType === 'plain') {
+                console.log('TESTING 2')
                 tabContentShownEvents.push(
                     <SyntaxHighlighter key={idx} language='htmlbars' style={solarizedDark}>
                         {pretty(cur, {ocd: true})}
