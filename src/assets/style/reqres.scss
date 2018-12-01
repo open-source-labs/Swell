@@ -7,11 +7,6 @@
   overflow: scroll;
   background: $medbluegray;
   border-top:solid 1px $bordergray;
-
-
-
-  display: grid;
-  grid-template-columns: repeat(3, 33.333%);
 }
 
 .resreq_select-radio-label {
@@ -46,9 +41,8 @@
   height: auto;
 
   overflow: hidden;
-  animation: fadeIn 400ms ease-in;
-  border: solid 1px $bordergray;
   background: #fff;
+  animation: fadeIn 400ms ease-in;
 }
 
 .response_sse:nth-of-type(odd){
@@ -136,6 +130,7 @@
 }
 
 .resreq_wrap {
+  max-width: calc(100vw - 356px);
   margin: 15px;
   background: white;
 }
@@ -165,6 +160,17 @@
   // }
 }
 
+.reqResContainer_inner {
+  width: auto;
+  height: calc(85% - 10px);
+  border: solid 5px red;
+}
+
+.reqResContainer_inner-page {
+  width: 100%;
+  height: 100%;
+  border: solid 5px blue;
+}
 
 .headers {
   border-top: solid 1px $bordergray;
@@ -189,6 +195,19 @@
 .reqResContainer-inner {
   position: relative;
   height: auto;
+}
+
+
+.httptwo {
+  padding: 10px 15px;
+  background-color: $greenone;
+  color: white;
+  font-weight: 800;
+  border-left: 1px solid $bordergray;
+  border-right: 1px solid $bordergray;
+  display: none;
+  height: auto;
+  font-size: .8rem;
 }
 
 // status-loader:
@@ -290,6 +309,10 @@ status-indicator {
   width: var(--status-indicator-size);
   height: var(--status-indicator-size);
   background-color: var(--status-indicator-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 status-indicator[pulse] {

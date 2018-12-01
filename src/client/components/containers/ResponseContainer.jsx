@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import ResponseSSE from '../display/ResponseSSE.jsx';
 import ResponsePlain from '../display/ResponsePlain.jsx';
-import ResponseTabs from './../display/ResponseTabs.jsx';
+import ResponseTabs from '../display/ResponseTabs.jsx';
 
 const mapStateToProps = store => ({});
 
@@ -44,7 +44,7 @@ class ResponseContainer extends Component {
         break;
       }
       default:
-        console.log('Sorry this is an invalid response type');
+        // console.log('Sorry this is an invalid response type');
     }
 
     const headersArr = [];

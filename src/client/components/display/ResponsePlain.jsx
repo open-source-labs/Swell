@@ -16,8 +16,6 @@ class ResponsePlain extends Component {
         contentBody = <ReactJson src={json} name={false} collapsed={1} />;
       }
       catch (err) {
-        // console.log(err);
-        // console.log(this.props.content.events);
         const json = this.props.content.events[0];
         contentBody = <ReactJson src={{ json }} name={false} collapsed={1} />;
       }
@@ -30,8 +28,7 @@ class ResponsePlain extends Component {
           margin: '3px',
           display: 'flex',
           flexDirection: 'column',
-        }}
-      >
+        }}>
         ResponsePlain
         {contentBody}
       </div>

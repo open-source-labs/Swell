@@ -1,40 +1,36 @@
 
-.primary-title {
-    font-size: 1.1rem;
-    font-weight: bold;
-    line-height: 40px;
+.primary-title {    
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: normal;
+    vertical-align: middle;
 }
 
 .secondary-title {
-    font-size: 1rem;
-    font-weight: bold;
-    line-height: 30px;
+    font-size: .8rem;
+    font-weight: 300;
+    line-height: normal;
+    vertical-align: middle;
 }
     
 .tertiary-title {
-    font-size: .8rem;
-    font-weight: bold;
+    font-size: .7rem;
+    font-weight: 500;
     line-height: 30px;
     margin: 0;
     padding: 0;
 }
 
+.title-offset_top {
+    margin-top: -3px; 
+}
+
 .highlighter {    
-    background: $greensix;
+    background: $darkgraygreen;
     color: white;
-    padding: 5px 15px;
+    padding: 8px 15px;
     display: inline-block;
     width: auto;
-}
-
-.history {
-    font-size: .8rem;
-}
-
-.historyDate h1 {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: 700;
 }
 
 .title_offset {

@@ -120,7 +120,7 @@ const httpController = {
     });
     formattedHeaders[':path'] = reqResObj.path;
 
-    console.log('path', reqResObj.path);
+    // console.log('path', reqResObj.path);
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
     // endStream false means we can continue to send more data, which we would for a body;
@@ -138,8 +138,9 @@ const httpController = {
       protocol: 'HTTP2',
       id: reqResObj.id,
     };
+    
     connectionArray.push(openConnectionObj);
-
+ 
     let isSSE;
 
     reqStream.on('response', (headers, flags) => {
@@ -171,10 +172,9 @@ const httpController = {
         let couldBeEvents = true;
         const wouldBeTimeReceived = Date.now();
 
-        console.log('data', [data]);
         while (couldBeEvents) {
           const possibleEventArr = data.match(/[\s\S]*\n\n/g);
-          console.log('possibleEventArr', possibleEventArr);
+
           // if the array has a match, send it to be parsed, and send back to store
           if (possibleEventArr && possibleEventArr[0]) {
             const receivedEventFields = httpController.parseSSEFields(possibleEventArr[0]);
@@ -229,14 +229,13 @@ const httpController = {
       protocol: 'HTTP1',
       id: reqResObj.id,
     };
+
     connectionArray.push(openConnectionObj);
-    // console.log(connectionArray);
 
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
-    console.log('REQ OBJ', parsedFetchOptions);
-    console.log(reqResObj);
+    // console.log(parsedFetchOptions);
 
     // const sesh = session.fromPartition(`${reqResObj.id}`, {cache: true});
     // console.log('agent', sesh.getUserAgent())
@@ -267,7 +266,7 @@ const httpController = {
       sesh.cookies.get({domain: domain, path: reqResObj.path}, (err, cookies) => {
         reqResObj.response.cookies = cookies;
         store.default.dispatch(actions.reqResUpdate(reqResObj))
-        sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
+        sesh.clearStorageData({storages: ['cookies']}, (x, y) => console.log(x, y))
         isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
       })
     })
