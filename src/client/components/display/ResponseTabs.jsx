@@ -10,10 +10,7 @@ import Tab from "./Tab.jsx";
 import SSERow from "./SSERow.jsx";
 import ResponsePlain from "./ResponsePlain.jsx";
 
-const mapStateToProps = store => ({
-  store: store
-});
-
+const mapStateToProps = store => ({ store: store});
 const mapDispatchToProps = dispatch => ({});
 
 class ResponseTabs extends Component {
@@ -78,7 +75,6 @@ class ResponseTabs extends Component {
 
     if (this.state.openTabs === "Headers") {
       let headerObj = this.props.responseContent.headers;
-
       if (!Array.isArray(headerObj) && headerObj) {
         for (let key in headerObj) {
           tabContentShownEvents.push(

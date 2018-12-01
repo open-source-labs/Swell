@@ -12,16 +12,11 @@ class SSERow extends Component {
   handleClick(e) {
     let expandable = e.target.closest('.response_sse').getElementsByClassName('data-inner').item(0);
     let expandBtn = e.target;
-
-    console.log('expandBtn', expandBtn)
-    console.log('expandable', expandable)
-    
     expandBtn.classList.toggle('expand-active')
     expandable.classList.toggle('expanded');
   }
 
   render() {
-    console.log('>>>>', this.props)
     let contentBody;
     try {
       let json = JSON.parse(this.props.content.data);
