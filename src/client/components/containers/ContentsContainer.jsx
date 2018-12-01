@@ -17,8 +17,8 @@ class Contents extends Component {
         <NavBarContainer/>
         <ReqResContainer/>
       </div>
-    )
+    );
   }
 }
 
-export default (Contents);
+export default Contents;

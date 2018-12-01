@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SSERow from './SSERow.jsx';
 
-const mapStateToProps = store => ({
- 
-});
+const mapStateToProps = store => ({});
 
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => ({});
 
 class ResponseSSE extends Component {
   constructor(props) {
@@ -19,16 +15,20 @@ class ResponseSSE extends Component {
   }
 
   render() {
+    const SSEEventsArr = this.props.content.events.map((event, index) => (
+      <SSERow key={index} content={event} />
+    ));
 
-    let SSEEventsArr = this.props.content.events.map((event, index) => <SSERow key={index} content={event}></SSERow>);
-  
-    return(
-      <div className={'response_event'}>
+    return (
+      <div className="response_event">
         {/* ResponseSSE */}
         {SSEEventsArr}
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResponseSSE);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ResponseSSE);

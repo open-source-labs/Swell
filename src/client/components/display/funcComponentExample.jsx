@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Column = ({imageList}) => (
-  <div className = 'column' style={styles}>
-      {imageList}
+const Column = ({ imageList }) => (
+  <div className="column" style={styles}>
+    {imageList}
   </div>
 );
 
-const styles = {}
+const styles = {};
 
 Column.propTypes = {
-    imageList: PropTypes.array.isRequired,
+  imageList: PropTypes.array.isRequired,
 };
 
 export default Column;

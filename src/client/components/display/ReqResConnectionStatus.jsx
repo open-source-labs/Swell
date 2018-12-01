@@ -2,7 +2,7 @@
 // import PropTypes from "prop-types";
 
 // const ReqResConnectionStatus = ({connectionStatus}) => {
-//   let connectionStatusDisplay = 
+//   let connectionStatusDisplay
 //   const styles = {};
 
 //   return (

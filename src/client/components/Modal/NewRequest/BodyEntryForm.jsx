@@ -46,7 +46,7 @@ class BodyEntryForm extends Component {
             setNewRequestBody={this.props.setNewRequestBody} 
             newRequestBody={this.props.newRequestBody}
           />
-        )
+        );
       }
       //all other cases..just plain text area
       else {
@@ -81,17 +81,17 @@ class BodyEntryForm extends Component {
           })} 
           value={this.props.newRequestBody.rawType}>
           Raw Type:
-          <option value='text/plain'>Text (text/plain)</option>
-          <option value='application/json'>JSON (application/json)</option>
-          <option value='application/javascript'>Javascript (application/javascript)</option>
-          <option value='application/xml'>XML (application/xml)</option>
-          <option value='text/xml'>XML (text/xml)</option>
-          <option value='text/html'>HTML (text/html)</option>
+          <option value="text/plain">Text (text/plain)</option>
+          <option value="application/json">JSON (application/json)</option>
+          <option value="application/javascript">Javascript (application/javascript)</option>
+          <option value="application/xml">XML (application/xml)</option>
+          <option value="text/xml">XML (text/xml)</option>
+          <option value="text/html">HTML (text/html)</option>
         </select>
 
         {bodyEntryArea}
       </div>
-    )
+    );
   }
 }
 

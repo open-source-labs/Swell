@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../../../assets/style/App.scss'
+import '../../../assets/style/App.scss';
+import { ipcRenderer } from 'electron';
 import * as actions from '../../actions/actions';
 import ContentsContainer from './ContentsContainer.jsx';
-import { ipcRenderer } from 'electron';
-import ReqResCtrl from '../../controllers/connectionController'
+import ReqResCtrl from '../../controllers/connectionController';
 import SidebarContainer from './SidebarContainer.jsx';
 import dbController from '../../controllers/dbController'
 import db from '../../db';
 
 const mapStateToProps = store => ({
-  store: store,
+  store,
 });
 
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => ({});
 
 class App extends Component {
   constructor(props) {
@@ -34,14 +32,17 @@ class App extends Component {
   }
 
   render() {
-    return(
-      <div id='app'>
+    return (
+      <div id="app">
         {/* App */}
-        <SidebarContainer/>
-        <ContentsContainer/>
+        <SidebarContainer />
+        <ContentsContainer />
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);

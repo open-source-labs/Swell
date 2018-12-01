@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactJson from 'react-json-view'
+import ReactJson from 'react-json-view';
 
 class SSERow extends Component {
   constructor(props) {
@@ -30,15 +30,24 @@ class SSERow extends Component {
       <div className={'response_sse'}>
         <div className={'nested-grid-4'}>
           <div>
-            <span className={'tertiary-title'}>ID {this.props.content.id}</span>
+            <span className="tertiary-title">
+              ID
+              {this.props.content.id}
+            </span>
           </div>
 
           <div>
-            <span className={'tertiary-title'}>Event {this.props.content.event}</span>
+            <span className="tertiary-title">
+              Event
+              {this.props.content.event}
+            </span>
           </div>
 
           <div>
-            <span className={'tertiary-title'}>Time Received {this.props.content.timeReceived}</span>
+            <span className="tertiary-title">
+              Time Received
+              {this.props.content.timeReceived}
+            </span>
           </div>
           <div>
 
@@ -54,7 +63,7 @@ class SSERow extends Component {
             </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

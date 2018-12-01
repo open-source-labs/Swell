@@ -5,12 +5,11 @@ import * as actions from '../../actions/actions';
 import ReqRes from '../display/ReqRes.jsx';
 
 const mapStateToProps = store => ({
-  reqRes : store.business.reqResArray,
-  currentTab : store.business.currentTab,
+  reqRes: store.business.reqResArray,
+  currentTab: store.business.currentTab,
 });
 
-const mapDispatchToProps = dispatch => ({
-});
+const mapDispatchToProps = dispatch => ({});
 
 class ReqResContainer extends Component {
   constructor(props) {
@@ -64,8 +63,11 @@ class ReqResContainer extends Component {
         {/* </div>
         <button className={'next'}></button> */}
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReqResContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReqResContainer);
