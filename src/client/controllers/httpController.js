@@ -225,11 +225,22 @@ const httpController = {
     let parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
-    console.log(parsedFetchOptions);
+    console.log('REQ OBJ', parsedFetchOptions);
+
+    parsedFetchOptions = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://google.com",
+      "method": "GET",
+      "headers": {
+        "cache-control": "no-cache",
+        "Postman-Token": "390f47f7-7c8c-4f63-b527-1b28028cad99"
+      }
+    }
 
     fetch(reqResObj.url, parsedFetchOptions)
     .then(response => {
-
+      console.log('RESPONSE ::', response)
       //Parse response headers now to decide if SSE or not.
       let heads = {};
       for (let entry of response.headers.entries()) {
@@ -293,7 +304,7 @@ const httpController = {
 
     function read() {
       reader.read().then(obj => {
-        // console.log(obj)
+        console.log('READ', obj)
         if (obj.done) {
           newObj.connection = 'closed';
           newObj.connectionType = 'plain';

@@ -30,7 +30,7 @@ const dbController = {
           groups[date].push(hist);
           return groups;
         }, {});
-        const historyGroupsArr = Object.keys(historyGroupsObj).map(date => {
+        const historyGroupsArr = Object.keys(historyGroupsObj).sort((a, b) => a - b).map(date => {
           return {
             date: date,
             history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
