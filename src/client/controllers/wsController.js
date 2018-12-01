@@ -1,6 +1,6 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import connectionController from './connectionController.js'
+import connectionController from './connectionController.js';
 
 const wsController = {
   openWSconnection(reqResObj, connectionArray) {
@@ -13,68 +13,72 @@ const wsController = {
     let socket;
     try {
       socket = new WebSocket(reqResObj.url);
-    } catch (err) {
+    }
+    catch (err) {
       reqResObj.connection = 'error';
       store.default.dispatch(actions.reqResUpdate(reqResObj));
       return;
     }
-    
+
     socket.addEventListener('open', () => {
       reqResObj.connection = 'open';
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
 
-    socket.addEventListener('message', function (event) {
-
-      //get fresh copy of reqRes
-      reqResObj = store.default.getState().business.reqResArray.find(obj => obj.id === reqResObj.id);
+    socket.addEventListener('message', (event) => {
+      // get fresh copy of reqRes
+      reqResObj = store.default
+        .getState()
+        .business.reqResArray.find(obj => obj.id === reqResObj.id);
 
       reqResObj.response.messages.push({
-        data : event.data,
-        timeReceived : Date.now(),
+        data: event.data,
+        timeReceived: Date.now(),
       });
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
 
     socket.onclose = (event) => {
-      //get fresh copy of reqRes
-      reqResObj = store.default.getState().business.reqResArray.find(obj => obj.id === reqResObj.id);
+      // get fresh copy of reqRes
+      reqResObj = store.default
+        .getState()
+        .business.reqResArray.find(obj => obj.id === reqResObj.id);
 
       switch (event.code) {
-        case 1006 : {
+        case 1006: {
           reqResObj.connection = 'error';
           break;
         }
-        default : {
+        default: {
           reqResObj.connection = 'closed';
           break;
         }
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-    }
+    };
 
     const openConnectionObj = {
-      socket : socket,
-      protocol : 'WS',
-      id : reqResObj.id,
-    }
+      socket,
+      protocol: 'WS',
+      id: reqResObj.id,
+    };
     connectionArray.push(openConnectionObj);
   },
-  
-  sendWebSocketMessage (reqResId, message) {
-    let matchedConnection = connectionController.getConnectionObject(reqResId);
+
+  sendWebSocketMessage(reqResId, message) {
+    const matchedConnection = connectionController.getConnectionObject(reqResId);
 
     matchedConnection.socket.send(message);
 
-    //get fresh copy of reqRes
-    let reqResObj = store.default.getState().business.reqResArray.find(obj => obj.id === reqResId);
+    // get fresh copy of reqRes
+    const reqResObj = store.default.getState().business.reqResArray
+      .find(obj => obj.id === reqResId);
 
     reqResObj.request.messages.push({
-      data : message,
-      timeReceived : Date.now(),
-    })
-
-  }
+      data: message,
+      timeReceived: Date.now(),
+    });
+  },
 };
 
 export default wsController;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+
 const classNames = require('classnames');
 
 class BodyTypeSelect extends Component {
@@ -50,7 +51,7 @@ class BodyTypeSelect extends Component {
           raw
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -59,4 +60,4 @@ BodyTypeSelect.propTypes = {
   setNewRequestBody : PropTypes.func.isRequired,
 };
 
-export default (BodyTypeSelect);
+export default BodyTypeSelect;

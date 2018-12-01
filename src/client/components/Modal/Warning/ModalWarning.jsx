@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import * as actions from '../../../actions/actions';
 
 const mapStateToProps = store => ({
-  warningModalMessage : store.business.warningModalMessage,
+  warningModalMessage: store.business.warningModalMessage,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setModalDisplay : (modalDisplay) => {
+  setModalDisplay: (modalDisplay) => {
     dispatch(actions.setModalDisplay(modalDisplay));
-  }
+  },
 });
 
 class ModalWarning extends Component {
@@ -20,23 +20,36 @@ class ModalWarning extends Component {
     this.hideWarning = this.hideWarning.bind(this);
   }
 
-  hideWarning () {
+  hideWarning() {
     this.props.setModalDisplay('Request');
   }
 
   render() {
-    return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}} onKeyPress={event => {
-        if (event.key === 'Enter') {
-          this.hideWarning();
-        }
-      }}>
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        style={{
+          border: '1px solid black',
+          margin: '3px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        onKeyPress={(event) => {
+          if (event.key === 'Enter') {
+            this.hideWarning();
+          }
+        }}
+      >
         ModalWarning
         <div>{this.props.warningModalMessage}</div>
-        <button onClick={this.hideWarning}>Ok</button>
+        <button onClick={this.hideWarning} type="button">Ok</button>
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalWarning);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ModalWarning);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactJson from 'react-json-view'
+import ReactJson from 'react-json-view';
 
 class SSERow extends Component {
   constructor(props) {
@@ -10,8 +10,11 @@ class SSERow extends Component {
   }
 
   handleClick(e) {
-    let expandable = e.target.closest('.response_sse').getElementsByClassName('data-inner').item(0);
-    let expandBtn = e.target;
+    const expandable = e.target
+      .closest('.response_sse')
+      .getElementsByClassName('data-inner')
+      .item(0);
+    const expandBtn = e.target;
 
     console.log('expandBtn', expandBtn)
     console.log('expandable', expandable)
@@ -35,15 +38,24 @@ class SSERow extends Component {
       <div className={'response_sse'}>
         <div className={'nested-grid-4'}>
           <div>
-            <span className={'tertiary-title'}>ID {this.props.content.id}</span>
+            <span className="tertiary-title">
+              ID
+              {this.props.content.id}
+            </span>
           </div>
 
           <div>
-            <span className={'tertiary-title'}>Event {this.props.content.event}</span>
+            <span className="tertiary-title">
+              Event
+              {this.props.content.event}
+            </span>
           </div>
 
           <div>
-            <span className={'tertiary-title'}>Time Received {this.props.content.timeReceived}</span>
+            <span className="tertiary-title">
+              Time Received
+              {this.props.content.timeReceived}
+            </span>
           </div>
           <div>
 
@@ -59,7 +71,7 @@ class SSERow extends Component {
             </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

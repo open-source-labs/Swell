@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+
 const classNames = require('classnames');
 
 class JSONTextArea extends Component {
@@ -102,7 +103,7 @@ class JSONTextArea extends Component {
             // this.props.updateBodyContent(parsedValue);
           }}></textarea>
       </div>
-    )
+    );
   }
 }
 
@@ -111,4 +112,4 @@ JSONTextArea.propTypes = {
   newRequestBody : PropTypes.object.isRequired,
 };
 
-export default (JSONTextArea);
+export default JSONTextArea;

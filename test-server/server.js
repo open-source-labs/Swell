@@ -5,19 +5,19 @@ const WebSocket = require ('ws');
 
 
 const app = express();
-const path = require('path');
+const path = require("path");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
-    next();
-  });
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
 
 app.listen(80, "0.0.0.0", () => {
-    console.log('Express server on 80, 0.0.0.0');
+  console.log("Express server on 80, 0.0.0.0");
 });
 
 let eventsArr = [{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'test'}];
@@ -26,7 +26,7 @@ app.get('/events', (req, res) => {
     res.header('Content-Type', 'text/event-stream');
     res.header('Cache-Control', 'no-cache');
 
-    let id=0;
+  let id = 0;
 
     setInterval(() => {
         if(eventsArr.length > id) {
