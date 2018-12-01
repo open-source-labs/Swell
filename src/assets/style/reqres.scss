@@ -41,9 +41,8 @@
   height: auto;
 
   overflow: hidden;
-  animation: fadeIn 400ms ease-in;
-  border: solid 1px $bordergray;
   background: #fff;
+  animation: fadeIn 400ms ease-in;
 }
 
 .response_sse:nth-of-type(odd){
@@ -131,6 +130,7 @@
 }
 
 .resreq_wrap {
+  max-width: calc(100vw - 356px);
   margin: 15px;
   background: white;
 }
@@ -195,6 +195,19 @@
 .reqResContainer-inner {
   position: relative;
   height: auto;
+}
+
+
+.httptwo {
+  padding: 10px 15px;
+  background-color: $greenone;
+  color: white;
+  font-weight: 800;
+  border-left: 1px solid $bordergray;
+  border-right: 1px solid $bordergray;
+  display: none;
+  height: auto;
+  font-size: .8rem;
 }
 
 // status-loader:
@@ -296,6 +309,10 @@ status-indicator {
   width: var(--status-indicator-size);
   height: var(--status-indicator-size);
   background-color: var(--status-indicator-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 status-indicator[pulse] {
