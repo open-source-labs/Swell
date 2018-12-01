@@ -1,5 +1,6 @@
+/* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 import WWWField from './WWWField.jsx';
 
@@ -85,10 +86,9 @@ class WWWForm extends Component {
     }
   }
 
-  updateWwwField (id, changeField, value) {
-
-    let wwwFieldsDeepCopy = this.state.wwwFields.map(wwwField => {
-      if(wwwField.id === id) {
+  updateWwwField(id, changeField, value) {
+    const wwwFieldsDeepCopy = this.state.wwwFields.map((wwwField) => {
+      if (wwwField.id === id) {
         wwwField[changeField] = value;
         wwwField.active = true;
       }
@@ -106,15 +106,15 @@ class WWWForm extends Component {
     });
   }
 
-  addFieldIfNeeded () {
-    if (this.shouldAddField ()) {
-      let wwwFieldsDeepCopy = JSON.parse(JSON.stringify(this.state.wwwFields));
-      
+  addFieldIfNeeded() {
+    if (this.shouldAddField()) {
+      const wwwFieldsDeepCopy = JSON.parse(JSON.stringify(this.state.wwwFields));
+
       wwwFieldsDeepCopy.push({
-        id : Math.floor(Math.random() * 100000),
-        active : false,
-        key : '',
-        value : '',
+        id: Math.floor(Math.random() * 100000),
+        active: false,
+        key: '',
+        value: '',
       });
   
       this.setState ({
@@ -123,16 +123,14 @@ class WWWForm extends Component {
     }
   }
 
-  shouldAddField () {
+  shouldAddField() {
     if (this.state.wwwFields.length === 0) {
       return true;
     }
 
-    return this.state.wwwFields.map(wwwField => {
-      return (wwwField.key === '' && wwwField.value === '') ? 1 : 0;
-    }).reduce((acc, cur) => {
-      return acc + cur
-    }) === 0 ? true : false;
+    return this.state.wwwFields
+      .map(wwwField => (wwwField.key === '' && wwwField.value === '' ? 1 : 0))
+      .reduce((acc, cur) => acc + cur) === 0;
   }
 
   render () {
@@ -142,11 +140,18 @@ class WWWForm extends Component {
       )
   })
 
-    return(
-      <div style={{'border' : '1px solid black', 'margin' : '3px', 'display' : 'flex', 'flexDirection' : 'column'}}>
+    return (
+      <div
+        style={{
+          border: '1px solid black',
+          margin: '3px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         {wwwFieldsReactArr}
       </div>
-    )
+    );
   }
 }
 
@@ -155,4 +160,4 @@ WWWForm.propTypes = {
   setNewRequestBody: PropTypes.func.isRequired,
 };
 
-export default WWWForm
+export default WWWForm;

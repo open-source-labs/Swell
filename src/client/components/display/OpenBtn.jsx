@@ -9,9 +9,16 @@ class OpenBtn extends Component {
 
   render() {
     return (
-      <button className={'btn'} style={this.props.stylesObj} type='button' onClick={ () => ReqResCtrl.openReqRes(this.props.content.id)}>Open</button>
+      <button
+        className="btn"
+        style={this.props.stylesObj}
+        type="button"
+        onClick={() => ReqResCtrl.openReqRes(this.props.content.id)}
+      >
+        Open
+      </button>
     );
   }
-};
+}
 
 export default OpenBtn;

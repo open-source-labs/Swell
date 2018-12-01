@@ -16,9 +16,6 @@ import dbController from './controllers/dbController'
 import * as actions from './actions/actions';
 
 // we are adding composeWithDevTools here to get easy access to the Redux dev tools
-const store = createStore(
-  reducers,
-  composeWithDevTools()
-);
+const store = createStore(reducers, composeWithDevTools());
 
 export default store;

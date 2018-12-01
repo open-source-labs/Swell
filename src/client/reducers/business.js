@@ -1,7 +1,7 @@
+import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
 import db from '../db';
 import dbController from '../controllers/dbController';
-import format from 'date-fns/format';
 
 
 const initialState = { 
@@ -9,7 +9,11 @@ const initialState = {
   reqResArray : [],
   history : [],
   warningModalMessage : "",
-  newResponseFields : {},
+  newRequestFields : {
+    method : 'GET',
+    protocol : 'http://',
+    url : 'http://',
+  },
   newRequestHeaders : {
     headersArr : [],
     count : 0,
@@ -19,32 +23,33 @@ const initialState = {
     bodyType : 'none',
     rawType : 'Text (text/plain)',
     JSONFormatted : true,
-  }
+  },
+  newRequestCookies : [],
 };
 
-const businessReducer = (state=initialState, action) => {
-  switch(action.type) {
-
-    case types.GET_HISTORY:{
-      console.log('action',action);
+const businessReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.GET_HISTORY: {
+      console.log('action', action);
 
       return {
         ...state,
+
         reqResArray : [],
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
-        history : action.payload
-      }
+        history: action.payload,
+      };
     }
 
-    case types.DELETE_HISTORY:{
-      console.log('action',action);
+    case types.DELETE_HISTORY: {
+      console.log('action', action);
 
-      let deleteId = action.payload.id;
-      let deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
-      let newHistory = JSON.parse(JSON.stringify(state.history));
+      const deleteId = action.payload.id;
+      const deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
+      const newHistory = JSON.parse(JSON.stringify(state.history));
       newHistory.forEach((obj, i) => {
         if (obj.date === deleteDate)
           obj.history = obj.history.filter(hist => hist.id !== deleteId);
@@ -55,68 +60,69 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
 
-        history: newHistory, 
-      }
+
+        history: newHistory,
+      };
     }
 
-    case types.REQRES_CLEAR:{
-      console.log('action',action);
+    case types.REQRES_CLEAR: {
+      console.log('action', action);
       return {
         ...state,
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
-        reqResArray : [],
-      }
+        reqResArray: [],
+      };
     }
 
-    case types.REQRES_ADD:{
-      console.log('action',action);
+    case types.REQRES_ADD: {
+      console.log('action', action);
       console.log(action.payload);
-      let reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
+      const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
-      let addDate = format(action.payload.created_at, 'MM/DD/YYYY');
-      let newHistory = JSON.parse(JSON.stringify(state.history));
+      const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
+      const newHistory = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       newHistory.forEach(obj => {
         if (obj.date === addDate) {
           obj.history.unshift(action.payload);
           updated = true;
         }
-      })
+      });
       if (!updated) {
         newHistory.unshift({
           date: addDate,
-          history: [action.payload]
-        })
+          history: [action.payload],
+        });
       }
 
       return {
         ...state,
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
         reqResArray,
-        history : newHistory
-      }
+        history: newHistory,
+      };
     }
 
-    case types.REQRES_DELETE:{
-      console.log('action',action);
+    case types.REQRES_DELETE: {
+      console.log('action', action);
 
-      let deleteId = action.payload.id;
+      const deleteId = action.payload.id;
 
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
@@ -131,9 +137,9 @@ const businessReducer = (state=initialState, action) => {
       console.log('action payload', action.payload)
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
 
-      let indexToBeUpdated = undefined;
+      let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
-        if(reqRes.id === action.payload.id) {
+        if (reqRes.id === action.payload.id) {
           indexToBeUpdated = index;
         }
       });
@@ -144,22 +150,22 @@ const businessReducer = (state=initialState, action) => {
 
       return {
         ...state,
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
         history : JSON.parse(JSON.stringify(state.history)),
 
-        reqResArray : reqResDeepCopy,
-      }
+        reqResArray: reqResDeepCopy,
+      };
     }
 
-    case types.SET_WARNING_MODAL_MESSAGE:{
-      console.log('action',action);
+    case types.SET_WARNING_MODAL_MESSAGE: {
+      console.log('action', action);
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
@@ -167,60 +173,59 @@ const businessReducer = (state=initialState, action) => {
       }
     }
 
-    case types.SET_NEW_RESPONSE_FIELDS:{
+    case types.SET_NEW_REQUEST_FIELDS:{
       console.log('action',action);
+      return {
+        ...state,
+        history: JSON.parse(JSON.stringify(state.history)),
+        reqResArray: JSON.parse(JSON.stringify(state.reqResArray)),
+        newRequestHeaders: JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestBody: JSON.parse(JSON.stringify(state.newRequestBody)),
+        
+        newRequestFields : JSON.parse(JSON.stringify(action.payload)),
+      }
+    }
+
+    case types.SET_NEW_REQUEST_HEADERS: {
+      console.log('action', action);
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
-        newResponseFields : JSON.parse(JSON.stringify(action.payload)),
-      }
+        newRequestHeaders: JSON.parse(JSON.stringify(action.payload)),
+      };
     }
 
-    case types.SET_NEW_REQUEST_HEADERS:{
-      console.log('action',action);
-      return {
-        ...state,
-        history : JSON.parse(JSON.stringify(state.history)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
-
-        newRequestHeaders : JSON.parse(JSON.stringify(action.payload)),
-      }
-    }
-
-    case types.SET_NEW_REQUEST_BODY:{
-      console.log('action',action);
+    case types.SET_NEW_REQUEST_BODY: {
+      console.log('action', action);
 
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
 
-        newRequestBody : JSON.parse(JSON.stringify(action.payload)),
-      }
+        newRequestBody: JSON.parse(JSON.stringify(action.payload)),
+      };
     }
 
-    case types.SET_CURRENT_TAB:{
-      console.log('action',action);
+    case types.SET_CURRENT_TAB: {
+      console.log('action', action);
       return {
         ...state,
         history : JSON.parse(JSON.stringify(state.history)),
         reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newResponseFields : JSON.parse(JSON.stringify(state.newResponseFields)),
+        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
         newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
         newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
 
         currentTab : action.payload,
       }
     }
-    
 
     default:
       return state;

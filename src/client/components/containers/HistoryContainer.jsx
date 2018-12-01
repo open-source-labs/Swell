@@ -4,11 +4,10 @@ import * as actions from '../../actions/actions';
 import HistoryDate from '../display/HistoryDate.jsx'
 
 const mapStateToProps = store => ({
-  history : store.business.history,
+  history: store.business.history,
 });
 
-const mapDispatchToProps = dispatch => ({
-});
+const mapDispatchToProps = dispatch => ({});
 
 class HistoryContainer extends Component {
   constructor(props) {
@@ -16,6 +15,9 @@ class HistoryContainer extends Component {
   }
 
   render() {
+    const historyArray = this.props.history
+      .map((history, i) => <History className="historyChild" content={history} key={i} />)
+      .reverse();
 
     let historyDates = this.props.history.map((date, i) => {
       return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate>
@@ -31,4 +33,7 @@ class HistoryContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HistoryContainer);

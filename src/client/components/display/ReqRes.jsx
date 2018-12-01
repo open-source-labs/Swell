@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
@@ -11,9 +11,7 @@ import connectionController from '../../controllers/connectionController';
 
 import * as actions from '../../actions/actions';
 
-
-const mapStateToProps = store => ({
-});
+const mapStateToProps = store => ({});
 
 const mapDispatchToProps = dispatch => ({
   reqResDelete: (reqRes) => {
@@ -21,7 +19,7 @@ const mapDispatchToProps = dispatch => ({
   },
   reqResUpdate: (reqRes) => {
     dispatch(actions.reqResUpdate(reqRes));
-  }
+  },
 });
 
 class ReqRes extends Component {
@@ -42,7 +40,7 @@ class ReqRes extends Component {
   }
 
   render() {
-    let contentBody = [];
+    const contentBody = [];
     // let resReqContainer = document.querySelector('.resreq_res-container');
     // resReqContainer[0].scrollTop = resReqContainer[0].scrollHeight;
 
@@ -95,27 +93,31 @@ class ReqRes extends Component {
       case 'error':
         statusLight = <status-indicator negative></status-indicator>
         break;
+      default:
+        console.log('not a valid connection for content object');
     }
 
     return (
       <div className={"resreq_wrap"}>
         {/* ReqRes */}
 
-        <div className={'title-row'}>
+        <div className="title-row">
           <div>
             <span className={'primary-title highlighter title_reverse-offset'}>{this.props.content.request.method}</span>
             <span className={'primary-title'}> {this.props.content.url}</span></div>
         </div>
 
-        <div className={'nested-grid-6'}>
+        <div className="nested-grid-6">
           <div>
             <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
             <input
-              id={this.props.content.id} checked={this.props.content.checked}
-              className="resreq_select-radio" name='resreq-select' type="checkbox"
+              id={this.props.content.id}
+              checked={this.props.content.checked}
+              className="resreq_select-radio"
+              name="resreq-select"
+              type="checkbox"
               onChange={this.onCheckHandler}
             />
-            {/* <label className={'resreq_select-radio-label'} for="resreq-select">Select</label> */}
           </div>
 
 
@@ -127,18 +129,29 @@ class ReqRes extends Component {
 
           <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
           <div>{statusLight}</div>
-          <div><span className={'tertiary-title'}>{this.props.content.connectionType}</span></div>
-          <div><span className={'tertiary-title'}>Round Trip: {(this.props.content.timeReceived) - (this.props.content.timeSent)}</span></div>
+          <div>
+            <span className="tertiary-title">{this.props.content.connectionType}</span>
+          </div>
+          <div>
+            <span className="tertiary-title">
+              Round Trip:
+              {' '}
+              {this.props.content.timeReceived - this.props.content.timeSent}
+            </span>
+          </div>
         </div>
 
-        <div style={http2Display}>HTTP2 connection: Requests with the same host will share a single HTTP2 connection</div>
+        <div style={http2Display}>
+          HTTP2 connection: Requests with the same host will share a single HTTP2 connection
+        </div>
 
         {contentBody}
-
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReqRes);
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReqRes);
