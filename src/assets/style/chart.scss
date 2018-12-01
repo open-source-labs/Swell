@@ -1,7 +1,30 @@
+.warningContainer {
+  width : 100%;
+  height : 150px;
+  padding : 17px;
+}
 
-#line-chart{
-    width: 100%;
-    height:250px;
-    border:$medgray 1px solid;
-  }
+.warning {
+  width : 100%;
+  height : 100%;
+  padding : 20px;
+  border : 8px solid #999999;
+  border-radius : 4px;
+  color : #999999;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.chartContainer {
+  padding: 0px 20px;
+  height: 150px;
+}
+.chart {
+  padding : 5px 10px;
+  width : 100%;
+  height : 150px;
+}
   
