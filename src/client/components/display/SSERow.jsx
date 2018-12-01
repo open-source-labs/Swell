@@ -49,8 +49,8 @@ class SSERow extends Component {
               {this.props.content.timeReceived}
             </span>
           </div>
+          
           <div>
-
             <span className={'tertiary-title expand-btn'} onClick={(e) => this.handleClick(e)} ></span>
           </div>
         </div>

@@ -7,7 +7,6 @@ import CloseBtn from './CloseBtn.jsx';
 
 import WebSocketWindow from "./WebSocketWindow.jsx";
 import connectionController from '../../controllers/connectionController';
-// import 'status-indicator/styles.css'
 
 import * as actions from '../../actions/actions';
 
@@ -41,10 +40,6 @@ class ReqRes extends Component {
 
   render() {
     const contentBody = [];
-    // let resReqContainer = document.querySelector('.resreq_res-container');
-    // resReqContainer[0].scrollTop = resReqContainer[0].scrollHeight;
-
-
 
     if (this.props.content.protocol === 'ws://') {
       contentBody.push(<WebSocketWindow
@@ -120,18 +115,17 @@ class ReqRes extends Component {
             />
           </div>
 
-
           <div className={'btn-sm'}>
             <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
             <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
           </div>
-
 
           <button className={'btn-sm resreq_remove'} onClick={this.removeReqRes}>Remove</button>
           <div>{statusLight}</div>
           <div>
             <span className="tertiary-title">{this.props.content.connectionType}</span>
           </div>
+
           <div>
             <span className="tertiary-title">
               Round Trip:
