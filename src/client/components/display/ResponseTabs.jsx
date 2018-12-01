@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { LightAsync as SyntaxHighlighter } from "react-syntax-highlighter";
+import { solarizedDark } from 'react-syntax-highlighter/styles/hljs';
+import pretty from 'pretty';
+
 import * as actions from "../../actions/actions";
 
 import Tab from "./Tab.jsx";
 import SSERow from "./SSERow.jsx";
+import ResponsePlain from "./ResponsePlain.jsx";
 
 const mapStateToProps = store => ({
   store: store
@@ -44,7 +49,6 @@ class ResponseTabs extends Component {
   }
 
   componentDidMount() {
-    console.log('Component Did Mount', this.props.responseContent);
     this.handleTabSelect("Events");
   }
 
@@ -58,7 +62,15 @@ class ResponseTabs extends Component {
     if (this.state.openTabs === "Events" && this.props.responseContent.events) {
         tabContentShown = this.props.responseContent.events;
         tabContentShown.forEach((cur, idx) => {
-          tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
+            if (this.props.store.business.reqResArray[0].connectionType === 'SSE') {
+                tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
+            } else if (this.props.store.business.reqResArray[0].connectionType === 'plain') {
+                tabContentShownEvents.push(
+                    <SyntaxHighlighter key={idx} language='htmlbars' style={solarizedDark}>
+                        {pretty(cur, {ocd: true})}
+                    </SyntaxHighlighter>          
+                )
+            }
         });
     }
 

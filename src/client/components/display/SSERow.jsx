@@ -27,10 +27,10 @@ class SSERow extends Component {
     console.log('>>>>', this.props)
     let contentBody;
     try {
-      const json = JSON.parse(this.props.content.data);
-      contentBody = <ReactJson src={json} name={false} displayDataTypes={false} />;
-    }
-    catch (err) {
+      let json = JSON.parse(this.props.content.data);
+      contentBody = <ReactJson src={json} name={false} displayDataTypes={false} />
+      // To Do Add pretty print
+    } catch (err) {
       contentBody = this.props.content.data;
     }
 

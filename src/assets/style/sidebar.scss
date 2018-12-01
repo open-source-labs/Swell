@@ -21,6 +21,15 @@
   color: #FCF7F8;
 }
 
+.sidebar_history {
+  height: 70vh;
+  overflow-y: scroll;
+}
+
+.sidebar_history-inner {
+  padding: 0 0 25px 0;
+}
+
 .contents{
   width: calc(100vw - 320px);
   height: 100vh;
