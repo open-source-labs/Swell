@@ -254,22 +254,24 @@ const httpController = {
       let sesh = session.defaultSession; 
       let domain = reqResObj.host.split('//')
       domain.shift();
-      domain = domain.join('').split('.').splice(-2).join('.')
+      domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
       let dotDomain = `.${domain}`;
       console.log(domain, dotDomain);
 
-      sesh.cookies.get({domain: domain, path: reqResObj.path}, (err, cookies) => {
-        reqResObj.response.cookies = cookies;
-        store.default.dispatch(actions.reqResUpdate(reqResObj))
-        cookies.forEach(cook => {
-          let url = '';
-          url += cook.secure ? 'https://' : 'http://';
-          url += cook.domain.charAt(0) === '.' ? 'www' : '';
-          url += cook.domain;
-          url += cook.path;
+      sesh.cookies.get({domain: domain}, (err, cookies) => {
+        if (cookies) {
+          reqResObj.response.cookies = cookies;
+          store.default.dispatch(actions.reqResUpdate(reqResObj))
+          cookies.forEach(cook => {
+            let url = '';
+            url += cook.secure ? 'https://' : 'http://';
+            url += cook.domain.charAt(0) === '.' ? 'www' : '';
+            url += cook.domain;
+            url += cook.path;
 
-          sesh.cookies.remove(url, cook.name, (x) => console.log(x));
-        })
+            sesh.cookies.remove(url, cook.name, (x) => console.log(x));
+          })
+        }
         isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
       })
     })
@@ -302,7 +304,7 @@ const httpController = {
     };
 
     if (method !== 'GET' && method !== 'HEAD') {
-      outputObj.body = body;
+      outputObj.body = JSON.stringify(body);
     }
 
     return outputObj;
@@ -355,10 +357,8 @@ const httpController = {
 
     // okay to set these after the read since read is async
     newObj.timeReceived = Date.now();
-    newObj.response = {
-      headers,
-      events: [],
-    };
+    newObj.response.headers = headers;
+    newObj.response.events = [];
     newObj.connection = 'open';
     newObj.connectionType = 'SSE';
 

@@ -22,10 +22,13 @@ class CookieTable extends Component {
 
     render() {
       console.log('all cookies', this.props.cookies)
-      let cookieRowArray = this.props.cookies.map((cookie, i) => {
-        return <CookieTableRow className='cookieTableRow' cookie={cookie} key={i} ></CookieTableRow>
-      })
-      console.log('cookies array', cookieRowArray);
+      let cookieRowArray;
+      if (Array.isArray(this.props.cookies)) {
+        cookieRowArray = this.props.cookies.map((cookie, i) => {
+          return <CookieTableRow className='cookieTableRow' cookie={cookie} key={i} ></CookieTableRow>
+        })
+        console.log('cookies array', cookieRowArray);
+      }
 
       return (
         <div className='cookieTable'>
