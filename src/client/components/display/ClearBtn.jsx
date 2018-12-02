@@ -3,7 +3,7 @@ import ReqResCtrl from '../../controllers/connectionController';
 
 const ClearBtn = () => (
   <button className="btn" type="button" onClick={ReqResCtrl.clearAllReqRes}>
-      ClearBtn
+      Clear All
   </button>
 );
 
