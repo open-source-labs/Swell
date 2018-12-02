@@ -9,6 +9,7 @@ import * as actions from '../../actions/actions';
 import Tab from './Tab.jsx';
 import SSERow from './SSERow.jsx';
 import ResponsePlain from './ResponsePlain.jsx';
+import CookieTable from './CookieTable.jsx';
 
 const mapStateToProps = store => ({ store });
 const mapDispatchToProps = dispatch => ({});
@@ -50,7 +51,7 @@ class ResponseTabs extends Component {
 
   render() {
     const events = 'Events';
-    // let cookies = "Cookies";
+    const cookies = "Cookies";
     const headers = 'Headers';
     const tabContentShownEvents = [];
     let tabContentShown;
@@ -63,6 +64,7 @@ class ResponseTabs extends Component {
     responsesCache.forEach((cur, idx) => {
       const responseEvents = cur.responseContent.events;
       const responseHeaders = cur.responseContent.headers;
+      const responseCookies = cur.responseContent.cookies;
       if (responseHeaders) {
         const responseContentType = responseHeaders['content-type'];
         const tabState = this.state.openTabs;
@@ -93,13 +95,14 @@ class ResponseTabs extends Component {
           }
         }
         else if (this.state.openTabs === 'Headers') {
+          console.log('on headers')
           const headerObj = this.props.responseContent.headers;
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
               // Fail safe for for in loop
               if (!Array.isArray(cur)) {
                 tabContentShownEvents.push(
-                  <div className="nested-grid-2">
+                  <div className="nested-grid-2" key={key}>
                     <span className="tertiary-title title_offset">{key}</span>
                     <span className="tertiary-title title_offset">
                       {headerObj[key]}
@@ -112,7 +115,10 @@ class ResponseTabs extends Component {
               }
             }
           }
-        }
+        } else if (this.state.openTabs === 'Cookies') {
+            console.log('cookies showing', this.props.responseContent.cookies);
+            tabContentShownEvents.push(<CookieTable className='cookieTable' cookies={this.props.responseContent.cookies} key='{cookieTable}'></CookieTable>)
+          }         
       }
     });
 
@@ -120,7 +126,7 @@ class ResponseTabs extends Component {
       <div>
         <ul className="tab_list">
           <Tab onTabSelected={this.handleTabSelect} tabName={events} />
-          {/* <Tab onTabSelected={this.handleTabSelect} tabName={cookies} /> */}
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
         </ul>
         <div className="tab_content">{tabContentShownEvents}</div>

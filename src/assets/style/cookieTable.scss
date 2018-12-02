@@ -1,0 +1,35 @@
+.cookieTable {
+  display: block;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cookieTableHeaders {
+  display: flex;
+  padding: 10px 0px;
+  justify-content: space-around;
+  border-bottom: 2px solid var(--hariline-regular);
+}
+
+.cookieTableRow {
+  padding: 0;
+  display: flex;
+  padding-bottom: 10px;
+  word-wrap: break-word;
+  justify-content: space-around;
+  border-bottom: 1px solid var(--hairline-regular);
+  cursor: text;
+  user-select: text
+}
+
+.cookieTableHeaderCell {
+  width: 100px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cookieTableCell {
+  width: 100px;
+  font-size: 12px;
+  padding-top: 10px;
+}
