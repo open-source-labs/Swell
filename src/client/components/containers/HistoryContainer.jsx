@@ -20,10 +20,10 @@ class HistoryContainer extends Component {
     })
 
     return(
-      <div className={'sidebar_history'}>
-        <div className={'sidebar_history-inner'}>
+      <div className={'historyDate-container'}>
+        {/* <div className={'sidebar_history-inner'}> */}
           {historyDates}
-        </div>
+        {/* </div> */}
       </div>
     )
   }

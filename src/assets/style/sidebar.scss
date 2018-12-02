@@ -10,10 +10,11 @@
 }
 
 .sidebar_modal-console {        
-  width: 320px;
+  width: 300px;
   height: 100vh;
-  display: block;
+  display: flex;
   position: absolute;
+  flex-direction: column;
   left: 0;
   top: 0;    
   background: #282828;
@@ -23,11 +24,11 @@
 
 
 .contents{
-  width: calc(100vw - 320px);
+  width: calc(100vw - 300px);
   height: 100vh;
   display: block;
   position: absolute;
-  left: 320px;
+  left: 300px;
   top: 0;
   background: white;
 }
@@ -70,6 +71,16 @@
   background: green;
 }
 
+.historyDate-container {
+  overflow: scroll;
+  // -ms-overflow-style: none;
+  // overflow: -moz-scrollbars-none;
+}
+.historyDate-container::-webkit-scrollbar {
+  // overflow: none;
+  // width: 0 !important
+}
+
 .historyDate h1 {
   margin-top: 15px;
   margin-bottom: 5px;
@@ -82,12 +93,13 @@
   border-radius: 3px;
   margin : 1px 0px 1px 0px;
   color : white;
-  display : flex;
-  align-items: center;
-  justify-content: space-between;
+  // display : flex;
+  // align-items: center;
+  // justify-content: space-between;
   cursor: pointer;
   overflow: hidden;
   height : 28px;
+  width: 100%;
   
   &:hover {
     border: 1px solid #808080;
@@ -120,14 +132,17 @@
 
 .history-delete-container {
   display: flex;
-  position: absolute;
-  right : 19px;
+  position: relative;
+  top: -28px;
+  float: right;
+  right : 0px;
   height: 26px;
+  z-index: 0;
 }
 .history-delete-fade {
   color: white;
   height: 26px;
-  width: 40px;
+  width: 30px;
   background:linear-gradient(to right, rgba(40, 40, 40, 0), rgba(40, 40, 40, 1));
 }
 .history-delete-button {
