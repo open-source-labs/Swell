@@ -10,10 +10,11 @@
 }
 
 .sidebar_modal-console {        
-  width: 320px;
+  width: 300px;
   height: 100vh;
-  display: block;
+  display: flex;
   position: absolute;
+  flex-direction: column;
   left: 0;
   top: 0;    
   background: #282828;
@@ -23,7 +24,7 @@
 
 
 .contents{
-  width: calc(100vw - 320px);
+  width: calc(100vw - 300px);
   height: 100vh;
   display: block;
   position: absolute;
@@ -68,6 +69,15 @@
 }
 .modal_protocol_button-selected {
   background: green;
+}
+
+.historyDate-container {
+  overflow: scroll;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+.historyDate-container::-webkit-scrollbar {
+  overflow: none;
 }
 
 .historyDate h1 {
@@ -123,6 +133,7 @@
   position: absolute;
   right : 19px;
   height: 26px;
+  z-index: -1;
 }
 .history-delete-fade {
   color: white;

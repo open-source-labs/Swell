@@ -15,19 +15,15 @@ class HistoryContainer extends Component {
   }
 
   render() {
-    const historyArray = this.props.history
-      .map((history, i) => <History className="historyChild" content={history} key={i} />)
-      .reverse();
-
     let historyDates = this.props.history.map((date, i) => {
       return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate>
     })
 
     return(
-      <div className={'sidebar_history'}>
-        <div className={'sidebar_history-inner'}>
+      <div className={'historyDate-container'}>
+        {/* <div className={'sidebar_history-inner'}> */}
           {historyDates}
-        </div>
+        {/* </div> */}
       </div>
     )
   }
