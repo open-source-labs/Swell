@@ -137,7 +137,8 @@ server.on('stream', (stream, headers) => {
   stream.respond({
     'content-type': 'text/event-stream',
     'cache-control' : 'no-cache',
-    ':status': 200
+    // 'set-cookie' : '1P_JAR=2018-12-02-21; expires=Tue, 01-Jan-2019 21:47:55 GMT; path=/; domain=.google.com',
+    ':status': 200,
   });
 
   let interval = setInterval(() => {

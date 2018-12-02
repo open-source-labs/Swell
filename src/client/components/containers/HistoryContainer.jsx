@@ -15,10 +15,6 @@ class HistoryContainer extends Component {
   }
 
   render() {
-    const historyArray = this.props.history
-      .map((history, i) => <History className="historyChild" content={history} key={i} />)
-      .reverse();
-
     let historyDates = this.props.history.map((date, i) => {
       return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate>
     })
