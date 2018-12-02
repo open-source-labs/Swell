@@ -103,17 +103,59 @@ class Graph extends Component {
     this.props.reqResArray.forEach((reqRes, index) => {
       if (reqRes.response.events && reqRes.timeReceived > this.state.currentTime) {
         // create dataset...
+        let backgroundColor;
+        let borderColor;
+        let pointBorderColor;
+        switch (index) {
+          case 0 : {
+            backgroundColor = 'rgba(21,183,143, .1)';
+            borderColor = 'rgb(21,183,143, .9)';
+            pointBorderColor = 'rgb(21,183,143)';
+            break;
+          }
+          case 1 : {
+            backgroundColor = 'rgba(0,161,147, .1)'
+            borderColor = 'rgba(0,161,147, .9)'
+            pointBorderColor = 'rgb(0,161,147)'
+            break;
+          }
+          case 2 : {
+            backgroundColor = 'rgba(0,116,131, .1)'
+            borderColor = 'rgba(0,116,131, .9)'
+            pointBorderColor = 'rgb(0,116,131)'
+            break;
+          }
+          case 3 : {
+            backgroundColor = 'rgba(0,155,191, .1)'
+            borderColor = 'rgba(0,155,191, .9)'
+            pointBorderColor = 'rgb(0,155,191)'
+            break;
+          }
+          case 4 : {
+            backgroundColor = 'rgba(0,137,208, .1)'
+            borderColor = 'rgba(0,137,208, .9)'
+            pointBorderColor = 'rgb(0,137,208)'
+            break;
+          }
+          case 5 : {
+            backgroundColor = 'rgba(49,87,192, .1)'
+            borderColor = 'rgba(49,87,192, .9)'
+            pointBorderColor = 'rgb(49,87,192)'
+            break;
+          }
+        }
+
         const dataSet = {
           label: reqRes.url,
           data: [],
           lineTension: 0,
-          backgroundColor: 'rgba(13,217,192, 0.1)',
-          borderColor: 'rgba(13,217,192, 0.9)',
+          backgroundColor,
+          borderColor,
           borderCapStyle: 'butt',
           borderDash: [],
           borderDashOffset: 0.0,
           borderJoinStyle: 'miter',
-          pointBorderColor: 'rgb(13,217,192)',
+          pointBorderColor,
           pointBackgroundColor: '#fff',
           pointBorderWidth: 1,
           pointHoverRadius: 5,
