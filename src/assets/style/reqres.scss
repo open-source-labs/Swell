@@ -132,14 +132,13 @@
 .resreq_wrap {
   max-width: calc(100vw - 356px);
   margin: 15px;
-  background: white;
 }
 
 .resreq_res-container {
   margin: 0;
   display: flex;
   flex-direction: column;
-  max-height: 46vh;
+  max-height: 60vh;
   height: auto;
   overflow: scroll;
   flex-direction: column-reverse;
@@ -181,7 +180,7 @@
   // margin: 10px 0 0;
   // display: flex;
   // flex-direction: column;    
-  border-bottom: 1px solid $bordergray;
+  // border-bottom: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;
 }
@@ -200,9 +199,10 @@
 
 .httptwo {
   padding: 10px 15px;
-  background-color: $greenone;
-  color: white;
+  background-color: white;
+  color: $greenone;
   font-weight: 800;
+  border-top: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;
   display: none;

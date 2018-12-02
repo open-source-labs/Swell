@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { solarizedDark } from 'react-syntax-highlighter/styles/hljs';
+// import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import { solarizedDark } from 'react-syntax-highlighter/styles/hljs';
 import pretty from 'pretty';
 
 import * as actions from '../../actions/actions';
@@ -84,15 +84,15 @@ class ResponseTabs extends Component {
             else if (responseContentType.includes('text/html')) {
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(
-                  <SyntaxHighlighter key={idx} language="htmlbars" style={solarizedDark}>
+                  <div>
                     {pretty(cur, { ocd: true })}
-                  </SyntaxHighlighter>,
+                  </div>,
                 );
               });
             }
           }
         }
-        else if (this.state.openTabs === 'Headers') {
+        else if (tabState === 'Headers') {
           const headerObj = this.props.responseContent.headers;
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {

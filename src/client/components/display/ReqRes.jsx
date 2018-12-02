@@ -102,7 +102,6 @@ class ReqRes extends Component {
 
         <div className="nested-grid-6">
           <div>
-            <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
             <input
               id={this.props.content.id}
               checked={this.props.content.checked}
@@ -127,9 +126,7 @@ class ReqRes extends Component {
 
           <div>
             <span className="tertiary-title">
-              Round Trip:
-              {' '}
-              {this.props.content.timeReceived - this.props.content.timeSent}
+              Roundtrip: {this.props.content.timeReceived - this.props.content.timeSent}
             </span>
           </div>
         </div>
@@ -138,6 +135,7 @@ class ReqRes extends Component {
           HTTP2 connection: Requests with the same host will share a single HTTP2 connection
         </div>
 
+        <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
         {contentBody}
       </div>
     );

@@ -3,7 +3,7 @@
     height: 42px;
     position: relative;
     top: 0;
-    border-bottom: 1px solid $bordergray;
+    // border-bottom: 1px solid $bordergray;
     background-color: $medgray;
 }
 
@@ -36,6 +36,7 @@
     height: auto;
     position: relative;
     padding: 5px 5px;
-    background: $graythree;
-    border: solid 1px $bordergray;
+    background: #E6EBEC;
+    border-left: solid 1px #ebeff2;
+    border-right: solid 1px #ebeff2;
   }
