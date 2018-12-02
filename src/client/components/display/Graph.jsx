@@ -21,9 +21,12 @@ class Graph extends Component {
     this.state = {
       // use the event counter as a 'hack' to force rerenders
       eventCounter: 0,
-      currentTime: null,
+      currentTime: Date.now(),
       timeSet: false,
+      oldestDataPointTimeReceived : 0,
+      timeFromNowToDisplay : 30000,
     };
+    this.updateTimeFromNowToDisplay = this.updateTimeFromNowToDisplay.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +52,7 @@ class Graph extends Component {
               type: 'linear',
               position: 'bottom',
               ticks: {
-                beginAtZero: true,
+                // beginAtZero: true,
               },
             },
           ],
@@ -96,12 +99,16 @@ class Graph extends Component {
   }
 
   updateGraphWithStoreData() {
-    // console.log('Updating graph');
+    console.log('Updating graph');
 
     let newEventCounter = 0;
+    let newOldestDataPointTimeReceived = Number.MAX_SAFE_INTEGER;
+
     const newDataSets = [];
     this.props.reqResArray.forEach((reqRes, index) => {
-      if (reqRes.response.events && reqRes.timeReceived > this.state.currentTime) {
+      // console.log(reqRes)
+      if ((reqRes.response.events && reqRes.timeReceived > this.state.currentTime) ||
+      (reqRes.response.messages || reqRes.request.messages)) {
         // create dataset...
         let backgroundColor;
         let borderColor;
@@ -170,22 +177,66 @@ class Graph extends Component {
         switch (reqRes.connectionType) {
           case 'SSE': {
             reqRes.response.events.forEach((event) => {
-              newEventCounter += 1;
-              dataSet.data.push({
-                x: event.timeReceived - this.state.currentTime,
-                y: index,
-              });
+              if(Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
+                
+                //to determine if the graph needs to update
+                if (event.timeReceived < newOldestDataPointTimeReceived) {
+                  newOldestDataPointTimeReceived = event.timeReceived;
+                }
+
+                newEventCounter += 1;
+                dataSet.data.push({
+                  x: event.timeReceived - this.state.currentTime,
+                  y: index,
+                });
+              }
             });
+            console.log(dataSet.data)
             break;
           }
 
           case 'plain': {
-            reqRes.response.events.forEach(() => {
-              newEventCounter += 1;
-              dataSet.data.push({
-                x: reqRes.timeReceived - this.state.currentTime,
-                y: index,
-              });
+            reqRes.response.events.forEach((event) => {
+              if(Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
+
+                if (event.timeReceived < newOldestDataPointTimeReceived) {
+                  newOldestDataPointTimeReceived = event.timeReceived;
+                }
+
+                newEventCounter += 1;
+                dataSet.data.push({
+                  x: reqRes.timeReceived - this.state.currentTime,
+                  y: index,
+                });
+              }
+            });
+            break;
+          }
+
+          case 'WebSocket': {
+            reqRes.response.messages.forEach(message => {
+              if(Date.now() - message.timeReceived < this.state.timeFromNowToDisplay) {
+                if (message.timeReceived < newOldestDataPointTimeReceived) {
+                  newOldestDataPointTimeReceived = message.timeReceived;
+                }
+                newEventCounter += 1;
+                dataSet.data.push({
+                  x: message.timeReceived - this.state.currentTime,
+                  y: index,
+                });
+              }
+            });
+            reqRes.request.messages.forEach(message => {
+              if(Date.now() - message.timeReceived < this.state.timeFromNowToDisplay) {
+                if (message.timeReceived < newOldestDataPointTimeReceived) {
+                  newOldestDataPointTimeReceived = message.timeReceived;
+                }
+                newEventCounter += 1;
+                dataSet.data.push({
+                  x: message.timeReceived - this.state.currentTime,
+                  y: index,
+                });
+              }
             });
             break;
           }
@@ -197,10 +248,11 @@ class Graph extends Component {
       }
     });
 
-    if (this.state.eventCounter !== newEventCounter) {
+    if (this.state.eventCounter !== newEventCounter || this.state.oldestDataPointTimeReceived !== newOldestDataPointTimeReceived) {
       this.setState(
         {
           eventCounter: newEventCounter,
+          oldestDataPointTimeReceived : newOldestDataPointTimeReceived
         },
         () => {
           // console.log('Rerender');
@@ -209,6 +261,12 @@ class Graph extends Component {
         },
       );
     }
+  }
+
+  updateTimeFromNowToDisplay (e) {
+    this.setState({
+      timeFromNowToDisplay : e.target.value
+    });
   }
 
   render() {
@@ -227,6 +285,16 @@ class Graph extends Component {
           </div>
         </div>
         <canvas className={'chart'} style={chartDisplayStyles} id="line-chart" />
+        <div className={'chartTime'}>
+          <span>Display results:</span>
+          <select onChange={this.updateTimeFromNowToDisplay} className={'chartTimeSelect'}>
+            <option value={10000}>Past 10 seconds</option>
+            <option value={30000}>Past 30 seconds</option>
+            <option value={60000}>Past 1 minute</option>
+            <option value={300000}>Past 5 minutes</option>
+            <option value={Number.MAX_SAFE_INTEGER}>All results</option>
+          </select>
+        </div>
       </div>
     );
   }
