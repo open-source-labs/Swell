@@ -235,11 +235,6 @@ const httpController = {
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
-    // console.log(parsedFetchOptions);
-
-    // const sesh = session.fromPartition(`${reqResObj.id}`, {cache: true});
-    // console.log('agent', sesh.getUserAgent())
-
     fetch(reqResObj.url, parsedFetchOptions)
     .then(response => {
       console.log('RESPONSE ::', response)
@@ -266,7 +261,15 @@ const httpController = {
       sesh.cookies.get({domain: domain, path: reqResObj.path}, (err, cookies) => {
         reqResObj.response.cookies = cookies;
         store.default.dispatch(actions.reqResUpdate(reqResObj))
-        sesh.clearStorageData({storages: ['cookies']}, (x, y) => console.log(x, y))
+        cookies.forEach(cook => {
+          let url = '';
+          url += cook.secure ? 'https://' : 'http://';
+          url += cook.domain.charAt(0) === '.' ? 'www' : '';
+          url += cook.domain;
+          url += cook.path;
+
+          sesh.cookies.remove(url, cook.name, (x) => console.log(x));
+        })
         isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
       })
     })
