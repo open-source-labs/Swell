@@ -197,10 +197,10 @@ class Graph extends Component {
 
           case 'plain': {
             reqRes.response.events.forEach((event) => {
-              if(Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
+              if(Date.now() - reqRes.timeReceived < this.state.timeFromNowToDisplay) {
 
-                if (event.timeReceived < newOldestDataPointTimeReceived) {
-                  newOldestDataPointTimeReceived = event.timeReceived;
+                if (reqRes.timeReceived < newOldestDataPointTimeReceived) {
+                  newOldestDataPointTimeReceived = reqRes.timeReceived;
                 }
 
                 newEventCounter += 1;
@@ -285,7 +285,7 @@ class Graph extends Component {
           </div>
         </div>
         <canvas className={'chart'} style={chartDisplayStyles} id="line-chart" />
-        <div className={'chartTime'}>
+        <div className={'chartTime'} style={chartDisplayStyles}>
           <span>Display results:</span>
           <select onChange={this.updateTimeFromNowToDisplay} className={'chartTimeSelect'}>
             <option value={10000}>Past 10 seconds</option>

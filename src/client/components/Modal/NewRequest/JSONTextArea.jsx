@@ -71,36 +71,16 @@ class JSONTextArea extends Component {
       <div>
         <div>{this.props.newRequestBody.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
         <textarea 
-          style={{'resize' : 'none'}} 
+          style={{'resize' : 'none', 'width' : '100%'}} 
           type='text' 
           rows={8} 
-          value={this.props.newRequestBody.JSONFormatted ? JSON.stringify(this.props.newRequestBody.bodyContent,undefined,4) : this.props.newRequestBody.bodyContent}
+          value={this.props.newRequestBody.bodyContent}
           placeholder='Body' 
           onChange={(e) => {
             this.props.setNewRequestBody({
               ...this.props.newRequestBody,
               bodyContent : e.target.value,
             });
-            // let parsedValue;
-            // let isJSONFormatted;
-            // try {
-            //   parsedValue = JSON.parse(e.target.value);
-            //   this.setState({
-            //     lastParseWasSuccess : true,
-            //   })
-            //   isJSONFormatted = true;
-            // }
-            // catch (error) {
-            //   console.log('error')
-            //   parsedValue = e.target.value;
-            //   this.setState({
-            //     lastParseWasSuccess : false,
-            //   });
-            //   isJSONFormatted = false;
-            // }
-            // console.log(parsedValue);
-            // this.props.updateJSONFormatted(isJSONFormatted);
-            // this.props.updateBodyContent(parsedValue);
           }}></textarea>
       </div>
     );
