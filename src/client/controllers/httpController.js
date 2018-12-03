@@ -329,7 +329,7 @@ const httpController = {
     };
 
     if (method !== 'GET' && method !== 'HEAD') {
-      outputObj.body = JSON.stringify(body);
+      outputObj.body = body;
     }
 
     return outputObj;
