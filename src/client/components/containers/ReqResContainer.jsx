@@ -29,10 +29,8 @@ class ReqResContainer extends Component {
     let num;
     const requestInstances = this.props.reqRes.length;
 
-    console.log('~~~~~~~~requestInstances~~~~~~~~', requestInstances)
     switch (requestInstances) {
       case 1:
-        console.log('+++++++++ 1');
         dynamicCols = { 
           width: 'calc(100vw - 356px)',
           display: 'grid', 
@@ -40,7 +38,6 @@ class ReqResContainer extends Component {
         num = 'one';
         break;
       case 2:
-        console.log('+++++++++ 2');
         dynamicCols = {
           width: 'calc((100vw - 356px)*2)',
           display: 'grid',
@@ -49,7 +46,6 @@ class ReqResContainer extends Component {
         num = 'two';
         break;
       case 3:
-        console.log('+++++++++ 3');
         dynamicCols = {
           width: 'calc((100vw - 356px)*3)',
           display: 'grid',
@@ -58,7 +54,6 @@ class ReqResContainer extends Component {
         num = 'three';
         break;
       case 4:
-        console.log('+++++++++ 4');
         dynamicCols = {
           width: 'calc((100vw - 356px)*4)',
           display: 'grid',
@@ -67,7 +62,6 @@ class ReqResContainer extends Component {
         num = 'four';
         break;
       case 5:
-        console.log('+++++++++ 5');
         dynamicCols = {
           width: 'calc((100vw - 356px)*5)',
           display: 'grid',
@@ -76,7 +70,6 @@ class ReqResContainer extends Component {
         num = 'five';
         break;
       case 6:
-        console.log('+++++++++ 6');
         dynamicCols = {
           width: 'calc((100vw - 356px)*6)',
           display: 'grid',
