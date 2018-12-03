@@ -52,7 +52,8 @@
   margin: 5px 0;
   display: block;
   padding: 8px;
-  background-color: #fc3d39;
+  // background-color: #fc3d39;
+  background-color: $bluefour;
   border: none;
   border-radius: 3px;
   color: white;
@@ -144,10 +145,10 @@
 .modal_headers_container-open {
   background: #343333;
   margin-top: 2px;
-  padding-top: 3px;
+  // padding-top: 3px;
   border-radius: 3px;
   overflow: hidden;
-  border: 1px solid $yellowgrey;
+  // border: 1px solid $yellowgrey;
   display: flex;
   flex-direction: column;
 }
@@ -158,7 +159,8 @@
 
 .modal_header {
   background: red;
-  margin: 0px 3px 3px 3px;
+  // margin: 0px 3px 3px 3px;
+  margin-bottom: 4px;
   border: 1px solid $yellowgrey;
   border-radius: 3px;
   overflow: hidden;
@@ -173,8 +175,8 @@
   box-sizing: border-box;
   position: relative;
   box-sizing: content-box ;
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   border-width: 0;
   // transition: all .3s linear;
   margin: 0px;
@@ -194,8 +196,8 @@
   border : none;
   color: white;
   background: #343333;
-  width: calc((100% - 25px)/2);
-  height: 25px;
+  width: calc((100% - 22px)/2);
+  height: 22px;
   display: block;
   padding: 8px 4px;
   outline: 0 none;
