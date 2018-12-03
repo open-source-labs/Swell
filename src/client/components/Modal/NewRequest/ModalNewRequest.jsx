@@ -174,8 +174,7 @@ class ModalNewRequest extends Component {
       display : this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
     }
     let BodyEntryFormStyle = {
-      'display' : (this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://') ? 'flex' : 'none',
-      'flexDirection' : 'column'
+      'display' : (this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://') ? 'block' : 'none'
     }
 
     return (
@@ -184,12 +183,12 @@ class ModalNewRequest extends Component {
         tabIndex={0}
         style={{ display: 'flex', flexDirection: 'column' }}
         onKeyPress={(event) => {
-          if (event.key === 'Enter') {
-            this.addNewRequest();
-          }
+          // if (event.key === 'Enter') {
+          //   this.addNewRequest();
+          // }
         }}
       >
-        <h1 className="sidebar_title">Create New Request</h1>
+        <h1 className="modal_title">Create New Request</h1>
 
 
         <FieldEntryForm />

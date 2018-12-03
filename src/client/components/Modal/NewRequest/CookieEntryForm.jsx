@@ -4,175 +4,97 @@ import * as actions from '../../../actions/actions';
 const uuidv4 = require('uuid/v4');
 
 const mapStateToProps = store => ({
-  newRequestHeaders : store.business.newRequestHeaders,
+  newRequestCookies : store.business.newRequestCookies,
   newRequestBody : store.business.newRequestBody,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setNewRequestHeaders : (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  setNewRequestCookies : (requestCookiesObj) => {
+    dispatch(actions.setNewRequestCookies(requestCookiesObj));
   },
 });
 
 class CookieEntryForm extends Component {
   constructor(props) {
     super(props);
-    this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
+    this.onChangeUpdateCookie = this.onChangeUpdateCookie.bind(this);
   }
 
   componentDidMount () {
-    let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    this.addHeader(headersDeepCopy);
+    let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+    this.addCookie(cookiesDeepCopy);
   }
 
   componentDidUpdate () {
-    if (this.props.newRequestHeaders.headersArr.length == 0) {
-      let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-      this.addHeader(headersDeepCopy);
+    if (this.props.newRequestCookies.cookiesArr.length == 0) {
+      let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+      this.addCookie(cookiesDeepCopy);
     }
-    this.checkContentTypeHeaderUpdate();
-  }
-
-  checkContentTypeHeaderUpdate () {
-    let contentType;
-    if (this.props.newRequestBody.bodyType === 'none'){
-      contentType = '';
-    }
-    else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'){
-      contentType = 'x-www-form-urlencoded';
-    }
-    else {
-      contentType = this.props.newRequestBody.rawType;
-    }
-
-    //Attempt to update header in these conditions:
-    let foundHeader = this.props.newRequestHeaders.headersArr.find(header => {
-      return header.key.toLowerCase() === 'content-type'
-    });
-
-    //1. if there is no contentTypeHeader, but there should be
-    if (!foundHeader && contentType !== '') {
-      this.addContentTypeHeader(contentType);
-    }
-    //2. if there is a contentTypeHeader, but there SHOULDNT be
-    else if (foundHeader && contentType === '') {
-      this.removeContentTypeHeader();
-    }
-    //3. if there is a contentTypeHeader, needs to update
-    else if (foundHeader && foundHeader.value !== contentType) {
-      this.updateContentTypeHeader(contentType, foundHeader);
-    }
-    
-  }
-
-  addContentTypeHeader (contentType){
-    let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-
-    headersDeepCopy.unshift({
-      id : this.props.newRequestHeaders.count,
-      active : true,
-      key : 'content-type',
-      value : contentType,
-    })
-    
-    this.props.setNewRequestHeaders({
-      headersArr : headersDeepCopy,
-      count : headersDeepCopy.length,
-    });
-  }
-
-  removeContentTypeHeader (){
-    let filtered = this.props.newRequestHeaders.headersArr.filter(header => {
-      return header.key !== 'content-type';
-    });
-
-    this.props.setNewRequestHeaders({
-      headersArr : filtered,
-      count : filtered.length,
-    });
-  }
-
-  updateContentTypeHeader (contentType, foundHeader) {
-    let filtered = this.props.newRequestHeaders.headersArr.filter(header => {
-      return header.key !== 'content-type';
-    });
-
-    filtered.unshift({
-      id : this.props.newRequestHeaders.count,
-      active : true,
-      key : 'content-type',
-      value : contentType,
-    })
-
-    this.props.setNewRequestHeaders({
-      headersArr : filtered,
-      count : filtered.length,
-    });
   }
   
 
-  addHeader (headersDeepCopy) {
-    headersDeepCopy.push({
-      id : this.props.newRequestHeaders.count,
+  addCookie (cookiesDeepCopy) {
+    cookiesDeepCopy.push({
+      id : this.props.newRequestCookies.count,
       active : false,
       key : '',
       value : ''
     })
 
-    this.props.setNewRequestHeaders({
-      headersArr : headersDeepCopy,
+    this.props.setNewRequestCookies({
+      cookiesArr : cookiesDeepCopy,
       override : false,
-      count : headersDeepCopy.length,
+      count : cookiesDeepCopy.length,
     });
   }
 
-  onChangeUpdateHeader(id, field, value) {
-    let headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+  onChangeUpdateCookie(id, field, value) {
+    let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
 
-    //find header to update
+    //find cookie to update
     let indexToBeUpdated = undefined;
-    for(let i = 0; i < headersDeepCopy.length; i++) {
-      if (headersDeepCopy[i].id === id) {
+    for(let i = 0; i < cookiesDeepCopy.length; i++) {
+      if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
         break;
       }
     }
     //update
-    headersDeepCopy[indexToBeUpdated][field] = value;
+    cookiesDeepCopy[indexToBeUpdated][field] = value;
 
     //also switch checkbox if they are typing
     if(field === 'key' || field === 'value') {
-      headersDeepCopy[indexToBeUpdated].active = true;
+      cookiesDeepCopy[indexToBeUpdated].active = true;
     }
     
-    //determine if new header needs to be added
-    let emptyHeadersCount = headersDeepCopy.map(header => {
-      return (!header.key && !header.value) ? 1 : 0
+    //determine if new cookie needs to be added
+    let emptyCookiesCount = cookiesDeepCopy.map(cookie => {
+      return (!cookie.key && !cookie.value) ? 1 : 0
     }).reduce((acc, cur) => {
       return acc + cur;
     });
 
-    //depending on if headers is empty, update store, or first add a new header
-    if (emptyHeadersCount === 0) {
-      this.addHeader(headersDeepCopy);
+    //depending on if cookies is empty, update store, or first add a new cookie
+    if (emptyCookiesCount === 0) {
+      this.addCookie(cookiesDeepCopy);
     } 
     else {
-      this.props.setNewRequestHeaders({
-        headersArr : headersDeepCopy,
-        count : headersDeepCopy.length,
+      this.props.setNewRequestCookies({
+        cookiesArr : cookiesDeepCopy,
+        count : cookiesDeepCopy.length,
       });
     }
   }
 
   render() {
-    // console.log('HeaderEntryForm Begin Render', this.state.headers);
-    let headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => {
-      return (<Header content={header} changeHandler={this.onChangeUpdateHeader} key={index} Key={header.key} value={header.value}></Header>)
+    // console.log('CookieEntryForm Begin Render', this.state.cookies);
+    let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
+      return (<Cookie content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Cookie>)
     });
     
     return(
       <div style={this.props.stylesObj}>
-        {headersArr}
+        {cookiesArr}
       </div>
     )
   }

@@ -4,7 +4,7 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 // Import parts of electron to use
 const { app, BrowserWindow, TouchBar, session } = require('electron')
 const path = require('path')
-const url = require('url') 
+const url = require('url')
 
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
@@ -166,6 +166,10 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  //require menu files
+  require('./menu/mainMenu')
+
 }
 
 // function createLoadingScreen() {

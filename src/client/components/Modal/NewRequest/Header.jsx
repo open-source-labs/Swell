@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 const Header = ({
   content, changeHandler, Key, value,
 }) => (
-  <div style={styles}>
+  <div style={styles} className='modal_header'>
     <input
+      className='modal_header_checkbox'
       type="checkbox"
       checked={content.active}
       onChange={e => changeHandler(content.id, 'active', e.target.checked)}
     />
 
     <input
-      className="modal_url-input"
+      className="modal_header_input modal_header_input_first"
       type="text"
       placeholder="Key"
       value={Key}
@@ -20,7 +21,7 @@ const Header = ({
     />
 
     <input
-      className="modal_url-input"
+      className="modal_header_input"
       type="text"
       placeholder="Value"
       value={value}

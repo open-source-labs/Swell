@@ -6,9 +6,7 @@ const classNames = require('classnames');
 class JSONTextArea extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   lastParseWasSuccess : true,
-    // }
+    this.prettyPrintJSON = this.prettyPrintJSON.bind(this);
   }
 
   componentDidMount () {
@@ -66,42 +64,41 @@ class JSONTextArea extends Component {
     }
   }
 
+  prettyPrintJSON () {
+    let prettyString = JSON.stringify(JSON.parse(this.props.newRequestBody.bodyContent), null, 4);
+    this.props.setNewRequestBody({
+      ...this.props.newRequestBody,
+      bodyContent : prettyString,
+    })
+  }
+
   render() {
+    let prettyPrintDisplay = {
+      'display' : this.props.newRequestBody.JSONFormatted ? 'block' : 'none',
+    }
+    let textAreaClass = this.props.newRequestBody.JSONFormatted ? 'modal_textarea' : 'modal_textarea modal_textarea-error';
+    
     return(
       <div>
-        <div>{this.props.newRequestBody.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
         <textarea 
-          style={{'resize' : 'none'}} 
+          className={textAreaClass}
+          style={{'resize' : 'none', 'width' : '100%'}} 
           type='text' 
           rows={8} 
-          value={this.props.newRequestBody.JSONFormatted ? JSON.stringify(this.props.newRequestBody.bodyContent,undefined,4) : this.props.newRequestBody.bodyContent}
+          value={this.props.newRequestBody.bodyContent}
           placeholder='Body' 
           onChange={(e) => {
             this.props.setNewRequestBody({
               ...this.props.newRequestBody,
               bodyContent : e.target.value,
             });
-            // let parsedValue;
-            // let isJSONFormatted;
-            // try {
-            //   parsedValue = JSON.parse(e.target.value);
-            //   this.setState({
-            //     lastParseWasSuccess : true,
-            //   })
-            //   isJSONFormatted = true;
-            // }
-            // catch (error) {
-            //   console.log('error')
-            //   parsedValue = e.target.value;
-            //   this.setState({
-            //     lastParseWasSuccess : false,
-            //   });
-            //   isJSONFormatted = false;
-            // }
-            // console.log(parsedValue);
-            // this.props.updateJSONFormatted(isJSONFormatted);
-            // this.props.updateBodyContent(parsedValue);
-          }}></textarea>
+          }}>
+        </textarea>
+        <div 
+          style={prettyPrintDisplay}
+          className={'modal_pretty_print'} 
+          onClick={this.prettyPrintJSON}>JSON correctly formatted. Pretty print?
+        </div>
       </div>
     );
   }
