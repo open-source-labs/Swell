@@ -19,8 +19,8 @@
   margin: 25px auto;
 
   &:hover {
-    color: $greenone;
-    border: solid 1px $greenone;
+    color: $bluethree;
+    border: solid 1px $bluethree;
     background: transparent;
   }
 }
@@ -35,29 +35,11 @@
     line-height: 1;
     border-radius: 3px;
     &:hover {
-      background-color: $greenone;
+      background-color: $bluethree;
       border: none;
     }
   }
 }
-
-// .btn-sm {
-//   width:100%;
-//   height: 28px;
-//   margin: 0 auto;
-//   display: block;
-//   border-radius: 2px;
-//   color: #212121;
-//   font-weight: bold;
-//   border: none;
-//   background-color: $litebluegray;
-//   cursor: pointer;
-
-//   &:hover {
-//     border: solid 1px $litebluegray;
-//     background: transparent;
-//   }
-// }
 
 .navbar-console {
   background: #4e4e4e;

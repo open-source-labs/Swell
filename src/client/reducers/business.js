@@ -18,13 +18,16 @@ const initialState = {
     headersArr : [],
     count : 0,
   },
+  newRequestCookies : {
+    cookiesArr : [],
+    count : 0,
+  },
   newRequestBody : {
     bodyContent : '',
     bodyType : 'none',
     rawType : 'Text (text/plain)',
     JSONFormatted : true,
   },
-  newRequestCookies : [],
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -36,9 +39,10 @@ const businessReducer = (state = initialState, action) => {
         ...state,
 
         reqResArray : [],
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         history: action.payload,
       };
@@ -60,11 +64,10 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),        newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         history: newHistory,
       };
@@ -74,9 +77,9 @@ const businessReducer = (state = initialState, action) => {
       console.log('action', action);
       return {
         ...state,
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),        newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         reqResArray: [],
       };
@@ -108,9 +111,9 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),  newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         reqResArray,
         history: newHistory,
@@ -124,10 +127,11 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        history : JSON.parse(JSON.stringify(state.history)),
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         reqResArray : state.reqResArray.filter(reqRes => {
           return reqRes.id !== deleteId;
@@ -153,10 +157,11 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
-        history : JSON.parse(JSON.stringify(state.history)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         reqResArray: reqResDeepCopy,
       };
@@ -166,11 +171,12 @@ const businessReducer = (state = initialState, action) => {
       console.log('action', action);
       return {
         ...state,
-        history : JSON.parse(JSON.stringify(state.history)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         warningModalMessage : action.payload
       }
@@ -180,10 +186,11 @@ const businessReducer = (state = initialState, action) => {
       // console.log('action',action);
       return {
         ...state,
-        history: JSON.parse(JSON.stringify(state.history)),
-        reqResArray: JSON.parse(JSON.stringify(state.reqResArray)),
-        newRequestHeaders: JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody: JSON.parse(JSON.stringify(state.newRequestBody)),
+        // history: JSON.parse(JSON.stringify(state.history)),
+        // reqResArray: JSON.parse(JSON.stringify(state.reqResArray)),
+        // newRequestHeaders: JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody: JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
         
         newRequestFields : JSON.parse(JSON.stringify(action.payload)),
       }
@@ -193,10 +200,11 @@ const businessReducer = (state = initialState, action) => {
       console.log('action', action);
       return {
         ...state,
-        history : JSON.parse(JSON.stringify(state.history)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         newRequestHeaders: JSON.parse(JSON.stringify(action.payload)),
       };
@@ -207,12 +215,28 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        history : JSON.parse(JSON.stringify(state.history)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         newRequestBody: JSON.parse(JSON.stringify(action.payload)),
+      };
+    }
+
+    case types.SET_NEW_REQUEST_COOKIES: {
+      console.log('action', action);
+
+      return {
+        ...state,
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+
+        newRequestCookies: JSON.parse(JSON.stringify(action.payload)),
       };
     }
 
@@ -220,11 +244,12 @@ const businessReducer = (state = initialState, action) => {
       console.log('action', action);
       return {
         ...state,
-        history : JSON.parse(JSON.stringify(state.history)),
-        reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
-        newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
-        newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
-        newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // history : JSON.parse(JSON.stringify(state.history)),
+        // reqResArray : JSON.parse(JSON.stringify(state.reqResArray)),
+        // newRequestFields : JSON.parse(JSON.stringify(state.newRequestFields)),
+        // newRequestHeaders : JSON.parse(JSON.stringify(state.newRequestHeaders)),
+        // newRequestBody : JSON.parse(JSON.stringify(state.newRequestBody)),
+        // newRequestCookies : JSON.parse(JSON.stringify(state.newRequestCookies)),
 
         currentTab : action.payload,
       }

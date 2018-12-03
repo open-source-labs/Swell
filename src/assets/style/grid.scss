@@ -24,7 +24,6 @@
       position: relative;
     }
   }
-  
 
   .nested-grid-3 {
     width: 100%;
@@ -39,7 +38,7 @@
       position: relative;
     }
   }
-  
+
   .nested-grid-4 {
     width: 100%;
     height: 30px;
@@ -50,18 +49,6 @@
       padding: 0 15px;
       border-right:1px solid $bordergray;
       position: relative;
-
-      &:first-child {
-      }
-      
-      &:nth-child(-n+2) {
-      }
-
-      &:nth-child(-n+3) {
-      }
-
-      &:last-child {
-      }
     }
   }
   
@@ -69,8 +56,6 @@
     width: 100%;
     height: auto;
     display: grid;
-    // grid-template-columns:3% 10% 10% 2% 27% 28% 30%;
-    // grid-template-columns: 5% 15% 15% 5% 20% 20% 20%; 
     grid-template-columns: 10% 15% 15% 10% 10% 30%;
     border:1px solid $bordergray;
     background: white;

@@ -4,9 +4,13 @@
   width: 100%;
   margin: 0;
   height: calc(100vh - 19.67% + 42px);
-  overflow: scroll;
-  background: $medbluegray;
+  overflow-x: scroll;
+  background-color: $medbluegray;
   border-top:solid 1px $bordergray;
+  background-image: url('../img/swell-bg.png');
+  background-position: center center;
+  background-size: 200px 200px;
+  background-repeat: no-repeat;
 }
 
 #jumpLinks {
@@ -253,6 +257,7 @@
   height: auto;
   font-size: .8rem;
 }
+
 
 // status-loader:
 
