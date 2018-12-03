@@ -16,9 +16,9 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = req
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
 // // configure logging
-// autoUpdater.logger = log;
-// autoUpdater.logger.transports.file.level = 'info';
-// log.info('App starting...');
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
 
 let mainWindow
 
@@ -161,7 +161,7 @@ function createWindow() {
   });
 
   //require menu files
-  require('./menu/mainMenu')
+  require('../menu/mainMenu')
 
 }
 
@@ -171,7 +171,7 @@ function createWindow() {
 app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
-  autoUpdater.checkForUpdates();
+  if (!dev) { autoUpdater.checkForUpdates() };
 });
 
 // Quit when all windows are closed.
@@ -185,7 +185,7 @@ app.on('window-all-closed', () => {
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
-  // log.info(text);
+  log.info(text);
   if (mainWindow) {
     mainWindow.webContents.send('message', text);
   }

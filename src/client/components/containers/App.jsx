@@ -37,7 +37,7 @@ class App extends Component {
     return (
       <div id="app">
         {/* App */}
-        <UpdatePopUpContainer/>
+        {/* <UpdatePopUpContainer/> */}
         <SidebarContainer />
         <ContentsContainer />
       </div>

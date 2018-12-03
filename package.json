@@ -2,7 +2,7 @@
   "name": "Swell",
   "version": "0.1.0",
   "description": "Swell",
-  "main": "main.js",
+  "main": "./src/main.js",
   "repository": "https://github.com/getswell/getswell",
   "scripts": {
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
@@ -10,14 +10,59 @@
     "build": "webpack --config webpack.build.config.js --mode production",
     "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder --x64 --mac",
+    "package-mac": "electron-builder --x64 --mac",
+    "package-all": "npm run build && electron-builder --mwl",
     "gh-publish": "electron-builder --x64 --mac -p always"
   },
   "build": {
-    "appId": "com.getswell.Swell.app"
+    "productName": "Swell",
+    "appId": "com.getswell.Swell.app",
+    "extends": null,
+    "files": [
+      "dist/",
+      "package.json"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "msi"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "snap",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "buildResources",
+      "output": "release"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "getswell",
+      "repo": "getswell",
+      "private": false
+    }
   },
-  "author": "Kyle Combs <combskyle@gmail.com>, Jason Ou <jasonou122894@gmail.com>, Anthony Terruso <> & Brandon Marrero <>",
+  "author": "Kyle Combs <combskyle@gmail.com>, Jason Ou <jasonou122894@gmail.com>, Anthony Terruso <aterruso@gmail.com> & Brandon Marrero <>",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
