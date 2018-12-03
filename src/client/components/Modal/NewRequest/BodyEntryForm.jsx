@@ -97,7 +97,7 @@ class BodyEntryForm extends Component {
           <div className='modal_rawtype_textarea_container'>
             <select 
               style={rawTypeStyles} 
-              class={'modal_rawtype_select'}
+              className={'modal_rawtype_select'}
               onChange={(e) => this.props.setNewRequestBody({
                 ...this.props.newRequestBody,
                 rawType : e.target.value,

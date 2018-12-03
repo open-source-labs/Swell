@@ -15,6 +15,7 @@ class HistoryContainer extends Component {
   }
 
   render() {
+    console.log(this.props.history);
     let historyDates = this.props.history.map((date, i) => {
       return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate>
     })
