@@ -2,7 +2,7 @@
   "name": "Swell",
   "version": "0.1.0",
   "description": "Swell",
-  "main": "./src/main.js",
+  "main": "main.js",
   "repository": "https://github.com/getswell/getswell",
   "scripts": {
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
@@ -10,7 +10,7 @@
     "build": "webpack --config webpack.build.config.js --mode production",
     "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js",
-    "package-mac": "electron-builder --x64 --mac",
+    "package-mac": "electron-builder  build --x64 --mac",
     "package-all": "npm run build && electron-builder --mwl",
     "gh-publish": "electron-builder --x64 --mac -p always"
   },
@@ -19,8 +19,12 @@
     "appId": "com.getswell.Swell.app",
     "extends": null,
     "files": [
-      "dist/",
-      "package.json"
+      "dist/index.html",
+      "dist/main.js",
+      "dist/img/swell-bg__2JecU.png",
+      "menu/mainMenu.js",
+      "package.json",
+      "main.js"
     ],
     "dmg": {
       "contents": [

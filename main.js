@@ -161,7 +161,7 @@ function createWindow() {
   });
 
   //require menu files
-  require('../menu/mainMenu')
+  require('./menu/mainMenu')
 
 }
 
