@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
-// import { solarizedDark } from 'react-syntax-highlighter/styles/hljs';
-import pretty from "pretty";
 
 import * as actions from "../../actions/actions";
 
@@ -50,9 +47,9 @@ class ResponseTabs extends Component {
   }
 
   render() {
-    const events = "Response Events";
-    const cookies = "Response Cookies";
-    const headers = "Response Headers";
+    const events = 'Response Events';
+    const cookies = 'Response Cookies';
+    const headers = 'Response Headers';
     const tabContentShownEvents = [];
     let tabContentShown;
 
@@ -69,12 +66,6 @@ class ResponseTabs extends Component {
         const responseContentType = responseHeaders["content-type"];
         const tabState = this.state.openTabs;
 
-        // console.log('CURRENT OBJ', cur);
-        // console.log('~~~~~~RE', responseEvents);
-        // console.log('~~~~~~RH', responseHeaders);
-        // console.log('~~~~~~RCT', responseContentType);
-        // console.log('~~~~~~TABSTATE', tabState);
-
         // Step 3  - Check content type of each response Update to use includes
         if (tabState === "Response Events") {
           if (responseContentType) {
@@ -82,10 +73,10 @@ class ResponseTabs extends Component {
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
               });
-            } else if (responseContentType.includes("text/html")) {
+            } else {
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(
-                  <div>{pretty(cur, { ocd: true })}</div>
+                  <div>{cur}</div>
                 );
               });
             }
