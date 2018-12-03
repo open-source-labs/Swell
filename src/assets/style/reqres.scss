@@ -1,12 +1,46 @@
 #reqResContainer {
-  // position: absolute;
   bottom: 0;
   width: 100%;
   margin: 0;
   height: calc(100vh - 19.67% + 42px);
-  overflow: scroll;
-  background: $medbluegray;
+  overflow-x: scroll;
+  background-color: $medbluegray;
   border-top:solid 1px $bordergray;
+  background-image: url('../img/swell-bg.png');
+  background-position: center center;
+  background-size: 200px 200px;
+  background-repeat: no-repeat;
+}
+
+#jumpLinks {
+  position: fixed;
+  bottom: 0;
+}
+
+#reqResContainer_inner {
+  width: auto;
+  height: calc(85% - 10px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+}
+
+
+.resreq_wrap {
+  max-width: calc(100vw - 356px);
+  margin: 15px;
+  flex: 0 0 auto;
+}
+
+.reqResContainer_inner-page {
+  width: 100%;
+  height: 100%;
 }
 
 .resreq_select-radio-label {
@@ -15,17 +49,14 @@
 }
 
 .resreq_select-radio {
-  display: inline;
   width: 15px;
   height: 15px;
-  position: absolute;
-  transform: translate(-50%, -50%);
+  position: relative;
   left: 45%;
-  top: 33%;
+  top: 17%;
 }
 
 .response_event {
-  // margin: 15px 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -37,11 +68,9 @@
 .response_sse {    
   display: flex;
   flex-direction: column;
-  // height: 30px;
   height: auto;
-
   overflow: hidden;
-  background: #fff;
+  background: white;
   animation: fadeIn 400ms ease-in;
 }
 
@@ -77,6 +106,8 @@
 
 .expanded {
   height: auto!important;
+  overflow-x: scroll;
+  border-bottom: solid 1px $bordergray;
 }
 
 @keyframes slideInRight {
@@ -115,7 +146,6 @@
   animation-name: slideInRight;
 }
 
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -129,17 +159,11 @@
   }
 }
 
-.resreq_wrap {
-  max-width: calc(100vw - 356px);
-  margin: 15px;
-  background: white;
-}
-
 .resreq_res-container {
   margin: 0;
   display: flex;
   flex-direction: column;
-  max-height: 46vh;
+  max-height: 60vh;
   height: auto;
   overflow: scroll;
   flex-direction: column-reverse;
@@ -147,29 +171,6 @@
   border-bottom: solid 1px $bordergray;
   border-left: solid 1px $bordergray;
   border-right: solid 1px $bordergray;
-
-
-  // border: 3px solid #15b78f;
-  // div {
-  //   width: 100%;
-  //   position: relative;
-  //   &:first-child{
-  //     position: absolute;
-  //     top: 0;
-  //   }
-  // }
-}
-
-.reqResContainer_inner {
-  width: auto;
-  height: calc(85% - 10px);
-  border: solid 5px red;
-}
-
-.reqResContainer_inner-page {
-  width: 100%;
-  height: 100%;
-  border: solid 5px blue;
 }
 
 .headers {
@@ -178,10 +179,6 @@
 
 .res_header {
   width: 100%;
-  // margin: 10px 0 0;
-  // display: flex;
-  // flex-direction: column;    
-  border-bottom: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;
 }
@@ -189,7 +186,6 @@
 .resreq_title {
   font-size: 1.1rem;
   font-weight: bold;
-  // color: #f3f4fc;
 }
 
 .reqResContainer-inner {
@@ -197,12 +193,12 @@
   height: auto;
 }
 
-
 .httptwo {
   padding: 10px 15px;
-  background-color: $greenone;
-  color: white;
+  background-color: white;
+  color: $greenone;
   font-weight: 800;
+  border-top: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;
   display: none;
@@ -211,7 +207,6 @@
 }
 
 // status-loader:
-
 :root {
   --status-indicator-size: 10px;
   --status-indicator-animation-duration: 2s;

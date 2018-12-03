@@ -4,8 +4,7 @@ import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
-
-import WebSocketWindow from "./WebSocketWindow.jsx";
+import WebSocketWindow from './WebSocketWindow.jsx';
 import connectionController from '../../controllers/connectionController';
 
 import * as actions from '../../actions/actions';
@@ -49,10 +48,10 @@ class ReqRes extends Component {
         id={this.props.content.id}
         connection={this.props.content.connection} />)
     } else {
-      contentBody.push(<Request content={this.props.content.request} key={0}/>);
+      contentBody.push(<Request content={this.props.content.request} key={0} />);
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
-      };
+      }
     }
 
     let openButtonStyles = {
@@ -70,28 +69,31 @@ class ReqRes extends Component {
     }
 
     let statusLight;
+    let itmArr = ['itmOne', 'itmTwo', 'itmThree', 'itmFour', 'itmFive', 'itmSix'];
+    let num = document.querySelectorAll('.resreq_wrap').length;
+
     switch (this.props.content.connection) {
       case 'uninitialized':
-        statusLight = <status-indicator></status-indicator>
+        statusLight = <status-indicator></status-indicator>;
         break;
       case 'pending':
-        statusLight = <status-indicator intermediary pulse></status-indicator>
+        statusLight = <status-indicator intermediary pulse></status-indicator>;
         break;
       case 'open':
-        statusLight = <status-indicator positive pulse></status-indicator>
+        statusLight = <status-indicator positive pulse></status-indicator>;
         break;
       case 'closed':
-        statusLight = <status-indicator negative></status-indicator>
+        statusLight = <status-indicator negative></status-indicator>;
         break;
       case 'error':
-        statusLight = <status-indicator negative></status-indicator>
+        statusLight = <status-indicator negative></status-indicator>;
         break;
       default:
         console.log('not a valid connection for content object');
     }
 
     return (
-      <div className={"resreq_wrap"}>
+      <div className={"resreq_wrap"} id={this.props.content.id}>
         {/* ReqRes */}
 
         <div className="title-row">
@@ -102,7 +104,6 @@ class ReqRes extends Component {
 
         <div className="nested-grid-6">
           <div>
-            <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
             <input
               id={this.props.content.id}
               checked={this.props.content.checked}
@@ -127,9 +128,7 @@ class ReqRes extends Component {
 
           <div>
             <span className="tertiary-title">
-              Round Trip:
-              {' '}
-              {this.props.content.timeReceived - this.props.content.timeSent}
+              Roundtrip: {this.props.content.timeReceived - this.props.content.timeSent}
             </span>
           </div>
         </div>
@@ -138,6 +137,7 @@ class ReqRes extends Component {
           HTTP2 connection: Requests with the same host will share a single HTTP2 connection
         </div>
 
+        <div style={errorStyles}>There was a network error in connecting to endpoint.</div>
         {contentBody}
       </div>
     );
