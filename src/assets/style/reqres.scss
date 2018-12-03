@@ -1,5 +1,4 @@
 #reqResContainer {
-  // position: absolute;
   bottom: 0;
   width: 100%;
   margin: 0;
@@ -39,39 +38,10 @@
   flex: 0 0 auto;
 }
 
-
-.offset-one-six {
-  transform: translateX(0);
-}
-
-.offset-two-six {
-  transform: translateX(-715px);
-}
-
-.offset-three-six {
-  transform: translateX(-1430px);
-}
-
-.offset-four-six {
-  transform: translateX(-2145px);
-}
-
-.offset-five-six {
-  transform: translateX(-2860px);
-}
-
-.offset-six-six {
-  transform: translateX(-3575px);
-}
-
-
-
 .reqResContainer_inner-page {
   width: 100%;
   height: 100%;
-  border: solid 5px blue;
 }
-
 
 .resreq_select-radio-label {
   font-size: 0.9rem;
@@ -87,7 +57,6 @@
 }
 
 .response_event {
-  // margin: 15px 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -99,11 +68,9 @@
 .response_sse {    
   display: flex;
   flex-direction: column;
-  // height: 30px;
   height: auto;
-
   overflow: hidden;
-  background: #fff;
+  background: white;
   animation: fadeIn 400ms ease-in;
 }
 
@@ -179,7 +146,6 @@
   animation-name: slideInRight;
 }
 
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -205,19 +171,7 @@
   border-bottom: solid 1px $bordergray;
   border-left: solid 1px $bordergray;
   border-right: solid 1px $bordergray;
-
-
-  // border: 3px solid #15b78f;
-  // div {
-  //   width: 100%;
-  //   position: relative;
-  //   &:first-child{
-  //     position: absolute;
-  //     top: 0;
-  //   }
-  // }
 }
-
 
 .headers {
   border-top: solid 1px $bordergray;
@@ -225,10 +179,6 @@
 
 .res_header {
   width: 100%;
-  // margin: 10px 0 0;
-  // display: flex;
-  // flex-direction: column;    
-  // border-bottom: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;
 }
@@ -236,14 +186,12 @@
 .resreq_title {
   font-size: 1.1rem;
   font-weight: bold;
-  // color: #f3f4fc;
 }
 
 .reqResContainer-inner {
   position: relative;
   height: auto;
 }
-
 
 .httptwo {
   padding: 10px 15px;
@@ -258,9 +206,7 @@
   font-size: .8rem;
 }
 
-
 // status-loader:
-
 :root {
   --status-indicator-size: 10px;
   --status-indicator-animation-duration: 2s;
