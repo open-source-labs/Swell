@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 
 import * as actions from "../../actions/actions";
 import ReqRes from "../display/ReqRes.jsx";
-import SweetScroll from 'sweet-scroll';
 
 const mapStateToProps = store => ({
   reqRes: store.business.reqResArray,
-  currentTab: store.business.currentTab
+  currentTab: store.business.currentTab,
+  resReqLength: store.business.reqResArray
 });
 
 const mapDispatchToProps = dispatch => ({});
@@ -17,8 +17,9 @@ class ReqResContainer extends Component {
     super(props);
   }
 
+
   render() {
-    let reqResArr = this.props.reqRes
+    const reqResArr = this.props.reqRes
       .filter(reqRes => reqRes.tab === this.props.currentTab)
       .map((reqRes, index) => {
         return <ReqRes className="reqResChild" content={reqRes} key={index} />;
@@ -26,19 +27,20 @@ class ReqResContainer extends Component {
 
     let dynamicCols;
     let num;
-    // console.log('>', this.props.reqRes.length);
+    const requestInstances = this.props.reqRes.length;
 
-    let requestInstances = this.props.reqRes.length;
-
+    console.log('~~~~~~~~requestInstances~~~~~~~~', requestInstances)
     switch (requestInstances) {
       case 1:
+        console.log('+++++++++ 1');
         dynamicCols = { 
           width: 'calc(100vw - 356px)',
-          display: "grid", 
-          gridTemplateColumns: "1, 100%" };
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(1, 100%)' };
         num = 'one';
         break;
       case 2:
+        console.log('+++++++++ 2');
         dynamicCols = {
           width: 'calc((100vw - 356px)*2)',
           display: 'grid',
@@ -47,6 +49,7 @@ class ReqResContainer extends Component {
         num = 'two';
         break;
       case 3:
+        console.log('+++++++++ 3');
         dynamicCols = {
           width: 'calc((100vw - 356px)*3)',
           display: 'grid',
@@ -55,6 +58,7 @@ class ReqResContainer extends Component {
         num = 'three';
         break;
       case 4:
+        console.log('+++++++++ 4');
         dynamicCols = {
           width: 'calc((100vw - 356px)*4)',
           display: 'grid',
@@ -63,6 +67,7 @@ class ReqResContainer extends Component {
         num = 'four';
         break;
       case 5:
+        console.log('+++++++++ 5');
         dynamicCols = {
           width: 'calc((100vw - 356px)*5)',
           display: 'grid',
@@ -71,6 +76,7 @@ class ReqResContainer extends Component {
         num = 'five';
         break;
       case 6:
+        console.log('+++++++++ 6');
         dynamicCols = {
           width: 'calc((100vw - 356px)*6)',
           display: 'grid',
