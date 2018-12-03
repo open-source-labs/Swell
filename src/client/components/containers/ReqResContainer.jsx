@@ -48,10 +48,15 @@ class ReqResContainer extends Component {
       default:
           // console.log(`There was an error`);
   }
-
+    let logoDisplayStyles = {
+      'display' : reqResArr.length === 0 ? 'flex' : 'none', 'alignItems' : 'center', 'justifyContent' : 'center', 'width' : '100%', 'height' : '100%'
+    }
 
     return(
       <div id="reqResContainer" style={dynamicCols}>
+        <div style={logoDisplayStyles}>
+          <img src='https://i.imgur.com/q7ePY8a.png' style={{'width' : '200px', 'marginTop' : '-20%', 'opacity' : '.5'}}></img>
+        </div>
         {/* ReqResContainer */}
         {/* <div className={'reqResContainer_inner'}>
           <div className={'reqResContainer_inner-page'}>     */}
