@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import * as actions from '../../actions/actions';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+import Tab from './Tab.jsx';
+import RequestTabs from './RequestTabs.jsx';
 
 class Request extends Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
-    return(
-      <div>
-        Request
+    const headerArr = this.props.content.headers.map((header, index) => (
+      <div key={index} style={{ display: 'flex' }}>
+        <div style={{ width: '50%' }}>{header.key}</div>
+        <div style={{ width: '50%' }}>{header.value}</div>
       </div>
-    )
+    ));
+
+    return (
+      <div className="res_header">
+        {/* {headerArr} */}
+        <RequestTabs requestContent={this.props.content} />
+      </div>
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Request);
+export default Request;

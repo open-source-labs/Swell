@@ -1,16 +1,23 @@
-/**
- * ************************************
- *
- * @module  actionTypes.js
- * @author
- * @date
- * @description Action Type Constants
- *
- * ************************************
- */
+// BUSINESS LOGIC ACTIONS
+export const REQRES_CLEAR = 'REQRES_CLEAR';
+export const REQRES_ADD = 'REQRES_ADD';
+export const REQRES_DELETE = 'REQRES_DELETE';
+export const REQRES_UPDATE = 'REQRES_UPDATE';
+
+export const GET_HISTORY = 'GET_HISTORY';
+export const DELETE_HISTORY = 'DELETE_HISTORY';
+
+export const SET_WARNING_MODAL_MESSAGE = "SET_WARNING_MODAL_MESSAGE";
+
+export const SET_NEW_REQUEST_FIELDS = "SET_NEW_REQUEST_FIELDS";
+export const SET_NEW_REQUEST_HEADERS = "SET_NEW_REQUEST_HEADERS";
+export const SET_NEW_REQUEST_BODY = "SET_NEW_REQUEST_BODY";
+export const SET_NEW_REQUEST_COOKIES = "SET_NEW_REQUEST_COOKIES";
+
+export const SET_CURRENT_TAB = "SET_CURRENT_TAB";
 
 
-// add action type constants i.e.:
-export const UPDATE_STATE_IMAGES = "UPDATE_STATE_IMAGES";
-
-
+//UI ACTIONS
+export const SHOW_MODAL = "SHOW_MODAL";
+export const HIDE_MODAL = "HIDE_MODAL";
+export const SET_MODAL_DISPLAY = "SET_MODAL_DISPLAY";

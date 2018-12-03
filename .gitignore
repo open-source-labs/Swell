@@ -1,2 +1,56 @@
+# Build folder and files #
+##########################
+builds/
+release/
+
+# Development folders and files #
+#################################
+.tmp/
 dist/
 node_modules/
+*.compiled.*
+package-lock.json
+
+# Folder config file #
+######################
+Desktop.ini
+
+# Folder notes #
+################
+_ignore/
+
+# Log files & folders #
+#######################
+logs/
+*.log
+npm-debug.log*
+.npm
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Photoshop & Illustrator files #
+#################################
+*.ai
+*.eps
+*.psd
+
+# Windows & Mac file caches #
+#############################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Windows shortcuts #
+#####################
+*.lnk

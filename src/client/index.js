@@ -5,11 +5,9 @@ import App from './components/containers/App.jsx';
 import store from './store';
 
 render(
-    // wrap the App in the Provider and pass in the store
-    <Provider store={store}>
-        <App></App>
-    </Provider>,
-    document.getElementById('contents')
+  // wrap the App in the Provider and pass in the store
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('contents'),
 );
-
-

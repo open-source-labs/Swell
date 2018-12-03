@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import Graph from '../display/Graph.jsx';
 import * as actions from '../../actions/actions';
 
-const mapStateToProps = store => ({
- 
-});
+const mapStateToProps = store => ({});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({});
 
-});
-
-class Graph extends Component {
+class GraphContainer extends Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
-    return(
+    return (
       <div>
-        GraphContainer
+        <Graph />
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Graph);
+export default connect(mapStateToProps, mapDispatchToProps)(GraphContainer);

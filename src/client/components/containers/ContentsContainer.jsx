@@ -1,33 +1,24 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
 import GraphContainer from './GraphContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
-
-const mapStateToProps = store => ({
- 
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+import NavBarContainer from './NavBarContainer.jsx';
 
 class Contents extends Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
     return(
-      <div>
-        ContentsContainer
+      <div className={'contents'}>
         <GraphContainer/>
+        <NavBarContainer/>
         <ReqResContainer/>
       </div>
-    )
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contents);
+export default Contents;

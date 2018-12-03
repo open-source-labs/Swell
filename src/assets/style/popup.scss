@@ -1,0 +1,29 @@
+.grey_screen {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: rgba(0,0,0, .7);
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+.grey_screen-hide {
+  display: none;
+}
+
+.update_popup {
+  height: 200px;
+  width: 200px;
+  background-color: white;
+  padding: 2.5%;
+}
+
+.update_popup-btn {
+  width: 50%;
+}
+
+

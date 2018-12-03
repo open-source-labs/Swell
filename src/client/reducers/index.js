@@ -1,26 +1,15 @@
-/**
- * ************************************
- *
- * @module  index.js
- * @author
- * @date
- * @description simply a place to combine reducers
- *
- * ************************************
- */
-
 import { combineReducers } from 'redux';
 
 // import all reducers here
-import reducer from './reducer';
-
+import businessReducer from './business';
+import uiReducer from './ui';
 
 // combine reducers
 const reducers = combineReducers({
   // if we had other reducers, they would go here
-  state: reducer,
+  business: businessReducer,
+  ui: uiReducer,
 });
 
 // make the combined reducers available for import
 export default reducers;
-
