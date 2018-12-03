@@ -142,12 +142,7 @@ class WWWForm extends Component {
 
     return (
       <div
-        style={{
-          border: '1px solid black',
-          margin: '3px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
+        className={'modal_headers_container-open'}
       >
         {wwwFieldsReactArr}
       </div>

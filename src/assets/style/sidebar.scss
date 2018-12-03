@@ -14,6 +14,10 @@
   background: #282828;
   padding: 15px 18px;
   color: #FCF7F8;
+  overflow: scroll;
+  &:focus {
+    outline: 0 none;
+  }
 }
 
 
@@ -38,15 +42,21 @@
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
   list-style: none;
-  padding: 0 0 15px 0;
+  padding: 0 0 5px 0;
 }
 
-.modal_select, .modal_url-input, .modal_submit {
+.modal_submit {
+  -webkit-appearance: none;
   width: 100%;
-  height: 30px;
+  height: 35px;
   margin: 5px 0;
   display: block;
   padding: 8px;
+  background-color: #fc3d39;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-size: 18px
 }
 
 .modal_protocol_container {
@@ -115,7 +125,8 @@
 
 .modal_subtitle {
   font-size: 14px;
-  margin-top: 7px;
+  margin-top: 4px;
+  width: 28%;
   display: flex;
   justify-items: center;
   cursor: pointer;
@@ -186,13 +197,87 @@
   width: calc((100% - 25px)/2);
   height: 25px;
   display: block;
-  padding: 8px;
+  padding: 8px 4px;
   outline: 0 none;
+  text-overflow: ellipsis;
 }
 .modal_header_input_first { 
   border-right: 1px solid $yellowgrey;
 }
 
+.modal_bodytype_button {
+  border-radius: 3px;
+  background-color: #343333; 
+  border: 1px solid $yellowgrey;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1rem;
+  outline: 0 none;
+  font-size: 14px;
+
+  &:hover {
+    background: $greenone;
+    border : none;
+  }
+}
+.modal_bodytype_button-selected {
+  background:$greenone;
+  border : none;
+}
+
+.modal_bodyform_container-open {
+  display: flex;
+  flex-direction: column;
+}
+.modal_bodyform_container-closed {
+  display: none;
+  overflow: hidden;
+}
+
+
+.modal_rawtype_select {
+  color: white;
+  background: $greenfour;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  line-height: 15px;
+  font-size: 14px;
+  text-align-last:center;
+  margin-top: 2px;
+  display: block;
+  padding: 0px 8px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+.modal_textarea {
+  margin-top: 7px;
+  border-radius: 3px;
+  padding: 5px;
+  border: 1px solid $yellowgrey;
+  background-color: #343333;
+  color: white;
+  width: 100%;
+
+  &:focus {
+    outline: 0 none;
+  }
+}
+.modal_textarea-error {
+  border: 1px solid red;
+}
+
+.modal_pretty_print {
+  color: $yellowgrey;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+ 
 .historyDate-container {
   overflow: scroll;
   // -ms-overflow-style: none;

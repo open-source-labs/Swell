@@ -19,6 +19,16 @@ const mapDispatchToProps = dispatch => ({
 class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      show : true,
+    };
+    this.toggleShow = this.toggleShow.bind(this);
+  }
+
+  toggleShow () {
+    this.setState ({
+      show : !this.state.show
+    });
   }
 
   render() {
@@ -52,7 +62,8 @@ class BodyEntryForm extends Component {
       else {
         return (
           <textarea
-            value={this.props.newRequestBody.bodyContent} 
+            value={this.props.newRequestBody.bodyContent}
+            className={'modal_textarea'}
             style={{'resize' : 'none'}} 
             type='text' 
             placeholder='Body' 
@@ -67,29 +78,44 @@ class BodyEntryForm extends Component {
         )
       }
     })()
+
+    const arrowClass = this.state.show ? 'modal_subtitle_arrow-open' : 'modal_subtitle_arrow-closed';
+
+    const bodyContainerClass = this.state.show ? 'modal_bodyform_container-open' : 'modal_bodyform_container-closed';
   
     return(
       <div style={this.props.stylesObj}>
+        <div className='modal_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+          <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+          </img>
+          Body
+        </div>
 
-        <BodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody}/>
+        <div className={bodyContainerClass}>
+          <BodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody}/>
 
-        <select 
-          style={rawTypeStyles} 
-          onChange={(e) => this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            rawType : e.target.value,
-          })} 
-          value={this.props.newRequestBody.rawType}>
-          Raw Type:
-          <option value="text/plain">Text (text/plain)</option>
-          <option value="application/json">JSON (application/json)</option>
-          <option value="application/javascript">Javascript (application/javascript)</option>
-          <option value="application/xml">XML (application/xml)</option>
-          <option value="text/xml">XML (text/xml)</option>
-          <option value="text/html">HTML (text/html)</option>
-        </select>
-
-        {bodyEntryArea}
+          <div className='modal_rawtype_textarea_container'>
+            <select 
+              style={rawTypeStyles} 
+              class={'modal_rawtype_select'}
+              onChange={(e) => this.props.setNewRequestBody({
+                ...this.props.newRequestBody,
+                rawType : e.target.value,
+              })} 
+              value={this.props.newRequestBody.rawType}>
+              Raw Type:
+              <option value="text/plain">Text (text/plain)</option>
+              <option value="application/json">JSON (application/json)</option>
+              <option value="application/javascript">Javascript (application/javascript)</option>
+              <option value="application/xml">XML (application/xml)</option>
+              <option value="text/xml">XML (text/xml)</option>
+              <option value="text/html">HTML (text/html)</option>
+            </select>
+            {bodyEntryArea}
+          </div>
+          
+        </div>
+        
       </div>
     );
   }

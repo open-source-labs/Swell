@@ -76,11 +76,12 @@ class JSONTextArea extends Component {
     let prettyPrintDisplay = {
       'display' : this.props.newRequestBody.JSONFormatted ? 'block' : 'none',
     }
+    let textAreaClass = this.props.newRequestBody.JSONFormatted ? 'modal_textarea' : 'modal_textarea modal_textarea-error';
+    
     return(
       <div>
-        <div>{this.props.newRequestBody.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
-        <div style={prettyPrintDisplay} onClick={this.prettyPrintJSON}>Pretty Print?</div>
         <textarea 
+          className={textAreaClass}
           style={{'resize' : 'none', 'width' : '100%'}} 
           type='text' 
           rows={8} 
@@ -91,7 +92,13 @@ class JSONTextArea extends Component {
               ...this.props.newRequestBody,
               bodyContent : e.target.value,
             });
-          }}></textarea>
+          }}>
+        </textarea>
+        <div 
+          style={prettyPrintDisplay}
+          className={'modal_pretty_print'} 
+          onClick={this.prettyPrintJSON}>JSON correctly formatted. Pretty print?
+        </div>
       </div>
     );
   }

@@ -174,8 +174,7 @@ class ModalNewRequest extends Component {
       display : this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
     }
     let BodyEntryFormStyle = {
-      'display' : (this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://') ? 'flex' : 'none',
-      'flexDirection' : 'column'
+      'display' : (this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://') ? 'block' : 'none'
     }
 
     return (
