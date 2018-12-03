@@ -4,6 +4,8 @@ import * as actions from '../../../actions/actions';
 import ProtocolSelect from "./ProtocolSelect.jsx";
 import PropTypes from "prop-types";
 
+const classNames = require('classnames');
+
 const mapStateToProps = store => ({
   newRequestFields : store.business.newRequestFields,
 });
@@ -72,19 +74,21 @@ class FieldEntryForm extends Component {
       <div>
         <ProtocolSelect currentProtocol={this.props.newRequestFields.protocol} onChangeHandler={this.onChangeHandler}/>
 
-        <select style={HTTPMethodStyle} value={this.props.newRequestFields.method} className={'HTTPMethodStyle modal_select'} onChange={(e) => {
-          this.onChangeHandler(e, 'method')
-        }}>
-          <option value='GET'>GET</option>
-          <option value='POST'>POST</option>
-          <option value='PUT'>PUT</option>
-          <option value='PATCH'>PATCH</option>
-          <option value='DELETE'>DELETE</option>
-        </select>
+        <div className={'modal_method_url_container'}>
+          <select style={HTTPMethodStyle} value={this.props.newRequestFields.method} className={'modal_method_select'} onChange={(e) => {
+            this.onChangeHandler(e, 'method')
+          }}>
+            <option value='GET'>GET</option>
+            <option value='POST'>POST</option>
+            <option value='PUT'>PUT</option>
+            <option value='PATCH'>PATCH</option>
+            <option value='DELETE'>DELETE</option>
+          </select>
 
-        <input className={'modal_url-input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
-          this.onChangeHandler(e, 'url')
-        }}></input>
+          <input className={'modal_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
+            this.onChangeHandler(e, 'url')
+          }}></input>
+        </div>
       </div>
     )
   }

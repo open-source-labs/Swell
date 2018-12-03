@@ -14,7 +14,7 @@
   background-color: $greenfive;
   color: white;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 20px;
   padding: 0 1.5rem;
   margin: 25px auto;
 
@@ -30,7 +30,7 @@
     margin: 0;
     width: 100%;
     height: 28px;
-    font-size: .7rem;
+    font-size: 14px;
     font-weight: bold;
     line-height: 1;
     &:hover {
@@ -68,7 +68,7 @@
 
   .btn {
     padding: .5rem;
-    font-size: .6rem;
+    font-size: 12px;
     background: $darkgraygreen;
     display: inline;
     margin:1px;

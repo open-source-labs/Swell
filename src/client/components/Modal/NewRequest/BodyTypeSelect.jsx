@@ -11,21 +11,22 @@ class BodyTypeSelect extends Component {
   render() {
     // console.log(this.props)
     let NoneStyleClasses = classNames({
-      'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'none'
+      'modal_bodytype_button' : true,
+      'modal_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'none'
     });
     let XWWWFormUrlEncodedStyleClasses = classNames({
-      'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
+      'modal_bodytype_button' : true,
+      'modal_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
     });
     let RawStyleClasses = classNames({
-      'modal_protocol_button' : true,
-      'modal_protocol_button-selected' : this.props.newRequestBody.bodyType === 'raw'
+      'modal_bodytype_button' : true,
+      'modal_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'raw'
     });
 
     return(
-      <div className={"modal_protocol_container"}>
+      <div className={"modal_protocol_container"} style={{'marginTop' : '4px'}}>
         <div 
+          style={{'width' : '17%'}}
           className={NoneStyleClasses} 
           onMouseDown={() => this.props.setNewRequestBody({
             ...this.props.newRequestBody,
@@ -35,6 +36,7 @@ class BodyTypeSelect extends Component {
           none
         </div>
         <div 
+          style={{'width' : '65%'}}
           className={XWWWFormUrlEncodedStyleClasses} 
           onMouseDown={() => this.props.setNewRequestBody({
             ...this.props.newRequestBody,
@@ -42,7 +44,8 @@ class BodyTypeSelect extends Component {
           })}>
           x-www-form-urlencoded
         </div>
-        <div 
+        <div
+          style={{'width' : '14%'}} 
           className={RawStyleClasses} 
           onMouseDown={() => this.props.setNewRequestBody({
             ...this.props.newRequestBody,
