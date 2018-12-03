@@ -44,12 +44,24 @@
     width: 100%;
     height: 30px;
     display: grid;
-    grid-template-columns: repeat(4, 25%); 
+    grid-template-columns: 25% 25% 40% 10%;
     border-bottom:1px solid $bordergray;
     div {
       padding: 0 15px;
       border-right:1px solid $bordergray;
       position: relative;
+
+      &:first-child {
+      }
+      
+      &:nth-child(-n+2) {
+      }
+
+      &:nth-child(-n+3) {
+      }
+
+      &:last-child {
+      }
     }
   }
   

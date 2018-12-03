@@ -24,24 +24,24 @@ class ResponseTabs extends Component {
   }
 
   componentDidMount() {
-    this.handleTabSelect("Events");
+    this.handleTabSelect("Response Events");
   }
 
   handleTabSelect(val) {
     switch (val) {
-      case "Cookies":
+      case "Response Cookies":
         this.setState({
-          openTabs: val
+          openTabs: val,
         });
         break;
-      case "Headers":
+      case "Response Headers":
         this.setState({
-          openTabs: val
+          openTabs: val,
         });
         break;
-      case "Events":
+      case "Response Events":
         this.setState({
-          openTabs: val
+          openTabs: val,
         });
         break;
       default:
@@ -50,9 +50,9 @@ class ResponseTabs extends Component {
   }
 
   render() {
-    const events = "Events";
-    const cookies = "Cookies";
-    const headers = "Headers";
+    const events = "Response Events";
+    const cookies = "Response Cookies";
+    const headers = "Response Headers";
     const tabContentShownEvents = [];
     let tabContentShown;
 
@@ -76,7 +76,7 @@ class ResponseTabs extends Component {
         // console.log('~~~~~~TABSTATE', tabState);
 
         // Step 3  - Check content type of each response Update to use includes
-        if (tabState === "Events") {
+        if (tabState === "Response Events") {
           if (responseContentType) {
             if (responseContentType.includes("text/event-stream")) {
               responseEvents.forEach((cur, idx) => {
@@ -90,7 +90,7 @@ class ResponseTabs extends Component {
               });
             }
           }
-        } else if (tabState === "Headers") {
+        } else if (tabState === "Response Headers") {
           const headerObj = this.props.responseContent.headers;
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
@@ -109,7 +109,7 @@ class ResponseTabs extends Component {
               }
             }
           }
-        } else if (this.state.openTabs === "Cookies") {
+        } else if (this.state.openTabs === "Response Cookies") {
           console.log("cookies showing", this.props.responseContent.cookies);
           tabContentShownEvents.push(
             <CookieTable
@@ -124,12 +124,12 @@ class ResponseTabs extends Component {
 
     return (
       <div>
-        <ul className="tab_list">
+        <ul className="tab_list-response">
           <Tab onTabSelected={this.handleTabSelect} tabName={events} />
           <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
         </ul>
-        <div className="tab_content">{tabContentShownEvents}</div>
+        <div className="tab_content-response">{tabContentShownEvents}</div>
       </div>
     );
   }

@@ -15,18 +15,17 @@
 }
 
 #reqResContainer_inner {
-  width: 4350px;
+  width: auto;
   height: calc(85% - 10px);
-  // border: solid 5px violet;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   display: flex;
   transition: transform 0.3s ease-in-out;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
 }
 
 
@@ -76,13 +75,11 @@
 }
 
 .resreq_select-radio {
-  display: inline;
   width: 15px;
   height: 15px;
-  position: absolute;
-  transform: translate(-50%, -50%);
+  position: relative;
   left: 45%;
-  top: 33%;
+  top: 17%;
 }
 
 .response_event {
@@ -138,6 +135,8 @@
 
 .expanded {
   height: auto!important;
+  overflow-x: scroll;
+  border-bottom: solid 1px $bordergray;
 }
 
 @keyframes slideInRight {
