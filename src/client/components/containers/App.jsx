@@ -6,6 +6,7 @@ import * as actions from '../../actions/actions';
 import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/connectionController';
 import SidebarContainer from './SidebarContainer.jsx';
+import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
 import dbController from '../../controllers/dbController'
 import db from '../../db';
 
@@ -36,6 +37,7 @@ class App extends Component {
     return (
       <div id="app">
         {/* App */}
+        <UpdatePopUpContainer/>
         <SidebarContainer />
         <ContentsContainer />
       </div>

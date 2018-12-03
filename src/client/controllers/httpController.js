@@ -262,7 +262,7 @@ const httpController = {
 
     fetch(reqResObj.url, parsedFetchOptions)
     .then(response => {
-      console.log('RESPONSE ::', response)
+      // console.log('RESPONSE ::', response)
       //Parse response headers now to decide if SSE or not.
       let heads = {};
       for (let entry of response.headers.entries()) {
@@ -307,6 +307,7 @@ const httpController = {
       request: { method },
       request: { headers },
       request: { body },
+      request: { cookies },
     } = reqResObject;
 
     method = method.toUpperCase();
@@ -318,11 +319,16 @@ const httpController = {
       }
     });
 
+    cookies.forEach(cookie => {
+      let cookieString = `${cookie.key}=${cookie.value}`;
+      document.cookie = cookieString;
+    })
+
     const outputObj = {
       method,
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
+      credentials: 'include', // include, *same-origin, omit
       headers: formattedHeaders,
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client

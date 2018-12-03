@@ -41,7 +41,6 @@ class ModalWarning extends Component {
           }
         }}
       >
-        ModalWarning
         <div>{this.props.warningModalMessage}</div>
         <button onClick={this.hideWarning} type="button">Ok</button>
       </div>

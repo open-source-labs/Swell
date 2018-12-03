@@ -8,7 +8,7 @@ class Tab extends Component {
     super(props);
     this.state = {
       selectedTab: '',
-    }
+    };
     this.tabClickHandler = this.tabClickHandler.bind(this);
   }
 

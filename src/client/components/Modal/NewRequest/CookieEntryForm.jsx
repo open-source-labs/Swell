@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import * as actions from '../../../actions/actions';
+import Header from './Header.jsx';
 const uuidv4 = require('uuid/v4');
 
 const mapStateToProps = store => ({
@@ -17,7 +18,11 @@ const mapDispatchToProps = dispatch => ({
 class CookieEntryForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      show : false,
+    }
     this.onChangeUpdateCookie = this.onChangeUpdateCookie.bind(this);
+    this.toggleShow = this.toggleShow.bind(this);
   }
 
   componentDidMount () {
@@ -86,15 +91,32 @@ class CookieEntryForm extends Component {
     }
   }
 
+  toggleShow () {
+    this.setState ({
+      show : !this.state.show
+    });
+  }
+
   render() {
     // console.log('CookieEntryForm Begin Render', this.state.cookies);
+    console.log('Cookie props', this.props);
     let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
-      return (<Cookie content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Cookie>)
+      return (<Header content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Header>)
     });
+
+    const arrowClass = this.state.show ? 'modal_subtitle_arrow-open' : 'modal_subtitle_arrow-closed';
+    const cookiesContainerClass = this.state.show ? 'modal_headers_container-open' : 'modal_headers_container-closed'
     
     return(
-      <div style={this.props.stylesObj}>
-        {cookiesArr}
+      <div>
+        <div className='modal_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+          <img className={arrowClass} style={{'marginTop' : '-6px'}} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+          </img>
+          Cookies
+        </div>
+        <div className={cookiesContainerClass}>
+          {cookiesArr}
+        </div>
       </div>
     )
   }
