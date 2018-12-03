@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 
 import * as actions from "../../actions/actions";
 import ReqRes from "../display/ReqRes.jsx";
-import SweetScroll from 'sweet-scroll';
 
 const mapStateToProps = store => ({
   reqRes: store.business.reqResArray,
-  currentTab: store.business.currentTab
+  currentTab: store.business.currentTab,
+  resReqLength: store.business.reqResArray
 });
 
 const mapDispatchToProps = dispatch => ({});
@@ -17,8 +17,9 @@ class ReqResContainer extends Component {
     super(props);
   }
 
+
   render() {
-    let reqResArr = this.props.reqRes
+    const reqResArr = this.props.reqRes
       .filter(reqRes => reqRes.tab === this.props.currentTab)
       .map((reqRes, index) => {
         return <ReqRes className="reqResChild" content={reqRes} key={index} />;
@@ -26,16 +27,14 @@ class ReqResContainer extends Component {
 
     let dynamicCols;
     let num;
-    // console.log('>', this.props.reqRes.length);
-
-    let requestInstances = this.props.reqRes.length;
+    const requestInstances = this.props.reqRes.length;
 
     switch (requestInstances) {
       case 1:
         dynamicCols = { 
           width: 'calc(100vw - 356px)',
-          display: "grid", 
-          gridTemplateColumns: "1, 100%" };
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(1, 100%)' };
         num = 'one';
         break;
       case 2:

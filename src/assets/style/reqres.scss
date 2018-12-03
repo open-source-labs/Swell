@@ -206,6 +206,19 @@
   font-size: .8rem;
 }
 
+.networkerror {
+  padding: 10px 15px;
+  background-color: white;
+  color: red;
+  font-weight: 800;
+  border-top: 1px solid $bordergray;
+  border-left: 1px solid $bordergray;
+  border-right: 1px solid $bordergray;
+  display: none;
+  height: auto;
+  font-size: .8rem;
+}
+
 // status-loader:
 :root {
   --status-indicator-size: 10px;
