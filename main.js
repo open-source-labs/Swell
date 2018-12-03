@@ -3,18 +3,23 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 // Import parts of electron to use
 const { app, BrowserWindow, TouchBar, session } = require('electron')
+
 const path = require('path')
 const url = require('url')
 
-const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+// Import Auto-Updater
+const { autoUpdater } = require('electron-updater')
+const log = require('electron-log');
 
-// const player = require('play-sound')
-// const wave = new Audio('./src/assets/audio/wavebig.mpg')
+const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// // configure logging
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
 let mainWindow
 
 const tbSelectAllButton = new TouchBarButton({
@@ -132,13 +137,6 @@ function createWindow() {
 
   mainWindow.loadURL(indexPath);
 
-  // const sesh = mainWindow.webContents.session;
-  // sesh.cookies.get({}, (err, cookies) => {
-  //   console.log(cookies)
-  // })
-  // sesh.clearStorageData({storages: ['cookies']}, (x) => console.log(x))
-
-
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -147,11 +145,6 @@ function createWindow() {
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
-    // wave.play()
-    // play wave crash on open
-    // player.Play('./src/assets/audio/wavebig.mpg', (err) => {
-    //   if (err) throw err
-    // })
 
     // Open the DevTools automatically if developing
     if (dev) {
@@ -172,21 +165,13 @@ function createWindow() {
 
 }
 
-// function createLoadingScreen() {
-//   loadingScreen = new BrowserWindow(Object.assign(windowParams, {parent: mainWindow}));
-//   loadingScreen.loadURL('file://' + __dirname + '/loading.html');
-//   loadingScreen.on('closed', () => loadingScreen = null);
-//   loadingScreen.webContents.on('did-finish-load', () => {
-//       loadingScreen.show();
-//   });
-// }
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
+  if (!dev) { autoUpdater.checkForUpdates() };
 });
 
 // Quit when all windows are closed.
@@ -196,6 +181,42 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+// Auto Updating Functionality
+const sendStatusToWindow = (text) => {
+  log.info(text);
+  if (mainWindow) {
+    mainWindow.webContents.send('message', text);
+  }
+};
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...');
+});
+autoUpdater.on('update-available', info => {
+  sendStatusToWindow('Update available.');
+});
+autoUpdater.on('update-not-available', info => {
+  sendStatusToWindow('Update not available.');
+});
+autoUpdater.on('error', err => {
+  sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
+});
+autoUpdater.on('download-progress', progressObj => {
+  sendStatusToWindow(
+    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+  );
+});
+autoUpdater.on('update-downloaded', info => {
+  sendStatusToWindow('Update downloaded; will install now');
+});
+
+autoUpdater.on('update-downloaded', info => {
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 500 ms.
+  // You could call autoUpdater.quitAndInstall(); immediately
+  autoUpdater.quitAndInstall();
 });
 
 app.on('activate', () => {

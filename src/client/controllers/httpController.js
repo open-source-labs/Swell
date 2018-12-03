@@ -300,6 +300,10 @@ const httpController = {
         isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
       })
     })
+    .catch(err => {
+      reqResObj.connection = 'error';
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+    }) 
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {

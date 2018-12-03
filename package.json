@@ -1,26 +1,82 @@
 {
-  "name": "swell",
-  "version": "1.0.0",
+  "name": "Swell",
+  "version": "0.1.0",
   "description": "Swell",
   "main": "main.js",
+  "repository": "https://github.com/getswell/getswell",
   "scripts": {
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "webpack --config webpack.build.config.js --mode production",
-    "package": "npm run build",
-    "postpackage": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
-    "server": "nodemon test-server/server.js"
+    "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
+    "server": "nodemon test-server/server.js",
+    "package-mac": "electron-builder  build --x64 --mac",
+    "package-all": "npm run build && electron-builder --mwl",
+    "gh-publish": "electron-builder --x64 --mac -p always"
   },
-  "author": "Schno Mozingo",
+  "build": {
+    "productName": "Swell",
+    "appId": "com.getswell.Swell.app",
+    "extends": null,
+    "files": [
+      "dist/index.html",
+      "dist/main.js",
+      "dist/img/swell-bg__2JecU.png",
+      "menu/mainMenu.js",
+      "package.json",
+      "main.js"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "msi"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "snap",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "buildResources",
+      "output": "release"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "getswell",
+      "repo": "getswell",
+      "private": false
+    }
+  },
+  "author": "Kyle Combs <combskyle@gmail.com>, Jason Ou <jasonou122894@gmail.com>, Anthony Terruso <aterruso@gmail.com> & Brandon Marrero <>",
   "license": "MIT",
   "dependencies": {
-    "babili-webpack-plugin": "^0.1.2",
     "body-parser": "^1.18.3",
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "cookie-parser": "^1.4.3",
     "date-fns": "^1.29.0",
     "electron-devtools-installer": "^2.2.4",
+    "electron-log": "^2.2.17",
+    "electron-updater": "^4.0.5",
     "express": "^4.16.4",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.4",
@@ -53,11 +109,12 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
-    "concurrently": "^4.0.1",
+    "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
     "dexie": "^2.0.4",
     "electron": "^3.0.6",
+    "electron-builder": "^20.38.2",
     "electron-packager": "^12.2.0",
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
