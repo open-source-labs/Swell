@@ -6,9 +6,7 @@ const classNames = require('classnames');
 class JSONTextArea extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   lastParseWasSuccess : true,
-    // }
+    this.prettyPrintJSON = this.prettyPrintJSON.bind(this);
   }
 
   componentDidMount () {
@@ -66,11 +64,24 @@ class JSONTextArea extends Component {
     }
   }
 
+  prettyPrintJSON () {
+    let prettyString = JSON.stringify(JSON.parse(this.props.newRequestBody.bodyContent), null, 4);
+    this.props.setNewRequestBody({
+      ...this.props.newRequestBody,
+      bodyContent : prettyString,
+    })
+  }
+
   render() {
+    let prettyPrintDisplay = {
+      'display' : this.props.newRequestBody.JSONFormatted ? 'block' : 'none',
+    }
+    let textAreaClass = this.props.newRequestBody.JSONFormatted ? 'modal_textarea' : 'modal_textarea modal_textarea-error';
+    
     return(
       <div>
-        <div>{this.props.newRequestBody.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
         <textarea 
+          className={textAreaClass}
           style={{'resize' : 'none', 'width' : '100%'}} 
           type='text' 
           rows={8} 
@@ -81,7 +92,13 @@ class JSONTextArea extends Component {
               ...this.props.newRequestBody,
               bodyContent : e.target.value,
             });
-          }}></textarea>
+          }}>
+        </textarea>
+        <div 
+          style={prettyPrintDisplay}
+          className={'modal_pretty_print'} 
+          onClick={this.prettyPrintJSON}>JSON correctly formatted. Pretty print?
+        </div>
       </div>
     );
   }
