@@ -6,9 +6,7 @@ const classNames = require('classnames');
 class JSONTextArea extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   lastParseWasSuccess : true,
-    // }
+    this.prettyPrintJSON = this.prettyPrintJSON.bind(this);
   }
 
   componentDidMount () {
@@ -66,10 +64,22 @@ class JSONTextArea extends Component {
     }
   }
 
+  prettyPrintJSON () {
+    let prettyString = JSON.stringify(JSON.parse(this.props.newRequestBody.bodyContent), null, 4);
+    this.props.setNewRequestBody({
+      ...this.props.newRequestBody,
+      bodyContent : prettyString,
+    })
+  }
+
   render() {
+    let prettyPrintDisplay = {
+      'display' : this.props.newRequestBody.JSONFormatted ? 'block' : 'none',
+    }
     return(
       <div>
         <div>{this.props.newRequestBody.JSONFormatted ? 'JSON correctly formatted.' : 'JSON incorrectly formatted (double quotes only).'}</div>
+        <div style={prettyPrintDisplay} onClick={this.prettyPrintJSON}>Pretty Print?</div>
         <textarea 
           style={{'resize' : 'none', 'width' : '100%'}} 
           type='text' 

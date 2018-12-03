@@ -18,7 +18,11 @@ const mapDispatchToProps = dispatch => ({
 class HeaderEntryForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      show : false,
+    }
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
+    this.toggleShow = this.toggleShow.bind(this);
   }
 
   componentDidMount() {
@@ -158,6 +162,12 @@ class HeaderEntryForm extends Component {
     }
   }
 
+  toggleShow () {
+    this.setState ({
+      show : !this.state.show
+    });
+  }
+
   render() {
     // console.log('HeaderEntryForm Begin Render', this.state.headers);
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
@@ -170,7 +180,19 @@ class HeaderEntryForm extends Component {
       />
     ));
 
-    return <div style={this.props.stylesObj}>{headersArr}</div>;
+    const arrowClass = this.state.show ? 'modal_subtitle_arrow-open' : 'modal_subtitle_arrow-closed';
+    let headersContainerClass = this.state.show ? 'modal_headers_container-open' : 'modal_headers_container-closed'
+
+    return <div style={this.props.stylesObj}>
+      <div className='modal_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+        <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+        </img>
+        Headers
+      </div>
+      <div className={headersContainerClass} >
+        {headersArr}
+      </div>
+    </div>;
   }
 }
 
