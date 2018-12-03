@@ -25,6 +25,8 @@ let eventsArr = [{body:'test'},{body:'test'},{body:'test'},{body:'test'},{body:'
 app.get('/events', (req, res) => {
     res.header('Content-Type', 'text/event-stream');
     res.header('Cache-Control', 'no-cache');
+    res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+    res.cookie('cookie2', 'i\'m-a-good-little-cookie')
 
   let id = 0;
 
@@ -49,6 +51,7 @@ app.post('/events', (req, res) => {
     console.log('headers', req.headers);
     console.log("body", req.body);
     res.header('Cache-Control', 'no-cache');
+    res.cookie('posted', 'you-sent-a-cookie-after-posting!')
 
     eventsArr.push(req.body);
     res.end('Body Received: ' + JSON.stringify(req.body));
@@ -134,7 +137,8 @@ server.on('stream', (stream, headers) => {
   stream.respond({
     'content-type': 'text/event-stream',
     'cache-control' : 'no-cache',
-    ':status': 200
+    // 'set-cookie' : '1P_JAR=2018-12-02-21; expires=Tue, 01-Jan-2019 21:47:55 GMT; path=/; domain=.google.com',
+    ':status': 200,
   });
 
   let interval = setInterval(() => {

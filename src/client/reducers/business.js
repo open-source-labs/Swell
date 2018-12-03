@@ -177,7 +177,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_FIELDS:{
-      console.log('action',action);
+      // console.log('action',action);
       return {
         ...state,
         history: JSON.parse(JSON.stringify(state.history)),
