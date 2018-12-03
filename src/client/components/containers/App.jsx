@@ -21,13 +21,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // const wave = new Audio('../../../assets/audio/wavebig.mp3');
-    // wave.play();
     ipcRenderer.on('selectAll', ReqResCtrl.selectAllResReq);
     ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllResReq);
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
+    ipcRenderer.on('message', (e, text) => {
+      console.log('Message from updater: ', text)
+    })
     dbController.getHistory();
   }
 
