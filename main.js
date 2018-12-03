@@ -182,7 +182,7 @@ app.on('window-all-closed', () => {
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
-  log.info(text);
+  // log.info(text);
   if (mainWindow) {
     mainWindow.webContents.send('message', text);
   }
