@@ -12,25 +12,11 @@
 @import 'cookieTable';
 @import 'popup';
 
-// h1 {
-//   color: $green;
-//   font-weight: bold;
-//   font-size: 3.5rem;
-
-//   &:after {
-//     content: '👋';
-//     display: inline-block;
-//     transform: rotate(-20deg);
-//     animation: wave .75s infinite linear alternate;
-//   }
+// #app {
+//     width: 100vw;
+//     min-width: 1280px;
+//     height: 100vh;
+//     min-height: 768px;
+//     position: relative;
 // }
-
-// @keyframes wave {
-//   100% {
-//     transform: rotate(20deg);
-//   }
-// }
-
-
-
 
