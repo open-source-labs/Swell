@@ -2,7 +2,7 @@
   bottom: 0;
   width: 100%;
   margin: 0;
-  height: calc(100vh - 19.67% + 42px);
+  height: calc(96vh - 19.67% + 42px);
   overflow-x: scroll;
   background-color: $medbluegray;
   border-top:solid 1px $bordergray;
@@ -28,9 +28,10 @@
 }
 
 .resreq_wrap {
-  max-width: calc(100vw - 300px);
+  max-width: calc(50vw - 300px);
   margin: 15px;
   flex: 0 0 auto;
+  min-width: 500px;
 }
 
 .reqResContainer_inner-page {
@@ -194,17 +195,20 @@
   height: auto;
 }
 
-.httptwo {
+.httptwo {    
   padding: 10px 15px;
   background-color: white;
-  color: $greenone;
+  color: #15B78F;
   font-weight: 800;
-  border-top: 1px solid $bordergray;
-  border-left: 1px solid $bordergray;
-  border-right: 1px solid $bordergray;
+  border-top: 1px solid #ebeff2;
+  border-left: 1px solid #ebeff2;
+  border-right: 1px solid #ebeff2;
   display: none;
   height: auto;
-  font-size: .8rem;
+  font-size: .7rem;
+  word-wrap: break-word;
+  width: 100%;
+  overflow: scroll;
 }
 
 .networkerror {
