@@ -11,11 +11,11 @@
     "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
-    "gh-publish": "electron-builder build --x64 --mac -p always"
+    "gh-publish": "export GH_TOKEN=b9e252e0b0404c2d8fbe403ca2a42dbd6dd13334 && electron-builder build --x64 --mac -p always"
   },
   "author": {
     "name": "Swell",
-    "email": "getswell@gmail.com",
+    "email": "getswellio@gmail.com",
     "url": "http://www.getswell.com"
   },
   "contributors": [
@@ -48,6 +48,7 @@
       "dist/index.html",
       "dist/main.js",
       "dist/img/swell-bg__2JecU.png",
+      "dist/img/Trashcan__3piXy.png",
       "menu/mainMenu.js",
       "package.json",
       "main.js"

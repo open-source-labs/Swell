@@ -4,7 +4,6 @@ import * as actions from '../../actions/actions';
 import dbController from '../../controllers/dbController';
 import Trashcan from '../../../assets/img/Trashcan.png'
 
-
 const path = require('path');
 
 const mapStateToProps = store => ({
