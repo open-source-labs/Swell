@@ -11,7 +11,6 @@ class SidebarContainer extends Component {
   render(props) {
     return (
       <div className="sidebar_modal-console">
-      We Made A Change!
         <ModalContainer />
         <HistoryContainer />
       </div>

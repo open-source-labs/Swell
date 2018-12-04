@@ -19,8 +19,7 @@
   margin: 25px auto;
 
   &:hover {
-    color: $highlight;
-    border: solid 1px $highlight;
+    color: white!important;
     background: transparent;
   }
 }
@@ -34,6 +33,7 @@
     font-weight: bold;
     line-height: 1;
     border-radius: 3px;
+    padding: 0;
     &:hover {
       background-color: $bluethree;
       border: none;
@@ -55,6 +55,7 @@
     background: $darkgraygreen;
     display: inline;
     margin:1px;
+    color: $mediumgray;
     border: solid 1px #4e4e4e;
   }
 
