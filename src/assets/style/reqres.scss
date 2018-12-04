@@ -84,12 +84,15 @@
   cursor: pointer;
   &:before {
     content: "+";
-    font-size:1.5em;
-    line-height:0.5em;
-    float:left; 
+    font-size: 1.5em;
+    line-height: 0.5em;
     transition: transform 0.3s ease-in-out;
     height: 14px;
     margin-top: 5px;
+    margin: 5px auto;
+    width: 11px;
+    height: 12px;
+    display: -webkit-box;
    }
 }
 
@@ -135,6 +138,9 @@
 .resreq_remove{
   background-color: $remove!important;
   color: $litegray!important;
+  &:hover {
+    background-color:#B93F3E!important;
+  }
 }
 
 .slideInRight {

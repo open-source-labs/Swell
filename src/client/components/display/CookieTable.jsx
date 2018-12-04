@@ -32,7 +32,8 @@ class CookieTable extends Component {
 
       return (
         <div className='cookieTable'>
-          <div className='cookieTableHeaders'>
+          <div className='cookieTableHeaders nested-grid-9'>
+            
             <div className='cookieTableHeaderCell'>Name</div>
             <div className='cookieTableHeaderCell'>Value</div>
             <div className='cookieTableHeaderCell'>Domain</div>
