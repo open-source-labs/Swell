@@ -49,33 +49,36 @@
   -webkit-appearance: none;
   width: 100%;
   height: 35px;
-  margin: 5px 0;
+  margin: 5px 0 15px;
   display: block;
   padding: 8px;
-  // background-color: #fc3d39;
-  background-color: $bluefour;
+  background-color: $bluetwo;
   border: none;
-  border-radius: 3px;
+  border-radius: 3%;
   color: white;
-  font-size: 18px;
+  font-size: .8rem;
   cursor: pointer;
+  font-weight:bold;
 }
 
 .modal_protocol_container {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0 5px 0;
+  margin: 15px 0 15px 0;
 }
-.modal_protocol_button {
-  border-radius: 3px;
-  background-color: #343333; 
-  border: 1px solid $yellowgrey;
-  padding: 5px;
+.modal_protocol_button {    
+  border-radius: 3%;
+  background-color: #343333;
+  border: 1px solid #808080;
+  /* padding: 5px; */
   width: 32%;
   text-align: center;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: .8rem;
   outline: 0 none;
+  line-height: 30px;
+  height: 30px;
+  font-weight: bold;
 
   &:hover {
     background: rgb(0,137,208);
@@ -93,24 +96,25 @@
   align-content: center;
   align-items: center;
 
-  border-radius: 3px;
+  border-radius: 3%;
   overflow: hidden;
+  margin: 0 0 15px;
 }
-.modal_method_select {
+.modal_method_select {    
   color: white;
-  background: $greenone;
+  background: #15B78F;
   -webkit-appearance: none;
   width: 70px;
   height: 30px;
   line-height: 15px;
-  font-size: 14px;
-  text-align-last:center;
-  // margin: 5px 0;
+  font-size: 0.8rem;
+  text-align-last: center;
   display: block;
   padding: 0px 8px;
   border-radius: 0px;
   border: none;
   cursor: pointer;
+  font-weight: bold;
 }
 .modal_url_input {
   border: 1px solid $yellowgrey;
@@ -127,11 +131,13 @@
 
 .modal_subtitle {
   font-size: 14px;
-  margin-top: 4px;
+  // margin-top: 4px;
   width: 28%;
   display: flex;
   justify-items: center;
   cursor: pointer;
+
+  margin: 0 0 15px;
 }
 .modal_subtitle_arrow-closed {
   height: 26px;
@@ -145,13 +151,13 @@
 
 .modal_headers_container-open {
   // background: #343333;
-  margin-top: 2px;
   // padding-top: 3px;
-  border-radius: 3px;
+  border-radius: 3%;
   overflow: hidden;
   // border: 1px solid $yellowgrey;
   display: flex;
   flex-direction: column;
+  margin: 0 0 15px;
 }
 .modal_headers_container-closed {
   display: none;
@@ -160,10 +166,10 @@
 
 .modal_header {
   // background: red;
-  // margin: 0px 3px 3px 3px;
+  // margin: 0px   ;
   margin-bottom: 4px;
   border: 1px solid $yellowgrey;
-  border-radius: 3px;
+  border-radius: 3%;
   overflow: hidden;
 }
 
@@ -209,7 +215,7 @@
 }
 
 .modal_bodytype_button {
-  border-radius: 3px;
+  border-radius: 3%;
   background-color: #343333; 
   border: 1px solid $yellowgrey;
   padding: 5px;
@@ -251,14 +257,14 @@
   margin-top: 2px;
   display: block;
   padding: 0px 8px;
-  border-radius: 3px;
+  border-radius:3%;
   border: none;
   cursor: pointer;
   overflow: hidden;
 }
 .modal_textarea {
   margin-top: 7px;
-  border-radius: 3px;
+  border-radius: 3%;
   padding: 5px;
   border: 1px solid $yellowgrey;
   background-color: #343333;
@@ -283,6 +289,7 @@
  
 .historyDate-container {
   overflow: scroll;
+  margin-top:15px;
   // -ms-overflow-style: none;
   // overflow: -moz-scrollbars-none;
 }
@@ -300,7 +307,7 @@
 .history-container {
   font-size: .9rem;
   border: 1px solid #282828;
-  border-radius: 3px;
+  border-radius: 3%;
   margin : 1px 0px 1px 0px;
   color : white;
   // display : flex;

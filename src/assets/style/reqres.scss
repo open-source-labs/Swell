@@ -19,21 +19,16 @@
 
 #reqResContainer_inner {
   width: auto;
-  height: calc(85% - 10px);
+  height: calc(100vh - 194px);
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   display: flex;
   transition: transform 0.3s ease-in-out;
-
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
 }
 
-
 .resreq_wrap {
-  max-width: calc(100vw - 356px);
+  max-width: calc(100vw - 300px);
   margin: 15px;
   flex: 0 0 auto;
 }
@@ -89,12 +84,15 @@
   cursor: pointer;
   &:before {
     content: "+";
-    font-size:1.5em;
-    line-height:0.5em;
-    float:left; 
+    font-size: 1.5em;
+    line-height: 0.5em;
     transition: transform 0.3s ease-in-out;
     height: 14px;
     margin-top: 5px;
+    margin: 5px auto;
+    width: 11px;
+    height: 12px;
+    display: -webkit-box;
    }
 }
 
@@ -140,6 +138,9 @@
 .resreq_remove{
   background-color: $remove!important;
   color: $litegray!important;
+  &:hover {
+    background-color:#B93F3E!important;
+  }
 }
 
 .slideInRight {

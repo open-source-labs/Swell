@@ -5,31 +5,43 @@
 }
 
 .cookieTableHeaders {
-  display: flex;
-  padding: 10px 0px;
-  justify-content: space-around;
-  border-bottom: 2px solid var(--hariline-regular);
+  // display: flex;
+  // padding: 10px 0px;
+  // justify-content: space-around;
+  // border-bottom: 2px solid var(--hariline-regular);
+  justify-content: left;
 }
 
 .cookieTableRow {
   padding: 0;
-  display: flex;
-  padding-bottom: 10px;
-  word-wrap: break-word;
-  justify-content: space-around;
-  border-bottom: 1px solid var(--hairline-regular);
+  /* display: flex; */
+  /* padding-bottom: 10px; */
+  // word-wrap: break-word;
+  // justify-content: space-around;
+  /* border-bottom: 1px solid var(--hairline-regular); */
   cursor: text;
-  user-select: text
+  // user-select: text;
+  background: white;
+  
 }
 
 .cookieTableHeaderCell {
-  width: 100px;
-  font-size: 12px;
+  // width: 100px;
+  // font-size: .6rem;    
+  // font-weight: bold;
+  // text-align: left;
+
+
+  font-size: .6rem;
   font-weight: bold;
+  text-align: left;
+  /* border: lime solid 1px; */
+  // margin-right: 100px;
 }
 
 .cookieTableCell {
-  width: 100px;
-  font-size: 12px;
-  padding-top: 10px;
+  // width: 100px;
+  font-size: 0.6rem;
+  overflow-x: scroll;
+  height: auto;
 }
