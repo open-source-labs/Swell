@@ -190,15 +190,11 @@ class ModalNewRequest extends Component {
 
     return (
       <div
-        role="button"
         tabIndex={0}
         style={{ display: 'flex', flexDirection: 'column' }}
         onKeyPress={(event) => {
-          // if (event.key === 'Enter') {
-          //   this.addNewRequest();
-          // }
         }}
-      >
+        >
         <h1 className="modal_title">Create New Request</h1>
 
 
