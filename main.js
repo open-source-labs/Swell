@@ -107,7 +107,7 @@ function createWindow() {
 
   if (dev) {
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
-  Adding React & Redux DevTools to Electon App
+  // Adding React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));
