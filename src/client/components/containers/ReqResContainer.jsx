@@ -32,54 +32,55 @@ class ReqResContainer extends Component {
     switch (requestInstances) {
       case 1:
         dynamicCols = { 
-          width: 'calc(50vw - 300px)',
-          minWidth: '540px',
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(1, 100%)' };
+          width: 'calc(100vw - 300px)'
+          //,
+          // display: 'grid', 
+          // gridTemplateColumns: 'repeat(1, 100%)' 
+        };
         num = 'one';
         break;
       case 2:
         dynamicCols = {
-          width: 'calc((50vw - 300px)*2)',
-          minWidth: '1080px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 50%)',
+          width: 'calc((100vw - 300px)*2)'
+          //,
+          // display: 'grid',
+          // gridTemplateColumns: 'repeat(2, 50%)',
         };
         num = 'two';
         break;
       case 3:
         dynamicCols = {
-          width: 'calc((50vw - 300px)*3)',
-          minWidth: '1620px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 33.333%)',
+          width: 'calc((100vw - 300px)*3)'
+          //,
+          // display: 'grid',
+          // gridTemplateColumns: 'repeat(3, 33.333%)',
         };
         num = 'three';
         break;
       case 4:
         dynamicCols = {
-          width: 'calc((50vw - 300px)*4)',
-          minWidth: '2160px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 25%)',
+          width: 'calc((100vw - 300px)*4)'
+          //,
+          // display: 'grid',
+          // gridTemplateColumns: 'repeat(4, 25%)',
         };
         num = 'four';
         break;
       case 5:
         dynamicCols = {
-          width: 'calc((50vw - 300px)*5)',
-          minWidth: '2700px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 20%)',
+          width: 'calc((100vw - 300px)*5)'
+          //,
+          // display: 'grid',
+          // gridTemplateColumns: 'repeat(5, 20%)',
         };
         num = 'five';
         break;
       case 6:
         dynamicCols = {
-          width: 'calc((100vw - 300px)*6)',
-          minWidth: '3240px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 16.666%)',
+          width: 'calc((100vw - 300px)*6)'
+          //,
+          // display: 'grid',
+          // gridTemplateColumns: 'repeat(6, 16.666%)',
         };
         num = 'six';
         break;

@@ -2,36 +2,32 @@
   bottom: 0;
   width: 100%;
   margin: 0;
-  height: calc(96vh - 19.67% + 42px);
-  overflow-x: scroll;
-  background-color: $medbluegray;
-  border-top:solid 1px $bordergray;
+  height: calc(97vh - 19.67% + 42px);
+  overflow-x: hidden;
+  background-color: #ecf1f5;
+  border-top: solid 1px #ebeff2;
   background-image: url('../img/swell-bg.png');
   background-position: center center;
   background-size: 200px 200px;
   background-repeat: no-repeat;
-}
-
-#jumpLinks {
-  position: fixed;
-  bottom: 0;
+  overflow-y: scroll;
 }
 
 #reqResContainer_inner {
   width: auto;
-  height: calc(100vh - 194px);
-  overflow-x: auto;
-  overflow-y: hidden;
+  height: calc(100vh - 150px);
+  overflow-x: hidden;
+  overflow-y: auto;
   white-space: nowrap;
-  display: flex;
+  /* display: flex; */
   transition: transform 0.3s ease-in-out;
 }
 
 .resreq_wrap {
-  max-width: calc(50vw - 300px);
+  width: calc(100vw - 340px);
   margin: 15px;
   flex: 0 0 auto;
-  min-width: 500px;
+  min-width: 800px;
 }
 
 .reqResContainer_inner-page {
