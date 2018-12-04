@@ -1,6 +1,6 @@
 <img src="./src/assets/img/horizontal-logo-lockup.png" 
       style="margin-top: 10px;"> 
-
+#
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Swell:%20For%20all%20your%20streaming%20API%20testing%20needs&url=https://www.getswell.io&hashtags=SSE,WebSocket,HTTP,API,developers)
 
 
