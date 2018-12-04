@@ -15,6 +15,8 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ### Supported Technologies
 * *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.
+<img src="https://i.imgur.com/jxY2Y2y.png"
+     style="float: left; margin-right: 10px; margin-bottom : 20px" />
 
 * *Server-Sent Events (SSE)*: Swell displays SSE events one by one as they come in.
 <img src="https://i.imgur.com/SrzGDxM.png"
