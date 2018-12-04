@@ -83,8 +83,7 @@
   &:hover {
     background: rgb(0,137,208);
     border: 2px solid $bluetwo;
-    border : none;
-    line-height: 30px;
+    line-height: 28px;
   }
 }
 .modal_protocol_button-selected {
@@ -170,7 +169,7 @@
   // background: red;
   // margin: 0px   ;
   margin-bottom: 4px;
-  border: 1px solid $yellowgrey;
+  border: 2px solid $yellowgrey;
   border-radius: 5px;
   overflow: hidden;
 }
