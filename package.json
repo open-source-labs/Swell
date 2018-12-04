@@ -12,7 +12,7 @@
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
     "package-all": "npm run build && electron-builder --mwl",
-    "gh-publish": "electron-builder --x64 --mac -p always"
+    "gh-publish": "electron-builder build --x64 --mac -p always"
   },
   "build": {
     "productName": "Swell",
