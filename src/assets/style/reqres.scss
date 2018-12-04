@@ -25,15 +25,10 @@
   white-space: nowrap;
   display: flex;
   transition: transform 0.3s ease-in-out;
-
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
 }
 
-
 .resreq_wrap {
-  max-width: calc(100vw - 356px);
+  max-width: calc(100vw - 300px);
   margin: 15px;
   flex: 0 0 auto;
 }

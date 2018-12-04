@@ -32,14 +32,14 @@ class ReqResContainer extends Component {
     switch (requestInstances) {
       case 1:
         dynamicCols = { 
-          width: 'calc(100vw - 356px)',
+          width: 'calc(100vw - 300px)',
           display: 'grid', 
           gridTemplateColumns: 'repeat(1, 100%)' };
         num = 'one';
         break;
       case 2:
         dynamicCols = {
-          width: 'calc((100vw - 356px)*2)',
+          width: 'calc((100vw - 300px)*2)',
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 50%)',
         };
@@ -47,7 +47,7 @@ class ReqResContainer extends Component {
         break;
       case 3:
         dynamicCols = {
-          width: 'calc((100vw - 356px)*3)',
+          width: 'calc((100vw - 300px)*3)',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 33.333%)',
         };
@@ -55,7 +55,7 @@ class ReqResContainer extends Component {
         break;
       case 4:
         dynamicCols = {
-          width: 'calc((100vw - 356px)*4)',
+          width: 'calc((100vw - 300px)*4)',
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 25%)',
         };
@@ -63,7 +63,7 @@ class ReqResContainer extends Component {
         break;
       case 5:
         dynamicCols = {
-          width: 'calc((100vw - 356px)*5)',
+          width: 'calc((100vw - 300px)*5)',
           display: 'grid',
           gridTemplateColumns: 'repeat(5, 20%)',
         };
@@ -71,7 +71,7 @@ class ReqResContainer extends Component {
         break;
       case 6:
         dynamicCols = {
-          width: 'calc((100vw - 356px)*6)',
+          width: 'calc((100vw - 300px)*6)',
           display: 'grid',
           gridTemplateColumns: 'repeat(6, 16.666%)',
         };
