@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+
+import { xcode } from 'react-syntax-highlighter/styles/hljs';
+import pretty from 'pretty';
 import * as actions from "../../actions/actions";
 
 import Tab from "./Tab.jsx";
@@ -76,7 +80,8 @@ class ResponseTabs extends Component {
             } else {
               responseEvents.forEach((cur, idx) => {
                 tabContentShownEvents.push(
-                  <div>{cur}</div>
+                  <div><SyntaxHighlighter language='javascript' style={xcode}>
+                  {pretty(cur, {ocd: false})}</SyntaxHighlighter></div>
                 );
               });
             }
