@@ -72,19 +72,17 @@ class ResponseTabs extends Component {
 
         // Step 3  - Check content type of each response Update to use includes
         if (tabState === "Response Events") {
-          if (responseContentType) {
-            if (responseContentType.includes("text/event-stream")) {
-              responseEvents.forEach((cur, idx) => {
-                tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
-              });
-            } else {
-              responseEvents.forEach((cur, idx) => {
-                tabContentShownEvents.push(
-                  <div><SyntaxHighlighter language='javascript' style={xcode}>
-                  {pretty(cur, {ocd: false})}</SyntaxHighlighter></div>
-                );
-              });
-            }
+          if (responseContentType && responseContentType.includes("text/event-stream")) {
+            responseEvents.forEach((cur, idx) => {
+              tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
+            });
+          } else {
+            responseEvents.forEach((cur, idx) => {
+              tabContentShownEvents.push(
+                <div><SyntaxHighlighter language='javascript' style={xcode}>
+                {pretty(cur, {ocd: false})}</SyntaxHighlighter></div>
+              );
+            });
           }
         } else if (tabState === "Response Headers") {
           const headerObj = this.props.responseContent.headers;
