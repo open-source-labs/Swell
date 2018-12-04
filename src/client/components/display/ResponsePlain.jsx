@@ -22,14 +22,7 @@ class ResponsePlain extends Component {
     }
 
     return (
-      <div
-        style={{
-          border: '1px solid black',
-          margin: '3px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-        ResponsePlain
+      <div>
         {contentBody}
       </div>
     );

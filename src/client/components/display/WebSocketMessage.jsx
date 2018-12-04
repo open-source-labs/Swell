@@ -9,16 +9,16 @@ class WebSocketMessage extends Component {
 
   render() {
     const styles = {
-      border: '1px solid black',
-      margin: '3px',
       display: 'flex',
       justifyContent: this.props.source === 'server' ? 'flex-start' : 'flex-end',
     };
 
+    const webSocketMessageClassNames =  this.props.source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
+
     return (
-      <div style={styles}>
-        <div style={{ width: '30%' }}>{this.props.data}</div>
-        <div style={{ width: '30%' }}>{this.props.timeReceived}</div>
+      <div style={styles} className={webSocketMessageClassNames}>
+        <div  className={'websocket_message-data'}>{this.props.data}</div>
+        <div  className={'websocket_message-time'}>{`${new Date(this.props.timeReceived).getHours()}:${new Date(this.props.timeReceived).getMinutes()}`}</div>
       </div>
     );
   }

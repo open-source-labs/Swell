@@ -46,21 +46,19 @@ class WebSocketWindow extends Component {
 
     return (
       <div
-        style={{
-          border: '1px solid black',
-          margin: '3px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
+        style={{}}
+        className={'websocket_container'}
       >
-        <div style={messageInputStyles}>
+        <div style={messageInputStyles} className={'websocket_input'}>
           <input
+            className={'websocket_input-text'}
             value={this.state.outgoingMessage}
             placeholder="Message"
             onChange={e => this.updateOutgoingMessage(e.target.value)}
           />
 
           <button
+            className={'websocket_input-btn'}
             onClick={() => wsController
               .sendWebSocketMessage(this.props.id, this.state.outgoingMessage)
             }
@@ -69,8 +67,10 @@ class WebSocketWindow extends Component {
             Send Message
           </button>
         </div>
-
+            
+        <div className={'websocket_message_container'}>
         {combinedMessagesReactArr}
+        </div>
       </div>
     );
   }
