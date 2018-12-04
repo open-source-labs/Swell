@@ -9,7 +9,7 @@
 .tab_list-response {
   width: 100%;
   height: 42px;    
-  position: absolute;
+  position: sticky;
   top: 0;
   z-index: 10;
   background-color: $medgray;
@@ -50,7 +50,7 @@
   width: 100%;
   height: auto;
   position: relative;
-  padding: 50px 5px;
+  padding: 5px 5px;
   background: $medgray;
   border-left: solid 1px $bordergray;
   border-right: solid 1px $bordergray;

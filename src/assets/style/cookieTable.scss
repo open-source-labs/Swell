@@ -7,8 +7,9 @@
 .cookieTableHeaders {
   display: flex;
   padding: 10px 0px;
-  justify-content: space-around;
-  border-bottom: 2px solid var(--hariline-regular);
+  // justify-content: space-around;
+  // border-bottom: 2px solid var(--hariline-regular);
+  justify-content: left;
 }
 
 .cookieTableRow {
@@ -23,10 +24,18 @@
 }
 
 .cookieTableHeaderCell {
-  width: 100px;
-  font-size: .6rem;    
+  // width: 100px;
+  // font-size: .6rem;    
+  // font-weight: bold;
+  // text-align: left;
+
+
+  font-size: .6rem;
   font-weight: bold;
   text-align: left;
+  /* border: lime solid 1px; */
+  margin-right: 100px;
+  margin-left: 15px;
 }
 
 .cookieTableCell {
