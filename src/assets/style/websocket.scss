@@ -6,6 +6,7 @@
   padding: 5px;
   display: flex;
   flex-direction: column;
+  
 }
 
 .websocket_input {
@@ -41,7 +42,7 @@
   border-radius: 12px;
   border: 1px solid #ebeff2;
   color : white;
-  background-color: #808080;
+  background-color: #46494c;
   cursor: pointer;
   outline: 0 none;
   &:hover {
@@ -57,6 +58,10 @@
   margin-top: 5px;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  height: 500px;
+  width: 100%;
+  flex-wrap: nowrap;
   // align-items: flex-start;
 }
 .websocket_message {
@@ -70,9 +75,10 @@
   overflow: hidden;
   width: auto;
   color: white;
+  flex-shrink: 0;
 }
 .websocket_message-server {
-  background-color: #808080;
+  background-color: #9d9d9d;
   align-self: flex-start;
 }
 .websocket_message-client {
