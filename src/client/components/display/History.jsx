@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import * as actions from '../../actions/actions';
 import dbController from '../../controllers/dbController';
+import Trashcan from '../../../assets/img/Trashcan.png'
+
+
 const path = require('path');
 
 const mapStateToProps = store => ({
@@ -88,7 +91,7 @@ class History extends Component {
           <div className='history-delete-fade'>
           </div>
           <div className={'history-delete-button'} onClick={this.deleteHistory}>
-            <img className='history-delete-image' src={'https://i.imgur.com/GiMa26l.png'} id={this.props.content.id} ></img>
+            <img className='history-delete-image' src={Trashcan} id={this.props.content.id} ></img>
           </div>
         </div>
       </div>
