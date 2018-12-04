@@ -76,7 +76,7 @@ class ReqResContainer extends Component {
         break;
       case 6:
         dynamicCols = {
-          width: 'calc((100vw - 300px)*6)',
+          width: 'calc((50vw - 300px)*6)',
           minWidth: '3240px',
           display: 'grid',
           gridTemplateColumns: 'repeat(6, 16.666%)',
