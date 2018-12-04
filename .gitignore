@@ -1,6 +1,7 @@
 # Build folder and files #
 ##########################
 builds/
+release/
 
 # Development folders and files #
 #################################
