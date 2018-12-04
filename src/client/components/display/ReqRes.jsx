@@ -137,7 +137,7 @@ class ReqRes extends Component {
           HTTP2 connection: Requests with the same host will share a single HTTP2 connection.
         </div>
 
-        <div style={errorStyles} class='networkerror'>There was a network error in connecting to endpoint.</div>
+        <div style={errorStyles} className='networkerror'>There was a network error in connecting to endpoint.</div>
         {contentBody}
       </div>
     );
