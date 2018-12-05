@@ -31,7 +31,7 @@
 	font-size: 1.1rem;
 	font-weight: bold;
 }
-.modalcontents {
+.modalContents {
 	border-bottom: 1px solid #ddd;
 	box-sizing: border-box;
 	font-size: 1.2rem;
@@ -76,7 +76,6 @@
 		border: 2px solid $bluetwo;
 		line-height: 28px;
 	}
-	/* padding: 5px; */
 }
 .modal_protocol_button-selected {
 	background: rgb(0,137,208);
@@ -120,7 +119,6 @@
 	width: 100%;
 }
 .modal_subtitle {
-	// margin-top: 4px;
 	cursor: pointer;
 	display: flex;
 	font-size: 14px;
@@ -138,9 +136,6 @@
 	margin: -3px -6px -8px -7px;
 }
 .modal_headers_container-open {
-	// background: #343333;
-	// border: 1px solid $yellowgrey;
-	// padding-top: 3px;
 	border-radius: 5px;
 	display: flex;
 	flex-direction: column;
@@ -152,8 +147,6 @@
 	overflow: hidden;
 }
 .modal_header {
-	// background: red;
-	// margin: 0px;
 	border: 2px solid $yellowgrey;
 	border-radius: 5px;
 	margin-bottom: 4px;
@@ -161,7 +154,6 @@
 }
 .modal_header_checkbox {
 	-webkit-appearance: none;
-	// transition: all .3s linear;
 	appearance: none;
 	background: #343333;
 	border-radius: 1px;
@@ -264,25 +256,18 @@
 	margin-bottom: 5px;
 	margin-top: 0px;
 }
-.historydate-container {
-	// -ms-overflow-style: none;
-	// overflow: -moz-scrollbars-none;
+.historyDate-container {
 	margin-top: 15px;
 	overflow: scroll;
 }
-.historydate-container::-webkit-scrollbar {
-	// overflow: none;
-	// width: 0 !important;
+.historyDate-container::-webkit-scrollbar {
 }
-.historydate h1 {
+.historyDate h1 {
 	font-weight: 700;
 	margin-bottom: 5px;
 	margin-top: 15px;
 }
 .history-container {
-	// align-items: center;
-	// display: flex;
-	// justify-content: space-between;
 	border: 1px solid #282828;
 	border-radius: 5px;
 	color: white;
@@ -303,7 +288,6 @@
 	}
 }
 .history-text-container {
-	// overflow: hidden;
 	align-items: center;
 	display: flex;
 	flex-shrink: 100;

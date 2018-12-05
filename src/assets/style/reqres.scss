@@ -1,320 +1,368 @@
-#reqrescontainer {
-	background-color: #ecf1f5;
-	background-image: url('../img/swell-bg.png');
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: 200px 200px;
-	border-top: solid 1px #ebeff2;
-	bottom: 0;
-	height: calc(97vh - 19.67% + 42px);
-	margin: 0;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	width: 100%;
+#reqResContainer {
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  height: calc(97vh - 19.67% + 42px);
+  overflow-x: hidden;
+  background-color: #ecf1f5;
+  border-top: solid 1px #ebeff2;
+  background-image: url('../img/swell-bg.png');
+  background-position: center center;
+  background-size: 200px 200px;
+  background-repeat: no-repeat;
+  overflow-y: scroll;
 }
-#reqrescontainer_inner {
-	height: calc(100vh - 150px);
-	overflow-x: hidden;
-	overflow-y: auto;
-	transition: transform 0.3s ease-in-out;
-	white-space: nowrap;
-	width: auto;
+
+#reqResContainer_inner {
+  width: auto;
+  height: calc(100vh - 150px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: nowrap;
+  transition: transform 0.3s ease-in-out;
 }
+
 .resreq_wrap {
-	flex: 0 0 auto;
-	margin: 15px;
-	min-width: 800px;
-	width: calc(100vw - 340px);
+  width: calc(100vw - 340px);
+  margin: 15px;
+  flex: 0 0 auto;
+  min-width: 800px;
 }
-.reqrescontainer_inner-page {
-	height: 100%;
-	width: 100%;
+
+.reqResContainer_inner-page {
+  width: 100%;
+  height: 100%;
 }
+
 .resreq_select-radio-label {
-	font-size: 0.9rem;
-	font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
+
 .resreq_select-radio {
-	height: 15px;
-	left: 45%;
-	position: relative;
-	top: 17%;
-	width: 15px;
+  width: 15px;
+  height: 15px;
+  position: relative;
+  left: 45%;
+  top: 17%;
 }
+
 .response_event {
-	background: white;
-	display: flex;
-	flex-direction: column;
-	height: auto;
-	overflow: hidden;
-	padding: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  height: auto;
+  overflow: hidden;
 }
-.response_sse {
-	animation: fadeIn 400ms ease-in;
-	background: white;
-	display: flex;
-	flex-direction: column;
-	height: auto;
-	overflow: hidden;
+
+.response_sse {    
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  overflow: hidden;
+  background: white;
+  animation: fadeIn 400ms ease-in;
 }
-.response_sse:nth-of-type(odd) {
-	background: $litegray;
+
+.response_sse:nth-of-type(odd){
+	background:$litegray;
 }
+
 .data-inner {
-	height: 0;
-	transition: height 0.15s ease-out;
+  height: 0;
+  transition: height 0.15s ease-out;
 }
+
 .expand-btn {
-	cursor: pointer;
-	display: block;
-	padding: 3px;
-	&:before {
-		content: "+";
-		display: -webkit-box;
-		font-size: 1.5em;
-		height: 14px;
-		height: 12px;
-		line-height: 0.5em;
-		margin: 5px auto;
-		margin-top: 5px;
-		transition: transform 0.3s ease-in-out;
-		width: 11px;
-	}
+  padding:3px;
+  display:block;
+  cursor: pointer;
+  &:before {
+    content: "+";
+    font-size: 1.5em;
+    line-height: 0.5em;
+    transition: transform 0.3s ease-in-out;
+    height: 14px;
+    margin-top: 5px;
+    margin: 5px auto;
+    width: 11px;
+    height: 12px;
+    display: -webkit-box;
+   }
 }
+
 .expand-btn.expand-active {
-	&:before {
-		transform: rotate(-225deg);
-	}
+  &:before {
+    transform:rotate(-225deg);
+  }
 }
+
 .expanded {
-	border-bottom: solid 1px $bordergray;
-	height: auto!important;
-	overflow-x: scroll;
+  height: auto!important;
+  overflow-x: scroll;
+  border-bottom: solid 1px $bordergray;
 }
-@keyframes slideinright {
-	from {
-		transform: translate3d(100%, 0, 0);
-		visibility: visible;
-	}
-	to {
-		transform: translate3d(0, 0, 0);
-	}
+
+@keyframes slideInRight {
+  from {
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
+
 .btn-sm {
-	.btn {
-		font-size: .7rem;
-		font-weight: bold;
-		height: 30px;
-		line-height: 1;
-		margin: 0;
-		width: 100%;
-		&:hover {
-			background: $teal;
-			border: none;
-			color: $litegray;
-		}
-	}
+  .btn {
+    margin: 0;
+    width: 100%;
+    height: 30px;
+    font-size: .7rem;
+    font-weight: bold;
+    line-height: 1;
+    &:hover {
+      background: $teal;
+      color: $litegray;
+      border: none;
+    }
+  }
 }
-.resreq_remove {
-	background-color: $remove!important;
-	color: $litegray!important;
-	&:hover {
-		background-color: #B93F3E!important;
-	}
+
+.resreq_remove{
+  background-color: $remove!important;
+  color: $litegray!important;
+  &:hover {
+    background-color:#B93F3E!important;
+  }
 }
-.slideinright {
-	animation-name: slideInRight;
+
+.slideInRight {
+  animation-name: slideInRight;
 }
-@keyframes fadein {
-	0% {
-		opacity: 0;
-		transform: scale(.8);
-	}
-	100% {
-		opacity: 1;
-		transform: scale(1);
-	}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(.8);
+    
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    
+  }
 }
+
 .resreq_res-container {
-	border-bottom: solid 1px $bordergray;
-	border-left: solid 1px $bordergray;
-	border-right: solid 1px $bordergray;
-	display: flex;
-	flex-direction: column;
-	flex-direction: column-reverse;
-	height: auto;
-	margin: 0;
-	max-height: 60vh;
-	overflow: scroll;
-	position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+  height: auto;
+  overflow: scroll;
+  flex-direction: column-reverse;
+  position: relative;
+  border-bottom: solid 1px $bordergray;
+  border-left: solid 1px $bordergray;
+  border-right: solid 1px $bordergray;
 }
+
 .headers {
-	border-top: solid 1px $bordergray;
+  border-top: solid 1px $bordergray;
 }
+
 .res_header {
-	border-left: 1px solid $bordergray;
-	border-right: 1px solid $bordergray;
-	width: 100%;
+  width: 100%;
+  border-left: 1px solid $bordergray;
+  border-right: 1px solid $bordergray;
 }
+
 .resreq_title {
-	font-size: 1.1rem;
-	font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
-.reqrescontainer-inner {
-	height: auto;
-	position: relative;
+
+.reqResContainer-inner {
+  position: relative;
+  height: auto;
 }
-.httptwo {
-	background-color: white;
-	border-left: 1px solid #ebeff2;
-	border-right: 1px solid #ebeff2;
-	border-top: 1px solid #ebeff2;
-	color: #15B78F;
-	display: none;
-	font-size: .7rem;
-	font-weight: 800;
-	height: auto;
-	overflow: scroll;
-	padding: 10px 15px;
-	width: 100%;
-	word-wrap: break-word;
+
+.httptwo {    
+  padding: 10px 15px;
+  background-color: white;
+  color: #15B78F;
+  font-weight: 800;
+  border-top: 1px solid #ebeff2;
+  border-left: 1px solid #ebeff2;
+  border-right: 1px solid #ebeff2;
+  display: none;
+  height: auto;
+  font-size: .7rem;
+  word-wrap: break-word;
+  width: 100%;
+  overflow: scroll;
 }
+
 .networkerror {
-	background-color: white;
-	border-left: 1px solid $bordergray;
-	border-right: 1px solid $bordergray;
-	border-top: 1px solid $bordergray;
-	color: red;
-	display: none;
-	font-size: .8rem;
-	font-weight: 800;
-	height: auto;
-	padding: 10px 15px;
+  padding: 10px 15px;
+  background-color: white;
+  color: red;
+  font-weight: 800;
+  border-top: 1px solid $bordergray;
+  border-left: 1px solid $bordergray;
+  border-right: 1px solid $bordergray;
+  display: none;
+  height: auto;
+  font-size: .8rem;
 }
+
 // status-loader:
 :root {
-	--status-indicator-animation-duration: 2s;
-	--status-indicator-color: rgb(216, 226, 233);
-	--status-indicator-color-active: rgb(0, 149, 255);
-	--status-indicator-color-active-semi: rgba(0, 149, 255, 0.5);
-	--status-indicator-color-active-transparent: rgba(0, 149, 255, 0);
-	--status-indicator-color-intermediary: rgb(255, 170, 0);
-	--status-indicator-color-intermediary-semi: rgba(255, 170, 0, 0.5);
-	--status-indicator-color-intermediary-transparent: rgba(255, 170, 0, 0);
-	--status-indicator-color-negative: rgb(255, 77, 77);
-	--status-indicator-color-negative-semi: rgba(255, 77, 77, 0.5);
-	--status-indicator-color-negative-transparent: rgba(255, 77, 77, 0);
-	--status-indicator-color-positive: rgb(75, 210, 143);
-	--status-indicator-color-positive-semi: rgba(75, 210, 143, 0.5);
-	--status-indicator-color-positive-transparent: rgba(75, 210, 143, 0);
-	--status-indicator-color-semi: rgba(216, 226, 233, 0.5);
-	--status-indicator-color-transparent: rgba(216, 226, 233, 0);
-	--status-indicator-size: 10px;
+  --status-indicator-size: 10px;
+  --status-indicator-animation-duration: 2s;
+
+  --status-indicator-color: rgb(216, 226, 233);
+  --status-indicator-color-semi: rgba(216, 226, 233, 0.5);
+  --status-indicator-color-transparent: rgba(216, 226, 233, 0);
+
+  --status-indicator-color-active: rgb(0, 149, 255);
+  --status-indicator-color-active-semi: rgba(0, 149, 255, 0.5);
+  --status-indicator-color-active-transparent: rgba(0, 149, 255, 0);
+
+  --status-indicator-color-positive: rgb(75, 210, 143);
+  --status-indicator-color-positive-semi: rgba(75, 210, 143, 0.5);
+  --status-indicator-color-positive-transparent: rgba(75, 210, 143, 0);
+
+  --status-indicator-color-intermediary: rgb(255, 170, 0);
+  --status-indicator-color-intermediary-semi: rgba(255, 170, 0, 0.5);
+  --status-indicator-color-intermediary-transparent: rgba(255, 170, 0, 0);
+
+  --status-indicator-color-negative: rgb(255, 77, 77);
+  --status-indicator-color-negative-semi: rgba(255, 77, 77, 0.5);
+  --status-indicator-color-negative-transparent: rgba(255, 77, 77, 0);
 }
+
 @keyframes status-indicator-pulse {
-	0% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-semi);
-	}
-	70% {
-		box-shadow: 0 0 0 var(--status-indicator-size)
+  0% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-semi);
+  }
+  70% {
+    box-shadow: 0 0 0 var(--status-indicator-size)
       var(--status-indicator-color-transparent);
-	}
-	100% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-transparent);
-	}
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-transparent);
+  }
 }
+
 @keyframes status-indicator-pulse-active {
-	0% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-active-semi);
-	}
-	70% {
-		box-shadow: 0 0 0 var(--status-indicator-size)
+  0% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-active-semi);
+  }
+  70% {
+    box-shadow: 0 0 0 var(--status-indicator-size)
       var(--status-indicator-color-active-transparent);
-	}
-	100% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-active-transparent);
-	}
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-active-transparent);
+  }
 }
+
 @keyframes status-indicator-pulse-positive {
-	0% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-positive-semi);
-	}
-	70% {
-		box-shadow: 0 0 0 var(--status-indicator-size)
+  0% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-positive-semi);
+  }
+  70% {
+    box-shadow: 0 0 0 var(--status-indicator-size)
       var(--status-indicator-color-positive-transparent);
-	}
-	100% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-positive-transparent);
-	}
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-positive-transparent);
+  }
 }
+
 @keyframes status-indicator-pulse-intermediary {
-	0% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-intermediary-semi);
-	}
-	70% {
-		box-shadow: 0 0 0 var(--status-indicator-size)
+  0% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-intermediary-semi);
+  }
+  70% {
+    box-shadow: 0 0 0 var(--status-indicator-size)
       var(--status-indicator-color-intermediary-transparent);
-	}
-	100% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-intermediary-transparent);
-	}
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-intermediary-transparent);
+  }
 }
+
 @keyframes status-indicator-pulse-negative {
-	0% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-negative-semi);
-	}
-	70% {
-		box-shadow: 0 0 0 var(--status-indicator-size)
+  0% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-negative-semi);
+  }
+  70% {
+    box-shadow: 0 0 0 var(--status-indicator-size)
       var(--status-indicator-color-negative-transparent);
-	}
-	100% {
-		box-shadow: 0 0 0 0 var(--status-indicator-color-negative-transparent);
-	}
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--status-indicator-color-negative-transparent);
+  }
 }
+
 status-indicator {
-	background-color: var(--status-indicator-color);
-	border-radius: 50%;
-	cursor: pointer;
-	display: inline-block;
-	height: var(--status-indicator-size);
-	left: 50%;
-	position: absolute;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	width: var(--status-indicator-size);
+  display: inline-block;
+  border-radius: 50%;
+  cursor: pointer;
+  width: var(--status-indicator-size);
+  height: var(--status-indicator-size);
+  background-color: var(--status-indicator-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+
 status-indicator[pulse] {
-	animation-delay: 0;
-	animation-direction: normal;
-	animation-duration: var(--status-indicator-animation-duration);
-	animation-fill-mode: none;
-	animation-iteration-count: infinite;
-	animation-name: status-indicator-pulse;
-	animation-timing-function: ease-in-out;
+  animation-name: status-indicator-pulse;
+  animation-duration: var(--status-indicator-animation-duration);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-delay: 0;
+  animation-fill-mode: none;
 }
+
 status-indicator[active] {
-	background-color: var(--status-indicator-color-active);
+  background-color: var(--status-indicator-color-active);
 }
+
 status-indicator[active][pulse] {
-	animation-name: status-indicator-pulse-active;
+  animation-name: status-indicator-pulse-active;
 }
+
 status-indicator[positive] {
-	animation-name: status-indicator-pulse-positive;
-	background-color: var(--status-indicator-color-positive);
+  background-color: var(--status-indicator-color-positive);
+  animation-name: status-indicator-pulse-positive;
 }
+
 status-indicator[positive][pulse] {
-	animation-name: status-indicator-pulse-positive;
+  animation-name: status-indicator-pulse-positive;
 }
+
 status-indicator[intermediary] {
-	background-color: var(--status-indicator-color-intermediary);
+  background-color: var(--status-indicator-color-intermediary);
 }
+
 status-indicator[intermediary][pulse] {
-	animation-name: status-indicator-pulse-intermediary;
+  animation-name: status-indicator-pulse-intermediary;
 }
+
 status-indicator[negative] {
-	animation-name: status-indicator-pulse-negative;
-	background-color: var(--status-indicator-color-negative);
+  background-color: var(--status-indicator-color-negative);
+  animation-name: status-indicator-pulse-negative;
 }
+
 status-indicator[negative][pulse] {
-	animation-name: status-indicator-pulse-negative;
+  animation-name: status-indicator-pulse-negative;
 }

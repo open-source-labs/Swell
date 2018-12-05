@@ -1,22 +1,22 @@
-.cookietable {
+.cookieTable {
 	display: block;
 	flex: 1;
 	overflow-y: auto;
 }
-.cookietableheaders {
+.cookieTableHeaders {
 	justify-content: left;
 }
-.cookietablerow {
+.cookieTableRow {
 	background: white;
 	cursor: text;
 	padding: 0;
 }
-.cookietableheadercell {
+.cookieTableHeaderCell {
 	font-size: .6rem;
 	font-weight: bold;
 	text-align: left;
 }
-.cookietablecell {
+.cookieTableCell {
 	font-size: 0.6rem;
 	height: auto;
 	overflow-x: scroll;
