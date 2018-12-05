@@ -1,47 +1,23 @@
-.cookieTable {
-  display: block;
-  flex: 1;
-  overflow-y: auto;
+.cookietable {
+	display: block;
+	flex: 1;
+	overflow-y: auto;
 }
-
-.cookieTableHeaders {
-  // display: flex;
-  // padding: 10px 0px;
-  // justify-content: space-around;
-  // border-bottom: 2px solid var(--hariline-regular);
-  justify-content: left;
+.cookietableheaders {
+	justify-content: left;
 }
-
-.cookieTableRow {
-  padding: 0;
-  /* display: flex; */
-  /* padding-bottom: 10px; */
-  // word-wrap: break-word;
-  // justify-content: space-around;
-  /* border-bottom: 1px solid var(--hairline-regular); */
-  cursor: text;
-  // user-select: text;
-  background: white;
-  
+.cookietablerow {
+	background: white;
+	cursor: text;
+	padding: 0;
 }
-
-.cookieTableHeaderCell {
-  // width: 100px;
-  // font-size: .6rem;    
-  // font-weight: bold;
-  // text-align: left;
-
-
-  font-size: .6rem;
-  font-weight: bold;
-  text-align: left;
-  /* border: lime solid 1px; */
-  // margin-right: 100px;
+.cookietableheadercell {
+	font-size: .6rem;
+	font-weight: bold;
+	text-align: left;
 }
-
-.cookieTableCell {
-  // width: 100px;
-  font-size: 0.6rem;
-  overflow-x: scroll;
-  height: auto;
+.cookietablecell {
+	font-size: 0.6rem;
+	height: auto;
+	overflow-x: scroll;
 }
