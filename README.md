@@ -12,7 +12,7 @@ Swell is a Streaming API development tool that enables developers to test API en
 
 ## Getting Started
 
-Visit www.getswell.io for a download link. 
+Visit www.getswell.io to download the latest release. 
 
 Swell is currently only supported on OS X with future support planned for Linux and Windows.
 
