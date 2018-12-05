@@ -1,109 +1,93 @@
 .websocket_container {
-  background-color: white;
-  // border: 3px solid rgb(200, 200, 200);
-  border: 1px solid #ebeff2;
-  border-radius: 0px 0px 5px 5px;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  
+	background-color: white;
+	border: 1px solid #ebeff2;
+	border-radius: 0px 0px 5px 5px;
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
 }
-
 .websocket_input {
-  // display: flex;
-  // align-content: center;
-  // align-items: center;
-  width: 100%;
+	width: 100%;
 }
 .websocket_input-text {
-  -webkit-appearance: none;
-  height: 25px;
-  border: 1px solid #ebeff2;
-  border-radius: 12px;
-  padding: 0px 105px 0px 8px;
-  text-overflow: ellipsis;
-  font-size: 14px;
-  background-color: rgb(247, 247, 247);
-  
-  // width: calc(100%-100px);
-  width: 100%;
-  float: left;
-  &:focus {
-    outline: 0 none;
-  }
+	-webkit-appearance: none;
+	background-color: rgb(247, 247, 247);
+	border: 1px solid #ebeff2;
+	border-radius: 12px;
+	float: left;
+	font-size: 14px;
+	height: 25px;
+	padding: 0px 105px 0px 8px;
+	text-overflow: ellipsis;
+	width: 100%;
+	&:focus {
+		outline: 0 none;
+	}
 }
 .websocket_input-btn {
-  -webkit-appearance: none;
-  width: 100px;
-  float: right;
-  margin-top: -25px;
-  margin-right:0px; 
-  height: 25px;
-  border-radius: 12px;
-  border: 1px solid #ebeff2;
-  color : white;
-  background-color: #46494c;
-  cursor: pointer;
-  outline: 0 none;
-  &:hover {
-    background-color: #0089D0;
-  }
-  &:active {
-    outline: 0 none;
-  }
+	-webkit-appearance: none;
+	background-color: #46494c;
+	border: 1px solid #ebeff2;
+	border-radius: 12px;
+	color: white;
+	cursor: pointer;
+	float: right;
+	height: 25px;
+	margin-right: 0px;
+	margin-top: -25px;
+	outline: 0 none;
+	width: 100px;
+	&:hover {
+		background-color: #0089D0;
+	}
+	&:active {
+		outline: 0 none;
+	}
 }
-
 .websocket_message_container {
-  border-top: 1px solid #ebeff2;
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-  overflow: scroll;
-  max-height: 500px;
-  height: auto;
-  width: 100%;
-  flex-wrap: nowrap;
-  // align-items: flex-start;
+	border-top: 1px solid #ebeff2;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	height: auto;
+	margin-top: 5px;
+	max-height: 500px;
+	overflow: scroll;
+	width: 100%;
 }
 .websocket_message {
-  border-radius: 12px;
-  border: 1px solid #ebeff2;
-  height: 25px;
-  margin-top: 3px;
-  display: flex;
-  // align-content: center;
-  align-items: center;
-  overflow: hidden;
-  width: auto;
-  color: white;
-  flex-shrink: 0;
+	align-items: center;
+	border: 1px solid #ebeff2;
+	border-radius: 12px;
+	color: white;
+	display: flex;
+	flex-shrink: 0;
+	height: 25px;
+	margin-top: 3px;
+	overflow: hidden;
+	width: auto;
 }
 .websocket_message-server {
-  background-color: #9d9d9d;
-  align-self: flex-start;
+	align-self: flex-start;
+	background-color: #9d9d9d;
 }
 .websocket_message-client {
-  background-color: rgb(0,137,208);
-  align-self: flex-end;
+	align-self: flex-end;
+	background-color: rgb(0,137,208);
 }
-
 .websocket_message-data {
-  // background-color: red;
-  height: 25px;
-  font-size: 14px;
-  max-width: 300px;
-  padding: 0px 8px;
-  padding-top: 5px;
-  border-right: 1px solid #b6b6b6;
-  overflow-wrap: break-word;
-  // text-overflow: ellipsis;
-  overflow: scroll;
+	border-right: 1px solid #b6b6b6;
+	font-size: 14px;
+	height: 25px;
+	max-width: 300px;
+	overflow: scroll;
+	overflow-wrap: break-word;
+	padding: 0px 8px;
+	padding-top: 5px;
 }
-
 .websocket_message-time {
-  // background-color: orange;
-  text-align: center;
-  font-size: 14px;
-  width: 50px;
-  padding: 0px 8px;
+	font-size: 14px;
+	padding: 0px 8px;
+	text-align: center;
+	width: 50px;
 }
