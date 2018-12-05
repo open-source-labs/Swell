@@ -1,16 +1,13 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
-
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { xcode } from 'react-syntax-highlighter/styles/hljs';
 import pretty from 'pretty';
-import * as actions from "../../actions/actions";
-
-import Tab from "./Tab.jsx";
-import SSERow from "./SSERow.jsx";
-import ResponsePlain from "./ResponsePlain.jsx";
-import CookieTable from "./CookieTable.jsx";
+import * as actions from '../../actions/actions';
+import Tab from './Tab.jsx';
+import SSERow from './SSERow.jsx';
+import ResponsePlain from './ResponsePlain.jsx';
+import CookieTable from './CookieTable.jsx';
 
 const mapStateToProps = store => ({ store });
 const mapDispatchToProps = dispatch => ({});
@@ -19,28 +16,28 @@ class ResponseTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openTabs: ""
+      openTabs: ''
     };
     this.handleTabSelect = this.handleTabSelect.bind(this);
   }
 
   componentDidMount() {
-    this.handleTabSelect("Response Events");
+    this.handleTabSelect('Response Events');
   }
 
   handleTabSelect(val) {
     switch (val) {
-      case "Response Cookies":
+      case 'Response Cookies':
         this.setState({
           openTabs: val,
         });
         break;
-      case "Response Headers":
+      case 'Response Headers':
         this.setState({
           openTabs: val,
         });
         break;
-      case "Response Events":
+      case 'Response Events':
         this.setState({
           openTabs: val,
         });
@@ -67,28 +64,32 @@ class ResponseTabs extends Component {
       const responseHeaders = cur.responseContent.headers;
       const responseCookies = cur.responseContent.cookies;
       if (responseHeaders) {
-        const responseContentType = responseHeaders["content-type"];
+        const responseContentType = responseHeaders['content-type'];
         const tabState = this.state.openTabs;
 
         // Step 3  - Check content type of each response Update to use includes
-        if (tabState === "Response Events") {
-          if (responseContentType && responseContentType.includes("text/event-stream")) {
+        if (tabState === 'Response Events') {
+          if (responseContentType && responseContentType.includes('text/event-stream')) {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
             });
-          } else {
+          }
+          else {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
-                <div><SyntaxHighlighter language='javascript' style={xcode}>
-                {pretty(cur, {ocd: false})}</SyntaxHighlighter></div>
+                <div>
+                  <SyntaxHighlighter language="javascript" style={xcode}>
+                    {pretty(cur, { ocd: false })}
+                  </SyntaxHighlighter>
+                </div>
               );
             });
           }
-        } else if (tabState === "Response Headers") {
+        }
+        else if (tabState === 'Response Headers') {
           const headerObj = this.props.responseContent.headers;
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
-              // Fail safe for for in loop
               if (!Array.isArray(cur)) {
                 tabContentShownEvents.push(
                   <div className="nested-grid-2" key={key}>
@@ -96,21 +97,22 @@ class ResponseTabs extends Component {
                     <span className="tertiary-title title_offset">
                       {headerObj[key]}
                     </span>
-                  </div>
+                  </div>,
                 );
-              } else {
-                console.log("Header Object was incorrect");
+              }
+              else {
+                console.log('Header Object was incorrect');
               }
             }
           }
-        } else if (this.state.openTabs === "Response Cookies") {
-          console.log("cookies showing", this.props.responseContent.cookies);
+        }
+        else if (this.state.openTabs === 'Response Cookies') {
           tabContentShownEvents.push(
             <CookieTable
               className="cookieTable"
               cookies={this.props.responseContent.cookies}
               key="{cookieTable}"
-            />
+            />,
           );
         }
       }
@@ -129,7 +131,4 @@ class ResponseTabs extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ResponseTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(ResponseTabs);
