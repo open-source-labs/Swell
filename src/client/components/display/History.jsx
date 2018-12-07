@@ -77,7 +77,6 @@ class History extends Component {
 
 
   render() {
-    // let trashcan = path.join('file://'+'../../../' + __dirname + '/assets/icons/Trashcan.png');
     return(
       <div className={'history-container'} >
         <div className={'history-text-container'} onClick={this.addHistoryToNewRequest}> 

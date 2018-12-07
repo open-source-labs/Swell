@@ -102,7 +102,7 @@ function createWindow() {
     show: false,
     title: 'Swell',
     webPreferences: { webSecurity: false },
-    icon: `${__dirname}/src/assets/icons/png/64x64.png`
+    icon: `${__dirname}/src/assets/icons/64x64.png`
   })
 
   if (dev) {

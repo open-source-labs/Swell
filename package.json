@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/getswell/getswell",
@@ -11,11 +11,15 @@
     "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
-    "gh-publish": "electron-builder build --x64 --mac -p always"
+    "package-all": "electron-builder  build -mwl",
+    "package-linux": "electron-builder build --linux",
+    "gh-publish-mac": "electron-builder build --x64 --mac -p always",
+    "gh-publish": "electron-builder build -mwl -p always"
+
   },
   "author": {
     "name": "Swell",
-    "email": "getswellio@gmail.com",
+    "email": "swell@getswell.io",
     "url": "http://www.getswell.io"
   },
   "contributors": [
@@ -71,12 +75,12 @@
       "target": [
         "nsis",
         "msi"
-      ]
+      ],
+      "icon": "icon.ico"
     },
     "linux": {
       "target": [
         "deb",
-        "rpm",
         "snap",
         "AppImage"
       ],
@@ -94,7 +98,7 @@
     }
   },
   "license": "MIT",
-  "homepage": "http://www.getswell.com",
+  "homepage": "http://www.getswell.io",
   "dependencies": {
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
@@ -114,6 +118,7 @@
     "react-redux": "^5.0.6",
     "react-syntax-highlighter": "^10.1.1",
     "redux": "^3.7.2",
+    "rpmbuild": "0.0.22",
     "status-indicator": "^1.0.9",
     "uuid": "^3.3.2",
     "ws": "^6.1.2"
