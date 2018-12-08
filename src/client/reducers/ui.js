@@ -8,7 +8,7 @@ const initialState = {
 const uiReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SHOW_MODAL: {
-      console.log('action', action);
+      // console.log('action', action);
       return {
         ...state,
         isDisplayedModal: true,
@@ -16,7 +16,7 @@ const uiReducer = (state = initialState, action) => {
     }
 
     case types.HIDE_MODAL: {
-      console.log('action', action);
+      // console.log('action', action);
       return {
         ...state,
         isDisplayedModal: false,
@@ -24,7 +24,7 @@ const uiReducer = (state = initialState, action) => {
     }
 
     case types.SET_MODAL_DISPLAY: {
-      console.log('action', action);
+      // console.log('action', action);
       return {
         ...state,
         modalDisplay: action.payload,

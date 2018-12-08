@@ -23,14 +23,14 @@ client.on('connect', () => {
   req1.on('response', (headers, flags) => {
     for (const name in headers) {
       if (Object.prototype.hasOwnProperty.call(headers, name)) {
-        console.log(`${name}: ${headers[name]}`);
+        // console.log(`${name}: ${headers[name]}`);
       }
     }
   });
 
   req1.setEncoding('utf8');
   req1.on('data', (chunk) => {
-    console.log(chunk);
+    // console.log(chunk);
   });
   // req1.on('end', () => {
   //   client.close();
@@ -51,14 +51,14 @@ client.on('connect', () => {
   req2.on('response', (headers, flags) => {
     for (const name in headers) {
       if (Object.prototype.hasOwnProperty.call(headers, name)) {
-        console.log(`${name}: ${headers[name]}`);
+        // console.log(`${name}: ${headers[name]}`);
       }
     }
   });
 
   req2.setEncoding('utf8');
   req2.on('data', (chunk) => {
-    console.log(chunk);
+    // console.log(chunk);
   });
   // req2.on('end', () => {
   //   client.close();
