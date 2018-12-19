@@ -13,14 +13,12 @@ class Tab extends Component {
   }
 
   tabClickHandler () {
-    console.log('TabClick')
     let selectedTab = this.props.tabName;
-    console.log(selectedTab);
     this.props.onTabSelected(selectedTab);            
   }
 
   render() {
-    return(
+    return (
       <li onClick={this.tabClickHandler} className={'tab-list-item'}>{this.props.tabName}</li>
     )
   }

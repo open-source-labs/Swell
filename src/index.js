@@ -7,7 +7,7 @@ import store from './client/store';
 const fs = require('fs');
 
 const fsroot = fs.readdirSync('/');
-console.log(fsroot);
+// console.log(fsroot);
 
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template,
