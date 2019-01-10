@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Request from './Request.jsx';
 import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
 import WebSocketWindow from './WebSocketWindow.jsx';
 import connectionController from '../../controllers/connectionController';
+import RequestTabs from './RequestTabs.jsx';
 
 import * as actions from '../../actions/actions';
 
@@ -47,59 +47,61 @@ class ReqRes extends Component {
         incomingMessages={this.props.content.response.messages}
         id={this.props.content.id}
         connection={this.props.content.connection} />)
-    } else {
-      contentBody.push(<Request content={this.props.content.request} key={0} />);
+    }
+    else {
+      contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
       }
     }
 
-    let openButtonStyles = {
+    const openButtonStyles = {
       display: (this.props.content.connection === 'uninitialized' || this.props.content.connection === 'closed' || this.props.content.connection === 'error') ? 'block' : 'none',
-    }
-    let closeButtonStyles = {
+    };
+
+    const closeButtonStyles = {
       display: (this.props.content.connection === 'pending' || this.props.content.connection === 'open') ? 'block' : 'none',
-    }
-    let errorStyles = {
-      'display': this.props.content.connection === 'error' ? 'block' : 'none',
-      'color': 'red',
-    }
-    let http2Display = {
-      'display': this.props.content.isHTTP2 ? 'block' : 'none',
-    }
+    };
+
+    const errorStyles = {
+      display: this.props.content.connection === 'error' ? 'block' : 'none',
+      color: 'red',
+    };
+
+    const http2Display = {
+      display: this.props.content.isHTTP2 ? 'block' : 'none',
+    };
 
     let statusLight;
-    let itmArr = ['itmOne', 'itmTwo', 'itmThree', 'itmFour', 'itmFive', 'itmSix'];
-    let num = document.querySelectorAll('.resreq_wrap').length;
+    const itmArr = ['itmOne', 'itmTwo', 'itmThree', 'itmFour', 'itmFive', 'itmSix'];
+    const num = document.querySelectorAll('.resreq_wrap').length;
 
     switch (this.props.content.connection) {
       case 'uninitialized':
         statusLight = <status-indicator></status-indicator>;
         break;
       case 'pending':
-        statusLight = <status-indicator intermediary pulse></status-indicator>;
+        statusLight = <status-indicator intermediary pulse />;
         break;
       case 'open':
-        statusLight = <status-indicator positive pulse></status-indicator>;
+        statusLight = <status-indicator positive pulse />;
         break;
       case 'closed':
-        statusLight = <status-indicator negative></status-indicator>;
+        statusLight = <status-indicator negative />;
         break;
       case 'error':
-        statusLight = <status-indicator negative></status-indicator>;
+        statusLight = <status-indicator negative />;
         break;
       default:
         console.log('not a valid connection for content object');
     }
 
     return (
-      <div className={"resreq_wrap"} id={this.props.content.id}>
-        {/* ReqRes */}
-
+      <div className="resreq_wrap" id={this.props.content.id}>
         <div className="title-row">
           <div>
-            <span className={'primary-title title-offset_top highlighter title_reverse-offset'}>{this.props.content.request.method}</span>
-            <span className={'primary-title title-offset_top'}> {this.props.content.url}</span></div>
+            <span className="primary-title title-offset_top highlighter title_reverse-offset">{this.props.content.request.method}</span>
+            <span className="primary-title title-offset_top">{this.props.content.url}</span></div>
         </div>
 
         <div className="nested-grid-6">
@@ -114,12 +116,12 @@ class ReqRes extends Component {
             />
           </div>
 
-          <div className={'btn-sm'}>
+          <div className="btn-sm">
             <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
             <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
           </div>
-          <div className={'btn-sm '}>
-            <button className={'btn resreq_remove'} onClick={this.removeReqRes}>Remove</button>
+          <div className="btn-sm">
+            <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
           </div>
           <div>{statusLight}</div>
           <div>
@@ -137,7 +139,7 @@ class ReqRes extends Component {
           HTTP2 connection: Requests with the same host will share a single HTTP2 connection.
         </div>
 
-        <div style={errorStyles} className='networkerror'>There was a network error in connecting to endpoint.</div>
+        <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
         {contentBody}
       </div>
     );

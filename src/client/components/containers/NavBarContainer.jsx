@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import SelectAllBtn from '../display/SelectAllBtn.jsx';
-import DeselectAllBtn from '../display/DeselectAllBtn.jsx';
-import OpenAllBtn from '../display/OpenAllBtn.jsx';
-import CloseAllBtn from '../display/CloseAllBtn.jsx';
-import ClearBtn from '../display/ClearBtn.jsx';
+import ReqResCtrl from '../../controllers/connectionController.js';
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -14,11 +10,25 @@ class NavBarContainer extends Component {
     return (
       <div className="navbar-console">
         <div className="navbar-console_inner">
-          <SelectAllBtn />
-          <DeselectAllBtn />
-          <OpenAllBtn />
-          <CloseAllBtn />
-          <ClearBtn />
+          <button className="btn" type="button" onClick={ReqResCtrl.selectAllResReq}>
+            Select All
+          </button>
+
+          <button className="btn" type="button" onClick={(e) => {ReqResCtrl.deselectAllResReq(e)}}>
+            Deselect All
+          </button>
+
+          <button className="btn" type="button" onClick={ReqResCtrl.openAllSelectedReqRes}>
+            Open Selected
+          </button>
+
+          <button className="btn" type="button" onClick={ReqResCtrl.closeAllReqRes}>
+            Close Selected
+          </button>
+
+          <button className="btn" type="button" onClick={ReqResCtrl.clearAllReqRes}>
+            Clear All
+          </button>
         </div>
       </div>
     );

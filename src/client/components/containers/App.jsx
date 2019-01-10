@@ -28,8 +28,8 @@ class App extends Component {
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
     ipcRenderer.on('message', (e, text) => {
-      console.log('Message from updater: ', text)
-    })
+      // console.log('Message from updater: ', text)
+    });
     dbController.getHistory();
   }
 
