@@ -33,8 +33,6 @@ const initialState = {
 const businessReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_HISTORY: {
-      console.log('action', action);
-
       return {
         ...state,
 
@@ -44,8 +42,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.DELETE_HISTORY: {
-      console.log('action', action);
-
       const deleteId = action.payload.id;
       const deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
@@ -64,7 +60,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_CLEAR: {
-      console.log('action', action);
       return {
         ...state,
         reqResArray: [],
@@ -72,8 +67,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_ADD: {
-      console.log('action', action);
-
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
 
@@ -103,8 +96,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_DELETE: {
-      console.log('action', action);
-
       const deleteId = action.payload.id;
       const newReqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       newReqResArray.filter(reqRes => reqRes.id !== deleteId)
@@ -116,10 +107,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_UPDATE:{
-      console.log('action',action);
-      console.log('action payload', action.payload)
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
-
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
         if (reqRes.id === action.payload.id) {
@@ -138,7 +126,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_WARNING_MODAL_MESSAGE: {
-      console.log('action', action);
       return {
         ...state,
         warningModalMessage : action.payload
@@ -146,7 +133,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_FIELDS:{
-      // console.log('action',action);
       return {
         ...state,
         newRequestFields : action.payload,
@@ -154,7 +140,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_HEADERS: {
-      console.log('action', action);
       return {
         ...state,
         newRequestHeaders: action.payload,
@@ -162,8 +147,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_BODY: {
-      console.log('action', action);
-
       return {
         ...state,
         newRequestBody: action.payload,
@@ -171,8 +154,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_COOKIES: {
-      console.log('action', action);
-
       return {
         ...state,
         newRequestCookies: action.payload,
@@ -180,7 +161,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_CURRENT_TAB: {
-      console.log('action', action);
       return {
         ...state,
         currentTab : action.payload,
