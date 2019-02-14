@@ -128,7 +128,7 @@ const businessReducer = (state = initialState, action) => {
       });
 
       if (indexToBeUpdated !== undefined) {
-        reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload)));
+        reqResDeepCopy.splice(indexToBeUpdated, 1, action.payload);
       }
 
       return {
@@ -149,7 +149,7 @@ const businessReducer = (state = initialState, action) => {
       // console.log('action',action);
       return {
         ...state,
-        newRequestFields : JSON.parse(JSON.stringify(action.payload)),
+        newRequestFields : action.payload,
       }
     }
 
@@ -157,7 +157,7 @@ const businessReducer = (state = initialState, action) => {
       console.log('action', action);
       return {
         ...state,
-        newRequestHeaders: JSON.parse(JSON.stringify(action.payload)),
+        newRequestHeaders: action.payload,
       };
     }
 
@@ -166,7 +166,7 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        newRequestBody: JSON.parse(JSON.stringify(action.payload)),
+        newRequestBody: action.payload,
       };
     }
 
@@ -175,7 +175,7 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        newRequestCookies: JSON.parse(JSON.stringify(action.payload)),
+        newRequestCookies: action.payload,
       };
     }
 
