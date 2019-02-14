@@ -97,8 +97,7 @@ const businessReducer = (state = initialState, action) => {
 
     case types.REQRES_DELETE: {
       const deleteId = action.payload.id;
-      const newReqResArray = JSON.parse(JSON.stringify(state.reqResArray));
-      newReqResArray.filter(reqRes => reqRes.id !== deleteId)
+      const newReqResArray = state.reqResArray.filter(reqRes => reqRes.id !== deleteId)
 
       return {
         ...state,
@@ -140,6 +139,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_HEADERS: {
+      console.log('setNewReqHeads', action)
       return {
         ...state,
         newRequestHeaders: action.payload,

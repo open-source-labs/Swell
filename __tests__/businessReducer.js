@@ -1,4 +1,4 @@
-import subject from '../src/client/reducers/business';
+import reducer from '../src/client/reducers/business';
 
 describe ('Business reducer', () => {
   let state;
@@ -33,16 +33,31 @@ describe ('Business reducer', () => {
 
   describe('default state', () => {
     it('should return a default state when given an undefined input', () => {
-      expect(subject(undefined, { type: undefined })).toEqual(state);
+      expect(reducer(undefined, { type: undefined })).toEqual(state);
     });
   });
 
   describe('unrecognized action types', () => {
     it('should return the original without any duplication', () => {
       const action = { type: 'aajsbicawlbejckr' };
-      expect(subject(state, action)).toBe(state);
+      expect(reducer(state, action)).toBe(state);
     });
   });
+
+  describe('SET_NEW_REQUEST_FIELDS', () => {
+    const action = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method : 'POST',
+        protocol : 'https://',
+        url : 'https://www.fakesite.com',
+      }
+    }
+    it('sets the newRequestFields', () => {
+      const { newRequestFields } = reducer(state, action);
+      expect(newRequestFields).toEqual(action.payload);
+    })
+  })
 
 
 })
