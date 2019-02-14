@@ -106,12 +106,12 @@ const businessReducer = (state = initialState, action) => {
       console.log('action', action);
 
       const deleteId = action.payload.id;
+      const newReqResArray = JSON.parse(JSON.stringify(state.reqResArray));
+      newReqResArray.filter(reqRes => reqRes.id !== deleteId)
 
       return {
         ...state,
-        reqResArray : state.reqResArray.filter(reqRes => {
-          return reqRes.id !== deleteId;
-        })
+        reqResArray : newReqResArray
       }
     }
 
