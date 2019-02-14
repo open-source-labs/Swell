@@ -5,6 +5,7 @@
   "main": "main.js",
   "repository": "https://github.com/getswell/getswell",
   "scripts": {
+    "test": "jest",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "webpack --config webpack.build.config.js --mode production",
@@ -15,7 +16,6 @@
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always"
-
   },
   "author": {
     "name": "Swell",
@@ -142,6 +142,7 @@
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.1.0",
     "mini-css-extract-plugin": "^0.4.4",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
