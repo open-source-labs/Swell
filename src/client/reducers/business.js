@@ -1,7 +1,7 @@
 import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
-import db from '../db';
-import dbController from '../controllers/dbController';
+// import db from '../db';
+// import dbController from '../controllers/dbController';
 
 
 const initialState = { 
