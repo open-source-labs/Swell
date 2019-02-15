@@ -26,7 +26,6 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props);
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     this.addHeader(headersDeepCopy);
   }
@@ -35,8 +34,10 @@ class HeaderEntryForm extends Component {
     if (this.props.newRequestHeaders.headersArr.length === 0) {
       const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
       this.addHeader(headersDeepCopy);
+    } 
+    if (this.props.newRequestBody.bodyType !== 'none') { 
+      this.checkContentTypeHeaderUpdate();
     }
-    this.checkContentTypeHeaderUpdate();
   }
 
   checkContentTypeHeaderUpdate() {
