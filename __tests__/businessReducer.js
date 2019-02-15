@@ -59,5 +59,21 @@ describe ('Business reducer', () => {
     })
   })
 
+  describe('SET_NEW_REQUEST_HEADERS', () => {
+    const action = {
+      type: 'SET_NEW_REQUEST_HEADERS',
+      payload: {
+        active: true,
+        key: 'content-type',
+        value: 'application/json'
+      }
+    }
+
+    it('sets new requestHeaders', () => {
+      const { newRequestHeaders } = reducer(state, action);
+      expect(newRequestHeaders).toEqual(action.payload);
+    })
+  })
+
 
 })
