@@ -44,6 +44,85 @@ describe ('Business reducer', () => {
     });
   });
 
+  describe('GET_HISTORY', () => {
+    const fakeHistory = [
+      { 
+        date: "02/15/2019", 
+        history: [
+          { id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e', created_at: '2019-02-15T21:40:44.132Z' },
+          { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' }
+        ]
+      },
+      { 
+        date: "02/14/2019", 
+        history: [
+          { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
+          { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
+        ]
+      }
+    ];
+    
+    const action = {
+      type: 'GET_HISTORY',
+      payload: fakeHistory
+    }
+
+    it('should update history in state', () => {
+      const { reqResArray, history } = reducer(state, action)
+      expect(reqResArray).toEqual([]);
+      expect(history).toEqual(fakeHistory);
+    })
+  })
+
+  describe('DELETE_HISTORY', () => {
+    const fakeHistory = [
+        { 
+          date: "02/15/2019", 
+          history: [
+            { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' }
+          ]
+        },
+        { 
+          date: "02/14/2019", 
+          history: [
+            { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
+            { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
+          ]
+        }
+      ];
+
+    beforeEach(() => {
+      state.history = fakeHistory;
+    })
+  
+
+    it('should delete the proper history', () => {
+
+      const action = {
+        type: 'DELETE_HISTORY',
+        payload: { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' }
+      }
+
+      const { history } = reducer(state, action);
+      expect(history).not.toBe(fakeHistory);
+      expect(history[1].history.length).toEqual(1);
+      expect(history[1].history[0].id).toBe('577eab93-e707-4dc0-af45-7adcc78807fa');
+    })
+
+    it('should remove date array if empty', () => {
+
+      const action = {
+        type: 'DELETE_HISTORY',
+        payload: { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' }
+      }
+      const initialHistory = state.history;
+      const { history } = reducer(state, action);
+      expect(history).not.toBe(initialHistory);
+      expect(initialHistory.length).toBe(2);
+      expect(history.length).toBe(1);
+    })
+  })
+
   describe('SET_NEW_REQUEST_FIELDS', () => {
     const action = {
       type: 'SET_NEW_REQUEST_FIELDS',
