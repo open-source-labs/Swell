@@ -75,5 +75,39 @@ describe ('Business reducer', () => {
     })
   })
 
+  describe('SET_NEW_REQUEST_BODY', () => {
+    const action = {
+      type: 'SET_NEW_REQUEST_BODY',
+      payload: {
+        bodyContent: '{ "key": "value"}',
+        bodyType: 'raw',
+        rawType: 'application/json',
+        JSONFormatted: true
+      }
+    }
+
+    it('sets new requestBody', () => {
+      const { newRequestBody } = reducer(state, action);
+      expect(newRequestBody).toEqual(action.payload);
+      expect(typeof newRequestBody.bodyContent).toBe('string');
+      expect(typeof newRequestBody.JSONFormatted).toBe('boolean');
+    })
+  })
+
+  describe('SET_NEW_REQUEST_COOKIES', () => {
+    const action = {
+      type: 'SET_NEW_REQUEST_COOKIES',
+      payload: {
+        key: 'admin',
+        value: 'password'
+      }
+    }
+
+    it('sets new requestCookies', () => {
+      const { newRequestCookies } = reducer(state, action);
+      expect(newRequestCookies).toEqual(action.payload);
+    })
+  })
+
 
 })
