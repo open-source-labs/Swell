@@ -139,7 +139,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_HEADERS: {
-      console.log('setNewReqHeads', action)
       return {
         ...state,
         newRequestHeaders: action.payload,

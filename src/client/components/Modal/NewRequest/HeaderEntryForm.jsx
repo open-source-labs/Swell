@@ -118,8 +118,6 @@ class HeaderEntryForm extends Component {
       value: '',
     });
 
-    // console.log(headersDeepCopy);
-
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
       override: false,
