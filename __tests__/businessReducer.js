@@ -224,14 +224,29 @@ describe ('Business reducer', () => {
       }
     }
 
-
-    it('should delete a reqRes from reqResArray', () => {
+    it('should update a reqRes from reqResArray', () => {
       const initialReqResArray = state.reqResArray;
       state.reqResArray = fakeReqResArray;
       const { reqResArray } = reducer(state, action);
       expect(reqResArray).not.toBe(initialReqResArray);
       expect(reqResArray.length).toEqual(3);
-      expect(reqResArray[1]).toEqual(action.payload);
+      expect(reqResArray[1]).toEqual(action.payload)
+      expect(reqResArray[0]).toEqual(fakeReqResArray[0]);
+      expect(reqResArray[2]).toEqual(fakeReqResArray[2]);
+    })
+  })
+
+  describe('SET_WARNING_MODAL_MESSAGE', () => {
+    const action = {
+      type: 'SET_WARNING_MODAL_MESSAGE',
+      payload: 'WARNING!  TESTING IN PROGRESS!'
+    }
+
+    it('should update the warningModalMessage', () => {
+      const initialMessage = state.warningModalMessage;
+      const { warningModalMessage } = reducer(state, action);
+      expect(warningModalMessage).not.toEqual(initialMessage);
+      expect(warningModalMessage).toEqual(action.payload);
     })
   })
 
