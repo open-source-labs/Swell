@@ -315,5 +315,16 @@ describe ('Business reducer', () => {
     })
   })
 
+  describe('SET_CURRENT_TAB', () => {
+    const action = {
+      type: 'SET_CURRENT_TAB',
+      payload: 'Second Tab'
+    }
 
+    it('should update currentTab', () => {
+      const { currentTab } = reducer(state, action);
+      expect(currentTab).toEqual(action.payload);
+    })
+  })
+  
 })
