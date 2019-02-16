@@ -123,6 +123,68 @@ describe ('Business reducer', () => {
     })
   })
 
+  describe('REQRES_CLEAR', () => {
+    const action = {
+      type: 'REQRES_CLEAR'
+    }
+
+    it('should empth the reqResArray', () => {
+      const initialReqResArray = [ { first: 1} , { second: 2 } ]
+      state.reqResArray = initialReqResArray;
+      expect(state.reqResArray).toBe(initialReqResArray);
+      const { reqResArray } = reducer(state, action);
+      expect(reqResArray).not.toBe(initialReqResArray);
+      expect(reqResArray).toEqual([]);
+    })
+  })
+
+  describe('REQRES_ADD', () => {
+    const fakeReqRes1 = { 
+      id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e',
+      created_at: '2019-02-15T21:40:44.132Z',
+      protocol: 'http://',
+      request: {method: 'POST', body: 'I am a request body'},
+      response: {}
+    }
+
+    const fakeReqRes2 = { 
+      id: 'c8d73eec-e383-4735-943a-20deab42ecff',
+      created_at: '2019-02-16T20:52:35.990Z',
+      protocol: 'http://',
+      request: {method: 'POST', body: 'I am a newer request body'},
+      response: {}
+    }
+
+    const action1 = {
+      type: 'REQRES_ADD',
+      payload: fakeReqRes1
+    }
+
+    const action2 = {
+      type: 'REQRES_ADD',
+      payload: fakeReqRes2
+    }
+
+    it('should add the reqRes to reqResArray', () => {
+      const initialReqResArray = state.reqResArray;
+      const { reqResArray } = reducer(state, action1);
+      expect(reqResArray).not.toEqual(initialReqResArray);
+      expect(reqResArray.length).toEqual(1);
+      expect(reqResArray[0]).toEqual(fakeReqRes1);
+      expect(reqResArray[0].request.body).toEqual('I am a request body')
+    })
+
+    it('should add the reqRes to the history', () => {
+      const firstState = reducer(state, action1);
+      expect(firstState.history.length).toEqual(1);
+      const { history } = reducer(firstState, action2);
+      expect(history.length).toEqual(2);
+      expect(history[0].date).toEqual('02/16/2019');
+      expect(history[1].date).toEqual('02/15/2019');
+    })
+
+  })
+
   describe('SET_NEW_REQUEST_FIELDS', () => {
     const action = {
       type: 'SET_NEW_REQUEST_FIELDS',
