@@ -185,6 +185,29 @@ describe ('Business reducer', () => {
 
   })
 
+  describe('REQRES_DELETE', () => {
+    const fakeReqResArray = [
+      { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' },
+      { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
+      { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
+    ];
+
+    const action = {
+      type: 'REQRES_DELETE',
+      payload: fakeReqResArray[1]
+    }
+
+
+    it('should delete a reqRes from reqResArray', () => {
+      const initialReqResArray = state.reqResArray;
+      state.reqResArray = fakeReqResArray;
+      const { reqResArray } = reducer(state, action);
+      expect(reqResArray).not.toBe(initialReqResArray);
+      expect(reqResArray.length).toEqual(2);
+      expect(reqResArray[1]).toEqual(fakeReqResArray[2]);
+    })
+  })
+
   describe('SET_NEW_REQUEST_FIELDS', () => {
     const action = {
       type: 'SET_NEW_REQUEST_FIELDS',
