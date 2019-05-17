@@ -1,0 +1,38 @@
+.primary-title {
+	font-size: .9rem;
+	font-weight: 600;
+	line-height: normal;
+	vertical-align: middle;
+}
+.secondary-title {
+	font-size: .8rem;
+	font-weight: 300;
+	line-height: normal;
+	vertical-align: middle;
+}
+.tertiary-title {
+	font-size: .7rem;
+	font-weight: 500;
+	line-height: 30px;
+	margin: 0;
+	padding: 0;
+}
+.title-offset_top {
+	margin-top: -3px;
+}
+.highlighter {
+	background: $darkgraygreen;
+	color: white;
+	display: inline-block;
+	padding: 8px 15px;
+	width: auto;
+}
+.title_offset {
+	border-right: 1px solid $bordergray;
+	padding-left: 15px;
+}
+.title_reverse-offset {
+	border-radius: 8px 0 0 0;
+	margin-left: -15px;
+	margin-right: 20px;
+}

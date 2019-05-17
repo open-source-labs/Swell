@@ -24,7 +24,7 @@ const tbSelectAllButton = new TouchBarButton({
   label: 'Select All',
   backgroundColor: '#3DADC2',
   click: () => {
-    console.log('select all');
+    // console.log('select all');
     mainWindow.webContents.send('selectAll');
   },
 });
@@ -33,7 +33,7 @@ const tbDeselectAllButton = new TouchBarButton({
   label: 'Deselect All',
   backgroundColor: '#3DADC2',
   click: () => {
-    console.log('deselect all');
+    // console.log('deselect all');
     mainWindow.webContents.send('deselectAll');
   },
 });
@@ -42,7 +42,7 @@ const tbOpenSelectedButton = new TouchBarButton({
   label: 'Open Selected',
   backgroundColor: '#00E28B',
   click: () => {
-    console.log('opening all selected');
+    // console.log('opening all selected');
     mainWindow.webContents.send('openAllSelected');
   },
 });
@@ -51,7 +51,7 @@ const tbCloseSelectedButton = new TouchBarButton({
   label: 'Close Selected',
   backgroundColor: '#DB5D58',
   click: () => {
-    console.log('closing all selected');
+    // console.log('closing all selected');
     mainWindow.webContents.send('closeAllSelected');
   },
 });
@@ -60,7 +60,7 @@ const tbClearAllButton = new TouchBarButton({
   label: 'Clear All',
   backgroundColor: '#708090',
   click: () => {
-    console.log('clearing all');
+    // console.log('clearing all');
     mainWindow.webContents.send('clearAll');
   },
 });
@@ -102,7 +102,7 @@ function createWindow() {
     show: false,
     title: 'Swell',
     webPreferences: { webSecurity: false },
-    icon: `${__dirname}/src/assets/icons/png/64x64.png`
+    icon: `${__dirname}/src/assets/icons/64x64.png`
   })
 
   if (dev) {
@@ -145,7 +145,7 @@ function createWindow() {
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.show();
 
     // Open the DevTools automatically if developing
     if (dev) {

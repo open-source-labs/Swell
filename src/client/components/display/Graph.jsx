@@ -191,7 +191,7 @@ class Graph extends Component {
                 });
               }
             });
-            console.log(dataSet.data)
+            // console.log(dataSet.data)
             break;
           }
 

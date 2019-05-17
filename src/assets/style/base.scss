@@ -1,28 +1,23 @@
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
-
 html {
-  background-color: white;
-  overflow: hidden;
+	background-color: white;
+	overflow: hidden;
 }
-
 body {
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
-    color: $liteblack;
-  }
-
-
-.header_entry-form {
-    width: 100%;
+	align-items: center;
+	color: $liteblack;
+	display: flex;
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	height: 100vh;
+	justify-content: center;
+	margin: 0;
+	width: 100vw;
 }
-  
+.header_entry-form {
+	width: 100%;
+}
 .header_entry-form input {
-    width: 100%;
+	width: 100%;
 }

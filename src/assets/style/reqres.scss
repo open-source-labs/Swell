@@ -19,7 +19,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   white-space: nowrap;
-  /* display: flex; */
   transition: transform 0.3s ease-in-out;
 }
 
@@ -246,6 +245,64 @@
   --status-indicator-color-negative-transparent: rgba(255, 77, 77, 0);
 }
 
+
+status-indicator {
+  display: inline-block;
+  border-radius: 50%;
+  cursor: pointer;
+  width: var(--status-indicator-size);
+  height: var(--status-indicator-size);
+  background-color: var(--status-indicator-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+status-indicator[pulse] {
+  animation-name: status-indicator-pulse;
+  animation-duration: var(--status-indicator-animation-duration);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-delay: 0;
+  animation-fill-mode: none;
+}
+
+status-indicator[active] {
+  background-color: var(--status-indicator-color-active);
+}
+
+status-indicator[active][pulse] {
+  animation-name: status-indicator-pulse-active;
+}
+
+status-indicator[positive] {
+  background-color: var(--status-indicator-color-positive);
+  animation-name: status-indicator-pulse-positive;
+}
+
+status-indicator[positive][pulse] {
+  animation-name: status-indicator-pulse-positive;
+}
+
+status-indicator[intermediary] {
+  background-color: var(--status-indicator-color-intermediary);
+}
+
+status-indicator[intermediary][pulse] {
+  animation-name: status-indicator-pulse-intermediary;
+}
+
+status-indicator[negative] {
+  background-color: var(--status-indicator-color-negative);
+  animation-name: status-indicator-pulse-negative;
+}
+
+status-indicator[negative][pulse] {
+  animation-name: status-indicator-pulse-negative;
+}
+
 @keyframes status-indicator-pulse {
   0% {
     box-shadow: 0 0 0 0 var(--status-indicator-color-semi);
@@ -309,61 +366,4 @@
   100% {
     box-shadow: 0 0 0 0 var(--status-indicator-color-negative-transparent);
   }
-}
-
-status-indicator {
-  display: inline-block;
-  border-radius: 50%;
-  cursor: pointer;
-  width: var(--status-indicator-size);
-  height: var(--status-indicator-size);
-  background-color: var(--status-indicator-color);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-status-indicator[pulse] {
-  animation-name: status-indicator-pulse;
-  animation-duration: var(--status-indicator-animation-duration);
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
-  animation-delay: 0;
-  animation-fill-mode: none;
-}
-
-status-indicator[active] {
-  background-color: var(--status-indicator-color-active);
-}
-
-status-indicator[active][pulse] {
-  animation-name: status-indicator-pulse-active;
-}
-
-status-indicator[positive] {
-  background-color: var(--status-indicator-color-positive);
-  animation-name: status-indicator-pulse-positive;
-}
-
-status-indicator[positive][pulse] {
-  animation-name: status-indicator-pulse-positive;
-}
-
-status-indicator[intermediary] {
-  background-color: var(--status-indicator-color-intermediary);
-}
-
-status-indicator[intermediary][pulse] {
-  animation-name: status-indicator-pulse-intermediary;
-}
-
-status-indicator[negative] {
-  background-color: var(--status-indicator-color-negative);
-  animation-name: status-indicator-pulse-negative;
-}
-
-status-indicator[negative][pulse] {
-  animation-name: status-indicator-pulse-negative;
 }

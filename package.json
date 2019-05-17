@@ -1,22 +1,26 @@
 {
   "name": "Swell",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/getswell/getswell",
   "scripts": {
+    "test": "jest",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "webpack --config webpack.build.config.js --mode production",
     "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
-    "gh-publish": "export GH_TOKEN=b9e252e0b0404c2d8fbe403ca2a42dbd6dd13334 && electron-builder build --x64 --mac -p always"
+    "package-all": "electron-builder  build -mwl",
+    "package-linux": "electron-builder build --linux",
+    "gh-publish-mac": "electron-builder build --x64 --mac -p always",
+    "gh-publish": "electron-builder build -mwl -p always"
   },
   "author": {
     "name": "Swell",
-    "email": "getswellio@gmail.com",
-    "url": "http://www.getswell.com"
+    "email": "swell@getswell.io",
+    "url": "http://www.getswell.io"
   },
   "contributors": [
     {
@@ -71,12 +75,12 @@
       "target": [
         "nsis",
         "msi"
-      ]
+      ],
+      "icon": "icon.ico"
     },
     "linux": {
       "target": [
         "deb",
-        "rpm",
         "snap",
         "AppImage"
       ],
@@ -94,7 +98,7 @@
     }
   },
   "license": "MIT",
-  "homepage": "http://www.getswell.com",
+  "homepage": "http://www.getswell.io",
   "dependencies": {
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
@@ -114,6 +118,7 @@
     "react-redux": "^5.0.6",
     "react-syntax-highlighter": "^10.1.1",
     "redux": "^3.7.2",
+    "rpmbuild": "0.0.22",
     "status-indicator": "^1.0.9",
     "uuid": "^3.3.2",
     "ws": "^6.1.2"
@@ -123,6 +128,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.4",
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
@@ -137,6 +143,7 @@
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.1.0",
     "mini-css-extract-plugin": "^0.4.4",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
@@ -148,6 +155,6 @@
     "style-loader": "^0.23.1",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.14"
   }
 }
