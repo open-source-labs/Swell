@@ -21,8 +21,8 @@ class App extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    ipcRenderer.on('selectAll', ReqResCtrl.selectAllResReq);
+  componentDidMount() {// This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
+    ipcRenderer.on('selectAll', ReqResCtrl.selectAllResReq); // if the selectAll touchbar button was clicked (then run this method called selectAllResReq) that is located in the connectionController...likewise for the rest
     ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllResReq);
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
