@@ -17,8 +17,8 @@ class HistoryContainer extends Component {
 
   render() {
     // console.log(this.props.history);
-    let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)) .map((date, i) => {
-      return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate>
+    let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)) .map((date, i) => { //wtf
+      return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate> //1) map through history state and create date component. 2) pass props to new component 
     })
 
     return(

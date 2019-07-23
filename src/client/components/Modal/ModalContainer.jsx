@@ -25,7 +25,7 @@ class ModalContainer extends Component {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate() {//keeping the redux store state in sync with this component's local state
     if (this.props.modalDisplay !== this.state.modalDisplay) {
       this.setState({
         modalDisplay: this.props.modalDisplay,
@@ -35,7 +35,7 @@ class ModalContainer extends Component {
 
   render() {
     let modalContents;
-    switch (this.state.modalDisplay) {
+    switch (this.state.modalDisplay) { // conditional rendering of components based on the value of modalDisplay in redux store
       case 'Request': {
         modalContents = <ModalNewRequest />;
         break;
