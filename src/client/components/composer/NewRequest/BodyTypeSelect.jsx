@@ -11,20 +11,20 @@ class BodyTypeSelect extends Component {
   render() {
     // console.log(this.props)
     let NoneStyleClasses = classNames({
-      'modal_bodytype_button' : true,
-      'modal_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'none'
+      'composer_bodytype_button' : true,
+      'composer_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'none'
     });
     let XWWWFormUrlEncodedStyleClasses = classNames({
-      'modal_bodytype_button' : true,
-      'modal_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
+      'composer_bodytype_button' : true,
+      'composer_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
     });
     let RawStyleClasses = classNames({
-      'modal_bodytype_button' : true,
-      'modal_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'raw'
+      'composer_bodytype_button' : true,
+      'composer_bodytype_button-selected' : this.props.newRequestBody.bodyType === 'raw'
     });
 
     return(
-      <div className={"modal_protocol_container"} style={{'marginTop' : '4px'}}>
+      <div className={"composer_protocol_container"} style={{'marginTop' : '4px'}}>
         <div 
           style={{'width' : '17%'}}
           className={NoneStyleClasses} 

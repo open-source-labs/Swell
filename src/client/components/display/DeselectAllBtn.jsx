@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReqResCtrl from '../../controllers/connectionController.js';
+import ReqResCtrl from '../../controllers/reqResController.js';
 
 const DeselectAllBtn = props => (
   <button
     className="btn"
     type="button"
     onClick={(e) => {
-      ReqResCtrl.deselectAllResReq(e);
+      ReqResCtrl.deselectAllReqRes(e);
     }}
   >
       Deselect All

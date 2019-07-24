@@ -10,20 +10,20 @@ class ProtocolSelect extends Component {
 
   render() {
     const HTTPStyleClasses = classNames({
-      modal_protocol_button: true,
-      'modal_protocol_button-selected': this.props.currentProtocol === 'http://',
+      composer_protocol_button: true,
+      'composer_protocol_button-selected': this.props.currentProtocol === 'http://',
     });
     const HTTPSStyleClasses = classNames({
-      modal_protocol_button: true,
-      'modal_protocol_button-selected': this.props.currentProtocol === 'https://',
+      composer_protocol_button: true,
+      'composer_protocol_button-selected': this.props.currentProtocol === 'https://',
     });
     const WSStyleClasses = classNames({
-      modal_protocol_button: true,
-      'modal_protocol_button-selected': this.props.currentProtocol === 'ws://',
+      composer_protocol_button: true,
+      'composer_protocol_button-selected': this.props.currentProtocol === 'ws://',
     });
 
     return (
-      <div className="modal_protocol_container">
+      <div className="composer_protocol_container">
         <div
           role="button"
           tabIndex={0}

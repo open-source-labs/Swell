@@ -142,7 +142,7 @@ class WWWForm extends Component {
 
     return (
       <div
-        className={'modal_headers_container-open'}
+        className={'composer_headers_container-open'}
       >
         {wwwFieldsReactArr}
       </div>

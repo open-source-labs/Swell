@@ -92,7 +92,7 @@ class ResponseTabs extends Component {
             for (const key in headerObj) {
               if (!Array.isArray(cur)) {
                 tabContentShownEvents.push(
-                  <div className="nested-grid-2" key={key}>
+                  <div className="grid-2" key={key}>
                     <span className="tertiary-title title_offset">{key}</span>
                     <span className="tertiary-title title_offset">
                       {headerObj[key]}
@@ -122,8 +122,8 @@ class ResponseTabs extends Component {
       <div>
         <ul className="tab_list-response">
           <Tab onTabSelected={this.handleTabSelect} tabName={events} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
         </ul>
         <div className="tab_content-response">{tabContentShownEvents}</div>
       </div>

@@ -74,8 +74,8 @@ class FieldEntryForm extends Component {
       <div>
         <ProtocolSelect currentProtocol={this.props.newRequestFields.protocol} onChangeHandler={this.onChangeHandler}/>
 
-        <div className={'modal_method_url_container'}>
-          <select style={HTTPMethodStyle} value={this.props.newRequestFields.method} className={'modal_method_select'} onChange={(e) => {
+        <div className={'composer_method_url_container'}>
+          <select style={HTTPMethodStyle} value={this.props.newRequestFields.method} className={'composer_method_select'} onChange={(e) => {
             this.onChangeHandler(e, 'method')
           }}>
             <option value='GET'>GET</option>
@@ -85,7 +85,7 @@ class FieldEntryForm extends Component {
             <option value='DELETE'>DELETE</option>
           </select>
 
-          <input className={'modal_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
+          <input className={'composer_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
             this.onChangeHandler(e, 'url')
           }}></input>
         </div>

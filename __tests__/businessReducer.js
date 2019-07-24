@@ -8,7 +8,7 @@ describe ('Business reducer', () => {
       currentTab : 'First Tab',
       reqResArray : [],
       history : [],
-      warningModalMessage : "",
+      warningMessage : "",
       newRequestFields : {
         method : 'GET',
         protocol : 'http://',
@@ -236,17 +236,17 @@ describe ('Business reducer', () => {
     })
   })
 
-  describe('SET_WARNING_MODAL_MESSAGE', () => {
+  describe('SET_COMPOSER_WARNING_MESSAGE', () => {
     const action = {
-      type: 'SET_WARNING_MODAL_MESSAGE',
+      type: 'SET_COMPOSER_WARNING_MESSAGE',
       payload: 'WARNING!  TESTING IN PROGRESS!'
     }
 
-    it('should update the warningModalMessage', () => {
-      const initialMessage = state.warningModalMessage;
-      const { warningModalMessage } = reducer(state, action);
-      expect(warningModalMessage).not.toEqual(initialMessage);
-      expect(warningModalMessage).toEqual(action.payload);
+    it('should update the warningMessage', () => {
+      const initialMessage = state.warningMessage;
+      const { warningMessage } = reducer(state, action);
+      expect(warningMessage).not.toEqual(initialMessage);
+      expect(warningMessage).toEqual(action.payload);
     })
   })
 

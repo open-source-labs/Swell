@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import * as actions from '../../../actions/actions';
 
 const mapStateToProps = store => ({
-  warningModalMessage: store.business.warningModalMessage,
+  warningMessage: store.business.warningMessage,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setModalDisplay: (modalDisplay) => {
-    dispatch(actions.setModalDisplay(modalDisplay));
+  setComposerDisplay: (composerDisplay) => {
+    dispatch(actions.setComposerDisplay(composerDisplay));
   },
 });
 
@@ -21,7 +21,7 @@ class ModalWarning extends Component {
   }
 
   hideWarning() {
-    this.props.setModalDisplay('Request');
+    this.props.setComposerDisplay('Request');
   }
 
   render() {
@@ -41,7 +41,7 @@ class ModalWarning extends Component {
           }
         }}
       >
-        <div>{this.props.warningModalMessage}</div>
+        <div>{this.props.warningMessage}</div>
         <button onClick={this.hideWarning} type="button">Ok</button>
       </div>
     );
