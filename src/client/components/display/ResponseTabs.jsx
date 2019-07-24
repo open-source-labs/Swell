@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { xcode } from 'react-syntax-highlighter/styles/hljs';
+// import { xcode } from 'react-syntax-highlighter/dist/styles/hljs';
+// import virtualizedRenderer from 'react-syntax-highlighter-virtualized-renderer';
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import pretty from 'pretty';
+import prettyFormat from 'pretty-format';
+import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
+// import JSONPretty from 'react-json-pretty';
 import * as actions from '../../actions/actions';
 import Tab from './Tab.jsx';
 import SSERow from './SSERow.jsx';
@@ -59,6 +64,7 @@ class ResponseTabs extends Component {
     responsesCache.push(this.props);
 
     // Step 2  - Increment across all responses in array
+
     responsesCache.forEach((cur, idx) => {
       const responseEvents = cur.responseContent.events;
       const responseHeaders = cur.responseContent.headers;
@@ -78,9 +84,12 @@ class ResponseTabs extends Component {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
                 <div>
-                  <SyntaxHighlighter language="javascript" style={xcode}>
-                    {pretty(cur, { ocd: false })}
+                  {console.log(responseEvents)}
+                  <SyntaxHighlighter language="javascript" style={docco}  className="response_display">
+                  {pretty(cur, {ocd: false})};
+                  
                   </SyntaxHighlighter>
+                  {/* {JSON.stringify(cur)} */}
                 </div>
               );
             });

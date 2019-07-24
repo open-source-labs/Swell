@@ -29,7 +29,7 @@ class ReqRes extends Component {
 
   onCheckHandler() {
     this.props.content.checked = !this.props.content.checked;
-    this.props.reqResUpdate(this.props.content);
+    this.props.reqResUpdate(this.props.content);            
   }
 
   removeReqRes() {
@@ -130,6 +130,7 @@ class ReqRes extends Component {
 
           <div>
             <span className="tertiary-title">
+              {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
               Roundtrip: {this.props.content.timeReceived - this.props.content.timeSent}
             </span>
           </div>

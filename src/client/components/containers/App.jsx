@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../../assets/style/App.scss';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron'; //
 import * as actions from '../../actions/actions';
 import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/connectionController';
