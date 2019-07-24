@@ -113,7 +113,7 @@ const businessReducer = (state = initialState, action) => {
       });
 
       if (indexToBeUpdated !== undefined) {
-        reqResDeepCopy.splice(indexToBeUpdated, 1, action.payload);
+        reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
 
       return {

@@ -13,7 +13,7 @@
 //   },
 // });
 
-// class ModalNewRequest extends Component {
+// class ComposerNewRequest extends Component {
 //   constructor(props) {
 //     super(props);
 //     this.state = {
@@ -89,7 +89,7 @@
 //   render() {
 //     return (
 //       <div style={{ border: '1px solid black', display: 'flex', flexDirection: 'column' }}>
-//         ModalNewRequest
+//         ComposerNewRequest
 //         <select
 //           onChange={(e) => {
 //             this.methodOnChange(e);
@@ -127,4 +127,4 @@
 // export default connect(
 //   mapStateToProps,
 //   mapDispatchToProps,
-// )(ModalNewRequest);
+// )(ComposerNewRequest);
