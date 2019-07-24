@@ -8,7 +8,7 @@ describe ('Business reducer', () => {
       currentTab : 'First Tab',
       reqResArray : [],
       history : [],
-      warningModalMessage : "",
+      warningMessage : "",
       newRequestFields : {
         method : 'GET',
         protocol : 'http://',
@@ -123,6 +123,133 @@ describe ('Business reducer', () => {
     })
   })
 
+  describe('REQRES_CLEAR', () => {
+    const action = {
+      type: 'REQRES_CLEAR'
+    }
+
+    it('should empth the reqResArray', () => {
+      const initialReqResArray = [ { first: 1} , { second: 2 } ]
+      state.reqResArray = initialReqResArray;
+      expect(state.reqResArray).toBe(initialReqResArray);
+      const { reqResArray } = reducer(state, action);
+      expect(reqResArray).not.toBe(initialReqResArray);
+      expect(reqResArray).toEqual([]);
+    })
+  })
+
+  describe('REQRES_ADD', () => {
+    const fakeReqRes1 = { 
+      id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e',
+      created_at: '2019-02-15T21:40:44.132Z',
+      protocol: 'http://',
+      request: {method: 'POST', body: 'I am a request body'},
+      response: {}
+    }
+
+    const fakeReqRes2 = { 
+      id: 'c8d73eec-e383-4735-943a-20deab42ecff',
+      created_at: '2019-02-16T20:52:35.990Z',
+      protocol: 'http://',
+      request: {method: 'POST', body: 'I am a newer request body'},
+      response: {}
+    }
+
+    const action1 = {
+      type: 'REQRES_ADD',
+      payload: fakeReqRes1
+    }
+
+    const action2 = {
+      type: 'REQRES_ADD',
+      payload: fakeReqRes2
+    }
+
+    it('should add the reqRes to reqResArray', () => {
+      const initialReqResArray = state.reqResArray;
+      const { reqResArray } = reducer(state, action1);
+      expect(reqResArray).not.toEqual(initialReqResArray);
+      expect(reqResArray.length).toEqual(1);
+      expect(reqResArray[0]).toEqual(fakeReqRes1);
+      expect(reqResArray[0].request.body).toEqual('I am a request body')
+    })
+
+    it('should add the reqRes to the history', () => {
+      const firstState = reducer(state, action1);
+      expect(firstState.history.length).toEqual(1);
+      const { history } = reducer(firstState, action2);
+      expect(history.length).toEqual(2);
+      expect(history[0].date).toEqual('02/16/2019');
+      expect(history[1].date).toEqual('02/15/2019');
+    })
+
+  })
+
+  describe('REQRES_DELETE', () => {
+    const fakeReqResArray = [
+      { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' },
+      { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
+      { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
+    ];
+
+    const action = {
+      type: 'REQRES_DELETE',
+      payload: fakeReqResArray[1]
+    }
+
+
+    it('should delete a reqRes from reqResArray', () => {
+      const initialReqResArray = state.reqResArray;
+      state.reqResArray = fakeReqResArray;
+      const { reqResArray } = reducer(state, action);
+      expect(reqResArray).not.toBe(initialReqResArray);
+      expect(reqResArray.length).toEqual(2);
+      expect(reqResArray[1]).toEqual(fakeReqResArray[2]);
+    })
+  })
+
+  describe('REQRES_UPDATE', () => {
+    const fakeReqResArray = [
+      { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' },
+      { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
+      { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
+    ];
+
+    const action = {
+      type: 'REQRES_UPDATE',
+      payload: { 
+        id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
+        created_at: '2019-02-15T00:40:56.360Z',
+        newKey: 'this is a new value'
+      }
+    }
+
+    it('should update a reqRes from reqResArray', () => {
+      const initialReqResArray = state.reqResArray;
+      state.reqResArray = fakeReqResArray;
+      const { reqResArray } = reducer(state, action);
+      expect(reqResArray).not.toBe(initialReqResArray);
+      expect(reqResArray.length).toEqual(3);
+      expect(reqResArray[1]).toEqual(action.payload)
+      expect(reqResArray[0]).toEqual(fakeReqResArray[0]);
+      expect(reqResArray[2]).toEqual(fakeReqResArray[2]);
+    })
+  })
+
+  describe('SET_COMPOSER_WARNING_MESSAGE', () => {
+    const action = {
+      type: 'SET_COMPOSER_WARNING_MESSAGE',
+      payload: 'WARNING!  TESTING IN PROGRESS!'
+    }
+
+    it('should update the warningMessage', () => {
+      const initialMessage = state.warningMessage;
+      const { warningMessage } = reducer(state, action);
+      expect(warningMessage).not.toEqual(initialMessage);
+      expect(warningMessage).toEqual(action.payload);
+    })
+  })
+
   describe('SET_NEW_REQUEST_FIELDS', () => {
     const action = {
       type: 'SET_NEW_REQUEST_FIELDS',
@@ -188,5 +315,16 @@ describe ('Business reducer', () => {
     })
   })
 
+  describe('SET_CURRENT_TAB', () => {
+    const action = {
+      type: 'SET_CURRENT_TAB',
+      payload: 'Second Tab'
+    }
 
+    it('should update currentTab', () => {
+      const { currentTab } = reducer(state, action);
+      expect(currentTab).toEqual(action.payload);
+    })
+  })
+  
 })

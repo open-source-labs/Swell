@@ -7,7 +7,7 @@
 	padding: 0 15px;
 	position: relative;
 }
-.nested-grid-2 {
+.grid-2 {
 	background: white;
 	border-bottom: 1px solid $bordergray;
 	border-left: 1px solid $bordergray;
@@ -22,7 +22,7 @@
 		position: relative;
 	}
 }
-.nested-grid-3 {
+.grid-3 {
 	border-bottom: 1px solid $bordergray;
 	display: grid;
 	grid-template-columns: repeat(3, 33.333%);
@@ -34,7 +34,7 @@
 		position: relative;
 	}
 }
-.nested-grid-4 {
+.grid-4 {
 	border-bottom: 1px solid $bordergray;
 	display: grid;
 	grid-template-columns: 25% 25% 40% 10%;
@@ -46,7 +46,7 @@
 		position: relative;
 	}
 }
-.nested-grid-6 {
+.grid-6 {
 	background: white;
 	border: 1px solid $bordergray;
 	border-bottom: 0;
@@ -76,7 +76,7 @@
     }
   }
 }
-.nested-grid-9 {
+.grid-9 {
 	background: white;
 	border: 1px solid $bordergray;
 	border-bottom: 0;

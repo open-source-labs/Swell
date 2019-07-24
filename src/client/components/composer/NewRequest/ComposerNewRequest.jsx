@@ -21,11 +21,11 @@ const mapDispatchToProps = dispatch => ({
   reqResAdd: (reqRes) => {
     dispatch(actions.reqResAdd(reqRes));
   },
-  setWarningModalMessage: (message) => {
-    dispatch(actions.setWarningModalMessage(message));
+  setComposerWarningMessage: (message) => {
+    dispatch(actions.setComposerWarningMessage(message));
   },
-  setModalDisplay: (modalDisplay) => {
-    dispatch(actions.setModalDisplay(modalDisplay));
+  setComposerDisplay: (composerDisplay) => {
+    dispatch(actions.setComposerDisplay(composerDisplay));
   },
 
   setNewRequestHeaders : (requestHeadersObj) => {
@@ -175,8 +175,8 @@ class ModalNewRequest extends Component {
       })
     } 
     else {
-      this.props.setWarningModalMessage(validated);
-      this.props.setModalDisplay('Warning');
+      this.props.setComposerWarningMessage(validated);
+      this.props.setComposerDisplay('Warning');
     }
   }
 
@@ -191,11 +191,11 @@ class ModalNewRequest extends Component {
     return (
       <div
         tabIndex={0}
-        style={{ display: 'flex', flexDirection: 'column' }}
+        style={{ display: 'flex', flexDirection: 'column', outline: 'none' }}
         onKeyPress={(event) => {
         }}
         >
-        <h1 className="modal_title">Create New Request</h1>
+        <h1 className="composer_title">Create New Request</h1>
 
 
         <FieldEntryForm />
@@ -210,7 +210,7 @@ class ModalNewRequest extends Component {
         
         <CookieEntryForm/>
 
-        <button className="modal_submit" onClick={this.addNewRequest} type="button">
+        <button className="composer_submit" onClick={this.addNewRequest} type="button">
           Add New Request
         </button>
       </div>

@@ -17,6 +17,7 @@ class SSERow extends Component {
   }
 
   render() {
+    console.log("IN THE SSEROW FILE")
     let contentBody;
     try {
       let json = JSON.parse(this.props.content.data);
@@ -28,7 +29,7 @@ class SSERow extends Component {
 
     return (
       <div className={'response_sse'}>
-        <div className={'nested-grid-4'}>
+        <div className={'grid-4'}>
           <div>
             <span className="tertiary-title">
               ID

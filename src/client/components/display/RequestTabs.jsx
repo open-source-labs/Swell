@@ -64,7 +64,7 @@ class RequestTabs extends Component {
       tabContentShown = [];
       this.props.requestContent.headers.forEach((cur, idx) => {
         tabContentShown.push(
-          <div className={"nested-grid-2"} key={idx}>
+          <div className={"grid-2"} key={idx}>
             <span className={"tertiary-title title_offset"}>{cur.key}</span>
             <span className={"tertiary-title title_offset"}>{cur.value}</span>
           </div>

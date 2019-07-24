@@ -33,19 +33,21 @@ class ResponseContainer extends Component {
   }
 
   render() {
-    let responseContents;
-    switch (this.state.responseDisplay) {
-      case 'SSE': {
-        responseContents = <ResponseSSE content={this.props.content} />;
-        break;
-      }
-      case 'plain': {
-        responseContents = <ResponsePlain content={this.props.content} />;
-        break;
-      }
-      default:
-        // console.log('Sorry this is an invalid response type');
-    }
+    // let responseContents;
+    // switch (this.state.responseDisplay) {
+    //   case 'SSE': {
+    //     responseContents = <ResponseSSE content={this.props.content} />;
+    //     break;
+    //   }
+    //   case 'plain': {
+    //     responseContents = <ResponsePlain content={this.props.content} />;
+    //     break;
+    //   }
+    //   default:
+    //   // console.log('Sorry this is an invalid response type');
+    // }
+
+    console.log("HERE IN THE RESPONSE CONTAINER LINE 50")
 
     const headersArr = [];
     let index = 0;
@@ -54,7 +56,7 @@ class ResponseContainer extends Component {
       for (const header in this.props.content.headers) {
         if (Object.prototype.hasOwnProperty.call(this.props.content.headers, header)) {
           headersArr.push(
-            <div className="headers nested-grid-2" key={index}>
+            <div className="headers grid-2" key={index}>
               <div>
                 <span className="tertiary-title">{header}</span>
               </div>

@@ -1,14 +1,12 @@
 import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
-// import db from '../db';
-// import dbController from '../controllers/dbController';
 
 
 const initialState = { 
   currentTab : 'First Tab',
   reqResArray : [],
   history : [],
-  warningModalMessage : "",
+  warningMessage : "",
   newRequestFields : {
     method : 'GET',
     protocol : 'http://',
@@ -124,10 +122,10 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
-    case types.SET_WARNING_MODAL_MESSAGE: {
+    case types.SET_COMPOSER_WARNING_MESSAGE: {
       return {
         ...state,
-        warningModalMessage : action.payload
+        warningMessage : action.payload
       }
     }
 

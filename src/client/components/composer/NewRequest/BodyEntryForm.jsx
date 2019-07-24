@@ -63,7 +63,7 @@ class BodyEntryForm extends Component {
         return (
           <textarea
             value={this.props.newRequestBody.bodyContent}
-            className={'modal_textarea'}
+            className={'composer_textarea'}
             style={{'resize' : 'none'}} 
             type='text' 
             placeholder='Body' 
@@ -79,13 +79,13 @@ class BodyEntryForm extends Component {
       }
     })()
 
-    const arrowClass = this.state.show ? 'modal_subtitle_arrow-open' : 'modal_subtitle_arrow-closed';
+    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
 
-    const bodyContainerClass = this.state.show ? 'modal_bodyform_container-open' : 'modal_bodyform_container-closed';
+    const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
   
     return(
       <div style={this.props.stylesObj}>
-        <div className='modal_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
           <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
           </img>
           Body
@@ -94,10 +94,10 @@ class BodyEntryForm extends Component {
         <div className={bodyContainerClass}>
           <BodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody}/>
 
-          <div className='modal_rawtype_textarea_container'>
+          <div className='composer_rawtype_textarea_container'>
             <select 
               style={rawTypeStyles} 
-              className={'modal_rawtype_select'}
+              className={'composer_rawtype_select'}
               onChange={(e) => this.props.setNewRequestBody({
                 ...this.props.newRequestBody,
                 rawType : e.target.value,

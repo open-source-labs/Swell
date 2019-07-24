@@ -32,7 +32,7 @@ class CookieTableRow extends Component {
         }
 
         return (
-          <div className='cookieTableRow nested-grid-9'>
+          <div className='cookieTableRow grid-9'>
               {tableCellArray}
           </div>
         )
