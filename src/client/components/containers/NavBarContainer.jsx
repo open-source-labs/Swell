@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReqResCtrl from '../../controllers/connectionController.js';
+import ReqResCtrl from '../../controllers/reqResController.js';
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -10,11 +10,11 @@ class NavBarContainer extends Component {
     return (
       <div className="navbar-console">
         <div className="navbar-console_inner">
-          <button className="btn" type="button" onClick={ReqResCtrl.selectAllResReq}>
+          <button className="btn" type="button" onClick={ReqResCtrl.selectAllReqRes}>
             Select All
           </button>
 
-          <button className="btn" type="button" onClick={(e) => {ReqResCtrl.deselectAllResReq(e)}}>
+          <button className="btn" type="button" onClick={(e) => {ReqResCtrl.deselectAllReqRes(e)}}>
             Deselect All
           </button>
 

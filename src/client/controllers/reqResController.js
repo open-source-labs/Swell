@@ -15,7 +15,7 @@ const connectionController = {
     return reqResArray.filter(reqRes => reqRes.tab === currentTab && reqRes.checked);
   },
 
-  selectAllResReq() {
+  selectAllReqRes() {
     const { reqResArray } = store.default.getState().business;
 
     const { currentTab } = store.default.getState().business;
@@ -28,7 +28,7 @@ const connectionController = {
     });
   },
 
-  deselectAllResReq() {
+  deselectAllReqRes() {
     const { reqResArray } = store.default.getState().business;
 
     const { currentTab } = store.default.getState().business;

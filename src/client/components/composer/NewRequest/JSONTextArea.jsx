@@ -76,7 +76,7 @@ class JSONTextArea extends Component {
     let prettyPrintDisplay = {
       'display' : this.props.newRequestBody.JSONFormatted ? 'block' : 'none',
     }
-    let textAreaClass = this.props.newRequestBody.JSONFormatted ? 'modal_textarea' : 'modal_textarea modal_textarea-error';
+    let textAreaClass = this.props.newRequestBody.JSONFormatted ? 'composer_textarea' : 'composer_textarea composer_textarea-error';
     
     return(
       <div>
@@ -96,7 +96,7 @@ class JSONTextArea extends Component {
         </textarea>
         <div 
           style={prettyPrintDisplay}
-          className={'modal_pretty_print'} 
+          className={'composer_pretty_print'} 
           onClick={this.prettyPrintJSON}>JSON correctly formatted. Pretty print?
         </div>
       </div>

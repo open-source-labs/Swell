@@ -4,7 +4,7 @@ import ResponseContainer from '../containers/ResponseContainer.jsx';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
 import WebSocketWindow from './WebSocketWindow.jsx';
-import connectionController from '../../controllers/connectionController';
+import connectionController from '../../controllers/reqResController';
 import RequestTabs from './RequestTabs.jsx';
 
 import * as actions from '../../actions/actions';
@@ -38,6 +38,7 @@ class ReqRes extends Component {
   }
 
   render() {
+
     const contentBody = [];
 
     if (this.props.content.protocol === 'ws://') {
@@ -49,6 +50,7 @@ class ReqRes extends Component {
         connection={this.props.content.connection} />)
     }
     else {
+      console.log("HERE IN REQ RES LINE 52")
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
@@ -104,12 +106,12 @@ class ReqRes extends Component {
             <span className="primary-title title-offset_top">{this.props.content.url}</span></div>
         </div>
 
-        <div className="nested-grid-6">
+        <div className="grid-6">
           <div>
             <input
               id={this.props.content.id}
               checked={this.props.content.checked}
-              className="resreq_select-radio"
+              className="reqres_select-radio"
               name="resreq-select"
               type="checkbox"
               onChange={this.onCheckHandler}

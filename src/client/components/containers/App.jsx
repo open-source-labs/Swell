@@ -4,7 +4,7 @@ import '../../../assets/style/App.scss';
 import { ipcRenderer } from 'electron';
 import * as actions from '../../actions/actions';
 import ContentsContainer from './ContentsContainer.jsx';
-import ReqResCtrl from '../../controllers/connectionController';
+import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';
 import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
 import dbController from '../../controllers/dbController'
@@ -22,8 +22,8 @@ class App extends Component {
   }
 
   componentDidMount() {// This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
-    ipcRenderer.on('selectAll', ReqResCtrl.selectAllResReq); // if the selectAll touchbar button was clicked (then run this method called selectAllResReq) that is located in the connectionController...likewise for the rest
-    ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllResReq);
+    ipcRenderer.on('selectAll', ReqResCtrl.selectAllReqRes); // if the selectAll touchbar button was clicked (then run this method called selectAllReqRes) that is located in the connectionController...likewise for the rest
+    ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllReqRes);
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);

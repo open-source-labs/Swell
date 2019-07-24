@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 
-import ModalNewRequest from './NewRequest/ModalNewRequest.jsx';
-import ModalWarning from './Warning/ModalWarning.jsx';
+import ModalNewRequest from './NewRequest/ComposerNewRequest.jsx';
+import ModalWarning from './Warning/ComposerWarning.jsx';
 
 const mapStateToProps = store => ({
   reqResArray: store.business.reqResArray,
-  modalDisplay: store.ui.modalDisplay,
+  composerDisplay: store.ui.composerDisplay,
 });
 
 const mapDispatchToProps = dispatch => ({});
 
-class ModalContainer extends Component {
+class ComposerContainer extends Component {
   constructor(props) {
     super(props);
     // console.log(this.props);
@@ -21,38 +21,38 @@ class ModalContainer extends Component {
 
   componentDidMount() {
     this.setState({
-      modalDisplay: this.props.modalDisplay,
+      composerDisplay: this.props.composerDisplay,
     });
   }
 
   componentDidUpdate() {//keeping the redux store state in sync with this component's local state
-    if (this.props.modalDisplay !== this.state.modalDisplay) {
+    if (this.props.composerDisplay !== this.state.composerDisplay) {
       this.setState({
-        modalDisplay: this.props.modalDisplay,
+        composerDisplay: this.props.composerDisplay,
       });
     }
   }
 
   render() {
-    let modalContents;
-    switch (this.state.modalDisplay) { // conditional rendering of components based on the value of modalDisplay in redux store
+    let composerContents;
+    switch (this.state.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
       case 'Request': {
-        modalContents = <ModalNewRequest />;
+        composerContents = <ModalNewRequest />;
         break;
       }
       case 'Warning': {
-        modalContents = <ModalWarning />;
+        composerContents = <ModalWarning />;
         break;
       }
       default:
         console.log('Incorrect Model Display setting');
     }
 
-    return <div className="modalContents">{modalContents}</div>;
+    return <div className="composerContents">{composerContents}</div>;
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ModalContainer);
+)(ComposerContainer);

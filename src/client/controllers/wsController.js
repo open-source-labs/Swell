@@ -1,6 +1,6 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import connectionController from './connectionController.js';
+import connectionController from './reqResController.js';
 
 const wsController = {
   openWSconnection(reqResObj, connectionArray) {
