@@ -13,7 +13,7 @@
 	padding: 15px 18px;
 	position: absolute;
 	top: 0;
-	width: 300px;
+	width: 500px;
 	&:focus {
 		outline: 0 none;
 	}
@@ -22,10 +22,10 @@
 	background: white;
 	display: block;
 	height: 100vh;
-	left: 300px;
+	left: 500px;
 	position: absolute;
 	top: 0;
-	width: calc(100vw - 300px);
+	width: calc(100vw - 500px);
 }
 .composer_title {
 	font-size: 1.1rem;
@@ -47,7 +47,7 @@
 	color: white;
 	cursor: pointer;
 	display: block;
-	font-size: .8rem;
+	font-size: .9rem;
 	font-weight: bold;
 	height: 35px;
 	margin: 5px 0 15px;
@@ -65,7 +65,7 @@
 	border: 2px solid #808080;
 	border-radius: 5px;
 	cursor: pointer;
-	font-size: .8rem;
+	font-size: .9rem;
 	font-weight: bold;
 	height: 30px;
 	line-height: 28px;
@@ -99,7 +99,7 @@
 	color: white;
 	cursor: pointer;
 	display: block;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 	font-weight: bold;
 	height: 30px;
 	line-height: 15px;
@@ -118,22 +118,23 @@
 	outline: 0 none;
 	padding: 8px;
 	width: 100%;
+	font-size:1rem; 
 }
 .composer_subtitle {
 	cursor: pointer;
 	display: flex;
-	font-size: 14px;
+	font-size: 16px;
 	justify-items: center;
 	margin: 0 0 15px;
 	width: 28%;
 }
 .composer_subtitle_arrow-closed {
-	height: 26px;
+	height: 28px;
 	margin: -3px -6px -8px -7px;
 	transform: rotate(270deg);
 }
 .composer_subtitle_arrow-open {
-	height: 26px;
+	height: 28px;
 	margin: -3px -6px -8px -7px;
 }
 .composer_headers_container-open {
@@ -179,6 +180,7 @@
 .composer_header_input {
 	-webkit-appearance: none;
 	background: #343333;
+	font-size: 14px;
 	border: none;
 	color: white;
 	display: block;
@@ -197,7 +199,6 @@
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: 1rem;
-	font-size: 14px;
 	outline: 0 none;
 	padding: 5px;
 	text-align: center;
@@ -273,7 +274,7 @@
 	border-radius: 5px;
 	color: white;
 	cursor: pointer;
-	font-size: .9rem;
+	font-size: .95rem;
 	height: 28px;
 	margin: 1px 0px 1px 0px;
 	overflow: hidden;
