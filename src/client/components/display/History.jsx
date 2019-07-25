@@ -78,7 +78,7 @@ class History extends Component {
 
   render() {
     return(
-      <div className={'history-container'} >
+      <div className={'history-container'} onClick={this.props.focusOnForm} >
         <div className={'history-text-container'} onClick={this.addHistoryToNewRequest}> 
           <div className={'history-method'}>{this.props.content.request.method}
           </div>
