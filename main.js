@@ -102,10 +102,10 @@ if (process.platform === 'win32') {// if user is on windows...
 function createWindow() {
   // Create the new browser window instance.
   mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 768,
-    minWidth: 1024,
-    minHeight: 565,
+    width: 2000,
+    height: 1000,
+    minWidth: 1304,
+    minHeight: 700,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
     title: 'Swell',

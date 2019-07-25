@@ -188,6 +188,8 @@ class ComposerNewRequest extends Component {
       'display' : (this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://') ? 'block' : 'none'
     }
 
+    
+
     return (
       <div
         tabIndex={0}
@@ -198,17 +200,17 @@ class ComposerNewRequest extends Component {
         <h1 className="composer_title">Create New Request</h1>
 
 
-        <FieldEntryForm />
+        <FieldEntryForm addRequestProp = {this.addNewRequest}/>
         
         <HeaderEntryForm 
           stylesObj={HeaderEntryFormStyle} 
         />
         
+        <CookieEntryForm/>
         <BodyEntryForm 
           stylesObj={BodyEntryFormStyle} 
         />
         
-        <CookieEntryForm/>
 
         <button className="composer_submit" onClick={this.addNewRequest} type="button">
           Add New Request
