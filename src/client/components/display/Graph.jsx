@@ -271,7 +271,6 @@ class Graph extends Component {
           oldestDataPointTimeReceived: newOldestDataPointTimeReceived
         },
         () => {
-          // console.log('Rerender');
           this.lineChart.data.datasets = newDataSets;
           this.lineChart.update();
         },

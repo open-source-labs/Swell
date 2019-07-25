@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-// import { xcode } from 'react-syntax-highlighter/dist/styles/hljs';
-// import virtualizedRenderer from 'react-syntax-highlighter-virtualized-renderer';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import pretty from 'pretty';
 import prettyFormat from 'pretty-format';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
-// import JSONPretty from 'react-json-pretty';
 import * as actions from '../../actions/actions';
 import Tab from './Tab.jsx';
 import SSERow from './SSERow.jsx';
@@ -84,15 +81,13 @@ class ResponseTabs extends Component {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
                 <div>
-                  {console.log(responseEvents)}
+                  {/* {console.log(responseEvents)} */}
                   <SyntaxHighlighter language="javascript" style={docco}  className="response_display">
                   {pretty(cur, {ocd: false})};
-                  
                   </SyntaxHighlighter>
-                  {/* {JSON.stringify(cur)} */}
                 </div>
               );
-            });
+            })
           }
         }
         else if (tabState === 'Response Headers') {
@@ -131,8 +126,8 @@ class ResponseTabs extends Component {
       <div>
         <ul className="tab_list-response">
           <Tab onTabSelected={this.handleTabSelect} tabName={events} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
           <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
         </ul>
         <div className="tab_content-response">{tabContentShownEvents}</div>
       </div>
