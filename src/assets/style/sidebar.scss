@@ -41,7 +41,7 @@
 }
 .composer_submit {
 	-webkit-appearance: none;
-	background-color: $bluetwo;
+	
 	border: none;
 	border-radius: 5px;
 	color: white;
@@ -53,7 +53,16 @@
 	margin: 5px 0 15px;
 	padding: 8px;
 	width: 100%;
-	outline: none;
+  outline: none;
+  &.http {
+    background-color: $bluetwo;
+  }
+  &.ws {
+    background-color: $greenone;
+  }
+  &.gql {
+    background-color: $gqlpink;
+  }
 }
 .composer_protocol_container {
 	display: flex;
@@ -61,7 +70,7 @@
 	margin: 15px 0 15px 0;
 }
 .composer_protocol_button {
-	background-color: #343333;
+  background-color: #343333;
 	border: 2px solid #808080;
 	border-radius: 5px;
 	cursor: pointer;
@@ -72,14 +81,32 @@
 	outline: 0 none;
 	text-align: center;
 	width: 32%;
-	&:hover {
-		background: rgb(0,137,208);
-		border: 2px solid $bluetwo;
-		line-height: 28px;
-	}
 }
-.composer_protocol_button-selected {
-	background: rgb(0,137,208);
+.composer_protocol_button_http:hover {
+	background: $bluetwo;
+	border: 2px solid $bluetwo;
+	line-height: 28px;
+}
+.composer_protocol_button_ws:hover {
+	background: $greenone;
+	border: 2px solid $greenone;
+	line-height: 28px;
+}
+.composer_protocol_button_gql:hover {
+	background: $gqlpink;
+	border: 2px solid $gqlpink;
+	line-height: 28px;
+}
+.composer_protocol_button-selected_http {
+	background: $bluetwo;
+	border: none;
+}
+.composer_protocol_button-selected_ws {
+	background: $greenone;
+	border: none;
+}
+.composer_protocol_button-selected_gql {
+	background: $gqlpink;
 	border: none;
 }
 .composer_method_url_container {

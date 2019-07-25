@@ -183,6 +183,7 @@ class ComposerNewRequest extends Component {
         method: 'GET',
         protocol: 'http://',
         url: 'http://',
+        graphQL: false
       })
     }
     else {
@@ -195,6 +196,10 @@ class ComposerNewRequest extends Component {
     let HeaderEntryFormStyle = { //trying to change style to conditional created strange duplication effect when continuously changing protocol
       display: this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
     }
+    let SubmitButtonClassName = "composer_submit";
+    if (this.props.newRequestFields.protocol === "ws://") {SubmitButtonClassName += " ws"}
+    else if (this.props.newRequestFields.graphQL) {SubmitButtonClassName += " gql"}
+    else {SubmitButtonClassName += " http"}
 
     return (
       <div
@@ -224,7 +229,7 @@ class ComposerNewRequest extends Component {
           />
         }
 
-        <button className="composer_submit" onClick={this.addNewRequest} type="button">
+        <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">
           Add New Request
         </button>
       </div>

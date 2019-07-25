@@ -33,8 +33,9 @@ class FieldEntryForm extends Component {
     switch (property) {
       case 'url': {
         // let url = this.props.newRequestFields.protocol + value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '')
-        let url = this.props.newRequestFields.protocol + value.replace(/(http?s|ws?s)(:[^\/]?\/?.?\/?)/, '')
-
+        // let url = this.props.newRequestFields.protocol + value.replace(/(http?s|ws?s)(:[^\/]?\/?.?\/?)/, '')
+        let url = value;
+        console.log("here;s the url",url)
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
           url: url,
@@ -43,15 +44,13 @@ class FieldEntryForm extends Component {
       }
       case 'protocol': {
         if (!!graphQL) {
-          // this.props.setGraphQL(true)
-          console.log("Here")
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
-            protocol: value,
-            graphQL: true,
-            method: 'QUERY'
+            protocol: '',
+            url: '',
+            method: 'QUERY',
+            graphQL: true
           })
-          console.log("this.state.graphQL ", this.props.newRequestFields.graphQL)
         }
         else {
 
@@ -137,10 +136,6 @@ class FieldEntryForm extends Component {
     )
   }
 }
-
-FieldEntryForm.propTypes = {
-  // stylesObj : PropTypes.object.isRequired,
-};
 
 export default connect(
   mapStateToProps,

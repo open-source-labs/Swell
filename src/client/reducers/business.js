@@ -8,8 +8,8 @@ const initialState = {
   history : [],
   warningMessage : "",
   newRequestFields : {
-    protocol : 'http://',
-    url : 'http://',
+    protocol : '',
+    url : '',
     method : 'GET',
     graphQL: false
   },
