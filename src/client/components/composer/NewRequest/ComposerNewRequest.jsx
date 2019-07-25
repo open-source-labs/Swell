@@ -204,11 +204,11 @@ class ModalNewRequest extends Component {
           stylesObj={HeaderEntryFormStyle} 
         />
         
+        <CookieEntryForm/>
         <BodyEntryForm 
           stylesObj={BodyEntryFormStyle} 
         />
         
-        <CookieEntryForm/>
 
         <button className="composer_submit" onClick={this.addNewRequest} type="button">
           Add New Request

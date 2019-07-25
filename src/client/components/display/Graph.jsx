@@ -34,7 +34,7 @@ class Graph extends Component {
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector('canvas').getContext('2d');
     ctx.canvas.width = '100%';
-    ctx.canvas.height = 150;
+    ctx.canvas.height = 650;
     this.lineChart = new Chart(context, {
       type: 'scatter',
       data: {
@@ -284,7 +284,7 @@ class Graph extends Component {
             Please add a request and hit the Open button to see response timing information.
           </div>
         </div>
-        <canvas className={'chart'} style={chartDisplayStyles} id="line-chart" />
+        <canvas className="chart" style={chartDisplayStyles} id="line-chart" />
         <div className={'chartTime'} style={chartDisplayStyles}>
           <span>Display results:</span>
           <select onChange={this.updateTimeFromNowToDisplay} className={'chartTimeSelect'} defaultValue={30000} >
