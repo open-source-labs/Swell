@@ -21,6 +21,10 @@ class ProtocolSelect extends Component {
       composer_protocol_button: true,
       'composer_protocol_button-selected': this.props.currentProtocol === 'ws://',
     });
+    // const GQLtyleClasses = classNames({
+    //   composer_protocol_button: true,
+    //   'composer_protocol_button-selected': this.props.currentProtocol === 'http://',
+    // });
 
     return (
       <div className="composer_protocol_container">
@@ -50,6 +54,15 @@ class ProtocolSelect extends Component {
         >
           WS
         </div>
+        {/* <div
+          role="button"
+          tabIndex={0}
+          className={GQLStyleClasses}
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol')
+          }
+        >
+          GRAPHQL
+        </div> */}
       </div>
     );
   }

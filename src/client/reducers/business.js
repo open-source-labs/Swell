@@ -8,6 +8,7 @@ const initialState = {
   history : [],
   warningMessage : "",
   newRequestFields : {
+    //add in graphQL: false ?
     method : 'GET',
     protocol : 'http://',
     url : 'http://',
@@ -144,6 +145,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_BODY: {
+      console.log("business reducer -> set new req body",action.payload)
       return {
         ...state,
         newRequestBody: action.payload,

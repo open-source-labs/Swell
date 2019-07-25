@@ -67,7 +67,12 @@ class FieldEntryForm extends Component {
     // console.log(this.props);
     let HTTPMethodStyle = {
       display : this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
-    }
+    } //adjust condition to add && graphQL = false
+
+    // add in a GRAPHQLMethodStyle
+    // let GRAPHQLMethodStyle = {
+    //   display : this.props.newRequestFields.protocol !== 'ws://' && graphQL === true ? 'block' : 'none',
+    // }
 
     return(
       // <div style={this.props.stylesObj}>
@@ -75,7 +80,11 @@ class FieldEntryForm extends Component {
         <ProtocolSelect currentProtocol={this.props.newRequestFields.protocol} onChangeHandler={this.onChangeHandler}/>
 
         <div className={'composer_method_url_container'}>
-          <select style={HTTPMethodStyle} value={this.props.newRequestFields.method} className={'composer_method_select'} onChange={(e) => {
+
+          {
+            this.props.newRequestFields.protocol !== 'ws://' &&
+
+          <select style={{display: 'block'}} value={this.props.newRequestFields.method} className={'composer_method_select'} onChange={(e) => {
             this.onChangeHandler(e, 'method')
           }}>
             <option value='GET'>GET</option>
@@ -84,6 +93,7 @@ class FieldEntryForm extends Component {
             <option value='PATCH'>PATCH</option>
             <option value='DELETE'>DELETE</option>
           </select>
+          }
 
           <input className={'composer_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
             this.onChangeHandler(e, 'url')
