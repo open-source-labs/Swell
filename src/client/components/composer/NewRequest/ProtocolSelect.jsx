@@ -11,7 +11,7 @@ class ProtocolSelect extends Component {
   render() {
     const HTTPStyleClasses = classNames({
       composer_protocol_button: true,
-      'composer_protocol_button-selected': this.props.currentProtocol === 'http://',
+      'composer_protocol_button-selected': this.props.currentProtocol === 'http://' && !this.props.graphQL,
     });
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
@@ -21,10 +21,10 @@ class ProtocolSelect extends Component {
       composer_protocol_button: true,
       'composer_protocol_button-selected': this.props.currentProtocol === 'ws://',
     });
-    // const GQLtyleClasses = classNames({
-    //   composer_protocol_button: true,
-    //   'composer_protocol_button-selected': this.props.currentProtocol === 'http://',
-    // });
+    const GQLStyleClasses = classNames({
+      composer_protocol_button: true,
+      'composer_protocol_button-selected': this.props.graphQL,
+    });
 
     return (
       <div className="composer_protocol_container">
@@ -54,15 +54,15 @@ class ProtocolSelect extends Component {
         >
           WS
         </div>
-        {/* <div
+        <div
           role="button"
           tabIndex={0}
           className={GQLStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol')
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol', "graphQLtrue")
           }
         >
           GRAPHQL
-        </div> */}
+        </div>
       </div>
     );
   }

@@ -103,9 +103,9 @@
 	font-weight: bold;
 	height: 30px;
 	line-height: 15px;
-	padding: 0px 8px;
+	padding: 0px auto;
 	text-align-last: center;
-	width: 70px;
+	width: 175px;
 }
 .composer_url_input {
 	-webkit-appearance: none;
@@ -131,7 +131,7 @@
 .composer_subtitle_arrow-closed {
 	height: 28px;
 	margin: -3px -6px -8px -7px;
-	transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 .composer_subtitle_arrow-open {
 	height: 28px;

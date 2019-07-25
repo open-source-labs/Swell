@@ -67,7 +67,7 @@ class BodyEntryForm extends Component {
             style={{'resize' : 'none'}} 
             type='text' 
             placeholder='Body' 
-            rows={5} 
+            rows={10} 
             onChange={(e) => {
               this.props.setNewRequestBody({
                 ...this.props.newRequestBody,
@@ -120,10 +120,6 @@ class BodyEntryForm extends Component {
     );
   }
 }
-
-BodyEntryForm.propTypes = {
-  stylesObj : PropTypes.object.isRequired,
-};
 
 export default connect(
   mapStateToProps,

@@ -5,16 +5,17 @@ import uuid from 'uuid/v4';
 import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
+import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import dbController from '../../../controllers/dbController'
 
 const mapStateToProps = store => ({
-  newRequestFields : store.business.newRequestFields,
-  newRequestHeaders : store.business.newRequestHeaders,
-  newRequestBody : store.business.newRequestBody,
-  newRequestCookies : store.business.newRequestCookies,
-  currentTab : store.business.currentTab,
+  newRequestFields: store.business.newRequestFields,
+  newRequestHeaders: store.business.newRequestHeaders,
+  newRequestBody: store.business.newRequestBody,
+  newRequestCookies: store.business.newRequestCookies,
+  currentTab: store.business.currentTab,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,16 +29,16 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actions.setComposerDisplay(composerDisplay));
   },
 
-  setNewRequestHeaders : (requestHeadersObj) => {
+  setNewRequestHeaders: (requestHeadersObj) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },
-  setNewRequestFields : (requestFields) => {
+  setNewRequestFields: (requestFields) => {
     dispatch(actions.setNewRequestFields(requestFields));
   },
-  setNewRequestBody : (requestBodyObj) => {
+  setNewRequestBody: (requestBodyObj) => {
     dispatch(actions.setNewRequestBody(requestBodyObj));
   },
-  setNewRequestCookies : (requestCookiesObj) => {
+  setNewRequestCookies: (requestCookiesObj) => {
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
   },
 });
@@ -52,17 +53,27 @@ class ComposerNewRequest extends Component {
     // };
 
     // this.onChangeHandler = this.onChangeHandler.bind(this);
+    // this.state = {
+    //   graphQL: false,
+    // };
+    // this.setGraphQL = this.setGraphQL.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
+
+  // setGraphQL(bool) {
+  //   this.setState({
+  //     graphQL: bool
+  //   });
+  // }
 
   requestValidationCheck() {
     let validationMessage;
 
     //Error conditions...
-    if(this.props.newRequestFields.url === 'http://' || this.props.newRequestFields.url === 'https://' || this.props.newRequestFields.url === 'ws://') {
+    if (this.props.newRequestFields.url === 'http://' || this.props.newRequestFields.url === 'https://' || this.props.newRequestFields.url === 'ws://') {
       validationMessage = "Please enter a valid URI.";
     }
-    else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json'){
+    else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
       validationMessage = "Please fix JSON body formatting errors.";
     }
     return validationMessage || true;
@@ -73,7 +84,7 @@ class ComposerNewRequest extends Component {
 
     if (validated === true) {
       let reqRes;
-      
+
       // HTTP REQUESTS
       if (this.props.newRequestFields.protocol !== 'ws://') {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1]}/`;
@@ -105,10 +116,10 @@ class ComposerNewRequest extends Component {
           checkSelected: false,
 
           request: {
-            method : this.props.newRequestFields.method,
-            headers : this.props.newRequestHeaders.headersArr.filter(header => header.active),
-            body : this.props.newRequestBody.bodyContent,
-            cookies : this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active),
+            method: this.props.newRequestFields.method,
+            headers: this.props.newRequestHeaders.headersArr.filter(header => header.active),
+            body: this.props.newRequestBody.bodyContent,
+            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active),
             bodyType: this.props.newRequestBody.bodyType,
             rawType: this.props.newRequestBody.rawType
           },
@@ -152,28 +163,28 @@ class ComposerNewRequest extends Component {
 
       //reset for next request
       this.props.setNewRequestHeaders({
-        headersArr : [],
-        count : 0,
+        headersArr: [],
+        count: 0,
       });
-      
+
       this.props.setNewRequestCookies({
-        cookiesArr : [],
-        count : 0,
+        cookiesArr: [],
+        count: 0,
       });
 
       this.props.setNewRequestBody({
-        bodyContent : '',
-        bodyType : 'none',
-        rawType : 'Text (text/plain)',
-        JSONFormatted : true,
+        bodyContent: '',
+        bodyType: 'none',
+        rawType: 'Text (text/plain)',
+        JSONFormatted: true,
       });
 
       this.props.setNewRequestFields({
-        method : 'GET',
-        protocol : 'http://',
-        url : 'http://',
+        method: 'GET',
+        protocol: 'http://',
+        url: 'http://',
       })
-    } 
+    }
     else {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
@@ -181,14 +192,9 @@ class ComposerNewRequest extends Component {
   }
 
   render() {
-    let HeaderEntryFormStyle = {
-      display : this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
+    let HeaderEntryFormStyle = { //trying to change style to conditional created strange duplication effect when continuously changing protocol
+      display: this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
     }
-    let BodyEntryFormStyle = {
-      'display' : (this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://') ? 'block' : 'none'
-    }
-
-    
 
     return (
       <div
@@ -196,21 +202,27 @@ class ComposerNewRequest extends Component {
         style={{ display: 'flex', flexDirection: 'column', outline: 'none' }}
         onKeyPress={(event) => {
         }}
-        >
+      >
         <h1 className="composer_title">Create New Request</h1>
 
 
-        <FieldEntryForm addRequestProp = {this.addNewRequest}/>
+        <FieldEntryForm addRequestProp={this.addNewRequest} />
         
-        <HeaderEntryForm 
-          stylesObj={HeaderEntryFormStyle} 
-        />
-        
-        <CookieEntryForm/>
-        <BodyEntryForm 
-          stylesObj={BodyEntryFormStyle} 
-        />
-        
+
+        <HeaderEntryForm
+          stylesObj={HeaderEntryFormStyle} />
+
+        <CookieEntryForm />
+
+        {
+          !this.props.newRequestFields.graphQL && this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://' &&
+          <BodyEntryForm />
+        }
+        {
+          this.props.newRequestFields.graphQL &&
+          <GraphQLBodyEntryForm
+          />
+        }
 
         <button className="composer_submit" onClick={this.addNewRequest} type="button">
           Add New Request

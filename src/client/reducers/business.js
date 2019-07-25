@@ -8,10 +8,10 @@ const initialState = {
   history : [],
   warningMessage : "",
   newRequestFields : {
-    //add in graphQL: false ?
-    method : 'GET',
     protocol : 'http://',
     url : 'http://',
+    method : 'GET',
+    graphQL: false
   },
   newRequestHeaders : {
     headersArr : [],
