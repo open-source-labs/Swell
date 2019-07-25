@@ -23,6 +23,7 @@ class FieldEntryForm extends Component {
   constructor(props) {
     super(props);
     this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   onChangeHandler(e, property) {
@@ -62,6 +63,12 @@ class FieldEntryForm extends Component {
       }
     }
   };
+  handleKeyPress(event){
+    if(event.key === 'Enter'){
+      console.log('enter press here! ')
+      this.props.addRequestProp();
+    }
+  }
 
   render() {
     // console.log(this.props);
@@ -97,7 +104,11 @@ class FieldEntryForm extends Component {
 
           <input className={'composer_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
             this.onChangeHandler(e, 'url')
-          }}></input>
+          }} onKeyPress={this.handleKeyPress} 
+          ref={input => {
+            this.myInput = input;
+          }}
+          ></input>
         </div>
       </div>
     )
