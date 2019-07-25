@@ -47,7 +47,7 @@ class ResponseContainer extends Component {
     //   // console.log('Sorry this is an invalid response type');
     // }
 
-    console.log("HERE IN THE RESPONSE CONTAINER LINE 50")
+    // console.log("HERE IN THE RESPONSE CONTAINER LINE 50")
 
     const headersArr = [];
     let index = 0;

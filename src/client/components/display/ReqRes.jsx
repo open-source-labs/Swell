@@ -50,7 +50,7 @@ class ReqRes extends Component {
         connection={this.props.content.connection} />)
     }
     else {
-      console.log("HERE IN REQ RES LINE 52")
+      // console.log("HERE IN REQ RES LINE 52")
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)

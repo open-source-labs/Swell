@@ -42,7 +42,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-class ModalNewRequest extends Component {
+class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
     // this.state = {
@@ -221,4 +221,4 @@ class ModalNewRequest extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ModalNewRequest);
+)(ComposerNewRequest);
