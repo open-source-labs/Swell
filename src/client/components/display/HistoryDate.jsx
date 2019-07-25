@@ -19,18 +19,25 @@ class HistoryDate extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.focusOnForm = this.focusOnForm.bind(this);
+  }
+
+  focusOnForm(event){
+    let composerUrlField = document.querySelector('.composer_url_input');
+    composerUrlField.focus()
+    console.log('Focus is back on the url')
   }
 
   render() {
     let current = this.props.history.find(a => a.date === this.props.content.date);
     let date = parse(current.date);
     
-    if (isToday(date)) { date = 'Today' }
+    if (isToday(date)) { date = 'Today' }//If the date matches todays date render the word "Today"
     else if (isYesterday(date)) { date = 'Yesterday' }
     else { date = format(date, 'ddd, MMM D, YYYY') }
 
     let histArray = current.history.map((history, i) => {
-      return <History className="historyChild" content={history} key={i}></History>
+      return <History className="historyChild" content={history} key={i} focusOnForm = {this.focusOnForm}></History>
     })
 
     return(
