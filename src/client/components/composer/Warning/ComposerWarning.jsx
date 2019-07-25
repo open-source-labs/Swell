@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-class ModalWarning extends Component {
+class ComposerWarning extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -51,4 +51,4 @@ class ModalWarning extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ModalWarning);
+)(ComposerWarning);

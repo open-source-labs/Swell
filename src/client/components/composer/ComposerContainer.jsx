@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 
-import ModalNewRequest from './NewRequest/ComposerNewRequest.jsx';
-import ModalWarning from './Warning/ComposerWarning.jsx';
+import ComposerNewRequest from './NewRequest/ComposerNewRequest.jsx';
+import ComposerWarning from './Warning/ComposerWarning.jsx';
 
 const mapStateToProps = store => ({
   reqResArray: store.business.reqResArray,
@@ -37,11 +37,11 @@ class ComposerContainer extends Component {
     let composerContents;
     switch (this.state.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
       case 'Request': {
-        composerContents = <ModalNewRequest />;
+        composerContents = <ComposerNewRequest />;
         break;
       }
       case 'Warning': {
-        composerContents = <ModalWarning />;
+        composerContents = <ComposerWarning />;
         break;
       }
       default:
