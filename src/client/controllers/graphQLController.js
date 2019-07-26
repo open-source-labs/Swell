@@ -2,6 +2,7 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
+import { CLIENT_RENEG_LIMIT } from 'tls';
 
 const graphQLController = {
 
@@ -30,25 +31,39 @@ const graphQLController = {
     connectionArray.push(openConnectionObj);
     */
 
+
+    const handleResponse = (data) => {
+      const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
+      // TODO: Add response headers, cookies
+      reqResCopy.connection = 'closed';
+      reqResCopy.connectionType = 'plain';
+      reqResCopy.timeReceived = Date.now();
+      reqResCopy.response.events.push(JSON.stringify(data.data));
+      store.default.dispatch(actions.reqResUpdate(reqResCopy));
+    };
+
     // Query specific implementation
-    // TODO: Implement mutations and subscriptions
-    const query = gql`${reqResObj.request.body}`;
+    const body = gql`${reqResObj.request.body}`;
     const client = new ApolloClient({ uri: reqResObj.url });
-    client.query({ query })
-      // Update the store with the response
-      .then((data) => {
-        const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
-        // TODO: Add response headers, cookies
-        reqResCopy.connection = 'closed';
-        reqResCopy.connectionType = 'plain';
-        reqResCopy.timeReceived = Date.now();
-        reqResCopy.response.events.push(JSON.stringify(data.data));
-        store.default.dispatch(actions.reqResUpdate(reqResCopy));
-      })
-      .catch((err) => {
-        reqResObj.connection = 'error';
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
-      });
+    if (reqResObj.request.method === 'QUERY') {
+      client.query({ query: body })
+        // Update the store with the response
+        .then(data => handleResponse(data))
+        .catch((err) => {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        });
+    }
+    else if (reqResObj.request.method === 'MUTATION') {
+      client.mutate({ mutation: body })
+        .then(data => handleResponse(data))
+        .catch((err) => {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        });
+    }
+
+    // TODO: Implement mutations and subscriptions
   }
 };
 
