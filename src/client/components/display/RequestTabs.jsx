@@ -72,6 +72,21 @@ class RequestTabs extends Component {
       });
     }
 
+    if (
+      this.state.openTab === "Request Cookies" &&
+      this.props.requestContent.cookies.length > 0
+    ) {
+      tabContentShown = [];
+      this.props.requestContent.cookies.forEach((cur, idx) => {
+        tabContentShown.push(
+          <div className={"grid-2"} key={idx}>
+            <span className={"tertiary-title title_offset"}>{cur.key}</span>
+            <span className={"tertiary-title title_offset"}>{cur.value}</span>
+          </div>
+        );
+      });
+    }
+
     return (
       <div>
         <ul className={"tab_list"}>

@@ -139,6 +139,8 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_HEADERS: {
+      // console.log("business reducer -> set new req header",action.payload)
+
       return {
         ...state,
         newRequestHeaders: action.payload,
@@ -146,7 +148,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_BODY: {
-      console.log("business reducer -> set new req body",action.payload)
+      // console.log("business reducer -> set new req body",action.payload)
       return {
         ...state,
         newRequestBody: action.payload,
@@ -154,7 +156,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_COOKIES: {
-      console.log("business reducer -> set new req cookies",action.payload)
+      // console.log("business reducer -> set new req cookies",action.payload)
       return {
         ...state,
         newRequestCookies: action.payload,
