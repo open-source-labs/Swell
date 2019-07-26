@@ -35,7 +35,7 @@ const graphQLController = {
 
 
     const handleResponse = (data) => {
-      console.log('data in handle response', data);
+      // console.log('data in handle response', data);
       const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
       // TODO: Add response headers, cookies
       reqResCopy.connection = 'closed';
@@ -63,24 +63,29 @@ const graphQLController = {
 
     See here for more information on this code: https://github.com/apollographql/apollo-link/issues/373
     */
-    const afterwareLink = new ApolloLink((operation, forward) => {
-      console.log('forward(operation)', forward(operation));
-      return forward(operation).map((response) => {
-        console.log('response', response);
-        const resultOfGetContext = operation.getContext();
-        console.log('resultOfGetContext', resultOfGetContext);
-        const { response: { headers } } = resultOfGetContext;
-        console.log('headers', headers);
-        headers.forEach((item) => {
-          console.log('this is a header', item);
-        });
-        return response;
-      });
-    });
+    // const afterwareLink = new ApolloLink((operation, forward) => {
+    // console.log('forward(operation)', forward(operation));
+    // return forward(operation).map((response) => {
+    //   console.log('response', response);
+    //   const resultOfGetContext = operation.getContext();
+    //   console.log('resultOfGetContext', resultOfGetContext);
+    //   const { response: { headers } } = resultOfGetContext;
+    //   console.log('headers', headers);
+    //   for (const header of headers.entries()) {
+    //     console.log('inside the entries iterator', header);
+    //   }
+    //   headers.forEach((item) => {
+    //     console.log('this is a header', item);
+    //   });
+    //   return response;
+    // });
+    // });
 
     const client = new ApolloClient({
-      link: afterwareLink.concat(httpLink),
+      // link: afterwareLink.concat(httpLink),
+      link: httpLink,
       headers,
+      credentials: 'same-origin',
       cache: new InMemoryCache(),
     });
 
@@ -90,6 +95,7 @@ const graphQLController = {
         // Update the store with the response
         .then(data => handleResponse(data))
         .catch((err) => {
+          console.error(err);
           reqResObj.connection = 'error';
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         });

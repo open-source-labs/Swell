@@ -45,7 +45,6 @@ const connectionController = {
   openReqRes(id) {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find(el => el.id === id);
-    console.log('reqResObj', reqResObj);
 
     if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj, this.openConnectionArray);
