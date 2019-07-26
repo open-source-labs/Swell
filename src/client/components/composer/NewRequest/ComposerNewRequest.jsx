@@ -46,25 +46,9 @@ const mapDispatchToProps = dispatch => ({
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   method : 'GET',
-    //   protocol : 'http://',
-    //   url : 'http://',
-    // };
-
-    // this.onChangeHandler = this.onChangeHandler.bind(this);
-    // this.state = {
-    //   graphQL: false,
-    // };
-    // this.setGraphQL = this.setGraphQL.bind(this);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
-  // setGraphQL(bool) {
-  //   this.setState({
-  //     graphQL: bool
-  //   });
-  // }
 
   requestValidationCheck() {
     let validationMessage;
@@ -85,7 +69,7 @@ class ComposerNewRequest extends Component {
     if (validated === true) {
       let reqRes;
 
-      // HTTP REQUESTS
+      // HTTP && GRAPHQL REQUESTS
       if (this.props.newRequestFields.protocol !== 'ws://') {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1]}/`;
         if (URIWithoutProtocol.charAt(URIWithoutProtocol.length - 1) !== '/') {
@@ -109,6 +93,7 @@ class ComposerNewRequest extends Component {
           host,
           path,
           url: this.props.newRequestFields.url,
+          graphQL: this.props.newRequestFields.graphQL,
           timeSent: null,
           timeReceived: null,
           connection: 'uninitialized',
@@ -130,6 +115,7 @@ class ComposerNewRequest extends Component {
           checked: false,
           tab: this.props.currentTab,
         };
+        console.log('HERES THE NEW REQRES: ', reqRes)
       }
       // WEBSOCKET REQUESTS
       else {
@@ -181,8 +167,8 @@ class ComposerNewRequest extends Component {
 
       this.props.setNewRequestFields({
         method: 'GET',
-        protocol: 'http://',
-        url: 'http://',
+        protocol: '',
+        url: '',
         graphQL: false
       })
     }

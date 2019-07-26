@@ -15,17 +15,17 @@ class ProtocolSelect extends Component {
     // });
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
-      composer_protocol_button_http: true,
-      'composer_protocol_button-selected_http': this.props.currentProtocol === '' && !this.props.graphQL,
+      http: true,
+      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL,
     });
     const WSStyleClasses = classNames({
       composer_protocol_button: true,
-      composer_protocol_button_ws: true,
+      ws: true,
       'composer_protocol_button-selected_ws': this.props.currentProtocol === 'ws://',
     });
     const GQLStyleClasses = classNames({
       composer_protocol_button: true,
-      composer_protocol_button_gql: true,
+      gql: true,
       'composer_protocol_button-selected_gql': this.props.graphQL,
     });
 
