@@ -1,6 +1,6 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import gql from 'graphql-tag';
 import { CLIENT_RENEG_LIMIT } from 'tls';
 
@@ -42,9 +42,20 @@ const graphQLController = {
       store.default.dispatch(actions.reqResUpdate(reqResCopy));
     };
 
-    // Query specific implementation
+    // TODO: Add request cookies
+    const headers = {};
+    reqResObj.request.headers.forEach((item) => {
+      headers[item.key] = item.value;
+    });
+
     const body = gql`${reqResObj.request.body}`;
-    const client = new ApolloClient({ uri: reqResObj.url });
+    const client = new ApolloClient({
+      uri: reqResObj.url,
+      headers,
+      cache: new InMemoryCache(),
+    });
+
+    // Query specific implementation
     if (reqResObj.request.method === 'QUERY') {
       client.query({ query: body })
         // Update the store with the response
