@@ -1,17 +1,21 @@
-import store from "../store";
+import * as store from '../store';
 import * as actions from '../actions/actions';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 
 const graphQLController = {
+
   openGraphQLConnection(reqResObj, connectionArray) {
+    // initialize response data
+    reqResObj.response.headers = {};
+    reqResObj.response.events = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     /*
     TODO: Investigate this code from httpController
     
-    store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     connectionArray.forEach((obj, i) => {
       if (obj.id === reqResObj.id) {
@@ -32,9 +36,21 @@ const graphQLController = {
     const query = gql`${reqResObj.request.body}`;
     const client = new ApolloClient({ uri: reqResObj.url });
     client.query({ query })
-      .then(data => console.log('response from query', data))
+      // Update the store with the response
+      .then((data) => {
+        const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
+        console.log(data);
+        // TODO: Add response headers, cookies
+        reqResCopy.connection = 'closed';
+        // HELP: What is connection type?
+        reqResCopy.connectionType = '';
+        reqResCopy.timeReceived = Date.now();
+        console.log('data', data);
+        console.log('events for graphql', data.data);
+        reqResCopy.response.events.push(JSON.stringify(data.data));
+        store.default.dispatch(actions.reqResUpdate(reqResCopy));
+      })
       .catch(err => console.error(err));
-
   }
 };
 

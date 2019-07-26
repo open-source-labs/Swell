@@ -54,7 +54,6 @@ const httpController = {
         clearInterval(interval);
         if (foundHTTP2Connection.status === 'initialized') {
           reqResObj.connection = 'error';
-          console.log('line56')
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         }
       }, 10000);
@@ -114,7 +113,6 @@ const httpController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
-    console.log('line116')
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     const formattedHeaders = {};
@@ -262,7 +260,7 @@ const httpController = {
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
     fetch(reqResObj.url, parsedFetchOptions)
-      .then(response => {
+      .then((response) => {
         // console.log('RESPONSE ::', response)
         //Parse response headers now to decide if SSE or not.
         let heads = {};
@@ -368,6 +366,7 @@ const httpController = {
           // console.log('after', bodyContent)
           // newObj.response.headers = headers;
           newObj.response.events.push(bodyContent);
+          console.log('events for http', typeof bodyContent, bodyContent);
           store.default.dispatch(actions.reqResUpdate(newObj));
         }
 
