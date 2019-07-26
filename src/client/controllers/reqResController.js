@@ -48,7 +48,6 @@ const connectionController = {
     console.log('reqResObj', reqResObj);
 
     if (reqResObj.graphQL) {
-    // if (reqResObj.request.method === 'QUERY') {
       graphQLController.openGraphQLConnection(reqResObj, this.openConnectionArray);
     }
     else {

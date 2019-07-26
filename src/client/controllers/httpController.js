@@ -286,12 +286,12 @@ const httpController = {
           if (cookies) {
             reqResObj.response.cookies = cookies;
             store.default.dispatch(actions.reqResUpdate(reqResObj))
-            cookies.forEach(cook => {
+            cookies.forEach((cookie) => {
               let url = '';
-              url += cook.secure ? 'https://' : 'http://';
-              url += cook.domain.charAt(0) === '.' ? 'www' : '';
-              url += cook.domain;
-              url += cook.path;
+              url += cookie.secure ? 'https://' : 'http://';
+              url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+              url += cookie.domain;
+              url += cookie.path;
 
               http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
             })
@@ -299,7 +299,7 @@ const httpController = {
           isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
         })
       })
-      .catch(err => {
+      .catch((err) => {
         reqResObj.connection = 'error';
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       })
@@ -366,7 +366,6 @@ const httpController = {
           // console.log('after', bodyContent)
           // newObj.response.headers = headers;
           newObj.response.events.push(bodyContent);
-          console.log('events for http', typeof bodyContent, bodyContent);
           store.default.dispatch(actions.reqResUpdate(newObj));
         }
 

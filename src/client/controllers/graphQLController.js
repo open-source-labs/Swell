@@ -16,7 +16,6 @@ const graphQLController = {
     /*
     TODO: Investigate this code from httpController
     
-
     connectionArray.forEach((obj, i) => {
       if (obj.id === reqResObj.id) {
         connectionArray.splice(i, 1);
@@ -39,18 +38,17 @@ const graphQLController = {
       // Update the store with the response
       .then((data) => {
         const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
-        console.log(data);
         // TODO: Add response headers, cookies
         reqResCopy.connection = 'closed';
-        // HELP: What is connection type?
-        reqResCopy.connectionType = '';
+        reqResCopy.connectionType = 'plain';
         reqResCopy.timeReceived = Date.now();
-        console.log('data', data);
-        console.log('events for graphql', data.data);
         reqResCopy.response.events.push(JSON.stringify(data.data));
         store.default.dispatch(actions.reqResUpdate(reqResCopy));
       })
-      .catch(err => console.error(err));
+      .catch((err) => {
+        reqResObj.connection = 'error';
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      });
   }
 };
 
