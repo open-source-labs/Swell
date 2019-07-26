@@ -12,6 +12,21 @@
   background-repeat: no-repeat;
   overflow-y: scroll;
 }
+#reqResContainer::-webkit-scrollbar{
+  width:10px;
+  background-color:#cccccc;
+  } 
+  #reqResContainer::-webkit-scrollbar-thumb{
+  background-color:rgb(189, 189, 189);
+  border-radius:10px;
+  }
+  #reqResContainer::-webkit-scrollbar-thumb:hover{
+  background-color:rgb(114, 111, 111);
+  }
+  #reqResContainer::-webkit-scrollbar-thumb:active{
+  background-color:rgb(80, 77, 77);
+  border:1px solid #333333;
+  } 
 
 #reqResContainer_inner {
   width: auto;
@@ -21,6 +36,7 @@
   white-space: nowrap;
   transition: transform 0.3s ease-in-out;
 }
+
 
 .resreq_wrap {
   width: calc(100vw - 340px);

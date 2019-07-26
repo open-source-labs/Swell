@@ -13,7 +13,7 @@
 	padding: 15px 18px;
 	position: absolute;
 	top: 0;
-	width: 500px;
+	width: 300px;
 	&:focus {
 		outline: 0 none;
 	}
@@ -22,10 +22,10 @@
 	background: white;
 	display: block;
 	height: 100vh;
-	left: 500px;
+	left: 300px;
 	position: absolute;
 	top: 0;
-	width: calc(100vw - 500px);
+	width: calc(100vw - 300px);
 }
 .composer_title {
 	font-size: 1.1rem;
