@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import * as actions from '../../../actions/actions';
-import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
 
 const mapStateToProps = store => ({
   newRequestBody: store.business.newRequestBody,
@@ -13,11 +12,11 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-class GraphQLBodyEntryForm extends Component {
+class GraphQLVariableEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
+      show: false,
     };
     this.toggleShow = this.toggleShow.bind(this);
   }
@@ -29,7 +28,6 @@ class GraphQLBodyEntryForm extends Component {
   }
 
   render() {
-
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
 
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -39,24 +37,24 @@ class GraphQLBodyEntryForm extends Component {
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
           <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
           </img>
-          Body
+          Variables
         </div>
 
         <textarea
-          value={this.props.newRequestBody.bodyContent}
+          value={this.props.newRequestBody.bodyVariables}
           className={'composer_textarea gql ' + bodyContainerClass }
           style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
           type='text'
-          placeholder='Body'
+          placeholder='Variables'
           rows={10}
           onChange={(e) => {
             this.props.setNewRequestBody({
               ...this.props.newRequestBody,
-              bodyContent: e.target.value
+              bodyVariables: e.target.value
             })
           }}
           ></textarea>
-          <GraphQLVariableEntryForm />
+
       </div>
     );
   }
@@ -65,4 +63,4 @@ class GraphQLBodyEntryForm extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(GraphQLBodyEntryForm);
+)(GraphQLVariableEntryForm);

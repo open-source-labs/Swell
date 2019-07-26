@@ -19,7 +19,7 @@ class Tab extends Component {
 
   render() {
     return (
-      <li onClick={this.tabClickHandler} className={'tab-list-item'}>{this.props.tabName}</li>
+      <li onClick={this.tabClickHandler} className={'tab-list-item'} key={this.props.tabName}>{this.props.tabName}</li>
     )
   }
 }

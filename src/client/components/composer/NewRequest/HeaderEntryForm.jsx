@@ -19,7 +19,7 @@ class HeaderEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show : true,
+      show: true,
     }
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
@@ -34,10 +34,8 @@ class HeaderEntryForm extends Component {
     if (this.props.newRequestHeaders.headersArr.length === 0) {
       const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
       this.addHeader(headersDeepCopy);
-    } 
-    // if (this.props.newRequestBody.bodyType !== 'none') { 
-      this.checkContentTypeHeaderUpdate();
-    // }
+    }
+    this.checkContentTypeHeaderUpdate();
   }
 
   checkContentTypeHeaderUpdate() {
@@ -48,7 +46,7 @@ class HeaderEntryForm extends Component {
     else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
       contentType = 'x-www-form-urlencoded';
     }
-    else if (this.props.newRequestBody.bodyType === 'GQLraw' || this.props.newRequestBody.bodyType === 'GQLvariables') {
+    else if (this.props.newRequestBody.bodyType === 'GQL' || this.props.newRequestBody.bodyType === 'GQLvariables') {
       contentType = 'application/json'
     }
     else {
@@ -164,9 +162,9 @@ class HeaderEntryForm extends Component {
     }
   }
 
-  toggleShow () {
-    this.setState ({
-      show : !this.state.show
+  toggleShow() {
+    this.setState({
+      show: !this.state.show
     });
   }
 

@@ -10,8 +10,8 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    // if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
-    if ((/https:\/\//).test(reqResObj.url)) {
+    if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
+    // if ((/https:\/\//).test(reqResObj.url)) {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
