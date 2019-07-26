@@ -35,7 +35,7 @@ class FieldEntryForm extends Component {
         // let url = this.props.newRequestFields.protocol + value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '')
         // let url = this.props.newRequestFields.protocol + value.replace(/(http?s|ws?s)(:[^\/]?\/?.?\/?)/, '')
         let url = value;
-        console.log("here;s the url",url)
+        console.log("here;s the url", url)
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
           url: url,
@@ -43,11 +43,24 @@ class FieldEntryForm extends Component {
         break;
       }
       case 'protocol': {
-        if (!!graphQL) {
+        let grabbedProtocol, afterProtocol, composedURL;
+        if (!!this.props.newRequestFields.url) {
+          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/) ? this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0] : '';
+          console.log('grabbedprotocol', grabbedProtocol)
+          afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length);
+          composedURL = grabbedProtocol !== 'ws://' ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
+        }
+        else {
+          grabbedProtocol = '';
+          afterProtocol = '';
+          composedURL = '';
+        }
+
+        if (!!graphQL) { //if graphql
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
-            url: '',
+            url: composedURL,
             method: 'QUERY',
             graphQL: true
           })
@@ -56,18 +69,31 @@ class FieldEntryForm extends Component {
             bodyType: 'GQLraw',
           });
         }
-        else {
-
-          let url = value + this.props.newRequestFields.url.replace(/(h?t?t?p?s?|w?s?):\/?\/?/, '');
-
+        else if (value === 'ws://') { //if ws
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: value,
-            url: url,
+            url: value + afterProtocol,
             method: 'GET',
             graphQL: false
           })
           console.log("ABOUT TO UPDATE REQ BODY IN FIELDENTRYFORM line 70")
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType: 'none',
+            bodyContent: '',
+          });
+        }
+        else { //if http/s
+          console.log("\n\n\n\n\n\n")
+          this.props.setNewRequestFields({
+            ...this.props.newRequestFields,
+            protocol: '',
+            url: 'http://' + afterProtocol,
+            method: 'GET',
+            graphQL: false
+          })
+          console.log("ABOUT TO UPDATE REQ BODY IN FIELDENTRYFORM")
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
             bodyType: 'none',

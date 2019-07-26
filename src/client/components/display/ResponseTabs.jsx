@@ -92,6 +92,7 @@ class ResponseTabs extends Component {
         }
         else if (tabState === 'Response Headers') {
           const headerObj = this.props.responseContent.headers;
+          console.log("responseTabs.jsx headers: ", this.props.responseContent.headers)
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
               if (!Array.isArray(cur)) {
