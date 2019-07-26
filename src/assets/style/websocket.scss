@@ -56,6 +56,25 @@
 	overflow: scroll;
 	width: 100%;
 }
+//-------------------------------------------------------------------
+//This is a fix for the ugly windows and linux scrollbars
+//-------------------------------------------------------------------
+.websocket_message_container::-webkit-scrollbar{
+	width:5px;
+	background-color:#ffffff;
+	}
+	.websocket_message_container::-webkit-scrollbar-thumb{
+	background-color:rgb(194, 194, 194);
+	border-radius:10px;
+	}
+	.websocket_message_container::-webkit-scrollbar-thumb:hover{
+	background-color:rgb(114, 111, 111);
+	}
+	.websocket_message_container::-webkit-scrollbar-thumb:active{
+	background-color:rgb(80, 77, 77);
+	border:1px solid #333333;
+	}
+//-------------------------------------------------------------------
 
 .websocket_message {
 	align-items: center;
@@ -82,11 +101,31 @@
 	font-size: 14px;
 	height: 25px;
 	max-width: 300px;
-	overflow: scroll;
-	overflow-wrap: break-word;
+	// overflow: scroll;
+	// overflow-wrap: break-word;
 	padding: 0px 8px;
 	padding-top: 5px;
 }
+//-------------------------------------------------------------------
+//This is a fix for the ugly windows and linux scrollbars
+//-------------------------------------------------------------------
+.websocket_message-data::-webkit-scrollbar{
+	width:10px;
+	background-color:#cccccc;
+	}
+	.websocket_message-data::-webkit-scrollbar-thumb{
+	background-color:rgb(189, 189, 189);
+	border-radius:10px;
+	}
+	.websocket_message-data::-webkit-scrollbar-thumb:hover{
+	background-color:rgb(114, 111, 111);
+	}
+	.websocket_message-data::-webkit-scrollbar-thumb:active{
+	background-color:rgb(80, 77, 77);
+	border:1px solid #333333;
+	}
+//-------------------------------------------------------------------
+
 .websocket_message-time {
 	font-size: 14px;
 	padding: 0px 8px;
