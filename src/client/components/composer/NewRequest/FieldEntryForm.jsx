@@ -51,6 +51,10 @@ class FieldEntryForm extends Component {
             method: 'QUERY',
             graphQL: true
           })
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType: 'GQLraw',
+          });
         }
         else {
 
@@ -63,6 +67,12 @@ class FieldEntryForm extends Component {
             method: 'GET',
             graphQL: false
           })
+          console.log("ABOUT TO UPDATE REQ BODY IN FIELDENTRYFORM line 70")
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType: 'none',
+            bodyContent: '',
+          });
         }
         break;
       }
@@ -70,6 +80,7 @@ class FieldEntryForm extends Component {
         if (value === 'GET') {
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
+            bodyType: 'none',
             bodyContent: '',
           });
         }
