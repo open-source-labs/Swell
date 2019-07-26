@@ -2,6 +2,7 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 import httpController from './httpController.js';
 import wsController from './wsController.js';
+import graphQLController from './graphQLController.js';
 
 const connectionController = {
   openConnectionArray: [],
@@ -46,9 +47,15 @@ const connectionController = {
     const reqResObj = reqResArr.find(el => el.id === id);
     console.log('reqResObj', reqResObj);
 
-    reqResObj.protocol === 'ws://'
-      ? wsController.openWSconnection(reqResObj, this.openConnectionArray)
-      : httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
+    // if (reqResObj.graphql) {
+    if (reqResObj.request.method === 'QUERY') {
+      graphQLController.openGraphQLConnection(reqResObj, this.openConnectionArray);
+    }
+    else {
+      reqResObj.protocol === 'ws://'
+        ? wsController.openWSconnection(reqResObj, this.openConnectionArray)
+        : httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
+    }
   },
 
   openAllSelectedReqRes() {

@@ -98,7 +98,7 @@ class FieldEntryForm extends Component {
           {
             this.props.newRequestFields.protocol !== 'ws://' && !this.props.newRequestFields.graphQL &&
 
-            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select'} onChange={(e) => {
+            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select http'} onChange={(e) => {
               this.onChangeHandler(e, 'method')
             }}>
               <option value='GET'>GET</option>
@@ -112,7 +112,7 @@ class FieldEntryForm extends Component {
           {
             this.props.newRequestFields.protocol !== 'ws://' && this.props.newRequestFields.graphQL &&
 
-            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select'} onChange={(e) => {
+            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select gql'} onChange={(e) => {
               this.onChangeHandler(e, 'method')
             }}>
               <option value='QUERY'>QUERY</option>
