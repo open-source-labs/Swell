@@ -17,7 +17,7 @@ class SSERow extends Component {
   }
 
   render() {
-    console.log("IN THE SSEROW FILE")
+    // console.log("IN THE SSEROW FILE")
     let contentBody;
     try {
       let json = JSON.parse(this.props.content.data);
