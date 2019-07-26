@@ -80,7 +80,7 @@ class ResponseTabs extends Component {
           else {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
-                <div>
+                <div key={`jsonresponsediv+${idx}`}>
                   {/* {console.log(responseEvents)} */}
                   <SyntaxHighlighter language="javascript" style={docco}  className="response_display">
                   {pretty(cur, {ocd: false})};
@@ -126,9 +126,9 @@ class ResponseTabs extends Component {
     return (
       <div>
         <ul className="tab_list-response">
-          <Tab onTabSelected={this.handleTabSelect} tabName={events} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={events} key='events'/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={headers} key='headers'/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} key='cookies'/>
         </ul>
         <div className="tab_content-response">{tabContentShownEvents}</div>
       </div>
