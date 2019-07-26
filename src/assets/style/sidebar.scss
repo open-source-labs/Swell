@@ -300,7 +300,10 @@
   font-size: 14px;
 	&:focus {
 		outline: 0 none;
-	}
+  }
+  &.gql {
+    margin-bottom: 10px;
+  }
 }
 .composer_textarea-error {
 	border: 1px solid red;

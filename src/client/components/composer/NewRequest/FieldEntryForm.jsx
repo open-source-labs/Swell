@@ -66,7 +66,10 @@ class FieldEntryForm extends Component {
           })
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyType: 'GQLraw',
+            bodyType: 'GQL',
+            bodyContent: `query {
+
+}`,
           });
         }
         else if (value === 'ws://') { //if ws
@@ -85,7 +88,6 @@ class FieldEntryForm extends Component {
           });
         }
         else { //if http/s
-          console.log("\n\n\n\n\n\n")
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
@@ -108,6 +110,42 @@ class FieldEntryForm extends Component {
             ...this.props.newRequestBody,
             bodyType: 'none',
             bodyContent: '',
+          });
+        }
+        this.props.setNewRequestFields({
+          ...this.props.newRequestFields,
+          method: value,
+        })
+        if (value === 'QUERY') {
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: `query {
+
+}`
+          });
+        }
+        this.props.setNewRequestFields({
+          ...this.props.newRequestFields,
+          method: value,
+        })
+        if (value === 'MUTATION') {
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: `mutation {
+
+}`
+          });
+        }
+        this.props.setNewRequestFields({
+          ...this.props.newRequestFields,
+          method: value,
+        })
+        if (value === 'SUBSCRIPTION') {
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: `subscription {
+
+}`
           });
         }
         this.props.setNewRequestFields({
