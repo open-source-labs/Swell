@@ -293,7 +293,7 @@ const httpController = {
               url += cookie.domain;
               url += cookie.path;
 
-              http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
+              http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
             })
           }
           isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
