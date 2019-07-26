@@ -35,9 +35,9 @@ class HeaderEntryForm extends Component {
       const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
       this.addHeader(headersDeepCopy);
     } 
-    if (this.props.newRequestBody.bodyType !== 'none') { 
+    // if (this.props.newRequestBody.bodyType !== 'none') { 
       this.checkContentTypeHeaderUpdate();
-    }
+    // }
   }
 
   checkContentTypeHeaderUpdate() {
@@ -47,6 +47,9 @@ class HeaderEntryForm extends Component {
     }
     else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
       contentType = 'x-www-form-urlencoded';
+    }
+    else if (this.props.newRequestBody.bodyType === 'GQLraw' || this.props.newRequestBody.bodyType === 'GQLvariables') {
+      contentType = 'application/json'
     }
     else {
       contentType = this.props.newRequestBody.rawType;

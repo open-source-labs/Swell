@@ -103,9 +103,10 @@ class ComposerNewRequest extends Component {
           request: {
             method: this.props.newRequestFields.method,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active),
-            body: this.props.newRequestBody.bodyContent,
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active),
+            body: this.props.newRequestBody.bodyContent,
             bodyType: this.props.newRequestBody.bodyType,
+            bodyVariables: this.props.newRequestBody.bodyVariables,
             rawType: this.props.newRequestBody.rawType
           },
           response: {

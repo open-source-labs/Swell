@@ -23,6 +23,7 @@ const initialState = {
   },
   newRequestBody: {
     bodyContent: '',
+    bodyVariables: '',
     bodyType: 'none',
     rawType: 'Text (text/plain)',
     JSONFormatted: true,
