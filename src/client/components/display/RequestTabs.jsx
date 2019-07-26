@@ -49,7 +49,7 @@ class RequestTabs extends Component {
 
   render() {
     let body = "Request Body";
-    // let cookies = 'Cookies';
+    let cookies = 'Request Cookies';
     let headers = "Request Headers";
     let tabContentShown;
 
@@ -77,7 +77,7 @@ class RequestTabs extends Component {
         <ul className={"tab_list"}>
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
           <Tab onTabSelected={this.handleTabSelect} tabName={body} />
-          {/* <Tab onTabSelected={this.handleTabSelect} tabName={cookies} /> */}
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
         </ul>
         <div className={"tab_content"}>{tabContentShown}</div>
       </div>
