@@ -17,7 +17,7 @@
 .tab-list-item {
 	cursor: pointer;
 	display: inline-block;
-	font-size: .6rem;
+	font-size: .8rem;
 	font-weight: 800;
 	line-height: 25px;
 	list-style: none;
@@ -47,4 +47,7 @@
 	padding: 5px 5px;
 	position: relative;
 	width: 100%;
+}
+.custom-json-pretty {
+	background-color: white;
 }

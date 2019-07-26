@@ -29,7 +29,7 @@ class ReqRes extends Component {
 
   onCheckHandler() {
     this.props.content.checked = !this.props.content.checked;
-    this.props.reqResUpdate(this.props.content);
+    this.props.reqResUpdate(this.props.content);            
   }
 
   removeReqRes() {
@@ -40,6 +40,8 @@ class ReqRes extends Component {
   render() {
 
     const contentBody = [];
+    // console.log(`TIME RECEIVED ${this.props.content.timeReceived}`)
+    // console.log(`TIME SENT ${this.props.content.timeSent}`)
 
     if (this.props.content.protocol === 'ws://') {
       contentBody.push(<WebSocketWindow
@@ -132,7 +134,8 @@ class ReqRes extends Component {
 
           <div>
             <span className="tertiary-title">
-              Roundtrip: {this.props.content.timeReceived - this.props.content.timeSent}
+              {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
+              Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
             </span>
           </div>
         </div>

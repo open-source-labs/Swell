@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { xcode } from 'react-syntax-highlighter/styles/hljs';
+// import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'; //not being used anymore
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import pretty from 'pretty';
+import prettyFormat from 'pretty-format';
+import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import * as actions from '../../actions/actions';
 import Tab from './Tab.jsx';
 import SSERow from './SSERow.jsx';
 import ResponsePlain from './ResponsePlain.jsx';
 import CookieTable from './CookieTable.jsx';
+import JSONPretty from 'react-json-pretty'; 
+// import 'react-json-pretty/themes/monikai.css';
+
+const JSONPrettyMon = require('react-json-pretty/dist/monikai');
 
 const mapStateToProps = store => ({ store });
 const mapDispatchToProps = dispatch => ({});
@@ -59,6 +65,7 @@ class ResponseTabs extends Component {
     responsesCache.push(this.props);
 
     // Step 2  - Increment across all responses in array
+
     responsesCache.forEach((cur, idx) => {
       const responseEvents = cur.responseContent.events;
       const responseHeaders = cur.responseContent.headers;
@@ -77,13 +84,18 @@ class ResponseTabs extends Component {
           else {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
-                <div>
-                  <SyntaxHighlighter language="javascript" style={xcode}>
-                    {pretty(cur, { ocd: false })}
-                  </SyntaxHighlighter>
+                <div className="json-response">
+                <JSONPretty data={cur}  theme ={{
+                  main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
+                  key: 'color:#f92672;',
+                  string: 'color:#fd971f;',
+                  value: 'color:#a6e22e;',
+                  boolean: 'color:#ac81fe;',
+                }}>     
+                  </JSONPretty>
                 </div>
               );
-            });
+            })
           }
         }
         else if (tabState === 'Response Headers') {

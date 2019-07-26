@@ -11,7 +11,7 @@
 	vertical-align: middle;
 }
 .tertiary-title {
-	font-size: .7rem;
+	font-size: .9rem;
 	font-weight: 500;
 	line-height: 30px;
 	margin: 0;
@@ -35,4 +35,8 @@
 	border-radius: 8px 0 0 0;
 	margin-left: -15px;
 	margin-right: 20px;
+}
+.json-response{
+	height:300px;
+	overflow-y: auto;
 }

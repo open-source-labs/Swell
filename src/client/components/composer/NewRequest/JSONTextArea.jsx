@@ -45,7 +45,7 @@ class JSONTextArea extends Component {
       return;
     }
     try {
-      console.log('intry');
+      // console.log('in try');
       JSON.parse(this.props.newRequestBody.bodyContent);
       if(!this.props.newRequestBody.JSONFormatted) {
         this.props.setNewRequestBody({
