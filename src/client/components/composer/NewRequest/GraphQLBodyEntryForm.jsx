@@ -29,7 +29,6 @@ class GraphQLBodyEntryForm extends Component {
   }
 
   render() {
-    console.log("INSIDE THE GRAPHQLBodyEntryForm ", this.props.newRequestBody)
     const num = this.props.newRequestBody.bodyType === 'GQLraw' ? 10 : 5;
 
     const textArea = <textarea
@@ -67,14 +66,14 @@ class GraphQLBodyEntryForm extends Component {
         <div className='composer_subtitle' >
           Body
         </div>
-      <GraphQLBodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody} />
-        
+        <GraphQLBodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody} />
+
         {textArea}
 
         {
           this.props.newRequestBody.bodyType === 'GQLvariables' &&
           secondTextArea
-      }
+        }
 
 
       </div>
