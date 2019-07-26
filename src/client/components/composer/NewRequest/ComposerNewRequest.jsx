@@ -57,6 +57,9 @@ class ComposerNewRequest extends Component {
     if (this.props.newRequestFields.url === 'http://' || this.props.newRequestFields.url === 'https://' || this.props.newRequestFields.url === 'ws://') {
       validationMessage = "Please enter a valid URI.";
     }
+    if (!(/(https?:\/\/)|(ws:\/\/)/).test(this.props.newRequestFields.url)) {
+      validationMessage = "Please enter a valid URI.";
+    }
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
       validationMessage = "Please fix JSON body formatting errors.";
     }
@@ -71,6 +74,12 @@ class ComposerNewRequest extends Component {
 
       // HTTP && GRAPHQL REQUESTS
       if (this.props.newRequestFields.protocol !== 'ws://') {
+        // console.log("HERE IN ADDNEWREQUEST IN COMPOSERNEWREQUEST")
+        // console.log("url----->", this.props.newRequestFields.url)
+        // console.log("protocol----->", this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0])
+        // // console.log("protocol----->", this.props.newRequestFields.url.match(/^https?:\/\//))
+        // const meow = this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/g)[0]
+        // console.log("uri minus protocol ----->", this.props.newRequestFields.url.substring(meow.length, this.props.newRequestFields.url.length))
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1]}/`;
         if (URIWithoutProtocol.charAt(URIWithoutProtocol.length - 1) !== '/') {
           URIWithoutProtocol += '/';
@@ -89,7 +98,7 @@ class ComposerNewRequest extends Component {
 
           id: uuid(), // Math.floor(Math.random() * 100000),
           created_at: new Date(),
-          protocol: this.props.newRequestFields.protocol,
+          protocol: this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0],
           host,
           path,
           url: this.props.newRequestFields.url,
