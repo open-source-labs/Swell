@@ -48,7 +48,7 @@ class GraphQLBodyEntryForm extends Component {
     ></textarea>
 
     const secondTextArea = <textarea
-      value={this.props.newRequestBody.bodyContent}
+      value={this.props.newRequestBody.bodyVariables}
       className={'composer_textarea'}
       style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
       type='text'
@@ -67,16 +67,13 @@ class GraphQLBodyEntryForm extends Component {
         <div className='composer_subtitle' >
           Body
         </div>
-      <GraphQLBodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody} />
-        
-        {textArea}
+        <GraphQLBodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody} />
 
+        {textArea}
         {
           this.props.newRequestBody.bodyType === 'GQLvariables' &&
           secondTextArea
-      }
-
-
+        }
       </div>
     );
   }

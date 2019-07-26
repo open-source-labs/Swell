@@ -66,8 +66,11 @@
 }
 .composer_protocol_container {
 	display: flex;
-	justify-content: space-between;
-	margin: 15px 0 15px 0;
+  margin: 15px 0 15px 0;
+  justify-content: space-between;
+  &.gqlbody {
+    justify-content: space-evenly;
+  }
 }
 .composer_protocol_button {
   background-color: #343333;
@@ -249,10 +252,17 @@
 		background: $greenone;
 		border: none;
 	}
+	&.gql:hover {
+		background: $gqlpink;
+		border: none;
+	}
 }
 .composer_bodytype_button-selected {
 	background: $greenone;
-	border: none;
+  border: none;
+  &.gql {
+    background: $gqlpink;
+  }
 }
 .composer_bodyform_container-open {
 	display: flex;
@@ -286,7 +296,8 @@
 	color: white;
 	margin-top: 7px;
 	padding: 5px;
-	width: 100%;
+  width: 100%;
+  font-size: 14px;
 	&:focus {
 		outline: 0 none;
 	}

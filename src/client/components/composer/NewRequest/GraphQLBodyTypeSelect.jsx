@@ -12,17 +12,19 @@ class GraphQLBodyTypeSelect extends Component {
     // console.log(this.props)
     let RawGQLClasses = classNames({
       'composer_bodytype_button': true,
+      'gql': true,
       'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'GQLraw'
     });
     let VariableGQLClasses = classNames({
       'composer_bodytype_button': true,
+      'gql': true,
       'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'GQLvariables'
     });
 
     return (
-      <div className={"composer_protocol_container"} style={{ 'marginTop': '4px' }}>
+      <div className={"composer_protocol_container gqlbody"} style={{ 'marginTop': '4px' }}>
         <div
-          style={{ 'width': '40%' }}
+          style={{ 'width': '35%' }}
           className={RawGQLClasses}
           onMouseDown={() => this.props.setNewRequestBody({
             ...this.props.newRequestBody,
@@ -32,7 +34,7 @@ class GraphQLBodyTypeSelect extends Component {
         </div>
 
         <div
-          style={{ 'width': '40%' }}
+          style={{ 'width': '35%' }}
           className={VariableGQLClasses}
           onMouseDown={() => this.props.setNewRequestBody({
             ...this.props.newRequestBody,

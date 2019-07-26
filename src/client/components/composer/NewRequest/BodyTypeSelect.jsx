@@ -24,7 +24,7 @@ class BodyTypeSelect extends Component {
     });
 
     return(
-      <div className={"composer_protocol_container"} style={{'marginTop' : '4px'}}>
+      <div className={"composer_protocol_container httpbody"} style={{'marginTop' : '4px'}}>
         <div 
           style={{'width' : '17%'}}
           className={NoneStyleClasses} 
