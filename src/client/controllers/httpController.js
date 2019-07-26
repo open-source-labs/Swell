@@ -11,11 +11,11 @@ const httpController = {
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
     if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
-      console.log('HTTPS, TRYING HTTP2');
+      // console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
     else {
-      console.log('HTTP REQUEST, MOVING TO FETCH');
+      // console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
   },
@@ -140,9 +140,9 @@ const httpController = {
       protocol: 'HTTP2',
       id: reqResObj.id,
     };
-    
+
     connectionArray.push(openConnectionObj);
- 
+
     let isSSE;
 
     reqStream.on('response', (headers, flags) => {
@@ -162,7 +162,7 @@ const httpController = {
       reqResObj.response.headers = headers;
       reqResObj.response.events = [];
 
-      let sesh = session.defaultSession; 
+      let sesh = session.defaultSession;
       let domain = reqResObj.host.split('//')
       domain.shift();
       domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
@@ -184,8 +184,8 @@ const httpController = {
 
       //       sesh.cookies.remove(url, cook.name, (x) => console.log(x));
       //     })
-        // }
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      // }
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
       // })
     });
 
@@ -261,49 +261,49 @@ const httpController = {
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
     fetch(reqResObj.url, parsedFetchOptions)
-    .then(response => {
-      // console.log('RESPONSE ::', response)
-      //Parse response headers now to decide if SSE or not.
-      let heads = {};
-      for (let entry of response.headers.entries()) {
-        heads[entry[0].toLowerCase()] = entry[1];
-      }
-      reqResObj.response.headers = heads;
-
-      let isStream;
-      if (heads['content-type'] && heads['content-type'].includes('stream')) {
-        isStream = true;
-      } else {
-        isStream = false;
-      }
-      let http1Sesh = session.defaultSession; 
-      let domain = reqResObj.host.split('//')
-      domain.shift();
-      domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-      // let dotDomain = `.${domain}`;
-      // console.log(domain, dotDomain);
-
-      http1Sesh.cookies.get({domain: domain}, (err, cookies) => {
-        if (cookies) {
-          reqResObj.response.cookies = cookies;
-          store.default.dispatch(actions.reqResUpdate(reqResObj))
-          cookies.forEach(cook => {
-            let url = '';
-            url += cook.secure ? 'https://' : 'http://';
-            url += cook.domain.charAt(0) === '.' ? 'www' : '';
-            url += cook.domain;
-            url += cook.path;
-
-            http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
-          })
+      .then(response => {
+        // console.log('RESPONSE ::', response)
+        //Parse response headers now to decide if SSE or not.
+        let heads = {};
+        for (let entry of response.headers.entries()) {
+          heads[entry[0].toLowerCase()] = entry[1];
         }
-        isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+        reqResObj.response.headers = heads;
+
+        let isStream;
+        if (heads['content-type'] && heads['content-type'].includes('stream')) {
+          isStream = true;
+        } else {
+          isStream = false;
+        }
+        let http1Sesh = session.defaultSession;
+        let domain = reqResObj.host.split('//')
+        domain.shift();
+        domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+        // let dotDomain = `.${domain}`;
+        // console.log(domain, dotDomain);
+
+        http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
+          if (cookies) {
+            reqResObj.response.cookies = cookies;
+            store.default.dispatch(actions.reqResUpdate(reqResObj))
+            cookies.forEach(cook => {
+              let url = '';
+              url += cook.secure ? 'https://' : 'http://';
+              url += cook.domain.charAt(0) === '.' ? 'www' : '';
+              url += cook.domain;
+              url += cook.path;
+
+              http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
+            })
+          }
+          isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+        })
       })
-    })
-    .catch(err => {
-      reqResObj.connection = 'error';
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
-    }) 
+      .catch(err => {
+        reqResObj.connection = 'error';
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      })
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
@@ -356,7 +356,7 @@ const httpController = {
 
     function read() {
       reader.read().then((obj) => {
-         if (obj.done) {
+        if (obj.done) {
           newObj.connection = 'closed';
           newObj.connectionType = 'plain';
           newObj.timeReceived = Date.now();

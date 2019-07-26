@@ -35,7 +35,6 @@ class FieldEntryForm extends Component {
         // let url = this.props.newRequestFields.protocol + value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '')
         // let url = this.props.newRequestFields.protocol + value.replace(/(http?s|ws?s)(:[^\/]?\/?.?\/?)/, '')
         let url = value;
-        console.log("here;s the url",url)
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
           url: url,
@@ -88,8 +87,6 @@ class FieldEntryForm extends Component {
   }
 
   render() {
-
-    console.log("inside of FieldEntryForm line 84 ", this.props.newRequestFields)
 
     return (
       <div>
