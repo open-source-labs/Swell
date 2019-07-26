@@ -1,8 +1,10 @@
+import ApolloClient from 'apollo-client';
+import { InMemoryCache, ApolloLink } from 'apollo-boost';
+import gql from 'graphql-tag';
+import { createHttpLink } from 'apollo-link-http';
+
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import ApolloClient, { InMemoryCache } from 'apollo-boost';
-import gql from 'graphql-tag';
-import { CLIENT_RENEG_LIMIT } from 'tls';
 
 const graphQLController = {
 
@@ -33,6 +35,7 @@ const graphQLController = {
 
 
     const handleResponse = (data) => {
+      console.log('data in handle response', data);
       const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
       // TODO: Add response headers, cookies
       reqResCopy.connection = 'closed';
@@ -49,8 +52,34 @@ const graphQLController = {
     });
 
     const body = gql`${reqResObj.request.body}`;
-    const client = new ApolloClient({
+
+    // adding createHttpLink to get headers..?
+    const httpLink = createHttpLink({
       uri: reqResObj.url,
+    });
+
+    /*
+    'Afterware' is very similar to a middleware, except that an afterware runs after a request has been made, that is when a response is going to get processed.
+
+    See here for more information on this code: https://github.com/apollographql/apollo-link/issues/373
+    */
+    const afterwareLink = new ApolloLink((operation, forward) => {
+      console.log('forward(operation)', forward(operation));
+      return forward(operation).map((response) => {
+        console.log('response', response);
+        const resultOfGetContext = operation.getContext();
+        console.log('resultOfGetContext', resultOfGetContext);
+        const { response: { headers } } = resultOfGetContext;
+        console.log('headers', headers);
+        headers.forEach((item) => {
+          console.log('this is a header', item);
+        });
+        return response;
+      });
+    });
+
+    const client = new ApolloClient({
+      link: afterwareLink.concat(httpLink),
       headers,
       cache: new InMemoryCache(),
     });

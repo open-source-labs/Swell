@@ -12,7 +12,7 @@ const httpController = {
      */
     // if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
     if ((/https:\/\//).test(reqResObj.url)) {
-      console.log('HTTPS, TRYING HTTP2');
+      // console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
     else {
