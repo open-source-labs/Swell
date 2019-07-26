@@ -86,7 +86,7 @@ class ResponseTabs extends Component {
               tabContentShownEvents.push(
                 <div className="json-response">
                 <JSONPretty data={cur}  theme ={{
-                  main: 'line-height:1.3;color:#66d9ef;background:#282828;overflow:auto;',
+                  main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
                   key: 'color:#f92672;',
                   string: 'color:#fd971f;',
                   value: 'color:#a6e22e;',
