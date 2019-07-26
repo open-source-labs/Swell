@@ -47,8 +47,8 @@ const connectionController = {
     const reqResObj = reqResArr.find(el => el.id === id);
     console.log('reqResObj', reqResObj);
 
-    // if (reqResObj.graphql) {
-    if (reqResObj.request.method === 'QUERY') {
+    if (reqResObj.graphQL) {
+    // if (reqResObj.request.method === 'QUERY') {
       graphQLController.openGraphQLConnection(reqResObj, this.openConnectionArray);
     }
     else {
