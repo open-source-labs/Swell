@@ -84,7 +84,7 @@ class ResponseTabs extends Component {
           else {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
-                <div className="json-response">
+                <div className="json-response" key={`jsonresponsediv+${idx}`}>
                 <JSONPretty data={cur}  theme ={{
                   main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
                   key: 'color:#f92672;',
@@ -100,6 +100,7 @@ class ResponseTabs extends Component {
         }
         else if (tabState === 'Response Headers') {
           const headerObj = this.props.responseContent.headers;
+          console.log("responseTabs.jsx headers: ", this.props.responseContent.headers)
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
               if (!Array.isArray(cur)) {
@@ -133,9 +134,9 @@ class ResponseTabs extends Component {
     return (
       <div>
         <ul className="tab_list-response">
-          <Tab onTabSelected={this.handleTabSelect} tabName={events} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={events} key='events'/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={headers} key='headers'/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} key='cookies'/>
         </ul>
         <div className="tab_content-response">{tabContentShownEvents}</div>
       </div>
