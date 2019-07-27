@@ -130,10 +130,10 @@ describe('Business reducer', () => {
       type: 'REQRES_CLEAR'
     }
 
-    it('should empth the reqResArray', () => {
+    it('should empty the reqResArray', () => {
       const initialReqResArray = [{ first: 1 }, { second: 2 }]
-      state.reqResArray = initialReqResArray;
-      expect(state.reqResArray).toBe(initialReqResArray);
+      // state.reqResArray = initialReqResArray;
+      // expect(state.reqResArray).toBe(initialReqResArray); //unnecessary...?
       const { reqResArray } = reducer(state, action);
       expect(reqResArray).not.toBe(initialReqResArray);
       expect(reqResArray).toEqual([]);
@@ -206,6 +206,7 @@ describe('Business reducer', () => {
       const { reqResArray } = reducer(state, action);
       expect(reqResArray).not.toBe(initialReqResArray);
       expect(reqResArray.length).toEqual(2);
+      expect(reqResArray[0]).toEqual(fakeReqResArray[0]);
       expect(reqResArray[1]).toEqual(fakeReqResArray[2]);
     })
   })
@@ -221,7 +222,7 @@ describe('Business reducer', () => {
       type: 'REQRES_UPDATE',
       payload: {
         id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-        created_at: '2019-02-15T00:40:56.360Z',
+        created_at: '2018-02-15T00:40:56.360Z',
         newKey: 'this is a new value'
       }
     }
@@ -382,13 +383,12 @@ describe('Business reducer', () => {
 
     it('sets new requestHeaders', () => {
       const { newRequestHeaders } = reducer(state, contentTypeHeaderAction);
-      console.log(newRequestHeaders)
       expect(newRequestHeaders.headersArr.length).toBe(1);
       expect(newRequestHeaders.headersArr[0]).toEqual(contentTypeHeaderAction.payload.headersArr[0]);
       expect(newRequestHeaders.count).toBe(1);
       expect(newRequestHeaders.override).toBe(false);
     })
-    it('adds to old headers when setting additional new requestHeaders', () => {
+    it('can set multiple requestHeaders', () => {
       const { newRequestHeaders } = reducer(state, otherHeaderAction);
       expect(newRequestHeaders.headersArr.length).toBe(2);
       expect(newRequestHeaders.headersArr[1]).toEqual(otherHeaderAction.payload.headersArr[1]);
@@ -402,10 +402,10 @@ describe('Business reducer', () => {
       type: 'SET_NEW_REQUEST_BODY',
       payload: {
         bodyContent: '{ "key": "value"}',
+        bodyVariables: '',
         bodyType: 'raw',
         rawType: 'application/json',
-        JSONFormatted: true,
-        bodyVariables: ''
+        JSONFormatted: true
       }
     }
 
@@ -418,17 +418,32 @@ describe('Business reducer', () => {
   })
 
   describe('SET_NEW_REQUEST_COOKIES', () => {
-    const action = {
+    const cookieAction = {
       type: 'SET_NEW_REQUEST_COOKIES',
       payload: {
-        key: 'admin',
-        value: 'password'
+        cookiesArr: [{key: 'admin', value: 'password'}],
+        count: [{key: 'admin', value: 'password'}].length
+      }
+    }
+    const otherCookieAction = {
+      type: 'SET_NEW_REQUEST_COOKIES',
+      payload: {
+        cookiesArr: [{key: 'admin', value: 'password'}, {key: 'admin2', value: 'password2'}],
+        count: [{key: 'admin', value: 'password'}, {key: 'admin2', value: 'password2'}].length
       }
     }
 
     it('sets new requestCookies', () => {
-      const { newRequestCookies } = reducer(state, action);
-      expect(newRequestCookies).toEqual(action.payload);
+      const { newRequestCookies } = reducer(state, cookieAction);
+      expect(newRequestCookies.cookiesArr.length).toBe(1);
+      expect(newRequestCookies.cookiesArr[0]).toEqual(cookieAction.payload.cookiesArr[0]);
+      expect(newRequestCookies.count).toBe(1);
+    })
+    it('can set multiple requestCookies', () => {
+      const { newRequestCookies } = reducer(state, otherCookieAction);
+      expect(newRequestCookies.cookiesArr.length).toBe(2);
+      expect(newRequestCookies.cookiesArr[1]).toEqual(otherCookieAction.payload.cookiesArr[1]);
+      expect(newRequestCookies.count).toBe(2);
     })
   })
 
