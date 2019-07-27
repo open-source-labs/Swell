@@ -9,7 +9,7 @@
 	flex-direction: column;
 	height: 100vh;
 	left: 0;
-	overflow: scroll;
+	// overflow: scroll;
 	padding: 15px 18px;
 	position: absolute;
 	top: 0;
@@ -41,7 +41,7 @@
 }
 .composer_submit {
 	-webkit-appearance: none;
-	background-color: $bluetwo;
+	
 	border: none;
 	border-radius: 5px;
 	color: white;
@@ -53,7 +53,16 @@
 	margin: 5px 0 15px;
 	padding: 8px;
 	width: 100%;
-	outline: none;
+  outline: none;
+  &.http {
+    background-color: $bluetwo;
+  }
+  &.ws {
+    background-color: $greenone;
+  }
+  &.gql {
+    background-color: $gqlpink;
+  }
 }
 .composer_protocol_container {
 	display: flex;
@@ -61,7 +70,7 @@
 	margin: 15px 0 15px 0;
 }
 .composer_protocol_button {
-	background-color: #343333;
+  background-color: #343333;
 	border: 2px solid #808080;
 	border-radius: 5px;
 	cursor: pointer;
@@ -72,14 +81,38 @@
 	outline: 0 none;
 	text-align: center;
 	width: 32%;
-	&:hover {
-		background: rgb(0,137,208);
-		border: 2px solid $bluetwo;
-		line-height: 28px;
-	}
 }
-.composer_protocol_button-selected {
-	background: rgb(0,137,208);
+.composer_protocol_button {
+  &.http:hover {
+	background: $bluetwo;
+	border: 2px solid $bluetwo;
+  line-height: 28px;
+  }
+}
+.composer_protocol_button {
+  &.ws:hover {
+	background: $greenone;
+	border: 2px solid $greenone;
+  line-height: 28px;
+  }
+}
+.composer_protocol_button {
+  &.gql:hover {
+	background: $gqlpink;
+	border: 2px solid $gqlpink;
+  line-height: 28px;
+  }
+}
+.composer_protocol_button-selected_http {
+	background: $bluetwo;
+	border: none;
+}
+.composer_protocol_button-selected_ws {
+	background: $greenone;
+	border: none;
+}
+.composer_protocol_button-selected_gql {
+	background: $gqlpink;
 	border: none;
 }
 .composer_method_url_container {
@@ -93,7 +126,7 @@
 }
 .composer_method_select {
 	-webkit-appearance: none;
-	background: #15B78F;
+	// background: #15B78F;
 	border: none;
 	border-radius: 0px;
 	color: white;
@@ -103,9 +136,19 @@
 	font-weight: bold;
 	height: 30px;
 	line-height: 15px;
-	padding: 0px 8px;
+	padding: 0px auto;
 	text-align-last: center;
-	width: 70px;
+	width: 175px;
+}
+.composer_method_select {
+  &.http {
+    background: $bluetwo;
+  }
+}
+.composer_method_select {
+  &.gql {
+    background: $gqlpink;
+  }
 }
 .composer_url_input {
 	-webkit-appearance: none;
@@ -131,7 +174,7 @@
 .composer_subtitle_arrow-closed {
 	height: 28px;
 	margin: -3px -6px -8px -7px;
-	transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 .composer_subtitle_arrow-open {
 	height: 28px;
@@ -260,7 +303,8 @@
 }
 .historyDate-container {
 	margin-top: 15px;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: none;
 }
 .historyDate-container::-webkit-scrollbar {
 }
@@ -277,7 +321,7 @@
 	font-size: .95rem;
 	height: 28px;
 	margin: 1px 0px 1px 0px;
-	overflow: hidden;
+	// overflow: hidden;
 	width: 100%;
 	&:hover {
 		border: 1px solid #808080;

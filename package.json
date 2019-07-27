@@ -138,6 +138,8 @@
     "electron": "^3.0.6",
     "electron-builder": "^20.38.2",
     "electron-packager": "^12.2.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
