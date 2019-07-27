@@ -2,31 +2,31 @@ import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
 
 
-const initialState = { 
-  currentTab : 'First Tab',
-  reqResArray : [],
-  history : [],
-  warningMessage : "",
-  newRequestFields : {
-    protocol : '',
-    url : '',
-    method : 'GET',
+const initialState = {
+  currentTab: 'First Tab',
+  reqResArray: [],
+  history: [],
+  warningMessage: "",
+  newRequestFields: {
+    protocol: '',
+    url: '',
+    method: 'GET',
     graphQL: false
   },
-  newRequestHeaders : {
-    headersArr : [],
-    count : 0,
+  newRequestHeaders: {
+    headersArr: [],
+    count: 0,
   },
-  newRequestCookies : {
-    cookiesArr : [],
-    count : 0,
+  newRequestCookies: {
+    cookiesArr: [],
+    count: 0,
   },
-  newRequestBody : {
-    bodyContent : '',
+  newRequestBody: {
+    bodyContent: '',
     bodyVariables: '',
-    bodyType : 'none',
-    rawType : 'Text (text/plain)',
-    JSONFormatted : true,
+    bodyType: 'none',
+    rawType: 'Text (text/plain)',
+    JSONFormatted: true,
   },
 };
 
@@ -36,7 +36,7 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
 
-        reqResArray : [],
+        reqResArray: [],
         history: action.payload,
       };
     }
@@ -48,9 +48,9 @@ const businessReducer = (state = initialState, action) => {
       newHistory.forEach((obj, i) => {
         if (obj.date === deleteDate)
           obj.history = obj.history.filter(hist => hist.id !== deleteId);
-          if (obj.history.length === 0) {
-            newHistory.splice(i, 1) 
-          }
+        if (obj.history.length === 0) {
+          newHistory.splice(i, 1)
+        }
       })
 
       return {
@@ -73,7 +73,7 @@ const businessReducer = (state = initialState, action) => {
       const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
 
       const newHistory = JSON.parse(JSON.stringify(state.history));
-      
+
       let updated = false;
       newHistory.forEach((obj) => {
         if (obj.date === addDate) {
@@ -101,11 +101,11 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        reqResArray : newReqResArray
+        reqResArray: newReqResArray
       }
     }
 
-    case types.REQRES_UPDATE:{
+    case types.REQRES_UPDATE: {
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
@@ -127,14 +127,14 @@ const businessReducer = (state = initialState, action) => {
     case types.SET_COMPOSER_WARNING_MESSAGE: {
       return {
         ...state,
-        warningMessage : action.payload
+        warningMessage: action.payload
       }
     }
 
-    case types.SET_NEW_REQUEST_FIELDS:{
+    case types.SET_NEW_REQUEST_FIELDS: {
       return {
         ...state,
-        newRequestFields : action.payload,
+        newRequestFields: action.payload,
       }
     }
 
@@ -167,7 +167,7 @@ const businessReducer = (state = initialState, action) => {
     case types.SET_CURRENT_TAB: {
       return {
         ...state,
-        currentTab : action.payload,
+        currentTab: action.payload,
       }
     }
 

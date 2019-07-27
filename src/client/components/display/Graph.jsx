@@ -99,8 +99,6 @@ class Graph extends Component {
   }
 
   updateGraphWithStoreData() {
-    console.log('Updating graph');
-
     let newEventCounter = 0;
     let newOldestDataPointTimeReceived = Number.MAX_SAFE_INTEGER;
 

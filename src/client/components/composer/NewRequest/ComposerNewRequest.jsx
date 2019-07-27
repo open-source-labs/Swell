@@ -125,7 +125,6 @@ class ComposerNewRequest extends Component {
           checked: false,
           tab: this.props.currentTab,
         };
-        console.log('HERES THE NEW REQRES: ', reqRes)
       }
       // WEBSOCKET REQUESTS
       else {
