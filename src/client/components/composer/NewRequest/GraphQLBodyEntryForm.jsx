@@ -44,7 +44,7 @@ class GraphQLBodyEntryForm extends Component {
 
         <textarea
           value={this.props.newRequestBody.bodyContent}
-          className={'composer_textarea gql ' + bodyContainerClass }
+          className={'composer_textarea gql ' + bodyContainerClass}
           style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
           type='text'
           placeholder='Body'
@@ -55,8 +55,8 @@ class GraphQLBodyEntryForm extends Component {
               bodyContent: e.target.value
             })
           }}
-          ></textarea>
-          <GraphQLVariableEntryForm />
+        ></textarea>
+        <GraphQLVariableEntryForm />
       </div>
     );
   }
