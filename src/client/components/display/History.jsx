@@ -58,8 +58,9 @@ class History extends Component {
       count: this.props.content.request.cookies ? this.props.content.request.cookies.length : 0,
     }
     const requestBodyObj = {
-      bodyContent: this.props.content.request.body ? this.props.content.request.body : '',
       bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
+      bodyContent: this.props.content.request.body ? this.props.content.request.body : '',
+      bodyVariables: this.props.content.request.bodyVariables ? this.props.content.request.bodyVariables : '',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
     }
