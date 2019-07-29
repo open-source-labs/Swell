@@ -1,37 +1,36 @@
 import reducer from '../src/client/reducers/business';
 
-describe ('Business reducer', () => {
+describe('Business reducer', () => {
   let state;
 
   beforeEach(() => {
-    state = { 
-      currentTab : 'First Tab',
-      reqResArray : [],
-      history : [],
-      warningMessage : "",
-      newRequestFields : {
-        protocol : '',
-        url : '',
-        method : 'GET',
-        protocol : '',
-        url : '',
-        graphQL : false
+
+    state = {
+      currentTab: 'First Tab',
+      reqResArray: [],
+      history: [],
+      warningMessage: "",
+      newRequestFields: {
+        method: 'GET',
+        protocol: '',
+        url: '',
+        graphQL: false
       },
-      newRequestHeaders : {
-        headersArr : [],
-        count : 0,
+      newRequestHeaders: {
+        headersArr: [],
+        count: 0,
       },
-      newRequestCookies : {
-        cookiesArr : [],
-        count : 0,
+      newRequestCookies: {
+        cookiesArr: [],
+        count: 0,
       },
-      newRequestBody : {
-        bodyContent : '',
-        bodyVariables: '',
-        bodyType : 'none',
-        rawType : 'Text (text/plain)',
-        JSONFormatted : true,
-        bodyVariables : ''
+
+      newRequestBody: {
+        bodyContent: '',
+        bodyType: 'none',
+        rawType: 'Text (text/plain)',
+        JSONFormatted: true,
+        bodyVariables: ''
       },
     };
   })
@@ -51,22 +50,22 @@ describe ('Business reducer', () => {
 
   describe('GET_HISTORY', () => {
     const fakeHistory = [
-      { 
-        date: "02/15/2019", 
+      {
+        date: "02/15/2019",
         history: [
           { id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e', created_at: '2019-02-15T21:40:44.132Z' },
           { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' }
         ]
       },
-      { 
-        date: "02/14/2019", 
+      {
+        date: "02/14/2019",
         history: [
           { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
           { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
         ]
       }
     ];
-    
+
     const action = {
       type: 'GET_HISTORY',
       payload: fakeHistory
@@ -81,25 +80,25 @@ describe ('Business reducer', () => {
 
   describe('DELETE_HISTORY', () => {
     const fakeHistory = [
-        { 
-          date: "02/15/2019", 
-          history: [
-            { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' }
-          ]
-        },
-        { 
-          date: "02/14/2019", 
-          history: [
-            { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
-            { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
-          ]
-        }
-      ];
+      {
+        date: "02/15/2019",
+        history: [
+          { id: 'c8d73eec-e383-4735-943a-20deab42ecff', created_at: '2019-02-15T20:52:35.990Z' }
+        ]
+      },
+      {
+        date: "02/14/2019",
+        history: [
+          { id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd', created_at: '2019-02-15T00:40:56.360Z' },
+          { id: '577eab93-e707-4dc0-af45-7adcc78807fa', created_at: '2019-02-15T00:16:56.133Z' }
+        ]
+      }
+    ];
 
     beforeEach(() => {
       state.history = fakeHistory;
     })
-  
+
 
     it('should delete the proper history', () => {
 
@@ -133,10 +132,10 @@ describe ('Business reducer', () => {
       type: 'REQRES_CLEAR'
     }
 
-    it('should empth the reqResArray', () => {
-      const initialReqResArray = [ { first: 1} , { second: 2 } ]
-      state.reqResArray = initialReqResArray;
-      expect(state.reqResArray).toBe(initialReqResArray);
+    it('should empty the reqResArray', () => {
+      const initialReqResArray = [{ first: 1 }, { second: 2 }]
+      // state.reqResArray = initialReqResArray;
+      // expect(state.reqResArray).toBe(initialReqResArray); //unnecessary...?
       const { reqResArray } = reducer(state, action);
       expect(reqResArray).not.toBe(initialReqResArray);
       expect(reqResArray).toEqual([]);
@@ -144,19 +143,19 @@ describe ('Business reducer', () => {
   })
 
   describe('REQRES_ADD', () => {
-    const fakeReqRes1 = { 
+    const fakeReqRes1 = {
       id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e',
       created_at: '2019-02-15T21:40:44.132Z',
       protocol: 'http://',
-      request: {method: 'POST', body: 'I am a request body'},
+      request: { method: 'POST', body: 'I am a request body' },
       response: {}
     }
 
-    const fakeReqRes2 = { 
+    const fakeReqRes2 = {
       id: 'c8d73eec-e383-4735-943a-20deab42ecff',
       created_at: '2019-02-16T20:52:35.990Z',
       protocol: 'http://',
-      request: {method: 'POST', body: 'I am a newer request body'},
+      request: { method: 'POST', body: 'I am a newer request body' },
       response: {}
     }
 
@@ -209,6 +208,7 @@ describe ('Business reducer', () => {
       const { reqResArray } = reducer(state, action);
       expect(reqResArray).not.toBe(initialReqResArray);
       expect(reqResArray.length).toEqual(2);
+      expect(reqResArray[0]).toEqual(fakeReqResArray[0]);
       expect(reqResArray[1]).toEqual(fakeReqResArray[2]);
     })
   })
@@ -222,9 +222,9 @@ describe ('Business reducer', () => {
 
     const action = {
       type: 'REQRES_UPDATE',
-      payload: { 
+      payload: {
         id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-        created_at: '2019-02-15T00:40:56.360Z',
+        created_at: '2018-02-15T00:40:56.360Z',
         newKey: 'this is a new value'
       }
     }
@@ -256,33 +256,146 @@ describe ('Business reducer', () => {
   })
 
   describe('SET_NEW_REQUEST_FIELDS', () => {
-    const action = {
+    //alternates url and tests all 5 http/s methods and 3 gql types
+    const getAction = {
       type: 'SET_NEW_REQUEST_FIELDS',
       payload: {
-        method : 'POST',
-        protocol : 'https://',
-        url : 'https://www.fakesite.com',
+        method: 'GET',
+        protocol: '',
+        url: 'http://www.fakesite.com',
+        graphQL: false
       }
     }
-    it('sets the newRequestFields', () => {
-      const { newRequestFields } = reducer(state, action);
-      expect(newRequestFields).toEqual(action.payload);
+    const postAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'POST',
+        protocol: '',
+        url: 'https://www.fakesite.com',
+        graphQL: false
+      }
+    }
+    const putAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'PUT',
+        protocol: '',
+        url: 'http://www.fakesite.com',
+        graphQL: false
+      }
+    }
+    const patchAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'PATCH',
+        protocol: '',
+        url: 'https://www.fakesite.com',
+        graphQL: false
+      }
+    }
+    const deleteAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'DELETE',
+        protocol: '',
+        url: 'http://www.fakesite.com',
+        graphQL: false
+      }
+    }
+    const queryAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'QUERY',
+        protocol: '',
+        url: 'https://www.fakesite.com',
+        graphQL: true
+      }
+    }
+    const mutationAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'MUTATION',
+        protocol: '',
+        url: 'http://www.fakesite.com',
+        graphQL: true
+      }
+    }
+    const subscriptionAction = {
+      type: 'SET_NEW_REQUEST_FIELDS',
+      payload: {
+        method: 'SUBSCRIPTION',
+        protocol: '',
+        url: 'https://www.fakesite.com',
+        graphQL: true
+      }
+    }
+    it('sets the newRequestFields on POST', () => {
+      const { newRequestFields } = reducer(state, postAction);
+      expect(newRequestFields).toEqual(postAction.payload);
+    })
+    it('sets the newRequestFields on GET', () => {
+      const { newRequestFields } = reducer(state, getAction);
+      expect(newRequestFields).toEqual(getAction.payload);
+    })
+    it('sets the newRequestFields on PUT', () => {
+      const { newRequestFields } = reducer(state, putAction);
+      expect(newRequestFields).toEqual(putAction.payload);
+    })
+    it('sets the newRequestFields on PATCH', () => {
+      const { newRequestFields } = reducer(state, patchAction);
+      expect(newRequestFields).toEqual(patchAction.payload);
+    })
+    it('sets the newRequestFields on DELETE', () => {
+      const { newRequestFields } = reducer(state, deleteAction);
+      expect(newRequestFields).toEqual(deleteAction.payload);
+    })
+    it('sets the newRequestFields on QUERY', () => {
+      const { newRequestFields } = reducer(state, queryAction);
+      expect(newRequestFields).toEqual(queryAction.payload);
+    })
+    it('sets the newRequestFields on MUTATION', () => {
+      const { newRequestFields } = reducer(state, mutationAction);
+      expect(newRequestFields).toEqual(mutationAction.payload);
+    })
+    it('sets the newRequestFields on SUBSCRIPTION', () => {
+      const { newRequestFields } = reducer(state, subscriptionAction);
+      expect(newRequestFields).toEqual(subscriptionAction.payload);
     })
   })
 
   describe('SET_NEW_REQUEST_HEADERS', () => {
-    const action = {
+    const contentTypeHeaderAction = {
       type: 'SET_NEW_REQUEST_HEADERS',
       payload: {
-        active: true,
-        key: 'content-type',
-        value: 'application/json'
+        headersArr: [{ id: 0, active: true, key: 'content-type', value: 'application/json' }],
+        override: false,
+        count: [{ active: true, key: 'content-type', value: 'application/json' }].length
+      }
+    }
+    const otherHeaderAction = {
+      type: 'SET_NEW_REQUEST_HEADERS',
+      payload: {
+        headersArr: [{ id: 0, active: true, key: 'content-type', value: 'application/json' },
+        { id: 1, active: true, key: 'otherHeader', value: 'otherHeaderValue' }],
+        override: false,
+        count: [{ id: 0, active: true, key: 'content-type', value: 'application/json' },
+        { id: 1, active: true, key: 'otherHeader', value: 'otherHeaderValue' }].length
       }
     }
 
     it('sets new requestHeaders', () => {
-      const { newRequestHeaders } = reducer(state, action);
-      expect(newRequestHeaders).toEqual(action.payload);
+      const { newRequestHeaders } = reducer(state, contentTypeHeaderAction);
+      expect(newRequestHeaders.headersArr.length).toBe(1);
+      expect(newRequestHeaders.headersArr[0]).toEqual(contentTypeHeaderAction.payload.headersArr[0]);
+      expect(newRequestHeaders.count).toBe(1);
+      expect(newRequestHeaders.override).toBe(false);
+    })
+    it('can set multiple requestHeaders', () => {
+      const { newRequestHeaders } = reducer(state, otherHeaderAction);
+      expect(newRequestHeaders.headersArr.length).toBe(2);
+      expect(newRequestHeaders.headersArr[1]).toEqual(otherHeaderAction.payload.headersArr[1]);
+      expect(newRequestHeaders.count).toBe(2);
+      expect(newRequestHeaders.override).toBe(false);
     })
   })
 
@@ -291,6 +404,7 @@ describe ('Business reducer', () => {
       type: 'SET_NEW_REQUEST_BODY',
       payload: {
         bodyContent: '{ "key": "value"}',
+        bodyVariables: '',
         bodyType: 'raw',
         rawType: 'application/json',
         JSONFormatted: true
@@ -306,17 +420,32 @@ describe ('Business reducer', () => {
   })
 
   describe('SET_NEW_REQUEST_COOKIES', () => {
-    const action = {
+    const cookieAction = {
       type: 'SET_NEW_REQUEST_COOKIES',
       payload: {
-        key: 'admin',
-        value: 'password'
+        cookiesArr: [{key: 'admin', value: 'password'}],
+        count: [{key: 'admin', value: 'password'}].length
+      }
+    }
+    const otherCookieAction = {
+      type: 'SET_NEW_REQUEST_COOKIES',
+      payload: {
+        cookiesArr: [{key: 'admin', value: 'password'}, {key: 'admin2', value: 'password2'}],
+        count: [{key: 'admin', value: 'password'}, {key: 'admin2', value: 'password2'}].length
       }
     }
 
     it('sets new requestCookies', () => {
-      const { newRequestCookies } = reducer(state, action);
-      expect(newRequestCookies).toEqual(action.payload);
+      const { newRequestCookies } = reducer(state, cookieAction);
+      expect(newRequestCookies.cookiesArr.length).toBe(1);
+      expect(newRequestCookies.cookiesArr[0]).toEqual(cookieAction.payload.cookiesArr[0]);
+      expect(newRequestCookies.count).toBe(1);
+    })
+    it('can set multiple requestCookies', () => {
+      const { newRequestCookies } = reducer(state, otherCookieAction);
+      expect(newRequestCookies.cookiesArr.length).toBe(2);
+      expect(newRequestCookies.cookiesArr[1]).toEqual(otherCookieAction.payload.cookiesArr[1]);
+      expect(newRequestCookies.count).toBe(2);
     })
   })
 
@@ -331,5 +460,5 @@ describe ('Business reducer', () => {
       expect(currentTab).toEqual(action.payload);
     })
   })
-  
+
 })

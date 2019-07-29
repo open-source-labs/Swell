@@ -20,12 +20,30 @@ class GraphQLBodyEntryForm extends Component {
       show: true,
     };
     this.toggleShow = this.toggleShow.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   toggleShow() {
     this.setState({
       show: !this.state.show
     });
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      const gqlBodyEntryTextArea = document.querySelector('#gqlBodyEntryTextArea')
+      const start = gqlBodyEntryTextArea.selectionStart
+      const second = gqlBodyEntryTextArea.value.substring(gqlBodyEntryTextArea.selectionStart)
+      // if you call the action/reducer, cursor jumps to bottom, this will update the textarea value without modifying state but it's fine because any subsequent keys will
+      // to account for edge case where tab is last key entered, alter addNewReq in ComposerNewRequest.jsx
+      // this.props.setNewRequestBody({
+      //   ...this.props.newRequestBody,
+      //   bodyContent: gqlBodyEntryTextArea.value.substring(0, start) + `  ` + gqlBodyEntryTextArea.value.substring(start)
+      // })
+      gqlBodyEntryTextArea.value = gqlBodyEntryTextArea.value.substring(0, start) + `  ` + gqlBodyEntryTextArea.value.substring(start)
+      gqlBodyEntryTextArea.setSelectionRange(gqlBodyEntryTextArea.value.length - second.length, gqlBodyEntryTextArea.value.length - second.length)
+    }
   }
 
   render() {
@@ -45,10 +63,12 @@ class GraphQLBodyEntryForm extends Component {
         <textarea
           value={this.props.newRequestBody.bodyContent}
           className={'composer_textarea gql ' + bodyContainerClass}
+          id='gqlBodyEntryTextArea'
           style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
           type='text'
           placeholder='Body'
           rows={10}
+          onKeyDown={(e) => this.handleKeyPress(e)}
           onChange={(e) => {
             this.props.setNewRequestBody({
               ...this.props.newRequestBody,
