@@ -93,6 +93,9 @@ class RequestTabs extends Component {
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
           <Tab onTabSelected={this.handleTabSelect} tabName={body} />
           <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
+          {/* {!!this.props.requestContent.bodyVariables &&
+          <p>Hey</p>
+          } */}
         </ul>
         <div className={"tab_content"}>{tabContentShown}</div>
       </div>

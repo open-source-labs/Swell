@@ -93,7 +93,14 @@ class ComposerNewRequest extends Component {
           path = path.substring(0, path.length - 1);
         }
         path = path.replace(/https?:\//g, 'http://');
+        let historyBodyContent;
+        if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value }
+        else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
+        else historyBodyContent = '';
 
+        let historyBodyVariables;
+        if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value }
+        else historyBodyVariables = '';
         reqRes = {
 
           id: uuid(), // Math.floor(Math.random() * 100000),
@@ -113,9 +120,9 @@ class ComposerNewRequest extends Component {
             method: this.props.newRequestFields.method,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active),
-            body: this.props.newRequestBody.bodyContent,
+            body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: this.props.newRequestBody.bodyVariables,
+            bodyVariables: historyBodyVariables,
             rawType: this.props.newRequestBody.rawType
           },
           response: {
@@ -169,6 +176,7 @@ class ComposerNewRequest extends Component {
 
       this.props.setNewRequestBody({
         bodyContent: '',
+        bodyVariables: '',
         bodyType: 'none',
         rawType: 'Text (text/plain)',
         JSONFormatted: true,
@@ -192,9 +200,9 @@ class ComposerNewRequest extends Component {
       display: this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
-    if (this.props.newRequestFields.protocol === "ws://") {SubmitButtonClassName += " ws"}
-    else if (this.props.newRequestFields.graphQL) {SubmitButtonClassName += " gql"}
-    else {SubmitButtonClassName += " http"}
+    if (this.props.newRequestFields.protocol === "ws://") { SubmitButtonClassName += " ws" }
+    else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
+    else { SubmitButtonClassName += " http" }
 
     return (
       <div
@@ -207,7 +215,7 @@ class ComposerNewRequest extends Component {
 
 
         <FieldEntryForm addRequestProp={this.addNewRequest} />
-        
+
 
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle} />
