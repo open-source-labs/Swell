@@ -26,6 +26,14 @@ class NavBarContainer extends Component {
             Close Selected
           </button>
 
+          <button className="btn" type="button" onClick={ReqResCtrl.minimizeAllReqRes}>
+            Minimize All
+          </button>
+
+          <button className="btn" type="button" onClick={ReqResCtrl.expandAllReqRes}>
+            Expand All
+          </button>
+          
           <button className="btn" type="button" onClick={ReqResCtrl.clearAllReqRes}>
             Clear All
           </button>

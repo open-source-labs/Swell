@@ -9,8 +9,6 @@ import RequestTabs from './RequestTabs.jsx';
 
 import * as actions from '../../actions/actions';
 
-const mapStateToProps = store => ({});
-
 const mapDispatchToProps = dispatch => ({
   reqResDelete: (reqRes) => {
     dispatch(actions.reqResDelete(reqRes));
@@ -25,10 +23,7 @@ class ReqRes extends Component {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
     this.onCheckHandler = this.onCheckHandler.bind(this);
-    this.toggleShow = this.toggleShow.bind(this);
-    this.state = {
-      show: true
-    }
+    this.minimize = this.minimize.bind(this);
   }
 
   onCheckHandler() {
@@ -41,10 +36,9 @@ class ReqRes extends Component {
     this.props.reqResDelete(this.props.content);
   }
 
-  toggleShow() {
-    this.setState({
-      show: !this.state.show
-    });
+  minimize() {
+    this.props.content.minimized = !this.props.content.minimized;
+    this.props.reqResUpdate(this.props.content);
   }
 
   render() {
@@ -106,12 +100,12 @@ class ReqRes extends Component {
         console.log('not a valid connection for content object');
     }
 
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
+    const arrowClass = !this.props.content.minimized ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
 
     return (
       <div className="resreq_wrap" id={this.props.content.id}>
         <div className="title-row">
-          <span className="primary-title highlighter title_reverse-offset" onClick={this.toggleShow}>
+          <span className="primary-title highlighter title_reverse-offset" onClick={this.minimize}>
             <span><img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
             </img></span>
             <pre><p>  </p></pre>
@@ -120,7 +114,7 @@ class ReqRes extends Component {
         </div>
 
         {
-          this.state.show &&
+          !this.props.content.minimized &&
           <div>
             <div className="grid-6">
               <div>
@@ -168,6 +162,6 @@ class ReqRes extends Component {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(ReqRes);

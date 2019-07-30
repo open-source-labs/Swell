@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactJson from 'react-json-view';
 
-class SSERow extends Component {
+class EventRow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -16,7 +16,6 @@ class SSERow extends Component {
     expandable.classList.toggle('expanded');
   }
   render() {
-    // console.log("IN THE SSEROW FILE")
     let contentBody;
     try {
       let json = JSON.parse(this.props.content.data);
@@ -49,22 +48,22 @@ class SSERow extends Component {
               {this.props.content.timeReceived}
             </span>
           </div>
-          
+
           <div>
             <span className={'tertiary-title expand-btn'} onClick={(e) => this.handleClick(e)} ></span>
           </div>
         </div>
 
         <div className={'title-row data-inner'}>
-            <div>
-              <span className={'tertiary-title'}>
-                Data {contentBody}
-              </span>
-            </div>
+          <div>
+            <span className={'tertiary-title'}>
+              Data {contentBody}
+            </span>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default SSERow;
+export default EventRow;
