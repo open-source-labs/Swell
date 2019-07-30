@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
-import ResponseSSE from '../display/ResponseSSE.jsx';
-import ResponsePlain from '../display/ResponsePlain.jsx';
 import ResponseTabs from '../display/ResponseTabs.jsx';
+import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
+import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
+import ResponseCookiesDisplay from '../display/ResponseCookiesDisplay.jsx';
 
 const mapStateToProps = store => ({});
-
 const mapDispatchToProps = dispatch => ({});
+// TODO: Implement Redux in these components?
 
 class ResponseContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      openTabs: 'Response Events',
+    };
+    this.handleTabSelect = this.handleTabSelect.bind(this);
   }
 
   componentDidMount() {
@@ -32,23 +36,29 @@ class ResponseContainer extends Component {
     }
   }
 
+  handleTabSelect(val) {
+    switch (val) {
+      case 'Response Cookies':
+        this.setState({
+          openTabs: val,
+        });
+        break;
+      case 'Response Headers':
+        this.setState({
+          openTabs: val,
+        });
+        break;
+      case 'Response Events':
+        this.setState({
+          openTabs: val,
+        });
+        break;
+      default:
+      // console.log(`There was an error with ${val}`);
+    }
+  }
+
   render() {
-    // let responseContents;
-    // switch (this.state.responseDisplay) {
-    //   case 'SSE': {
-    //     responseContents = <ResponseSSE content={this.props.content} />;
-    //     break;
-    //   }
-    //   case 'plain': {
-    //     responseContents = <ResponsePlain content={this.props.content} />;
-    //     break;
-    //   }
-    //   default:
-    //   // console.log('Sorry this is an invalid response type');
-    // }
-
-    // console.log("HERE IN THE RESPONSE CONTAINER LINE 50")
-
     const headersArr = [];
     let index = 0;
 
@@ -72,7 +82,10 @@ class ResponseContainer extends Component {
 
     return (
       <div className="resreq_res-container">
-        <ResponseTabs responseContent={this.props.content} />
+        <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
+        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay responseContent={this.props.content} />}
+        {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
+        {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
       </div>
     );
   }
