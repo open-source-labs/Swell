@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SSERow from './SSERow.jsx';
+import EventRow from './EventRow.jsx';
 import JSONPretty from 'react-json-pretty';
 
 class ResponseEventsDisplay extends Component {
@@ -8,7 +8,7 @@ class ResponseEventsDisplay extends Component {
   }
 
   render() {
-    const tabContentShownEvents = [];
+    const displayContents = [];
 
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];
@@ -23,12 +23,12 @@ class ResponseEventsDisplay extends Component {
         // Check content type of each response Update to use includes
         if (responseContentType && responseContentType.includes('text/event-stream')) {
           responseEvents.forEach((cur, idx) => {
-            tabContentShownEvents.push(<SSERow key={idx} content={cur} />);
+            displayContents.push(<EventRow key={idx} content={cur} />);
           });
         }
         else {
           responseEvents.forEach((cur, idx) => {
-            tabContentShownEvents.push(
+            displayContents.push(
               <div className="json-response" key={`jsonresponsediv+${idx}`}>
                 <JSONPretty data={cur} space="4" theme={{
                   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
@@ -45,7 +45,7 @@ class ResponseEventsDisplay extends Component {
       }
     });
 
-    return <div className="tab_content-response">{tabContentShownEvents}</div>;
+    return <div className="tab_content-response">{displayContents}</div>;
   }
 }
 

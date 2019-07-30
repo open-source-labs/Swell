@@ -6,7 +6,7 @@ class ResponseHeadersDisplay extends Component {
   }
 
   render() {
-    const tabContentShownEvents = [];
+    const displayContents = [];
 
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];
@@ -16,13 +16,13 @@ class ResponseHeadersDisplay extends Component {
     responsesCache.forEach((cur, idx) => {
       const headerObj = this.props.responseContent.headers;
       if (!Object.keys(headerObj).length) {
-        tabContentShownEvents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Headers</p>)
+        displayContents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Headers</p>)
         return;
       }
       if (!Array.isArray(headerObj) && headerObj) {
         for (const key in headerObj) {
           if (!Array.isArray(cur)) {
-            tabContentShownEvents.push(
+            displayContents.push(
               <div className="grid-2" key={key}>
                 <span className="tertiary-title title_offset">{key}</span>
                 <span className="tertiary-title title_offset">
@@ -37,7 +37,7 @@ class ResponseHeadersDisplay extends Component {
         }
       }
     });
-    return <div className="tab_content-response">{tabContentShownEvents}</div>;
+    return <div className="tab_content-response">{displayContents}</div>;
   }
 }
 export default ResponseHeadersDisplay;
