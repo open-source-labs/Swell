@@ -12,8 +12,10 @@
   background-repeat: no-repeat;
   // overflow-y: scroll;
 }
+
 //-------------------------------------------------------------------
 //This is a fix for the ugly windows and linux scrollbars
+
 // //-------------------------------------------------------------------
 // #reqResContainer_inner::-webkit-scrollbar{
 //   width:5px;
@@ -40,6 +42,7 @@
   transition: transform 0.3s ease-in-out;
   
 }
+
 
 .resreq_wrap {
   width: calc(100vw - 340px);
