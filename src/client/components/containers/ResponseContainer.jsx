@@ -7,10 +7,6 @@ import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
 import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
 import ResponseCookiesDisplay from '../display/ResponseCookiesDisplay.jsx';
 
-const mapStateToProps = store => ({});
-const mapDispatchToProps = dispatch => ({});
-// TODO: Implement Redux in these components?
-
 class ResponseContainer extends Component {
   constructor(props) {
     super(props);
@@ -91,7 +87,4 @@ class ResponseContainer extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResponseContainer);
+export default ResponseContainer;
