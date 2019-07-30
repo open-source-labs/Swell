@@ -15,7 +15,6 @@ class SSERow extends Component {
     expandBtn.classList.toggle('expand-active')
     expandable.classList.toggle('expanded');
   }
-
   render() {
     // console.log("IN THE SSEROW FILE")
     let contentBody;
