@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
 import ResponseTabs from '../display/ResponseTabs.jsx';
+import ResponseDisplay from '../display/ResponseDisplay.jsx';
 
 const mapStateToProps = store => ({});
 
@@ -11,7 +12,10 @@ const mapDispatchToProps = dispatch => ({});
 class ResponseContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      openTabs: 'Response Events',
+    };
+    this.handleTabSelect = this.handleTabSelect.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +31,28 @@ class ResponseContainer extends Component {
       this.setState({
         responseDisplay: this.props.connectionType,
       });
+    }
+  }
+
+  handleTabSelect(val) {
+    switch (val) {
+      case 'Response Cookies':
+        this.setState({
+          openTabs: val,
+        });
+        break;
+      case 'Response Headers':
+        this.setState({
+          openTabs: val,
+        });
+        break;
+      case 'Response Events':
+        this.setState({
+          openTabs: val,
+        });
+        break;
+      default:
+      // console.log(`There was an error with ${val}`);
     }
   }
 
@@ -54,7 +80,8 @@ class ResponseContainer extends Component {
 
     return (
       <div className="resreq_res-container">
-        <ResponseTabs responseContent={this.props.content} />
+        <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
+        <ResponseDisplay responseContent={this.props.content} openTabs={this.state.openTabs} />
       </div>
     );
   }
