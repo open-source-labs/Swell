@@ -61,13 +61,13 @@ class RequestTabs extends Component {
 
     if (this.state.openTab === "Request Body") {
       tabContentShown = !!this.props.requestContent.body
-      ? <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p>
-      : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Headers</p>
+      ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p></pre>
+      : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>
     }
     
     else if (this.state.openTab === "Request Variables") {
       tabContentShown = !!this.props.requestContent.bodyVariables
-      ? <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.bodyVariables}</p>
+      ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.bodyVariables}</p></pre>
       : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Variables</p>
     }
 
