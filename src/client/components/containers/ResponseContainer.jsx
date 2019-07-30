@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
-import ResponseSSE from '../display/ResponseSSE.jsx';
 import ResponsePlain from '../display/ResponsePlain.jsx';
 import ResponseTabs from '../display/ResponseTabs.jsx';
 
