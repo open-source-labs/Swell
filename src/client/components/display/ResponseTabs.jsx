@@ -6,8 +6,6 @@ import SSERow from './SSERow.jsx';
 import CookieTable from './CookieTable.jsx';
 import JSONPretty from 'react-json-pretty';
 
-const JSONPrettyMon = require('react-json-pretty/dist/monikai');
-
 const mapStateToProps = store => ({ store });
 const mapDispatchToProps = dispatch => ({});
 
@@ -15,7 +13,7 @@ class ResponseTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openTabs: ''
+      openTabs: '',
     };
     this.handleTabSelect = this.handleTabSelect.bind(this);
   }
@@ -51,7 +49,6 @@ class ResponseTabs extends Component {
     const cookies = 'Response Cookies';
     const headers = 'Response Headers';
     const tabContentShownEvents = [];
-    let tabContentShown;
 
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];
@@ -78,14 +75,15 @@ class ResponseTabs extends Component {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
                 <div className="json-response" key={`jsonresponsediv+${idx}`}>
-                  <JSONPretty data={cur} theme={{
-                    main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
-                    key: 'color:#f92672;',
-                    string: 'color:#fd971f;',
-                    value: 'color:#a6e22e;',
-                    boolean: 'color:#ac81fe;',
-                  }}>
-                  </JSONPretty>
+                  <JSONPretty
+                    data={cur}
+                    theme={{
+                      main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
+                      key: 'color:#f92672;',
+                      string: 'color:#fd971f;',
+                      value: 'color:#a6e22e;',
+                      boolean: 'color:#ac81fe;',
+                    }} />
                 </div>
               );
             })
@@ -93,7 +91,7 @@ class ResponseTabs extends Component {
         }
         else if (tabState === 'Response Headers') {
           const headerObj = this.props.responseContent.headers;
-          console.log("responseTabs.jsx headers: ", this.props.responseContent.headers)
+          console.log('responseTabs.jsx headers: ', this.props.responseContent.headers)
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
               if (!Array.isArray(cur)) {
@@ -127,9 +125,9 @@ class ResponseTabs extends Component {
     return (
       <div>
         <ul className="tab_list-response">
-          <Tab onTabSelected={this.handleTabSelect} tabName={events} key='events' />
-          <Tab onTabSelected={this.handleTabSelect} tabName={headers} key='headers' />
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} key='cookies' />
+          <Tab onTabSelected={this.handleTabSelect} tabName={events} key="events" />
+          <Tab onTabSelected={this.handleTabSelect} tabName={headers} key="headers" />
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} key="cookies" />
         </ul>
         <div className="tab_content-response">{tabContentShownEvents}</div>
       </div>
