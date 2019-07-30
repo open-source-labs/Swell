@@ -14,11 +14,15 @@ class WebSocketMessage extends Component {
     };
 
     const webSocketMessageClassNames =  this.props.source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
+    let time = new Date(this.props.timeReceived).getMinutes();
+    time = (time < 10) ?
+    `${new Date(this.props.timeReceived).getHours()}:0${JSON.stringify(time)}` :
+    `${new Date(this.props.timeReceived).getHours()}:${JSON.stringify(time)}`;
 
     return (
       <div style={styles} className={webSocketMessageClassNames}>
         <div  className={'websocket_message-data'}>{this.props.data}</div>
-        <div  className={'websocket_message-time'}>{`${new Date(this.props.timeReceived).getHours()}:${new Date(this.props.timeReceived).getMinutes()}`}</div>
+        <div  className={'websocket_message-time'}>{time}</div>
       </div>
     );
   }

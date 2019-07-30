@@ -22,6 +22,7 @@ class ReqResContainer extends Component {
     const reqResArr = this.props.reqRes
       .filter(reqRes => reqRes.tab === this.props.currentTab)
       .map((reqRes, index) => {
+        console.log(reqRes)
         return <ReqRes className="reqResChild" content={reqRes} key={index} />;
       });
 
