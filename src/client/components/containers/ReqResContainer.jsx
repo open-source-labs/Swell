@@ -22,7 +22,6 @@ class ReqResContainer extends Component {
     const reqResArr = this.props.reqRes
       .filter(reqRes => reqRes.tab === this.props.currentTab)
       .map((reqRes, index) => {
-        console.log(reqRes)
         return <ReqRes className="reqResChild" content={reqRes} key={index} />;
       });
 
@@ -32,7 +31,7 @@ class ReqResContainer extends Component {
 
     switch (requestInstances) {
       case 1:
-        dynamicCols = { 
+        dynamicCols = {
           width: 'calc(100vw - 300px)'
           //,
           // display: 'grid', 

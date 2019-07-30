@@ -29,7 +29,7 @@ class ReqRes extends Component {
 
   onCheckHandler() {
     this.props.content.checked = !this.props.content.checked;
-    this.props.reqResUpdate(this.props.content);            
+    this.props.reqResUpdate(this.props.content);
   }
 
   removeReqRes() {
@@ -40,8 +40,6 @@ class ReqRes extends Component {
   render() {
 
     const contentBody = [];
-    // console.log(`TIME RECEIVED ${this.props.content.timeReceived}`)
-    // console.log(`TIME SENT ${this.props.content.timeSent}`)
 
     if (this.props.content.protocol === 'ws://') {
       contentBody.push(<WebSocketWindow
@@ -49,10 +47,10 @@ class ReqRes extends Component {
         outgoingMessages={this.props.content.request.messages}
         incomingMessages={this.props.content.response.messages}
         id={this.props.content.id}
-        connection={this.props.content.connection} />)
+        connection={this.props.content.connection}
+      />);
     }
     else {
-      // console.log("HERE IN REQ RES LINE 52")
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
@@ -77,12 +75,10 @@ class ReqRes extends Component {
     };
 
     let statusLight;
-    const itmArr = ['itmOne', 'itmTwo', 'itmThree', 'itmFour', 'itmFive', 'itmSix'];
-    const num = document.querySelectorAll('.resreq_wrap').length;
 
     switch (this.props.content.connection) {
       case 'uninitialized':
-        statusLight = <status-indicator></status-indicator>;
+        statusLight = <status-indicator />;
         break;
       case 'pending':
         statusLight = <status-indicator intermediary pulse />;
@@ -103,9 +99,8 @@ class ReqRes extends Component {
     return (
       <div className="resreq_wrap" id={this.props.content.id}>
         <div className="title-row">
-          <div>
-            <span className="primary-title title-offset_top highlighter title_reverse-offset">{this.props.content.request.method}</span>
-            <span className="primary-title title-offset_top">{this.props.content.url}</span></div>
+          <span className="primary-title title-offset_top highlighter title_reverse-offset">{this.props.content.request.method}</span>
+          <span className="primary-title title-offset_top">{this.props.content.url}</span>
         </div>
 
         <div className="grid-6">
@@ -128,16 +123,13 @@ class ReqRes extends Component {
             <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
           </div>
           <div>{statusLight}</div>
-          <div>
-            <span className="tertiary-title">{this.props.content.connectionType}</span>
-          </div>
+          <span className="tertiary-title">{this.props.content.connectionType}</span>
 
-          <div>
-            <span className="tertiary-title">
-              {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
-              Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
-            </span>
-          </div>
+
+          <span className="tertiary-title">
+            {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
+            Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
+          </span>
         </div>
 
         <div style={http2Display} className={'httptwo'}>
