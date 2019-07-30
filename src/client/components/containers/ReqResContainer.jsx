@@ -31,7 +31,7 @@ class ReqResContainer extends Component {
 
     switch (requestInstances) {
       case 1:
-        dynamicCols = { 
+        dynamicCols = {
           width: 'calc(100vw - 300px)'
           //,
           // display: 'grid', 
