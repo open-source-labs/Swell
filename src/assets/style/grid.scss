@@ -81,12 +81,12 @@
 	border: 1px solid $bordergray;
 	border-bottom: 0;
 	display: grid;
-	grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 12%;
+	grid-template-columns: 12% 14% 11% 8% 11% 11% 8% 11% 14%;
 	height: auto;
 	width: 100%;
 	div {
 		border-right: 1px solid $bordergray;
-		padding: 10px 15px;
+		padding: 10px 10%;
 		position: relative;
 	}
 }

@@ -88,17 +88,36 @@ const graphQLController = {
       credentials: 'same-origin',
       cache: new InMemoryCache(),
     });
-
+    //Possible implementation of variables
+    // graphql(body, {
+    //   name : body,
+    //   options: (ownProps) => ({
+    //     variables: {
+    //       reqResObj.request.bodyVariables
+    //     }
+    //   })
     // Query specific implementation
     if (reqResObj.request.method === 'QUERY') {
-      client.query({ query: body })
-        // Update the store with the response
-        .then(data => handleResponse(data))
-        .catch((err) => {
-          console.error(err);
-          reqResObj.connection = 'error';
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
-        });
+      if(reqResObj.request.bodyVariables){
+        client.query({ query: body, variables:JSON.parse(reqResObj.request.bodyVariables) })
+          // Update the store with the response
+          .then(data => handleResponse(data))
+          .catch((err) => {
+            console.error(err);
+            reqResObj.connection = 'error';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+          });
+      }else{
+        client.query({ query: body })
+          // Update the store with the response
+          .then(data => handleResponse(data))
+          .catch((err) => {
+            console.error(err);
+            reqResObj.connection = 'error';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+          });
+
+      }
     }
     else if (reqResObj.request.method === 'MUTATION') {
       client.mutate({ mutation: body })

@@ -27,6 +27,11 @@ class RequestTabs extends Component {
           openTab: val
         });
         break;
+      case "Request Variables":
+        this.setState({
+          openTab: val
+        });
+        break;
       case "Request Cookies":
         this.setState({
           openTab: val
@@ -43,7 +48,7 @@ class RequestTabs extends Component {
   }
 
   componentDidMount() {
-    // console.log('requestContent', this.props.requestContent);
+    console.log('requestContent', this.props.requestContent);
     this.handleTabSelect("Request Headers");
   }
 
@@ -51,51 +56,65 @@ class RequestTabs extends Component {
     let body = "Request Body";
     let cookies = 'Request Cookies';
     let headers = "Request Headers";
+    let variables = "Request Variables";
     let tabContentShown;
 
     if (this.state.openTab === "Request Body") {
-      tabContentShown = this.props.requestContent.body;
+      tabContentShown = !!this.props.requestContent.body
+      ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p></pre>
+      : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>
+    }
+    
+    else if (this.state.openTab === "Request Variables") {
+      tabContentShown = !!this.props.requestContent.bodyVariables
+      ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.bodyVariables}</p></pre>
+      : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Variables</p>
     }
 
-    if (
-      this.state.openTab === "Request Headers" &&
-      this.props.requestContent.headers.length > 0
-    ) {
+    else if (this.state.openTab === "Request Headers") {
       tabContentShown = [];
-      this.props.requestContent.headers.forEach((cur, idx) => {
-        tabContentShown.push(
-          <div className={"grid-2"} key={idx}>
-            <span className={"tertiary-title title_offset"}>{cur.key}</span>
-            <span className={"tertiary-title title_offset"}>{cur.value}</span>
-          </div>
-        );
-      });
+      if (this.props.requestContent.headers.length > 0) {
+        this.props.requestContent.headers.forEach((cur, idx) => {
+          tabContentShown.push(
+            <div className={"grid-2"} key={idx}>
+              <span className={"tertiary-title title_offset"}>{cur.key}</span>
+              <span className={"tertiary-title title_offset"}>{cur.value}</span>
+            </div>
+          );
+        });
+      }
+      else {
+        tabContentShown.push(<p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Headers</p>)
+      }
     }
 
-    if (
-      this.state.openTab === "Request Cookies" &&
-      this.props.requestContent.cookies.length > 0
-    ) {
+    else if (this.state.openTab === "Request Cookies") {
       tabContentShown = [];
-      this.props.requestContent.cookies.forEach((cur, idx) => {
-        tabContentShown.push(
-          <div className={"grid-2"} key={idx}>
-            <span className={"tertiary-title title_offset"}>{cur.key}</span>
-            <span className={"tertiary-title title_offset"}>{cur.value}</span>
-          </div>
-        );
-      });
+      if (this.props.requestContent.cookies.length > 0) {
+        this.props.requestContent.cookies.forEach((cur, idx) => {
+          tabContentShown.push(
+            <div className={"grid-2"} key={idx}>
+              <span className={"tertiary-title title_offset"}>{cur.key}</span>
+              <span className={"tertiary-title title_offset"}>{cur.value}</span>
+            </div>
+          );
+        });
+      }
+      else {
+        tabContentShown.push(<p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`}>No Request Cookies</p>)
+      }
     }
 
     return (
       <div>
         <ul className={"tab_list"}>
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={body} />
           <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
-          {/* {!!this.props.requestContent.bodyVariables &&
-          <p>Hey</p>
-          } */}
+          <Tab onTabSelected={this.handleTabSelect} tabName={body} />
+          {
+            this.props.requestContent.bodyType==="GQL" &&
+            <Tab onTabSelected={this.handleTabSelect} tabName={variables} />
+          }
         </ul>
         <div className={"tab_content"}>{tabContentShown}</div>
       </div>

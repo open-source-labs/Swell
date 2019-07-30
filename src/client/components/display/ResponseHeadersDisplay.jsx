@@ -15,6 +15,10 @@ class ResponseHeadersDisplay extends Component {
     // Step 2  - Increment across all responses in array
     responsesCache.forEach((cur, idx) => {
       const headerObj = this.props.responseContent.headers;
+      if (!Object.keys(headerObj).length) {
+        tabContentShownEvents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Headers</p>)
+        return;
+      }
       if (!Array.isArray(headerObj) && headerObj) {
         for (const key in headerObj) {
           if (!Array.isArray(cur)) {

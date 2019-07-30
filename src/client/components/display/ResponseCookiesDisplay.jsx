@@ -16,6 +16,10 @@ class ResponseCookiesDisplay extends Component {
     // Step 2  - Increment across all responses in array
 
     responsesCache.forEach((cur, idx) => {
+      if (!this.props.responseContent.cookies) {
+        tabContentShownEvents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Cookies</p>)
+        return;
+      }
       tabContentShownEvents.push(
         <CookieTable
           className="cookieTable"

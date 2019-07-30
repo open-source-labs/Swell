@@ -30,15 +30,13 @@ class ResponseEventsDisplay extends Component {
           responseEvents.forEach((cur, idx) => {
             tabContentShownEvents.push(
               <div className="json-response" key={`jsonresponsediv+${idx}`}>
-                <JSONPretty
-                  data={cur}
-                  theme={{
-                    main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
-                    key: 'color:#f92672;',
-                    string: 'color:#fd971f;',
-                    value: 'color:#a6e22e;',
-                    boolean: 'color:#ac81fe;',
-                  }}
+                <JSONPretty data={cur} space="4" theme={{
+                  main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
+                  key: 'color:#0089D0;', //bluetwo
+                  string: 'color:#15B78F;',//greenone
+                  value: 'color:#fd971f;', //a nice orange
+                  boolean: 'color:#E00198;', //gqlpink
+                }}
                 />
               </div>
             );

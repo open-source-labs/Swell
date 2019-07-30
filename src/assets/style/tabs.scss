@@ -39,6 +39,17 @@
 	position: relative;
 	width: 100%;
 }
+.reqResContent {
+  background: white;
+  color: #999999;
+  padding: 10px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 500;
+  &.info {
+    color: black;
+  }
+}
 .tab_content-response {
 	background: $medgray;
 	border-left: solid 1px $bordergray;
@@ -48,6 +59,7 @@
 	position: relative;
 	width: 100%;
 }
-.custom-json-pretty {
-	background-color: white;
-}
+// .custom-json-pretty {
+//   background-color: white;
+//   padding: 10px;
+// }
