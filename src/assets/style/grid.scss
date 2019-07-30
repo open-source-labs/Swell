@@ -5,7 +5,10 @@
 	height: 30px;
 	overflow: hidden;
 	padding: 0 15px;
-	position: relative;
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
 }
 .grid-2 {
 	background: white;

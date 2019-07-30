@@ -25,6 +25,10 @@ class ReqRes extends Component {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
     this.onCheckHandler = this.onCheckHandler.bind(this);
+    this.toggleShow = this.toggleShow.bind(this);
+    this.state = {
+      show: true
+    }
   }
 
   onCheckHandler() {
@@ -35,6 +39,12 @@ class ReqRes extends Component {
   removeReqRes() {
     connectionController.closeReqRes(this.props.content.id);
     this.props.reqResDelete(this.props.content);
+  }
+
+  toggleShow() {
+    this.setState({
+      show: !this.state.show
+    });
   }
 
   render() {
@@ -96,49 +106,63 @@ class ReqRes extends Component {
         console.log('not a valid connection for content object');
     }
 
+    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
+
     return (
       <div className="resreq_wrap" id={this.props.content.id}>
         <div className="title-row">
-          <span className="primary-title title-offset_top highlighter title_reverse-offset">{this.props.content.request.method}</span>
-          <span className="primary-title title-offset_top">{this.props.content.url}</span>
+          <span className="primary-title highlighter title_reverse-offset" onClick={this.toggleShow}>
+            <span><img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+            </img></span>
+            <pre><p>  </p></pre>
+            {this.props.content.request.method}</span>
+          <span className="primary-title ">{this.props.content.url}</span>
         </div>
 
-        <div className="grid-6">
+        {
+          this.state.show &&
           <div>
-            <input
-              id={this.props.content.id}
-              checked={this.props.content.checked}
-              className="reqres_select-radio"
-              name="resreq-select"
-              type="checkbox"
-              onChange={this.onCheckHandler}
-            />
-          </div>
+            <div className="grid-6">
+              <div>
+                <input
+                  id={this.props.content.id}
+                  checked={this.props.content.checked}
+                  className="reqres_select-radio"
+                  name="resreq-select"
+                  type="checkbox"
+                  onChange={this.onCheckHandler}
+                />
+              </div>
 
-          <div className="btn-sm">
-            <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-            <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-          </div>
-          <div className="btn-sm">
-            <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
-          </div>
-          <div>{statusLight}</div>
-          <span className="tertiary-title">{this.props.content.connectionType}</span>
+              <div className="btn-sm">
+                <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+                <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+              </div>
+              <div className="btn-sm">
+                <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
+              </div>
+              <div>{statusLight}</div>
+              <span className="tertiary-title">{this.props.content.connectionType}</span>
 
 
-          <span className="tertiary-title">
-            {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
-            Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
-          </span>
+              <span className="tertiary-title">
+                {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
+                Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
+              </span>
+            </div>
+
+
+            <div style={http2Display} className={'httptwo'}>
+              HTTP2 connection: Requests with the same host will share a single HTTP2 connection.
         </div>
 
-        <div style={http2Display} className={'httptwo'}>
-          HTTP2 connection: Requests with the same host will share a single HTTP2 connection.
-        </div>
+            <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
+            {contentBody}
+          </div>
+        }
 
-        <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
-        {contentBody}
       </div>
+
     );
   }
 }
