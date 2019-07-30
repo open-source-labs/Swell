@@ -88,7 +88,7 @@ class RequestTabs extends Component {
     }
 
     return (
-      <div>
+      <div className={"request_tabs_container"}>
         <ul className={"tab_list"}>
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
           <Tab onTabSelected={this.handleTabSelect} tabName={body} />
