@@ -31,7 +31,6 @@ class FieldEntryForm extends Component {
   onChangeHandler(e, property, graphQL) {
 
     let value = e.target.value;
-    const methodReplaceRegex = new RegExp(`${this.props.newRequestBody.bodyContent}`, 'mi')
     switch (property) {
       case 'url': {
         let url = value;
@@ -99,6 +98,8 @@ class FieldEntryForm extends Component {
         break;
       }
       case 'method': {
+        const methodReplaceRegex = new RegExp(`${this.props.newRequestFields.method}`, 'mi')
+        let newBody = "";
         if (!this.props.newRequestFields.graphQL) { //if one of 5 http methods (get, post, put, patch, delete)
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
@@ -107,27 +108,40 @@ class FieldEntryForm extends Component {
           });
         }
         else if (value === 'QUERY') {
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: (this.props.newRequestFields.method === "MUTATION" || this.props.newRequestFields.method === "SUBSCRIPTION")
-            ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'query') + this.props.newRequestBody.bodyContent.substring(this.props.newRequestFields.method.length, this.props.newRequestBody.bodyContent.length)
-            : `query {
+          //if switching to graphQL = true
+          if (!this.props.newRequestFields.graphQL) newBody = `query {
 
 }`
+          else newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+            ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'query')
+            : `query ${this.props.newRequestBody.bodyContent}`
+
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: newBody
           });
         }
         else if (value === 'MUTATION') {
+          newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+            ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'mutation')
+            : `mutation ${this.props.newRequestBody.bodyContent}`
+
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyContent: this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'mutation') + this.props.newRequestBody.bodyContent.substring(this.props.newRequestFields.method.length, this.props.newRequestBody.bodyContent.length)
+            bodyContent: newBody
           });
         }
         else if (value === 'SUBSCRIPTION') {
+          newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+            ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'subscription')
+            : `subscription ${this.props.newRequestBody.bodyContent}`
+
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyContent: this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'subscription') + this.props.newRequestBody.bodyContent.substring(this.props.newRequestFields.method.length, this.props.newRequestBody.bodyContent.length)
+            bodyContent: newBody
           });
         }
+        //always set new method
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
           method: value,

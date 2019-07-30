@@ -4,6 +4,10 @@ describe('Business reducer', () => {
   let state;
 
   beforeEach(() => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> d46d6cb5bb669bafb0962ae783e26057ca2bf452
     state = {
       currentTab: 'First Tab',
       reqResArray: [],
@@ -23,6 +27,10 @@ describe('Business reducer', () => {
         cookiesArr: [],
         count: 0,
       },
+<<<<<<< HEAD
+=======
+
+>>>>>>> d46d6cb5bb669bafb0962ae783e26057ca2bf452
       newRequestBody: {
         bodyContent: '',
         bodyType: 'none',

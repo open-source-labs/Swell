@@ -52,7 +52,7 @@ class ComposerNewRequest extends Component {
 
   requestValidationCheck() {
     let validationMessage;
-
+    
     //Error conditions...
     if (this.props.newRequestFields.url === 'http://' || this.props.newRequestFields.url === 'https://' || this.props.newRequestFields.url === 'ws://') {
       validationMessage = "Please enter a valid URI.";
@@ -63,6 +63,12 @@ class ComposerNewRequest extends Component {
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
       validationMessage = "Please fix JSON body formatting errors.";
     }
+    else if(this.props.newRequestFields.method ==="QUERY"){
+      if(this.props.newRequestFields.url && !this.props.newRequestBody.bodyContent){
+        validationMessage = "Missing body.";
+      }
+    }
+    
     return validationMessage || true;
   }
 

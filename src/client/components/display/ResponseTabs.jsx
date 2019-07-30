@@ -85,12 +85,12 @@ class ResponseTabs extends Component {
             responseEvents.forEach((cur, idx) => {
               tabContentShownEvents.push(
                 <div className="json-response" key={`jsonresponsediv+${idx}`}>
-                <JSONPretty data={cur}  theme ={{
-                  main: 'line-height:1.3;color:#66d9ef;background:#RRGGBB;overflow:auto;',
-                  key: 'color:#f92672;',
-                  string: 'color:#fd971f;',
-                  value: 'color:#a6e22e;',
-                  boolean: 'color:#ac81fe;',
+                <JSONPretty data={cur}  space="4" theme ={{
+                  main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
+                  key: 'color:#0089D0;', //bluetwo
+                  string: 'color:#15B78F;',//greenone
+                  value: 'color:#fd971f;', //a nice orange
+                  boolean: 'color:#E00198;', //gqlpink
                 }}>     
                   </JSONPretty>
                 </div>
@@ -100,7 +100,10 @@ class ResponseTabs extends Component {
         }
         else if (tabState === 'Response Headers') {
           const headerObj = this.props.responseContent.headers;
-          console.log("responseTabs.jsx headers: ", this.props.responseContent.headers)
+          if (!Object.keys(headerObj).length) {
+            tabContentShownEvents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Headers</p>)
+            return;
+          }
           if (!Array.isArray(headerObj) && headerObj) {
             for (const key in headerObj) {
               if (!Array.isArray(cur)) {
@@ -120,6 +123,10 @@ class ResponseTabs extends Component {
           }
         }
         else if (this.state.openTabs === 'Response Cookies') {
+          if (!this.props.responseContent.cookies) {
+            tabContentShownEvents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Cookies</p>)
+            return;
+          }
           tabContentShownEvents.push(
             <CookieTable
               className="cookieTable"
