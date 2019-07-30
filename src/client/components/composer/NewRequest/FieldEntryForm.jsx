@@ -8,6 +8,7 @@ const classNames = require('classnames');
 
 const mapStateToProps = store => ({
   newRequestFields: store.business.newRequestFields,
+  newRequestBody: store.business.newRequestBody
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,10 +31,9 @@ class FieldEntryForm extends Component {
   onChangeHandler(e, property, graphQL) {
 
     let value = e.target.value;
+    const methodReplaceRegex = new RegExp(`${this.props.newRequestBody.bodyContent}`, 'mi')
     switch (property) {
       case 'url': {
-        // let url = this.props.newRequestFields.protocol + value.replace(/(h?.?t?.?t?.?p?.?s?.?|w?.?s?.?)(:[^\/]?\/?.?\/?)/, '')
-        // let url = this.props.newRequestFields.protocol + value.replace(/(http?s|ws?s)(:[^\/]?\/?.?\/?)/, '')
         let url = value;
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
@@ -44,8 +44,9 @@ class FieldEntryForm extends Component {
       case 'protocol': {
         let grabbedProtocol, afterProtocol, composedURL;
         if (!!this.props.newRequestFields.url) {
-          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/) ? this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0] : '';
-          console.log('grabbedprotocol', grabbedProtocol)
+          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)
+          ? this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0]
+          : '';
           afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length);
           composedURL = grabbedProtocol !== 'ws://' ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
         }
@@ -63,13 +64,14 @@ class FieldEntryForm extends Component {
             method: 'QUERY',
             graphQL: true
           })
-          this.props.setNewRequestBody({
+          this.props.setNewRequestBody({ //when switching to GQL clear body
             ...this.props.newRequestBody,
             bodyType: 'GQL',
             bodyContent: `query {
 
-}`,
+}`
           });
+          break;
         }
         else if (value === 'ws://') { //if ws
           this.props.setNewRequestFields({
@@ -79,12 +81,6 @@ class FieldEntryForm extends Component {
             method: 'GET',
             graphQL: false
           })
-          console.log("ABOUT TO UPDATE REQ BODY IN FIELDENTRYFORM line 70")
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyType: 'none',
-            bodyContent: '',
-          });
         }
         else { //if http/s
           this.props.setNewRequestFields({
@@ -94,57 +90,42 @@ class FieldEntryForm extends Component {
             method: 'GET',
             graphQL: false
           })
-          console.log("ABOUT TO UPDATE REQ BODY IN FIELDENTRYFORM")
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyType: 'none',
-            bodyContent: '',
-          });
         }
+        this.props.setNewRequestBody({
+          ...this.props.newRequestBody,
+          bodyType: 'none',
+          bodyContent: '',
+        });
         break;
       }
       case 'method': {
-        if (value === 'GET') {
+        if (!this.props.newRequestFields.graphQL) { //if one of 5 http methods (get, post, put, patch, delete)
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
             bodyType: 'none',
             bodyContent: '',
           });
         }
-        this.props.setNewRequestFields({
-          ...this.props.newRequestFields,
-          method: value,
-        })
-        if (value === 'QUERY') {
+        else if (value === 'QUERY') {
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyContent: `query {
+            bodyContent: (this.props.newRequestFields.method === "MUTATION" || this.props.newRequestFields.method === "SUBSCRIPTION")
+            ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'query') + this.props.newRequestBody.bodyContent.substring(this.props.newRequestFields.method.length, this.props.newRequestBody.bodyContent.length)
+            : `query {
 
 }`
           });
         }
-        this.props.setNewRequestFields({
-          ...this.props.newRequestFields,
-          method: value,
-        })
-        if (value === 'MUTATION') {
+        else if (value === 'MUTATION') {
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyContent: `mutation {
-
-}`
+            bodyContent: this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'mutation') + this.props.newRequestBody.bodyContent.substring(this.props.newRequestFields.method.length, this.props.newRequestBody.bodyContent.length)
           });
         }
-        this.props.setNewRequestFields({
-          ...this.props.newRequestFields,
-          method: value,
-        })
-        if (value === 'SUBSCRIPTION') {
+        else if (value === 'SUBSCRIPTION') {
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyContent: `subscription {
-
-}`
+            bodyContent: this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'subscription') + this.props.newRequestBody.bodyContent.substring(this.props.newRequestFields.method.length, this.props.newRequestBody.bodyContent.length)
           });
         }
         this.props.setNewRequestFields({
