@@ -9,8 +9,6 @@ import RequestTabs from './RequestTabs.jsx';
 
 import * as actions from '../../actions/actions';
 
-const mapStateToProps = store => ({});
-
 const mapDispatchToProps = dispatch => ({
   reqResDelete: (reqRes) => {
     dispatch(actions.reqResDelete(reqRes));
@@ -144,6 +142,6 @@ class ReqRes extends Component {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(ReqRes);
