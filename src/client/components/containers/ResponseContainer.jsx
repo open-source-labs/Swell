@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
-import ResponsePlain from '../display/ResponsePlain.jsx';
 import ResponseTabs from '../display/ResponseTabs.jsx';
 
 const mapStateToProps = store => ({});
@@ -32,22 +31,6 @@ class ResponseContainer extends Component {
   }
 
   render() {
-    // let responseContents;
-    // switch (this.state.responseDisplay) {
-    //   case 'SSE': {
-    //     responseContents = <ResponseSSE content={this.props.content} />;
-    //     break;
-    //   }
-    //   case 'plain': {
-    //     responseContents = <ResponsePlain content={this.props.content} />;
-    //     break;
-    //   }
-    //   default:
-    //   // console.log('Sorry this is an invalid response type');
-    // }
-
-    // console.log("HERE IN THE RESPONSE CONTAINER LINE 50")
-
     const headersArr = [];
     let index = 0;
 
