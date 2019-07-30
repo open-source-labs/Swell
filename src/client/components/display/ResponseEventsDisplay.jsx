@@ -47,9 +47,7 @@ class ResponseEventsDisplay extends Component {
       }
     });
 
-    return (
-      <div className="tab_content-response">{tabContentShownEvents}</div>
-    )
+    return <div className="tab_content-response">{tabContentShownEvents}</div>;
   }
 }
 

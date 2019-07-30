@@ -15,7 +15,6 @@ class ResponseHeadersDisplay extends Component {
     // Step 2  - Increment across all responses in array
     responsesCache.forEach((cur, idx) => {
       const headerObj = this.props.responseContent.headers;
-      console.log('responseTabs.jsx headers: ', this.props.responseContent.headers)
       if (!Array.isArray(headerObj) && headerObj) {
         for (const key in headerObj) {
           if (!Array.isArray(cur)) {
@@ -34,7 +33,7 @@ class ResponseHeadersDisplay extends Component {
         }
       }
     });
-    return <div className="tab_content-response">{tabContentShownEvents}</div>
+    return <div className="tab_content-response">{tabContentShownEvents}</div>;
   }
 }
 export default ResponseHeadersDisplay;
