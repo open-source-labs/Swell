@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../actions/actions';
 import ResponseTabs from '../display/ResponseTabs.jsx';
-import ResponseDisplay from '../display/ResponseDisplay.jsx';
+import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
+import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
+import ResponseCookiesDisplay from '../display/ResponseCookiesDisplay.jsx';
 
 const mapStateToProps = store => ({});
-
 const mapDispatchToProps = dispatch => ({});
+// TODO: Implement Redux in these components?
 
 class ResponseContainer extends Component {
   constructor(props) {
@@ -81,7 +83,9 @@ class ResponseContainer extends Component {
     return (
       <div className="resreq_res-container">
         <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
-        <ResponseDisplay responseContent={this.props.content} openTabs={this.state.openTabs} />
+        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay responseContent={this.props.content} />}
+        {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
+        {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
       </div>
     );
   }
