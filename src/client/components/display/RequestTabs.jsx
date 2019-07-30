@@ -48,7 +48,6 @@ class RequestTabs extends Component {
   }
 
   componentDidMount() {
-    console.log('requestContent', this.props.requestContent);
     this.handleTabSelect("Request Headers");
   }
 
@@ -61,14 +60,14 @@ class RequestTabs extends Component {
 
     if (this.state.openTab === "Request Body") {
       tabContentShown = !!this.props.requestContent.body
-      ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p></pre>
-      : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>
+        ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p></pre>
+        : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>
     }
-    
+
     else if (this.state.openTab === "Request Variables") {
       tabContentShown = !!this.props.requestContent.bodyVariables
-      ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.bodyVariables}</p></pre>
-      : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Variables</p>
+        ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.bodyVariables}</p></pre>
+        : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Variables</p>
     }
 
     else if (this.state.openTab === "Request Headers") {
@@ -112,7 +111,7 @@ class RequestTabs extends Component {
           <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
           <Tab onTabSelected={this.handleTabSelect} tabName={body} />
           {
-            this.props.requestContent.bodyType==="GQL" &&
+            this.props.requestContent.bodyType === "GQL" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={variables} />
           }
         </ul>
