@@ -7,7 +7,7 @@ class ResponseCookiesDisplay extends Component {
   }
 
   render() {
-    const tabContentShownEvents = [];
+    const displayContents = [];
 
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];
@@ -17,10 +17,10 @@ class ResponseCookiesDisplay extends Component {
 
     responsesCache.forEach((cur, idx) => {
       if (!this.props.responseContent.cookies) {
-        tabContentShownEvents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Cookies</p>)
+        displayContents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Cookies</p>)
         return;
       }
-      tabContentShownEvents.push(
+      displayContents.push(
         <CookieTable
           className="cookieTable"
           cookies={this.props.responseContent.cookies}
@@ -29,7 +29,7 @@ class ResponseCookiesDisplay extends Component {
       );
     });
 
-    return <div className="tab_content-response">{tabContentShownEvents}</div>;
+    return <div className="tab_content-response">{displayContents}</div>;
   }
 }
 

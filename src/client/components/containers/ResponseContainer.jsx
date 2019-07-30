@@ -7,10 +7,6 @@ import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
 import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
 import ResponseCookiesDisplay from '../display/ResponseCookiesDisplay.jsx';
 
-const mapStateToProps = store => ({});
-const mapDispatchToProps = dispatch => ({});
-// TODO: Implement Redux in these components?
-
 class ResponseContainer extends Component {
   constructor(props) {
     super(props);
@@ -79,11 +75,12 @@ class ResponseContainer extends Component {
         }
       }
     }
+    console.log('content being passed', this.props.content);
 
     return (
       <div className="resreq_res-container">
         <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
-        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay responseContent={this.props.content} />}
+        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay props={this.props.content} />}
         {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
         {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
       </div>
@@ -91,7 +88,4 @@ class ResponseContainer extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResponseContainer);
+export default ResponseContainer;
