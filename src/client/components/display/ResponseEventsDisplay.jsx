@@ -13,6 +13,7 @@ class ResponseEventsDisplay extends Component {
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];
     responsesCache.push(this.props);
+    console.log('this.props)', this.props);
 
     // Step 2  - Increment across all responses in array
     responsesCache.forEach((cur, idx) => {
@@ -27,20 +28,18 @@ class ResponseEventsDisplay extends Component {
           });
         }
         else {
-          responseEvents.forEach((cur, idx) => {
-            displayContents.push(
-              <div className="json-response" key={`jsonresponsediv+${idx}`}>
-                <JSONPretty data={cur} space="4" theme={{
-                  main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
-                  key: 'color:#0089D0;', //bluetwo
-                  string: 'color:#15B78F;',//greenone
-                  value: 'color:#fd971f;', //a nice orange
-                  boolean: 'color:#E00198;', //gqlpink
-                }}
-                />
-              </div>
-            );
-          });
+          displayContents.push(
+            <div className="json-response" key={`jsonresponsediv+${idx}`}>
+              <JSONPretty data={responseEvents[0]} space="4" theme={{
+                main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
+                key: 'color:#0089D0;', // bluetwo
+                string: 'color:#15B78F;',// greenone
+                value: 'color:#fd971f;', // a nice orange
+                boolean: 'color:#E00198;', // gqlpink
+              }}
+              />
+            </div>
+          );
         }
       }
     });
