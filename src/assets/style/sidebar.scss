@@ -9,7 +9,7 @@
 	flex-direction: column;
 	height: 100vh;
 	left: 0;
-	overflow: scroll;
+	// overflow: scroll;
 	padding: 15px 18px;
 	position: absolute;
 	top: 0;
@@ -317,7 +317,8 @@
 }
 .historyDate-container {
 	margin-top: 15px;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: none;
 }
 .historyDate-container::-webkit-scrollbar {
 }
@@ -334,7 +335,7 @@
 	font-size: .95rem;
 	height: 28px;
 	margin: 1px 0px 1px 0px;
-	overflow: hidden;
+	// overflow: hidden;
 	width: 100%;
 	&:hover {
 		border: 1px solid #808080;

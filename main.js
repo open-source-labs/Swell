@@ -109,7 +109,10 @@ function createWindow() {
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
     title: 'Swell',
-    webPreferences: { webSecurity: false },
+    allowRunningInsecureContent: true,
+    webPreferences: { 
+      webSecurity: false,
+     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
   
