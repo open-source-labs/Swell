@@ -146,7 +146,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_BODY: {
-
       return {
         ...state,
         newRequestBody: action.payload,
