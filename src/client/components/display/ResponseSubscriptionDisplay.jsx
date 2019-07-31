@@ -1,13 +1,10 @@
 import React from 'react';
 import JSONPretty from 'react-json-pretty';
-import { Subscription } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, Subscription } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
@@ -39,11 +36,11 @@ const ResponseSubscriptionDisplay = ({ subscriptionBody }) => {
   return (
     <ApolloProvider client={client} >
       <div className="tab_content-response">
-        <Subscription subscription={gql`${subscriptionBody}`}>
-          {({ loading, data }) => {
-            if (loading) return <p>Listening for new data</p>;
-            return <div className="json-response" key="jsonresponsediv">
-              <JSONPretty data={data} space="4" theme={{
+        <div className="json-response" key="jsonresponsediv">
+          <Subscription subscription={gql`${subscriptionBody}`}>
+            {({ loading, data }) => {
+              if (loading) return 'Listening for new data';
+              return <JSONPretty data={data} space="4" theme={{
                 main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
                 key: 'color:#0089D0;', // bluetwo
                 string: 'color:#15B78F;',// greenone
@@ -51,14 +48,12 @@ const ResponseSubscriptionDisplay = ({ subscriptionBody }) => {
                 boolean: 'color:#E00198;', // gqlpink
               }}
               />
-            </div>
-          }}
-        </Subscription>
+            }}
+          </Subscription>
+        </div>
       </div>
     </ApolloProvider >
   );
-
-
 }
 
 export default ResponseSubscriptionDisplay;
