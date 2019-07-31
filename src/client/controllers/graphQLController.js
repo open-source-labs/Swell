@@ -120,12 +120,22 @@ const graphQLController = {
       }
     }
     else if (reqResObj.request.method === 'MUTATION') {
-      client.mutate({ mutation: body })
+      if (reqResObj.request.bodyVariables) {
+        client.mutate({ mutation: body,  variables:JSON.parse(reqResObj.request.bodyVariables) })
         .then(data => handleResponse(data))
         .catch((err) => {
           reqResObj.connection = 'error';
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         });
+      }
+      else {
+        client.mutate({ mutation: body })
+          .then(data => handleResponse(data))
+          .catch((err) => {
+            reqResObj.connection = 'error';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+          });
+      }
     }
 
     // TODO: Implement mutations and subscriptions
