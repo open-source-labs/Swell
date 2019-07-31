@@ -15,7 +15,7 @@ const graphQLController = {
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    
+
     /*
     TODO: Investigate this code from httpController
     
@@ -120,20 +120,21 @@ const graphQLController = {
       }
     }
     else if (reqResObj.request.method === 'MUTATION') {
-      if(reqResObj.request.bodyVariables){
-        client.mutate({ mutation: body, variables:JSON.parse(reqResObj.request.bodyVariables) })
-          .then(data => handleResponse(data))
-          .catch((err) => {
-            reqResObj.connection = 'error';
-            store.default.dispatch(actions.reqResUpdate(reqResObj));
-          });
-      }else{
-        client.mutate({ mutation: body })
+      if (reqResObj.request.bodyVariables) {
+        client.mutate({ mutation: body,  variables:JSON.parse(reqResObj.request.bodyVariables) })
         .then(data => handleResponse(data))
         .catch((err) => {
           reqResObj.connection = 'error';
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         });
+      }
+      else {
+        client.mutate({ mutation: body })
+          .then(data => handleResponse(data))
+          .catch((err) => {
+            reqResObj.connection = 'error';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+          });
       }
     }
 
