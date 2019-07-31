@@ -117,6 +117,32 @@ const connectionController = {
     connectionController.closeAllReqRes();
     store.default.dispatch(actions.reqResClear());
   },
+
+  minimizeAllReqRes() {
+    const { reqResArray } = store.default.getState().business;
+
+    const { currentTab } = store.default.getState().business;
+
+    reqResArray.forEach((reqRes) => {
+      if (!reqRes.minimized && reqRes.tab === currentTab) {
+        reqRes.minimized = true;
+        store.default.dispatch(actions.reqResUpdate(reqRes));
+      }
+    });
+  },
+  
+  expandAllReqRes() {
+    const { reqResArray } = store.default.getState().business;
+
+    const { currentTab } = store.default.getState().business;
+
+    reqResArray.forEach((reqRes) => {
+      if (reqRes.minimized && reqRes.tab === currentTab) {
+        reqRes.minimized = false;
+        store.default.dispatch(actions.reqResUpdate(reqRes));
+      }
+    });
+  },
 };
 
 export default connectionController;

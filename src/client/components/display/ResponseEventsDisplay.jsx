@@ -7,13 +7,14 @@ const ResponseEventsDisplay = ({ props }) => {
   const displayContents = [];
 
   // If it's an SSE, render event rows
-  if (headers['content-type'] && headers['content-type'].includes('text/event-stream')) {
+  if (headers && headers['content-type'] && headers['content-type'].includes('text/event-stream')) {
     events.forEach((cur, idx) => {
       displayContents.push(<EventRow key={idx} content={cur} />);
     });
   }
   // Otherwise, render a single display
   else {
+    if(events) {
     displayContents.push(
       <div className="json-response" key="jsonresponsediv">
         <JSONPretty data={events[0]} space="4" theme={{
@@ -26,6 +27,7 @@ const ResponseEventsDisplay = ({ props }) => {
         />
       </div>
     );
+   }
   }
 
   return <div className="tab_content-response">{displayContents}</div>;

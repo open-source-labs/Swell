@@ -2,7 +2,8 @@
 	font-size: .9rem;
 	font-weight: 600;
 	line-height: normal;
-	vertical-align: middle;
+  display: flex;
+  align-items: center;
 }
 .secondary-title {
 	font-size: .8rem;
@@ -15,7 +16,8 @@
 	font-weight: 500;
 	line-height: 30px;
 	margin: 0;
-	padding: 0;
+  padding: 0;
+  overflow: scroll;
 }
 .title-offset_top {
 	margin-top: -3px;
@@ -23,7 +25,7 @@
 .highlighter {
 	background: $darkgraygreen;
 	color: white;
-	display: inline-block;
+  display: flex;
 	padding: 8px 15px;
 	width: auto;
 }

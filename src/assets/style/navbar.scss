@@ -41,15 +41,15 @@
 	background: #4e4e4e;
 }
 .navbar-console_inner {
-	max-width: 600px;
+  // max-width: 600px;
 	padding: 0 15px;
 	.btn {
-		background: $darkgraygreen;
+		background: transparent;
 		border: solid 1px #4e4e4e;
 		color: $mediumgray;
 		display: inline;
 		font-size: 14px;
-		margin: 1px;
+		margin: 4px;
 		padding: .5rem;
 	}
 }
