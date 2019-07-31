@@ -10,17 +10,6 @@ import * as actions from '../actions/actions';
 const graphQLController = {
 
   openGraphQLConnection(reqResObj) {
-
-    const client = new ApolloClient({
-      link: createHttpLink({ uri: reqResObj.url }),
-      headers,
-      credentials: 'same-origin',
-      cache: new InMemoryCache(),
-    });
-
-    // TODO: Refactor to reduce short-circuiting
-    if (reqResObj.response.method === 'SUBSCRIPTION') return this.openSubscription(reqResObj, client);
-
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -32,6 +21,13 @@ const graphQLController = {
     const headers = {};
     reqResObj.request.headers.forEach((item) => {
       headers[item.key] = item.value;
+    });
+
+    const client = new ApolloClient({
+      link: createHttpLink({ uri: reqResObj.url }),
+      headers,
+      credentials: 'same-origin',
+      cache: new InMemoryCache(),
     });
 
     const body = gql`${reqResObj.request.body}`;
@@ -57,11 +53,10 @@ const graphQLController = {
     }
   },
 
-  openSubscription(reqResObj, client) {
+  openSubscription(reqResObj) {
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
-    reqResObj.connectionType = 'gql-subscription'; // TODO: Do we need this?
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     return;
   },
