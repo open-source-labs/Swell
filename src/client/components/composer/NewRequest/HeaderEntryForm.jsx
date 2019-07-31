@@ -54,20 +54,20 @@ class HeaderEntryForm extends Component {
     }
 
     // Attempt to update header in these conditions:
-    // const foundHeader = this.props.newRequestHeaders.headersArr.find(header => header.key.toLowerCase() === 'content-type');
+    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => header.key.toLowerCase() === 'content-type');
 
-    // // 1. if there is no contentTypeHeader, but there should be
-    // if (!foundHeader && contentType !== '') {
-    //   this.addContentTypeHeader(contentType);
-    // }
-    // // 2. if there is a contentTypeHeader, but there SHOULDNT be
-    // else if (foundHeader && contentType === '') {
-    //   this.removeContentTypeHeader();
-    // }
-    // // 3. if there is a contentTypeHeader, needs to update
-    // else if (foundHeader && foundHeader.value !== contentType) {
-    //   this.updateContentTypeHeader(contentType, foundHeader);
-    // }
+    // 1. if there is no contentTypeHeader, but there should be
+    if (!foundHeader && contentType !== '') {
+      this.addContentTypeHeader(contentType);
+    }
+    // 2. if there is a contentTypeHeader, but there SHOULDNT be
+    else if (foundHeader && contentType === '') {
+      this.removeContentTypeHeader();
+    }
+    // 3. if there is a contentTypeHeader, needs to update
+    else if (foundHeader && foundHeader.value !== contentType) {
+      this.updateContentTypeHeader(contentType, foundHeader);
+    }
   }
 
   addContentTypeHeader(contentType) {

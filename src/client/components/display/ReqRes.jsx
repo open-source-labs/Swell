@@ -124,7 +124,8 @@ class ReqRes extends Component {
           <span className="tertiary-title">{this.props.content.connectionType}</span>
 
 
-          <span className="tertiary-title">
+          <span className="tertiary-title" title="The amount of time it takes to recieve response"
+>
             {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
             Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
           </span>

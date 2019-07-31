@@ -24,6 +24,18 @@
 	margin: 1px;
 	margin-bottom: -1px;
 	padding: 0.4rem 0.95rem;
+	color:rgba(0,0,0,0.5);
+}
+.tab-list-item-active{
+	cursor: pointer;
+	display: inline-block;
+	font-size: .8rem;
+	font-weight: 800;
+	line-height: 25px;
+	list-style: none;
+	margin: 1px;
+	margin-bottom: -1px;
+	padding: 0.4rem 0.95rem;
 }
 .tab-list-active {
 	background-color: white;

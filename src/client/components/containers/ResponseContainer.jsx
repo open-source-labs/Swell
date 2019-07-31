@@ -79,7 +79,7 @@ class ResponseContainer extends Component {
 
     return (
       <div className="resreq_res-container">
-        <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
+        <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} openResponseTab={this.state.openTabs}/>
         {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay props={this.props.content} />}
         {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
         {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
