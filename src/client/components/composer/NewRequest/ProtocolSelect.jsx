@@ -41,6 +41,7 @@ class ProtocolSelect extends Component {
           HTTP
         </div> */}
         <div
+          title="Enter an http or an https url"
           role="button"
           tabIndex={0}
           className={HTTPSStyleClasses}
@@ -51,6 +52,7 @@ class ProtocolSelect extends Component {
           HTTP/S
         </div>
         <div
+          title="Enter WebSocket url"
           role="button"
           tabIndex={0}
           className={WSStyleClasses}
@@ -59,6 +61,7 @@ class ProtocolSelect extends Component {
           WS
         </div>
         <div
+          title="Enter a GraphQL endpoint"
           role="button"
           tabIndex={0}
           className={GQLStyleClasses}

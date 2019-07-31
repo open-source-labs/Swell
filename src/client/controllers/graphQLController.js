@@ -15,7 +15,7 @@ const graphQLController = {
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+    
     /*
     TODO: Investigate this code from httpController
     
