@@ -110,10 +110,19 @@ const businessReducer = (state = initialState, action) => {
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
         if (reqRes.id === action.payload.id) {
+          // console.log(action.payload)
           indexToBeUpdated = index;
+          console.log("current minimized in state",state.reqResArray[index].minimized)
+          console.log("minimize payload", action.payload.minimized)
+          
+          if(state.reqResArray[index].minimized){
+            action.payload.minimized = true
+          }else{
+            action.payload.minimized = false
+          }
         }
       });
-
+      // console.log(,action.payload.minimized)
       if (indexToBeUpdated !== undefined) {
         reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }

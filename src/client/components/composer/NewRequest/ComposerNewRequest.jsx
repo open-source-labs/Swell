@@ -137,7 +137,7 @@ class ComposerNewRequest extends Component {
             events: null,
           },
           checked: false,
-          minizimed: false,
+          minimized: false,
           tab: this.props.currentTab,
         };
       }
