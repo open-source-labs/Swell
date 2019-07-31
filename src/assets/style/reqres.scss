@@ -15,23 +15,23 @@
 
 //-------------------------------------------------------------------
 //This is a fix for the ugly windows and linux scrollbars
+//-------------------------------------------------------------------
+#reqResContainer::-webkit-scrollbar{
+  width:5px;
+  background-color:#cccccc;
+  }
+  #reqResContainer::-webkit-scrollbar-thumb{
+  background-color:rgb(189, 189, 189);
+  border-radius:10px;
+  }
+  #reqResContainer::-webkit-scrollbar-thumb:hover{
+  background-color:rgb(114, 111, 111);
+  }
+  #reqResContainer::-webkit-scrollbar-thumb:active{
+  background-color:rgb(80, 77, 77);
+  border:1px solid #333333;
 
-// //-------------------------------------------------------------------
-// #reqResContainer_inner::-webkit-scrollbar{
-//   width:5px;
-//   background-color:#cccccc;
-//   }
-//   #reqResContainer_inner::-webkit-scrollbar-thumb{
-//   background-color:rgb(189, 189, 189);
-//   border-radius:10px;
-//   }
-//   #reqResContainer_inner::-webkit-scrollbar-thumb:hover{
-//   background-color:rgb(114, 111, 111);
-//   }
-//   #reqResContainer_inner::-webkit-scrollbar-thumb:active{
-//   background-color:rgb(80, 77, 77);
-//   border:1px solid #333333;
-//   }
+  }
 //-------------------------------------------------------------------
 #reqResContainer_inner {
   width: auto;
@@ -185,8 +185,9 @@
   flex-direction: column;
   max-height: 60vh;
   height: auto;
-  // overflow: scroll;
+  overflow: scroll;
   flex-direction: column;
+  overflow-wrap: break-word;
   position: relative;
   border-bottom: solid 1px $bordergray;
   border-left: solid 1px $bordergray;

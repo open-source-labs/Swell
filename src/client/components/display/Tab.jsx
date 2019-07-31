@@ -6,20 +6,17 @@ import * as actions from '../../actions/actions';
 class Tab extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedTab: '',
-    };
     this.tabClickHandler = this.tabClickHandler.bind(this);
   }
 
   tabClickHandler () {
     let selectedTab = this.props.tabName;
-    this.props.onTabSelected(selectedTab);            
+    this.props.onTabSelected(selectedTab);        
   }
 
   render() {
     return (
-      <li onClick={this.tabClickHandler} className={'tab-list-item'} key={this.props.tabName}>{this.props.tabName}</li>
+      <li onClick={this.tabClickHandler} className={this.props.tabName === this.props.openTab ? 'tab-list-item-active': 'tab-list-item'} key={this.props.tabName}>{this.props.tabName}</li>
     )
   }
 }

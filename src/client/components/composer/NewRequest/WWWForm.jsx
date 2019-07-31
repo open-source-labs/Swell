@@ -94,6 +94,7 @@ class WWWForm extends Component {
       }
       return wwwField;
     });
+      console.log(wwwField.id)
 
     let bodyContent = wwwFieldsDeepCopy
     .filter(wwwField => wwwField.active)
