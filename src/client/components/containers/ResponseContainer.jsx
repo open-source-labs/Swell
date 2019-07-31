@@ -75,12 +75,15 @@ class ResponseContainer extends Component {
         }
       }
     }
-    console.log('content being passed', this.props.content);
+    console.log('ResponseContainer subscriptionBody', this.props.subscriptionBody);
 
     return (
       <div className="resreq_res-container">
         <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
-        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay props={this.props.content} />}
+        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay
+          response={this.props.content}
+          subscriptionBody={this.props.subscriptionBody}
+        />}
         {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
         {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
       </div>
