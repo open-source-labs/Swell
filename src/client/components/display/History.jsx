@@ -49,8 +49,16 @@ class History extends Component {
       url: this.props.content.url ? this.props.content.url : 'http://',
       graphQL: this.props.content.graphQL ? this.props.content.graphQL : false
     }
+    let deeperCopy = JSON.parse(JSON.stringify(this.props.content.request.headers));
+    deeperCopy.push({
+      id: this.props.content.request.headers.length+1,
+      active: false,
+      key: '',
+      value: '',
+    })
+    console.log(deeperCopy)
     const requestHeadersObj = {
-      headersArr: this.props.content.request.headers ? this.props.content.request.headers : [],
+      headersArr: this.props.content.request.headers ? deeperCopy : [],
       count: this.props.content.request.headers ? this.props.content.request.headers.length : 0,
     }
     const requestCookiesObj = {
