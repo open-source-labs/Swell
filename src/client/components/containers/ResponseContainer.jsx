@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import * as actions from '../../actions/actions';
 import ResponseTabs from '../display/ResponseTabs.jsx';
 import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
 import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
@@ -76,13 +74,16 @@ class ResponseContainer extends Component {
         }
       }
     }
-    console.log('ResponseContainer subscriptionBody', this.props.subscriptionBody);
 
     return (
       <div className="resreq_res-container">
         <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} />
-        {(this.state.openTabs === 'Response Events' && this.props.subscriptionBody) && <ResponseSubscriptionDisplay subscriptionBody={this.props.subscriptionBody} />}
-        {(this.state.openTabs === 'Response Events' && !this.props.subscriptionBody) && <ResponseEventsDisplay response={this.props.content} />}
+        {(this.state.openTabs === 'Response Events' && this.props.subscriptionBody)
+          && <ResponseSubscriptionDisplay subscriptionBody={this.props.subscriptionBody} />
+        }
+        {(this.state.openTabs === 'Response Events' && !this.props.subscriptionBody)
+          && <ResponseEventsDisplay response={this.props.content} />
+        }
         {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
         {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
       </div>
