@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions/actions';
 import Header from './Header.jsx';
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 const mapStateToProps = store => ({
   newRequestHeaders: store.business.newRequestHeaders,
@@ -185,7 +186,7 @@ class HeaderEntryForm extends Component {
 
     return <div style={this.props.stylesObj}>
       <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-        <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+        <img className={arrowClass} src={dropDownArrow}>
         </img>
         Headers
       </div>

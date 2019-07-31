@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import WWWForm from './WWWForm.jsx';
 import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 const mapStateToProps = store => ({
   newRequestBody : store.business.newRequestBody,
@@ -86,7 +87,7 @@ class BodyEntryForm extends Component {
     return(
       <div style={this.props.stylesObj}>
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+          <img className={arrowClass} src={dropDownArrow}>
           </img>
           Body
         </div>

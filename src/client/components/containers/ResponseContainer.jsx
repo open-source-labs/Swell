@@ -75,7 +75,7 @@ class ResponseContainer extends Component {
         }
       }
     }
-    console.log('content being passed', this.props.content);
+    // console.log('content being passed', this.props.content);
 
     return (
       <div className="resreq_res-container">
