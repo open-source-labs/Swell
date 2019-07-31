@@ -23,6 +23,7 @@ const graphQLController = {
     });
 
     const body = gql`${reqResObj.request.body}`;
+    const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
 
     const client = new ApolloClient({
       link: createHttpLink({ uri: reqResObj.url }),
@@ -32,45 +33,22 @@ const graphQLController = {
     });
 
     if (reqResObj.request.method === 'QUERY') {
-      console.log(reqResObj.request);
-      if (reqResObj.request.bodyVariables) {
-        client.query({ query: body, variables: JSON.parse(reqResObj.request.bodyVariables) })
-          // Update the store with the response
-          .then(data => this.handleResponse(data, reqResObj))
-          .catch((err) => {
-            console.error(err);
-            reqResObj.connection = 'error';
-            store.default.dispatch(actions.reqResUpdate(reqResObj));
-          });
-      } else {
-        client.query({ query: body })
-          // Update the store with the response
-          .then(data => this.handleResponse(data, reqResObj))
-          .catch((err) => {
-            console.error(err);
-            reqResObj.connection = 'error';
-            store.default.dispatch(actions.reqResUpdate(reqResObj));
-          });
-
-      }
+      client.query({ query: body, variables })
+        // Update the store with the response
+        .then(data => this.handleResponse(data, reqResObj))
+        .catch((err) => {
+          console.error(err);
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        });
     }
     else if (reqResObj.request.method === 'MUTATION') {
-      if (reqResObj.request.bodyVariables) {
-        client.mutate({ mutation: body, variables: JSON.parse(reqResObj.request.bodyVariables) })
-          .then(data => this.handleResponse(data, reqResObj))
-          .catch((err) => {
-            reqResObj.connection = 'error';
-            store.default.dispatch(actions.reqResUpdate(reqResObj));
-          });
-      }
-      else {
-        client.mutate({ mutation: body })
-          .then(data => this.handleResponse(data, reqResObj))
-          .catch((err) => {
-            reqResObj.connection = 'error';
-            store.default.dispatch(actions.reqResUpdate(reqResObj));
-          });
-      }
+      client.mutate({ mutation: body, variables })
+        .then(data => this.handleResponse(data, reqResObj))
+        .catch((err) => {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        });
     }
   },
 
