@@ -10,12 +10,22 @@ class WebSocketWindow extends Component {
     this.state = {
       outgoingMessage: '',
     };
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.sendToWSController = this.sendToWSController.bind(this);
   }
 
   updateOutgoingMessage(value) {
     this.setState({
       outgoingMessage: value,
     });
+  }
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.sendToWSController()
+    }
+  }
+  sendToWSController(){
+     wsController.sendWebSocketMessage(this.props.id, this.state.outgoingMessage) 
   }
 
   render() {
@@ -53,15 +63,14 @@ class WebSocketWindow extends Component {
           <input
             className={'websocket_input-text'}
             value={this.state.outgoingMessage}
+            onKeyPress={this.handleKeyPress}
             placeholder="Message"
             onChange={e => this.updateOutgoingMessage(e.target.value)}
           />
 
           <button
             className={'websocket_input-btn'}
-            onClick={() => wsController
-              .sendWebSocketMessage(this.props.id, this.state.outgoingMessage)
-            }
+            onClick={this.sendToWSController}
             type="button"
           >
             Send Message

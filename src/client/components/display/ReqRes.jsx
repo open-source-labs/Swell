@@ -124,36 +124,33 @@ class ReqRes extends Component {
           <div>
             <div className="grid-6">
               <div>
-                <input
-                  id={this.props.content.id}
-                  checked={this.props.content.checked}
-                  className="reqres_select-radio"
-                  name="resreq-select"
-                  type="checkbox"
-                  onChange={this.onCheckHandler}
-                />
-              </div>
+          
+            <input
+              id={this.props.content.id}
+              checked={this.props.content.checked}
+              className="reqres_select-radio"
+              name="resreq-select"
+              type="checkbox"
+              onChange={this.onCheckHandler}
+            />
+          </div>
 
-              <div className="btn-sm">
-                <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-                <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-              </div>
-              <div className="btn-sm">
-                <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
-              </div>
-              <div>{statusLight}</div>
-              <span className="tertiary-title">{this.props.content.connectionType}</span>
-
-
-              <span className="tertiary-title">
-                {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
-                Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
-              </span>
-            </div>
+          <div className="btn-sm">
+            <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+            <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+          </div>
+          <div className="btn-sm">
+            <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
+          </div>
+          <div>{statusLight}</div>
+          <span className="tertiary-title">{this.props.content.connectionType}</span>
 
 
-            <div style={http2Display} className={'httptwo'}>
-              HTTP2 connection: Requests with the same host will share a single HTTP2 connection.
+          <span className="tertiary-title" title="The amount of time it takes to recieve response"
+>
+            {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
+            Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
+          </span>
         </div>
 
             <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
