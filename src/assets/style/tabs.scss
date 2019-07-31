@@ -8,13 +8,25 @@
 .tab_list-response {
 	background-color: $medgray;
 	height: 42px;
-	padding-bottom: 30px;
+	// padding-top: 30px;
 	position: sticky;
 	top: 0;
 	width: 100%;
 	z-index: 10;
 }
 .tab-list-item {
+	cursor: pointer;
+	display: inline-block;
+	font-size: .8rem;
+	font-weight: 800;
+	line-height: 25px;
+	list-style: none;
+	margin: 1px;
+	margin-bottom: -1px;
+	padding: 0.4rem 0.95rem;
+	color:rgba(0,0,0,0.5);
+}
+.tab-list-item-active{
 	cursor: pointer;
 	display: inline-block;
 	font-size: .8rem;
@@ -57,7 +69,7 @@
 	height: auto;
 	padding: 5px 5px;
 	position: relative;
-	width: 100%;
+	width: auto;
 }
 // .custom-json-pretty {
 //   background-color: white;

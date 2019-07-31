@@ -105,14 +105,14 @@ class RequestTabs extends Component {
     }
 
     return (
-      <div>
+      <div className={"request_tabs_container"}>
         <ul className={"tab_list"}>
-          <Tab onTabSelected={this.handleTabSelect} tabName={headers} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={body} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab}/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab}/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab}/>
           {
             this.props.requestContent.bodyType === "GQL" &&
-            <Tab onTabSelected={this.handleTabSelect} tabName={variables} />
+            <Tab onTabSelected={this.handleTabSelect} tabName={variables} openTab={this.state.openTab} />
           }
         </ul>
         <div className={"tab_content"}>{tabContentShown}</div>
