@@ -25,7 +25,9 @@ class WebSocketWindow extends Component {
     }
   }
   sendToWSController(){
-     wsController.sendWebSocketMessage(this.props.id, this.state.outgoingMessage) 
+    wsController.sendWebSocketMessage(this.props.id, this.state.outgoingMessage) 
+    this.updateOutgoingMessage("")
+    document.querySelector(".websocket_input-text").value =""
   }
 
   render() {
