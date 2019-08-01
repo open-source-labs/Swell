@@ -54,10 +54,10 @@ class ComposerNewRequest extends Component {
     let validationMessage;
 
     //Error conditions...
-    if (this.props.newRequestFields.url === 'http://' || this.props.newRequestFields.url === 'https://' || this.props.newRequestFields.url === 'ws://') {
+    if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) {
       validationMessage = "Please enter a valid URI.";
     }
-    if (!(/(https?:\/\/)|(ws:\/\/)/).test(this.props.newRequestFields.url)) {
+    if (!(/(https?:\/\/)|(wss?:\/\/)/).test(this.props.newRequestFields.url)) {
       validationMessage = "Please enter a valid URI.";
     }
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
