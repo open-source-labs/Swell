@@ -27,13 +27,11 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidMount() {
-    console.log("mounting")
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate() {
-    console.log("updating")
     if (this.props.newRequestHeaders.headersArr.length === 0) {
       const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
       this.addHeader(headersDeepCopy);
