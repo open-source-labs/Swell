@@ -165,27 +165,7 @@ const httpController = {
       let domain = reqResObj.host.split('//')
       domain.shift();
       domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-      // let dotDomain = `.${domain}`;
-      // console.log(domain, dotDomain);
-
-      // sesh.cookies.get({}, (err, cookies) => {
-      //   console.log('cooks~~@@#$', cookies)
-      //   if (cookies) {
-      //     reqResObj.response.cookies = cookies;
-      //     console.log('line176')
-      //     store.default.dispatch(actions.reqResUpdate(reqResObj))
-      //     cookies.forEach(cook => {
-      //       let url = '';
-      //       url += cook.secure ? 'https://' : 'http://';
-      //       url += cook.domain.charAt(0) === '.' ? 'www' : '';
-      //       url += cook.domain;
-      //       url += cook.path;
-
-      //       sesh.cookies.remove(url, cook.name, (x) => console.log(x));
-      //     })
-      // }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-      // })
     });
 
     reqStream.setEncoding('utf8');

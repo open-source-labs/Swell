@@ -77,7 +77,6 @@ class ComposerNewRequest extends Component {
 
     if (validated === true) {
       let reqRes;
-      console.log("LSKDJFSLDKFJLSDF", this.props.newRequestBody)
 
       // HTTP && GRAPHQL REQUESTS
       if (this.props.newRequestFields.protocol !== 'ws://') {
