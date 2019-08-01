@@ -18,7 +18,25 @@
 	margin: 0;
 	padding: 0;
 	width:auto;
+	overflow-X:scroll;
 }
+.tertiary-title::-webkit-scrollbar{
+	width:1px;
+	height:1px;
+  background-color:#cccccc;
+  }
+  .tertiary-title::-webkit-scrollbar-thumb{
+  background-color:rgb(189, 189, 189);
+  border-radius:10px;
+  }
+  .tertiary-title::-webkit-scrollbar-thumb:hover{
+  background-color:rgb(114, 111, 111);
+  }
+ .tertiary-title::-webkit-scrollbar-thumb:active{
+  background-color:rgb(80, 77, 77);
+  border:1px solid #333333;
+
+  }
 .title-offset_top {
 	margin-top: -3px;
 }
