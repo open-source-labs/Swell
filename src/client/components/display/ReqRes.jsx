@@ -6,6 +6,7 @@ import CloseBtn from './CloseBtn.jsx';
 import WebSocketWindow from './WebSocketWindow.jsx';
 import connectionController from '../../controllers/reqResController';
 import RequestTabs from './RequestTabs.jsx';
+import dropDownArrow from '../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 import * as actions from '../../actions/actions';
 
@@ -112,7 +113,7 @@ class ReqRes extends Component {
       <div className="resreq_wrap" id={this.props.content.id}>
         <div className="title-row">
           <span className="primary-title highlighter title_reverse-offset" onClick={this.minimize}>
-            <span><img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+            <span><img className={arrowClass} src={dropDownArrow}>
             </img></span>
             <pre><p>  </p></pre>
             {this.props.content.request.method}</span>

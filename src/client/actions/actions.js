@@ -63,6 +63,11 @@ export const setCurrentTab = (tab) => ({
   payload: tab,
 });
 
+export const setChecksAndMinis = (reqResArray) => ({
+  type: types.SET_CHECKS_AND_MINIS,
+  payload: reqResArray,
+});
+
 // UI ACTIONS
 export const showWarning = () => ({
   type: types.SHOW_WARNING,

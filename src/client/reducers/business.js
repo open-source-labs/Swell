@@ -105,15 +105,24 @@ const businessReducer = (state = initialState, action) => {
       }
     }
 
+    case types.SET_CHECKS_AND_MINIS: {
+      console.log('setchecks and minis', action.payload)
+      return {
+        ...state,
+        reqResArray: JSON.parse(JSON.stringify(action.payload))
+      }
+    }
+
     case types.REQRES_UPDATE: {
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
         if (reqRes.id === action.payload.id) indexToBeUpdated = index;
-        action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
-        action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
       });
       if (indexToBeUpdated !== undefined) {
+        action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
+        action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
+        console.log("\n REQRES UPDATING \n", state.reqResArray[indexToBeUpdated])
         reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
 

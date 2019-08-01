@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import * as actions from '../../../actions/actions';
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 const mapStateToProps = store => ({
   newRequestBody: store.business.newRequestBody,
@@ -55,7 +56,7 @@ class GraphQLBodyEntryForm extends Component {
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+          <img className={arrowClass} src={dropDownArrow}>
           </img>
           Body
         </div>
