@@ -67,7 +67,7 @@ const wsController = {
 
   sendWebSocketMessage(reqResId, message) {
     const matchedConnection = connectionController.getConnectionObject(reqResId);
-
+    console.log("matchedConnection", matchedConnection)
     matchedConnection.socket.send(message);
 
     // get fresh copy of reqRes
