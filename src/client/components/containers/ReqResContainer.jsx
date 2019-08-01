@@ -17,7 +17,6 @@ class ReqResContainer extends Component {
     super(props);
   }
 
-
   render() {
     const reqResArr = this.props.reqRes
       .filter(reqRes => reqRes.tab === this.props.currentTab)
