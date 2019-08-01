@@ -165,7 +165,6 @@ class HeaderEntryForm extends Component {
   }
 
   render() {
-    // console.log('HeaderEntryForm Begin Render', this.state.headers);
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <Header
         content={header}

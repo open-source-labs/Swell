@@ -83,10 +83,10 @@ class ResponseContainer extends Component {
           handleTabSelect={this.handleTabSelect}
           openResponseTab={this.state.openTabs}
         />
-        {(this.state.openTabs === 'Response Events' && this.props.subscriptionBody)
-          && <ResponseSubscriptionDisplay subscriptionBody={this.props.subscriptionBody} />
+        {(this.state.openTabs === 'Response Events' && this.props.subscriptionData)
+          && <ResponseSubscriptionDisplay subscriptionData={this.props.subscriptionData} />
         }
-        {(this.state.openTabs === 'Response Events' && !this.props.subscriptionBody)
+        {(this.state.openTabs === 'Response Events' && !this.props.subscriptionData)
           && <ResponseEventsDisplay response={this.props.content} />
         }
         {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
