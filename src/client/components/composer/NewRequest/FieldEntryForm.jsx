@@ -95,6 +95,7 @@ class FieldEntryForm extends Component {
           bodyType: 'none',
           bodyContent: '',
         });
+        //remove Content-Type Header here
         break;
       }
       case 'method': {
