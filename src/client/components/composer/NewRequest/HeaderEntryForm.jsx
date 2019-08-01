@@ -90,15 +90,6 @@ class HeaderEntryForm extends Component {
     });
   }
 
-  // removeContentTypeHeader() {
-  //   const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
-
-  //   this.props.setNewRequestHeaders({
-  //     headersArr: filtered,
-  //     count: filtered.length,
-  //   });
-  // }
-
   updateContentTypeHeader(contentType, foundHeader) {
     const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
     console.log('updating', filtered)
@@ -173,7 +164,6 @@ class HeaderEntryForm extends Component {
   }
 
   render() {
-    // console.log('HeaderEntryForm Begin Render', this.state.headers);
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <Header
         content={header}
