@@ -27,11 +27,13 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidMount() {
+    console.log("mounting")
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate() {
+    console.log("updating")
     if (this.props.newRequestHeaders.headersArr.length === 0) {
       const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
       this.addHeader(headersDeepCopy);
@@ -55,34 +57,33 @@ class HeaderEntryForm extends Component {
     }
 
     // Attempt to update header in these conditions:
-    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => header.key.toLowerCase() === 'content-type');
-    console.log('here is foundHeader', foundHeader)
+    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => /content-type$/i.test(header.key.toLowerCase()) );
+    
     // 1. if there is no contentTypeHeader, but there should be
     if (!foundHeader && contentType !== '') {
-      console.log("#1")
       this.addContentTypeHeader(contentType);
+      // this.updateContentTypeHeader(contentType, foundHeader);
     }
-    // 2. if there is a contentTypeHeader, but there SHOULDNT be
+    // 2. if there is a contentTypeHeader, but there SHOULDNT be, but the user inputs anyway... just let them
     else if (foundHeader && contentType === '') {
-      console.log("#2")
-      // this.removeContentTypeHeader();
+      //keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
     // 3. if there is a contentTypeHeader, needs to update
     else if (foundHeader && foundHeader.value !== contentType) {
-      console.log("#3")
       this.updateContentTypeHeader(contentType, foundHeader);
     }
   }
 
   addContentTypeHeader(contentType) {
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')));
 
-    headersDeepCopy.unshift({
+    const contentTypeHeader = ({
       id: this.props.newRequestHeaders.count,
       active: true,
       key: 'Content-Type',
       value: contentType,
     });
+    headersDeepCopy.length > 1 ? headersDeepCopy.splice(headersDeepCopy.length-1, 0, contentTypeHeader) : headersDeepCopy.unshift(contentTypeHeader)
 
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,

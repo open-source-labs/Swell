@@ -31,22 +31,12 @@ class ProtocolSelect extends Component {
 
     return (
       <div className="composer_protocol_container">
-        {/* <div
-          role="button"
-          tabIndex={0}
-          className={HTTPStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol')
-          }
-        >
-          HTTP
-        </div> */}
         <div
           title="Enter an http or an https url"
           role="button"
           tabIndex={0}
           className={HTTPSStyleClasses}
           onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol')
-          // onMouseDown={() => this.props.onChangeHandler({ target: { value: 'https://' } }, 'protocol')
           }
         >
           HTTP/S

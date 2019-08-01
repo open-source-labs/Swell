@@ -8,7 +8,8 @@ const classNames = require('classnames');
 
 const mapStateToProps = store => ({
   newRequestFields: store.business.newRequestFields,
-  newRequestBody: store.business.newRequestBody
+  newRequestBody: store.business.newRequestBody,
+  newRequestHeaders: store.business.newRequestHeaders
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,6 +18,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setNewRequestBody: (requestBodyObj) => {
     dispatch(actions.setNewRequestBody(requestBodyObj));
+  },
+  setNewRequestHeaders: (requestHeadersObj) => {
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },
 });
 
@@ -94,6 +98,12 @@ class FieldEntryForm extends Component {
           ...this.props.newRequestBody,
           bodyType: 'none',
           bodyContent: '',
+        });
+        //removes Content-Type Header
+        const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')
+        this.props.setNewRequestHeaders({
+          headersArr: filtered,
+          count: filtered.length,
         });
         break;
       }

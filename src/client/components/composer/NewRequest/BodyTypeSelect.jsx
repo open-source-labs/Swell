@@ -10,9 +10,7 @@ class BodyTypeSelect extends Component {
   }
 
   removeContentTypeHeader() {
-    console.log("something")
     const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
-
     this.props.setNewRequestHeaders({
       headersArr: filtered,
       count: filtered.length,
@@ -20,7 +18,6 @@ class BodyTypeSelect extends Component {
   }
 
   render() {
-    // console.log(this.props)
     let NoneStyleClasses = classNames({
       'composer_bodytype_button': true,
       'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'none'
