@@ -7,10 +7,11 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 
 
-const ResponseSubscriptionDisplay = ({ subscriptionBody }) => {
+const ResponseSubscriptionDisplay = ({ subscriptionData }) => {
+  const { body, uri } = subscriptionData;
 
   const link = new WebSocketLink({
-    uri: 'ws://localhost:4000',
+    uri,
     options: { reconnect: true }
   });
 
@@ -23,7 +24,7 @@ const ResponseSubscriptionDisplay = ({ subscriptionBody }) => {
     <ApolloProvider client={client} >
       <div className="tab_content-response">
         <div className="json-response" key="jsonresponsediv">
-          <Subscription subscription={gql`${subscriptionBody}`}>
+          <Subscription subscription={gql`${body}`}>
             {({ loading, data }) => {
               if (loading) return 'Listening for new data';
               return <JSONPretty data={data} space="4" theme={{
