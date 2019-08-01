@@ -56,17 +56,20 @@ class HeaderEntryForm extends Component {
 
     // Attempt to update header in these conditions:
     const foundHeader = this.props.newRequestHeaders.headersArr.find(header => header.key.toLowerCase() === 'content-type');
-
+    console.log('here is foundHeader', foundHeader)
     // 1. if there is no contentTypeHeader, but there should be
     if (!foundHeader && contentType !== '') {
+      console.log("#1")
       this.addContentTypeHeader(contentType);
     }
     // 2. if there is a contentTypeHeader, but there SHOULDNT be
     else if (foundHeader && contentType === '') {
-      this.removeContentTypeHeader();
+      console.log("#2")
+      // this.removeContentTypeHeader();
     }
     // 3. if there is a contentTypeHeader, needs to update
     else if (foundHeader && foundHeader.value !== contentType) {
+      console.log("#3")
       this.updateContentTypeHeader(contentType, foundHeader);
     }
   }
@@ -77,7 +80,7 @@ class HeaderEntryForm extends Component {
     headersDeepCopy.unshift({
       id: this.props.newRequestHeaders.count,
       active: true,
-      key: 'content-type',
+      key: 'Content-Type',
       value: contentType,
     });
 
@@ -87,22 +90,22 @@ class HeaderEntryForm extends Component {
     });
   }
 
-  removeContentTypeHeader() {
-    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key !== 'content-type');
+  // removeContentTypeHeader() {
+  //   const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
 
-    this.props.setNewRequestHeaders({
-      headersArr: filtered,
-      count: filtered.length,
-    });
-  }
+  //   this.props.setNewRequestHeaders({
+  //     headersArr: filtered,
+  //     count: filtered.length,
+  //   });
+  // }
 
   updateContentTypeHeader(contentType, foundHeader) {
-    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key !== 'content-type');
-
+    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
+    console.log('updating', filtered)
     filtered.unshift({
       id: this.props.newRequestHeaders.count,
       active: true,
-      key: 'content-type',
+      key: 'Content-Type',
       value: contentType,
     });
 
