@@ -58,7 +58,13 @@ class ReqRes extends Component {
     else {
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
-        contentBody.push(<ResponseContainer content={this.props.content.response} connectionType={this.props.content.connectionType} key={1} />)
+        contentBody.push(<ResponseContainer
+          content={this.props.content.response}
+          connectionType={this.props.content.connectionType}
+          // Add subscription body if it's a GQL subscription
+          subscriptionBody={this.props.content.request.method === 'SUBSCRIPTION' ? this.props.content.request.body : null}
+          key={1}
+        />)
       }
     }
 

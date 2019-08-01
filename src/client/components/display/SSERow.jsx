@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactJson from 'react-json-view';
 
-class EventRow extends Component {
+class SSERow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -66,4 +66,4 @@ class EventRow extends Component {
   }
 }
 
-export default EventRow;
+export default SSERow;

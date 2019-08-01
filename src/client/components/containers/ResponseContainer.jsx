@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import * as actions from '../../actions/actions';
 import ResponseTabs from '../display/ResponseTabs.jsx';
 import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
 import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
 import ResponseCookiesDisplay from '../display/ResponseCookiesDisplay.jsx';
+import ResponseSubscriptionDisplay from '../display/ResponseSubscriptionDisplay.jsx';
 
 class ResponseContainer extends Component {
   constructor(props) {
@@ -75,12 +74,21 @@ class ResponseContainer extends Component {
         }
       }
     }
-    // console.log('content being passed', this.props.content);
+
 
     return (
       <div className="resreq_res-container">
-        <ResponseTabs responseContent={this.props.content} handleTabSelect={this.handleTabSelect} openResponseTab={this.state.openTabs}/>
-        {this.state.openTabs === 'Response Events' && <ResponseEventsDisplay props={this.props.content} />}
+        <ResponseTabs
+          responseContent={this.props.content}
+          handleTabSelect={this.handleTabSelect}
+          openResponseTab={this.state.openTabs}
+        />
+        {(this.state.openTabs === 'Response Events' && this.props.subscriptionBody)
+          && <ResponseSubscriptionDisplay subscriptionBody={this.props.subscriptionBody} />
+        }
+        {(this.state.openTabs === 'Response Events' && !this.props.subscriptionBody)
+          && <ResponseEventsDisplay response={this.props.content} />
+        }
         {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
         {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
       </div>
