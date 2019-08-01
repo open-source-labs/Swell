@@ -61,12 +61,10 @@ class ReqRes extends Component {
         // Get subscription information if it's a subscription
         let subscriptionData = null;
         if (this.props.content.request.method === 'SUBSCRIPTION') {
-          // TODO: What if the WS path is different?
           // Ensure this has a web socket path
           const uri = this.props.content.protocol === /wss?:\/\//
             ? this.props.content.url
             : this.props.content.url.replace(this.props.content.protocol, 'ws://');
-          console.log(uri)
           subscriptionData = {
             uri,
             body: this.props.content.request.body,

@@ -60,9 +60,8 @@ class History extends Component {
         value: '',
       })
     }
-    console.log(deeperCopy)
     const requestHeadersObj = {
-      headersArr: !!deeperCopy ? deeperCopy : [],
+      headersArr: deeperCopy ? deeperCopy : [],
       count: this.props.content.request.headers ? this.props.content.request.headers.length : 0,
     }
     const requestCookiesObj = {
