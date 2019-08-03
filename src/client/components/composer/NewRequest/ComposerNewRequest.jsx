@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import uuid from 'uuid/v4';
-
-import * as actions from '../../../actions/actions';
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
@@ -10,54 +7,20 @@ import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import dbController from '../../../controllers/dbController'
 
-const mapStateToProps = store => ({
-  newRequestFields: store.business.newRequestFields,
-  newRequestHeaders: store.business.newRequestHeaders,
-  newRequestBody: store.business.newRequestBody,
-  newRequestCookies: store.business.newRequestCookies,
-  currentTab: store.business.currentTab,
-});
-
-const mapDispatchToProps = dispatch => ({
-  reqResAdd: (reqRes) => {
-    dispatch(actions.reqResAdd(reqRes));
-  },
-  setComposerWarningMessage: (message) => {
-    dispatch(actions.setComposerWarningMessage(message));
-  },
-  setComposerDisplay: (composerDisplay) => {
-    dispatch(actions.setComposerDisplay(composerDisplay));
-  },
-
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-  },
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
-  },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-  },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
-  },
-});
-
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
     this.addNewRequest = this.addNewRequest.bind(this);
   }
 
-
   requestValidationCheck() {
     let validationMessage;
 
     //Error conditions...
-    if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) {
+    if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) { //if url is only http/https/ws/wss://
       validationMessage = "Please enter a valid URI.";
     }
-    if (!(/(https?:\/\/)|(wss?:\/\/)/).test(this.props.newRequestFields.url)) {
+    if (!(/(https?:\/\/)|(wss?:\/\/)/).test(this.props.newRequestFields.url)) { //if url doesn't have http/https/ws/wss://
       validationMessage = "Please enter a valid URI.";
     }
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
@@ -80,12 +43,6 @@ class ComposerNewRequest extends Component {
 
       // HTTP && GRAPHQL REQUESTS
       if (this.props.newRequestFields.protocol !== 'ws://') {
-        // console.log("HERE IN ADDNEWREQUEST IN COMPOSERNEWREQUEST")
-        // console.log("url----->", this.props.newRequestFields.url)
-        // console.log("protocol----->", this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0])
-        // // console.log("protocol----->", this.props.newRequestFields.url.match(/^https?:\/\//))
-        // const meow = this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/g)[0]
-        // console.log("uri minus protocol ----->", this.props.newRequestFields.url.substring(meow.length, this.props.newRequestFields.url.length))
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1]}/`;
         if (URIWithoutProtocol.charAt(URIWithoutProtocol.length - 1) !== '/') {
           URIWithoutProtocol += '/';
@@ -100,13 +57,14 @@ class ComposerNewRequest extends Component {
         }
         path = path.replace(/https?:\//g, 'http://');
         let historyBodyContent;
-        if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value }
+        if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
         else historyBodyContent = '';
 
         let historyBodyVariables;
-        if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value }
+        if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
+
         reqRes = {
 
           id: uuid(), // Math.floor(Math.random() * 100000),
@@ -165,8 +123,6 @@ class ComposerNewRequest extends Component {
         };
       }
 
-      // console.log(this.props);
-
       dbController.addToIndexDb(reqRes);
       this.props.reqResAdd(reqRes);
 
@@ -215,27 +171,47 @@ class ComposerNewRequest extends Component {
       <div
         tabIndex={0}
         style={{ display: 'flex', flexDirection: 'column', outline: 'none' }}
-        onKeyPress={(event) => {
-        }}
       >
         <h1 className="composer_title">Create New Request</h1>
 
-
-        <FieldEntryForm addRequestProp={this.addNewRequest} />
-
+        <FieldEntryForm
+          addRequestProp={this.addNewRequest}
+          newRequestFields={this.props.newRequestFields}
+          newRequestHeaders={this.props.newRequestHeaders}
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestFields={this.props.setNewRequestFields}
+          setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestCookies={this.props.setNewRequestCookies}
+          setNewRequestBody={this.props.setNewRequestBody}
+        />
 
         <HeaderEntryForm
-          stylesObj={HeaderEntryFormStyle} />
+          stylesObj={HeaderEntryFormStyle}
+          newRequestHeaders={this.props.newRequestHeaders}
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestHeaders={this.props.setNewRequestHeaders}
+        />
 
-        <CookieEntryForm />
+        <CookieEntryForm
+          newRequestCookies={this.props.newRequestCookies}
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestCookies={this.props.setNewRequestCookies}
+        />
 
         {
           !this.props.newRequestFields.graphQL && this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://' &&
-          <BodyEntryForm />
+          <BodyEntryForm
+          newRequestHeaders={this.props.newRequestHeaders}
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestBody={this.props.setNewRequestBody}
+          />
         }
         {
           this.props.newRequestFields.graphQL &&
           <GraphQLBodyEntryForm
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestBody={this.props.setNewRequestBody}
           />
         }
 
@@ -247,7 +223,4 @@ class ComposerNewRequest extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ComposerNewRequest);
+export default ComposerNewRequest;

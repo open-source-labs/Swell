@@ -22,7 +22,7 @@ class WebSocketMessage extends Component {
 
     return (
       <div style={styles} className={webSocketMessageClassNames}>
-        <div  className={'websocket_message-data'}>{this.props.data}</div>
+        <div className={'websocket_message-data'}><div>{this.props.data}</div></div>
         <div  className={'websocket_message-time'}>{`${hours}:${minutes}`}</div>
       </div>
     );

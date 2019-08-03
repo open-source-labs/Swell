@@ -1,20 +1,18 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../../actions/actions';
 import Header from './Header.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
-const mapStateToProps = store => ({
-  newRequestHeaders: store.business.newRequestHeaders,
-  newRequestBody: store.business.newRequestBody,
-});
+// const mapStateToProps = store => ({
+//   newRequestHeaders: store.business.newRequestHeaders,
+//   newRequestBody: store.business.newRequestBody,
+// });
 
-const mapDispatchToProps = dispatch => ({
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-  },
-});
+// const mapDispatchToProps = dispatch => ({
+//   setNewRequestHeaders: (requestHeadersObj) => {
+//     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+//   },
+// });
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -27,13 +25,11 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidMount() {
-    console.log("mounting")
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate() {
-    console.log("updating")
     if (this.props.newRequestHeaders.headersArr.length === 0) {
       const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
       this.addHeader(headersDeepCopy);
@@ -93,7 +89,6 @@ class HeaderEntryForm extends Component {
 
   updateContentTypeHeader(contentType, foundHeader) {
     const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
-    console.log('updating', filtered)
     filtered.unshift({
       id: this.props.newRequestHeaders.count,
       active: true,
@@ -169,8 +164,8 @@ class HeaderEntryForm extends Component {
       <Header
         content={header}
         changeHandler={this.onChangeUpdateHeader}
-        key={index}
-        Key={header.key}
+        key={index} //key
+        Key={header.key} //prop
         value={header.value}
       />
     ));
@@ -193,7 +188,4 @@ class HeaderEntryForm extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HeaderEntryForm);
+export default HeaderEntryForm;

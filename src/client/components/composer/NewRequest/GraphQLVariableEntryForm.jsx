@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import * as actions from '../../../actions/actions';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
-
-const mapStateToProps = store => ({
-  newRequestBody: store.business.newRequestBody,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-  },
-});
 
 class GraphQLVariableEntryForm extends Component {
   constructor(props) {
@@ -48,7 +37,6 @@ class GraphQLVariableEntryForm extends Component {
 
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
     return (
@@ -81,7 +69,4 @@ class GraphQLVariableEntryForm extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GraphQLVariableEntryForm);
+export default GraphQLVariableEntryForm;
