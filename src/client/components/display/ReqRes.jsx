@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import ResponseContainer from '../containers/ResponseContainer.jsx';
+import connectionController from '../../controllers/reqResController';
 import OpenBtn from './OpenBtn.jsx';
 import CloseBtn from './CloseBtn.jsx';
-import WebSocketWindow from './WebSocketWindow.jsx';
-import connectionController from '../../controllers/reqResController';
 import RequestTabs from './RequestTabs.jsx';
+import ResponseContainer from '../containers/ResponseContainer.jsx';
+import WebSocketWindow from './WebSocketWindow.jsx';
 import dropDownArrow from '../../../assets/icons/arrow_drop_down_white_192x192.png'
-
-import * as actions from '../../actions/actions';
-
-const mapDispatchToProps = dispatch => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
-  },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
-  },
-});
 
 class ReqRes extends Component {
   constructor(props) {
@@ -43,7 +31,6 @@ class ReqRes extends Component {
   }
 
   render() {
-
     const contentBody = [];
 
     if (this.props.content.protocol === 'ws://') {
@@ -178,7 +165,4 @@ class ReqRes extends Component {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(ReqRes);
+export default ReqRes;

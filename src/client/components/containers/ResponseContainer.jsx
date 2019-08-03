@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import ResponseTabs from '../display/ResponseTabs.jsx';
 import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
 import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';

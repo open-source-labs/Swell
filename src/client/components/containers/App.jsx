@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import '../../../assets/style/App.scss';
 import { ipcRenderer } from 'electron'; //
-import * as actions from '../../actions/actions';
 import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';
 import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
 import dbController from '../../controllers/dbController'
-import db from '../../db';
 
-const mapStateToProps = store => ({
-  store,
-});
-
-const mapDispatchToProps = dispatch => ({});
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +18,8 @@ class App extends Component {
     ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllReqRes);
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
+    ipcRenderer.on('minimizeAll', ReqResCtrl.minimizeAllReqRes);
+    ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
     ipcRenderer.on('message', (e, text) => {
       // console.log('Message from updater: ', text)
@@ -44,7 +38,4 @@ class App extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App);
+export default App;

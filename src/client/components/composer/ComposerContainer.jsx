@@ -7,22 +7,23 @@ import ComposerWarning from './Warning/ComposerWarning.jsx';
 
 const mapStateToProps = store => ({
   reqResArray: store.business.reqResArray,
-  composerDisplay: store.ui.composerDisplay, 
-  newRequestFields: store.business.newRequestFields, 
-  newRequestHeaders: store.business.newRequestHeaders, 
-  newRequestBody: store.business.newRequestBody, 
-  newRequestCookies: store.business.newRequestCookies, 
-  currentTab: store.business.currentTab, 
+  composerDisplay: store.ui.composerDisplay,
+  newRequestFields: store.business.newRequestFields,
+  newRequestHeaders: store.business.newRequestHeaders,
+  newRequestBody: store.business.newRequestBody,
+  newRequestCookies: store.business.newRequestCookies,
+  currentTab: store.business.currentTab,
+  warningMessage: store.business.warningMessage,
 });
 
 const mapDispatchToProps = dispatch => ({
-  reqResAdd: (reqRes) => {dispatch(actions.reqResAdd(reqRes))},
-  setComposerWarningMessage: (message) => {dispatch(actions.setComposerWarningMessage(message))},
-  setComposerDisplay: (composerDisplay) => {dispatch(actions.setComposerDisplay(composerDisplay))},
-  setNewRequestHeaders: (requestHeadersObj) => {dispatch(actions.setNewRequestHeaders(requestHeadersObj))},
-  setNewRequestFields: (requestFields) => {dispatch(actions.setNewRequestFields(requestFields))},
-  setNewRequestBody: (requestBodyObj) => {dispatch(actions.setNewRequestBody(requestBodyObj))},
-  setNewRequestCookies: (requestCookiesObj) => {dispatch(actions.setNewRequestCookies(requestCookiesObj))},
+  reqResAdd: (reqRes) => { dispatch(actions.reqResAdd(reqRes)) },
+  setComposerWarningMessage: (message) => { dispatch(actions.setComposerWarningMessage(message)) },
+  setComposerDisplay: (composerDisplay) => { dispatch(actions.setComposerDisplay(composerDisplay)) },
+  setNewRequestHeaders: (requestHeadersObj) => { dispatch(actions.setNewRequestHeaders(requestHeadersObj)) },
+  setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
+  setNewRequestBody: (requestBodyObj) => { dispatch(actions.setNewRequestBody(requestBodyObj)) },
+  setNewRequestCookies: (requestCookiesObj) => { dispatch(actions.setNewRequestCookies(requestCookiesObj)) },
 });
 
 class ComposerContainer extends Component {
@@ -70,7 +71,10 @@ class ComposerContainer extends Component {
         break;
       }
       case 'Warning': {
-        composerContents = <ComposerWarning />;
+        composerContents = <ComposerWarning
+          warningMessage={this.props.warningMessage}
+          setComposerDisplay={this.props.setComposerDisplay}
+        />;
         break;
       }
       default:

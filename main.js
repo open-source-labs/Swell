@@ -27,7 +27,6 @@ const tbSelectAllButton = new TouchBarButton({
   label: 'Select All',
   backgroundColor: '#3DADC2',
   click: () => {
-    // console.log('select all');
     mainWindow.webContents.send('selectAll');
   },
 });
@@ -36,7 +35,6 @@ const tbDeselectAllButton = new TouchBarButton({
   label: 'Deselect All',
   backgroundColor: '#3DADC2',
   click: () => {
-    // console.log('deselect all');
     mainWindow.webContents.send('deselectAll');
   },
 });
@@ -45,7 +43,6 @@ const tbOpenSelectedButton = new TouchBarButton({
   label: 'Open Selected',
   backgroundColor: '#00E28B',
   click: () => {
-    // console.log('opening all selected');
     mainWindow.webContents.send('openAllSelected');
   },
 });
@@ -54,8 +51,23 @@ const tbCloseSelectedButton = new TouchBarButton({
   label: 'Close Selected',
   backgroundColor: '#DB5D58',
   click: () => {
-    // console.log('closing all selected');
     mainWindow.webContents.send('closeAllSelected');
+  },
+});
+
+const tbMinimizeALlButton = new TouchBarButton({
+  label: 'Minimize All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    mainWindow.webContents.send('minimizeAll');
+  },
+});
+
+const tbExpandAllButton = new TouchBarButton({
+  label: 'Expand All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    mainWindow.webContents.send('expandedAll');
   },
 });
 
@@ -78,7 +90,7 @@ const tbFlexSpacer = new TouchBarSpacer({
 // Attach earlier made buttons to a touch bar
 // -----------------------------------------------------------------
 
-const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbClearAllButton]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton,, tbMinimizeALlButton, tbExpandAllButton, tbClearAllButton]);
 
 
 // Keep a reference for dev mode

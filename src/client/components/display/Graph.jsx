@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Chart } from 'chart.js';
-import Store from '../../store';
 
 const mapStateToProps = Store => ({
   reqResArray: Store.business.reqResArray,
@@ -44,24 +43,33 @@ class Graph extends Component {
         animation: {
           duration: 0,
         },
-        maintainAspectRatio: false,
-        showLines: true,
-        scales: {
-          xAxes: [
-            {
-              type: 'linear',
-              position: 'bottom',
-              ticks: {
-                // beginAtZero: true,
-              },
-            },
-          ],
-          yAxes: [{
-            display: false,
-          }]
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) { //data.
+              // console.log('data', data)
+              let hoverLabel = data.datasets[tooltipItem.datasetIndex].label;
+              return hoverLabel;
+            }
+          }
         },
-      },
-    });
+        maintainAspectRatio: false,
+          showLines: true,
+          scales: {
+            xAxes: [
+              {
+                type: 'linear',
+                position: 'bottom',
+                ticks: {
+                  // beginAtZero: true,
+                },
+              },
+            ],
+            yAxes: [{
+              display: false,
+            }]
+          },
+        },
+      });
   }
 
   componentDidUpdate() {
@@ -78,9 +86,10 @@ class Graph extends Component {
       });
     }
     else if (openRequestCount >= 1 && !this.state.timeSet) {
-      // console.log('Reset time and graph')
       this.lineChart.data.datasets = [];
       this.lineChart.update();
+      if (openRequestCount > 12) { this.lineChart.options.legend.display = false } //removes legend when over 12 keys
+
 
       this.setState(
         {
@@ -88,7 +97,6 @@ class Graph extends Component {
           timeSet: true,
         },
         () => {
-          // console.log(this.state.currentTime);
           this.updateGraphWithStoreData();
         },
       );
@@ -104,7 +112,6 @@ class Graph extends Component {
 
     const newDataSets = [];
     this.props.reqResArray.forEach((reqRes, index) => {
-      // console.log(reqRes)
       if ((reqRes.response.events && reqRes.timeReceived > this.state.currentTime) ||
         (reqRes.response.messages || reqRes.request.messages)) {
         // create dataset...
@@ -113,7 +120,7 @@ class Graph extends Component {
         let pointBorderColor;
         let pointHoverBackgroundColor;
         let pointHoverBorderColor;
-        switch (index) {
+        switch (index % 6) {
           case 0: {
             backgroundColor = 'rgba(21,183,143, .1)';
             borderColor = 'rgb(21,183,143, .9)';

@@ -8,7 +8,14 @@ const mapStateToProps = store => ({
   history: store.business.history,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  reqResAdd: (reqRes) => { dispatch(actions.reqResAdd(reqRes)) },
+  reqResDelete: (reqRes) => { dispatch(actions.reqResDelete(reqRes)) },
+  setNewRequestHeaders: (requestHeadersObj) => { dispatch(actions.setNewRequestHeaders(requestHeadersObj)) },
+  setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
+  setNewRequestBody: (requestBodyObj) => { dispatch(actions.setNewRequestBody(requestBodyObj)) },
+  setNewRequestCookies: (requestCookiesObj) => { dispatch(actions.setNewRequestCookies(requestCookiesObj)) },
+});
 
 class HistoryContainer extends Component {
   constructor(props) {
@@ -17,15 +24,24 @@ class HistoryContainer extends Component {
 
   render() {
     // console.log(this.props.history);
-    let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)) .map((date, i) => { //wtf
-      return <HistoryDate className="historyDate" content={date} key={i}></HistoryDate> //1) map through history state and create date component. 2) pass props to new component 
+    let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)).map((date, i) => { //wtf
+      return <HistoryDate
+        className="historyDate"
+        content={date} key={i}
+        history={this.props.history}
+        reqResAdd={this.props.reqResAdd}
+        reqResDelete={this.props.reqResDelete}
+        setNewRequestFields={this.props.setNewRequestFields}
+        setNewRequestHeaders={this.props.setNewRequestHeaders}
+        setNewRequestCookies={this.props.setNewRequestCookies}
+        setNewRequestBody={this.props.setNewRequestBody}
+      />
+      //1) map through history state and create date component. 2) pass props to new component 
     })
 
-    return(
+    return (
       <div className={'historyDate-container'}>
-        {/* <div className={'sidebar_history-inner'}> */}
-          {historyDates}
-        {/* </div> */}
+        {historyDates}
       </div>
     )
   }
