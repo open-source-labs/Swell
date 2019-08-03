@@ -1,35 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import * as actions from '../../../actions/actions';
 import ProtocolSelect from "./ProtocolSelect.jsx";
-import PropTypes from "prop-types";
-
-const classNames = require('classnames');
-
-const mapStateToProps = store => ({
-  newRequestFields: store.business.newRequestFields,
-  newRequestBody: store.business.newRequestBody,
-  newRequestHeaders: store.business.newRequestHeaders
-});
-
-const mapDispatchToProps = dispatch => ({
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
-  },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-  },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-  },
-});
 
 class FieldEntryForm extends Component {
   constructor(props) {
     super(props);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    // this.props.graphQL && this.props.setGraphQL
   }
 
   onChangeHandler(e, property, graphQL) {
@@ -170,7 +146,11 @@ class FieldEntryForm extends Component {
 
     return (
       <div>
-        <ProtocolSelect currentProtocol={this.props.newRequestFields.protocol} onChangeHandler={this.onChangeHandler} graphQL={this.props.newRequestFields.graphQL} />
+        <ProtocolSelect
+          currentProtocol={this.props.newRequestFields.protocol}
+          onChangeHandler={this.onChangeHandler}
+          graphQL={this.props.newRequestFields.graphQL}
+        />
 
         <div className={'composer_method_url_container'}>
 
@@ -214,7 +194,4 @@ class FieldEntryForm extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FieldEntryForm);
+export default FieldEntryForm;

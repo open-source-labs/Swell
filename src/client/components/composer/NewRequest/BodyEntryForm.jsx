@@ -1,32 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import * as actions from '../../../actions/actions';
-import PropTypes from "prop-types";
 import WWWForm from './WWWForm.jsx';
 import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
-const mapStateToProps = store => ({
-  newRequestBody: store.business.newRequestBody,
-  newRequestHeaders: store.business.newRequestHeaders,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-  },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj))
-  }
-});
-
 class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      show: true,
-    };
+    this.state = {show: true};
     this.toggleShow = this.toggleShow.bind(this);
   }
 
@@ -131,7 +112,4 @@ class BodyEntryForm extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BodyEntryForm);
+export default BodyEntryForm;

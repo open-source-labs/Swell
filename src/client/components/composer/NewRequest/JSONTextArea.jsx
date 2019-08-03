@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const classNames = require('classnames');
-
 class JSONTextArea extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +61,6 @@ class JSONTextArea extends Component {
       return;
     }
     try {
-      // console.log('in try');
       JSON.parse(this.props.newRequestBody.bodyContent);
       if(!this.props.newRequestBody.JSONFormatted) {
         this.props.setNewRequestBody({

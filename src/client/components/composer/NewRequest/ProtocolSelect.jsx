@@ -9,10 +9,6 @@ class ProtocolSelect extends Component {
   }
 
   render() {
-    // const HTTPStyleClasses = classNames({
-    //   composer_protocol_button: true,
-    //   'composer_protocol_button-selected': this.props.currentProtocol === 'http://' && !this.props.graphQL,
-    // });
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
       http: true,

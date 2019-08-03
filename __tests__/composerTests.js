@@ -13,13 +13,19 @@ import { JestEnvironment } from '@jest/environment';
 // import httpController from '../src/client/controllers/httpController.js'
 // import dbController from '../src/client/controllers/dbController.js'
 // import reqResController from '../src/client/controllers/reqResController.js'
+// import ComposerNewRequest from "../src/client/components/composer/NewRequest/ComposerNewRequest.jsx"; //doesn't like png
 import ProtocolSelect from "../src/client/components/composer/NewRequest/ProtocolSelect.jsx";
-// import FieldEntryForm from "../src/client/components/composer/NewRequest/FieldEntryForm.jsx";
-// import HeaderEntryForm from '../src/client/components/composer/NewRequest/HeaderEntryForm.jsx';
-// import CookieEntryForm from '../src/client/components/composer/NewRequest/CookieEntryForm.jsx';
+import FieldEntryForm from "../src/client/components/composer/NewRequest/FieldEntryForm.jsx";
+// import HeaderEntryForm from '../src/client/components/composer/NewRequest/HeaderEntryForm.jsx'; //doesn't like png
+import Header from '../src/client/components/composer/NewRequest/Header.jsx';
+// import CookieEntryForm from '../src/client/components/composer/NewRequest/CookieEntryForm.jsx'; //doesn't like png
 // import BodyEntryForm from "../src/client/components/composer/NewRequest/BodyEntryForm.jsx";
-// import GraphQLBodyEntryForm from "../src/client/components/composer/NewRequest/GraphQLBodyEntryForm.jsx";
-// import GraphQLVariableEntryForm from "../src/client/components/composer/NewRequest/GraphQLVariableEntryForm.jsx";
+import BodyTypeSelect from "../src/client/components/composer/NewRequest/BodyTypeSelect.jsx";
+import WWWForm from '../src/client/components/composer/NewRequest/WWWForm.jsx';
+import WWWField from '../src/client/components/composer/NewRequest/WWWField.jsx';
+import JSONTextArea from '../src/client/components/composer/NewRequest/JSONTextArea.jsx';
+// import GraphQLBodyEntryForm from "../src/client/components/composer/NewRequest/GraphQLBodyEntryForm.jsx"; //doesn't like png
+// import GraphQLVariableEntryForm from "../src/client/components/composer/NewRequest/GraphQLVariableEntryForm.jsx"; //doesn't like png
 
 // Newer Enzyme versions require an adapter to a particular version of React
 configure({ adapter: new Adapter() });

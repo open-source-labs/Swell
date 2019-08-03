@@ -7,15 +7,27 @@ import ComposerWarning from './Warning/ComposerWarning.jsx';
 
 const mapStateToProps = store => ({
   reqResArray: store.business.reqResArray,
-  composerDisplay: store.ui.composerDisplay,
+  composerDisplay: store.ui.composerDisplay, 
+  newRequestFields: store.business.newRequestFields, 
+  newRequestHeaders: store.business.newRequestHeaders, 
+  newRequestBody: store.business.newRequestBody, 
+  newRequestCookies: store.business.newRequestCookies, 
+  currentTab: store.business.currentTab, 
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  reqResAdd: (reqRes) => {dispatch(actions.reqResAdd(reqRes))},
+  setComposerWarningMessage: (message) => {dispatch(actions.setComposerWarningMessage(message))},
+  setComposerDisplay: (composerDisplay) => {dispatch(actions.setComposerDisplay(composerDisplay))},
+  setNewRequestHeaders: (requestHeadersObj) => {dispatch(actions.setNewRequestHeaders(requestHeadersObj))},
+  setNewRequestFields: (requestFields) => {dispatch(actions.setNewRequestFields(requestFields))},
+  setNewRequestBody: (requestBodyObj) => {dispatch(actions.setNewRequestBody(requestBodyObj))},
+  setNewRequestCookies: (requestCookiesObj) => {dispatch(actions.setNewRequestCookies(requestCookiesObj))},
+});
 
 class ComposerContainer extends Component {
   constructor(props) {
     super(props);
-    // console.log(this.props);
     this.state = {};
   }
 
@@ -37,7 +49,24 @@ class ComposerContainer extends Component {
     let composerContents;
     switch (this.state.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
       case 'Request': {
-        composerContents = <ComposerNewRequest />;
+        composerContents = <ComposerNewRequest
+          composerDisplay={this.props.composerDisplay}
+          newRequestFields={this.props.newRequestFields}
+          newRequestHeaders={this.props.newRequestHeaders}
+          newRequestCookies={this.props.newRequestCookies}
+          newRequestBody={this.props.newRequestBody}
+          currentTab={this.props.currentTab}
+
+          reqResAdd={this.props.reqResAdd}
+
+          setComposerWarningMessage={this.props.setComposerWarningMessage}
+          setComposerDisplay={this.props.setComposerDisplay}
+
+          setNewRequestFields={this.props.setNewRequestFields}
+          setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestCookies={this.props.setNewRequestCookies}
+          setNewRequestBody={this.props.setNewRequestBody}
+        />;
         break;
       }
       case 'Warning': {
