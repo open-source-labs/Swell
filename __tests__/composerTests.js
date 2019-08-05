@@ -11,7 +11,7 @@ import { JestEnvironment } from '@jest/environment';
 // shallow render and traverse the shallow rendered tree.
 // import * as actions from '../src/client/actions/actions.js';
 // import httpController from '../src/client/controllers/httpController.js'
-// import dbController from '../src/client/controllers/dbController.js'
+// import historyController from '../src/client/controllers/historyController.js'
 // import reqResController from '../src/client/controllers/reqResController.js'
 
 // import ComposerNewRequest from "../src/client/components/composer/NewRequest/ComposerNewRequest.jsx"; //doesn't like png
