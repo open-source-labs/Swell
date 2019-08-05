@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as actions from '../../actions/actions';
 import { connect } from "react-redux";
 import ReqRes from "../display/ReqRes.jsx";
 

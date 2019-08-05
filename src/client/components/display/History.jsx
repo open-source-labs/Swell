@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import dbController from '../../controllers/dbController';
+import historyController from '../../controllers/historyController';
 import Trashcan from '../../../assets/img/Trashcan.png'
 
 class History extends Component {
@@ -53,7 +53,7 @@ class History extends Component {
 
   deleteHistory(e) {
     this.props.deleteFromHistory(this.props.content);
-    dbController.deleteFromIndexDb(e.target.id);
+    historyController.deleteHistoryFromIndexedDb(e.target.id);
   }
 
 

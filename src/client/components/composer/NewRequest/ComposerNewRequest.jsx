@@ -5,7 +5,7 @@ import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
-import dbController from '../../../controllers/dbController'
+import historyController from '../../../controllers/historyController'
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class ComposerNewRequest extends Component {
 
         reqRes = {
 
-          id: uuid(), // Math.floor(Math.random() * 100000),
+          id: uuid(),
           created_at: new Date(),
           protocol: this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0],
           host,
@@ -101,7 +101,7 @@ class ComposerNewRequest extends Component {
       // WEBSOCKET REQUESTS
       else {
         reqRes = {
-          id: uuid(), // Math.floor(Math.random() * 100000),
+          id: uuid(),
           created_at: new Date(),
           protocol: this.props.newRequestFields.protocol,
           url: this.props.newRequestFields.url,
@@ -123,7 +123,7 @@ class ComposerNewRequest extends Component {
         };
       }
 
-      dbController.addToIndexDb(reqRes);
+      historyController.addHistoryToIndexedDb(reqRes);
       this.props.reqResAdd(reqRes);
 
       //reset for next request

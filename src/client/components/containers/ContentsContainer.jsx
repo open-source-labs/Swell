@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import * as actions from '../../actions/actions';
 import GraphContainer from './GraphContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
 import NavBarContainer from './NavBarContainer.jsx';
