@@ -30,8 +30,7 @@ class HistoryDate extends Component {
         className="historyChild"
         content={history} key={i}
         focusOnForm={this.focusOnForm}
-        reqResAdd={this.props.reqResAdd}
-        reqResDelete={this.props.reqResDelete}
+        deleteFromHistory={this.props.deleteFromHistory}
         setNewRequestFields={this.props.setNewRequestFields}
         setNewRequestHeaders={this.props.setNewRequestHeaders}
         setNewRequestCookies={this.props.setNewRequestCookies}

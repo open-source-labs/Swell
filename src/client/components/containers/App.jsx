@@ -5,7 +5,7 @@ import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';
 import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
-import dbController from '../../controllers/dbController'
+import historyController from '../../controllers/historyController'
 
 
 class App extends Component {
@@ -24,7 +24,7 @@ class App extends Component {
     ipcRenderer.on('message', (e, text) => {
       // console.log('Message from updater: ', text)
     });
-    dbController.getHistory();
+    historyController.getHistory();
   }
 
   render() {

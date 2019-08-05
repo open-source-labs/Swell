@@ -35,7 +35,6 @@ const businessReducer = (state = initialState, action) => {
     case types.GET_HISTORY: {
       return {
         ...state,
-
         reqResArray: [],
         history: action.payload,
       };
@@ -106,7 +105,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_CHECKS_AND_MINIS: {
-      console.log('setchecks and minis', action.payload)
       return {
         ...state,
         reqResArray: JSON.parse(JSON.stringify(action.payload))

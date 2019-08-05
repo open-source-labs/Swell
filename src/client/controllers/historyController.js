@@ -3,26 +3,31 @@ import * as actions from '../actions/actions';
 import db from '../db';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse'
+import collectionsController from './collectionsController'
 
-const dbController = {
+const historyController = {
 
-  addToIndexDb (reqRes) {
+  addHistoryToIndexedDb(reqRes) {
     db.history.put(reqRes)
-      .then(() => {})
       .catch((err) => console.log('Error in addToHistory', err))
-
+    // collectionsController.addCollectionToIndexedDb({
+    //   created_at: new Date(),
+    //   name: "blepblep",
+    //   reqResArray: [{"hi":"kajol"}, {"bye":"kajol"}]
+    // })
+    // collectionsController.getCollection()
   },
 
-  deleteFromIndexDb (id) {
+  deleteHistoryFromIndexedDb(id) {
     db.history.delete(id)
-      .then(() => {})
       .catch((err) => console.log('Error in deleteFromHistory', err))
   },
 
-  getHistory () { 
+  getHistory() {
+    console.log("IN GET HISTORY")
     db.table('history')
       .toArray()
-      .then(history => { 
+      .then(history => {
         const historyGroupsObj = history.reduce((groups, hist) => {
           const date = format(hist.created_at, 'MM/DD/YYYY')
           if (!groups[date]) {
@@ -34,14 +39,17 @@ const dbController = {
         let historyGroupsArr = Object.keys(historyGroupsObj).sort((a, b) => parse(b) - parse(a)).map(date => {
           return {
             date: date,
-            history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
+            history: historyGroupsObj[date]
           };
         });
         store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
       .catch(err => console.log('Error in getHistory', err));
+      db.table('collections')
+      .toArray()
+      .then(arr => console.log("HERE",arr))
+      .catch(err => console.log('Error in collections', err));
   }
-
 }
 
-export default dbController;
+export default historyController;
