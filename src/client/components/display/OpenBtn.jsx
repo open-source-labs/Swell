@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import ReqResCtrl from '../../controllers/reqResController';
 
 class OpenBtn extends Component {

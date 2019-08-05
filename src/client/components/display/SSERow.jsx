@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import ReactJson from 'react-json-view';
 
 class SSERow extends Component {

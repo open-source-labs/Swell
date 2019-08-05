@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
-
 import Tab from "./Tab.jsx";
-
-const mapStateToProps = store => ({
-  store: store
-});
-
-const mapDispatchToProps = dispatch => ({});
 
 class RequestTabs extends Component {
   constructor(props) {
@@ -121,7 +112,4 @@ class RequestTabs extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RequestTabs);
+export default RequestTabs;

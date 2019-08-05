@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
 import CookieTableCell from './CookieTableCell.jsx'
 
-
-const mapStateToProps = store => ({
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class CookieTableRow extends Component {
     constructor(props) {
@@ -17,11 +8,7 @@ class CookieTableRow extends Component {
         this.state = {}
     }
 
-    componentDidMount() {
-    }
-
     render() {
-
         let tableCellArray = [];
 
         for(const key in this.props.cookie) {
@@ -39,4 +26,4 @@ class CookieTableRow extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CookieTableRow);
+export default CookieTableRow;

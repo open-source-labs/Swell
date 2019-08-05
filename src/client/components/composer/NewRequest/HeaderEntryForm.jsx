@@ -3,17 +3,6 @@ import React, { Component } from 'react';
 import Header from './Header.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
-// const mapStateToProps = store => ({
-//   newRequestHeaders: store.business.newRequestHeaders,
-//   newRequestBody: store.business.newRequestBody,
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   setNewRequestHeaders: (requestHeadersObj) => {
-//     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-//   },
-// });
-
 class HeaderEntryForm extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +15,7 @@ class HeaderEntryForm extends Component {
 
   componentDidMount() {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    this.addHeader(headersDeepCopy);
+    if (headersDeepCopy[headersDeepCopy.length-1] && headersDeepCopy[headersDeepCopy.length-1].key !== "") this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate() {

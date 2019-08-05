@@ -13,6 +13,7 @@ import { JestEnvironment } from '@jest/environment';
 // import httpController from '../src/client/controllers/httpController.js'
 // import dbController from '../src/client/controllers/dbController.js'
 // import reqResController from '../src/client/controllers/reqResController.js'
+
 // import ComposerNewRequest from "../src/client/components/composer/NewRequest/ComposerNewRequest.jsx"; //doesn't like png
 import ProtocolSelect from "../src/client/components/composer/NewRequest/ProtocolSelect.jsx";
 import FieldEntryForm from "../src/client/components/composer/NewRequest/FieldEntryForm.jsx";
@@ -26,6 +27,30 @@ import WWWField from '../src/client/components/composer/NewRequest/WWWField.jsx'
 import JSONTextArea from '../src/client/components/composer/NewRequest/JSONTextArea.jsx';
 // import GraphQLBodyEntryForm from "../src/client/components/composer/NewRequest/GraphQLBodyEntryForm.jsx"; //doesn't like png
 // import GraphQLVariableEntryForm from "../src/client/components/composer/NewRequest/GraphQLVariableEntryForm.jsx"; //doesn't like png
+// import HistoryContainer from '../src/client/components/containers/HistoryContainer.jsx';  //doesn't like electron sessions
+// import HistoryDate from '../src/client/components/display/HistoryDate.jsx'; //doesn't like electron sessions
+// import History from '../src/client/components/display/History.jsx'; //doesn't like electron sessions or png
+import Graph from '../src/client/components/display/Graph.jsx'; 
+// import NavBarContainer from '../src/client/components/containers/NavBarContainer.jsx';  //doesn't like electron sessions
+// import ReqResContainer from '../src/client/components/containers/ReqResContainer.jsx';  //doesn't like electron sessions
+// import ReqRes from '../src/client/components/display/ReqRes.jsx'; //doesn't like electron sessions or png
+// import OpenBtn from '../src/client/components/display/OpenBtn.jsx'; //doesn't like electron sessions or png
+// import CloseBtn from '../src/client/components/display/CloseBtn.jsx'; //doesn't like electron sessions or png
+import RequestTabs from '../src/client/components/display/RequestTabs.jsx';
+import Tab from '../src/client/components/display/Tab.jsx';
+// import WebSocketWindow from '../src/client/components/display/WebSocketWindow.jsx'; //doesn't like electron sessions
+import WebSocketMessage from '../src/client/components/display/WebSocketMessage.jsx';
+// import ResponseContainer from '../src/client/components/containers/ResponseContainer.jsx';  //doesn't like electron sessions
+import ResponseTabs from '../src/client/components/display/ResponseTabs.jsx';
+import ResponseEventsDisplay from '../src/client/components/display/ResponseEventsDisplay.jsx';
+import SSERow from '../src/client/components/display/SSERow.jsx';
+import ResponseHeadersDisplay from '../src/client/components/display/ResponseHeadersDisplay.jsx';
+// import ResponseCookiesDisplay from '../src/client/components/display/ResponseCookiesDisplay.jsx'; //doesn't like electron sessions
+import CookieTable from '../src/client/components/display/CookieTable.jsx'; //doesn't like electron sessions
+import CookieTableRow from '../src/client/components/display/CookieTableRow.jsx'; //doesn't like electron sessions
+import CookieTableCell from '../src/client/components/display/CookieTableCell.jsx'; //doesn't like electron sessions
+// import ResponseSubscriptionDisplay from '../src/client/components/display/ResponseSubscriptionDisplay.jsx'; //doesn't like electron sessions
+
 
 // Newer Enzyme versions require an adapter to a particular version of React
 configure({ adapter: new Adapter() });
