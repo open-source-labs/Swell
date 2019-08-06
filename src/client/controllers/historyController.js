@@ -15,7 +15,7 @@ const historyController = {
     //   name: "blepblep",
     //   reqResArray: [{"hi":"kajol"}, {"bye":"kajol"}]
     // })
-    // collectionsController.getCollection()
+    // collectionsController.getCollections()
   },
 
   deleteHistoryFromIndexedDb(id) {
@@ -24,7 +24,6 @@ const historyController = {
   },
 
   getHistory() {
-    console.log("IN GET HISTORY")
     db.table('history')
       .toArray()
       .then(history => {
@@ -45,10 +44,6 @@ const historyController = {
         store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
       .catch(err => console.log('Error in getHistory', err));
-      db.table('collections')
-      .toArray()
-      .then(arr => console.log("HERE",arr))
-      .catch(err => console.log('Error in collections', err));
   }
 }
 

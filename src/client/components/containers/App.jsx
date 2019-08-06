@@ -6,6 +6,7 @@ import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';
 import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
 import historyController from '../../controllers/historyController'
+import collectionsController from '../../controllers/collectionsController'
 
 
 class App extends Component {
@@ -25,6 +26,8 @@ class App extends Component {
       // console.log('Message from updater: ', text)
     });
     historyController.getHistory();
+    collectionsController.getCollections();
+    
   }
 
   render() {

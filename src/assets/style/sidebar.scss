@@ -41,7 +41,6 @@
 }
 .composer_submit {
 	-webkit-appearance: none;
-	
 	border: none;
 	border-radius: 5px;
 	color: white;
@@ -318,7 +317,8 @@
 .historyDate-container {
 	margin-top: 15px;
 	overflow-y: scroll;
-	overflow-x: none;
+  overflow-x: none;
+  height: 475px;
 }
 .historyDate-container::-webkit-scrollbar {
 }

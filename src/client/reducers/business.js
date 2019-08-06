@@ -6,6 +6,7 @@ const initialState = {
   currentTab: 'First Tab',
   reqResArray: [],
   history: [],
+  collections: [],
   warningMessage: "",
   newRequestFields: {
     protocol: '',
@@ -35,7 +36,6 @@ const businessReducer = (state = initialState, action) => {
     case types.GET_HISTORY: {
       return {
         ...state,
-        reqResArray: [],
         history: action.payload,
       };
     }
@@ -55,6 +55,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         history: newHistory,
+      };
+    }
+
+    case types.GET_COLLECTIONS: {
+      return {
+        ...state,
+        collections: action.payload,
       };
     }
 
