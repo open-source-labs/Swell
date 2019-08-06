@@ -31,7 +31,7 @@ class History extends Component {
     }
     const requestHeadersObj = {
       headersArr: deeperCopy ? deeperCopy : [],
-      count: this.props.content.request.headers ? this.props.content.request.headers.length : 0,
+      count: deeperCopy ? deeperCopy.length : 1, //TO FIX
     }
     const requestCookiesObj = {
       cookiesArr: this.props.content.request.cookies ? this.props.content.request.cookies : [],
@@ -55,7 +55,6 @@ class History extends Component {
     this.props.deleteFromHistory(this.props.content);
     historyController.deleteHistoryFromIndexedDb(e.target.id);
   }
-
 
   render() {
     return (
