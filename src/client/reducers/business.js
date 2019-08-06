@@ -6,7 +6,28 @@ const initialState = {
   currentTab: 'First Tab',
   reqResArray: [],
   history: [],
-  collections: [],
+  collections: [{
+    created_at: new Date(),
+    name: "blepblep",
+    reqResArray: [{
+      "id": "e21f6b05-08b6-4058-ba2e-3fe492bc7e99",
+      "created_at": "Sat Jul 20 2019 16: 11: 42 GMT - 0400(EDT)",
+      "protocol": "http://",
+      "host": "http://pokeapi.co",
+      "path": "/api/v2/pokemon/squirtle",
+      "checkSelected": false,
+      "checked": false,
+      "connection": "uninitialized",
+      "connectionType": null,
+      "created_at": "Sat Jul 20 2019 16: 11: 42 GMT - 0400(EDT)",
+      "request": { method: "GET", headers: [], body: "", cookies: [], bodyType: "none" },
+      "response": { headers: null, events: null },
+      "tab": "First Tab",
+      "timeReceived": null,
+      "timeSent": null,
+      "url": "http://pokeapi.co/api/v2/pokemon/squirtle"
+    }]
+  }],
   warningMessage: "",
   newRequestFields: {
     protocol: '',
@@ -62,6 +83,28 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         collections: action.payload,
+      };
+    }
+
+    case types.DELETE_COLLECTION: {
+      const deleteId = action.payload.id;
+      const newCollections = JSON.parse(JSON.stringify(state.collections));
+      newCollections.forEach((obj, i) => {
+        if (obj.id === deleteId) {
+          newCollections.splice(i, 1)
+        }
+      })
+
+      return {
+        ...state,
+        collections: newCollections,
+      };
+    }
+
+    case types.COLLECTION_TO_REQRES: {
+      return {
+        ...state,
+        reqResArray: action.payload,
       };
     }
 

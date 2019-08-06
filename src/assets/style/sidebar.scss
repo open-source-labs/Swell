@@ -347,7 +347,7 @@
 		opacity: 1;
 	}
 }
-.history-text-container {
+.history-text-container, .collection-text-container {
 	align-items: center;
 	display: flex;
 	flex-shrink: 100;
@@ -358,10 +358,10 @@
 	line-height: 20px;
 	padding: 4px 6px;
 }
-.history-url {
+.history-url, .collection-name {
 	margin-left: 4px;
 }
-.history-delete-container {
+.history-delete-container, .collection-delete-container {
 	display: flex;
 	float: right;
 	height: 26px;
@@ -370,22 +370,43 @@
 	top: -28px;
 	z-index: 0;
 }
-.history-delete-fade {
+.history-delete-fade, .collection-delete-fade {
 	background: linear-gradient(to right, rgba(40, 40, 40, 0), rgba(40, 40, 40, 1));
 	color: white;
 	height: 26px;
-	width: 30px;
+	width: 32px;
 }
-.history-delete-button {
+.history-delete-button, .collection-delete-button {
 	// flex-grow: 1;
 	background: rgba(40, 40, 40, 1);
 	height: 100%;
 	width: 20px;
 }
-.history-delete-image {
+.history-delete-image, .collection-delete-image {
 	height: 22px;
 	margin-left: 2px;
 	margin-top: 2px;
 	opacity: 0;
 	width: 16px;
+}
+.collections-container {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+.collection-container {
+  border: 1px solid #282828;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	font-size: .95rem;
+	height: 28px;
+	margin: 1px 0px 1px 0px;
+	// overflow: hidden;
+	width: 100%;
+	&:hover {
+		border: 1px solid #808080;
+	}
+	&:hover .collection-delete-image {
+		opacity: 1;
+	}  
 }

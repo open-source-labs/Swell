@@ -23,6 +23,11 @@ export const deleteFromCollection = collection => ({
   payload: collection,
 });
 
+export const collectionToReqRes = reqResArray => ({
+  type: types.COLLECTION_TO_REQRES,
+  payload: reqResArray,
+});
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
