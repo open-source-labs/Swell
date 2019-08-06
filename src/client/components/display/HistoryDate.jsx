@@ -27,7 +27,6 @@ class HistoryDate extends Component {
 
     let histArray = current.history.map((history, i) => {
       return <History
-        className="historyChild"
         content={history} key={i}
         focusOnForm={this.focusOnForm}
         deleteFromHistory={this.props.deleteFromHistory}

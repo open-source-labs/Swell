@@ -17,21 +17,15 @@ const collectionsController = {
       .catch((err) => console.log('Error in deleteFromCollection', err))
   },
 
-  getCollection() {
+  getCollections() {
     console.log("IN GET COLLECTION")
     db.table('collections')
       .toArray()
       .then(collections => {
-        console.log(collections)
-        // let collectionsArr = Object.keys(collection).sort((a, b) => parse(b) - parse(a)).map(date => {
-        //   return {
-        //     date: date,
-        //     collections: collectionsGroupsObj[date]
-        //   };
-        // });
-        // store.default.dispatch(actions.getCollection(collectionsArr));
+        const collectionsArr = collections.sort((a, b) => b.created_at - a.created_at);
+        store.default.dispatch(actions.getCollections(collectionsArr));
       })
-      .catch(err => console.log('Error in getCollection', err));
+      .catch(err => console.log('Error in getCollections', err));
   }
 }
 

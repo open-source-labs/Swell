@@ -93,7 +93,7 @@ class HeaderEntryForm extends Component {
 
   addHeader(headersDeepCopy) {
     headersDeepCopy.push({
-      id: this.props.newRequestHeaders.count,
+      id: this.props.newRequestHeaders.count+1,
       active: false,
       key: '',
       value: '',
