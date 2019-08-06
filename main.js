@@ -2,8 +2,9 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 // Import parts of electron to use
-const { app, BrowserWindow, TouchBar, session } = require('electron')
-
+// app - Control your application's event lifecycle
+// ipcMain - Communicate asynchronously from the main process to renderer processes
+const { app, BrowserWindow, TouchBar, ipcMain } = require('electron')
 const path = require('path');
 const url = require('url');
 
@@ -123,6 +124,8 @@ function createWindow() {
     title: 'Swell',
     allowRunningInsecureContent: true,
     webPreferences: { 
+      "nodeIntegration":true,
+      "sandbox" : false, 
       webSecurity: false,
      },
     icon: `${__dirname}/src/assets/icons/64x64.png`
@@ -200,6 +203,59 @@ app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
   if (!dev) { autoUpdater.checkForUpdates() };
+});
+
+let promptWindow; //will be the modal window when for ipcMain.on('prompt', ...)
+let promptAnswer; //will be the value of the modal input
+
+function promptModal(parent, callback) { //function that creates the modal
+  console.log("creating prompt window???")
+  console.log("__dirname",path.join( __dirname, 'prompt.html'))
+  promptWindow = new BrowserWindow({
+    width: 360, height: 120,
+    'parent': parent,
+    'show': true,
+    'modal': true,
+    'frame': true,
+    // 'alwaysOnTop': true,
+    // 'title': 'Name Collection',
+    'webPreferences' : { 
+      "nodeIntegration":true,
+      "sandbox" : false 
+    }   
+  });
+  promptWindow.on('closed', () => {
+    promptWindow = null; //resets modal to nothing when closed
+    callback(promptAnswer)
+  })
+  let practice = url.format({
+    protocol: 'http:',
+    host: 'localhost:8080',
+    pathname: 'prompt.html',
+    slashes: true,
+  });
+  promptWindow.loadURL(practice)
+  // promptWindow.loadURL(`file://${__dirname}/src/prompts/prompt.html`)
+  // promptWindow.once('ready-to-show', () => { promptWindow.show() }) // I THINK WE NEED THIS? LSDKJFLSDKHFOASKLDJFISGUKDHILFJKS:WJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGF
+}
+
+//link between prompt.html and ipcMain
+ipcMain.on("dialogOpen", (event, data) => { //UNSURE IF WE NEED THIS ??????????????????????????????????????????????????????????????????????????????????????????????????????????????
+  event.returnValue = JSON.stringify({}, null, '')
+})
+
+//closeDialog called by prompt.html on close
+ipcMain.on('closeDialog', (event, data) => { //takes document.getElementById("name").value
+  promptAnswer = data;
+})
+
+ipcMain.on("prompt",  (event, notused) => {
+  console.log("about to create prompt?")
+	promptModal(mainWindow,
+	    function(data) {
+        event.returnValue = data
+      }
+    );        
 });
 
 // Quit when all windows are closed.

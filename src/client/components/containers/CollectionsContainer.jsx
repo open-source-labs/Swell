@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
-import collectionsController from '../../controllers/collectionsController'
 import Collection from '../display/Collection.jsx'
 
 const mapStateToProps = store => ({

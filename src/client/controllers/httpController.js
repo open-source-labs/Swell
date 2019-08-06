@@ -161,7 +161,7 @@ const httpController = {
       reqResObj.response.headers = headers;
       reqResObj.response.events = [];
 
-      let sesh = session.defaultSession;
+      // let sesh = session.defaultSession;
       let domain = reqResObj.host.split('//')
       domain.shift();
       domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
@@ -244,7 +244,9 @@ const httpController = {
         // console.log('RESPONSE ::', response)
         //Parse response headers now to decide if SSE or not.
         let heads = {};
+        console.log(response.headers)
         for (let entry of response.headers.entries()) {
+          console.log("entries", entry)
           heads[entry[0].toLowerCase()] = entry[1];
         }
         reqResObj.response.headers = heads;
@@ -286,13 +288,14 @@ const httpController = {
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
-    let {
-      request: { method },
-      request: { headers },
-      request: { body },
-      request: { cookies },
-    } = reqResObject;
-
+    // let {
+    //   request: { method },
+    //   request: { headers },
+    //   request: { body },
+    //   request: { cookies },
+    // } = reqResObject;
+    let {method, headers, body, cookies} = reqResObject.request;
+    
     method = method.toUpperCase();
 
     const formattedHeaders = {};

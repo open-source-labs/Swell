@@ -18,7 +18,6 @@ const collectionsController = {
   },
 
   getCollections() {
-    console.log("IN GET COLLECTION")
     db.table('collections')
       .toArray()
       .then(collections => {

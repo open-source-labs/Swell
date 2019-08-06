@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../../assets/style/App.scss';
-import { ipcRenderer } from 'electron'; //
+import { ipcRenderer } from 'electron'; //Communicate asynchronously from a renderer process to the main process.
 import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';

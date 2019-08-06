@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import ReqResCtrl from '../../controllers/reqResController.js';
+const { ipcRenderer } = require("electron")
+
 
 class NavBarContainer extends Component {
   constructor(props) {
     super(props);
+    this.showPrompt = this.showPrompt.bind(this)
   }
-
+  
+  showPrompt() {
+    console.log('clicked showPrompt')
+    ipcRenderer.sendSync('prompt', "")
+  }
   render(props) {
     return (
       <div className="navbar-console">
@@ -36,6 +43,10 @@ class NavBarContainer extends Component {
           
           <button className="btn" type="button" onClick={ReqResCtrl.clearAllReqRes}>
             Clear All
+          </button>
+          
+          <button className="btn" type="button" onClick={() => this.showPrompt()}>
+            Save Collection
           </button>
         </div>
       </div>
