@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import connectionController from '../../controllers/reqResController';
-import OpenBtn from './OpenBtn.jsx';
-import CloseBtn from './CloseBtn.jsx';
-import RequestTabs from './RequestTabs.jsx';
-import ResponseContainer from '../containers/ResponseContainer.jsx';
-import WebSocketWindow from './WebSocketWindow.jsx';
+import OpenBtn from '../display/OpenBtn.jsx';
+import CloseBtn from '../display/CloseBtn.jsx';
+import RequestTabs from '../display/RequestTabs.jsx';
+import ResponseContainer from './ResponseContainer.jsx';
+import WebSocketWindow from '../display/WebSocketWindow.jsx';
 import dropDownArrow from '../../../assets/icons/arrow_drop_down_white_192x192.png'
 
-class ReqRes extends Component {
+class SingleReqResContainer extends Component {
   constructor(props) {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
@@ -165,4 +165,4 @@ class ReqRes extends Component {
   }
 }
 
-export default ReqRes;
+export default SingleReqResContainer;
