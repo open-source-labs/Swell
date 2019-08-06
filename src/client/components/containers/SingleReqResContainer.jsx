@@ -45,24 +45,10 @@ class SingleReqResContainer extends Component {
     else {
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
-        // Get subscription information if it's a subscription
-        let subscriptionData = null;
-        if (this.props.content.request.method === 'SUBSCRIPTION') {
-          // Ensure this has a web socket path
-          const uri = this.props.content.protocol === /wss?:\/\//
-            ? this.props.content.url
-            : this.props.content.url.replace(this.props.content.protocol, 'ws://');
-          subscriptionData = {
-            uri,
-            body: this.props.content.request.body,
-            // TODO: For later implementation of variables
-            // variables: this.props.content.request.bodyVariables
-          }
-        }
         contentBody.push(<ResponseContainer
-          content={this.props.content.response}
+          content={this.props.content}
           connectionType={this.props.content.connectionType}
-          subscriptionData={subscriptionData}
+          reqResUpdate={this.props.reqResUpdate}
           key={1}
         />)
       }

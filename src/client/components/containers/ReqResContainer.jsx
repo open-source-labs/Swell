@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import SingleReqResContainer from "./SingleReqResContainer.jsx";
 
 const mapStateToProps = store => ({
-  reqRes: store.business.reqResArray,
+  reqResArray: store.business.reqResArray,
   currentTab: store.business.currentTab,
 });
 
@@ -23,7 +23,7 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    const reqResArr = this.props.reqRes
+    const reqResArr = this.props.reqResArray
       .filter(reqRes => reqRes.tab === this.props.currentTab)
       .map((reqRes, index) => {
         return <SingleReqResContainer
