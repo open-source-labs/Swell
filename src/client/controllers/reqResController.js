@@ -48,13 +48,10 @@ const connectionController = {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find(el => el.id === id);
 
-    if (reqResObj.response.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);	
+    if (reqResObj.response.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
-    else {
-      reqResObj.protocol === 'ws://'
-        ? wsController.openWSconnection(reqResObj, this.openConnectionArray)
-        : httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
-    }
+    else if (reqResObj.protocol === 'ws://') wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
   },
 
   openAllSelectedReqRes() {
@@ -132,7 +129,7 @@ const connectionController = {
     });
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-  
+
   expandAllReqRes() {
     const { reqResArray } = store.default.getState().business;
 
