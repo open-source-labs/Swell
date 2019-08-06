@@ -30,7 +30,7 @@ import JSONTextArea from '../src/client/components/composer/NewRequest/JSONTextA
 // import HistoryContainer from '../src/client/components/containers/HistoryContainer.jsx';  //doesn't like electron sessions
 // import HistoryDate from '../src/client/components/display/HistoryDate.jsx'; //doesn't like electron sessions
 // import History from '../src/client/components/display/History.jsx'; //doesn't like electron sessions or png
-import Graph from '../src/client/components/display/Graph.jsx'; 
+import Graph from '../src/client/components/display/Graph.jsx';
 // import NavBarContainer from '../src/client/components/containers/NavBarContainer.jsx';  //doesn't like electron sessions
 // import ReqResContainer from '../src/client/components/containers/ReqResContainer.jsx';  //doesn't like electron sessions
 // import ReqRes from '../src/client/components/display/ReqRes.jsx'; //doesn't like electron sessions or png
@@ -46,9 +46,9 @@ import ResponseEventsDisplay from '../src/client/components/display/ResponseEven
 import SSERow from '../src/client/components/display/SSERow.jsx';
 import ResponseHeadersDisplay from '../src/client/components/display/ResponseHeadersDisplay.jsx';
 // import ResponseCookiesDisplay from '../src/client/components/display/ResponseCookiesDisplay.jsx'; //doesn't like electron sessions
-import CookieTable from '../src/client/components/display/CookieTable.jsx'; //doesn't like electron sessions
-import CookieTableRow from '../src/client/components/display/CookieTableRow.jsx'; //doesn't like electron sessions
-import CookieTableCell from '../src/client/components/display/CookieTableCell.jsx'; //doesn't like electron sessions
+import CookieTable from '../src/client/components/display/CookieTable.jsx';
+import CookieTableRow from '../src/client/components/display/CookieTableRow.jsx';
+import CookieTableCell from '../src/client/components/display/CookieTableCell.jsx';
 // import ResponseSubscriptionDisplay from '../src/client/components/display/ResponseSubscriptionDisplay.jsx'; //doesn't like electron sessions
 
 
