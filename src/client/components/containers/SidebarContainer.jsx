@@ -12,8 +12,8 @@ class SidebarContainer extends Component {
     return (
       <div className="sidebar_composer-console">
         <ComposerContainer />
-        <HistoryContainer />
         <CollectionsContainer />
+        <HistoryContainer />
       </div>
     );
   }

@@ -30,7 +30,7 @@ class CollectionsContainer extends Component {
 
     return (
       <div className={'collections-container'}>
-        <p>Collections</p>
+        <h1>Collections</h1>
         {collectionComponents}
       </div>
     )

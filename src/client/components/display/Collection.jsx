@@ -21,8 +21,8 @@ class Collection extends Component {
 
   render() {
     return (
-      <div className={'collection-container'}  >
-        <div className={'collection-text-container'} onClick={this.addCollectionToReqResContainer}>
+      <>
+        <div className={'collection-container collection-text-container'} onClick={this.addCollectionToReqResContainer}>
           <div className={'collection-name'}> {this.props.content.name}
           </div>
         </div>
@@ -33,7 +33,7 @@ class Collection extends Component {
             <img className='collection-delete-image' src={Trashcan} id={this.props.content.id} ></img>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }

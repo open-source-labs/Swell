@@ -31,7 +31,7 @@ class History extends Component {
     }
     const requestHeadersObj = {
       headersArr: deeperCopy ? deeperCopy : [],
-      count: this.props.content.request.headers ? this.props.content.request.headers.length : 0, //TO FIX
+      count: deeperCopy ? deeperCopy.length : 1, //TO FIX
     }
     const requestCookiesObj = {
       cookiesArr: this.props.content.request.cookies ? this.props.content.request.cookies : [],

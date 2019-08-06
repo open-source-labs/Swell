@@ -315,14 +315,15 @@
 	margin-top: 0px;
 }
 .historyDate-container {
-	margin-top: 15px;
+  border-top: 1px solid #ddd;
+	// margin-top: 10px;
 	overflow-y: scroll;
   overflow-x: none;
-  height: 475px;
+  height: 360px;
 }
 .historyDate-container::-webkit-scrollbar {
 }
-.historyDate h1 {
+.historyDate h1, .collections-container h1 {
 	font-weight: 700;
 	margin-bottom: 5px;
 	margin-top: 15px;
@@ -349,8 +350,9 @@
 }
 .history-text-container, .collection-text-container {
 	align-items: center;
-	display: flex;
-	flex-shrink: 100;
+  display: flex;
+  justify-self: center;
+  flex-shrink: 100;
 }
 .history-method {
 	font-weight: bold;
@@ -386,12 +388,12 @@
 	height: 22px;
 	margin-left: 2px;
 	margin-top: 2px;
-	opacity: 0;
+	opacity: 0.5;
 	width: 16px;
 }
 .collections-container {
-  border-top: 1px solid #ddd;
-  padding-top: 10px;
+  margin-top: 10px;
+  width: 100%;
 }
 .collection-container {
   border: 1px solid #282828;
@@ -400,9 +402,11 @@
 	cursor: pointer;
 	font-size: .95rem;
 	height: 28px;
-	margin: 1px 0px 1px 0px;
+  margin: 1px 0px 1px 0px;
+  overflow-y: scroll;
+  overflow-x: none;
 	// overflow: hidden;
-	width: 100%;
+	width: 465px;
 	&:hover {
 		border: 1px solid #808080;
 	}
