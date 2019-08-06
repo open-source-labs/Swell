@@ -28,7 +28,6 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
     value: 'color:#fd971f;', // a nice orange
     boolean: 'color:#E00198;', // gqlpink
   }
-  console.log('content.connection', content.connection);
 
   return (
     <ApolloProvider client={client} >

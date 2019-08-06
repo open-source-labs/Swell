@@ -56,9 +56,8 @@ const graphQLController = {
   openSubscription(reqResObj) {
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
-    reqResObj.connection = 'pending';
+    reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    return;
   },
 
   handleResponse(response, reqResObj) {
