@@ -9,7 +9,7 @@ class ResponseContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openTabs: 'Response Events',
+      openTab: 'Response Events',
     };
     this.handleTabSelect = this.handleTabSelect.bind(this);
   }
@@ -34,17 +34,17 @@ class ResponseContainer extends Component {
     switch (val) {
       case 'Response Cookies':
         this.setState({
-          openTabs: val,
+          openTab: val,
         });
         break;
       case 'Response Headers':
         this.setState({
-          openTabs: val,
+          openTab: val,
         });
         break;
       case 'Response Events':
         this.setState({
-          openTabs: val,
+          openTab: val,
         });
         break;
       default:
@@ -56,16 +56,16 @@ class ResponseContainer extends Component {
     const headersArr = [];
     let index = 0;
 
-    if (this.props.content.headers) {
-      for (const header in this.props.content.headers) {
-        if (Object.prototype.hasOwnProperty.call(this.props.content.headers, header)) {
+    if (this.props.content.response.headers) {
+      for (const header in this.props.content.response.headers) {
+        if (Object.prototype.hasOwnProperty.call(this.props.content.response.headers, header)) {
           headersArr.push(
             <div className="headers grid-2" key={index}>
               <div>
                 <span className="tertiary-title">{header}</span>
               </div>
               <div>
-                <span className="tertiary-title">{this.props.content.headers[header]}</span>
+                <span className="tertiary-title">{this.props.content.response.headers[header]}</span>
               </div>
             </div>,
           );
@@ -74,22 +74,21 @@ class ResponseContainer extends Component {
       }
     }
 
-
     return (
       <div className="resreq_res-container">
         <ResponseTabs
-          responseContent={this.props.content}
+          responseContent={this.props.content.response}
           handleTabSelect={this.handleTabSelect}
-          openResponseTab={this.state.openTabs}
+          openResponseTab={this.state.openTab}
         />
-        {(this.state.openTabs === 'Response Events' && this.props.subscriptionData)
-          && <ResponseSubscriptionDisplay subscriptionData={this.props.subscriptionData} />
+        {(this.state.openTab === 'Response Events' && this.props.content.request.method === 'SUBSCRIPTION')
+          && <ResponseSubscriptionDisplay content={this.props.content} reqResUpdate={this.props.reqResUpdate} />
         }
-        {(this.state.openTabs === 'Response Events' && !this.props.subscriptionData)
-          && <ResponseEventsDisplay response={this.props.content} />
+        {(this.state.openTab === 'Response Events' && this.props.content.request.method !== 'SUBSCRIPTION')
+          && <ResponseEventsDisplay response={this.props.content.response} />
         }
-        {this.state.openTabs === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content} />}
-        {this.state.openTabs === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content} />}
+        {this.state.openTab === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content.response} />}
+        {this.state.openTab === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content.response} />}
       </div>
     );
   }

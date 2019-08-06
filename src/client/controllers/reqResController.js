@@ -47,14 +47,14 @@ const connectionController = {
   openReqRes(id) {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find(el => el.id === id);
+    console.log('reqResObj', reqResObj);
 
-    if (reqResObj.response.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);	
-    else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
-    else {
-      reqResObj.protocol === 'ws://'
-        ? wsController.openWSconnection(reqResObj, this.openConnectionArray)
-        : httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
+    if (reqResObj.request.method === 'SUBSCRIPTION') {
+      graphQLController.openSubscription(reqResObj);
     }
+    else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
+    else if (reqResObj.protocol === 'ws://') wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
   },
 
   openAllSelectedReqRes() {
@@ -108,10 +108,7 @@ const connectionController = {
   /* Closes all open endpoint */
   closeAllReqRes() {
     const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
-    selectedAndCurrentTabReqResArr.forEach(reqRes => {
-      // console.log(reqRes);
-      connectionController.closeReqRes(reqRes.id)
-    });
+    selectedAndCurrentTabReqResArr.forEach(reqRes => connectionController.closeReqRes(reqRes.id));
   },
 
   clearAllReqRes() {
@@ -132,7 +129,7 @@ const connectionController = {
     });
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-  
+
   expandAllReqRes() {
     const { reqResArray } = store.default.getState().business;
 
