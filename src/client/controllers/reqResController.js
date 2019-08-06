@@ -105,10 +105,7 @@ const connectionController = {
   /* Closes all open endpoint */
   closeAllReqRes() {
     const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
-    selectedAndCurrentTabReqResArr.forEach(reqRes => {
-      // console.log(reqRes);
-      connectionController.closeReqRes(reqRes.id)
-    });
+    selectedAndCurrentTabReqResArr.forEach(reqRes => connectionController.closeReqRes(reqRes.id));
   },
 
   clearAllReqRes() {

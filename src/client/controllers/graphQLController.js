@@ -13,7 +13,7 @@ const graphQLController = {
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
-    reqResObj.connection = 'pending';
+    reqResObj.connection = 'open';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
@@ -56,7 +56,7 @@ const graphQLController = {
   openSubscription(reqResObj) {
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
-    reqResObj.connection = 'open';
+    reqResObj.connection = 'pending';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     return;
   },

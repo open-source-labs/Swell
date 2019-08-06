@@ -8,7 +8,6 @@ import { WebSocketLink } from 'apollo-link-ws';
 
 
 const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
-  console.log('content', content);
   const body = content.request.body;
   const uri = content.protocol === /wss?:\/\// ? content.url : content.url.replace(content.protocol, 'ws://');
 
@@ -29,12 +28,14 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
     value: 'color:#fd971f;', // a nice orange
     boolean: 'color:#E00198;', // gqlpink
   }
+  console.log('content.connection', content.connection);
 
   return (
     <ApolloProvider client={client} >
       <div className="tab_content-response">
         <div className="json-response" key="jsonresponsediv">
-          <Subscription subscription={gql`${body}`}>
+          {content.connection === 'closed' && <JSONPretty data={content.response.events[0]} space="4" theme={theme} />}
+          {content.connection === 'open' && <Subscription subscription={gql`${body}`}>
             {({ loading, data }) => {
               if (loading && !content.response.events[0]) return 'Listening for new data';
               if (loading && content.response.events[0]) return <JSONPretty data={content.response.events[0]} space="4" theme={theme} />
@@ -42,7 +43,7 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
               reqResUpdate(content);
               return <JSONPretty data={data} space="4" theme={theme} />
             }}
-          </Subscription>
+          </Subscription>}
         </div>
       </div>
     </ApolloProvider >
