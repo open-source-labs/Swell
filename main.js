@@ -91,7 +91,7 @@ const tbFlexSpacer = new TouchBarSpacer({
 // Attach earlier made buttons to a touch bar
 // -----------------------------------------------------------------
 
-const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton,, tbMinimizeALlButton, tbExpandAllButton, tbClearAllButton]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, , tbMinimizeALlButton, tbExpandAllButton, tbClearAllButton]);
 
 
 // Keep a reference for dev mode
@@ -123,17 +123,17 @@ function createWindow() {
     show: false,
     title: 'Swell',
     allowRunningInsecureContent: true,
-    webPreferences: { 
-      "nodeIntegration":true,
-      "sandbox" : false, 
+    webPreferences: {
+      "nodeIntegration": true,
+      "sandbox": false,
       webSecurity: false,
-     },
+    },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
-  
+
   if (dev) {
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
-  // If we are in developer mode Add React & Redux DevTools to Electon App
+    // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));
@@ -161,7 +161,7 @@ function createWindow() {
       slashes: true,
     });
   }
-  
+
   // our new app window will load content depending on the boolean value of the dev variable
   mainWindow.loadURL(indexPath);
 
@@ -186,7 +186,7 @@ function createWindow() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    
+
     //tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
     mainWindow = null;
   });
@@ -209,8 +209,8 @@ let promptWindow; //will be the modal window when for ipcMain.on('prompt', ...)
 let promptAnswer; //will be the value of the modal input
 
 function promptModal(parent, callback) { //function that creates the modal
-  console.log("creating prompt window???")
-  console.log("__dirname",path.join( __dirname, 'prompt.html'))
+  console.log("#3 creating prompt window???")
+  console.log("__dirname", path.join(__dirname, 'src/prompts/prompt.html'))
   promptWindow = new BrowserWindow({
     width: 360, height: 120,
     'parent': parent,
@@ -219,10 +219,10 @@ function promptModal(parent, callback) { //function that creates the modal
     'frame': true,
     // 'alwaysOnTop': true,
     // 'title': 'Name Collection',
-    'webPreferences' : { 
-      "nodeIntegration":true,
-      "sandbox" : false 
-    }   
+    'webPreferences': {
+      "nodeIntegration": true,
+      "sandbox": false
+    }
   });
   promptWindow.on('closed', () => {
     promptWindow = null; //resets modal to nothing when closed
@@ -234,28 +234,31 @@ function promptModal(parent, callback) { //function that creates the modal
     pathname: 'prompt.html',
     slashes: true,
   });
-  promptWindow.loadURL(practice)
-  // promptWindow.loadURL(`file://${__dirname}/src/prompts/prompt.html`)
+  // promptWindow.loadURL(practice)
+  promptWindow.loadURL(`file://${__dirname}/src/prompts/prompt.html`)
   // promptWindow.once('ready-to-show', () => { promptWindow.show() }) // I THINK WE NEED THIS? LSDKJFLSDKHFOASKLDJFISGUKDHILFJKS:WJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGF
 }
 
 //link between prompt.html and ipcMain
 ipcMain.on("dialogOpen", (event, data) => { //UNSURE IF WE NEED THIS ??????????????????????????????????????????????????????????????????????????????????????????????????????????????
+  console.log("prompt is opennn")
   event.returnValue = JSON.stringify({}, null, '')
 })
 
 //closeDialog called by prompt.html on close
 ipcMain.on('closeDialog', (event, data) => { //takes document.getElementById("name").value
+  console.log("prompt is closing", event, data)
   promptAnswer = data;
+  console.log({promptAnswer})
 })
 
-ipcMain.on("prompt",  (event, notused) => {
-  console.log("about to create prompt?")
-	promptModal(mainWindow,
-	    function(data) {
-        event.returnValue = data
-      }
-    );        
+ipcMain.on("prompt", (event, notused) => {
+  console.log("#2 about to create prompt?")
+  promptModal(mainWindow,
+    function (data) {
+      event.returnValue = data
+    }
+  );
 });
 
 // Quit when all windows are closed.

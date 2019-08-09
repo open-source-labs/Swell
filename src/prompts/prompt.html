@@ -23,7 +23,7 @@
     }
 
     function response() {
-      ipcRenderer.send("closeDialog", document.getElementById("name").value)
+      ipcRenderer.send("closeDialog", document.getElementById("data").value)
       this.close();
     }
 
