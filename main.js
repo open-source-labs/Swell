@@ -216,7 +216,7 @@ function promptModal(parent, callback) { //function that creates the modal
     'parent': parent,
     'show': true,
     'modal': true,
-    'frame': true,
+    // 'frame': true,
     // 'alwaysOnTop': true,
     // 'title': 'Name Collection',
     'webPreferences': {
@@ -228,15 +228,16 @@ function promptModal(parent, callback) { //function that creates the modal
     promptWindow = null; //resets modal to nothing when closed
     callback(promptAnswer)
   })
-  let practice = url.format({
-    protocol: 'http:',
-    host: 'localhost:8080',
-    pathname: 'prompt.html',
-    slashes: true,
-  });
+  // let practice = url.format({
+  //   protocol: 'http:',
+  //   host: 'localhost:8080',
+  //   pathname: 'prompt.html',
+  //   slashes: true,
+  // });
   // promptWindow.loadURL(practice)
-  promptWindow.loadURL(`file://${__dirname}/src/prompts/prompt.html`)
-  // promptWindow.once('ready-to-show', () => { promptWindow.show() }) // I THINK WE NEED THIS? LSDKJFLSDKHFOASKLDJFISGUKDHILFJKS:WJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGF
+  // promptWindow.loadURL(`file://${__dirname}/src/prompts/prompt.html`)
+  promptWindow.loadFile(`./src/prompts/prompt.html`)
+  // promptWindow.once('ready-to-show', () => { promptWindow.show() }) // I DONT THINK WE NEED THIS? LSDKJFLSDKHFOASKLDJFISGUKDHILFJKS:WJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGF
 }
 
 //link between prompt.html and ipcMain

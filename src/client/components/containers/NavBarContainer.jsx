@@ -11,7 +11,7 @@ class NavBarContainer extends Component {
   
   showPrompt() {
     console.log('#1 clicked showPrompt')
-    ipcRenderer.sendSync('prompt', "")
+    ipcRenderer.send('prompt', "")
   }
   render(props) {
     return (
