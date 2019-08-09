@@ -122,7 +122,7 @@ const businessReducer = (state = initialState, action) => {
       if (indexToBeUpdated !== undefined) {
         action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
         action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
-        console.log("\n REQRES UPDATING \n", state.reqResArray[indexToBeUpdated])
+        // console.log("\n REQRES UPDATING \n", state.reqResArray[indexToBeUpdated])
         reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
 

@@ -10,7 +10,7 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
+    if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') { //if ((/https:\/\//).test(reqResObj.url))
       // if ((/https:\/\//).test(reqResObj.url)) {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
@@ -239,50 +239,67 @@ const httpController = {
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
-    fetch(reqResObj.url, parsedFetchOptions)
+    // fetch(reqResObj.url, parsedFetchOptions)
+    fetch('http://localhost:3000/getHead', parsedFetchOptions)
       .then((response) => {
-        // console.log('RESPONSE ::', response)
-        //Parse response headers now to decide if SSE or not.
-        let heads = {};
-        for (let entry of response.headers.entries()) {
-          heads[entry[0].toLowerCase()] = entry[1];
-        }
-        reqResObj.response.headers = heads;
-
-        let isStream;
-        if (heads['content-type'] && heads['content-type'].includes('stream')) {
-          isStream = true;
-        } else {
-          isStream = false;
-        }
-        let http1Sesh = session.defaultSession;
-        let domain = reqResObj.host.split('//')
-        domain.shift();
-        domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-        // let dotDomain = `.${domain}`;
-        // console.log(domain, dotDomain);
-
-        http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
-          if (cookies) {
-            reqResObj.response.cookies = cookies;
-            store.default.dispatch(actions.reqResUpdate(reqResObj))
-            cookies.forEach((cookie) => {
-              let url = '';
-              url += cookie.secure ? 'https://' : 'http://';
-              url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-              url += cookie.domain;
-              url += cookie.path;
-
-              http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
-            })
-          }
-          isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
-        })
+        return response.json()
       })
+      .then((jsonResponseOfHeaders) =>{
+        console.log(jsonResponseOfHeaders._headers)//the mother f**ing headers
+        //--------------------------------------------------------------------
+        //After our first fetch for our headers, start second fetch for actual api data
+        //--------------------------------------------------------------------
+        return fetch('http://localhost:3000', parsedFetchOptions)
+                .then((response) => {
+                  //Parse response headers now to decide if SSE or not.
+                  let weGotTheHeaders = jsonResponseOfHeaders._headers
+                  let heads = weGotTheHeaders ;
+                  
+                  reqResObj.response.headers = weGotTheHeaders;
+                  // setTimeout(()=>{console.log('RESPONSE ::', response.headers)},8000)
+                  console.log("Hey man, headsup", heads)
+          
+                  let isStream;
+                  if (heads['content-type'] && heads['content-type'].includes('stream')) {
+                    isStream = true;
+                  } else {
+                    isStream = false;
+                  }
+                  let http1Sesh = session.defaultSession;
+                  let domain = reqResObj.host.split('//')
+                  domain.shift();
+                  domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+                  // let dotDomain = `.${domain}`;
+                  // console.log(domain, dotDomain);
+          
+                  http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
+                    if (cookies) {
+                      reqResObj.response.cookies = cookies;
+                      store.default.dispatch(actions.reqResUpdate(reqResObj))
+                      cookies.forEach((cookie) => {
+                        let url = '';
+                        url += cookie.secure ? 'https://' : 'http://';
+                        url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+                        url += cookie.domain;
+                        url += cookie.path;
+                        console.log(cookies)
+                        http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
+                      })
+                    }
+                    isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+                  })
+                })
+                .catch((err) => {
+                  reqResObj.connection = 'error';
+                  store.default.dispatch(actions.reqResUpdate(reqResObj));
+                }) 
+      })
+      
       .catch((err) => {
         reqResObj.connection = 'error';
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       })
+      
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
@@ -295,7 +312,7 @@ const httpController = {
 
     method = method.toUpperCase();
 
-    const formattedHeaders = {};
+    const formattedHeaders = {'url': reqResObject.url};
     headers.forEach((head) => {
       if (head.active) {
         formattedHeaders[head.key] = head.value;
@@ -309,7 +326,7 @@ const httpController = {
 
     const outputObj = {
       method,
-      mode: 'cors', // no-cors, cors, *same-origin
+      // mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'include', // include, *same-origin, omit
       headers: formattedHeaders,
