@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-
-import ModalContainer from '../Modal/ModalContainer.jsx';
+import ComposerContainer from '../composer/ComposerContainer.jsx';
 import HistoryContainer from './HistoryContainer.jsx';
+import CollectionsContainer from './CollectionsContainer.jsx';
 
 class SidebarContainer extends Component {
   constructor(props) {
@@ -10,8 +10,9 @@ class SidebarContainer extends Component {
 
   render(props) {
     return (
-      <div className="sidebar_modal-console">
-        <ModalContainer />
+      <div className="sidebar_composer-console">
+        <ComposerContainer />
+        <CollectionsContainer />
         <HistoryContainer />
       </div>
     );

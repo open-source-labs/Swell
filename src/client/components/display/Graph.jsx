@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Chart } from 'chart.js';
-import Store from '../../store';
 
 const mapStateToProps = Store => ({
   reqResArray: Store.business.reqResArray,
@@ -23,8 +22,8 @@ class Graph extends Component {
       eventCounter: 0,
       currentTime: Date.now(),
       timeSet: false,
-      oldestDataPointTimeReceived : 0,
-      timeFromNowToDisplay : 30000,
+      oldestDataPointTimeReceived: 0,
+      timeFromNowToDisplay: 30000,
     };
     this.updateTimeFromNowToDisplay = this.updateTimeFromNowToDisplay.bind(this);
   }
@@ -34,34 +33,43 @@ class Graph extends Component {
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector('canvas').getContext('2d');
     ctx.canvas.width = '100%';
-    ctx.canvas.height = 150;
+    ctx.canvas.height = '50%';
     this.lineChart = new Chart(context, {
       type: 'scatter',
       data: {
         datasets: [],
       },
       options: {
-        animation : {
-          duration : 0,
+        animation: {
+          duration: 0,
         },
-        maintainAspectRatio : false,
-        showLines: true,
-        scales: {
-          xAxes: [
-            {
-              type: 'linear',
-              position: 'bottom',
-              ticks: {
-                // beginAtZero: true,
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) { //data.
+              // console.log('data', data)
+              let hoverLabel = data.datasets[tooltipItem.datasetIndex].label;
+              return hoverLabel;
+            }
+          }
+        },
+        maintainAspectRatio: false,
+          showLines: true,
+          scales: {
+            xAxes: [
+              {
+                type: 'linear',
+                position: 'bottom',
+                ticks: {
+                  // beginAtZero: true,
+                },
               },
-            },
-          ],
-          yAxes: [{
-            display: false,
-          }]
+            ],
+            yAxes: [{
+              display: false,
+            }]
+          },
         },
-      },
-    });
+      });
   }
 
   componentDidUpdate() {
@@ -78,9 +86,10 @@ class Graph extends Component {
       });
     }
     else if (openRequestCount >= 1 && !this.state.timeSet) {
-      // console.log('Reset time and graph')
       this.lineChart.data.datasets = [];
       this.lineChart.update();
+      if (openRequestCount > 12) { this.lineChart.options.legend.display = false } //removes legend when over 12 keys
+
 
       this.setState(
         {
@@ -88,7 +97,6 @@ class Graph extends Component {
           timeSet: true,
         },
         () => {
-          // console.log(this.state.currentTime);
           this.updateGraphWithStoreData();
         },
       );
@@ -99,55 +107,66 @@ class Graph extends Component {
   }
 
   updateGraphWithStoreData() {
-    console.log('Updating graph');
-
     let newEventCounter = 0;
     let newOldestDataPointTimeReceived = Number.MAX_SAFE_INTEGER;
 
     const newDataSets = [];
     this.props.reqResArray.forEach((reqRes, index) => {
-      // console.log(reqRes)
       if ((reqRes.response.events && reqRes.timeReceived > this.state.currentTime) ||
-      (reqRes.response.messages || reqRes.request.messages)) {
+        (reqRes.response.messages || reqRes.request.messages)) {
         // create dataset...
         let backgroundColor;
         let borderColor;
         let pointBorderColor;
-        switch (index) {
-          case 0 : {
+        let pointHoverBackgroundColor;
+        let pointHoverBorderColor;
+        switch (index % 6) {
+          case 0: {
             backgroundColor = 'rgba(21,183,143, .1)';
             borderColor = 'rgb(21,183,143, .9)';
             pointBorderColor = 'rgb(21,183,143)';
+            pointHoverBackgroundColor = 'rgba(21,183,143)'
+            pointHoverBorderColor = 'rgba(21,183,143)'
             break;
           }
-          case 1 : {
+          case 1: {
             backgroundColor = 'rgba(0,161,147, .1)'
             borderColor = 'rgba(0,161,147, .9)'
             pointBorderColor = 'rgb(0,161,147)'
+            pointHoverBackgroundColor = 'rgba(0,161,147)'
+            pointHoverBorderColor = 'rgba(0,161,147)'
             break;
           }
-          case 2 : {
+          case 2: {
             backgroundColor = 'rgba(0,116,131, .1)'
             borderColor = 'rgba(0,116,131, .9)'
             pointBorderColor = 'rgb(0,116,131)'
+            pointHoverBackgroundColor = 'rgba(0,116,131,1)'
+            pointHoverBorderColor = 'rgba(0,116,131,1)'
             break;
           }
-          case 3 : {
+          case 3: {
             backgroundColor = 'rgba(0,155,191, .1)'
             borderColor = 'rgba(0,155,191, .9)'
             pointBorderColor = 'rgb(0,155,191)'
+            pointHoverBackgroundColor = 'rgba(0,155,191,1)'
+            pointHoverBorderColor = 'rgba(0,155,191,1)'
             break;
           }
-          case 4 : {
+          case 4: {
             backgroundColor = 'rgba(0,137,208, .1)'
             borderColor = 'rgba(0,137,208, .9)'
             pointBorderColor = 'rgb(0,137,208)'
+            pointHoverBackgroundColor = 'rgba(0,137,208,1)'
+            pointHoverBorderColor = 'rgba(0,137,208,1)'
             break;
           }
-          case 5 : {
+          case 5: {
             backgroundColor = 'rgba(49,87,192, .1)'
             borderColor = 'rgba(49,87,192, .9)'
             pointBorderColor = 'rgb(49,87,192)'
+            pointHoverBackgroundColor = 'rgba(49,87,192,1)'
+            pointHoverBorderColor = 'rgba(49,87,192,1)'
             break;
           }
         }
@@ -166,8 +185,10 @@ class Graph extends Component {
           pointBackgroundColor: '#fff',
           pointBorderWidth: 1,
           pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          // pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          // pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBackgroundColor,
+          pointHoverBorderColor,
           pointHoverBorderWidth: 2,
           pointRadius: 5,
           pointHitRadius: 10,
@@ -177,8 +198,8 @@ class Graph extends Component {
         switch (reqRes.connectionType) {
           case 'SSE': {
             reqRes.response.events.forEach((event) => {
-              if(Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
-                
+              if (Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
+
                 //to determine if the graph needs to update
                 if (event.timeReceived < newOldestDataPointTimeReceived) {
                   newOldestDataPointTimeReceived = event.timeReceived;
@@ -197,7 +218,7 @@ class Graph extends Component {
 
           case 'plain': {
             reqRes.response.events.forEach((event) => {
-              if(Date.now() - reqRes.timeReceived < this.state.timeFromNowToDisplay) {
+              if (Date.now() - reqRes.timeReceived < this.state.timeFromNowToDisplay) {
 
                 if (reqRes.timeReceived < newOldestDataPointTimeReceived) {
                   newOldestDataPointTimeReceived = reqRes.timeReceived;
@@ -215,7 +236,7 @@ class Graph extends Component {
 
           case 'WebSocket': {
             reqRes.response.messages.forEach(message => {
-              if(Date.now() - message.timeReceived < this.state.timeFromNowToDisplay) {
+              if (Date.now() - message.timeReceived < this.state.timeFromNowToDisplay) {
                 if (message.timeReceived < newOldestDataPointTimeReceived) {
                   newOldestDataPointTimeReceived = message.timeReceived;
                 }
@@ -227,7 +248,7 @@ class Graph extends Component {
               }
             });
             reqRes.request.messages.forEach(message => {
-              if(Date.now() - message.timeReceived < this.state.timeFromNowToDisplay) {
+              if (Date.now() - message.timeReceived < this.state.timeFromNowToDisplay) {
                 if (message.timeReceived < newOldestDataPointTimeReceived) {
                   newOldestDataPointTimeReceived = message.timeReceived;
                 }
@@ -252,10 +273,9 @@ class Graph extends Component {
       this.setState(
         {
           eventCounter: newEventCounter,
-          oldestDataPointTimeReceived : newOldestDataPointTimeReceived
+          oldestDataPointTimeReceived: newOldestDataPointTimeReceived
         },
         () => {
-          // console.log('Rerender');
           this.lineChart.data.datasets = newDataSets;
           this.lineChart.update();
         },
@@ -263,18 +283,18 @@ class Graph extends Component {
     }
   }
 
-  updateTimeFromNowToDisplay (e) {
+  updateTimeFromNowToDisplay(e) {
     this.setState({
-      timeFromNowToDisplay : e.target.value
+      timeFromNowToDisplay: e.target.value
     });
   }
 
   render() {
     let chartDisplayStyles = {
-      'display' : this.state.eventCounter > 0 ? 'block' : 'none',
+      'display': this.state.eventCounter > 0 ? 'block' : 'none',
     }
     let warningDisplayStyles = {
-      'display' : this.state.eventCounter === 0 ? 'block' : 'none',
+      'display': this.state.eventCounter === 0 ? 'block' : 'none',
     }
 
     return (
@@ -284,7 +304,7 @@ class Graph extends Component {
             Please add a request and hit the Open button to see response timing information.
           </div>
         </div>
-        <canvas className={'chart'} style={chartDisplayStyles} id="line-chart" />
+        <canvas className="chart" style={chartDisplayStyles} id="line-chart" />
         <div className={'chartTime'} style={chartDisplayStyles}>
           <span>Display results:</span>
           <select onChange={this.updateTimeFromNowToDisplay} className={'chartTimeSelect'} defaultValue={30000} >

@@ -1,59 +1,45 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import * as actions from '../../../actions/actions';
-import PropTypes from "prop-types";
 import WWWForm from './WWWForm.jsx';
 import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
-
-const mapStateToProps = store => ({
-  newRequestBody : store.business.newRequestBody,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setNewRequestBody : (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-  },
-});
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 class BodyEntryForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      show : true,
-    };
+    this.state = {show: true};
     this.toggleShow = this.toggleShow.bind(this);
   }
 
-  toggleShow () {
-    this.setState ({
-      show : !this.state.show
+  toggleShow() {
+    this.setState({
+      show: !this.state.show
     });
   }
 
   render() {
     let rawTypeStyles = {
-      'display' : this.props.newRequestBody.bodyType === 'raw' ? 'block' : 'none',
+      'display': this.props.newRequestBody.bodyType === 'raw' ? 'block' : 'none',
     }
 
     let bodyEntryArea = (() => {
       //BodyType of none : display nothing
-      if (this.props.newRequestBody.bodyType === 'none'){
+      if (this.props.newRequestBody.bodyType === 'none') {
         return;
       }
       //BodyType of XWWW... : display WWWForm entry
-      else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'){
+      else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
         return (
-          <WWWForm 
-            setNewRequestBody={this.props.setNewRequestBody} 
+          <WWWForm
+            setNewRequestBody={this.props.setNewRequestBody}
             newRequestBody={this.props.newRequestBody}
           />)
       }
       //RawType of application/json : Text area box with error checking
       else if (this.props.newRequestBody.rawType === 'application/json') {
         return (
-          <JSONTextArea 
-            setNewRequestBody={this.props.setNewRequestBody} 
+          <JSONTextArea
+            setNewRequestBody={this.props.setNewRequestBody}
             newRequestBody={this.props.newRequestBody}
           />
         );
@@ -63,15 +49,15 @@ class BodyEntryForm extends Component {
         return (
           <textarea
             value={this.props.newRequestBody.bodyContent}
-            className={'modal_textarea'}
-            style={{'resize' : 'none'}} 
-            type='text' 
-            placeholder='Body' 
-            rows={5} 
+            className={'composer_textarea'}
+            style={{ 'resize': 'none' }}
+            type='text'
+            placeholder='Body'
+            rows={10}
             onChange={(e) => {
               this.props.setNewRequestBody({
                 ...this.props.newRequestBody,
-                bodyContent : e.target.value
+                bodyContent: e.target.value
               })
             }}
           ></textarea>
@@ -79,29 +65,34 @@ class BodyEntryForm extends Component {
       }
     })()
 
-    const arrowClass = this.state.show ? 'modal_subtitle_arrow-open' : 'modal_subtitle_arrow-closed';
+    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
 
-    const bodyContainerClass = this.state.show ? 'modal_bodyform_container-open' : 'modal_bodyform_container-closed';
-  
-    return(
+    const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
+
+    return (
       <div style={this.props.stylesObj}>
-        <div className='modal_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src='https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png'>
+        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+          <img className={arrowClass} src={dropDownArrow}>
           </img>
           Body
         </div>
 
         <div className={bodyContainerClass}>
-          <BodyTypeSelect setNewRequestBody={this.props.setNewRequestBody} newRequestBody={this.props.newRequestBody}/>
+          <BodyTypeSelect
+            setNewRequestBody={this.props.setNewRequestBody}
+            newRequestBody={this.props.newRequestBody}
+            setNewRequestHeaders={this.props.setNewRequestHeaders}
+            newRequestHeaders={this.props.newRequestHeaders}
+          />
 
-          <div className='modal_rawtype_textarea_container'>
-            <select 
-              style={rawTypeStyles} 
-              className={'modal_rawtype_select'}
+          <div className='composer_rawtype_textarea_container'>
+            <select
+              style={rawTypeStyles}
+              className={'composer_rawtype_select'}
               onChange={(e) => this.props.setNewRequestBody({
                 ...this.props.newRequestBody,
-                rawType : e.target.value,
-              })} 
+                rawType: e.target.value,
+              })}
               value={this.props.newRequestBody.rawType}>
               Raw Type:
               <option value="text/plain">Text (text/plain)</option>
@@ -113,19 +104,12 @@ class BodyEntryForm extends Component {
             </select>
             {bodyEntryArea}
           </div>
-          
+
         </div>
-        
+
       </div>
     );
   }
 }
 
-BodyEntryForm.propTypes = {
-  stylesObj : PropTypes.object.isRequired,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BodyEntryForm);
+export default BodyEntryForm;

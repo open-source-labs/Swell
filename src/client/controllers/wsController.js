@@ -1,6 +1,6 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import connectionController from './connectionController.js';
+import connectionController from './reqResController.js';
 
 const wsController = {
   openWSconnection(reqResObj, connectionArray) {
@@ -67,7 +67,7 @@ const wsController = {
 
   sendWebSocketMessage(reqResId, message) {
     const matchedConnection = connectionController.getConnectionObject(reqResId);
-
+    console.log("matchedConnection", matchedConnection)
     matchedConnection.socket.send(message);
 
     // get fresh copy of reqRes

@@ -1,7 +1,10 @@
 const {Menu} = require('electron')
 const electron = require('electron')
 const app = electron.app
-
+// --------------------------------------------------------------------------------------------------
+// Here we are creating an array of menu tabs. Each menu tab will have its own list items(aka a sub-menu).
+// This array called template will be our default menu set up
+// --------------------------------------------------------------------------------------------------
 const template = [
   {
     label: 'Edit',
@@ -13,7 +16,7 @@ const template = [
         role: 'redo'
       },
       {
-        type: 'separator'
+        type: 'separator'// A dividing line between menu items
       },
       {
         role: 'cut'
@@ -40,14 +43,14 @@ const template = [
     submenu: [
       {
         label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
+        accelerator: 'CmdOrCtrl+R',//keyboard shortcut that will reload the current window
         click (item, focusedWindow) {
           if (focusedWindow) focusedWindow.reload()
         }
       },
       {
         label: 'Toggle Developer Tools',
-        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I', // another keyboard shortcut that will be conditionally assigned depending on whether or not user is on macOS
         click (item, focusedWindow) {
           if (focusedWindow) focusedWindow.webContents.toggleDevTools()
         }
@@ -93,10 +96,17 @@ const template = [
     ]
   }
 ]
+// --------------------------------------------------------------------------------------------------
 
-if (process.platform === 'darwin') {
+
+
+// --------------------------------------------------------------------------------------------------
+// If the user is on mac create an extra menu tab that will be labeled as the name of your app
+// This new tab will have submenu features that windows and linux users will not have access to
+// --------------------------------------------------------------------------------------------------
+if (process.platform === 'darwin') {// if user is on mac...
   const name = app.getName()
-  template.unshift({
+  template.unshift({// add on these new menu items
     label: name,
     submenu: [
       {
@@ -129,8 +139,8 @@ if (process.platform === 'darwin') {
       }
     ]
   })
-  // Edit menu.
-  template[1].submenu.push(
+  // template[1] refers to the Edit menu. 
+  template[1].submenu.push(// If user is on macOS also provide speech based submenu items in addition to the edit menu's other submenu items that were set earlier
     {
       type: 'separator'
     },
@@ -146,8 +156,8 @@ if (process.platform === 'darwin') {
       ]
     }
   )
-  // Window menu.
-  template[3].submenu = [
+  //template[3] refers to the Window menu.
+  template[3].submenu = [ // if user is on macOS replace the Window menu that we created earlier with the submenu below 
     {
       label: 'Close',
       accelerator: 'CmdOrCtrl+W',
@@ -171,6 +181,10 @@ if (process.platform === 'darwin') {
     }
   ]
 }
-
+// create our menu with the Menu module imported from electron,
+// use its built in method buildFromTemplate
+// and pass in the template we've just created
 const menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)
+
+// append our newly created menu to our app
+Menu.setApplicationMenu(menu) 

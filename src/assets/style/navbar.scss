@@ -14,7 +14,8 @@
 	height: 40px;
 	margin: 25px auto;
 	padding: 0 1.5rem;
-	width: auto;
+  width: auto;
+  outline: none;
 	&:hover {
 		background: transparent;
 		color: white!important;
@@ -23,7 +24,7 @@
 .btn-sm {
 	.btn {
 		border-radius: 3px;
-		font-size: 0.6rem;
+		font-size: 0.9rem;
 		font-weight: bold;
 		height: 30px;
 		line-height: 1;
@@ -40,15 +41,15 @@
 	background: #4e4e4e;
 }
 .navbar-console_inner {
-	max-width: 600px;
+  // max-width: 600px;
 	padding: 0 15px;
 	.btn {
-		background: $darkgraygreen;
+		background: transparent;
 		border: solid 1px #4e4e4e;
 		color: $mediumgray;
 		display: inline;
-		font-size: 12px;
-		margin: 1px;
+		font-size: 14px;
+		margin: 4px;
 		padding: .5rem;
 	}
 }

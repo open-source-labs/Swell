@@ -3,30 +3,53 @@
   width: 100%;
   margin: 0;
   height: calc(97vh - 19.67% + 42px);
-  overflow-x: hidden;
+  // overflow-x: hidden;
   background-color: #ecf1f5;
   border-top: solid 1px #ebeff2;
   background-image: url('../img/swell-bg.png');
   background-position: center center;
   background-size: 200px 200px;
   background-repeat: no-repeat;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 
+//-------------------------------------------------------------------
+//This is a fix for the ugly windows and linux scrollbars
+//-------------------------------------------------------------------
+#reqResContainer::-webkit-scrollbar{
+  width:5px;
+  background-color:#cccccc;
+  }
+  #reqResContainer::-webkit-scrollbar-thumb{
+  background-color:rgb(189, 189, 189);
+  border-radius:10px;
+  }
+  #reqResContainer::-webkit-scrollbar-thumb:hover{
+  background-color:rgb(114, 111, 111);
+  }
+  #reqResContainer::-webkit-scrollbar-thumb:active{
+  background-color:rgb(80, 77, 77);
+  border:1px solid #333333;
+
+  }
+//-------------------------------------------------------------------
 #reqResContainer_inner {
   width: auto;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 260px);
   overflow-x: hidden;
   overflow-y: auto;
   white-space: nowrap;
   transition: transform 0.3s ease-in-out;
+  
 }
+
 
 .resreq_wrap {
   width: calc(100vw - 340px);
   margin: 15px;
   flex: 0 0 auto;
   min-width: 800px;
+  padding-right: 215px;
 }
 
 .reqResContainer_inner-page {
@@ -34,12 +57,12 @@
   height: 100%;
 }
 
-.resreq_select-radio-label {
+.reqres_select-radio-label {
   font-size: 0.9rem;
   font-weight: bold;
 }
 
-.resreq_select-radio {
+.reqres_select-radio {
   width: 15px;
   height: 15px;
   position: relative;
@@ -163,7 +186,8 @@
   max-height: 60vh;
   height: auto;
   overflow: scroll;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  overflow-wrap: break-word;
   position: relative;
   border-bottom: solid 1px $bordergray;
   border-left: solid 1px $bordergray;
@@ -189,6 +213,12 @@
   position: relative;
   height: auto;
 }
+
+// .response_display {
+//   weight: 500px;
+//   height: 100px;
+//   overflow: scroll; 
+// }
 
 .httptwo {    
   padding: 10px 15px;

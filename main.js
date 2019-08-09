@@ -4,13 +4,13 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 // Import parts of electron to use
 const { app, BrowserWindow, TouchBar, session } = require('electron')
 
-const path = require('path')
-const url = require('url')
+const path = require('path');
+const url = require('url');
 
-// Import Auto-Updater
-const { autoUpdater } = require('electron-updater')
+// Import Auto-Updater- Swell will update itself
+const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
-
+// TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
 // // configure logging
@@ -18,13 +18,15 @@ autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
-let mainWindow
+let mainWindow;
 
+// -----------------------------------------------------------------
+// Create Touchbar buttons
+// -----------------------------------------------------------------
 const tbSelectAllButton = new TouchBarButton({
   label: 'Select All',
   backgroundColor: '#3DADC2',
   click: () => {
-    // console.log('select all');
     mainWindow.webContents.send('selectAll');
   },
 });
@@ -33,7 +35,6 @@ const tbDeselectAllButton = new TouchBarButton({
   label: 'Deselect All',
   backgroundColor: '#3DADC2',
   click: () => {
-    // console.log('deselect all');
     mainWindow.webContents.send('deselectAll');
   },
 });
@@ -42,7 +43,6 @@ const tbOpenSelectedButton = new TouchBarButton({
   label: 'Open Selected',
   backgroundColor: '#00E28B',
   click: () => {
-    // console.log('opening all selected');
     mainWindow.webContents.send('openAllSelected');
   },
 });
@@ -51,8 +51,23 @@ const tbCloseSelectedButton = new TouchBarButton({
   label: 'Close Selected',
   backgroundColor: '#DB5D58',
   click: () => {
-    // console.log('closing all selected');
     mainWindow.webContents.send('closeAllSelected');
+  },
+});
+
+const tbMinimizeALlButton = new TouchBarButton({
+  label: 'Minimize All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    mainWindow.webContents.send('minimizeAll');
+  },
+});
+
+const tbExpandAllButton = new TouchBarButton({
+  label: 'Expand All',
+  backgroundColor: '#3DADC2',
+  click: () => {
+    mainWindow.webContents.send('expandedAll');
   },
 });
 
@@ -65,13 +80,18 @@ const tbClearAllButton = new TouchBarButton({
   },
 });
 
+
 const tbSpacer = new TouchBarSpacer();
 
 const tbFlexSpacer = new TouchBarSpacer({
   size: 'flexible',
 });
+// -----------------------------------------------------------------
+// Attach earlier made buttons to a touch bar
+// -----------------------------------------------------------------
 
-const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbClearAllButton]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton,, tbMinimizeALlButton, tbExpandAllButton, tbClearAllButton]);
+
 
 // Keep a reference for dev mode
 let dev = false;
@@ -86,28 +106,31 @@ if (
 
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
-if (process.platform === 'win32') {
+if (process.platform === 'win32') {// if user is on windows...
   app.commandLine.appendSwitch('high-dpi-support', 'true');
   app.commandLine.appendSwitch('force-device-scale-factor', '1');
 }
 
 function createWindow() {
-  // Create the browser window.
+  // Create the new browser window instance.
   mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 768,
-    minWidth: 1024,
-    minHeight: 565,
+    width: 2000,
+    height: 1000,
+    minWidth: 1304,
+    minHeight: 700,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
     title: 'Swell',
-    webPreferences: { webSecurity: false },
+    allowRunningInsecureContent: true,
+    webPreferences: { 
+      webSecurity: false,
+     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
-
+  
   if (dev) {
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
-  // Adding React & Redux DevTools to Electon App
+  // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));
@@ -120,7 +143,7 @@ function createWindow() {
   // and load the index.html of the app.
   let indexPath;
 
-  if (dev && process.argv.indexOf('--noDevServer') === -1) {
+  if (dev && process.argv.indexOf('--noDevServer') === -1) {// if we are in dev mode load up 'http://localhost:8080/index.html'
     indexPath = url.format({
       protocol: 'http:',
       host: 'localhost:8080',
@@ -129,15 +152,17 @@ function createWindow() {
     });
   }
   else {
-    indexPath = url.format({
+    indexPath = url.format({// if we are not in dev mode load production build file
       protocol: 'file:',
       pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
     });
   }
-
+  
+  // our new app window will load content depending on the boolean value of the dev variable
   mainWindow.loadURL(indexPath);
 
+  // give our new window the earlier created touchbar
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -158,10 +183,12 @@ function createWindow() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+    
+    //tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
     mainWindow = null;
   });
 
-  //require menu files
+  //require menu file
   require('./menu/mainMenu')
 
 }
@@ -179,8 +206,8 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
+  if (process.platform !== 'darwin') {//darwin refers to macOS... 
+    app.quit();// If User is on mac exit the program when all windows are closed
   }
 });
 

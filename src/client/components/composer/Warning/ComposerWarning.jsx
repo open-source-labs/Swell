@@ -1,19 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import * as actions from '../../../actions/actions';
-
-const mapStateToProps = store => ({
-  warningModalMessage: store.business.warningModalMessage,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setModalDisplay: (modalDisplay) => {
-    dispatch(actions.setModalDisplay(modalDisplay));
-  },
-});
-
-class ModalWarning extends Component {
+class ComposerWarning extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -21,7 +8,7 @@ class ModalWarning extends Component {
   }
 
   hideWarning() {
-    this.props.setModalDisplay('Request');
+    this.props.setComposerDisplay('Request');
   }
 
   render() {
@@ -41,14 +28,11 @@ class ModalWarning extends Component {
           }
         }}
       >
-        <div>{this.props.warningModalMessage}</div>
+        <div>{this.props.warningMessage}</div>
         <button onClick={this.hideWarning} type="button">Ok</button>
       </div>
     );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ModalWarning);
+export default ComposerWarning;
