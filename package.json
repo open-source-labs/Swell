@@ -131,6 +131,7 @@
     "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
     "redux": "^3.7.2",
     "rpmbuild": "0.0.22",
+    "semantic-ui-react": "^0.87.3",
     "status-indicator": "^1.0.9",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2",

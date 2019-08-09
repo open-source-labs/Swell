@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReqResCtrl from '../../controllers/reqResController.js';
-const { ipcRenderer } = require("electron")
+const { ipcRenderer } = require("electron");
+import Prompt from '../../../prompts/prompt.jsx'
 
 
 class NavBarContainer extends Component {
@@ -8,7 +9,7 @@ class NavBarContainer extends Component {
     super(props);
     this.showPrompt = this.showPrompt.bind(this)
   }
-  
+
   showPrompt() {
     console.log('#1 clicked showPrompt')
     ipcRenderer.send('prompt', "")
@@ -21,7 +22,7 @@ class NavBarContainer extends Component {
             Select All
           </button>
 
-          <button className="btn" type="button" onClick={(e) => {ReqResCtrl.deselectAllReqRes(e)}}>
+          <button className="btn" type="button" onClick={(e) => { ReqResCtrl.deselectAllReqRes(e) }}>
             Deselect All
           </button>
 
@@ -40,14 +41,17 @@ class NavBarContainer extends Component {
           <button className="btn" type="button" onClick={ReqResCtrl.expandAllReqRes}>
             Expand All
           </button>
-          
+
           <button className="btn" type="button" onClick={ReqResCtrl.clearAllReqRes}>
             Clear All
           </button>
-          
+
           <button className="btn" type="button" onClick={() => this.showPrompt()}>
             Save Collection
           </button>
+
+          <Prompt />
+
         </div>
       </div>
     );
