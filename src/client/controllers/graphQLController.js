@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-client';
-import { InMemoryCache, ApolloLink } from 'apollo-boost';
 import gql from 'graphql-tag';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 
 import * as store from '../store';
@@ -13,7 +13,7 @@ const graphQLController = {
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
-    reqResObj.connection = 'pending';
+    reqResObj.connection = 'open';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
@@ -58,7 +58,6 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    return;
   },
 
   handleResponse(response, reqResObj) {

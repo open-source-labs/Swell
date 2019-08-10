@@ -3,53 +3,46 @@ import JSONPretty from 'react-json-pretty';
 import gql from 'graphql-tag';
 import { ApolloProvider, Subscription } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
 
 
-const ResponseSubscriptionDisplay = ({ subscriptionBody }) => {
+const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
+  const body = content.request.body;
+  const uri = content.protocol === /wss?:\/\// ? content.url : content.url.replace(content.protocol, 'ws://');
 
-  const httpLink = createHttpLink({ uri: 'http://localhost:4000' });
-
-  const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:4000',
+  const link = new WebSocketLink({
+    uri,
     options: { reconnect: true }
   });
-
-  const link = split(
-    ({ query }) => {
-      const { kind, operation } = getMainDefinition(query);
-      return kind === 'OperationDefinition' && operation === 'subscription';
-    },
-    wsLink,
-    httpLink
-  )
 
   const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
   });
 
+  const theme = {
+    main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
+    key: 'color:#0089D0;', // bluetwo
+    string: 'color:#15B78F;',// greenone
+    value: 'color:#fd971f;', // a nice orange
+    boolean: 'color:#E00198;', // gqlpink
+  }
+
   return (
     <ApolloProvider client={client} >
       <div className="tab_content-response">
         <div className="json-response" key="jsonresponsediv">
-          <Subscription subscription={gql`${subscriptionBody}`}>
+          {content.connection === 'closed' && <JSONPretty data={content.response.events[0]} space="4" theme={theme} />}
+          {content.connection === 'open' && <Subscription subscription={gql`${body}`}>
             {({ loading, data }) => {
-              if (loading) return 'Listening for new data';
-              return <JSONPretty data={data} space="4" theme={{
-                main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
-                key: 'color:#0089D0;', // bluetwo
-                string: 'color:#15B78F;',// greenone
-                value: 'color:#fd971f;', // a nice orange
-                boolean: 'color:#E00198;', // gqlpink
-              }}
-              />
+              if (loading && !content.response.events[0]) return 'Listening for new data';
+              if (loading && content.response.events[0]) return <JSONPretty data={content.response.events[0]} space="4" theme={theme} />
+              content.response.events[0] = data;
+              reqResUpdate(content);
+              return <JSONPretty data={data} space="4" theme={theme} />
             }}
-          </Subscription>
+          </Subscription>}
         </div>
       </div>
     </ApolloProvider >

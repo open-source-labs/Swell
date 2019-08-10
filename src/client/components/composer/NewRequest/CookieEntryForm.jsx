@@ -1,20 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import * as actions from '../../../actions/actions';
 import Header from './Header.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
-const uuidv4 = require('uuid/v4');
-
-const mapStateToProps = store => ({
-  newRequestCookies: store.business.newRequestCookies,
-  newRequestBody: store.business.newRequestBody,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
-  },
-});
 
 class CookieEntryForm extends Component {
   constructor(props) {
@@ -37,7 +23,6 @@ class CookieEntryForm extends Component {
       this.addCookie(cookiesDeepCopy);
     }
   }
-
 
   addCookie(cookiesDeepCopy) {
     cookiesDeepCopy.push({
@@ -99,7 +84,6 @@ class CookieEntryForm extends Component {
   }
 
   render() {
-    // console.log('CookieEntryForm Begin Render', this.state.cookies);
     let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
       return (<Header content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Header>)
     });
@@ -122,7 +106,4 @@ class CookieEntryForm extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CookieEntryForm);
+export default CookieEntryForm;

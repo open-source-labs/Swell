@@ -1,37 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import * as actions from '../../actions/actions';
-import dbController from '../../controllers/dbController';
+import historyController from '../../controllers/historyController';
 import Trashcan from '../../../assets/img/Trashcan.png'
-
-const path = require('path');
-
-const mapStateToProps = store => ({
-});
-
-const mapDispatchToProps = dispatch => ({
-  reqResAdd: (reqRes) => {
-    dispatch(actions.reqResAdd(reqRes));
-  },
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
-  },
-  deleteFromHistory: (reqRes) => {
-    dispatch(actions.deleteFromHistory(reqRes))
-  },
-  setNewRequestFields: (requestObj) => {
-    dispatch(actions.setNewRequestFields(requestObj));
-  },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-  },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
-  },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-  },
-})
 
 class History extends Component {
   constructor(props) {
@@ -60,10 +29,9 @@ class History extends Component {
         value: '',
       })
     }
-    console.log(deeperCopy)
     const requestHeadersObj = {
-      headersArr: !!deeperCopy ? deeperCopy : [],
-      count: this.props.content.request.headers ? this.props.content.request.headers.length : 0,
+      headersArr: deeperCopy ? deeperCopy : [],
+      count: deeperCopy ? deeperCopy.length : 1, //TO FIX
     }
     const requestCookiesObj = {
       cookiesArr: this.props.content.request.cookies ? this.props.content.request.cookies : [],
@@ -85,9 +53,8 @@ class History extends Component {
 
   deleteHistory(e) {
     this.props.deleteFromHistory(this.props.content);
-    dbController.deleteFromIndexDb(e.target.id);
+    historyController.deleteHistoryFromIndexedDb(e.target.id);
   }
-
 
   render() {
     return (
@@ -110,7 +77,4 @@ class History extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(History);
+export default History;

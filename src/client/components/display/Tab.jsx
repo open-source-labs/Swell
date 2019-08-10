@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
 
 class Tab extends Component {
   constructor(props) {
@@ -20,6 +17,5 @@ class Tab extends Component {
     )
   }
 }
-
 
 export default (Tab);

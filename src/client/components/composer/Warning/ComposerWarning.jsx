@@ -1,17 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import * as actions from '../../../actions/actions';
-
-const mapStateToProps = store => ({
-  warningMessage: store.business.warningMessage,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setComposerDisplay: (composerDisplay) => {
-    dispatch(actions.setComposerDisplay(composerDisplay));
-  },
-});
 
 class ComposerWarning extends Component {
   constructor(props) {
@@ -48,7 +35,4 @@ class ComposerWarning extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ComposerWarning);
+export default ComposerWarning;

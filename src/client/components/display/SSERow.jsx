@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import ReactJson from 'react-json-view';
 
 class SSERow extends Component {
@@ -30,22 +29,19 @@ class SSERow extends Component {
         <div className={'grid-4'}>
           <div>
             <span className="tertiary-title">
-              ID
-              {this.props.content.id}
+              ID {this.props.content.id}
             </span>
           </div>
 
           <div>
             <span className="tertiary-title">
-              Event
-              {this.props.content.event}
+              Event {this.props.content.event}
             </span>
           </div>
 
           <div>
             <span className="tertiary-title">
-              Time Received
-              {this.props.content.timeReceived}
+              Time Received {this.props.content.timeReceived}
             </span>
           </div>
 

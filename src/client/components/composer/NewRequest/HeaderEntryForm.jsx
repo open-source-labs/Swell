@@ -1,20 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../../actions/actions';
 import Header from './Header.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
-
-const mapStateToProps = store => ({
-  newRequestHeaders: store.business.newRequestHeaders,
-  newRequestBody: store.business.newRequestBody,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-  },
-});
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -28,7 +15,7 @@ class HeaderEntryForm extends Component {
 
   componentDidMount() {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    this.addHeader(headersDeepCopy);
+    if (headersDeepCopy[headersDeepCopy.length-1] && headersDeepCopy[headersDeepCopy.length-1].key !== "") this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate() {
@@ -55,15 +42,16 @@ class HeaderEntryForm extends Component {
     }
 
     // Attempt to update header in these conditions:
-    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => header.key.toLowerCase() === 'content-type');
-
+    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => /content-type$/i.test(header.key.toLowerCase()) );
+    
     // 1. if there is no contentTypeHeader, but there should be
     if (!foundHeader && contentType !== '') {
       this.addContentTypeHeader(contentType);
+      // this.updateContentTypeHeader(contentType, foundHeader);
     }
-    // 2. if there is a contentTypeHeader, but there SHOULDNT be
+    // 2. if there is a contentTypeHeader, but there SHOULDNT be, but the user inputs anyway... just let them
     else if (foundHeader && contentType === '') {
-      this.removeContentTypeHeader();
+      //keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
     // 3. if there is a contentTypeHeader, needs to update
     else if (foundHeader && foundHeader.value !== contentType) {
@@ -72,14 +60,15 @@ class HeaderEntryForm extends Component {
   }
 
   addContentTypeHeader(contentType) {
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')));
 
-    headersDeepCopy.unshift({
+    const contentTypeHeader = ({
       id: this.props.newRequestHeaders.count,
       active: true,
-      key: 'content-type',
+      key: 'Content-Type',
       value: contentType,
     });
+    headersDeepCopy.length > 1 ? headersDeepCopy.splice(headersDeepCopy.length-1, 0, contentTypeHeader) : headersDeepCopy.unshift(contentTypeHeader)
 
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
@@ -87,22 +76,12 @@ class HeaderEntryForm extends Component {
     });
   }
 
-  removeContentTypeHeader() {
-    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key !== 'content-type');
-
-    this.props.setNewRequestHeaders({
-      headersArr: filtered,
-      count: filtered.length,
-    });
-  }
-
   updateContentTypeHeader(contentType, foundHeader) {
-    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key !== 'content-type');
-
+    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
     filtered.unshift({
       id: this.props.newRequestHeaders.count,
       active: true,
-      key: 'content-type',
+      key: 'Content-Type',
       value: contentType,
     });
 
@@ -114,7 +93,7 @@ class HeaderEntryForm extends Component {
 
   addHeader(headersDeepCopy) {
     headersDeepCopy.push({
-      id: this.props.newRequestHeaders.count,
+      id: this.props.newRequestHeaders.count+1,
       active: false,
       key: '',
       value: '',
@@ -170,13 +149,12 @@ class HeaderEntryForm extends Component {
   }
 
   render() {
-    // console.log('HeaderEntryForm Begin Render', this.state.headers);
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <Header
         content={header}
         changeHandler={this.onChangeUpdateHeader}
-        key={index}
-        Key={header.key}
+        key={index} //key
+        Key={header.key} //prop
         value={header.value}
       />
     ));
@@ -199,7 +177,4 @@ class HeaderEntryForm extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HeaderEntryForm);
+export default HeaderEntryForm;

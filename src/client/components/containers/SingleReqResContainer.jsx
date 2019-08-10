@@ -1,25 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import ResponseContainer from '../containers/ResponseContainer.jsx';
-import OpenBtn from './OpenBtn.jsx';
-import CloseBtn from './CloseBtn.jsx';
-import WebSocketWindow from './WebSocketWindow.jsx';
 import connectionController from '../../controllers/reqResController';
-import RequestTabs from './RequestTabs.jsx';
+import OpenBtn from '../display/OpenBtn.jsx';
+import CloseBtn from '../display/CloseBtn.jsx';
+import RequestTabs from '../display/RequestTabs.jsx';
+import ResponseContainer from './ResponseContainer.jsx';
+import WebSocketWindow from '../display/WebSocketWindow.jsx';
 import dropDownArrow from '../../../assets/icons/arrow_drop_down_white_192x192.png'
 
-import * as actions from '../../actions/actions';
-
-const mapDispatchToProps = dispatch => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
-  },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
-  },
-});
-
-class ReqRes extends Component {
+class SingleReqResContainer extends Component {
   constructor(props) {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
@@ -43,7 +31,6 @@ class ReqRes extends Component {
   }
 
   render() {
-
     const contentBody = [];
 
     if (this.props.content.protocol === 'ws://') {
@@ -59,10 +46,9 @@ class ReqRes extends Component {
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
         contentBody.push(<ResponseContainer
-          content={this.props.content.response}
+          content={this.props.content}
           connectionType={this.props.content.connectionType}
-          // Add subscription body if it's a GQL subscription
-          subscriptionBody={this.props.content.request.method === 'SUBSCRIPTION' ? this.props.content.request.body : null}
+          reqResUpdate={this.props.reqResUpdate}
           key={1}
         />)
       }
@@ -125,34 +111,34 @@ class ReqRes extends Component {
           <div>
             <div className="grid-6">
               <div>
-          
-            <input
-              id={this.props.content.id}
-              checked={this.props.content.checked}
-              className="reqres_select-radio"
-              name="resreq-select"
-              type="checkbox"
-              onChange={this.onCheckHandler}
-            />
-          </div>
 
-          <div className="btn-sm">
-            <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-            <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-          </div>
-          <div className="btn-sm">
-            <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
-          </div>
-          <div>{statusLight}</div>
-          <span className="tertiary-title">{this.props.content.connectionType}</span>
+                <input
+                  id={this.props.content.id}
+                  checked={this.props.content.checked}
+                  className="reqres_select-radio"
+                  name="resreq-select"
+                  type="checkbox"
+                  onChange={this.onCheckHandler}
+                />
+              </div>
+
+              <div className="btn-sm">
+                <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+                <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+              </div>
+              <div className="btn-sm">
+                <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
+              </div>
+              <div>{statusLight}</div>
+              <span className="tertiary-title">{this.props.content.connectionType}</span>
 
 
-          <span className="tertiary-title" title="The amount of time it takes to recieve response"
->
-            {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
-            Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent} ms
-          </span>
-        </div>
+              <span className="tertiary-title" title="The amount of time it takes to recieve response"
+              >
+                {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
+                Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent} ms
+              </span>
+            </div>
 
             <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
             {contentBody}
@@ -165,7 +151,4 @@ class ReqRes extends Component {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(ReqRes);
+export default SingleReqResContainer;
