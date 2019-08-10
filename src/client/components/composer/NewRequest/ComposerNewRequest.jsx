@@ -191,13 +191,15 @@ class ComposerNewRequest extends Component {
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
         />
-
+        
+        {
+          this.props.newRequestFields.method &&
         <CookieEntryForm
           newRequestCookies={this.props.newRequestCookies}
           newRequestBody={this.props.newRequestBody}
           setNewRequestCookies={this.props.setNewRequestCookies}
         />
-
+        }
         {
           !this.props.newRequestFields.graphQL && this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://' &&
           <BodyEntryForm
