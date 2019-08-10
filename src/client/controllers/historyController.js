@@ -10,29 +10,6 @@ const historyController = {
   addHistoryToIndexedDb(reqRes) {
     db.history.put(reqRes)
       .catch((err) => console.log('Error in addToHistory', err))
-    // collectionsController.addCollectionToIndexedDb({
-    //   created_at: new Date(),
-    //   name: "blepblep",
-    //   reqResArray: [{
-    //     "id": "e21f6b05-08b6-4058-ba2e-3fe492bc7e99",
-    //     "created_at": "Sat Jul 20 2019 16: 11: 42 GMT - 0400(EDT)",
-    //     "protocol": "http://",
-    //     "host": "http://pokeapi.co",
-    //     "path": "/api/v2/pokemon/squirtle",
-    //     "checkSelected": false,
-    //     "checked": false,
-    //     "connection": "uninitialized",
-    //     "connectionType": null,
-    //     "created_at": "Sat Jul 20 2019 16: 11: 42 GMT - 0400(EDT)",
-    //     "request": { method: "GET", headers: [], body: "", cookies: [], bodyType: "none" },
-    //     "response": { headers: null, events: null },
-    //     "tab": "First Tab",
-    //     "timeReceived": null,
-    //     "timeSent": null,
-    //     "url": "http://pokeapi.co/api/v2/pokemon/squirtle"
-    //   }]
-    // })
-
   },
 
   deleteHistoryFromIndexedDb(id) {
@@ -55,7 +32,7 @@ const historyController = {
         let historyGroupsArr = Object.keys(historyGroupsObj).sort((a, b) => parse(b) - parse(a)).map(date => {
           return {
             date: date,
-            history: historyGroupsObj[date]
+            history: historyGroupsObj[date].sort((a, b) => b.created_at - a.created_at)
           };
         });
         store.default.dispatch(actions.getHistory(historyGroupsArr));
