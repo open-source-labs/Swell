@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import connectionController from '../../controllers/reqResController';
-import OpenBtn from './OpenBtn.jsx';
-import CloseBtn from './CloseBtn.jsx';
-import RequestTabs from './RequestTabs.jsx';
-import ResponseContainer from '../containers/ResponseContainer.jsx';
-import WebSocketWindow from './WebSocketWindow.jsx';
+import OpenBtn from '../display/OpenBtn.jsx';
+import CloseBtn from '../display/CloseBtn.jsx';
+import RequestTabs from '../display/RequestTabs.jsx';
+import ResponseContainer from './ResponseContainer.jsx';
+import WebSocketWindow from '../display/WebSocketWindow.jsx';
 import dropDownArrow from '../../../assets/icons/arrow_drop_down_white_192x192.png'
 
-class ReqRes extends Component {
+class SingleReqResContainer extends Component {
   constructor(props) {
     super(props);
     this.removeReqRes = this.removeReqRes.bind(this);
@@ -45,24 +45,10 @@ class ReqRes extends Component {
     else {
       contentBody.push(<RequestTabs requestContent={this.props.content.request} key={0} />)
       if (this.props.content.connection !== 'uninitialized') {
-        // Get subscription information if it's a subscription
-        let subscriptionData = null;
-        if (this.props.content.request.method === 'SUBSCRIPTION') {
-          // Ensure this has a web socket path
-          const uri = this.props.content.protocol === /wss?:\/\//
-            ? this.props.content.url
-            : this.props.content.url.replace(this.props.content.protocol, 'ws://');
-          subscriptionData = {
-            uri,
-            body: this.props.content.request.body,
-            // TODO: For later implementation of variables
-            // variables: this.props.content.request.bodyVariables
-          }
-        }
         contentBody.push(<ResponseContainer
-          content={this.props.content.response}
+          content={this.props.content}
           connectionType={this.props.content.connectionType}
-          subscriptionData={subscriptionData}
+          reqResUpdate={this.props.reqResUpdate}
           key={1}
         />)
       }
@@ -165,4 +151,4 @@ class ReqRes extends Component {
   }
 }
 
-export default ReqRes;
+export default SingleReqResContainer;

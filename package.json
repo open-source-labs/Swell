@@ -105,9 +105,9 @@
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "dependencies": {
-    "apollo-boost": "^0.4.3",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
+    "apollo-link-http": "^1.5.15",
     "apollo-link-ws": "^1.0.18",
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
