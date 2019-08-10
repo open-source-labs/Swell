@@ -129,6 +129,7 @@
     "react-highlight": "^0.12.0",
     "react-json-pretty": "^2.1.0",
     "react-json-view": "^1.19.1",
+    "react-modal": "^3.9.1",
     "react-redux": "^5.0.6",
     "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
     "redux": "^3.7.2",

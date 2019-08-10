@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import HistoryDate from '../display/HistoryDate.jsx';
+import parse from 'date-fns/parse'
+
 
 const mapStateToProps = store => ({
   history: store.business.history,
@@ -23,7 +25,8 @@ class HistoryContainer extends Component {
   render() {
     // history is already sorted by created_at from getHistory
     //1) map through history state and create date component. 2) pass props to new component 
-    let historyDates = this.props.history.map((date, i) => {
+    let historyDates = this.props.history.map((date, i) => { //nvm nvm
+    // let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)).map((date, i) => { //wtf
       return <HistoryDate
         className="historyDate"
         content={date} key={i}

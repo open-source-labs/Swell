@@ -87,6 +87,13 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.COLLECTION_ADD: { //add to collection to array in state
+      return {
+        ...state,
+        collections: [action.payload, ...state.collections],
+      };
+    }
+
     case types.REQRES_CLEAR: {
       return {
         ...state,

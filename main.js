@@ -2,8 +2,9 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 // Import parts of electron to use
-const { app, BrowserWindow, TouchBar, session } = require('electron')
-
+// app - Control your application's event lifecycle
+// ipcMain - Communicate asynchronously from the main process to renderer processes
+const { app, BrowserWindow, TouchBar, ipcMain } = require('electron')
 const path = require('path');
 const url = require('url');
 
@@ -90,7 +91,7 @@ const tbFlexSpacer = new TouchBarSpacer({
 // Attach earlier made buttons to a touch bar
 // -----------------------------------------------------------------
 
-const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton,, tbMinimizeALlButton, tbExpandAllButton, tbClearAllButton]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbMinimizeAllButton, tbExpandAllButton, tbClearAllButton]);
 
 
 // Keep a reference for dev mode
@@ -122,15 +123,17 @@ function createWindow() {
     show: false,
     title: 'Swell',
     allowRunningInsecureContent: true,
-    webPreferences: { 
+    webPreferences: {
+      "nodeIntegration": true,
+      "sandbox": false,
       webSecurity: false,
-     },
+    },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
-  
+
   if (dev) {
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
-  // If we are in developer mode Add React & Redux DevTools to Electon App
+    // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));
@@ -158,7 +161,7 @@ function createWindow() {
       slashes: true,
     });
   }
-  
+
   // our new app window will load content depending on the boolean value of the dev variable
   mainWindow.loadURL(indexPath);
 
@@ -183,14 +186,13 @@ function createWindow() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    
+
     //tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
     mainWindow = null;
   });
 
   //require menu file
   require('./menu/mainMenu')
-
 }
 
 // This method will be called when Electron has finished
