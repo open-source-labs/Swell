@@ -1,6 +1,4 @@
-import { ipcRenderer } from 'electron';
 import * as types from './actionTypes';
-import ReqResCtrl from '../controllers/reqResController';
 
 // BUSINESS LOGIC ACTIONS
 export const getHistory = history => ({

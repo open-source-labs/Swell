@@ -62,9 +62,10 @@ class NavBarContainer extends Component {
     const collectionObj = {
       name: inputName,
       id: uuid(),
+      created_at: new Date(), 
       reqResArray: clonedArray
     }
-    console.log({collectionObj})
+    // console.log({collectionObj})
     collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
     this.props.collectionAdd(collectionObj)
     this.setState({ showModal: false });
@@ -122,8 +123,11 @@ class NavBarContainer extends Component {
             overlayClassName="collectionModalOverlay"
             contentLabel="Enter a Collection Name"
             shouldCloseOnOverlayClick={true}
+            aria={{
+              labelledby: "heading"
+            }}
           >
-            <h1>What would you like to name your collection?</h1>
+            <h1 id="heading">What would you like to name your collection?</h1>
             <input type={'text'} id="collectionNameInput" onKeyDown={(e) => this.handleKeyPress(e)}/>
             <p id="collectionNameError" style={{display:'none'}}>Collection name already exists!</p>
             <div>
