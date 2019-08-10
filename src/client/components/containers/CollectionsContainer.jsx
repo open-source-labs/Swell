@@ -8,8 +8,8 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  deleteFromCollection: (collection) => { dispatch(actions.deleteFromCollection(collection)) },  
-  collectionToReqRes: (reqResArray) => { dispatch(actions.collectionToReqRes(reqResArray)) },  
+  deleteFromCollection: (collection) => { dispatch(actions.deleteFromCollection(collection)) },
+  collectionToReqRes: (reqResArray) => { dispatch(actions.collectionToReqRes(reqResArray)) },
 });
 
 class CollectionsContainer extends Component {
@@ -18,12 +18,12 @@ class CollectionsContainer extends Component {
   }
 
   render() {
-    
+
     let collectionComponents = this.props.collections.map((collection, idx) => {
-      return <Collection 
+      return <Collection
         content={collection} key={idx}
-        deleteFromCollection = {this.props.deleteFromCollection}
-        collectionToReqRes = {this.props.collectionToReqRes}
+        deleteFromCollection={this.props.deleteFromCollection}
+        collectionToReqRes={this.props.collectionToReqRes}
       />
     })
 

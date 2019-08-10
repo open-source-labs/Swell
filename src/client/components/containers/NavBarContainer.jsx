@@ -18,12 +18,12 @@ class NavBarContainer extends Component {
     super(props);
     this.state = {
       showModal: false,
-      newName: ""
     }
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.saveCollection = this.saveCollection.bind(this);
     this.saveName = this.saveName.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleOpenModal() {
@@ -36,49 +36,47 @@ class NavBarContainer extends Component {
   saveName() {
     const inputName = document.querySelector('#collectionNameInput').value;
     if (!!inputName.trim()) {
-      this.setState({ ...this.state, newName: inputName });
+      collectionsController.collectionNameExists({ name: inputName })
+      .catch((err) => console.log("error in checking collection name: ", err))
+      .then((found) => {
+        if (found) { //if the name already exists
+          document.querySelector('#collectionNameInput').setAttribute("style", "border-color: red;");
+          document.querySelector('#collectionNameError').setAttribute("style", "display: block");
+        }
+        else this.saveCollection(inputName)
+      })
     }
-    collectionsController.collectionNameExists({ name: inputName })
   }
-  saveCollection() {
-    this.setState({ showModal: false });
-    // const clonedArray = (this.props.reqResArray).slice()
-    // clonedArray.forEach((reqRes) => {
-    //   if (!reqRes.minimized && reqRes.tab === currentTab) {
-    //     reqRes.minimized = true;
-    //   }
-    // });
-    // console.log({ clonedArray })
-    // const collectionObj = {
-    //   name: this.state.newName,
-    //   id: uuid(),
-    //   reqResArray: clonedArray
-    // }
-    // collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
-    // this.props.collectionAdd(collectionObj)
-    this.props.collectionAdd({
+  saveCollection(inputName) {
+    const clonedArray = (this.props.reqResArray).slice()
+    clonedArray.forEach((reqRes) => { //reinitialize and minimize all things
+      reqRes.checked = false;
+      reqRes.minimized = true;
+      reqRes.timeSent = null;
+      reqRes.timeReceived = null;
+      reqRes.connection = 'uninitialized';
+      if (reqRes.response.hasOwnProperty('headers')) reqRes.response = { headers: null, events: null }
+      else reqRes.response = {messages: []}
+    });
+    // console.log({ clonedArray }, inputName)
+    const collectionObj = {
+      name: inputName,
       id: uuid(),
-      created_at: new Date(),
-      name: "meep",
-      reqResArray: [{
-        "id": "e21f69905-08b6-4058-ba2e-3fe492bc7e99",
-        "created_at": "Sat Jul 20 2019 16: 11: 42 GMT - 0400(EDT)",
-        "protocol": "http://",
-        "host": "http://pokeapi.co",
-        "path": "/api/v2/pokemon/squirtle",
-        "checkSelected": false,
-        "checked": false,
-        "connection": "uninitialized",
-        "connectionType": null,
-        "created_at": "Sat Jul 20 2019 16: 11: 42 GMT - 0400(EDT)",
-        "request": { method: "GET", headers: [], body: "", cookies: [], bodyType: "none" },
-        "response": { headers: null, events: null },
-        "tab": "First Tab",
-        "timeReceived": null,
-        "timeSent": null,
-        "url": "http://pokeapi.co/api/v2/pokemon/squirtle"
-      }]
-    })
+      reqResArray: clonedArray
+    }
+    console.log({collectionObj})
+    collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
+    this.props.collectionAdd(collectionObj)
+    this.setState({ showModal: false });
+  }
+
+  handleKeyPress(event) {
+    const warning = document.querySelector('#collectionNameError');
+    if (event.key === 'Enter') this.saveName();
+    else if (warning.style.display === 'block') {
+      warning.setAttribute("style", "display: none !important");
+      document.querySelector('#collectionNameInput').setAttribute("style", "border: 2px solid $yellowgrey !important;");
+    }
   }
 
   render(props) {
@@ -122,13 +120,14 @@ class NavBarContainer extends Component {
             isOpen={this.state.showModal}
             className="collectionModal"
             overlayClassName="collectionModalOverlay"
-            contentLabel="Minimal Modal Example"
+            contentLabel="Enter a Collection Name"
             shouldCloseOnOverlayClick={true}
           >
             <h1>What would you like to name your collection?</h1>
-            <input type={'text'} id="collectionNameInput" />
+            <input type={'text'} id="collectionNameInput" onKeyDown={(e) => this.handleKeyPress(e)}/>
+            <p id="collectionNameError" style={{display:'none'}}>Collection name already exists!</p>
             <div>
-              <button onClick={() => { this.saveName(); this.saveCollection() }}>Save</button>
+              <button onClick={this.saveName}>Save</button>
               <button onClick={this.handleCloseModal}>Cancel</button>
             </div>
           </ReactModal>

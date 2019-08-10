@@ -1,6 +1,4 @@
 .collectionModal {
-  // height: 200px;
-  // width: 200px;
   top: 100%;
   left: 100%;
   right: 100%;
@@ -15,6 +13,8 @@
   align-items: center;
   padding: 16px;
   border-radius: 10px;
+  opacity: 1 !important;
+  z-index: 12;
   h1 {
     margin: 10px;
     font-size: 26px;
@@ -27,7 +27,6 @@
   }
   input {
     font-size: 18px;
-    // text-indent: 20px;
     text-align: center;
     width: 80%;
     height: 40px;
@@ -50,9 +49,15 @@
     margin: 10px;
     outline: none;
   }
+  p {
+    color: white;
+    font-size: 20px;
+  }
 }
 .collectionModalOverlay {
-  padding: 10px;
+  height: 100vh;
+  width: 100vw;
+  // padding: 10px;
   border-radius: 10px;
   position: relative;
   top: 0;
@@ -63,5 +68,6 @@
   justify-content: center;
   align-items: center;
   outline: none;
-  background: #343333;
+  background-color:rgba(0, 0, 0, 0.5);
+  z-index: 12;
 }

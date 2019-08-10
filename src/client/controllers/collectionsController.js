@@ -6,7 +6,7 @@ import db from '../db';
 const collectionsController = {
 
   addCollectionToIndexedDb(collection) {
-    db.collections.put({...collection})
+    db.collections.put({ ...collection })
       .catch((err) => console.log('Error in addToCollection', err))
   },
 
@@ -26,14 +26,19 @@ const collectionsController = {
   },
 
   collectionNameExists(obj) {
-    const {name} = obj
+    const { name } = obj
     console.log(name)
-    db.collections.where("name").equalsIgnoreCase(name).first(collection => {
-      collection ? console.log(`Found ${name}`) : console.log("nope not here")
-      collection ? console.log(`Found ${name}`) : console.log("nope not here")
-    }).catch(error => {
-      console.error(error.stack || error);
-    });
+    return new Promise((resolve, reject) => { //resolve and reject are functions!
+      db.collections.where("name").equalsIgnoreCase(name).first(foundCollection => {
+      foundCollection ? console.log(`Found ${name}`) : console.log("nope not here")
+      return !!foundCollection
+    })
+      .then((found) => { console.log("found: ", found); resolve(found)})
+      .catch(error => {
+        console.error(error.stack || error);
+        reject(error)
+      });
+    })
   }
 }
 
