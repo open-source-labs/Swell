@@ -323,10 +323,10 @@
 }
 .historyDate-container::-webkit-scrollbar {
 }
-.historyDate h1, .collections-container h1 {
+.historyDate h1, .collections-container > h1 {
 	font-weight: 700;
 	margin-bottom: 5px;
-	margin-top: 15px;
+  margin-top: 15px;
 }
 .history-container {
 	border: 1px solid #282828;
@@ -361,7 +361,7 @@
 	padding: 4px 6px;
 }
 .history-url, .collection-name {
-	margin-left: 4px;
+  margin-left: 4px;
 }
 .history-delete-container, .collection-delete-container {
 	display: flex;
@@ -392,7 +392,7 @@
 	width: 16px;
 }
 .collections-container {
-  margin-top: 10px;
+  // margin: 10px 0;
   width: 100%;
 }
 .collection-container {
@@ -401,7 +401,7 @@
 	color: white;
 	cursor: pointer;
 	font-size: .95rem;
-	height: 28px;
+  // height: 28px;
   margin: 1px 0px 1px 0px;
   overflow-y: scroll;
   overflow-x: none;

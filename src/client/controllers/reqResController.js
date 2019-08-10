@@ -24,7 +24,6 @@ const connectionController = {
     reqResArray.forEach((reqRes) => {
       if (!reqRes.checked && reqRes.tab === currentTab) {
         reqRes.checked = true;
-        // store.default.dispatch(actions.reqResUpdate(reqRes));
       }
     });
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
@@ -38,7 +37,6 @@ const connectionController = {
     reqResArray.forEach((reqRes) => {
       if (reqRes.checked && reqRes.tab === currentTab) {
         reqRes.checked = false;
-        // store.default.dispatch(actions.reqResUpdate(reqRes));
       }
     });
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
@@ -127,7 +125,6 @@ const connectionController = {
     reqResArray.forEach((reqRes) => {
       if (!reqRes.minimized && reqRes.tab === currentTab) {
         reqRes.minimized = true;
-        // store.default.dispatch(actions.reqResUpdate(reqRes));
       }
     });
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
@@ -141,7 +138,6 @@ const connectionController = {
     reqResArray.forEach((reqRes) => {
       if (reqRes.minimized && reqRes.tab === currentTab) {
         reqRes.minimized = false;
-        // store.default.dispatch(actions.reqResUpdate(reqRes));
       }
     });
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));

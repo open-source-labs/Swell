@@ -193,7 +193,6 @@ function createWindow() {
 
   //require menu file
   require('./menu/mainMenu')
-
 }
 
 // This method will be called when Electron has finished
@@ -203,63 +202,6 @@ app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
   if (!dev) { autoUpdater.checkForUpdates() };
-});
-
-let promptWindow; //will be the modal window when for ipcMain.on('prompt', ...)
-let promptAnswer; //will be the value of the modal input
-
-function promptModal(parent, callback) { //function that creates the modal
-  console.log("#3 creating prompt window???")
-  console.log("__dirname", path.join(__dirname, 'src/prompts/prompt.html'))
-  promptWindow = new BrowserWindow({
-    width: 360, height: 120,
-    'parent': parent,
-    'show': true,
-    'modal': true,
-    // 'frame': true,
-    // 'alwaysOnTop': true,
-    // 'title': 'Name Collection',
-    'webPreferences': {
-      "nodeIntegration": true,
-      "sandbox": false
-    }
-  });
-  promptWindow.on('closed', () => {
-    promptWindow = null; //resets modal to nothing when closed
-    callback(promptAnswer)
-  })
-  // let practice = url.format({
-  //   protocol: 'http:',
-  //   host: 'localhost:8080',
-  //   pathname: 'prompt.html',
-  //   slashes: true,
-  // });
-  // promptWindow.loadURL(practice)
-  // promptWindow.loadURL(`file://${__dirname}/src/prompts/prompt.html`)
-  promptWindow.loadFile(`./src/prompts/prompt.html`)
-  // promptWindow.once('ready-to-show', () => { promptWindow.show() }) // I DONT THINK WE NEED THIS? LSDKJFLSDKHFOASKLDJFISGUKDHILFJKS:WJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGFWJOHLSUDKJHFGIUDKSDGF
-}
-
-//link between prompt.html and ipcMain
-ipcMain.on("dialogOpen", (event, data) => { //UNSURE IF WE NEED THIS ??????????????????????????????????????????????????????????????????????????????????????????????????????????????
-  console.log("prompt is opennn")
-  event.returnValue = JSON.stringify({}, null, '')
-})
-
-//closeDialog called by prompt.html on close
-ipcMain.on('closeDialog', (event, data) => { //takes document.getElementById("name").value
-  console.log("prompt is closing", event, data)
-  promptAnswer = data;
-  console.log({promptAnswer})
-})
-
-ipcMain.on("prompt", (event, notused) => {
-  console.log("#2 about to create prompt?")
-  promptModal(mainWindow,
-    function (data) {
-      event.returnValue = data
-    }
-  );
 });
 
 // Quit when all windows are closed.

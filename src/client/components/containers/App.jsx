@@ -30,7 +30,6 @@ class App extends Component {
   }
 
   render() {
-    // ReactModal.setAppElement('#root');
     return (
       <div id="app">
         {/* <UpdatePopUpContainer/> */}

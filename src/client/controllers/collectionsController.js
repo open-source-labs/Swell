@@ -1,14 +1,12 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import db from '../db';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse'
-import uuid from 'uuid/v4';
+// import uuid from 'uuid/v4';
 
 const collectionsController = {
 
   addCollectionToIndexedDb(collection) {
-    db.collections.put({...collection, id: uuid()})
+    db.collections.put({...collection})
       .catch((err) => console.log('Error in addToCollection', err))
   },
 
@@ -25,6 +23,17 @@ const collectionsController = {
         store.default.dispatch(actions.getCollections(collectionsArr));
       })
       .catch(err => console.log('Error in getCollections', err));
+  },
+
+  collectionNameExists(obj) {
+    const {name} = obj
+    console.log(name)
+    db.collections.where("name").equalsIgnoreCase(name).first(collection => {
+      collection ? console.log(`Found ${name}`) : console.log("nope not here")
+      collection ? console.log(`Found ${name}`) : console.log("nope not here")
+    }).catch(error => {
+      console.error(error.stack || error);
+    });
   }
 }
 
