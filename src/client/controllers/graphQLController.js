@@ -36,7 +36,7 @@ const graphQLController = {
     if (reqResObj.request.method === 'QUERY') {
       client.query({ query: body, variables })
         // Update the store with the response
-        .then(data => this.handleResponse(data, reqResObj)
+        .then(data => this.handleResponse(data, reqResObj))
         .catch((err) => {
           console.error(err);
           reqResObj.connection = 'error';

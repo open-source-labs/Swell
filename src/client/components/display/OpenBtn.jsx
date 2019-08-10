@@ -24,7 +24,7 @@ class OpenBtn extends Component {
         style={this.props.stylesObj}
         type="button"
         // onClick={() => ReqResCtrl.openReqRes(this.props.content.id)}
-        onClick={()=>{this.batchCall(this.props.content.id, 700)}}
+        onClick={()=>{this.batchCall(this.props.content.id, 0)}}
       >
         Open
       </button>
