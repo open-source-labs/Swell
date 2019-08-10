@@ -10,6 +10,7 @@ dist/
 node_modules/
 *.compiled.*
 package-lock.json
+coverage/
 
 # Folder config file #
 ######################
