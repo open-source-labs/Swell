@@ -3,11 +3,13 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './client/components/containers/App.jsx';
 import store from './client/store';
+import ReactModal from 'react-modal';
 
 // const fs = require('fs');
 
 // const fsroot = fs.readdirSync('/');
 // console.log(fsroot);
+
 
 console.log({document})
 

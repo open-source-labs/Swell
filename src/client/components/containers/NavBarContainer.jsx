@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import ReqResCtrl from '../../controllers/reqResController.js';
 const { ipcRenderer } = require("electron");
-import Prompt from '../../../prompts/prompt.jsx'
-
+import ReactModal from 'react-modal';
+import Prompt from '../../../prompts/Prompt.jsx'
 
 class NavBarContainer extends Component {
   constructor(props) {
     super(props);
-    this.showPrompt = this.showPrompt.bind(this)
+    this.state = { showModal: false }
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  showPrompt() {
-    console.log('#1 clicked showPrompt')
-    ipcRenderer.send('prompt', "")
+  handleOpenModal() {
+    this.setState({ showModal: true });
   }
+
+  handleCloseModal() {
+    console.log("here")
+    this.setState({ showModal: false });
+  }
+
   render(props) {
     return (
       <div className="navbar-console">
@@ -46,11 +53,27 @@ class NavBarContainer extends Component {
             Clear All
           </button>
 
-          <button className="btn" type="button" onClick={() => this.showPrompt()}>
+          <button className="btn" type="button" onClick={this.handleOpenModal}>
             Save Collection
           </button>
 
-          <Prompt />
+          {/* <ReactModal
+            isOpen={this.state.showModal}
+            contentLabel="Minimal Modal Example"
+            shouldCloseOnOverlayClick={true}
+            style={{
+              overlay: {
+                backgroundColor: 'lightsteelblue'
+              },
+              content: {
+                color: 'lightsteelblue'
+              }
+            }}
+          >
+
+            <button onClick={this.handleCloseModal}>Close Modal</button>
+          </ReactModal> */}
+          <Prompt isOpen={this.state.showModal} handleCloseModal={this.props.handleCloseModal}/>
 
         </div>
       </div>

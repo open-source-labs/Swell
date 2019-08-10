@@ -36,10 +36,6 @@ module.exports = {
   target: 'electron-renderer',
   plugins: [
     new HtmlWebpackPlugin(),
-    new HtmlWebpackPlugin({  // Also generate a prompt.html
-      filename: 'prompt.html',
-      template: 'src/prompts/prompt.html'
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),

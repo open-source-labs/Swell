@@ -1,0 +1,67 @@
+.collectionModal {
+  // height: 200px;
+  // width: 200px;
+  top: 100%;
+  left: 100%;
+  right: 100%;
+  bottom: 100%;
+  background-color: #0089D0;
+  outline: none;
+  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+  h1 {
+    margin: 10px;
+    font-size: 26px;
+  }
+  div {
+    margin: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  input {
+    font-size: 18px;
+    // text-indent: 20px;
+    text-align: center;
+    width: 80%;
+    height: 40px;
+    border-radius: 5px;
+    -webkit-appearance: none;
+    border: 2px solid $yellowgrey;
+    outline: none;
+  }
+  button {
+    width: 40%;
+	  border: 2px solid #808080;
+  	border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  	font-size: .9rem;
+    font-weight: bold;
+    padding: 4px 18px;
+    margin: 10px;
+    outline: none;
+  }
+}
+.collectionModalOverlay {
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  background: #343333;
+}

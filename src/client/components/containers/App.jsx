@@ -8,7 +8,6 @@ import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
 import historyController from '../../controllers/historyController'
 import collectionsController from '../../controllers/collectionsController'
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,10 +26,11 @@ class App extends Component {
     });
     historyController.getHistory();
     collectionsController.getCollections();
-    
+
   }
 
   render() {
+    // ReactModal.setAppElement('#root');
     return (
       <div id="app">
         {/* <UpdatePopUpContainer/> */}
