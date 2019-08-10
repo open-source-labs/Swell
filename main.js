@@ -91,7 +91,7 @@ const tbFlexSpacer = new TouchBarSpacer({
 // Attach earlier made buttons to a touch bar
 // -----------------------------------------------------------------
 
-const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, , tbMinimizeALlButton, tbExpandAllButton, tbClearAllButton]);
+const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton, tbOpenSelectedButton, tbCloseSelectedButton, tbMinimizeAllButton, tbExpandAllButton, tbClearAllButton]);
 
 
 // Keep a reference for dev mode
