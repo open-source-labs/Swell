@@ -240,66 +240,63 @@ const httpController = {
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
     // fetch(reqResObj.url, parsedFetchOptions)
-    fetch('http://localhost:3000/getHead', parsedFetchOptions)
+   
+   fetch('http://localhost:7000', parsedFetchOptions)
       .then((response) => {
-        return response.json()
-      })
-      .then((jsonResponseOfHeaders) =>{
-        console.log(jsonResponseOfHeaders._headers)//the mother f**ing headers
-        //--------------------------------------------------------------------
-        //After our first fetch for our headers, start second fetch for actual api data
-        //--------------------------------------------------------------------
-        return fetch('http://localhost:3000', parsedFetchOptions)
-                .then((response) => {
-                  //Parse response headers now to decide if SSE or not.
-                  let weGotTheHeaders = jsonResponseOfHeaders._headers
-                  let heads = weGotTheHeaders ;
-                  
-                  reqResObj.response.headers = weGotTheHeaders;
-                  // setTimeout(()=>{console.log('RESPONSE ::', response.headers)},8000)
-                  console.log("Hey man, headsup", heads)
+        //Parse response headers now to decide if SSE or not.
+        let theResponseBody;
+        let theResponseHeaders;
+        let deezNuts ;
+        response.json()
+        .then((result)=> {
+           deezNuts = result.headers._headers
+           theResponseBody = result.body
+        })
+        .then(()=>{  
+          reqResObj.response.headers = deezNuts;
+          // setTimeout(()=>{console.log('RESPONSE ::', response.headers)},8000)
+          // console.log("Hey man, headsup", deezNuts)
+
+          let isStream;
+          if (deezNuts['content-type'] && deezNuts['content-type'].includes('stream')) {
+            isStream = true;
+          } else {
+            isStream = false;
+          }
+          let http1Sesh = session.defaultSession;
+          let domain = reqResObj.host.split('//')
+          domain.shift();
+          domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+          // let dotDomain = `.${domain}`;
+          // console.log(domain, dotDomain);
+
+          http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
+            if (cookies) {
+              reqResObj.response.cookies = cookies;
+              store.default.dispatch(actions.reqResUpdate(reqResObj))
+              cookies.forEach((cookie) => {
+                let url = '';
+                url += cookie.secure ? 'https://' : 'http://';
+                url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+                url += cookie.domain;
+                url += cookie.path;
+                console.log(cookies)
+                http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
+              })
+            }
+            isStream ? this.handleSSE(response, reqResObj, deezNuts) : this.handleSingleEvent(theResponseBody, reqResObj, deezNuts);
+          })
           
-                  let isStream;
-                  if (heads['content-type'] && heads['content-type'].includes('stream')) {
-                    isStream = true;
-                  } else {
-                    isStream = false;
-                  }
-                  let http1Sesh = session.defaultSession;
-                  let domain = reqResObj.host.split('//')
-                  domain.shift();
-                  domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-                  // let dotDomain = `.${domain}`;
-                  // console.log(domain, dotDomain);
-          
-                  http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
-                    if (cookies) {
-                      reqResObj.response.cookies = cookies;
-                      store.default.dispatch(actions.reqResUpdate(reqResObj))
-                      cookies.forEach((cookie) => {
-                        let url = '';
-                        url += cookie.secure ? 'https://' : 'http://';
-                        url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-                        url += cookie.domain;
-                        url += cookie.path;
-                        console.log(cookies)
-                        http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
-                      })
-                    }
-                    isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
-                  })
-                })
-                .catch((err) => {
-                  reqResObj.connection = 'error';
-                  store.default.dispatch(actions.reqResUpdate(reqResObj));
-                }) 
+
+          // console.log("classy",deezNuts)
+          //     console.log(theResponseBody)
       })
       
-      .catch((err) => {
-        reqResObj.connection = 'error';
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
-      })
-      
+    })
+        .catch((err) => {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        }) 
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
@@ -342,39 +339,13 @@ const httpController = {
   },
 
   handleSingleEvent(response, originalObj, headers) {
-    // console.log('Handling Single Event')
-
+    console.log('Handling Single Event')
     const newObj = JSON.parse(JSON.stringify(originalObj));
-
-    const reader = response.body.getReader();
-    let bodyContent = '';
-    read();
-
-    function read() {
-      reader.read().then((obj) => {
-        if (obj.done) {
           newObj.connection = 'closed';
           newObj.connectionType = 'plain';
           newObj.timeReceived = Date.now();
-          // newObj.response = {
-          //   headers: headers,
-          //   events: [],
-          // };
-          // console.log('after', bodyContent)
-          // newObj.response.headers = headers;
-          newObj.response.events.push(bodyContent);
-          store.default.dispatch(actions.reqResUpdate(newObj));
-        }
-
-        // decode and recursively call
-        else {
-          bodyContent += new TextDecoder('utf-8').decode(obj.value);
-          // console.log(bodyContent);
-
-          read();
-        }
-      });
-    }
+          newObj.response.events.push(response);
+          store.default.dispatch(actions.reqResUpdate(newObj));  
   },
 
   /* handle SSE Streams for HTTP1.1 */
