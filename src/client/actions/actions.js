@@ -28,6 +28,11 @@ export const collectionToReqRes = reqResArray => ({
   payload: reqResArray,
 });
 
+export const collectionAdd = collection => ({
+  type: types.COLLECTION_ADD,
+  payload: collection,
+});
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });

@@ -17,8 +17,8 @@ class WebSocketMessage extends Component {
     let hours = new Date(this.props.timeReceived).getHours();
     let minutes = new Date(this.props.timeReceived).getMinutes();
 
-    hours = hours >= 10 ? `${new Date(this.props.timeReceived).getHours()}` : `0${JSON.stringify(hours)}`
-    minutes = minutes >= 10 ? `${new Date(this.props.timeReceived).getHours()}` : `0${JSON.stringify(minutes)}`
+    hours = hours >= 10 ? `${hours}` : `0${JSON.stringify(hours)}`
+    minutes = minutes >= 10 ? `${minutes}` : `0${JSON.stringify(minutes)}`
 
     return (
       <div style={styles} className={webSocketMessageClassNames}>

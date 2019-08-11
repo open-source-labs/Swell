@@ -319,14 +319,14 @@
 	// margin-top: 10px;
 	overflow-y: scroll;
   overflow-x: none;
-  height: 360px;
+  height: 100%;
 }
 .historyDate-container::-webkit-scrollbar {
 }
-.historyDate h1, .collections-container h1 {
+.historyDate h1, .collections-container > h1 {
 	font-weight: 700;
 	margin-bottom: 5px;
-	margin-top: 15px;
+  margin-top: 15px;
 }
 .history-container {
 	border: 1px solid #282828;
@@ -348,11 +348,33 @@
 		opacity: 1;
 	}
 }
+.collection-container {
+	border: 1px solid #282828;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	font-size: .95rem;
+	height: 28px;
+	margin: 1px 0px 1px 0px;
+	// overflow: hidden;
+	width: 100%;
+	&:hover{
+		border: 1px solid #808080;
+  }
+  &:hover .collection-delete-image {
+		opacity: 1;
+	}
+}
 .history-text-container, .collection-text-container {
 	align-items: center;
   display: flex;
   justify-self: center;
   flex-shrink: 100;
+  overflow-y: scroll;
+  // background: pink;
+}
+.collection-text-container {
+  height: 28px;
 }
 .history-method {
 	font-weight: bold;
@@ -361,7 +383,7 @@
 	padding: 4px 6px;
 }
 .history-url, .collection-name {
-	margin-left: 4px;
+  margin-left: 4px;
 }
 .history-delete-container, .collection-delete-container {
 	display: flex;
@@ -379,7 +401,6 @@
 	width: 32px;
 }
 .history-delete-button, .collection-delete-button {
-	// flex-grow: 1;
 	background: rgba(40, 40, 40, 1);
 	height: 100%;
 	width: 20px;
@@ -388,29 +409,12 @@
 	height: 22px;
 	margin-left: 2px;
 	margin-top: 2px;
-	opacity: 0.5;
+	opacity: 0;
 	width: 16px;
 }
 .collections-container {
-  margin-top: 10px;
+  min-height: 150px;
+  max-height: 400px;
   width: 100%;
-}
-.collection-container {
-  border: 1px solid #282828;
-	border-radius: 5px;
-	color: white;
-	cursor: pointer;
-	font-size: .95rem;
-	height: 28px;
-  margin: 1px 0px 1px 0px;
   overflow-y: scroll;
-  overflow-x: none;
-	// overflow: hidden;
-	width: 465px;
-	&:hover {
-		border: 1px solid #808080;
-	}
-	&:hover .collection-delete-image {
-		opacity: 1;
-	}  
 }
