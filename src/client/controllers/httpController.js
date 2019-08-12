@@ -239,23 +239,22 @@ const httpController = {
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
 
-    // fetch(reqResObj.url, parsedFetchOptions)
+    // fetch(reqResObj.url, parsedFetchOptions) <- Was the original fetch before we added proxy httpserver
    
-   fetch('http://localhost:7000', parsedFetchOptions)
+   fetch('http://localhost:7000', parsedFetchOptions)//fetch to our local server
       .then((response) => {
         //Parse response headers now to decide if SSE or not.
         let theResponseBody;
         let theResponseHeaders;
         let deezNuts ;
-        response.json()
-        .then((result)=> {
-           deezNuts = result.headers._headers
-           theResponseBody = result.body
+        response.json() //we make our response more readable
+        .then((result)=> {//the readale verson of our response is an object that looks like this: {headers:{*alloftheresponsheaders go here*}, body:{**api content here**}}
+           deezNuts = result.headers._headers // deezNutz refers to our literal object of response headers
+           theResponseBody = result.body // the ResponseBody is the literal readable object containing our api content
         })
-        .then(()=>{  
+        .then(()=>{  //Now that we have access to the full response headers for http we have bypassed cors and can use this data
           reqResObj.response.headers = deezNuts;
-          // setTimeout(()=>{console.log('RESPONSE ::', response.headers)},8000)
-          // console.log("Hey man, headsup", deezNuts)
+         
           console.log('deeeeezzznuuutsch',deezNuts['content-type'])
           let isStream;
           if (deezNuts['content-type'] && deezNuts['content-type'].includes('stream')) {
@@ -267,8 +266,7 @@ const httpController = {
           let domain = reqResObj.host.split('//')
           domain.shift();
           domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-          // let dotDomain = `.${domain}`;
-          // console.log(domain, dotDomain);
+       
 
           http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
             if (cookies) {
@@ -284,12 +282,14 @@ const httpController = {
                 http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
               })
             }
+            //Below the headers and response api content are handled by swell and will be displayed. 
+            //The handlesingeevent is functional
+            //handleSSE is not fuctional. Likely because handleSSE is expecting an unreadable response as a param instead of passing it the readable content... which would require another fetch for raw unparsed response
             isStream ? this.handleSSE(response, reqResObj, deezNuts) : this.handleSingleEvent(theResponseBody, reqResObj, deezNuts);
           })
           
 
-          // console.log("classy",deezNuts)
-          //     console.log(theResponseBody)
+          
       })
       
     })
