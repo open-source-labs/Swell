@@ -60,7 +60,7 @@
 //This is a fix for the ugly windows and linux scrollbars
 //-------------------------------------------------------------------
 .websocket_message_container::-webkit-scrollbar{
-	width:5px;
+	width:0.5px;
 	background-color:#ffffff;
 	}
 	.websocket_message_container::-webkit-scrollbar-thumb{
@@ -126,7 +126,7 @@
 //This is a fix for the ugly windows and linux scrollbars
 //-------------------------------------------------------------------
 // .websocket_message-data::-webkit-scrollbar{
-// 	width:10px;
+// 	width:0.5px;
 // 	background-color:#cccccc;
 // 	}
 // 	.websocket_message-data::-webkit-scrollbar-thumb{

@@ -122,13 +122,14 @@ class NavBarContainer extends Component {
             className="collectionModal"
             overlayClassName="collectionModalOverlay"
             contentLabel="Enter a Collection Name"
+            onRequestClose={this.handleCloseModal}
             shouldCloseOnOverlayClick={true}
             aria={{
               labelledby: "heading"
             }}
           >
             <h1 id="heading">What would you like to name your collection?</h1>
-            <input type={'text'} id="collectionNameInput" onKeyDown={(e) => this.handleKeyPress(e)}/>
+            <input type={'text'} id="collectionNameInput" onKeyDown={(e) => this.handleKeyPress(e)} autoFocus/>
             <p id="collectionNameError" style={{display:'none'}}>Collection name already exists!</p>
             <div>
               <button onClick={this.saveName}>Save</button>

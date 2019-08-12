@@ -45,8 +45,7 @@ class Graph extends Component {
         },
         tooltips: {
           callbacks: {
-            label: function (tooltipItem, data) { //data.
-              // console.log('data', data)
+            label: function (tooltipItem, data) { //data
               let hoverLabel = data.datasets[tooltipItem.datasetIndex].label;
               return hoverLabel;
             }
@@ -88,8 +87,8 @@ class Graph extends Component {
     else if (openRequestCount >= 1 && !this.state.timeSet) {
       this.lineChart.data.datasets = [];
       this.lineChart.update();
-      if (openRequestCount > 12) { this.lineChart.options.legend.display = false } //removes legend when over 12 keys
-
+      if (openRequestCount > 6) { this.lineChart.options.legend.display = false } //removes legend when over 6 keys
+      if (openRequestCount <= 6) { this.lineChart.options.legend.display = true } //resets legend when under 7 keys
 
       this.setState(
         {
@@ -185,8 +184,6 @@ class Graph extends Component {
           pointBackgroundColor: '#fff',
           pointBorderWidth: 1,
           pointHoverRadius: 5,
-          // pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          // pointHoverBorderColor: 'rgba(220,220,220,1)',
           pointHoverBackgroundColor,
           pointHoverBorderColor,
           pointHoverBorderWidth: 2,
@@ -204,15 +201,13 @@ class Graph extends Component {
                 if (event.timeReceived < newOldestDataPointTimeReceived) {
                   newOldestDataPointTimeReceived = event.timeReceived;
                 }
-
                 newEventCounter += 1;
                 dataSet.data.push({
-                  x: event.timeReceived - this.state.currentTime,
+                  x: event.timeReceived - reqRes.timeSent,
                   y: index,
                 });
               }
             });
-            // console.log(dataSet.data)
             break;
           }
 
@@ -226,7 +221,7 @@ class Graph extends Component {
 
                 newEventCounter += 1;
                 dataSet.data.push({
-                  x: reqRes.timeReceived - this.state.currentTime,
+                  x: reqRes.timeReceived - reqRes.timeSent,
                   y: index,
                 });
               }
@@ -242,7 +237,7 @@ class Graph extends Component {
                 }
                 newEventCounter += 1;
                 dataSet.data.push({
-                  x: message.timeReceived - this.state.currentTime,
+                  x: message.timeReceived - reqRes.timeSent,
                   y: index,
                 });
               }
@@ -254,7 +249,7 @@ class Graph extends Component {
                 }
                 newEventCounter += 1;
                 dataSet.data.push({
-                  x: message.timeReceived - this.state.currentTime,
+                  x: message.timeReceived - reqRes.timeSent,
                   y: index,
                 });
               }
@@ -264,7 +259,6 @@ class Graph extends Component {
           default:
             console.log('Invalid connection type');
         }
-
         newDataSets.push(dataSet);
       }
     });
@@ -306,7 +300,6 @@ class Graph extends Component {
         </div>
         <canvas className="chart" style={chartDisplayStyles} id="line-chart" />
         <div className={'chartTime'} style={chartDisplayStyles}>
-          <span>Display results:</span>
           <select onChange={this.updateTimeFromNowToDisplay} className={'chartTimeSelect'} defaultValue={30000} >
             <option value={10000}>Past 10 seconds</option>
             <option value={30000}>Past 30 seconds</option>

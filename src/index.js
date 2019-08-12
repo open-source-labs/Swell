@@ -5,14 +5,6 @@ import App from './client/components/containers/App.jsx';
 import store from './client/store';
 import ReactModal from 'react-modal';
 
-// const fs = require('fs');
-
-// const fsroot = fs.readdirSync('/');
-// console.log(fsroot);
-
-
-console.log({document})
-
 // Since we are using HtmlWebpackPlugin WITHOUT a template,
 // we should create our own root node in the body element before rendering into it
 const root = document.createElement('div');
