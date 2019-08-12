@@ -52,6 +52,61 @@
   padding-right: 215px;
 }
 
+.batch-loading_wrap {
+  width: calc(100vw - 400px);
+  font-size: 20pt;
+  margin: 15px;
+  flex: 0 0 auto;
+  min-width: 800px;
+  // padding-right: 215px;
+  height:200px;
+  background-color: whitesmoke;
+  background-image: url('../img/swell-bg.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+#batchlog-counter{
+  color:rgba(0,0,0,0.5);
+  font-weight: 800;
+}
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 150rem;
+  height: 150rem;
+  margin-left: 40%;
+  // margin-right: auto;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 5%;
+  height: 5%;
+  margin: 6px;
+  border: 6px solid rgba(0,0,0,0.6);
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: rgba(0,0,0,0.6) transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .reqResContainer_inner-page {
   width: 100%;
   height: 100%;

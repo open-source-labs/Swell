@@ -256,7 +256,7 @@ const httpController = {
           reqResObj.response.headers = deezNuts;
           // setTimeout(()=>{console.log('RESPONSE ::', response.headers)},8000)
           // console.log("Hey man, headsup", deezNuts)
-
+          console.log('deeeeezzznuuutsch',deezNuts['content-type'])
           let isStream;
           if (deezNuts['content-type'] && deezNuts['content-type'].includes('stream')) {
             isStream = true;

@@ -56,7 +56,7 @@ const tbCloseSelectedButton = new TouchBarButton({
   },
 });
 
-const tbMinimizeALlButton = new TouchBarButton({
+const tbMinimizeAllButton = new TouchBarButton({
   label: 'Minimize All',
   backgroundColor: '#3DADC2',
   click: () => {
