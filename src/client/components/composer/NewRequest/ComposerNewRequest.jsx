@@ -82,8 +82,8 @@ class ComposerNewRequest extends Component {
 
           request: {
             method: this.props.newRequestFields.method,
-            headers: this.props.newRequestHeaders.headersArr.filter(header => header.active),
-            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active),
+            headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
+            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
             bodyVariables: historyBodyVariables,
@@ -191,13 +191,15 @@ class ComposerNewRequest extends Component {
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
         />
-
+        
+        {
+          this.props.newRequestFields.method &&
         <CookieEntryForm
           newRequestCookies={this.props.newRequestCookies}
           newRequestBody={this.props.newRequestBody}
           setNewRequestCookies={this.props.setNewRequestCookies}
         />
-
+        }
         {
           !this.props.newRequestFields.graphQL && this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://' &&
           <BodyEntryForm

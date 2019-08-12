@@ -10,8 +10,7 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
-      // if ((/https:\/\//).test(reqResObj.url)) {
+    if (reqResObj.protocol === 'https://') {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
@@ -121,7 +120,6 @@ const httpController = {
     });
     formattedHeaders[':path'] = reqResObj.path;
 
-    // console.log('path', reqResObj.path);
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
     // endStream false means we can continue to send more data, which we would for a body;
@@ -244,9 +242,7 @@ const httpController = {
         // console.log('RESPONSE ::', response)
         //Parse response headers now to decide if SSE or not.
         let heads = {};
-        console.log(response.headers)
         for (let entry of response.headers.entries()) {
-          console.log("entries", entry)
           heads[entry[0].toLowerCase()] = entry[1];
         }
         reqResObj.response.headers = heads;
@@ -261,8 +257,6 @@ const httpController = {
         let domain = reqResObj.host.split('//')
         domain.shift();
         domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-        // let dotDomain = `.${domain}`;
-        // console.log(domain, dotDomain);
 
         http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
           if (cookies) {

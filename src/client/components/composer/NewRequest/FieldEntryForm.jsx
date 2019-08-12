@@ -57,7 +57,7 @@ class FieldEntryForm extends Component {
             ...this.props.newRequestFields,
             protocol: value,
             url: value + afterProtocol,
-            method: 'GET',
+            method: '',
             graphQL: false
           })
         }
