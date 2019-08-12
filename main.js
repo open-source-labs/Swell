@@ -7,7 +7,7 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 const { app, BrowserWindow, TouchBar, ipcMain } = require('electron')
 const path = require('path');
 const url = require('url');
-
+const httpserver = require("./httpserver")
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
