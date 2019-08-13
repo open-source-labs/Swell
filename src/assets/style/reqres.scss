@@ -147,6 +147,9 @@
     font-size: .7rem;
     font-weight: bold;
     line-height: 1;
+    background-color: $bluetwo;
+    border: none;
+    color: white;
     &:hover {
       background: $teal;
       color: $litegray;
