@@ -10,7 +10,7 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') { //if ((/https:\/\//).test(reqResObj.url))
+    if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
       // if ((/https:\/\//).test(reqResObj.url)) {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
@@ -64,7 +64,7 @@ const httpController = {
       console.log('New HTTP2 Conn:', reqResObj.host);
 
       const id = Math.random() * 100000;
-      const client = http2.connect(reqResObj.host);
+      const client = http2.connect(reqResObj.host );
 
       // push HTTP2 connection to array
       const http2Connection = {
@@ -217,12 +217,13 @@ const httpController = {
 
   establishHTTP1connection(reqResObj, connectionArray) {
     // start off by clearing existing response data
+    //--------------------------------------------------------------------------------------------------------------
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+//--------------------------------------------------------------------------------------------------------------
     connectionArray.forEach((obj, i) => {
       if (obj.id === reqResObj.id) {
         connectionArray.splice(i, 1);
@@ -233,31 +234,75 @@ const httpController = {
       protocol: 'HTTP1',
       id: reqResObj.id,
     };
-
     connectionArray.push(openConnectionObj);
 
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
-
-    // fetch(reqResObj.url, parsedFetchOptions) <- Was the original fetch before we added proxy httpserver
-   
-   fetch('http://localhost:7000', parsedFetchOptions)//fetch to our local server
-      .then((response) => {
+//--------------------------------------------------------------------------------------------------------------
+//Begin if else statement to separate SSE fetch from proxy server Fetch
+//--------------------------------------------------------------------------------------------------------------
+   if(/localhost:/.test(reqResObj.url) ){//If the url provided is a localhost:port#... 
+      fetch(reqResObj.url, parsedFetchOptions)//fetch straight to that localhost:port# url
+      .then(response => {
         //Parse response headers now to decide if SSE or not.
+        let heads = {};
+        for (let entry of response.headers.entries()) {
+          heads[entry[0].toLowerCase()] = entry[1];
+        }
+        reqResObj.response.headers = heads;
+        //store headers in heads object
+        let isStream;
+        if (heads['content-type'] && heads['content-type'].includes('stream')) {
+          isStream = true;
+        } else {
+          isStream = false;
+        }
+        let http1Sesh = session.defaultSession; 
+        let domain = reqResObj.host.split('//')
+        domain.shift();
+        domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+       
+        http1Sesh.cookies.get({domain: domain}, (err, cookies) => {
+          if (cookies) {
+            reqResObj.response.cookies = cookies;
+            store.default.dispatch(actions.reqResUpdate(reqResObj))
+            cookies.forEach(cook => {
+              let url = '';
+              url += cook.secure ? 'https://' : 'http://';
+              url += cook.domain.charAt(0) === '.' ? 'www' : '';
+              url += cook.domain;
+              url += cook.path;
+
+              http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
+            })
+          }
+          isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+        })
+      })
+      .catch(err => {
+        reqResObj.connection = 'error';
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      }) 
+   }
+   //--------------------------------------------------------------------------------------------------------------
+   else{ //Else if the user did not enter a localhost url...
+      fetch('http://localhost:7000', parsedFetchOptions)//fetch to OUR local proxy server
+      .then((response) => {
+        //Begin parsing response headers and response body 
         let theResponseBody;
         let theResponseHeaders;
-        let deezNuts ;
+        let unparsedResponse;
         response.json() //we make our response more readable
-        .then((result)=> {//the readale verson of our response is an object that looks like this: {headers:{*alloftheresponsheaders go here*}, body:{**api content here**}}
-           deezNuts = result.headers._headers // deezNutz refers to our literal object of response headers
-           theResponseBody = result.body // the ResponseBody is the literal readable object containing our api content
+        .then((result)=> {//the readable verson of our response is an object that looks like this: {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
+          theResponseHeaders = result.headers._headers // theResponseHeaders refers to our literal object of response headers
+          theResponseBody = result.body // the ResponseBody is the literal readable object containing our api content
+          unparsedResponse = result.rawResponse // the raw unparsed response from localhost:7000
         })
         .then(()=>{  //Now that we have access to the full response headers for http we have bypassed cors and can use this data
-          reqResObj.response.headers = deezNuts;
-         
-          console.log('deeeeezzznuuutsch',deezNuts['content-type'])
+          reqResObj.response.headers = theResponseHeaders;
+          // console.log({ unparsedResponse })
           let isStream;
-          if (deezNuts['content-type'] && deezNuts['content-type'].includes('stream')) {
+          if (theResponseHeaders['content-type'] && theResponseHeaders['content-type'].includes('stream')) {
             isStream = true;
           } else {
             isStream = false;
@@ -266,7 +311,7 @@ const httpController = {
           let domain = reqResObj.host.split('//')
           domain.shift();
           domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-       
+      
 
           http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
             if (cookies) {
@@ -282,21 +327,22 @@ const httpController = {
                 http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
               })
             }
+            console.log(isStream)
+            console.log(unparsedResponse)
             //Below the headers and response api content are handled by swell and will be displayed. 
-            //The handlesingeevent is functional
+            //The handlesingleevent is functional
             //handleSSE is not fuctional. Likely because handleSSE is expecting an unreadable response as a param instead of passing it the readable content... which would require another fetch for raw unparsed response
-            isStream ? this.handleSSE(response, reqResObj, deezNuts) : this.handleSingleEvent(theResponseBody, reqResObj, deezNuts);
+            isStream ? this.handleSSE(unparsedResponse, reqResObj, theResponseHeaders) : this.handleSingleEvent(theResponseBody, reqResObj, theResponseHeaders);
           })
-          
-
-          
+        })
+    
       })
-      
-    })
-        .catch((err) => {
-          reqResObj.connection = 'error';
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
-        }) 
+      .catch((err) => {
+        reqResObj.connection = 'error';
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      })
+      //--------------------------------------------------------------------------------------------------------------
+   }
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
@@ -351,6 +397,7 @@ const httpController = {
 
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
+    console.log('handling SSE')
     const reader = response.body.getReader();
 
     let data = '';

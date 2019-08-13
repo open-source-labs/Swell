@@ -48,11 +48,11 @@ require('isomorphic-fetch');
 
 // //--------------------------------------------------------------------
 
-// // THE ONE FETCH METHOD. Is breaking http SSE-(sse1 and sse3 from the test server) This method will:
+// // THE ONE FETCH METHOD.  This method will:
 
 // // 1 get both the headers AND api content from the request by fetching to "/" aka (localhost:7000) from swell
-// // 2 Swell hits the "/"" endpoint and recievesan array containing headers(response.headers) and readable api content(response.json())  
-// // 3 Swell now has access to unfiltered headers and the response content
+// // 2 Swell hits the "/"" endpoint and recieve san array containing headers(response.headers), readable api content(response.json() and raw response data(response))  
+// // 3 Swell now has access to unfiltered headers and both a parsed and unparsed version of the api response content
 
 // //--------------------------------------------------------------------
 
@@ -60,11 +60,11 @@ require('isomorphic-fetch');
 app.get('/',(req,res,next)=>{
   fetch(req.headers.url)//fetch to url that was passed here from swell as a request header
   .then((response)=>{
-    return [response.headers, response.json()]//return the headers and api content as a single array
+    return [response.headers, response.json(), response]//return the headers and api content as a single array
   })
-  .then((gotJsonResponses)=>{
-    gotJsonResponses[1].then((pro)=>{//this .then is used to parse response.json()
-      res.send({headers:gotJsonResponses[0], body:pro})//send the headers and readable api content as an object to swell
+  .then((gotResponses)=>{
+    gotResponses[1].then((content)=>{//this .then is used to parse response.json()
+      res.send({headers:gotResponses[0], body:content, rawResponse:gotResponses[2]})//send the headers and readable api content as an object to swell
     })
   })
   

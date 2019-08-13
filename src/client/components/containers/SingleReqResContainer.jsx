@@ -25,7 +25,7 @@ class SingleReqResContainer extends Component {
   }
   
   toggleBatch() {
-    if(/http|https$/.test(this.props.content.protocol) ){
+    if(this.props.content.protocol === 'https://' ){
       this.props.content.isThisBatchCall = !this.props.content.isThisBatchCall;
       this.props.reqResUpdate(this.props.content);
     }
@@ -167,12 +167,12 @@ class SingleReqResContainer extends Component {
 
 
                   <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
-                    Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent} ms
+                    Roundtrip: {(this.props.content.timeReceived === null || this.props.content.connection === 'pending') ? '0' : this.props.content.timeReceived - this.props.content.timeSent} ms
                   </span>
 
 
                   {/* ----------------------------------------------------------------------------------- */}
-                  {/* Only allow batchcalls for request matching https://... sry http no batch for you */}
+                  {/* Only allow batchcalls for requests matching https://... Conditionally render batchcall checkbox */}
                   {/* ----------------------------------------------------------------------------------- */}
                   {this.props.content.protocol === "https://"? 
                       <span className = "batchcall-container">

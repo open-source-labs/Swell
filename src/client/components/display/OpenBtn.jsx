@@ -7,17 +7,24 @@ class OpenBtn extends Component {
     this.batchCall=this.batchCall.bind(this)
   }
   batchCall(id, time){
-      let counter = 0
-      if(time < 0 || !time){
-        time = 0
-      }
+    let counter = 0
+    //prevents user from entering falsey or negative values
+    if(time < 0 || !time){
+      time = 0
+    }
+    //if this current request has batch call ticked...
     if(this.props.content.isThisBatchCall){
-      while(time >= counter ){
-          ReqResCtrl.openReqRes(id)
-          // console.log('hit',counter,'times')
-          counter++
-          this.props.content.batchlogCounter = counter
-          this.props.reqResUpdate(this.props.content);
+      //check if the amount of times the user wants to batch call is greater than zero 
+      while(time > counter ){
+          //if it is, make a request
+            ReqResCtrl.openReqRes(id)
+            // console.log('hit',counter,'times')
+            //and increment counter 
+            counter++
+            this.props.content.batchlogCounter = counter
+            //update state with our counter to track our iteration
+            this.props.reqResUpdate(this.props.content);
+            //Repeat until counter is greater than times
       }  
     }else{
       ReqResCtrl.openReqRes(id)
