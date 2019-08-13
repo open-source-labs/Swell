@@ -8,7 +8,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 
 
 const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
-  const body = content.request.body;
+  const { body, bodyVariables } = content.request;
   const uri = content.protocol === /wss?:\/\// ? content.url : content.url.replace(content.protocol, 'ws://');
 
   const link = new WebSocketLink({
@@ -34,7 +34,7 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
       <div className="tab_content-response">
         <div className="json-response" key="jsonresponsediv">
           {content.connection === 'closed' && <JSONPretty data={content.response.events[0]} space="4" theme={theme} />}
-          {content.connection === 'open' && <Subscription subscription={gql`${body}`}>
+          {content.connection === 'open' && <Subscription subscription={gql`${body}`} variables={JSON.parse(bodyVariables)}>
             {({ loading, data }) => {
               if (loading && !content.response.events[0]) return 'Listening for new data';
               if (loading && content.response.events[0]) return <JSONPretty data={content.response.events[0]} space="4" theme={theme} />
