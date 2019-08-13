@@ -204,7 +204,7 @@ function createWindow() {
 app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
-  // if (!dev) { autoUpdater.checkForUpdates() };
+  if (!dev) { autoUpdater.checkForUpdates() };
 });
 
 // Quit when all windows are closed.
