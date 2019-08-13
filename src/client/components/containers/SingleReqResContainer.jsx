@@ -135,7 +135,7 @@ class SingleReqResContainer extends Component {
 
               {(this.props.content.protocol === "https://" && this.props.content.request.method !== "SUBSCRIPTION") || this.props.content.protocol === "http://" ?
                    <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
-                     Roundtrip: {this.props.content.timeReceived - this.props.content.timeSent} ms
+                     Roundtrip: {this.props.content.connection === "pending"   || this.props.content.connection === "open" ? 0:this.props.content.timeReceived - this.props.content.timeSent} ms
                    </span>
                  :<></>}
             </div>
