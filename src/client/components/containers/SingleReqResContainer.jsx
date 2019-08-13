@@ -133,11 +133,11 @@ class SingleReqResContainer extends Component {
               <span className="tertiary-title">{this.props.content.connectionType}</span>
 
 
-              <span className="tertiary-title" title="The amount of time it takes to recieve response"
-              >
-                {/* kajol - we have to figure out if timeReceived gives the right latency value  */}
-                Roundtrip: {this.props.content.timeReceived === null ? '0' : this.props.content.timeReceived - this.props.content.timeSent}
-              </span>
+              {(this.props.content.protocol === "https://" && this.props.content.request.method !== "SUBSCRIPTION") || this.props.content.protocol === "http://" ?
+                   <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
+                     Roundtrip: {this.props.content.timeReceived - this.props.content.timeSent} ms
+                   </span>
+                 :<></>}
             </div>
 
             <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
