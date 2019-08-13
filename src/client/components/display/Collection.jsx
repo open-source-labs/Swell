@@ -11,7 +11,7 @@ class Collection extends Component {
   }
 
   addCollectionToReqResContainer() {
-    this.props.collectionToReqRes(this.props.content.reqResArray)
+    this.props.collectionToReqRes(JSON.parse(JSON.stringify(this.props.content.reqResArray)))
   }
   
   deleteCollection(e) {

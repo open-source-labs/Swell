@@ -8,6 +8,7 @@ describe('Business reducer', () => {
       currentTab: 'First Tab',
       reqResArray: [],
       history: [],
+      collections: [],
       warningMessage: "",
       newRequestFields: {
         method: 'GET',
@@ -421,15 +422,15 @@ describe('Business reducer', () => {
     const cookieAction = {
       type: 'SET_NEW_REQUEST_COOKIES',
       payload: {
-        cookiesArr: [{key: 'admin', value: 'password'}],
-        count: [{key: 'admin', value: 'password'}].length
+        cookiesArr: [{ key: 'admin', value: 'password' }],
+        count: [{ key: 'admin', value: 'password' }].length
       }
     }
     const otherCookieAction = {
       type: 'SET_NEW_REQUEST_COOKIES',
       payload: {
-        cookiesArr: [{key: 'admin', value: 'password'}, {key: 'admin2', value: 'password2'}],
-        count: [{key: 'admin', value: 'password'}, {key: 'admin2', value: 'password2'}].length
+        cookiesArr: [{ key: 'admin', value: 'password' }, { key: 'admin2', value: 'password2' }],
+        count: [{ key: 'admin', value: 'password' }, { key: 'admin2', value: 'password2' }].length
       }
     }
 

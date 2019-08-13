@@ -17,15 +17,14 @@
 	font-weight: 500;
 	line-height: 30px;
 	margin: 0;
-	padding: 0;
-	padding-right:10px;
+	padding-left: 6px;
 	width:auto;
 	overflow-X:scroll;
 	overflow-y:none;
 }
 .tertiary-title::-webkit-scrollbar{
-	width:1px;
-	height:1px;
+	width:0.5px;
+	height:0.5px;
   background-color:#cccccc;
   }
   .tertiary-title::-webkit-scrollbar-thumb{
@@ -48,7 +47,8 @@
 	color: white;
   display: flex;
 	padding: 8px 15px;
-	width: auto;
+  width: auto;
+  min-width: 82.1px; //mainly a fix for WS highlight width
 }
 .title_offset {
 	border-right: 1px solid $bordergray;

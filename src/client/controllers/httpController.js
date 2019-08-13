@@ -10,8 +10,7 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://') { //if ((/https:\/\//).test(reqResObj.url))
-      // if ((/https:\/\//).test(reqResObj.url)) {
+    if (reqResObj.protocol === 'https://') {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
@@ -121,7 +120,6 @@ const httpController = {
     });
     formattedHeaders[':path'] = reqResObj.path;
 
-    // console.log('path', reqResObj.path);
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
     // endStream false means we can continue to send more data, which we would for a body;

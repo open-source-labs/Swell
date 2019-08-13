@@ -49,31 +49,10 @@ class ResponseContainer extends Component {
         break;
      
       default:
-      // console.log(`There was an error with ${val}`);
     }
   }
 
   render() {
-    const headersArr = [];
-    let index = 0;
-
-    if (this.props.content.response.headers) {
-      for (const header in this.props.content.response.headers) {
-        if (Object.prototype.hasOwnProperty.call(this.props.content.response.headers, header)) {
-          headersArr.push(
-            <div className="headers grid-2" key={index}>
-              <div>
-                <span className="tertiary-title">{header}</span>
-              </div>
-              <div>
-                <span className="tertiary-title">{this.props.content.response.headers[header]}</span>
-              </div>
-            </div>,
-          );
-          index += 1;
-        }
-      }
-    }
 
     return (
       <div className="resreq_res-container">

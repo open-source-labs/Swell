@@ -24,10 +24,10 @@ class WebSocketWindow extends Component {
       this.sendToWSController()
     }
   }
-  sendToWSController(){
-    wsController.sendWebSocketMessage(this.props.id, this.state.outgoingMessage) 
+  sendToWSController() {
+    wsController.sendWebSocketMessage(this.props.id, this.state.outgoingMessage)
     this.updateOutgoingMessage("")
-    document.querySelector(".websocket_input-text").value =""
+    document.querySelector(".websocket_input-text").value = ""
   }
 
   render() {
@@ -55,7 +55,7 @@ class WebSocketWindow extends Component {
     const messageInputStyles = {
       display: this.props.connection === 'open' ? 'block' : 'none',
     };
-
+    console.log(this.props)
     return (
       <div
         style={{}}
@@ -78,10 +78,12 @@ class WebSocketWindow extends Component {
             Send Message
           </button>
         </div>
-            
-        <div className={'websocket_message_container'}>
-        {combinedMessagesReactArr}
-        </div>
+        {
+          this.props.connection === 'open' &&
+          <div className={'websocket_message_container'}>
+            {combinedMessagesReactArr}
+          </div>
+        }
       </div>
     );
   }
