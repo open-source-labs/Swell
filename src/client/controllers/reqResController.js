@@ -46,9 +46,7 @@ const connectionController = {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find(el => el.id === id);
 
-    if (reqResObj.request.method === 'SUBSCRIPTION') {
-      graphQLController.openSubscription(reqResObj);
-    }
+    if (reqResObj.request.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
     else if (reqResObj.protocol === 'ws://') wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
