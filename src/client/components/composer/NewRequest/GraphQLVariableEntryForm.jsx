@@ -54,7 +54,7 @@ class GraphQLVariableEntryForm extends Component {
           style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
           type='text'
           placeholder='Variables'
-          rows={10}
+          rows={5}
           onKeyDown={(e) => this.handleKeyPress(e)}
           onChange={(e) => {
             this.props.setNewRequestBody({

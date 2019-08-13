@@ -93,7 +93,7 @@ class HeaderEntryForm extends Component {
 
   addHeader(headersDeepCopy) {
     headersDeepCopy.push({
-      id: this.props.newRequestHeaders.count+1,
+      id: this.props.newRequestHeaders.count,
       active: false,
       key: '',
       value: '',
@@ -108,7 +108,7 @@ class HeaderEntryForm extends Component {
 
   onChangeUpdateHeader(id, field, value) {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-
+    console.log({id}, {headersDeepCopy})
     // find header to update
     let indexToBeUpdated;
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
@@ -127,8 +127,10 @@ class HeaderEntryForm extends Component {
 
     // determine if new header needs to be added
     const emptyHeadersCount = headersDeepCopy
-      .map(header => (!header.key && !header.value ? 1 : 0))
-      .reduce((acc, cur) => acc + cur);
+      .reduce((count, curr) => {
+        if (!curr.key && !curr.value) ++count
+        return count
+      }, 0)
 
     // depending on if headers is empty, update store, or first add a new header
     if (emptyHeadersCount === 0) {
