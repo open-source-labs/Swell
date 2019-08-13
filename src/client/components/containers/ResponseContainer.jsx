@@ -4,7 +4,6 @@ import ResponseEventsDisplay from '../display/ResponseEventsDisplay.jsx';
 import ResponseHeadersDisplay from '../display/ResponseHeadersDisplay.jsx';
 import ResponseCookiesDisplay from '../display/ResponseCookiesDisplay.jsx';
 import ResponseSubscriptionDisplay from '../display/ResponseSubscriptionDisplay.jsx';
-import ResponseBatchLogDisplay from '../display/ResponseBatchLogDisplay.jsx';
 
 class ResponseContainer extends Component {
   constructor(props) {
@@ -48,11 +47,7 @@ class ResponseContainer extends Component {
           openTab: val,
         });
         break;
-      case 'Batch Log':
-        this.setState({
-          openTab: val,
-        });
-        break;
+     
       default:
       // console.log(`There was an error with ${val}`);
     }
@@ -96,7 +91,6 @@ class ResponseContainer extends Component {
         }
         {this.state.openTab === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content.response} />}
         {this.state.openTab === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content.response} />}
-        {this.state.openTab === 'Batch Log' && <ResponseBatchLogDisplay content={this.props.content} />}
       </div>
     );
   }

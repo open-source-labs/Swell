@@ -88,14 +88,6 @@ export const setChecksAndMinis = (reqResArray) => ({
   payload: reqResArray,
 });
 
-export const toggleBatchMode = (reqResArray) => ({
-  type: types.TOGGLE_BATCH_MODE,
-  payload: reqResArray,
-});
-export const updateBatchCount = (reqResArray) => ({
-  type: types.UPDATE_BATCH_COUNT,
-  payload: reqResArray,
-});
 
 // UI ACTIONS
 export const showWarning = () => ({

@@ -156,7 +156,6 @@ const businessReducer = (state = initialState, action) => {
       if (indexToBeUpdated !== undefined) {
         action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
         action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
-        action.payload.isThisBatchCall = state.reqResArray[indexToBeUpdated].isThisBatchCall;
         reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
 
@@ -165,21 +164,6 @@ const businessReducer = (state = initialState, action) => {
         reqResArray: reqResDeepCopy,
       };
     }
-//--------------------------------------------------------------------------------------------------
-    // case types.TOGGLE_BATCH_MODE: {
-    //   return {
-    //     ...state,
-    //     reqResArray: JSON.parse(JSON.stringify(action.payload))
-    //   }
-    // }
-
-    // case types.UPDATE_BATCH_COUNT: {
-    //   return {
-    //     ...state,
-    //     reqResArray: JSON.parse(JSON.stringify(action.payload))
-    //   }
-    // }
-    //--------------------------------------------------------------------------------------------------
 
     case types.SET_COMPOSER_WARNING_MESSAGE: {
       return {

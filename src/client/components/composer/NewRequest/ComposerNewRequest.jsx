@@ -95,9 +95,6 @@ class ComposerNewRequest extends Component {
           },
           checked: false,
           minimized: false,
-          isThisBatchCall: false,
-          batchCount:0,
-          batchlogCounter:0,
           tab: this.props.currentTab,
         };
       }

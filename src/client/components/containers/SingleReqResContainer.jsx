@@ -13,10 +13,7 @@ class SingleReqResContainer extends Component {
     this.removeReqRes = this.removeReqRes.bind(this);
     this.onCheckHandler = this.onCheckHandler.bind(this);
     this.minimize = this.minimize.bind(this);
-    this.toggleBatch = this.toggleBatch.bind(this);
-    this.incrementBatchCount = this.incrementBatchCount.bind(this);
-    this.decrementBatchCount = this.decrementBatchCount.bind(this);
-    this.changeHandler = this.changeHandler.bind(this);
+
   }
 
   onCheckHandler() {
@@ -24,29 +21,7 @@ class SingleReqResContainer extends Component {
     this.props.reqResUpdate(this.props.content);
   }
   
-  toggleBatch() {
-    if(this.props.content.protocol === 'https://' ){
-      this.props.content.isThisBatchCall = !this.props.content.isThisBatchCall;
-      this.props.reqResUpdate(this.props.content);
-    }
-  }
-  incrementBatchCount(){
-    this.props.content.batchCount++
-    this.props.reqResUpdate(this.props.content);
-
-  }
-  decrementBatchCount(){
-    if(this.props.content.batchCount > 0){
-      this.props.content.batchCount--
-      this.props.reqResUpdate(this.props.content);
-    }
-  }
-  changeHandler(e){
-    this.props.content.batchCount = e.target.value
-      
-        this.props.reqResUpdate(this.props.content);
-    
-  }
+  
 
   removeReqRes() {
     connectionController.closeReqRes(this.props.content.id);
@@ -122,7 +97,6 @@ class SingleReqResContainer extends Component {
     }
 
     const arrowClass = !this.props.content.minimized ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    let loadingBatch = (this.props.content.connection === 'pending' || this.props.content.connection === 'open')  && this.props.content.isThisBatchCall
     return (
       <div>
         <div className="resreq_wrap" id={this.props.content.id}>
@@ -134,10 +108,7 @@ class SingleReqResContainer extends Component {
                 {this.props.content.request.method}</span>
               <span className="primary-title ">{this.props.content.url}</span>
             </div>
-  {/* -------------------------------------------------------- */}
-    {/* Conditionally Render loading screen for batch requests */}
-  {/* -------------------------------------------------------- */}
-        { loadingBatch ? <div className ="batch-loading_wrap"><h1 id="batchlog-counter">{this.props.content.batchlogCounter}</h1><div className="lds-ring"><div></div><div></div><div></div><div></div></div></div> : 
+        { 
             //----------------------------------------
             //Contitionally minimize the current reqRescontainer
             //----------------------------------------
@@ -171,28 +142,11 @@ class SingleReqResContainer extends Component {
                   </span>
 
 
-                  {/* ----------------------------------------------------------------------------------- */}
-                  {/* Only allow batchcalls for requests matching https://... Conditionally render batchcall checkbox */}
-                  {/* ----------------------------------------------------------------------------------- */}
-                  {this.props.content.protocol === "https://"? 
-                      <span className = "batchcall-container">
-                        <label id="batch-label" htmlFor="batchbox">Batch Call</label>
-                        <input type="checkbox" checked={this.props.content.isThisBatchCall} id= 'batchbox' className="togglebatch" onChange={this.toggleBatch}></input>
-                      </span>
-                  :<></>} 
+              
                 </div>
 
 
-                  {/* ----------------------------------------------------------------------------------- */}
-                  {/* Only allow user to edit batchcount if the current request batchcheckbox is ticked */}
-                  {/* ----------------------------------------------------------------------------------- */}
-                  {this.props.content.isThisBatchCall?
-                      <div className= 'batchController'>
-                        <input id="current-batch-count" type="text" value={this.props.content.batchCount} onChange={this.changeHandler}></input>
-                        <button onClick={this.incrementBatchCount}>↑</button>
-                        <button onClick={this.decrementBatchCount}>↓</button>
-                      </div>
-                  :<></>}
+                 
                 <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
                 {contentBody}
               </div>              
