@@ -230,9 +230,9 @@ ipcMain.on('check-for-update', () => { //listens to ipcRenderer in UpdatePopUpCo
 // autoUpdater.on('update-available', info => {
 //   sendStatusToWindow('Update available.');
 // });
-autoUpdater.on('update-not-available', info => {
-  sendStatusToWindow('Update not available.');
-});
+// autoUpdater.on('update-not-available', info => {
+//   sendStatusToWindow('Update not available.');
+// });
 autoUpdater.on('error', (err) => {
   console.error(err)
   sendStatusToWindow(`Error in auto-updater`);

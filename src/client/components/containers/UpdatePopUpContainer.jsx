@@ -17,7 +17,7 @@ class UpdatePopUpContainer extends Component {
 
   componentDidMount() {
     ipcRenderer.on('message', (e, text) => {
-      if (text !== "Update not available.") this.setState({ show: true, message: text });
+      this.setState({ show: true, message: text });
     });
   }
 
