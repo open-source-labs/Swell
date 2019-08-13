@@ -222,20 +222,17 @@ const sendStatusToWindow = (text) => {
 };
 
 ipcMain.on('check-for-update', () => {
-  console.log('get feed url?', autoUpdater.getFeedURL());
   autoUpdater.checkForUpdates();
 });
-autoUpdater.on('checking-for-update', () => {
-  // sendStatusToWindow('Checking for update...');
-  console.log('Checking for update...');
-  sendStatusToWindow('update-downloaded');
-});
-autoUpdater.on('update-available', info => {
-  sendStatusToWindow('Update available.');
-});
-autoUpdater.on('update-not-available', info => {
-  // sendStatusToWindow('Update not available.');
-});
+// autoUpdater.on('checking-for-update', () => {
+// sendStatusToWindow('Checking for update...');
+// // });
+// autoUpdater.on('update-available', info => {
+//   sendStatusToWindow('Update available.');
+// });
+// autoUpdater.on('update-not-available', info => {
+// sendStatusToWindow('Update not available.');
+// });
 autoUpdater.on('error', err => {
   sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
 });

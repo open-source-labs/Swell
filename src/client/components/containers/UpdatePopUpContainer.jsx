@@ -22,7 +22,6 @@ class UpdatePopUpContainer extends Component {
   componentDidMount() {
     ipcRenderer.on('message', (e, text) => {
       this.setState({ show: true, message: text });
-      if (text === 'Update downloaded.') ipcRenderer.send('quit-and-install');
     });
   }
 
@@ -35,17 +34,22 @@ class UpdatePopUpContainer extends Component {
     })
   }
 
+  handleUpdateClick() {
+    toggleShow();
+    ipcRenderer.send('quit-and-install');
+  }
+
   render() {
 
     const greyScreenClass = this.state.show ? 'grey_screen' : 'grey_screen-hide';
 
     return <div className={greyScreenClass}>
       <div className='update_popup'>
-        <h2>{this.state.message}</h2>
+        <p>{this.state.message}</p>
         {this.state.message === 'Update downloaded.' &&
           <>
             <p>Do you want to restart and install now? <br /> (If not, will auto-install on restart.)</p>
-            <button className='update_popup-btn' onClick={this.toggleShow}>Update</button>
+            <button className='update_popup-btn' onClick={this.handleUpdateClick}>Update</button>
           </>
         }
         <button className='update_popup-btn' onClick={this.toggleShow}>
