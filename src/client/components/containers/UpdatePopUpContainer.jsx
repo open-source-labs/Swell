@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
-
-
-const mapStateToProps = store => ({
-});
+import { ipcRenderer } from 'electron';
 
 const mapDispatchToProps = dispatch => ({});
 
@@ -12,42 +8,52 @@ class UpdatePopUpContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show : true,
+      show: false,
+      message: '',
     };
     this.toggleShow = this.toggleShow.bind(this);
+    this.handleUpdateClick = this.handleUpdateClick.bind(this);
   }
 
   componentDidMount() {
+    ipcRenderer.on('message', (e, text) => {
+      if (text !== "Update not available.") this.setState({ show: true, message: text });
+    });
   }
 
-  componentDidUpdate() {
-  }
-
-  toggleShow () {
+  toggleShow() {
     this.setState({
-      show : !this.state.show,
+      show: !this.state.show,
     })
+  }
+
+  handleUpdateClick() {
+    this.toggleShow();
+    ipcRenderer.send('quit-and-install');
   }
 
   render() {
 
-    const greyScreenClass = this.state.show ? 'grey_screen' : 'grey_screen-hide';
-
-    return <div className={greyScreenClass}>
+    return this.state.show
+    ? (
       <div className='update_popup'>
-        <h4>There is an update available. <br/>Update?</h4>
-        <button className='update_popup-btn' onClick={this.toggleShow}>
-          Update
-        </button>
-        <button className='update_popup-btn' onClick={this.toggleShow}>
+        <p>{this.state.message}</p>
+        {this.state.message === 'Update downloaded.' &&
+          <>
+            <p class="updateMessage">Do you want to restart and install now? <br /> (If not, will auto-install on restart.)</p>
+            <button className='update popup-btn' onClick={this.handleUpdateClick}>Update</button>
+          </>
+        }
+        <button className='dismiss popup-btn' onClick={this.toggleShow}>
           Dismiss
         </button>
       </div>
-    </div>
+    )
+    : <></>
   }
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(UpdatePopUpContainer);

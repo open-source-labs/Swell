@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": "https://github.com/getswell/getswell",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "webpack --config webpack.build.config.js --mode production",
@@ -118,6 +118,8 @@
     }
   },
   "jest": {
+    "verbose": true,
+    "collectCoverage": true,
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "./__mocks__/fileMock.js"
     }
