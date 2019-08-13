@@ -215,12 +215,13 @@ const httpController = {
 
   establishHTTP1connection(reqResObj, connectionArray) {
     // start off by clearing existing response data
+    //--------------------------------------------------------------------------------------------------------------
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+    //--------------------------------------------------------------------------------------------------------------
     connectionArray.forEach((obj, i) => {
       if (obj.id === reqResObj.id) {
         connectionArray.splice(i, 1);
@@ -231,68 +232,112 @@ const httpController = {
       protocol: 'HTTP1',
       id: reqResObj.id,
     };
-
     connectionArray.push(openConnectionObj);
 
     const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
     parsedFetchOptions.signal = openConnectionObj.abort.signal;
-
-    fetch(reqResObj.url, parsedFetchOptions)
-      .then((response) => {
-        // console.log('RESPONSE ::', response)
-        //Parse response headers now to decide if SSE or not.
-        let heads = {};
-        for (let entry of response.headers.entries()) {
-          heads[entry[0].toLowerCase()] = entry[1];
-        }
-        reqResObj.response.headers = heads;
-
-        let isStream;
-        if (heads['content-type'] && heads['content-type'].includes('stream')) {
-          isStream = true;
-        } else {
-          isStream = false;
-        }
-        let http1Sesh = session.defaultSession;
-        let domain = reqResObj.host.split('//')
-        domain.shift();
-        domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-
-        http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
-          if (cookies) {
-            reqResObj.response.cookies = cookies;
-            store.default.dispatch(actions.reqResUpdate(reqResObj))
-            cookies.forEach((cookie) => {
-              let url = '';
-              url += cookie.secure ? 'https://' : 'http://';
-              url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-              url += cookie.domain;
-              url += cookie.path;
-
-              http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
-            })
+    //--------------------------------------------------------------------------------------------------------------
+    //Begin if else statement to separate SSE fetch from proxy server Fetch
+    //--------------------------------------------------------------------------------------------------------------
+    if (/localhost:/.test(reqResObj.url)) {//If the url provided is a localhost:port#... 
+      fetch(reqResObj.url, parsedFetchOptions)//fetch straight to that localhost:port# url
+        .then(response => {
+          //Parse response headers now to decide if SSE or not.
+          let heads = {};
+          for (let entry of response.headers.entries()) {
+            heads[entry[0].toLowerCase()] = entry[1];
           }
-          isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+          reqResObj.response.headers = heads;
+          //store headers in heads object
+          let isStream;
+          if (heads['content-type'] && heads['content-type'].includes('stream')) {
+            isStream = true;
+          } else {
+            isStream = false;
+          }
+          let http1Sesh = session.defaultSession;
+          let domain = reqResObj.host.split('//')
+          domain.shift();
+          domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+
+          http1Sesh.cookies.get({ domain: domain }, (err, cookies) => {
+            if (cookies) {
+              reqResObj.response.cookies = cookies;
+              store.default.dispatch(actions.reqResUpdate(reqResObj))
+              cookies.forEach(cook => {
+                let url = '';
+                url += cook.secure ? 'https://' : 'http://';
+                url += cook.domain.charAt(0) === '.' ? 'www' : '';
+                url += cook.domain;
+                url += cook.path;
+
+                http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
+              })
+            }
+            isStream ? this.handleSSE(response, reqResObj, heads) : this.handleSingleEvent(response, reqResObj, heads);
+          })
         })
-      })
-      .catch((err) => {
-        reqResObj.connection = 'error';
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
-      })
+        .catch(err => {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        })
+    }
+    //--------------------------------------------------------------------------------------------------------------
+    else { //Else if the user did not enter a localhost url...
+      fetch('http://localhost:7000', parsedFetchOptions)//fetch to OUR local proxy server
+        .then(response => response.json())
+        .then((result) => {
+          // the readable verson of our response is an object that looks like this: {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
+          // theResponseHeaders refers to our literal object of response headers
+          // the ResponseBody is the literal readable object containing our api content
+          // the raw unparsed response from localhost:7000
+          const theResponseHeaders = result.headers._headers;
+          const { body, rawResponse } = result;
+          // Now that we have access to the full response headers for http we have bypassed cors and can use this data
+          reqResObj.response.headers = theResponseHeaders;
+          let isStream;
+          if (theResponseHeaders['content-type'] && theResponseHeaders['content-type'].includes('stream')) {
+            isStream = true;
+          } else {
+            isStream = false;
+          }
+          let http1Sesh = session.defaultSession;
+          let domain = reqResObj.host.split('//');
+          domain.shift();
+          domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+
+          http1Sesh.cookies.get({ domain }, (err, cookies) => {
+            if (cookies) {
+              reqResObj.response.cookies = cookies;
+              store.default.dispatch(actions.reqResUpdate(reqResObj))
+              cookies.forEach((cookie) => {
+                let url = '';
+                url += cookie.secure ? 'https://' : 'http://';
+                url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+                url += cookie.domain;
+                url += cookie.path;
+                http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
+              })
+            }
+            // Below the headers and response api content are handled by swell and will be displayed. 
+            // The handlesingleevent is functional
+            // handleSSE is not fuctional. Likely because handleSSE is expecting an unreadable response as a param instead of passing it the readable content... which would require another fetch for raw unparsed response
+            isStream ? this.handleSSE(rawResponse, reqResObj, theResponseHeaders) : this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+          })
+        })
+        .catch((err) => {
+          reqResObj.connection = 'error';
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        });
+    }
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
-    // let {
-    //   request: { method },
-    //   request: { headers },
-    //   request: { body },
-    //   request: { cookies },
-    // } = reqResObject;
-    let {method, headers, body, cookies} = reqResObject.request;
-    
+    let { method, headers, body, cookies } = reqResObject.request;
+
     method = method.toUpperCase();
 
-    const formattedHeaders = {};
+    const formattedHeaders = { 'url': reqResObject.url };
     headers.forEach((head) => {
       if (head.active) {
         formattedHeaders[head.key] = head.value;
@@ -306,7 +351,7 @@ const httpController = {
 
     const outputObj = {
       method,
-      mode: 'cors', // no-cors, cors, *same-origin
+      // mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'include', // include, *same-origin, omit
       headers: formattedHeaders,
@@ -322,43 +367,18 @@ const httpController = {
   },
 
   handleSingleEvent(response, originalObj, headers) {
-    // console.log('Handling Single Event')
-
+    console.log('Handling Single Event')
     const newObj = JSON.parse(JSON.stringify(originalObj));
-
-    const reader = response.body.getReader();
-    let bodyContent = '';
-    read();
-
-    function read() {
-      reader.read().then((obj) => {
-        if (obj.done) {
-          newObj.connection = 'closed';
-          newObj.connectionType = 'plain';
-          newObj.timeReceived = Date.now();
-          // newObj.response = {
-          //   headers: headers,
-          //   events: [],
-          // };
-          // console.log('after', bodyContent)
-          // newObj.response.headers = headers;
-          newObj.response.events.push(bodyContent);
-          store.default.dispatch(actions.reqResUpdate(newObj));
-        }
-
-        // decode and recursively call
-        else {
-          bodyContent += new TextDecoder('utf-8').decode(obj.value);
-          // console.log(bodyContent);
-
-          read();
-        }
-      });
-    }
+    newObj.connection = 'closed';
+    newObj.connectionType = 'plain';
+    newObj.timeReceived = Date.now();
+    newObj.response.events.push(response);
+    store.default.dispatch(actions.reqResUpdate(newObj));
   },
 
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
+    console.log('handling SSE')
     const reader = response.body.getReader();
 
     let data = '';

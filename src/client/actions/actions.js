@@ -86,6 +86,7 @@ export const setChecksAndMinis = (reqResArray) => ({
   payload: reqResArray,
 });
 
+
 // UI ACTIONS
 export const showWarning = () => ({
   type: types.SHOW_WARNING,
