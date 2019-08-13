@@ -221,7 +221,7 @@ const sendStatusToWindow = (text) => {
   }
 };
 
-ipcMain.on('check-for-update', () => {
+ipcMain.on('check-for-update', () => { //listens to ipcRenderer in UpdatePopUpContainer.jsx
   autoUpdater.checkForUpdates();
 });
 // autoUpdater.on('checking-for-update', () => {
