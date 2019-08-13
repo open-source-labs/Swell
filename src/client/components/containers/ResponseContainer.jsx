@@ -47,6 +47,7 @@ class ResponseContainer extends Component {
           openTab: val,
         });
         break;
+     
       default:
     }
   }
@@ -56,6 +57,7 @@ class ResponseContainer extends Component {
     return (
       <div className="resreq_res-container">
         <ResponseTabs
+          content={this.props.content}
           responseContent={this.props.content.response}
           handleTabSelect={this.handleTabSelect}
           openResponseTab={this.state.openTab}

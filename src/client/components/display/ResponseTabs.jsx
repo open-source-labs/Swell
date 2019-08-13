@@ -10,7 +10,6 @@ class ResponseTabs extends Component {
     const events = 'Response Events';
     const cookies = 'Response Cookies';
     const headers = 'Response Headers';
-
     return (
       <ul className="tab_list-response">
         <Tab onTabSelected={this.props.handleTabSelect} tabName={events} key="events" openTab={this.props.openResponseTab}/>

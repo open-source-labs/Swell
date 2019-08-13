@@ -66,7 +66,9 @@ const graphQLController = {
     reqResCopy.connection = 'closed';
     reqResCopy.connectionType = 'plain';
     reqResCopy.timeReceived = Date.now();
+    // console.log("reqResCopy",reqResCopy)
     reqResCopy.response.events.push(JSON.stringify(response.data));
+    // reqResCopy.response.headers = "HI";
     store.default.dispatch(actions.reqResUpdate(reqResCopy));
   },
 };

@@ -11,6 +11,7 @@
 	line-height: normal;
 	vertical-align: middle;
 }
+
 .tertiary-title {
 	font-size: .9rem;
 	font-weight: 500;
@@ -19,6 +20,7 @@
 	padding-left: 6px;
 	width:auto;
 	overflow-X:scroll;
+	overflow-y:none;
 }
 .tertiary-title::-webkit-scrollbar{
 	width:0.5px;
