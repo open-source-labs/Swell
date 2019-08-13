@@ -35,7 +35,7 @@ class UpdatePopUpContainer extends Component {
 
     return <div className={greyScreenClass}>
       <div className='update_popup'>
-        There is an update available. Update?
+        <h4>There is an update available. <br/>Update?</h4>
         <button className='update_popup-btn' onClick={this.toggleShow}>
           Update
         </button>
