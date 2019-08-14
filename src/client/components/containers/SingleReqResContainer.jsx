@@ -21,7 +21,6 @@ class SingleReqResContainer extends Component {
     this.props.reqResUpdate(this.props.content);
   }
   
-  
 
   removeReqRes() {
     connectionController.closeReqRes(this.props.content.id);
