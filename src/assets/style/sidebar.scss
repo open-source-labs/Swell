@@ -386,6 +386,22 @@
 .history-url, .collection-name {
   margin-left: 4px;
 }
+.history-text-container::-webkit-scrollbar, .collection-text-container::-webkit-scrollbar, .historyDate-container::-webkit-scrollbar, .collections-container::-webkit-scrollbar {
+	width: 0.5px;
+	background-color: #cccccccc;
+}
+.history-text-container::-webkit-scrollbar-thumb, .collection-text-container::-webkit-scrollbar-thumb, .historyDate-container::-webkit-scrollbar-thumb, .collections-container::-webkit-scrollbar-thumb  {
+	width: 0.5px;
+	background-color: #cccccccc;
+}
+.history-text-container::-webkit-scrollbar-thumb:hover, .collection-text-container::-webkit-scrollbar-thumb:hover, .historyDate-container::-webkit-scrollbar-thumb:hover, .collections-container::-webkit-scrollbar-thumb:hover  {
+	width: 0.5px;
+	background-color: #cccccccc;
+}
+.history-text-container::-webkit-scrollbar:active,.collection-text-container::-webkit-scrollbar:active, .historyDate-container::-webkit-scrollbar:active, .collections-container::-webkit-scrollbar:active{
+	width: 0.5px;
+	background-color: #cccccccc;
+}
 .history-delete-container, .collection-delete-container {
 	display: flex;
 	float: right;
