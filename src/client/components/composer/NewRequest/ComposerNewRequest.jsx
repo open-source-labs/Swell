@@ -40,14 +40,12 @@ class ComposerNewRequest extends Component {
 
     if (validated === true) {
       let reqRes;
+      const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
 
       // HTTP && GRAPHQL REQUESTS
       if (this.props.newRequestFields.protocol !== 'ws://') {
-        let URIWithoutProtocol = `${this.props.newRequestFields.url.split(this.props.newRequestFields.protocol)[1]}/`;
-        if (URIWithoutProtocol.charAt(URIWithoutProtocol.length - 1) !== '/') {
-          URIWithoutProtocol += '/';
-        }
-        const host = this.props.newRequestFields.protocol + URIWithoutProtocol.split('/')[0];
+        let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
+        const host = protocol + URIWithoutProtocol.split('/')[0];
         let path = `/${URIWithoutProtocol.split('/')
           .splice(1)
           .join('/')
@@ -64,12 +62,11 @@ class ComposerNewRequest extends Component {
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
-
         reqRes = {
 
           id: uuid(),
           created_at: new Date(),
-          protocol: this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0],
+          protocol: this.props.newRequestFields.url.match(/https?:\/\//)[0],
           host,
           path,
           url: this.props.newRequestFields.url,
@@ -103,7 +100,7 @@ class ComposerNewRequest extends Component {
         reqRes = {
           id: uuid(),
           created_at: new Date(),
-          protocol: this.props.newRequestFields.protocol,
+          protocol: this.props.newRequestFields.url.match(/wss?:\/\//)[0],
           url: this.props.newRequestFields.url,
           timeSent: null,
           timeReceived: null,
@@ -191,29 +188,29 @@ class ComposerNewRequest extends Component {
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
         />
-        
+
         {
           this.props.newRequestFields.method &&
-        <CookieEntryForm
-          newRequestCookies={this.props.newRequestCookies}
-          newRequestBody={this.props.newRequestBody}
-          setNewRequestCookies={this.props.setNewRequestCookies}
-        />
+          <CookieEntryForm
+            newRequestCookies={this.props.newRequestCookies}
+            newRequestBody={this.props.newRequestBody}
+            setNewRequestCookies={this.props.setNewRequestCookies}
+          />
         }
         {
           !this.props.newRequestFields.graphQL && this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://' &&
           <BodyEntryForm
-          newRequestHeaders={this.props.newRequestHeaders}
-          newRequestBody={this.props.newRequestBody}
-          setNewRequestHeaders={this.props.setNewRequestHeaders}
-          setNewRequestBody={this.props.setNewRequestBody}
+            newRequestHeaders={this.props.newRequestHeaders}
+            newRequestBody={this.props.newRequestBody}
+            setNewRequestHeaders={this.props.setNewRequestHeaders}
+            setNewRequestBody={this.props.setNewRequestBody}
           />
         }
         {
           this.props.newRequestFields.graphQL &&
           <GraphQLBodyEntryForm
-          newRequestBody={this.props.newRequestBody}
-          setNewRequestBody={this.props.setNewRequestBody}
+            newRequestBody={this.props.newRequestBody}
+            setNewRequestBody={this.props.setNewRequestBody}
           />
         }
 
