@@ -6,12 +6,12 @@ html {
 	overflow: hidden;
 }
 body {
-	align-items: center;
-	color: $liteblack;
 	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	color: $liteblack;
 	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 	height: 100vh;
-	justify-content: center;
 	margin: 0;
 	width: 100vw;
 }

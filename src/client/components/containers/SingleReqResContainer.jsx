@@ -20,8 +20,7 @@ class SingleReqResContainer extends Component {
     this.props.content.checked = !this.props.content.checked;
     this.props.reqResUpdate(this.props.content);
   }
-  
-  
+
 
   removeReqRes() {
     connectionController.closeReqRes(this.props.content.id);
@@ -100,65 +99,69 @@ class SingleReqResContainer extends Component {
     return (
       <div>
         <div className="resreq_wrap" id={this.props.content.id}>
-            <div className="title-row">
-              <span className="primary-title highlighter title_reverse-offset" onClick={this.minimize}>
-                <span><img className={arrowClass} src={dropDownArrow}>
-                </img></span>
-                <pre><p>  </p></pre>
-                {this.props.content.request.method}</span>
-              <span className="primary-title ">{this.props.content.url}</span>
-            </div>
-        { 
+          <div className="title-row">
+            <span className="primary-title highlighter title_reverse-offset" onClick={this.minimize}>
+              <span><img className={arrowClass} src={dropDownArrow}>
+              </img></span>
+              <pre><p>  </p></pre>
+              {this.props.content.request.method}</span>
+            <span className="primary-title ">{this.props.content.url}</span>
+          </div>
+          {
             //----------------------------------------
             //Contitionally minimize the current reqRescontainer
             //----------------------------------------
             !this.props.content.minimized &&
-              <div>
-                <div className="grid-6">
-                  <div>
-                    <input
-                      id={this.props.content.id}
-                      checked={this.props.content.checked}
-                      className="reqres_select-radio"
-                      name="resreq-select"
-                      type="checkbox"
-                      onChange={this.onCheckHandler}
-                    />
-                  </div>
-
-                  <div className="btn-sm">
-                    <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} reqResUpdate={this.props.reqResUpdate}/>
-                    <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
-                  </div>
-                  <div className="btn-sm">
-                    <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
-                  </div>
-                  <div>{statusLight}</div>
-                  <span className="tertiary-title">{this.props.content.connectionType}</span>
-
-
-                  <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
-                    Roundtrip: {(this.props.content.timeReceived === null || this.props.content.connection === 'pending') ? '0' : this.props.content.timeReceived - this.props.content.timeSent} ms
-                  </span>
-
-
-              
+            <>
+              <div className="grid-6">
+                <div>
+                  <input
+                    id={this.props.content.id}
+                    checked={this.props.content.checked}
+                    className="reqres_select-radio"
+                    name="resreq-select"
+                    type="checkbox"
+                    onChange={this.onCheckHandler}
+                  />
                 </div>
 
+                <div className="btn-sm">
+                  <OpenBtn stylesObj={openButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} reqResUpdate={this.props.reqResUpdate} />
+                  <CloseBtn stylesObj={closeButtonStyles} content={this.props.content} connectionStatus={this.props.content.connection} />
+                </div>
 
-                 
-                <div style={errorStyles} className="networkerror">There was a network error in connecting to endpoint.</div>
-                {contentBody}
-              </div>              
-        }
-  {/* -------------------------------------------------------- */}
-  {/* -------------------------------------------------------- */}
+                <div className="btn-sm">
+                  <button type="button" className="btn resreq_remove" onClick={this.removeReqRes}>Remove</button>
+                </div>
 
-      </div> 
-    </div>
+                <div>{statusLight}</div>
 
-        
+                <span className="tertiary-title">{this.props.content.connectionType}</span>
+
+                {this.props.content.request.method === "SUBSCRIPTION" || this.props.content.protocol === "ws://" ? <></> :
+                  <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
+                    Roundtrip: {(this.props.content.connection === "open" || this.props.content.connection === 'pending') ? 0 : this.props.content.timeReceived - this.props.content.timeSent} ms
+                  </span>
+                }
+
+              </div>
+              <div style={http2Display} className={'httptwo'}>
+                HTTP2 connection: Requests with the same host will share a single HTTP2 connection.
+              </div>
+
+              <div style={errorStyles} className="networkerror">
+                There was a network error in connecting to endpoint.
+              </div>
+              {contentBody}
+            </>
+          }
+
+        </div>
+      </div>
+
+
     )
-};}
+  };
+}
 
 export default SingleReqResContainer;

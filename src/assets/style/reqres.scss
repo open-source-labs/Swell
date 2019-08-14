@@ -141,14 +141,19 @@
 
 .btn-sm {
   .btn {
+    cursor: pointer;
     margin: 0;
+    outline: none;
     width: 100%;
     height: 30px;
     font-size: .7rem;
     font-weight: bold;
     line-height: 1;
+    background-color: $bluetwo;
+    border: none;
+    color: white;
     &:hover {
-      background: $teal;
+      background: $bluetwo;
       color: $litegray;
       border: none;
     }
