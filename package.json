@@ -1,15 +1,14 @@
 {
   "name": "Swell",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Swell",
   "main": "main.js",
-  "repository": "https://github.com/getswell/getswell",
+  "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "test": "jest",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "webpack --config webpack.build.config.js --mode production",
-    "package": "electron-packager ./ --out=./builds --icon=src/assets/icons/mac/Swell.ico --overwrite",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
     "package-all": "electron-builder  build -mwl",
@@ -73,10 +72,15 @@
       "dist/main.js",
       "dist/img/swell-bg__2JecU.png",
       "dist/img/Trashcan__3piXy.png",
+      "dist/img/arrow_drop_down_white_192x192__3cp1B.png",
       "menu/mainMenu.js",
       "package.json",
-      "main.js"
+      "main.js",
+      "httpserver.js"
     ],
+    "nsis": {
+      "createDesktopShortcut": "always"
+    },
     "dmg": {
       "contents": [
         {
@@ -92,10 +96,7 @@
       ]
     },
     "win": {
-      "target": [
-        "nsis",
-        "msi"
-      ],
+      "target": "NSIS",
       "icon": "icon.ico"
     },
     "linux": {
@@ -107,13 +108,13 @@
       "category": "Development"
     },
     "directories": {
-      "buildResources": "buildResources",
+      "buildResources": "build",
       "output": "release"
     },
     "publish": {
       "provider": "github",
-      "owner": "getswell",
-      "repo": "getswell",
+      "owner": "open-source-labs",
+      "repo": "Swell",
       "private": false
     }
   },
@@ -175,7 +176,6 @@
     "devtron": "^1.4.0",
     "electron": "^3.0.6",
     "electron-builder": "^20.38.2",
-    "electron-packager": "^12.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
