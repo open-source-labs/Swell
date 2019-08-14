@@ -245,13 +245,10 @@ const httpController = {
         reqResObj.response.headers = heads;
         // store extracted headers in heads object
         // check if the content-type header contains the word stream
-        let isStream;
+        let isStream = false;
 
-        if (heads['content-type'] && heads['content-type'].includes('stream')) {
-          isStream = true;
-        } else {
-          isStream = false;
-        }
+        if (heads['content-type'] && heads['content-type'].includes('stream')) isStream = true;
+
         if (isStream) { // if url is sse...
           const http1Sesh = session.defaultSession;
           let domain = reqResObj.host.split('//');
