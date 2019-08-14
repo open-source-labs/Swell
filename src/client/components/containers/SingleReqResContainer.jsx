@@ -136,10 +136,11 @@ class SingleReqResContainer extends Component {
                   <div>{statusLight}</div>
                   <span className="tertiary-title">{this.props.content.connectionType}</span>
 
-
+                  { this.props.content.request.method === "SUBSCRIPTION" || this.props.content.protocol === "ws://" ? <></>:
                   <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
-                    Roundtrip: {(this.props.content.timeReceived === null || this.props.content.connection === 'pending') ? '0' : this.props.content.timeReceived - this.props.content.timeSent} ms
+                    Roundtrip: {(this.props.content.connection === "open" || this.props.content.connection === 'pending') ? 0 : this.props.content.timeReceived - this.props.content.timeSent} ms
                   </span>
+                  }
 
 
               
