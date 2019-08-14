@@ -1,10 +1,11 @@
-<img src="./src/assets/img/horizontal-logo-lockup.png" style="margin-top: 10px; margin-bottom: -10px">
+<p align="center"><img src="./src/assets/img/horizontal-logo-lockup.png" style="margin-top: 10px; margin-bottom: -10px;"></p>
 
 #
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Swell-%20For%20all%20your%20streaming%20API%20testing%20needs&url=https://www.getswell.io&hashtags=SSE,WebSocket,HTTP,API,developers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/open-source-labs/Swell/blob/dev/LICENSE.txt)
 ![AppVeyor](https://img.shields.io/badge/build-passing-brightgreen.svg)
-![AppVeyor](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![AppVeyor](https://img.shields.io/badge/version-0.2.0-blue.svg)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/getswell/getswell/issues)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Swell-%20For%20all%20your%20streaming%20API%20testing%20needs&url=https://www.getswell.io&hashtags=SSE,WebSocket,HTTP,API,developers)
 
 
 
@@ -19,7 +20,7 @@ Swell is currently available for OS X, Linux and Windows.
 ### Features
 Swell is a one-stop shop for sending and monitoring your API requests
 
-<kbd><img src="https://i.imgur.com/tcfbCPf.jpg"
+<kbd><img src="./ReadMeGifs/Swell_API_WebSockeasdfts.gif"
      style="float: left; margin-right: 10px;margin-bottom : 40px; margin-top : 10px;" /></kbd>
 
 * Send and monitor up to six concurrent connections
@@ -28,23 +29,42 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ### Supported Technologies
 * *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.
-<kbd><img src="https://i.imgur.com/jxY2Y2y.png"
+<kbd><img src="./ReadMeGifs/Swell_API_6_Concurrent_Eevee_Requests.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 * *Server-Sent Events (SSE)*: Swell displays SSE events one by one as they come in.
-<kbd><img src="https://i.imgur.com/SrzGDxM.png"
+<kbd><img src="./ReadMeGifs/Swell_API_3_SSE.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
 * *WebSocket (WS)*: Swell enables connecting directly to WebSocket servers with an HTTP handshake. Developers can directly send messages to the connected WS server. Messages are displayed in chatbox format, clearly indicating outgoing and incoming messages.
-<kbd><img src="https://i.imgur.com/cyVs9MZ.png"
+<kbd><img src="./ReadMeGifs/Swell_API_WebSockets.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
+
+* *GraphQL*: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions - with and without variables
+<kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
+     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
+### Additional Features
+* *Collections*: Swell allows you to save collections for easier testing
+<kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
+     style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
+
+
+* *Minimize/Expand*: Swell allows you to minimize and expand your requests, making it easy to manage everything at once!
+<kbd><img src="./ReadMeGifs/Swell_API_Minimize_Expand.gif"
+     style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 
 ## Built With
 * Electron
 * React
 * Redux
+* Express
+* Apollo
+* React-Modal
+* IndexedDB
 * Chart.js
 
 
@@ -54,10 +74,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * **Brandon Marrero** - [brandon6190](https://github.com/brandon6190)
 * **Jason Ou** - [jasonou1994](https://github.com/jasonou1994)
 * **Kyle Combs** - [texpatnyc](https://github.com/texpatnyc)
+* **Kwadwo Asamoah** - [addoasa](https://github.com/addoasa)
+* **Abby Chao** - [brandon6190](https://github.com/abbychao)
+* **Amanda Flink** - [jasonou1994](https://github.com/aflinky)
+* **Kajol Thapa** - [texpatnyc](https://github.com/kajolthapa)
 
 ## License
 
-This project is licensed under the MIT License.
-<!-- 
-C:\Users\Lazarus-Kwadwo\Desktop\devStuff\codesmith\production\Swell\node_modules\jest-jasmine2\package.json.4242575574
-C:\Users\Lazarus-Kwadwo\Desktop\devStuff\codesmith\production\Swell\node_modules\jest-jasmine2\package.json -->
+This project is licensed under the MIT License
