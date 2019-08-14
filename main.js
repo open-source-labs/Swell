@@ -204,7 +204,7 @@ function createWindow() {
 app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
-  if (!dev) { autoUpdater.checkForUpdates() };
+  if (!dev) { autoUpdater.checkForUpdates() }; 
 });
 
 // Quit when all windows are closed.
@@ -225,7 +225,7 @@ const sendStatusToWindow = (text) => {
 };
 
 ipcMain.on('check-for-update', () => { //listens to ipcRenderer in UpdatePopUpContainer.jsx
-  autoUpdater.checkForUpdates();
+  if (!dev) autoUpdater.checkForUpdates();
 });
 // autoUpdater.on('checking-for-update', () => {
 // sendStatusToWindow('Checking for update...');

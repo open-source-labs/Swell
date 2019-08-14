@@ -4,24 +4,6 @@
   width: 100%;
   background: #4e4e4e;
 }
-.btn {
-	background-color: $bluetwo;
-	border: none;
-	color: white;
-	cursor: pointer;
-	display: block;
-	font-size: 20px;
-	font-weight: bold;
-	height: 40px;
-	margin: 25px auto;
-	padding: 0 1.5rem;
-  width: auto;
-  outline: none;
-	&:hover {
-		background: transparent;
-		color: white!important;
-	}
-}
 
 .navbar-console_inner {
   padding: 2px 0;
@@ -34,6 +16,10 @@
 		color: $mediumgray;
 		font-size: 14px;
 		margin: 4px;
-		padding: .5rem;
+    padding: .5rem;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+    font-weight: 425;
 	}
 }

@@ -58,14 +58,12 @@ class NavBarContainer extends Component {
       if (reqRes.response.hasOwnProperty('headers')) reqRes.response = { headers: null, events: null }
       else reqRes.response = {messages: []}
     });
-    // console.log({ clonedArray }, inputName)
     const collectionObj = {
       name: inputName,
       id: uuid(),
       created_at: new Date(), 
       reqResArray: clonedArray
     }
-    // console.log({collectionObj})
     collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
     this.props.collectionAdd(collectionObj)
     this.setState({ showModal: false });
