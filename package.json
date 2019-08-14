@@ -79,6 +79,9 @@
       "main.js",
       "httpserver.js"
     ],
+    "nsis": {
+      "createDesktopShortcut": "always"
+    },
     "dmg": {
       "contents": [
         {
@@ -94,10 +97,7 @@
       ]
     },
     "win": {
-      "target": [
-        "nsis",
-        "msi"
-      ],
+      "target": "NSIS",
       "icon": "icon.ico"
     },
     "linux": {
@@ -114,8 +114,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "getswell",
-      "repo": "getswell",
+      "owner": "open-source-labs",
+      "repo": "Swell",
       "private": false
     }
   },
