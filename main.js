@@ -225,7 +225,6 @@ const sendStatusToWindow = (text) => {
 };
 
 ipcMain.on('check-for-update', () => { //listens to ipcRenderer in UpdatePopUpContainer.jsx
-  console.log("here")
   if (!dev) autoUpdater.checkForUpdates();
 });
 // autoUpdater.on('checking-for-update', () => {
