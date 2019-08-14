@@ -1,5 +1,5 @@
 // Allow self-signing HTTPS over TLS
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 // Import parts of electron to use
 // app - Control your application's event lifecycle
@@ -7,17 +7,15 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 const { app, BrowserWindow, TouchBar, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
-//---------------------------------------------
-//This allows electron to spin up this server to localhost:7000 when the app starts up
-require("./httpserver")
-//---------------------------------------------
+// This allows electron to spin up this server to localhost:7000 when the app starts up
+require('./httpserver');
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
-// // configure logging
+// configure logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');

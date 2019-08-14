@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/getswell/getswell",
@@ -73,9 +73,11 @@
       "dist/main.js",
       "dist/img/swell-bg__2JecU.png",
       "dist/img/Trashcan__3piXy.png",
+      "dist/img/arrow_drop_down_white_192x192__3cp1B.png",
       "menu/mainMenu.js",
       "package.json",
-      "main.js"
+      "main.js",
+      "httpserver.js"
     ],
     "dmg": {
       "contents": [
@@ -175,7 +177,6 @@
     "devtron": "^1.4.0",
     "electron": "^3.0.6",
     "electron-builder": "^20.38.2",
-    "electron-packager": "^12.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
