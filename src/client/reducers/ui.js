@@ -1,30 +1,30 @@
 import * as types from '../actions/actionTypes';
 
 const initialState = {
-  isDisplayedModal: true,
-  modalDisplay: 'Request',
+  warningIsDisplayed: true,
+  composerDisplay: 'Request',
 };
 
 const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.SHOW_MODAL: {
+    case types.SHOW_WARNING: {
       return {
         ...state,
-        isDisplayedModal: true,
+        warningIsDisplayed: true,
       };
     }
 
-    case types.HIDE_MODAL: {
+    case types.HIDE_WARNING: {
       return {
         ...state,
-        isDisplayedModal: false,
+        warningIsDisplayed: false,
       };
     }
 
-    case types.SET_MODAL_DISPLAY: {
+    case types.SET_COMPOSER_DISPLAY: {
       return {
         ...state,
-        modalDisplay: action.payload,
+        composerDisplay: action.payload,
       };
     }
 

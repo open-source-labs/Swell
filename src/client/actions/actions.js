@@ -1,6 +1,4 @@
-import { ipcRenderer } from 'electron';
 import * as types from './actionTypes';
-import ReqResCtrl from '../controllers/connectionController';
 
 // BUSINESS LOGIC ACTIONS
 export const getHistory = history => ({
@@ -11,6 +9,26 @@ export const getHistory = history => ({
 export const deleteFromHistory = reqRes => ({
   type: types.DELETE_HISTORY,
   payload: reqRes,
+});
+
+export const getCollections = collections => ({
+  type: types.GET_COLLECTIONS,
+  payload: collections,
+});
+
+export const deleteFromCollection = collection => ({
+  type: types.DELETE_COLLECTION,
+  payload: collection,
+});
+
+export const collectionToReqRes = reqResArray => ({
+  type: types.COLLECTION_TO_REQRES,
+  payload: reqResArray,
+});
+
+export const collectionAdd = collection => ({
+  type: types.COLLECTION_ADD,
+  payload: collection,
 });
 
 export const reqResClear = () => ({
@@ -32,8 +50,8 @@ export const reqResUpdate = reqRes => ({
   payload: reqRes,
 });
 
-export const setWarningModalMessage = message => ({
-  type: types.SET_WARNING_MODAL_MESSAGE,
+export const setComposerWarningMessage = message => ({
+  type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message,
 });
 
@@ -63,16 +81,22 @@ export const setCurrentTab = (tab) => ({
   payload: tab,
 });
 
+export const setChecksAndMinis = (reqResArray) => ({
+  type: types.SET_CHECKS_AND_MINIS,
+  payload: reqResArray,
+});
+
+
 // UI ACTIONS
-export const showModal = () => ({
-  type: types.SHOW_MODAL,
+export const showWarning = () => ({
+  type: types.SHOW_WARNING,
 });
 
-export const hideModal = () => ({
-  type: types.HIDE_MODAL,
+export const hideWarning = () => ({
+  type: types.HIDE_WARNING,
 });
 
-export const setModalDisplay = modalDisplay => ({
-  type: types.SET_MODAL_DISPLAY,
-  payload: modalDisplay,
+export const setComposerDisplay = composerDisplay => ({
+  type: types.SET_COMPOSER_DISPLAY,
+  payload: composerDisplay,
 });

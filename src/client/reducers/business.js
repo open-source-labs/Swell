@@ -2,29 +2,32 @@ import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
 
 
-const initialState = { 
-  currentTab : 'First Tab',
-  reqResArray : [],
-  history : [],
-  warningModalMessage : "",
-  newRequestFields : {
-    method : 'GET',
-    protocol : 'http://',
-    url : 'http://',
+const initialState = {
+  currentTab: 'First Tab',
+  reqResArray: [],
+  history: [],
+  collections: [],
+  warningMessage: "",
+  newRequestFields: {
+    protocol: '',
+    url: '',
+    method: 'GET',
+    graphQL: false
   },
-  newRequestHeaders : {
-    headersArr : [],
-    count : 0,
+  newRequestHeaders: {
+    headersArr: [],
+    count: 0,
   },
-  newRequestCookies : {
-    cookiesArr : [],
-    count : 0,
+  newRequestCookies: {
+    cookiesArr: [],
+    count: 0,
   },
-  newRequestBody : {
-    bodyContent : '',
-    bodyType : 'none',
-    rawType : 'Text (text/plain)',
-    JSONFormatted : true,
+  newRequestBody: {
+    bodyContent: '',
+    bodyVariables: '',
+    bodyType: 'none',
+    rawType: 'Text (text/plain)',
+    JSONFormatted: true,
   },
 };
 
@@ -33,8 +36,6 @@ const businessReducer = (state = initialState, action) => {
     case types.GET_HISTORY: {
       return {
         ...state,
-
-        reqResArray : [],
         history: action.payload,
       };
     }
@@ -46,14 +47,50 @@ const businessReducer = (state = initialState, action) => {
       newHistory.forEach((obj, i) => {
         if (obj.date === deleteDate)
           obj.history = obj.history.filter(hist => hist.id !== deleteId);
-          if (obj.history.length === 0) {
-            newHistory.splice(i, 1) 
-          }
+        if (obj.history.length === 0) {
+          newHistory.splice(i, 1)
+        }
       })
 
       return {
         ...state,
         history: newHistory,
+      };
+    }
+
+    case types.GET_COLLECTIONS: {
+      return {
+        ...state,
+        collections: action.payload,
+      };
+    }
+
+    case types.DELETE_COLLECTION: {
+      const deleteId = action.payload.id;
+      const newCollections = JSON.parse(JSON.stringify(state.collections));
+      newCollections.forEach((obj, i) => {
+        if (obj.id === deleteId) {
+          newCollections.splice(i, 1)
+        }
+      })
+
+      return {
+        ...state,
+        collections: newCollections,
+      };
+    }
+
+    case types.COLLECTION_TO_REQRES: {
+      return {
+        ...state,
+        reqResArray: action.payload,
+      };
+    }
+
+    case types.COLLECTION_ADD: { //add to collection to array in state
+      return {
+        ...state,
+        collections: [action.payload, ...state.collections],
       };
     }
 
@@ -71,7 +108,7 @@ const businessReducer = (state = initialState, action) => {
       const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
 
       const newHistory = JSON.parse(JSON.stringify(state.history));
-      
+
       let updated = false;
       newHistory.forEach((obj) => {
         if (obj.date === addDate) {
@@ -99,21 +136,27 @@ const businessReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        reqResArray : newReqResArray
+        reqResArray: newReqResArray
       }
     }
 
-    case types.REQRES_UPDATE:{
+    case types.SET_CHECKS_AND_MINIS: {
+      return {
+        ...state,
+        reqResArray: JSON.parse(JSON.stringify(action.payload))
+      }
+    }
+
+    case types.REQRES_UPDATE: {
       let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
-        if (reqRes.id === action.payload.id) {
-          indexToBeUpdated = index;
-        }
+        if (reqRes.id === action.payload.id) indexToBeUpdated = index;
       });
-
       if (indexToBeUpdated !== undefined) {
-        reqResDeepCopy.splice(indexToBeUpdated, 1, action.payload);
+        action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
+        action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
+        reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
 
       return {
@@ -122,17 +165,17 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
-    case types.SET_WARNING_MODAL_MESSAGE: {
+    case types.SET_COMPOSER_WARNING_MESSAGE: {
       return {
         ...state,
-        warningModalMessage : action.payload
+        warningMessage: action.payload
       }
     }
 
-    case types.SET_NEW_REQUEST_FIELDS:{
+    case types.SET_NEW_REQUEST_FIELDS: {
       return {
         ...state,
-        newRequestFields : action.payload,
+        newRequestFields: action.payload,
       }
     }
 
@@ -160,7 +203,7 @@ const businessReducer = (state = initialState, action) => {
     case types.SET_CURRENT_TAB: {
       return {
         ...state,
-        currentTab : action.payload,
+        currentTab: action.payload,
       }
     }
 

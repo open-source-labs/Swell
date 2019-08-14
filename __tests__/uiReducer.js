@@ -5,35 +5,35 @@ describe('UI Reducer', () => {
   
   beforeEach(() => {
     state = {
-      isDisplayedModal: null,
-      modalDisplay: 'Request',
+      warningIsDisplayed: null,
+      composerDisplay: 'Request',
     };
   })
 
-  describe('SHOW_MODAL', () => {
-    const action = { type: 'SHOW_MODAL'};
+  describe('SHOW_WARNING', () => {
+    const action = { type: 'SHOW_WARNING'};
 
-    it('should set isDisplayedModal to true', () => {
-      const { isDisplayedModal } = reducer(state, action);
-      expect(isDisplayedModal).toBe(true);
+    it('should set warningIsDisplayed to true', () => {
+      const { warningIsDisplayed } = reducer(state, action);
+      expect(warningIsDisplayed).toBe(true);
     })
   })
 
-  describe('HIDE_MODAL', () => {
-    const action = { type: 'HIDE_MODAL'};
+  describe('HIDE_WARNING', () => {
+    const action = { type: 'HIDE_WARNING'};
 
-    it('should set isDisplayedModal to false', () => {
-      const { isDisplayedModal } = reducer(state, action);
-      expect(isDisplayedModal).toBe(false);
+    it('should set warningIsDisplayed to false', () => {
+      const { warningIsDisplayed } = reducer(state, action);
+      expect(warningIsDisplayed).toBe(false);
     })
   })
 
-  describe('SET_MODAL_DISPLAY', () => {
-    const action = { type: 'SET_MODAL_DISPLAY', payload: 'CHANGE' }
+  describe('SET_COMPOSER_DISPLAY', () => {
+    const action = { type: 'SET_COMPOSER_DISPLAY', payload: 'CHANGE' }
 
-    it('should update the modalDisplay', () => {
-      const { modalDisplay } = reducer(state, action);
-      expect(modalDisplay).toEqual(action.payload);
+    it('should update the composerDisplay', () => {
+      const { composerDisplay } = reducer(state, action);
+      expect(composerDisplay).toEqual(action.payload);
     })
   })
 })

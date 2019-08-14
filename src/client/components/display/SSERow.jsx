@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import ReactJson from 'react-json-view';
 
 class SSERow extends Component {
@@ -15,7 +14,6 @@ class SSERow extends Component {
     expandBtn.classList.toggle('expand-active')
     expandable.classList.toggle('expanded');
   }
-
   render() {
     let contentBody;
     try {
@@ -28,39 +26,36 @@ class SSERow extends Component {
 
     return (
       <div className={'response_sse'}>
-        <div className={'nested-grid-4'}>
+        <div className={'grid-4'}>
           <div>
             <span className="tertiary-title">
-              ID
-              {this.props.content.id}
+              ID {this.props.content.id}
             </span>
           </div>
 
           <div>
             <span className="tertiary-title">
-              Event
-              {this.props.content.event}
+              Event {this.props.content.event}
             </span>
           </div>
 
           <div>
             <span className="tertiary-title">
-              Time Received
-              {this.props.content.timeReceived}
+              Time Received {this.props.content.timeReceived}
             </span>
           </div>
-          
+
           <div>
             <span className={'tertiary-title expand-btn'} onClick={(e) => this.handleClick(e)} ></span>
           </div>
         </div>
 
         <div className={'title-row data-inner'}>
-            <div>
-              <span className={'tertiary-title'}>
-                Data {contentBody}
-              </span>
-            </div>
+          <div>
+            <span className={'tertiary-title'}>
+              Data {contentBody}
+            </span>
+          </div>
         </div>
       </div>
     );

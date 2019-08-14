@@ -1,42 +1,39 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import '../../../assets/style/App.scss';
-import { ipcRenderer } from 'electron';
-import * as actions from '../../actions/actions';
+import { ipcRenderer } from 'electron'; //Communicate asynchronously from a renderer process to the main process.
 import ContentsContainer from './ContentsContainer.jsx';
-import ReqResCtrl from '../../controllers/connectionController';
+import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';
 import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
-import dbController from '../../controllers/dbController'
-import db from '../../db';
-
-const mapStateToProps = store => ({
-  store,
-});
-
-const mapDispatchToProps = dispatch => ({});
+import historyController from '../../controllers/historyController'
+import collectionsController from '../../controllers/collectionsController'
 
 class App extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
-    ipcRenderer.on('selectAll', ReqResCtrl.selectAllResReq);
-    ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllResReq);
+  componentDidMount() {// This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
+    ipcRenderer.send('check-for-update');
+    ipcRenderer.on('selectAll', ReqResCtrl.selectAllReqRes); // if the selectAll touchbar button was clicked (then run this method called selectAllReqRes) that is located in the connectionController...likewise for the rest
+    ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllReqRes);
     ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
     ipcRenderer.on('closeAllSelected', ReqResCtrl.closeAllReqRes);
+    ipcRenderer.on('minimizeAll', ReqResCtrl.minimizeAllReqRes);
+    ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
     ipcRenderer.on('message', (e, text) => {
       // console.log('Message from updater: ', text)
     });
-    dbController.getHistory();
+    historyController.getHistory();
+    collectionsController.getCollections();
+
   }
 
   render() {
     return (
       <div id="app">
-        {/* <UpdatePopUpContainer/> */}
+        <UpdatePopUpContainer/>
         <SidebarContainer />
         <ContentsContainer />
       </div>
@@ -44,7 +41,4 @@ class App extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App);
+export default App;

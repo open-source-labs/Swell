@@ -1,54 +1,25 @@
 .navbar-console {
 	display: flex;
-	justify-content: space-between;
-	width: 100%;
+	justify-content: center;
+  width: 100%;
+  background: #4e4e4e;
 }
-.btn {
-	background-color: $bluetwo;
-	border: none;
-	color: white;
-	cursor: pointer;
-	display: block;
-	font-size: 20px;
-	font-weight: bold;
-	height: 40px;
-	margin: 25px auto;
-	padding: 0 1.5rem;
-	width: auto;
-	&:hover {
-		background: transparent;
-		color: white!important;
-	}
-}
-.btn-sm {
-	.btn {
-		border-radius: 3px;
-		font-size: 0.6rem;
-		font-weight: bold;
-		height: 30px;
-		line-height: 1;
-		margin: 0;
-		padding: 0;
-		width: 100%;
-		&:hover {
-			background-color: $bluethree;
-			border: none;
-		}
-	}
-}
-.navbar-console {
-	background: #4e4e4e;
-}
+
 .navbar-console_inner {
-	max-width: 600px;
-	padding: 0 15px;
+  padding: 2px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
 	.btn {
-		background: $darkgraygreen;
+		background: transparent;
 		border: solid 1px #4e4e4e;
 		color: $mediumgray;
-		display: inline;
-		font-size: 12px;
-		margin: 1px;
-		padding: .5rem;
+		font-size: 14px;
+		margin: 4px;
+    padding: .5rem;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+    font-weight: 425;
 	}
 }

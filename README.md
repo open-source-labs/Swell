@@ -58,5 +58,6 @@ Swell is a one-stop shop for sending and monitoring your API requests
 ## License
 
 This project is licensed under the MIT License.
-
-
+<!-- 
+C:\Users\Lazarus-Kwadwo\Desktop\devStuff\codesmith\production\Swell\node_modules\jest-jasmine2\package.json.4242575574
+C:\Users\Lazarus-Kwadwo\Desktop\devStuff\codesmith\production\Swell\node_modules\jest-jasmine2\package.json -->

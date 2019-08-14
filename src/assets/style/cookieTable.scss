@@ -4,7 +4,7 @@
 	overflow-y: auto;
 }
 .cookieTableHeaders {
-	justify-content: left;
+  justify-content: left;
 }
 .cookieTableRow {
 	background: white;
@@ -12,12 +12,12 @@
 	padding: 0;
 }
 .cookieTableHeaderCell {
-	font-size: .6rem;
+	font-size: .7rem;
 	font-weight: bold;
-	text-align: left;
+  text-align: left;
 }
 .cookieTableCell {
-	font-size: 0.6rem;
-	height: auto;
+	font-size: 0.7rem;
+  height: auto;
 	overflow-x: scroll;
 }
