@@ -39,7 +39,6 @@
   overflow-y: auto;
   white-space: nowrap;
   transition: transform 0.3s ease-in-out;
-  
 }
 
 
@@ -198,6 +197,22 @@
   border-bottom: solid 1px $bordergray;
   border-left: solid 1px $bordergray;
   border-right: solid 1px $bordergray;
+}
+.resreq_res-container::-webkit-scrollbar{
+	width: 0.5px;
+	background-color: transparent;
+}
+.resreq_res-container::-webkit-scrollbar-thumb {
+	width: 0.5px;
+	background-color: transparent;
+}
+.resreq_res-container::-webkit-scrollbar-thumb:hover {
+	width: 0.5px;
+	background-color: transparent;
+}
+.resreq_res-container::-webkit-scrollbar:active {
+	width: 0.5px;
+	background-color: transparent;
 }
 
 .headers {
