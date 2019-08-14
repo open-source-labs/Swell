@@ -1,6 +1,7 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
-const session = require('electron').remote.session;
+
+const { session } = require('electron').remote;
 const http2 = require('http2');
 
 const httpController = {
@@ -13,8 +14,7 @@ const httpController = {
     if (reqResObj.protocol === 'https://') {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
-    }
-    else {
+    } else {
       // console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
@@ -127,8 +127,7 @@ const httpController = {
     // Send body depending on method;
     if (reqResObj.request.method !== 'GET' && reqResObj.request.method !== 'HEAD') {
       reqStream.end(reqResObj.request.body);
-    }
-    else {
+    } else {
       reqStream.end();
     }
 
@@ -148,8 +147,7 @@ const httpController = {
       if (isSSE) {
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'SSE';
-      }
-      else {
+      } else {
         reqResObj.connection = 'closed';
         reqResObj.connectionType = 'plain';
       }
@@ -160,9 +158,10 @@ const httpController = {
       reqResObj.response.events = [];
 
       // let sesh = session.defaultSession;
-      let domain = reqResObj.host.split('//')
+      let domain = reqResObj.host.split('//');
       domain.shift();
-      domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
+      domain = domain.join('').split('.').splice(-2).join('.')
+        .split(':')[0];
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
 
@@ -204,8 +203,7 @@ const httpController = {
         reqResObj.connection = 'closed';
         reqResObj.response.events.push(receivedEventFields);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-      }
-      else {
+      } else {
         reqResObj.connection = 'closed';
         reqResObj.response.events.push(data);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -215,13 +213,11 @@ const httpController = {
 
   establishHTTP1connection(reqResObj, connectionArray) {
     // start off by clearing existing response data
-    //--------------------------------------------------------------------------------------------------------------
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    //--------------------------------------------------------------------------------------------------------------
     connectionArray.forEach((obj, i) => {
       if (obj.id === reqResObj.id) {
         connectionArray.splice(i, 1);
@@ -234,115 +230,120 @@ const httpController = {
     };
     connectionArray.push(openConnectionObj);
 
-    const parsedFetchOptions = this.parseFetchOptionsFromReqRes(reqResObj);
-    parsedFetchOptions.signal = openConnectionObj.abort.signal;
-//--------------------------------------------------------------------------------------------------------------
-// Check if the URL provided is a stream
-//--------------------------------------------------------------------------------------------------------------
-      fetch(reqResObj.url, parsedFetchOptions)//fetch straight to provided url
-      .then(response => {
+    const options = this.parseFetchOptionsFromReqRes(reqResObj);
+    options.signal = openConnectionObj.abort.signal;
+    //--------------------------------------------------------------------------------------------------------------
+    // Check if the URL provided is a stream
+    //--------------------------------------------------------------------------------------------------------------
+    fetch(reqResObj.url, options)// fetch straight to provided url
+      .then((response) => {
         // Parse response headers now to decide if SSE or not.
-        let heads = {};
-        for (let entry of response.headers.entries()) {
+        const heads = {};
+        for (const entry of response.headers.entries()) {
           heads[entry[0].toLowerCase()] = entry[1];
         }
         reqResObj.response.headers = heads;
         // store extracted headers in heads object
         // check if the content-type header contains the word stream
         let isStream;
+
         if (heads['content-type'] && heads['content-type'].includes('stream')) {
           isStream = true;
         } else {
           isStream = false;
         }
-        if(isStream){// if url is sse...
-          let http1Sesh = session.defaultSession; 
-          let domain = reqResObj.host.split('//')
+        if (isStream) { // if url is sse...
+          const http1Sesh = session.defaultSession;
+          let domain = reqResObj.host.split('//');
           domain.shift();
-          domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-        
-          http1Sesh.cookies.get({domain: domain}, (err, cookies) => {
+          [domain] = domain.join('').split('.').splice(-2).join('.')
+            .split(':');
 
+          http1Sesh.cookies.get({ domain }, (err, cookies) => {
             if (cookies) {
               reqResObj.response.cookies = cookies;
-              store.default.dispatch(actions.reqResUpdate(reqResObj))
-              cookies.forEach(cook => {
+              store.default.dispatch(actions.reqResUpdate(reqResObj));
+              cookies.forEach((cook) => {
                 let url = '';
                 url += cook.secure ? 'https://' : 'http://';
                 url += cook.domain.charAt(0) === '.' ? 'www' : '';
                 url += cook.domain;
                 url += cook.path;
 
-                http1Sesh.cookies.remove(url, cook.name, (x) => console.log(x));
-              })
+                http1Sesh.cookies.remove(url, cook.name, x => console.log(x));
+              });
             }
-            this.handleSSE(response, reqResObj, heads) ;
-          })
-        }else{// if url is not not sse ...
-          fetch('http://localhost:7000', parsedFetchOptions)//fetch to OUR local proxy server before fetching to url provided
-          .then(response => response.json())
-          .then((result) => {
-            // the readable verson of our response is an object that looks like this: 
-            // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
-            // theResponseHeaders refers to our literal object of response headers
-            // the ResponseBody is the literal readable object containing our api content
-            // the raw unparsed response from localhost:7000
-            const theResponseHeaders = result.headers._headers;
-            const { body, rawResponse } = result;
-            // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
-            reqResObj.response.headers = theResponseHeaders;
-           
-            let http1Sesh = session.defaultSession;
-            let domain = reqResObj.host.split('//');
-            domain.shift();
-            domain = domain.join('').split('.').splice(-2).join('.').split(':')[0]
-  
-            http1Sesh.cookies.get({ domain }, (err, cookies) => {
-              if (cookies) {
-                reqResObj.response.cookies = cookies;
-                store.default.dispatch(actions.reqResUpdate(reqResObj))
-                cookies.forEach((cookie) => {
-                  let url = '';
-                  url += cookie.secure ? 'https://' : 'http://';
-                  url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-                  url += cookie.domain;
-                  url += cookie.path;
-                  http1Sesh.cookies.remove(url, cookie.name, (x) => console.log(x));
-                })
-              }
-              // Below the headers and response api content are handled by swell and will be displayed.
-             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-            })
-          })
-          .catch((err) => {
-            reqResObj.connection = 'error';
-            store.default.dispatch(actions.reqResUpdate(reqResObj));
+            this.handleSSE(response, reqResObj, heads);
           });
+        } else { // if url is not not sse ...
+          reqResObj.timeSent = Date.now();
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+          fetch('http://localhost:7000', options)// fetch to OUR local proxy server before fetching to url provided
+            .then(response => response.json())
+            .then((result) => {
+              // the readable verson of our response is an object that looks like this:
+              // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
+              // theResponseHeaders refers to our literal object of response headers
+              // the ResponseBody is the literal readable object containing our api content
+              // the raw unparsed response from localhost:7000
+              const theResponseHeaders = result.headers._headers;
+              const { body } = result;
+              // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
+              reqResObj.response.headers = theResponseHeaders;
+
+              const http1Sesh = session.defaultSession;
+              let domain = reqResObj.host.split('//');
+              domain.shift();
+              [domain] = domain.join('').split('.').splice(-2).join('.')
+                .split(':');
+
+              http1Sesh.cookies.get({ domain }, (err, cookies) => {
+                if (cookies) {
+                  reqResObj.response.cookies = cookies;
+                  store.default.dispatch(actions.reqResUpdate(reqResObj));
+                  cookies.forEach((cookie) => {
+                    let url = '';
+                    url += cookie.secure ? 'https://' : 'http://';
+                    url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+                    url += cookie.domain;
+                    url += cookie.path;
+                    http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
+                  });
+                }
+                // Below the headers and response api content are handled by swell and will be displayed.
+                this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+              });
+            })
+            .catch((err) => {
+              reqResObj.connection = 'error';
+              store.default.dispatch(actions.reqResUpdate(reqResObj));
+            });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reqResObj.connection = 'error';
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-      }) 
-   
+      });
   },
 
   parseFetchOptionsFromReqRes(reqResObject) {
-    let { method, headers, body, cookies } = reqResObject.request;
+    let {
+      method, headers, body, cookies
+    } = reqResObject.request;
 
     method = method.toUpperCase();
 
-    const formattedHeaders = { 'url': reqResObject.url };
+    const formattedHeaders = { url: reqResObject.url };
     headers.forEach((head) => {
       if (head.active) {
         formattedHeaders[head.key] = head.value;
       }
     });
 
-    cookies.forEach(cookie => {
-      let cookieString = `${cookie.key}=${cookie.value}`;
+    cookies.forEach((cookie) => {
+      const cookieString = `${cookie.key}=${cookie.value}`;
       document.cookie = cookieString;
-    })
+    });
 
     const outputObj = {
       method,
@@ -421,8 +422,7 @@ const httpController = {
 
         // base case
         if (obj.done) {
-        }
-        else {
+        } else {
           read();
         }
       });
@@ -453,8 +453,7 @@ const httpController = {
           const key = Object.keys(cur)[0];
           if (acc[key]) {
             acc[key] = `${acc[key]}\n${cur[key]}`;
-          }
-          else {
+          } else {
             acc[key] = cur[key];
           }
           return acc;

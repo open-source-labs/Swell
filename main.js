@@ -9,7 +9,7 @@ const path = require('path');
 const url = require('url');
 //---------------------------------------------
 //This allows electron to spin up this server to localhost:7000 when the app starts up
-const httpserver = require("./httpserver")
+require("./httpserver")
 //---------------------------------------------
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require('electron-updater');
@@ -204,7 +204,7 @@ function createWindow() {
 app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
-  if (!dev) { autoUpdater.checkForUpdates() }; 
+  if (!dev) { autoUpdater.checkForUpdates() };
 });
 
 // Quit when all windows are closed.
