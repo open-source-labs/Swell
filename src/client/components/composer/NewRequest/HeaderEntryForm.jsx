@@ -108,7 +108,6 @@ class HeaderEntryForm extends Component {
 
   onChangeUpdateHeader(id, field, value) {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    console.log({id}, {headersDeepCopy})
     // find header to update
     let indexToBeUpdated;
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
