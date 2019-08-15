@@ -24,8 +24,8 @@ class FieldEntryForm extends Component {
         let grabbedProtocol, afterProtocol;
         if (!!this.props.newRequestFields.url) {
           grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/) !== null
-          ? this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
-          : ""
+            ? this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
+            : ""
           afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length)
         }
         else afterProtocol = ''
@@ -151,7 +151,7 @@ class FieldEntryForm extends Component {
 
           {/* below conditional method selection rendering for http/s */}
           {
-            this.props.newRequestFields.protocol !== 'ws://' && !this.props.newRequestFields.graphQL &&
+            !/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL &&
 
             <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select http'} onChange={(e) => {
               this.onChangeHandler(e, 'method')
@@ -165,7 +165,7 @@ class FieldEntryForm extends Component {
           }
           {/* below conditional method selection rendering for graphql */}
           {
-            this.props.newRequestFields.protocol !== 'ws://' && this.props.newRequestFields.graphQL &&
+            !/wss?:\/\//.test(this.props.newRequestFields.protocol) && this.props.newRequestFields.graphQL &&
 
             <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select gql'} onChange={(e) => {
               this.onChangeHandler(e, 'method')

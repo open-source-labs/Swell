@@ -34,7 +34,6 @@ class RequestTabs extends Component {
         });
         break;
       default:
-      // console.log(`There was an error with ${val}`);
     }
   }
 
@@ -63,7 +62,7 @@ class RequestTabs extends Component {
 
     else if (this.state.openTab === "Request Headers") {
       tabContentShown = [];
-      if (this.props.requestContent.headers.length > 0) {
+      if (this.props.requestContent.headers && this.props.requestContent.headers.length > 0) {
         this.props.requestContent.headers.forEach((cur, idx) => {
           tabContentShown.push(
             <div className={"grid-2"} key={idx}>
@@ -80,7 +79,7 @@ class RequestTabs extends Component {
 
     else if (this.state.openTab === "Request Cookies") {
       tabContentShown = [];
-      if (this.props.requestContent.cookies.length > 0) {
+      if (this.props.requestContent.cookies && this.props.requestContent.cookies.length > 0) {
         this.props.requestContent.cookies.forEach((cur, idx) => {
           tabContentShown.push(
             <div className={"grid-2"} key={idx}>
@@ -98,9 +97,9 @@ class RequestTabs extends Component {
     return (
       <div className={"request_tabs_container"}>
         <ul className={"tab_list"}>
-          <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab}/>
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab}/>
-          <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab}/>
+          <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
+          <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab} />
           {
             this.props.requestContent.bodyType === "GQL" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={variables} openTab={this.state.openTab} />

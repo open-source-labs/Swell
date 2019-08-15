@@ -43,7 +43,7 @@ class ComposerNewRequest extends Component {
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
 
       // HTTP && GRAPHQL REQUESTS
-      if (this.props.newRequestFields.protocol !== 'ws://') {
+      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         let path = `/${URIWithoutProtocol.split('/')
@@ -157,10 +157,10 @@ class ComposerNewRequest extends Component {
 
   render() {
     let HeaderEntryFormStyle = { //trying to change style to conditional created strange duplication effect when continuously changing protocol
-      display: this.props.newRequestFields.protocol !== 'ws://' ? 'block' : 'none',
+      display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
-    if (this.props.newRequestFields.protocol === "ws://") { SubmitButtonClassName += " ws" }
+    if (/wss?:\/\//.test(this.props.newRequestFields.protocol)) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
     else { SubmitButtonClassName += " http" }
 
@@ -190,7 +190,7 @@ class ComposerNewRequest extends Component {
         />
 
         {
-          this.props.newRequestFields.method && this.props.newRequestFields.protocol !== 'ws://' &&
+          this.props.newRequestFields.method && !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}
@@ -198,7 +198,10 @@ class ComposerNewRequest extends Component {
           />
         }
         {
-          !this.props.newRequestFields.graphQL && this.props.newRequestFields.method !== 'GET' && this.props.newRequestFields.protocol !== 'ws://' &&
+          !this.props.newRequestFields.graphQL
+          && this.props.newRequestFields.method !== 'GET'
+          && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
+          &&
           <BodyEntryForm
             newRequestHeaders={this.props.newRequestHeaders}
             newRequestBody={this.props.newRequestBody}

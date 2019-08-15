@@ -130,7 +130,6 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
-    "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.15",
     "apollo-link-ws": "^1.0.18",
     "chart.js": "^2.7.3",
@@ -194,6 +193,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.1.0",
     "postcss-pxtorem": "^4.0.1",
+    "react-test-renderer": "^16.9.0",
     "redux-devtools-extension": "^2.13.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",

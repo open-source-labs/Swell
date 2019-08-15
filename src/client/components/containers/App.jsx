@@ -22,9 +22,6 @@ class App extends Component {
     ipcRenderer.on('minimizeAll', ReqResCtrl.minimizeAllReqRes);
     ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
-    ipcRenderer.on('message', (e, text) => {
-      // console.log('Message from updater: ', text)
-    });
     historyController.getHistory();
     collectionsController.getCollections();
 
@@ -33,7 +30,7 @@ class App extends Component {
   render() {
     return (
       <div id="app">
-        <UpdatePopUpContainer/>
+        <UpdatePopUpContainer />
         <SidebarContainer />
         <ContentsContainer />
       </div>

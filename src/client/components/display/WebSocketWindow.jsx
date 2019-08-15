@@ -55,7 +55,6 @@ class WebSocketWindow extends Component {
     const messageInputStyles = {
       display: this.props.connection === 'open' ? 'block' : 'none',
     };
-    console.log(this.props)
     return (
       <div
         style={{}}
