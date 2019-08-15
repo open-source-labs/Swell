@@ -130,6 +130,7 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
+    "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.15",
     "apollo-link-ws": "^1.0.18",
     "chart.js": "^2.7.3",
@@ -139,9 +140,13 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-log": "^2.2.17",
     "electron-updater": "^4.0.5",
+    "es6-promise": "^4.2.8",
+    "express": "^4.17.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "isomorphic-fetch": "^2.2.1",
     "node-sass": "^4.10.0",
+    "nodemon": "^1.19.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
@@ -158,11 +163,7 @@
     "status-indicator": "^1.0.9",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2",
-    "ws": "^6.1.2",
-    "es6-promise": "^4.2.8",
-    "express": "^4.17.1",
-    "isomorphic-fetch": "^2.2.1",
-    "nodemon": "^1.19.1"
+    "ws": "^6.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

@@ -326,7 +326,7 @@ const httpController = {
   parseFetchOptionsFromReqRes(reqResObject) {
     let {
       method, headers, body, cookies
-    } = reqResObject.request;
+    } = reqResObject.request; 
 
     method = method.toUpperCase();
 
