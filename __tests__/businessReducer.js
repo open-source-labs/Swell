@@ -13,7 +13,7 @@ describe('Business reducer', () => {
       newRequestFields: {
         method: 'GET',
         protocol: '',
-        url: '',
+        url: 'http://',
         graphQL: false
       },
       newRequestHeaders: {
