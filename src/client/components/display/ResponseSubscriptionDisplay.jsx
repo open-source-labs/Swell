@@ -8,7 +8,8 @@ import { WebSocketLink } from 'apollo-link-ws';
 
 
 const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
-  const { body, bodyVariables } = content.request;
+  let { body, bodyVariables } = content.request;
+  if (bodyVariables === '') bodyVariables = null
   const uri = /wss?:\/\//.test(content.protocol) ? content.url : content.url.replace(content.protocol, 'ws://');
 
   const link = new WebSocketLink({
