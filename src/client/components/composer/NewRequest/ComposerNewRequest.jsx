@@ -190,7 +190,7 @@ class ComposerNewRequest extends Component {
         />
 
         {
-          this.props.newRequestFields.method &&
+          this.props.newRequestFields.method && this.props.newRequestFields.protocol !== 'ws://' &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}
