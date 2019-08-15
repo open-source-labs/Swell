@@ -10,7 +10,7 @@ const initialState = {
   warningMessage: "",
   newRequestFields: {
     protocol: '',
-    url: '',
+    url: 'http://',
     method: 'GET',
     graphQL: false
   },
