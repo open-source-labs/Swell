@@ -39,18 +39,16 @@
   overflow-y: auto;
   white-space: nowrap;
   transition: transform 0.3s ease-in-out;
+  padding-bottom: 40px;
 }
-
 
 .resreq_wrap {
   width: calc(100vw - 340px);
   margin: 15px;
   flex: 0 0 auto;
   min-width: 800px;
-  padding-right: 215px;
+  padding-right: 200px;
 }
-
-
 
 .reqResContainer_inner-page {
   width: 100%;
@@ -230,10 +228,17 @@
   font-weight: bold;
 }
 
-.reqResContainer-inner {
-  position: relative;
-  height: auto;
-}
+// .reqResContainer-inner {
+//   // position: relative;
+//   // height: auto;
+//   width: auto;
+//   height: auto;
+//   overflow-x: hidden;
+//   overflow-y: scroll;
+//   white-space: nowrap;
+//   transition: transform 0.3s ease-in-out;
+//   padding-bottom: 20px !important;
+// }
 
 // .response_display {
 //   weight: 500px;
