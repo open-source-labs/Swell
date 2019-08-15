@@ -23,23 +23,24 @@ class FieldEntryForm extends Component {
       case 'protocol': {
         let grabbedProtocol, afterProtocol, composedURL;
         if (!!this.props.newRequestFields.url) {
-          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)
-            ? this.props.newRequestFields.url.match(/(https?:\/\/)|(ws:\/\/)/)[0]
-            : '';
+          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
+            // ? this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
+            // : '';
           afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length);
-          composedURL = grabbedProtocol !== 'ws://' ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
+          // composedURL = grabbedProtocol !== 'ws://' ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
+          // composedURL = /wss?:\/\//. ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
+          composedURL = grabbedProtocol + afterProtocol;
         }
         else {
-          grabbedProtocol = '';
+          composedURL = grabbedProtocol = 'http://';
           afterProtocol = '';
-          composedURL = '';
         }
 
         if (!!graphQL) { //if graphql
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
-            url: composedURL,
+            url: `http://${afterProtocol}`,
             method: 'QUERY',
             graphQL: true
           })
