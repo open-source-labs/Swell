@@ -34,7 +34,6 @@ class RequestTabs extends Component {
         });
         break;
       default:
-      // console.log(`There was an error with ${val}`);
     }
   }
 
