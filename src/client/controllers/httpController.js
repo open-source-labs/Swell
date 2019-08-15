@@ -257,6 +257,7 @@ const httpController = {
             .split(':');
 
           http1Sesh.cookies.get({ domain }, (err, cookies) => {
+            console.log('KKKKKKKK',cookies);
             if (cookies) {
               reqResObj.response.cookies = cookies;
               store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -295,8 +296,10 @@ const httpController = {
                 .split(':');
 
               http1Sesh.cookies.get({ domain }, (err, cookies) => {
+                console.log(cookies,'before cookies')
                 if (cookies) {
                   reqResObj.response.cookies = cookies;
+                  console.log(reqResObj.response.cookies, '**** look here for Kajol')
                   store.default.dispatch(actions.reqResUpdate(reqResObj));
                   cookies.forEach((cookie) => {
                     let url = '';
@@ -326,7 +329,9 @@ const httpController = {
   parseFetchOptionsFromReqRes(reqResObject) {
     let {
       method, headers, body, cookies
-    } = reqResObject.request;
+    } = reqResObject.request; 
+    console.log(reqResObject.request.cookies, 'HERE IS reqResObject.request.cookies')
+    console.log(cookies, 'HERE IS just cookies')
 
     method = method.toUpperCase();
 
@@ -339,7 +344,10 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
+      console.log(cookieString, 'MY COOKIE STRING')
+      console.log('2 cookies$$$$$$$$$$$$$$', cookie.value);
       document.cookie = cookieString;
+      console.log(document.cookie,'+++++++ DOCUMENT.COOKIE')
     });
 
     const outputObj = {

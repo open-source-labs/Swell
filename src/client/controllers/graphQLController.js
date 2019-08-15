@@ -10,6 +10,7 @@ import * as actions from '../actions/actions';
 const graphQLController = {
 
   openGraphQLConnection(reqResObj) {
+    console.warn(reqResObj)
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -61,6 +62,7 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
+    console.log(response, reqResObj)
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
     // TODO: Add response headers, cookies
     reqResCopy.connection = 'closed';

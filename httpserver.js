@@ -10,8 +10,14 @@ const port = 7000;
 // 3 Swell now has access to unfiltered headers and both a parsed and unparsed version of the api response content
 
 app.get('/', (req, res) => {
-  fetch(req.headers.url)
+  console.log(req.headers, 'THIS Headers HTTPSERVER')
+  fetch(req.headers.url, {
+    headers: {
+      cookie: req.headers.cookie
+    }
+  })  // you forgot to send cookie and headers
     .then((response) => {
+      // console.log(response, '&&&&&&&')
       const [contentType] = response.headers._headers['content-type'];
       const { headers } = response;
       const contents = /json/.test(contentType) ? response.json() : response.text();
