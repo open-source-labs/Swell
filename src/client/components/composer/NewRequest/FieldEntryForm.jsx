@@ -25,8 +25,6 @@ class FieldEntryForm extends Component {
         if (!!this.props.newRequestFields.url) {
           grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
           afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length);
-          // composedURL = grabbedProtocol !== 'ws://' ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
-          // composedURL = /wss?:\/\//. ? grabbedProtocol + afterProtocol : 'http://' + afterProtocol;
           composedURL = grabbedProtocol + afterProtocol;
         }
         else {
