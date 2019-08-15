@@ -76,7 +76,7 @@ class HeaderEntryForm extends Component {
     });
   }
 
-  updateContentTypeHeader(contentType, foundHeader) {
+  updateContentTypeHeader(contentType) {
     const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
     filtered.unshift({
       id: this.props.newRequestHeaders.count,

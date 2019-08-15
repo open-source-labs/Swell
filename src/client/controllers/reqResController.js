@@ -48,7 +48,7 @@ const connectionController = {
 
     if (reqResObj.request.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
-    else if (reqResObj.protocol === 'ws://') wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    else if (/wss?:\/\//.test(reqResObj.protocol)) wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
   },
 

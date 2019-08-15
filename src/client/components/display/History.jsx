@@ -19,23 +19,33 @@ class History extends Component {
       graphQL: this.props.content.graphQL ? this.props.content.graphQL : false
     }
 
-    let deeperCopy;
+    let headerDeeperCopy;
     if (this.props.content.request.headers) {
-      deeperCopy = JSON.parse(JSON.stringify(this.props.content.request.headers));
-      deeperCopy.push({
+      headerDeeperCopy = JSON.parse(JSON.stringify(this.props.content.request.headers));
+      headerDeeperCopy.push({
         id: this.props.content.request.headers.length + 1,
         active: false,
         key: '',
         value: '',
       })
     }
+    let cookieDeeperCopy;
+    if (this.props.content.request.cookies && !/ws/.test(this.props.content.protocol)) {
+      cookieDeeperCopy = JSON.parse(JSON.stringify(this.props.content.request.cookies));
+      cookieDeeperCopy.push({
+        id: this.props.content.request.cookies.length + 1,
+        active: false,
+        key: '',
+        value: '',
+      })
+    }
     const requestHeadersObj = {
-      headersArr: deeperCopy ? deeperCopy : [],
-      count: deeperCopy ? deeperCopy.length : 1, //TO FIX
+      headersArr: headerDeeperCopy ? headerDeeperCopy : [],
+      count: headerDeeperCopy ? headerDeeperCopy.length : 1,
     }
     const requestCookiesObj = {
-      cookiesArr: this.props.content.request.cookies ? this.props.content.request.cookies : [],
-      count: this.props.content.request.cookies ? this.props.content.request.cookies.length : 0,
+      cookiesArr: cookieDeeperCopy ? cookieDeeperCopy : [],
+      count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
     }
     const requestBodyObj = {
       bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',

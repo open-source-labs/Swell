@@ -8,7 +8,6 @@ class CookieTable extends Component {
   }
 
   render() {
-    // console.log('all cookies', this.props.cookies)
     let cookieRowArray;
     if (Array.isArray(this.props.cookies)) {
       cookieRowArray = this.props.cookies.map((cookie, i) => {

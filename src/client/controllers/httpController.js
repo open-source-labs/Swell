@@ -15,7 +15,7 @@ const httpController = {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     } else {
-      // console.log('HTTP REQUEST, MOVING TO FETCH');
+      console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
   },

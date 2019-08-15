@@ -20,16 +20,18 @@
   background-color:#cccccc;
   }
   #reqResContainer::-webkit-scrollbar-thumb{
-  background-color:rgb(189, 189, 189);
+  width:0.5px;
+  background-color:#cccccc;
   border-radius:10px;
   }
   #reqResContainer::-webkit-scrollbar-thumb:hover{
-  background-color:rgb(114, 111, 111);
+  width:0.5px;
+  background-color:#cccccc;
   }
   #reqResContainer::-webkit-scrollbar-thumb:active{
-  background-color:rgb(80, 77, 77);
-  border:1px solid #333333;
-
+  width:0.5px;
+  background-color:#cccccc;
+  border:1px solid #cccccc;
   }
 //-------------------------------------------------------------------
 #reqResContainer_inner {
@@ -39,18 +41,16 @@
   overflow-y: auto;
   white-space: nowrap;
   transition: transform 0.3s ease-in-out;
+  padding-bottom: 40px;
 }
-
 
 .resreq_wrap {
   width: calc(100vw - 340px);
   margin: 15px;
   flex: 0 0 auto;
   min-width: 800px;
-  padding-right: 215px;
+  padding-right: 200px;
 }
-
-
 
 .reqResContainer_inner-page {
   width: 100%;
@@ -229,17 +229,6 @@
   font-size: 1.1rem;
   font-weight: bold;
 }
-
-.reqResContainer-inner {
-  position: relative;
-  height: auto;
-}
-
-// .response_display {
-//   weight: 500px;
-//   height: 100px;
-//   overflow: scroll; 
-// }
 
 .httptwo {    
   padding: 10px 15px;

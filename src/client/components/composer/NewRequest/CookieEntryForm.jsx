@@ -13,13 +13,16 @@ class CookieEntryForm extends Component {
   }
 
   componentDidMount() {
-    let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
-    this.addCookie(cookiesDeepCopy);
+    const cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+    if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") this.addCookie(cookiesDeepCopy);
   }
 
   componentDidUpdate() {
+    const cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
     if (this.props.newRequestCookies.cookiesArr.length == 0) {
-      let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+      this.addCookie([]);
+    }
+    else if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") {
       this.addCookie(cookiesDeepCopy);
     }
   }

@@ -35,7 +35,7 @@ class SingleReqResContainer extends Component {
   render() {
     const contentBody = [];
 
-    if (this.props.content.protocol === 'ws://') {
+    if (/wss?:\/\//.test(this.props.content.protocol)) {
       contentBody.push(<WebSocketWindow
         key={0}
         outgoingMessages={this.props.content.request.messages}
@@ -138,7 +138,9 @@ class SingleReqResContainer extends Component {
 
                 <span className="tertiary-title">{this.props.content.connectionType}</span>
 
-                {this.props.content.request.method === "SUBSCRIPTION" || this.props.content.protocol === "ws://"  || this.props.content.connectionType === "SSE" ? <></> :
+                {this.props.content.request.method === "SUBSCRIPTION"
+                  || /wss?:\/\//.test(this.props.content.protocol)
+                  || this.props.content.connectionType === "SSE" ? <></> :
                   <span className="tertiary-title roundtrip" title="The amount of time it takes to recieve response">
                     Roundtrip: {(this.props.content.connection === "open" || this.props.content.connection === 'pending' || this.props.content.timeReceived === null) ? 0 : this.props.content.timeReceived - this.props.content.timeSent} ms
                   </span>

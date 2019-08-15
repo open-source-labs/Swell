@@ -77,7 +77,6 @@ const tbClearAllButton = new TouchBarButton({
   label: 'Clear All',
   backgroundColor: '#708090',
   click: () => {
-    // console.log('clearing all');
     mainWindow.webContents.send('clearAll');
   },
 });

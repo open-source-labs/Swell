@@ -21,3 +21,22 @@
   height: auto;
 	overflow-x: scroll;
 }
+
+.cookieTable::-webkit-scrollbar, .cookieTableCell::-webkit-scrollbar{
+  width:0.5px;
+  background-color:transparent;
+}
+.cookieTable::-webkit-scrollbar-thumb, .cookieTableCell::-webkit-scrollbar-thumb{
+  width:0.5px;
+  background-color:transparent;
+  border-radius:10px;
+}
+.cookieTable::-webkit-scrollbar-thumb:hover, .cookieTableCell::-webkit-scrollbar-thumb:hover{
+  width:0.5px;
+  background-color:transparent;
+}
+.cookieTable::-webkit-scrollbar-thumb:active, .cookieTableCell::-webkit-scrollbar-thumb:active{
+  width:0.5px;
+  background-color:transparent;
+  border:1px solid transparent;
+}
