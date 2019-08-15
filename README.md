@@ -9,7 +9,7 @@
 
 
 
-Swell is a Streaming API development tool that enables developers to test API endpoints served over modern networking technologies including Server-Sent Events (SSE), WebSocket, and HTTP2.
+Swell is a API development tool that enables developers to test  endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, and GraphQL.
 
 ## Getting Started
 
@@ -17,17 +17,17 @@ Visit www.getswell.io to download the latest release.
 
 Swell is currently available for OS X, Linux and Windows.
 
-### Features
+## Highlights
 Swell is a one-stop shop for sending and monitoring your API requests
 
-<kbd><img src="./ReadMeGifs/Swell_API_WebSockeasdfts.gif"
-     style="float: left; margin-right: 10px;margin-bottom : 40px; margin-top : 10px;" /></kbd>
-
-* Send and monitor up to six concurrent connections
-* Interactive chart delivers request/response timing information in an easy to digest form
+* Send and monitor requests over HTTP2 (including SSEs), WebSockets, and GraphQL
+* Support for up to six concurrent connections
+* View request/response timing information in an interactive chart
+* Save requests in "collections" of multiple requests
+* Minimize and maximize requests
 * Native OS/X app
 
-### Supported Technologies
+## Supported Technologies
 * *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.
 <kbd><img src="./ReadMeGifs/Swell_API_6_Concurrent_Eevee_Requests.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
@@ -46,13 +46,13 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
-### Additional Features
-* *Collections*: Swell allows you to save collections for easier testing
+## Additional Features
+* *Collections*: Swell allows you to save collections for easier testing of multiple requests.
 <kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 
-* *Minimize/Expand*: Swell allows you to minimize and expand your requests, making it easy to manage everything at once!
+* *Minimize/Expand*: Swell allows you to minimize and expand your requests, making it easy to manage everything at once.
 <kbd><img src="./ReadMeGifs/Swell_API_Minimize_Expand.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
