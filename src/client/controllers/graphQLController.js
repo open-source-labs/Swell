@@ -19,13 +19,13 @@ const graphQLController = {
 
     // TODO: Add request cookies
     const headers = {};
-    reqResObj.request.headers.forEach((item) => {
+    // added filter to take out Content-Type header because it's hard coded on front end and set by createHttpLink
+    reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
       headers[item.key] = item.value;
     });
 
     const client = new ApolloClient({
-      link: createHttpLink({ uri: reqResObj.url }),
-      headers,
+      link: createHttpLink({ uri: reqResObj.url, headers }),
       credentials: 'same-origin',
       cache: new InMemoryCache(),
     });
