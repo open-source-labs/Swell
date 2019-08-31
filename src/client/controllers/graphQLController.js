@@ -30,13 +30,13 @@ const graphQLController = {
     const afterLink = new ApolloLink((operation, forward) => {
       return forward(operation).map(response => {
         const context = operation.getContext();
-        console.log(context.response.headers.get('X-Powered-By'));
-        reqResObj.response.headers['Content-Length'] = context.response.headers.get('Content-Length');
-        reqResObj.response.headers['Content-Type'] = context.response.headers.get('Content-Type');
-        reqResObj.response.headers['Date'] = context.response.headers.get('Date');
-        reqResObj.response.headers['Connection'] = context.response.headers.get('Connection');
-        reqResObj.response.headers['ETag'] = context.response.headers.get('ETag');
-        console.log(reqResObj);
+        const responseHeaders = context.response.headers;
+        
+        for (let headerItem of responseHeaders.entries()) {
+          const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-')
+          reqResObj.response.headers[key] = headerItem[1];
+        }
+        
         return response;
       });
     });
