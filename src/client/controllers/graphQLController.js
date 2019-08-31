@@ -2,6 +2,7 @@ import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
+import { ApolloLink } from 'apollo-link';
 
 import * as store from '../store';
 import * as actions from '../actions/actions';
@@ -24,8 +25,25 @@ const graphQLController = {
       headers[item.key] = item.value;
     });
 
+    // afterware takes headers from context response object, copies to reqResObj
+    // ? way to iterate through all headers ?
+    const afterLink = new ApolloLink((operation, forward) => {
+      return forward(operation).map(response => {
+        const context = operation.getContext();
+        console.log(context.response.headers.get('X-Powered-By'));
+        reqResObj.response.headers['Content-Length'] = context.response.headers.get('Content-Length');
+        reqResObj.response.headers['Content-Type'] = context.response.headers.get('Content-Type');
+        reqResObj.response.headers['Date'] = context.response.headers.get('Date');
+        reqResObj.response.headers['Connection'] = context.response.headers.get('Connection');
+        reqResObj.response.headers['ETag'] = context.response.headers.get('ETag');
+        console.log(reqResObj);
+        return response;
+      });
+    });
+
     const client = new ApolloClient({
-      link: createHttpLink({ uri: reqResObj.url, headers }),
+      // moved headers object into createHttpLink arguments
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers })),
       credentials: 'same-origin',
       cache: new InMemoryCache(),
     });
