@@ -75,9 +75,9 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * **Jason Ou** - [jasonou1994](https://github.com/jasonou1994)
 * **Kyle Combs** - [texpatnyc](https://github.com/texpatnyc)
 * **Kwadwo Asamoah** - [addoasa](https://github.com/addoasa)
-* **Abby Chao** - [brandon6190](https://github.com/abbychao)
-* **Amanda Flink** - [jasonou1994](https://github.com/aflinky)
-* **Kajol Thapa** - [texpatnyc](https://github.com/kajolthapa)
+* **Abby Chao** - [abbychao](https://github.com/abbychao)
+* **Amanda Flink** - [aflinky](https://github.com/aflinky)
+* **Kajol Thapa** - [kajolthapa](https://github.com/kajolthapa)
 
 ## License
 
