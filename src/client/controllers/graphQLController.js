@@ -20,20 +20,17 @@ const graphQLController = {
 
     // TODO: Add request cookies
     const headers = {};
-    // added filter to take out Content-Type header because it's hard coded on front end and set by createHttpLink
     reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
       headers[item.key] = item.value;
     });
 
     // afterware takes headers from context response object, copies to reqResObj
-    // ? way to iterate through all headers ?
     const afterLink = new ApolloLink((operation, forward) => {
       return forward(operation).map(response => {
         const context = operation.getContext();
-        const responseHeaders = context.response.headers;
-        
-        for (let headerItem of responseHeaders.entries()) {
-          const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-')
+
+        for (let headerItem of context.response.headers.entries()) {
+          const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
           reqResObj.response.headers[key] = headerItem[1];
         }
         
@@ -42,9 +39,8 @@ const graphQLController = {
     });
 
     const client = new ApolloClient({
-      // moved headers object into createHttpLink arguments
-      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers })),
-      credentials: 'same-origin',
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })),
+      credentials: 'include',
       cache: new InMemoryCache(),
     });
 
@@ -79,6 +75,7 @@ const graphQLController = {
 
   handleResponse(response, reqResObj) {
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
+
     // TODO: Add response headers, cookies
     reqResCopy.connection = 'closed';
     reqResCopy.connectionType = 'plain';
