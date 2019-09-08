@@ -75,7 +75,6 @@ const graphQLController = {
 
   handleResponse(response, reqResObj) {
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
-
     // TODO: Add response headers, cookies
     reqResCopy.connection = 'closed';
     reqResCopy.connectionType = 'plain';
