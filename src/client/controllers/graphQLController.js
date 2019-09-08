@@ -39,7 +39,7 @@ const graphQLController = {
     });
 
     const client = new ApolloClient({
-      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })),
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers })),
       credentials: 'include',
       cache: new InMemoryCache(),
     });
