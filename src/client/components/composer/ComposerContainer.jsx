@@ -33,22 +33,22 @@ class ComposerContainer extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      composerDisplay: this.props.composerDisplay,
-    });
+    // this.setState({
+    //   composerDisplay: this.props.composerDisplay,
+    // });
   }
 
   componentDidUpdate() {//keeping the redux store state in sync with this component's local state
-    if (this.props.composerDisplay !== this.state.composerDisplay) {
-      this.setState({
-        composerDisplay: this.props.composerDisplay,
-      });
-    }
+    // if (this.props.composerDisplay !== this.state.composerDisplay) {
+    //   this.setState({
+    //     composerDisplay: this.props.composerDisplay,
+    //   });
+    // }
   }
 
   render() {
     let composerContents;
-    switch (this.state.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
+    switch (this.props.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
       case 'Request': {
         composerContents = <ComposerNewRequest
           composerDisplay={this.props.composerDisplay}

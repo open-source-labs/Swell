@@ -1,6 +1,7 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
+// const fetch2 = require('node-fetch');
 const { session } = require('electron').remote;
 const http2 = require('http2');
 
@@ -278,7 +279,7 @@ const httpController = {
           fetch('http://localhost:7000', options)// fetch to OUR local proxy server before fetching to url provided
             .then(response => response.json())
             .then((result) => {
-              // the readable verson of our response is an object that looks like this:
+              // the readable version of our response is an object that looks like this:
               // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
               // theResponseHeaders refers to our literal object of response headers
               // the ResponseBody is the literal readable object containing our api content
