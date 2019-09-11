@@ -2,6 +2,7 @@ import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
+import { ApolloLink } from 'apollo-link';
 
 import * as store from '../store';
 import * as actions from '../actions/actions';
@@ -19,14 +20,26 @@ const graphQLController = {
 
     // TODO: Add request cookies
     const headers = {};
-    reqResObj.request.headers.forEach((item) => {
+    reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
       headers[item.key] = item.value;
     });
 
+    // afterware takes headers from context response object, copies to reqResObj
+    const afterLink = new ApolloLink((operation, forward) => {
+      return forward(operation).map(response => {
+        const context = operation.getContext();
+
+        for (let headerItem of context.response.headers.entries()) {
+          const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
+          reqResObj.response.headers[key] = headerItem[1];
+        }
+        
+        return response;
+      });
+    });
+
     const client = new ApolloClient({
-      link: createHttpLink({ uri: reqResObj.url }),
-      headers,
-      credentials: 'same-origin',
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })),
       cache: new InMemoryCache(),
     });
 
@@ -57,6 +70,7 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    //
   },
 
   handleResponse(response, reqResObj) {
