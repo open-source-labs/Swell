@@ -144,6 +144,7 @@
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "isomorphic-fetch": "^2.2.1",
+    "node-fetch": "^2.6.0",
     "node-sass": "^4.10.0",
     "nodemon": "^1.19.1",
     "path": "^0.12.7",

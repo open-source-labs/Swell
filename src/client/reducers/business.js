@@ -81,9 +81,10 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.COLLECTION_TO_REQRES: {
+      const reqResArray = [...action.payload]
       return {
         ...state,
-        reqResArray: action.payload,
+        reqResArray,
       };
     }
 
