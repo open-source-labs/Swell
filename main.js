@@ -268,26 +268,19 @@ app.on('activate', () => {
 
 ipcMain.on('asynchronous-message', (event, arg) => {
   const { method, headers, body, cookie} = arg.options;
-  console.log('arg.options', arg.options)
   fetch2(arg.reqResObj.url, { method, headers, body, cookie })
-    .then(response => 
-      
-      {
-        const [contentType] = response.headers._headers['content-type'];
-        const { headers } = response;
-        const contents = /json/.test(contentType) ? response.json() : response.text();
-        contents.then((body) => {
-          return res.send({
-            headers,
-            body,
-          });
-        });
-      }
-      
-      response.json())
-    .then(result => {
-      console.log('result', result);
-      event.sender.send('asynchronous-reply', {body: result})
+    .then((response) => {
+      console.log('response:', response)
+      console.log('response.headers:', response.headers)
+      console.log('response.headers.get', response.headers.get('content-type'))
+      const contentType = response.headers.get('content-type');
+      const { headers } = response;
+      const contents = /json/.test(contentType) ? response.json() : response.text();
+      contents
+    .then((body) => {
+        console.log('body', body)
+        event.sender.send('asynchronous-reply', {headers, body})
+      });
     })
     .catch(error => {
       console.log(error);
