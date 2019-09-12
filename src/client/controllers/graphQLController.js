@@ -57,34 +57,7 @@ const graphQLController = {
 
     if (reqResObj.request.method === 'QUERY') {
       client.query({ query: body, variables })
-        .then(data => {
-          // getting all current cookies for request and response
-           session.defaultSession.cookies.get({}, (error, result) => {
-            console.log(result)
-            // removing request cookies
-            const cookies = result.filter((cookie) => {
-              let match = false;
-              if (reqResObj.request.cookies.length) {
-                console.log('here')
-                for (let reqCookie of reqResObj.request.cookies) {
-                  if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
-                }
-              }
-              if (!match) return cookie;
-            });
-            console.log(cookies)
-            // update state with only response cookies
-            reqResObj.response.cookies = cookies;
-
-            result.forEach(cookie => {
-              session.defaultSession.cookies.remove('http://localhost:8080', cookie.name, (data) => {
-                console.log(data);
-              })
-            })
-
-            this.handleResponse(data, reqResObj);
-          });
-        })
+        .then(data => this.handleCookiesAndResponse(data, reqResObj))
         .catch((err) => {
           console.error(err);
           reqResObj.connection = 'error';
@@ -93,7 +66,7 @@ const graphQLController = {
     }
     else if (reqResObj.request.method === 'MUTATION') {
       client.mutate({ mutation: body, variables })
-        .then(data => this.handleResponse(data, reqResObj))
+        .then(data => this.handleCookiesAndResponse(data, reqResObj))
         .catch((err) => {
           reqResObj.connection = 'error';
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -108,6 +81,32 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 
+  handleCookiesAndResponse(data, reqResObj) {
+    // getting all current cookies for request and response
+    session.defaultSession.cookies.get({}, (error, result) => {
+      // removing request cookies, leaving only response cookies
+      const cookies = result.filter((cookie) => {
+        let match = false;
+        if (reqResObj.request.cookies.length) {
+          for (let reqCookie of reqResObj.request.cookies) {
+            if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
+          }
+        }
+        if (!match) return cookie;
+      });
+      // update reqResObj with only response cookies
+      reqResObj.response.cookies = cookies;
+      // removing request and response cookies every request in application storage
+      result.forEach(cookie => {
+        session.defaultSession.cookies.remove('http://localhost:8080', cookie.name, (data) => {
+          console.log(data);
+        })
+      });
+      // call to set state with updated reqResObj
+      this.handleResponse(data, reqResObj);
+    });
+  },
+
   handleResponse(response, reqResObj) {
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
     console.log(reqResCopy);
@@ -117,8 +116,6 @@ const graphQLController = {
     reqResCopy.timeReceived = Date.now();
     reqResCopy.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResCopy));
-
-
   },
 };
 
