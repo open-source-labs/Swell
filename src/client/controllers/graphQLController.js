@@ -7,6 +7,7 @@ const { session } = require('electron').remote
 
 import * as store from '../store';
 import * as actions from '../actions/actions';
+import { resolve } from 'url';
 
 
 const graphQLController = {
@@ -26,12 +27,11 @@ const graphQLController = {
     });
 
     // cookies
-    console.log(reqResObj.request.cookies);
     // const cookie = { url: 'http://localhost:8080/', name: reqResObj.request.cookies[0].key, value: reqResObj.request.cookies[0].value }
     // session.defaultSession.cookies.set(cookie, (error) => {
     //   if (error) console.error(error)
     // });
-    session.defaultSession.cookies.get({}, (error, result) => console.log('Found the following cookie', result[0].value));
+    // session.defaultSession.cookies.get({}, (error, result) => console.log('Found the following cookie', result[0].value));
 
     // afterware takes headers from context response object, copies to reqResObj
     const afterLink = new ApolloLink((operation, forward) => {
@@ -39,7 +39,6 @@ const graphQLController = {
         const context = operation.getContext();
 
         for (let headerItem of context.response.headers.entries()) {
-          console.log(headerItem);
           const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
           reqResObj.response.headers[key] = headerItem[1];
         }
@@ -49,7 +48,7 @@ const graphQLController = {
     });
 
     const client = new ApolloClient({
-      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'include' })),
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'omit' })),
       cache: new InMemoryCache(),
     });
 
@@ -59,27 +58,28 @@ const graphQLController = {
     if (reqResObj.request.method === 'QUERY') {
       client.query({ query: body, variables })
         .then(data => {
-          // getting all current cookies for request and response
-          session.defaultSession.cookies.get({}, (error, result) => {
-            // removing request cookies
-            const cookies = result.filter((cookie) => {
-
-              let match = false;
-
-              if (reqResObj.request.cookies.length) {
-                for (let reqCookie of reqResObj.request.cookies) {
-                  if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
+            // getting all current cookies for request and response
+            session.defaultSession.cookies.get({}, (error, result) => {
+              // removing request cookies
+              const cookies = result.filter((cookie) => {
+                let match = false;
+                if (reqResObj.request.cookies.length) {
+                  console.log('here')
+                  for (let reqCookie of reqResObj.request.cookies) {
+                    if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
+                  }
                 }
-              }
+                if (!match) return cookie;
+              });
+              // update state with only response cookies
+              reqResObj.response.cookies = cookies;
+              
+              session.defaultSession.clearStorageData({
+                storages: 'cookies'
+              }, data => consolelog(data));
 
-              if (!match) return cookie;
+              this.handleResponse(data, reqResObj);
             });
-
-            // update state with only response cookies
-            reqResObj.response.cookies = cookies;
-
-            this.handleResponse(data, reqResObj);
-          });
         })
         .catch((err) => {
           console.error(err);
