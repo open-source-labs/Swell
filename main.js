@@ -15,6 +15,8 @@ const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
+const fetch2 = require('node-fetch');
+
 // configure logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -263,3 +265,33 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+ipcMain.on('asynchronous-message', (event, arg) => {
+  const { method, headers, body, cookie} = arg.options;
+  console.log('arg.options', arg.options)
+  fetch2(arg.reqResObj.url, { method, headers, body, cookie })
+    .then(response => 
+      
+      {
+        const [contentType] = response.headers._headers['content-type'];
+        const { headers } = response;
+        const contents = /json/.test(contentType) ? response.json() : response.text();
+        contents.then((body) => {
+          return res.send({
+            headers,
+            body,
+          });
+        });
+      }
+      
+      response.json())
+    .then(result => {
+      console.log('result', result);
+      event.sender.send('asynchronous-reply', {body: result})
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+
+
