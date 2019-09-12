@@ -7,7 +7,6 @@ const { session } = require('electron').remote
 
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { resolve } from 'url';
 
 
 const graphQLController = {
@@ -27,11 +26,12 @@ const graphQLController = {
     });
 
     // cookies
-    // const cookie = { url: 'http://localhost:8080/', name: reqResObj.request.cookies[0].key, value: reqResObj.request.cookies[0].value }
-    // session.defaultSession.cookies.set(cookie, (error) => {
-    //   if (error) console.error(error)
-    // });
-    // session.defaultSession.cookies.get({}, (error, result) => console.log('Found the following cookie', result[0].value));
+    if (reqResObj.request.cookies.length) {
+      const cookie = { url: 'http://localhost:8080/', name: reqResObj.request.cookies[0].key, value: reqResObj.request.cookies[0].value }
+      session.defaultSession.cookies.set(cookie, (error) => {
+        if (error) console.error(error)
+      });
+    }
 
     // afterware takes headers from context response object, copies to reqResObj
     const afterLink = new ApolloLink((operation, forward) => {
@@ -48,7 +48,7 @@ const graphQLController = {
     });
 
     const client = new ApolloClient({
-      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'omit' })),
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })),
       cache: new InMemoryCache(),
     });
 
@@ -58,28 +58,32 @@ const graphQLController = {
     if (reqResObj.request.method === 'QUERY') {
       client.query({ query: body, variables })
         .then(data => {
-            // getting all current cookies for request and response
-            session.defaultSession.cookies.get({}, (error, result) => {
-              // removing request cookies
-              const cookies = result.filter((cookie) => {
-                let match = false;
-                if (reqResObj.request.cookies.length) {
-                  console.log('here')
-                  for (let reqCookie of reqResObj.request.cookies) {
-                    if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
-                  }
+          // getting all current cookies for request and response
+           session.defaultSession.cookies.get({}, (error, result) => {
+            console.log(result)
+            // removing request cookies
+            const cookies = result.filter((cookie) => {
+              let match = false;
+              if (reqResObj.request.cookies.length) {
+                console.log('here')
+                for (let reqCookie of reqResObj.request.cookies) {
+                  if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
                 }
-                if (!match) return cookie;
-              });
-              // update state with only response cookies
-              reqResObj.response.cookies = cookies;
-              
-              session.defaultSession.clearStorageData({
-                storages: 'cookies'
-              }, data => consolelog(data));
-
-              this.handleResponse(data, reqResObj);
+              }
+              if (!match) return cookie;
             });
+            console.log(cookies)
+            // update state with only response cookies
+            reqResObj.response.cookies = cookies;
+
+            result.forEach(cookie => {
+              session.defaultSession.cookies.remove('http://localhost:8080', cookie.name, (data) => {
+                console.log(data);
+              })
+            })
+
+            this.handleResponse(data, reqResObj);
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -102,7 +106,6 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    //
   },
 
   handleResponse(response, reqResObj) {
@@ -114,6 +117,8 @@ const graphQLController = {
     reqResCopy.timeReceived = Date.now();
     reqResCopy.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResCopy));
+
+
   },
 };
 
