@@ -2,6 +2,8 @@ import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
+import { ApolloLink } from 'apollo-link';
+const { session } = require('electron').remote
 
 import * as store from '../store';
 import * as actions from '../actions/actions';
@@ -13,20 +15,41 @@ const graphQLController = {
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
+    reqResObj.response.cookies = [];
     reqResObj.connection = 'open';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-    // TODO: Add request cookies
     const headers = {};
-    reqResObj.request.headers.forEach((item) => {
+    reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
       headers[item.key] = item.value;
     });
 
+    // cookies
+    console.log(reqResObj.request.cookies);
+    // const cookie = { url: 'http://localhost:8080/', name: reqResObj.request.cookies[0].key, value: reqResObj.request.cookies[0].value }
+    // session.defaultSession.cookies.set(cookie, (error) => {
+    //   if (error) console.error(error)
+    // });
+    session.defaultSession.cookies.get({}, (error, result) => console.log('Found the following cookie', result[0].value));
+
+    // afterware takes headers from context response object, copies to reqResObj
+    const afterLink = new ApolloLink((operation, forward) => {
+      return forward(operation).map(response => {
+        const context = operation.getContext();
+
+        for (let headerItem of context.response.headers.entries()) {
+          console.log(headerItem);
+          const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
+          reqResObj.response.headers[key] = headerItem[1];
+        }
+      
+        return response;
+      });
+    });
+
     const client = new ApolloClient({
-      link: createHttpLink({ uri: reqResObj.url }),
-      headers,
-      credentials: 'same-origin',
+      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'include' })),
       cache: new InMemoryCache(),
     });
 
@@ -35,7 +58,29 @@ const graphQLController = {
 
     if (reqResObj.request.method === 'QUERY') {
       client.query({ query: body, variables })
-        .then(data => this.handleResponse(data, reqResObj))
+        .then(data => {
+          // getting all current cookies for request and response
+          session.defaultSession.cookies.get({}, (error, result) => {
+            // removing request cookies
+            const cookies = result.filter((cookie) => {
+
+              let match = false;
+
+              if (reqResObj.request.cookies.length) {
+                for (let reqCookie of reqResObj.request.cookies) {
+                  if (reqCookie.key === cookie.name && reqCookie.value === cookie.value) match = true;
+                }
+              }
+
+              if (!match) return cookie;
+            });
+
+            // update state with only response cookies
+            reqResObj.response.cookies = cookies;
+
+            this.handleResponse(data, reqResObj);
+          });
+        })
         .catch((err) => {
           console.error(err);
           reqResObj.connection = 'error';
@@ -57,10 +102,12 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    //
   },
 
   handleResponse(response, reqResObj) {
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
+    console.log(reqResCopy);
     // TODO: Add response headers, cookies
     reqResCopy.connection = 'closed';
     reqResCopy.connectionType = 'plain';
