@@ -1,9 +1,12 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
-// const fetch2 = require('node-fetch');
+const fetch2 = require('node-fetch');
 const { session } = require('electron').remote;
 const http2 = require('http2');
+
+const { ipcRenderer } = require('electron')
+
 
 const httpController = {
   openHTTP2Connections: [],
@@ -236,8 +239,10 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
-    fetch(reqResObj.url, options)// fetch straight to provided url
+    fetch2(reqResObj.url, options)// fetch straight to provided url
       .then((response) => {
+        console.log('response from 1st Fetch', response);
+      
         // Parse response headers now to decide if SSE or not.
         const heads = {};
         for (const entry of response.headers.entries()) {
@@ -274,11 +279,32 @@ const httpController = {
             this.handleSSE(response, reqResObj, heads);
           });
         } else { // if url is not not sse ...
+          
+          
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-          fetch('http://localhost:7000', options)// fetch to OUR local proxy server before fetching to url provided
-            .then(response => response.json())
+
+          console.log('before sendToMain')
+          // fetch2(reqResObj.url, options)// fetch to OUR local proxy server before fetching to url provided
+          
+          function sendToMainForFetch(args) {
+            console.log('before 2nd fetch')
+            return new Promise (resolve => {
+              ipcRenderer.send('asynchronous-message', args)
+              ipcRenderer.on('asynchronous-reply', (event, result) => {
+                resolve(result);
+              })
+            })
+          }
+
+        console.log(sendToMainForFetch({reqResObj, options}))
+         sendToMainForFetch({reqResObj, options})
+            // .then(response => {
+            //   console.log('2nd fetch request', response);
+            //   response.json()}
+            //   )
             .then((result) => {
+              console.log('result 2nd fetch:', result);
               // the readable version of our response is an object that looks like this:
               // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
               // theResponseHeaders refers to our literal object of response headers
