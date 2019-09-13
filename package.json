@@ -128,7 +128,6 @@
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link-http": "^1.5.15",
@@ -167,7 +166,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
-    "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",

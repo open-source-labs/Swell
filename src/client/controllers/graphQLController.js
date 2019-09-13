@@ -25,24 +25,23 @@ const graphQLController = {
       headers[item.key] = item.value;
     });
 
-    // cookies
+    // set all user's cookie in the application's cookie storage
     if (reqResObj.request.cookies.length) {
-      const cookie = { url: 'http://localhost:8080/', name: reqResObj.request.cookies[0].key, value: reqResObj.request.cookies[0].value }
-      session.defaultSession.cookies.set(cookie, (error) => {
-        if (error) console.error(error)
-      });
+      reqResObj.request.cookies.forEach(userCookie => {
+        session.defaultSession.cookies.set({ url: 'http://localhost:8080/', name: userCookie.key, value: userCookie.value }, (error) => {
+          if (error) console.error(error)
+        });
+      })
     }
 
     // afterware takes headers from context response object, copies to reqResObj
     const afterLink = new ApolloLink((operation, forward) => {
       return forward(operation).map(response => {
         const context = operation.getContext();
-
         for (let headerItem of context.response.headers.entries()) {
           const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
           reqResObj.response.headers[key] = headerItem[1];
         }
-      
         return response;
       });
     });
@@ -95,7 +94,7 @@ const graphQLController = {
         if (!match) return cookie;
       });
       // update reqResObj with only response cookies
-      reqResObj.response.cookies = cookies;
+      reqResObj.response.cookies.push(...cookies);
       // removing request and response cookies every request in application storage
       result.forEach(cookie => {
         session.defaultSession.cookies.remove('http://localhost:8080', cookie.name, (data) => {
@@ -109,8 +108,6 @@ const graphQLController = {
 
   handleResponse(response, reqResObj) {
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
-    console.log(reqResCopy);
-    // TODO: Add response headers, cookies
     reqResCopy.connection = 'closed';
     reqResCopy.connectionType = 'plain';
     reqResCopy.timeReceived = Date.now();
