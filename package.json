@@ -130,6 +130,7 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
+    "apollo-link": "^1.2.13",
     "apollo-link-http": "^1.5.15",
     "apollo-link-ws": "^1.0.18",
     "chart.js": "^2.7.3",
@@ -144,6 +145,7 @@
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "isomorphic-fetch": "^2.2.1",
+    "node-fetch": "^2.6.0",
     "node-sass": "^4.10.0",
     "nodemon": "^1.19.1",
     "path": "^0.12.7",

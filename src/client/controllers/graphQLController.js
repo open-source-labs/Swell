@@ -38,10 +38,12 @@ const graphQLController = {
     const afterLink = new ApolloLink((operation, forward) => {
       return forward(operation).map(response => {
         const context = operation.getContext();
+
         for (let headerItem of context.response.headers.entries()) {
           const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
           reqResObj.response.headers[key] = headerItem[1];
         }
+
         return response;
       });
     });
@@ -78,6 +80,7 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    //
   },
 
   handleCookiesAndResponse(data, reqResObj) {
