@@ -47,11 +47,12 @@ const graphQLController = {
     
       if (networkError) console.log(`[Network error]: ${networkError}`);
 
-      const errorsArr = graphQLErrors.map(error => {
-        return JSON.stringify(error);
-      });
+      const errorsObj = {
+        errors: graphQLErrors,
+        data: null
+      }
 
-      this.handleError(errorsArr, reqResObj);
+      this.handleError(errorsObj, reqResObj);
     });
 
     // afterware takes headers from context response object, copies to reqResObj
@@ -143,10 +144,10 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResCopy));
   },
   
-  handleError(errorsArr, reqResObj) {
+  handleError(errorsObj, reqResObj) {
     reqResObj.connection = 'error';
     reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(...errorsArr);
+    reqResObj.response.events.push(JSON.stringify(errorsObj));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   }
 };
