@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
+import { onError } from "apollo-link-error";
 const { session } = require('electron').remote
 
 import * as store from '../store';
@@ -34,6 +35,25 @@ const graphQLController = {
       })
     }
 
+    // error link
+    const errorLink = onError(({ graphQLErrors, networkError }) => {
+      console.log(graphQLErrors);
+      if (graphQLErrors)
+        graphQLErrors.map(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+          ),
+        );
+    
+      if (networkError) console.log(`[Network error]: ${networkError}`);
+
+      const errorsArr = graphQLErrors.map(error => {
+        return JSON.stringify(error);
+      });
+
+      this.handleError(errorsArr, reqResObj);
+    });
+
     // afterware takes headers from context response object, copies to reqResObj
     const afterLink = new ApolloLink((operation, forward) => {
       return forward(operation).map(response => {
@@ -48,8 +68,14 @@ const graphQLController = {
       });
     });
 
+    const link = ApolloLink.from([
+      errorLink,
+      afterLink,
+      createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })
+    ])
+
     const client = new ApolloClient({
-      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })),
+      link,
       cache: new InMemoryCache(),
     });
 
@@ -61,8 +87,6 @@ const graphQLController = {
         .then(data => this.handleCookiesAndResponse(data, reqResObj))
         .catch((err) => {
           console.error(err);
-          reqResObj.connection = 'error';
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
         });
     }
     else if (reqResObj.request.method === 'MUTATION') {
@@ -110,6 +134,7 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
+    console.log(response.data);
     const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
     reqResCopy.connection = 'closed';
     reqResCopy.connectionType = 'plain';
@@ -117,6 +142,13 @@ const graphQLController = {
     reqResCopy.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResCopy));
   },
+  
+  handleError(errorsArr, reqResObj) {
+    reqResObj.connection = 'error';
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(...errorsArr);
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
+  }
 };
 
 export default graphQLController;
