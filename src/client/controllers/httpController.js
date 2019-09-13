@@ -15,13 +15,14 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://') {
-      console.log('HTTPS, TRYING HTTP2');
+    // if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
+    //   console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
-    } else {
-      console.log('HTTP REQUEST, MOVING TO FETCH');
-      httpController.establishHTTP1connection(reqResObj, connectionArray);
-    }
+    // } 
+    // else {
+    //   console.log('HTTP REQUEST, MOVING TO FETCH');
+    //   httpController.establishHTTP1connection(reqResObj, connectionArray);
+    // }
   },
 
   establishHTTP2Connection(reqResObj, connectionArray) {
@@ -236,19 +237,54 @@ const httpController = {
 
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
     options.signal = openConnectionObj.abort.signal;
+
+    //! BETTER APPROACH?
+    // fetch2(reqResObj.url, options)
+    //   .then(response => response.json())
+    //   .then(result => console.log('THIS IS THE RESULT DIRECTLY FROM NODE-FETCH', result))
+
+    // fetch(reqResObj.url, options)
+    //   .then(response => response.json())
+    //   .then(result => console.log('THIS IS THE RESULT DIRECTLY FROM normal FETCH', result))
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
-    fetch2(reqResObj.url, options)// fetch straight to provided url
+
+    function sendToMainForFetch(args) {
+      console.log('before fetch')
+      return new Promise (resolve => {
+        ipcRenderer.send('asynchronous-message', args)
+        ipcRenderer.on('asynchronous-reply', (event, result) => {
+          resolve(result);
+        })
+      })
+    }
+    console.log('OPTIONS', options)
+    sendToMainForFetch({reqResObj, options})
+      // .then((result) => {
+      // console.log('result 2nd fetch:', result);
+      // })
+    
+    // fetch(reqResObj.url, options)// fetch straight to provided url
       .then((response) => {
         console.log('response from 1st Fetch', response);
+        console.log('response from 1st Fetch - RES.HEADERS', response.headers);
       
         // Parse response headers now to decide if SSE or not.
-        const heads = {};
-        for (const entry of response.headers.entries()) {
-          heads[entry[0].toLowerCase()] = entry[1];
-        }
+        const heads = response.headers;
+
+        console.log('headers entries:', response.headers['content-type']);
+
+        // for (const entry of response.headers) {
+        //   console.log('entry', entry);
+        //   console.log('entry[0]',entry[0].toLowerCase());
+        //   console.log('entry[1]', entry[1]);
+        //   heads[entry[0].toLowerCase()] = entry[1];
+        // }
+
         reqResObj.response.headers = heads;
+        // console.log('HEADS', heads);
+        console.log('HEADS!!!', heads);
         // store extracted headers in heads object
         // check if the content-type header contains the word stream
         let isStream = false;
@@ -278,40 +314,45 @@ const httpController = {
             }
             this.handleSSE(response, reqResObj, heads);
           });
-        } else { // if url is not not sse ...
-          
+          console.log('SERVED')
+        } 
+        
+        else { // if url is not not sse ...
           
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-          console.log('before sendToMain')
+          
           // fetch2(reqResObj.url, options)// fetch to OUR local proxy server before fetching to url provided
           
-          function sendToMainForFetch(args) {
-            console.log('before 2nd fetch')
-            return new Promise (resolve => {
-              ipcRenderer.send('asynchronous-message', args)
-              ipcRenderer.on('asynchronous-reply', (event, result) => {
-                resolve(result);
-              })
-            })
-          }
+          // function sendToMainForFetch(args) {
+          //   console.log('before 2nd fetch')
+          //   return new Promise (resolve => {
+          //     ipcRenderer.send('asynchronous-message', args)
+          //     ipcRenderer.on('asynchronous-reply', (event, result) => {
+          //       resolve(result);
+          //     })
+          //   })
+          // }
 
-        console.log(sendToMainForFetch({reqResObj, options}))
-         sendToMainForFetch({reqResObj, options})
+        // console.log(sendToMainForFetch({reqResObj, options}))
+        //  sendToMainForFetch({reqResObj, options})
             // .then(response => {
             //   console.log('2nd fetch request', response);
             //   response.json()}
             //   )
-            .then((result) => {
-              console.log('result 2nd fetch:', result);
-              // the readable version of our response is an object that looks like this:
-              // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
-              // theResponseHeaders refers to our literal object of response headers
-              // the ResponseBody is the literal readable object containing our api content
-              // the raw unparsed response from localhost:7000
-              const theResponseHeaders = result.headers._headers;
-              const { body } = result;
+            // .then((result) => {
+              // console.log('result 2nd fetch:', result);
+              // // the readable version of our response is an object that looks like this:
+              // // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
+              // // theResponseHeaders refers to our literal object of response headers
+              // // the ResponseBody is the literal readable object containing our api content
+              // // the raw unparsed response from localhost:7000
+              // console.log('RESULT', result);
+              // console.log('RESULT.HEADERS', result.headers);
+              const theResponseHeaders = response.headers;
+              console.log('theResponseHeaders',theResponseHeaders);
+              const { body } = response;
               // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
               reqResObj.response.headers = theResponseHeaders;
 
@@ -337,11 +378,11 @@ const httpController = {
                 // Below the headers and response api content are handled by swell and will be displayed.
                 this.handleSingleEvent(body, reqResObj, theResponseHeaders);
               });
-            })
-            .catch((err) => {
-              reqResObj.connection = 'error';
-              store.default.dispatch(actions.reqResUpdate(reqResObj));
-            });
+            // })
+            // .catch((err) => {
+            //   reqResObj.connection = 'error';
+            //   store.default.dispatch(actions.reqResUpdate(reqResObj));
+            // });
         }
       })
       .catch((err) => {
