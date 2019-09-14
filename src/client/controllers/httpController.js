@@ -351,6 +351,8 @@ const httpController = {
             .split(':');
 
           http1Sesh.cookies.get({ domain }, (err, cookies) => {
+            console.log('COOKIES RECEIVED', theResponseHeaders.cookies);
+            console.log('SESSION.GET', cookies);
             if (cookies) {
               reqResObj.response.cookies = cookies;
               store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -395,7 +397,7 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
-      document.cookie = cookieString;
+      formattedHeaders.cookie = cookieString;
     });
 
     const outputObj = {
