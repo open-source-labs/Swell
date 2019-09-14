@@ -21,7 +21,7 @@ const httpController = {
     // } 
     // else {
     //   console.log('HTTP REQUEST, MOVING TO FETCH');
-    //   httpController.establishHTTP1connection(reqResObj, connectionArray);
+      // httpController.establishHTTP1connection(reqResObj, connectionArray);
     // }
   },
 
@@ -216,7 +216,19 @@ const httpController = {
     });
   },
 
+  sendToMainForFetch(args) {
+    console.log('before fetch')
+    return new Promise (resolve => {
+      ipcRenderer.send('asynchronous-message', args)
+      ipcRenderer.on('asynchronous-reply', (event, result) => {
+        resolve(result);
+      })
+    })
+  },
+
   establishHTTP1connection(reqResObj, connectionArray) {
+
+    console.log('ReqResObj HTTP Controller', reqResObj);
     // start off by clearing existing response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -238,34 +250,12 @@ const httpController = {
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
     options.signal = openConnectionObj.abort.signal;
 
-    //! BETTER APPROACH?
-    // fetch2(reqResObj.url, options)
-    //   .then(response => response.json())
-    //   .then(result => console.log('THIS IS THE RESULT DIRECTLY FROM NODE-FETCH', result))
-
-    // fetch(reqResObj.url, options)
-    //   .then(response => response.json())
-    //   .then(result => console.log('THIS IS THE RESULT DIRECTLY FROM normal FETCH', result))
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
 
-    function sendToMainForFetch(args) {
-      console.log('before fetch')
-      return new Promise (resolve => {
-        ipcRenderer.send('asynchronous-message', args)
-        ipcRenderer.on('asynchronous-reply', (event, result) => {
-          resolve(result);
-        })
-      })
-    }
-    console.log('OPTIONS', options)
-    sendToMainForFetch({reqResObj, options})
-      // .then((result) => {
-      // console.log('result 2nd fetch:', result);
-      // })
-    
-    // fetch(reqResObj.url, options)// fetch straight to provided url
+    // send information to the NODE side to do the fetch request
+    this.sendToMainForFetch({reqResObj, options})
       .then((response) => {
         console.log('response from 1st Fetch', response);
         console.log('response from 1st Fetch - RES.HEADERS', response.headers);
@@ -283,7 +273,7 @@ const httpController = {
         // }
 
         reqResObj.response.headers = heads;
-        // console.log('HEADS', heads);
+ 
         console.log('HEADS!!!', heads);
         // store extracted headers in heads object
         // check if the content-type header contains the word stream
@@ -348,36 +338,34 @@ const httpController = {
               // // theResponseHeaders refers to our literal object of response headers
               // // the ResponseBody is the literal readable object containing our api content
               // // the raw unparsed response from localhost:7000
-              // console.log('RESULT', result);
-              // console.log('RESULT.HEADERS', result.headers);
-              const theResponseHeaders = response.headers;
-              console.log('theResponseHeaders',theResponseHeaders);
-              const { body } = response;
-              // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
-              reqResObj.response.headers = theResponseHeaders;
+          const theResponseHeaders = response.headers;
+          console.log('theResponseHeaders',theResponseHeaders);
+          const { body } = response;
+          // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
+          reqResObj.response.headers = theResponseHeaders;
 
-              const http1Sesh = session.defaultSession;
-              let domain = reqResObj.host.split('//');
-              domain.shift();
-              [domain] = domain.join('').split('.').splice(-2).join('.')
-                .split(':');
+          const http1Sesh = session.defaultSession;
+          let domain = reqResObj.host.split('//');
+          domain.shift();
+          [domain] = domain.join('').split('.').splice(-2).join('.')
+            .split(':');
 
-              http1Sesh.cookies.get({ domain }, (err, cookies) => {
-                if (cookies) {
-                  reqResObj.response.cookies = cookies;
-                  store.default.dispatch(actions.reqResUpdate(reqResObj));
-                  cookies.forEach((cookie) => {
-                    let url = '';
-                    url += cookie.secure ? 'https://' : 'http://';
-                    url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-                    url += cookie.domain;
-                    url += cookie.path;
-                    http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-                  });
-                }
-                // Below the headers and response api content are handled by swell and will be displayed.
-                this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+          http1Sesh.cookies.get({ domain }, (err, cookies) => {
+            if (cookies) {
+              reqResObj.response.cookies = cookies;
+              store.default.dispatch(actions.reqResUpdate(reqResObj));
+              cookies.forEach((cookie) => {
+                let url = '';
+                url += cookie.secure ? 'https://' : 'http://';
+                url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+                url += cookie.domain;
+                url += cookie.path;
+                http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
               });
+            }
+            // Below the headers and response api content are handled by swell and will be displayed.
+            this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+          });
             // })
             // .catch((err) => {
             //   reqResObj.connection = 'error';
