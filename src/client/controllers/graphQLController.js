@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
+import { onError } from "apollo-link-error";
 const { session } = require('electron').remote
 
 import * as store from '../store';
@@ -20,6 +21,7 @@ const graphQLController = {
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
+    // populating headers object with response headers - except for Content-Type
     const headers = {};
     reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
       headers[item.key] = item.value;
@@ -33,6 +35,11 @@ const graphQLController = {
         });
       })
     }
+
+    // error link - passes networkError to handler
+    const errorLink = onError(({ networkError }) => {
+      this.handleError(networkError, reqResObj);
+    });
 
     // afterware takes headers from context response object, copies to reqResObj
     const afterLink = new ApolloLink((operation, forward) => {
@@ -48,8 +55,18 @@ const graphQLController = {
       });
     });
 
+    // creates http connection to host
+    const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' });
+
+    // additive composition of multiple links
+    const link = ApolloLink.from([
+      errorLink,
+      afterLink,
+      httpLink
+    ]);
+
     const client = new ApolloClient({
-      link: afterLink.concat(createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })),
+      link,
       cache: new InMemoryCache(),
     });
 
@@ -61,16 +78,13 @@ const graphQLController = {
         .then(data => this.handleCookiesAndResponse(data, reqResObj))
         .catch((err) => {
           console.error(err);
-          reqResObj.connection = 'error';
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
         });
-    }
-    else if (reqResObj.request.method === 'MUTATION') {
-      client.mutate({ mutation: body, variables })
+      }
+      else if (reqResObj.request.method === 'MUTATION') {
+        client.mutate({ mutation: body, variables })
         .then(data => this.handleCookiesAndResponse(data, reqResObj))
         .catch((err) => {
-          reqResObj.connection = 'error';
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
+          console.error(err);
         });
     }
   },
@@ -80,7 +94,7 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    //
+    // TODO - needs built out
   },
 
   handleCookiesAndResponse(data, reqResObj) {
@@ -110,13 +124,19 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
-    const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
-    reqResCopy.connection = 'closed';
-    reqResCopy.connectionType = 'plain';
-    reqResCopy.timeReceived = Date.now();
-    reqResCopy.response.events.push(JSON.stringify(response.data));
-    store.default.dispatch(actions.reqResUpdate(reqResCopy));
+    reqResObj.connection = 'closed';
+    reqResObj.connectionType = 'plain';
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(JSON.stringify(response.data));
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
+  
+  handleError(errorsObj, reqResObj) {
+    reqResObj.connection = 'error';
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(JSON.stringify(errorsObj));
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
+  }
 };
 
 export default graphQLController;
