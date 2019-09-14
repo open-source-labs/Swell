@@ -266,6 +266,8 @@ app.on('activate', () => {
   }
 });
 
+
+// ipcMain listener that 
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log(arg.options)
   const { method, headers, body} = arg.options;
@@ -275,35 +277,18 @@ ipcMain.on('asynchronous-message', (event, arg) => {
     .then((response) => {
       console.log('response.headers:', response.headers)
       console.log(response.ok);
-      console.log(response.status);
-      console.log(response.statusText);
       const headers = response.headers.raw();
       headers.cookies = response.headers.get('set-cookie');
-      console.log('headers.cookies', headers.cookies);
-      console.log(response.headers.get('content-type'));
-      response.json()
+      console.log('RES COOKIES', headers.cookies);
+      const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+      contents
       .then(body =>  {
         console.log(body)
         event.sender.send('asynchronous-reply', {headers, body})
       })
+      .catch(error => console.log('ERROR',error))
     })
-      
-      // console.log('response.headers:', response.headers)
-      // console.log('response.headers.get', response.headers.get('content-type'))
-    //   const contentType = response.headers.get('content-type');
-    //   const { headers } = response;
-    //   const contents = /json/.test(contentType) ? response.json() : response.text();
-    //   contents
-    // .then((body) => {
-        // console.log('body', body)
-        // console.log('HEADERS', headers)
-        // console.log('HEADERS', Object.values(headers))
-        // event.sender.send('asynchronous-reply', response.headers.raw())
-      // });
-    // })
-    .catch(error => {
-      console.log(error);
-    })
+    .catch(error => console.log(error))
 })
 
 
