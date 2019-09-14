@@ -21,6 +21,7 @@ const graphQLController = {
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
+    // populating headers object with response headers - except for Content-Type
     const headers = {};
     reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
       headers[item.key] = item.value;
@@ -35,24 +36,9 @@ const graphQLController = {
       })
     }
 
-    // error link
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
-      console.log(graphQLErrors);
-      if (graphQLErrors)
-        graphQLErrors.map(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-    
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-
-      const errorsObj = {
-        errors: graphQLErrors,
-        data: null
-      }
-
-      this.handleError(errorsObj, reqResObj);
+    // error link - passes networkError to handler
+    const errorLink = onError(({ networkError }) => {
+      this.handleError(networkError, reqResObj);
     });
 
     // afterware takes headers from context response object, copies to reqResObj
@@ -69,11 +55,15 @@ const graphQLController = {
       });
     });
 
+    // creates http connection to host
+    const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' });
+
+    // additive composition of multiple links
     const link = ApolloLink.from([
       errorLink,
       afterLink,
-      createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' })
-    ])
+      httpLink
+    ]);
 
     const client = new ApolloClient({
       link,
@@ -89,13 +79,12 @@ const graphQLController = {
         .catch((err) => {
           console.error(err);
         });
-    }
-    else if (reqResObj.request.method === 'MUTATION') {
-      client.mutate({ mutation: body, variables })
+      }
+      else if (reqResObj.request.method === 'MUTATION') {
+        client.mutate({ mutation: body, variables })
         .then(data => this.handleCookiesAndResponse(data, reqResObj))
         .catch((err) => {
-          reqResObj.connection = 'error';
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
+          console.error(err);
         });
     }
   },
@@ -105,7 +94,7 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    //
+    // TODO - needs built out
   },
 
   handleCookiesAndResponse(data, reqResObj) {
@@ -135,13 +124,11 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
-    console.log(response.data);
-    const reqResCopy = JSON.parse(JSON.stringify(reqResObj));
-    reqResCopy.connection = 'closed';
-    reqResCopy.connectionType = 'plain';
-    reqResCopy.timeReceived = Date.now();
-    reqResCopy.response.events.push(JSON.stringify(response.data));
-    store.default.dispatch(actions.reqResUpdate(reqResCopy));
+    reqResObj.connection = 'closed';
+    reqResObj.connectionType = 'plain';
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(JSON.stringify(response.data));
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
   
   handleError(errorsObj, reqResObj) {
