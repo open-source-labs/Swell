@@ -271,9 +271,9 @@ app.on('activate', () => {
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log(arg.options)
   const { method, headers, body} = arg.options;
-  const cookies = arg.reqResObj.request.cookies;
-  console.log('COOKIES', cookies);
-  fetch2(arg.reqResObj.url, { method, headers, body, cookies })
+  // headers.cookie = arg.reqResObj.request.cookies;
+  // console.log('COOKIES', cookies);
+  fetch2(arg.reqResObj.url, { method, headers, body })
     .then((response) => {
       console.log('response.headers:', response.headers)
       console.log(response.ok);
@@ -283,7 +283,8 @@ ipcMain.on('asynchronous-message', (event, arg) => {
       const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
       contents
       .then(body =>  {
-        console.log(body)
+        console.log(body);
+        // console.log(headers.cookies);
         event.sender.send('asynchronous-reply', {headers, body})
       })
       .catch(error => console.log('ERROR',error))
