@@ -32,6 +32,23 @@ class SingleReqResContainer extends Component {
     this.props.reqResUpdate(this.props.content);
   }
 
+  renderStatusCode() {
+    if (this.props.content.graphQL) { // graphql
+      const statusCode = !this.props.content.response.events ? '' : 
+      this.props.content.response.events && 
+      this.props.content.response.events.length ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
+      return !this.props.content.response.events ? '' : 
+      this.props.content.response.events && 
+      this.props.content.response.events.length && 
+      statusCode ? statusCode : '200'
+    } else if (/wss?:\/\//.test(this.props.content.protocol)) { // ws
+    return 'ws';
+  } else { // http
+      return  this.props.content.response.headers ? this.props.content.response.headers[":status"] : '';
+    }
+    
+  }
+
   render() {
     const contentBody = [];
 
@@ -94,7 +111,8 @@ class SingleReqResContainer extends Component {
       default:
         console.log('not a valid connection for content object');
     }
-
+    // TODO: remove later
+    console.log('props.content: ', this.props.content);
     const arrowClass = !this.props.content.minimized ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     return (
       <div>
@@ -113,7 +131,7 @@ class SingleReqResContainer extends Component {
             //----------------------------------------
             !this.props.content.minimized &&
             <>
-              <div className="grid-6">
+              <div className="grid-7">
                 <div>
                   <input
                     id={this.props.content.id}
@@ -145,6 +163,8 @@ class SingleReqResContainer extends Component {
                     Roundtrip: {(this.props.content.connection === "open" || this.props.content.connection === 'pending' || this.props.content.timeReceived === null) ? 0 : this.props.content.timeReceived - this.props.content.timeSent} ms
                   </span>
                 }
+
+                <div className="tertiary-title">Status: {this.renderStatusCode()}</div>
 
               </div>
               <div style={http2Display} className={'httptwo'}>
