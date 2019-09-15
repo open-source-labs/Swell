@@ -13,7 +13,6 @@ class SingleReqResContainer extends Component {
     this.removeReqRes = this.removeReqRes.bind(this);
     this.onCheckHandler = this.onCheckHandler.bind(this);
     this.minimize = this.minimize.bind(this);
-
   }
 
   onCheckHandler() {
@@ -34,17 +33,23 @@ class SingleReqResContainer extends Component {
 
   renderStatusCode() {
     if (this.props.content.graphQL) { // graphql
-      const statusCode = !this.props.content.response.events ? '' : 
-      this.props.content.response.events && 
-      this.props.content.response.events.length ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
-      return !this.props.content.response.events ? '' : 
-      this.props.content.response.events && 
-      this.props.content.response.events.length && 
-      statusCode ? statusCode : '200'
+      const statusCode = !this.props.content.response.events 
+        ? '' 
+        : this.props.content.response.events
+        && this.props.content.response.events.length
+        ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
+
+      return !this.props.content.response.events 
+        ? ''
+        : this.props.content.response.events
+        && this.props.content.response.events.length
+        && statusCode ? 'Status: ' + statusCode : 'Status: 200';
     } else if (/wss?:\/\//.test(this.props.content.protocol)) { // ws
-    return 'ws';
-  } else { // http
-      return  this.props.content.response.headers ? this.props.content.response.headers[":status"] : '';
+      return '';
+    } else { // http
+      return this.props.content.response.headers 
+        && this.props.content.response.headers[':status'] 
+        ? 'Status: ' + this.props.content.response.headers[":status"] : '';
     }
     
   }
@@ -112,7 +117,6 @@ class SingleReqResContainer extends Component {
         console.log('not a valid connection for content object');
     }
     // TODO: remove later
-    console.log('props.content: ', this.props.content);
     const arrowClass = !this.props.content.minimized ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     return (
       <div>
@@ -164,7 +168,7 @@ class SingleReqResContainer extends Component {
                   </span>
                 }
 
-                <div className="tertiary-title">Status: {this.renderStatusCode()}</div>
+                <div className="tertiary-title">{this.renderStatusCode()}</div>
 
               </div>
               <div style={http2Display} className={'httptwo'}>
