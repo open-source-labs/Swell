@@ -27,7 +27,6 @@ const wsController = {
     });
 
     socket.addEventListener('message', (event) => {
-      console.log(event);
       // get fresh copy of reqRes
       reqResObj = store.default
         .getState()
