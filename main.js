@@ -280,7 +280,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
     .then((response) => {
       const headers = response.headers.raw();
       // const receivedCookie = cookie.parse(response.headers.get('set-cookie'));
-      const receivedCookie = response.headers.get('set-cookie');
+      const receivedCookie = headers['set-cookie'];
       console.log('RES COOKIES', receivedCookie);
       headers.cookies = receivedCookie;
       const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
