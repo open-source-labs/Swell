@@ -124,7 +124,6 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
-    console.log(response)
     reqResObj.connection = 'closed';
     reqResObj.connectionType = 'plain';
     reqResObj.timeReceived = Date.now();
