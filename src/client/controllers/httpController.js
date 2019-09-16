@@ -15,14 +15,14 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    // if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
-    //   console.log('HTTPS, TRYING HTTP2');
+    if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
+      console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
-    // } 
-    // else {
-    //   console.log('HTTP REQUEST, MOVING TO FETCH');
-      // httpController.establishHTTP1connection(reqResObj, connectionArray);
-    // }
+    } 
+    else {
+      console.log('HTTP REQUEST, MOVING TO FETCH');
+      httpController.establishHTTP1connection(reqResObj, connectionArray);
+    }
   },
 
   establishHTTP2Connection(reqResObj, connectionArray) {
@@ -339,7 +339,7 @@ const httpController = {
               // // the ResponseBody is the literal readable object containing our api content
               // // the raw unparsed response from localhost:7000
           const theResponseHeaders = response.headers;
-          console.log('theResponseHeaders',theResponseHeaders);
+          console.log('theResponseHeaders',typeof theResponseHeaders.cookies);
           const { body } = response;
           // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
           reqResObj.response.headers = theResponseHeaders;
@@ -347,8 +347,13 @@ const httpController = {
           const http1Sesh = session.defaultSession;
           let domain = reqResObj.host.split('//');
           domain.shift();
-          [domain] = domain.join('').split('.').splice(-2).join('.')
-            .split(':');
+          [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
+
+          const receivedCookies = theResponseHeaders.cookies
+          
+          const mainCookies = { url: reqResObj.host  , name: 'received' , value: 'NEW COOKIE!'}
+          console.log('main', mainCookies)
+          http1Sesh.cookies.set(mainCookies, () => console.log('cookies added!'))
 
           http1Sesh.cookies.get({ domain }, (err, cookies) => {
             console.log('COOKIES RECEIVED', theResponseHeaders.cookies);
@@ -397,6 +402,7 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
+      document.cookie = cookieString;
       formattedHeaders.cookie = cookieString;
     });
 
