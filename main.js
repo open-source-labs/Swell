@@ -15,6 +15,9 @@ const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
+// basic http cookie parser
+const cookie = require('cookie');
+// node-fetch for the fetch request
 const fetch2 = require('node-fetch');
 
 // configure logging
@@ -273,13 +276,13 @@ ipcMain.on('asynchronous-message', (event, arg) => {
   const { method, headers, body} = arg.options;
   // headers.cookie = arg.reqResObj.request.cookies;
   // console.log('COOKIES', cookies);
-  fetch2(arg.reqResObj.url, { method, headers, body })
+  fetch2(headers.url, { method, headers, body })
     .then((response) => {
-      console.log('response.headers:', response.headers)
-      console.log(response.ok);
       const headers = response.headers.raw();
-      headers.cookies = response.headers.get('set-cookie');
-      console.log('RES COOKIES', headers.cookies);
+      // const receivedCookie = cookie.parse(response.headers.get('set-cookie'));
+      const receivedCookie = response.headers.get('set-cookie');
+      console.log('RES COOKIES', receivedCookie);
+      headers.cookies = receivedCookie;
       const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
       contents
       .then(body =>  {

@@ -255,7 +255,7 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
 
     // send information to the NODE side to do the fetch request
-    this.sendToMainForFetch({reqResObj, options})
+    this.sendToMainForFetch({options})
       .then((response) => {
         console.log('response from 1st Fetch', response);
         console.log('response from 1st Fetch - RES.HEADERS', response.headers);
@@ -339,7 +339,7 @@ const httpController = {
               // // the ResponseBody is the literal readable object containing our api content
               // // the raw unparsed response from localhost:7000
           const theResponseHeaders = response.headers;
-          console.log('theResponseHeaders',typeof theResponseHeaders.cookies);
+          console.log('theResponseHeaders', theResponseHeaders);
           const { body } = response;
           // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
           reqResObj.response.headers = theResponseHeaders;
@@ -349,9 +349,20 @@ const httpController = {
           domain.shift();
           [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
 
-          const receivedCookies = theResponseHeaders.cookies
+          const receivedCookies = theResponseHeaders.cookies.split
+          console.log(theResponseHeaders['set-cookie'][0].split(';')[0].split('='));
+
+
+          // check if   
+          const responseCookieName = theResponseHeaders['set-cookie'][0].split(';')[0].split('=')[0];
+          const responseCookieValue = theResponseHeaders['set-cookie'][0].split(';')[0].split('=')[1];
           
-          const mainCookies = { url: reqResObj.host  , name: 'received' , value: 'NEW COOKIE!'}
+          const mainCookies = { 
+            url: reqResObj.host,
+            name: responseCookieName,
+            value: responseCookieValue,
+            // expriationDate: theResponseHeaders.cookies.Expires,
+          }
           console.log('main', mainCookies)
           http1Sesh.cookies.set(mainCookies, () => console.log('cookies added!'))
 
@@ -402,7 +413,9 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
+      // saving cookies in the chromium instance
       document.cookie = cookieString;
+      // attach to formattedHeaders so options object includes this
       formattedHeaders.cookie = cookieString;
     });
 
