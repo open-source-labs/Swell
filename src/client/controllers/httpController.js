@@ -304,14 +304,12 @@ const httpController = {
             }
             this.handleSSE(response, reqResObj, heads);
           });
-          console.log('SERVED')
         } 
         
         else { // if url is not not sse ...
           
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-
           
           // fetch2(reqResObj.url, options)// fetch to OUR local proxy server before fetching to url provided
           
@@ -339,7 +337,9 @@ const httpController = {
               // // the ResponseBody is the literal readable object containing our api content
               // // the raw unparsed response from localhost:7000
           const theResponseHeaders = response.headers;
-          console.log('theResponseHeaders', theResponseHeaders);
+
+          console.log('COOKIE RECEIVED',theResponseHeaders.cookies)
+
           const { body } = response;
           // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
           reqResObj.response.headers = theResponseHeaders;
@@ -349,25 +349,65 @@ const httpController = {
           domain.shift();
           [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
 
-          const receivedCookies = theResponseHeaders.cookies.split
-          console.log(theResponseHeaders['set-cookie'][0].split(';')[0].split('='));
+          // const receivedCookies = theResponseHeaders.cookies.split
+          // console.log(theResponseHeaders['set-cookie'][0].split(';')[0].split('='));
 
 
-          // check if   
-          const responseCookieName = theResponseHeaders['set-cookie'][0].split(';')[0].split('=')[0];
-          const responseCookieValue = theResponseHeaders['set-cookie'][0].split(';')[0].split('=')[1];
+          // const cookieFormat = { 
+          //   url: reqResObj.host,
+          //   name: null,
+          //   value: null,
+          //   expriationDate: null,
+          //   secure: null,
+          //   domain: null,
+          //   httpOnly: null,
+          // }
+          const splitCookies = theResponseHeaders.cookies;
+          console.log('SPLIT C',splitCookies)
+
+          const cookiesToAdd = [];
+          splitCookies.forEach((eachCookie) => {
+            const cookieFormat = { 
+              url: reqResObj.host,
+              name: null,
+              value: null,
+              expriationDate: null,
+              secure: false,
+              domain: null,
+              httpOnly: false,
+            }
+            let cookieArray = eachCookie.split('; ');
+            cookieArray = cookieArray.map((element) => element.split('='));
+
+            console.log('COOKIE ARRAY', cookieArray)
+            cookieFormat.name = cookieArray[0][0];
+            cookieFormat.value = cookieArray[0][1];
+
+            for (let i = 1; i < cookieArray.length; i++) {
+              if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = cookieArray[i][1]
+              // if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
+              if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
+              if (cookieArray[i][0].toLowerCase() === 'domain') {
+                let domain = cookieArray[i][1].split('//');
+                domain.shift();
+                // console.log('DOMAIN1', domain)
+                domain = domain.join('').split('.').splice(-2).join('.').split(':');
+                cookieFormat.domain = domain[0];
+              }
+              // console.log(cookieFormat.domain)
+            }
+            cookiesToAdd.push(cookieFormat);
+          })
+          console.log('COOKIES TO ADD',cookiesToAdd);
           
-          const mainCookies = { 
-            url: reqResObj.host,
-            name: responseCookieName,
-            value: responseCookieValue,
-            // expriationDate: theResponseHeaders.cookies.Expires,
-          }
-          console.log('main', mainCookies)
-          http1Sesh.cookies.set(mainCookies, () => console.log('cookies added!'))
+          // set cookies in the session
+          cookiesToAdd.forEach((additionalCookie)=> {
+            http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
+          })
+          // // http1Sesh.cookies.set(mainCookies, () => console.log('cookies added!'))
+          
 
           http1Sesh.cookies.get({ domain }, (err, cookies) => {
-            console.log('COOKIES RECEIVED', theResponseHeaders.cookies);
             console.log('SESSION.GET', cookies);
             if (cookies) {
               reqResObj.response.cookies = cookies;
