@@ -44,8 +44,8 @@ class SingleReqResContainer extends Component {
         : this.props.content.response.events
         && this.props.content.response.events.length
         && statusCode ? 'Status: ' + statusCode : 'Status: 200';
-    } else if (/wss?:\/\//.test(this.props.content.protocol)) { // ws
-      return '';
+    } else if (/wss?:\/\//.test(this.props.content.protocol)) { // ws - close codes
+      return this.props.content.closeCode ? `Close Code: ${this.props.content.closeCode}` : '';
     } else { // http
       return this.props.content.response.headers 
         && this.props.content.response.headers[':status'] 
