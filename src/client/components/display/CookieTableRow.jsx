@@ -17,7 +17,7 @@ class CookieTableRow extends Component {
         if (!this.props.cookie.expirationDate) {
             tableCellArray.push(<CookieTableCell detail={''} key='expirationDate'></CookieTableCell>)
         }
-
+        console.log('tableCellArray', tableCellArray);
         return (
           <div className='cookieTableRow grid-9'>
               {tableCellArray}
