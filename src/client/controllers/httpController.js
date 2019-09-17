@@ -261,13 +261,6 @@ const httpController = {
         // Parse response headers now to decide if SSE or not.
         const heads = response.headers;
 
-        // for (const entry of response.headers) {
-        //   console.log('entry', entry);
-        //   console.log('entry[0]',entry[0].toLowerCase());
-        //   console.log('entry[1]', entry[1]);
-        //   heads[entry[0].toLowerCase()] = entry[1];
-        // }
-
         reqResObj.response.headers = heads;
         
         // store extracted headers in heads object
@@ -305,32 +298,13 @@ const httpController = {
           
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-          
-          // fetch2(reqResObj.url, options)// fetch to OUR local proxy server before fetching to url provided
-          
-          // function sendToMainForFetch(args) {
-          //   console.log('before 2nd fetch')
-          //   return new Promise (resolve => {
-          //     ipcRenderer.send('asynchronous-message', args)
-          //     ipcRenderer.on('asynchronous-reply', (event, result) => {
-          //       resolve(result);
-          //     })
-          //   })
-          // }
 
-        // console.log(sendToMainForFetch({reqResObj, options}))
-        //  sendToMainForFetch({reqResObj, options})
-            // .then(response => {
-            //   console.log('2nd fetch request', response);
-            //   response.json()}
-            //   )
-            // .then((result) => {
-              // console.log('result 2nd fetch:', result);
-              // // the readable version of our response is an object that looks like this:
-              // // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
-              // // theResponseHeaders refers to our literal object of response headers
-              // // the ResponseBody is the literal readable object containing our api content
-              // // the raw unparsed response from localhost:7000
+              //! Old proxy comments
+              // the readable version of our response is an object that looks like this:
+              // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
+              // theResponseHeaders refers to our literal object of response headers
+              // the ResponseBody is the literal readable object containing our api content
+              // the raw unparsed response from localhost:7000
           const theResponseHeaders = response.headers;
 
           console.log('COOKIE RECEIVED',theResponseHeaders.cookies)
@@ -346,9 +320,8 @@ const httpController = {
           domain.shift();
           [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
           console.log('DOMAIN', domain);
-          // const receivedCookies = theResponseHeaders.cookies.split
-          // console.log(theResponseHeaders['set-cookie'][0].split(';')[0].split('='));
 
+          // if cookies exists, parse the cookie(s)
           if (theResponseHeaders.cookies) {
             const splitCookies = theResponseHeaders.cookies;
             console.log('SPLIT C',splitCookies)
@@ -374,7 +347,7 @@ const httpController = {
   
               for (let i = 1; i < cookieArray.length; i++) {
                 if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = new Date(cookieArray[i][1]).getTime();
-                // this secure option is not working for some reason - disabled for now
+                //! this secure option is not working for some reason - disabled for now
                 // if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
                 if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
               }
@@ -405,11 +378,6 @@ const httpController = {
             // Below the headers and response api content are handled by swell and will be displayed.
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
           });
-            // })
-            // .catch((err) => {
-            //   reqResObj.connection = 'error';
-            //   store.default.dispatch(actions.reqResUpdate(reqResObj));
-            // });
         }
       })
       .catch((err) => {
