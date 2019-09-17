@@ -7,6 +7,7 @@ const wsController = {
     reqResObj.response.messages = [];
     reqResObj.request.messages = [];
     reqResObj.connection = 'pending';
+    reqResObj.closeCode = 0;
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
@@ -35,6 +36,7 @@ const wsController = {
         data: event.data,
         timeReceived: Date.now(),
       });
+
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
 
@@ -43,6 +45,9 @@ const wsController = {
       reqResObj = store.default
         .getState()
         .business.reqResArray.find(obj => obj.id === reqResObj.id);
+
+      //  attach close code to reqResObj
+      reqResObj.closeCode = event.code;
 
       switch (event.code) {
         case 1006: {
@@ -54,6 +59,7 @@ const wsController = {
           break;
         }
       }
+
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     };
 

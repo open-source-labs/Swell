@@ -13,7 +13,6 @@ class SingleReqResContainer extends Component {
     this.removeReqRes = this.removeReqRes.bind(this);
     this.onCheckHandler = this.onCheckHandler.bind(this);
     this.minimize = this.minimize.bind(this);
-
   }
 
   onCheckHandler() {
@@ -30,6 +29,29 @@ class SingleReqResContainer extends Component {
   minimize() {
     this.props.content.minimized = !this.props.content.minimized;
     this.props.reqResUpdate(this.props.content);
+  }
+
+  renderStatusCode() {
+    if (this.props.content.graphQL) { // graphql
+      const statusCode = !this.props.content.response.events 
+        ? '' 
+        : this.props.content.response.events
+        && this.props.content.response.events.length
+        ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
+
+      return !this.props.content.response.events 
+        ? ''
+        : this.props.content.response.events
+        && this.props.content.response.events.length
+        && statusCode ? 'Status: ' + statusCode : 'Status: 200';
+    } else if (/wss?:\/\//.test(this.props.content.protocol)) { // ws - close codes
+      return this.props.content.closeCode ? `Close Code: ${this.props.content.closeCode}` : '';
+    } else { // http
+      return this.props.content.response.headers 
+        && this.props.content.response.headers[':status'] 
+        ? 'Status: ' + this.props.content.response.headers[":status"] : '';
+    }
+    
   }
 
   render() {
@@ -94,7 +116,7 @@ class SingleReqResContainer extends Component {
       default:
         console.log('not a valid connection for content object');
     }
-
+    // TODO: remove later
     const arrowClass = !this.props.content.minimized ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     return (
       <div>
@@ -113,7 +135,7 @@ class SingleReqResContainer extends Component {
             //----------------------------------------
             !this.props.content.minimized &&
             <>
-              <div className="grid-6">
+              <div className="grid-7">
                 <div>
                   <input
                     id={this.props.content.id}
@@ -145,6 +167,8 @@ class SingleReqResContainer extends Component {
                     Roundtrip: {(this.props.content.connection === "open" || this.props.content.connection === 'pending' || this.props.content.timeReceived === null) ? 0 : this.props.content.timeReceived - this.props.content.timeSent} ms
                   </span>
                 }
+
+                <div className="tertiary-title">{this.renderStatusCode()}</div>
 
               </div>
               <div style={http2Display} className={'httptwo'}>
