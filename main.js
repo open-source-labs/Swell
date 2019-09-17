@@ -15,6 +15,11 @@ const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
+// basic http cookie parser
+const cookie = require('cookie');
+// node-fetch for the fetch request
+const fetch2 = require('node-fetch');
+
 // configure logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -126,7 +131,7 @@ function createWindow() {
     webPreferences: {
       "nodeIntegration": true,
       "sandbox": false,
-      webSecurity: false,
+      webSecurity: true,
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
@@ -263,3 +268,24 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+
+// ipcMain listener that 
+ipcMain.on('asynchronous-message', (event, arg) => {
+  const { method, headers, body} = arg.options;
+  fetch2(headers.url, { method, headers, body })
+    .then((response) => {
+      const headers = response.headers.raw();
+      const receivedCookie = headers['set-cookie'];
+      headers.cookies = receivedCookie;
+      const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+      contents
+      .then(body =>  {
+        event.sender.send('asynchronous-reply', {headers, body})
+      })
+      .catch(error => console.log('ERROR',error))
+    })
+    .catch(error => console.log(error))
+})
+
+

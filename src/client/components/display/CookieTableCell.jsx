@@ -8,10 +8,10 @@ class CookieTableCell extends Component {
     }
 
     render() {
-
+        console.log('bottom cookie table', this.props.detail)
         return (
           <div className='cookieTableCell'>
-            {this.props.detail}
+            {this.props.detail.toString()}
           </div>
         )
     }
