@@ -131,7 +131,7 @@ function createWindow() {
     webPreferences: {
       "nodeIntegration": true,
       "sandbox": false,
-      webSecurity: true,
+      webSecurity: false,
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
@@ -272,18 +272,22 @@ app.on('activate', () => {
 
 // ipcMain listener that 
 ipcMain.on('asynchronous-message', (event, arg) => {
-  const { method, headers, body} = arg.options;
+  const { method, headers, body } = arg.options;
+  // console.log(headers.url);
   fetch2(headers.url, { method, headers, body })
     .then((response) => {
+      console.log(response.headers.raw())
       const headers = response.headers.raw();
+
       const receivedCookie = headers['set-cookie'];
       headers.cookies = receivedCookie;
+
       const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
       contents
-      .then(body =>  {
-        event.sender.send('asynchronous-reply', {headers, body})
-      })
-      .catch(error => console.log('ERROR',error))
+        .then(body => {
+          event.sender.send('asynchronous-reply', { headers, body })
+        })
+        .catch(error => console.log('ERROR', error))
     })
     .catch(error => console.log(error))
 })
