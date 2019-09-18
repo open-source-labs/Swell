@@ -212,14 +212,26 @@ const httpController = {
 
         const cookiesToAdd = [];
         splitCookies.forEach((eachCookie) => {
+          // const cookieFormat = {
+          //   url: reqResObj.host,
+          //   name: null,
+          //   value: null,
+          //   expriationDate: null,
+          //   secure: false,
+          //   domain: null,
+          //   httpOnly: false,
+          // }
           const cookieFormat = {
-            url: reqResObj.host,
+            // url: reqResObj.host,
             name: null,
             value: null,
-            expirationDate: null,
-            secure: false,
             domain: null,
+            hostOnly: false,
+            path: null,
+            secure: false,
             httpOnly: false,
+            session: false,
+            expriationDate: null,
           }
           let cookieArray = eachCookie.split('; ');
           cookieArray = cookieArray.map((element) => element.split('='));
@@ -230,37 +242,46 @@ const httpController = {
           cookieFormat.domain = domain;
 
           for (let i = 1; i < cookieArray.length; i++) {
-            if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = new Date(cookieArray[i][1]).getTime();
-            //! this secure option is not working for some reason - disabled for now
-            // if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
+            if (cookieArray[i][0].toLowerCase() === 'expires') {
+              cookieFormat.expriationDate = cookieArray[i][1]; 
+              console.log('EXP DATE FOUND and ADDED', cookieFormat.expriationDate);
+            }
+            if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
             if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
+            if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
           }
           cookiesToAdd.push(cookieFormat);
         })
         console.log('COOKIES TO ADD', cookiesToAdd);
 
         // set cookies in the session
-        cookiesToAdd.forEach((additionalCookie) => {
-          http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
-        })
+        // cookiesToAdd.forEach((additionalCookie) => {
+        //   console.log('ADDITIONAL COOKIE', additionalCookie)
+        //   http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
+        // })
+        
+        reqResObj.response.cookies = cookiesToAdd;
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+        this.handleSingleEvent(body, reqResObj, theResponseHeaders);
       }
 
-      http1Sesh.cookies.get({ domain }, (err, cookies) => {
-        if (cookies) {
-          reqResObj.response.cookies = cookies;
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
-          cookies.forEach((cookie) => {
-            let url = '';
-            url += cookie.secure ? 'https://' : 'http://';
-            url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-            url += cookie.domain;
-            url += cookie.path;
-            http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-          });
-        }
-        // Below the headers and response api content are handled by swell and will be displayed.
-        this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-      });
+      // http1Sesh.cookies.get({ domain }, (err, cookies) => {
+      //   if (cookies) {
+      //     console.log('UPDATED COOKIES',cookies)
+      //     reqResObj.response.cookies = cookies;
+      //     store.default.dispatch(actions.reqResUpdate(reqResObj));
+      //     cookies.forEach((cookie) => {
+      //       let url = '';
+      //       url += cookie.secure ? 'https://' : 'http://';
+      //       url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+      //       url += cookie.domain;
+      //       url += cookie.path;
+      //       http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
+      //     });
+      //   }
+      //   // Below the headers and response api content are handled by swell and will be displayed.
+      //   this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+      // });
 
     })
 
@@ -310,7 +331,6 @@ const httpController = {
       }
     });
   },
-
   // ----------------------------------------------------------------------------
 
   sendToMainForFetch(args) {
@@ -412,7 +432,7 @@ const httpController = {
 
           console.log('BODY', body);
 
-          const http1Sesh = session.defaultSession;
+          // const http1Sesh = session.defaultSession;
           let domain = reqResObj.host.split('//');
           domain.shift();
           [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
@@ -425,14 +445,26 @@ const httpController = {
 
             const cookiesToAdd = [];
             splitCookies.forEach((eachCookie) => {
+              // const cookieFormat = {
+              //   url: reqResObj.host,
+              //   name: null,
+              //   value: null,
+              //   expriationDate: null,
+              //   secure: false,
+              //   domain: null,
+              //   httpOnly: false,
+              // }
               const cookieFormat = {
-                url: reqResObj.host,
+                // url: reqResObj.host,
                 name: null,
                 value: null,
-                expriationDate: null,
-                secure: false,
                 domain: null,
+                hostOnly: false,
+                path: null,
+                secure: false,
                 httpOnly: false,
+                session: false,
+                expriationDate: null,
               }
               let cookieArray = eachCookie.split('; ');
               cookieArray = cookieArray.map((element) => element.split('='));
@@ -443,37 +475,46 @@ const httpController = {
               cookieFormat.domain = domain;
 
               for (let i = 1; i < cookieArray.length; i++) {
-                if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = new Date(cookieArray[i][1]).getTime();
-                //! this secure option is not working for some reason - disabled for now
-                // if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
+                if (cookieArray[i][0].toLowerCase() === 'expires') {
+                  cookieFormat.expriationDate = cookieArray[i][1]; 
+                  console.log('EXP DATE FOUND and ADDED', cookieFormat.expriationDate);
+                }
+                if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
                 if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
+                if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
               }
               cookiesToAdd.push(cookieFormat);
             })
             console.log('COOKIES TO ADD', cookiesToAdd);
 
             // set cookies in the session
-            cookiesToAdd.forEach((additionalCookie) => {
-              http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
-            })
+            // cookiesToAdd.forEach((additionalCookie) => {
+            //   console.log('ADDITIONAL COOKIE', additionalCookie)
+            //   http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
+            // })
+            
+            reqResObj.response.cookies = cookiesToAdd;
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+            this.handleSingleEvent(body, reqResObj, theResponseHeaders);
           }
 
-          http1Sesh.cookies.get({ domain }, (err, cookies) => {
-            if (cookies) {
-              reqResObj.response.cookies = cookies;
-              store.default.dispatch(actions.reqResUpdate(reqResObj));
-              cookies.forEach((cookie) => {
-                let url = '';
-                url += cookie.secure ? 'https://' : 'http://';
-                url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-                url += cookie.domain;
-                url += cookie.path;
-                http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-              });
-            }
-            // Below the headers and response api content are handled by swell and will be displayed.
-            this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-          });
+          // http1Sesh.cookies.get({ domain }, (err, cookies) => {
+          //   if (cookies) {
+          //     console.log('UPDATED COOKIES',cookies)
+          //     reqResObj.response.cookies = cookies;
+          //     store.default.dispatch(actions.reqResUpdate(reqResObj));
+          //     cookies.forEach((cookie) => {
+          //       let url = '';
+          //       url += cookie.secure ? 'https://' : 'http://';
+          //       url += cookie.domain.charAt(0) === '.' ? 'www' : '';
+          //       url += cookie.domain;
+          //       url += cookie.path;
+          //       http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
+          //     });
+          //   }
+          //   // Below the headers and response api content are handled by swell and will be displayed.
+          //   this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+          // });
         }
       })
       .catch((err) => {
