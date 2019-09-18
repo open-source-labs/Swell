@@ -278,6 +278,8 @@ ipcMain.on('asynchronous-message', (event, arg) => {
     .then((response) => {
       console.log(response.headers.raw())
       const headers = response.headers.raw();
+      // add status code for regular http requests in the response header
+      headers[':status'] = response.status;
 
       const receivedCookie = headers['set-cookie'];
       headers.cookies = receivedCookie;
