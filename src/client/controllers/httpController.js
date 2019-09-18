@@ -22,6 +22,7 @@ const setCookie = require('set-cookie-parser');
 // handleSingleEvent(response, originalObj, headers)
 // handleSSE(response, originalObj, headers)
 // parseSSEFields(rawString)
+// cookieFormatter(setCookie(response.cookies)) 
 
 
 const httpController = {
@@ -188,55 +189,14 @@ const httpController = {
       reqResObj.response.headers = headers;
       reqResObj.response.events = [];
 
-      // let domain = reqResObj.host.split('//');
-      // domain.shift();
-      // [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
-      // console.log('DOMAIN', domain);
-
-      console.log('HEADERS', headers)
-      console.log('SETCOOKIE',setCookie.parse(headers['set-cookie']));
       // if cookies exists, parse the cookie(s)
-      if (headers['set-cookie']) {
-        const splitCookies = setCookie.parse(headers['set-cookie']);
-        console.log('cookies received H2',splitCookies)
-        const cookiesToAdd = [];
-        splitCookies.forEach((eachCookie) => {
-          const cookieFormat = {
-            name: eachCookie.name,
-            value: eachCookie.value,
-            domain: eachCookie.domain,
-            hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
-            path: eachCookie.path,
-            secure: eachCookie.secure ? eachCookie.secure : false,
-            httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
-            session: eachCookie.session ? eachCookie.session : false,
-            expriationDate: eachCookie.expires? eachCookie.expires : '',
-          }
-          // let cookieArray = eachCookie.split('; ');
-          // cookieArray = cookieArray.map((element) => element.split('='));
-
-          // cookieFormat.name = cookieArray[0][0];
-          // cookieFormat.value = cookieArray[0][1];
-          // cookieFormat.domain = domain;
-
-          // for (let i = 1; i < cookieArray.length; i++) {
-          //   if (cookieArray[i][0].toLowerCase() === 'expires') {
-          //     cookieFormat.expriationDate = cookieArray[i][1]; 
-          //   }
-          //   if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
-          //   if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
-          //   if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
-          // }
-          cookiesToAdd.push(cookieFormat);
-        })
-        
-        reqResObj.response.cookies = cookiesToAdd;
+      if (setCookie.parse(headers['set-cookie'])) {
+        reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
         store.default.dispatch(actions.reqResUpdate(reqResObj));
         this.handleSingleEvent(body, reqResObj, theResponseHeaders);
       }
     })
-
-
+    
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => {
@@ -325,7 +285,7 @@ const httpController = {
     // send information to the NODE side to do the fetch request
     this.sendToMainForFetch({ options })
       .then((response) => {
-        console.log('response from 1st Fetch - RES.HEADERS', response.headers);
+        console.log('response from main fetch', response.headers);
 
         // Parse response headers now to decide if SSE or not.
         const heads = response.headers;
@@ -338,7 +298,7 @@ const httpController = {
 
         if (heads['content-type'] && heads['content-type'].includes('stream')) isStream = true;
 
-        if (isStream) { // if url is sse...
+        if (isStream) { // if url is sse... //! <REVISIT>
           const http1Sesh = session.defaultSession;
           let domain = reqResObj.host.split('//');
           domain.shift();
@@ -370,51 +330,12 @@ const httpController = {
 
           const theResponseHeaders = response.headers;
 
-          console.log('COOKIE RECEIVED', theResponseHeaders.cookies)
-
           const { body } = response;
           reqResObj.response.headers = theResponseHeaders;
 
-          let domain = reqResObj.host.split('//');
-          domain.shift();
-          [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
-
-          // console.log('HEADERS h1', headers)
-          console.log('SETCOOKIE h1',setCookie.parse(theResponseHeaders.cookies));
-
           // if cookies exists, parse the cookie(s)
-          if (theResponseHeaders.cookies) {
-            const splitCookies = theResponseHeaders.cookies;
-
-            const cookiesToAdd = [];
-            splitCookies.forEach((eachCookie) => {
-              const cookieFormat = {
-                name: null,
-                value: null,
-                domain: null,
-                hostOnly: false,
-                path: null,
-                secure: false,
-                httpOnly: false,
-                session: false,
-                expriationDate: null,
-              }
-              let cookieArray = eachCookie.split('; ');
-              cookieArray = cookieArray.map((element) => element.split('='));
-
-              cookieFormat.name = cookieArray[0][0];
-              cookieFormat.value = cookieArray[0][1];
-              cookieFormat.domain = domain;
-
-              for (let i = 1; i < cookieArray.length; i++) {
-                if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = cookieArray[i][1]; 
-                if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
-                if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
-                if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
-              }
-              cookiesToAdd.push(cookieFormat);
-            })            
-            reqResObj.response.cookies = cookiesToAdd;
+          if (setCookie.parse(theResponseHeaders.cookies)) {    
+            reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(theResponseHeaders.cookies));
             store.default.dispatch(actions.reqResUpdate(reqResObj));
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
           }
@@ -444,8 +365,6 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
-      // saving cookies in the chromium instance
-      document.cookie = cookieString;
       // attach to formattedHeaders so options object includes this
       formattedHeaders.cookie = cookieString;
     });
@@ -571,6 +490,23 @@ const httpController = {
         }, {})
     );
   },
+
+  cookieFormatter (cookieArray) {
+    return cookieArray.map((eachCookie) => {
+      const cookieFormat = {
+        name: eachCookie.name,
+        value: eachCookie.value,
+        domain: eachCookie.domain,
+        hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
+        path: eachCookie.path,
+        secure: eachCookie.secure ? eachCookie.secure : false,
+        httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
+        session: eachCookie.session ? eachCookie.session : false,
+        expriationDate: eachCookie.expires ? eachCookie.expires : '',
+      }
+      return cookieFormat;
+    })
+  }
 };
 
 export default httpController;
