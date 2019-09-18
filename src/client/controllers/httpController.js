@@ -7,6 +7,9 @@ const http2 = require('http2');
 
 const { ipcRenderer } = require('electron')
 
+// parsing through cookies
+const setCookie = require('set-cookie-parser');
+
 
 //Included Functions
 
@@ -185,104 +188,52 @@ const httpController = {
       reqResObj.response.headers = headers;
       reqResObj.response.events = [];
 
-
-
-      // let sesh = session.defaultSession;
       // let domain = reqResObj.host.split('//');
       // domain.shift();
-      // domain = domain.join('').split('.').splice(-2).join('.')
-      //   .split(':')[0];
-      // store.default.dispatch(actions.reqResUpdate(reqResObj));
+      // [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
+      // console.log('DOMAIN', domain);
 
-
-
-
-
-
-      const http1Sesh = session.defaultSession;
-      let domain = reqResObj.host.split('//');
-      domain.shift();
-      [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
-      console.log('DOMAIN', domain);
-
+      console.log('HEADERS', headers)
+      console.log('SETCOOKIE',setCookie.parse(headers['set-cookie']));
       // if cookies exists, parse the cookie(s)
       if (headers['set-cookie']) {
-        const splitCookies = [headers['set-cookie']];
-        console.log('SPLIT C', splitCookies)
-
+        const splitCookies = setCookie.parse(headers['set-cookie']);
+        console.log('cookies received H2',splitCookies)
         const cookiesToAdd = [];
         splitCookies.forEach((eachCookie) => {
-          // const cookieFormat = {
-          //   url: reqResObj.host,
-          //   name: null,
-          //   value: null,
-          //   expriationDate: null,
-          //   secure: false,
-          //   domain: null,
-          //   httpOnly: false,
-          // }
           const cookieFormat = {
-            // url: reqResObj.host,
-            name: null,
-            value: null,
-            domain: null,
-            hostOnly: false,
-            path: null,
-            secure: false,
-            httpOnly: false,
-            session: false,
-            expriationDate: null,
+            name: eachCookie.name,
+            value: eachCookie.value,
+            domain: eachCookie.domain,
+            hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
+            path: eachCookie.path,
+            secure: eachCookie.secure ? eachCookie.secure : false,
+            httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
+            session: eachCookie.session ? eachCookie.session : false,
+            expriationDate: eachCookie.expires? eachCookie.expires : '',
           }
-          let cookieArray = eachCookie.split('; ');
-          cookieArray = cookieArray.map((element) => element.split('='));
+          // let cookieArray = eachCookie.split('; ');
+          // cookieArray = cookieArray.map((element) => element.split('='));
 
-          console.log('COOKIE ARRAY', cookieArray)
-          cookieFormat.name = cookieArray[0][0];
-          cookieFormat.value = cookieArray[0][1];
-          cookieFormat.domain = domain;
+          // cookieFormat.name = cookieArray[0][0];
+          // cookieFormat.value = cookieArray[0][1];
+          // cookieFormat.domain = domain;
 
-          for (let i = 1; i < cookieArray.length; i++) {
-            if (cookieArray[i][0].toLowerCase() === 'expires') {
-              cookieFormat.expriationDate = cookieArray[i][1]; 
-              console.log('EXP DATE FOUND and ADDED', cookieFormat.expriationDate);
-            }
-            if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
-            if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
-            if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
-          }
+          // for (let i = 1; i < cookieArray.length; i++) {
+          //   if (cookieArray[i][0].toLowerCase() === 'expires') {
+          //     cookieFormat.expriationDate = cookieArray[i][1]; 
+          //   }
+          //   if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
+          //   if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
+          //   if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
+          // }
           cookiesToAdd.push(cookieFormat);
         })
-        console.log('COOKIES TO ADD', cookiesToAdd);
-
-        // set cookies in the session
-        // cookiesToAdd.forEach((additionalCookie) => {
-        //   console.log('ADDITIONAL COOKIE', additionalCookie)
-        //   http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
-        // })
         
         reqResObj.response.cookies = cookiesToAdd;
         store.default.dispatch(actions.reqResUpdate(reqResObj));
         this.handleSingleEvent(body, reqResObj, theResponseHeaders);
       }
-
-      // http1Sesh.cookies.get({ domain }, (err, cookies) => {
-      //   if (cookies) {
-      //     console.log('UPDATED COOKIES',cookies)
-      //     reqResObj.response.cookies = cookies;
-      //     store.default.dispatch(actions.reqResUpdate(reqResObj));
-      //     cookies.forEach((cookie) => {
-      //       let url = '';
-      //       url += cookie.secure ? 'https://' : 'http://';
-      //       url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-      //       url += cookie.domain;
-      //       url += cookie.path;
-      //       http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-      //     });
-      //   }
-      //   // Below the headers and response api content are handled by swell and will be displayed.
-      //   this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-      // });
-
     })
 
 
@@ -417,12 +368,6 @@ const httpController = {
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-          //! Old proxy comments
-          // the readable version of our response is an object that looks like this:
-          // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
-          // theResponseHeaders refers to our literal object of response headers
-          // the ResponseBody is the literal readable object containing our api content
-          // the raw unparsed response from localhost:7000
           const theResponseHeaders = response.headers;
 
           console.log('COOKIE RECEIVED', theResponseHeaders.cookies)
@@ -430,32 +375,20 @@ const httpController = {
           const { body } = response;
           reqResObj.response.headers = theResponseHeaders;
 
-          console.log('BODY', body);
-
-          // const http1Sesh = session.defaultSession;
           let domain = reqResObj.host.split('//');
           domain.shift();
           [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
-          console.log('DOMAIN', domain);
+
+          // console.log('HEADERS h1', headers)
+          console.log('SETCOOKIE h1',setCookie.parse(theResponseHeaders.cookies));
 
           // if cookies exists, parse the cookie(s)
           if (theResponseHeaders.cookies) {
             const splitCookies = theResponseHeaders.cookies;
-            console.log('SPLIT C', splitCookies)
 
             const cookiesToAdd = [];
             splitCookies.forEach((eachCookie) => {
-              // const cookieFormat = {
-              //   url: reqResObj.host,
-              //   name: null,
-              //   value: null,
-              //   expriationDate: null,
-              //   secure: false,
-              //   domain: null,
-              //   httpOnly: false,
-              // }
               const cookieFormat = {
-                // url: reqResObj.host,
                 name: null,
                 value: null,
                 domain: null,
@@ -469,52 +402,22 @@ const httpController = {
               let cookieArray = eachCookie.split('; ');
               cookieArray = cookieArray.map((element) => element.split('='));
 
-              console.log('COOKIE ARRAY', cookieArray)
               cookieFormat.name = cookieArray[0][0];
               cookieFormat.value = cookieArray[0][1];
               cookieFormat.domain = domain;
 
               for (let i = 1; i < cookieArray.length; i++) {
-                if (cookieArray[i][0].toLowerCase() === 'expires') {
-                  cookieFormat.expriationDate = cookieArray[i][1]; 
-                  console.log('EXP DATE FOUND and ADDED', cookieFormat.expriationDate);
-                }
+                if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = cookieArray[i][1]; 
                 if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
                 if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
                 if (cookieArray[i][0].toLowerCase() === 'path') cookieFormat.path = cookieArray[i][1];
               }
               cookiesToAdd.push(cookieFormat);
-            })
-            console.log('COOKIES TO ADD', cookiesToAdd);
-
-            // set cookies in the session
-            // cookiesToAdd.forEach((additionalCookie) => {
-            //   console.log('ADDITIONAL COOKIE', additionalCookie)
-            //   http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
-            // })
-            
+            })            
             reqResObj.response.cookies = cookiesToAdd;
             store.default.dispatch(actions.reqResUpdate(reqResObj));
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
           }
-
-          // http1Sesh.cookies.get({ domain }, (err, cookies) => {
-          //   if (cookies) {
-          //     console.log('UPDATED COOKIES',cookies)
-          //     reqResObj.response.cookies = cookies;
-          //     store.default.dispatch(actions.reqResUpdate(reqResObj));
-          //     cookies.forEach((cookie) => {
-          //       let url = '';
-          //       url += cookie.secure ? 'https://' : 'http://';
-          //       url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-          //       url += cookie.domain;
-          //       url += cookie.path;
-          //       http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-          //     });
-          //   }
-          //   // Below the headers and response api content are handled by swell and will be displayed.
-          //   this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-          // });
         }
       })
       .catch((err) => {
