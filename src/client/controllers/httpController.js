@@ -7,6 +7,9 @@ const http2 = require('http2');
 
 const { ipcRenderer } = require('electron')
 
+// parsing through cookies
+const setCookie = require('set-cookie-parser');
+
 
 //Included Functions
 
@@ -19,6 +22,7 @@ const { ipcRenderer } = require('electron')
 // handleSingleEvent(response, originalObj, headers)
 // handleSSE(response, originalObj, headers)
 // parseSSEFields(rawString)
+// cookieFormatter(setCookie(response.cookies)) 
 
 
 const httpController = {
@@ -185,86 +189,14 @@ const httpController = {
       reqResObj.response.headers = headers;
       reqResObj.response.events = [];
 
-
-
-      // let sesh = session.defaultSession;
-      // let domain = reqResObj.host.split('//');
-      // domain.shift();
-      // domain = domain.join('').split('.').splice(-2).join('.')
-      //   .split(':')[0];
-      // store.default.dispatch(actions.reqResUpdate(reqResObj));
-
-
-
-
-
-
-      const http1Sesh = session.defaultSession;
-      let domain = reqResObj.host.split('//');
-      domain.shift();
-      [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
-      console.log('DOMAIN', domain);
-
       // if cookies exists, parse the cookie(s)
-      if (headers['set-cookie']) {
-        const splitCookies = [headers['set-cookie']];
-        console.log('SPLIT C', splitCookies)
-
-        const cookiesToAdd = [];
-        splitCookies.forEach((eachCookie) => {
-          const cookieFormat = {
-            url: reqResObj.host,
-            name: null,
-            value: null,
-            expirationDate: null,
-            secure: false,
-            domain: null,
-            httpOnly: false,
-          }
-          let cookieArray = eachCookie.split('; ');
-          cookieArray = cookieArray.map((element) => element.split('='));
-
-          console.log('COOKIE ARRAY', cookieArray)
-          cookieFormat.name = cookieArray[0][0];
-          cookieFormat.value = cookieArray[0][1];
-          cookieFormat.domain = domain;
-
-          for (let i = 1; i < cookieArray.length; i++) {
-            if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = new Date(cookieArray[i][1]).getTime();
-            //! this secure option is not working for some reason - disabled for now
-            // if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
-            if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
-          }
-          cookiesToAdd.push(cookieFormat);
-        })
-        console.log('COOKIES TO ADD', cookiesToAdd);
-
-        // set cookies in the session
-        cookiesToAdd.forEach((additionalCookie) => {
-          http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
-        })
-      }
-
-      http1Sesh.cookies.get({ domain }, (err, cookies) => {
-        if (cookies) {
-          reqResObj.response.cookies = cookies;
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
-          cookies.forEach((cookie) => {
-            let url = '';
-            url += cookie.secure ? 'https://' : 'http://';
-            url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-            url += cookie.domain;
-            url += cookie.path;
-            http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-          });
-        }
-        // Below the headers and response api content are handled by swell and will be displayed.
+      if (setCookie.parse(headers['set-cookie'])) {
+        reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
         this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-      });
-
+      }
     })
-
-
+    
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => {
@@ -310,7 +242,6 @@ const httpController = {
       }
     });
   },
-
   // ----------------------------------------------------------------------------
 
   sendToMainForFetch(args) {
@@ -354,7 +285,7 @@ const httpController = {
     // send information to the NODE side to do the fetch request
     this.sendToMainForFetch({ options })
       .then((response) => {
-        console.log('response from 1st Fetch - RES.HEADERS', response.headers);
+        console.log('response from main fetch', response.headers);
 
         // Parse response headers now to decide if SSE or not.
         const heads = response.headers;
@@ -367,7 +298,7 @@ const httpController = {
 
         if (heads['content-type'] && heads['content-type'].includes('stream')) isStream = true;
 
-        if (isStream) { // if url is sse...
+        if (isStream) { // if url is sse... //! <REVISIT>
           const http1Sesh = session.defaultSession;
           let domain = reqResObj.host.split('//');
           domain.shift();
@@ -397,83 +328,17 @@ const httpController = {
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-          //! Old proxy comments
-          // the readable version of our response is an object that looks like this:
-          // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
-          // theResponseHeaders refers to our literal object of response headers
-          // the ResponseBody is the literal readable object containing our api content
-          // the raw unparsed response from localhost:7000
           const theResponseHeaders = response.headers;
-
-          console.log('COOKIE RECEIVED', theResponseHeaders.cookies)
 
           const { body } = response;
           reqResObj.response.headers = theResponseHeaders;
 
-          console.log('BODY', body);
-
-          const http1Sesh = session.defaultSession;
-          let domain = reqResObj.host.split('//');
-          domain.shift();
-          [domain] = domain.join('').split('.').splice(-2).join('.').split(':');
-          console.log('DOMAIN', domain);
-
           // if cookies exists, parse the cookie(s)
-          if (theResponseHeaders.cookies) {
-            const splitCookies = theResponseHeaders.cookies;
-            console.log('SPLIT C', splitCookies)
-
-            const cookiesToAdd = [];
-            splitCookies.forEach((eachCookie) => {
-              const cookieFormat = {
-                url: reqResObj.host,
-                name: null,
-                value: null,
-                expriationDate: null,
-                secure: false,
-                domain: null,
-                httpOnly: false,
-              }
-              let cookieArray = eachCookie.split('; ');
-              cookieArray = cookieArray.map((element) => element.split('='));
-
-              console.log('COOKIE ARRAY', cookieArray)
-              cookieFormat.name = cookieArray[0][0];
-              cookieFormat.value = cookieArray[0][1];
-              cookieFormat.domain = domain;
-
-              for (let i = 1; i < cookieArray.length; i++) {
-                if (cookieArray[i][0].toLowerCase() === 'expires') cookieFormat.expriationDate = new Date(cookieArray[i][1]).getTime();
-                //! this secure option is not working for some reason - disabled for now
-                // if (cookieArray[i][0].toLowerCase() === 'secure') cookieFormat.secure = true
-                if (cookieArray[i][0].toLowerCase() === 'httponly') cookieFormat.httpOnly = true;
-              }
-              cookiesToAdd.push(cookieFormat);
-            })
-            console.log('COOKIES TO ADD', cookiesToAdd);
-
-            // set cookies in the session
-            cookiesToAdd.forEach((additionalCookie) => {
-              http1Sesh.cookies.set(additionalCookie, () => console.log('cookie added!'))
-            })
-          }
-
-          http1Sesh.cookies.get({ domain }, (err, cookies) => {
-            if (cookies) {
-              reqResObj.response.cookies = cookies;
-              store.default.dispatch(actions.reqResUpdate(reqResObj));
-              cookies.forEach((cookie) => {
-                let url = '';
-                url += cookie.secure ? 'https://' : 'http://';
-                url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-                url += cookie.domain;
-                url += cookie.path;
-                http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-              });
-            }
-            // Below the headers and response api content are handled by swell and will be displayed.
+          if (setCookie.parse(theResponseHeaders.cookies)) {    
+            reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(theResponseHeaders.cookies));
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-          });
+          }
         }
       })
       .catch((err) => {
@@ -500,8 +365,6 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
-      // saving cookies in the chromium instance
-      document.cookie = cookieString;
       // attach to formattedHeaders so options object includes this
       formattedHeaders.cookie = cookieString;
     });
@@ -627,6 +490,23 @@ const httpController = {
         }, {})
     );
   },
+
+  cookieFormatter (cookieArray) {
+    return cookieArray.map((eachCookie) => {
+      const cookieFormat = {
+        name: eachCookie.name,
+        value: eachCookie.value,
+        domain: eachCookie.domain,
+        hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
+        path: eachCookie.path,
+        secure: eachCookie.secure ? eachCookie.secure : false,
+        httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
+        session: eachCookie.session ? eachCookie.session : false,
+        expriationDate: eachCookie.expires ? eachCookie.expires : '',
+      }
+      return cookieFormat;
+    })
+  }
 };
 
 export default httpController;
