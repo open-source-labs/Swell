@@ -4,6 +4,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
 import { onError } from "apollo-link-error";
+import { WebSocketLink } from 'apollo-link-ws';
 const { session } = require('electron').remote
 
 import * as store from '../store';
@@ -95,6 +96,32 @@ const graphQLController = {
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     // TODO - needs built out
+    
+    const wsLink = new createHttpLink({
+      uri: `http://localhost:8000/graphql`,
+      options: {
+        reconnect: true
+      }
+    });
+
+    const client = new ApolloClient({
+      link: wsLink,
+      cache: new InMemoryCache(),
+    })
+    
+    client.subscribe({
+      query: gql`
+      subscription {
+        messageCreated {
+          content
+        }
+      }
+      `
+    }).subscribe({
+      next(data) {
+        console.log('DATA', data);
+      }
+    })
   },
 
   handleCookiesAndResponse(data, reqResObj) {

@@ -133,7 +133,7 @@
     "apollo-link": "^1.2.13",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.15",
-    "apollo-link-ws": "^1.0.18",
+    "apollo-link-ws": "^1.0.19",
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",

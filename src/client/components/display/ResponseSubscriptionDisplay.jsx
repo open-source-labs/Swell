@@ -37,6 +37,9 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
           {content.connection === 'closed' && <JSONPretty data={content.response.events[0]} space="4" theme={theme} />}
           {content.connection === 'open' && <Subscription subscription={gql`${body}`} variables={JSON.parse(bodyVariables)}>
             {({ loading, data }) => {
+              console.log('content.resonse.events', content.response.events)
+              console.log('loading', loading)
+              console.log('data', data)
               if (loading && !content.response.events[0]) return 'Listening for new data';
               if (loading && content.response.events[0]) return <JSONPretty data={content.response.events[0]} space="4" theme={theme} />
               content.response.events[0] = data;
