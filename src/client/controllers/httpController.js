@@ -196,7 +196,7 @@ const httpController = {
         this.handleSingleEvent(body, reqResObj, theResponseHeaders);
       }
     })
-    
+
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => {
@@ -246,8 +246,8 @@ const httpController = {
 
   sendToMainForFetch(args) {
     return new Promise(resolve => {
-      ipcRenderer.send('asynchronous-message', args)
-      ipcRenderer.on('asynchronous-reply', (event, result) => {
+      ipcRenderer.send('http1-fetch-message', args)
+      ipcRenderer.on('http1-fetch-reply', (event, result) => {
         resolve(result);
       })
     })
@@ -334,7 +334,7 @@ const httpController = {
           reqResObj.response.headers = theResponseHeaders;
 
           // if cookies exists, parse the cookie(s)
-          if (setCookie.parse(theResponseHeaders.cookies)) {    
+          if (setCookie.parse(theResponseHeaders.cookies)) {
             reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(theResponseHeaders.cookies));
             store.default.dispatch(actions.reqResUpdate(reqResObj));
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
@@ -491,7 +491,7 @@ const httpController = {
     );
   },
 
-  cookieFormatter (cookieArray) {
+  cookieFormatter(cookieArray) {
     return cookieArray.map((eachCookie) => {
       const cookieFormat = {
         name: eachCookie.name,
