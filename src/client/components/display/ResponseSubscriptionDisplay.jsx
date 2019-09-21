@@ -31,25 +31,11 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
   }
 
   return (
-    <ApolloProvider client={client} >
       <div className="tab_content-response">
         <div className="json-response" key="jsonresponsediv">
-          {content.connection === 'closed' && <JSONPretty data={content.response.events[0]} space="4" theme={theme} />}
-          {content.connection === 'open' && <Subscription subscription={gql`${body}`} variables={JSON.parse(bodyVariables)}>
-            {({ loading, data }) => {
-              console.log('content.resonse.events', content.response.events)
-              console.log('loading', loading)
-              console.log('data', data)
-              if (loading && !content.response.events[0]) return 'Listening for new data';
-              if (loading && content.response.events[0]) return <JSONPretty data={content.response.events[0]} space="4" theme={theme} />
-              content.response.events[0] = data;
-              reqResUpdate(content);
-              return <JSONPretty data={data} space="4" theme={theme} />
-            }}
-          </Subscription>}
+  {content.response.events.reduce((array, subEvent, index) => array.concat([<JSONPretty data={subEvent} space="4" theme={theme} key={`subs${index}`} />, <hr key={`hr${index}`}></hr>]), [])}
         </div>
       </div>
-    </ApolloProvider >
   );
 }
 
