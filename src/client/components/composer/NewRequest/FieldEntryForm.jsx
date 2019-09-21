@@ -31,6 +31,7 @@ class FieldEntryForm extends Component {
         else afterProtocol = ''
 
         if (!!graphQL) { //if graphql
+          console.log('')
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',

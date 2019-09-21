@@ -99,7 +99,7 @@ const graphQLController = {
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     
-    const wsUri = 'ws://localhost:4000/';
+    const wsUri = reqResObj.url;
     const wsClient = new SubscriptionClient(wsUri, { reconnect: true });
     const wsLink = new WebSocketLink(wsClient);
     
@@ -108,11 +108,12 @@ const graphQLController = {
       cache: new InMemoryCache()
     });
 
-    const body = gql`${reqResObj.request.body}`;
+    const query = gql`${reqResObj.request.body}`;
+    const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
 
     apolloClient.subscribe({
-      query: body,
-      variables: {}
+      query,
+      variables,
     }).subscribe({
       next (subsEvent) {
         // Notify your application with the new arrived data

@@ -40,12 +40,15 @@ class ComposerNewRequest extends Component {
 
     if (validated === true) {
       let reqRes;
+      console.count()//1
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
-
+      console.count()//2
       // HTTP && GRAPHQL REQUESTS
       if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
+        console.count()//3
         const host = protocol + URIWithoutProtocol.split('/')[0];
+        console.count()//4
         let path = `/${URIWithoutProtocol.split('/')
           .splice(1)
           .join('/')
@@ -62,6 +65,7 @@ class ComposerNewRequest extends Component {
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
+        console.count()//5
         reqRes = {
 
           id: uuid(),
@@ -94,6 +98,7 @@ class ComposerNewRequest extends Component {
           minimized: false,
           tab: this.props.currentTab,
         };
+        console.count()//6
       }
       // WEBSOCKET REQUESTS
       else {
@@ -118,6 +123,7 @@ class ComposerNewRequest extends Component {
           checked: false,
           tab: this.props.currentTab,
         };
+        console.count()//7
       }
 
       historyController.addHistoryToIndexedDb(reqRes);
