@@ -10,6 +10,9 @@ const { session } = require('electron').remote
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
+import { SubscriptionClient } from 'subscriptions-transport-ws';
+import ws from 'ws';
+
 
 const graphQLController = {
 
@@ -95,33 +98,32 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    // TODO - needs built out
     
-    const wsLink = new createHttpLink({
-      uri: `http://localhost:8000/graphql`,
-      options: {
-        reconnect: true
+    // const uri = 'http://localhost:4000/';
+    const wsUri = 'ws://localhost:4000/';
+    
+    // const link = new HttpLink({ uri, fetch });
+    const wsClient = new SubscriptionClient(wsUri, { reconnect: true });
+    const wsLink = new WebSocketLink(wsClient);
+    
+    const apolloClient = new ApolloClient({
+      link: wsLink,
+      cache: new InMemoryCache()
+    });
+
+    const body = gql`${reqResObj.request.body}`;
+
+    apolloClient.subscribe({
+      query: body,
+      variables: {}
+    }).subscribe({
+      next (subsEvent) {
+        // Notify your application with the new arrived data
+        reqResObj.response.events.push(JSON.stringify(subsEvent.data));
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
       }
     });
 
-    const client = new ApolloClient({
-      link: wsLink,
-      cache: new InMemoryCache(),
-    })
-    
-    client.subscribe({
-      query: gql`
-      subscription {
-        messageCreated {
-          content
-        }
-      }
-      `
-    }).subscribe({
-      next(data) {
-        console.log('DATA', data);
-      }
-    })
   },
 
   handleCookiesAndResponse(data, reqResObj) {
