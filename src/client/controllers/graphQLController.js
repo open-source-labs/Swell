@@ -99,10 +99,7 @@ const graphQLController = {
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     
-    // const uri = 'http://localhost:4000/';
     const wsUri = 'ws://localhost:4000/';
-    
-    // const link = new HttpLink({ uri, fetch });
     const wsClient = new SubscriptionClient(wsUri, { reconnect: true });
     const wsLink = new WebSocketLink(wsClient);
     
