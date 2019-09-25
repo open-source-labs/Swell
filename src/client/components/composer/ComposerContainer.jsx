@@ -12,8 +12,9 @@ const mapStateToProps = store => ({
   newRequestHeaders: store.business.newRequestHeaders,
   newRequestBody: store.business.newRequestBody,
   newRequestCookies: store.business.newRequestCookies,
+  newRequestSSE: store.business.newRequestSSE,
   currentTab: store.business.currentTab,
-  warningMessage: store.business.warningMessage,
+  warningMessage: store.business.warningMessage
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,6 +25,7 @@ const mapDispatchToProps = dispatch => ({
   setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
   setNewRequestBody: (requestBodyObj) => { dispatch(actions.setNewRequestBody(requestBodyObj)) },
   setNewRequestCookies: (requestCookiesObj) => { dispatch(actions.setNewRequestCookies(requestCookiesObj)) },
+  setNewRequestSSE: (requestSSEBool) => { dispatch(actions.setNewRequestSSE(requestSSEBool)) }
 });
 
 class ComposerContainer extends Component {
@@ -47,6 +49,7 @@ class ComposerContainer extends Component {
   }
 
   render() {
+    console.log('this.props.newRequestSSE in connected parent: ', this.props.newRequestSSE);
     let composerContents;
     switch (this.props.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
       case 'Request': {
@@ -56,6 +59,7 @@ class ComposerContainer extends Component {
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestCookies={this.props.newRequestCookies}
           newRequestBody={this.props.newRequestBody}
+          newRequestSSE={this.props.newRequestSSE}
           currentTab={this.props.currentTab}
 
           reqResAdd={this.props.reqResAdd}
@@ -67,6 +71,7 @@ class ComposerContainer extends Component {
           setNewRequestHeaders={this.props.setNewRequestHeaders}
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
+          setNewRequestSSE={this.props.setNewRequestSSE}
         />;
         break;
       }

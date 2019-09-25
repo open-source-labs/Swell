@@ -275,21 +275,35 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
 
   fetch2(headers.url, { method, headers, body })
     .then((response) => {
-      const headers = response.headers.raw();
+      const headers2 = response.headers.raw();
       // check if the endpoint sends SSE
-      if (headers['content-type'][0].includes('stream')) {
-        event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
+      if (headers2['content-type'][0].includes('stream')) {
+        // invoke another func that fetches to SSE and reads stream
+        // params: method, headers, body
+        
+        fetch2(headers.url, { method, headers, body })
+        .then(response => response.body)
+        .then(res => res.on('readable', () => {
+        let chunk;
+        while (null !== (chunk = res.read())) {
+        console.log(chunk.toString());
+  }
+  }))
+  .catch(err => console.log(err));
+          
+        event.sender.send('http1-fetch-reply', { headers2, body: { error: 'This Is An SSE endpoint' } })
+        
       } else {
         // add status code for regular http requests in the response header
-        headers[':status'] = response.status;
+        headers2[':status'] = response.status;
 
-        const receivedCookie = headers['set-cookie'];
-        headers.cookies = receivedCookie;
+        const receivedCookie = headers2['set-cookie'];
+        headers2.cookies = receivedCookie;
 
-        const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+        const contents = /json/.test(response.headers2.get('content-type')) ? response.json() : response.text();
         contents
           .then(body => {
-            event.sender.send('http1-fetch-reply', { headers, body })
+            event.sender.send('http1-fetch-reply', { headers2, body })
           })
           .catch(error => console.log('ERROR', error))
       }
