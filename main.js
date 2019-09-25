@@ -7,8 +7,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 const { app, BrowserWindow, TouchBar, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
-// This allows electron to spin up this server to localhost:7000 when the app starts up
-require('./httpserver');
+
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
@@ -271,25 +270,29 @@ app.on('activate', () => {
 
 
 // ipcMain listener that 
-ipcMain.on('asynchronous-message', (event, arg) => {
+ipcMain.on('http1-fetch-message', (event, arg) => {
   const { method, headers, body } = arg.options;
-  // console.log(headers.url);
+
   fetch2(headers.url, { method, headers, body })
     .then((response) => {
-      console.log(response.headers.raw())
       const headers = response.headers.raw();
-      // add status code for regular http requests in the response header
-      headers[':status'] = response.status;
+      // check if the endpoint sends SSE
+      if (headers['content-type'][0].includes('stream')) {
+        event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
+      } else {
+        // add status code for regular http requests in the response header
+        headers[':status'] = response.status;
 
-      const receivedCookie = headers['set-cookie'];
-      headers.cookies = receivedCookie;
+        const receivedCookie = headers['set-cookie'];
+        headers.cookies = receivedCookie;
 
-      const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
-      contents
-        .then(body => {
-          event.sender.send('asynchronous-reply', { headers, body })
-        })
-        .catch(error => console.log('ERROR', error))
+        const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+        contents
+          .then(body => {
+            event.sender.send('http1-fetch-reply', { headers, body })
+          })
+          .catch(error => console.log('ERROR', error))
+      }
     })
     .catch(error => console.log(error))
 })
