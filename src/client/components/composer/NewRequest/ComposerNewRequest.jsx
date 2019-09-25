@@ -209,7 +209,7 @@ class ComposerNewRequest extends Component {
 
   render() {
     let HeaderEntryFormStyle = { //trying to change style to conditional created strange duplication effect when continuously changing protocol
-      display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) || this.props.newRequestFields.graphQL ? 'block' : 'none',
+      display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
     if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
@@ -242,7 +242,7 @@ class ComposerNewRequest extends Component {
         />
 
         {
-          this.props.newRequestFields.method && (!/wss?:\/\//.test(this.props.newRequestFields.protocol) || this.props.newRequestFields.graphQL) &&
+          this.props.newRequestFields.method && !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}
