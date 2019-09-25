@@ -58,7 +58,7 @@ class SingleReqResContainer extends Component {
   render() {
     const contentBody = [];
 
-    if (/wss?:\/\//.test(this.props.content.protocol)) {
+    if (/wss?:\/\//.test(this.props.content.protocol) && !this.props.content.graphQL) {
       contentBody.push(<WebSocketWindow
         key={0}
         outgoingMessages={this.props.content.request.messages}
