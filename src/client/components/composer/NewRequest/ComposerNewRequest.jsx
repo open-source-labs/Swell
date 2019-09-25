@@ -41,7 +41,6 @@ class ComposerNewRequest extends Component {
     if (validated === true) {
       let reqRes;
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
-
       // HTTP && GRAPHQL REQUESTS
       if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
@@ -67,6 +66,59 @@ class ComposerNewRequest extends Component {
           id: uuid(),
           created_at: new Date(),
           protocol: this.props.newRequestFields.url.match(/https?:\/\//)[0],
+          host,
+          path,
+          url: this.props.newRequestFields.url,
+          graphQL: this.props.newRequestFields.graphQL,
+          timeSent: null,
+          timeReceived: null,
+          connection: 'uninitialized',
+          connectionType: null,
+          checkSelected: false,
+
+          request: {
+            method: this.props.newRequestFields.method,
+            headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
+            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
+            body: historyBodyContent,
+            bodyType: this.props.newRequestBody.bodyType,
+            bodyVariables: historyBodyVariables,
+            rawType: this.props.newRequestBody.rawType
+          },
+          response: {
+            headers: null,
+            events: null,
+          },
+          checked: false,
+          minimized: false,
+          tab: this.props.currentTab,
+        };
+      }
+      // GraphQL Subscriptions
+      else if (this.props.newRequestFields.graphQL) {
+        let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
+        const host = protocol + URIWithoutProtocol.split('/')[0];
+        let path = `/${URIWithoutProtocol.split('/')
+          .splice(1)
+          .join('/')
+          .replace(/\/{2,}/g, '/')}`;
+        if (path.charAt(path.length - 1) === '/' && path.length > 1) {
+          path = path.substring(0, path.length - 1);
+        }
+        path = path.replace(/wss?:\//g, 'ws://');
+        let historyBodyContent;
+        if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
+        else historyBodyContent = '';
+
+        let historyBodyVariables;
+        if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        else historyBodyVariables = '';
+        reqRes = {
+
+          id: uuid(),
+          created_at: new Date(),
+          protocol: 'ws://',
           host,
           path,
           url: this.props.newRequestFields.url,
@@ -157,10 +209,10 @@ class ComposerNewRequest extends Component {
 
   render() {
     let HeaderEntryFormStyle = { //trying to change style to conditional created strange duplication effect when continuously changing protocol
-      display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) ? 'block' : 'none',
+      display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) || this.props.newRequestFields.graphQL ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
-    if (/wss?:\/\//.test(this.props.newRequestFields.protocol)) { SubmitButtonClassName += " ws" }
+    if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
     else { SubmitButtonClassName += " http" }
 
@@ -190,7 +242,7 @@ class ComposerNewRequest extends Component {
         />
 
         {
-          this.props.newRequestFields.method && !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
+          this.props.newRequestFields.method && (!/wss?:\/\//.test(this.props.newRequestFields.protocol) || this.props.newRequestFields.graphQL) &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}

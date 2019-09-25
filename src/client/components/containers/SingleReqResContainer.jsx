@@ -33,11 +33,12 @@ class SingleReqResContainer extends Component {
 
   renderStatusCode() {
     if (this.props.content.graphQL) { // graphql
-      const statusCode = !this.props.content.response.events 
-        ? '' 
-        : this.props.content.response.events
-        && this.props.content.response.events.length
-        ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
+      return '200';
+      // const statusCode = !this.props.content.response.events 
+      //   ? '' 
+      //   : this.props.content.response.events
+      //   && this.props.content.response.events.length
+      //   ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
 
       return !this.props.content.response.events 
         ? ''
@@ -57,7 +58,7 @@ class SingleReqResContainer extends Component {
   render() {
     const contentBody = [];
 
-    if (/wss?:\/\//.test(this.props.content.protocol)) {
+    if (/wss?:\/\//.test(this.props.content.protocol) && !this.props.content.graphQL) {
       contentBody.push(<WebSocketWindow
         key={0}
         outgoingMessages={this.props.content.request.messages}

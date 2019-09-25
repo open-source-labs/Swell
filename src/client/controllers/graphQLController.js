@@ -4,10 +4,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
 import { onError } from "apollo-link-error";
+import { WebSocketLink } from 'apollo-link-ws';
 const { session } = require('electron').remote
 
 import * as store from '../store';
 import * as actions from '../actions/actions';
+
+import { SubscriptionClient } from 'subscriptions-transport-ws';
+import ws from 'ws';
 
 
 const graphQLController = {
@@ -94,7 +98,30 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    // TODO - needs built out
+    
+    const wsUri = reqResObj.url;
+    const wsClient = new SubscriptionClient(wsUri, { reconnect: true });
+    const wsLink = new WebSocketLink(wsClient);
+    
+    const apolloClient = new ApolloClient({
+      link: wsLink,
+      cache: new InMemoryCache()
+    });
+
+    const query = gql`${reqResObj.request.body}`;
+    const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
+
+    apolloClient.subscribe({
+      query,
+      variables,
+    }).subscribe({
+      next (subsEvent) {
+        // Notify your application with the new arrived data
+        reqResObj.response.events.push(JSON.stringify(subsEvent.data));
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      }
+    });
+
   },
 
   handleCookiesAndResponse(data, reqResObj) {

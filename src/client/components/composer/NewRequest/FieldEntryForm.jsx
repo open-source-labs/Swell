@@ -126,6 +126,8 @@ class FieldEntryForm extends Component {
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
           method: value,
+          protocol: value === 'SUBSCRIPTION' ? 'ws://' : '',
+          url: value === 'SUBSCRIPTION' ? 'ws://' : 'https://',
         })
       }
     }
@@ -165,7 +167,8 @@ class FieldEntryForm extends Component {
           }
           {/* below conditional method selection rendering for graphql */}
           {
-            !/wss?:\/\//.test(this.props.newRequestFields.protocol) && this.props.newRequestFields.graphQL &&
+            // !/wss?:\/\//.test(this.props.newRequestFields.protocol) && 
+            this.props.newRequestFields.graphQL &&
 
             <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select gql'} onChange={(e) => {
               this.onChangeHandler(e, 'method')
