@@ -33,12 +33,11 @@ class SingleReqResContainer extends Component {
 
   renderStatusCode() {
     if (this.props.content.graphQL) { // graphql
-      return '200';
-      // const statusCode = !this.props.content.response.events 
-      //   ? '' 
-      //   : this.props.content.response.events
-      //   && this.props.content.response.events.length
-      //   ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
+      const statusCode = !this.props.content.response.events 
+        ? '' 
+        : this.props.content.response.events
+        && this.props.content.response.events.length
+        ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
 
       return !this.props.content.response.events 
         ? ''
