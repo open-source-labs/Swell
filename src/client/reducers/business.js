@@ -205,9 +205,10 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_SSE: {
+      console.log('action.payload',action.payload)
       return {
         ...state,
-        newRequestSSE: action.payload,
+        newRequestSSE: {isSSE: action.payload},
       };
     }
 
