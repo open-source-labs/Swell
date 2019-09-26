@@ -7,6 +7,8 @@ import { onError } from "apollo-link-error";
 import { WebSocketLink } from 'apollo-link-ws';
 const { session } = require('electron').remote
 
+const { ipcRenderer } = require('electron')
+
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
@@ -24,73 +26,96 @@ const graphQLController = {
     reqResObj.connection = 'open';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    
+    this.sendGqlToMain({reqResObj})
+    .then(response => {
+      if(response.reqResObj.response.cookies) console.log('response.reqResObj.response.cookies', response.reqResObj.response.cookies);
 
-    // populating headers object with response headers - except for Content-Type
-    const headers = {};
-    reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
-      headers[item.key] = item.value;
-    });
-
-    // set all user's cookie in the application's cookie storage
-    if (reqResObj.request.cookies.length) {
-      reqResObj.request.cookies.forEach(userCookie => {
-        session.defaultSession.cookies.set({ url: 'http://localhost:8080/', name: userCookie.key, value: userCookie.value }, (error) => {
-          if (error) console.error(error)
-        });
-      })
-    }
-
-    // error link - passes networkError to handler
-    const errorLink = onError(({ networkError }) => {
-      this.handleError(networkError, reqResObj);
-    });
-
-    // afterware takes headers from context response object, copies to reqResObj
-    const afterLink = new ApolloLink((operation, forward) => {
-      return forward(operation).map(response => {
-        const context = operation.getContext();
-
-        for (let headerItem of context.response.headers.entries()) {
-          const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
-          reqResObj.response.headers[key] = headerItem[1];
-        }
-
-        return response;
-      });
-    });
-
-    // creates http connection to host
-    const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' });
-
-    // additive composition of multiple links
-    const link = ApolloLink.from([
-      errorLink,
-      afterLink,
-      httpLink
-    ]);
-
-    const client = new ApolloClient({
-      link,
-      cache: new InMemoryCache(),
-    });
-
-    const body = gql`${reqResObj.request.body}`;
-    const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
-
-    if (reqResObj.request.method === 'QUERY') {
-      client.query({ query: body, variables })
-        .then(data => this.handleCookiesAndResponse(data, reqResObj))
-        .catch((err) => {
-          console.error(err);
-        });
+      if (response.error) {
+        this.handleError(response.error, response.reqResObj);
+      } else {
+        this.handleResponse(response.data, response.reqResObj);
       }
-      else if (reqResObj.request.method === 'MUTATION') {
-        client.mutate({ mutation: body, variables })
-        .then(data => this.handleCookiesAndResponse(data, reqResObj))
-        .catch((err) => {
-          console.error(err);
-        });
-    }
+    });
+
+    // ***** REMOVE 
+    // const headers = {};
+    // reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
+    //   headers[item.key] = item.value;
+    // });
+
+    // // set all user's cookie in the application's cookie storage
+    // if (reqResObj.request.cookies.length) {
+    //   reqResObj.request.cookies.forEach(userCookie => {
+    //     session.defaultSession.cookies.set({ url: 'http://localhost:8080/', name: userCookie.key, value: userCookie.value }, (error) => {
+    //       if (error) console.error(error)
+    //     });
+    //   })
+    // }
+
+    // // error link - passes networkError to handler
+    // const errorLink = onError(({ networkError }) => {
+    //   this.handleError(networkError, reqResObj);
+    // });
+
+    // // afterware takes headers from context response object, copies to reqResObj
+    // const afterLink = new ApolloLink((operation, forward) => {
+    //   return forward(operation).map(response => {
+    //     const context = operation.getContext();
+
+    //     for (let headerItem of context.response.headers.entries()) {
+    //       const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
+    //       reqResObj.response.headers[key] = headerItem[1];
+    //     }
+
+    //     return response;
+    //   });
+    // });
+
+    // // creates http connection to host
+    // const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'same-origin' });
+
+    // // additive composition of multiple links
+    // const link = ApolloLink.from([
+    //   errorLink,
+    //   afterLink,
+    //   httpLink
+    // ]);
+
+    // const client = new ApolloClient({
+    //   link,
+    //   cache: new InMemoryCache(),
+    // });
+
+    // const body = gql`${reqResObj.request.body}`;
+    // const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
+
+    // if (reqResObj.request.method === 'QUERY') {
+    //   client.query({ query: body, variables })
+    //     .then(data => this.handleCookiesAndResponse(data, reqResObj))
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    //   }
+    //   else if (reqResObj.request.method === 'MUTATION') {
+    //     client.mutate({ mutation: body, variables })
+    //     .then(data => this.handleCookiesAndResponse(data, reqResObj))
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // }
+
+  },
+
+  sendGqlToMain(args) {
+    return new Promise(resolve => {
+      ipcRenderer.send('open-gql', args)
+      ipcRenderer.on('reply-gql', (event, result) => {
+        console.log('response cookies on reqres ', result.reqResObj.response.cookies);
+        result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
+        resolve(result);
+      })
+    })
   },
 
   openSubscription(reqResObj) {
@@ -128,6 +153,7 @@ const graphQLController = {
     // getting all current cookies for request and response
     session.defaultSession.cookies.get({}, (error, result) => {
       // removing request cookies, leaving only response cookies
+      console.log('result from session.cookies.get: '. result);
       const cookies = result.filter((cookie) => {
         let match = false;
         if (reqResObj.request.cookies.length) {
@@ -139,6 +165,7 @@ const graphQLController = {
       });
       // update reqResObj with only response cookies
       reqResObj.response.cookies.push(...cookies);
+      console.log('reqResObj.response.cookies: ', reqResObj.response.cookies)
       // removing request and response cookies every request in application storage
       result.forEach(cookie => {
         session.defaultSession.cookies.remove('http://localhost:8080', cookie.name, (data) => {
@@ -155,6 +182,7 @@ const graphQLController = {
     reqResObj.connectionType = 'plain';
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(response.data));
+    console.log(reqResObj);
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
   
@@ -163,7 +191,26 @@ const graphQLController = {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(errorsObj));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+  },
+
+  cookieFormatter(cookieArray) {
+    return cookieArray.map((eachCookie) => {
+      console.log(eachCookie);
+      const cookieFormat = {
+        name: eachCookie.name,
+        value: eachCookie.value,
+        domain: eachCookie.domain,
+        hostOnly: eachCookie.hostonly ? eachCookie.hostonly : false,
+        path: eachCookie.path,
+        secure: eachCookie.secure ? eachCookie.secure : false,
+        httpOnly: eachCookie.httponly ? eachCookie.httponly : false,
+        session: eachCookie.session ? eachCookie.session : false,
+        expriationDate: eachCookie.expires ? eachCookie.expires : '',
+      }
+      return cookieFormat;
+    })
   }
+  
 };
 
 export default graphQLController;

@@ -11,6 +11,7 @@ class CookieTableRow extends Component {
   render() {
     let tableCellArray = [];
     for (const key in this.props.cookie) {
+      console.log('key in cookieTableRow: ', key);
       tableCellArray.push(<CookieTableCell detail={this.props.cookie[key]} key={key}></CookieTableCell>)
     }
     if (!this.props.cookie.expirationDate) {
