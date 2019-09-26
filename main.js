@@ -130,7 +130,7 @@ function createWindow() {
     webPreferences: {
       "nodeIntegration": true,
       "sandbox": false,
-      webSecurity: false,
+      webSecurity: true,
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
