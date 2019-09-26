@@ -282,7 +282,35 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
+    
+    // if isSSE is true, then nodefetch to stream,
+    
+    // console.log('REQRES', reqResObj.request.isSSE)
+    if (reqResObj.request.isSSE) {
+      // invoke another func that fetches to SSE and reads stream
+      // params: method, headers, body
+      const { method, headers, body } = options;
 
+      fetch2(headers.url, { method, headers, body })
+      .then(response => {
+        console.log('inside SSE nodefetch:')
+        const heads = {};
+        for (const entry of response.headers.entries()) {
+          heads[entry[0].toLowerCase()] = entry[1];
+        }
+        reqResObj.response.headers = heads;
+        this.handleSSE(response, reqResObj, heads);
+      })
+      // .then(res => res.on('readable', () => {
+      // let chunk;
+      // while (null !== (chunk = res.read())) {
+      // console.log(chunk.toString());
+      // }
+      // }))
+      // .catch(err => console.log(err));
+    }
+
+    else {
     // send information to the NODE side to do the fetch request
     this.sendToMainForFetch({ options })
       .then((response) => {
@@ -346,6 +374,7 @@ const httpController = {
         reqResObj.connection = 'error';
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       });
+    }
   },
 
   // ----------------------------------------------------------------------------
@@ -402,7 +431,14 @@ const httpController = {
 
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
+    console.log('handle SSE response', response);
+    console.log('handle SSE header', headers);
+
     const reader = response.body.getReader();
+
+    console.log('reader', reader);
+
+    // console.log('handle SSE', headers);
 
     let data = '';
     read();
@@ -422,6 +458,7 @@ const httpController = {
         // check if there is new info to add to data
         if (decoder.decode(obj.value) !== '') {
           data += decoder.decode(obj.value);
+          console.log('data inside read', data)
         }
 
         // check if there are double new lines to parse...
