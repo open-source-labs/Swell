@@ -275,20 +275,28 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
 
   fetch2(headers.url, { method, headers, body })
     .then((response) => {
-      const headers2 = response.headers.raw();
+      const headers = response.headers.raw();
       // check if the endpoint sends SSE
         // add status code for regular http requests in the response header
-        headers2[':status'] = response.status;
-
-        const receivedCookie = headers2['set-cookie'];
-        headers2.cookies = receivedCookie;
-
-        const contents = /json/.test(response.headers2.get('content-type')) ? response.json() : response.text();
-        contents
-          .then(body => {
-            event.sender.send('http1-fetch-reply', { headers2, body })
-          })
-          .catch(error => console.log('ERROR', error))
+        
+        if (headers['content-type'][0].includes('stream')) {
+          // invoke another func that fetches to SSE and reads stream
+          // params: method, headers, body
+          event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
+         }
+        else {
+          headers[':status'] = response.status;
+  
+          const receivedCookie = headers['set-cookie'];
+          headers.cookies = receivedCookie;
+  
+          const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+          contents
+            .then(body => {
+              event.sender.send('http1-fetch-reply', { headers, body })
+            })
+            .catch(error => console.log('ERROR', error))
+        }
     })
     .catch(error => console.log(error))
 })
