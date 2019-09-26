@@ -74,7 +74,7 @@ class ComposerNewRequest extends Component {
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
-        console.log('in add new request, this.props.newRequestSSE: ', this.props.newRequestSSE)
+        // console.log('in add new request, this.props.newRequestSSE: ', this.props.newRequestSSE)
 
         reqRes = {
 
@@ -99,7 +99,7 @@ class ComposerNewRequest extends Component {
             bodyType: this.props.newRequestBody.bodyType,
             bodyVariables: historyBodyVariables,
             rawType: this.props.newRequestBody.rawType,
-            isSSE: this.props.newRequestSSE
+            isSSE: this.props.newRequestSSE.isSSE,
           },
           response: {
             headers: null,
@@ -216,9 +216,9 @@ class ComposerNewRequest extends Component {
         url: '',
         graphQL: false
       });
-      console.log(`this.props.setNewRequestSSE:  ${this.props.setNewRequestSSE}`);
+      // console.log(`this.props.setNewRequestSSE:  ${this.props.setNewRequestSSE}`);
       this.props.setNewRequestSSE(false);
-      console.log(`in add new request, isSSE from store: ${this.props.newRequestSSE}`);
+      // console.log(`in add new request, isSSE from store: ${this.props.newRequestSSE}`);
     }
     else {
       this.props.setComposerWarningMessage(validated);
@@ -234,6 +234,8 @@ class ComposerNewRequest extends Component {
     if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
     else { SubmitButtonClassName += " http" }
+
+    // console.log('SSE?', this.props.newRequestSSE)
 
     return (
       <div
