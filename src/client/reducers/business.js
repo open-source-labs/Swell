@@ -29,6 +29,9 @@ const initialState = {
     rawType: 'Text (text/plain)',
     JSONFormatted: true,
   },
+  newRequestSSE: {
+    isSSE: false
+  }
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -198,6 +201,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestCookies: action.payload,
+      };
+    }
+
+    case types.SET_NEW_REQUEST_SSE: {
+      return {
+        ...state,
+        newRequestSSE: action.payload,
       };
     }
 

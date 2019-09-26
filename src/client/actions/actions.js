@@ -76,6 +76,11 @@ export const setNewRequestCookies = (cookies) => ({
   payload : cookies
 });
 
+export const setNewRequestSSE = (SSEBool) => ({
+  type: types.SET_NEW_REQUEST_SSE,
+  payload : SSEBool
+});
+
 export const setCurrentTab = (tab) => ({
   type: types.SET_CURRENT_TAB,
   payload: tab,
