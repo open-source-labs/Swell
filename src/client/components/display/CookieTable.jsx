@@ -11,7 +11,6 @@ class CookieTable extends Component {
     let cookieRowArray;
     if (Array.isArray(this.props.cookies)) {
       cookieRowArray = this.props.cookies.map((cookie, i) => {
-        console.log('CookieTable cookie: ', cookie);
         return <CookieTableRow className='cookieTableRow' cookie={cookie} key={i} ></CookieTableRow>
       })
     }
