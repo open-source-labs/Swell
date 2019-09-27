@@ -386,15 +386,7 @@ const httpController = {
 
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
-    console.log('handle SSE response', response);
-    console.log('handle SSE header', headers);
-
     const reader = response.body.getReader();
-
-    console.log('reader', reader);
-
-    // console.log('handle SSE', headers);
-
     let data = '';
     read();
 
@@ -413,7 +405,6 @@ const httpController = {
         // check if there is new info to add to data
         if (decoder.decode(obj.value) !== '') {
           data += decoder.decode(obj.value);
-          console.log('data inside read', data)
         }
 
         // check if there are double new lines to parse...

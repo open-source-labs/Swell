@@ -216,9 +216,7 @@ class ComposerNewRequest extends Component {
         url: '',
         graphQL: false
       });
-      // console.log(`this.props.setNewRequestSSE:  ${this.props.setNewRequestSSE}`);
       this.props.setNewRequestSSE(false);
-      // console.log(`in add new request, isSSE from store: ${this.props.newRequestSSE}`);
     }
     else {
       this.props.setComposerWarningMessage(validated);
@@ -234,8 +232,6 @@ class ComposerNewRequest extends Component {
     if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
     else { SubmitButtonClassName += " http" }
-
-    // console.log('SSE?', this.props.newRequestSSE)
 
     return (
       <div

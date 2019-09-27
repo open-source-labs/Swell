@@ -49,7 +49,6 @@ class ComposerContainer extends Component {
   }
 
   render() {
-    // console.log('this.props.newRequestSSE in connected parent: ', this.props.newRequestSSE);
     let composerContents;
     switch (this.props.composerDisplay) { // conditional rendering of components based on the value of composerDisplay in redux store
       case 'Request': {
