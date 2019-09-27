@@ -306,74 +306,53 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
 })
 
 ipcMain.on('open-gql', (event, args) => {
-
   const reqResObj = args.reqResObj;
+
   // populating headers object with response headers - except for Content-Type
   const headers = {};
   reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
     headers[item.key] = item.value;
   });
 
+  // request cookies from reqResObj to request headers
   let cookies;
   if (reqResObj.request.cookies.length) {
     cookies = reqResObj.request.cookies.reduce((acc,userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
     }, "")
   }
-  console.log(cookies);
-
   headers.Cookie = cookies;
-
-  // cookies.forEach((cookie) => {
-  //   const cookieString = `${cookie.key}=${cookie.value}`;
-  //   // attach to formattedHeaders so options object includes this
-  //   formattedHeaders.cookie = cookieString;
-  // });
-
-
-  // error link - passes networkError to handler
-  // const errorLink = onError(({ networkError }) => {
-  //   // this.handleError(networkError, reqResObj);
-  //   console.log('error link');
-  // });
 
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
     return forward(operation).map(response => {
       const context = operation.getContext();
       const headers = context.response.headers.entries();
-      console.log('afterlink')
 
       for (let headerItem of headers) {
         const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
         reqResObj.response.headers[key] = headerItem[1];
-        console.log('headerItem: ', headerItem);
+
+        // if cookies were sent by server, parse first key-value pair, then cookie.parse the rest
         if (headerItem[0] === 'set-cookie'){
-          const composedCookies = [];
+          const parsedCookies = [];
           const cookieStrArr = headerItem[1].split(', ');
           cookieStrArr.forEach(thisCookie => {
-            console.log('cookie log', thisCookie)
             thisCookie = thisCookie.toLowerCase();
-
+            // index of first semicolon
             const idx = thisCookie.search(/[;]/g);
+            // first key value pair
             const keyValueArr = thisCookie.slice(0, idx).split('=');
-            console.log(keyValueArr);
-            const parsedCookie = cookie.parse(thisCookie.slice(idx + 1));
-            const initCookie = {...parsedCookie};
-            initCookie['name'] = keyValueArr[0]
-            initCookie['value'] = keyValueArr[1]
-            console.log(initCookie);
+            // cookie contents after first key value pair
+            const parsedRemainingCookieProperties = cookie.parse(thisCookie.slice(idx + 1));
+
+            const parsedCookie = {...parsedRemainingCookieProperties, name: keyValueArr[0], value: keyValueArr[1]};
   
-            composedCookies.push(initCookie);
+            parsedCookies.push(parsedCookie);
           })
-          // const orderedCookies = cookieFormatter(composedCookies);
-          // console.log(orderedCookies);
-          // reqResObj.response.cookies = orderedCookies;
-          reqResObj.response.cookies = composedCookies;
+          reqResObj.response.cookies = parsedCookies;
         }
       }
-      
-      console.log('reqResObj.response.cookies: ', reqResObj.response.cookies);
 
       return response;
     });
@@ -400,9 +379,7 @@ ipcMain.on('open-gql', (event, args) => {
     client.query({ query: body, variables })
       .then(data => event.sender.send('reply-gql', {reqResObj, data}))
       .catch((err) => {
-        // console.log('this error catch')
-        // console.error(Object.keys(err.networkError));
-        console.log('in error catch: ', err)
+        console.error(err);
         event.sender.send('reply-gql', {error: err.networkError, reqResObj});
       });
     }
@@ -414,23 +391,4 @@ ipcMain.on('open-gql', (event, args) => {
       });
   }
 });
-
-// function cookieFormatter(cookieArray) {
-//   return cookieArray.map((eachCookie) => {
-//     console.log(eachCookie);
-//     const cookieFormat = {
-//       name: eachCookie.name,
-//       value: eachCookie.value,
-//       domain: eachCookie.domain,
-//       hostOnly: eachCookie.hostonly ? eachCookie.hostonly : false,
-//       path: eachCookie.path,
-//       secure: eachCookie.secure ? eachCookie.secure : false,
-//       httpOnly: eachCookie.httponly ? eachCookie.httponly : false,
-//       session: eachCookie.session ? eachCookie.session : false,
-//       expriationDate: eachCookie.expires ? eachCookie.expires : '',
-//     }
-//     return cookieFormat;
-//   })
-// }
-
 
