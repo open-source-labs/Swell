@@ -336,8 +336,6 @@ ipcMain.on('open-gql', (event, args) => {
         const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
         reqResObj.response.headers[key] = headerItem[1];
 
-        console.log(key);
-
         // if cookies were sent by server, parse first key-value pair, then cookie.parse the rest
         if (headerItem[0] === 'set-cookie'){
           const parsedCookies = [];
@@ -358,8 +356,6 @@ ipcMain.on('open-gql', (event, args) => {
           reqResObj.response.cookies = parsedCookies;
         }
       }
-
-      console.log(reqResObj.response.headers)
 
       return response;
     });
@@ -386,8 +382,6 @@ ipcMain.on('open-gql', (event, args) => {
     client.query({ query: body, variables })
 
       .then(data => {
-        console.log(data);
-        console.log(reqResObj.response.headers);
         event.sender.send('reply-gql', {reqResObj, data})})
       .catch((err) => {
         console.error(err);
