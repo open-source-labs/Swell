@@ -332,7 +332,6 @@ ipcMain.on('open-gql', (event, args) => {
     return forward(operation).map(response => {
       const context = operation.getContext();
       const headers = context.response.headers.entries();
-
       for (let headerItem of headers) {
         const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
         reqResObj.response.headers[key] = headerItem[1];
@@ -381,7 +380,9 @@ ipcMain.on('open-gql', (event, args) => {
 
   if (reqResObj.request.method === 'QUERY') {
     client.query({ query: body, variables })
-      .then(data => event.sender.send('reply-gql', {reqResObj, data}))
+
+      .then(data => {
+        event.sender.send('reply-gql', {reqResObj, data})})
       .catch((err) => {
         console.error(err);
         event.sender.send('reply-gql', {error: err.networkError, reqResObj});

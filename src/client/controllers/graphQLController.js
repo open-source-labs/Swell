@@ -22,8 +22,7 @@ const graphQLController = {
     
     this.sendGqlToMain({reqResObj})
     .then(response => {
-      const { data, error, resReqObj } = response
-      error ? this.handleError(error, reqResObj) : this.handleResponse(data, reqResObj);
+      response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
     });
   },
 
