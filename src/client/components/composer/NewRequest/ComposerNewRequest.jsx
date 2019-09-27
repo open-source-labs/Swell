@@ -6,11 +6,20 @@ import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import historyController from '../../../controllers/historyController'
+import { CLIENT_RENEG_LIMIT } from 'tls';
+
 
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
+    
     this.addNewRequest = this.addNewRequest.bind(this);
+    this.handleSSEPayload = this.handleSSEPayload.bind(this);
+  }
+
+  componentDidMount(){
+    console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
+
   }
 
   requestValidationCheck() {
@@ -33,6 +42,10 @@ class ComposerNewRequest extends Component {
     }
 
     return validationMessage || true;
+  }
+
+  handleSSEPayload(e){
+    this.props.setNewRequestSSE(e.target.checked);
   }
 
   addNewRequest() {
@@ -61,6 +74,8 @@ class ComposerNewRequest extends Component {
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
+        // console.log('in add new request, this.props.newRequestSSE: ', this.props.newRequestSSE)
+
         reqRes = {
 
           id: uuid(),
@@ -83,7 +98,8 @@ class ComposerNewRequest extends Component {
             body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
             bodyVariables: historyBodyVariables,
-            rawType: this.props.newRequestBody.rawType
+            rawType: this.props.newRequestBody.rawType,
+            isSSE: this.props.newRequestSSE.isSSE,
           },
           response: {
             headers: null,
@@ -199,7 +215,8 @@ class ComposerNewRequest extends Component {
         protocol: '',
         url: '',
         graphQL: false
-      })
+      });
+      this.props.setNewRequestSSE(false);
     }
     else {
       this.props.setComposerWarningMessage(validated);
@@ -267,6 +284,14 @@ class ComposerNewRequest extends Component {
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
           />
+        }
+
+        {/* SSE CHeckbox, update newRequestSSE in store */}
+        {
+          !this.props.newRequestFields.graphQL
+          && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
+          && 
+          <div>Server Sent Event: <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/></div>
         }
 
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">

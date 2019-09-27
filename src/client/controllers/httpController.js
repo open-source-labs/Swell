@@ -34,6 +34,7 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
+    console.log('Inside openHTTPconnection in controller, reqResObj.request: ', reqResObj);
     if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
@@ -281,49 +282,33 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
+    
+    // if isSSE is true, then node-fetch to stream,
+    if (reqResObj.request.isSSE) {
+      // invoke another func that fetches to SSE and reads stream
+      // params: method, headers, body
+      const { method, headers, body } = options;
 
+      fetch2(headers.url, { method, headers, body })
+        .then(response => {
+          const heads = {};
+          for (const entry of response.headers.entries()) {
+            heads[entry[0].toLowerCase()] = entry[1];
+          }
+          reqResObj.response.headers = heads;
+          this.handleSSE(response, reqResObj, heads);
+        })
+    }
+    // if not SSE, talk to main to fetch data and receive
+    else {
     // send information to the NODE side to do the fetch request
     this.sendToMainForFetch({ options })
       .then((response) => {
-        console.log('response from main fetch', response.headers);
+        console.log('Response from main fetch:', response.headers);
 
         // Parse response headers now to decide if SSE or not.
         const heads = response.headers;
-
         reqResObj.response.headers = heads;
-
-        // store extracted headers in heads object
-        // check if the content-type header contains the word stream
-        let isStream = false;
-
-        if (heads['content-type'] && heads['content-type'].includes('stream')) isStream = true;
-
-        if (isStream) { // if url is sse... //! <REVISIT>
-          const http1Sesh = session.defaultSession;
-          let domain = reqResObj.host.split('//');
-          domain.shift();
-          [domain] = domain.join('').split('.').splice(-2).join('.')
-            .split(':');
-
-          http1Sesh.cookies.get({ domain }, (err, cookies) => {
-            if (cookies) {
-              reqResObj.response.cookies = cookies;
-              store.default.dispatch(actions.reqResUpdate(reqResObj));
-              cookies.forEach((cook) => {
-                let url = '';
-                url += cook.secure ? 'https://' : 'http://';
-                url += cook.domain.charAt(0) === '.' ? 'www' : '';
-                url += cook.domain;
-                url += cook.path;
-
-                http1Sesh.cookies.remove(url, cook.name, x => console.log(x));
-              });
-            }
-            this.handleSSE(response, reqResObj, heads);
-          });
-        }
-
-        else { // if url is not not sse ...
 
           reqResObj.timeSent = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -339,12 +324,12 @@ const httpController = {
             store.default.dispatch(actions.reqResUpdate(reqResObj));
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
           }
-        }
       })
       .catch((err) => {
         reqResObj.connection = 'error';
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       });
+    }
   },
 
   // ----------------------------------------------------------------------------
@@ -402,7 +387,6 @@ const httpController = {
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
     const reader = response.body.getReader();
-
     let data = '';
     read();
 
