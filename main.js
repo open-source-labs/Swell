@@ -19,6 +19,14 @@ const cookie = require('cookie');
 // node-fetch for the fetch request
 const fetch2 = require('node-fetch');
 
+// GraphQL imports
+const ApolloClient = require('apollo-client').ApolloClient;
+const gql = require('graphql-tag');
+const { InMemoryCache } = require('apollo-cache-inmemory');
+const { createHttpLink } = require('apollo-link-http');
+const { ApolloLink } = require('apollo-link');
+const { onError } = require("apollo-link-error");
+
 // configure logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -301,4 +309,90 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
     .catch(error => console.log(error))
 })
 
+ipcMain.on('open-gql', (event, args) => {
+  const reqResObj = args.reqResObj;
+
+  // populating headers object with response headers - except for Content-Type
+  const headers = {};
+  reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
+    headers[item.key] = item.value;
+  });
+
+  // request cookies from reqResObj to request headers
+  let cookies;
+  if (reqResObj.request.cookies.length) {
+    cookies = reqResObj.request.cookies.reduce((acc,userCookie) => {
+      return acc + `${userCookie.key}=${userCookie.value}; `;
+    }, "")
+  }
+  headers.Cookie = cookies;
+
+  // afterware takes headers from context response object, copies to reqResObj
+  const afterLink = new ApolloLink((operation, forward) => {
+    return forward(operation).map(response => {
+      const context = operation.getContext();
+      const headers = context.response.headers.entries();
+
+      for (let headerItem of headers) {
+        const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
+        reqResObj.response.headers[key] = headerItem[1];
+
+        // if cookies were sent by server, parse first key-value pair, then cookie.parse the rest
+        if (headerItem[0] === 'set-cookie'){
+          const parsedCookies = [];
+          const cookieStrArr = headerItem[1].split(', ');
+          cookieStrArr.forEach(thisCookie => {
+            thisCookie = thisCookie.toLowerCase();
+            // index of first semicolon
+            const idx = thisCookie.search(/[;]/g);
+            // first key value pair
+            const keyValueArr = thisCookie.slice(0, idx).split('=');
+            // cookie contents after first key value pair
+            const parsedRemainingCookieProperties = cookie.parse(thisCookie.slice(idx + 1));
+
+            const parsedCookie = {...parsedRemainingCookieProperties, name: keyValueArr[0], value: keyValueArr[1]};
+  
+            parsedCookies.push(parsedCookie);
+          })
+          reqResObj.response.cookies = parsedCookies;
+        }
+      }
+
+      return response;
+    });
+  });
+
+  // creates http connection to host
+  const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'include', fetch: fetch2, });
+
+  // additive composition of multiple links
+  const link = ApolloLink.from([
+    afterLink,
+    httpLink
+  ]);
+
+  const client = new ApolloClient({
+    link,
+    cache: new InMemoryCache(),
+  });
+
+  const body = gql`${reqResObj.request.body}`;
+  const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
+
+  if (reqResObj.request.method === 'QUERY') {
+    client.query({ query: body, variables })
+      .then(data => event.sender.send('reply-gql', {reqResObj, data}))
+      .catch((err) => {
+        console.error(err);
+        event.sender.send('reply-gql', {error: err.networkError, reqResObj});
+      });
+    }
+    else if (reqResObj.request.method === 'MUTATION') {
+      client.mutate({ mutation: body, variables })
+      .then(data => event.sender.send('reply-gql', {reqResObj, data}))
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+});
 
