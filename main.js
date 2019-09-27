@@ -138,7 +138,7 @@ function createWindow() {
     webPreferences: {
       "nodeIntegration": true,
       "sandbox": false,
-      webSecurity: false,
+      webSecurity: true,
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
@@ -285,22 +285,26 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
     .then((response) => {
       const headers = response.headers.raw();
       // check if the endpoint sends SSE
-      if (headers['content-type'][0].includes('stream')) {
-        event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
-      } else {
         // add status code for regular http requests in the response header
-        headers[':status'] = response.status;
-
-        const receivedCookie = headers['set-cookie'];
-        headers.cookies = receivedCookie;
-
-        const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
-        contents
-          .then(body => {
-            event.sender.send('http1-fetch-reply', { headers, body })
-          })
-          .catch(error => console.log('ERROR', error))
-      }
+        
+        if (headers['content-type'][0].includes('stream')) {
+          // invoke another func that fetches to SSE and reads stream
+          // params: method, headers, body
+          event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
+         }
+        else {
+          headers[':status'] = response.status;
+  
+          const receivedCookie = headers['set-cookie'];
+          headers.cookies = receivedCookie;
+  
+          const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+          contents
+            .then(body => {
+              event.sender.send('http1-fetch-reply', { headers, body })
+            })
+            .catch(error => console.log('ERROR', error))
+        }
     })
     .catch(error => console.log(error))
 })
