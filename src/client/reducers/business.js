@@ -29,6 +29,9 @@ const initialState = {
     rawType: 'Text (text/plain)',
     JSONFormatted: true,
   },
+  newRequestSSE: {
+    isSSE: false
+  }
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -81,9 +84,10 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.COLLECTION_TO_REQRES: {
+      const reqResArray = [...action.payload]
       return {
         ...state,
-        reqResArray: action.payload,
+        reqResArray,
       };
     }
 
@@ -197,6 +201,14 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestCookies: action.payload,
+      };
+    }
+
+    case types.SET_NEW_REQUEST_SSE: {
+      console.log('action.payload',action.payload)
+      return {
+        ...state,
+        newRequestSSE: {isSSE: action.payload},
       };
     }
 
