@@ -5,8 +5,9 @@ class OpenBtn extends Component {
   constructor(props) {
     super(props);
   }
- 
+
   render() {
+    console.log(this.props.content.id);
     return (
       <button
         className="btn"

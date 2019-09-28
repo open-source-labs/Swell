@@ -5,15 +5,15 @@ import Trashcan from '../../../assets/img/Trashcan.png'
 class Collection extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    // this.state = {};
     this.deleteCollection = this.deleteCollection.bind(this);
     this.addCollectionToReqResContainer = this.addCollectionToReqResContainer.bind(this);
   }
 
   addCollectionToReqResContainer() {
-    this.props.collectionToReqRes(JSON.parse(JSON.stringify(this.props.content.reqResArray)))
+    this.props.collectionToReqRes(this.props.content.reqResArray)
   }
-  
+
   deleteCollection(e) {
     this.props.deleteFromCollection(this.props.content); //a function we need to make in the container
     collectionsController.deleteCollectionFromIndexedDb(e.target.id);

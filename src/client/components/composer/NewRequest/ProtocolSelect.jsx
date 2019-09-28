@@ -17,7 +17,7 @@ class ProtocolSelect extends Component {
     const WSStyleClasses = classNames({
       composer_protocol_button: true,
       ws: true,
-      'composer_protocol_button-selected_ws': /wss?:\/\//.test(this.props.currentProtocol),
+      'composer_protocol_button-selected_ws': /wss?:\/\//.test(this.props.currentProtocol) && !this.props.graphQL,
     });
     const GQLStyleClasses = classNames({
       composer_protocol_button: true,

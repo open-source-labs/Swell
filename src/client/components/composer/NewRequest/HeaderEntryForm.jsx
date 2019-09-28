@@ -160,8 +160,8 @@ class HeaderEntryForm extends Component {
       />
     ));
 
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const headersContainerClass = this.state.show ? 'composer_headers_container-open' : 'composer_headers_container-closed'
+    const arrowClass = this.state.show ? 'composer_subtitle_arrow-closed' : 'composer_subtitle_arrow-open';
+    const headersContainerClass = this.state.show ? 'composer_headers_container-closed' : 'composer_headers_container-open'
 
     return <div style={this.props.stylesObj}>
       <div
