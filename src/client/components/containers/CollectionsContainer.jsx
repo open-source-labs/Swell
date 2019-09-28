@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import Collection from '../display/Collection.jsx'
+import collectionsController from '../../controllers/collectionsController';
 
 const mapStateToProps = store => ({
   collections: store.business.collections,
@@ -30,6 +31,7 @@ class CollectionsContainer extends Component {
     return (
       <div className={'collections-container'}>
         <h1>Collections</h1>
+        <button className="import-collections" onClick={collectionsController.importCollection}>Import</button>
         {collectionComponents}
       </div>
     )

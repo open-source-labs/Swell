@@ -1,7 +1,13 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import db from '../db';
-// import uuid from 'uuid/v4';
+import { ipcRenderer } from 'electron';
+
+ipcRenderer.on('add-collection', (event, args) => {
+  console.log('here');
+      collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
+      collectionsController.getCollections();
+});
 
 const collectionsController = {
 
@@ -35,6 +41,21 @@ const collectionsController = {
           reject(error);
         });
     });
+  },
+
+  exportCollection(id) {
+    db.collections.where('id').equals(id).first(foundCollection => {
+      ipcRenderer.send('export-collection', {collection: foundCollection});
+    })
+    .catch((error) => {
+      console.error(error.stack || error);
+      reject(error);
+    });
+    console.log('exporting collection', id);
+  },
+
+  importCollection() {
+    ipcRenderer.send('import-collection');
   },
 };
 
