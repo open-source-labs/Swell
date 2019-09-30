@@ -23,8 +23,10 @@ class Collection extends Component {
     return (
       <div className={'collection-container'}>
         <div className={'collection-text-container'} onClick={this.addCollectionToReqResContainer}>
-          <div className={'collection-name'}> {this.props.content.name}
-          </div>
+          <div className={'collection-name'}> {this.props.content.name}</div>
+        </div>
+        <div className="collection-export-container">
+          <button onClick={() => collectionsController.exportCollection(this.props.content.id)}>Export</button>
         </div>
         <div className='collection-delete-container'>
           <div className='collection-delete-fade'>

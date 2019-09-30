@@ -365,6 +365,9 @@
   &:hover .collection-delete-image {
 		opacity: 1;
 	}
+  &:hover .collection-export-container {
+		display: flex;
+	}
 }
 .history-text-container, .collection-text-container {
 	align-items: center;
@@ -428,6 +431,40 @@
 	margin-top: 2px;
 	opacity: 0;
 	width: 16px;
+}
+.collection-export-container {
+	display: none;
+	float: right;
+	height: 26px;
+	position: relative;
+	right: 0px;
+	top: -28px;
+	z-index: 0;
+	padding-left: 10px;
+}
+.collection-export-container button {
+	background: transparent;
+	color: rgb(216, 216, 216);
+	border: 0;
+	cursor: pointer;
+	outline: none;
+}
+.collection-import-container {
+	display: flex;
+	float: right;
+	height: 26px;
+	position: relative;
+	right: 0px;
+	top: -28px;
+	z-index: 0;
+	padding-right: 10px;
+}
+.collection-import-container button {
+	background: transparent;
+	color: rgb(216, 216, 216);
+	border: 0;
+	cursor: pointer;
+	outline: none;
 }
 .collections-container {
   min-height: 150px;

@@ -4,15 +4,17 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 // Import parts of electron to use
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
-const { app, BrowserWindow, TouchBar, ipcMain } = require('electron');
+const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
+const fs = require('fs');
 
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
+
 
 // basic http cookie parser
 const cookie = require('cookie');
@@ -25,7 +27,6 @@ const gql = require('graphql-tag');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const { createHttpLink } = require('apollo-link-http');
 const { ApolloLink } = require('apollo-link');
-const { onError } = require("apollo-link-error");
 
 // configure logging
 autoUpdater.logger = log;
@@ -275,6 +276,94 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// export collection ipc
+ipcMain.on('export-collection', (event, args) => {
+  let content = JSON.stringify(args.collection);
+
+  dialog.showSaveDialog((fileName) => {
+      if (fileName === undefined){
+          console.log("You didn't save the file");
+          return;
+      }
+
+      // fileName is a string that contains the path and filename created in the save file dialog.  
+      fs.writeFile(fileName, content, (err) => {
+          if(err){
+              console.log("An error ocurred creating the file "+ err.message)
+          }
+      });
+  }); 
+})
+
+ipcMain.on('import-collection', (event, args) => {
+  dialog.showOpenDialog((fileNames) => {
+    // reusable error message options object
+    const options = {
+      type: 'error',
+      buttons: ['Okay'],
+      defaultId: 2,
+      title: 'Error',
+      message: '',
+      detail: '',
+    };
+
+    // fileNames is an array that contains all the selected
+    if(fileNames === undefined){
+        console.log("No file selected");
+        return;
+    }
+
+    // get first file path - not dynamic for multiple files
+    let filepath = fileNames[0];
+
+    // get file extension
+    const ext = path.extname(filepath);
+
+    // make sure if there is an extension that it is .txt
+    if (ext && ext !== '.txt') {
+      options.message = 'Invalid File Type';
+      options.detail = 'Please use a .txt file';
+      dialog.showMessageBox(null, options);
+      return;
+    }
+
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+        if(err){
+            alert("An error ocurred reading the file :" + err.message);
+            return;
+        }
+
+        // parse data, will throw error if not parsable
+        let parsed;
+        try {
+          parsed = JSON.parse(data);
+        } catch {
+          options.message = 'Invalid File Structure';
+          options.detail = 'Please use a JSON object';
+          dialog.showMessageBox(null, options);
+          return;
+        }
+
+        if (parsed) {
+          // validate parsed data type and properties
+          if (typeof parsed !== 'object' || 
+          !parsed['id'] || 
+          !parsed['name'] || 
+          !parsed['reqResArray'] || 
+          !parsed['created_at']) {
+            options.message = 'Invalid File';
+            options.detail = 'Please try again.';
+            dialog.showMessageBox(null, options);
+            return;
+          }
+        }
+
+        // send data to chromium for state update
+        event.sender.send('add-collection', {data});
+    });
+});
+})
 
 
 // ipcMain listener that 

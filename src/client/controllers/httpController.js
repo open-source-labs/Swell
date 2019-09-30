@@ -310,7 +310,7 @@ const httpController = {
         const heads = response.headers;
         reqResObj.response.headers = heads;
 
-          reqResObj.timeSent = Date.now();
+          reqResObj.timeReceived = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
           const theResponseHeaders = response.headers;
