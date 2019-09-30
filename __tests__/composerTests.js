@@ -102,13 +102,7 @@ describe('GraphQL Composer', () => {
 
       it('Renders a <div>', () => {
         expect(wrapper.type()).toEqual('div');
-        // expect(wrapper.text()).toEqual('Mega: Markets');
-        // expect(wrapper.find('strong').text()).toMatch('Mega');
       });
-
-      it('lskdf', () => {
-        expect(5).toBe(5)
-      })
     })
   })
 })

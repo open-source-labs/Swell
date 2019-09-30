@@ -322,6 +322,11 @@
   overflow-x: none;
   height: 100%;
 }
+.historyDate-container h1 {
+	font-weight: 700;
+	margin-bottom: 5px;
+  margin-top: 15px;
+}
 .historyDate-container::-webkit-scrollbar {
 }
 .historyDate h1, .collections-container > h1 {
@@ -348,6 +353,16 @@
 	&:hover .history-delete-image {
 		opacity: 1;
 	}
+}
+.clear-history button {
+	float: right;
+	top: -24px;
+	position: relative;
+	color: rgb(216, 216, 216);
+	background: transparent;
+	border: 0;
+	outline: none;
+	cursor: pointer;
 }
 .collection-container {
 	border: 1px solid #282828;

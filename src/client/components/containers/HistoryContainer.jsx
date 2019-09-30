@@ -41,6 +41,10 @@ class HistoryContainer extends Component {
 
     return (
       <div className={'historyDate-container'}>
+        <h1>History</h1>
+        <div className="clear-history">
+          <button>Clear History</button>
+        </div>
         {historyDates}
       </div>
     )
