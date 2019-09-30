@@ -448,6 +448,22 @@
 	border: 0;
 	cursor: pointer;
 }
+.collection-import-container {
+	display: flex;
+	float: right;
+	height: 26px;
+	position: relative;
+	right: 0px;
+	top: -28px;
+	z-index: 0;
+	padding-right: 10px;
+}
+.collection-import-container button {
+	background: transparent;
+	color: rgb(216, 216, 216);
+	border: 0;
+	cursor: pointer;
+}
 .collections-container {
   min-height: 150px;
   max-height: 400px;

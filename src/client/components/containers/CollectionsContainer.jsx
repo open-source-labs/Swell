@@ -31,7 +31,9 @@ class CollectionsContainer extends Component {
     return (
       <div className={'collections-container'}>
         <h1>Collections</h1>
-        <button className="import-collections" onClick={collectionsController.importCollection}>Import</button>
+        <div className="collection-import-container">
+          <button className="import-collections" onClick={collectionsController.importCollection}>Import Collection</button>
+        </div>
         {collectionComponents}
       </div>
     )
