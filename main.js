@@ -281,7 +281,6 @@ app.on('activate', () => {
 ipcMain.on('export-collection', (event, args) => {
   let content = JSON.stringify(args.collection);
 
-  // You can obviously give a direct path without use the dialog (C:/Program Files/path/myfileexample.txt)
   dialog.showSaveDialog((fileName) => {
       if (fileName === undefined){
           console.log("You didn't save the file");
@@ -299,43 +298,69 @@ ipcMain.on('export-collection', (event, args) => {
 
 ipcMain.on('import-collection', (event, args) => {
   dialog.showOpenDialog((fileNames) => {
+    // reusable error message options object
+    const options = {
+      type: 'error',
+      buttons: ['Okay'],
+      defaultId: 2,
+      title: 'Error',
+      message: '',
+      detail: '',
+    };
+
     // fileNames is an array that contains all the selected
     if(fileNames === undefined){
         console.log("No file selected");
         return;
     }
 
+    // get first file path - not dynamic for multiple files
     let filepath = fileNames[0];
+
+    // get file extension
+    const ext = path.extname(filepath);
+
+    // make sure if there is an extension that it is .txt
+    if (ext && ext !== '.txt') {
+      options.message = 'Invalid File Type';
+      options.detail = 'Please use a .txt file';
+      dialog.showMessageBox(null, options);
+      return;
+    }
 
     fs.readFile(filepath, 'utf-8', (err, data) => {
         if(err){
             alert("An error ocurred reading the file :" + err.message);
             return;
         }
-        const parsed = JSON.parse(data);
+
+        // parse data, will throw error if not parsable
+        let parsed;
+        try {
+          parsed = JSON.parse(data);
+        } catch {
+          options.message = 'Invalid File Structure';
+          options.detail = 'Please use a JSON object';
+          dialog.showMessageBox(null, options);
+          return;
+        }
+
         if (parsed) {
+          // validate parsed data type and properties
           if (typeof parsed !== 'object' || 
           !parsed['id'] || 
           !parsed['name'] || 
           !parsed['reqResArray'] || 
           !parsed['created_at']) {
-            console.log('invalid file');
-            const options = {
-              type: 'question',
-              buttons: ['Alrighty Then'],
-              defaultId: 2,
-              title: 'Error',
-              message: 'Invalid File',
-              detail: 'Please try again.',
-            };
+            options.message = 'Invalid File';
+            options.detail = 'Please try again.';
             dialog.showMessageBox(null, options);
             return;
           }
         }
 
+        // send data to chromium for state update
         event.sender.send('add-collection', {data});
-        // Change how to handle the file content
-        console.log("The file content is : " + data);
     });
 });
 })
