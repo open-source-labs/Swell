@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import HistoryDate from '../display/HistoryDate.jsx';
+import ClearHistoryBtn from '../display/ClearHistoryBtn.jsx';
+import historyController from '../../controllers/historyController';
+
+const { dialog } = require('electron').remote;
 import parse from 'date-fns/parse'
 
 
@@ -10,6 +14,7 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  clearHistory: () => { dispatch(actions.clearHistory()) },
   deleteFromHistory: (reqRes) => { dispatch(actions.deleteFromHistory(reqRes)) },
   setNewRequestHeaders: (requestHeadersObj) => { dispatch(actions.setNewRequestHeaders(requestHeadersObj)) },
   setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
@@ -41,6 +46,10 @@ class HistoryContainer extends Component {
 
     return (
       <div className={'historyDate-container'}>
+        <h1>History</h1>
+        <div className="clear-history">
+          <ClearHistoryBtn clearHistory={this.props.clearHistory} />
+        </div>
         {historyDates}
       </div>
     )
