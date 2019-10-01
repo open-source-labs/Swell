@@ -1,44 +1,71 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 
+const fetch2 = require('node-fetch');
 const { session } = require('electron').remote;
 const http2 = require('http2');
+
+const { ipcRenderer } = require('electron')
+
+// parsing through cookies
+const setCookie = require('set-cookie-parser');
+
+
+//Included Functions
+
+// openHTTPconnection(reqResObj, connectionArray)
+// establishHTTP2Connection(reqResObj, connectionArray)
+// attachRequestToHTTP2Client(client, reqResObj, connectionArray)
+// sendToMainForFetch(args)
+// establishHTTP1connection(reqResObj, connectionArray)
+// parseFetchOptionsFromReqRes(reqResObject)
+// handleSingleEvent(response, originalObj, headers)
+// handleSSE(response, originalObj, headers)
+// parseSSEFields(rawString)
+// cookieFormatter(setCookie(response.cookies)) 
+
 
 const httpController = {
   openHTTP2Connections: [],
 
-  openHTTPconnection(reqResObj, connectionArray) {
+  // ----------------------------------------------------------------------------
+
+  openHTTPconnection(reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://') {
+    console.log('Inside openHTTPconnection in controller, reqResObj.request: ', reqResObj);
+    if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
       console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
-    } else {
+    }
+    else {
       console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
   },
 
-  establishHTTP2Connection(reqResObj, connectionArray) {
+  // ----------------------------------------------------------------------------
+
+  establishHTTP2Connection(reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
     /*
       Attempt to find an existing HTTP2 connection in openHTTP2Connections Array.
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
 
-    const foundHTTP2Connection = httpController.openHTTP2Connections.find(
-      conn => conn.host === reqResObj.host,
-    );
+    const foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
 
-    // existing HTTP2 connection is found, attach a request to it.
+    console.log('Found HTTP2 Conn >', foundHTTP2Connection);
+
+    // EXISTING HTTP2 CONNECTION IS FOUND -----
+
     if (foundHTTP2Connection) {
       const { client } = foundHTTP2Connection;
 
       // periodically check if the client is open or destroyed, and attach if conditions are met
       const interval = setInterval(() => {
         if (foundHTTP2Connection.status === 'connected') {
-          console.log('Existing HTTP2 Conn:', reqResObj.host);
           this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
           clearInterval(interval);
         }
@@ -48,7 +75,9 @@ const httpController = {
           clearInterval(interval);
         }
       }, 50);
+      // --------------------------------------------------
       // if hasnt changed in 10 seconds, mark as error
+      // --------------------------------------------------
       setTimeout(() => {
         clearInterval(interval);
         if (foundHTTP2Connection.status === 'initialized') {
@@ -57,8 +86,10 @@ const httpController = {
         }
       }, 10000);
     }
+    // --------------------------------------------------
+    // NO EXISTING HTTP2 CONNECTION - make it before attaching request
+    // --------------------------------------------------
 
-    // no existing HTTP2 connection, make it before attaching request.
     else {
       console.log('New HTTP2 Conn:', reqResObj.host);
 
@@ -106,7 +137,9 @@ const httpController = {
     }
   },
 
-  attachRequestToHTTP2Client(client, reqResObj, connectionArray) {
+  // ----------------------------------------------------------------------------
+
+  attachRequestToHTTP2Client(client, reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
     // start off by clearing existing response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -157,13 +190,13 @@ const httpController = {
       reqResObj.response.headers = headers;
       reqResObj.response.events = [];
 
-      // let sesh = session.defaultSession;
-      let domain = reqResObj.host.split('//');
-      domain.shift();
-      domain = domain.join('').split('.').splice(-2).join('.')
-        .split(':')[0];
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
-    });
+      // if cookies exists, parse the cookie(s)
+      if (setCookie.parse(headers['set-cookie'])) {
+        reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+        this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+      }
+    })
 
     reqStream.setEncoding('utf8');
     let data = '';
@@ -210,8 +243,21 @@ const httpController = {
       }
     });
   },
+  // ----------------------------------------------------------------------------
 
-  establishHTTP1connection(reqResObj, connectionArray) {
+  sendToMainForFetch(args) {
+    return new Promise(resolve => {
+      ipcRenderer.send('http1-fetch-message', args)
+      ipcRenderer.on('http1-fetch-reply', (event, result) => {
+        resolve(result);
+      })
+    })
+  },
+
+  // ----------------------------------------------------------------------------
+
+  establishHTTP1connection(reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
+
     // start off by clearing existing response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -232,96 +278,61 @@ const httpController = {
 
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
     options.signal = openConnectionObj.abort.signal;
+
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
-    fetch(reqResObj.url, options)// fetch straight to provided url
+    
+    // if isSSE is true, then node-fetch to stream,
+    if (reqResObj.request.isSSE) {
+      // invoke another func that fetches to SSE and reads stream
+      // params: method, headers, body
+      const { method, headers, body } = options;
+
+      fetch2(headers.url, { method, headers, body })
+        .then(response => {
+          const heads = {};
+          for (const entry of response.headers.entries()) {
+            heads[entry[0].toLowerCase()] = entry[1];
+          }
+          reqResObj.response.headers = heads;
+          this.handleSSE(response, reqResObj, heads);
+        })
+    }
+    // if not SSE, talk to main to fetch data and receive
+    else {
+    // send information to the NODE side to do the fetch request
+    this.sendToMainForFetch({ options })
       .then((response) => {
+        console.log('Response from main fetch:', response.headers);
+
         // Parse response headers now to decide if SSE or not.
-        const heads = {};
-        for (const entry of response.headers.entries()) {
-          heads[entry[0].toLowerCase()] = entry[1];
-        }
+        const heads = response.headers;
         reqResObj.response.headers = heads;
-        // store extracted headers in heads object
-        // check if the content-type header contains the word stream
-        let isStream = false;
 
-        if (heads['content-type'] && heads['content-type'].includes('stream')) isStream = true;
-
-        if (isStream) { // if url is sse...
-          const http1Sesh = session.defaultSession;
-          let domain = reqResObj.host.split('//');
-          domain.shift();
-          [domain] = domain.join('').split('.').splice(-2).join('.')
-            .split(':');
-
-          http1Sesh.cookies.get({ domain }, (err, cookies) => {
-            if (cookies) {
-              reqResObj.response.cookies = cookies;
-              store.default.dispatch(actions.reqResUpdate(reqResObj));
-              cookies.forEach((cook) => {
-                let url = '';
-                url += cook.secure ? 'https://' : 'http://';
-                url += cook.domain.charAt(0) === '.' ? 'www' : '';
-                url += cook.domain;
-                url += cook.path;
-
-                http1Sesh.cookies.remove(url, cook.name, x => console.log(x));
-              });
-            }
-            this.handleSSE(response, reqResObj, heads);
-          });
-        } else { // if url is not not sse ...
-          reqResObj.timeSent = Date.now();
+          reqResObj.timeReceived = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-          fetch('http://localhost:7000', options)// fetch to OUR local proxy server before fetching to url provided
-            .then(response => response.json())
-            .then((result) => {
-              // the readable verson of our response is an object that looks like this:
-              // {headers:{**response headers go here**}, body:{**api content here**}, rawResponse:{**object with data about response**} }
-              // theResponseHeaders refers to our literal object of response headers
-              // the ResponseBody is the literal readable object containing our api content
-              // the raw unparsed response from localhost:7000
-              const theResponseHeaders = result.headers._headers;
-              const { body } = result;
-              // Now that we have got to the full response headers for http from localhost:7000 we have bypassed cors and can use this data
-              reqResObj.response.headers = theResponseHeaders;
 
-              const http1Sesh = session.defaultSession;
-              let domain = reqResObj.host.split('//');
-              domain.shift();
-              [domain] = domain.join('').split('.').splice(-2).join('.')
-                .split(':');
+          const theResponseHeaders = response.headers;
 
-              http1Sesh.cookies.get({ domain }, (err, cookies) => {
-                if (cookies) {
-                  reqResObj.response.cookies = cookies;
-                  store.default.dispatch(actions.reqResUpdate(reqResObj));
-                  cookies.forEach((cookie) => {
-                    let url = '';
-                    url += cookie.secure ? 'https://' : 'http://';
-                    url += cookie.domain.charAt(0) === '.' ? 'www' : '';
-                    url += cookie.domain;
-                    url += cookie.path;
-                    http1Sesh.cookies.remove(url, cookie.name, x => console.log(x));
-                  });
-                }
-                // Below the headers and response api content are handled by swell and will be displayed.
-                this.handleSingleEvent(body, reqResObj, theResponseHeaders);
-              });
-            })
-            .catch((err) => {
-              reqResObj.connection = 'error';
-              store.default.dispatch(actions.reqResUpdate(reqResObj));
-            });
-        }
+          const { body } = response;
+          reqResObj.response.headers = theResponseHeaders;
+
+          // if cookies exists, parse the cookie(s)
+          if (setCookie.parse(theResponseHeaders.cookies)) {
+            reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(theResponseHeaders.cookies));
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+            this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+          }
       })
       .catch((err) => {
         reqResObj.connection = 'error';
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       });
+    }
   },
+
+  // ----------------------------------------------------------------------------
 
   parseFetchOptionsFromReqRes(reqResObject) {
     let {
@@ -339,7 +350,8 @@ const httpController = {
 
     cookies.forEach((cookie) => {
       const cookieString = `${cookie.key}=${cookie.value}`;
-      document.cookie = cookieString;
+      // attach to formattedHeaders so options object includes this
+      formattedHeaders.cookie = cookieString;
     });
 
     const outputObj = {
@@ -359,6 +371,8 @@ const httpController = {
     return outputObj;
   },
 
+  // ----------------------------------------------------------------------------
+
   handleSingleEvent(response, originalObj, headers) {
     const newObj = JSON.parse(JSON.stringify(originalObj));
     newObj.connection = 'closed';
@@ -368,10 +382,11 @@ const httpController = {
     store.default.dispatch(actions.reqResUpdate(newObj));
   },
 
+  // ----------------------------------------------------------------------------
+
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
     const reader = response.body.getReader();
-
     let data = '';
     read();
 
@@ -426,6 +441,8 @@ const httpController = {
     }
   },
 
+  // ----------------------------------------------------------------------------
+
   parseSSEFields(rawString) {
     return (
       rawString
@@ -457,6 +474,23 @@ const httpController = {
         }, {})
     );
   },
+
+  cookieFormatter(cookieArray) {
+    return cookieArray.map((eachCookie) => {
+      const cookieFormat = {
+        name: eachCookie.name,
+        value: eachCookie.value,
+        domain: eachCookie.domain,
+        hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
+        path: eachCookie.path,
+        secure: eachCookie.secure ? eachCookie.secure : false,
+        httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
+        session: eachCookie.session ? eachCookie.session : false,
+        expriationDate: eachCookie.expires ? eachCookie.expires : '',
+      }
+      return cookieFormat;
+    })
+  }
 };
 
 export default httpController;

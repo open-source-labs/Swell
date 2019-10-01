@@ -17,6 +17,11 @@ const historyController = {
       .catch((err) => console.log('Error in deleteFromHistory', err))
   },
 
+  clearHistoryFromIndexedDb() {
+    db.history.clear()
+      .catch(err => console.log(err))
+  },
+
   getHistory() {
     db.table('history')
       .toArray()

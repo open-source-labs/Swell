@@ -6,11 +6,20 @@ import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import historyController from '../../../controllers/historyController'
+import { CLIENT_RENEG_LIMIT } from 'tls';
+
 
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
+    
     this.addNewRequest = this.addNewRequest.bind(this);
+    this.handleSSEPayload = this.handleSSEPayload.bind(this);
+  }
+
+  componentDidMount(){
+    console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
+
   }
 
   requestValidationCheck() {
@@ -35,13 +44,16 @@ class ComposerNewRequest extends Component {
     return validationMessage || true;
   }
 
+  handleSSEPayload(e){
+    this.props.setNewRequestSSE(e.target.checked);
+  }
+
   addNewRequest() {
     const validated = this.requestValidationCheck();
 
     if (validated === true) {
       let reqRes;
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
-
       // HTTP && GRAPHQL REQUESTS
       if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
@@ -62,11 +74,67 @@ class ComposerNewRequest extends Component {
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
+        // console.log('in add new request, this.props.newRequestSSE: ', this.props.newRequestSSE)
+
         reqRes = {
 
           id: uuid(),
           created_at: new Date(),
           protocol: this.props.newRequestFields.url.match(/https?:\/\//)[0],
+          host,
+          path,
+          url: this.props.newRequestFields.url,
+          graphQL: this.props.newRequestFields.graphQL,
+          timeSent: null,
+          timeReceived: null,
+          connection: 'uninitialized',
+          connectionType: null,
+          checkSelected: false,
+
+          request: {
+            method: this.props.newRequestFields.method,
+            headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
+            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
+            body: historyBodyContent,
+            bodyType: this.props.newRequestBody.bodyType,
+            bodyVariables: historyBodyVariables,
+            rawType: this.props.newRequestBody.rawType,
+            isSSE: this.props.newRequestSSE.isSSE,
+          },
+          response: {
+            headers: null,
+            events: null,
+          },
+          checked: false,
+          minimized: false,
+          tab: this.props.currentTab,
+        };
+      }
+      // GraphQL Subscriptions
+      else if (this.props.newRequestFields.graphQL) {
+        let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
+        const host = protocol + URIWithoutProtocol.split('/')[0];
+        let path = `/${URIWithoutProtocol.split('/')
+          .splice(1)
+          .join('/')
+          .replace(/\/{2,}/g, '/')}`;
+        if (path.charAt(path.length - 1) === '/' && path.length > 1) {
+          path = path.substring(0, path.length - 1);
+        }
+        path = path.replace(/wss?:\//g, 'ws://');
+        let historyBodyContent;
+        if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
+        else historyBodyContent = '';
+
+        let historyBodyVariables;
+        if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        else historyBodyVariables = '';
+        reqRes = {
+
+          id: uuid(),
+          created_at: new Date(),
+          protocol: 'ws://',
           host,
           path,
           url: this.props.newRequestFields.url,
@@ -147,7 +215,8 @@ class ComposerNewRequest extends Component {
         protocol: '',
         url: '',
         graphQL: false
-      })
+      });
+      this.props.setNewRequestSSE(false);
     }
     else {
       this.props.setComposerWarningMessage(validated);
@@ -160,7 +229,7 @@ class ComposerNewRequest extends Component {
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
-    if (/wss?:\/\//.test(this.props.newRequestFields.protocol)) { SubmitButtonClassName += " ws" }
+    if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
     else { SubmitButtonClassName += " http" }
 
@@ -215,6 +284,17 @@ class ComposerNewRequest extends Component {
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
           />
+        }
+
+        {/* SSE CHeckbox, update newRequestSSE in store */}
+        {
+          !this.props.newRequestFields.graphQL
+          && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
+          && 
+          <div class='composer_subtitle_SSE'>
+            <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/>
+            Server Sent Events
+          </div>
         }
 
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">

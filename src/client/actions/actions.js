@@ -11,6 +11,10 @@ export const deleteFromHistory = reqRes => ({
   payload: reqRes,
 });
 
+export const clearHistory = () => ({
+  type: types.CLEAR_HISTORY,
+});
+
 export const getCollections = collections => ({
   type: types.GET_COLLECTIONS,
   payload: collections,
@@ -74,6 +78,11 @@ export const setNewRequestBody = (body) => ({
 export const setNewRequestCookies = (cookies) => ({
   type: types.SET_NEW_REQUEST_COOKIES,
   payload : cookies
+});
+
+export const setNewRequestSSE = (SSEBool) => ({
+  type: types.SET_NEW_REQUEST_SSE,
+  payload : SSEBool
 });
 
 export const setCurrentTab = (tab) => ({

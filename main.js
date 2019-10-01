@@ -4,16 +4,29 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 // Import parts of electron to use
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
-const { app, BrowserWindow, TouchBar, ipcMain } = require('electron');
+const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
-// This allows electron to spin up this server to localhost:7000 when the app starts up
-require('./httpserver');
+const fs = require('fs');
+
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
+
+
+// basic http cookie parser
+const cookie = require('cookie');
+// node-fetch for the fetch request
+const fetch2 = require('node-fetch');
+
+// GraphQL imports
+const ApolloClient = require('apollo-client').ApolloClient;
+const gql = require('graphql-tag');
+const { InMemoryCache } = require('apollo-cache-inmemory');
+const { createHttpLink } = require('apollo-link-http');
+const { ApolloLink } = require('apollo-link');
 
 // configure logging
 autoUpdater.logger = log;
@@ -126,7 +139,7 @@ function createWindow() {
     webPreferences: {
       "nodeIntegration": true,
       "sandbox": false,
-      webSecurity: false,
+      webSecurity: true,
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`
   })
@@ -263,3 +276,213 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// export collection ipc
+ipcMain.on('export-collection', (event, args) => {
+  let content = JSON.stringify(args.collection);
+
+  dialog.showSaveDialog((fileName) => {
+      if (fileName === undefined){
+          console.log("You didn't save the file");
+          return;
+      }
+
+      // fileName is a string that contains the path and filename created in the save file dialog.  
+      fs.writeFile(fileName, content, (err) => {
+          if(err){
+              console.log("An error ocurred creating the file "+ err.message)
+          }
+      });
+  }); 
+})
+
+ipcMain.on('import-collection', (event, args) => {
+  dialog.showOpenDialog((fileNames) => {
+    // reusable error message options object
+    const options = {
+      type: 'error',
+      buttons: ['Okay'],
+      defaultId: 2,
+      title: 'Error',
+      message: '',
+      detail: '',
+    };
+
+    // fileNames is an array that contains all the selected
+    if(fileNames === undefined){
+        console.log("No file selected");
+        return;
+    }
+
+    // get first file path - not dynamic for multiple files
+    let filepath = fileNames[0];
+
+    // get file extension
+    const ext = path.extname(filepath);
+
+    // make sure if there is an extension that it is .txt
+    if (ext && ext !== '.txt') {
+      options.message = 'Invalid File Type';
+      options.detail = 'Please use a .txt file';
+      dialog.showMessageBox(null, options);
+      return;
+    }
+
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+        if(err){
+            alert("An error ocurred reading the file :" + err.message);
+            return;
+        }
+
+        // parse data, will throw error if not parsable
+        let parsed;
+        try {
+          parsed = JSON.parse(data);
+        } catch {
+          options.message = 'Invalid File Structure';
+          options.detail = 'Please use a JSON object';
+          dialog.showMessageBox(null, options);
+          return;
+        }
+
+        if (parsed) {
+          // validate parsed data type and properties
+          if (typeof parsed !== 'object' || 
+          !parsed['id'] || 
+          !parsed['name'] || 
+          !parsed['reqResArray'] || 
+          !parsed['created_at']) {
+            options.message = 'Invalid File';
+            options.detail = 'Please try again.';
+            dialog.showMessageBox(null, options);
+            return;
+          }
+        }
+
+        // send data to chromium for state update
+        event.sender.send('add-collection', {data});
+    });
+});
+})
+
+
+// ipcMain listener that 
+ipcMain.on('http1-fetch-message', (event, arg) => {
+  const { method, headers, body } = arg.options;
+
+  fetch2(headers.url, { method, headers, body })
+    .then((response) => {
+      const headers = response.headers.raw();
+      // check if the endpoint sends SSE
+        // add status code for regular http requests in the response header
+        
+        if (headers['content-type'][0].includes('stream')) {
+          // invoke another func that fetches to SSE and reads stream
+          // params: method, headers, body
+          event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
+         }
+        else {
+          headers[':status'] = response.status;
+  
+          const receivedCookie = headers['set-cookie'];
+          headers.cookies = receivedCookie;
+  
+          const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+          contents
+            .then(body => {
+              event.sender.send('http1-fetch-reply', { headers, body })
+            })
+            .catch(error => console.log('ERROR', error))
+        }
+    })
+    .catch(error => console.log(error))
+})
+
+ipcMain.on('open-gql', (event, args) => {
+  const reqResObj = args.reqResObj;
+
+  // populating headers object with response headers - except for Content-Type
+  const headers = {};
+  reqResObj.request.headers.filter(item => item.key !== 'Content-Type').forEach((item) => {
+    headers[item.key] = item.value;
+  });
+
+  // request cookies from reqResObj to request headers
+  let cookies;
+  if (reqResObj.request.cookies.length) {
+    cookies = reqResObj.request.cookies.reduce((acc,userCookie) => {
+      return acc + `${userCookie.key}=${userCookie.value}; `;
+    }, "")
+  }
+  headers.Cookie = cookies;
+
+  // afterware takes headers from context response object, copies to reqResObj
+  const afterLink = new ApolloLink((operation, forward) => {
+    return forward(operation).map(response => {
+      const context = operation.getContext();
+      const headers = context.response.headers.entries();
+      for (let headerItem of headers) {
+        const key = headerItem[0].split('-').map(item => item[0].toUpperCase() + item.slice(1)).join('-');
+        reqResObj.response.headers[key] = headerItem[1];
+
+        // if cookies were sent by server, parse first key-value pair, then cookie.parse the rest
+        if (headerItem[0] === 'set-cookie'){
+          const parsedCookies = [];
+          const cookieStrArr = headerItem[1].split(', ');
+          cookieStrArr.forEach(thisCookie => {
+            thisCookie = thisCookie.toLowerCase();
+            // index of first semicolon
+            const idx = thisCookie.search(/[;]/g);
+            // first key value pair
+            const keyValueArr = thisCookie.slice(0, idx).split('=');
+            // cookie contents after first key value pair
+            const parsedRemainingCookieProperties = cookie.parse(thisCookie.slice(idx + 1));
+
+            const parsedCookie = {...parsedRemainingCookieProperties, name: keyValueArr[0], value: keyValueArr[1]};
+  
+            parsedCookies.push(parsedCookie);
+          })
+          reqResObj.response.cookies = parsedCookies;
+        }
+      }
+
+      return response;
+    });
+  });
+
+  // creates http connection to host
+  const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'include', fetch: fetch2, });
+
+  // additive composition of multiple links
+  const link = ApolloLink.from([
+    afterLink,
+    httpLink
+  ]);
+
+  const client = new ApolloClient({
+    link,
+    cache: new InMemoryCache(),
+  });
+
+  const body = gql`${reqResObj.request.body}`;
+  const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
+
+  if (reqResObj.request.method === 'QUERY') {
+    client.query({ query: body, variables })
+
+      .then(data => {
+        event.sender.send('reply-gql', {reqResObj, data})})
+      .catch((err) => {
+        console.error(err);
+        event.sender.send('reply-gql', {error: err.networkError, reqResObj});
+      });
+    }
+    else if (reqResObj.request.method === 'MUTATION') {
+      client.mutate({ mutation: body, variables })
+      .then(data => event.sender.send('reply-gql', {reqResObj, data}))
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+});
+
