@@ -291,7 +291,10 @@ class ComposerNewRequest extends Component {
           !this.props.newRequestFields.graphQL
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
           && 
-          <div>Server Sent Event: <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/></div>
+          <div class='composer_subtitle_SSE'>
+            <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/>
+            Server Sent Events
+          </div>
         }
 
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">

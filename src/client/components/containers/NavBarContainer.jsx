@@ -111,7 +111,7 @@ class NavBarContainer extends Component {
             Clear All
           </button>
 
-          <button className="btn" type="button" onClick={this.handleOpenModal}>
+          <button className="btn save-btn" type="button" onClick={this.handleOpenModal}>
             Save Collection
           </button>
 
