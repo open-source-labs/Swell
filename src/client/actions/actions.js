@@ -11,6 +11,10 @@ export const deleteFromHistory = reqRes => ({
   payload: reqRes,
 });
 
+export const clearHistory = () => ({
+  type: types.CLEAR_HISTORY,
+});
+
 export const getCollections = collections => ({
   type: types.GET_COLLECTIONS,
   payload: collections,

@@ -61,6 +61,13 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.CLEAR_HISTORY: {
+      return {
+        ...state,
+        history: []
+      };
+    }
+
     case types.GET_COLLECTIONS: {
       return {
         ...state,
