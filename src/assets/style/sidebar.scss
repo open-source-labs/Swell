@@ -3,13 +3,13 @@
 	font-weight: bold;
 }
 .sidebar_composer-console {
-	background: #282828;
+	background: #2c3e50;
 	color: #FCF7F8;
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	left: 0;
-	// overflow: scroll;
+	overflow: scroll;
 	padding: 15px 18px;
 	position: absolute;
 	top: 0;
@@ -173,6 +173,16 @@
 	margin: 0 0 15px;
 	width: 28%;
 }
+.composer_subtitle_SSE {
+	cursor: pointer;
+	display: flex;
+	font-size: 16px;
+	justify-items: center;
+	margin: 0 0 15px;
+	width: 40%;
+	padding: 3px;
+}
+
 .composer_subtitle_arrow-closed {
 	height: 28px;
 	margin: -3px -6px -8px -7px;
@@ -320,7 +330,8 @@
 	// margin-top: 10px;
 	overflow-y: scroll;
   overflow-x: none;
-  height: 100%;
+	height: 100%;
+	min-height: 200px;
 }
 .historyDate-container h1 {
 	font-weight: 700;
@@ -335,7 +346,7 @@
   margin-top: 15px;
 }
 .history-container {
-	border: 1px solid #282828;
+	border: 1px solid #2c3e50;
 	border-radius: 5px;
 	color: white;
 	cursor: pointer;
@@ -365,7 +376,7 @@
 	cursor: pointer;
 }
 .collection-container {
-	border: 1px solid #282828;
+	border: 1px solid #2c3e50;
 	border-radius: 5px;
 	color: white;
 	cursor: pointer;
@@ -430,13 +441,13 @@
 	z-index: 0;
 }
 .history-delete-fade, .collection-delete-fade {
-	background: linear-gradient(to right, rgba(40, 40, 40, 0), rgba(40, 40, 40, 1));
+	// background: linear-gradient(to right, rgba(40, 40, 40, 0), rgba(40, 40, 40, 1));
 	color: white;
 	height: 26px;
 	width: 32px;
 }
 .history-delete-button, .collection-delete-button {
-	background: rgba(40, 40, 40, 1);
+	// background: rgba(40, 40, 40, 1);
 	height: 100%;
 	width: 20px;
 }
