@@ -1,7 +1,7 @@
 import React from 'react';
 import SSERow from './SSERow.jsx';
 import JSONPretty from 'react-json-pretty';
-
+import createDOMPurify from 'dompurify';
 
 const ResponseEventsDisplay = ({ response }) => {
   const { events, headers } = response;
@@ -12,6 +12,12 @@ const ResponseEventsDisplay = ({ response }) => {
     events.forEach((cur, idx) => {
       displayContents.push(<SSERow key={idx} content={cur} />);
     });
+  }
+  // if the response content-type, purify and render html
+  else if (headers && headers['content-type'] && headers['content-type'].includes('text/html')) {
+    displayContents.push(
+      <div className="okay" dangerouslySetInnerHTML={{__html: createDOMPurify.sanitize(events[0])}} />
+    )
   }
   // Otherwise, render a single display
   else {
