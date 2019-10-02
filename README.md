@@ -46,7 +46,6 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
-
 ## Additional Features
 * *Collections*: Swell allows you to save collections for easier testing of multiple requests.
 <kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
@@ -54,7 +53,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 
 * *Import/Export Collections*: Swell allows you to import and export collections, making it easy to share collections with your team.
-<kbd><img src="./ReadMeGifs/Swell_API_ImportExport.gif"
+<kbd><img src="./ReadMeGifs/Swell_API_ImportExportCol.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 
