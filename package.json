@@ -61,7 +61,27 @@
       "name": "Amanda Flink",
       "email": "avflinkette@gmail.com",
       "url": "https://github.com/aflinky"
-    }
+    },
+    {
+      "name": "Anthony Toreson",
+      "email": "anthony.toreson@gmail.com",
+      "url": "https://github.com/atoreson"
+    },
+    {
+      "name": "Billy Tran",
+      "email": "billy.tran61@gmail.com",
+      "url": "https://github.com/btctrl"
+    },
+    {
+      "name": "Paul Rhee",
+      "email": "youjun27@gmail.com",
+      "url": "https://github.com/prheee"
+    },
+    {
+      "name": "Sam Parsons",
+      "email": "samparsons269@gmail.com",
+      "url": "https://github.com/sam-parsons"
+    },
   ],
   "build": {
     "productName": "Swell",
