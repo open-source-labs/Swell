@@ -11,9 +11,9 @@ describe('Business reducer', () => {
       collections: [],
       warningMessage: "",
       newRequestFields: {
-        method: 'GET',
         protocol: '',
         url: 'http://',
+        method: 'GET',
         graphQL: false
       },
       newRequestHeaders: {
@@ -26,11 +26,14 @@ describe('Business reducer', () => {
       },
       newRequestBody: {
         bodyContent: '',
+        bodyVariables: '',
         bodyType: 'none',
         rawType: 'Text (text/plain)',
         JSONFormatted: true,
-        bodyVariables: ''
       },
+      newRequestSSE: {
+        isSSE: false
+      }
     };
   })
 

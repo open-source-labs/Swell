@@ -20,12 +20,12 @@ Swell is currently available for OS X, Linux and Windows.
 ## Highlights
 Swell is a one-stop shop for sending and monitoring your API requests
 
-* Send and monitor requests over HTTP2 (including SSEs), WebSockets, and GraphQL
+* Send and monitor streams over HTTP2 (including SSEs) and WebSockets
+* Create GraphQL queries, mutations, and subscriptions
 * Support for up to six concurrent connections
 * View request/response timing information in an interactive chart
 * Save requests in "collections" of multiple requests
-* Minimize and maximize requests
-* Native OS/X app
+* Import and export "collections" for sharing
 
 ## Supported Technologies
 * *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.
@@ -52,8 +52,8 @@ Swell is a one-stop shop for sending and monitoring your API requests
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 
-* *Minimize/Expand*: Swell allows you to minimize and expand your requests, making it easy to manage everything at once.
-<kbd><img src="./ReadMeGifs/Swell_API_Minimize_Expand.gif"
+* *Import/Export Collections*: Swell allows you to import and export collections, making it easy to share collections with your team.
+<kbd><img src="./ReadMeGifs/Swell_API_ImportExportCol.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 
@@ -61,9 +61,8 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * Electron
 * React
 * Redux
-* Express
-* Apollo
-* React-Modal
+* Apollo Client
+* Websockets
 * IndexedDB
 * Chart.js
 
@@ -78,6 +77,10 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * **Abby Chao** - [abbychao](https://github.com/abbychao)
 * **Amanda Flink** - [aflinky](https://github.com/aflinky)
 * **Kajol Thapa** - [kajolthapa](https://github.com/kajolthapa)
+* **Anthony Toreson** - [atoreson](https://github.com/atoreson)
+* **Billy Tran** - [btctrl](https://github.com/btctrl)
+* **Paul Rhee** - [prheee](https://github.com/prheee)
+* **Sam Parsons** - [sam-parsons](https://github.com/sam-parsons)
 
 ## License
 
