@@ -82,26 +82,22 @@ describe('ResponseEventsDisplay', () => {
 describe('ResponseSubscriptionDisplay', () => {
   let props;
   let wrapper;
-  const testURL = 'https://swell-test-graphql.herokuapp.com';
+  const testURL = 'ws://localhost:4000/';
   beforeAll(() => {
     props = {
       content: {
         url: testURL,
-        protocol: 'https://',
+        protocol: 'ws://',
         connection: 'open',
         request: {
-          body: `subscription {
-            newLink {
+          body: `subscription MessageSentSubscription {
+            messageSent {
               id
-              url
-              description
-              postedBy {
-                id
-                name
-                email
-              }
+              from
+              message
             }
           }`,
+          bodyVariables: '',
         },
         response: {
           events: [],
@@ -109,10 +105,26 @@ describe('ResponseSubscriptionDisplay', () => {
       },
       reqResUpdate: jest.fn(),
     };
-    wrapper = renderer.create(<ResponseSubscriptionDisplay {...props} />);
+    wrapper = shallow(<ResponseSubscriptionDisplay {...props}/>)
 
   });
-  xit('should initialize as listening', () => {
-    expect(wrapper).toMatchSnapshot();
+  it('should initialize as listening', () => {
+    expect(wrapper.text()).toEqual('');
+  });
+
+  it('should have one event displayed', () => {
+    
+    // reassign props with one event
+    props.content.response.event =
+            {
+              "messageSent": {
+                  "id": 34,
+                  "from": "sam",
+                  "message": "rock and roll",
+                  "__typename": "Chat"
+              }
+          }
+    // expect one json response to be found
+    expect(wrapper.find('div.json-response')).toHaveLength(1);
   });
 });
