@@ -1,4 +1,4 @@
-# Contributing to Transcriptase
+# Contributing to Swell
 We love your input! We want to make contributing to Swell as easy and transparent as possible, whether it's:
 
 - Reporting a bug
