@@ -77,7 +77,6 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * **Abby Chao** - [abbychao](https://github.com/abbychao)
 * **Amanda Flink** - [aflinky](https://github.com/aflinky)
 * **Kajol Thapa** - [kajolthapa](https://github.com/kajolthapa)
-* **Anthony Toreson** - [atoreson](https://github.com/atoreson)
 * **Billy Tran** - [btctrl](https://github.com/btctrl)
 * **Paul Rhee** - [prheee](https://github.com/prheee)
 * **Sam Parsons** - [sam-parsons](https://github.com/sam-parsons)
