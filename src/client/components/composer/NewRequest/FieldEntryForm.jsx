@@ -8,8 +8,7 @@ class FieldEntryForm extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  onChangeHandler(e, property, graphQL, gRPC) {
-
+  onChangeHandler(e, property, graphQL) {
     let value = e.target.value;
     switch (property) {
       case 'url': {
@@ -57,11 +56,11 @@ class FieldEntryForm extends Component {
             graphQL: false,
             gRPC: false
           })
-          // this.props.setNewRequestBody({ //when switching to http clear body
-          //   ...this.props.newRequestBody,
-          //   bodyType: 'HTTP',
-          //   bodyContent: `Body`
-          // });
+          this.props.setNewRequestBody({ //when switching to http clear body
+            ...this.props.newRequestBody,
+            bodyType: 'none',
+            bodyContent: ``
+          });
           break;
         }
         else if (value === 'localhost:') { //if gRPC
@@ -76,7 +75,7 @@ class FieldEntryForm extends Component {
           this.props.setNewRequestBody({ //when switching to gRPC clear body
             ...this.props.newRequestBody,
             bodyType: 'GRPC',
-            bodyContent: `syntax = "proto3";`
+            bodyContent: ``
           });
           break;
         }
@@ -151,7 +150,7 @@ class FieldEntryForm extends Component {
 
         // gRPC streaming types
         else if (value === 'UNARY') {
-          if (!this.props.newRequestFields.gRPC) newBody = `syntax = "proto3";`
+          if (!this.props.newRequestFields.gRPC) newBody = ``
           // else newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
           //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'unary')
           //   : `unary ${this.props.newRequestBody.bodyContent}`

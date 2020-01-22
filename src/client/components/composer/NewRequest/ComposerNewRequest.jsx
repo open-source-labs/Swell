@@ -3,9 +3,10 @@ import uuid from 'uuid/v4'; //Universally Unique Identifier: generates a unique 
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
+import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
-import historyController from '../../../controllers/historyController'
+import historyController from '../../../controllers/historyController';
 import { CLIENT_RENEG_LIMIT } from 'tls';
 
 
@@ -252,16 +253,18 @@ class ComposerNewRequest extends Component {
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
         />
-
-        <HeaderEntryForm
+        {
+          !/localhost:/.test(this.props.newRequestFields.protocol) &&
+          <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
-        />
-
+          />
+        }
         {
           this.props.newRequestFields.method && !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
+          !/localhost:/.test(this.props.newRequestFields.protocol) &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}
@@ -270,6 +273,7 @@ class ComposerNewRequest extends Component {
         }
         {
           !this.props.newRequestFields.graphQL
+          && !this.props.newRequestFields.gRPC
           && this.props.newRequestFields.method !== 'GET'
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
           &&
@@ -287,6 +291,13 @@ class ComposerNewRequest extends Component {
             setNewRequestBody={this.props.setNewRequestBody}
           />
         }
+        {
+          this.props.newRequestFields.gRPC &&
+          <GRPCBodyEntryForm
+            newRequestBody={this.props.newRequestBody}
+            setNewRequestBody={this.props.setNewRequestBody}
+          /> 
+        }
 
         {/* SSE CHeckbox, update newRequestSSE in store */}
         {
@@ -299,7 +310,7 @@ class ComposerNewRequest extends Component {
             Server Sent Events
           </div>
         }
-
+        
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">
           Add New Request
         </button>

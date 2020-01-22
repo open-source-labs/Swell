@@ -164,6 +164,7 @@
     "electron-updater": "^4.0.5",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "isomorphic-fetch": "^2.2.1",

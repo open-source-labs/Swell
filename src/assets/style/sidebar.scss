@@ -66,6 +66,22 @@
     background-color: $grpcorange;
   }
 }
+.import-proto {
+	-webkit-appearance: none;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	display: block;
+	font-size: .9rem;
+	font-weight: bold;
+	height: 35px;
+	margin: 5px 0 15px;
+	padding: 8px;
+	width: 100%;
+  outline: none;
+  background-color: $grpcorange;
+}
 .composer_protocol_container {
 	display: flex;
   margin: 15px 0 15px 0;

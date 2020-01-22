@@ -62,7 +62,7 @@ class ProtocolSelect extends Component {
           GRAPHQL
         </div>
         <div
-          title="Enter a gRPC streaming type"
+          title="Enter an IP address"
           role="button"
           tabIndex={0}
           className={GRPCStyleClasses}
