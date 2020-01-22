@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import { remote } from 'electron';
 import fs from 'fs';
+import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 
 class GRPCBodyEntryForm extends Component {
   constructor(props) {
@@ -71,6 +72,10 @@ class GRPCBodyEntryForm extends Component {
           }}
         ></textarea>
         <button className="import-proto" onClick={this.importProtos}>Import Proto File</button>
+        <GRPCAutoInputForm
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestBody={this.props.setNewRequestBody}
+        />
       </div>
     );
   }

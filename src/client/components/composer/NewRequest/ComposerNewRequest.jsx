@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import uuid from 'uuid/v4'; //Universally Unique Identifier: generates a unique ID
+import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
@@ -20,7 +20,6 @@ class ComposerNewRequest extends Component {
 
   componentDidMount(){
     console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
-
   }
 
   requestValidationCheck() {
@@ -56,7 +55,7 @@ class ComposerNewRequest extends Component {
       let reqRes;
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
       // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
+      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol) && !/localhost:/.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         let path = `/${URIWithoutProtocol.split('/')

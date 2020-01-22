@@ -536,6 +536,17 @@
 .collections-container {
   min-height: 150px;
   max-height: 400px;
-  width: 100%;
+  width: 45%;
   overflow-y: scroll;
+}
+.dropdownService, .dropdownRequest {
+  background-color: #343333;
+	border: 1px solid $yellowgrey;
+	border-radius: 5px;
+	color: white;
+	margin-top: 7px;
+	padding: 5px;
+  width: 45%;
+  font-size: 14px;
+  margin: 10px;
 }

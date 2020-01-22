@@ -50,7 +50,7 @@ class FieldEntryForm extends Component {
         else if (value === 'http://') { //if http/s
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
-            protocol: value,
+            protocol: '',
             url: `http://${afterProtocol}`,
             method: 'GET',
             graphQL: false,
@@ -161,9 +161,14 @@ class FieldEntryForm extends Component {
           });
         }
         else if (value === 'SERVER STREAMING') {
-          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          // ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'server')
-          // : `server ${this.props.newRequestBody.bodyContent}`
+          this.props.setNewRequestFields({
+            ...this.props.newRequestFields,
+            protocol: 'localhost:',
+            url: `localhost:${afterProtocol}`,
+            method: 'SERVER STREAMING',
+            graphQL: false,
+            gRPC: true
+          })
 
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
