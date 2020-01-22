@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import uuid from 'uuid/v4';
+import uuid from 'uuid/v4'; //Universally Unique Identifier: generates a unique ID
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
@@ -54,7 +54,7 @@ class ComposerNewRequest extends Component {
     if (validated === true) {
       let reqRes;
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
-      // HTTP && GRAPHQL REQUESTS
+      // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
       if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
@@ -214,7 +214,8 @@ class ComposerNewRequest extends Component {
         method: 'GET',
         protocol: '',
         url: '',
-        graphQL: false
+        graphQL: false,
+        gRPC: false
       });
       this.props.setNewRequestSSE(false);
     }
@@ -229,8 +230,9 @@ class ComposerNewRequest extends Component {
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
-    if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
+    if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && (!this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC)) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
+    else if (this.props.newRequestFields.gRPC) { SubmitButtonClassName += " grpc" }
     else { SubmitButtonClassName += " http" }
 
     return (
@@ -288,7 +290,8 @@ class ComposerNewRequest extends Component {
 
         {/* SSE CHeckbox, update newRequestSSE in store */}
         {
-          !this.props.newRequestFields.graphQL
+          !this.props.newRequestFields.graphQL 
+          && !this.props.newRequestFields.gRPC
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
           && 
           <div class='composer_subtitle_SSE'>

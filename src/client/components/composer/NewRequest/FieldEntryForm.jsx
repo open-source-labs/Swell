@@ -8,7 +8,7 @@ class FieldEntryForm extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  onChangeHandler(e, property, graphQL) {
+  onChangeHandler(e, property, graphQL, gRPC) {
 
     let value = e.target.value;
     switch (property) {
@@ -19,12 +19,12 @@ class FieldEntryForm extends Component {
           url: url,
         })
         break;
-      }
+      } 
       case 'protocol': {
         let grabbedProtocol, afterProtocol;
         if (!!this.props.newRequestFields.url) {
-          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/) !== null
-            ? this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
+          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/) !== null
+            ? this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/)[0]
             : ""
           afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length)
         }
@@ -36,7 +36,8 @@ class FieldEntryForm extends Component {
             protocol: '',
             url: `http://${afterProtocol}`,
             method: 'QUERY',
-            graphQL: true
+            graphQL: true,
+            gRPC: false
           })
           this.props.setNewRequestBody({ //when switching to GQL clear body
             ...this.props.newRequestBody,
@@ -47,29 +48,53 @@ class FieldEntryForm extends Component {
           });
           break;
         }
+        else if (value === 'http://') { //if http/s
+          this.props.setNewRequestFields({
+            ...this.props.newRequestFields,
+            protocol: value,
+            url: `http://${afterProtocol}`,
+            method: 'GET',
+            graphQL: false,
+            gRPC: false
+          })
+          // this.props.setNewRequestBody({ //when switching to http clear body
+          //   ...this.props.newRequestBody,
+          //   bodyType: 'HTTP',
+          //   bodyContent: `Body`
+          // });
+          break;
+        }
+        else if (value === 'localhost:') { //if gRPC
+          this.props.setNewRequestFields({
+            ...this.props.newRequestFields,
+            protocol: value,
+            url: `localhost:${afterProtocol}`,
+            method: 'UNARY',
+            graphQL: false,
+            gRPC: true
+          })
+          this.props.setNewRequestBody({ //when switching to gRPC clear body
+            ...this.props.newRequestBody,
+            bodyType: 'GRPC',
+            bodyContent: `syntax = "proto3";`
+          });
+          break;
+        }
         else if (value === 'ws://') { //if ws
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: value,
             url: value + afterProtocol,
             method: '',
-            graphQL: false
+            graphQL: false,
+            gRPC: false
           })
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType: 'none',
+            bodyContent: '',
+          });
         }
-        else { //if http/s
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
-            protocol: '',
-            url: 'http://' + afterProtocol,
-            method: 'GET',
-            graphQL: false
-          })
-        }
-        this.props.setNewRequestBody({
-          ...this.props.newRequestBody,
-          bodyType: 'none',
-          bodyContent: '',
-        });
         //removes Content-Type Header
         const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')
         this.props.setNewRequestHeaders({
@@ -81,13 +106,14 @@ class FieldEntryForm extends Component {
       case 'method': {
         const methodReplaceRegex = new RegExp(`${this.props.newRequestFields.method}`, 'mi')
         let newBody = "";
-        if (!this.props.newRequestFields.graphQL) { //if one of 5 http methods (get, post, put, patch, delete)
+        if (!this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC) { //if one of 5 http methods (get, post, put, patch, delete)
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
             bodyType: 'none',
             bodyContent: '',
           });
         }
+        // GraphQL features
         else if (value === 'QUERY') {
           //if switching to graphQL = true
           if (!this.props.newRequestFields.graphQL) newBody = `query {
@@ -122,6 +148,49 @@ class FieldEntryForm extends Component {
             bodyContent: newBody
           });
         }
+
+        // gRPC streaming types
+        else if (value === 'UNARY') {
+          if (!this.props.newRequestFields.gRPC) newBody = `syntax = "proto3";`
+          // else newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'unary')
+          //   : `unary ${this.props.newRequestBody.bodyContent}`
+
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: newBody
+          });
+        }
+        else if (value === 'SERVER STREAMING') {
+          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+          // ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'server')
+          // : `server ${this.props.newRequestBody.bodyContent}`
+
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: newBody
+          });
+        }
+        else if (value === 'CLIENT STREAMING') {
+          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'client')
+          //   : `client ${this.props.newRequestBody.bodyContent}`
+
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: newBody
+          });
+        }
+        else if (value === 'BIDIRECTIONAL') {
+          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'bidirectional')
+          //   : `bidirectional ${this.props.newRequestBody.bodyContent}`
+
+          this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyContent: newBody
+          });
+        }
         //always set new method
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
@@ -147,13 +216,14 @@ class FieldEntryForm extends Component {
           currentProtocol={this.props.newRequestFields.protocol}
           onChangeHandler={this.onChangeHandler}
           graphQL={this.props.newRequestFields.graphQL}
+          gRPC={this.props.newRequestFields.gRPC}
         />
 
         <div className={'composer_method_url_container'}>
 
           {/* below conditional method selection rendering for http/s */}
           {
-            !/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL &&
+            !/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC &&
 
             <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select http'} onChange={(e) => {
               this.onChangeHandler(e, 'method')
@@ -176,6 +246,20 @@ class FieldEntryForm extends Component {
               <option value='QUERY'>QUERY</option>
               <option value='MUTATION'>MUTATION</option>
               <option value='SUBSCRIPTION'>SUBSCRIPTION</option>
+            </select>
+          }
+
+          {/* below conditional method selection rendering for gRPC */}
+          {
+            this.props.newRequestFields.gRPC &&
+
+            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select grpc'} onChange={(e) => {
+              this.onChangeHandler(e, 'method')
+            }}>
+              <option value='UNARY'>UNARY</option>
+              <option value='SERVER STREAMING'>SERVER STREAMING</option>
+              <option value='CLIENT STREAMING'>CLIENT STREAMING</option>
+              <option value='BIDIRECTIONAL'>BIDIRECTIONAL</option>
             </select>
           }
 

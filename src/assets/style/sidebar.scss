@@ -62,12 +62,18 @@
   &.gql {
     background-color: $gqlpink;
   }
+  &.grpc {
+    background-color: $grpcorange;
+  }
 }
 .composer_protocol_container {
 	display: flex;
   margin: 15px 0 15px 0;
   justify-content: space-between;
   &.gqlbody {
+    justify-content: space-evenly;
+  }
+  &.grpcbody {
     justify-content: space-evenly;
   }
 }
@@ -105,6 +111,13 @@
   line-height: 28px;
   }
 }
+.composer_protocol_button {
+  &.grpc:hover {
+  background: $grpcorange;
+  border: 2px solid $grpcorange;
+  line-height: 28px;
+  }
+}
 .composer_protocol_button-selected_http {
 	background: $bluetwo;
 	border: none;
@@ -115,6 +128,10 @@
 }
 .composer_protocol_button-selected_gql {
 	background: $gqlpink;
+	border: none;
+}
+.composer_protocol_button-selected_grpc {
+	background: $grpcorange;
 	border: none;
 }
 .composer_method_url_container {
@@ -140,16 +157,15 @@
 	line-height: 15px;
 	padding: 0px auto;
 	text-align-last: center;
-	width: 175px;
-}
-.composer_method_select {
+  width: 175px;
   &.http {
     background: $bluetwo;
   }
-}
-.composer_method_select {
   &.gql {
     background: $gqlpink;
+  }
+  &.grpc {
+    background: $grpcorange;
   }
 }
 .composer_url_input {
@@ -264,6 +280,10 @@
 	&.gql:hover {
 		background: $gqlpink;
 		border: none;
+  }
+  &.grpc:hover {
+		background: $grpcorange;
+		border: none;
 	}
 }
 .composer_bodytype_button-selected {
@@ -271,6 +291,9 @@
   border: none;
   &.gql {
     background: $gqlpink;
+  }
+  &.grpc {
+    background: $grpcorange;
   }
 }
 .composer_bodyform_container-open {
@@ -312,6 +335,9 @@
 		outline: 0 none;
   }
   &.gql {
+    margin-bottom: 10px;
+  }
+  &.grpc {
     margin-bottom: 10px;
   }
 }
@@ -401,7 +427,6 @@
   justify-self: center;
   flex-shrink: 100;
   overflow-y: scroll;
-  // background: pink;
 }
 .collection-text-container {
   height: 28px;
