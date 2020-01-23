@@ -14,7 +14,7 @@ class GRPCAutoInputForm extends Component {
           rpcs: [
             {
               name: 'GetBook',
-              type: 'unary',
+              type: 'UNARY',
               definition: 'rpc GetBook (GetBookRequest) returns (Book) {}',
               messages: [
                 {
@@ -35,13 +35,57 @@ class GRPCAutoInputForm extends Component {
                   ]
                 }
               ]
+            },
+            {
+              name: 'GetBooksViaAuthor',
+              type: 'BIDRECTIONAL',
+              definition: 'rpc GetBooks (stream GetBookRequest) returns (stream Book) {}',
+              messages: [
+                {
+                  name: 'Book',
+                  definition: [
+                    {
+                      number: 1,
+                      definition: 'int64 isbn = 1'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }, 
+        {
+          name: 'DogService',
+          rpcs: [
+            {
+              name: 'GetDog',
+              type: 'BIDIRECTIONAL',
+              definition: 'rpc GetDog (stream GetDogRequest) returns (stream Dog) {}',
+              messages: [
+                {
+                  name: 'Dog',
+                  definition: [
+                    {
+                      number: 1,
+                      definition: 'string name = 2'
+                    },
+                    {
+                      number: 2,
+                      definition: 'string type = 3'
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
-      ]
+      ],
+      selectedService: null,
+      selectedRequest: null,
     };
- 
     this.toggleShow = this.toggleShow.bind(this);
+    this.setService = this.setService.bind(this);
+    this.setRequest = this.setRequest.bind(this);
   }
 
   toggleShow() {
@@ -50,22 +94,44 @@ class GRPCAutoInputForm extends Component {
     });
   }
 
-  // setServices(mockData) {
-  //   this.setState({
-  //     ...this.state,
-  //     services: mockData.services,
-  //   });
-  // }
-  
+  setService() {
+    const sel = document.getElementById('dropdownService');
+    const opt = sel.options[sel.selectedIndex];
+    const serviceName = opt.text;
+    this.setState({ 
+      ...this.state,
+      selectedService: serviceName
+   });
+  }
 
+  setRequest() {
+    const sel = document.getElementById('dropdownRequest');
+    const opt = sel.options[sel.selectedIndex];
+    const requestName = opt.text;
+    this.setState({ 
+      ...this.state,
+      selectedRequest: requestName
+   });
+  }
+  
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
     let services = this.state.services;
-  
+    const servicesList =[];
     for (let i = 0; i < services.length; i++) {
-      <option value={i}>services[i].name</option>
+      servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
+    }
+
+    let selectedService = this.state.selectedService;
+    const rpcsList = [];
+    for (const service of services) {
+      if (service.name === selectedService) {
+        for (let i = 0; i < service.rpcs.length; i++) {
+          rpcsList.push(<option key={i} value={i}>{service.rpcs[i].name}</option>)
+        }
+      }
     }
 
     return (
@@ -75,14 +141,14 @@ class GRPCAutoInputForm extends Component {
           Service & Request
         </div>
 
-       <select id="dropdownService" name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
-          <option value="test1" selected="">Service1</option>
-          {/* {optionsList} */}
+       <select id="dropdownService" onChange={this.setService} name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
+          <option value="services" selected="">Select Service</option>
+          {servicesList}
         </select>
 
-        <select id="dropdownRequest" name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
-          <option value="test1" selected="">Request1</option>
-          <option value="test2">Request2</option>
+        <select id="dropdownRequest" onChange={this.setRequest} name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
+          <option value="requests" selected="">Select Request</option>
+          {rpcsList}
         </select>
         {/* <textarea
           value={this.props.newRequestBody.bodyContent}

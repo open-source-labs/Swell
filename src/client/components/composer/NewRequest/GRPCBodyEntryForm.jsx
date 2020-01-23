@@ -52,6 +52,8 @@ class GRPCBodyEntryForm extends Component {
           console.log('Proto file has been saved')
         })
       });
+
+      
     });
   }
  
