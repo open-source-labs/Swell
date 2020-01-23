@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import { remote } from 'electron';
-const fs = require('fs');
-const path = require('path');
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
-// const remote = require('remote');
-// import { app } from remote;
+import fs from 'fs';
+import path from 'path';
 
 class GRPCBodyEntryForm extends Component {
   constructor(props) {
@@ -44,8 +42,9 @@ class GRPCBodyEntryForm extends Component {
           ...this.props.newRequestBody,
           bodyContent: data
         });
-        const test = remote.app.getAppPath();
-        fs.writeFileSync(path.join(test, 'src/client/components/composer/protos/saveProto.proto'), data, 'utf-8', (err) => {
+        // write to saveProto file 
+        const dirName = remote.app.getAppPath();
+        fs.writeFileSync(path.join(dirName, 'src/client/components/composer/protos/saveProto.proto'), data, 'utf-8', (err) => {
           if(err){
               alert("An error ocurred writing the file :" + err.message);
               return;
