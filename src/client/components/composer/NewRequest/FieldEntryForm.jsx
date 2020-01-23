@@ -162,15 +162,6 @@ class FieldEntryForm extends Component {
           });
         }
         else if (value === 'SERVER STREAMING') {
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
-            protocol: 'localhost:',
-            url: `localhost:${afterProtocol}`,
-            method: 'SERVER STREAMING',
-            graphQL: false,
-            gRPC: true
-          })
-
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
             bodyContent: newBody
