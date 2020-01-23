@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import uuid from 'uuid/v4';
+import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
+import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
-import historyController from '../../../controllers/historyController'
+import historyController from '../../../controllers/historyController';
 import { CLIENT_RENEG_LIMIT } from 'tls';
 
 
@@ -19,7 +20,6 @@ class ComposerNewRequest extends Component {
 
   componentDidMount(){
     console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
-
   }
 
   requestValidationCheck() {
@@ -54,8 +54,8 @@ class ComposerNewRequest extends Component {
     if (validated === true) {
       let reqRes;
       const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
-      // HTTP && GRAPHQL REQUESTS
-      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol)) {
+      // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
+      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol) && !/localhost:/.test(this.props.newRequestFields.protocol)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         let path = `/${URIWithoutProtocol.split('/')
@@ -214,7 +214,8 @@ class ComposerNewRequest extends Component {
         method: 'GET',
         protocol: '',
         url: '',
-        graphQL: false
+        graphQL: false,
+        gRPC: false
       });
       this.props.setNewRequestSSE(false);
     }
@@ -229,8 +230,9 @@ class ComposerNewRequest extends Component {
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol) ? 'block' : 'none',
     }
     let SubmitButtonClassName = "composer_submit";
-    if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL) { SubmitButtonClassName += " ws" }
+    if (/wss?:\/\//.test(this.props.newRequestFields.protocol) && (!this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC)) { SubmitButtonClassName += " ws" }
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
+    else if (this.props.newRequestFields.gRPC) { SubmitButtonClassName += " grpc" }
     else { SubmitButtonClassName += " http" }
 
     return (
@@ -250,16 +252,18 @@ class ComposerNewRequest extends Component {
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
         />
-
-        <HeaderEntryForm
+        {
+          !/localhost:/.test(this.props.newRequestFields.protocol) &&
+          <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
-        />
-
+          />
+        }
         {
           this.props.newRequestFields.method && !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
+          !/localhost:/.test(this.props.newRequestFields.protocol) &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}
@@ -268,6 +272,7 @@ class ComposerNewRequest extends Component {
         }
         {
           !this.props.newRequestFields.graphQL
+          && !this.props.newRequestFields.gRPC
           && this.props.newRequestFields.method !== 'GET'
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
           &&
@@ -285,10 +290,18 @@ class ComposerNewRequest extends Component {
             setNewRequestBody={this.props.setNewRequestBody}
           />
         }
+        {
+          this.props.newRequestFields.gRPC &&
+          <GRPCBodyEntryForm
+            newRequestBody={this.props.newRequestBody}
+            setNewRequestBody={this.props.setNewRequestBody}
+          /> 
+        }
 
         {/* SSE CHeckbox, update newRequestSSE in store */}
         {
-          !this.props.newRequestFields.graphQL
+          !this.props.newRequestFields.graphQL 
+          && !this.props.newRequestFields.gRPC
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
           && 
           <div class='composer_subtitle_SSE'>
@@ -296,7 +309,7 @@ class ComposerNewRequest extends Component {
             Server Sent Events
           </div>
         }
-
+        
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">
           Add New Request
         </button>
