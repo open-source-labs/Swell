@@ -148,6 +148,7 @@
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "dependencies": {
+    "@grpc/proto-loader": "^0.5.3",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link": "^1.2.13",
@@ -166,7 +167,10 @@
     "express": "^4.17.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "grpc": "^1.24.2",
+    "highland": "^2.13.5",
     "isomorphic-fetch": "^2.2.1",
+    "mali": "^0.20.0",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.10.0",
     "nodemon": "^1.19.1",
