@@ -42,6 +42,14 @@ class GRPCBodyEntryForm extends Component {
           bodyContent: data
         });
       });
+      // fs.writeFileSync('../protos/saveProto.proto', filePaths, 'utf-8', (err) => {
+      //   console.log('In writeFileSync')
+      //   if(err){
+      //       alert("An error ocurred writing the file :" + err.message);
+      //       return;
+      //   }
+      //   console.log('Proto file has been saved')
+      // })
     });
   }
  

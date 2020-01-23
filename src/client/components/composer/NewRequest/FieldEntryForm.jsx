@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProtocolSelect from "./ProtocolSelect.jsx";
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 class FieldEntryForm extends Component {
   constructor(props) {

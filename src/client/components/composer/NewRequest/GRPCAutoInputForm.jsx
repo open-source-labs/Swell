@@ -16,6 +16,10 @@ class GRPCAutoInputForm extends Component {
     });
   }
 
+  // parseData() {
+    
+  // }
+
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
