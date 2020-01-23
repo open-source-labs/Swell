@@ -12,7 +12,7 @@ class ProtocolSelect extends Component {
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
       http: true,
-      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL,
+      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL && !this.props.gRPC,
     });
     const WSStyleClasses = classNames({
       composer_protocol_button: true,
