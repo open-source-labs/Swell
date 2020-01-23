@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import { remote } from 'electron';
-import fs from 'fs';
+const fs = require('fs')
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 
 class GRPCBodyEntryForm extends Component {
@@ -42,14 +42,14 @@ class GRPCBodyEntryForm extends Component {
           bodyContent: data
         });
       });
-      // fs.writeFileSync('../protos/saveProto.proto', filePaths, 'utf-8', (err) => {
-      //   console.log('In writeFileSync')
-      //   if(err){
-      //       alert("An error ocurred writing the file :" + err.message);
-      //       return;
-      //   }
-      //   console.log('Proto file has been saved')
-      // })
+      fs.writeFile('saveProto.proto', filePaths[0], 'utf-8', (err) => {
+        console.log('In writeFileSync: __dirname ', __dirname)
+        if(err){
+            alert("An error ocurred writing the file :" + err.message);
+            return;
+        }
+        console.log('Proto file has been saved')
+      })
     });
   }
  
