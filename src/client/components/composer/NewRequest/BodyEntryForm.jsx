@@ -12,7 +12,7 @@ class BodyEntryForm extends Component {
   }
 
   toggleShow() {
-    this.setState({
+    this.setState({ 
       show: !this.state.show
     });
   }
