@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import { remote } from 'electron';
-import fs from 'fs';
+const fs = require('fs');
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 
 class GRPCBodyEntryForm extends Component {
