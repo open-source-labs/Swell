@@ -163,6 +163,50 @@ class ComposerNewRequest extends Component {
           tab: this.props.currentTab,
         };
       }
+      //grpc requests 
+      else if (this.props.newRequestFields.gRPC) {
+        let historyBodyContent;
+        if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
+        else historyBodyContent = '';
+
+        let historyBodyVariables;
+        if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        else historyBodyVariables = '';
+        console.log('history body content grpc', historyBodyContent)
+        reqRes = {
+
+          id: uuid(),
+          created_at: new Date(),
+          protocol: 'ws://',
+          host,
+          path,
+          url: this.props.newRequestFields.url,
+          graphQL: this.props.newRequestFields.graphQL,
+          timeSent: null,
+          timeReceived: null,
+          connection: 'uninitialized',
+          connectionType: null,
+          checkSelected: false,
+
+          request: {
+            method: this.props.newRequestFields.method,
+            headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
+            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
+            body: historyBodyContent,
+            bodyType: this.props.newRequestBody.bodyType,
+            bodyVariables: historyBodyVariables,
+            rawType: this.props.newRequestBody.rawType
+          },
+          response: {
+            headers: null,
+            events: null,
+          },
+          checked: false,
+          minimized: false,
+          tab: this.props.currentTab,
+        };
+      }
       // WEBSOCKET REQUESTS
       else {
         reqRes = {
