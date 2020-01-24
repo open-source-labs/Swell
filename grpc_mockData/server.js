@@ -5,18 +5,18 @@ const hl = require("highland");
 const PROTO_PATH = path.join(__dirname, "./protos/hw2.proto");
 const HOSTPORT = "0.0.0.0:50051";
 
-const streamData = [
+const dataStream = [
   {
-    message: "Hello Bob"
+    message: "Bob"
   },
   {
-    message: "Hello Kate"
+    message: "Kate"
   },
   {
-    message: "Hello Jim"
+    message: "Jim"
   },
   {
-    message: "Hello Sara"
+    message: "Sara"
   }
 ];
 
@@ -30,11 +30,18 @@ function sayHello(ctx) {
   console.log(`set sayHello response: ${ctx.res.message}`);
 }
 
-function sayHellos(ctx) {
+async function sayHellos(ctx) {
   console.dir(ctx.metadata, { depth: 3, colors: true });
-  console.log(`got sayHellos request name: ${ctx.req.name}`);
-  ctx.res = hl(streamData);
+  console.log(`got sayHellos request name:`, JSON.stringify(ctx.req, null, 4));
+  let reqMessages = {"message": 'hello!!! ' + ctx.req.name}
+  dataStream.push(reqMessages)
+  reqMessages = dataStream
+  console.log('what is this?????', reqMessages)
+  let streamData = await hl(reqMessages)
+  ctx.res = streamData;
+  
   console.log(`done sayHellos`);
+  ctx.res.end()
 }
 
 function sayHelloCs (ctx) {
