@@ -112,6 +112,8 @@ class GRPCAutoInputForm extends Component {
     const sel = document.getElementById('dropdownService');
     const opt = sel.options[sel.selectedIndex];
     const serviceName = opt.text;
+    const streamBtn = document.getElementById('stream');
+    streamBtn.innerText = 'STREAM';
     this.setState({ 
       ...this.state,
       selectedService: serviceName
