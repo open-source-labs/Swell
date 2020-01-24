@@ -21,12 +21,17 @@ function main () {
   client.sayHello({ name: user }, function (err, response) {
     console.log('Greeting:', response.message)
     })
+
   // server side streaming
   const call = client.sayHellos({ name: user })
+    // testing with mock data in server.js
     call.on('data', data => {
       console.log('server streaming messages:', data);
     })
-
+    // call.on('error', console.error);
+    // call.on('data', console.log);
+    // call.on('end', () => client.close());
+    
   // client side streaming
   const stream = client.sayHelloCs((err, response) => {
     if (err) {
@@ -34,11 +39,11 @@ function main () {
     } else {
       console.log(response);
     }
-    // client.close();
+    client.close();
   })
-  stream.write({ name: 'hello write stream'});
-  stream.write({name: 'hello 2nd stream' })
-  stream.end({ name: 'hello end stream'})
+  stream.write({ name: 'hello 1st client side stream'});
+  stream.write({name: 'hello 2nd client side stream' })
+  stream.end({ name: 'hello end client side stream'})
  
   // bidi streaming
   const streamBidi = client.sayHelloBidi();
@@ -46,7 +51,7 @@ function main () {
   streamBidi.on('data', console.log);
   streamBidi.on('end', ()=> client.close());
 
-  streamBidi.write ({ name: 'hello bidi stream 1'});
-  streamBidi.end({ name: 'hello bidi stream 2'})
+  streamBidi.write ({ name: 'hello 1st bi-di stream'});
+  streamBidi.end({ name: 'hello 2nd bi-di stream'})
 }
 main()
