@@ -50,7 +50,7 @@ const connectionController = {
     if (reqResObj.request.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
     else if (/wss?:\/\//.test(reqResObj.protocol)) wsController.openWSconnection(reqResObj, this.openConnectionArray);
-    // else if (reqResObj.gRPC) grpcCsontroller.openGrpcConnection(reqResObj);
+    else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
     else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
   },
 
