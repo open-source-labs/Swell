@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
-import { remote } from 'electron';
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+import { remote, dialog } from 'electron';
 import fs from 'fs';
 import path from 'path';
 
@@ -28,11 +28,12 @@ class GRPCProtoEntryForm extends Component {
       filters: [
         { name: 'Protos', extensions: ['proto'] },
       ]
-    }, (filePaths) => {
+    })
+    .then(filePaths => {
       if (!filePaths) {
         return;
       }
-      fs.readFile(filePaths[0], 'utf-8', (err, data) => {
+      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, data) => {
         if(err){
             alert("An error ocurred reading the file :" + err.message);
             return;
