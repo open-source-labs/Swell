@@ -86,7 +86,6 @@ class GRPCAutoInputForm extends Component {
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
-    this.setStreamingType = this.setStreamingType.bind(this);
   }
 
     // waiting for server to work to test functionality of service and request dropdowns
@@ -126,28 +125,24 @@ class GRPCAutoInputForm extends Component {
     this.setState({ 
       ...this.state,
       selectedRequest: requestName
-   });
-   
-   this.setStreamingType();
-  }
-
-  setStreamingType() {
-    const selectedService = this.state.selectedService;
-    const selectedRequest = this.state.selectedRequest;
-    const services = this.state.services;
-    let streamingType;
-    for (const service of services) {
-      if (service.name === selectedService ) {
-        for (const rpc of service.rpcs) {
-          if (rpc.name === selectedRequest) {
-            streamingType = rpc.type;
+    }, () => {
+      const selectedService = this.state.selectedService;
+      const selectedRequest = this.state.selectedRequest;
+      const services = this.state.services;
+      let streamingType;
+      for (const service of services) {
+        if (service.name === selectedService ) {
+          for (const rpc of service.rpcs) {
+            if (rpc.name === selectedRequest) {
+              streamingType = rpc.type;
+            }
           }
         }
       }
-    }
-    this.setState({ selectedStreamingType: streamingType });  
-    const streamBtn = document.getElementById('stream')
-    streamBtn.innerText = streamingType
+      this.setState({ selectedStreamingType: streamingType });  
+      const streamBtn = document.getElementById('stream')
+      streamBtn.innerText = streamingType
+    });
   }
   
   render() {
