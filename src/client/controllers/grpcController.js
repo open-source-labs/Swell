@@ -7,16 +7,17 @@ var async = require('async');
 var fs = require('fs');
 var parseArgs = require('minimist');
 var path = require('path');
-var grpc = require('grpc');
-var protoLoader = require('@grpc/proto-loader');
+// var grpc = impo('grpc');
+// import grpc from "grpc";
+// var protoLoader = require('@grpc/proto-loader');
 
 
 let rpcFunctions = [0, 1, 2, 3];
 let grpcController = {};
 
-grpcController.establishConnection = (reqResObj, connectionArray) => {
+grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     //check for connection, if not open one
-
+    console.log('we made it to grpcController, noice')
     if (connection) {
         //do stuff
     }
@@ -131,4 +132,5 @@ grpcController.establishConnection = (reqResObj, connectionArray) => {
     
     client[serviceFunction]((objToSendFromReq), featureCallback);
   }
-}
+};
+export default grpcController;

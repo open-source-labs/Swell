@@ -3,6 +3,7 @@ import * as actions from '../actions/actions';
 import httpController from './httpController.js';
 import wsController from './wsController.js';
 import graphQLController from './graphQLController.js';
+import grpcController from './grpcController.js';
 
 const connectionController = {
   openConnectionArray: [],
@@ -49,6 +50,7 @@ const connectionController = {
     if (reqResObj.request.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
     else if (/wss?:\/\//.test(reqResObj.protocol)) wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    // else if (reqResObj.gRPC) grpcCsontroller.openGrpcConnection(reqResObj);
     else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
   },
 

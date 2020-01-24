@@ -26,6 +26,9 @@ class ComposerNewRequest extends Component {
     let validationMessage;
 
     //Error conditions...
+    if (this.props.newRequestFields.gRPC){
+      return true;
+    }
     if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) { //if url is only http/https/ws/wss://
       validationMessage = "Please enter a valid URI.";
     }
@@ -35,6 +38,7 @@ class ComposerNewRequest extends Component {
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
       validationMessage = "Please fix JSON body formatting errors.";
     }
+    
     else if (this.props.newRequestFields.method === "QUERY") {
       if (this.props.newRequestFields.url && !this.props.newRequestBody.bodyContent) {
         validationMessage = "Missing body.";
@@ -53,9 +57,12 @@ class ComposerNewRequest extends Component {
 
     if (validated === true) {
       let reqRes;
-      const protocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0]
+      let protocol;
+      protocol = this.props.newRequestFields.gRPC ? '' : this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+
       // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol) && !/localhost:/.test(this.props.newRequestFields.protocol)) {
+      if (!/wss?:\/\//.test(this.props.newRequestFields.protocol) && !(this.props.newRequestFields.gRPC)) {
+        // console.log(' in wss check')
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         let path = `/${URIWithoutProtocol.split('/')
@@ -118,10 +125,13 @@ class ComposerNewRequest extends Component {
           .splice(1)
           .join('/')
           .replace(/\/{2,}/g, '/')}`;
+          // console.log('what is path' , path)
         if (path.charAt(path.length - 1) === '/' && path.length > 1) {
           path = path.substring(0, path.length - 1);
         }
         path = path.replace(/wss?:\//g, 'ws://');
+        // console.log('what is path2' , path)
+
         let historyBodyContent;
         if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
@@ -134,7 +144,7 @@ class ComposerNewRequest extends Component {
 
           id: uuid(),
           created_at: new Date(),
-          protocol: 'ws://',
+          protocol: 'ws://',  
           host,
           path,
           url: this.props.newRequestFields.url,
@@ -165,6 +175,9 @@ class ComposerNewRequest extends Component {
       }
       //grpc requests 
       else if (this.props.newRequestFields.gRPC) {
+        console.log('inside grpc composernewrequest')
+        let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
+        const host = protocol + URIWithoutProtocol.split('/')[0];
         let historyBodyContent;
         if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
@@ -174,15 +187,21 @@ class ComposerNewRequest extends Component {
         if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
         console.log('history body content grpc', historyBodyContent)
+        let path = `/${URIWithoutProtocol.split('/')
+          .splice(1)
+          .join('/')
+          .replace(/\/{2,}/g, '/')}`;
+          console.log('path var is ' , path)
         reqRes = {
 
           id: uuid(),
           created_at: new Date(),
-          protocol: 'ws://',
+          protocol: '',
           host,
           path,
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
+          gRPC: this.props.newRequestFields.gRPC,
           timeSent: null,
           timeReceived: null,
           connection: 'uninitialized',

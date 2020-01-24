@@ -12,7 +12,7 @@ class ProtocolSelect extends Component {
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
       http: true,
-      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL,
+      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL && !this.props.gRPC,
     });
     const WSStyleClasses = classNames({
       composer_protocol_button: true,
@@ -66,7 +66,7 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GRPCStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'localhost:' } }, 'protocol')
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', false)
           }
         >
           GRPC
