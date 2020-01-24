@@ -267,6 +267,7 @@ class ComposerNewRequest extends Component {
 
       this.props.setNewRequestBody({
         bodyContent: '',
+        protoContent: '',
         bodyVariables: '',
         bodyType: 'none',
         rawType: 'Text (text/plain)',
