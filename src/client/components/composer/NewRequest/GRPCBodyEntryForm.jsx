@@ -40,7 +40,7 @@ class GRPCBodyEntryForm extends Component {
         }
         this.props.setNewRequestBody({
           ...this.props.newRequestBody,
-          bodyContent: data
+          protoContent: data
         });
         // write to saveProto file 
         const dirName = remote.app.getAppPath();
@@ -52,8 +52,6 @@ class GRPCBodyEntryForm extends Component {
           console.log('Proto file has been saved')
         })
       });
-
-      
     });
   }
  
@@ -65,7 +63,7 @@ class GRPCBodyEntryForm extends Component {
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
           <img className={arrowClass} src={dropDownArrow}></img>
-          Proto
+          Body
         </div>
 
         <textarea
@@ -74,7 +72,7 @@ class GRPCBodyEntryForm extends Component {
           id='grpcBodyEntryTextArea'
           style={{ 'resize': 'none' }} 
           type='text'
-          placeholder='Type or import .proto file'
+          placeholder='Type query'
           rows={10}
           onChange={(e) => {
             this.props.setNewRequestBody({
@@ -83,7 +81,30 @@ class GRPCBodyEntryForm extends Component {
             })
           }}
         ></textarea>
+
+
+        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+          <img className={arrowClass} src={dropDownArrow}></img>
+          Proto
+        </div>
+
+        <textarea
+          value={this.props.newRequestBody.protoContent}
+          className={'composer_textarea grpc ' + bodyContainerClass}
+          id='grpcProtoEntryTextArea'
+          style={{ 'resize': 'none' }} 
+          type='text'
+          placeholder='Type or import .proto file'
+          rows={10}
+          onChange={(e) => {
+            this.props.setNewRequestBody({
+              ...this.props.newRequestBody,
+              protoContent: e.target.value
+            })
+          }}
+        ></textarea>
         <button className="import-proto" onClick={this.importProtos}>Import Proto File</button>
+
         <GRPCAutoInputForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}
