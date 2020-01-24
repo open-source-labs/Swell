@@ -149,44 +149,44 @@ class FieldEntryForm extends Component {
           });
         }
 
-        // gRPC streaming types
-        else if (value === 'UNARY') {
-          if (!this.props.newRequestFields.gRPC) newBody = ``
-          // else newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'unary')
-          //   : `unary ${this.props.newRequestBody.bodyContent}`
+        // // gRPC streaming types
+        // else if (value === 'UNARY') {
+        //   if (!this.props.newRequestFields.gRPC) newBody = ``
+        //   // else newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+        //   //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'unary')
+        //   //   : `unary ${this.props.newRequestBody.bodyContent}`
 
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-        else if (value === 'SERVER STREAMING') {
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-        else if (value === 'CLIENT STREAMING') {
-          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'client')
-          //   : `client ${this.props.newRequestBody.bodyContent}`
+        //   this.props.setNewRequestBody({
+        //     ...this.props.newRequestBody,
+        //     bodyContent: newBody
+        //   });
+        // }
+        // else if (value === 'SERVER STREAMING') {
+        //   this.props.setNewRequestBody({
+        //     ...this.props.newRequestBody,
+        //     bodyContent: newBody
+        //   });
+        // }
+        // else if (value === 'CLIENT STREAMING') {
+        //   // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+        //   //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'client')
+        //   //   : `client ${this.props.newRequestBody.bodyContent}`
 
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-        else if (value === 'BIDIRECTIONAL') {
-          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'bidirectional')
-          //   : `bidirectional ${this.props.newRequestBody.bodyContent}`
+        //   this.props.setNewRequestBody({
+        //     ...this.props.newRequestBody,
+        //     bodyContent: newBody
+        //   });
+        // }
+        // else if (value === 'BIDIRECTIONAL') {
+        //   // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
+        //   //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'bidirectional')
+        //   //   : `bidirectional ${this.props.newRequestBody.bodyContent}`
 
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
+        //   this.props.setNewRequestBody({
+        //     ...this.props.newRequestBody,
+        //     bodyContent: newBody
+        //   });
+        // }
         //always set new method
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
@@ -249,14 +249,7 @@ class FieldEntryForm extends Component {
           {
             this.props.newRequestFields.gRPC &&
 
-            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select grpc'} onChange={(e) => {
-              this.onChangeHandler(e, 'method')
-            }}>
-              <option value='UNARY'>UNARY</option>
-              <option value='SERVER STREAMING'>SERVER STREAMING</option>
-              <option value='CLIENT STREAMING'>CLIENT STREAMING</option>
-              <option value='BIDIRECTIONAL'>BIDIRECTIONAL</option>
-            </select>
+            <button style={{ display: 'block' }} id='stream' value='STREAM' className={'composer_method_select grpc'}>STREAM</button>
           }
 
           <input className={'composer_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {

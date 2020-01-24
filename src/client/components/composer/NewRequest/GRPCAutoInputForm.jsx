@@ -86,21 +86,21 @@ class GRPCAutoInputForm extends Component {
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
-    // this.setStreamingType = this.setStreamingType.bind(this);
+    this.setStreamingType = this.setStreamingType.bind(this);
   }
 
     // waiting for server to work to test functionality of service and request dropdowns
     // componentDidMount() {
-    //   fetch(`/`)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     const { services } = data;
-    //     this.setState({
-    //       ...this.state,
-    //       services
-    //     })
-    //   })
-    //   .catch((err) => { console.log(err) })
+      // fetch(`/`)
+      // .then(res => res.json())
+      // .then(data => {
+      //   const { services } = data;
+      //   this.setState({
+      //     ...this.state,
+      //     services
+      //   })
+      // })
+      // .catch((err) => { console.log(err) })
     // }
 
   toggleShow() {
@@ -127,28 +127,28 @@ class GRPCAutoInputForm extends Component {
       ...this.state,
       selectedRequest: requestName
    });
-  //  this.setStreamingType();
+   
+   this.setStreamingType();
   }
 
-  // setStreamingType() {
-  //   const selectedService = this.state.selectedService;
-  //   const selectedRequest = this.state.selectedRequest;
-  //   const services = this.state.services;
-  //   let streamingType;
-  //   for (const service of services) {
-  //     if (service.name === selectedService ) {
-  //       for (const rpc of service.rpcs) {
-  //         if (rpc.name === selectedRequest) {
-  //           streamingType = rpc.type
-  //         }
-  //       }
-  //     }
-  //   }
-  //   this.setState({ 
-  //     ...this.state,
-  //     selectedStreamingType: streamingType
-  //  });
-  // }
+  setStreamingType() {
+    const selectedService = this.state.selectedService;
+    const selectedRequest = this.state.selectedRequest;
+    const services = this.state.services;
+    let streamingType;
+    for (const service of services) {
+      if (service.name === selectedService ) {
+        for (const rpc of service.rpcs) {
+          if (rpc.name === selectedRequest) {
+            streamingType = rpc.type;
+          }
+        }
+      }
+    }
+    this.setState({ selectedStreamingType: streamingType });  
+    const streamBtn = document.getElementById('stream')
+    streamBtn.innerText = streamingType
+  }
   
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
@@ -169,22 +169,6 @@ class GRPCAutoInputForm extends Component {
         }
       }
     }
-
-    // let streamingType;
-    // for (const service of services) {
-    //   if (service.name === selectedService ) {
-    //     for (const rpc of service.rpcs) {
-    //       if (rpc.name === selectedRequest) {
-    //         streamingType = rpc.type
-    //       }
-    //     }
-    //   }
-    // }
-    // console.log('streamingType: ', streamingType)
-    // this.setState({ 
-    //   ...this.state,
-    //   selectedStreamingType: streamingType
-    // });
 
     return (
       <div >
