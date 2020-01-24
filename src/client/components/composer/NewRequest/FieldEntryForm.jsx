@@ -65,20 +65,11 @@ class FieldEntryForm extends Component {
           break;
         }
         else if (value === '') { //if gRPC
-<<<<<<< HEAD
-
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
-            protocol: value,
-            url: `${afterProtocol}`,
-            method: 'UNARY',
-=======
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
             url: `${afterProtocol}`,
             method: '',
->>>>>>> dev
             graphQL: false,
             gRPC: true
           })
@@ -159,50 +150,6 @@ class FieldEntryForm extends Component {
           });
         }
 
-<<<<<<< HEAD
-        // gRPC streaming types
-        else if (value === 'UNARY') {
-          if (!this.props.newRequestFields.gRPC) newBody = ``
-          // else newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'unary')
-          //   : `unary ${this.props.newRequestBody.bodyContent}`
-
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-        else if (value === 'SERVER STREAMING') {
-          console.log('in server streaming case')
-        
-
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-        else if (value === 'CLIENT STREAMING') {
-          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'client')
-          //   : `client ${this.props.newRequestBody.bodyContent}`
-
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-        else if (value === 'BIDIRECTIONAL') {
-          // newBody = methodReplaceRegex.test(this.props.newRequestBody.bodyContent)
-          //   ? this.props.newRequestBody.bodyContent.replace(methodReplaceRegex, 'bidirectional')
-          //   : `bidirectional ${this.props.newRequestBody.bodyContent}`
-
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyContent: newBody
-          });
-        }
-=======
->>>>>>> dev
         //always set new method
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
