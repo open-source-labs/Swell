@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-const path = require('path')
-const Mali = require('mali')
-const hl = require('highland')
-=======
 const path = require("path");
 const Mali = require("mali");
 const hl = require("highland");
->>>>>>> dev
 
 const PROTO_PATH = path.join(__dirname, "./protos/hw2.proto");
 const HOSTPORT = "0.0.0.0:50051";
@@ -29,27 +23,6 @@ const dataStream = [
 /**
  * Implements the SayHello RPC method.
  */
-<<<<<<< HEAD
-// unary response
-async function sayHello (ctx) {
-  console.dir(ctx.metadata, { depth: 3, colors: true })
-  console.log(`got sayHello request name: ${ctx.req.name}`)
-  ctx.res = { message: 'Hello ' + ctx.req.name }
-  console.log(`set sayHello response: ${ctx.res.message}`)
-}
-// server side response
-async function sayHellos (ctx) {
-  console.dir(ctx.metadata, { depth: 3, colors: true })
-  console.log(`got server side streaming request name: ${ctx.req.name}`)
-  console.log('what is ctx.req.name', ctx.req.name)
-  ctx.res = hl(streamData)
-  // let counter = 0
-  // ctx.res = hl('data', d => {
-  //   counter++
-    // ctx.res.write({ message: 'server side stream: ' + d.name })
-  // })
-  console.log(`done server side streaming`)
-=======
 function sayHello(ctx) {
   console.dir(ctx.metadata, { depth: 3, colors: true });
   console.log(`got sayHello request name: ${ctx.req.name}`);
@@ -68,7 +41,6 @@ async function sayHellos(ctx) {
   ctx.res = streamData;
   
   console.log(`done sayHellos`);
->>>>>>> dev
   ctx.res.end()
 }
 
@@ -88,33 +60,14 @@ function sayHelloCs (ctx) {
       .collect()
       .toCallback((err, result) => {
         if (err) return reject(err)
-<<<<<<< HEAD
-        console.log(`done client streaming counter ${counter}`)
-        ctx.response.res = { message: 'client stream: ' + counter }
-=======
         console.log(`done sayHelloClients counter ${counter}`)
         ctx.response.res = { message: 'SAYHELLOCs Client stream: ' + counter }
         console.log(ctx.response.res)
->>>>>>> dev
         resolve()
       })
   })
 }
 
-<<<<<<< HEAD
-async function sayHelloBidi (ctx) {
-  console.log('got sayHelloBidi')
-  console.dir(ctx.metadata, { depth: 3, colors: true })
-  let counter = 0
-  ctx.req.on('data', d => {
-    counter++
-    ctx.res.write({ message: 'bi-di stream: ' + d.name })
-  })
-  ctx.req.on('end', () => {
-    console.log(`done bi-di streaming counter ${counter}`)
-    ctx.res.end()
-  })
-=======
 function sayHelloBidi(ctx) {
   console.log("got sayHelloBidi");
   console.dir(ctx.metadata, { depth: 3, colors: true });
@@ -127,7 +80,6 @@ function sayHelloBidi(ctx) {
     console.log(`done sayHelloBidi counter ${counter}`);
     ctx.res.end();
   });
->>>>>>> dev
 }
 
 /**
