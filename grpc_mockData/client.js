@@ -1,39 +1,42 @@
-var path = require('path')
-const protoLoader = require('@grpc/proto-loader')
-const grpc = require('grpc')
+var path = require("path");
+const protoLoader = require("@grpc/proto-loader");
+const grpc = require("grpc");
 
+const PROTO_PATH = path.resolve(__dirname, "./protos/hw2.proto");
 
-const PROTO_PATH = path.resolve(__dirname, './protos/hw2.proto')
+const pd = protoLoader.loadSync(PROTO_PATH);
+const loaded = grpc.loadPackageDefinition(pd);
+const hello_proto = loaded.helloworld;
 
-const pd = protoLoader.loadSync(PROTO_PATH)
-const loaded = grpc.loadPackageDefinition(pd)
-const hello_proto = loaded.helloworld
-
-function main () {
-  var client = new hello_proto.Greeter('localhost:50051', grpc.credentials.createInsecure())
-  var user
+function main() {
+  var client = new hello_proto.Greeter(
+    "localhost:50051",
+    grpc.credentials.createInsecure()
+  );
+  var user;
   if (process.argv.length >= 3) {
-    user = process.argv[2]
+    user = process.argv[2];
   } else {
-    user = 'world'
+    user = "world";
   }
+  const meta = new grpc.Metadata();
+  meta.add("testing", "metadata is working");
+  // client.sayHello.send({name: user}, meta, function(err, response) {
+  //   console.log("metadata:", response);
+  // });
   // unary
-  client.sayHello({ name: user }, function (err, response) {
-    console.log('Greeting:', response.message)
-    })
+  client.sayHello({ name: user }, meta, function(err, response) {
+    console.log("Greeting:", response.message);
 
+  });
   // server side streaming
-  const call = client.sayHellos({ name: user })
-    // testing with mock data in server.js
-    call.on('data', data => {
-      console.log('server streaming messages:', data);
-    })
-    // call.on('error', console.error);
-    // call.on('data', console.log);
-    // call.on('end', () => client.close());
-    
+  const call = client.sayHellos({ name: user }, meta);
+  call.on("data", data => {
+    console.log("server streaming messages:", data);
+  });
+
   // client side streaming
-  const stream = client.sayHelloCs((err, response) => {
+  const stream = client.sayHelloCs(meta, (err, response) => {
     if (err) {
       console.log(err);
     } else {
@@ -46,12 +49,12 @@ function main () {
   stream.end({ name: 'hello end client side stream'})
  
   // bidi streaming
-  const streamBidi = client.sayHelloBidi();
-  streamBidi.on('error', console.error);
-  streamBidi.on('data', console.log);
-  streamBidi.on('end', ()=> client.close());
+  const streamBidi = client.sayHelloBidi(meta);
+  streamBidi.on("error", console.error);
+  streamBidi.on("data", console.log);
+  streamBidi.on("end", () => client.close());
 
   streamBidi.write ({ name: 'hello 1st bi-di stream'});
   streamBidi.end({ name: 'hello 2nd bi-di stream'})
 }
-main()
+main();

@@ -66,7 +66,7 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GRPCStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'localhost:' } }, 'protocol')
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', false)
           }
         >
           GRPC
