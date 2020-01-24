@@ -141,7 +141,11 @@ class GRPCAutoInputForm extends Component {
       }
       this.setState({ selectedStreamingType: streamingType });  
       const streamBtn = document.getElementById('stream')
-      streamBtn.innerText = streamingType
+      if (streamingType === undefined) {
+        streamBtn.innerText = 'STREAM'
+      } else {
+        streamBtn.innerText = streamingType
+      }
     });
   }
   
@@ -169,7 +173,7 @@ class GRPCAutoInputForm extends Component {
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
           <img className={arrowClass} src={dropDownArrow}></img>
-          Service & Request
+          Stream
         </div>
 
        <select id="dropdownService" onChange={this.setService} name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
