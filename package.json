@@ -147,6 +147,10 @@
   },
   "license": "MIT",
   "homepage": "http://www.getswell.io",
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",
     "apollo-cache-inmemory": "^1.6.2",
@@ -203,8 +207,8 @@
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "electron": "^3.0.6",
-    "electron-builder": "^20.38.2",
+    "electron": "^7.1.10",
+    "electron-builder": "^22.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
