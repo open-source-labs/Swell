@@ -29,7 +29,7 @@ class FieldEntryForm extends Component {
           afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length)
         }
         else afterProtocol = ''
-
+        console.log('graphQL prop: ',graphQL)
         if (!!graphQL) { //if graphql
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
@@ -104,6 +104,7 @@ class FieldEntryForm extends Component {
         break;
       }
       case 'method': {
+        console.log(value)
         const methodReplaceRegex = new RegExp(`${this.props.newRequestFields.method}`, 'mi')
         let newBody = "";
         if (!this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC) { //if one of 5 http methods (get, post, put, patch, delete)
@@ -154,7 +155,7 @@ class FieldEntryForm extends Component {
           ...this.props.newRequestFields,
           method: value,
           protocol: value === 'SUBSCRIPTION' ? 'ws://' : '',
-          url: value === 'SUBSCRIPTION' ? 'ws://' : 'https://',
+          // url: value === 'SUBSCRIPTION' ? 'ws://' : 'https://',
         })
       }
     }
