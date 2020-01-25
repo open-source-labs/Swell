@@ -362,7 +362,7 @@ class ComposerNewRequest extends Component {
           && !this.props.newRequestFields.gRPC
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
           && 
-          <div class='composer_subtitle_SSE'>
+          <div className='composer_subtitle_SSE'>
             <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/>
             Server Sent Events
           </div>
