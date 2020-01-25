@@ -269,11 +269,11 @@ class ComposerNewRequest extends Component {
       });
 
       this.props.setNewRequestFields({
-        method: 'GET',
+        method: this.props.newRequestFields.method,
         protocol: '',
         url: '',
-        graphQL: false,
-        gRPC: false
+        graphQL: this.props.newRequestFields.graphQL,
+        gRPC: this.props.newRequestFields.gRPC,
       });
       this.props.setNewRequestSSE(false);
     }
