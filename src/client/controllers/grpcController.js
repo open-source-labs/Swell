@@ -13,7 +13,7 @@ const grpc = require('grpc');
 var protoLoader = require('@grpc/proto-loader');
 
 
-let rpcFunctions = [0, 1, 2, 3];
+// let rpcFunctions = [0, 1, 2, 3];
 let grpcController = {};
 //package helloworld;
 // service Greeter {
