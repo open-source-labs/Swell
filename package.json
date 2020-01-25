@@ -207,7 +207,7 @@
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "electron": "^7.1.10",
+    "electron": "^7.0.0",
     "electron-builder": "^22.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
@@ -230,8 +230,9 @@
     "redux-devtools-extension": "^2.13.8",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "webpack": "^4.23.1",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "webpack-node-externals": "^1.7.2"
   }
 }

@@ -155,7 +155,7 @@ class FieldEntryForm extends Component {
           ...this.props.newRequestFields,
           method: value,
           protocol: value === 'SUBSCRIPTION' ? 'ws://' : '',
-          // url: value === 'SUBSCRIPTION' ? 'ws://' : 'https://',
+          url: value === 'SUBSCRIPTION' ? 'ws://' : 'https://',
         })
       }
     }
