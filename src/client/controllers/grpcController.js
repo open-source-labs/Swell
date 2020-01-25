@@ -7,7 +7,7 @@ var async = require('async');
 var fs = require('fs');
 var parseArgs = require('minimist');
 var path = require('path');
-// var grpc = impo('grpc');
+// var grpc = require('grpc');
 // import grpc from "grpc";
 // var protoLoader = require('@grpc/proto-loader');
 
