@@ -1,4 +1,4 @@
-import { Router } from "express";
+// import { Router } from "express";
 import { ipcRenderer } from "electron";
 
 var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
@@ -24,7 +24,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     else {
         //STUFF that we probably will need from reqresobj/state
         //proto file already parsed and details passed to state and then to reqresObj
-        //service name = reqResObj.grpcServiceName 
+        //service name = reqResObj.grpcServiceName
         //serverName = reqResObj.grpcServerName
         //serviceFunctionType = reqResObj.serviceFunctionType
         //serviceFunction = reqResObj.serviceFunction
@@ -55,7 +55,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
                 enums: String,
                 defaults: true,
                 oneofs: true
-        
+
             }
         )
         let serverName = grpc.loadPackageDefinition(packageDefinition).serviceInput;
@@ -72,7 +72,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         // else {
         //     runBidiStream();
         // }
-       
+
 
     }
 
@@ -95,7 +95,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-        
+
         this.sendGrpcToMain({reqResObj})
         .then(response => {
         response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
@@ -108,7 +108,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     reqResObj.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   }
-  
+
   const handleError =  (errorsObj, reqResObj) => {
     reqResObj.connection = 'error';
     reqResObj.timeReceived = Date.now();
@@ -127,9 +127,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('Found feature called' , feature);
             //save && display data
         }
-        
+
         }
-    
+
     client[serviceFunction]((objToSendFromReq), featureCallback);
   }
 };

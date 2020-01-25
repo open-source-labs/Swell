@@ -13,7 +13,7 @@ import { CLIENT_RENEG_LIMIT } from 'tls';
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
-    
+
     this.addNewRequest = this.addNewRequest.bind(this);
     this.handleSSEPayload = this.handleSSEPayload.bind(this);
   }
@@ -38,7 +38,7 @@ class ComposerNewRequest extends Component {
     else if (!this.props.newRequestBody.JSONFormatted && this.props.newRequestBody.rawType === 'application/json') {
       validationMessage = "Please fix JSON body formatting errors.";
     }
-    
+
     else if (this.props.newRequestFields.method === "QUERY") {
       if (this.props.newRequestFields.url && !this.props.newRequestBody.bodyContent) {
         validationMessage = "Missing body.";
@@ -144,7 +144,7 @@ class ComposerNewRequest extends Component {
 
           id: uuid(),
           created_at: new Date(),
-          protocol: 'ws://',  
+          protocol: 'ws://',
           host,
           path,
           url: this.props.newRequestFields.url,
@@ -173,7 +173,7 @@ class ComposerNewRequest extends Component {
           tab: this.props.currentTab,
         };
       }
-      //grpc requests 
+      //grpc requests
       else if (this.props.newRequestFields.gRPC) {
         console.log('inside grpc composernewrequest')
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
@@ -359,21 +359,21 @@ class ComposerNewRequest extends Component {
           <GRPCBodyEntryForm
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
-          /> 
+          />
         }
 
         {/* SSE CHeckbox, update newRequestSSE in store */}
         {
-          !this.props.newRequestFields.graphQL 
+          !this.props.newRequestFields.graphQL
           && !this.props.newRequestFields.gRPC
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
-          && 
-          <div class='composer_subtitle_SSE'>
+          &&
+          <div className='composer_subtitle_SSE'>
             <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/>
             Server Sent Events
           </div>
         }
-        
+
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">
           Add New Request
         </button>
