@@ -221,7 +221,9 @@ class GRPCAutoInputForm extends Component {
           }
         }
       }
-      this.setState({ selectedStreamingType: streamingType });  
+      this.setState({ 
+        selectedStreamingType: streamingType,
+      });  
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {
         streamBtn.innerText = 'STREAM'
@@ -273,3 +275,4 @@ class GRPCAutoInputForm extends Component {
 }
 
 export default GRPCAutoInputForm;
+

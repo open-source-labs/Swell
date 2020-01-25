@@ -183,6 +183,10 @@ class ComposerNewRequest extends Component {
           .splice(1)
           .join('/')
           .replace(/\/{2,}/g, '/')}`;
+
+        // grabbing streaming type to set method in reqRes.request.method
+        const grpcStream = document.getElementById('stream').innerText;
+
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -199,7 +203,7 @@ class ComposerNewRequest extends Component {
           checkSelected: false,
 
           request: {
-            method: this.props.newRequestFields.method,
+            method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: historyBodyContent,
