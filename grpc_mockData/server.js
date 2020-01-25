@@ -23,9 +23,16 @@ const dataStream = [
 /**
  * Implements the SayHello RPC method.
  */
-function sayHello(ctx) {
+async function sayHello(ctx) {
   console.dir(ctx.metadata, { depth: 3, colors: true });
   console.log(`got sayHello request name: ${ctx.req.name}`);
+
+  //setting and sending metadata
+  ctx.sendMetadata({
+    version: 'gRPC v1.24.2',
+    meta_Message: 'metadata sample value'
+  })
+  // console.log(ctx.request.get('meta_Message'))  
   ctx.res = { message: "Hello " + ctx.req.name };
   console.log(`set sayHello response: ${ctx.res.message}`);
 }

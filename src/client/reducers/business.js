@@ -121,12 +121,14 @@ const businessReducer = (state = initialState, action) => {
       const newHistory = JSON.parse(JSON.stringify(state.history));
 
       let updated = false;
+      //if there is history for added date, add query to beginning of history
       newHistory.forEach((obj) => {
         if (obj.date === addDate) {
           obj.history.unshift(action.payload);
           updated = true;
         }
       });
+      //if there is not history at added date, create new history with new query
       if (!updated) {
         newHistory.unshift({
           date: addDate,

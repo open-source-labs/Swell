@@ -19,6 +19,7 @@ function main() {
   } else {
     user = "world";
   }
+  
   const meta = new grpc.Metadata();
   meta.add("testing", "metadata is working");
   // client.sayHello.send({name: user}, meta, function(err, response) {
