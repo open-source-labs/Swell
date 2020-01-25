@@ -69,7 +69,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         //proto file already parsed and details passed to state and then to reqresObj
         //service name = reqResObj.grpcServiceName 
         //serverName = reqResObj.grpcServerName
-        //serviceFunctionType = reqResObj.serviceFunctionType
+        //serviceType = reqResObj.serviceFunctionType
         //serviceFunction = reqResObj.serviceFunction
         //     this.ws = websocket;
         // this.url = undefined
@@ -94,6 +94,17 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('Found reply called "' + response.message) 
         }
       }
+        let rpcDefinition = rpc.definition;
+
+        const rpcMessageNames = rpc.rpcDefinition.split('(').slice(1);
+        rpcMessagesArr = [];
+        for (let i = 0; i < rpcMessageNames.length; i += 1) {
+          let ele = rpcMessageNames[i];
+          ele = ele.split(')')[0];
+          rpcMessagesArr.push(ele)
+        }
+        const messageNameKey = serviceObj.
+        const message = reqResObj.message;
         const dirName = remote.app.getAppPath();
         const service = services[0].name;
         const rpc = services[0].rpcs[0].name;
@@ -110,20 +121,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             }
         )
         let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
-        let client = new serverName[service]('localhost:50051', grpc.credentials.createInsecure());
-        client[rpc]({name: 'Evan'}, runCallback)
-        // if (serviceFunctionType === 'unary') {
-        //     runUnary();
-        // }
-        // else if (serviceFunctionType === 'clientStream') {
-        //     runClientStream();
-        // }
-        // else if (serviceFunctionType === 'serverStream') {
-        //     runServerStream();
-        // }
-        // else {
-        //     runBidiStream();
-        // }
+        if (serviceType === 'unary') {
+          let client = new serverName[service]('localhost:50051', grpc.credentials.createInsecure());
+          client[rpc]({name: `${rpcMessagesArr[0]}`}, runCallback)
+
+        }
+        else if (serviceType === 'clientStream') {
+            runClientStream();
+        }
+        else if (serviceType === 'serverStream') {
+            runServerStream();
+        }
+        else {
+            runBidiStream();
+        }
        
 
     }
