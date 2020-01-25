@@ -1,4 +1,4 @@
-import { Router } from "express";
+// import { Router } from "express";
 import { ipcRenderer } from "electron";
 
 var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
@@ -12,7 +12,7 @@ var path = require('path');
 // var protoLoader = require('@grpc/proto-loader');
 
 
-let rpcFunctions = [0, 1, 2, 3];
+// let rpcFunctions = [0, 1, 2, 3];
 let grpcController = {};
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {

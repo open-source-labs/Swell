@@ -10,75 +10,155 @@ class GRPCAutoInputForm extends Component {
       services: [
         {
           name: 'BookService',
-          rpcs: [
+          messages: [
             {
-              name: 'GetBook',
-              type: 'UNARY',
-              definition: 'rpc GetBook (GetBookRequest) returns (Book) {}',
-              messages: [
-                {
-                  name: 'Book',
-                  definition: [
-                    {
-                      number: 1,
-                      definition: 'int64 isbn = 1'
-                    },
-                    {
-                      number: 2,
-                      definition: 'string title = 2'
-                    },
-                    {
-                      number: 3,
-                      definition: 'string author = 3'
-                    }
-                  ]
-                }
-              ]
+              name: "Book",
+              def: {
+                1: 'int64 isbn',
+                2: 'string title',
+                3: 'string author',
+              }
             },
             {
-              name: 'GetBooksViaAuthor',
-              type: 'BIDRECTIONAL',
-              definition: 'rpc GetBooks (stream GetBookRequest) returns (stream Book) {}',
-              messages: [
-                {
-                  name: 'Book',
-                  definition: [
-                    {
-                      number: 1,
-                      definition: 'int64 isbn = 1'
-                    }
-                  ]
-                }
-              ]
+              name: "GetBookRequest",
+              def: {
+                1: 'int64 isbn'
+              }
+            },
+            {
+              name: "GetBookViaAuthor",
+              def: {
+                1: 'string author',
+              }
             }
-          ]
-        }, 
-        {
-          name: 'DogService',
+          ],
           rpcs: [
             {
-              name: 'GetDog',
+              name: "GetBook",
+              type: 'UNARY',
+              def: "rpc (GetBookRequest) returns (Book) {}"
+            },
+            {
+              name: "GetBooksViaAuthor",
+              type: 'SERVER STREAM',
+              def: "rpc (GetBookViaAuthor) returns (stream Book) {}"
+            },
+            {
+              name: "GetGreatestBook",
+              type: 'CLIENT STREAM',
+              def: "rpc (stream GetBookRequest) returns (Book) {}"
+            },
+            {
+              name: "GetBooks",
               type: 'BIDIRECTIONAL',
-              definition: 'rpc GetDog (stream GetDogRequest) returns (stream Dog) {}',
-              messages: [
-                {
-                  name: 'Dog',
-                  definition: [
-                    {
-                      number: 1,
-                      definition: 'string name = 2'
-                    },
-                    {
-                      number: 2,
-                      definition: 'string type = 3'
-                    }
-                  ]
-                }
-              ]
+              def: "rpc (stream GetBookRequest) returns (stream Book) {}"
+            },
+          ]
+        },
+        {
+          name: 'DogService',
+          messages: [
+            {
+              name: "Info",
+              def: {
+                1: 'string name',
+                2: 'string breed'
+              }
+            },
+            {
+              name: "GetAge",
+              def: {
+                1: 'string age'
+              }
             }
+          ],
+          rpcs: [
+            {
+              name: "GetInfo",
+              type: 'UNARY',
+              def: "rpc (GetAge) returns (Info) {}"
+            },
+            {
+              name: "GetBackground",
+              type: 'BIDIRECTIONAL',
+              def: "rpc (stream GetAge) returns (stream Info) {}"
+            },
           ]
         }
       ],
+      // ***MOCK DATA--OLD SCHEMA***
+      // services: [
+      //   {
+      //     name: 'BookService',
+      //     rpcs: [
+      //       {
+      //         name: 'GetBook',
+      //         type: 'UNARY',
+      //         definition: 'rpc GetBook (GetBookRequest) returns (Book) {}',
+      //         messages: [
+      //           {
+      //             name: 'Book',
+      //             definition: [
+      //               {
+      //                 number: 1,
+      //                 definition: 'int64 isbn = 1'
+      //               },
+      //               {
+      //                 number: 2,
+      //                 definition: 'string title = 2'
+      //               },
+      //               {
+      //                 number: 3,
+      //                 definition: 'string author = 3'
+      //               }
+      //             ]
+      //           }
+      //         ]
+      //       },
+      //       {
+      //         name: 'GetBooksViaAuthor',
+      //         type: 'BIDRECTIONAL',
+      //         definition: 'rpc GetBooks (stream GetBookRequest) returns (stream Book) {}',
+      //         messages: [
+      //           {
+      //             name: 'Book',
+      //             definition: [
+      //               {
+      //                 number: 1,
+      //                 definition: 'int64 isbn = 1'
+      //               }
+      //             ]
+      //           }
+      //         ]
+      //       }
+      //     ]
+      //   }, 
+      //   {
+      //     name: 'DogService',
+      //     rpcs: [
+      //       {
+      //         name: 'GetDog',
+      //         type: 'BIDIRECTIONAL',
+      //         definition: 'rpc GetDog (stream GetDogRequest) returns (stream Dog) {}',
+      //         messages: [
+      //           {
+      //             name: 'Dog',
+      //             definition: [
+      //               {
+      //                 number: 1,
+      //                 definition: 'string name = 2'
+      //               },
+      //               {
+      //                 number: 2,
+      //                 definition: 'string type = 3'
+      //               }
+      //             ]
+      //           }
+      //         ]
+      //       }
+      //     ]
+      //   }
+      // ],
       selectedService: null,
       selectedRequest: null,
       selectedStreamingType: null
@@ -112,6 +192,8 @@ class GRPCAutoInputForm extends Component {
     const sel = document.getElementById('dropdownService');
     const opt = sel.options[sel.selectedIndex];
     const serviceName = opt.text;
+    const streamBtn = document.getElementById('stream');
+    streamBtn.innerText = 'STREAM';
     this.setState({ 
       ...this.state,
       selectedService: serviceName
@@ -139,7 +221,9 @@ class GRPCAutoInputForm extends Component {
           }
         }
       }
-      this.setState({ selectedStreamingType: streamingType });  
+      this.setState({ 
+        selectedStreamingType: streamingType,
+      });  
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {
         streamBtn.innerText = 'STREAM'
@@ -191,3 +275,4 @@ class GRPCAutoInputForm extends Component {
 }
 
 export default GRPCAutoInputForm;
+
