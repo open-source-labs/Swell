@@ -92,7 +92,7 @@ class NavBarContainer extends Component {
           </button>
 
           <button className="btn" type="button" onClick={ReqResCtrl.openAllSelectedReqRes}>
-            Open Selected
+            Send Selected
           </button>
 
           <button className="btn" type="button" onClick={ReqResCtrl.closeAllReqRes}>
@@ -126,7 +126,7 @@ class NavBarContainer extends Component {
               labelledby: "heading"
             }}
           >
-            <h1 id="heading">What would you like to name your collection?</h1>
+            <h1 id="heading">Name your collection</h1>
             <input type={'text'} id="collectionNameInput" onKeyDown={(e) => this.handleKeyPress(e)} autoFocus />
             <p id="collectionNameError" style={{ display: 'none' }}>Collection name already exists!</p>
             <div>

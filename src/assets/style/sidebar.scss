@@ -104,34 +104,26 @@
 	line-height: 28px;
 	outline: 0 none;
 	text-align: center;
-	width: 32%;
-}
-.composer_protocol_button {
+  width: 32%;
   &.http:hover {
-	background: $bluetwo;
-	border: 2px solid $bluetwo;
-  line-height: 28px;
+    background: $bluetwo;
+    border: 2px solid $bluetwo;
+    line-height: 28px;
   }
-}
-.composer_protocol_button {
   &.ws:hover {
-	background: $greenone;
-	border: 2px solid $greenone;
-  line-height: 28px;
+    background: $greenone;
+    border: 2px solid $greenone;
+    line-height: 28px;
   }
-}
-.composer_protocol_button {
   &.gql:hover {
-	background: $gqlpink;
-	border: 2px solid $gqlpink;
-  line-height: 28px;
+    background: $gqlpink;
+    border: 2px solid $gqlpink;
+    line-height: 28px;
   }
-}
-.composer_protocol_button {
   &.grpc:hover {
-  background: $grpcorange;
-  border: 2px solid $grpcorange;
-  line-height: 28px;
+    background: $grpcorange;
+    border: 2px solid $grpcorange;
+    line-height: 28px;
   }
 }
 .composer_protocol_button-selected_http {
@@ -173,7 +165,7 @@
 	line-height: 15px;
 	padding: 0px auto;
 	text-align-last: center;
-  width: 175px;
+  width: 200px;
   &.http {
     background: $bluetwo;
   }
