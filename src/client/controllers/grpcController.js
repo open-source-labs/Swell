@@ -96,14 +96,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       }
         let rpcDefinition = rpc.definition;
 
-        const rpcMessageNames = rpc.rpcDefinition.split('(').slice(1);
+        const rpcMessageNames = rpcDefinition.split('(').slice(1);
         rpcMessagesArr = [];
         for (let i = 0; i < rpcMessageNames.length; i += 1) {
           let ele = rpcMessageNames[i];
           ele = ele.split(')')[0];
           rpcMessagesArr.push(ele)
         }
-        const messageNameKey = serviceObj.
+        for (message in service.messages) {
+          if (message.name === rpcMessagesArr[0]) {
+            let thisISAKEYREQ = message.definition.split(' ')[1];
+          }
+        }
+        const messageKey = [];
+
         const message = reqResObj.message;
         const dirName = remote.app.getAppPath();
         const service = services[0].name;
@@ -123,14 +129,35 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
         if (serviceType === 'unary') {
           let client = new serverName[service]('localhost:50051', grpc.credentials.createInsecure());
-          client[rpc]({name: `${rpcMessagesArr[0]}`}, runCallback)
+          client[rpc]({thisISAKEYREQ: `${reqResObj.queryBody}`}, runCallback)
 
         }
         else if (serviceType === 'clientStream') {
-            runClientStream();
+          call = client[rpc](function(error, stats) {
+            if (error) {
+              console.log(error);
+              return;
+            }});
+
+          let callStack = reqResObj.queryArr;
+          callStack.map((ele)=> {
+            ele = () => {
+              call.write(ele)
+            }
+          }) 
+          
+          async.series(callstack, function() {
+            call.end();
+          });
+          stream.write({ name: "hello first stream" });
+          stream.write({ name: "hello 2nd stream" });
+          stream.end({ name: "hello end stream" });
         }
         else if (serviceType === 'serverStream') {
-            runServerStream();
+          const call = client[rpc]({thisISAKEYREQ: `${reqResObj.queryBody}`});
+          call.on("data", data => {
+            console.log('server streaming messages:', data);
+          })
         }
         else {
             runBidiStream();
