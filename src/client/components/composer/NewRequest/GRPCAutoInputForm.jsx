@@ -261,12 +261,12 @@ class GRPCAutoInputForm extends Component {
         </div>
 
        <select id="dropdownService" onChange={this.setService} name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
-          <option value="services" selected="">Select Service</option>
+          <option value="services" defaultValue="">Select Service</option>
           {servicesList}
         </select>
 
         <select id="dropdownRequest" onChange={this.setRequest} name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
-          <option value="requests" selected="">Select Request</option>
+          <option value="requests" defaultValue="">Select Request</option>
           {rpcsList}
         </select>
       </div>

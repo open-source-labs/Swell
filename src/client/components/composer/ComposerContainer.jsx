@@ -10,6 +10,7 @@ const mapStateToProps = store => ({
   composerDisplay: store.ui.composerDisplay,
   newRequestFields: store.business.newRequestFields,
   newRequestHeaders: store.business.newRequestHeaders,
+  newRequestStreams: store.business.newRequestStreams,
   newRequestBody: store.business.newRequestBody,
   newRequestCookies: store.business.newRequestCookies,
   newRequestSSE: store.business.newRequestSSE,
@@ -22,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
   setComposerWarningMessage: (message) => { dispatch(actions.setComposerWarningMessage(message)) },
   setComposerDisplay: (composerDisplay) => { dispatch(actions.setComposerDisplay(composerDisplay)) },
   setNewRequestHeaders: (requestHeadersObj) => { dispatch(actions.setNewRequestHeaders(requestHeadersObj)) },
+  setNewRequestStreams: (requestStreamsObj) => { dispatch(actions.setNewRequestStreams(requestStreamsObj)) },
   setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
   setNewRequestBody: (requestBodyObj) => { dispatch(actions.setNewRequestBody(requestBodyObj)) },
   setNewRequestCookies: (requestCookiesObj) => { dispatch(actions.setNewRequestCookies(requestCookiesObj)) },
@@ -56,6 +58,7 @@ class ComposerContainer extends Component {
           composerDisplay={this.props.composerDisplay}
           newRequestFields={this.props.newRequestFields}
           newRequestHeaders={this.props.newRequestHeaders}
+          newRequestStreams={this.props.newRequestStreams}
           newRequestCookies={this.props.newRequestCookies}
           newRequestBody={this.props.newRequestBody}
           newRequestSSE={this.props.newRequestSSE}
@@ -68,6 +71,7 @@ class ComposerContainer extends Component {
 
           setNewRequestFields={this.props.setNewRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestStreams={this.props.setNewRequestStreams}
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
           setNewRequestSSE={this.props.setNewRequestSSE}

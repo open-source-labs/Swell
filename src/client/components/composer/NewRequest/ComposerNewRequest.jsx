@@ -3,7 +3,7 @@ import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a uniq
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
-import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
+import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import historyController from '../../../controllers/historyController';
@@ -205,6 +205,7 @@ class ComposerNewRequest extends Component {
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
+            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream.active && !!stream.query),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
@@ -213,6 +214,7 @@ class ComposerNewRequest extends Component {
           },
           response: {
             headers: null,
+            stream: null,
             events: null,
           },
           checked: false,
@@ -252,6 +254,12 @@ class ComposerNewRequest extends Component {
       this.props.setNewRequestHeaders({
         headersArr: [],
         count: 0,
+      });
+
+      this.props.setNewRequestStreams({
+        streamsArr: [],
+        count: 0,
+        streamContent: ''
       });
 
       this.props.setNewRequestCookies({
@@ -304,9 +312,11 @@ class ComposerNewRequest extends Component {
           addRequestProp={this.addNewRequest}
           newRequestFields={this.props.newRequestFields}
           newRequestHeaders={this.props.newRequestHeaders}
+          newRequestStreams={this.props.newRequestStreams}
           newRequestBody={this.props.newRequestBody}
           setNewRequestFields={this.props.setNewRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestStreams={this.props.setNewRequestStreams}
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
         />
@@ -315,8 +325,10 @@ class ComposerNewRequest extends Component {
           <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={this.props.newRequestHeaders}
+          newRequestStreams={this.props.newRequestStreams}
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestStreams={this.props.setNewRequestStreams}
           />
         }
         {
@@ -350,10 +362,12 @@ class ComposerNewRequest extends Component {
         }
         {
           this.props.newRequestFields.gRPC &&
-          <GRPCBodyEntryForm
+          <GRPCProtoEntryForm
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
-          /> 
+            newRequestStreams={this.props.newRequestStreams}
+            setNewRequestStreams={this.props.setNewRequestStreams}
+           />
         }
 
         {/* SSE CHeckbox, update newRequestSSE in store */}

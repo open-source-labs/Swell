@@ -18,6 +18,11 @@ const initialState = {
     headersArr: [],
     count: 0,
   },
+  newRequestStreams: {
+    streamsArr: [],
+    count: 0,
+    streamContent: ''
+  },
   newRequestCookies: {
     cookiesArr: [],
     count: 0,
@@ -196,6 +201,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestHeaders: action.payload,
+      };
+    }
+
+    case types.SET_NEW_REQUEST_STREAMS: {
+      return {
+        ...state,
+        newRequestStreams: action.payload,
       };
     }
 
