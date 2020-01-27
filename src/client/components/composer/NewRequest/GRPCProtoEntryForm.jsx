@@ -3,7 +3,6 @@ import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x19
 import { remote } from 'electron';
 import fs from 'fs';
 import path from 'path';
-import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 
 class GRPCProtoEntryForm extends Component {
@@ -88,14 +87,9 @@ class GRPCProtoEntryForm extends Component {
         <GRPCAutoInputForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}
-        />
-
-        <GRPCBodyEntryForm
-          newRequestBody={this.props.newRequestBody}
-          setNewRequestBody={this.props.setNewRequestBody}
           newRequestStreams={this.props.newRequestStreams}
           setNewRequestStreams={this.props.setNewRequestStreams}
-        /> 
+        />
 
       </div>
     );

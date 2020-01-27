@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
 class GRPCAutoInputForm extends Component {
   constructor(props) {
@@ -269,6 +270,17 @@ class GRPCAutoInputForm extends Component {
           <option value="requests" defaultValue="">Select Request</option>
           {rpcsList}
         </select>
+
+        <GRPCBodyEntryForm
+          newRequestBody={this.props.newRequestBody}
+          setNewRequestBody={this.props.setNewRequestBody}
+          newRequestStreams={this.props.newRequestStreams}
+          setNewRequestStreams={this.props.setNewRequestStreams}
+          selectedService={this.state.selectedService}
+          selectedRequest={this.state.selectedRequest}
+          selectedStreamingType={this.state.selectedStreamingType}
+        /> 
+
       </div>
     );
   }

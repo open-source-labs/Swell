@@ -70,6 +70,9 @@ class GRPCBodyEntryForm extends Component {
       <GRPCBodyStream
       newRequestBody={this.props.newRequestBody}
       setNewRequestBody={this.props.setNewRequestBody}
+      selectedService={this.props.selectedService}
+      selectedRequest={this.props.selectedRequest}
+      selectedStreamingType={this.props.selectedStreamingType}
       changeHandler={this.onChangeUpdateStream}
       content={stream}
       key={index}
