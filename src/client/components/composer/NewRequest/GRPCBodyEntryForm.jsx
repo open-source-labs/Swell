@@ -15,11 +15,6 @@ class GRPCBodyEntryForm extends Component {
     this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
   }
 
-  componentDidMount() {
-    const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
-    this.addStream(streamsDeepCopy);
-  }
-
   componentDidUpdate() {
     if (this.props.newRequestStreams.streamsArr.length === 0) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
@@ -79,6 +74,7 @@ class GRPCBodyEntryForm extends Component {
       content={stream}
       key={index}
       query={stream.query}
+      stream={index}
     />
     ))
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
