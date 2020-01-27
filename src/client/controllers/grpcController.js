@@ -1,5 +1,7 @@
 // import { Router } from "express";
 import { ipcRenderer } from "electron";
+import { remote } from 'electron';
+import { dirname } from "path";
 
 var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
 
@@ -7,19 +9,60 @@ var async = require('async');
 var fs = require('fs');
 var parseArgs = require('minimist');
 var path = require('path');
-// var grpc = require('grpc');
-// import grpc from "grpc";
-// var protoLoader = require('@grpc/proto-loader');
+const grpc = require('grpc');
+var protoLoader = require('@grpc/proto-loader');
 
 
 // let rpcFunctions = [0, 1, 2, 3];
 let grpcController = {};
+//package helloworld;
+// service Greeter {
+//   // Sends a greeting
+//   rpc SayHello (HelloRequest) returns (HelloReply) {}
+//   rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
+//   rpc SayHellos (HelloRequest) returns (stream HelloReply) {}
+//   rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
+// }
+// // The request message containing the user's name.
+// message HelloRequest {
+//   string name = 1;
+// }
+// // The response message containing the greetings
+// message HelloReply {
+//   string message = 1;
+// }
+const packageName = "helloworld";
+  const services = [{
+    name: 'Greeter',
+    messages: [
+      {name: "HelloRequest",
+      def : "string name = 1;"
+      },
+      {name: "HelloReply",
+        def : "string message = 1;"
+        }
+    ],
+    rpcs: [
+      {name: "SayHello",
+        definition: "rpc (HelloRequest) returns (HelloReply) {}"
+      },
+      {name: "SayHelloCS",
+        definition: "rpc (stream HelloRequest) returns (HelloReply) {}"
+      },
+      {name: "SayHellos",
+        definition: "rpc (HelloRequest) returns (stream HelloReply) {}"
+      },
+      {name: "SayHelloBidi",
+        definition: "rpc (stream HelloRequest) returns (stream HelloReply) {}"
+      },
+    ]
+  }];
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     //check for connection, if not open one
     console.log('we made it to grpcController, noice')
-    if (connection) {
-        //do stuff
+    if (false) {
+        //use existing connection
     }
     else {
         //STUFF that we probably will need from reqresobj/state
@@ -38,16 +81,24 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         // this.streamType = undefined;
         // this._call = undefined;
         //write the proto file we uploaded somewhere, then add that as protopath?
-        fs.writeFileSync("./protos/output.proto", this.protoFile, "utf8", function (err) {
-            if (err) {
-              console.log("An error occurred while writing JSON Object to File.");
-              return console.log(err);
-            }
-            console.log("JSON file has been saved.");
-          });
-        let server = this.url;
-        let PROTO_PATH = "./protos/output.proto";
-        packageDefinition = protoLoader.loadSync(
+        
+        // let server = this.url;
+        function runCallback(error, response){
+          if (error) {
+            console.log(error);
+            return;
+          }
+          if (response === '') {
+            console.log('Found no helloReply at ')
+          } else {
+            console.log('Found reply called "' + response.message) 
+        }
+      }
+        const dirName = remote.app.getAppPath();
+        const service = services[0].name;
+        const rpc = services[0].rpcs[0].name;
+        let PROTO_PATH = path.join( dirName, "grpc_mockData/protos/hw2.proto")
+        const packageDefinition = protoLoader.loadSync(
             PROTO_PATH,
             {
                 keepCase: true,
@@ -58,8 +109,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         
             }
         )
-        let serverName = grpc.loadPackageDefinition(packageDefinition).serviceInput;
-        let client = new serverName[this.serviceInput](server, grpc.credentials.createInsecure());
+        let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
+        let client = new serverName[service]('localhost:50051', grpc.credentials.createInsecure());
+        client[rpc]({name: 'Evan'}, runCallback)
         // if (serviceFunctionType === 'unary') {
         //     runUnary();
         // }
