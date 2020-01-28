@@ -1,7 +1,6 @@
 // import { Router } from "express";
 import { ipcRenderer } from "electron";
 import { remote } from 'electron';
-import { dirname } from "path";
 
 var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
 
@@ -81,7 +80,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         // this.streamType = undefined;
         // this._call = undefined;
         //write the proto file we uploaded somewhere, then add that as protopath?
-        
+
         // let server = this.url;
         function runCallback(error, response){
           if (error) {
@@ -91,7 +90,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           if (response === '') {
             console.log('Found no helloReply at ')
           } else {
-            console.log('Found reply called "' + response.message) 
+            console.log('Found reply called "' + response.message)
         }
       }
         const dirName = remote.app.getAppPath();

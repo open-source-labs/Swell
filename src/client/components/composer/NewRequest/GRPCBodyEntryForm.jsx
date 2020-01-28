@@ -17,7 +17,7 @@ class GRPCBodyEntryForm extends Component {
       show: !this.state.show
     });
   }
- 
+
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -33,7 +33,7 @@ class GRPCBodyEntryForm extends Component {
           value={this.props.newRequestBody.bodyContent}
           className={'composer_textarea grpc ' + bodyContainerClass}
           id='grpcBodyEntryTextArea'
-          style={{ 'resize': 'none' }} 
+          style={{ 'resize': 'none' }}
           type='text'
           placeholder='Type query'
           rows={6}
