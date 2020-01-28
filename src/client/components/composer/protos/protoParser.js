@@ -58,7 +58,13 @@ async function protoParser(protoBodyData) {
   //create descriptor from package packageDefinition
   //descriptor --> gRPC uses the Protobuf .proto file format to define your messages, services and some aspects of the code generation.
   protoStorage.descriptor = grpc.loadPackageDefinition(protoStorage.packageDefinition);
-  console.log(protoStorage.descriptor);
+  // console.log(protoStorage.descriptor);
+  protoStorage.packageName = Object.keys(protoStorage.descriptor)[0];
+  // console.log('package name: ',protoStorage.packageName);
+  protoStorage.descriptorDefinition = protoStorage.descriptor[protoStorage.packageName];
+  // console.log('protoStorage.descriptorDefinition: ',protoStorage.descriptorDefinition);
+  rpcObj = {};
+
 }
 // test run of protoParser
 // protoParser(tempData);
