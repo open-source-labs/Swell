@@ -1,36 +1,22 @@
 syntax = "proto3";
 
-package com.book;
+package helloworld;
 
-message Book {
-    int64 isbn = 1;
-    string title = 2;
-    string author = 3;
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
+  rpc SayHellos (HelloRequest) returns (stream HelloReply) {}
+  rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
 }
 
-message GetBookRequest {
-    int64 isbn = 1;
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
 }
 
-message GetBookViaAuthor {
-    string author = 1;
-}
-
-service BookService {
-    rpc GetBook (GetBookRequest) returns (Book) {}
-    rpc GetBooksViaAuthor (GetBookViaAuthor) returns (stream Book) {}
-    rpc GetGreatestBook (stream GetBookRequest) returns (Book) {}
-    rpc GetBooks (stream GetBookRequest) returns (stream Book) {}
-}
-
-message BookStore {
-    string name = 1;
-    map<int64, string> books = 2;
-}
-
-enum EnumSample {
-    option allow_alias = true;
-    UNKNOWN = 0;
-    STARTED = 1;
-    RUNNING = 1;
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
 }
