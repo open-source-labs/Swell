@@ -6,10 +6,7 @@ class GRPCBodyEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
-      streamQuery: `  {
-        test: "testing"
-  }`
+      show: true
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
@@ -23,40 +20,42 @@ class GRPCBodyEntryForm extends Component {
   }
 
   addStream(streamsDeepCopy) {
-    streamsDeepCopy.push({
+   streamsDeepCopy.push({
       id: this.props.newRequestStreams.count,
       active: false,
-      query: this.state.streamQuery
+      query: this.props.selectedQuery
     });
 
     this.props.setNewRequestStreams({
       streamsArr: streamsDeepCopy,
-      count: streamsDeepCopy.length
+      count: streamsDeepCopy.length,
+      streamContent: this.props.selectedQuery
     });
   }
 
   onChangeUpdateStream(id, value) {
     const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
+    console.log('streamsDeepCopy: ', streamsDeepCopy)
     // find the stream in the array to update
     let indexToBeUpdated;
     for (let i = 0; i < streamsDeepCopy.length; i++) {
       if (streamsDeepCopy[i].id === id) {
         indexToBeUpdated = i;
-        break;
-      }
+        streamsDeepCopy[indexToBeUpdated].active = true;
+        if (streamsDeepCopy.length === 1) {
+          this.addStream(streamsDeepCopy);
+        }
+      };
     }
     // update query value
     streamsDeepCopy[indexToBeUpdated].query = value;
-    // adds another stream query 
-    if (streamsDeepCopy.length === 1) {
-      this.addStream(streamsDeepCopy);
-    }
+
     // update the store
     this.props.setNewRequestStreams({
       streamsArr: streamsDeepCopy,
       count: streamsDeepCopy.length,
+      streamContent: value
     });
-    
   }
 
   toggleShow() {
@@ -68,15 +67,15 @@ class GRPCBodyEntryForm extends Component {
   render() {
     const streamArr = this.props.newRequestStreams.streamsArr.map((stream, index) => (
       <GRPCBodyStream
-      newRequestBody={this.props.newRequestBody}
-      setNewRequestBody={this.props.setNewRequestBody}
+      newRequestStreams={this.props.newRequestStreams}
+      setNewRequestStreams={this.props.setNewRequestStreams}
       selectedService={this.props.selectedService}
       selectedRequest={this.props.selectedRequest}
+      selectedQuery={this.props.selectedQuery}
       selectedStreamingType={this.props.selectedStreamingType}
       changeHandler={this.onChangeUpdateStream}
       content={stream}
       key={index}
-      query={stream.query}
       stream={index}
     />
     ))
