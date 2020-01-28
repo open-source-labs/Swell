@@ -96,7 +96,6 @@ class GRPCAutoInputForm extends Component {
       selectedService: null,
       selectedRequest: null,
       selectedStreamingType: null,
-      selectedQuery: null
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
@@ -170,9 +169,10 @@ class GRPCAutoInputForm extends Component {
             results = results + ', ' + result;
           }
         }
-        this.setState({ 
-          selectedQuery: results
-        })
+        this.props.setNewRequestStreams({
+          ...this.props.newRequestStreams,
+          streamContent: results
+        });
       });  
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {
@@ -224,7 +224,6 @@ class GRPCAutoInputForm extends Component {
           setNewRequestStreams={this.props.setNewRequestStreams}
           selectedService={this.state.selectedService}
           selectedRequest={this.state.selectedRequest}
-          selectedQuery={this.state.selectedQuery}
           selectedStreamingType={this.state.selectedStreamingType}
         /> 
 

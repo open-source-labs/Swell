@@ -23,13 +23,13 @@ class GRPCBodyEntryForm extends Component {
    streamsDeepCopy.push({
       id: this.props.newRequestStreams.count,
       active: false,
-      query: this.props.selectedQuery
+      query: this.props.newRequestStreams.streamContent
     });
 
     this.props.setNewRequestStreams({
       streamsArr: streamsDeepCopy,
       count: streamsDeepCopy.length,
-      streamContent: this.props.selectedQuery
+      streamContent: this.props.newRequestStreams.streamContent
     });
   }
 
@@ -71,7 +71,6 @@ class GRPCBodyEntryForm extends Component {
       setNewRequestStreams={this.props.setNewRequestStreams}
       selectedService={this.props.selectedService}
       selectedRequest={this.props.selectedRequest}
-      selectedQuery={this.props.selectedQuery}
       selectedStreamingType={this.props.selectedStreamingType}
       changeHandler={this.onChangeUpdateStream}
       content={stream}
