@@ -305,8 +305,8 @@ class ComposerNewRequest extends Component {
           checked: false,
           minimized: false,
           tab: this.props.currentTab,
-          service: this.props.newRequestStreams.selectedRequest,
-          rpc: this.props.newRequestStreams.selectedService,
+          service: this.props.newRequestStreams.selectedService,
+          rpc: this.props.newRequestStreams.selectedRequest,
           packageName: this.props.newRequestStreams.selectedPackage,
           queryArr: [document.getElementById('grpcBodyEntryTextArea').value],
           servicesObj: services
