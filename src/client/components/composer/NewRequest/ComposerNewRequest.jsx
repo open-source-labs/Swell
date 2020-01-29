@@ -13,7 +13,7 @@ import { CLIENT_RENEG_LIMIT } from 'tls';
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
-    
+
     this.addNewRequest = this.addNewRequest.bind(this);
     this.handleSSEPayload = this.handleSSEPayload.bind(this);
   }
@@ -167,7 +167,7 @@ class ComposerNewRequest extends Component {
           tab: this.props.currentTab,
         };
       }
-      // grpc requests 
+      // grpc requests
       else if (this.props.newRequestFields.gRPC) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
@@ -353,21 +353,21 @@ class ComposerNewRequest extends Component {
           <GRPCBodyEntryForm
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
-          /> 
+          />
         }
 
         {/* SSE CHeckbox, update newRequestSSE in store */}
         {
-          !this.props.newRequestFields.graphQL 
+          !this.props.newRequestFields.graphQL
           && !this.props.newRequestFields.gRPC
           && !/wss?:\/\//.test(this.props.newRequestFields.protocol)
-          && 
+          &&
           <div className='composer_subtitle_SSE'>
             <input type="checkbox" onChange={this.handleSSEPayload} checked={this.props.newRequestSSE.isSSE}/>
             Server Sent Events
           </div>
         }
-        
+
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">
           Add New Request
         </button>

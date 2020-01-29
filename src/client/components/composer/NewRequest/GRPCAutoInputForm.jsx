@@ -132,7 +132,7 @@ class GRPCAutoInputForm extends Component {
       //         ]
       //       }
       //     ]
-      //   }, 
+      //   },
       //   {
       //     name: 'DogService',
       //     rpcs: [
@@ -194,7 +194,7 @@ class GRPCAutoInputForm extends Component {
     const serviceName = opt.text;
     const streamBtn = document.getElementById('stream');
     streamBtn.innerText = 'STREAM';
-    this.setState({ 
+    this.setState({
       ...this.state,
       selectedService: serviceName
    });
@@ -204,7 +204,7 @@ class GRPCAutoInputForm extends Component {
     const sel = document.getElementById('dropdownRequest');
     const opt = sel.options[sel.selectedIndex];
     const requestName = opt.text;
-    this.setState({ 
+    this.setState({
       ...this.state,
       selectedRequest: requestName
     }, () => {
@@ -221,9 +221,9 @@ class GRPCAutoInputForm extends Component {
           }
         }
       }
-      this.setState({ 
+      this.setState({
         selectedStreamingType: streamingType,
-      });  
+      });
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {
         streamBtn.innerText = 'STREAM'
@@ -232,7 +232,7 @@ class GRPCAutoInputForm extends Component {
       }
     });
   }
-  
+
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -261,12 +261,12 @@ class GRPCAutoInputForm extends Component {
         </div>
 
        <select id="dropdownService" onChange={this.setService} name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
-          <option value="services" selected="">Select Service</option>
+          <option value="services" defaultValue="">Select Service</option>
           {servicesList}
         </select>
 
         <select id="dropdownRequest" onChange={this.setRequest} name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
-          <option value="requests" selected="">Select Request</option>
+          <option value="requests" defaultValue="">Select Request</option>
           {rpcsList}
         </select>
       </div>
@@ -275,4 +275,3 @@ class GRPCAutoInputForm extends Component {
 }
 
 export default GRPCAutoInputForm;
-
