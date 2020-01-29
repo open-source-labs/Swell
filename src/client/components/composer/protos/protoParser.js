@@ -17,9 +17,9 @@ const path = require('path')
 // console.log(path);
 // const dirName = remote.app.getAppPath();
 // console.log(process.cwd());
-let tempData = fs.readFileSync(path.join(process.cwd(), 'grpc_mockData/protos/hw2.proto'), 'utf-8')
+let tempData = fs.readFileSync(path.join(process.cwd(), 'grpc_mockData/protos/route_guide.proto'), 'utf-8')
   // tempData = data;
-  console.log('data: ', tempData);
+  // console.log('data: ', tempData);
   // write to saveProto file
   // const dirName = remote.app.getAppPath();
   fs.writeFileSync(path.join(process.cwd(), 'src/client/components/composer/protos/saveProto.proto'), tempData, 'utf-8')
@@ -63,12 +63,93 @@ async function protoParser(protoBodyData) {
   // console.log('package name: ',protoStorage.packageName);
   protoStorage.descriptorDefinition = protoStorage.descriptor[protoStorage.packageName];
   // console.log('protoStorage.descriptorDefinition: ',protoStorage.descriptorDefinition);
-  rpcObj = {};
+  const serviceObj = {};
 
+  for (let [serviceName, serviceDef] of Object.entries(protoStorage.descriptorDefinition))
+  if (typeof serviceDef === 'function') {
+    // console.log('serviceName, serviceDef: ', serviceName, serviceDef);
+    serviceObj.name = serviceName;
+    serviceObj.rpcs = [];
+    serviceObj.messages = []
+    for (let [requestName, requestDef] of Object.entries(serviceDef.service)) {
+      // console.log('requestName, requestDef: ', requestName, requestDef);
+      const streamingReq = requestDef.requestStream;
+      const streamingRes = requestDef.responseStream;
+      // console.log('streamingReq, streamingRes: ', streamingReq, streamingRes);
+      let stream = 'UNARY';
+      if (streamingReq) stream = 'CLIENT STREAM';
+      if (streamingRes) stream = 'SERVER STREAM';
+      if (streamingReq && streamingRes) stream = 'BIDIRECTIONAL';
+      let messageNameReq = requestDef.requestType.type.name;
+      let messageNameRes = requestDef.responseType.type.name;
+      serviceObj.rpcs.push({
+        name: requestName,
+        type: stream,
+        req: messageNameReq,
+        res: messageNameRes
+      });
+
+      // console.log('serviceName: ', serviceName); // ServiceName
+      console.log('requestName: ', requestName); // RPC Request Name
+      // console.log('requestDef: ', requestDef); // too much info
+      requestDef.requestType.type.field.forEach((msgObj) => {
+        let mName = msgObj.name;
+        // let mType = msgObj.type;
+        let bool = false;
+        if (msgObj.type === 'TYPE_MESSAGE') bool = true;
+
+        serviceObj.messages.push({
+          name: messageNameReq,
+          def: {[mName]: msgObj.type},
+          nested: bool,
+          dependent: msgObj.typeName
+        })
+      })
+      requestDef.responseType.type.field.forEach((msgObj) => {
+        let mName = msgObj.name;
+        // let mType = msgObj.type;
+        let bool = false;
+        if (msgObj.type === 'TYPE_MESSAGE') bool = true;
+
+        serviceObj.messages.push({
+          name: messageNameRes,
+          def: {[mName]: msgObj.type},
+          nested: bool,
+          dependent: msgObj.typeName
+        })
+        // serviceObj.messages.def =
+      })
+
+      // serviceObj[serviceName][requestName]
+      console.log('Request message type: ',requestDef.requestType.type); // need to iterate through .field to get all types per message
+      console.log('Request message name: ',requestDef.requestType.type.name); // Request message name
+      console.log('Request message type.field: ',requestDef.requestType.type.field);
+      console.log('message reqField [0].name: ', (requestDef.requestType.type.field)[0].name); // name of individual message field within message
+      console.log('message reqField [0].type: ', (requestDef.requestType.type.field)[0].type); // type of individual message field per message
+      console.log('Response message name: ',requestDef.responseType.type.name);// Response message name
+      // console.log('Response message type.field: ',requestDef.responseType.type.field);
+      console.log('message resField [0].name: ', (requestDef.responseType.type.field)[0].name); // name of individual content type within message
+      console.log('message resField [0].type: ', (requestDef.responseType.type.field)[0].type);// type of individual content type per message
+
+      console.log('serviceObj: ', serviceObj);
+      console.log('serviceObj.messages: ', serviceObj.messages);
+    }
+  }
 }
 // test run of protoParser
 // protoParser(tempData);
-
+//
+//this.state.services = [
+// {name: 'ServiceName',
+// messages: [{name: 'messageName',
+//            def: {messageDef}
+//            }]
+// rpcs: [{name: 'RPC Name',
+//         type: 'Stream Type',
+//         req: 'MessageName for Requst',
+//         res: 'MessageName for Response'}]
+//  }]
+//
 // this.state.services: [
       //   {
       //     name: 'BookService',
@@ -154,7 +235,7 @@ async function protoParser(protoBodyData) {
       //     ]
       //   }
       // ]
-console.log(tempData);
+// console.log(tempData);
 protoParser(tempData).catch((err) => console.log(err));
 module.exports = {
   protoParser
