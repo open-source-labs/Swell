@@ -16,21 +16,22 @@ class GRPCAutoInputForm extends Component {
             {
               name: "Book",
               def: {
-                isbn: 'int64',
-                title: 'string',
-                author: 'string',
+                isbn: 'TYPE_INT64',
+                title: 'TYPE_STRING',
+                author: 'TYPE_STRING',
               }
             },
             {
               name: "GetBookRequest",
               def: {
-                isbn: 'int64'
+                isbn: 'TYPE_INT64',
+                pages: 'TYPE_INT64'
               }
             },
             {
               name: "GetBookViaAuthor",
               def: {
-                author: 'string',
+                author: 'TYPE_STRING',
               }
             }
           ],
@@ -68,14 +69,14 @@ class GRPCAutoInputForm extends Component {
             {
               name: "Info",
               def: {
-                name: 'string',
-                breed: 'string'
+                name: 'TYPE_STRING',
+                breed: 'TYPE_STRING'
               }
             },
             {
               name: "GetAge",
               def: {
-                age: 'int64'
+                age: 'TYPE_INT64'
               }
             }
           ],
@@ -168,7 +169,8 @@ class GRPCAutoInputForm extends Component {
             for (const message of service.messages) {
               if (message.name === req) {
                 for (const key in message.def) {
-                  results.push(`${key}: <${message.def[key]}>`)
+                  // results.push(`${key}: ${message.def[key]}`)
+                  results.push(`${key}: ${message.def[key].slice(5).toLowerCase()}`)
                 }
               }
             }
@@ -178,18 +180,26 @@ class GRPCAutoInputForm extends Component {
         if (results.length === 1) {
           query = results[0];
           this.props.newRequestStreams.streamsArr[0].query = query;
+          this.props.setNewRequestStreams({
+            ...this.props.newRequestStreams,
+            streamContent: `{
+              ${query}
+}`
+          });
         } 
         else {
           for (let i = 0; i < results.length; i++) {
-            query =  query + ', ' + results[i]
+            query =  `${query}, 
+            ${results[i]}`
           }
           query = query.slice(1)
-          // console.log('query: ', query)
+          this.props.setNewRequestStreams({
+            ...this.props.newRequestStreams,
+            streamContent: `{${query}
+}`
+          });
         }
-        this.props.setNewRequestStreams({
-          ...this.props.newRequestStreams,
-          streamContent: query
-        });
+
       });  
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {

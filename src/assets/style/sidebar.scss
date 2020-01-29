@@ -559,3 +559,20 @@
   font-size: 14px;
   margin: 10px;
 }
+.add-stream-btn {
+	display: flex;
+	float: right;
+	height: 26px;
+	position: relative;
+	// right: 0px;
+	// top: -10px;
+	z-index: 0;
+  padding-right: 10px;
+  &.button {
+    background: transparent;
+    color: rgb(216, 216, 216);
+    border: 0;
+    cursor: pointer;
+    outline: none;
+  }
+}

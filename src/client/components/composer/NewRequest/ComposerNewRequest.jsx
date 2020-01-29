@@ -308,7 +308,7 @@ class ComposerNewRequest extends Component {
           service: this.props.newRequestStreams.selectedRequest,
           rpc: this.props.newRequestStreams.selectedService,
           packageName: this.props.newRequestStreams.selectedPackage,
-          queryArr: this.props.newRequestStreams.streamsArr.map(stream => stream.query),
+          queryArr: [document.getElementById('grpcBodyEntryTextArea').value],
           servicesObj: services
         };
       }
@@ -349,7 +349,11 @@ class ComposerNewRequest extends Component {
       this.props.setNewRequestStreams({
         streamsArr: [],
         count: 0,
-        streamContent: ''
+        streamContent: '',
+        selectedPackage: null,
+        selectedService: null,
+        selectedRequest: null,
+        selectedStreamingType: null,
       });
 
       this.props.setNewRequestCookies({
@@ -379,6 +383,8 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
+    document.getElementById('stream').innerText = "STREAM";
+    document.getElementById('dropdownService').selectedIndex = 0;
   }
 
   render() {

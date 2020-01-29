@@ -33,102 +33,102 @@ let grpcController = {};
 // }
 
 
-grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
+grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
   // reqResObj.response.headers = {};
   // reqResObj.response.events = [];
   // reqResObj.response.cookies = [];
   // reqResObj.connection = 'open';
   // reqResObj.timeSent = Date.now();
-    // let reqResObj = {
-    //   service : 'BookService',
-    //   rpc : 'GetGreatestBook',
-    //   packageName : "helloworld",
-      // queryArr: [{isbn: 68, author: 'Bob', title: 'Bobby'}, {isbn: 4, author: 'wicki', title: 'wack'}, {isbn: 52, author: 'okey', title: 'dokey'}],
-    //   servicesObj: [
-    //     {
-    //       name: 'BookService',
-    //       messages: [
-    //         {
-    //           name: "Book",
-    //           def: {
-    //             isbn: 'int64',
-    //             title: 'string',
-    //             author: 'string',
-    //           }
-    //         },
-    //         {
-    //           name: "GetBookRequest",
-    //           def: {
-    //             isbn: 'int64'
-    //           }
-    //         },
-    //         {
-    //           name: "GetBookViaAuthor",
-    //           def: {
-    //             author: 'string',
-    //           }
-    //         }
-    //       ],
-    //       rpcs: [
-    //         {
-    //           name: "GetBook",
-    //           type: 'UNARY',
-    //           req: 'GetBookRequest',
-    //           res: 'Book'
-    //         },
-    //         {
-    //           name: "GetBooksViaAuthor",
-    //           type: 'SERVER STREAM',
-    //           req: 'GetBookViaAuthor',
-    //           res: 'Book'
-    //         },
-    //         {
-    //           name: "GetGreatestBook",
-    //           type: 'CLIENT STREAM',
-    //           req: 'GetBookRequest',
-    //           res: 'Book'
-    //         },
-    //         {
-    //           name: "GetBooks",
-    //           type: 'BIDIRECTIONAL',
-    //           req: 'GetBookRequest',
-    //           res: 'Book'
-    //         },
-    //       ]
-    //     },
-    //     {
-    //       name: 'DogService',
-    //       messages: [
-    //         {
-    //           name: "Info",
-    //           def: {
-    //             name: 'string',
-    //             breed: 'string'
-    //           }
-    //         },
-    //         {
-    //           name: "GetAge",
-    //           def: {
-    //             age: 'string'
-    //           }
-    //         }
-    //       ],
-    //       rpcs: [
-    //         {
-    //           name: "GetInfo",
-    //           type: 'UNARY',
-    //           req: 'GetAge',
-    //           res: 'Info',
-    //         },
-    //         {
-    //           name: "GetBackground",
-    //           type: 'BIDIRECTIONAL',
-    //           req: 'GetAge',
-    //           res: 'Info'
-    //         },
-    //       ]
-    //     }
-    //   ], }
+    let reqResObj = {
+      service : 'BookService',
+      rpc : 'GetGreatestBook',
+      packageName : "helloworld",
+      queryArr: [{isbn: 68, author: 'Bob', title: 'Bobby'}, {isbn: 4, author: 'wicki', title: 'wack'}, {isbn: 52, author: 'okey', title: 'dokey'}],
+      servicesObj: [
+        {
+          name: 'BookService',
+          messages: [
+            {
+              name: "Book",
+              def: {
+                isbn: 'int64',
+                title: 'string',
+                author: 'string',
+              }
+            },
+            {
+              name: "GetBookRequest",
+              def: {
+                isbn: 'int64'
+              }
+            },
+            {
+              name: "GetBookViaAuthor",
+              def: {
+                author: 'string',
+              }
+            }
+          ],
+          rpcs: [
+            {
+              name: "GetBook",
+              type: 'UNARY',
+              req: 'GetBookRequest',
+              res: 'Book'
+            },
+            {
+              name: "GetBooksViaAuthor",
+              type: 'SERVER STREAM',
+              req: 'GetBookViaAuthor',
+              res: 'Book'
+            },
+            {
+              name: "GetGreatestBook",
+              type: 'CLIENT STREAM',
+              req: 'GetBookRequest',
+              res: 'Book'
+            },
+            {
+              name: "GetBooks",
+              type: 'BIDIRECTIONAL',
+              req: 'GetBookRequest',
+              res: 'Book'
+            },
+          ]
+        },
+        {
+          name: 'DogService',
+          messages: [
+            {
+              name: "Info",
+              def: {
+                name: 'string',
+                breed: 'string'
+              }
+            },
+            {
+              name: "GetAge",
+              def: {
+                age: 'string'
+              }
+            }
+          ],
+          rpcs: [
+            {
+              name: "GetInfo",
+              type: 'UNARY',
+              req: 'GetAge',
+              res: 'Info',
+            },
+            {
+              name: "GetBackground",
+              type: 'BIDIRECTIONAL',
+              req: 'GetAge',
+              res: 'Info'
+            },
+          ]
+        }
+      ], }
     // console.log('we made it to grpcController, noice')
     
       //check for connection, if not open one

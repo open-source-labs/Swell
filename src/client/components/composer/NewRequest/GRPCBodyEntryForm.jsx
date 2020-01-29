@@ -34,14 +34,14 @@ class GRPCBodyEntryForm extends Component {
   }
 
   onChangeUpdateStream(streamID, value) {
-    let newValue = value.slice(1, value.length - 1).trim()
+    // let newValue = value.slice(1, value.length - 1).trim()
     const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
     let index;
     for (let i = 0; i < streamsDeepCopy.length; i++) {
       if (streamsDeepCopy[i].id === streamID) {
         index = i;
         streamsDeepCopy[index].active = true;
-        streamsDeepCopy[index].query = newValue;
+        streamsDeepCopy[index].query = value;
       };
     }
 
@@ -54,8 +54,12 @@ class GRPCBodyEntryForm extends Component {
       ...this.props.newRequestStreams,
       streamsArr: streamsDeepCopy,
       count: streamsDeepCopy.length,
-      streamContent: newValue
+      streamContent: value
     });
+  }
+
+  addNewStream() {
+    console.log('inside addNewStream')
   }
 
   toggleShow() {
@@ -82,6 +86,14 @@ class GRPCBodyEntryForm extends Component {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
+    let addStreamBtn;
+    if (this.props.selectedStreamingType === "CLIENT STREAM" || this.props.selectedStreamingType === "BIDIRECTIONAL") {
+      addStreamBtn = (
+        <div className="add-stream-btn">
+         <button className="add-stream-btn button" onClick={this.props.addNewStream}>Add Stream</button>
+        </div>
+      )
+    }
 
     return (
       <div >
@@ -92,6 +104,7 @@ class GRPCBodyEntryForm extends Component {
         <section className={bodyContainerClass}>
           {streamArr}
         </section>
+        {addStreamBtn}
       </div>
     );
   }
