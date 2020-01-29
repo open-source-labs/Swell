@@ -277,27 +277,29 @@ app.on('activate', () => {
   }
 });
 
-// export collection ipc
+// export collection ipc now promise-based
 ipcMain.on('export-collection', (event, args) => {
   let content = JSON.stringify(args.collection);
-
-  dialog.showSaveDialog((fileName) => {
-      if (fileName === undefined){
+  dialog.showSaveDialog(null)
+  .then((resp)=> {
+      if (resp.filePath === undefined){
           console.log("You didn't save the file");
           return;
       }
 
       // fileName is a string that contains the path and filename created in the save file dialog.  
-      fs.writeFile(fileName, content, (err) => {
+      fs.writeFile(resp.filePath, content, (err) => {
           if(err){
               console.log("An error ocurred creating the file "+ err.message)
           }
-      });
-  }); 
-})
+        })
+    
+  })})
+
 
 ipcMain.on('import-collection', (event, args) => {
-  dialog.showOpenDialog((fileNames) => {
+  dialog.showOpenDialog(null)
+  .then((fileNames) => {
     // reusable error message options object
     const options = {
       type: 'error',
@@ -315,7 +317,7 @@ ipcMain.on('import-collection', (event, args) => {
     }
 
     // get first file path - not dynamic for multiple files
-    let filepath = fileNames[0];
+    let filepath = fileNames.filePaths[0];
 
     // get file extension
     const ext = path.extname(filepath);

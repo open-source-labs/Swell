@@ -1,6 +1,6 @@
 import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
-
+import historyController from '../controllers/historyController'
 
 const initialState = {
   currentTab: 'First Tab',
@@ -72,6 +72,9 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.CLEAR_HISTORY: {
+      console.log('should have cleared history')
+      historyController.clearHistoryFromIndexedDb();
+
       return {
         ...state,
         history: []

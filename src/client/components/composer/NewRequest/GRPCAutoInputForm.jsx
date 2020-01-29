@@ -209,7 +209,7 @@ class GRPCAutoInputForm extends Component {
       }
     });
   }
-  
+
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -262,4 +262,3 @@ class GRPCAutoInputForm extends Component {
 }
 
 export default GRPCAutoInputForm;
-

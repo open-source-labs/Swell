@@ -67,7 +67,7 @@ class GRPCBodyEntryForm extends Component {
       show: !this.state.show
     });
   }
- 
+
   render() {
     const streamArr = this.props.newRequestStreams.streamsArr.map((stream, index) => (
       <GRPCBodyStream
