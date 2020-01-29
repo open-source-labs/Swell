@@ -1,7 +1,6 @@
 // import { Router } from "express";
 import { ipcRenderer } from "electron";
 import { remote } from 'electron';
-import { dirname } from "path";
 
 var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
 
@@ -130,7 +129,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         }
       ], }
     console.log('we made it to grpcController, noice')
-    
+
       //check for connection, if not open one
 
     if (false) {
@@ -139,7 +138,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
     else {
         //STUFF that we probably will need from reqresobj/state
         //proto file already parsed and details passed to state and then to reqresObj
-        //service name = reqResObj.grpcServiceName 
+        //service name = reqResObj.grpcServiceName
         //serverName = reqResObj.grpcServerName
         //serviceType = reqResObj.serviceFunctionType
         //serviceFunction = reqResObj.serviceFunction
@@ -153,7 +152,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         // this.streamType = undefined;
         // this._call = undefined;
         //write the proto file we uploaded somewhere, then add that as protopath?
-        
+
         // let server = this.url;
         function runCallback(error, response){
           if (error) {
@@ -163,7 +162,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           if (response === '') {
             console.log('Found no helloReply at ')
           } else {
-            console.log('Found reply called "' + response.message) 
+            console.log('Found reply called "' + response.message)
         }
       }
       // definition: "rpc (HelloRequest) returns (HelloReply) {}"
@@ -184,7 +183,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         if ( currentService.name === service) {
           foundService = currentService;
           rpcList = currentService.rpcs;
-          console.log('got rpc list', rpcList)
+          // console.log('got rpc list', rpcList)
         }
       }
       // go through that rpcList and find the one that matches passed in rpc, then grab its definition and type
@@ -194,7 +193,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
       for ( let i = 0; i < rpcList.length; i += 1) {
         let currentRPC = rpcList[i];
         if ( currentRPC.name === rpc) {
-          console.log('found correct rpc')
+          // console.log('found correct rpc')
           foundRpc = currentRPC;
           rpcReq = currentRPC.req;
           rpcType = currentRPC.type;
@@ -204,7 +203,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         //go through definition and using splits, end up with rpcMessageArr as two element array of request and response (rpcMessagesArr)
         // const rpcMessageNames = rpcDefinition.split('(').slice(1);
         let rpcMessagesArr = [foundRpc.req, foundRpc.res];
-      
+
         // for (let i = 0; i < rpcMessageNames.length; i += 1) {
         //   let ele = rpcMessageNames[i];
         //   ele = ele.split(')')[0];
@@ -215,7 +214,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         let keysArray;
         for (let messageIdx in foundService.messages) {
           let message = foundService.messages[messageIdx];
-          console.log(message);
+          // console.log(message);
           // {
           //   name: "Book",
           //   def: {
@@ -224,15 +223,15 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           //     author: 'string',
           //   }
           // },
-          if (rpcMessagesArr[0] === message.name || rpcMessagesArr[0] === 'stream ' +message.name) {
+          if (foundRpc.req === message.name || foundRpc.req === 'stream ' +message.name) {
             console.log('found matching message name')
             messageDefObj = message.def;
             keysArray = [];
             for (const key in messageDefObj) {
               keysArray.push(key);
-              
+
             }
-            console.log('keysarray', keysArray)
+            // console.log('keysarray', keysArray)
             // for (let i = 1; i < Object.keys(messageDefObj).length + 1; i += 1) {
             //   console.log(messageDefObj)
             //   let key = messageDefObj[i].split(' ')[1];
@@ -242,7 +241,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           }
         }
         const messageKey = [];
-        console.log('rpcMessagesArr:', rpcMessagesArr, 'keysArray:', keysArray)
+        // console.log('rpcMessagesArr:', rpcMessagesArr, 'keysArray:', keysArray)
         // const message = reqResObj.message;
         const dirName = remote.app.getAppPath();
         // const service = services[0].name;
@@ -256,7 +255,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
                 enums: String,
                 defaults: true,
                 oneofs: true
-        
+
             }
         )
         let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
@@ -269,7 +268,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           //   queryObj[key] = reqResObj.queryArr[i];
           // }
           client[rpc](reqResObj.queryArr[0], (data)=> {
-            console.log('sent UNARY request', data);
+            // console.log('sent UNARY request', data);
             reqResObj.response.events.push(data)
           })
 
@@ -284,9 +283,9 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           //   reqResObj.response.events.push(reponse)
           //   console.log('in client stream response', response);
           // }});
-          
+
           let callStack = reqResObj.queryArr;
-          console.log('callstack before map', callStack);
+          // console.log('callstack before map', callStack);
           callStack = callStack.map((ele)=> {
           //   let queryObj = {};
           //     for (let i = 0; i < keysArray.length; i+= 1) {
@@ -295,29 +294,32 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           // }
             // let key = keysArray[i];
             // let callObj = {key : ele}
-            console.log('callobj' , ele)
+            // console.log('callobj' , ele)
             return () => {
               call.write(ele)
             }
-          }) 
+          })
           console.log('callstack array', callStack)
-          async.series(callStack, function() {
+          async.series(callStack, function(err, result) {
             call.end();
+            // reqResObj.response.events.push(result)
+            console.log('result of async series', result);
+
             console.log('ran all functions')
           });
-          
+
         }
         else if (rpcType === 'SERVER STREAM') {
           let dataArr;
           const call = client[rpc](reqResObj.queryArr[0]);
           call.on("data", data => {
-            console.log('server streaming message:', data);
+            // console.log('server streaming message:', data);
             //do something to data we got
             reqResObj.response.events.push(data)
 
             dataArr.push(data);
           })
-          call.on('end', () => {  
+          call.on('end', () => {
             console.log('server side stream completed', dataArr)
           })
         }
@@ -325,18 +327,18 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         else {
           let call = client[service];
           call.on('data', (response) => {
-          console.log('Got server response "' + response );
+          // console.log('Got server response "' + response );
           reqResObj.response.events.push(data)
 
             });
 
           call.on('end', ()=> {
-            console.log('server response ended')
+            // console.log('server response ended')
           });
 
           for (var i = 0; i < queryArr.length; i++) {
             let query = queryArr[i];
-            
+
             call.write(query);
           }
           call.end();
@@ -348,7 +350,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
 
     }
 
-    // old code taken from other controllers 
+    // old code taken from other controllers
     const sendGrpcToMain = (args) => {
         return new Promise(resolve => {
             ipcRenderer.send('open-grpc', args)
@@ -367,7 +369,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-        
+
         this.sendGrpcToMain({reqResObj})
         .then(response => {
         response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
@@ -379,7 +381,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(response.data));
   }
-  
+
   const handleError =  (errorsObj, reqResObj) => {
     reqResObj.connection = 'error';
     reqResObj.timeReceived = Date.now();

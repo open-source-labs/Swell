@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
 class GRPCAutoInputForm extends Component {
   constructor(props) {
@@ -9,26 +10,28 @@ class GRPCAutoInputForm extends Component {
       // ***MOCK DATA***
       services: [
         {
+          packageName: 'com.book',
           name: 'BookService',
           messages: [
             {
               name: "Book",
               def: {
-                1: 'int64 isbn',
-                2: 'string title',
-                3: 'string author',
+                isbn: 'TYPE_INT64',
+                title: 'TYPE_STRING',
+                author: 'TYPE_STRING',
               }
             },
             {
               name: "GetBookRequest",
               def: {
-                1: 'int64 isbn'
+                isbn: 'TYPE_INT64',
+                pages: 'TYPE_INT64'
               }
             },
             {
               name: "GetBookViaAuthor",
               def: {
-                1: 'string author',
+                author: 'TYPE_STRING',
               }
             }
           ],
@@ -36,39 +39,44 @@ class GRPCAutoInputForm extends Component {
             {
               name: "GetBook",
               type: 'UNARY',
-              def: "rpc (GetBookRequest) returns (Book) {}"
+              req: 'GetBookRequest',
+              res: 'Book'
             },
             {
               name: "GetBooksViaAuthor",
               type: 'SERVER STREAM',
-              def: "rpc (GetBookViaAuthor) returns (stream Book) {}"
+              req: 'GetBookViaAuthor',
+              res: 'Book'
             },
             {
               name: "GetGreatestBook",
               type: 'CLIENT STREAM',
-              def: "rpc (stream GetBookRequest) returns (Book) {}"
+              req: 'GetBookRequest',
+              res: 'Book'
             },
             {
               name: "GetBooks",
               type: 'BIDIRECTIONAL',
-              def: "rpc (stream GetBookRequest) returns (stream Book) {}"
+              req: 'GetBookRequest',
+              res: 'Book'
             },
           ]
         },
         {
+          packageName: 'ILoveDogs',
           name: 'DogService',
           messages: [
             {
               name: "Info",
               def: {
-                1: 'string name',
-                2: 'string breed'
+                name: 'TYPE_STRING',
+                breed: 'TYPE_STRING'
               }
             },
             {
               name: "GetAge",
               def: {
-                1: 'string age'
+                age: 'TYPE_INT64'
               }
             }
           ],
@@ -76,111 +84,23 @@ class GRPCAutoInputForm extends Component {
             {
               name: "GetInfo",
               type: 'UNARY',
-              def: "rpc (GetAge) returns (Info) {}"
+              req: 'GetAge',
+              res: 'Info',
             },
             {
               name: "GetBackground",
               type: 'BIDIRECTIONAL',
-              def: "rpc (stream GetAge) returns (stream Info) {}"
+              req: 'GetAge',
+              res: 'Info'
             },
           ]
         }
       ],
-      // ***MOCK DATA--OLD SCHEMA***
-      // services: [
-      //   {
-      //     name: 'BookService',
-      //     rpcs: [
-      //       {
-      //         name: 'GetBook',
-      //         type: 'UNARY',
-      //         definition: 'rpc GetBook (GetBookRequest) returns (Book) {}',
-      //         messages: [
-      //           {
-      //             name: 'Book',
-      //             definition: [
-      //               {
-      //                 number: 1,
-      //                 definition: 'int64 isbn = 1'
-      //               },
-      //               {
-      //                 number: 2,
-      //                 definition: 'string title = 2'
-      //               },
-      //               {
-      //                 number: 3,
-      //                 definition: 'string author = 3'
-      //               }
-      //             ]
-      //           }
-      //         ]
-      //       },
-      //       {
-      //         name: 'GetBooksViaAuthor',
-      //         type: 'BIDRECTIONAL',
-      //         definition: 'rpc GetBooks (stream GetBookRequest) returns (stream Book) {}',
-      //         messages: [
-      //           {
-      //             name: 'Book',
-      //             definition: [
-      //               {
-      //                 number: 1,
-      //                 definition: 'int64 isbn = 1'
-      //               }
-      //             ]
-      //           }
-      //         ]
-      //       }
-      //     ]
-      //   }, 
-      //   {
-      //     name: 'DogService',
-      //     rpcs: [
-      //       {
-      //         name: 'GetDog',
-      //         type: 'BIDIRECTIONAL',
-      //         definition: 'rpc GetDog (stream GetDogRequest) returns (stream Dog) {}',
-      //         messages: [
-      //           {
-      //             name: 'Dog',
-      //             definition: [
-      //               {
-      //                 number: 1,
-      //                 definition: 'string name = 2'
-      //               },
-      //               {
-      //                 number: 2,
-      //                 definition: 'string type = 3'
-      //               }
-      //             ]
-      //           }
-      //         ]
-      //       }
-      //     ]
-      //   }
-      // ],
-      selectedService: null,
-      selectedRequest: null,
-      selectedStreamingType: null
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
   }
-
-    // waiting for server to work to test functionality of service and request dropdowns
-    // componentDidMount() {
-      // fetch(`/`)
-      // .then(res => res.json())
-      // .then(data => {
-      //   const { services } = data;
-      //   this.setState({
-      //     ...this.state,
-      //     services
-      //   })
-      // })
-      // .catch((err) => { console.log(err) })
-    // }
 
   toggleShow() {
     this.setState({
@@ -194,26 +114,33 @@ class GRPCAutoInputForm extends Component {
     const serviceName = opt.text;
     const streamBtn = document.getElementById('stream');
     streamBtn.innerText = 'STREAM';
-    this.setState({ 
-      ...this.state,
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       selectedService: serviceName
-   });
+
+    });
   }
 
   setRequest() {
     const sel = document.getElementById('dropdownRequest');
     const opt = sel.options[sel.selectedIndex];
     const requestName = opt.text;
-    this.setState({ 
-      ...this.state,
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       selectedRequest: requestName
+    });
+    this.setState({ 
+      ...this.state
     }, () => {
-      const selectedService = this.state.selectedService;
-      const selectedRequest = this.state.selectedRequest;
+      console.log('here')
+      const selectedService = this.props.newRequestStreams.selectedService;
+      const selectedRequest = this.props.newRequestStreams.selectedRequest;
       const services = this.state.services;
       let streamingType;
+      let packageName;
       for (const service of services) {
         if (service.name === selectedService ) {
+          packageName = service.packageName;
           for (const rpc of service.rpcs) {
             if (rpc.name === selectedRequest) {
               streamingType = rpc.type;
@@ -221,8 +148,58 @@ class GRPCAutoInputForm extends Component {
           }
         }
       }
+      this.props.setNewRequestStreams({
+        ...this.props.newRequestStreams,
+        selectedPackage: packageName,
+        selectedStreamingType: streamingType
+      });
       this.setState({ 
-        selectedStreamingType: streamingType,
+        ...this.state
+      }, () => {
+        let req;
+        let results = [];
+        let query = '';
+        for (const service of services) {
+          if (service.name === selectedService ) {
+            for (const rpc of service.rpcs) {
+              if (rpc.name === selectedRequest) {
+                req = rpc.req
+              }
+            }
+            for (const message of service.messages) {
+              if (message.name === req) {
+                for (const key in message.def) {
+                  // results.push(`${key}: ${message.def[key]}`)
+                  results.push(`${key}: ${message.def[key].slice(5).toLowerCase()}`)
+                }
+              }
+            }
+          }
+        }
+        // console.log('results: ', results)
+        if (results.length === 1) {
+          query = results[0];
+          this.props.newRequestStreams.streamsArr[0].query = query;
+          this.props.setNewRequestStreams({
+            ...this.props.newRequestStreams,
+            streamContent: `{
+              ${query}
+}`
+          });
+        } 
+        else {
+          for (let i = 0; i < results.length; i++) {
+            query =  `${query}, 
+            ${results[i]}`
+          }
+          query = query.slice(1)
+          this.props.setNewRequestStreams({
+            ...this.props.newRequestStreams,
+            streamContent: `{${query}
+}`
+          });
+        }
+
       });  
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {
@@ -232,7 +209,7 @@ class GRPCAutoInputForm extends Component {
       }
     });
   }
-  
+
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -243,7 +220,8 @@ class GRPCAutoInputForm extends Component {
       servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
     }
 
-    let selectedService = this.state.selectedService;
+    // let selectedService = this.state.selectedService;
+    let selectedService = this.props.newRequestStreams.selectedService;
     const rpcsList = [];
     for (const service of services) {
       if (service.name === selectedService) {
@@ -252,7 +230,6 @@ class GRPCAutoInputForm extends Component {
         }
       }
     }
-
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
@@ -269,10 +246,19 @@ class GRPCAutoInputForm extends Component {
           <option value="requests" defaultValue="">Select Request</option>
           {rpcsList}
         </select>
+
+        <GRPCBodyEntryForm
+          newRequestStreams={this.props.newRequestStreams}
+          setNewRequestStreams={this.props.setNewRequestStreams}
+          selectedPackage={this.props.newRequestStreams.selectedPackage}
+          selectedService={this.props.newRequestStreams.selectedService}
+          selectedRequest={this.props.newRequestStreams.selectedRequest}
+          selectedStreamingType={this.props.newRequestStreams.selectedStreamingType}
+        /> 
+
       </div>
     );
   }
 }
 
 export default GRPCAutoInputForm;
-

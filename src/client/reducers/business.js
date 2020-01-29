@@ -1,6 +1,6 @@
 import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
-
+import historyController from '../controllers/historyController'
 
 const initialState = {
   currentTab: 'First Tab',
@@ -17,6 +17,16 @@ const initialState = {
   newRequestHeaders: {
     headersArr: [],
     count: 0,
+  },
+  newRequestStreams: {
+    streamsArr: [],
+    count: 0,
+    streamContent: '',
+    selectedPackage: null,
+    selectedRequest: null,
+    selectedService: null,
+    selectedStreamingType: null,
+    queryArr: null
   },
   newRequestCookies: {
     cookiesArr: [],
@@ -62,6 +72,9 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.CLEAR_HISTORY: {
+      console.log('should have cleared history')
+      historyController.clearHistoryFromIndexedDb();
+
       return {
         ...state,
         history: []
@@ -196,6 +209,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestHeaders: action.payload,
+      };
+    }
+
+    case types.SET_NEW_REQUEST_STREAMS: {
+      return {
+        ...state,
+        newRequestStreams: action.payload,
       };
     }
 

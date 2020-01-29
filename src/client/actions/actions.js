@@ -70,6 +70,11 @@ export const setNewRequestHeaders = (headers) => ({
   payload : headers
 });
 
+export const setNewRequestStreams = (streams) => ({
+  type: types.SET_NEW_REQUEST_STREAMS,
+  payload : streams
+});
+
 export const setNewRequestBody = (body) => ({
   type: types.SET_NEW_REQUEST_BODY,
   payload : body
