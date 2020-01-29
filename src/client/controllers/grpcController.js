@@ -224,7 +224,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           //     author: 'string',
           //   }
           // },
-          if (rpcMessagesArr[0] === message.name || rpcMessagesArr[0] === 'stream ' +message.name) {
+          if (foundRpc.req === message.name || foundRpc.req === 'stream ' +message.name) {
             console.log('found matching message name')
             messageDefObj = message.def;
             keysArray = [];
@@ -301,8 +301,11 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
             }
           }) 
           console.log('callstack array', callStack)
-          async.series(callStack, function() {
+          async.series(callStack, function(err, result) {
             call.end();
+            // reqResObj.response.events.push(result)
+            console.log('result of async series', result);
+
             console.log('ran all functions')
           });
           

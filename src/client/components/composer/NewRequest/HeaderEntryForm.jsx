@@ -148,7 +148,7 @@ class HeaderEntryForm extends Component {
       show: !this.state.show
     });
   }
-
+  
   render() {
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <Header
