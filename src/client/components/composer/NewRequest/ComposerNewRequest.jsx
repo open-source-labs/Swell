@@ -301,7 +301,7 @@ class ComposerNewRequest extends Component {
         <h1 className="composer_title">Create New Request</h1>
 
         <FieldEntryForm
-          addRequestProp={this.addNewRequest}
+          // addRequestProp={this.addNewRequest}
           newRequestFields={this.props.newRequestFields}
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestBody={this.props.newRequestBody}

@@ -6,7 +6,7 @@ class FieldEntryForm extends Component {
   constructor(props) {
     super(props);
     this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    // this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   onChangeHandler(e, property, graphQL) {
@@ -161,11 +161,11 @@ class FieldEntryForm extends Component {
     }
   };
 
-  handleKeyPress(event) {
-    if (event.key === 'Enter') {
-      this.props.addRequestProp();
-    }
-  }
+  // handleKeyPress(event) {
+  //   if (event.key === 'Enter') {
+  //     this.props.addRequestProp();
+  //   }
+  // }
 
   render() {
 
