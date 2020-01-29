@@ -183,7 +183,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         if ( currentService.name === service) {
           foundService = currentService;
           rpcList = currentService.rpcs;
-          console.log('got rpc list', rpcList)
+          // console.log('got rpc list', rpcList)
         }
       }
       // go through that rpcList and find the one that matches passed in rpc, then grab its definition and type
@@ -193,7 +193,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
       for ( let i = 0; i < rpcList.length; i += 1) {
         let currentRPC = rpcList[i];
         if ( currentRPC.name === rpc) {
-          console.log('found correct rpc')
+          // console.log('found correct rpc')
           foundRpc = currentRPC;
           rpcReq = currentRPC.req;
           rpcType = currentRPC.type;
@@ -214,7 +214,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         let keysArray;
         for (let messageIdx in foundService.messages) {
           let message = foundService.messages[messageIdx];
-          console.log(message);
+          // console.log(message);
           // {
           //   name: "Book",
           //   def: {
@@ -231,7 +231,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
               keysArray.push(key);
 
             }
-            console.log('keysarray', keysArray)
+            // console.log('keysarray', keysArray)
             // for (let i = 1; i < Object.keys(messageDefObj).length + 1; i += 1) {
             //   console.log(messageDefObj)
             //   let key = messageDefObj[i].split(' ')[1];
@@ -241,7 +241,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           }
         }
         const messageKey = [];
-        console.log('rpcMessagesArr:', rpcMessagesArr, 'keysArray:', keysArray)
+        // console.log('rpcMessagesArr:', rpcMessagesArr, 'keysArray:', keysArray)
         // const message = reqResObj.message;
         const dirName = remote.app.getAppPath();
         // const service = services[0].name;
@@ -268,7 +268,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           //   queryObj[key] = reqResObj.queryArr[i];
           // }
           client[rpc](reqResObj.queryArr[0], (data)=> {
-            console.log('sent UNARY request', data);
+            // console.log('sent UNARY request', data);
             reqResObj.response.events.push(data)
           })
 
@@ -285,7 +285,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           // }});
 
           let callStack = reqResObj.queryArr;
-          console.log('callstack before map', callStack);
+          // console.log('callstack before map', callStack);
           callStack = callStack.map((ele)=> {
           //   let queryObj = {};
           //     for (let i = 0; i < keysArray.length; i+= 1) {
@@ -294,7 +294,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           // }
             // let key = keysArray[i];
             // let callObj = {key : ele}
-            console.log('callobj' , ele)
+            // console.log('callobj' , ele)
             return () => {
               call.write(ele)
             }
@@ -313,7 +313,7 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
           let dataArr;
           const call = client[rpc](reqResObj.queryArr[0]);
           call.on("data", data => {
-            console.log('server streaming message:', data);
+            // console.log('server streaming message:', data);
             //do something to data we got
             reqResObj.response.events.push(data)
 
@@ -327,13 +327,13 @@ grpcController.openGrpcConnection = (reqResObj2, connectionArray) => {
         else {
           let call = client[service];
           call.on('data', (response) => {
-          console.log('Got server response "' + response );
+          // console.log('Got server response "' + response );
           reqResObj.response.events.push(data)
 
             });
 
           call.on('end', ()=> {
-            console.log('server response ended')
+            // console.log('server response ended')
           });
 
           for (var i = 0; i < queryArr.length; i++) {
