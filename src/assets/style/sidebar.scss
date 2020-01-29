@@ -82,6 +82,23 @@
   outline: none;
   background-color: $grpcorange;
 }
+.stream-number {
+	-webkit-appearance: none;
+  background-color: #2c3e50;
+  border: none;
+  color: white;
+  margin-top: 7px;
+  padding: 5px;
+  width: 25%;
+  font-size: 14px;
+	cursor: pointer;
+	display: block;
+	font-weight: bold;
+  height: 35px;
+  &:focus {
+    outline: 0 none;
+  }
+}
 .composer_protocol_container {
 	display: flex;
   margin: 15px 0 15px 0;
@@ -541,4 +558,21 @@
   width: 45%;
   font-size: 14px;
   margin: 10px;
+}
+.add-stream-btn {
+	display: flex;
+	float: right;
+	height: 26px;
+	position: relative;
+	// right: 0px;
+	// top: -10px;
+	z-index: 0;
+  padding-right: 10px;
+  &.button {
+    background: transparent;
+    color: rgb(216, 216, 216);
+    border: 0;
+    cursor: pointer;
+    outline: none;
+  }
 }

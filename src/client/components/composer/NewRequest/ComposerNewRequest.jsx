@@ -3,7 +3,7 @@ import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a uniq
 import HeaderEntryForm from './HeaderEntryForm.jsx';
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
-import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
+import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import historyController from '../../../controllers/historyController';
@@ -169,6 +169,91 @@ class ComposerNewRequest extends Component {
       }
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
+        let services = [
+          {
+            name: 'BookService',
+            messages: [
+              {
+                name: "Book",
+                def: {
+                  isbn: 'int64',
+                  title: 'string',
+                  author: 'string',
+                }
+              },
+              {
+                name: "GetBookRequest",
+                def: {
+                  isbn: 'int64'
+                }
+              },
+              {
+                name: "GetBookViaAuthor",
+                def: {
+                  author: 'string',
+                }
+              }
+            ],
+            rpcs: [
+              {
+                name: "GetBook",
+                type: 'UNARY',
+                req: 'GetBookRequest',
+                res: 'Book'
+              },
+              {
+                name: "GetBooksViaAuthor",
+                type: 'SERVER STREAM',
+                req: 'GetBookViaAuthor',
+                res: 'Book'
+              },
+              {
+                name: "GetGreatestBook",
+                type: 'CLIENT STREAM',
+                req: 'GetBookRequest',
+                res: 'Book'
+              },
+              {
+                name: "GetBooks",
+                type: 'BIDIRECTIONAL',
+                req: 'GetBookRequest',
+                res: 'Book'
+              },
+            ]
+          },
+          {
+            name: 'DogService',
+            messages: [
+              {
+                name: "Info",
+                def: {
+                  name: 'string',
+                  breed: 'string'
+                }
+              },
+              {
+                name: "GetAge",
+                def: {
+                  age: 'string'
+                }
+              }
+            ],
+            rpcs: [
+              {
+                name: "GetInfo",
+                type: 'UNARY',
+                req: 'GetAge',
+                res: 'Info',
+              },
+              {
+                name: "GetBackground",
+                type: 'BIDIRECTIONAL',
+                req: 'GetAge',
+                res: 'Info'
+              },
+            ]
+          }
+        ]
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         let historyBodyContent;
@@ -205,6 +290,7 @@ class ComposerNewRequest extends Component {
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
+            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream.active),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
@@ -213,11 +299,17 @@ class ComposerNewRequest extends Component {
           },
           response: {
             headers: null,
+            stream: null,
             events: null,
           },
           checked: false,
           minimized: false,
           tab: this.props.currentTab,
+          service: this.props.newRequestStreams.selectedService,
+          rpc: this.props.newRequestStreams.selectedRequest,
+          packageName: this.props.newRequestStreams.selectedPackage,
+          queryArr: [document.getElementById('grpcBodyEntryTextArea').value],
+          servicesObj: services
         };
       }
       // WEBSOCKET REQUESTS
@@ -254,6 +346,16 @@ class ComposerNewRequest extends Component {
         count: 0,
       });
 
+      this.props.setNewRequestStreams({
+        streamsArr: [],
+        count: 0,
+        streamContent: '',
+        selectedPackage: null,
+        selectedService: null,
+        selectedRequest: null,
+        selectedStreamingType: null,
+      });
+
       this.props.setNewRequestCookies({
         cookiesArr: [],
         count: 0,
@@ -281,6 +383,8 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
+    document.getElementById('stream').innerText = "STREAM";
+    document.getElementById('dropdownService').selectedIndex = 0;
   }
 
   render() {
@@ -304,9 +408,11 @@ class ComposerNewRequest extends Component {
           addRequestProp={this.addNewRequest}
           newRequestFields={this.props.newRequestFields}
           newRequestHeaders={this.props.newRequestHeaders}
+          newRequestStreams={this.props.newRequestStreams}
           newRequestBody={this.props.newRequestBody}
           setNewRequestFields={this.props.setNewRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestStreams={this.props.setNewRequestStreams}
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
         />
@@ -315,8 +421,10 @@ class ComposerNewRequest extends Component {
           <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={this.props.newRequestHeaders}
+          newRequestStreams={this.props.newRequestStreams}
           newRequestBody={this.props.newRequestBody}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
+          setNewRequestStreams={this.props.setNewRequestStreams}
           />
         }
         {
@@ -350,10 +458,12 @@ class ComposerNewRequest extends Component {
         }
         {
           this.props.newRequestFields.gRPC &&
-          <GRPCBodyEntryForm
+          <GRPCProtoEntryForm
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
-          />
+            newRequestStreams={this.props.newRequestStreams}
+            setNewRequestStreams={this.props.setNewRequestStreams}
+           />
         }
 
         {/* SSE CHeckbox, update newRequestSSE in store */}
