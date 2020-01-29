@@ -135,6 +135,8 @@ async function protoParser(protoBodyData) {
       console.log('serviceObj.messages: ', serviceObj.messages);
     }
   }
+  protoStorage.serviceObj = serviceObj;
+  return protoStorage;
 }
 // test run of protoParser
 // protoParser(tempData);
