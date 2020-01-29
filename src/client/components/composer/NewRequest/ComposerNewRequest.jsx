@@ -169,6 +169,91 @@ class ComposerNewRequest extends Component {
       }
       // grpc requests 
       else if (this.props.newRequestFields.gRPC) {
+        let services = [
+          {
+            name: 'BookService',
+            messages: [
+              {
+                name: "Book",
+                def: {
+                  isbn: 'int64',
+                  title: 'string',
+                  author: 'string',
+                }
+              },
+              {
+                name: "GetBookRequest",
+                def: {
+                  isbn: 'int64'
+                }
+              },
+              {
+                name: "GetBookViaAuthor",
+                def: {
+                  author: 'string',
+                }
+              }
+            ],
+            rpcs: [
+              {
+                name: "GetBook",
+                type: 'UNARY',
+                req: 'GetBookRequest',
+                res: 'Book'
+              },
+              {
+                name: "GetBooksViaAuthor",
+                type: 'SERVER STREAM',
+                req: 'GetBookViaAuthor',
+                res: 'Book'
+              },
+              {
+                name: "GetGreatestBook",
+                type: 'CLIENT STREAM',
+                req: 'GetBookRequest',
+                res: 'Book'
+              },
+              {
+                name: "GetBooks",
+                type: 'BIDIRECTIONAL',
+                req: 'GetBookRequest',
+                res: 'Book'
+              },
+            ]
+          },
+          {
+            name: 'DogService',
+            messages: [
+              {
+                name: "Info",
+                def: {
+                  name: 'string',
+                  breed: 'string'
+                }
+              },
+              {
+                name: "GetAge",
+                def: {
+                  age: 'string'
+                }
+              }
+            ],
+            rpcs: [
+              {
+                name: "GetInfo",
+                type: 'UNARY',
+                req: 'GetAge',
+                res: 'Info',
+              },
+              {
+                name: "GetBackground",
+                type: 'BIDIRECTIONAL',
+                req: 'GetAge',
+                res: 'Info'
+              },
+            ]
+          }
+        ]
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         let historyBodyContent;
@@ -205,7 +290,7 @@ class ComposerNewRequest extends Component {
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
-            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream.active && !!stream.query),
+            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream.active),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
@@ -220,6 +305,11 @@ class ComposerNewRequest extends Component {
           checked: false,
           minimized: false,
           tab: this.props.currentTab,
+          service: this.props.newRequestStreams.selectedRequest,
+          rpc: this.props.newRequestStreams.selectedService,
+          packageName: this.props.newRequestStreams.selectedPackage,
+          queryArr: this.props.newRequestStreams.streamsArr.map(stream => stream.query),
+          servicesObj: services
         };
       }
       // WEBSOCKET REQUESTS

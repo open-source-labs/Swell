@@ -10,6 +10,7 @@ class GRPCAutoInputForm extends Component {
       // ***MOCK DATA***
       services: [
         {
+          packageName: 'com.book',
           name: 'BookService',
           messages: [
             {
@@ -61,6 +62,7 @@ class GRPCAutoInputForm extends Component {
           ]
         },
         {
+          packageName: 'ILoveDogs',
           name: 'DogService',
           messages: [
             {
@@ -73,7 +75,7 @@ class GRPCAutoInputForm extends Component {
             {
               name: "GetAge",
               def: {
-                age: 'string'
+                age: 'int64'
               }
             }
           ],
@@ -93,9 +95,6 @@ class GRPCAutoInputForm extends Component {
           ]
         }
       ],
-      selectedService: null,
-      selectedRequest: null,
-      selectedStreamingType: null,
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
@@ -114,26 +113,33 @@ class GRPCAutoInputForm extends Component {
     const serviceName = opt.text;
     const streamBtn = document.getElementById('stream');
     streamBtn.innerText = 'STREAM';
-    this.setState({ 
-      ...this.state,
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       selectedService: serviceName
-   });
+
+    });
   }
 
   setRequest() {
     const sel = document.getElementById('dropdownRequest');
     const opt = sel.options[sel.selectedIndex];
     const requestName = opt.text;
-    this.setState({ 
-      ...this.state,
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       selectedRequest: requestName
+    });
+    this.setState({ 
+      ...this.state
     }, () => {
-      const selectedService = this.state.selectedService;
-      const selectedRequest = this.state.selectedRequest;
+      console.log('here')
+      const selectedService = this.props.newRequestStreams.selectedService;
+      const selectedRequest = this.props.newRequestStreams.selectedRequest;
       const services = this.state.services;
       let streamingType;
+      let packageName;
       for (const service of services) {
         if (service.name === selectedService ) {
+          packageName = service.packageName;
           for (const rpc of service.rpcs) {
             if (rpc.name === selectedRequest) {
               streamingType = rpc.type;
@@ -141,11 +147,17 @@ class GRPCAutoInputForm extends Component {
           }
         }
       }
-      this.setState({ 
+      this.props.setNewRequestStreams({
+        ...this.props.newRequestStreams,
+        selectedPackage: packageName,
         selectedStreamingType: streamingType
+      });
+      this.setState({ 
+        ...this.state
       }, () => {
         let req;
         let results = [];
+        let query = '';
         for (const service of services) {
           if (service.name === selectedService ) {
             for (const rpc of service.rpcs) {
@@ -156,22 +168,27 @@ class GRPCAutoInputForm extends Component {
             for (const message of service.messages) {
               if (message.name === req) {
                 for (const key in message.def) {
-                  results.push(`${key}: ${message.def[key]}`)
+                  results.push(`${key}: <${message.def[key]}>`)
                 }
               }
             }
           }
         }
+        // console.log('results: ', results)
         if (results.length === 1) {
-          results = results[0];
-        } else {
-          for (const result of results) {
-            results = results + ', ' + result;
+          query = results[0];
+          this.props.newRequestStreams.streamsArr[0].query = query;
+        } 
+        else {
+          for (let i = 0; i < results.length; i++) {
+            query =  query + ', ' + results[i]
           }
+          query = query.slice(1)
+          // console.log('query: ', query)
         }
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
-          streamContent: results
+          streamContent: query
         });
       });  
       const streamBtn = document.getElementById('stream')
@@ -193,7 +210,8 @@ class GRPCAutoInputForm extends Component {
       servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
     }
 
-    let selectedService = this.state.selectedService;
+    // let selectedService = this.state.selectedService;
+    let selectedService = this.props.newRequestStreams.selectedService;
     const rpcsList = [];
     for (const service of services) {
       if (service.name === selectedService) {
@@ -222,9 +240,10 @@ class GRPCAutoInputForm extends Component {
         <GRPCBodyEntryForm
           newRequestStreams={this.props.newRequestStreams}
           setNewRequestStreams={this.props.setNewRequestStreams}
-          selectedService={this.state.selectedService}
-          selectedRequest={this.state.selectedRequest}
-          selectedStreamingType={this.state.selectedStreamingType}
+          selectedPackage={this.props.newRequestStreams.selectedPackage}
+          selectedService={this.props.newRequestStreams.selectedService}
+          selectedRequest={this.props.newRequestStreams.selectedRequest}
+          selectedStreamingType={this.props.newRequestStreams.selectedStreamingType}
         /> 
 
       </div>

@@ -33,28 +33,28 @@ class GRPCBodyEntryForm extends Component {
     });
   }
 
-  onChangeUpdateStream(id, value) {
+  onChangeUpdateStream(streamID, value) {
+    let newValue = value.slice(1, value.length - 1).trim()
     const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
-    console.log('streamsDeepCopy: ', streamsDeepCopy)
-    // find the stream in the array to update
-    let indexToBeUpdated;
+    let index;
     for (let i = 0; i < streamsDeepCopy.length; i++) {
-      if (streamsDeepCopy[i].id === id) {
-        indexToBeUpdated = i;
-        streamsDeepCopy[indexToBeUpdated].active = true;
-        if (streamsDeepCopy.length === 1) {
-          this.addStream(streamsDeepCopy);
-        }
+      if (streamsDeepCopy[i].id === streamID) {
+        index = i;
+        streamsDeepCopy[index].active = true;
+        streamsDeepCopy[index].query = newValue;
       };
     }
-    // update query value
-    streamsDeepCopy[indexToBeUpdated].query = value;
+
+    // if (streamsDeepCopy.length === 1) {
+    //   this.addStream(streamsDeepCopy);
+    // }
 
     // update the store
     this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       streamsArr: streamsDeepCopy,
       count: streamsDeepCopy.length,
-      streamContent: value
+      streamContent: newValue
     });
   }
 
@@ -69,13 +69,14 @@ class GRPCBodyEntryForm extends Component {
       <GRPCBodyStream
       newRequestStreams={this.props.newRequestStreams}
       setNewRequestStreams={this.props.setNewRequestStreams}
+      selectedPackage={this.props.newRequestStreams.selectedPackage}
       selectedService={this.props.selectedService}
       selectedRequest={this.props.selectedRequest}
       selectedStreamingType={this.props.selectedStreamingType}
       changeHandler={this.onChangeUpdateStream}
-      content={stream}
+      stream={stream}
       key={index}
-      stream={index}
+      streamNum={index}
     />
     ))
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';

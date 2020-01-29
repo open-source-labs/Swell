@@ -21,7 +21,12 @@ const initialState = {
   newRequestStreams: {
     streamsArr: [],
     count: 0,
-    streamContent: ''
+    streamContent: '',
+    selectedPackage: null,
+    selectedRequest: null,
+    selectedService: null,
+    selectedStreamingType: null,
+    queryArr: null
   },
   newRequestCookies: {
     cookiesArr: [],
