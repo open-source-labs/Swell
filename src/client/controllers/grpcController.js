@@ -1,6 +1,9 @@
 // import { Router } from "express";
 import { ipcRenderer } from "electron";
 import { remote } from 'electron';
+import * as store from '../store';
+import * as actions from '../actions/actions';
+
 
 var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
 
@@ -184,19 +187,33 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           //   let key = keysArray[i];
           //   queryObj[key] = reqResObj.queryArr[i];
           // }
-          console.log('trying to send UNARY', reqResObj.queryArr)
-          let currQuery = reqResObj.queryArr[0].slice(6).slice(0, -2).trim().split(' ');
-          let first = currQuery[0].slice(0, -1);
-          let queryObject = {};
-          queryObject[first] = currQuery[1];
-          console.log('split query' , currQuery)
-          console.log('queryObject', queryObject)
-          client[rpc](queryObject, (err, data)=> {
+          console.log('trying to send UNARY', reqResObj.queryArr[0])
+          // let currQuery = reqResObj.queryArr[0].slice(2, -2).trim().split(',');
+          // console.log('before loop', currQuery)
+          // for (let i = 0; i < currQuery.length; i += 1) {
+          //   let ele = currQuery[i];
+          //   if (i > 0) {
+          //     currQuery[i]= ele.slice(1);
+          //     console.log('ele in loop', ele)
+          //   }
+            
+          // }
+          // console.log(reqResObj.queryArr[0].slice(6).slice(0, -2).trim().split(','))
+          // console.log('after forloop', currQuery)
+          // .split(' ');
+          // let first = currQuery[0];
+          // let queryObject = {};
+          
+          // queryObject[first] = currQuery[1];
+          let query = reqResObj.queryArr[0];
+          client[rpc](query, (err, data)=> {
             if (err) {
               console.log('unary error' , err);
             }
             console.log('sent UNARY request', data);
-            // reqResObj.response.events.push(data)
+            reqResObj.response.events.push(data)
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+
           })
 
         }
@@ -229,7 +246,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           console.log('callstack array', callStack)
           async.series(callStack, function(err, result) {
             call.end();
-            // reqResObj.response.events.push(result)
+            reqResObj.response.events.push(result)
             console.log('result of async series', result);
 
             console.log('ran all functions')
