@@ -153,6 +153,7 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.8.3",
     "@grpc/proto-loader": "^0.5.3",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
@@ -200,6 +201,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
