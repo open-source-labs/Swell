@@ -86,7 +86,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let services = reqResObj.servicesObj;
       let packageName = reqResObj.packageName;
       let url = reqResObj.url;
-      console.log('pckname', packageName, 'service', service, 'rpc', rpc, 'servicesObj', services)
+      console.log('pckname', packageName, 'service', service, 'rpc', rpc, 'services', services)
       //go through services object, find service where name matches our passed in service, then grab the rpc list of that service, also save that service
       let rpcList;
       let foundService;
@@ -140,8 +140,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('found matching message name')
             messageDefObj = message.def;
             keysArray = [];
-            console.log('messagedef', message.def)
-             (Object.keys(messageDefObj)).forEach((key)=>{
+            console.log('messagedef', message.def);
+            Object.keys(messageDefObj).forEach((key)=>{
                keysArray.push(key)
              }) 
             //   keysArray.push(key);
@@ -162,7 +162,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         const dirName = remote.app.getAppPath();
         // const service = services[0].name;
         // const rpc = services[0].rpcs[0].name;
-        let PROTO_PATH = path.join( dirName, "grpc_mockData/protos/hw2.proto")
+        // let PROTO_PATH = path.join( dirName, "grpc_mockData/protos/hw2.proto")
+        let PROTO_PATH = reqResObj.protoPath;
         const packageDefinition = protoLoader.loadSync(
             PROTO_PATH,
             {
@@ -175,7 +176,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             }
         )
         let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
-        // let client = new serverName[service](`${url}`, grpc.credentials.createInsecure()); //localhost should be variable destination from reqresObj
+        let client = new serverName[service](`${url}`, grpc.credentials.createInsecure()); //localhost should be variable destination from reqresObj
 
         if (rpcType === 'UNARY') {
           // let queryObj = {};
@@ -183,9 +184,19 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           //   let key = keysArray[i];
           //   queryObj[key] = reqResObj.queryArr[i];
           // }
-          client[rpc](reqResObj.queryArr[0], (data)=> {
-            // console.log('sent UNARY request', data);
-            reqResObj.response.events.push(data)
+          console.log('trying to send UNARY', reqResObj.queryArr)
+          let currQuery = reqResObj.queryArr[0].slice(6).slice(0, -2).trim().split(' ');
+          let first = currQuery[0].slice(0, -1);
+          let queryObject = {};
+          queryObject[first] = currQuery[1];
+          console.log('split query' , currQuery)
+          console.log('queryObject', queryObject)
+          client[rpc](queryObject, (err, data)=> {
+            if (err) {
+              console.log('unary error' , err);
+            }
+            console.log('sent UNARY request', data);
+            // reqResObj.response.events.push(data)
           })
 
         }
@@ -262,7 +273,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       reqResObj.connection = 'closed';
       reqResObj.connectionType = 'plain';
       reqResObj.timeReceived = Date.now();
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
+      // store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     }
 

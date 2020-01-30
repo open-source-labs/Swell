@@ -26,7 +26,9 @@ const initialState = {
     selectedRequest: null,
     selectedService: null,
     selectedStreamingType: null,
-    queryArr: null
+    queryArr: null,
+    protoPath: null,
+    services: null,
   },
   newRequestCookies: {
     cookiesArr: [],
