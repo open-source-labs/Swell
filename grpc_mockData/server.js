@@ -8,16 +8,16 @@ const HOSTPORT = "0.0.0.0:50051";
 
 const dataStream = [
   {
-    message: "Bob"
+    message: "You"
   },
   {
-    message: "Kate"
+    message: "Are"
   },
   {
-    message: "Jim"
+    message: "doing IT"
   },
   {
-    message: "Sara"
+    message: "Champ"
   }
 ];
 
@@ -54,6 +54,7 @@ async function sayHellos(ctx) {
   let streamData = await hl(reqMessages)
   ctx.res = streamData;
   metadata.set('serverStream', 'indeed')
+  dataStream.pop()
 
   ctx.sendMetadata(metadata)
 
@@ -71,12 +72,14 @@ function sayHelloCs (ctx) {
   console.log('got sayHelloClients')
   let counter = 0
   // console.log("ctx content:",ctx.req)
+  let messages = [];
   return new Promise((resolve, reject) => {
     hl(ctx.req)
       .map(message => {
         counter++
         console.log('message content',message.name)
         ctx.response.res = { message: 'Client stream: ' + message.name }
+        messages.push(message.name)
         ctx.sendMetadata(metadata)
 
 
@@ -86,7 +89,7 @@ function sayHelloCs (ctx) {
       .toCallback((err, result) => {
         if (err) return reject(err)
         console.log(`done sayHelloClients counter ${counter}`)
-        ctx.response.res = { message: 'SAYHELLOCs Client stream: ' + counter }
+        ctx.response.res = { message: 'SAYHELLOCs Client stream: ' + messages }
         console.log(ctx.response.res)
         resolve()
       })

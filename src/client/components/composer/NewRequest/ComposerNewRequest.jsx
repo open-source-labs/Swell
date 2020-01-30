@@ -199,7 +199,7 @@ class ComposerNewRequest extends Component {
           let query = queryArrStr[i];
           let regexVar = (/\r?\n|\r|↵/g);
           query = (query.replace(regexVar, ''));
-          queryArr.push(JSON.parse(queryArr));
+          queryArr.push(JSON.parse(query));
           
         }
 
