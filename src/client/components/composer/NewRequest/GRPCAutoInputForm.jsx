@@ -135,7 +135,7 @@ class GRPCAutoInputForm extends Component {
       console.log('here')
       const selectedService = this.props.newRequestStreams.selectedService;
       const selectedRequest = this.props.newRequestStreams.selectedRequest;
-      const services = this.props.services;
+      const services = this.props.newRequestStreams.services;
       let streamingType;
       let packageName;
       for (const service of services) {
@@ -220,10 +220,10 @@ class GRPCAutoInputForm extends Component {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
-    let services = this.props.services;
+    let services = this.props.newRequestStreams.services;
     const servicesList =[];
     const rpcsList = [];
-    if (this.props.services) {
+    if (services) {
       for (let i = 0; i < services.length; i++) {
         servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
       }
