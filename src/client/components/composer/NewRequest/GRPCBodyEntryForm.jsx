@@ -42,6 +42,7 @@ class GRPCBodyEntryForm extends Component {
 }`);
 
     this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       streamsArr: this.props.newRequestStreams.streamsArr,
       count: this.props.newRequestStreams.streamsArr.length,
       streamContent: this.props.newRequestStreams.streamContent
