@@ -219,6 +219,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
               console.log('unary error' , err);
             }
             console.log('sent UNARY request', data);
+            // Close Connection and set time received for Unary
             reqResObj.timeReceived = Date.now();
             reqResObj.connection = 'closed';
             reqResObj.connectionType = 'plain';
@@ -349,6 +350,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             reqResObj.connection = 'closed';
             reqResObj.connectionType = 'plain';
             reqResObj.timeReceived = Date.now();
+            // reqResObj.response.events.push(response) // no event expected from on 'end';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
             console.log('server response ended', data)
           });
 
