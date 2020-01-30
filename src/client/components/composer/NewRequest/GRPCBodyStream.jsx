@@ -8,11 +8,12 @@ class GRPCBodyStream extends Component {
   render() {
     let bodyType;
     let streamBody;
+    let count = this.props.newRequestStreams.count;
+    let streamContent = this.props.newRequestStreams.streamContent[count];
     if (this.props.newRequestStreams.count === 1) {
-
       streamBody = (
         <textarea
-          value={`${this.props.newRequestStreams.streamContent ? this.props.newRequestStreams.streamContent : ''}`}
+          value={`${streamContent ? streamContent : ''}`}
           className={"composer_textarea grpc"}
           id='grpcBodyEntryTextArea'
           // style={{ 'resize': 'none' }} 
@@ -25,7 +26,7 @@ class GRPCBodyStream extends Component {
     } else {
       streamBody = (
         <textarea
-          value={this.props.newRequestStreams.streamContent}
+          value={streamContent}
           className={"composer_textarea grpc"}
           id='grpcBodyEntryTextArea'
           // style={{ 'resize': 'none' }} 

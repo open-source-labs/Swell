@@ -52,8 +52,8 @@ class GRPCProtoEntryForm extends Component {
       });
       let parsedProtoContent = protoParserFunc(this.props.newRequestBody.protoContent)
       .then(data => {
-        console.log(data);
-        console.log('after parser runs', data.serviceArr);
+        // console.log(data);
+        // console.log('after parser runs', data.serviceArr);
         // this.setState({
         //   ...this.state,
         //   services: data.serviceArr,

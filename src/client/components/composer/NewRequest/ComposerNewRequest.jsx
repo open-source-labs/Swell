@@ -268,7 +268,7 @@ class ComposerNewRequest extends Component {
       this.props.setNewRequestStreams({
         streamsArr: [],
         count: 0,
-        streamContent: '',
+        streamContent: [],
         selectedPackage: null,
         selectedService: null,
         selectedRequest: null,
