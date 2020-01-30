@@ -9,10 +9,12 @@ class GRPCBodyStream extends Component {
     let bodyType;
     let streamBody;
     // console.log('this.props.newRequestStreams.count: ', this.props.newRequestStreams.count)
-    let count = this.props.newRequestStreams.count - 1;
-    let streamContent = this.props.newRequestStreams.streamContent[count];
+    // let count = this.props.newRequestStreams.count - 1;
+    // console.log('this.props.stream: ', this.props.stream)
+    // console.log('this.props.stream.id: ', this.props.stream.id)
+    let streamContent = this.props.newRequestStreams.streamContent[this.props.stream.id];
     // let textareaID = `grpcBodyEntryTextArea${count}`;
-    if (this.props.newRequestStreams.count === 1) {
+    if (this.props.stream.id === 1) {
       streamBody = (
         <textarea
           value={`${streamContent ? streamContent : ''}`}

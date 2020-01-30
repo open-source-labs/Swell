@@ -32,14 +32,13 @@ class GRPCBodyEntryForm extends Component {
 
   addStream() {
     const firstBodyContent = this.props.newRequestStreams.streamsArr[0].query;
-    const count = this.props.newRequestStreams.count;
+    // const count = this.props.newRequestStreams.count;
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
     newStream.active = false;
     newStream.query = firstBodyContent;
     this.props.newRequestStreams.streamsArr.push(newStream)
-    this.props.newRequestStreams.streamContent.push(`{${firstBodyContent}
-}`);
+    this.props.newRequestStreams.streamContent.push(firstBodyContent);
 
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
@@ -50,20 +49,19 @@ class GRPCBodyEntryForm extends Component {
   }
 
   onChangeUpdateStream(streamID, value) {
-    let index;
     for (let i = 0; i < this.props.newRequestStreams.streamsArr.length; i++) {
       if (this.props.newRequestStreams.streamsArr[i].id === streamID) {
-        index = i;
-        this.props.newRequestStreams.streamsArr[index].active = true;
-        this.props.newRequestStreams.streamsArr[index].query = value;
-        this.props.newRequestStreams.streamContent[index] = value;
+        this.props.newRequestStreams.streamsArr[streamID].active = true;
+        this.props.newRequestStreams.streamsArr[streamID].query = value;
+        this.props.newRequestStreams.streamContent[streamID] = value;
+
+        this.props.setNewRequestStreams({
+          ...this.props.newRequestStreams,
+          streamsArr: this.props.newRequestStreams.streamsArr,
+          streamContent: this.props.newRequestStreams.streamContent
+        });
       };
     }
-  this.props.setNewRequestStreams({
-      ...this.props.newRequestStreams,
-      streamsArr: this.props.newRequestStreams.streamsArr,
-      streamContent: this.props.newRequestStreams.streamContent
-    });
   }
 
   toggleShow() {
