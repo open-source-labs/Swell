@@ -3,16 +3,17 @@ import { ipcRenderer } from "electron";
 import { remote } from 'electron';
 import * as store from '../store';
 import * as actions from '../actions/actions';
+import { Metadata } from "grpc";
 
 
-var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
+const PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
 
-var async = require('async');
-var fs = require('fs');
-var parseArgs = require('minimist');
-var path = require('path');
+const async = require('async');
+const fs = require('fs');
+const parseArgs = require('minimist');
+const path = require('path');
 const grpc = require('grpc');
-var protoLoader = require('@grpc/proto-loader');
+const protoLoader = require('@grpc/proto-loader');
 
 
 // let rpcFunctions = [0, 1, 2, 3];
@@ -89,6 +90,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let services = reqResObj.servicesObj;
       let packageName = reqResObj.packageName;
       let url = reqResObj.url;
+      let queryArr = reqResObj.queryArr;
       console.log('pckname', packageName, 'service', service, 'rpc', rpc, 'services', services)
       //go through services object, find service where name matches our passed in service, then grab the rpc list of that service, also save that service
       let rpcList;
@@ -206,78 +208,105 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           
           // queryObject[first] = currQuery[1];
           let query = reqResObj.queryArr[0];
-          client[rpc](query, (err, data)=> {
+          // let metadata = new grpc.Metadata();
+          metadata.add('testHeader', 'works?')
+          client[rpc](query,  (err, data)=> {
             if (err) {
               console.log('unary error' , err);
             }
             console.log('sent UNARY request', data);
             reqResObj.response.events.push(data)
+            reqResObj.response.events.push()
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
           })
 
         }
         else if (rpcType === 'CLIENT STREAM') {
-          // call = client[rpc](function(error, response) {
-          //   if (error) {
-          //     console.log(error);
-          //     return;
-          //   }
-          // else {
-          //   reqResObj.response.events.push(reponse)
-          //   console.log('in client stream response', response);
-          // }});
-
-          let callStack = reqResObj.queryArr;
-          // console.log('callstack before map', callStack);
-          callStack = callStack.map((ele)=> {
-          //   let queryObj = {};
-          //     for (let i = 0; i < keysArray.length; i+= 1) {
-          //   let key = keysArray[i];
-          //   queryObj[key] = reqResObj.queryArr[i];
-          // }
-            // let key = keysArray[i];
-            // let callObj = {key : ele}
-            // console.log('callobj' , ele)
-            return () => {
-              call.write(ele)
+          let call = client[rpc](function(error, response) {
+            if (error) {
+              console.log('error in client stream', error);
+              return;
             }
-          })
-          console.log('callstack array', callStack)
-          async.series(callStack, function(err, result) {
-            call.end();
-            reqResObj.response.events.push(result)
-            console.log('result of async series', result);
+          else {
+            reqResObj.response.events.push(response)
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-            console.log('ran all functions')
-          });
+            console.log('in client stream response', response);
+          }});
+
+          // let callStack = reqResObj.queryArr;
+          // console.log('callstack before map', callStack);
+          // callStack = callStack.map((ele)=> {
+          // //   let queryObj = {};
+          // //     for (let i = 0; i < keysArray.length; i+= 1) {
+          // //   let key = keysArray[i];
+          // //   queryObj[key] = reqResObj.queryArr[i];
+          // // }
+          //   // let key = keysArray[i];
+          //   // let callObj = {key : ele}
+          //   // console.log('callobj' , ele)
+          //   return () => {
+          //     console.log('one of callstack', ele)
+          //     call.write(ele)
+          //   }
+          // })
+          // console.log('callstack array', callStack)
+          for (var i = 0; i < queryArr.length; i++) {
+            let query = queryArr[i];
+            call.write(query);
+          }
+          call.end();
+          // async.series(callStack, function(err, result) {
+          //   call.end();
+          //   // reqResObj.response.events.push(result)
+          //   console.log('result of async series', result);
+
+          //   console.log('ran all functions')
+          // });
 
         }
         else if (rpcType === 'SERVER STREAM') {
           let dataArr;
           const call = client[rpc](reqResObj.queryArr[0]);
-          call.on("data", data => {
+          call.on("data", resp => {
             // console.log('server streaming message:', data);
             //do something to data we got
-            reqResObj.response.events.push(data)
+            reqResObj.response.events.push(resp)
+            console.log('data response server stream',resp)
+            console.log(reqResObj.response.events)
 
-            dataArr.push(data);
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            // dataArr.push(resp);
+          })
+          call.on('error', () => {
+            // store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            console.log('server side stream erring out')
           })
           call.on('end', () => {
-            console.log('server side stream completed', dataArr)
+            // store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            console.log('server side stream completed')
           })
         }
         //else BIDIRECTIONAL
         else {
-          let call = client[service];
+          let call = client[rpc]();
           call.on('data', (response) => {
           // console.log('Got server response "' + response );
-          reqResObj.response.events.push(data)
+          reqResObj.response.events.push(response)
+          console.log(reqResObj.response.events)
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+
 
             });
-
-          call.on('end', ()=> {
-            // console.log('server response ended')
+          call.on('error', ()=> {
+            console.log('server ended connection with error')
+          })
+          call.on('end', (data)=> {
+            console.log('server response ended', data)
           });
 
           for (var i = 0; i < queryArr.length; i++) {
@@ -295,42 +324,42 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     }
 
     // old code taken from other controllers
-    const sendGrpcToMain = (args) => {
-        return new Promise(resolve => {
-            ipcRenderer.send('open-grpc', args)
-            ipcRenderer.on('reply-grpc', (event, result) => {
-            // needs formatting because component reads them in a particular order
-            result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
-            resolve(result);
-        })
-      })
-    }
-    const openGrpcConnection = (reqResObj) => {
-    // initialize response data
-        reqResObj.response.headers = {};
-        reqResObj.response.events = [];
-        reqResObj.response.cookies = [];
-        reqResObj.connection = 'open';
-        reqResObj.timeSent = Date.now();
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
+  //   const sendGrpcToMain = (args) => {
+  //       return new Promise(resolve => {
+  //           ipcRenderer.send('open-grpc', args)
+  //           ipcRenderer.on('reply-grpc', (event, result) => {
+  //           // needs formatting because component reads them in a particular order
+  //           result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
+  //           resolve(result);
+  //       })
+  //     })
+  //   }
+  //   const openGrpcConnection = (reqResObj) => {
+  //   // initialize response data
+  //       reqResObj.response.headers = {};
+  //       reqResObj.response.events = [];
+  //       reqResObj.response.cookies = [];
+  //       reqResObj.connection = 'open';
+  //       reqResObj.timeSent = Date.now();
+  //       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-        this.sendGrpcToMain({reqResObj})
-        .then(response => {
-        response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
-        });
-  }
-  const handleResponse = (response, reqResObj) => {
-    reqResObj.connection = 'closed';
-    reqResObj.connectionType = 'plain';
-    reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(response.data));
-  }
+  //       this.sendGrpcToMain({reqResObj})
+  //       .then(response => {
+  //       response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
+  //       });
+  // }
+  // const handleResponse = (response, reqResObj) => {
+  //   reqResObj.connection = 'closed';
+  //   reqResObj.connectionType = 'plain';
+  //   reqResObj.timeReceived = Date.now();
+  //   reqResObj.response.events.push(JSON.stringify(response.data));
+  // }
 
-  const handleError =  (errorsObj, reqResObj) => {
-    reqResObj.connection = 'error';
-    reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(errorsObj));
-    store.default.dispatch(actions.reqResUpdate(reqResObj));
-  }
+  // const handleError =  (errorsObj, reqResObj) => {
+  //   reqResObj.connection = 'error';
+  //   reqResObj.timeReceived = Date.now();
+  //   reqResObj.response.events.push(JSON.stringify(errorsObj));
+  //   store.default.dispatch(actions.reqResUpdate(reqResObj));
+  // }
 };
 export default grpcController;
