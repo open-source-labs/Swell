@@ -13,8 +13,17 @@ class HistoryDate extends Component {
   }
 
   focusOnForm(event) {
-    let composerUrlField = document.querySelector('.composer_url_input');
-    composerUrlField.focus()
+    console.log(this.props)
+    if(this.props.content.gRPC) {
+      let composerUrlField = document.querySelector('.composer_method_select grpc');
+      composerUrlField.focus()
+
+    }
+    else {
+      let composerUrlField = document.querySelector('.composer_url_input');
+      composerUrlField.focus()
+    }
+    
   }
 
   render() {
