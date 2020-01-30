@@ -278,42 +278,42 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     }
 
     // old code taken from other controllers
-    const sendGrpcToMain = (args) => {
-        return new Promise(resolve => {
-            ipcRenderer.send('open-grpc', args)
-            ipcRenderer.on('reply-grpc', (event, result) => {
-            // needs formatting because component reads them in a particular order
-            result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
-            resolve(result);
-        })
-      })
-    }
-    const openGrpcConnection = (reqResObj) => {
-    // initialize response data
-        reqResObj.response.headers = {};
-        reqResObj.response.events = [];
-        reqResObj.response.cookies = [];
-        reqResObj.connection = 'open';
-        reqResObj.timeSent = Date.now();
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
+  //   const sendGrpcToMain = (args) => {
+  //       return new Promise(resolve => {
+  //           ipcRenderer.send('open-grpc', args)
+  //           ipcRenderer.on('reply-grpc', (event, result) => {
+  //           // needs formatting because component reads them in a particular order
+  //           result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
+  //           resolve(result);
+  //       })
+  //     })
+  //   }
+  //   const openGrpcConnection = (reqResObj) => {
+  //   // initialize response data
+  //       reqResObj.response.headers = {};
+  //       reqResObj.response.events = [];
+  //       reqResObj.response.cookies = [];
+  //       reqResObj.connection = 'open';
+  //       reqResObj.timeSent = Date.now();
+  //       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-        this.sendGrpcToMain({reqResObj})
-        .then(response => {
-        response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
-        });
-  }
-  const handleResponse = (response, reqResObj) => {
-    reqResObj.connection = 'closed';
-    reqResObj.connectionType = 'plain';
-    reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(response.data));
-  }
+  //       this.sendGrpcToMain({reqResObj})
+  //       .then(response => {
+  //       response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
+  //       });
+  // }
+  // const handleResponse = (response, reqResObj) => {
+  //   reqResObj.connection = 'closed';
+  //   reqResObj.connectionType = 'plain';
+  //   reqResObj.timeReceived = Date.now();
+  //   reqResObj.response.events.push(JSON.stringify(response.data));
+  // }
 
-  const handleError =  (errorsObj, reqResObj) => {
-    reqResObj.connection = 'error';
-    reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(errorsObj));
-    store.default.dispatch(actions.reqResUpdate(reqResObj));
-  }
+  // const handleError =  (errorsObj, reqResObj) => {
+  //   reqResObj.connection = 'error';
+  //   reqResObj.timeReceived = Date.now();
+  //   reqResObj.response.events.push(JSON.stringify(errorsObj));
+  //   store.default.dispatch(actions.reqResUpdate(reqResObj));
+  // }
 };
 export default grpcController;
