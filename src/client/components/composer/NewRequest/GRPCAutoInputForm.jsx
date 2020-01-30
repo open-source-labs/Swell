@@ -174,7 +174,7 @@ class GRPCAutoInputForm extends Component {
                   // results.push(`${key}: ${message.def[key]}`)
                   console.log('key: ', key);
                   console.log('message.def: ', message.def);
-                  results.push(`${key}: ${message.def[key].type.slice(5).toLowerCase()}`)
+                  results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                 }
                 break;
                 // msgNameCheck = false;
