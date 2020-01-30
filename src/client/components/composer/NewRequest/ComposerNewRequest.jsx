@@ -284,13 +284,13 @@ class ComposerNewRequest extends Component {
       });
 
       this.props.setNewRequestStreams({
-        streamsArr: [],
-        count: 0,
-        streamContent: '',
-        selectedPackage: null,
-        selectedService: null,
-        selectedRequest: null,
-        selectedStreamingType: null,
+        ...this.props.newRequestStreams,
+        // streamsArr: [''],
+        // streamContent: [],
+        // selectedPackage: null,
+        // selectedService: null,
+        // selectedRequest: null,
+        // selectedStreamingType: null,
       });
 
       this.props.setNewRequestCookies({
@@ -299,8 +299,8 @@ class ComposerNewRequest extends Component {
       });
 
       this.props.setNewRequestBody({
+        ...this.newRequestBody,
         bodyContent: '',
-        protoContent: '',
         bodyVariables: '',
         bodyType: 'none',
         rawType: 'Text (text/plain)',
@@ -320,8 +320,12 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
-    document.getElementById('stream').innerText = "STREAM";
-    document.getElementById('dropdownService').selectedIndex = 0;
+    if (this.props.newRequestFields.gRPC) {
+      document.getElementById('stream').innerText = "STREAM";
+      // document.getElementById('dropdownService').selectedIndex = 0;
+      // document.getElementById('dropdownRequest').selectedIndex = 0;
+      // document.getElementById('grpcBodyEntryTextArea').value = '';
+    }
   }
 
   render() {
