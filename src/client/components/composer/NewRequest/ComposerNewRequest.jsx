@@ -233,7 +233,8 @@ class ComposerNewRequest extends Component {
             rawType: this.props.newRequestBody.rawType
           },
           response: {
-            headers: null,
+            cookies: [],
+            headers: {},
             stream: null,
             events: [],
           },
