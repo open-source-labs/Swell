@@ -1,6 +1,7 @@
 const path = require("path");
 const Mali = require("mali");
 const hl = require("highland");
+const grpc = require('grpc');
 
 const PROTO_PATH = path.join(__dirname, "./protos/hw2.proto");
 const HOSTPORT = "0.0.0.0:50051";
@@ -23,14 +24,27 @@ const dataStream = [
 /**
  * Implements the SayHello RPC method.
  */
+
+
 function sayHello(ctx) {
+  let metadata = new grpc.Metadata();
+  metadata.set('it', 'works?')
+  metadata.set('indeed', 'it do')
   console.dir(ctx.metadata, { depth: 3, colors: true });
   console.log(`got sayHello request name: ${ctx.req.name}`);
   ctx.res = { message: "Hello " + ctx.req.name };
+  // let metadata = new grpc.Metadata();
+  // metadata.set('it', 'does?')
+  metadata.set('UNARY', 'yes')
+
+  ctx.sendMetadata(metadata)
   console.log(`set sayHello response: ${ctx.res.message}`);
 }
 
 async function sayHellos(ctx) {
+  let metadata = new grpc.Metadata();
+  metadata.set('it', 'works?')
+  metadata.set('indeed', 'it do')
   console.dir(ctx.metadata, { depth: 3, colors: true });
   console.log(`got sayHellos request name:`, JSON.stringify(ctx.req, null, 4));
   let reqMessages = {"message": 'hello!!! ' + ctx.req.name}
@@ -39,12 +53,20 @@ async function sayHellos(ctx) {
   console.log('what is this?????', reqMessages)
   let streamData = await hl(reqMessages)
   ctx.res = streamData;
-  
+  metadata.set('serverStream', 'indeed')
+
+  ctx.sendMetadata(metadata)
+
   console.log(`done sayHellos`);
   ctx.res.end()
+  // dataStream = [];
 }
 
 function sayHelloCs (ctx) {
+  let metadata = new grpc.Metadata();
+  metadata.set('it', 'works?')
+  metadata.set('indeed', 'it do')
+  metadata.set('clientStream', 'indubitably')
   console.dir(ctx.metadata, { depth: 3, colors: true })
   console.log('got sayHelloClients')
   let counter = 0
@@ -55,6 +77,9 @@ function sayHelloCs (ctx) {
         counter++
         console.log('message content',message.name)
         ctx.response.res = { message: 'Client stream: ' + message.name }
+        ctx.sendMetadata(metadata)
+
+
 
       })
       .collect()
@@ -69,15 +94,23 @@ function sayHelloCs (ctx) {
 }
 
 function sayHelloBidi(ctx) {
+  let metadata = new grpc.Metadata();
+  metadata.set('it', 'works?')
+  metadata.set('indeed', 'it do')
   console.log("got sayHelloBidi");
   console.dir(ctx.metadata, { depth: 3, colors: true });
   let counter = 0;
   ctx.req.on("data", d => {
     counter++;
     ctx.res.write({ message: "bidi stream: " + d.name });
+    
+
   });
+  metadata.set('bidiStream', 'ohyes')
+  ctx.sendMetadata(metadata);
   ctx.req.on("end", () => {
     console.log(`done sayHelloBidi counter ${counter}`);
+
     ctx.res.end();
   });
 }
