@@ -3,16 +3,17 @@ import { ipcRenderer } from "electron";
 import { remote } from 'electron';
 import * as store from '../store';
 import * as actions from '../actions/actions';
+import { Metadata } from "grpc";
 
 
-var PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
+const PROTO_PATH = __dirname + '/../../../protos/savedfile.proto';
 
-var async = require('async');
-var fs = require('fs');
-var parseArgs = require('minimist');
-var path = require('path');
+const async = require('async');
+const fs = require('fs');
+const parseArgs = require('minimist');
+const path = require('path');
 const grpc = require('grpc');
-var protoLoader = require('@grpc/proto-loader');
+const protoLoader = require('@grpc/proto-loader');
 
 
 // let rpcFunctions = [0, 1, 2, 3];
@@ -89,6 +90,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let services = reqResObj.servicesObj;
       let packageName = reqResObj.packageName;
       let url = reqResObj.url;
+      let queryArr = reqResObj.queryArr;
       console.log('pckname', packageName, 'service', service, 'rpc', rpc, 'services', services)
       //go through services object, find service where name matches our passed in service, then grab the rpc list of that service, also save that service
       let rpcList;
@@ -211,6 +213,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           reqResObj.connection = 'open';
           reqResObj.timeSent = Date.now();
           client[rpc](query, (err, data)=> {
+          // let metadata = new grpc.Metadata();
+          metadata.add('testHeader', 'works?')
             if (err) {
               console.log('unary error' , err);
             }
@@ -219,82 +223,109 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             reqResObj.connection = 'closed';
             reqResObj.connectionType = 'plain';
             reqResObj.response.events.push(data)
+            reqResObj.response.events.push()
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
           })
 
         }
         else if (rpcType === 'CLIENT STREAM') {
-          // call = client[rpc](function(error, response) {
-          //   if (error) {
-          //     console.log(error);
-          //     return;
-          //   }
-          // else {
-          //   reqResObj.response.events.push(reponse)
-          //   console.log('in client stream response', response);
-          // }});
-
-          let callStack = reqResObj.queryArr;
-          // console.log('callstack before map', callStack);
-          callStack = callStack.map((ele)=> {
-          //   let queryObj = {};
-          //     for (let i = 0; i < keysArray.length; i+= 1) {
-          //   let key = keysArray[i];
-          //   queryObj[key] = reqResObj.queryArr[i];
-          // }
-            // let key = keysArray[i];
-            // let callObj = {key : ele}
-            // console.log('callobj' , ele)
-            return () => {
-              // Open Connection and set time sent for Client Stream
-              reqResObj.connection = 'open';
-              reqResObj.connectionType = 'plain';
-              reqResObj.timeSent = Date.now();
-              call.write(ele)
+          let call = client[rpc](function(error, response) {
+            if (error) {
+              console.log('error in client stream', error);
+              return;
             }
-          })
-          console.log('callstack array', callStack)
-          async.series(callStack, function(err, result) {
-            call.end();
-            // reqResObj.response.events.push(result)
-            //Close Connection for client Stream
-            reqResObj.connection = 'closed';
-            reqResObj.connectionType = 'plain';
-            reqResObj.timeReceived = Date.now();
-            reqResObj.response.events.push(data)
+          else {
+            reqResObj.response.events.push(response)
             store.default.dispatch(actions.reqResUpdate(reqResObj));
-            console.log('result of async series', result);
 
-            console.log('ran all functions')
-          });
+            console.log('in client stream response', response);
+          }});
+
+          // let callStack = reqResObj.queryArr;
+          // console.log('callstack before map', callStack);
+          // callStack = callStack.map((ele)=> {
+          // //   let queryObj = {};
+          // //     for (let i = 0; i < keysArray.length; i+= 1) {
+          // //   let key = keysArray[i];
+          // //   queryObj[key] = reqResObj.queryArr[i];
+          // // }
+          //   // let key = keysArray[i];
+          //   // let callObj = {key : ele}
+          //   // console.log('callobj' , ele)
+          //   return () => {
+          //     console.log('one of callstack', ele)
+          //     call.write(ele)
+          //   }
+          // })
+          // console.log('callstack array', callStack)
+          for (var i = 0; i < queryArr.length; i++) {
+            let query = queryArr[i];
+            reqResObj.connection = 'open';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeSent = Date.now();
+            call.write(query);
+            // add console log for completed write?
+          }
+          call.end();
+          //Close Connection for client Stream
+          reqResObj.connection = 'closed';
+          reqResObj.connectionType = 'plain';
+          reqResObj.timeReceived = Date.now();
+          reqResObj.response.events.push(response)
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+          // add console log for completed call
+
+          // async.series(callStack, function(err, result) {
+          //   call.end();
+          //   // reqResObj.response.events.push(result)
+          //   console.log('result of async series', result);
+
+          //   console.log('ran all functions')
+          // });
 
         }
         else if (rpcType === 'SERVER STREAM') {
           let dataArr;
           const call = client[rpc](reqResObj.queryArr[0]);
-          call.on("data", data => {
+          call.on("data", resp => {
             // console.log('server streaming message:', data);
             //do something to data we got
-            reqResObj.response.events.push(data)
+            reqResObj.response.events.push(resp)
+            console.log('data response server stream',resp)
+            console.log(reqResObj.response.events)
 
-            dataArr.push(data);
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            // dataArr.push(resp);
+          })
+          call.on('error', () => {
+            // store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            console.log('server side stream erring out')
           })
           call.on('end', () => {
-            console.log('server side stream completed', dataArr)
+            // store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            console.log('server side stream completed')
           })
         }
         //else BIDIRECTIONAL
         else {
-          let call = client[service];
+          let call = client[rpc]();
           call.on('data', (response) => {
-          console.log('Got server response "' + response );
-          reqResObj.response.events.push(data)
+          // console.log('Got server response "' + response );
+          reqResObj.response.events.push(response)
+          console.log(reqResObj.response.events)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-            });
 
-          call.on('end', ()=> {
-            // console.log('server response ended')
+
+            });
+          call.on('error', ()=> {
+            console.log('server ended connection with error')
+          })
+          call.on('end', (data)=> {
+            console.log('server response ended', data)
           });
 
           for (var i = 0; i < queryArr.length; i++) {
