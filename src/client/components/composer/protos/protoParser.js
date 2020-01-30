@@ -1,33 +1,17 @@
 const fs =  require('fs');
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
-// const electron = require('electron');
-// import { ipcRenderer } from "electron";
-// const { remote } = require('electron');
-// const app = require('electron').remote.app;
-// import { remote } from 'electron';
 const path = require('path')
 
 //temp for testing >>>>
-// console.log(electron);
-// console.log(__dirname);
-// console.log('app.getAppPath(): ', remote.app.getAppPath());
-// console.log(path.join(__dirname, 'grpc_mockData/protos/hw2.proto'));
-// console.log(path.join(process.cwd(), 'grpc_mockData/protos/hw2.proto'));
-// console.log(path);
-// const dirName = remote.app.getAppPath();
-// console.log(process.cwd());
-let tempData = fs.readFileSync(path.join(process.cwd(), 'grpc_mockData/protos/route_guide.proto'), 'utf-8')
-  // tempData = data;
-  // console.log('data: ', tempData);
-  // write to saveProto file
-  // const dirName = remote.app.getAppPath();
-  fs.writeFileSync(path.join(process.cwd(), 'src/client/components/composer/protos/saveProto.proto'), tempData, 'utf-8')
-    console.log('Proto file has been saved')
+// let tempData = fs.readFileSync(path.join(process.cwd(), 'grpc_mockData/protos/route_guide.proto'), 'utf-8')
+
+  // fs.writeFileSync(path.join(process.cwd(), 'src/client/components/composer/protos/saveProto.proto'), tempData, 'utf-8')
+  //   console.log('Proto file has been saved')
   // })
 // });
 // temp for testing ^^^^
-async function protoParser(protoBodyData) {
+async function protoParserFunc(protoBodyData) {
   // define storage for .proto parsed content
   let protoStorage = {};
   //store the original .proto content in the storage before parsing
@@ -51,10 +35,10 @@ async function protoParser(protoBodyData) {
     defaults: true,
     oneofs:true
   };
-  console.log('before protoLoader');
+  // console.log('before protoLoader');
   //create gRPC package definition w/ protoLoader
   protoStorage.packageDefinition = protoLoader.loadSync(PROTO_PATH, protoOptionsObj);
-  console.log('after protoLoader');
+  // console.log('after protoLoader');
   //create descriptor from package packageDefinition
   //descriptor --> gRPC uses the Protobuf .proto file format to define your messages, services and some aspects of the code generation.
   protoStorage.descriptor = grpc.loadPackageDefinition(protoStorage.packageDefinition);
@@ -62,17 +46,26 @@ async function protoParser(protoBodyData) {
   protoStorage.packageName = Object.keys(protoStorage.descriptor)[0];
   // console.log('package name: ',protoStorage.packageName);
   protoStorage.descriptorDefinition = protoStorage.descriptor[protoStorage.packageName];
-  // console.log('protoStorage.descriptorDefinition: ',protoStorage.descriptorDefinition);
-  const serviceObj = {};
-
-  for (let [serviceName, serviceDef] of Object.entries(protoStorage.descriptorDefinition))
+  console.log('protoStorage.descriptorDefinition: ',protoStorage.descriptorDefinition);
+  protoStorage.protoPath = PROTO_PATH;
+  console.log(PROTO_PATH);
+  const serviceArr = [];
+  for (let [serviceName, serviceDef] of Object.entries(protoStorage.descriptorDefinition)){
   if (typeof serviceDef === 'function') {
+    console.log('serviceName: ', serviceName);
+    console.log('serviceDef: ', serviceDef);
+    const serviceObj = {};
+    serviceObj.packageName = protoStorage.packageName;
     // console.log('serviceName, serviceDef: ', serviceName, serviceDef);
     serviceObj.name = serviceName;
     serviceObj.rpcs = [];
     serviceObj.messages = []
+    let counter = 1;
     for (let [requestName, requestDef] of Object.entries(serviceDef.service)) {
-      // console.log('requestName, requestDef: ', requestName, requestDef);
+      console.log('counter: ', counter);
+      counter++
+      console.log('requestName: ', requestName);
+      console.log('requestDef: ', requestDef);
       const streamingReq = requestDef.requestStream;
       const streamingRes = requestDef.responseStream;
       // console.log('streamingReq, streamingRes: ', streamingReq, streamingRes);
@@ -90,21 +83,40 @@ async function protoParser(protoBodyData) {
       });
 
       // console.log('serviceName: ', serviceName); // ServiceName
-      console.log('requestName: ', requestName); // RPC Request Name
+      // console.log('requestName: ', requestName); // RPC Request Name
       // console.log('requestDef: ', requestDef); // too much info
+      let draftObj;
       requestDef.requestType.type.field.forEach((msgObj) => {
         let mName = msgObj.name;
         // let mType = msgObj.type;
         let bool = false;
         if (msgObj.type === 'TYPE_MESSAGE') bool = true;
+        if (!draftObj) {
+          draftObj = {
+            name: messageNameReq,
+            def: {},
 
-        serviceObj.messages.push({
-          name: messageNameReq,
-          def: {[mName]: msgObj.type},
-          nested: bool,
-          dependent: msgObj.typeName
-        })
+          }
+        }
+        draftObj.def[mName] = {};
+        draftObj.def[mName].type = msgObj.type ;
+        draftObj.def[mName].nested = bool ;
+        draftObj.def[mName].dependent = msgObj.typeName ;
+
+        // {
+        //   name: messageNameReq,
+        //   def: {
+        //     [mName]: {
+        //       type:msgObj.type,
+        //       nested: bool,
+        //       dependent: msgObj.typeName}
+        //     }
+        // }
+
+
       })
+      serviceObj.messages.push(draftObj)
+      /*
       requestDef.responseType.type.field.forEach((msgObj) => {
         let mName = msgObj.name;
         // let mType = msgObj.type;
@@ -119,23 +131,27 @@ async function protoParser(protoBodyData) {
         })
         // serviceObj.messages.def =
       })
+      */ // not using the details of the response object since user will run
+      // their own server
 
       // serviceObj[serviceName][requestName]
-      console.log('Request message type: ',requestDef.requestType.type); // need to iterate through .field to get all types per message
-      console.log('Request message name: ',requestDef.requestType.type.name); // Request message name
-      console.log('Request message type.field: ',requestDef.requestType.type.field);
-      console.log('message reqField [0].name: ', (requestDef.requestType.type.field)[0].name); // name of individual message field within message
-      console.log('message reqField [0].type: ', (requestDef.requestType.type.field)[0].type); // type of individual message field per message
-      console.log('Response message name: ',requestDef.responseType.type.name);// Response message name
+      // console.log('Request message type: ',requestDef.requestType.type); // need to iterate through .field to get all types per message
+      // console.log('Request message name: ',requestDef.requestType.type.name); // Request message name
+      // console.log('Request message type.field: ',requestDef.requestType.type.field);
+      // console.log('message reqField [0].name: ', (requestDef.requestType.type.field)[0].name); // name of individual message field within message
+      // console.log('message reqField [0].type: ', (requestDef.requestType.type.field)[0].type); // type of individual message field per message
+      // console.log('Response message name: ',requestDef.responseType.type.name);// Response message name
       // console.log('Response message type.field: ',requestDef.responseType.type.field);
-      console.log('message resField [0].name: ', (requestDef.responseType.type.field)[0].name); // name of individual content type within message
-      console.log('message resField [0].type: ', (requestDef.responseType.type.field)[0].type);// type of individual content type per message
+      // console.log('message resField [0].name: ', (requestDef.responseType.type.field)[0].name); // name of individual content type within message
+      // console.log('message resField [0].type: ', (requestDef.responseType.type.field)[0].type);// type of individual content type per message
 
-      console.log('serviceObj: ', serviceObj);
-      console.log('serviceObj.messages: ', serviceObj.messages);
+      // console.log('serviceObj: ', serviceObj);
+      // console.log('serviceObj.messages: ', serviceObj.messages);
     }
+    serviceArr.push(serviceObj);
   }
-  protoStorage.serviceObj = serviceObj;
+}
+  protoStorage.serviceArr = serviceArr;
   return protoStorage;
 }
 // test run of protoParser
@@ -238,7 +254,5 @@ async function protoParser(protoBodyData) {
       //   }
       // ]
 // console.log(tempData);
-protoParser(tempData).catch((err) => console.log(err));
-module.exports = {
-  protoParser
-};
+// protoParserFunc(tempData).catch((err) => console.log(err));
+export default protoParserFunc
