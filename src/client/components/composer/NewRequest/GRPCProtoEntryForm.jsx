@@ -14,6 +14,7 @@ class GRPCProtoEntryForm extends Component {
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.importProtos = this.importProtos.bind(this);
+    this.submitUpdatedProto = this.submitUpdatedProto.bind(this);
   }
 
   toggleShow() {
@@ -71,6 +72,25 @@ class GRPCProtoEntryForm extends Component {
     });
   }
 
+  updateProtoBody(value) {
+    this.props.setNewRequestBody({
+      ...this.props.newRequestBody,
+      protoContent: value
+    })
+  }
+
+  submitUpdatedProto() {
+    protoParserFunc(this.props.newRequestBody.protoContent)
+    .then(data => { 
+      this.props.setNewRequestStreams({
+        ...this.props.newRequestStreams,
+        services: data.serviceArr,
+        protoPath: data.protoPath
+      })
+    }).catch((err) => console.log(err));
+    document.getElementById("save-proto").innerText = 'Changes Saved ✓';
+  }
+
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -86,25 +106,26 @@ class GRPCProtoEntryForm extends Component {
           value={this.props.newRequestBody.protoContent}
           className={'composer_textarea grpc ' + bodyContainerClass}
           id='grpcProtoEntryTextArea'
-          style={{ 'resize': 'none' }}
+          // style={{ 'resize': 'none' }}
           type='text'
-          placeholder='Type or import .proto file'
+          placeholder='Import .proto file or paste a copy'
           rows={8}
-          onChange={(e) => {
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              protoContent: e.target.value
-            })
-          }}
+          onChange={e => this.updateProtoBody(e.target.value)}
+          // onChange={(e) => {
+          //   this.props.setNewRequestBody({
+          //     ...this.props.newRequestBody,
+          //     protoContent: e.target.value
+          //   })
+          // }}
         ></textarea>
         <button className="import-proto" onClick={this.importProtos}>Import Proto File</button>
+        <button id="save-proto" className="save-proto" onClick={this.submitUpdatedProto}>Save Changes</button>
 
         <GRPCAutoInputForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}
           newRequestStreams={this.props.newRequestStreams}
           setNewRequestStreams={this.props.setNewRequestStreams}
-          services = {this.state.services}
         />
 
       </div>

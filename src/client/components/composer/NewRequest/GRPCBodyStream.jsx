@@ -15,7 +15,7 @@ class GRPCBodyStream extends Component {
           value={`${this.props.newRequestStreams.streamContent ? this.props.newRequestStreams.streamContent : ''}`}
           className={"composer_textarea grpc"}
           id='grpcBodyEntryTextArea'
-          style={{ 'resize': 'none' }} 
+          // style={{ 'resize': 'none' }} 
           type='text'
           placeholder='Type query'
           rows={4}
@@ -28,7 +28,7 @@ class GRPCBodyStream extends Component {
           value={this.props.newRequestStreams.streamContent}
           className={"composer_textarea grpc"}
           id='grpcBodyEntryTextArea'
-          style={{ 'resize': 'none' }} 
+          // style={{ 'resize': 'none' }} 
           type='text'
           placeholder='Type query'
           rows={4}
@@ -41,7 +41,7 @@ class GRPCBodyStream extends Component {
       <input
         defaultValue={` Stream ${this.props.streamNum + 1}`}
         className='stream-number'
-        style={{ 'resize': 'none' }} 
+        // style={{ 'resize': 'none' }} 
         type="text"
       ></input>
       )
