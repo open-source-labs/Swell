@@ -148,7 +148,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('messagedef', message.def);
             Object.keys(messageDefObj).forEach((key)=>{
                keysArray.push(key)
-             }) 
+             })
             //   keysArray.push(key);
 
             // }
@@ -183,6 +183,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
         let client = new serverName[service](`${url}`, grpc.credentials.createInsecure()); //localhost should be variable destination from reqresObj
 
+
         if (rpcType === 'UNARY') {
           // let queryObj = {};
           // for (let i = 0; i < keysArray.length; i+= 1) {
@@ -198,25 +199,30 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           //     currQuery[i]= ele.slice(1);
           //     console.log('ele in loop', ele)
           //   }
-            
+
           // }
           // console.log(reqResObj.queryArr[0].slice(6).slice(0, -2).trim().split(','))
           // console.log('after forloop', currQuery)
           // .split(' ');
           // let first = currQuery[0];
           // let queryObject = {};
-          
+
           // queryObject[first] = currQuery[1];
           let query = reqResObj.queryArr[0];
+          // Open Connection and set time sent for Unary
+          reqResObj.connection = 'open';
+          reqResObj.timeSent = Date.now();
+          client[rpc](query, (err, data)=> {
           // let metadata = new grpc.Metadata();
           metadata.add('testHeader', 'works?')
-          client[rpc](query,  (err, data)=> {
             if (err) {
               console.log('unary error' , err);
             }
             console.log('sent UNARY request', data);
+            reqResObj.timeReceived = Date.now();
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
             reqResObj.response.events.push(data)
-            reqResObj.response.events.push()
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
           })
@@ -229,11 +235,18 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
               return;
             }
           else {
+            //Close Connection for client Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
             reqResObj.response.events.push(response)
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
             console.log('in client stream response', response);
           }});
+
+          // debugging call methods
+          console.log('call: ', call);
 
           // let callStack = reqResObj.queryArr;
           // console.log('callstack before map', callStack);
@@ -254,9 +267,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // console.log('callstack array', callStack)
           for (var i = 0; i < queryArr.length; i++) {
             let query = queryArr[i];
+            //Open Connection for client Stream
+            reqResObj.connection = 'open';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeSent = Date.now();
             call.write(query);
+            // add console log for completed write?
           }
           call.end();
+
+
+          // reqResObj.response.events.push(response)
+          // store.default.dispatch(actions.reqResUpdate(reqResObj));
+          // add console log for completed call
+
           // async.series(callStack, function(err, result) {
           //   call.end();
           //   // reqResObj.response.events.push(result)
@@ -268,6 +292,10 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         }
         else if (rpcType === 'SERVER STREAM') {
           let dataArr;
+          //Open Connection for SERVER Stream
+          reqResObj.connection = 'open';
+          reqResObj.connectionType = 'plain';
+          reqResObj.timeSent = Date.now();
           const call = client[rpc](reqResObj.queryArr[0]);
           call.on("data", resp => {
             // console.log('server streaming message:', data);
@@ -286,6 +314,12 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('server side stream erring out')
           })
           call.on('end', () => {
+            //Close Connection for SERVER Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
+            // reqResObj.response.events.push(response) // no event expected from on 'end';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
             // store.default.dispatch(actions.reqResUpdate(reqResObj));
 
             console.log('server side stream completed')
@@ -293,9 +327,14 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         }
         //else BIDIRECTIONAL
         else {
+
           let call = client[rpc]();
           call.on('data', (response) => {
           // console.log('Got server response "' + response );
+          //Close Individual Connection for BIDIRECTIONAL Stream
+          reqResObj.connection = 'pending';
+          reqResObj.connectionType = 'plain';
+          reqResObj.timeReceived = Date.now();
           reqResObj.response.events.push(response)
           console.log(reqResObj.response.events)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -306,12 +345,23 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('server ended connection with error')
           })
           call.on('end', (data)=> {
+            //Close Final Server Connection for BIDIRECTIONAL Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
             console.log('server response ended', data)
           });
 
           for (var i = 0; i < queryArr.length; i++) {
             let query = queryArr[i];
-
+            //Open Connection for BIDIRECTIONAL Stream
+            if (i === 0){
+              reqResObj.connection = 'open';
+            } else {
+              reqResObj.connection = 'pending';
+            }
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeSent = Date.now();
             call.write(query);
           }
           call.end();
@@ -323,43 +373,44 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
     }
 
-    // old code taken from other controllers
-  //   const sendGrpcToMain = (args) => {
-  //       return new Promise(resolve => {
-  //           ipcRenderer.send('open-grpc', args)
-  //           ipcRenderer.on('reply-grpc', (event, result) => {
-  //           // needs formatting because component reads them in a particular order
-  //           result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
-  //           resolve(result);
-  //       })
-  //     })
-  //   }
-  //   const openGrpcConnection = (reqResObj) => {
-  //   // initialize response data
-  //       reqResObj.response.headers = {};
-  //       reqResObj.response.events = [];
-  //       reqResObj.response.cookies = [];
-  //       reqResObj.connection = 'open';
-  //       reqResObj.timeSent = Date.now();
-  //       store.default.dispatch(actions.reqResUpdate(reqResObj));
+    /* old code taken from other controllers
+    const sendGrpcToMain = (args) => {
+        return new Promise(resolve => {
+            ipcRenderer.send('open-grpc', args)
+            ipcRenderer.on('reply-grpc', (event, result) => {
+            // needs formatting because component reads them in a particular order
+            result.reqResObj.response.cookies = this.cookieFormatter(result.reqResObj.response.cookies);
+            resolve(result);
+        })
+      })
+    }
+    const openGrpcConnection = (reqResObj) => {
+    // initialize response data
+        reqResObj.response.headers = {};
+        reqResObj.response.events = [];
+        reqResObj.response.cookies = [];
+        reqResObj.connection = 'open';
+        reqResObj.timeSent = Date.now();
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-  //       this.sendGrpcToMain({reqResObj})
-  //       .then(response => {
-  //       response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
-  //       });
-  // }
-  // const handleResponse = (response, reqResObj) => {
-  //   reqResObj.connection = 'closed';
-  //   reqResObj.connectionType = 'plain';
-  //   reqResObj.timeReceived = Date.now();
-  //   reqResObj.response.events.push(JSON.stringify(response.data));
-  // }
+        this.sendGrpcToMain({reqResObj})
+        .then(response => {
+        response.error ? this.handleError(response.error, response.reqResObj) : this.handleResponse(response.data, response.reqResObj);
+        });
+  }
+  const handleResponse = (response, reqResObj) => {
+    reqResObj.connection = 'closed';
+    reqResObj.connectionType = 'plain';
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(JSON.stringify(response.data));
+  }
 
-  // const handleError =  (errorsObj, reqResObj) => {
-  //   reqResObj.connection = 'error';
-  //   reqResObj.timeReceived = Date.now();
-  //   reqResObj.response.events.push(JSON.stringify(errorsObj));
-  //   store.default.dispatch(actions.reqResUpdate(reqResObj));
-  // }
+  const handleError =  (errorsObj, reqResObj) => {
+    reqResObj.connection = 'error';
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(JSON.stringify(errorsObj));
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
+  }
+  */
 };
 export default grpcController;
