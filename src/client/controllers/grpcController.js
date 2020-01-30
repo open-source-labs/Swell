@@ -214,7 +214,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           reqResObj.timeSent = Date.now();
           client[rpc](query, (err, data)=> {
           // let metadata = new grpc.Metadata();
-          metadata.add('testHeader', 'works?')
+
+          // metadata.add('testHeader', 'works?')
+          
             if (err) {
               console.log('unary error' , err);
             }
@@ -226,6 +228,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             reqResObj.response.events.push(data)
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
+
+          }).on('metadata', (metadata) => {
+            // code
+            console.log('in client got metadata', metadata)
+            console.log('in client got metadata repr is', metadata._internal_repr)
+
+
+            let keys = Object.keys(metadata._internal_repr)
+            for (let i = 0; i < keys.length; i += 1) {
+              let key = keys[i];
+              reqResObj.response.headers[key] = metadata._internal_repr[key][0];
+              console.log('reqred headers are now', reqResObj.response.headers)
+            }
+            store.default.dispatch(actions.reqResUpdate(reqResObj))
           })
 
         }
@@ -244,7 +260,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
             console.log('in client stream response', response);
-          }});
+          }}).on('metadata', (metadata) => {
+            // code
+            console.log('in client got metadata', metadata)
+            console.log('in client got metadata repr is', metadata._internal_repr)
+
+
+            let keys = Object.keys(metadata._internal_repr)
+            for (let i = 0; i < keys.length; i += 1) {
+              let key = keys[i];
+              reqResObj.response.headers[key] = metadata._internal_repr[key][0];
+              console.log('reqred headers are now', reqResObj.response.headers)
+            }
+            store.default.dispatch(actions.reqResUpdate(reqResObj))
+          });
 
           // debugging call methods
           console.log('call: ', call);
@@ -325,6 +354,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
             console.log('server side stream completed')
           })
+          call.on('metadata', (metadata) => {
+            // code
+            console.log('in client got metadata', metadata)
+            console.log('in client got metadata repr is', metadata._internal_repr)
+
+
+            let keys = Object.keys(metadata._internal_repr)
+            for (let i = 0; i < keys.length; i += 1) {
+              let key = keys[i];
+              reqResObj.response.headers[key] = metadata._internal_repr[key][0];
+              console.log('reqred headers are now', reqResObj.response.headers)
+            }
+            store.default.dispatch(actions.reqResUpdate(reqResObj))
+          })
         }
         //else BIDIRECTIONAL
         else {
@@ -341,6 +384,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
 
+            })
+            call.on('metadata', (metadata) => {
+              // code
+              console.log('in client got metadata', metadata)
+              console.log('in client got metadata repr is', metadata._internal_repr)
+  
+  
+              let keys = Object.keys(metadata._internal_repr)
+              for (let i = 0; i < keys.length; i += 1) {
+                let key = keys[i];
+                reqResObj.response.headers[key] = metadata._internal_repr[key][0];
+                console.log('reqred headers are now', reqResObj.response.headers)
+              }
+              store.default.dispatch(actions.reqResUpdate(reqResObj))
             });
           call.on('error', ()=> {
             console.log('server ended connection with error')
