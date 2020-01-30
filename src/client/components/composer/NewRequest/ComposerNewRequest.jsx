@@ -185,6 +185,23 @@ class ComposerNewRequest extends Component {
           .splice(1)
           .join('/')
           .replace(/\/{2,}/g, '/')}`;
+        let queryArrStr = [document.getElementById('grpcBodyEntryTextArea').value];
+        // let queryArr = queryArrStr[0].slice(2, -2).trim().split(',');
+        let queryArr = queryArrStr[0]
+        let regexVar = (/\r?\n|\r|↵/g);
+        queryArr = (queryArr.replace(regexVar, ''));
+        queryArr = [JSON.parse(queryArr)]
+        console.log('before loop', queryArr)
+        console.log('before loop with bracket', [queryArr])
+
+        // for (let i = 0; i < currQuery.length; i += 1) {
+        //   let query = queryArr[i];
+        //   if (i > 0) {
+        //     currQuery[i]= ele.slice(1);
+        //     console.log('ele in loop', ele)
+        //   }
+          
+        // }
 
         // grabbing streaming type to set method in reqRes.request.method
         const grpcStream = document.getElementById('stream').innerText;
@@ -218,7 +235,7 @@ class ComposerNewRequest extends Component {
           response: {
             headers: null,
             stream: null,
-            events: null,
+            events: [],
           },
           checked: false,
           minimized: false,
@@ -226,7 +243,7 @@ class ComposerNewRequest extends Component {
           service: this.props.newRequestStreams.selectedService,
           rpc: this.props.newRequestStreams.selectedRequest,
           packageName: this.props.newRequestStreams.selectedPackage,
-          queryArr: [document.getElementById('grpcBodyEntryTextArea').value],
+          queryArr: queryArr,
           servicesObj: this.props.newRequestStreams.services,
           protoPath: this.props.newRequestStreams.protoPath
         };
@@ -266,8 +283,8 @@ class ComposerNewRequest extends Component {
       });
 
       this.props.setNewRequestStreams({
-        streamsArr: [],
-        count: 0,
+        ...this.props.newRequestStreams,
+        streamsArr: [''],
         streamContent: [],
         selectedPackage: null,
         selectedService: null,
@@ -281,8 +298,8 @@ class ComposerNewRequest extends Component {
       });
 
       this.props.setNewRequestBody({
+        ...this.newRequestBody,
         bodyContent: '',
-        protoContent: '',
         bodyVariables: '',
         bodyType: 'none',
         rawType: 'Text (text/plain)',
@@ -302,8 +319,11 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
-    document.getElementById('stream').innerText = "STREAM";
-    document.getElementById('dropdownService').selectedIndex = 0;
+    if (this.props.newRequestFields.gRPC) {
+      document.getElementById('stream').innerText = "STREAM";
+      document.getElementById('dropdownService').selectedIndex = 0;
+      document.getElementById('grpcBodyEntryTextArea').value = '';
+    }
   }
 
   render() {

@@ -8,8 +8,10 @@ class GRPCBodyStream extends Component {
   render() {
     let bodyType;
     let streamBody;
-    let count = this.props.newRequestStreams.count;
+    // console.log('this.props.newRequestStreams.count: ', this.props.newRequestStreams.count)
+    let count = this.props.newRequestStreams.count - 1;
     let streamContent = this.props.newRequestStreams.streamContent[count];
+    // let textareaID = `grpcBodyEntryTextArea${count}`;
     if (this.props.newRequestStreams.count === 1) {
       streamBody = (
         <textarea
@@ -21,9 +23,11 @@ class GRPCBodyStream extends Component {
           placeholder='Type query'
           rows={4}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
+          // onChange={e => this.props.changeHandler(textareaID, e.target.value)}
         ></textarea>
       )
     } else {
+      // let textareaID = `grpcBodyEntryTextArea_${count}`;
       streamBody = (
         <textarea
           value={streamContent}
@@ -33,6 +37,7 @@ class GRPCBodyStream extends Component {
           type='text'
           placeholder='Type query'
           rows={4}
+          // onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
         ></textarea>
       )

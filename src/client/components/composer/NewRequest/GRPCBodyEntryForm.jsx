@@ -10,6 +10,7 @@ class GRPCBodyEntryForm extends Component {
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
+    this.addStream = this.addStream.bind(this);
   }
 
   componentDidMount() {
@@ -29,44 +30,38 @@ class GRPCBodyEntryForm extends Component {
     }
   }
 
-  // addStream(streamsDeepCopy) {
-  //   // console.log('streamsDeepCopy: ', streamsDeepCopy)
-  //   streamsDeepCopy.push({
-  //     id: this.props.newRequestStreams.count,
-  //     active: false,
-  //     query: ''
-  //   });
-  //   this.props.newRequestStreams.streamContent.push('')
-  //   this.props.setNewRequestStreams({
-  //     streamsArr: streamsDeepCopy,
-  //     count: streamsDeepCopy.length,
-  //     streamContent: this.props.newRequestStreams.streamContent
-  //   });
-  //   console.log('streamsArr: ', this.props.newRequestStreams.streamsArr)
-  //   console.log('streamContent: ', this.props.newRequestStreams.streamContent)
-  // }
-
   addStream() {
-    console.log('inside addStream')
+    const firstBodyContent = this.props.newRequestStreams.streamsArr[0].query;
+    const count = this.props.newRequestStreams.count;
+    const newStream = {};
+    newStream.id = this.props.newRequestStreams.count;
+    newStream.active = false;
+    newStream.query = firstBodyContent;
+    this.props.newRequestStreams.streamsArr.push(newStream)
+    this.props.newRequestStreams.streamContent.push(`{${firstBodyContent}
+}`);
+
+    this.props.setNewRequestStreams({
+      streamsArr: this.props.newRequestStreams.streamsArr,
+      count: this.props.newRequestStreams.streamsArr.length,
+      streamContent: this.props.newRequestStreams.streamContent
+    });
   }
 
   onChangeUpdateStream(streamID, value) {
-    const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
     let index;
-    for (let i = 0; i < streamsDeepCopy.length; i++) {
-      if (streamsDeepCopy[i].id === streamID) {
+    for (let i = 0; i < this.props.newRequestStreams.streamsArr.length; i++) {
+      if (this.props.newRequestStreams.streamsArr[i].id === streamID) {
         index = i;
-        streamsDeepCopy[index].active = true;
-        streamsDeepCopy[index].query = value;
+        this.props.newRequestStreams.streamsArr[index].active = true;
+        this.props.newRequestStreams.streamsArr[index].query = value;
+        this.props.newRequestStreams.streamContent[index] = value;
       };
     }
-    let count = this.props.newRequestStreams.count;
-    this.props.newRequestStreams.streamContent[count] = value;
-    this.props.setNewRequestStreams({
+  this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
-      streamsArr: streamsDeepCopy,
-      count: streamsDeepCopy.length,
-      streamContent: this.props.newRequestStreams
+      streamsArr: this.props.newRequestStreams.streamsArr,
+      streamContent: this.props.newRequestStreams.streamContent
     });
   }
 

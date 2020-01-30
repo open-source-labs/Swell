@@ -84,7 +84,7 @@ class GRPCAutoInputForm extends Component {
                   // results.push(`${key}: ${message.def[key]}`)
                   // console.log('key: ', key);
                   // console.log('message.def: ', message.def);
-                  results.push(`${key}: ${message.def[key].type.slice(5).toLowerCase()}`)
+                  results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                 }
                 break;
                 // msgNameCheck = false;
@@ -97,7 +97,9 @@ class GRPCAutoInputForm extends Component {
         // console.log('count in autoinput: ', count)
         if (results.length === 1) {
           query = results[0];
-          this.props.newRequestStreams.streamsArr[index].query = query;
+          if (this.props.newRequestStreams.streamsArr[index] !== '') {
+            this.props.newRequestStreams.streamsArr[index].query = query;
+          }
           if (this.props.newRequestStreams.streamsArr.length === 1) {
             this.props.newRequestStreams.streamContent.pop();
           }
@@ -116,7 +118,9 @@ class GRPCAutoInputForm extends Component {
             ${results[i]}`
           }
           query = query.slice(1);
-          this.props.newRequestStreams.streamsArr[index].query = query;
+          if (this.props.newRequestStreams.streamsArr[index] !== '') {
+            this.props.newRequestStreams.streamsArr[index].query = query;
+          }
           if (this.props.newRequestStreams.streamsArr.length === 1) {
             this.props.newRequestStreams.streamContent.pop();
           }
