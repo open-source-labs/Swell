@@ -146,7 +146,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('messagedef', message.def);
             Object.keys(messageDefObj).forEach((key)=>{
                keysArray.push(key)
-             }) 
+             })
             //   keysArray.push(key);
 
             // }
@@ -181,6 +181,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
         let client = new serverName[service](`${url}`, grpc.credentials.createInsecure()); //localhost should be variable destination from reqresObj
 
+
         if (rpcType === 'UNARY') {
           // let queryObj = {};
           // for (let i = 0; i < keysArray.length; i+= 1) {
@@ -196,21 +197,27 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           //     currQuery[i]= ele.slice(1);
           //     console.log('ele in loop', ele)
           //   }
-            
+
           // }
           // console.log(reqResObj.queryArr[0].slice(6).slice(0, -2).trim().split(','))
           // console.log('after forloop', currQuery)
           // .split(' ');
           // let first = currQuery[0];
           // let queryObject = {};
-          
+
           // queryObject[first] = currQuery[1];
           let query = reqResObj.queryArr[0];
+          // Open Connection and set time sent for Unary
+          reqResObj.connection = 'open';
+          reqResObj.timeSent = Date.now();
           client[rpc](query, (err, data)=> {
             if (err) {
               console.log('unary error' , err);
             }
             console.log('sent UNARY request', data);
+            reqResObj.timeReceived = Date.now();
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
             reqResObj.response.events.push(data)
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
@@ -240,13 +247,23 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             // let callObj = {key : ele}
             // console.log('callobj' , ele)
             return () => {
+              // Open Connection and set time sent for Client Stream
+              reqResObj.connection = 'open';
+              reqResObj.connectionType = 'plain';
+              reqResObj.timeSent = Date.now();
               call.write(ele)
             }
           })
           console.log('callstack array', callStack)
           async.series(callStack, function(err, result) {
             call.end();
-            reqResObj.response.events.push(result)
+            // reqResObj.response.events.push(result)
+            //Close Connection for client Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
+            reqResObj.response.events.push(data)
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
             console.log('result of async series', result);
 
             console.log('ran all functions')
@@ -271,9 +288,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         else {
           let call = client[service];
           call.on('data', (response) => {
-          // console.log('Got server response "' + response );
+          console.log('Got server response "' + response );
           reqResObj.response.events.push(data)
-
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
             });
 
           call.on('end', ()=> {
@@ -294,7 +311,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
     }
 
-    // old code taken from other controllers
+    /* old code taken from other controllers
     const sendGrpcToMain = (args) => {
         return new Promise(resolve => {
             ipcRenderer.send('open-grpc', args)
@@ -332,5 +349,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     reqResObj.response.events.push(JSON.stringify(errorsObj));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   }
+  */
 };
 export default grpcController;
