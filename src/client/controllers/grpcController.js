@@ -218,15 +218,17 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
         }
         else if (rpcType === 'CLIENT STREAM') {
-          // call = client[rpc](function(error, response) {
-          //   if (error) {
-          //     console.log(error);
-          //     return;
-          //   }
-          // else {
-          //   reqResObj.response.events.push(reponse)
-          //   console.log('in client stream response', response);
-          // }});
+          let call = client[rpc](function(error, response) {
+            if (error) {
+              console.log('error in client stream', error);
+              return;
+            }
+          else {
+            reqResObj.response.events.push(reponse)
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+            console.log('in client stream response', response);
+          }});
 
           let callStack = reqResObj.queryArr;
           // console.log('callstack before map', callStack);
@@ -240,13 +242,14 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             // let callObj = {key : ele}
             // console.log('callobj' , ele)
             return () => {
+              console.log('one of callstack', ele)
               call.write(ele)
             }
           })
           console.log('callstack array', callStack)
           async.series(callStack, function(err, result) {
             call.end();
-            reqResObj.response.events.push(result)
+            // reqResObj.response.events.push(result)
             console.log('result of async series', result);
 
             console.log('ran all functions')
