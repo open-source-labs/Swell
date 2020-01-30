@@ -223,7 +223,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             reqResObj.connection = 'closed';
             reqResObj.connectionType = 'plain';
             reqResObj.response.events.push(data)
-            reqResObj.response.events.push()
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
           })
@@ -236,11 +235,18 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
               return;
             }
           else {
+            //Close Connection for client Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
             reqResObj.response.events.push(response)
             store.default.dispatch(actions.reqResUpdate(reqResObj));
 
             console.log('in client stream response', response);
           }});
+
+          // debugging call methods
+          console.log('call: ', call);
 
           // let callStack = reqResObj.queryArr;
           // console.log('callstack before map', callStack);
@@ -261,6 +267,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // console.log('callstack array', callStack)
           for (var i = 0; i < queryArr.length; i++) {
             let query = queryArr[i];
+            //Open Connection for client Stream
             reqResObj.connection = 'open';
             reqResObj.connectionType = 'plain';
             reqResObj.timeSent = Date.now();
@@ -268,12 +275,10 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             // add console log for completed write?
           }
           call.end();
-          //Close Connection for client Stream
-          reqResObj.connection = 'closed';
-          reqResObj.connectionType = 'plain';
-          reqResObj.timeReceived = Date.now();
-          reqResObj.response.events.push(response)
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+
+          // reqResObj.response.events.push(response)
+          // store.default.dispatch(actions.reqResUpdate(reqResObj));
           // add console log for completed call
 
           // async.series(callStack, function(err, result) {
@@ -287,6 +292,10 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         }
         else if (rpcType === 'SERVER STREAM') {
           let dataArr;
+          //Open Connection for SERVER Stream
+          reqResObj.connection = 'open';
+          reqResObj.connectionType = 'plain';
+          reqResObj.timeSent = Date.now();
           const call = client[rpc](reqResObj.queryArr[0]);
           call.on("data", resp => {
             // console.log('server streaming message:', data);
@@ -305,6 +314,12 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('server side stream erring out')
           })
           call.on('end', () => {
+            //Close Connection for SERVER Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
+            // reqResObj.response.events.push(response) // no event expected from on 'end';
+            store.default.dispatch(actions.reqResUpdate(reqResObj));
             // store.default.dispatch(actions.reqResUpdate(reqResObj));
 
             console.log('server side stream completed')
@@ -312,9 +327,14 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         }
         //else BIDIRECTIONAL
         else {
+
           let call = client[rpc]();
           call.on('data', (response) => {
           // console.log('Got server response "' + response );
+          //Close Individual Connection for BIDIRECTIONAL Stream
+          reqResObj.connection = 'pending';
+          reqResObj.connectionType = 'plain';
+          reqResObj.timeReceived = Date.now();
           reqResObj.response.events.push(response)
           console.log(reqResObj.response.events)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -325,12 +345,23 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             console.log('server ended connection with error')
           })
           call.on('end', (data)=> {
+            //Close Final Server Connection for BIDIRECTIONAL Stream
+            reqResObj.connection = 'closed';
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeReceived = Date.now();
             console.log('server response ended', data)
           });
 
           for (var i = 0; i < queryArr.length; i++) {
             let query = queryArr[i];
-
+            //Open Connection for BIDIRECTIONAL Stream
+            if (i === 0){
+              reqResObj.connection = 'open';
+            } else {
+              reqResObj.connection = 'pending';
+            }
+            reqResObj.connectionType = 'plain';
+            reqResObj.timeSent = Date.now();
             call.write(query);
           }
           call.end();
