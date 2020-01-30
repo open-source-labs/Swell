@@ -8,94 +8,94 @@ class GRPCAutoInputForm extends Component {
     this.state = {
       show: true,
       // ***MOCK DATA***
-      services: [
-        {
-          packageName: 'com.book',
-          name: 'BookService',
-          messages: [
-            {
-              name: "Book",
-              def: {
-                isbn: 'TYPE_INT64',
-                title: 'TYPE_STRING',
-                author: 'TYPE_STRING',
-              }
-            },
-            {
-              name: "GetBookRequest",
-              def: {
-                isbn: 'TYPE_INT64',
-                pages: 'TYPE_INT64'
-              }
-            },
-            {
-              name: "GetBookViaAuthor",
-              def: {
-                author: 'TYPE_STRING',
-              }
-            }
-          ],
-          rpcs: [
-            {
-              name: "GetBook",
-              type: 'UNARY',
-              req: 'GetBookRequest',
-              res: 'Book'
-            },
-            {
-              name: "GetBooksViaAuthor",
-              type: 'SERVER STREAM',
-              req: 'GetBookViaAuthor',
-              res: 'Book'
-            },
-            {
-              name: "GetGreatestBook",
-              type: 'CLIENT STREAM',
-              req: 'GetBookRequest',
-              res: 'Book'
-            },
-            {
-              name: "GetBooks",
-              type: 'BIDIRECTIONAL',
-              req: 'GetBookRequest',
-              res: 'Book'
-            },
-          ]
-        },
-        {
-          packageName: 'ILoveDogs',
-          name: 'DogService',
-          messages: [
-            {
-              name: "Info",
-              def: {
-                name: 'TYPE_STRING',
-                breed: 'TYPE_STRING'
-              }
-            },
-            {
-              name: "GetAge",
-              def: {
-                age: 'TYPE_INT64'
-              }
-            }
-          ],
-          rpcs: [
-            {
-              name: "GetInfo",
-              type: 'UNARY',
-              req: 'GetAge',
-              res: 'Info',
-            },
-            {
-              name: "GetBackground",
-              type: 'BIDIRECTIONAL',
-              req: 'GetAge',
-              res: 'Info'
-            },
-          ]
-        }
-      ],
+    //   services: [
+    //     {
+    //       packageName: 'com.book',
+    //       name: 'BookService',
+    //       messages: [
+    //         {
+    //           name: "Book",
+    //           def: {
+    //             isbn: 'TYPE_INT64',
+    //             title: 'TYPE_STRING',
+    //             author: 'TYPE_STRING',
+    //           }
+    //         },
+    //         {
+    //           name: "GetBookRequest",
+    //           def: {
+    //             isbn: 'TYPE_INT64',
+    //             pages: 'TYPE_INT64'
+    //           }
+    //         },
+    //         {
+    //           name: "GetBookViaAuthor",
+    //           def: {
+    //             author: 'TYPE_STRING',
+    //           }
+    //         }
+    //       ],
+    //       rpcs: [
+    //         {
+    //           name: "GetBook",
+    //           type: 'UNARY',
+    //           req: 'GetBookRequest',
+    //           res: 'Book'
+    //         },
+    //         {
+    //           name: "GetBooksViaAuthor",
+    //           type: 'SERVER STREAM',
+    //           req: 'GetBookViaAuthor',
+    //           res: 'Book'
+    //         },
+    //         {
+    //           name: "GetGreatestBook",
+    //           type: 'CLIENT STREAM',
+    //           req: 'GetBookRequest',
+    //           res: 'Book'
+    //         },
+    //         {
+    //           name: "GetBooks",
+    //           type: 'BIDIRECTIONAL',
+    //           req: 'GetBookRequest',
+    //           res: 'Book'
+    //         },
+    //       ]
+    //     },
+    //     {
+    //       packageName: 'ILoveDogs',
+    //       name: 'DogService',
+    //       messages: [
+    //         {
+    //           name: "Info",
+    //           def: {
+    //             name: 'TYPE_STRING',
+    //             breed: 'TYPE_STRING'
+    //           }
+    //         },
+    //         {
+    //           name: "GetAge",
+    //           def: {
+    //             age: 'TYPE_INT64'
+    //           }
+    //         }
+    //       ],
+    //       rpcs: [
+    //         {
+    //           name: "GetInfo",
+    //           type: 'UNARY',
+    //           req: 'GetAge',
+    //           res: 'Info',
+    //         },
+    //         {
+    //           name: "GetBackground",
+    //           type: 'BIDIRECTIONAL',
+    //           req: 'GetAge',
+    //           res: 'Info'
+    //         },
+    //       ]
+    //     }
+    //   ],
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
@@ -129,13 +129,13 @@ class GRPCAutoInputForm extends Component {
       ...this.props.newRequestStreams,
       selectedRequest: requestName
     });
-    this.setState({ 
+    this.setState({
       ...this.state
     }, () => {
       console.log('here')
       const selectedService = this.props.newRequestStreams.selectedService;
       const selectedRequest = this.props.newRequestStreams.selectedRequest;
-      const services = this.state.services;
+      const services = this.props.services;
       let streamingType;
       let packageName;
       for (const service of services) {
@@ -153,12 +153,13 @@ class GRPCAutoInputForm extends Component {
         selectedPackage: packageName,
         selectedStreamingType: streamingType
       });
-      this.setState({ 
+      this.setState({
         ...this.state
       }, () => {
         let req;
         let results = [];
         let query = '';
+        let msgNameCheck = true;
         for (const service of services) {
           if (service.name === selectedService ) {
             for (const rpc of service.rpcs) {
@@ -167,11 +168,16 @@ class GRPCAutoInputForm extends Component {
               }
             }
             for (const message of service.messages) {
-              if (message.name === req) {
+              console.log('service.messages: ', service.messages);
+              if (message.name === req ) {
                 for (const key in message.def) {
                   // results.push(`${key}: ${message.def[key]}`)
-                  results.push(`${key}: ${message.def[key].slice(5).toLowerCase()}`)
+                  console.log('key: ', key);
+                  console.log('message.def: ', message.def);
+                  results.push(`${key}: ${message.def[key].type.slice(5).toLowerCase()}`)
                 }
+                break;
+                // msgNameCheck = false;
               }
             }
           }
@@ -186,10 +192,10 @@ class GRPCAutoInputForm extends Component {
               ${query}
 }`
           });
-        } 
+        }
         else {
           for (let i = 0; i < results.length; i++) {
-            query =  `${query}, 
+            query =  `${query},
             ${results[i]}`
           }
           query = query.slice(1)
@@ -200,7 +206,7 @@ class GRPCAutoInputForm extends Component {
           });
         }
 
-      });  
+      });
       const streamBtn = document.getElementById('stream')
       if (streamingType === undefined) {
         streamBtn.innerText = 'STREAM'
@@ -214,19 +220,21 @@ class GRPCAutoInputForm extends Component {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
-    let services = this.state.services;
+    let services = this.props.services;
     const servicesList =[];
-    for (let i = 0; i < services.length; i++) {
-      servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
-    }
-
-    // let selectedService = this.state.selectedService;
-    let selectedService = this.props.newRequestStreams.selectedService;
     const rpcsList = [];
-    for (const service of services) {
-      if (service.name === selectedService) {
-        for (let i = 0; i < service.rpcs.length; i++) {
-          rpcsList.push(<option key={i} value={i}>{service.rpcs[i].name}</option>)
+    if (this.props.services) {
+      for (let i = 0; i < services.length; i++) {
+        servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
+      }
+
+      // let selectedService = this.state.selectedService;
+      let selectedService = this.props.newRequestStreams.selectedService;
+      for (const service of services) {
+        if (service.name === selectedService) {
+          for (let i = 0; i < service.rpcs.length; i++) {
+            rpcsList.push(<option key={i} value={i}>{service.rpcs[i].name}</option>)
+          }
         }
       }
     }
@@ -254,7 +262,7 @@ class GRPCAutoInputForm extends Component {
           selectedService={this.props.newRequestStreams.selectedService}
           selectedRequest={this.props.newRequestStreams.selectedRequest}
           selectedStreamingType={this.props.newRequestStreams.selectedStreamingType}
-        /> 
+        />
 
       </div>
     );
