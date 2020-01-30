@@ -39,6 +39,7 @@ service RouteGuide {
   // huge number of features.
   rpc ListFeatures(Rectangle) returns (stream Feature) {}
 
+
   // A client-to-server streaming RPC.
   //
   // Accepts a stream of Points on a route being traversed, returning a
@@ -59,6 +60,7 @@ service RouteGuide {
 message Point {
   int32 latitude = 1;
   int32 longitude = 2;
+
 }
 
 // A latitude-longitude rectangle, represented as two diagonally opposite
@@ -108,4 +110,7 @@ message RouteSummary {
 
   // The duration of the traversal in seconds.
   int32 elapsed_time = 4;
+}
+message HelloAge {
+  int32 age = 1;
 }
