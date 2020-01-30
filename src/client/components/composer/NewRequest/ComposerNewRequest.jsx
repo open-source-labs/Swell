@@ -184,7 +184,7 @@ class ComposerNewRequest extends Component {
               {
                 name: "GetBookRequest",
                 def: {
-                  isbn: 'int64'
+                  isbn: 'int64',
                 }
               },
               {
@@ -286,6 +286,7 @@ class ComposerNewRequest extends Component {
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
+          
 
           request: {
             method: grpcStream,
