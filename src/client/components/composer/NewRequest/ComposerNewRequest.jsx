@@ -185,26 +185,23 @@ class ComposerNewRequest extends Component {
           .splice(1)
           .join('/')
           .replace(/\/{2,}/g, '/')}`;
+        // let queryArrStr = [document.getElementById('grpcBodyEntryTextArea').value];
+        // // let queryArr = queryArrStr[0].slice(2, -2).trim().split(',');
+        // let queryArr = queryArrStr[0]
+        // let regexVar = (/\r?\n|\r|↵/g);
+        // queryArr = (queryArr.replace(regexVar, ''));
+        let queryArrStr = this.props.newRequestStreams.streamContent;
+        let queryArr = [];
+        console.log('before loop', queryArr)
+        console.log('before loop with bracket', [queryArr])
 
-        // -----THIS IS THE ARRAY OF QUERY OBJECTS, IT SHOULD REPLACE THE DOM MANIPULATION-----
-        // *****let queryArr = this.props.newRequestStreams.streamContent*****
-        let queryArrStr = [document.getElementById('grpcBodyEntryTextArea').value];
-        // let queryArr = queryArrStr[0].slice(2, -2).trim().split(',');
-        let queryArr = queryArrStr[0]
-        let regexVar = (/\r?\n|\r|↵/g);
-        queryArr = (queryArr.replace(regexVar, ''));
-        queryArr = [JSON.parse(queryArr)]
-        // console.log('before loop', queryArr)
-        // console.log('before loop with bracket', [queryArr])
-
-        // for (let i = 0; i < currQuery.length; i += 1) {
-        //   let query = queryArr[i];
-        //   if (i > 0) {
-        //     currQuery[i]= ele.slice(1);
-        //     console.log('ele in loop', ele)
-        //   }
+        for (let i = 0; i < queryArrStr.length; i += 1) {
+          let query = queryArrStr[i];
+          let regexVar = (/\r?\n|\r|↵/g);
+          query = (query.replace(regexVar, ''));
+          queryArr.push(JSON.parse(query));
           
-        // }
+        }
 
         // grabbing streaming type to set method in reqRes.request.method
         const grpcStream = document.getElementById('stream').innerText;
