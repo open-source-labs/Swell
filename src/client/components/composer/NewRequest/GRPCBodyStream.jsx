@@ -8,30 +8,38 @@ class GRPCBodyStream extends Component {
   render() {
     let bodyType;
     let streamBody;
-    if (this.props.newRequestStreams.count === 1) {
-
+    // console.log('this.props.newRequestStreams.count: ', this.props.newRequestStreams.count)
+    // let count = this.props.newRequestStreams.count - 1;
+    // console.log('this.props.stream: ', this.props.stream)
+    // console.log('this.props.stream.id: ', this.props.stream.id)
+    let streamContent = this.props.newRequestStreams.streamContent[this.props.stream.id];
+    // let textareaID = `grpcBodyEntryTextArea${count}`;
+    if (this.props.stream.id === 1) {
       streamBody = (
         <textarea
-          value={`${this.props.newRequestStreams.streamContent ? this.props.newRequestStreams.streamContent : ''}`}
+          value={`${streamContent ? streamContent : ''}`}
           className={"composer_textarea grpc"}
           id='grpcBodyEntryTextArea'
-          style={{ 'resize': 'none' }} 
+          // style={{ 'resize': 'none' }} 
           type='text'
           placeholder='Type query'
           rows={4}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
+          // onChange={e => this.props.changeHandler(textareaID, e.target.value)}
         ></textarea>
       )
     } else {
+      // let textareaID = `grpcBodyEntryTextArea_${count}`;
       streamBody = (
         <textarea
-          value={this.props.newRequestStreams.streamContent}
+          value={streamContent}
           className={"composer_textarea grpc"}
           id='grpcBodyEntryTextArea'
-          style={{ 'resize': 'none' }} 
+          // style={{ 'resize': 'none' }} 
           type='text'
           placeholder='Type query'
           rows={4}
+          // onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
         ></textarea>
       )
@@ -41,7 +49,7 @@ class GRPCBodyStream extends Component {
       <input
         defaultValue={` Stream ${this.props.streamNum + 1}`}
         className='stream-number'
-        style={{ 'resize': 'none' }} 
+        // style={{ 'resize': 'none' }} 
         type="text"
       ></input>
       )

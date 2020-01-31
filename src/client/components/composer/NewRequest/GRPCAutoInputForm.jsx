@@ -7,95 +7,6 @@ class GRPCAutoInputForm extends Component {
     super(props);
     this.state = {
       show: true,
-      // ***MOCK DATA***
-    //   services: [
-    //     {
-    //       packageName: 'com.book',
-    //       name: 'BookService',
-    //       messages: [
-    //         {
-    //           name: "Book",
-    //           def: {
-    //             isbn: 'TYPE_INT64',
-    //             title: 'TYPE_STRING',
-    //             author: 'TYPE_STRING',
-    //           }
-    //         },
-    //         {
-    //           name: "GetBookRequest",
-    //           def: {
-    //             isbn: 'TYPE_INT64',
-    //             pages: 'TYPE_INT64'
-    //           }
-    //         },
-    //         {
-    //           name: "GetBookViaAuthor",
-    //           def: {
-    //             author: 'TYPE_STRING',
-    //           }
-    //         }
-    //       ],
-    //       rpcs: [
-    //         {
-    //           name: "GetBook",
-    //           type: 'UNARY',
-    //           req: 'GetBookRequest',
-    //           res: 'Book'
-    //         },
-    //         {
-    //           name: "GetBooksViaAuthor",
-    //           type: 'SERVER STREAM',
-    //           req: 'GetBookViaAuthor',
-    //           res: 'Book'
-    //         },
-    //         {
-    //           name: "GetGreatestBook",
-    //           type: 'CLIENT STREAM',
-    //           req: 'GetBookRequest',
-    //           res: 'Book'
-    //         },
-    //         {
-    //           name: "GetBooks",
-    //           type: 'BIDIRECTIONAL',
-    //           req: 'GetBookRequest',
-    //           res: 'Book'
-    //         },
-    //       ]
-    //     },
-    //     {
-    //       packageName: 'ILoveDogs',
-    //       name: 'DogService',
-    //       messages: [
-    //         {
-    //           name: "Info",
-    //           def: {
-    //             name: 'TYPE_STRING',
-    //             breed: 'TYPE_STRING'
-    //           }
-    //         },
-    //         {
-    //           name: "GetAge",
-    //           def: {
-    //             age: 'TYPE_INT64'
-    //           }
-    //         }
-    //       ],
-    //       rpcs: [
-    //         {
-    //           name: "GetInfo",
-    //           type: 'UNARY',
-    //           req: 'GetAge',
-    //           res: 'Info',
-    //         },
-    //         {
-    //           name: "GetBackground",
-    //           type: 'BIDIRECTIONAL',
-    //           req: 'GetAge',
-    //           res: 'Info'
-    //         },
-    //       ]
-    //     }
-    //   ],
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
@@ -132,7 +43,6 @@ class GRPCAutoInputForm extends Component {
     this.setState({
       ...this.state
     }, () => {
-      console.log('here')
       const selectedService = this.props.newRequestStreams.selectedService;
       const selectedRequest = this.props.newRequestStreams.selectedRequest;
       const services = this.props.newRequestStreams.services;
@@ -159,7 +69,7 @@ class GRPCAutoInputForm extends Component {
         let req;
         let results = [];
         let query = '';
-        let msgNameCheck = true;
+        // let msgNameCheck = true;
         for (const service of services) {
           if (service.name === selectedService ) {
             for (const rpc of service.rpcs) {
@@ -168,12 +78,12 @@ class GRPCAutoInputForm extends Component {
               }
             }
             for (const message of service.messages) {
-              console.log('service.messages: ', service.messages);
+              // console.log('service.messages: ', service.messages);
               if (message.name === req ) {
                 for (const key in message.def) {
                   // results.push(`${key}: ${message.def[key]}`)
-                  console.log('key: ', key);
-                  console.log('message.def: ', message.def);
+                  // console.log('key: ', key);
+                  // console.log('message.def: ', message.def);
                   results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                 }
                 break;
@@ -183,14 +93,23 @@ class GRPCAutoInputForm extends Component {
           }
         }
         // console.log('results: ', results)
+        let index = this.props.newRequestStreams.count - 1;
+        // console.log('count in autoinput: ', count)
         if (results.length === 1) {
           query = results[0];
-          this.props.newRequestStreams.streamsArr[0].query = query;
+          if (this.props.newRequestStreams.streamsArr[index] !== '') {
+            this.props.newRequestStreams.streamsArr[index].query = query;
+          }
+          if (this.props.newRequestStreams.streamsArr.length === 1) {
+            this.props.newRequestStreams.streamContent.pop();
+          }
+          this.props.newRequestStreams.streamContent.push(`{
+            ${query}
+}`);
           this.props.setNewRequestStreams({
             ...this.props.newRequestStreams,
-            streamContent: `{
-              ${query}
-}`
+            streamsArr: this.props.newRequestStreams.streamsArr,
+            streamContent: this.props.newRequestStreams.streamContent
           });
         }
         else {
@@ -198,11 +117,20 @@ class GRPCAutoInputForm extends Component {
             query =  `${query},
             ${results[i]}`
           }
-          query = query.slice(1)
+          query = query.slice(1);
+          if (this.props.newRequestStreams.streamsArr[index] !== '') {
+            this.props.newRequestStreams.streamsArr[index].query = query;
+          }
+          if (this.props.newRequestStreams.streamsArr.length === 1) {
+            this.props.newRequestStreams.streamContent.pop();
+          }
+          this.props.newRequestStreams.streamContent.push(`{${query}
+}`);
+        // console.log('streamContent arr: ', this.props.newRequestStreams.streamContent)
           this.props.setNewRequestStreams({
             ...this.props.newRequestStreams,
-            streamContent: `{${query}
-}`
+            streamsArr: this.props.newRequestStreams.streamsArr,
+            streamContent: this.props.newRequestStreams.streamContent
           });
         }
 

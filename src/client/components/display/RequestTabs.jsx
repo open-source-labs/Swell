@@ -99,8 +99,10 @@ class RequestTabs extends Component {
         <ul className={"tab_list"}>
           <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab} />
-          <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
-
+          {
+            !this.props.requestContent.bodyType === "GRPC" &&
+            <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
+          }
           {
             this.props.requestContent.bodyType === "GQL" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={variables} openTab={this.state.openTab} />

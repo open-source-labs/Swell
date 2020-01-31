@@ -46,14 +46,14 @@ async function protoParserFunc(protoBodyData) {
   protoStorage.packageName = Object.keys(protoStorage.descriptor)[0];
   // console.log('package name: ',protoStorage.packageName);
   protoStorage.descriptorDefinition = protoStorage.descriptor[protoStorage.packageName];
-  console.log('protoStorage.descriptorDefinition: ',protoStorage.descriptorDefinition);
+  // console.log('protoStorage.descriptorDefinition: ',protoStorage.descriptorDefinition);
   protoStorage.protoPath = PROTO_PATH;
-  console.log(PROTO_PATH);
+  // console.log(PROTO_PATH);
   const serviceArr = [];
   for (let [serviceName, serviceDef] of Object.entries(protoStorage.descriptorDefinition)){
   if (typeof serviceDef === 'function') {
-    console.log('serviceName: ', serviceName);
-    console.log('serviceDef: ', serviceDef);
+    // console.log('serviceName: ', serviceName);
+    // console.log('serviceDef: ', serviceDef);
     const serviceObj = {};
     serviceObj.packageName = protoStorage.packageName;
     // console.log('serviceName, serviceDef: ', serviceName, serviceDef);
@@ -62,10 +62,10 @@ async function protoParserFunc(protoBodyData) {
     serviceObj.messages = []
     let counter = 1;
     for (let [requestName, requestDef] of Object.entries(serviceDef.service)) {
-      console.log('counter: ', counter);
+      // console.log('counter: ', counter);
       counter++
-      console.log('requestName: ', requestName);
-      console.log('requestDef: ', requestDef);
+      // console.log('requestName: ', requestName);
+      // console.log('requestDef: ', requestDef);
       const streamingReq = requestDef.requestStream;
       const streamingRes = requestDef.responseStream;
       // console.log('streamingReq, streamingRes: ', streamingReq, streamingRes);

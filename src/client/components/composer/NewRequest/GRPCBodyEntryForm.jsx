@@ -10,56 +10,58 @@ class GRPCBodyEntryForm extends Component {
     };
     this.toggleShow = this.toggleShow.bind(this);
     this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
+    this.addStream = this.addStream.bind(this);
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     if (this.props.newRequestStreams.streamsArr.length === 0) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
-      this.addStream(streamsDeepCopy);
+      streamsDeepCopy.push({
+        id: this.props.newRequestStreams.count,
+        active: false,
+        query: ''
+      });
+      this.props.newRequestStreams.streamContent.push('')
+      this.props.setNewRequestStreams({
+        streamsArr: streamsDeepCopy,
+        count: streamsDeepCopy.length,
+        streamContent: this.props.newRequestStreams.streamContent
+      });
     }
   }
 
-  addStream(streamsDeepCopy) {
-   streamsDeepCopy.push({
-      id: this.props.newRequestStreams.count,
-      active: false,
-      query: this.props.newRequestStreams.streamContent
-    });
+  addStream() {
+    const firstBodyContent = this.props.newRequestStreams.streamsArr[0].query;
+    // const count = this.props.newRequestStreams.count;
+    const newStream = {};
+    newStream.id = this.props.newRequestStreams.count;
+    newStream.active = false;
+    newStream.query = firstBodyContent;
+    this.props.newRequestStreams.streamsArr.push(newStream)
+    this.props.newRequestStreams.streamContent.push(firstBodyContent);
 
     this.props.setNewRequestStreams({
-      streamsArr: streamsDeepCopy,
-      count: streamsDeepCopy.length,
+      ...this.props.newRequestStreams,
+      streamsArr: this.props.newRequestStreams.streamsArr,
+      count: this.props.newRequestStreams.streamsArr.length,
       streamContent: this.props.newRequestStreams.streamContent
     });
   }
 
   onChangeUpdateStream(streamID, value) {
-    // let newValue = value.slice(1, value.length - 1).trim()
-    const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
-    let index;
-    for (let i = 0; i < streamsDeepCopy.length; i++) {
-      if (streamsDeepCopy[i].id === streamID) {
-        index = i;
-        streamsDeepCopy[index].active = true;
-        streamsDeepCopy[index].query = value;
+    for (let i = 0; i < this.props.newRequestStreams.streamsArr.length; i++) {
+      if (this.props.newRequestStreams.streamsArr[i].id === streamID) {
+        this.props.newRequestStreams.streamsArr[streamID].active = true;
+        this.props.newRequestStreams.streamsArr[streamID].query = value;
+        this.props.newRequestStreams.streamContent[streamID] = value;
+
+        this.props.setNewRequestStreams({
+          ...this.props.newRequestStreams,
+          streamsArr: this.props.newRequestStreams.streamsArr,
+          streamContent: this.props.newRequestStreams.streamContent
+        });
       };
     }
-
-    // if (streamsDeepCopy.length === 1) {
-    //   this.addStream(streamsDeepCopy);
-    // }
-
-    // update the store
-    this.props.setNewRequestStreams({
-      ...this.props.newRequestStreams,
-      streamsArr: streamsDeepCopy,
-      count: streamsDeepCopy.length,
-      streamContent: value
-    });
-  }
-
-  addNewStream() {
-    console.log('inside addNewStream')
   }
 
   toggleShow() {
@@ -90,7 +92,7 @@ class GRPCBodyEntryForm extends Component {
     if (this.props.selectedStreamingType === "CLIENT STREAM" || this.props.selectedStreamingType === "BIDIRECTIONAL") {
       addStreamBtn = (
         <div className="add-stream-btn">
-         <button className="add-stream-btn button" onClick={this.props.addNewStream}>Add Stream</button>
+         <button className="add-stream-btn button" onClick={this.addStream}>Add Stream</button>
         </div>
       )
     }

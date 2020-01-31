@@ -66,19 +66,19 @@
     background-color: $grpcorange;
   }
 }
-.import-proto {
+.import-proto, .save-proto {
 	-webkit-appearance: none;
 	border: none;
 	border-radius: 5px;
 	color: white;
 	cursor: pointer;
-	display: block;
+	display: inline-block;
 	font-size: .9rem;
 	font-weight: bold;
 	height: 35px;
-	margin: 5px 0 15px;
+	margin: 4px 4px;
 	padding: 8px;
-	width: 100%;
+	width: 48%;
   outline: none;
   background-color: $grpcorange;
 }
