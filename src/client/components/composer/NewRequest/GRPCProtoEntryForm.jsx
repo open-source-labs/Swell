@@ -24,6 +24,7 @@ class GRPCProtoEntryForm extends Component {
   }
 
   // import local proto file and have it uploaded to document body
+  // via electron file import dialog
   importProtos() {
     remote.dialog.showOpenDialog({
       buttonLabel : "Import Proto File",
@@ -40,38 +41,25 @@ class GRPCProtoEntryForm extends Component {
       this.props.setNewRequestBody({
         ...this.props.newRequestBody,
         protoContent: importedProto
-        // write to saveProto file
-        // const dirName = remote.app.getAppPath();
-        // fs.writeFileSync(path.join(dirName, 'src/client/components/composer/protos/saveProto.proto'), data, 'utf-8', (err) => {
-        //   if(err){
-        //       alert("An error ocurred writing the file :" + err.message);
-        //       return;
-        //   }
-        //   console.log('Proto file has been saved')
-        // })
+
       });
+
+      // parse proto file via protoParserFunc imported from protoParser.js
       let parsedProtoContent = protoParserFunc(this.props.newRequestBody.protoContent)
       .then(data => {
-        // console.log(data);
-        // console.log('after parser runs', data.serviceArr);
-        // this.setState({
-        //   ...this.state,
-        //   services: data.serviceArr,
-        //   protoPath: data.protoPath
-        // })  
+
+        // copy parsed proto file details to state
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
           services: data.serviceArr,
           protoPath: data.protoPath
         })
       }).catch((err) => console.log(err));
-      // protoParser(this.props.newRequestBody.protoContent)
-      // .then((data) => parsedProtoContent = data);
-      // console.log(parsedProtoContent);
-      //set state after successful invocation
+
     });
   }
 
+  // save contents of protoContent to state
   updateProtoBody(value) {
     this.props.setNewRequestBody({
       ...this.props.newRequestBody,
@@ -79,9 +67,11 @@ class GRPCProtoEntryForm extends Component {
     })
   }
 
+  // seperate button to update protoContent in state after user has edited the
+  // content after the initial file import
   submitUpdatedProto() {
     protoParserFunc(this.props.newRequestBody.protoContent)
-    .then(data => { 
+    .then(data => {
       this.props.setNewRequestStreams({
         ...this.props.newRequestStreams,
         services: data.serviceArr,
@@ -106,17 +96,11 @@ class GRPCProtoEntryForm extends Component {
           value={this.props.newRequestBody.protoContent}
           className={'composer_textarea grpc ' + bodyContainerClass}
           id='grpcProtoEntryTextArea'
-          // style={{ 'resize': 'none' }}
           type='text'
           placeholder='Import .proto file or paste a copy'
           rows={8}
           onChange={e => this.updateProtoBody(e.target.value)}
-          // onChange={(e) => {
-          //   this.props.setNewRequestBody({
-          //     ...this.props.newRequestBody,
-          //     protoContent: e.target.value
-          //   })
-          // }}
+        
         ></textarea>
         <button className="import-proto" onClick={this.importProtos}>Import Proto File</button>
         <button id="save-proto" className="save-proto" onClick={this.submitUpdatedProto}>Save Changes</button>

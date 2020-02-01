@@ -170,14 +170,16 @@ class ComposerNewRequest extends Component {
       }
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
-       
+
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
+        // populate the history if there is body content
         let historyBodyContent;
         if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
         else historyBodyContent = '';
 
+        // look back to understand what the Variables code is referring to. Also check if still using "path"
         let historyBodyVariables;
         if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
@@ -186,29 +188,23 @@ class ComposerNewRequest extends Component {
           .join('/')
           .replace(/\/{2,}/g, '/')}`;
 
-        // -----THIS IS THE ARRAY OF QUERY OBJECTS, IT SHOULD REPLACE THE DOM MANIPULATION-----
-        // *****let queryArr = this.props.newRequestStreams.streamContent*****
-        let queryArrStr = [document.getElementById('grpcBodyEntryTextArea').value];
-        // let queryArr = queryArrStr[0].slice(2, -2).trim().split(',');
-        let queryArr = queryArrStr[0]
-        let regexVar = (/\r?\n|\r|↵/g);
-        queryArr = (queryArr.replace(regexVar, ''));
-        queryArr = [JSON.parse(queryArr)]
-        // console.log('before loop', queryArr)
-        // console.log('before loop with bracket', [queryArr])
+        // define array to hold client query strings
+        let queryArrStr = this.props.newRequestStreams.streamContent;
+        let queryArr = [];
+        // scrub client query strings to remove line breaks
+        // convert strings to objects and push to array
+        for (let i = 0; i < queryArrStr.length; i += 1) {
+          let query = queryArrStr[i];
+          let regexVar = (/\r?\n|\r|↵/g);
+          query = (query.replace(regexVar, ''));
+          queryArr.push(JSON.parse(query));
 
-        // for (let i = 0; i < currQuery.length; i += 1) {
-        //   let query = queryArr[i];
-        //   if (i > 0) {
-        //     currQuery[i]= ele.slice(1);
-        //     console.log('ele in loop', ele)
-        //   }
-          
-        // }
+        }
 
         // grabbing streaming type to set method in reqRes.request.method
         const grpcStream = document.getElementById('stream').innerText;
 
+        // create reqres obj to be passed to controller for further actions/tasks
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -223,8 +219,8 @@ class ComposerNewRequest extends Component {
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
-          
 
+          // review neccesity of streams, cookies, rawType, and bodyVariables
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),

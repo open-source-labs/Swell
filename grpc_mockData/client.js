@@ -2,18 +2,23 @@ const path = require("path");
 const protoLoader = require("@grpc/proto-loader");
 const grpc = require("grpc");
 
+// store proto path
 const PROTO_PATH = path.resolve(__dirname, "./protos/hw2.proto");
 
+// create package definition
 const pd = protoLoader.loadSync(PROTO_PATH);
 const loaded = grpc.loadPackageDefinition(pd);
+// store package from proto file
 const hello_proto = loaded.helloworld;
 
 function main() {
+  // start client and create credentials
   const client = new hello_proto.Greeter(
     "localhost:50051",
     grpc.credentials.createInsecure()
   );
   // set request value
+  // CLI prompt or hard code the variable for the message "name": "string"
   let user;
   // returns an array containing the command line arguments passed when the Node.js process was launched
   // starts on 2 because process.argv contains the whole command-line invocation
@@ -27,7 +32,7 @@ function main() {
   // create metadata
   const meta = new grpc.Metadata();
   meta.add("testing", "metadata is working");
-
+  
   // unary
   client.sayHello({ name: user }, meta, function(err, response) {
     console.log("Greeting:", response.message);

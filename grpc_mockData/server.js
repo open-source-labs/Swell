@@ -1,5 +1,6 @@
 const path = require("path");
 const Mali = require("mali");
+// consider replacing highland with normal node code for converting array to streams
 const hl = require("highland");
 const grpc = require('grpc');
 
@@ -66,6 +67,8 @@ async function sayHellos(ctx) {
  
   let streamData = await hl(reqMessages)
   ctx.res = streamData;
+  metadata.set('serverStream', 'indeed')
+  dataStream.pop()
 
   // send response header metadata object directly as an argument and that is set and sent
   metadata.set('serverStream', 'indeed')
@@ -95,6 +98,7 @@ function sayHelloCs (ctx) {
         counter++
         console.log('message content',message.name)
         ctx.response.res = { message: 'Client stream: ' + message.name }
+        messages.push(message.name)
         ctx.sendMetadata(metadata)
       })
       // returns all the elements as an array
