@@ -1,5 +1,6 @@
 const path = require("path");
 const Mali = require("mali");
+// consider replacing highland with normal node code for converting array to streams
 const hl = require("highland");
 const grpc = require('grpc');
 
@@ -106,7 +107,7 @@ function sayHelloBidi(ctx) {
   ctx.req.on("data", d => {
     counter++;
     ctx.res.write({ message: "bidi stream: " + d.name });
-    
+
 
   });
   metadata.set('bidiStream', 'ohyes')
