@@ -123,7 +123,7 @@ class GRPCProtoEntryForm extends Component {
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
     /*
     pseudocode for the return section
-     - first div renders the arrow button along with the word "Proto"
+     - first div renders the arrow button along with the title "Proto"
      - textarea has a default value and will changw when a proto file is imported or pasted in
      - the 2 buttons allow you to import a proto file or save any changes made to the textarea in the state of the store
      - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
@@ -134,6 +134,7 @@ class GRPCProtoEntryForm extends Component {
           <img className={arrowClass} src={dropDownArrow}></img>
           Proto
         </div>
+
         <textarea
           value={this.props.newRequestBody.protoContent}
           className={'composer_textarea grpc ' + bodyContainerClass}
@@ -143,8 +144,10 @@ class GRPCProtoEntryForm extends Component {
           rows={8}
           onChange={e => this.updateProtoBody(e.target.value)}
         ></textarea>
+
         <button className="import-proto" onClick={this.importProtos}>Import Proto File</button>
         <button id="save-proto" className="save-proto" onClick={this.submitUpdatedProto}>Save Changes</button>
+
         <GRPCAutoInputForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}

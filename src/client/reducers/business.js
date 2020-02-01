@@ -41,6 +41,7 @@ const initialState = {
     bodyType: 'none',
     rawType: 'Text (text/plain)',
     JSONFormatted: true,
+    // protoContent: null
   },
   newRequestSSE: {
     isSSE: false

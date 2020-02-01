@@ -4,11 +4,10 @@ class GRPCBodyStream extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
-    let bodyType;
+    let streamNum;
     let streamBody;
-    // grab query
+    // grabs the query based on the stream id/number
     let streamContent = this.props.newRequestStreams.streamContent[this.props.stream.id];
     // if the none or the first stream query in the array
     if (this.props.stream.id === 1) {
@@ -21,7 +20,6 @@ class GRPCBodyStream extends Component {
           placeholder='Type query'
           rows={4}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
-
         ></textarea>
       )
     } else {
@@ -38,9 +36,9 @@ class GRPCBodyStream extends Component {
         ></textarea>
       )
     }
-    // number the query stream after add
+    // displays the stream number next to the stream body for client or bidirectionbal streaming
     if (this.props.selectedStreamingType === "CLIENT STREAM" || this.props.selectedStreamingType === "BIDIRECTIONAL") {
-      bodyType = (
+      streamNum = (
       <input
         defaultValue={` Stream ${this.props.streamNum + 1}`}
         className='stream-number'        
@@ -49,9 +47,13 @@ class GRPCBodyStream extends Component {
       )
     }
     const styles = { display: 'flex' };
+    /*
+    pseudocode for the return section
+    - renders the stream body (and the stream number if for client or bidirectional stream)
+    */
     return (
     <div style={styles}>
-      {bodyType}
+      {streamNum}
       {streamBody}
     </div>
     )
