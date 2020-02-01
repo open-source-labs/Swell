@@ -325,7 +325,7 @@ class ComposerNewRequest extends Component {
       // document.getElementById('dropdownService').selectedIndex = 0;
       // document.getElementById('dropdownRequest').selectedIndex = 0;
       // document.getElementById('grpcBodyEntryTextArea').value = '';
-    }
+    } 
   }
 
   render() {
