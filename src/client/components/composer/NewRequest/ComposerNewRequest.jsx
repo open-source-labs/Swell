@@ -319,12 +319,10 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
-    if (this.props.newRequestFields.gRPC) {
-      document.getElementById('stream').innerText = "STREAM";
-      // document.getElementById('dropdownService').selectedIndex = 0;
-      // document.getElementById('dropdownRequest').selectedIndex = 0;
-      // document.getElementById('grpcBodyEntryTextArea').value = '';
-    }
+    // resets the stream button next to URL to stream after adding new request
+    // if (this.props.newRequestFields.gRPC) {
+    //   document.getElementById('stream').innerText = "STREAM";
+    // }
   }
 
   render() {

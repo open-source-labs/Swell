@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
+import { VariablesInAllowedPositionRule } from 'graphql/validation';
 
 class GRPCAutoInputForm extends Component {
   constructor(props) {
@@ -119,6 +120,11 @@ class GRPCAutoInputForm extends Component {
           streamContent.push(`{
             ${query}
 }`);
+          this.props.setNewRequestStreams({
+            ...this.props.newRequestStreams,
+            streamsArr: streamsArr,
+            streamContent: streamContent
+          });
         }
         // add query body to state if there are multiple key:value pairs in a message
         else {
@@ -135,13 +141,18 @@ class GRPCAutoInputForm extends Component {
           }
           streamContent.push(`{${query}
 }`);
+          this.props.setNewRequestStreams({
+            ...this.props.newRequestStreams,
+            streamsArr: streamsArr,
+            streamContent: streamContent
+          });
         }
         // set state in the store with updated content
-        this.props.setNewRequestStreams({
-          ...this.props.newRequestStreams,
-          streamsArr: streamsArr,
-          streamContent: streamContent
-        });
+        // this.props.setNewRequestStreams({
+        //   ...this.props.newRequestStreams,
+        //   streamsArr: streamsArr,
+        //   streamContent: streamContent
+        // });
       });
       // update button display for streaming type listed next to url
       const streamBtn = document.getElementById('stream')
@@ -207,7 +218,6 @@ class GRPCAutoInputForm extends Component {
           selectedRequest={this.props.newRequestStreams.selectedRequest}
           selectedStreamingType={this.props.newRequestStreams.selectedStreamingType}
         />
-
       </div>
     );
   }

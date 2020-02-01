@@ -26,11 +26,11 @@ class GRPCProtoEntryForm extends Component {
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   importProtos() {
     // save current selections in case user hits the cancel button instead of importing a new proto file
-    const savedProtoContent = this.props.newRequestBody.protoContent;
-    const savedSelectedPackage = this.props.newRequestStreams.selectedPackage;
-    const savedServices = this.props.newRequestStreams.savedServices;
-    const savedRequest = this.props.newRequestStreams.savedRequest;
-    const savedStreamingType = this.props.newRequestStreams.selectedStreamingType;
+    // const savedProtoContent = this.props.newRequestBody.protoContent;
+    // const savedSelectedPackage = this.props.newRequestStreams.selectedPackage;
+    // const savedServices = this.props.newRequestStreams.savedServices;
+    // const savedRequest = this.props.newRequestStreams.savedRequest;
+    // const savedStreamingType = this.props.newRequestStreams.selectedStreamingType;
     // upon clicking the import proto button, if the protoContent contains any code,
     // reset selected package name, service, request, streaming type, array of streams, and the stream query content
     if (this.props.newRequestBody.protoContent !== null) {
@@ -48,7 +48,6 @@ class GRPCProtoEntryForm extends Component {
       });
       // grabs the service dropdown list and resets it to the first option "Select Service"
       document.getElementById('dropdownService').selectedIndex = 0;
-
     }
     remote.dialog.showOpenDialog({
       buttonLabel : "Import Proto File",
