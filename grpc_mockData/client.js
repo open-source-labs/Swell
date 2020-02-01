@@ -1,19 +1,24 @@
-var path = require("path");
+const path = require("path");
 const protoLoader = require("@grpc/proto-loader");
 const grpc = require("grpc");
 
+// store proto path
 const PROTO_PATH = path.resolve(__dirname, "./protos/hw2.proto");
 
+// create package definition
 const pd = protoLoader.loadSync(PROTO_PATH);
 const loaded = grpc.loadPackageDefinition(pd);
+// store package from proto file
 const hello_proto = loaded.helloworld;
 
 function main() {
-  var client = new hello_proto.Greeter(
+  // start client and create credentials
+  const client = new hello_proto.Greeter(
     "localhost:50051",
     grpc.credentials.createInsecure()
   );
-  var user;
+  // CLI prompt or hard code the variable for the message "name": "string"
+  let user;
   if (process.argv.length >= 3) {
     user = process.argv[2];
   } else {
@@ -21,9 +26,7 @@ function main() {
   }
   const meta = new grpc.Metadata();
   meta.add("testing", "metadata is working");
-  // client.sayHello.send({name: user}, meta, function(err, response) {
-  //   console.log("metadata:", response);
-  // });
+  
   // unary
   client.sayHello({ name: user }, meta, function(err, response) {
     console.log("Greeting:", response.message);
