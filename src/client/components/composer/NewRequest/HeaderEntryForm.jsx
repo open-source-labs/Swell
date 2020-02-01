@@ -30,13 +30,10 @@ class HeaderEntryForm extends Component {
     let contentType;
     console.log(this.props.newRequestBody.bodyType)
 
-    if (this.props.newRequestBody.bodyType === 'GRPC') {
+    if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none' ) {
       contentType = ''
     }
 
-    else if (this.props.newRequestBody.bodyType === 'none') {
-      contentType = '';
-    }
     else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
       contentType = 'x-www-form-urlencoded';
     }
@@ -74,7 +71,6 @@ class HeaderEntryForm extends Component {
       key: 'Content-Type',
       value: contentType,
     });
-    //headersDeepCopy.length > 1 ? headersDeepCopy.splice(headersDeepCopy.length - 1, 0, contentTypeHeader) : headersDeepCopy.unshift(contentTypeHeader)
     headersDeepCopy.push(contentTypeHeader)
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
@@ -134,17 +130,6 @@ class HeaderEntryForm extends Component {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
 
-    // determine if new header needs to be added
-    // const emptyHeadersCount = headersDeepCopy
-    //   .reduce((count, curr) => {
-    //     if (!curr.key && !curr.value)++count
-    //     return count
-    //   }, 0)
-
-    // depending on if headers is empty, update store, or first add a new header
-    // if (emptyHeadersCount === 0) {
-    //   this.addHeader(headersDeepCopy);
-    // }
 
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
