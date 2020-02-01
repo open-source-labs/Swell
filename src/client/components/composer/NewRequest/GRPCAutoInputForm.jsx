@@ -8,46 +8,52 @@ class GRPCAutoInputForm extends Component {
     this.state = {
       show: true,
     };
+    // need to bind the 'this' of the event handler to the component instance when it is being rendered
     this.toggleShow = this.toggleShow.bind(this);
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
   }
-
+  // event handler on the arrow button that allows you to open/close the section 
   toggleShow() {
     this.setState({
       show: !this.state.show
     });
   }
-
-  // choose service from package and save to state
+  // event handler for changes made to the Select Services dropdown list
   setService() {
-    const sel = document.getElementById('dropdownService');
-    const opt = sel.options[sel.selectedIndex];
-    const serviceName = opt.text;
-    const streamBtn = document.getElementById('stream');
-    streamBtn.innerText = 'STREAM';
+   // grabs the name of the current selected option from the select servics dropdown to be saved in the state of the store
+    const dropdownService = document.getElementById('dropdownService');
+    const serviceName = dropdownService.options[dropdownService.selectedIndex].text;
+    // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
+    document.getElementById('stream').innerText = 'STREAM';
+    // the selected service name is saved in state of the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
       selectedService: serviceName
-
     });
   }
-
-  // choose RPC request types per service  and save to state
+  // event handler for changes made to the Select Request dropdown list
   setRequest() {
-    const sel = document.getElementById('dropdownRequest');
-    const opt = sel.options[sel.selectedIndex];
-    const requestName = opt.text;
+    // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
+    const dropdownRequest = document.getElementById('dropdownRequest');
+    const requestName = dropdownRequest.options[dropdownRequest.selectedIndex].text;
+    // the selected request name is saved in state of the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
       selectedRequest: requestName
     });
+    
     this.setState({
       ...this.state
     }, () => {
+
+      // save the selected service/request and array of all the services obj in variables,
+      // which is currently found in the state of the store
       const selectedService = this.props.newRequestStreams.selectedService;
       const selectedRequest = this.props.newRequestStreams.selectedRequest;
+
       const services = this.props.newRequestStreams.services;
+      console.log('services: ', services)
       let streamingType;
       let packageName;
       for (const service of services) {
@@ -71,7 +77,6 @@ class GRPCAutoInputForm extends Component {
         let req;
         let results = [];
         let query = '';
-
         // find the name of the client message in the rpc request
         for (const service of services) {
           if (service.name === selectedService ) {
@@ -80,13 +85,10 @@ class GRPCAutoInputForm extends Component {
                 req = rpc.req
               }
             }
-
             // capture all key:value pairs in each message definition
             for (const message of service.messages) {
-
               if (message.name === req ) {
                 for (const key in message.def) {
-
                   results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                 }
                 break;
@@ -95,10 +97,8 @@ class GRPCAutoInputForm extends Component {
             }
           }
         }
-
         // add query body to state (messages with single key: value pair)
         let index = this.props.newRequestStreams.count - 1;
-
         if (results.length === 1) {
           query = results[0];
           if (this.props.newRequestStreams.streamsArr[index] !== '') {

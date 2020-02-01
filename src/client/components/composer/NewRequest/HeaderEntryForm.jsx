@@ -28,7 +28,7 @@ class HeaderEntryForm extends Component {
 
   checkContentTypeHeaderUpdate() {
     let contentType;
-    console.log(this.props.newRequestBody.bodyType)
+    // console.log(this.props.newRequestBody.bodyType)
 
     if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none' ) {
       contentType = ''
@@ -95,7 +95,7 @@ class HeaderEntryForm extends Component {
 
   addHeader() {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    console.log(headersDeepCopy);
+    // console.log(headersDeepCopy);
     headersDeepCopy.push({
       id: this.props.newRequestHeaders.headersArr.length,
       active: false,
@@ -117,7 +117,7 @@ class HeaderEntryForm extends Component {
     let indexToBeUpdated;
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
       if (headersDeepCopy[i].id === id) {
-        console.log('updating this one: ', i)
+        // console.log('updating this one: ', i)
         indexToBeUpdated = i;
 
       }

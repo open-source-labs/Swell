@@ -8,9 +8,17 @@ class GRPCBodyEntryForm extends Component {
     this.state = {
       show: true
     };
+    // need to bind the 'this' of the event handler to the component instance when it is being rendered
     this.toggleShow = this.toggleShow.bind(this);
     this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
     this.addStream = this.addStream.bind(this);
+  }
+
+  // event handler on the arrow button that allows you to open/close the section 
+  toggleShow() {
+    this.setState({
+      show: !this.state.show
+    });
   }
 
   componentDidMount() {
@@ -64,12 +72,6 @@ class GRPCBodyEntryForm extends Component {
         });
       };
     }
-  }
-
-  toggleShow() {
-    this.setState({
-      show: !this.state.show
-    });
   }
 
   render() {
