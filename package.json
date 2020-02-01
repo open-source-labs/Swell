@@ -15,11 +15,7 @@
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
-<<<<<<< HEAD
-    "postinstall": "npm rebuild --runtime=electron --target=7.0.0"
-=======
     "postinstall": "npm rebuild --runtime=electron --target=7.0.1"
->>>>>>> dev
   },
   "author": {
     "name": "Swell",
