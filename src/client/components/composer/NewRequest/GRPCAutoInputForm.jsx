@@ -35,6 +35,19 @@ class GRPCAutoInputForm extends Component {
   }
   // event handler for changes made to the Select Request dropdown list
   setRequest() {
+    // clears all stream bodies except the first when switching from client/directional stream to something else
+    while (this.props.newRequestStreams.streamsArr.length > 1) {
+      this.props.newRequestStreams.streamsArr.pop();
+      this.props.newRequestStreams.count -= 1;
+    }
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
+      selectedPackge: null,
+      selectedRequest: null,
+      selectedStreamingType: null,
+      streamContent: [],
+      streamsArr: this.props.newRequestStreams.streamsArr
+    });
     // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
     const dropdownRequest = document.getElementById('dropdownRequest');
     const requestName = dropdownRequest.options[dropdownRequest.selectedIndex].text;
@@ -43,7 +56,6 @@ class GRPCAutoInputForm extends Component {
       ...this.props.newRequestStreams,
       selectedRequest: requestName
     });
-    
     this.setState({
       ...this.state
     }, () => {
@@ -120,11 +132,6 @@ class GRPCAutoInputForm extends Component {
           streamContent.push(`{
             ${query}
 }`);
-          this.props.setNewRequestStreams({
-            ...this.props.newRequestStreams,
-            streamsArr: streamsArr,
-            streamContent: streamContent
-          });
         }
         // add query body to state if there are multiple key:value pairs in a message
         else {
@@ -141,18 +148,13 @@ class GRPCAutoInputForm extends Component {
           }
           streamContent.push(`{${query}
 }`);
-          this.props.setNewRequestStreams({
-            ...this.props.newRequestStreams,
-            streamsArr: streamsArr,
-            streamContent: streamContent
-          });
         }
         // set state in the store with updated content
-        // this.props.setNewRequestStreams({
-        //   ...this.props.newRequestStreams,
-        //   streamsArr: streamsArr,
-        //   streamContent: streamContent
-        // });
+        this.props.setNewRequestStreams({
+          ...this.props.newRequestStreams,
+          streamsArr: streamsArr,
+          streamContent: streamContent
+        });
       });
       // update button display for streaming type listed next to url
       const streamBtn = document.getElementById('stream')
