@@ -27,6 +27,7 @@ const initialState = {
     selectedRequest: null,
     selectedService: null,
     selectedStreamingType: null,
+    initialQuery: null,
     queryArr: null,
     protoPath: null,
     services: null,

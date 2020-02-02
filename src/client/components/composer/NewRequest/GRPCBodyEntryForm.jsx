@@ -44,16 +44,17 @@ class GRPCBodyEntryForm extends Component {
   addStream() {
     const streamsArr = this.props.newRequestStreams.streamsArr
     // save query of first stream body
-    const firstBodyContent = streamsArr[0].query;
+    const firstBodyQuery = this.props.newRequestStreams.initialQuery;
     // constructs new stream body obj
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
     newStream.active = false;
-    newStream.query = firstBodyContent;
+    newStream.query = firstBodyQuery;
     // push new stream body obj into the streamsArr
     streamsArr.push(newStream)
+    this.props.newRequestStreams.streamContent.push(`{${firstBodyQuery}
+}`);
     // push query of first stream body into the streamContent array
-    this.props.newRequestStreams.streamContent.push(firstBodyContent);
     // update mew state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,

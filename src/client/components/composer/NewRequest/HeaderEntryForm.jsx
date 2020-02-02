@@ -151,7 +151,7 @@ class HeaderEntryForm extends Component {
     if (this.props.newRequestBody.bodyType === 'GRPC') {
       headerName = 'Metadata';
       addHeaderName = 'Add Metadata';
-      headerClass = 'import-proto'
+      headerClass = 'addMetadata grpc'
     }
     if (this.props.newRequestBody.bodyType === 'GQL') {
       headerClass = 'composer_submit gql'

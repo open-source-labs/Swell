@@ -153,7 +153,8 @@ class GRPCAutoInputForm extends Component {
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
           streamsArr: streamsArr,
-          streamContent: streamContent
+          streamContent: streamContent,
+          initialQuery: query
         });
       });
       // update button display for streaming type listed next to url

@@ -39,7 +39,7 @@
 	padding: 0 0 5px 0;
 	width: 100%;
 }
-.composer_submit {
+.composer_submit, .addMetadata {
 	-webkit-appearance: none;
 	border: none;
 	border-radius: 5px;
@@ -81,6 +81,12 @@
 	width: 48%;
   outline: none;
   background-color: $grpcorange;
+}
+.small-btn-open {
+	display: inline;
+}
+.small-btn-closed {
+	display: none;
 }
 .stream-number {
 	-webkit-appearance: none;

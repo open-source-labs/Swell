@@ -120,6 +120,7 @@ class GRPCProtoEntryForm extends Component {
     // arrow button used to collapse or open the Proto section
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
+    const smallBtn = this.state.show ? 'small-btn-open' : 'small-btn-closed';
     /*
     pseudocode for the return section
      - first div renders the arrow button along with the title "Proto"
@@ -144,8 +145,8 @@ class GRPCProtoEntryForm extends Component {
           onChange={e => this.updateProtoBody(e.target.value)}
         ></textarea>
 
-        <button className="import-proto" onClick={this.importProtos}>Import Proto File</button>
-        <button id="save-proto" className="save-proto" onClick={this.submitUpdatedProto}>Save Changes</button>
+        <button className={'import-proto ' + smallBtn} onClick={this.importProtos}>Import Proto File</button>
+        <button id="save-proto" className={'save-proto ' + smallBtn} onClick={this.submitUpdatedProto}>Save Changes</button>
 
         <GRPCAutoInputForm
           newRequestBody={this.props.newRequestBody}
