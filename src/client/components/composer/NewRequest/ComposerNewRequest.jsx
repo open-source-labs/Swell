@@ -361,6 +361,7 @@ class ComposerNewRequest extends Component {
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestStreams={this.props.newRequestStreams}
           newRequestBody={this.props.newRequestBody}
+          newRequestFields={this.props.newRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
           setNewRequestStreams={this.props.setNewRequestStreams}
           />

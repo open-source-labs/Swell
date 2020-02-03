@@ -131,37 +131,29 @@ class GRPCAutoInputForm extends Component {
         }
         const streamsArr = this.props.newRequestStreams.streamsArr;
         const streamContent = this.props.newRequestStreams.streamContent;
-        // find the index of the current stream body
-        const index = this.props.newRequestStreams.count - 1;
-         // add query body to state (messages with single key: value pair)
+         // query for messages with single key:value pair
         if (results.length === 1) {
           query = results[0];
-          if (streamsArr[index] !== '') {
-            streamsArr[index].query = query;
-          }
-          if (streamsArr.length === 1) {
-            streamContent.pop();
-          }
-          streamContent.push(`{
-            ${query}
-}`);
         }
-        // add query body to state if there are multiple key:value pairs in a message
+        // query for messages with multiple key:value pairs
         else {
           for (let i = 0; i < results.length; i++) {
-            query =  `${query},
-            ${results[i]}`
+            query = `${query},
+    ${results[i]}`
           }
-          query = query.slice(1);
-          if (streamsArr[index] !== '') {
-            streamsArr[index].query = query;
-          }
-          if (streamsArr.length === 1) {
-            streamContent.pop();
-          }
-          streamContent.push(`{${query}
-}`);
+          query = query.slice(1).trim();
         }
+        // set query in streamsArr 
+        if (streamsArr[0] !== '') {
+          streamsArr[0].query = `{
+    ${query}
+}`;
+        }
+        // remove initial empty string then push new query to stream content arr
+        streamContent.pop();
+        streamContent.push(`{
+    ${query}
+}`);
         // set state in the store with updated content
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,

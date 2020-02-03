@@ -148,7 +148,7 @@ class HeaderEntryForm extends Component {
     let headerName = 'Headers';
     let addHeaderName = 'Add Header'
     let headerClass = 'composer_submit http'
-    if (this.props.newRequestBody.bodyType === 'GRPC') {
+    if (this.props.newRequestFields.gRPC) {
       headerName = 'Metadata';
       addHeaderName = 'Add Metadata';
       headerClass = 'addMetadata grpc'

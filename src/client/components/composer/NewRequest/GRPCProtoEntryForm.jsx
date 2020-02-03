@@ -28,19 +28,28 @@ class GRPCProtoEntryForm extends Component {
     // save current selections in case user hits the cancel button instead of importing a new proto file
     // const savedProtoContent = this.props.newRequestBody.protoContent;
     // const savedSelectedPackage = this.props.newRequestStreams.selectedPackage;
-    // const savedServices = this.props.newRequestStreams.savedServices;
-    // const savedRequest = this.props.newRequestStreams.savedRequest;
+    // const savedServices = this.props.newRequestStreams.selectedServices;
+    // const savedRequest = this.props.newRequestStreams.selectedRequest;
     // const savedStreamingType = this.props.newRequestStreams.selectedStreamingType;
-    
-    // upon clicking the import proto button, if the protoContent contains any code,
-    // reset selected package name, service, request, streaming type, array of streams, and the stream query content
+    // upon clicking the import proto button, if the protoContent contains any code: 
+    // clear all stream bodies except first one for client/bidi stream & reset query of first stream body
+    while (this.props.newRequestStreams.streamsArr.length > 1) {
+      this.props.newRequestStreams.streamsArr.pop();
+      this.props.newRequestStreams.streamContent.pop()
+      this.props.newRequestStreams.count -= 1;
+    }
+    this.props.newRequestStreams.streamContent[0] = '';
+    // resets streaming type displayed next to the URL
+    document.getElementById('stream').innerText = 'STREAM';
+    // reset selected package name, service, request, and streaming type
     if (this.props.newRequestBody.protoContent !== null) {
       this.props.setNewRequestStreams({
         ...this.props.newRequestStreams,
         selectedPackage: null,
         selectedService: null,
         selectedRequest: null,
-        selectedStreamingType: null
+        selectedStreamingType: null,
+        streamContent: this.props.newRequestStreams.streamContent
       });
       // clears the protocontent textarea by reseting it to an empty string in state of the store
       this.props.setNewRequestBody({
