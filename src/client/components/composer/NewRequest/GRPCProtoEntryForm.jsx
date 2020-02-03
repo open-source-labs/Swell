@@ -31,6 +31,7 @@ class GRPCProtoEntryForm extends Component {
     // const savedServices = this.props.newRequestStreams.savedServices;
     // const savedRequest = this.props.newRequestStreams.savedRequest;
     // const savedStreamingType = this.props.newRequestStreams.selectedStreamingType;
+    
     // upon clicking the import proto button, if the protoContent contains any code,
     // reset selected package name, service, request, streaming type, array of streams, and the stream query content
     if (this.props.newRequestBody.protoContent !== null) {
@@ -94,7 +95,7 @@ class GRPCProtoEntryForm extends Component {
     //   });
     // }
   }
-  // save protoContent to state in the store whenever the client makes any changes to the proto file 
+  // saves protoContent to state in the store whenever the client makes any changes to the proto file 
   // or pastes a copy of their proto file
   updateProtoBody(value) {
     this.props.setNewRequestBody({
@@ -103,7 +104,7 @@ class GRPCProtoEntryForm extends Component {
     })
   }
   // separate button to update protoContent state in the store after client make edits after initial file import
-  // so the protoParserFunc doesn't fire every time client makes any changes
+  // so the protoParserFunc doesn't fire every time the client make any changes
   submitUpdatedProto() {
     protoParserFunc(this.props.newRequestBody.protoContent)
     .then(data => {
@@ -124,7 +125,7 @@ class GRPCProtoEntryForm extends Component {
     /*
     pseudocode for the return section
      - first div renders the arrow button along with the title "Proto"
-     - textarea has a default value and will changw when a proto file is imported or pasted in
+     - textarea has a default value which changes when a proto file is imported or pasted in
      - the 2 buttons allow you to import a proto file or save any changes made to the textarea in the state of the store
      - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
      */

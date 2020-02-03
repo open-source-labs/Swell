@@ -88,23 +88,6 @@
 .small-btn-closed {
 	display: none;
 }
-.stream-number {
-	-webkit-appearance: none;
-  background-color: #2c3e50;
-  border: none;
-  color: white;
-  margin-top: 7px;
-  padding: 5px;
-  width: 25%;
-  font-size: 14px;
-	cursor: pointer;
-	display: block;
-	font-weight: bold;
-  height: 35px;
-  &:focus {
-    outline: 0 none;
-  }
-}
 .composer_protocol_container {
 	display: flex;
   margin: 15px 0 15px 0;
@@ -402,7 +385,7 @@
 	margin-bottom: 5px;
   margin-top: 15px;
 }
-.history-container {
+.history-container, stream-container {
 	border: 1px solid #2c3e50;
 	border-radius: 5px;
 	color: white;
@@ -570,8 +553,6 @@
 	float: right;
 	height: 26px;
 	position: relative;
-	// right: 0px;
-	// top: -10px;
 	z-index: 0;
   padding-right: 10px;
   &.button {
@@ -581,4 +562,38 @@
     cursor: pointer;
     outline: none;
   }
+}
+.stream-number {
+  -webkit-appearance: none;
+  background-color: #2c3e50;
+  border: none;
+  color: white;
+  margin-top: 7px;
+  width: 55%;
+  font-size: 14px;
+  display: inline-block;
+	font-weight: bold;
+  height: 35px;
+  outline: none;
+  cursor: default;
+}
+.delete-stream-btn {
+	-webkit-appearance: none;
+  background: #343333;
+  border-radius: 5px;
+  border: 1px solid $yellowgrey;
+  display: inline-block;
+	cursor: pointer;
+	height: 15px;
+  width: 15px;
+  padding: 0px 15px 20px 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+
+	&:hover {
+		background: #2c3e50;
+	}
 }

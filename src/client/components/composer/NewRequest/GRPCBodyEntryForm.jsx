@@ -26,7 +26,6 @@ class GRPCBodyEntryForm extends Component {
       // add fist stream body to the streamsArr (streamsDeepCopy)
       streamsDeepCopy.push({
         id: this.props.newRequestStreams.count,
-        active: false,
         query: ''
       });
       // sets the first query in the intial stream body to an empty string
@@ -39,22 +38,20 @@ class GRPCBodyEntryForm extends Component {
       });
     }
   }
-
   // add stream only for client or BIDIRECTIONAL streaming
   addStream() {
     const streamsArr = this.props.newRequestStreams.streamsArr
-    // save query of first stream body
+    // save query of initial stream body
     const firstBodyQuery = this.props.newRequestStreams.initialQuery;
     // constructs new stream body obj
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
-    newStream.active = false;
     newStream.query = firstBodyQuery;
     // push new stream body obj into the streamsArr
     streamsArr.push(newStream)
+    // push query of initial stream body into the streamContent array
     this.props.newRequestStreams.streamContent.push(`{${firstBodyQuery}
 }`);
-    // push query of first stream body into the streamContent array
     // update mew state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
@@ -63,13 +60,11 @@ class GRPCBodyEntryForm extends Component {
       streamContent: this.props.newRequestStreams.streamContent
     });
   }
-
   // event handler that updates state in the store when typing into the stream query body
   onChangeUpdateStream(streamID, value) {
     const streamsArr = this.props.newRequestStreams.streamsArr;
     for (let i = 0; i < streamsArr.length; i++) {
       if (streamsArr[i].id === streamID) {
-        streamsArr[streamID].active = true;
         streamsArr[streamID].query = value;
         this.props.newRequestStreams.streamContent[streamID] = value;
         this.props.setNewRequestStreams({
@@ -80,7 +75,6 @@ class GRPCBodyEntryForm extends Component {
       };
     }
   }
-
   render() {
     // for each stream body in the streamArr, render the GRPCBodyStream component
     const streamArr = this.props.newRequestStreams.streamsArr.map((stream, index) => (
@@ -100,7 +94,6 @@ class GRPCBodyEntryForm extends Component {
     // arrow button used to collapse or open the Body section
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
-
     //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
     let addStreamBtn;
     if (this.props.selectedStreamingType === "CLIENT STREAM" || this.props.selectedStreamingType === "BIDIRECTIONAL") {

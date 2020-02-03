@@ -224,7 +224,7 @@ class ComposerNewRequest extends Component {
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
-            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream.active),
+            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: historyBodyContent,
             bodyType: this.props.newRequestBody.bodyType,
