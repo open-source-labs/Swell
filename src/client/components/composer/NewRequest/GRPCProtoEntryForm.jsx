@@ -23,12 +23,64 @@ class GRPCProtoEntryForm extends Component {
     });
   }
 
-  // import local proto file and have it uploaded to document body
-  // via electron file import dialog
+  // // import local proto file and have it uploaded to document body
+  // // via electron file import dialog
+  // importProtos() {
+  //   remote.dialog.showOpenDialog({
+  //     buttonLabel : "Import Proto File",
+  //     properties: ['openFile', 'multiSelections'],
+  //     filters: [
+  //       { name: 'Protos', extensions: ['proto'] },
+  //     ]
+  //   })
+  //   .then(filePaths => {
+  //     if (!filePaths) {
+  //       return;
+  //     }
+  //     let importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
+  //     this.props.setNewRequestBody({
+  //       ...this.props.newRequestBody,
+  //       protoContent: importedProto
+
+  //     });
+
+  //     // parse proto file via protoParserFunc imported from protoParser.js
+  //     let parsedProtoContent = protoParserFunc(this.props.newRequestBody.protoContent)
+  //     .then(data => {
+
+  //       // copy parsed proto file details to state
+  //       this.props.setNewRequestStreams({
+  //         ...this.props.newRequestStreams,
+  //         services: data.serviceArr,
+  //         protoPath: data.protoPath
+  //       })
+  //     }).catch((err) => console.log(err));
+
+  //   });
+  // }
+  // import proto file via electron file import dialog and have it displayed in proto textarea box
   importProtos() {
+    // upon clicking the import proto button, if the protoContent contains any code, reset selected package name, service, request, and streaming type
+    if (this.props.newRequestBody.protoContent !== null) {
+      this.props.setNewRequestStreams({
+        ...this.props.newRequestStreams,
+        selectedPackage: null,
+        selectedService: null,
+        selectedRequest: null,
+        selectedStreamingType: null,
+      });
+      // clears the protocontent textarea by reseting it to an empty string in state of the store
+      this.props.setNewRequestBody({
+        ...this.props.newRequestBody,
+        protoContent: ''
+      });
+      // grabs the service dropdown list and resets it to the first option "Select Service"
+      document.getElementById('dropdownService').selectedIndex = 0;
+    }
     remote.dialog.showOpenDialog({
       buttonLabel : "Import Proto File",
       properties: ['openFile', 'multiSelections'],
+      // limits the client to only importing .proto files
       filters: [
         { name: 'Protos', extensions: ['proto'] },
       ]
@@ -37,28 +89,25 @@ class GRPCProtoEntryForm extends Component {
       if (!filePaths) {
         return;
       }
-      let importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
+      // read uploaded proto file
+      const importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
+      // set state of protoContent in the store
       this.props.setNewRequestBody({
         ...this.props.newRequestBody,
         protoContent: importedProto
-
       });
-
       // parse proto file via protoParserFunc imported from protoParser.js
-      let parsedProtoContent = protoParserFunc(this.props.newRequestBody.protoContent)
+      protoParserFunc(this.props.newRequestBody.protoContent)
       .then(data => {
-
-        // copy parsed proto file details to state
+        // save parsed proto file details to state in the store
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
           services: data.serviceArr,
           protoPath: data.protoPath
         })
       }).catch((err) => console.log(err));
-
     });
   }
-
   // save contents of protoContent to state
   updateProtoBody(value) {
     this.props.setNewRequestBody({

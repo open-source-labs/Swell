@@ -18,7 +18,12 @@ let grpcController = {};
 
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
-    //check for connection, if not open one
+  //testing connection
+  reqResObj.connection = 'open';
+  reqResObj.timeSent = Date.now();
+  reqResObj.connectionType = 'plain'
+  
+  //check for connection, if not open one
   if (false) {
       //use existing connection
   }
@@ -98,8 +103,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       if (rpcType === 'UNARY') {
         let query = reqResObj.queryArr[0];
         // Open Connection and set time sent for Unary
-        reqResObj.connection = 'open';
-        reqResObj.timeSent = Date.now();
+        // reqResObj.connection = 'open';
+        // reqResObj.timeSent = Date.now();
         // make Unary call
         client[rpc](query, (err, data)=> {
         // let metadata = new grpc.Metadata();
@@ -111,9 +116,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           }
           // console.log('sent UNARY request', data);
           // Close Connection and set time received for Unary
-          reqResObj.timeReceived = Date.now();
-          reqResObj.connection = 'closed';
-          reqResObj.connectionType = 'plain';
+          // reqResObj.timeReceived = Date.now();
+          // reqResObj.connection = 'closed';
+          // reqResObj.connectionType = 'plain';
           reqResObj.response.events.push(data)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
@@ -131,9 +136,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       }
       else if (rpcType === 'CLIENT STREAM') {
         // create call and open client stream connection
-        reqResObj.connection = 'open';
-        reqResObj.connectionType = 'plain';
-        reqResObj.timeSent = Date.now();
+        // reqResObj.connection = 'open';
+        // reqResObj.connectionType = 'plain';
+        // reqResObj.timeSent = Date.now();
         let call = client[rpc](function(error, response) {
           if (error) {
             console.log('error in client stream', error);
@@ -141,8 +146,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           }
         else {
           //Close Connection for client Stream
-          reqResObj.connection = 'closed';
-          reqResObj.connectionType = 'plain';
+          // reqResObj.connection = 'closed';
+          // reqResObj.connectionType = 'plain';
           reqResObj.timeReceived = Date.now();
           reqResObj.response.events.push(response)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -183,8 +188,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // Open Connection for client Stream
           // this needs additional work to provide correct sent time for each
           // request without overwrite
-          reqResObj.connection = 'pending';
-          reqResObj.connectionType = 'plain';
+          // reqResObj.connection = 'pending';
+          // reqResObj.connectionType = 'plain';
           reqResObj.timeSent = Date.now();
           call.write(query);
           // add console log for completed write?
@@ -302,5 +307,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
   }
+  //testing
+  reqResObj.connection = 'closed';
+  reqResObj.connectionType = 'plain';
 };
 export default grpcController;
