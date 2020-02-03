@@ -100,8 +100,8 @@
   }
 }
 .composer_protocol_button {
-  background-color: #343333;
-	border: 2px solid #808080;
+  background-color: $liteblack;
+	border: 2px solid $yellowgrey;
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: .9rem;
@@ -185,7 +185,7 @@
 .composer_url_input {
 	-webkit-appearance: none;
 	// border: none;
-	background: #343333;
+	background: $liteblack;
 	border: 2px solid $yellowgrey;
 	color: white;
 	display: block;
@@ -242,7 +242,7 @@
 .composer_header_checkbox {
 	-webkit-appearance: none;
 	appearance: none;
-	background: #343333;
+	background: $liteblack;
 	border-radius: 1px;
 	border-right: 1px solid $yellowgrey;
 	border-width: 0;
@@ -264,7 +264,7 @@
 }
 .composer_header_input {
 	-webkit-appearance: none;
-	background: #343333;
+	background: $liteblack;
 	font-size: 14px;
 	border: none;
 	color: white;
@@ -279,7 +279,7 @@
 	border-right: 1px solid $yellowgrey;
 }
 .composer_bodytype_button {
-	background-color: #343333;
+	background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	cursor: pointer;
@@ -337,7 +337,7 @@
   outline: none;
 }
 .composer_textarea {
-	background-color: #343333;
+	background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	color: white;
@@ -396,10 +396,10 @@
 	// overflow: hidden;
 	width: 100%;
 	&:hover {
-		border: 1px solid #808080;
+		border: 1px solid $yellowgrey;
 	}
 	&:hover .history-method {
-		background-color: #2F4858;
+		background-color: $greensix;
 	}
 	&:hover .history-delete-image {
 		opacity: 1;
@@ -426,7 +426,7 @@
 	// overflow: hidden;
 	width: 100%;
 	&:hover{
-		border: 1px solid #808080;
+		border: 1px solid $yellowgrey;
   }
   &:hover .collection-delete-image {
 		opacity: 1;
@@ -538,7 +538,7 @@
   overflow-y: scroll;
 }
 .dropdownService, .dropdownRequest {
-  background-color: #343333;
+  background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	color: white;
@@ -579,7 +579,7 @@
 }
 .delete-stream-btn {
 	-webkit-appearance: none;
-  background: #343333;
+  background: $liteblack;
   border-radius: 5px;
   border: 1px solid $yellowgrey;
   display: inline-block;
@@ -592,8 +592,12 @@
   color: white;
   font-weight: bold;
   font-size: 14px;
-
 	&:hover {
-		background: #2c3e50;
-	}
+    color: $medbluegray;
+    background: $huntergreen;
+    border: 1px solid $litebluegray;
+  }
+  &:focus {
+  outline: none;
+  }
 }

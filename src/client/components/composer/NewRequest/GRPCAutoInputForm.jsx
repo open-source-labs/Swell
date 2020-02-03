@@ -27,9 +27,20 @@ class GRPCAutoInputForm extends Component {
     const serviceName = dropdownService.options[dropdownService.selectedIndex].text;
     // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
     document.getElementById('stream').innerText = 'STREAM';
-    // the selected service name is saved in state of the store
+    // while (this.props.newRequestStreams.streamsArr.length > 1) {
+    //   this.props.newRequestStreams.streamsArr.pop();
+    // }
+    // the selected service name is saved in state of the store, mostly everything else is reset
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
+      // count: 0,
+      // streamsArr: this.props.newRequestStreams.streamsArr,
+      // streamContent: [''],
+      // selectedPackage: null,
+      // selectedRequest: null,
+      // selectedStreamingType: null,
+      // initialQuery: null,
+      // queryArr: null,
       selectedService: serviceName
     });
   }
@@ -38,14 +49,16 @@ class GRPCAutoInputForm extends Component {
     // clears all stream bodies except the first when switching from client/directional stream to something else
     while (this.props.newRequestStreams.streamsArr.length > 1) {
       this.props.newRequestStreams.streamsArr.pop();
+      this.props.newRequestStreams.streamContent.pop()
       this.props.newRequestStreams.count -= 1;
     }
+    // update state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
-      selectedPackge: null,
+      selectedPackage: null,
       selectedRequest: null,
       selectedStreamingType: null,
-      streamContent: [],
+      streamContent: this.props.newRequestStreams.streamContent,
       streamsArr: this.props.newRequestStreams.streamsArr
     });
     // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store

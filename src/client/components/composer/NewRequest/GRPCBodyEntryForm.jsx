@@ -40,24 +40,24 @@ class GRPCBodyEntryForm extends Component {
   }
   // add stream only for client or BIDIRECTIONAL streaming
   addStream() {
-    const streamsArr = this.props.newRequestStreams.streamsArr
+    const streamsArr = this.props.newRequestStreams.streamsArr;
+    const streamContent = this.props.newRequestStreams.streamContent;
     // save query of initial stream body
     const firstBodyQuery = this.props.newRequestStreams.initialQuery;
-    // constructs new stream body obj
+    // construct new stream body obj & push into the streamsArr
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
     newStream.query = firstBodyQuery;
-    // push new stream body obj into the streamsArr
     streamsArr.push(newStream)
-    // push query of initial stream body into the streamContent array
-    this.props.newRequestStreams.streamContent.push(`{${firstBodyQuery}
+    // push query of initial stream body into streamContent array
+    streamContent.push(`{${firstBodyQuery}
 }`);
     // update mew state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
       streamsArr: streamsArr,
       count: streamsArr.length,
-      streamContent: this.props.newRequestStreams.streamContent
+      streamContent: streamContent
     });
   }
   // event handler that updates state in the store when typing into the stream query body
