@@ -13,17 +13,13 @@ class HistoryDate extends Component {
   }
 
   focusOnForm(event) {
-    console.log(this.props)
-    if(this.props.content.gRPC) {
-      let composerUrlField = document.querySelector('.composer_method_select grpc');
-      composerUrlField.focus()
 
-    }
-    else {
-      let composerUrlField = document.querySelector('.composer_url_input');
-      composerUrlField.focus()
-    }
+//     console.log('history date this is the changed tab',document.querySelector('.composer_url_input'))
+    // console.log('this is the new request field', this.props.NewRequestFields)
     
+    let composerUrlField = document.querySelector('.composer_url_input');
+    composerUrlField.focus()
+
   }
 
   render() {

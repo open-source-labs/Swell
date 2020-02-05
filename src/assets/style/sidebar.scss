@@ -39,7 +39,7 @@
 	padding: 0 0 5px 0;
 	width: 100%;
 }
-.composer_submit {
+.composer_submit, .addMetadata {
 	-webkit-appearance: none;
 	border: none;
 	border-radius: 5px;
@@ -82,22 +82,11 @@
   outline: none;
   background-color: $grpcorange;
 }
-.stream-number {
-	-webkit-appearance: none;
-  background-color: #2c3e50;
-  border: none;
-  color: white;
-  margin-top: 7px;
-  padding: 5px;
-  width: 25%;
-  font-size: 14px;
-	cursor: pointer;
-	display: block;
-	font-weight: bold;
-  height: 35px;
-  &:focus {
-    outline: 0 none;
-  }
+.small-btn-open {
+	display: inline;
+}
+.small-btn-closed {
+	display: none;
 }
 .composer_protocol_container {
 	display: flex;
@@ -111,8 +100,8 @@
   }
 }
 .composer_protocol_button {
-  background-color: #343333;
-	border: 2px solid #808080;
+  background-color: $liteblack;
+	border: 2px solid $yellowgrey;
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: .9rem;
@@ -196,7 +185,7 @@
 .composer_url_input {
 	-webkit-appearance: none;
 	// border: none;
-	background: #343333;
+	background: $liteblack;
 	border: 2px solid $yellowgrey;
 	color: white;
 	display: block;
@@ -253,7 +242,7 @@
 .composer_header_checkbox {
 	-webkit-appearance: none;
 	appearance: none;
-	background: #343333;
+	background: $liteblack;
 	border-radius: 1px;
 	border-right: 1px solid $yellowgrey;
 	border-width: 0;
@@ -275,7 +264,7 @@
 }
 .composer_header_input {
 	-webkit-appearance: none;
-	background: #343333;
+	background: $liteblack;
 	font-size: 14px;
 	border: none;
 	color: white;
@@ -290,7 +279,7 @@
 	border-right: 1px solid $yellowgrey;
 }
 .composer_bodytype_button {
-	background-color: #343333;
+	background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	cursor: pointer;
@@ -348,7 +337,7 @@
   outline: none;
 }
 .composer_textarea {
-	background-color: #343333;
+	background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	color: white;
@@ -396,7 +385,7 @@
 	margin-bottom: 5px;
   margin-top: 15px;
 }
-.history-container {
+.history-container, stream-container {
 	border: 1px solid #2c3e50;
 	border-radius: 5px;
 	color: white;
@@ -407,10 +396,10 @@
 	// overflow: hidden;
 	width: 100%;
 	&:hover {
-		border: 1px solid #808080;
+		border: 1px solid $yellowgrey;
 	}
 	&:hover .history-method {
-		background-color: #2F4858;
+		background-color: $greensix;
 	}
 	&:hover .history-delete-image {
 		opacity: 1;
@@ -437,7 +426,7 @@
 	// overflow: hidden;
 	width: 100%;
 	&:hover{
-		border: 1px solid #808080;
+		border: 1px solid $yellowgrey;
   }
   &:hover .collection-delete-image {
 		opacity: 1;
@@ -549,7 +538,7 @@
   overflow-y: scroll;
 }
 .dropdownService, .dropdownRequest {
-  background-color: #343333;
+  background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	color: white;
@@ -564,8 +553,6 @@
 	float: right;
 	height: 26px;
 	position: relative;
-	// right: 0px;
-	// top: -10px;
 	z-index: 0;
   padding-right: 10px;
   &.button {
@@ -574,5 +561,43 @@
     border: 0;
     cursor: pointer;
     outline: none;
+  }
+}
+.stream-number {
+  -webkit-appearance: none;
+  background-color: #2c3e50;
+  border: none;
+  color: white;
+  margin-top: 7px;
+  width: 55%;
+  font-size: 14px;
+  display: inline-block;
+	font-weight: bold;
+  height: 35px;
+  outline: none;
+  cursor: default;
+}
+.delete-stream-btn {
+	-webkit-appearance: none;
+  background: $liteblack;
+  border-radius: 5px;
+  border: 1px solid $yellowgrey;
+  display: inline-block;
+	cursor: pointer;
+	height: 15px;
+  width: 15px;
+  padding: 0px 15px 20px 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+	&:hover {
+    color: $medbluegray;
+    background: $huntergreen;
+    border: 1px solid $litebluegray;
+  }
+  &:focus {
+  outline: none;
   }
 }
