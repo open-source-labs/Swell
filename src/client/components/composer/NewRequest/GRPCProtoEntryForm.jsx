@@ -4,7 +4,6 @@ import { remote } from 'electron';
 import fs from 'fs';
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 import protoParserFunc from "../protos/protoParser.js";
-import { runInThisContext } from 'vm';
 
 class GRPCProtoEntryForm extends Component {
   constructor(props) {
@@ -81,6 +80,7 @@ class GRPCProtoEntryForm extends Component {
       // parse proto file via protoParserFunc imported from protoParser.js
       protoParserFunc(this.props.newRequestBody.protoContent)
       .then(data => {
+        console.log('in protoEntry, logging data.serviceArr: ', data.serviceArr)
         // save parsed proto file details to state in the store
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,

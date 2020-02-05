@@ -47,7 +47,9 @@ class GRPCBodyEntryForm extends Component {
     // construct new stream body obj & push into the streamsArr
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
-    newStream.query = firstBodyQuery;
+    newStream.query = `{
+    ${firstBodyQuery}
+}`;
     streamsArr.push(newStream)
     // push query of initial stream body into streamContent array
     streamContent.push(`{

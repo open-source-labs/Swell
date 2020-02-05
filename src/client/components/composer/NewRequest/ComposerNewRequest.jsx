@@ -319,10 +319,6 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
-    // resets the stream button next to URL to stream after adding new request
-    // if (this.props.newRequestFields.gRPC) {
-    //   document.getElementById('stream').innerText = "STREAM";
-    // }
   }
 
   render() {
