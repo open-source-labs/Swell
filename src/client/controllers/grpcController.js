@@ -19,9 +19,9 @@ let grpcController = {};
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
   //testing connection
-  reqResObj.connection = 'open';
-  reqResObj.timeSent = Date.now();
-  reqResObj.connectionType = 'plain'
+  // reqResObj.connection = 'open';
+  // reqResObj.timeSent = Date.now();
+  // reqResObj.connectionType = 'plain'
   
   //check for connection, if not open one
   if (false) {
@@ -36,6 +36,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     let packageName = reqResObj.packageName;
     let url = reqResObj.url;
     let queryArr = reqResObj.queryArr;
+    
 
     // go through services object, find service where name matches our passed
     // in service, then grab the rpc list of that service, also save that service
@@ -101,14 +102,15 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
 
       if (rpcType === 'UNARY') {
+        // let meta = new grpc.Metadata();
         let query = reqResObj.queryArr[0];
         // Open Connection and set time sent for Unary
-        // reqResObj.connection = 'open';
-        // reqResObj.timeSent = Date.now();
+        reqResObj.connection = 'open';
+        reqResObj.timeSent = Date.now();
         // make Unary call
         client[rpc](query, (err, data)=> {
         // let metadata = new grpc.Metadata();
-
+        
         // metadata.add('testHeader', 'works?')
 
           if (err) {
@@ -116,20 +118,23 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           }
           // console.log('sent UNARY request', data);
           // Close Connection and set time received for Unary
-          // reqResObj.timeReceived = Date.now();
-          // reqResObj.connection = 'closed';
-          // reqResObj.connectionType = 'plain';
+          reqResObj.timeReceived = Date.now();
+          reqResObj.connection = 'closed';
+          reqResObj.connectionType = 'plain';
           reqResObj.response.events.push(data)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
 
-        }).on('metadata', (metadata) => {
+        }).add('metadata', (metadata) => {
+          
           // if metadata is sent back from the server, analyze and handle
           let keys = Object.keys(metadata._internal_repr)
           for (let i = 0; i < keys.length; i += 1) {
             let key = keys[i];
-            reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-          }
+            // if (meta) {
+            //   meta.add(reqResObj.response.headers[key] = metadata._internal_repr[key][0]);
+            // }
+          }reqResObj.response.headers[key] = metadata._internal_repr[key][0];
           store.default.dispatch(actions.reqResUpdate(reqResObj))
         })
 
@@ -308,7 +313,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
   }
   //testing
-  reqResObj.connection = 'closed';
-  reqResObj.connectionType = 'plain';
+  // reqResObj.connection = 'closed';
+  // reqResObj.connectionType = 'plain';
 };
 export default grpcController;
