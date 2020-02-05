@@ -30,6 +30,7 @@ class GRPCBodyEntryForm extends Component {
     }
   }
 
+  // add stream for client or BIDIRECTIONAL streaming
   addStream() {
     const firstBodyContent = this.props.newRequestStreams.streamsArr[0].query;
     // const count = this.props.newRequestStreams.count;
@@ -48,6 +49,7 @@ class GRPCBodyEntryForm extends Component {
     });
   }
 
+  // update state when typing into the stream query body
   onChangeUpdateStream(streamID, value) {
     for (let i = 0; i < this.props.newRequestStreams.streamsArr.length; i++) {
       if (this.props.newRequestStreams.streamsArr[i].id === streamID) {
