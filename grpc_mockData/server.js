@@ -64,14 +64,14 @@ async function sayHellos(ctx) {
   // alias for ctx.request.req
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
   let reqMessages = {"message": 'hello!!! ' + ctx.req.name}
- 
+  dataStream.push(reqMessages)
+  reqMessages = dataStream
   let streamData = await hl(reqMessages)
   ctx.res = streamData;
   metadata.set('serverStream', 'indeed')
   dataStream.pop()
 
   // send response header metadata object directly as an argument and that is set and sent
-  metadata.set('serverStream', 'indeed')
   ctx.sendMetadata(metadata)
 
   console.log(`done sayHellos`);
