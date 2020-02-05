@@ -126,11 +126,8 @@ function sayHelloBidi(ctx) {
   ctx.req.on("data", d => {
     counter++;
     ctx.res.write({ message: "bidi stream: " + d.name });
-<<<<<<< HEAD
-=======
 
 
->>>>>>> dev
   });
   metadata.set('bidiStream', 'ohyes')
   ctx.sendMetadata(metadata);
