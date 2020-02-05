@@ -28,7 +28,7 @@ class HeaderEntryForm extends Component {
 
   checkContentTypeHeaderUpdate() {
     let contentType;
-    console.log(this.props.newRequestBody.bodyType)
+    // console.log(this.props.newRequestBody.bodyType)
 
     if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none' ) {
       contentType = ''
