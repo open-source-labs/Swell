@@ -51,7 +51,7 @@ class RequestTabs extends Component {
     if (this.props.requestContent.bodyType === 'GRPC') {
       displayQueries = '';
       let length = this.props.requestContent.streams.length;
-      for (let i =0; i < length; i += 1) {
+      for (let i = 0; i < length; i += 1) {
         if (i > 0) {
           displayQueries += '\n\n'
         }
@@ -61,6 +61,8 @@ class RequestTabs extends Component {
     }
 
     if (this.state.openTab === "Request Body") {
+      // console.log('displayQueries: ', displayQueries)
+      // console.log('this.props.requestContent: ', this.props.requestContent)
       tabContentShown = !!this.props.requestContent.body
         ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{displayQueries}</p></pre>
         : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>

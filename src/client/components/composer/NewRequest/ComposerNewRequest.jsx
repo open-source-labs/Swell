@@ -181,20 +181,6 @@ class ComposerNewRequest extends Component {
 
 `
         }
-        // populate the history if there is body content
-        // let historyBodyContent;
-        // if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        // else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
-        // else historyBodyContent = '';
-        // look back to understand what the Variables code is referring to. Also check if still using "path"
-        let historyBodyVariables;
-        if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = '';
-        let path = `/${URIWithoutProtocol.split('/')
-          .splice(1)
-          .join('/')
-          .replace(/\/{2,}/g, '/')}`;
-
         // define array to hold client query strings
         let queryArrStr = this.props.newRequestStreams.streamContent;
         let queryArr = [];
@@ -211,13 +197,14 @@ class ComposerNewRequest extends Component {
         // grabbing streaming type to set method in reqRes.request.method
         const grpcStream = document.getElementById('stream').innerText;
 
+        // console.log('Arr: ', this.props.newRequestStreams.streamsArr)
+        // console.log('Content: ', this.props.newRequestStreams.streamContent)
         // create reqres obj to be passed to controller for further actions/tasks
         reqRes = {
           id: uuid(),
           created_at: new Date(),
           protocol: '',
           host,
-          path,
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
           gRPC: this.props.newRequestFields.gRPC,
@@ -235,7 +222,6 @@ class ComposerNewRequest extends Component {
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: historyBodyVariables,
             rawType: this.props.newRequestBody.rawType
           },
           response: {
