@@ -47,24 +47,22 @@ class RequestTabs extends Component {
     let headers = "Request Headers";
     let variables = "Request Variables";
     let tabContentShown;
-    let displayQueries = this.props.requestContent.body;
-    if (this.props.requestContent.bodyType === 'GRPC') {
-      displayQueries = '';
-      let length = this.props.requestContent.streams.length;
-      for (let i = 0; i < length; i += 1) {
-        if (i > 0) {
-          displayQueries += '\n\n'
-        }
-        let streamObj = this.props.requestContent.streams[i];
-        displayQueries += streamObj.query;
-      }
-    }
-
+    // let displayQueries = this.props.requestContent.body;
+    // if (this.props.requestContent.bodyType === 'GRPC') {
+    //   displayQueries = '';
+    //   let length = this.props.requestContent.streams.length;
+    //   for (let i = 0; i < length; i += 1) {
+    //     if (i > 0) {
+    //       displayQueries += '\n\n'
+    //     }
+    //     let streamObj = this.props.requestContent.streams[i];
+    //     displayQueries += streamObj.query;
+    //   }
+    // }
+ 
     if (this.state.openTab === "Request Body") {
-      // console.log('displayQueries: ', displayQueries)
-      // console.log('this.props.requestContent: ', this.props.requestContent)
       tabContentShown = !!this.props.requestContent.body
-        ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{displayQueries}</p></pre>
+        ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p></pre>
         : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>
     }
 
