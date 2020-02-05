@@ -173,12 +173,19 @@ class ComposerNewRequest extends Component {
 
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
-        // populate the history if there is body content
-        let historyBodyContent;
-        if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
-        else historyBodyContent = '';
 
+        // saves all stream body queries to history & reqres request body
+        let streamQueries = '';
+        for (let i = 0; i < this.props.newRequestStreams.streamContent.length; i++) {
+          streamQueries += `${this.props.newRequestStreams.streamContent[i]}
+
+`
+        }
+        // populate the history if there is body content
+        // let historyBodyContent;
+        // if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
+        // else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
+        // else historyBodyContent = '';
         // look back to understand what the Variables code is referring to. Also check if still using "path"
         let historyBodyVariables;
         if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
@@ -226,7 +233,7 @@ class ComposerNewRequest extends Component {
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
             streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
-            body: historyBodyContent,
+            body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
             bodyVariables: historyBodyVariables,
             rawType: this.props.newRequestBody.rawType
