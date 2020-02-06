@@ -120,31 +120,35 @@ class GRPCAutoInputForm extends Component {
               }
             }
             for (const message of service.messages) {
-              console.log('message: ', message);
+              // console.log('message: ', message);
               if (message.name === req ) {
                 for (const key in message.def) {
                   // if message type is a nested message (message.def.nested === true)
                   // message.def = key: {dependent: dependent.message.def}
-                  console.log('message.def.nested: ', message.def[key].nested);
-                  console.log('key: ', key);
+                  // console.log('message.def.nested: ', message.def[key].nested);
+                  // console.log('key: ', key);
                   if (message.def[key].nested) {
                     for (const submess of service.messages) {
-                      console.log('submess: ', submess);
-                      console.log('submess.name: ', submess.name);
-                      console.log('message.def[key].dependent: ', message.def[key].dependent);
+                      // console.log('submess: ', submess);
+                      // console.log('submess.name: ', submess.name);
+                      // console.log('message.def[key].dependent: ', message.def[key].dependent);
                       if (submess.name === message.def[key].dependent ) {
+                        // define obj for the submessage definition
+                        let tempObj = {};
                         for (const subKey in submess.def) {
-                    results.push(`"${key}":{"${subKey}": "${submess.def[subKey].type.slice(5).toLowerCase()}"}`)
-                  }
-                  break;
-                  } else {
-                  console.log('message.def: ', message.def);
+                          tempObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
+                        }
+                        // console.log('tempObj: ', tempObj);
+                        results.push(`"${key}":${JSON.stringify(tempObj)}`)
+                        break;
+                      }
+                      // break;
+                  }//after
+                } else {
+                  // console.log('message.def: ', message.def);
                   results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                 }
-                }
-                // break;
               }
-            }
             break;
           }
         }
