@@ -34,6 +34,7 @@ class GRPCAutoInputForm extends Component {
     while (this.props.newRequestStreams.streamsArr.length > 1) {
       this.props.newRequestStreams.streamsArr.pop();
       this.props.newRequestStreams.streamContent.pop();
+      this.props.newRequestStreams.count -= 1;
     }
     this.props.newRequestStreams.streamContent[0] = '';
     // the selected service name is saved in state of the store, mostly everything else is reset

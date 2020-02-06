@@ -30,7 +30,7 @@ class History extends Component {
       })
     }
     let cookieDeeperCopy;
-    if (this.props.content.request.cookies && !/ws/.test(this.props.content.protocol)) {
+    if (this.props.content.request.cookies && !/ws/.test(this.props.content.protocol && !this.content.gRPC)) {
       cookieDeeperCopy = JSON.parse(JSON.stringify(this.props.content.request.cookies));
       cookieDeeperCopy.push({
         id: this.props.content.request.cookies.length + 1,
@@ -57,7 +57,7 @@ class History extends Component {
     }
     // set the streamContent arr to equal each query in the streamsArr
     const streamsArr = this.props.content.streamsArr;
-    const streamContent = []
+    const streamContent = [];
     for (const stream of streamsArr) {
       streamContent.push(stream.query);
     }
