@@ -106,14 +106,18 @@ class RequestTabs extends Component {
         tabContentShown.push(<p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`}>No Request Cookies</p>)
       }
     }
-
+    
     return (
       <div className={"request_tabs_container"}>
         <ul className={"tab_list"}>
           <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab} />
           {
-            !this.props.requestContent.bodyType === "GRPC" &&
+            this.props.requestContent.bodyType === "none" &&
+            <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
+          }
+          {
+            this.props.requestContent.bodyType === "GQL" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
           }
           {
