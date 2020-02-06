@@ -94,7 +94,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
       let client = new serverName[service](`${url}`, grpc.credentials.createInsecure());
 
-      // create client requested metadata key and value for each type of streaming
+      // create client requested metadata key and value pair for each type of streaming
       let meta = new grpc.Metadata()
       let metaArr = reqResObj.request.headers;
       for (let i = 0; i < metaArr.length; i+=1) {
@@ -179,20 +179,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // add console log for completed write?
         }
         call.end();
-
-
-        // reqResObj.response.events.push(response)
-        // store.default.dispatch(actions.reqResUpdate(reqResObj));
-        // add console log for completed call
-
-        // async.series(callStack, function(err, result) {
-        //   call.end();
-        //   // reqResObj.response.events.push(result)
-        //   console.log('result of async series', result);
-
-        //   console.log('ran all functions')
-        // });
-
       }
       else if (rpcType === 'SERVER STREAM') {
         // Open Connection for SERVER Stream
