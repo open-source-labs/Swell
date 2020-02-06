@@ -65,9 +65,7 @@ class ComposerContainer extends Component {
           newRequestBody={this.props.newRequestBody}
           newRequestSSE={this.props.newRequestSSE}
           currentTab={this.props.currentTab}
-          protoPath={this.props.protoPath}
           reqResAdd={this.props.reqResAdd}
-          services={this.props.services}
 
           setComposerWarningMessage={this.props.setComposerWarningMessage}
           setComposerDisplay={this.props.setComposerDisplay}
@@ -91,7 +89,6 @@ class ComposerContainer extends Component {
       default:
         console.log('Incorrect Model Display setting');
     }
-
     return <div className="composerContents">{composerContents}</div>;
   }
 }

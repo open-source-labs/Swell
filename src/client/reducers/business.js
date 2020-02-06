@@ -12,7 +12,8 @@ const initialState = {
     protocol: '',
     url: 'http://',
     method: 'GET',
-    graphQL: false
+    graphQL: false,
+    gRPC: false
   },
   newRequestHeaders: {
     headersArr: [],
@@ -26,6 +27,7 @@ const initialState = {
     selectedRequest: null,
     selectedService: null,
     selectedStreamingType: null,
+    initialQuery: null,
     queryArr: null,
     protoPath: null,
     services: null,
@@ -40,6 +42,7 @@ const initialState = {
     bodyType: 'none',
     rawType: 'Text (text/plain)',
     JSONFormatted: true,
+    // protoContent: null
   },
   newRequestSSE: {
     isSSE: false
@@ -66,7 +69,6 @@ const businessReducer = (state = initialState, action) => {
           newHistory.splice(i, 1)
         }
       })
-
       return {
         ...state,
         history: newHistory,
@@ -76,7 +78,6 @@ const businessReducer = (state = initialState, action) => {
     case types.CLEAR_HISTORY: {
       console.log('should have cleared history')
       historyController.clearHistoryFromIndexedDb();
-
       return {
         ...state,
         history: []
@@ -98,7 +99,6 @@ const businessReducer = (state = initialState, action) => {
           newCollections.splice(i, 1)
         }
       })
-
       return {
         ...state,
         collections: newCollections,
@@ -130,11 +130,8 @@ const businessReducer = (state = initialState, action) => {
     case types.REQRES_ADD: {
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
-
       const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
-
       const newHistory = JSON.parse(JSON.stringify(state.history));
-
       let updated = false;
       //if there is history for added date, add query to beginning of history
       newHistory.forEach((obj) => {
@@ -150,7 +147,6 @@ const businessReducer = (state = initialState, action) => {
           history: [action.payload],
         });
       }
-
       return {
         ...state,
         reqResArray,
@@ -161,7 +157,6 @@ const businessReducer = (state = initialState, action) => {
     case types.REQRES_DELETE: {
       const deleteId = action.payload.id;
       const newReqResArray = state.reqResArray.filter(reqRes => reqRes.id !== deleteId)
-
       return {
         ...state,
         reqResArray: newReqResArray
@@ -186,7 +181,6 @@ const businessReducer = (state = initialState, action) => {
         action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
         reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
-
       return {
         ...state,
         reqResArray: reqResDeepCopy,
@@ -236,7 +230,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_SSE: {
-      console.log('action.payload',action.payload)
+      // console.log('action.payload',action.payload)
       return {
         ...state,
         newRequestSSE: {isSSE: action.payload},

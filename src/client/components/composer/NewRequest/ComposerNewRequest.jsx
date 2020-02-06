@@ -170,22 +170,13 @@ class ComposerNewRequest extends Component {
       }
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
-        let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
-        const host = protocol + URIWithoutProtocol.split('/')[0];
-        // populate the history if there is body content
-        let historyBodyContent;
-        if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
-        else historyBodyContent = '';
 
-        // look back to understand what the Variables code is referring to. Also check if still using "path"
-        let historyBodyVariables;
-        if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = '';
-        let path = `/${URIWithoutProtocol.split('/')
-          .splice(1)
-          .join('/')
-          .replace(/\/{2,}/g, '/')}`;
+
+        // saves all stream body queries to history & reqres request body
+        let streamQueries = '';
+        for (let i = 0; i < this.props.newRequestStreams.streamContent.length; i++) {
+          streamQueries += `${this.props.newRequestStreams.streamContent[i]}`
+        }      
 
         // define array to hold client query strings
         let queryArrStr = this.props.newRequestStreams.streamContent;
@@ -208,9 +199,9 @@ class ComposerNewRequest extends Component {
         reqRes = {
           id: uuid(),
           created_at: new Date(),
-          protocol: 'https://',
-          host,
-          path,
+
+          protocol: '',
+
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
           gRPC: this.props.newRequestFields.gRPC,
@@ -224,11 +215,10 @@ class ComposerNewRequest extends Component {
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
-            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream.active),
+            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
-            body: historyBodyContent,
+            body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: historyBodyVariables,
             rawType: this.props.newRequestBody.rawType
           },
           response: {
@@ -354,12 +344,10 @@ class ComposerNewRequest extends Component {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
-    if (this.props.newRequestFields.gRPC) {
-      document.getElementById('stream').innerText = "STREAM";
-      // document.getElementById('dropdownService').selectedIndex = 0;
-      // document.getElementById('dropdownRequest').selectedIndex = 0;
-      // document.getElementById('grpcBodyEntryTextArea').value = '';
-    }
+    // resets the stream button next to URL to stream after adding new request
+    // if (this.props.newRequestFields.gRPC) {
+    //   document.getElementById('stream').innerText = "STREAM";
+    // }
   }
 
   render() {
@@ -398,6 +386,7 @@ class ComposerNewRequest extends Component {
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestStreams={this.props.newRequestStreams}
           newRequestBody={this.props.newRequestBody}
+          newRequestFields={this.props.newRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
           setNewRequestStreams={this.props.setNewRequestStreams}
           />
