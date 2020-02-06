@@ -18,7 +18,7 @@ class History extends Component {
       protocol: this.props.content.protocol ? this.props.content.protocol : 'http://',
       url: this.props.content.url ? this.props.content.url : 'http://',
       graphQL: this.props.content.graphQL ? this.props.content.graphQL : false,
-      gRPC: this.props.content.protocol === '' ? true : false
+      gRPC: this.props.content.gRPC ? this.props.content.gRPC : false
     }
     let headerDeeperCopy;
     if (this.props.content.request.headers) {

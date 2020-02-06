@@ -171,13 +171,6 @@ class ComposerNewRequest extends Component {
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
 
-        let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
-        const host = protocol + URIWithoutProtocol.split('/')[0];
-        // populate the history if there is body content
-        // let historyBodyContent;
-        // if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        // else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
-        // else historyBodyContent = '';
 
         // saves all stream body queries to history & reqres request body
         let streamQueries = '';
@@ -205,11 +198,11 @@ class ComposerNewRequest extends Component {
         // console.log('Arr: ', this.props.newRequestStreams.streamsArr)
         // console.log('Content: ', this.props.newRequestStreams.streamContent)
         // create reqres obj to be passed to controller for further actions/tasks
+
         reqRes = {
           id: uuid(),
           created_at: new Date(),
           protocol: '',
-          host,
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
           gRPC: this.props.newRequestFields.gRPC,
@@ -304,6 +297,29 @@ class ComposerNewRequest extends Component {
         JSONFormatted: true,
       });
 
+      if (this.props.newRequestFields.gRPC) {
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GRPC',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
+      if (this.props.newRequestFields.graphQL) {
+
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GQL',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
       this.props.setNewRequestFields({
         method: this.props.newRequestFields.method,
         protocol: '',
@@ -311,6 +327,18 @@ class ComposerNewRequest extends Component {
         graphQL: this.props.newRequestFields.graphQL,
         gRPC: this.props.newRequestFields.gRPC,
       });
+
+      if(this.props.newRequestFields.protocol === 'ws://') {
+      this.props.setNewRequestFields({
+        method: this.props.newRequestFields.method,
+        protocol: 'ws://',
+        url: 'ws://',
+        graphQL: this.props.newRequestFields.graphQL,
+        gRPC: this.props.newRequestFields.gRPC,
+      });
+    }
+
+      
       this.props.setNewRequestSSE(false);
     }
     else {
