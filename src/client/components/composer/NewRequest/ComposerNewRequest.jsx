@@ -170,7 +170,6 @@ class ComposerNewRequest extends Component {
       }
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
-
         let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
         const host = protocol + URIWithoutProtocol.split('/')[0];
         // populate the history if there is body content
@@ -205,10 +204,11 @@ class ComposerNewRequest extends Component {
         const grpcStream = document.getElementById('stream').innerText;
 
         // create reqres obj to be passed to controller for further actions/tasks
+
         reqRes = {
           id: uuid(),
           created_at: new Date(),
-          protocol: '',
+          protocol: 'https://',
           host,
           path,
           url: this.props.newRequestFields.url,
@@ -306,6 +306,29 @@ class ComposerNewRequest extends Component {
         JSONFormatted: true,
       });
 
+      if (this.props.newRequestFields.gRPC) {
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GRPC',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
+      if (this.props.newRequestFields.graphQL) {
+
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GQL',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
       this.props.setNewRequestFields({
         method: this.props.newRequestFields.method,
         protocol: '',
@@ -313,6 +336,18 @@ class ComposerNewRequest extends Component {
         graphQL: this.props.newRequestFields.graphQL,
         gRPC: this.props.newRequestFields.gRPC,
       });
+
+      if(this.props.newRequestFields.protocol === 'ws://') {
+      this.props.setNewRequestFields({
+        method: this.props.newRequestFields.method,
+        protocol: 'ws://',
+        url: 'ws://',
+        graphQL: this.props.newRequestFields.graphQL,
+        gRPC: this.props.newRequestFields.gRPC,
+      });
+    }
+
+      
       this.props.setNewRequestSSE(false);
     }
     else {
