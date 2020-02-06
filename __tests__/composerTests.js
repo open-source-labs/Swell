@@ -5,7 +5,7 @@ import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson, { mountToJson } from 'enzyme-to-json';
-
+import {remote} from "electron";
 import { JestEnvironment } from '@jest/environment';
 // Enzyme is a wrapper around React test utilities which makes it easier to
 // shallow render and traverse the shallow rendered tree.
@@ -13,7 +13,6 @@ import { JestEnvironment } from '@jest/environment';
 // import httpController from '../src/client/controllers/httpController.js'
 // import historyController from '../src/client/controllers/historyController.js'
 // import reqResController from '../src/client/controllers/reqResController.js'
-
 // import ComposerNewRequest from "../src/client/components/composer/NewRequest/ComposerNewRequest.jsx"; //doesn't like png
 import ProtocolSelect from "../src/client/components/composer/NewRequest/ProtocolSelect.jsx";
 import FieldEntryForm from "../src/client/components/composer/NewRequest/FieldEntryForm.jsx";
