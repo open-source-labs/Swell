@@ -24,6 +24,7 @@ class HeaderEntryForm extends Component {
       this.addHeader(headersDeepCopy);
     }
     this.checkContentTypeHeaderUpdate();
+
   }
 
   checkContentTypeHeaderUpdate() {
