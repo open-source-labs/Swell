@@ -172,8 +172,6 @@ class FieldEntryForm extends Component {
   // }
 
   render() {
-    // console.log('what is this field entry form', this.props.newRequestFields)
-
 
     return (
       <div>
