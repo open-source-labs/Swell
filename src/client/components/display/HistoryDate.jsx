@@ -20,8 +20,6 @@ class HistoryDate extends Component {
   }
 
   render() {
-    // console.log('this.props.content: ', this.props.content)
-    // console.log('this.props.history: ', this.props.history)
     let current = this.props.history.find(a => a.date === this.props.content.date);
     let date = parse(current.date);
 

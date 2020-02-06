@@ -7,8 +7,6 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import historyController from '../../../controllers/historyController';
-import { CLIENT_RENEG_LIMIT } from 'tls';
-
 
 class ComposerNewRequest extends Component {
   constructor(props) {

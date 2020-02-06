@@ -6,11 +6,9 @@ class History extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
     this.addHistoryToNewRequest = this.addHistoryToNewRequest.bind(this);
     this.deleteHistory = this.deleteHistory.bind(this);
   }
-
   addHistoryToNewRequest() {
     const requestFieldObj = {
       method: this.props.content.request.method ? this.props.content.request.method : 'GET',
@@ -63,12 +61,12 @@ class History extends Component {
     }
     // construct the streams obj from passed in history content & set state in store
     const requestStreamsObj = {
-      streamsArr: this.props.content.streamsArr,
+      streamsArr,
       count: this.props.content.queryArr.length,
-      streamContent: streamContent,
+      streamContent,
       selectedPackage: this.props.content.packageName,
       selectedRequest: this.props.content.rpc,
-      selectedService: this.props.content.service,
+      selectedService:  this.props.content.service,
       selectedStreamingType: this.props.content.request.method,
       initialQuery: this.props.content.initialQuery,
       queryArr: this.props.content.queryArr,
@@ -80,7 +78,6 @@ class History extends Component {
     this.props.setNewRequestCookies(requestCookiesObj);
     this.props.setNewRequestBody(requestBodyObj);
     this.props.setNewRequestStreams(requestStreamsObj)
-
     // for gRPC 
     if (this.props.content.gRPC) {
       // need to place logic in callback otherwise code won't work and returns null
@@ -105,7 +102,6 @@ class History extends Component {
       })
     }
   }
-
   deleteHistory(e) {
     this.props.deleteFromHistory(this.props.content);
     historyController.deleteHistoryFromIndexedDb(e.target.id);
