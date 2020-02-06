@@ -12,6 +12,11 @@ class RequestTabs extends Component {
   }
 
   handleTabSelect(val) {
+    let headers = "Request Headers"
+    if (this.props.requestContent.bodyType === 'GRPC') {
+      headers = "Request Metadata"
+    }
+
     switch (val) {
       case "Request Body":
         this.setState({
@@ -28,7 +33,7 @@ class RequestTabs extends Component {
           openTab: val
         });
         break;
-      case "Request Headers":
+      case headers:
         this.setState({
           openTab: val
         });
@@ -49,9 +54,11 @@ class RequestTabs extends Component {
     let tabContentShown;
     let displayQueries = this.props.requestContent.body;
     if (this.props.requestContent.bodyType === 'GRPC') {
+      headers = "Request Metadata";
+
       displayQueries = '';
       let length = this.props.requestContent.streams.length;
-      for (let i =0; i < length; i += 1) {
+      for (let i = 0; i < length; i += 1) {
         if (i > 0) {
           displayQueries += '\n\n'
         }
@@ -72,7 +79,7 @@ class RequestTabs extends Component {
         : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Variables</p>
     }
 
-    else if (this.state.openTab === "Request Headers") {
+    else if (this.state.openTab === headers) {
       tabContentShown = [];
       if (this.props.requestContent.headers && this.props.requestContent.headers.length > 0) {
         this.props.requestContent.headers.forEach((cur, idx) => {
@@ -85,7 +92,7 @@ class RequestTabs extends Component {
         });
       }
       else {
-        tabContentShown.push(<p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Headers</p>)
+      tabContentShown.push(<p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No {headers}</p>)
       }
     }
 
