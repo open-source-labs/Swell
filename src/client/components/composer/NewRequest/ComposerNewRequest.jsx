@@ -171,30 +171,12 @@ class ComposerNewRequest extends Component {
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
 
-        let URIWithoutProtocol = `${this.props.newRequestFields.url}`;
-        const host = protocol + URIWithoutProtocol.split('/')[0];
-        
+
         // saves all stream body queries to history & reqres request body
         let streamQueries = '';
         for (let i = 0; i < this.props.newRequestStreams.streamContent.length; i++) {
-          streamQueries += `${this.props.newRequestStreams.streamContent[i]}
-
-`
-        }
-//         // populate the history if there is body content
-//         let historyBodyContent;
-//         if (document.querySelector('#grpcBodyEntryTextArea')) { historyBodyContent = document.querySelector('#grpcBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
-//         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
-//         else historyBodyContent = '';
-
-        // look back to understand what the Variables code is referring to. Also check if still using "path"
-        let historyBodyVariables;
-        if (document.querySelector('#grpcVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#grpcVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = '';
-        let path = `/${URIWithoutProtocol.split('/')
-          .splice(1)
-          .join('/')
-          .replace(/\/{2,}/g, '/')}`;
+          streamQueries += `${this.props.newRequestStreams.streamContent[i]}`
+        }      
 
         // define array to hold client query strings
         let queryArrStr = this.props.newRequestStreams.streamContent;
@@ -213,12 +195,13 @@ class ComposerNewRequest extends Component {
         const grpcStream = document.getElementById('stream').innerText;
 
         // create reqres obj to be passed to controller for further actions/tasks
+
         reqRes = {
           id: uuid(),
           created_at: new Date(),
+
           protocol: '',
-          host,
-          path,
+
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
           gRPC: this.props.newRequestFields.gRPC,
@@ -236,7 +219,6 @@ class ComposerNewRequest extends Component {
             cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: historyBodyVariables,
             rawType: this.props.newRequestBody.rawType
           },
           response: {
@@ -314,6 +296,29 @@ class ComposerNewRequest extends Component {
         JSONFormatted: true,
       });
 
+      if (this.props.newRequestFields.gRPC) {
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GRPC',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
+      if (this.props.newRequestFields.graphQL) {
+
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GQL',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
       this.props.setNewRequestFields({
         method: this.props.newRequestFields.method,
         protocol: '',
@@ -321,6 +326,18 @@ class ComposerNewRequest extends Component {
         graphQL: this.props.newRequestFields.graphQL,
         gRPC: this.props.newRequestFields.gRPC,
       });
+
+      if(this.props.newRequestFields.protocol === 'ws://') {
+      this.props.setNewRequestFields({
+        method: this.props.newRequestFields.method,
+        protocol: 'ws://',
+        url: 'ws://',
+        graphQL: this.props.newRequestFields.graphQL,
+        gRPC: this.props.newRequestFields.gRPC,
+      });
+    }
+
+      
       this.props.setNewRequestSSE(false);
     }
     else {
