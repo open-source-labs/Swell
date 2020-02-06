@@ -79,7 +79,7 @@ class History extends Component {
     this.props.setNewRequestBody(requestBodyObj);
     this.props.setNewRequestStreams(requestStreamsObj)
     // for gRPC 
-    if (this.props.content.gRPC) {
+    if (this.props.content && this.props.content.gRPC) {
       // need to place logic in callback otherwise code won't work and returns null
       this.setState({
         ...this.state

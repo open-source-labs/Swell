@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
-import { VariablesInAllowedPositionRule } from 'graphql/validation';
-import ReactDOM from "react-dom";
 
 class GRPCAutoInputForm extends Component {
   constructor(props) {
