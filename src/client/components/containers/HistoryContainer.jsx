@@ -8,9 +8,9 @@ import historyController from '../../controllers/historyController';
 const { dialog } = require('electron').remote;
 import parse from 'date-fns/parse'
 
-
 const mapStateToProps = store => ({
   history: store.business.history,
+  newRequestStreams: store.business.newRequestStreams
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
   setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
   setNewRequestBody: (requestBodyObj) => { dispatch(actions.setNewRequestBody(requestBodyObj)) },
   setNewRequestCookies: (requestCookiesObj) => { dispatch(actions.setNewRequestCookies(requestCookiesObj)) },
-  setNewRequestStreams: (requestStreams) => { dispatch(actions.setNewRequestStreams(requestStreams))}
+  setNewRequestStreams: (requestStreamsObj) => { dispatch(actions.setNewRequestStreams(requestStreamsObj))}
 });
 
 class HistoryContainer extends Component {
@@ -30,7 +30,7 @@ class HistoryContainer extends Component {
 
   render() {
     // history is already sorted by created_at from getHistory
-    //1) map through history state and create date component. 2) pass props to new component 
+    // 1) map through history state and create date component. 2) pass props to new component 
     let historyDates = this.props.history.map((date, i) => { //nvm nvm
     // let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)).map((date, i) => { //wtf
       return <HistoryDate
@@ -43,6 +43,7 @@ class HistoryContainer extends Component {
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
         setNewRequestStreams={this.props.setNewRequestStreams}
+        newRequestStreams={this.props.newRequestStreams}
       />
     })
 

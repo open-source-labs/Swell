@@ -136,7 +136,6 @@ class ComposerNewRequest extends Component {
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
         reqRes = {
-
           id: uuid(),
           created_at: new Date(),
           protocol: 'ws://',
@@ -149,7 +148,6 @@ class ComposerNewRequest extends Component {
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
-
           request: {
             method: this.props.newRequestFields.method,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
@@ -170,13 +168,11 @@ class ComposerNewRequest extends Component {
       }
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
-
-
         // saves all stream body queries to history & reqres request body
         let streamQueries = '';
         for (let i = 0; i < this.props.newRequestStreams.streamContent.length; i++) {
           streamQueries += `${this.props.newRequestStreams.streamContent[i]}
-
+          
 `
         }
         // define array to hold client query strings
@@ -189,16 +185,13 @@ class ComposerNewRequest extends Component {
           let regexVar = (/\r?\n|\r|↵/g);
           query = (query.replace(regexVar, ''));
           queryArr.push(JSON.parse(query));
-
         }
 
         // grabbing streaming type to set method in reqRes.request.method
         const grpcStream = document.getElementById('stream').innerText;
 
-        // console.log('Arr: ', this.props.newRequestStreams.streamsArr)
-        // console.log('Content: ', this.props.newRequestStreams.streamContent)
         // create reqres obj to be passed to controller for further actions/tasks
-
+        console.log('this.props.newRequestStreams.initialQuery: ', this.props.newRequestStreams.initialQuery)
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -211,16 +204,14 @@ class ComposerNewRequest extends Component {
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
-
-          // review neccesity of streams, cookies, rawType, and bodyVariables
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
             // streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
-            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
             body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
-            rawType: this.props.newRequestBody.rawType
+            rawType: this.props.newRequestBody.rawType,
+            protoContent: this.props.newRequestBody.protoContent
           },
           response: {
             cookies: [],
@@ -235,6 +226,8 @@ class ComposerNewRequest extends Component {
           rpc: this.props.newRequestStreams.selectedRequest,
           packageName: this.props.newRequestStreams.selectedPackage,
           queryArr: queryArr,
+          initialQuery: this.props.newRequestStreams.initialQuery,
+          streamsArr: this.props.newRequestStreams.streamsArr,
           servicesObj: this.props.newRequestStreams.services,
           protoPath: this.props.newRequestStreams.protoPath
         };

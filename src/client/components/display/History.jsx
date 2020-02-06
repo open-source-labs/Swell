@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import historyController from '../../controllers/historyController';
-import Trashcan from '../../../assets/img/Trashcan.png'
+import Trashcan from '../../../assets/img/Trashcan.png';
 
 class History extends Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class History extends Component {
   }
 
   addHistoryToNewRequest() {
-    // console.log('this is the content', this.props.content)
     const requestFieldObj = {
       method: this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol: this.props.content.protocol ? this.props.content.protocol : 'http://',
@@ -56,25 +55,55 @@ class History extends Component {
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
       protoContent: this.props.content.request.protoContent
     }
-    // const requestStreamsObj = {
-    //   streamsArr: this.props.content.streamsArr,
-    //   count: this.props.content.count,
-    //   streamContent: this.props.streamContent,
-    //   selectedPackage: this.props.selectedPackage,
-    //   selectedRequest: this.props.selectedRequest,
-    //   selectedService: this.props.selectedService,
-    //   selectedStreamingType: this.props.selectedStreamingType,
-    //   initialQuery: this.props.initialQuery,
-    //   queryArr: this.props.queryArr,
-    //   protoPath: this.props.protoPath,
-    //   services: this.props.services
-    // }
-
+    // set the streamContent arr to equal each query in the streamsArr
+    const streamsArr = this.props.content.streamsArr;
+    const streamContent = []
+    for (const stream of streamsArr) {
+      streamContent.push(stream.query);
+    }
+    // construct the streams obj from passed in history content & set state in store
+    const requestStreamsObj = {
+      streamsArr: this.props.content.streamsArr,
+      count: this.props.content.queryArr.length,
+      streamContent: streamContent,
+      selectedPackage: this.props.content.packageName,
+      selectedRequest: this.props.content.rpc,
+      selectedService: this.props.content.service,
+      selectedStreamingType: this.props.content.request.method,
+      initialQuery: this.props.content.initialQuery,
+      queryArr: this.props.content.queryArr,
+      protoPath: this.props.content.protoPath,
+      services: this.props.content.servicesObj
+    }
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
     this.props.setNewRequestCookies(requestCookiesObj);
     this.props.setNewRequestBody(requestBodyObj);
-    // this.props.setNewRequestStreams(requestStreamsObj)
+    this.props.setNewRequestStreams(requestStreamsObj)
+
+    // for gRPC 
+    if (this.props.content.gRPC) {
+      // need to place logic in callback otherwise code won't work and returns null
+      this.setState({
+        ...this.state
+      }, () => {
+        // grab the dropdown lists and set its selected value to equal what is in the history
+        const dropdownService = document.getElementById('dropdownService').options;
+        for (const option of dropdownService) {
+          if (option.text === this.props.content.service) {
+            option.selected = true;
+          }
+        }
+        const dropdownRequest = document.getElementById('dropdownRequest').options;
+        for (const option of dropdownRequest) {
+          if (option.text === this.props.content.rpc) {
+            option.selected = true;
+          }
+        }
+        // update streaming type button displayed next to the URL
+        document.getElementById('stream').innerText = this.props.content.request.method;
+      })
+    }
   }
 
   deleteHistory(e) {

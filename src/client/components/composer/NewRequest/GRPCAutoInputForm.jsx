@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 import { VariablesInAllowedPositionRule } from 'graphql/validation';
+import ReactDOM from "react-dom";
 
 class GRPCAutoInputForm extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class GRPCAutoInputForm extends Component {
   }
   // event handler for changes made to the Select Services dropdown list
   setService() {
-   // grabs the name of the current selected option from the select servics dropdown to be saved in the state of the store
+   // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
     const dropdownService = document.getElementById('dropdownService');
     const serviceName = dropdownService.options[dropdownService.selectedIndex].text;
     // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
@@ -177,6 +178,7 @@ class GRPCAutoInputForm extends Component {
       }
     });
   }
+  
 
   render() {
     // arrow button used to collapse or open the Stream section
@@ -214,12 +216,12 @@ class GRPCAutoInputForm extends Component {
           Stream
         </div>
 
-       <select id="dropdownService" onChange={this.setService} name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
+       <select id="dropdownService" onChange={this.setService} ref="dropdownService" name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
           <option value="services" defaultValue="">Select Service</option>
           {servicesList}
         </select>
 
-        <select id="dropdownRequest" onChange={this.setRequest} name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
+        <select id="dropdownRequest" onChange={this.setRequest} ref="dropdownRequest" name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
           <option value="requests" defaultValue="">Select Request</option>
           {rpcsList}
         </select>
