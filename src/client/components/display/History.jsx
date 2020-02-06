@@ -12,14 +12,13 @@ class History extends Component {
   }
 
   addHistoryToNewRequest() {
-    console.log('this is the content', this.props.content)
 
     const requestFieldObj = {
       method: this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol: this.props.content.protocol ? this.props.content.protocol : 'http://',
       url: this.props.content.url ? this.props.content.url : 'http://',
       graphQL: this.props.content.graphQL ? this.props.content.graphQL : false,
-      gRPC: this.props.content.protocol === '' ? true : null
+      gRPC: this.props.content.gRPC ? this.props.content.gRPC : false
     }
 
 

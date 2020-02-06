@@ -171,11 +171,13 @@ class ComposerNewRequest extends Component {
       // grpc requests
       else if (this.props.newRequestFields.gRPC) {
 
+
         // saves all stream body queries to history & reqres request body
         let streamQueries = '';
         for (let i = 0; i < this.props.newRequestStreams.streamContent.length; i++) {
           streamQueries += `${this.props.newRequestStreams.streamContent[i]}`
         }      
+
         // define array to hold client query strings
         let queryArrStr = this.props.newRequestStreams.streamContent;
         let queryArr = [];
@@ -193,10 +195,13 @@ class ComposerNewRequest extends Component {
         const grpcStream = document.getElementById('stream').innerText;
 
         // create reqres obj to be passed to controller for further actions/tasks
+
         reqRes = {
           id: uuid(),
           created_at: new Date(),
+
           protocol: '',
+
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
           gRPC: this.props.newRequestFields.gRPC,
@@ -291,6 +296,29 @@ class ComposerNewRequest extends Component {
         JSONFormatted: true,
       });
 
+      if (this.props.newRequestFields.gRPC) {
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GRPC',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
+      if (this.props.newRequestFields.graphQL) {
+
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'GQL',
+          rawType: '',
+          JSONFormatted: true,
+        });
+      }
+
       this.props.setNewRequestFields({
         method: this.props.newRequestFields.method,
         protocol: '',
@@ -298,6 +326,18 @@ class ComposerNewRequest extends Component {
         graphQL: this.props.newRequestFields.graphQL,
         gRPC: this.props.newRequestFields.gRPC,
       });
+
+      if(this.props.newRequestFields.protocol === 'ws://') {
+      this.props.setNewRequestFields({
+        method: this.props.newRequestFields.method,
+        protocol: 'ws://',
+        url: 'ws://',
+        graphQL: this.props.newRequestFields.graphQL,
+        gRPC: this.props.newRequestFields.gRPC,
+      });
+    }
+
+      
       this.props.setNewRequestSSE(false);
     }
     else {
