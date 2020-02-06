@@ -27,15 +27,20 @@ class GRPCAutoInputForm extends Component {
     const serviceName = dropdownService.options[dropdownService.selectedIndex].text;
     // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
     document.getElementById('stream').innerText = 'STREAM';
-    // while (this.props.newRequestStreams.streamsArr.length > 1) {
-    //   this.props.newRequestStreams.streamsArr.pop();
-    // }
+    // grabs the request dropdown list and resets it to the first option "Select Request"
+    document.getElementById('dropdownRequest').selectedIndex = 0;
+    // clear query body
+    while (this.props.newRequestStreams.streamsArr.length > 1) {
+      this.props.newRequestStreams.streamsArr.pop();
+      this.props.newRequestStreams.streamContent.pop();
+    }
+    this.props.newRequestStreams.streamContent[0] = '';
     // the selected service name is saved in state of the store, mostly everything else is reset
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
       // count: 0,
       // streamsArr: this.props.newRequestStreams.streamsArr,
-      // streamContent: [''],
+      // streamContent: this.props.newRequestStreams.streamContent,
       // selectedPackage: null,
       // selectedRequest: null,
       // selectedStreamingType: null,
@@ -43,6 +48,7 @@ class GRPCAutoInputForm extends Component {
       // queryArr: null,
       selectedService: serviceName
     });
+
   }
   // event handler for changes made to the Select Request dropdown list
   setRequest() {

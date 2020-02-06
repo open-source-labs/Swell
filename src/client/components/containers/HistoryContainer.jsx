@@ -20,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
   setNewRequestFields: (requestFields) => { dispatch(actions.setNewRequestFields(requestFields)) },
   setNewRequestBody: (requestBodyObj) => { dispatch(actions.setNewRequestBody(requestBodyObj)) },
   setNewRequestCookies: (requestCookiesObj) => { dispatch(actions.setNewRequestCookies(requestCookiesObj)) },
+  setNewRequestStreams: (requestStreams) => { dispatch(actions.setNewRequestStreams(requestStreams))}
 });
 
 class HistoryContainer extends Component {
@@ -41,6 +42,7 @@ class HistoryContainer extends Component {
         setNewRequestHeaders={this.props.setNewRequestHeaders}
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
+        setNewRequestStreams={this.props.setNewRequestStreams}
       />
     })
 

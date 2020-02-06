@@ -12,18 +12,14 @@ class History extends Component {
   }
 
   addHistoryToNewRequest() {
-    console.log('this is the content', this.props.content)
-
+    // console.log('this is the content', this.props.content)
     const requestFieldObj = {
       method: this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol: this.props.content.protocol ? this.props.content.protocol : 'http://',
       url: this.props.content.url ? this.props.content.url : 'http://',
       graphQL: this.props.content.graphQL ? this.props.content.graphQL : false,
-      gRPC: this.props.content.protocol === '' ? true : null
+      gRPC: this.props.content.protocol === '' ? true : false
     }
-
-
-
     let headerDeeperCopy;
     if (this.props.content.request.headers) {
       headerDeeperCopy = JSON.parse(JSON.stringify(this.props.content.request.headers));
@@ -58,12 +54,27 @@ class History extends Component {
       bodyVariables: this.props.content.request.bodyVariables ? this.props.content.request.bodyVariables : '',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
+      protoContent: this.props.content.request.protoContent
     }
+    // const requestStreamsObj = {
+    //   streamsArr: this.props.content.streamsArr,
+    //   count: this.props.content.count,
+    //   streamContent: this.props.streamContent,
+    //   selectedPackage: this.props.selectedPackage,
+    //   selectedRequest: this.props.selectedRequest,
+    //   selectedService: this.props.selectedService,
+    //   selectedStreamingType: this.props.selectedStreamingType,
+    //   initialQuery: this.props.initialQuery,
+    //   queryArr: this.props.queryArr,
+    //   protoPath: this.props.protoPath,
+    //   services: this.props.services
+    // }
 
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
     this.props.setNewRequestCookies(requestCookiesObj);
     this.props.setNewRequestBody(requestBodyObj);
+    // this.props.setNewRequestStreams(requestStreamsObj)
   }
 
   deleteHistory(e) {

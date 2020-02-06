@@ -39,6 +39,7 @@ class HistoryDate extends Component {
         setNewRequestHeaders={this.props.setNewRequestHeaders}
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
+        setNewRequestStreams={this.props.setNewRequestStreams}
       />
     })
 
