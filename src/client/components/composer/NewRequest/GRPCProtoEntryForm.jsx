@@ -109,6 +109,8 @@ class GRPCProtoEntryForm extends Component {
         protoPath: data.protoPath
       })
     }).catch((err) => console.log(err));
+    // changes the button label from "Save Changes" to "Changes Saved"
+    document.getElementById("save-proto").innerText = 'Changes Saved ✓';
   }
   
   render() {

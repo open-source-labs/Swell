@@ -122,7 +122,7 @@ class RequestTabs extends Component {
           <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab} />
           {
-            this.props.requestContent.bodyType === "none" &&
+            this.props.requestContent.bodyType === "raw" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
           }
           {

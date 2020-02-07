@@ -77,7 +77,7 @@ describe('GraphQL Composer', () => {
     },
     newRequestBody: {
       bodyContent: '',
-      bodyType: 'none',
+      bodyType: 'raw',
       rawType: 'Text (text/plain)',
       JSONFormatted: true,
       bodyVariables: ''

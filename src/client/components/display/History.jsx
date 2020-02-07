@@ -46,7 +46,7 @@ class History extends Component {
       count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
     }
     const requestBodyObj = {
-      bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'none',
+      bodyType: this.props.content.request.bodyType ? this.props.content.request.bodyType : 'raw',
       bodyContent: this.props.content.request.body ? this.props.content.request.body : '',
       bodyVariables: this.props.content.request.bodyVariables ? this.props.content.request.bodyVariables : '',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',

@@ -274,7 +274,7 @@ class ComposerNewRequest extends Component {
         ...this.newRequestBody,
         bodyContent: '',
         bodyVariables: '',
-        bodyType: 'none',
+        bodyType: 'raw',
         rawType: 'Text (text/plain)',
         JSONFormatted: true,
       });
@@ -395,8 +395,6 @@ class ComposerNewRequest extends Component {
         {
           this.props.newRequestFields.gRPC &&
           <GRPCProtoEntryForm
-            newRequestBody={this.props.newRequestBody}
-            setNewRequestBody={this.props.setNewRequestBody}
             newRequestStreams={this.props.newRequestStreams}
             setNewRequestStreams={this.props.setNewRequestStreams}
            />

@@ -114,7 +114,7 @@ class FieldEntryForm extends Component {
         if (!this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC) { //if one of 5 http methods (get, post, put, patch, delete)
           this.props.setNewRequestBody({
             ...this.props.newRequestBody,
-            bodyType: 'none',
+            bodyType: 'raw',
             bodyContent: '',
           });
         }
