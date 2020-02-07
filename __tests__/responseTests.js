@@ -67,7 +67,7 @@ describe('ResponseContainer', () => {
 
 describe('ResponseTabs', () => {
   it('should render three tabs', () => {
-    const wrapper = shallow(<ResponseTabs content={'o'}/>);
+    const wrapper = shallow(<ResponseTabs content={'not grpc'}/>);
     expect(wrapper.find('Tab')).toHaveLength(3);
   });
   it('grpc should render two tabs', () => {
@@ -88,16 +88,7 @@ describe('ResponseEventsDisplay', () => {
     const wrapper = shallow(<ResponseEventsDisplay {...props} />);
     expect(wrapper.find('SSERow')).toHaveLength(2);
   });
-  // it('if gRPC, should render all events', () => {
-  //   const props = {
-  //     response: {
-  //       headers: { 'content-type': 'application/json' },
-  //       events: ['event 1', 'event 2'],
-  //     }
-  //   };
-  //   const wrapper = shallow(<ResponseEventsDisplay {...props} />);
-  //   expect(wrapper.find('.__json-pretty__').props.data).toHaveLength(2);
-  // });
+
   it('if not SSE, should render single event', () => {
     const props = {
       response: {

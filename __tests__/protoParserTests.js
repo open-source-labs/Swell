@@ -1,4 +1,9 @@
-syntax = "proto3";
+import protoParser from '../src/client/components/composer/protos/protoParser';
+import {remote} from "electron";
+
+
+beforeEach(() => {
+const protoFile = `syntax = 'proto3';
 
 package helloworld;
 
@@ -11,13 +16,6 @@ service Greeter {
   rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
 }
 
-service Butler {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
-  rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
-  rpc SayHellos (HelloRequest) returns (stream HelloReply) {}
-  rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
-}
 // The request message containing the user's name.
 message HelloRequest {
   string name = 1;
@@ -27,3 +25,12 @@ message HelloRequest {
 message HelloReply {
   string message = 1;
 }
+
+// The request message containing the user's name.
+message HelloHowOldRequest {
+  int32 age = 1;
+}
+message HelloAge {
+  int32 age = 1;
+}`
+})
