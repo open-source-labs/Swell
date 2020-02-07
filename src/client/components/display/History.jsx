@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import historyController from '../../controllers/historyController';
-import Trashcan from '../../../assets/img/Trashcan.png'
+import Trashcan from '../../../assets/img/Trashcan.png';
 
 class History extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
     this.addHistoryToNewRequest = this.addHistoryToNewRequest.bind(this);
     this.deleteHistory = this.deleteHistory.bind(this);
   }
-
   addHistoryToNewRequest() {
-
     const requestFieldObj = {
       method: this.props.content.request.method ? this.props.content.request.method : 'GET',
       protocol: this.props.content.protocol ? this.props.content.protocol : 'http://',
@@ -20,9 +17,6 @@ class History extends Component {
       graphQL: this.props.content.graphQL ? this.props.content.graphQL : false,
       gRPC: this.props.content.gRPC ? this.props.content.gRPC : false
     }
-
-
-
     let headerDeeperCopy;
     if (this.props.content.request.headers) {
       headerDeeperCopy = JSON.parse(JSON.stringify(this.props.content.request.headers));
@@ -57,12 +51,50 @@ class History extends Component {
       bodyVariables: this.props.content.request.bodyVariables ? this.props.content.request.bodyVariables : '',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
+      protoContent: this.props.content.request.protoContent
     }
-
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
     this.props.setNewRequestCookies(requestCookiesObj);
     this.props.setNewRequestBody(requestBodyObj);
+    // for gRPC 
+    if (this.props.content && this.props.content.gRPC) {
+      // construct the streams obj from passed in history content & set state in store
+      const requestStreamsObj = {
+        streamsArr: this.props.content.streamsArr,
+        count: this.props.content.queryArr.length,
+        streamContent: this.props.content.streamContent,
+        selectedPackage: this.props.content.packageName,
+        selectedRequest: this.props.content.rpc,
+        selectedService:  this.props.content.service,
+        selectedStreamingType: this.props.content.request.method,
+        initialQuery: this.props.content.initialQuery,
+        queryArr: this.props.content.queryArr,
+        protoPath: this.props.content.protoPath,
+        services: this.props.content.servicesObj
+      }
+      this.props.setNewRequestStreams(requestStreamsObj)
+      // need to place logic in callback otherwise code won't work and returns null
+      this.setState({
+        ...this.state
+      }, () => {
+        // grab the dropdown lists and set its selected value to equal what is in the history
+        const dropdownService = document.getElementById('dropdownService').options;
+        for (const option of dropdownService) {
+          if (option.text === this.props.content.service) {
+            option.selected = true;
+          }
+        }
+        const dropdownRequest = document.getElementById('dropdownRequest').options;
+        for (const option of dropdownRequest) {
+          if (option.text === this.props.content.rpc) {
+            option.selected = true;
+          }
+        }
+        // update streaming type button displayed next to the URL
+        document.getElementById('stream').innerText = this.props.content.request.method;
+      })
+    }
   }
 
   deleteHistory(e) {
