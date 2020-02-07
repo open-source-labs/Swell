@@ -31,7 +31,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     let packageName = reqResObj.packageName;
     let url = reqResObj.url;
     let queryArr = reqResObj.queryArr;
-    
+
     // go through services object, find service where name matches our passed
     // in service, then grab the rpc list of that service, also save that service
     let rpcList;
@@ -174,7 +174,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // request without overwrite
           reqResObj.connection = 'pending';
           reqResObj.connectionType = 'plain';
-          reqResObj.timeReceived = Date.now();
+          reqResObj.timeSent = Date.now();
           call.write(query);
           // add console log for completed write?
         }
