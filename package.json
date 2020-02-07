@@ -198,7 +198,8 @@
     "status-indicator": "^1.0.9",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2",
-    "ws": "^6.1.2"
+    "ws": "^6.1.2",
+    "node-pre-gyp": "0.6.x"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

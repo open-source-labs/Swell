@@ -10,6 +10,7 @@ class WebSocketMessage extends Component {
   render() {
     const styles = {
       display: 'flex',
+      overflow: 'hidden',
       justifyContent: this.props.source === 'server' ? 'flex-start' : 'flex-end',
     };
 
@@ -22,7 +23,7 @@ class WebSocketMessage extends Component {
 
     return (
       <div style={styles} className={webSocketMessageClassNames}>
-        <div className={'websocket_message-data'}><div>{this.props.data}</div></div>
+        <div style={styles} className={'websocket_message-data'}><div>{this.props.data}</div></div>
         <div  className={'websocket_message-time'}>{`${hours}:${minutes}`}</div>
       </div>
     );
