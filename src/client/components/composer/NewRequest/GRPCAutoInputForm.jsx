@@ -178,7 +178,6 @@ class GRPCAutoInputForm extends Component {
     });
   }
   
-
   render() {
     // arrow button used to collapse or open the Stream section
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';

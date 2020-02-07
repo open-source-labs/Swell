@@ -216,6 +216,7 @@ class ComposerNewRequest extends Component {
           queryArr: queryArr,
           initialQuery: this.props.newRequestStreams.initialQuery,
           streamsArr: this.props.newRequestStreams.streamsArr,
+          streamContent: this.props.newRequestStreams.streamContent,
           servicesObj: this.props.newRequestStreams.services,
           protoPath: this.props.newRequestStreams.protoPath
         };

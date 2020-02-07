@@ -28,7 +28,7 @@ class History extends Component {
       })
     }
     let cookieDeeperCopy;
-    if (this.props.content.request.cookies && !/ws/.test(this.props.content.protocol && !this.content.gRPC)) {
+    if (this.props.content.request.cookies && !/ws/.test(this.props.content.protocol)) {
       cookieDeeperCopy = JSON.parse(JSON.stringify(this.props.content.request.cookies));
       cookieDeeperCopy.push({
         id: this.props.content.request.cookies.length + 1,
@@ -53,33 +53,27 @@ class History extends Component {
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
       protoContent: this.props.content.request.protoContent
     }
-    // set the streamContent arr to equal each query in the streamsArr
-    const streamsArr = this.props.content.streamsArr;
-    const streamContent = [];
-    for (const stream of streamsArr) {
-      streamContent.push(stream.query);
-    }
-    // construct the streams obj from passed in history content & set state in store
-    const requestStreamsObj = {
-      streamsArr,
-      count: this.props.content.queryArr.length,
-      streamContent,
-      selectedPackage: this.props.content.packageName,
-      selectedRequest: this.props.content.rpc,
-      selectedService:  this.props.content.service,
-      selectedStreamingType: this.props.content.request.method,
-      initialQuery: this.props.content.initialQuery,
-      queryArr: this.props.content.queryArr,
-      protoPath: this.props.content.protoPath,
-      services: this.props.content.servicesObj
-    }
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
     this.props.setNewRequestCookies(requestCookiesObj);
     this.props.setNewRequestBody(requestBodyObj);
-    this.props.setNewRequestStreams(requestStreamsObj)
     // for gRPC 
     if (this.props.content && this.props.content.gRPC) {
+      // construct the streams obj from passed in history content & set state in store
+      const requestStreamsObj = {
+        streamsArr: this.props.content.streamsArr,
+        count: this.props.content.queryArr.length,
+        streamContent: this.props.content.streamContent,
+        selectedPackage: this.props.content.packageName,
+        selectedRequest: this.props.content.rpc,
+        selectedService:  this.props.content.service,
+        selectedStreamingType: this.props.content.request.method,
+        initialQuery: this.props.content.initialQuery,
+        queryArr: this.props.content.queryArr,
+        protoPath: this.props.content.protoPath,
+        services: this.props.content.servicesObj
+      }
+      this.props.setNewRequestStreams(requestStreamsObj)
       // need to place logic in callback otherwise code won't work and returns null
       this.setState({
         ...this.state
@@ -102,6 +96,7 @@ class History extends Component {
       })
     }
   }
+
   deleteHistory(e) {
     this.props.deleteFromHistory(this.props.content);
     historyController.deleteHistoryFromIndexedDb(e.target.id);

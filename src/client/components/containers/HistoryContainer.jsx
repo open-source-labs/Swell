@@ -43,7 +43,7 @@ class HistoryContainer extends Component {
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
         setNewRequestStreams={this.props.setNewRequestStreams}
-        newRequestStreams={this.props.newRequestStreams}
+        // newRequestStreams={this.props.newRequestStreams}
       />
     })
 
