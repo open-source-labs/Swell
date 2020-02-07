@@ -51,7 +51,6 @@ class History extends Component {
       bodyVariables: this.props.content.request.bodyVariables ? this.props.content.request.bodyVariables : '',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
-      protoContent: this.props.content.request.protoContent
     }
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
@@ -71,7 +70,8 @@ class History extends Component {
         initialQuery: this.props.content.initialQuery,
         queryArr: this.props.content.queryArr,
         protoPath: this.props.content.protoPath,
-        services: this.props.content.servicesObj
+        services: this.props.content.servicesObj,
+        protoContent: this.props.content.protoContent
       }
       this.props.setNewRequestStreams(requestStreamsObj)
       // need to place logic in callback otherwise code won't work and returns null

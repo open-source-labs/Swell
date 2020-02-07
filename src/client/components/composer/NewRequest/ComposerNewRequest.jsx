@@ -195,11 +195,9 @@ class ComposerNewRequest extends Component {
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
-            // streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
             body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
             rawType: this.props.newRequestBody.rawType,
-            protoContent: this.props.newRequestBody.protoContent
           },
           response: {
             cookies: [],
@@ -213,12 +211,14 @@ class ComposerNewRequest extends Component {
           service: this.props.newRequestStreams.selectedService,
           rpc: this.props.newRequestStreams.selectedRequest,
           packageName: this.props.newRequestStreams.selectedPackage,
+          streamingType: this.props.newRequestStreams.streamingType,
           queryArr: queryArr,
           initialQuery: this.props.newRequestStreams.initialQuery,
           streamsArr: this.props.newRequestStreams.streamsArr,
           streamContent: this.props.newRequestStreams.streamContent,
           servicesObj: this.props.newRequestStreams.services,
-          protoPath: this.props.newRequestStreams.protoPath
+          protoPath: this.props.newRequestStreams.protoPath,
+          protoContent: this.props.newRequestStreams.protoContent
         };
       }
       // WEBSOCKET REQUESTS
@@ -245,6 +245,7 @@ class ComposerNewRequest extends Component {
         };
       }
 
+      // add request to history
       historyController.addHistoryToIndexedDb(reqRes);
       this.props.reqResAdd(reqRes);
 

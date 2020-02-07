@@ -13,12 +13,14 @@ class GRPCAutoInputForm extends Component {
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
   }
+
   // event handler on the arrow button that allows you to open/close the section
   toggleShow() {
     this.setState({
       show: !this.state.show
     });
   }
+
   // event handler for changes made to the Select Services dropdown list
   setService() {
    // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
@@ -28,34 +30,23 @@ class GRPCAutoInputForm extends Component {
     document.getElementById('stream').innerText = 'STREAM';
     // grabs the request dropdown list and resets it to the first option "Select Request"
     document.getElementById('dropdownRequest').selectedIndex = 0;
-    // clear query body
-    while (this.props.newRequestStreams.streamsArr.length > 1) {
-      this.props.newRequestStreams.streamsArr.pop();
-      this.props.newRequestStreams.streamContent.pop();
-      this.props.newRequestStreams.count -= 1;
-    }
-    this.props.newRequestStreams.streamContent[0] = '';
+    // clears all stream query bodies except the first one
+    this.props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
-      // count: 0,
-      // streamsArr: this.props.newRequestStreams.streamsArr,
-      // streamContent: this.props.newRequestStreams.streamContent,
-      // selectedPackage: null,
-      // selectedRequest: null,
-      // selectedStreamingType: null,
-      // initialQuery: null,
-      // queryArr: null,
       selectedService: serviceName
     });
-
   }
+
   // event handler for changes made to the Select Request dropdown list
   setRequest() {
+    const streamsArr = this.props.newRequestStreams.streamsArr;
+    const streamContent = this.props.newRequestStreams.streamContent;
     // clears all stream bodies except the first when switching from client/directional stream to something else
-    while (this.props.newRequestStreams.streamsArr.length > 1) {
-      this.props.newRequestStreams.streamsArr.pop();
-      this.props.newRequestStreams.streamContent.pop()
+    while (streamsArr.length > 1) {
+      streamsArr.pop();
+      streamContent.pop()
       this.props.newRequestStreams.count -= 1;
     }
     // update state in the store
@@ -64,8 +55,8 @@ class GRPCAutoInputForm extends Component {
       selectedPackage: null,
       selectedRequest: null,
       selectedStreamingType: null,
-      streamContent: this.props.newRequestStreams.streamContent,
-      streamsArr: this.props.newRequestStreams.streamsArr
+      streamContent: streamContent,
+      streamsArr: streamsArr
     });
     // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
     const dropdownRequest = document.getElementById('dropdownRequest');
@@ -148,21 +139,17 @@ class GRPCAutoInputForm extends Component {
                         results.push(`"${key}":${JSON.stringify(tempObj)}`)
                         break;
                       }
-                      // break;
-                  }//after
-                } else {
-                  // console.log('message.def: ', message.def);
-                  results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
+                    }
+                  } else {
+                    // console.log('message.def: ', message.def);
+                    results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
+                  }
                 }
+                break;
               }
-            break;
+            }
           }
         }
-      }
-    }
-
-        const streamsArr = this.props.newRequestStreams.streamsArr;
-        const streamContent = this.props.newRequestStreams.streamContent;
          // query for messages with single key:value pair
         if (results.length === 1) {
           query = results[0];

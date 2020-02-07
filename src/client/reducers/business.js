@@ -31,6 +31,7 @@ const initialState = {
     queryArr: null,
     protoPath: null,
     services: null,
+    protoContent: ''
   },
   newRequestCookies: {
     cookiesArr: [],
