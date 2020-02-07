@@ -67,6 +67,16 @@ describe('ResponseEventsDisplay', () => {
     const wrapper = shallow(<ResponseEventsDisplay {...props} />);
     expect(wrapper.find('SSERow')).toHaveLength(2);
   });
+  // it('if gRPC, should render all events', () => {
+  //   const props = {
+  //     response: {
+  //       headers: { 'content-type': 'text/event-stream' },
+  //       events: ['event 1', 'event 2'],
+  //     }
+  //   };
+  //   const wrapper = shallow(<ResponseEventsDisplay {...props} />);
+  //   expect(wrapper.find('JSONPretty').props.data).toHaveLength(2);
+  // });
   it('if not SSE, should render single event', () => {
     const props = {
       response: {

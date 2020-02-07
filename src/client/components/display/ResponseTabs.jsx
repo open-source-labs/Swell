@@ -18,7 +18,7 @@ class ResponseTabs extends Component {
         {
           !this.props.content.gRPC &&
           <Tab onTabSelected={this.props.handleTabSelect} tabName={cookies} key="cookies" openTab={this.props.openResponseTab}/>
-        }
+        } */}
         </ul>
     );
   }

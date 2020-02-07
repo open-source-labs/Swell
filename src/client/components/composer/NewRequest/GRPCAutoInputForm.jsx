@@ -13,7 +13,7 @@ class GRPCAutoInputForm extends Component {
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
   }
-  // event handler on the arrow button that allows you to open/close the section 
+  // event handler on the arrow button that allows you to open/close the section
   toggleShow() {
     this.setState({
       show: !this.state.show
@@ -86,9 +86,9 @@ class GRPCAutoInputForm extends Component {
       let streamingType;
       let packageName;
       /*
-      for each service obj in the services array, if its name matches the current selected service option then: 
+      for each service obj in the services array, if its name matches the current selected service option then:
       - save the package name
-      - iterate through the rpcs and if its name matches the current selected request then save its streaming type 
+      - iterate through the rpcs and if its name matches the current selected request then save its streaming type
       */
       for (const service of services) {
         if (service.name === selectedService ) {
@@ -112,7 +112,7 @@ class GRPCAutoInputForm extends Component {
         let req;
         let results = [];
         let query = '';
-        /* 
+        /*
         for each service obj in the services array, if its name matches the current selected service option then:
         - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
         - iterate through the messages and if its name matches the saved req/rpc name,
@@ -126,15 +126,41 @@ class GRPCAutoInputForm extends Component {
               }
             }
             for (const message of service.messages) {
+              // console.log('message: ', message);
               if (message.name === req ) {
                 for (const key in message.def) {
+                  // if message type is a nested message (message.def.nested === true)
+                  // message.def = key: {dependent: dependent.message.def}
+                  // console.log('message.def.nested: ', message.def[key].nested);
+                  // console.log('key: ', key);
+                  if (message.def[key].nested) {
+                    for (const submess of service.messages) {
+                      // console.log('submess: ', submess);
+                      // console.log('submess.name: ', submess.name);
+                      // console.log('message.def[key].dependent: ', message.def[key].dependent);
+                      if (submess.name === message.def[key].dependent ) {
+                        // define obj for the submessage definition
+                        let tempObj = {};
+                        for (const subKey in submess.def) {
+                          tempObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
+                        }
+                        // console.log('tempObj: ', tempObj);
+                        results.push(`"${key}":${JSON.stringify(tempObj)}`)
+                        break;
+                      }
+                      // break;
+                  }//after
+                } else {
+                  // console.log('message.def: ', message.def);
                   results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                 }
-                break;
               }
-            }
+            break;
           }
         }
+      }
+    }
+
         const streamsArr = this.props.newRequestStreams.streamsArr;
         const streamContent = this.props.newRequestStreams.streamContent;
          // query for messages with single key:value pair
@@ -149,7 +175,7 @@ class GRPCAutoInputForm extends Component {
           }
           query = query.slice(1).trim();
         }
-        // set query in streamsArr 
+        // set query in streamsArr
         if (streamsArr[0] !== '') {
           streamsArr[0].query = `{
     ${query}

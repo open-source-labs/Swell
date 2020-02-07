@@ -1,4 +1,5 @@
 import reducer from '../src/client/reducers/business';
+import {remote} from "electron";
 
 describe('Business reducer', () => {
   let state;
@@ -14,11 +15,25 @@ describe('Business reducer', () => {
         protocol: '',
         url: 'http://',
         method: 'GET',
-        graphQL: false
+        graphQL: false,
+        gRPC: false
       },
       newRequestHeaders: {
         headersArr: [],
         count: 0,
+      },
+      newRequestStreams: {
+        streamsArr: [],
+        count: 0,
+        streamContent: [],
+        selectedPackage: null,
+        selectedRequest: null,
+        selectedService: null,
+        selectedStreamingType: null,
+        initialQuery: null,
+        queryArr: null,
+        protoPath: null,
+        services: null,
       },
       newRequestCookies: {
         cookiesArr: [],
