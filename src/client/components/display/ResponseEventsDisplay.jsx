@@ -19,12 +19,29 @@ const ResponseEventsDisplay = ({ response }) => {
       <div className="okay" dangerouslySetInnerHTML={{__html: createDOMPurify.sanitize(events[0])}} />
     )
   }
+  else if (events.length > 1) {
+    if (events) {
+      displayContents.push(
+        <div className="json-response" key="jsonresponsediv">
+          <JSONPretty data={events} space="4" theme={{
+            main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
+            key: 'color:#0089D0;', // bluetwo
+            string: 'color:#15B78F;',// greenone
+            value: 'color:#fd971f;', // a nice orange
+            boolean: 'color:#E00198;', // gqlpink
+          }}
+          />
+        </div>
+      );
+    }
+    
+  }
   // Otherwise, render a single display
   else {
     if (events) {
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
-          <JSONPretty data={events} space="4" theme={{
+          <JSONPretty data={events[0]} space="4" theme={{
             main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
             key: 'color:#0089D0;', // bluetwo
             string: 'color:#15B78F;',// greenone
