@@ -35,19 +35,28 @@ function sayHello(ctx) {
   metadata.set('indeed', 'it do')
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
-  console.log("received metadata from client request", ctx.meta)
+  console.log("received metadata from client request", ctx.metadata)
   // console.dir(ctx.metadata, { depth: 3, colors: true });
-  console.log(`got sayHello request name: ${ctx.req.name}`);
-  
+  // console.log(`got sayHello request name: ${ctx.req.name}`);
+  console.log(`got server sayHello request: ${ctx.req.firstPerson.name}`)
+
+  let firstPerson = ctx.req.firstPerson;
+  let secondPerson = ctx.req.secondPerson;
+  ctx.res = {
+    "messageOne": "Hello" + firstPerson,
+    "messageTwo": "Hello" + secondPerson
+  }
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
-  ctx.res = { message: "Hello " + ctx.req.name };
+ 
+  // ctx.res = { message: "Hello " + ctx.req.name };
 
   // send response header metadata object directly as an argument and that is set and sent
   metadata.set('UNARY', 'yes')
   ctx.sendMetadata(metadata)
 
-  console.log(`set sayHello response: ${ctx.res.message}`);
+  // console.log(`set sayHello response: ${ctx.res.message}`);
+  console.log(`set sayHello response: ${ctx.res.messageOne}`);
 }
 
 // Server-Side Stream
@@ -64,7 +73,9 @@ async function sayHellos(ctx) {
 
   // alias for ctx.request.req
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
+  
   let reqMessages = {"message": 'hello!!! ' + ctx.req.name}
+
   dataStream.push(reqMessages)
   reqMessages = dataStream
   let streamData = await hl(reqMessages)

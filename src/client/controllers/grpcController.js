@@ -97,7 +97,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       // create client requested metadata key and value pair for each type of streaming
       let meta = new grpc.Metadata()
       let metaArr = reqResObj.request.headers;
-      console.log("metaArr from grpcController line 100:", metaArr)
+      // console.log("metaArr from grpcController line 100:", metaArr)
       for (let i = 0; i < metaArr.length; i+=1) {
         let currentHeader = metaArr[i];
         meta.add(currentHeader.key, currentHeader.value)
@@ -105,7 +105,14 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       }
 
       if (rpcType === 'UNARY') {
-        let query = reqResObj.queryArr[0];
+        // let query = reqResObj.queryArr[0]
+        let query;
+        let keys = Object.keys(reqResObj.queryArr[0])
+        console.log('keys from reqResObj', keys)
+        for (let j = 0; j < keys.length; j += 1) {
+          query = reqResObj.queryArr[0][keys[j]];
+          console.log('query reqResObj.queryArr', query)
+        }
         // Open Connection and set time sent for Unary
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
@@ -186,6 +193,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'plain';
         reqResObj.timeSent = Date.now();
+
         const call = client[rpc](reqResObj.queryArr[0], meta);
         call.on("data", resp => {
           // console.log('server streaming message:', data);
