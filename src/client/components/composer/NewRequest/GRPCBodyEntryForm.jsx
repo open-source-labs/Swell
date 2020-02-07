@@ -92,6 +92,7 @@ class GRPCBodyEntryForm extends Component {
       stream={stream}
       key={index}
       streamNum={index}
+      history={this.props.history}
     />
     ))
     // arrow button used to collapse or open the Body section

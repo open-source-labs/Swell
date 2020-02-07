@@ -295,7 +295,7 @@ class Graph extends Component {
       <div>
         <div style={warningDisplayStyles} className={'warningContainer'}>
           <div className={'warning'}>
-            Please add a request and hit the Open button to see response timing information.
+            Please add a request and hit the "Send" button to see response timing information.
           </div>
         </div>
         <canvas className="chart" style={chartDisplayStyles} id="line-chart" />

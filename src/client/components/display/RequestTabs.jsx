@@ -52,24 +52,23 @@ class RequestTabs extends Component {
     let headers = "Request Headers";
     let variables = "Request Variables";
     let tabContentShown;
-    let displayQueries = this.props.requestContent.body;
-    if (this.props.requestContent.bodyType === 'GRPC') {
-      headers = "Request Metadata";
 
-      displayQueries = '';
-      let length = this.props.requestContent.streams.length;
-      for (let i = 0; i < length; i += 1) {
-        if (i > 0) {
-          displayQueries += '\n\n'
-        }
-        let streamObj = this.props.requestContent.streams[i];
-        displayQueries += streamObj.query;
-      }
-    }
-
+    // let displayQueries = this.props.requestContent.body;
+    // if (this.props.requestContent.bodyType === 'GRPC') {
+    //   displayQueries = '';
+    //   let length = this.props.requestContent.streams.length;
+    //   for (let i = 0; i < length; i += 1) {
+    //     if (i > 0) {
+    //       displayQueries += '\n\n'
+    //     }
+    //     let streamObj = this.props.requestContent.streams[i];
+    //     displayQueries += streamObj.query;
+    //   }
+    // }
+ 
     if (this.state.openTab === "Request Body") {
       tabContentShown = !!this.props.requestContent.body
-        ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{displayQueries}</p></pre>
+        ? <pre><p className="reqResContent info" key={`reqResContent${this.props.requestContent.id}`} >{this.props.requestContent.body}</p></pre>
         : <p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`} >No Request Body</p>
     }
 
@@ -112,14 +111,18 @@ class RequestTabs extends Component {
         tabContentShown.push(<p className="reqResContent" key={`reqResContent${this.props.requestContent.id}`}>No Request Cookies</p>)
       }
     }
-
+    
     return (
       <div className={"request_tabs_container"}>
         <ul className={"tab_list"}>
           <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab} />
           {
-            !this.props.requestContent.bodyType === "GRPC" &&
+            this.props.requestContent.bodyType === "none" &&
+            <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
+          }
+          {
+            this.props.requestContent.bodyType === "GQL" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
           }
           {

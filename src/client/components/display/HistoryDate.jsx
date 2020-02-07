@@ -13,20 +13,17 @@ class HistoryDate extends Component {
   }
 
   focusOnForm(event) {
-
-//     console.log('history date this is the changed tab',document.querySelector('.composer_url_input'))
+    // console.log('history date this is the changed tab',document.querySelector('.composer_url_input'))
     // console.log('this is the new request field', this.props.NewRequestFields)
-    
     let composerUrlField = document.querySelector('.composer_url_input');
     composerUrlField.focus()
-
   }
 
   render() {
     let current = this.props.history.find(a => a.date === this.props.content.date);
     let date = parse(current.date);
 
-    if (isToday(date)) { date = 'Today' }//If the date matches todays date render the word "Today"
+    if (isToday(date)) { date = 'Today' } // If the date matches todays date render the word "Today"
     else if (isYesterday(date)) { date = 'Yesterday' }
     else { date = format(date, 'ddd, MMM D, YYYY') }
 
@@ -39,6 +36,8 @@ class HistoryDate extends Component {
         setNewRequestHeaders={this.props.setNewRequestHeaders}
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
+        setNewRequestStreams={this.props.setNewRequestStreams}
+        // newRequestStreams={this.props.newRequestStreams}
       />
     })
 

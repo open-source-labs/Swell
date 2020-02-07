@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
-import { VariablesInAllowedPositionRule } from 'graphql/validation';
 
 class GRPCAutoInputForm extends Component {
   constructor(props) {
@@ -22,20 +21,26 @@ class GRPCAutoInputForm extends Component {
   }
   // event handler for changes made to the Select Services dropdown list
   setService() {
-   // grabs the name of the current selected option from the select servics dropdown to be saved in the state of the store
+   // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
     const dropdownService = document.getElementById('dropdownService');
     const serviceName = dropdownService.options[dropdownService.selectedIndex].text;
     // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
     document.getElementById('stream').innerText = 'STREAM';
-    // while (this.props.newRequestStreams.streamsArr.length > 1) {
-    //   this.props.newRequestStreams.streamsArr.pop();
-    // }
+    // grabs the request dropdown list and resets it to the first option "Select Request"
+    document.getElementById('dropdownRequest').selectedIndex = 0;
+    // clear query body
+    while (this.props.newRequestStreams.streamsArr.length > 1) {
+      this.props.newRequestStreams.streamsArr.pop();
+      this.props.newRequestStreams.streamContent.pop();
+      this.props.newRequestStreams.count -= 1;
+    }
+    this.props.newRequestStreams.streamContent[0] = '';
     // the selected service name is saved in state of the store, mostly everything else is reset
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
       // count: 0,
       // streamsArr: this.props.newRequestStreams.streamsArr,
-      // streamContent: [''],
+      // streamContent: this.props.newRequestStreams.streamContent,
       // selectedPackage: null,
       // selectedRequest: null,
       // selectedStreamingType: null,
@@ -43,6 +48,7 @@ class GRPCAutoInputForm extends Component {
       // queryArr: null,
       selectedService: serviceName
     });
+
   }
   // event handler for changes made to the Select Request dropdown list
   setRequest() {
@@ -197,7 +203,7 @@ class GRPCAutoInputForm extends Component {
       }
     });
   }
-
+  
   render() {
     // arrow button used to collapse or open the Stream section
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
@@ -234,12 +240,12 @@ class GRPCAutoInputForm extends Component {
           Stream
         </div>
 
-       <select id="dropdownService" onChange={this.setService} name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
+       <select id="dropdownService" onChange={this.setService} ref="dropdownService" name="dropdownService" className={'dropdownService ' + bodyContainerClass}>
           <option value="services" defaultValue="">Select Service</option>
           {servicesList}
         </select>
 
-        <select id="dropdownRequest" onChange={this.setRequest} name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
+        <select id="dropdownRequest" onChange={this.setRequest} ref="dropdownRequest" name="dropdownRequest" className={'dropdownRequest ' + bodyContainerClass}>
           <option value="requests" defaultValue="">Select Request</option>
           {rpcsList}
         </select>
