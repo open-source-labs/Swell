@@ -185,7 +185,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // request without overwrite
           reqResObj.connection = 'pending';
           reqResObj.connectionType = 'plain';
-          reqResObj.timeSent = Date.now();
+          reqResObj.timeReceived = Date.now();
           call.write(query);
           // add console log for completed write?
         }
@@ -239,7 +239,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           for (let i = 0; i < keys.length; i += 1) {
             let key = keys[i];
             reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-            console.log('reqred headers are now', reqResObj.response.headers)
+            console.log('reqres headers are now: ', reqResObj.response.headers)
           }
           store.default.dispatch(actions.reqResUpdate(reqResObj))
         })
@@ -265,7 +265,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             for (let i = 0; i < keys.length; i += 1) {
               let key = keys[i];
               reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-              console.log('reqred headers are now', reqResObj.response.headers)
+              console.log('reqres headers are now: ', reqResObj.response.headers)
             }
             store.default.dispatch(actions.reqResUpdate(reqResObj))
           });
