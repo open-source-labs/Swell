@@ -12,9 +12,11 @@ class ResponseTabs extends Component {
     const cookies = 'Response Cookies';
     let headers = 'Response Headers';
 
+
     if (this.props.content.gRPC === true ) {
       headers = 'Response Metadata';
     }
+
     return (
       <ul className="tab_list-response">
         <Tab onTabSelected={this.props.handleTabSelect} tabName={events} key="events" openTab={this.props.openResponseTab}/>

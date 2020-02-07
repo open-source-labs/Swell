@@ -19,6 +19,7 @@ let grpcController = {};
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     //check for connection, if not open one
+    console.log(reqResObj)
   if (false) {
       //use existing connection
   }
@@ -31,6 +32,12 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     let packageName = reqResObj.packageName;
     let url = reqResObj.url;
     let queryArr = reqResObj.queryArr;
+    if (reqResObj.response.events === null) {
+      reqResObj.response.events = [];
+    }
+    if (reqResObj.response.headers === null) {
+      reqResObj.response.headers = {};
+    }
     
     // go through services object, find service where name matches our passed
     // in service, then grab the rpc list of that service, also save that service
@@ -65,13 +72,13 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let keysArray;
       for (let messageIdx in foundService.messages) {
         let message = foundService.messages[messageIdx];
-        console.log('message' , message)
+        // console.log('message' , message)
 
         if (foundRpc.req === message.name || foundRpc.req === 'stream ' +message.name) {
-          console.log('found matching message name')
+          // console.log('found matching message name')
           messageDefObj = message.def;
           keysArray = [];
-          console.log('messagedef', message.def);
+          // console.log('messagedef', message.def);
           Object.keys(messageDefObj).forEach((key)=>{
              keysArray.push(key)
            })
@@ -154,8 +161,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           reqResObj.response.events.push(response)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-          console.log('in client stream response', response);
-        }}).on('metadata', (metadata) => { //// metadata from server
+          // console.log('in client stream response', response);
+        }}).on('metadata', (metadata) => {
           // if metadata is sent back from the server, analyze and handle
           let keys = Object.keys(metadata._internal_repr)
           for (let i = 0; i < keys.length; i += 1) {
@@ -186,19 +193,19 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'plain';
         reqResObj.timeSent = Date.now();
+        console.log('rpc', rpc, 'reqresquery', reqResObj.queryArr[0])
         const call = client[rpc](reqResObj.queryArr[0], meta);
         call.on("data", resp => {
           // console.log('server streaming message:', data);
           // add server response to reqResObj and dispatch to state/store
           reqResObj.response.events.push(resp)
-          console.log('data response server stream',resp)
-          console.log(reqResObj.response.events)
+          // console.log('data response server stream',resp)
+          // console.log(reqResObj.response.events)
 
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         })
         call.on('error', () => {
           // for fatal error from server
-
           console.log('server side stream erring out')
         })
         call.on('end', () => {
@@ -208,14 +215,15 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           reqResObj.timeReceived = Date.now();
           // no need to push response to reqResObj, no event expected from on 'end'
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-          console.log('server side stream completed')
-        }) // metadata from server
+          // console.log('server side stream completed')
+        })
         call.on('metadata', (metadata) => {
           let keys = Object.keys(metadata._internal_repr)
           for (let i = 0; i < keys.length; i += 1) {
             let key = keys[i];
             reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-            console.log('reqres headers are now: ', reqResObj.response.headers)
+            // console.log('reqred headers are now', reqResObj.response.headers)
+
           }
           store.default.dispatch(actions.reqResUpdate(reqResObj))
         })
@@ -231,7 +239,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connectionType = 'plain';
         reqResObj.timeReceived = Date.now();
         reqResObj.response.events.push(response)
-        console.log(reqResObj.response.events)
+        // console.log(reqResObj.response.events)
         store.default.dispatch(actions.reqResUpdate(reqResObj));
 
 
@@ -241,7 +249,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             for (let i = 0; i < keys.length; i += 1) {
               let key = keys[i];
               reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-              console.log('reqres headers are now: ', reqResObj.response.headers)
+
+              // console.log('reqred headers are now', reqResObj.response.headers)
+
             }
             store.default.dispatch(actions.reqResUpdate(reqResObj))
           });
@@ -255,7 +265,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           reqResObj.timeReceived = Date.now();
           // no need to push response to reqResObj, no event expected from on 'end'
           store.default.dispatch(actions.reqResUpdate(reqResObj));
-          console.log('server response ended', data)
+          // console.log('server response ended', data)
         });
 
         for (var i = 0; i < queryArr.length; i++) {

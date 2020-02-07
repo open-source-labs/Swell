@@ -16,8 +16,6 @@ const mapStateToProps = store => ({
   newRequestSSE: store.business.newRequestSSE,
   currentTab: store.business.currentTab,
   warningMessage: store.business.warningMessage,
-  protoPath: store.business.protoPath,
-  services: store.business.services
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -159,7 +159,6 @@
 }
 .composer_method_select {
 	-webkit-appearance: none;
-	// background: #15B78F;
 	border: none;
 	border-radius: 0px;
 	color: white;
@@ -172,14 +171,28 @@
 	padding: 0px auto;
 	text-align-last: center;
   width: 200px;
+  &:focus {
+		outline: 0 none;
+  }
   &.http {
     background: $bluetwo;
+    &:hover {
+      color: $medbluegray;
+      background: $huntergreen;
+      border: 2px solid $litebluegray;
+    }
   }
   &.gql {
     background: $gqlpink;
+    &:hover {
+      color: $medbluegray;
+      background: $gqlpinktwo;
+      border: 2px solid $litebluegray;
+    }
   }
   &.grpc {
     background: $grpcorange;
+    cursor: default;
   }
 }
 .composer_url_input {
@@ -547,6 +560,7 @@
   width: 45%;
   font-size: 14px;
   margin: 10px;
+  outline: 0 none;
 }
 .add-stream-btn {
 	display: flex;

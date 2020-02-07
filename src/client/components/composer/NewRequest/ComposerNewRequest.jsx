@@ -7,24 +7,20 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from './CookieEntryForm.jsx';
 import historyController from '../../../controllers/historyController';
-import { CLIENT_RENEG_LIMIT } from 'tls';
-
 
 class ComposerNewRequest extends Component {
   constructor(props) {
     super(props);
-
     this.addNewRequest = this.addNewRequest.bind(this);
     this.handleSSEPayload = this.handleSSEPayload.bind(this);
   }
 
   componentDidMount(){
-    console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
+    // console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
   }
 
   requestValidationCheck() {
     let validationMessage;
-
     //Error conditions...
     if (this.props.newRequestFields.gRPC){
       return true;
@@ -53,11 +49,9 @@ class ComposerNewRequest extends Component {
 
   addNewRequest() {
     const validated = this.requestValidationCheck();
-
     if (validated === true) {
       let reqRes;
-     const protocol = this.props.newRequestFields.gRPC ? '' : this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-
+      const protocol = this.props.newRequestFields.gRPC ? '' : this.props.newRequestFields.url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
       // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
       if (!/wss?:\/\//.test(this.props.newRequestFields.protocol) && !(this.props.newRequestFields.gRPC)) {
         let URIWithoutProtocol = `${this.props.newRequestFields.url.split(protocol)[1]}/`;
@@ -74,14 +68,10 @@ class ComposerNewRequest extends Component {
         if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
         else historyBodyContent = '';
-
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
-        // console.log('in add new request, this.props.newRequestSSE: ', this.props.newRequestSSE)
-
         reqRes = {
-
           id: uuid(),
           created_at: new Date(),
           protocol: this.props.newRequestFields.url.match(/https?:\/\//)[0],
@@ -89,13 +79,13 @@ class ComposerNewRequest extends Component {
           path,
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
+          gRPC: this.props.newRequestFields.gRPC,
           timeSent: null,
           timeReceived: null,
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
           protoPath: this.props.protoPath,
-
           request: {
             method: this.props.newRequestFields.method,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
@@ -131,12 +121,10 @@ class ComposerNewRequest extends Component {
         if (document.querySelector('#gqlBodyEntryTextArea')) { historyBodyContent = document.querySelector('#gqlBodyEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) { historyBodyContent = this.props.newRequestBody.bodyContent }
         else historyBodyContent = '';
-
         let historyBodyVariables;
         if (document.querySelector('#gqlVariableEntryTextArea')) { historyBodyVariables = document.querySelector('#gqlVariableEntryTextArea').value } //grabs the input value in case tab was last key pressed
         else historyBodyVariables = '';
         reqRes = {
-
           id: uuid(),
           created_at: new Date(),
           protocol: 'ws://',
@@ -144,12 +132,12 @@ class ComposerNewRequest extends Component {
           path,
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
+          gRPC: this.props.newRequestFields.gRPC,
           timeSent: null,
           timeReceived: null,
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
-
           request: {
             method: this.props.newRequestFields.method,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
@@ -168,16 +156,16 @@ class ComposerNewRequest extends Component {
           tab: this.props.currentTab,
         };
       }
-      // grpc requests
+      // gRPC requests
       else if (this.props.newRequestFields.gRPC) {
-
-
         // saves all stream body queries to history & reqres request body
         let streamQueries = '';
         for (let i = 0; i < this.props.newRequestStreams.streamContent.length; i++) {
-          streamQueries += `${this.props.newRequestStreams.streamContent[i]}`
-        }      
-
+          // quries MUST be in this format, do NOT edit template literal unless necessary
+          streamQueries += `${this.props.newRequestStreams.streamContent[i]}
+          
+`
+        }
         // define array to hold client query strings
         let queryArrStr = this.props.newRequestStreams.streamContent;
         let queryArr = [];
@@ -188,20 +176,14 @@ class ComposerNewRequest extends Component {
           let regexVar = (/\r?\n|\r|↵/g);
           query = (query.replace(regexVar, ''));
           queryArr.push(JSON.parse(query));
-
         }
-
         // grabbing streaming type to set method in reqRes.request.method
         const grpcStream = document.getElementById('stream').innerText;
-
         // create reqres obj to be passed to controller for further actions/tasks
-
         reqRes = {
           id: uuid(),
           created_at: new Date(),
-
           protocol: '',
-
           url: this.props.newRequestFields.url,
           graphQL: this.props.newRequestFields.graphQL,
           gRPC: this.props.newRequestFields.gRPC,
@@ -210,16 +192,14 @@ class ComposerNewRequest extends Component {
           connection: 'uninitialized',
           connectionType: null,
           checkSelected: false,
-
-          // review neccesity of streams, cookies, rawType, and bodyVariables
           request: {
             method: grpcStream,
             headers: this.props.newRequestHeaders.headersArr.filter(header => header.active && !!header.key),
-            streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
-            cookies: this.props.newRequestCookies.cookiesArr.filter(cookie => cookie.active && !!cookie.key),
+            // streams: this.props.newRequestStreams.streamsArr.filter(stream => stream),
             body: streamQueries,
             bodyType: this.props.newRequestBody.bodyType,
-            rawType: this.props.newRequestBody.rawType
+            rawType: this.props.newRequestBody.rawType,
+            protoContent: this.props.newRequestBody.protoContent
           },
           response: {
             cookies: [],
@@ -234,6 +214,9 @@ class ComposerNewRequest extends Component {
           rpc: this.props.newRequestStreams.selectedRequest,
           packageName: this.props.newRequestStreams.selectedPackage,
           queryArr: queryArr,
+          initialQuery: this.props.newRequestStreams.initialQuery,
+          streamsArr: this.props.newRequestStreams.streamsArr,
+          streamContent: this.props.newRequestStreams.streamContent,
           servicesObj: this.props.newRequestStreams.services,
           protoPath: this.props.newRequestStreams.protoPath
         };
@@ -250,7 +233,6 @@ class ComposerNewRequest extends Component {
           connection: 'uninitialized',
           connectionType: 'WebSocket',
           checkSelected: false,
-
           request: {
             method: 'WS',
             messages: [],
@@ -308,7 +290,6 @@ class ComposerNewRequest extends Component {
       }
 
       if (this.props.newRequestFields.graphQL) {
-
         this.props.setNewRequestBody({
           ...this.newRequestBody,
           bodyContent: '',
@@ -336,18 +317,12 @@ class ComposerNewRequest extends Component {
         gRPC: this.props.newRequestFields.gRPC,
       });
     }
-
-      
       this.props.setNewRequestSSE(false);
     }
     else {
       this.props.setComposerWarningMessage(validated);
       this.props.setComposerDisplay('Warning');
     }
-    // resets the stream button next to URL to stream after adding new request
-    // if (this.props.newRequestFields.gRPC) {
-    //   document.getElementById('stream').innerText = "STREAM";
-    // }
   }
 
   render() {
@@ -359,7 +334,6 @@ class ComposerNewRequest extends Component {
     else if (this.props.newRequestFields.graphQL) { SubmitButtonClassName += " gql" }
     else if (this.props.newRequestFields.gRPC) { SubmitButtonClassName += " grpc" }
     else { SubmitButtonClassName += " http" }
-
     return (
       <div
         tabIndex={0}
@@ -379,9 +353,7 @@ class ComposerNewRequest extends Component {
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
         />
-        {
-          !/localhost:/.test(this.props.newRequestFields.protocol) &&
-          <HeaderEntryForm
+        <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={this.props.newRequestHeaders}
           newRequestStreams={this.props.newRequestStreams}
@@ -389,11 +361,10 @@ class ComposerNewRequest extends Component {
           newRequestFields={this.props.newRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
           setNewRequestStreams={this.props.setNewRequestStreams}
-          />
-        }
+        />
         {
           this.props.newRequestFields.method && !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
-          !/localhost:/.test(this.props.newRequestFields.protocol) &&
+          !this.props.newRequestFields.gRPC &&
           <CookieEntryForm
             newRequestCookies={this.props.newRequestCookies}
             newRequestBody={this.props.newRequestBody}
@@ -429,7 +400,6 @@ class ComposerNewRequest extends Component {
             setNewRequestStreams={this.props.setNewRequestStreams}
            />
         }
-
         {/* SSE CHeckbox, update newRequestSSE in store */}
         {
           !this.props.newRequestFields.graphQL
@@ -441,7 +411,6 @@ class ComposerNewRequest extends Component {
             Server Sent Events
           </div>
         }
-
         <button className={SubmitButtonClassName} onClick={this.addNewRequest} type="button">
           Add New Request
         </button>
