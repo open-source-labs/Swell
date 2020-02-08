@@ -77,10 +77,8 @@ class GRPCBodyStream extends Component {
         </button>
       )
     }
-    /*
-    pseudocode for the return section
-    - renders the stream body (and the stream number if for client or bidirectional stream)
-    */
+    // pseudocode for the return section: 
+    // renders the stream body (and the stream number if for client or bidirectional stream)
     return (
     <div style={{ display: 'flex' }}>
       <div>

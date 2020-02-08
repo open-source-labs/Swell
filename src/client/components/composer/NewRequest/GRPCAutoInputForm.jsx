@@ -101,9 +101,7 @@ class GRPCAutoInputForm extends Component {
         ...this.state
       }, () => {
         let req;
-        // let results = [];
         let results = {};
-        let query = '';
         /*
         for each service obj in the services array, if its name matches the current selected service option then:
         - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
@@ -118,34 +116,22 @@ class GRPCAutoInputForm extends Component {
               }
             }
             for (const message of service.messages) {
-              // console.log('message: ', message);
               if (message.name === req ) {
                 for (const key in message.def) {
                   // if message type is a nested message (message.def.nested === true)
-                  // message.def = key: {dependent: dependent.message.def}
-                  // console.log('message.def.nested: ', message.def[key].nested);
-                  // console.log('key: ', key);
                   if (message.def[key].nested) {
                     for (const submess of service.messages) {
-                      // console.log('submess: ', submess);
-                      // console.log('submess.name: ', submess.name);
-                      // console.log('message.def[key].dependent: ', message.def[key].dependent);
                       if (submess.name === message.def[key].dependent ) {
                         // define obj for the submessage definition
-                        let tempObj = {};
+                        let subObj = {};
                         for (const subKey in submess.def) {
-                          tempObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
+                          subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
                         }
-                        // console.log('tempObj: ', tempObj);
-                        // JSON.stringify(JSON.parse(this.props.newRequestBody.bodyContent), null, 4
-                        // results.push(`"${key}":${JSON.stringify(tempObj, null, 2)}`)
-                        results[key] = tempObj
+                        results[key] = subObj
                         break;
                       }
                     }
                   } else {
-                    // console.log('message.def: ', message.def);
-                    // results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
                     results[key] = message.def[key].type.slice(5).toLowerCase()
                   }
                 }
@@ -154,34 +140,12 @@ class GRPCAutoInputForm extends Component {
             }
           }
         }
-        // console.log('resultsobj: ', results)
-         // query for messages with single key:value pair
-        // if (results.length === 1) {
-        //   query = results[0];
-        // }
-        // query for messages with multiple key:value pairs
-    //     else {
-    //       for (let i = 0; i < results.length; i++) {
-    //         query = `${query},
-    // ${results[i]}`
-    //       }
-    //       query = query.slice(1).trim();
-    //     }
-        // set query in streamsArr
-//         if (streamsArr[0] !== '') {
-//           streamsArr[0].query = `{
-//     ${query}
-// }`;
-//         }
+        // push JSON formatted query in streamContent arr
         const queryJSON = JSON.stringify(results, null, 4)
         if (streamsArr[0] !== '') {
           streamsArr[0].query = queryJSON
         }
         // remove initial empty string then push new query to stream content arr
-//         streamContent.pop();
-//         streamContent.push(`{
-//     ${query}
-// }`);
         streamContent.pop();
         streamContent.push(queryJSON);
         // set state in the store with updated content

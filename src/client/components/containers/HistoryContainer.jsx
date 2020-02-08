@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import HistoryDate from '../display/HistoryDate.jsx';
 import ClearHistoryBtn from '../display/ClearHistoryBtn.jsx';
-import historyController from '../../controllers/historyController';
-
-const { dialog } = require('electron').remote;
-import parse from 'date-fns/parse'
 
 const mapStateToProps = store => ({
   history: store.business.history,
@@ -43,7 +39,6 @@ class HistoryContainer extends Component {
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
         setNewRequestStreams={this.props.setNewRequestStreams}
-        // newRequestStreams={this.props.newRequestStreams}
       />
     })
 

@@ -13,8 +13,6 @@ class HistoryDate extends Component {
   }
 
   focusOnForm(event) {
-    // console.log('history date this is the changed tab',document.querySelector('.composer_url_input'))
-    // console.log('this is the new request field', this.props.NewRequestFields)
     let composerUrlField = document.querySelector('.composer_url_input');
     composerUrlField.focus()
   }
@@ -37,7 +35,6 @@ class HistoryDate extends Component {
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
         setNewRequestStreams={this.props.setNewRequestStreams}
-        // newRequestStreams={this.props.newRequestStreams}
       />
     })
 
