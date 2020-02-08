@@ -42,7 +42,7 @@ describe('Business reducer', () => {
       newRequestBody: {
         bodyContent: '',
         bodyVariables: '',
-        bodyType: 'none',
+        bodyType: 'raw',
         rawType: 'Text (text/plain)',
         JSONFormatted: true,
       },

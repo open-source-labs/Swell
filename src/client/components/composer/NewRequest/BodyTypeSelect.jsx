@@ -18,33 +18,29 @@ class BodyTypeSelect extends Component {
   }
 
   render() {
-    let NoneStyleClasses = classNames({
+    let RawStyleClasses = classNames({
       'composer_bodytype_button': true,
-      'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'none'
+      'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'raw'
     });
     let XWWWFormUrlEncodedStyleClasses = classNames({
       'composer_bodytype_button': true,
       'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'x-www-form-urlencoded'
     });
-    let RawStyleClasses = classNames({
+    let NoneStyleClasses = classNames({
       'composer_bodytype_button': true,
-      'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'raw'
+      'composer_bodytype_button-selected': this.props.newRequestBody.bodyType === 'none'
     });
 
     return (
       <div className={"composer_protocol_container httpbody"} style={{ 'marginTop': '4px' }}>
-        <div
-          style={{ 'width': '17%' }}
-          className={NoneStyleClasses}
-          onMouseDown={() => {
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              bodyType: 'none',
-              bodyContent: ''
-            })
-            this.removeContentTypeHeader()
-          }}>
-          none
+         <div
+          style={{ 'width': '14%' }}
+          className={RawStyleClasses}
+          onMouseDown={() => this.props.setNewRequestBody({
+            ...this.props.newRequestBody,
+            bodyType: 'raw'
+          })}>
+          Raw
         </div>
         <div
           style={{ 'width': '65%' }}
@@ -56,13 +52,17 @@ class BodyTypeSelect extends Component {
           x-www-form-urlencoded
         </div>
         <div
-          style={{ 'width': '14%' }}
-          className={RawStyleClasses}
-          onMouseDown={() => this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
-            bodyType: 'raw'
-          })}>
-          raw
+          style={{ 'width': '17%' }}
+          className={NoneStyleClasses}
+          onMouseDown={() => {
+            this.props.setNewRequestBody({
+              ...this.props.newRequestBody,
+              bodyType: 'none',
+              bodyContent: ''
+            })
+            this.removeContentTypeHeader()
+          }}>
+          None
         </div>
       </div>
     );
