@@ -121,7 +121,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           if (err) {
             console.log('unary error' , err);
           }
-          // console.log('sent UNARY request', data);
+          console.log('sent UNARY request', data);
           // Close Connection and set time received for Unary
           reqResObj.timeReceived = Date.now();
           reqResObj.connection = 'closed';

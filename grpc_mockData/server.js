@@ -28,6 +28,7 @@ const dataStream = [
 
 // Unary stream
 // ctx = watch execution context
+let pList = [];
 function sayHello(ctx) {
   // create new metadata
   let metadata = new grpc.Metadata();
@@ -39,24 +40,26 @@ function sayHello(ctx) {
   // console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log(`got sayHello request name: ${ctx.req.name}`);
   console.log(`got server sayHello request: ${ctx.req.firstPerson.name}`)
-
-  let firstPerson = ctx.req.firstPerson;
-  let secondPerson = ctx.req.secondPerson;
+  let personlist
+  for (let i = 0; i < pList.length; i++) {
+    personlist = pList[i];
+    console.log('personlist from server.js',personlist)
+    let firstPerson = ctx.req.firstPerson;
+    let secondPerson = ctx.req.secondPerson;
   ctx.res = {
-    "messageOne": "Hello" + firstPerson,
-    "messageTwo": "Hello" + secondPerson
+    "messageOne": "Hello" + firstPerson.name,
+    "messageTwo": "Hello" + secondPerson.name
   }
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
- 
-  // ctx.res = { message: "Hello " + ctx.req.name };
+  ctx.res = { message: "Hello " + ctx.req.name };
 
   // send response header metadata object directly as an argument and that is set and sent
   metadata.set('UNARY', 'yes')
   ctx.sendMetadata(metadata)
 
-  // console.log(`set sayHello response: ${ctx.res.message}`);
-  console.log(`set sayHello response: ${ctx.res.messageOne}`);
+  console.log(`set sayHello response: ${ctx.res.message}`);
+  // console.log(`set sayHello response: ${ctx.res.messageOne}`);
 }
 
 // Server-Side Stream
