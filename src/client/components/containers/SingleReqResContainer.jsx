@@ -20,7 +20,6 @@ class SingleReqResContainer extends Component {
     this.props.reqResUpdate(this.props.content);
   }
 
-
   removeReqRes() {
     connectionController.closeReqRes(this.props.content.id);
     this.props.reqResDelete(this.props.content);
@@ -38,7 +37,6 @@ class SingleReqResContainer extends Component {
         : this.props.content.response.events
         && this.props.content.response.events.length
         ? JSON.parse(this.props.content.response.events[0]).statusCode : '';
-
       return !this.props.content.response.events 
         ? ''
         : this.props.content.response.events
@@ -51,7 +49,6 @@ class SingleReqResContainer extends Component {
         && this.props.content.response.headers[':status'] 
         ? 'Status: ' + this.props.content.response.headers[":status"] : '';
     }
-    
   }
 
   render() {
