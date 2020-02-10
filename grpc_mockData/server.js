@@ -59,7 +59,7 @@ function sayHelloNested(ctx) {
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
   console.log("received metadata from client request", ctx.metadata)
-  // console.dir(ctx.metadata, { depth: 3, colors: true });
+  console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log("ctx line 64 from server.js", ctx)
 
   // nested unary response call
