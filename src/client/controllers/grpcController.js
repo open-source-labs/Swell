@@ -19,6 +19,7 @@ let grpcController = {};
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     //check for connection, if not open one
+    console.log(reqResObj)
   if (false) {
       //use existing connection
   }
@@ -31,6 +32,12 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     let packageName = reqResObj.packageName;
     let url = reqResObj.url;
     let queryArr = reqResObj.queryArr;
+    if (reqResObj.response.events === null) {
+      reqResObj.response.events = [];
+    }
+    if (reqResObj.response.headers === null) {
+      reqResObj.response.headers = {};
+    }
     
     // go through services object, find service where name matches our passed
     // in service, then grab the rpc list of that service, also save that service
@@ -166,7 +173,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         });
 
         // debugging call methods
-        console.log('call: ', call);
+        // console.log('call: ', call);
 
         for (var i = 0; i < queryArr.length; i++) {
           let query = queryArr[i];
@@ -186,7 +193,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'plain';
         reqResObj.timeSent = Date.now();
-
+        console.log('rpc', rpc, 'reqresquery', reqResObj.queryArr[0])
         const call = client[rpc](reqResObj.queryArr[0], meta);
         call.on("data", resp => {
           // console.log('server streaming message:', data);

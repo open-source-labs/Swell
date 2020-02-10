@@ -42,7 +42,7 @@ describe('Business reducer', () => {
       newRequestBody: {
         bodyContent: '',
         bodyVariables: '',
-        bodyType: 'none',
+        bodyType: 'raw',
         rawType: 'Text (text/plain)',
         JSONFormatted: true,
       },
@@ -346,6 +346,28 @@ describe('Business reducer', () => {
         graphQL: true
       }
     }
+    const requestStreamsAction = {
+      type: 'SET_NEW_REQUEST_STREAMS',
+      payload: {
+        
+        streamsArr: [],
+        count: 0,
+        streamContent: [],
+        selectedPackage: 'helloworld',
+        selectedRequest: 'helloRequest',
+        selectedService: 'hello',
+        selectedStreamingType: null,
+        initialQuery: null,
+        queryArr: null,
+        protoPath: null,
+        services: null,
+        
+      },
+    }
+    it('sets the newRequestStreams on SET_NEW_REQUEST_STREAMS', () => {
+      const { newRequestStreams } = reducer(state, requestStreamsAction);
+      expect(newRequestStreams).toEqual(requestStreamsAction.payload);
+    })
     it('sets the newRequestFields on POST', () => {
       const { newRequestFields } = reducer(state, postAction);
       expect(newRequestFields).toEqual(postAction.payload);

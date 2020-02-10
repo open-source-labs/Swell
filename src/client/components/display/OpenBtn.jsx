@@ -7,7 +7,6 @@ class OpenBtn extends Component {
   }
 
   render() {
-    console.log(this.props.content.id);
     return (
       <button
         className="btn"
