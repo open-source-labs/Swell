@@ -8,7 +8,7 @@ import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
 import historyController from '../../controllers/historyController';
 import collectionsController from '../../controllers/collectionsController';
 const EventEmitter = require('events');
-
+const {dialog} = require('electron').remote
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +23,16 @@ class App extends Component {
     ipcRenderer.on('minimizeAll', ReqResCtrl.minimizeAllReqRes);
     ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
-    
-    // window.onerror = (error, url, line) => {
-    //   console.log('had an err, send to ipcMain')
-    //   alert('Fatal Error, Press OK to Refresh')
-    //   ipcRenderer.send('fatalError')
-    // }
+    //window on error fires for any error in program, opens a dialog allowing user to continue or refresh. refresh sends to ipcMain
+    window.onerror = (error, url, line) => {
+      // alert('Fatal Error, Press OK to Refresh')
+      // dialog.showOpenDialogSync({properties: ['openFile', "multiSelections"]})
+      // dialog.showErrorBox('error in app dialog', 'what did u do')
+      let answer = dialog.showMessageBoxSync({title: 'Application Error',message: 'An error has occurred, you can click Continue to keep working or click Refresh Page to refresh', buttons: ['Refresh Page', 'Continue']})
+      if (answer === 0) {
+        ipcRenderer.send('fatalError')
+      }
+    } 
     // process.on('uncaughtException', (err) => {
     //   console.log('whoops! there was an error');
     // });
