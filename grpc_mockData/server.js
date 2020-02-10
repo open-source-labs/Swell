@@ -61,7 +61,7 @@ function sayHelloNested(ctx) {
   console.log("received metadata from client request", ctx.metadata)
   // console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log("ctx line 64 from server.js", ctx)
-  
+
   // nested unary response call
   let firstPerson = ctx.req.firstPerson.name;
   let secondPerson = ctx.req.secondPerson.name;
