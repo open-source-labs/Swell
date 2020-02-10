@@ -39,20 +39,12 @@ function sayHello(ctx) {
   console.log("received metadata from client request", ctx.metadata)
   // console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log(`got sayHello request name: ${ctx.req.name}`);
-  let messages=[];
-  for (let i = 0; i < ctx.req.length; i++ ){
-    let reqMessages = {"message": 'hello!!! ' + ctx.req[i].name}
-    message.push(reqMessages)
-  }
-  // ctx.res = messages;
-  ctx.response.res = { serverMessage: 'nested unary stream: ' + messages }
-  
-  // let firstPerson = ctx.req.firstPerson.name;
-  // let secondPerson = ctx.req.secondPerson.name;
-  // ctx.res = { messageOne: "Hello" + firstPerson, messageTwo: "Hello" + secondPerson }
+
+  // nested unary response call
+  let firstPerson = ctx.req.firstPerson.name;
+  let secondPerson = ctx.req.secondPerson.name;
+  ctx.res = {"serverMessage": [{message: "hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
  
-  
-  
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
   // ctx.res = { message: "Hello " + ctx.req.name };
@@ -62,7 +54,7 @@ function sayHello(ctx) {
   ctx.sendMetadata(metadata)
 
   // console.log(`set sayHello response: ${ctx.res.message}`);
-  console.log(`set sayHello response: ${ctx.res.messageOne.message}`);
+  // console.log(`set sayHello response: ${ctx.res.messageOne.message}`);
 }
 
 // Server-Side Stream
