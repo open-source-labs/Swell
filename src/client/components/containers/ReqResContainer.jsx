@@ -23,7 +23,7 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    // console.log('this.props.reqResArray: ', this.props.reqResArray)
+    
     const reqResArr = this.props.reqResArray
       .map((reqRes, index) => {
         return <SingleReqResContainer

@@ -13,12 +13,14 @@ class GRPCAutoInputForm extends Component {
     this.setService = this.setService.bind(this);
     this.setRequest = this.setRequest.bind(this);
   }
+
   // event handler on the arrow button that allows you to open/close the section
   toggleShow() {
     this.setState({
       show: !this.state.show
     });
   }
+
   // event handler for changes made to the Select Services dropdown list
   setService() {
    // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
@@ -28,34 +30,23 @@ class GRPCAutoInputForm extends Component {
     document.getElementById('stream').innerText = 'STREAM';
     // grabs the request dropdown list and resets it to the first option "Select Request"
     document.getElementById('dropdownRequest').selectedIndex = 0;
-    // clear query body
-    while (this.props.newRequestStreams.streamsArr.length > 1) {
-      this.props.newRequestStreams.streamsArr.pop();
-      this.props.newRequestStreams.streamContent.pop();
-      this.props.newRequestStreams.count -= 1;
-    }
-    this.props.newRequestStreams.streamContent[0] = '';
+    // clears all stream query bodies except the first one
+    this.props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
-      // count: 0,
-      // streamsArr: this.props.newRequestStreams.streamsArr,
-      // streamContent: this.props.newRequestStreams.streamContent,
-      // selectedPackage: null,
-      // selectedRequest: null,
-      // selectedStreamingType: null,
-      // initialQuery: null,
-      // queryArr: null,
       selectedService: serviceName
     });
-
   }
+
   // event handler for changes made to the Select Request dropdown list
   setRequest() {
+    const streamsArr = this.props.newRequestStreams.streamsArr;
+    const streamContent = this.props.newRequestStreams.streamContent;
     // clears all stream bodies except the first when switching from client/directional stream to something else
-    while (this.props.newRequestStreams.streamsArr.length > 1) {
-      this.props.newRequestStreams.streamsArr.pop();
-      this.props.newRequestStreams.streamContent.pop()
+    while (streamsArr.length > 1) {
+      streamsArr.pop();
+      streamContent.pop()
       this.props.newRequestStreams.count -= 1;
     }
     // update state in the store
@@ -64,8 +55,8 @@ class GRPCAutoInputForm extends Component {
       selectedPackage: null,
       selectedRequest: null,
       selectedStreamingType: null,
-      streamContent: this.props.newRequestStreams.streamContent,
-      streamsArr: this.props.newRequestStreams.streamsArr
+      streamContent: streamContent,
+      streamsArr: streamsArr
     });
     // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
     const dropdownRequest = document.getElementById('dropdownRequest');
@@ -110,8 +101,7 @@ class GRPCAutoInputForm extends Component {
         ...this.state
       }, () => {
         let req;
-        let results = [];
-        let query = '';
+        let results = {};
         /*
         for each service obj in the services array, if its name matches the current selected service option then:
         - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
@@ -126,72 +116,44 @@ class GRPCAutoInputForm extends Component {
               }
             }
             for (const message of service.messages) {
-              // console.log('message: ', message);
               if (message.name === req ) {
                 for (const key in message.def) {
                   // if message type is a nested message (message.def.nested === true)
-                  // message.def = key: {dependent: dependent.message.def}
-                  // console.log('message.def.nested: ', message.def[key].nested);
-                  // console.log('key: ', key);
                   if (message.def[key].nested) {
                     for (const submess of service.messages) {
-                      // console.log('submess: ', submess);
-                      // console.log('submess.name: ', submess.name);
-                      // console.log('message.def[key].dependent: ', message.def[key].dependent);
                       if (submess.name === message.def[key].dependent ) {
                         // define obj for the submessage definition
-                        let tempObj = {};
+                        let subObj = {};
                         for (const subKey in submess.def) {
-                          tempObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
+                          subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
                         }
-                        // console.log('tempObj: ', tempObj);
-                        results.push(`"${key}":${JSON.stringify(tempObj)}`)
+                        results[key] = subObj
                         break;
                       }
-                      // break;
-                  }//after
-                } else {
-                  // console.log('message.def: ', message.def);
-                  results.push(`"${key}": "${message.def[key].type.slice(5).toLowerCase()}"`)
+                    }
+                  } else {
+                    results[key] = message.def[key].type.slice(5).toLowerCase()
+                  }
                 }
+                break;
               }
-            break;
+            }
           }
         }
-      }
-    }
-
-        const streamsArr = this.props.newRequestStreams.streamsArr;
-        const streamContent = this.props.newRequestStreams.streamContent;
-         // query for messages with single key:value pair
-        if (results.length === 1) {
-          query = results[0];
-        }
-        // query for messages with multiple key:value pairs
-        else {
-          for (let i = 0; i < results.length; i++) {
-            query = `${query},
-    ${results[i]}`
-          }
-          query = query.slice(1).trim();
-        }
-        // set query in streamsArr
+        // push JSON formatted query in streamContent arr
+        const queryJSON = JSON.stringify(results, null, 4)
         if (streamsArr[0] !== '') {
-          streamsArr[0].query = `{
-    ${query}
-}`;
+          streamsArr[0].query = queryJSON
         }
         // remove initial empty string then push new query to stream content arr
         streamContent.pop();
-        streamContent.push(`{
-    ${query}
-}`);
+        streamContent.push(queryJSON);
         // set state in the store with updated content
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
           streamsArr: streamsArr,
           streamContent: streamContent,
-          initialQuery: query
+          initialQuery: queryJSON
         });
       });
       // update button display for streaming type listed next to url

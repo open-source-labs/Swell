@@ -7,11 +7,10 @@ class ResponseTabs extends Component {
   }
 
   render() {
-    console.log('THETSHESTRKSDFKJHS', this.props.content)
+    
     const events = 'Response Events';
     const cookies = 'Response Cookies';
     let headers = 'Response Headers';
-
 
     if (this.props.content.gRPC === true ) {
       headers = 'Response Metadata';
