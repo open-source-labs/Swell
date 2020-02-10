@@ -6,6 +6,7 @@ import createDOMPurify from 'dompurify';
 const ResponseEventsDisplay = ({ response }) => {
   const { events, headers } = response;
   const displayContents = [];
+  console.log('what is events' , events)
 
   // If it's an SSE, render event rows
   if (headers && headers['content-type'] && headers['content-type'].includes('text/event-stream')) {
@@ -19,7 +20,7 @@ const ResponseEventsDisplay = ({ response }) => {
       <div className="okay" dangerouslySetInnerHTML={{__html: createDOMPurify.sanitize(events[0])}} />
     )
   }
-  else if (events.length > 1) {
+  else if (events && events.length > 1) {
     if (events) {
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
@@ -36,6 +37,7 @@ const ResponseEventsDisplay = ({ response }) => {
     }
     
   }
+
   // Otherwise, render a single display
   else {
     if (events) {
