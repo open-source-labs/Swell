@@ -54,7 +54,9 @@ class RequestTabs extends Component {
     let tabContentShown;
 
     // let displayQueries = this.props.requestContent.body;
-    // if (this.props.requestContent.bodyType === 'GRPC') {
+    if (this.props.requestContent.bodyType === 'GRPC') {
+      headers = "Request Metadata"
+    }
     //   displayQueries = '';
     //   let length = this.props.requestContent.streams.length;
     //   for (let i = 0; i < length; i += 1) {
