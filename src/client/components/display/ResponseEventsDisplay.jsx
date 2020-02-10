@@ -22,9 +22,16 @@ const ResponseEventsDisplay = ({ response }) => {
   }
   else if (events && events.length > 1) {
     if (events) {
+      let resEvents = '';
+      let eventJSON;
+      for (const event of events) {
+        eventJSON = JSON.stringify(event, null, 4);
+        resEvents = `${resEvents}
+${eventJSON}`
+      }
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
-          <JSONPretty data={events} space="4" theme={{
+          <JSONPretty data={resEvents} space="4" theme={{
             main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
             key: 'color:#0089D0;', // bluetwo
             string: 'color:#15B78F;',// greenone
