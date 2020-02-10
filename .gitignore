@@ -55,3 +55,7 @@ ehthumbs.db
 # Windows shortcuts #
 #####################
 *.lnk
+
+# proto files #
+#####################
+*.protos
