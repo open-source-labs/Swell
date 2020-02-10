@@ -31,7 +31,7 @@ class GRPCBodyStream extends Component {
     let deleteStreamBtn;
     // grabs the query based on the stream id/number
     let streamContent = this.props.newRequestStreams.streamContent[this.props.stream.id];
-    // if the none or the first stream query in the array
+    // if none or the first stream query in the array
     if (this.props.stream.id === 1) {
       streamBody = (
         <textarea
@@ -45,7 +45,7 @@ class GRPCBodyStream extends Component {
         ></textarea>
       )
     } else {
-      // if subsequent stream query
+      // for subsequent stream query
       streamBody = (
         <textarea
           value={streamContent}

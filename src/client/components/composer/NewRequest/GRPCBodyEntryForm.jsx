@@ -38,7 +38,7 @@ class GRPCBodyEntryForm extends Component {
       });
     }
   }
-  // add stream only for client or BIDIRECTIONAL streaming
+  // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   addStream() {
     const streamsArr = this.props.newRequestStreams.streamsArr;
     const streamContent = this.props.newRequestStreams.streamContent;
