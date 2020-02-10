@@ -5,8 +5,9 @@ import ContentsContainer from './ContentsContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from './SidebarContainer.jsx';
 import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
-import historyController from '../../controllers/historyController'
-import collectionsController from '../../controllers/collectionsController'
+import historyController from '../../controllers/historyController';
+import collectionsController from '../../controllers/collectionsController';
+const EventEmitter = require('events');
 
 class App extends Component {
   constructor(props) {
@@ -22,6 +23,16 @@ class App extends Component {
     ipcRenderer.on('minimizeAll', ReqResCtrl.minimizeAllReqRes);
     ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
+    
+    // window.onerror = (error, url, line) => {
+    //   console.log('had an err, send to ipcMain')
+    //   alert('Fatal Error, Press OK to Refresh')
+    //   ipcRenderer.send('fatalError')
+    // }
+    // process.on('uncaughtException', (err) => {
+    //   console.log('whoops! there was an error');
+    // });
+
     historyController.getHistory();
     collectionsController.getCollections();
 

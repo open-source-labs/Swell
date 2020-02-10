@@ -4,15 +4,9 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const uuid = require('uuid');
 
-//temp for testing >>>>
-// let tempData = fs.readFileSync(path.join(process.cwd(), 'grpc_mockData/protos/route_guide.proto'), 'utf-8')
 
-  // fs.writeFileSync(path.join(process.cwd(), 'src/client/components/composer/protos/saveProto.proto'), tempData, 'utf-8')
-  //   console.log('Proto file has been saved')
-  // })
-// });
-// temp for testing ^^^^
 async function protoParserFunc(protoBodyData) {
+  
   // define storage for .proto parsed content
   let protoStorage = {};
   //store the original .proto content in the storage before parsing

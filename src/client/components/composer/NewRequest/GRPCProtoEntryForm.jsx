@@ -70,6 +70,7 @@ class GRPCProtoEntryForm extends Component {
       if (!filePaths) {
         return;
       }
+    
       // read uploaded proto file
       const importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
       // set state of protoContent in the store

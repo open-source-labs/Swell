@@ -4,6 +4,7 @@ import * as actions from '../../actions/actions';
 
 import ComposerNewRequest from './NewRequest/ComposerNewRequest.jsx';
 import ComposerWarning from './Warning/ComposerWarning.jsx';
+const EventEmitter = require('events');
 
 const mapStateToProps = store => ({
   reqResArray: store.business.reqResArray,
@@ -40,6 +41,7 @@ class ComposerContainer extends Component {
     // this.setState({
     //   composerDisplay: this.props.composerDisplay,
     // });
+
   }
 
   componentDidUpdate() {//keeping the redux store state in sync with this component's local state
