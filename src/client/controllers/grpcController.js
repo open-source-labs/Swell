@@ -104,7 +104,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       // create client requested metadata key and value pair for each type of streaming
       let meta = new grpc.Metadata()
       let metaArr = reqResObj.request.headers;
-      console.log("metaArr from grpcController line 100:", metaArr)
+      // console.log("metaArr from grpcController line 100:", metaArr)
       for (let i = 0; i < metaArr.length; i+=1) {
         let currentHeader = metaArr[i];
         meta.add(currentHeader.key, currentHeader.value)
@@ -173,7 +173,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         });
 
         // debugging call methods
-        console.log('call: ', call);
+        // console.log('call: ', call);
 
         for (var i = 0; i < queryArr.length; i++) {
           let query = queryArr[i];

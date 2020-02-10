@@ -31,6 +31,7 @@ const initialState = {
     queryArr: null,
     protoPath: null,
     services: null,
+    protoContent: ''
   },
   newRequestCookies: {
     cookiesArr: [],
@@ -39,7 +40,7 @@ const initialState = {
   newRequestBody: {
     bodyContent: '',
     bodyVariables: '',
-    bodyType: 'none',
+    bodyType: 'raw',
     rawType: 'Text (text/plain)',
     JSONFormatted: true,
   },
