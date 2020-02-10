@@ -59,16 +59,16 @@ function sayHelloNested(ctx) {
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
   console.log("received metadata from client request", ctx.metadata)
-  console.dir(ctx.metadata, { depth: 3, colors: true });
-  // console.log(`got sayHello request name: ${ctx.req.name}`);
-  console.log("ctx line 64 from server.js", ctx)
+  // console.dir(ctx.metadata, { depth: 3, colors: true });
+  // console.log("ctx line 64 from server.js", ctx)
+  
   // nested unary response call
   let firstPerson = ctx.req.firstPerson.name;
   let secondPerson = ctx.req.secondPerson.name;
-  // ctx.res = {"serverMessage": [{message: "hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
-  ctx.res = {"serverMessage": {message:"hello! " + firstPerson}, "serverMessage": {message: "hello! " + secondPerson}}
+  console.log("firstPerson line 68 from server.js:", firstPerson)
+  ctx.res = {"serverMessage": [{message: "Hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
+
   // send response header metadata object directly as an argument and that is set and sent
-  metadata.set('UNARY Nested', 'yes')
   ctx.sendMetadata(metadata)
 }
 // Server-Side Stream

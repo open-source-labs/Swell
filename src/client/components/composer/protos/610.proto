@@ -5,8 +5,8 @@ package helloworld;
 // The greeting service definition.
 service Greeter {
   // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {} // single unary stream
-  rpc SayHelloNested (HelloNestedRequest) returns (HelloNestedReply) {} // nested unary stream
+  rpc SayHello (HelloRequest) returns (HelloReply) {} // single unary service
+  rpc SayHelloNested (HelloNestedRequest) returns (HelloNestedReply) {} // nested unary service
   rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
   rpc SayHellos (HelloRequest) returns (stream HelloReply) {}
   rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
@@ -29,8 +29,8 @@ message HelloNestedRequest {
 
 message HelloNestedReply {
   // create array of nested server response
-  repeated HelloReply serverMessage = 1;
-  
+   HelloReply serverMessage = 1;
+   //repeated
 }
 // The request message containing the user's name.
 message HelloHowOldRequest {
