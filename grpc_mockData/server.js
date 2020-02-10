@@ -28,7 +28,6 @@ const dataStream = [
 
 // Unary stream
 // ctx = watch execution context
-
 function sayHello(ctx) {
   // create new metadata
   let metadata = new grpc.Metadata();
@@ -38,25 +37,40 @@ function sayHello(ctx) {
   // The execution context provides scripts and templates with access to the watch metadata
   console.log("received metadata from client request", ctx.metadata)
   console.dir(ctx.metadata, { depth: 3, colors: true });
-  // console.log(`got sayHello request name: ${ctx.req.name}`);
+  console.log(`got sayHello request name: ${ctx.req.name}`);
 
-  // nested unary response call
-  let firstPerson = ctx.req.firstPerson.name;
-  let secondPerson = ctx.req.secondPerson.name;
-  ctx.res = {"serverMessage": [{message: "hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
- 
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
-  // ctx.res = { message: "Hello " + ctx.req.name };
+  ctx.res = { message: "Hello " + ctx.req.name };
 
   // send response header metadata object directly as an argument and that is set and sent
   metadata.set('UNARY', 'yes')
   ctx.sendMetadata(metadata)
 
-  // console.log(`set sayHello response: ${ctx.res.message}`);
-  // console.log(`set sayHello response: ${ctx.res.messageOne.message}`);
+  console.log(`set sayHello response: ${ctx.res.message}`);
 }
+// nested Unary stream
 
+function sayHelloNested(ctx) {
+  // create new metadata
+  let metadata = new grpc.Metadata();
+  metadata.set('it', 'works?')
+  metadata.set('indeed', 'it do')
+  // Watcher creates a watch execution context for the watch
+  // The execution context provides scripts and templates with access to the watch metadata
+  console.log("received metadata from client request", ctx.metadata)
+  console.dir(ctx.metadata, { depth: 3, colors: true });
+  // console.log(`got sayHello request name: ${ctx.req.name}`);
+  console.log("ctx line 64 from server.js", ctx)
+  // nested unary response call
+  let firstPerson = ctx.req.firstPerson.name;
+  let secondPerson = ctx.req.secondPerson.name;
+  // ctx.res = {"serverMessage": [{message: "hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
+  ctx.res = {"serverMessage": {message:"hello! " + firstPerson}, "serverMessage": {message: "hello! " + secondPerson}}
+  // send response header metadata object directly as an argument and that is set and sent
+  metadata.set('UNARY Nested', 'yes')
+  ctx.sendMetadata(metadata)
+}
 // Server-Side Stream
 // used highland library to manage asynchronous data
 async function sayHellos(ctx) {
@@ -88,6 +102,7 @@ async function sayHellos(ctx) {
   // ends server stream
   ctx.res.end()
 }
+
 
 // Client-Side stream
 function sayHelloCs (ctx) {
@@ -155,7 +170,7 @@ function sayHelloBidi(ctx) {
  */
 function main() {
   const app = new Mali(PROTO_PATH, "Greeter");
-  app.use({ sayHello, sayHellos, sayHelloCs, sayHelloBidi });
+  app.use({ sayHello, sayHelloNested, sayHellos, sayHelloCs, sayHelloBidi });
   app.start(HOSTPORT);
   console.log(`Greeter service running @ ${HOSTPORT}`);
 }
