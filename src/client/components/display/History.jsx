@@ -69,7 +69,7 @@ class History extends Component {
         selectedRequest: this.props.content.rpc,
         selectedService:  this.props.content.service,
         selectedStreamingType: this.props.content.request.method,
-        // initialQuery: this.props.content.initialQuery,
+        initialQuery: this.props.content.initialQuery,
         queryArr: this.props.content.queryArr,
         protoPath: this.props.content.protoPath,
         services: this.props.content.servicesObj,
