@@ -7,7 +7,7 @@ class ResponseTabs extends Component {
   }
 
   render() {
-    
+
     const events = 'Response Events';
     const cookies = 'Response Cookies';
     let headers = 'Response Headers';
