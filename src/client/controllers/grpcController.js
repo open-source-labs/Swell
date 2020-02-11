@@ -19,6 +19,7 @@ let grpcController = {};
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     //check for connection, if not open one
+    console.log(reqResObj)
   if (false) {
       //use existing connection
   }
@@ -31,6 +32,12 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     let packageName = reqResObj.packageName;
     let url = reqResObj.url;
     let queryArr = reqResObj.queryArr;
+    if (reqResObj.response.events === null) {
+      reqResObj.response.events = [];
+    }
+    if (reqResObj.response.headers === null) {
+      reqResObj.response.headers = {};
+    }
 
     // go through services object, find service where name matches our passed
     // in service, then grab the rpc list of that service, also save that service
@@ -97,7 +104,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       // create client requested metadata key and value pair for each type of streaming
       let meta = new grpc.Metadata()
       let metaArr = reqResObj.request.headers;
-      console.log("metaArr from grpcController line 100:", metaArr)
+      // console.log("metaArr from grpcController line 100:", metaArr)
       for (let i = 0; i < metaArr.length; i+=1) {
         let currentHeader = metaArr[i];
         meta.add(currentHeader.key, currentHeader.value)
@@ -105,16 +112,17 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       }
 
       if (rpcType === 'UNARY') {
-        let query = reqResObj.queryArr[0];
+        let query = reqResObj.queryArr[0]
+
         // Open Connection and set time sent for Unary
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
         // make Unary call
         client[rpc](query, meta, (err, data)=> {
+          console.log("query from line 122 in grpcController", query)
           if (err) {
             console.log('unary error' , err);
           }
-          // console.log('sent UNARY request', data);
           // Close Connection and set time received for Unary
           reqResObj.timeReceived = Date.now();
           reqResObj.connection = 'closed';
@@ -166,7 +174,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         });
 
         // debugging call methods
-        console.log('call: ', call);
+        // console.log('call: ', call);
 
         for (var i = 0; i < queryArr.length; i++) {
           let query = queryArr[i];
@@ -186,6 +194,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'plain';
         reqResObj.timeSent = Date.now();
+        console.log('rpc', rpc, 'reqresquery', reqResObj.queryArr[0])
         const call = client[rpc](reqResObj.queryArr[0], meta);
         call.on("data", resp => {
           // console.log('server streaming message:', data);

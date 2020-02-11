@@ -58,11 +58,13 @@ class History extends Component {
     this.props.setNewRequestBody(requestBodyObj);
     // for gRPC 
     if (this.props.content && this.props.content.gRPC) {
+      const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.content.streamsArr));
+      const contentsDeepCopy = JSON.parse(JSON.stringify(this.props.content.streamContent));
       // construct the streams obj from passed in history content & set state in store
       const requestStreamsObj = {
-        streamsArr: this.props.content.streamsArr,
+        streamsArr: streamsDeepCopy,
         count: this.props.content.queryArr.length,
-        streamContent: this.props.content.streamContent,
+        streamContent: contentsDeepCopy,
         selectedPackage: this.props.content.packageName,
         selectedRequest: this.props.content.rpc,
         selectedService:  this.props.content.service,
@@ -71,7 +73,7 @@ class History extends Component {
         queryArr: this.props.content.queryArr,
         protoPath: this.props.content.protoPath,
         services: this.props.content.servicesObj,
-        protoContent: this.props.content.protoContent
+        protoContent: this.props.content.protoContent,
       }
       this.props.setNewRequestStreams(requestStreamsObj)
       // need to place logic in callback otherwise code won't work and returns null

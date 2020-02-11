@@ -76,6 +76,7 @@ class GRPCProtoEntryForm extends Component {
       ...this.props.newRequestStreams,
       protoContent: value
     })
+    document.getElementById("save-proto").innerText = 'Save Changes';
   }
 
  // clears stream body query when proto file or selected service is changed
