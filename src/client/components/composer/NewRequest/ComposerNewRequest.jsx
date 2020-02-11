@@ -15,10 +15,6 @@ class ComposerNewRequest extends Component {
     this.handleSSEPayload = this.handleSSEPayload.bind(this);
   }
 
-  componentDidMount(){
-    // console.log('this.props.newRequestSSE.isSSE: ', this.props.newRequestSSE.isSSE);
-  }
-
   requestValidationCheck() {
     let validationMessage;
     //Error conditions...
@@ -39,7 +35,6 @@ class ComposerNewRequest extends Component {
         validationMessage = "Missing body.";
       }
     }
-
     return validationMessage || true;
   }
 
@@ -257,12 +252,6 @@ class ComposerNewRequest extends Component {
 
       this.props.setNewRequestStreams({
         ...this.props.newRequestStreams,
-        // streamsArr: [''],
-        // streamContent: [],
-        // selectedPackage: null,
-        // selectedService: null,
-        // selectedRequest: null,
-        // selectedStreamingType: null,
       });
 
       this.props.setNewRequestCookies({
@@ -279,28 +268,6 @@ class ComposerNewRequest extends Component {
         JSONFormatted: true,
       });
 
-      if (this.props.newRequestFields.gRPC) {
-        this.props.setNewRequestBody({
-          ...this.newRequestBody,
-          bodyContent: '',
-          bodyVariables: '',
-          bodyType: 'GRPC',
-          rawType: '',
-          JSONFormatted: true,
-        });
-      }
-
-      if (this.props.newRequestFields.graphQL) {
-        this.props.setNewRequestBody({
-          ...this.newRequestBody,
-          bodyContent: '',
-          bodyVariables: '',
-          bodyType: 'GQL',
-          rawType: '',
-          JSONFormatted: true,
-        });
-      }
-
       this.props.setNewRequestFields({
         method: this.props.newRequestFields.method,
         protocol: '',
@@ -309,15 +276,32 @@ class ComposerNewRequest extends Component {
         gRPC: this.props.newRequestFields.gRPC,
       });
 
-      if(this.props.newRequestFields.protocol === 'ws://') {
-      this.props.setNewRequestFields({
-        method: this.props.newRequestFields.method,
-        protocol: 'ws://',
-        url: 'ws://',
-        graphQL: this.props.newRequestFields.graphQL,
-        gRPC: this.props.newRequestFields.gRPC,
-      });
-    }
+      if (this.props.newRequestFields.gRPC) {
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyType: 'GRPC',
+          rawType: '',
+        });
+        this.props.setNewRequestFields({
+          ...this.props.newRequestFields,
+          url: this.props.newRequestFields.url,
+        });
+      }
+
+      if (this.props.newRequestFields.graphQL) {
+        this.props.setNewRequestBody({
+          ...this.newRequestBody,
+          bodyType: 'GQL',
+          rawType: '',
+        });
+      }
+
+      if (this.props.newRequestFields.protocol === 'ws://') {
+        this.props.setNewRequestFields({
+          protocol: 'ws://',
+          url: 'ws://',
+        });
+      }
       this.props.setNewRequestSSE(false);
     }
     else {
