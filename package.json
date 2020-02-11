@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -14,7 +14,8 @@
     "package-all": "electron-builder  build -mwl",
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
-    "gh-publish": "electron-builder build -mwl -p always"
+    "gh-publish": "electron-builder build -mwl -p always",
+    "postinstall": "npm rebuild --runtime=electron --target=7.0.1"
   },
   "author": {
     "name": "Swell",
@@ -81,6 +82,11 @@
       "name": "Sam Parsons",
       "email": "samparsons269@gmail.com",
       "url": "https://github.com/sam-parsons"
+    },
+    {
+      "name": "Dan Stein",
+      "email": "50937807+danst3in@users.noreply.github.com",
+      "url": "https://github.com/danst3in"
     }
   ],
   "build": {
@@ -98,6 +104,7 @@
       "main.js",
       "httpserver.js"
     ],
+    "nodeVersion":"12.14.1",
     "nsis": {
       "createDesktopShortcut": "always"
     },
@@ -149,7 +156,7 @@
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "engines": {
-    "node": ">=12.0.0",
+    "node": ">=12.14.1",
     "npm": ">=6.0.0"
   },
   "dependencies": {
