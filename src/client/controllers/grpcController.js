@@ -190,6 +190,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         call.end();
       }
       else if (rpcType === 'SERVER STREAM') {
+        let timesArr = [];
         // Open Connection for SERVER Stream
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'plain';
@@ -200,6 +201,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // console.log('server streaming message:', data);
           // add server response to reqResObj and dispatch to state/store
           reqResObj.response.events.push(resp)
+          timesArr.push(Date.now())
+          console.log('new time pushed: ', timesArr)
           // console.log('data response server stream',resp)
           // console.log(reqResObj.response.events)
 
@@ -213,7 +216,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           // Close Connection for SERVER Stream
           reqResObj.connection = 'closed';
           reqResObj.connectionType = 'plain';
-          reqResObj.timeReceived = Date.now();
+          reqResObj.timeReceived =Date.now();
+          reqResObj.timesArr = timesArr
           // no need to push response to reqResObj, no event expected from on 'end'
           store.default.dispatch(actions.reqResUpdate(reqResObj));
           // console.log('server side stream completed')
