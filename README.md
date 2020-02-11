@@ -46,6 +46,10 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
+* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
+<kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
+     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
 ## Additional Features
 * *Collections*: Swell allows you to save collections for easier testing of multiple requests.
 <kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
