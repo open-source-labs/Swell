@@ -29,6 +29,7 @@ class Graph extends Component {
   }
 
   componentDidMount() {
+    
     // set up lineChart
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector('canvas').getContext('2d');
@@ -72,6 +73,8 @@ class Graph extends Component {
   }
 
   componentDidUpdate() {
+    console.log('req res array in graph',this.props.reqResArray);
+
     let openRequestCount = 0;
     this.props.reqResArray.forEach((reqRes) => {
       if (reqRes.connection === 'open' || reqRes.connection === 'pending') {

@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -82,6 +82,31 @@
       "name": "Sam Parsons",
       "email": "samparsons269@gmail.com",
       "url": "https://github.com/sam-parsons"
+    },
+    {
+      "name": "Dan Stein",
+      "email": "50937807+danst3in@users.noreply.github.com",
+      "url": "https://github.com/danst3in"
+    },
+    {
+      "name": "Evan Grobar",
+      "email": "egrobar@gmail.com",
+      "url": "https://github.com/egrobar"
+    },
+    {
+      "name": "Nancy Dao",
+      "email": "nancyddao@gmail.com",
+      "url": "https://github.com/nancyddao"
+    },
+    {
+      "name": "Yoon Choi",
+      "email": "choi.yoon333@gmail.com",
+      "url": "https://github.com/cyoonique"
+    },
+    {
+      "name": "Amruth Uppaluri",
+      "email": "amruth@uppaluri.org",
+      "url": "https://github.com/amuuth"
     }
   ],
   "build": {
@@ -99,6 +124,7 @@
       "main.js",
       "httpserver.js"
     ],
+    "nodeVersion":"12.14.1",
     "nsis": {
       "createDesktopShortcut": "always"
     },
@@ -150,7 +176,7 @@
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "engines": {
-    "node": ">=12.0.0",
+    "node": ">=12.14.1",
     "npm": ">=6.0.0"
   },
   "dependencies": {
