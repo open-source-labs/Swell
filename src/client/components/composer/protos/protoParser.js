@@ -1,7 +1,8 @@
 const fs =  require('fs');
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
-const path = require('path')
+const path = require('path');
+const uuid = require('uuid');
 
 //temp for testing >>>>
 // let tempData = fs.readFileSync(path.join(process.cwd(), 'grpc_mockData/protos/route_guide.proto'), 'utf-8')
@@ -16,16 +17,26 @@ async function protoParserFunc(protoBodyData) {
   let protoStorage = {};
   //store the original .proto content in the storage before parsing
   protoStorage.protoMaster = protoBodyData;
-
+  //make unique protoID for file we are saving
+  let protoID = Math.floor(Math.random() * 1000);
+  //if file path for that ID already exists, increment the ID
+  try {
+    while (fs.existsSync('src/client/components/composer/protos/' + protoID + '.proto')) {
+      //file exists
+      protoID += 1;
+    }
+  } catch(err) {
+    console.error(err)
+  }
   // write to saveProto file for interaction with the server
   // const dirName = remote.app.getAppPath(); // uncomment when done testing above
-  fs.writeFileSync(path.join(process.cwd(), 'src/client/components/composer/protos/saveProto.proto'), protoBodyData, 'utf-8')
+  fs.writeFileSync(path.join(process.cwd(), 'src/client/components/composer/protos/' + protoID + '.proto'), protoBodyData, 'utf-8')
     console.log('Proto file has been saved')
   // });
 
   // define the modular client for testing
   // declare path variable of imported proto file
-  const PROTO_PATH = path.join(process.cwd(), 'src/client/components/composer/protos/saveProto.proto');
+  const PROTO_PATH = path.join(process.cwd(), 'src/client/components/composer/protos/' + protoID + '.proto');
 
   // create gRPC package options
   const protoOptionsObj = {

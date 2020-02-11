@@ -7,10 +7,10 @@ class ResponseTabs extends Component {
   }
 
   render() {
+
     const events = 'Response Events';
     const cookies = 'Response Cookies';
     let headers = 'Response Headers';
-
 
     if (this.props.content.gRPC === true ) {
       headers = 'Response Metadata';
@@ -23,7 +23,7 @@ class ResponseTabs extends Component {
         {
           !this.props.content.gRPC &&
           <Tab onTabSelected={this.props.handleTabSelect} tabName={cookies} key="cookies" openTab={this.props.openResponseTab}/>
-        } */}
+        }
         </ul>
     );
   }

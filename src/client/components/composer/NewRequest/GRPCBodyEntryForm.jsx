@@ -38,7 +38,7 @@ class GRPCBodyEntryForm extends Component {
       });
     }
   }
-  // add stream only for client or BIDIRECTIONAL streaming
+  // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   addStream() {
     const streamsArr = this.props.newRequestStreams.streamsArr;
     const streamContent = this.props.newRequestStreams.streamContent;
@@ -47,14 +47,10 @@ class GRPCBodyEntryForm extends Component {
     // construct new stream body obj & push into the streamsArr
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
-    newStream.query = `{
-    ${firstBodyQuery}
-}`;
+    newStream.query = firstBodyQuery
     streamsArr.push(newStream)
     // push query of initial stream body into streamContent array
-    streamContent.push(`{
-    ${firstBodyQuery}
-}`);
+    streamContent.push(firstBodyQuery);
     // update mew state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,

@@ -53,6 +53,10 @@ class RequestTabs extends Component {
     let variables = "Request Variables";
     let tabContentShown;
 
+    if (this.props.requestContent.bodyType === 'GRPC') {
+      headers = "Request Metadata"
+    }
+    
     // let displayQueries = this.props.requestContent.body;
     if (this.props.requestContent.bodyType === 'GRPC') {
       headers = "Request Metadata"
@@ -120,7 +124,7 @@ class RequestTabs extends Component {
           <Tab onTabSelected={this.handleTabSelect} tabName={body} openTab={this.state.openTab} />
           <Tab onTabSelected={this.handleTabSelect} tabName={headers} openTab={this.state.openTab} />
           {
-            this.props.requestContent.bodyType === "none" &&
+            this.props.requestContent.bodyType === "raw" &&
             <Tab onTabSelected={this.handleTabSelect} tabName={cookies} openTab={this.state.openTab} />
           }
           {

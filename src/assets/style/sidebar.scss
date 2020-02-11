@@ -171,9 +171,7 @@
 	padding: 0px auto;
 	text-align-last: center;
   width: 200px;
-  &:focus {
-		outline: 0 none;
-  }
+	outline: 0 none;
   &.http {
     background: $bluetwo;
     &:hover {
@@ -348,6 +346,11 @@
 	text-align-last: center;
   width: 100%;
   outline: none;
+  &:hover {
+    color: $medbluegray;
+    background: $huntergreen;
+    border: 2px solid $litebluegray;
+  }
 }
 .composer_textarea {
 	background-color: $liteblack;

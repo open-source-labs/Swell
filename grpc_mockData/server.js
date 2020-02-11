@@ -35,10 +35,10 @@ function sayHello(ctx) {
   metadata.set('indeed', 'it do')
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
-  console.log("received metadata from client request", ctx.meta)
-  // console.dir(ctx.metadata, { depth: 3, colors: true });
+  console.log("received metadata from client request", ctx.metadata)
+  console.dir(ctx.metadata, { depth: 3, colors: true });
   console.log(`got sayHello request name: ${ctx.req.name}`);
-  
+
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
   ctx.res = { message: "Hello " + ctx.req.name };
@@ -49,7 +49,28 @@ function sayHello(ctx) {
 
   console.log(`set sayHello response: ${ctx.res.message}`);
 }
+// nested Unary stream
 
+function sayHelloNested(ctx) {
+  // create new metadata
+  let metadata = new grpc.Metadata();
+  metadata.set('it', 'works?')
+  metadata.set('indeed', 'it do')
+  // Watcher creates a watch execution context for the watch
+  // The execution context provides scripts and templates with access to the watch metadata
+  console.log("received metadata from client request", ctx.metadata)
+  console.dir(ctx.metadata, { depth: 3, colors: true });
+  // console.log("ctx line 64 from server.js", ctx)
+
+  // nested unary response call
+  let firstPerson = ctx.req.firstPerson.name;
+  let secondPerson = ctx.req.secondPerson.name;
+  console.log("firstPerson line 68 from server.js:", firstPerson)
+  ctx.res = {"serverMessage": [{message: "Hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
+
+  // send response header metadata object directly as an argument and that is set and sent
+  ctx.sendMetadata(metadata)
+}
 // Server-Side Stream
 // used highland library to manage asynchronous data
 async function sayHellos(ctx) {
@@ -64,7 +85,9 @@ async function sayHellos(ctx) {
 
   // alias for ctx.request.req
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
+  
   let reqMessages = {"message": 'hello!!! ' + ctx.req.name}
+
   dataStream.push(reqMessages)
   reqMessages = dataStream
   let streamData = await hl(reqMessages)
@@ -79,6 +102,7 @@ async function sayHellos(ctx) {
   // ends server stream
   ctx.res.end()
 }
+
 
 // Client-Side stream
 function sayHelloCs (ctx) {
@@ -146,7 +170,7 @@ function sayHelloBidi(ctx) {
  */
 function main() {
   const app = new Mali(PROTO_PATH, "Greeter");
-  app.use({ sayHello, sayHellos, sayHelloCs, sayHelloBidi });
+  app.use({ sayHello, sayHelloNested, sayHellos, sayHelloCs, sayHelloBidi });
   app.start(HOSTPORT);
   console.log(`Greeter service running @ ${HOSTPORT}`);
 }
