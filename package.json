@@ -92,6 +92,21 @@
       "name": "Evan Grobar",
       "email": "egrobar@gmail.com",
       "url": "https://github.com/egrobar"
+    },
+    {
+      "name": "Nancy Dao",
+      "email": "nancyddao@gmail.com",
+      "url": "https://github.com/nancyddao"
+    },
+    {
+      "name": "Yoon Choi",
+      "email": "choi.yoon333@gmail.com",
+      "url": "https://github.com/cyoonique"
+    },
+    {
+      "name": "Amruth Uppaluri",
+      "email": "amruth@uppaluri.org",
+      "url": "https://github.com/amuuth"
     }
   ],
   "build": {
