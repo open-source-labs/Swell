@@ -112,16 +112,17 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       }
 
       if (rpcType === 'UNARY') {
-        let query = reqResObj.queryArr[0];
+        let query = reqResObj.queryArr[0]
+
         // Open Connection and set time sent for Unary
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
         // make Unary call
         client[rpc](query, meta, (err, data)=> {
+          console.log("query from line 122 in grpcController", query)
           if (err) {
             console.log('unary error' , err);
           }
-          // console.log('sent UNARY request', data);
           // Close Connection and set time received for Unary
           reqResObj.timeReceived = Date.now();
           reqResObj.connection = 'closed';
