@@ -36,7 +36,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     if (reqResObj.response.headers === null) {
       reqResObj.response.headers = {};
     }
-    
+
     // go through services object, find service where name matches our passed
     // in service, then grab the rpc list of that service, also save that service
     let rpcList;
@@ -114,7 +114,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         time.timeSent = Date.now();
         // make Unary call
         client[rpc](query, meta, (err, data)=> {
-        
+
           if (err) {
             console.log('unary error' , err);
           }
@@ -185,14 +185,20 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
           reqResObj.connection = 'pending';
 
+
           time.timeSent = timeSent
           reqResObj.response.times.push(time)
+
+
+          //reqResObj.connectionType = 'plain';
+         // reqResObj.timeSent = Date.now();
 
           call.write(query);
         }
         call.end();
       }
       else if (rpcType === 'SERVER STREAM') {
+        let timesArr = [];
         // Open Connection for SERVER Stream
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
@@ -203,7 +209,14 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           time.timeSent = reqResObj.timeSent;
           // add server response to reqResObj and dispatch to state/store
           reqResObj.response.events.push(resp)
+
           reqResObj.response.times.push(time)
+
+
+         // timesArr.push(Date.now())
+          //console.log('new time pushed: ', timesArr)
+          // console.log('data response server stream',resp)
+          // console.log(reqResObj.response.events)
 
 
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -215,7 +228,13 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         call.on('end', () => {
           // Close Connection for SERVER Stream
           reqResObj.connection = 'closed';
+
           reqResObj.timeReceived = Date.now();
+
+         // reqResObj.connectionType = 'plain';
+         // reqResObj.timeReceived =Date.now();
+         // reqResObj.timesArr = timesArr
+
           // no need to push response to reqResObj, no event expected from on 'end'
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         })

@@ -61,6 +61,11 @@ class GRPCBodyEntryForm extends Component {
   }
   // event handler that updates state in the store when typing into the stream query body
   onChangeUpdateStream(streamID, value) {
+    // if client makes additional edits to proto file after hitting save
+    let saveProtoBtn = document.getElementById("save-proto").innerText;
+    if (saveProtoBtn === "Changes Saved") {
+      saveProtoBtn = "Save Changes";
+    }
     const streamsArr = this.props.newRequestStreams.streamsArr;
     for (let i = 0; i < streamsArr.length; i++) {
       if (streamsArr[i].id === streamID) {

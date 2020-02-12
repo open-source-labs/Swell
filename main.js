@@ -118,6 +118,7 @@ if (
   dev = true;
 }
 
+
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
 if (process.platform === 'win32') {// if user is on windows...
@@ -168,6 +169,7 @@ function createWindow() {
     });
   }
   else {
+    console.log('__dirname', __dirname);
     indexPath = url.format({// if we are not in dev mode load production build file
       protocol: 'file:',
       pathname: path.join(__dirname, 'dist', 'index.html'),
@@ -221,7 +223,7 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {//darwin refers to macOS... 
+  if (process.platform !== 'darwin') {//darwin refers to macOS...
     app.quit();// If User is on mac exit the program when all windows are closed
   }
 });
@@ -268,6 +270,14 @@ autoUpdater.on('update-downloaded', info => {
 ipcMain.on('quit-and-install', () => {
   autoUpdater.quitAndInstall();
 });
+// App page reloads when user selects "Refresh" from pop-up dialog
+ipcMain.on('fatalError', () => {
+  console.log('received fatal error')
+  mainWindow.reload();
+});
+ipcMain.on('uncaughtException', () => {
+  console.log('received uncaguht fatal error')
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -287,13 +297,13 @@ ipcMain.on('export-collection', (event, args) => {
           return;
       }
 
-      // fileName is a string that contains the path and filename created in the save file dialog.  
+      // fileName is a string that contains the path and filename created in the save file dialog.
       fs.writeFile(resp.filePath, content, (err) => {
           if(err){
               console.log("An error ocurred creating the file "+ err.message)
           }
         })
-    
+
   })})
 
 
@@ -349,10 +359,10 @@ ipcMain.on('import-collection', (event, args) => {
 
         if (parsed) {
           // validate parsed data type and properties
-          if (typeof parsed !== 'object' || 
-          !parsed['id'] || 
-          !parsed['name'] || 
-          !parsed['reqResArray'] || 
+          if (typeof parsed !== 'object' ||
+          !parsed['id'] ||
+          !parsed['name'] ||
+          !parsed['reqResArray'] ||
           !parsed['created_at']) {
             options.message = 'Invalid File';
             options.detail = 'Please try again.';
@@ -368,7 +378,7 @@ ipcMain.on('import-collection', (event, args) => {
 })
 
 
-// ipcMain listener that 
+// ipcMain listener that
 ipcMain.on('http1-fetch-message', (event, arg) => {
   const { method, headers, body } = arg.options;
 
@@ -377,7 +387,7 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
       const headers = response.headers.raw();
       // check if the endpoint sends SSE
         // add status code for regular http requests in the response header
-        
+
         if (headers['content-type'][0].includes('stream')) {
           // invoke another func that fetches to SSE and reads stream
           // params: method, headers, body
@@ -385,10 +395,10 @@ ipcMain.on('http1-fetch-message', (event, arg) => {
          }
         else {
           headers[':status'] = response.status;
-  
+
           const receivedCookie = headers['set-cookie'];
           headers.cookies = receivedCookie;
-  
+
           const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
           contents
             .then(body => {
@@ -441,7 +451,7 @@ ipcMain.on('open-gql', (event, args) => {
             const parsedRemainingCookieProperties = cookie.parse(thisCookie.slice(idx + 1));
 
             const parsedCookie = {...parsedRemainingCookieProperties, name: keyValueArr[0], value: keyValueArr[1]};
-  
+
             parsedCookies.push(parsedCookie);
           })
           reqResObj.response.cookies = parsedCookies;
@@ -487,4 +497,3 @@ ipcMain.on('open-gql', (event, args) => {
       });
   }
 });
-

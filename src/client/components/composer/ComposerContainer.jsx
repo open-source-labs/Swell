@@ -40,6 +40,7 @@ class ComposerContainer extends Component {
     // this.setState({
     //   composerDisplay: this.props.composerDisplay,
     // });
+
   }
 
   componentDidUpdate() {//keeping the redux store state in sync with this component's local state
