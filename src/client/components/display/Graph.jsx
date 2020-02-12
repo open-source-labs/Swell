@@ -193,6 +193,20 @@ class Graph extends Component {
 
         // populate events
         switch (reqRes.connectionType) {
+          case 'GRPC': {
+            reqRes.response.times.forEach(message => {
+              if (message.timeSent && message.timeReceived) {
+
+                newEventCounter += 1;
+                dataSet.data.push({
+                  x: message.timeReceived - message.timeSent,
+                  y: index,
+                });
+              }
+            });
+
+            break;
+          }
           case 'SSE': {
             reqRes.response.events.forEach((event) => {
               if (Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
