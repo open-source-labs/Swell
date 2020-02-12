@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { remote } from 'electron';
 import fs from 'fs';
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
-import protoParserFunc from "../protos/protoParser.js";
+import protoParserFunc from "../../../../client/protoParser.js";
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
 class GRPCProtoEntryForm extends Component {
@@ -18,7 +18,7 @@ class GRPCProtoEntryForm extends Component {
     this.submitUpdatedProto = this.submitUpdatedProto.bind(this);
   }
 
-  // event handler on the arrow button that allows you to open/close the section 
+  // event handler on the arrow button that allows you to open/close the section
   toggleShow() {
     this.setState({
       show: !this.state.show
@@ -113,7 +113,7 @@ class GRPCProtoEntryForm extends Component {
     // changes the button label from "Save Changes" to "Changes Saved"
     document.getElementById("save-proto").innerText = 'Changes Saved';
   }
-  
+
   render() {
     // arrow button used to collapse or open the Proto section
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
