@@ -66,7 +66,6 @@ ${eventJSON}`
   }
 
   return <div className="tab_content-response">{displayContents}</div>;
-  {crash}
 }
 
 export default ResponseEventsDisplay;
