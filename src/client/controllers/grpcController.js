@@ -159,7 +159,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           reqResObj.response.times.forEach(time => {
             time.timeReceived = curTime;
             reqResObj.timeReceived = time.timeReceived;
-            reqResObj.response.events.push(time)
 
           })
           reqResObj.response.events.push(response)
