@@ -270,6 +270,7 @@ autoUpdater.on('update-downloaded', info => {
 ipcMain.on('quit-and-install', () => {
   autoUpdater.quitAndInstall();
 });
+// App page reloads when user selects "Refresh" from pop-up dialog
 ipcMain.on('fatalError', () => {
   console.log('received fatal error')
   mainWindow.reload();

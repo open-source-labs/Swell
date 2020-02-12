@@ -23,16 +23,24 @@ class App extends Component {
     ipcRenderer.on('minimizeAll', ReqResCtrl.minimizeAllReqRes);
     ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
-    //window on error fires for any error in program, opens a dialog allowing user to continue or refresh. refresh sends to ipcMain
+
+    // window on error fires for any error in program, opens a dialog allowing
+    // user to continue or refresh.
+    // refresh sends to ipcMain
+    let errorCount = 0;
     window.onerror = (error, url, line) => {
-      // alert('Fatal Error, Press OK to Refresh')
-      // dialog.showOpenDialogSync({properties: ['openFile', "multiSelections"]})
-      // dialog.showErrorBox('error in app dialog', 'what did u do')
-      let answer = dialog.showMessageBoxSync({title: 'Application Error',message: 'An error has occurred, you can click Continue to keep working or click Refresh Page to refresh', buttons: ['Refresh Page', 'Continue']})
-      if (answer === 0) {
-        ipcRenderer.send('fatalError')
+      // implement an error counter and a check for odd numbered errors due to
+      // behavior of react cross origin error in electron. This attempts to ignore
+      // the second error message from react that accompanies each error. Prevents
+      // consecutive error box popups.
+      errorCount++
+      if (errorCount % 2 !== 0) {
+        let answer = dialog.showMessageBoxSync({title: `Application Error (${errorCount})`,message: `(${errorCount}) An error has occurred, you can click Continue to keep working or click Refresh Page to refresh`, buttons: ['Refresh Page', 'Continue']})
+        if (answer === 0) {
+          ipcRenderer.send('fatalError')
+        }
       }
-    } 
+    }
     // process.on('uncaughtException', (err) => {
     //   console.log('whoops! there was an error');
     // });
