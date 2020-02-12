@@ -70,13 +70,10 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let keysArray;
       for (let messageIdx in foundService.messages) {
         let message = foundService.messages[messageIdx];
-        // console.log('message' , message)
 
         if (foundRpc.req === message.name || foundRpc.req === 'stream ' +message.name) {
-          // console.log('found matching message name')
           messageDefObj = message.def;
           keysArray = [];
-          // console.log('messagedef', message.def);
           Object.keys(messageDefObj).forEach((key)=>{
              keysArray.push(key)
            })
@@ -111,17 +108,22 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         let query = reqResObj.queryArr[0]
         let time = {};
 
-
         // Open Connection and set time sent for Unary
         reqResObj.connection = 'open';
+        
         time.timeSent = Date.now();
         // make Unary call
         client[rpc](query, meta, (err, data)=> {
+        
           if (err) {
             console.log('unary error' , err);
           }
           // Close Connection and set time received for Unary
-          time.timeReceived = Date.now();
+          reqResObj.timeSent = time.timeSent;
+
+          time.timeReceived =  Date.now();
+          reqResObj.timeReceived = time.timeReceived
+
           reqResObj.connection = 'closed';
           reqResObj.response.events.push(data)
           reqResObj.response.times.push(time)
@@ -144,6 +146,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         // create call and open client stream connection
         reqResObj.connection = 'open';
         let timeSent = Date.now();
+        reqResObj.timeSent = timeSent;
         let call = client[rpc](meta, function(error, response) {
           if (error) {
             console.log('error in client stream', error);
@@ -155,13 +158,13 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           let curTime = Date.now()
           reqResObj.response.times.forEach(time => {
             time.timeReceived = curTime;
+            reqResObj.timeReceived = time.timeReceived;
             reqResObj.response.events.push(time)
 
           })
           reqResObj.response.events.push(response)
           store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-          // console.log('in client stream response', response);
         }}).on('metadata', (metadata) => {
           // if metadata is sent back from the server, analyze and handle
           let keys = Object.keys(metadata._internal_repr)
@@ -193,13 +196,11 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         // Open Connection for SERVER Stream
         reqResObj.connection = 'open';
         reqResObj.timeSent = Date.now();
-        console.log('rpc', rpc, 'reqresquery', reqResObj.queryArr[0])
         const call = client[rpc](reqResObj.queryArr[0], meta);
         call.on("data", resp => {
           let time = {};
           time.timeReceived = Date.now();
           time.timeSent = reqResObj.timeSent;
-          console.log('data response:', resp);
           // add server response to reqResObj and dispatch to state/store
           reqResObj.response.events.push(resp)
           reqResObj.response.times.push(time)
@@ -239,6 +240,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         //Close Individual Server Response for BIDIRECTIONAL Stream
         reqResObj.connection = 'pending';
         curTimeObj.timeReceived = Date.now();
+        reqResObj.timeReceived = curTimeObj.timeReceived;
         reqResObj.response.events.push(response);
         reqResObj.response.times.push(curTimeObj);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -274,7 +276,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           } else {
             reqResObj.connection = 'pending';
           }
-          time.timeSent = Date.now()
+          time.timeSent = Date.now();
+          reqResObj.timeSent = time.timeSent;
           reqResObj.response.times.push(time)
           call.write(query);
         }
