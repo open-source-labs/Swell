@@ -3,12 +3,14 @@ import SSERow from './SSERow.jsx';
 import JSONPretty from 'react-json-pretty';
 import createDOMPurify from 'dompurify';
 
+
+
 const ResponseEventsDisplay = ({ response }) => {
   const { events, headers } = response;
   const displayContents = [];
-  console.log('what is events' , events)
 
   // If it's an SSE, render event rows
+  
   if (headers && headers['content-type'] && headers['content-type'].includes('text/event-stream')) {
     events.forEach((cur, idx) => {
       displayContents.push(<SSERow key={idx} content={cur} />);

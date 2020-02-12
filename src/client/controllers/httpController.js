@@ -22,7 +22,7 @@ const setCookie = require('set-cookie-parser');
 // handleSingleEvent(response, originalObj, headers)
 // handleSSE(response, originalObj, headers)
 // parseSSEFields(rawString)
-// cookieFormatter(setCookie(response.cookies)) 
+// cookieFormatter(setCookie(response.cookies))
 
 
 const httpController = {
@@ -188,13 +188,15 @@ const httpController = {
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
-      reqResObj.response.events = [];
+      // reqResObj.response.events = []; // passing empty array to handleSingleEvent
+      // below instead of running this line. This invocation is different from
+      // when it is run below to Check if the URL provided is a stream (near line 327)
 
       // if cookies exists, parse the cookie(s)
       if (setCookie.parse(headers['set-cookie'])) {
         reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-        this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+        this.handleSingleEvent([], reqResObj, headers);
       }
     })
 
@@ -282,7 +284,7 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
-    
+
     // if isSSE is true, then node-fetch to stream,
     if (reqResObj.request.isSSE) {
       // invoke another func that fetches to SSE and reads stream

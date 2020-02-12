@@ -118,6 +118,7 @@ if (
   dev = true;
 }
 
+
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
 if (process.platform === 'win32') {// if user is on windows...
@@ -268,6 +269,14 @@ autoUpdater.on('update-downloaded', info => {
 // });
 ipcMain.on('quit-and-install', () => {
   autoUpdater.quitAndInstall();
+});
+// App page reloads when user selects "Refresh" from pop-up dialog
+ipcMain.on('fatalError', () => {
+  console.log('received fatal error')
+  mainWindow.reload();
+});
+ipcMain.on('uncaughtException', () => {
+  console.log('received uncaguht fatal error')
 });
 
 app.on('activate', () => {
