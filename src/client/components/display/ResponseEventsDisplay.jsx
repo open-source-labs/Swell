@@ -6,7 +6,7 @@ import createDOMPurify from 'dompurify';
 const ResponseEventsDisplay = ({ response }) => {
   const { events, headers } = response;
   const displayContents = [];
-  console.log('what is events' , events)
+  // console.log('what is events' , events)
 
   // If it's an SSE, render event rows
   if (headers && headers['content-type'] && headers['content-type'].includes('text/event-stream')) {
