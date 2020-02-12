@@ -25,20 +25,21 @@ class FieldEntryForm extends Component {
         break;
       } 
       case 'protocol': {
-        let grabbedProtocol, afterProtocol;
-        if (!!this.props.newRequestFields.url) {
-          grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/) !== null
-            ? this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/)[0]
-            : ""
-          afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length)
-        }
-        else afterProtocol = ''
+        // let grabbedProtocol, afterProtocol;
+        // if (!!this.props.newRequestFields.url) {
+        //   grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/) !== null
+        //     ? this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/)[0]
+        //     : ""
+        //   afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length)
+        // }
+        // else afterProtocol = ''
         // console.log('graphQL prop: ',graphQL)
         if (!!graphQL) { //if graphql
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
-            url: `http://${afterProtocol}`,
+            // url: `http://${afterProtocol}`,
+            url: 'http://',
             method: 'QUERY',
             graphQL: true,
             gRPC: false
@@ -56,7 +57,8 @@ class FieldEntryForm extends Component {
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
-            url: `http://${afterProtocol}`,
+            // url: `http://${afterProtocol}`,
+            url: 'http://',
             method: 'GET',
             graphQL: false,
             gRPC: false
@@ -72,7 +74,8 @@ class FieldEntryForm extends Component {
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
-            url: `${afterProtocol}`,
+            // url: `${afterProtocol}`,
+            url: '',
             method: '',
             graphQL: false,
             gRPC: true
@@ -88,7 +91,8 @@ class FieldEntryForm extends Component {
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: value,
-            url: value + afterProtocol,
+            // url: value + afterProtocol,
+            url: 'ws://',
             method: '',
             graphQL: false,
             gRPC: false
