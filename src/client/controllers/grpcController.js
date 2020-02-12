@@ -161,7 +161,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             time.timeReceived = curTime;
             console.log('time.timeReceived client stream: ', time.timeReceived);
             reqResObj.timeReceived = time.timeReceived;
-            // reqResObj.response.times.push(time)
 
           })
           reqResObj.response.events.push(response)
