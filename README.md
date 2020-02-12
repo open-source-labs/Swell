@@ -9,7 +9,7 @@
 
 
 
-Swell is a API development tool that enables developers to test  endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, and GraphQL.
+Swell is a API development tool that enables developers to test  endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, GraphQL and gRPC.
 
 ## Getting Started
 
@@ -22,6 +22,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 * Send and monitor streams over HTTP2 (including SSEs) and WebSockets
 * Create GraphQL queries, mutations, and subscriptions
+* Provides full streaming testing support for gRPC
 * Support for up to six concurrent connections
 * View request/response timing information in an interactive chart
 * Save requests in "collections" of multiple requests
@@ -46,6 +47,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
+## Latest Swell v.0.4.0 update
 * *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
 <kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
@@ -84,6 +86,12 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * **Billy Tran** - [btctrl](https://github.com/btctrl)
 * **Paul Rhee** - [prheee](https://github.com/prheee)
 * **Sam Parsons** - [sam-parsons](https://github.com/sam-parsons)
+* **Nancy Dao** - [nancyddao](https://github.com/nancyddao)
+* **Evan Grobar** - [egrobar](https://github.com/egrobar)
+* **Dan Stein** - [danst3in](https://github.com/danst3in)
+* **Amruth Uppaluri** - [amuuth](https://github.com/amuuth)
+* **Yoon Choi** - [cyoonique](https://github.com/cyoonique)
+
 
 ## License
 
