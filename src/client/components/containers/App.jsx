@@ -32,18 +32,16 @@ class App extends Component {
       // implement an error counter and a check for odd numbered errors due to
       // behavior of react cross origin error in electron. This attempts to ignore
       // the second error message from react that accompanies each error. Prevents
-      // consecutive error box popups.
+      // consecutive error box popups. Also ignores HTTP Protocol errors from the
+      // auto switch from HTTP2 to HTTP1
       errorCount++
-      if (errorCount % 2 !== 0) {
+      if (errorCount % 2 !== 0 && error !== 'Uncaught Error: Protocol error' ) {
         let answer = dialog.showMessageBoxSync({title: `Application Error (${errorCount})`,message: `(${errorCount}) An error has occurred, you can click Continue to keep working or click Refresh Page to refresh`, buttons: ['Refresh Page', 'Continue']})
         if (answer === 0) {
           ipcRenderer.send('fatalError')
         }
       }
     }
-    // process.on('uncaughtException', (err) => {
-    //   console.log('whoops! there was an error');
-    // });
 
     historyController.getHistory();
     collectionsController.getCollections();
