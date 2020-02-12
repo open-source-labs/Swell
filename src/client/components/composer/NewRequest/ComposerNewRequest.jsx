@@ -269,9 +269,10 @@ class ComposerNewRequest extends Component {
       });
 
       this.props.setNewRequestFields({
+        ...this.props.newRequestFields,
         method: this.props.newRequestFields.method,
         protocol: '',
-        url: '',
+        url: 'http://',
         graphQL: this.props.newRequestFields.graphQL,
         gRPC: this.props.newRequestFields.gRPC,
       });
