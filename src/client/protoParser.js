@@ -6,7 +6,7 @@ const uuid = require('uuid');
 
 
 async function protoParserFunc(protoBodyData) {
-  
+
   // define storage for .proto parsed content
   let protoStorage = {};
   //store the original .proto content in the storage before parsing
