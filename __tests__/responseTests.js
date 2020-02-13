@@ -26,6 +26,7 @@ describe('ResponseContainer', () => {
     wrapper.setState({ openTab: 'Response Headers' });
     expect(wrapper.find('ResponseHeadersDisplay')).toBeTruthy();
   });
+ 
 
   it('should render Response Cookies when selected', () => {
     const wrapper = shallow(<ResponseContainer {...props} />);
@@ -47,14 +48,34 @@ describe('ResponseContainer', () => {
     const wrapper = shallow(<ResponseContainer {...props} />);
     expect(wrapper.find('ResponseEventsDisplay')).toBeTruthy();
   });
+
+  props = {
+    content: {
+      gRPC: true,
+      request: {
+        method: null
+      },
+    }
+  }
+  it('gRPC req should render Response Metadata when selected', () => {
+    const wrapper = shallow(<ResponseContainer {...props} />);
+    wrapper.setState({ openTab: 'Response Metadata' });
+    expect(wrapper.find('ResponseHeadersDisplay')).toBeTruthy();
+  });
+  
 });
 
 describe('ResponseTabs', () => {
   it('should render three tabs', () => {
-    const wrapper = shallow(<ResponseTabs />);
+    const wrapper = shallow(<ResponseTabs content={'not grpc'}/>);
     expect(wrapper.find('Tab')).toHaveLength(3);
   });
+  it('grpc should render two tabs', () => {
+    const wrapper = shallow(<ResponseTabs content={{gRPC: true}}/>);
+    expect(wrapper.find('Tab')).toHaveLength(2);
+  });
 });
+
 
 describe('ResponseEventsDisplay', () => {
   it('if SSE, should render event rows', () => {
@@ -67,6 +88,7 @@ describe('ResponseEventsDisplay', () => {
     const wrapper = shallow(<ResponseEventsDisplay {...props} />);
     expect(wrapper.find('SSERow')).toHaveLength(2);
   });
+
   it('if not SSE, should render single event', () => {
     const props = {
       response: {

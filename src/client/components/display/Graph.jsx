@@ -29,6 +29,7 @@ class Graph extends Component {
   }
 
   componentDidMount() {
+    
     // set up lineChart
     const context = document.querySelector('#line-chart');
     const ctx = document.querySelector('canvas').getContext('2d');
@@ -72,6 +73,7 @@ class Graph extends Component {
   }
 
   componentDidUpdate() {
+
     let openRequestCount = 0;
     this.props.reqResArray.forEach((reqRes) => {
       if (reqRes.connection === 'open' || reqRes.connection === 'pending') {
@@ -193,6 +195,20 @@ class Graph extends Component {
 
         // populate events
         switch (reqRes.connectionType) {
+          case 'GRPC': {
+            reqRes.response.times.forEach(message => {
+              if (message.timeSent && message.timeReceived) {
+
+                newEventCounter += 1;
+                dataSet.data.push({
+                  x: message.timeReceived - message.timeSent,
+                  y: index,
+                });
+              }
+            });
+
+            break;
+          }
           case 'SSE': {
             reqRes.response.events.forEach((event) => {
               if (Date.now() - event.timeReceived < this.state.timeFromNowToDisplay) {
@@ -295,7 +311,7 @@ class Graph extends Component {
       <div>
         <div style={warningDisplayStyles} className={'warningContainer'}>
           <div className={'warning'}>
-            Please add a request and hit the Open button to see response timing information.
+            Please add a request and hit the "Send" button to see response timing information.
           </div>
         </div>
         <canvas className="chart" style={chartDisplayStyles} id="line-chart" />

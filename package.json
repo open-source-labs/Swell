@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -14,7 +14,8 @@
     "package-all": "electron-builder  build -mwl",
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
-    "gh-publish": "electron-builder build -mwl -p always"
+    "gh-publish": "electron-builder build -mwl -p always",
+    "postinstall": "npm rebuild --runtime=electron --target=7.0.1"
   },
   "author": {
     "name": "Swell",
@@ -81,6 +82,31 @@
       "name": "Sam Parsons",
       "email": "samparsons269@gmail.com",
       "url": "https://github.com/sam-parsons"
+    },
+    {
+      "name": "Dan Stein",
+      "email": "50937807+danst3in@users.noreply.github.com",
+      "url": "https://github.com/danst3in"
+    },
+    {
+      "name": "Evan Grobar",
+      "email": "egrobar@gmail.com",
+      "url": "https://github.com/egrobar"
+    },
+    {
+      "name": "Nancy Dao",
+      "email": "nancyddao@gmail.com",
+      "url": "https://github.com/nancyddao"
+    },
+    {
+      "name": "Yoon Choi",
+      "email": "choi.yoon333@gmail.com",
+      "url": "https://github.com/cyoonique"
+    },
+    {
+      "name": "Amruth Uppaluri",
+      "email": "amruth@uppaluri.org",
+      "url": "https://github.com/amuuth"
     }
   ],
   "build": {
@@ -98,6 +124,7 @@
       "main.js",
       "httpserver.js"
     ],
+    "nodeVersion":"12.14.1",
     "nsis": {
       "createDesktopShortcut": "always"
     },
@@ -142,12 +169,19 @@
     "verbose": true,
     "collectCoverage": true,
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "./__mocks__/fileMock.js"
+      "electron": "<rootDir>/__mocks__/electronMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/styleMocks.js"
     }
   },
   "license": "MIT",
   "homepage": "http://www.getswell.io",
+  "engines": {
+    "node": ">=12.14.1",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
+    "@babel/runtime": "^7.8.3",
+    "@grpc/proto-loader": "^0.5.3",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link": "^1.2.13",
@@ -158,7 +192,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",
     "dexie": "^2.0.4",
-    "dompurify": "^2.0.3",
+    "dompurify": "^2.0.7",
     "electron-devtools-installer": "^2.2.4",
     "electron-log": "^2.2.17",
     "electron-updater": "^4.0.5",
@@ -166,9 +200,12 @@
     "express": "^4.17.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "grpc": "^1.24.2",
+    "highland": "^2.13.5",
     "isomorphic-fetch": "^2.2.1",
+    "mali": "^0.20.0",
     "node-fetch": "^2.6.0",
-    "node-sass": "^4.10.0",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.19.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.2",
@@ -187,10 +224,12 @@
     "status-indicator": "^1.0.9",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2",
-    "ws": "^6.1.2"
+    "ws": "^6.1.2",
+    "node-pre-gyp": "0.6.x"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
@@ -199,8 +238,8 @@
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "electron": "^3.0.6",
-    "electron-builder": "^20.38.2",
+    "electron": "^7.0.1",
+    "electron-builder": "^22.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
@@ -219,11 +258,12 @@
     "postcss-nested": "^4.1.0",
     "postcss-pxtorem": "^4.0.1",
     "react-test-renderer": "^16.9.0",
-    "redux-devtools-extension": "^2.13.2",
+    "redux-devtools-extension": "^2.13.8",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "webpack": "^4.23.1",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "webpack-node-externals": "^1.7.2"
   }
 }

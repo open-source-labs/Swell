@@ -10,13 +10,13 @@ class ResponseHeadersDisplay extends Component {
 
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];
-    responsesCache.push(this.props);
+    responsesCache.push(this.props.responseContent);
 
     // Step 2  - Increment across all responses in array
     responsesCache.forEach((cur, idx) => {
       const headerObj = this.props.responseContent.headers;
       if (!Object.keys(headerObj).length) {
-        displayContents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Headers</p>)
+        displayContents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No {this.props.tabName}</p>)
         return;
       }
       if (!Array.isArray(headerObj) && headerObj) {

@@ -37,6 +37,11 @@ class ResponseContainer extends Component {
           openTab: val,
         });
         break;
+      case 'Response Metadata':
+        this.setState({
+          openTab: val,
+        });
+        break;
       case 'Response Headers':
         this.setState({
           openTab: val,
@@ -47,7 +52,7 @@ class ResponseContainer extends Component {
           openTab: val,
         });
         break;
-     
+
       default:
     }
   }
@@ -68,7 +73,8 @@ class ResponseContainer extends Component {
         {(this.state.openTab === 'Response Events' && this.props.content.request.method !== 'SUBSCRIPTION')
           && <ResponseEventsDisplay response={this.props.content.response} />
         }
-        {this.state.openTab === 'Response Headers' && <ResponseHeadersDisplay responseContent={this.props.content.response} />}
+        {this.state.openTab === 'Response Headers' && <ResponseHeadersDisplay tabName={this.state.openTab} responseContent={this.props.content.response} />}
+        {this.state.openTab === 'Response Metadata' && <ResponseHeadersDisplay tabName={this.state.openTab} responseContent={this.props.content.response} />}
         {this.state.openTab === 'Response Cookies' && <ResponseCookiesDisplay responseContent={this.props.content.response} />}
       </div>
     );

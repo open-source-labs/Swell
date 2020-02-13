@@ -3,6 +3,7 @@ import * as actions from '../actions/actions';
 import httpController from './httpController.js';
 import wsController from './wsController.js';
 import graphQLController from './graphQLController.js';
+import grpcController from './grpcController.js';
 
 const connectionController = {
   openConnectionArray: [],
@@ -45,10 +46,10 @@ const connectionController = {
   openReqRes(id) {
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find(el => el.id === id);
-    console.log('reqResObj > ', reqResObj);
     if (reqResObj.request.method === 'SUBSCRIPTION') graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) graphQLController.openGraphQLConnection(reqResObj);
     else if (/wss?:\/\//.test(reqResObj.protocol)) wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
     else httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
   },
 

@@ -12,7 +12,7 @@ class ProtocolSelect extends Component {
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
       http: true,
-      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL,
+      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL && !this.props.gRPC,
     });
     const WSStyleClasses = classNames({
       composer_protocol_button: true,
@@ -24,6 +24,11 @@ class ProtocolSelect extends Component {
       gql: true,
       'composer_protocol_button-selected_gql': this.props.graphQL,
     });
+    const GRPCStyleClasses = classNames({
+      composer_protocol_button: true,
+      grpc: true,
+      'composer_protocol_button-selected_grpc': this.props.gRPC,
+    });
 
     return (
       <div className="composer_protocol_container">
@@ -32,7 +37,7 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={HTTPSStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol')
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol')
           }
         >
           HTTP/S
@@ -51,10 +56,20 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GQLStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', "graphQLtrue")
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', 'graphQLtrue')
           }
         >
           GRAPHQL
+        </div>
+        <div
+          title="Enter an IP address"
+          role="button"
+          tabIndex={0}
+          className={GRPCStyleClasses}
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', false)
+          }
+        >
+          GRPC
         </div>
       </div>
     );

@@ -39,7 +39,7 @@
 	padding: 0 0 5px 0;
 	width: 100%;
 }
-.composer_submit {
+.composer_submit, .addMetadata {
 	-webkit-appearance: none;
 	border: none;
 	border-radius: 5px;
@@ -62,6 +62,31 @@
   &.gql {
     background-color: $gqlpink;
   }
+  &.grpc {
+    background-color: $grpcorange;
+  }
+}
+.import-proto, .save-proto {
+	-webkit-appearance: none;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	display: inline-block;
+	font-size: .9rem;
+	font-weight: bold;
+	height: 35px;
+	margin: 4px 4px;
+	padding: 8px;
+	width: 48%;
+  outline: none;
+  background-color: $grpcorange;
+}
+.small-btn-open {
+	display: inline;
+}
+.small-btn-closed {
+	display: none;
 }
 .composer_protocol_container {
 	display: flex;
@@ -70,10 +95,13 @@
   &.gqlbody {
     justify-content: space-evenly;
   }
+  &.grpcbody {
+    justify-content: space-evenly;
+  }
 }
 .composer_protocol_button {
-  background-color: #343333;
-	border: 2px solid #808080;
+  background-color: $liteblack;
+	border: 2px solid $yellowgrey;
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: .9rem;
@@ -82,27 +110,26 @@
 	line-height: 28px;
 	outline: 0 none;
 	text-align: center;
-	width: 32%;
-}
-.composer_protocol_button {
+  width: 32%;
   &.http:hover {
-	background: $bluetwo;
-	border: 2px solid $bluetwo;
-  line-height: 28px;
+    background: $bluetwo;
+    border: 2px solid $bluetwo;
+    line-height: 28px;
   }
-}
-.composer_protocol_button {
   &.ws:hover {
-	background: $greenone;
-	border: 2px solid $greenone;
-  line-height: 28px;
+    background: $greenone;
+    border: 2px solid $greenone;
+    line-height: 28px;
   }
-}
-.composer_protocol_button {
   &.gql:hover {
-	background: $gqlpink;
-	border: 2px solid $gqlpink;
-  line-height: 28px;
+    background: $gqlpink;
+    border: 2px solid $gqlpink;
+    line-height: 28px;
+  }
+  &.grpc:hover {
+    background: $grpcorange;
+    border: 2px solid $grpcorange;
+    line-height: 28px;
   }
 }
 .composer_protocol_button-selected_http {
@@ -117,6 +144,10 @@
 	background: $gqlpink;
 	border: none;
 }
+.composer_protocol_button-selected_grpc {
+	background: $grpcorange;
+	border: none;
+}
 .composer_method_url_container {
 	align-content: center;
 	align-items: center;
@@ -128,7 +159,6 @@
 }
 .composer_method_select {
 	-webkit-appearance: none;
-	// background: #15B78F;
 	border: none;
 	border-radius: 0px;
 	color: white;
@@ -140,22 +170,33 @@
 	line-height: 15px;
 	padding: 0px auto;
 	text-align-last: center;
-	width: 175px;
-}
-.composer_method_select {
+  width: 200px;
+	outline: 0 none;
   &.http {
     background: $bluetwo;
+    &:hover {
+      color: $medbluegray;
+      background: $huntergreen;
+      border: 2px solid $litebluegray;
+    }
   }
-}
-.composer_method_select {
   &.gql {
     background: $gqlpink;
+    &:hover {
+      color: $medbluegray;
+      background: $gqlpinktwo;
+      border: 2px solid $litebluegray;
+    }
+  }
+  &.grpc {
+    background: $grpcorange;
+    cursor: default;
   }
 }
 .composer_url_input {
 	-webkit-appearance: none;
 	// border: none;
-	background: #343333;
+	background: $liteblack;
 	border: 2px solid $yellowgrey;
 	color: white;
 	display: block;
@@ -212,7 +253,7 @@
 .composer_header_checkbox {
 	-webkit-appearance: none;
 	appearance: none;
-	background: #343333;
+	background: $liteblack;
 	border-radius: 1px;
 	border-right: 1px solid $yellowgrey;
 	border-width: 0;
@@ -234,7 +275,7 @@
 }
 .composer_header_input {
 	-webkit-appearance: none;
-	background: #343333;
+	background: $liteblack;
 	font-size: 14px;
 	border: none;
 	color: white;
@@ -249,7 +290,7 @@
 	border-right: 1px solid $yellowgrey;
 }
 .composer_bodytype_button {
-	background-color: #343333;
+	background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	cursor: pointer;
@@ -264,6 +305,10 @@
 	&.gql:hover {
 		background: $gqlpink;
 		border: none;
+  }
+  &.grpc:hover {
+		background: $grpcorange;
+		border: none;
 	}
 }
 .composer_bodytype_button-selected {
@@ -271,6 +316,9 @@
   border: none;
   &.gql {
     background: $gqlpink;
+  }
+  &.grpc {
+    background: $grpcorange;
   }
 }
 .composer_bodyform_container-open {
@@ -298,9 +346,14 @@
 	text-align-last: center;
   width: 100%;
   outline: none;
+  &:hover {
+    color: $medbluegray;
+    background: $huntergreen;
+    border: 2px solid $litebluegray;
+  }
 }
 .composer_textarea {
-	background-color: #343333;
+	background-color: $liteblack;
 	border: 1px solid $yellowgrey;
 	border-radius: 5px;
 	color: white;
@@ -312,6 +365,9 @@
 		outline: 0 none;
   }
   &.gql {
+    margin-bottom: 10px;
+  }
+  &.grpc {
     margin-bottom: 10px;
   }
 }
@@ -345,7 +401,7 @@
 	margin-bottom: 5px;
   margin-top: 15px;
 }
-.history-container {
+.history-container, stream-container {
 	border: 1px solid #2c3e50;
 	border-radius: 5px;
 	color: white;
@@ -356,10 +412,10 @@
 	// overflow: hidden;
 	width: 100%;
 	&:hover {
-		border: 1px solid #808080;
+		border: 1px solid $yellowgrey;
 	}
 	&:hover .history-method {
-		background-color: #2F4858;
+		background-color: $greensix;
 	}
 	&:hover .history-delete-image {
 		opacity: 1;
@@ -386,7 +442,7 @@
 	// overflow: hidden;
 	width: 100%;
 	&:hover{
-		border: 1px solid #808080;
+		border: 1px solid $yellowgrey;
   }
   &:hover .collection-delete-image {
 		opacity: 1;
@@ -401,7 +457,6 @@
   justify-self: center;
   flex-shrink: 100;
   overflow-y: scroll;
-  // background: pink;
 }
 .collection-text-container {
   height: 28px;
@@ -497,4 +552,69 @@
   max-height: 400px;
   width: 100%;
   overflow-y: scroll;
+}
+.dropdownService, .dropdownRequest {
+  background-color: $liteblack;
+	border: 1px solid $yellowgrey;
+	border-radius: 5px;
+	color: white;
+	margin-top: 7px;
+	padding: 5px;
+  width: 45%;
+  font-size: 14px;
+  margin: 10px;
+  outline: 0 none;
+}
+.add-stream-btn {
+	display: flex;
+	float: right;
+	height: 26px;
+	position: relative;
+	z-index: 0;
+  padding-right: 10px;
+  &.button {
+    background: transparent;
+    color: rgb(216, 216, 216);
+    border: 0;
+    cursor: pointer;
+    outline: none;
+  }
+}
+.stream-number {
+  -webkit-appearance: none;
+  background-color: #2c3e50;
+  border: none;
+  color: white;
+  margin-top: 7px;
+  width: 55%;
+  font-size: 14px;
+  display: inline-block;
+	font-weight: bold;
+  height: 35px;
+  outline: none;
+  cursor: default;
+}
+.delete-stream-btn {
+	-webkit-appearance: none;
+  background: $liteblack;
+  border-radius: 5px;
+  border: 1px solid $yellowgrey;
+  display: inline-block;
+	cursor: pointer;
+	height: 15px;
+  width: 15px;
+  padding: 0px 15px 20px 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+	&:hover {
+    color: $medbluegray;
+    background: $huntergreen;
+    border: 1px solid $litebluegray;
+  }
+  &:focus {
+  outline: none;
+  }
 }

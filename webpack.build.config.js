@@ -1,8 +1,10 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BabiliPlugin = require('babili-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+
 
 // Any directories you will be adding code/files into,
 // need to be added to this array so webpack will pick them up
@@ -46,6 +48,17 @@ module.exports = {
     ],
   },
   target: 'electron-renderer',
+  optimization: {
+   minimize: true,
+   minimizer: [new TerserPlugin({
+     terserOptions: {
+       compress: {
+         
+       },
+     },
+   })],
+  },
+  externals: [nodeExternals()],
   plugins: [
     new HtmlWebpackPlugin(),
     new MiniCssExtractPlugin({
@@ -57,7 +70,6 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new BabiliPlugin(),
   ],
   stats: {
     colors: true,
