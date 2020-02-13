@@ -15,7 +15,7 @@
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
-    "postinstall": "npm rebuild --runtime=electron --target=7.0.1"
+    "postinstall": "npm rebuild grpc --runtime=electron --target=7.0.1"
   },
   "author": {
     "name": "Swell",
@@ -124,7 +124,7 @@
       "main.js",
       "httpserver.js"
     ],
-    "nodeVersion":"12.14.1",
+    "nodeVersion": "12.14.1",
     "nsis": {
       "createDesktopShortcut": "always"
     },
