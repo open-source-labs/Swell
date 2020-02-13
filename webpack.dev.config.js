@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { spawn } = require('child_process');
+const nodeExternals = require('webpack-node-externals');
+
 
 // Any directories you will be adding code/files into,
 // need to be added to this array so webpack will pick them up
@@ -34,6 +36,7 @@ module.exports = {
     ]
   },
   target: 'electron-renderer',
+  externals: [nodeExternals()],
   plugins: [
     new HtmlWebpackPlugin(),
     new webpack.DefinePlugin({
@@ -57,5 +60,5 @@ module.exports = {
         .on('close', code => process.exit(0))
         .on('error', spawnError => console.error(spawnError));
     },
-  },
+  }
 };

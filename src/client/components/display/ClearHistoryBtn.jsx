@@ -10,10 +10,10 @@ const ClearHistoryBtn = (props) => (
       message: 'Are you sure you want to clear history?'
     }
 
-    dialog.showMessageBox(null, opts, (response) => {
-      if (response === 0) {
+    dialog.showMessageBox(null, opts)
+    .then((response) => {
+      if (response.response === 0) {
         props.clearHistory();
-        historyController.clearHistoryFromIndexedDb();
       }
     })
   }}>Clear History</button>

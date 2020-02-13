@@ -22,7 +22,7 @@ const setCookie = require('set-cookie-parser');
 // handleSingleEvent(response, originalObj, headers)
 // handleSSE(response, originalObj, headers)
 // parseSSEFields(rawString)
-// cookieFormatter(setCookie(response.cookies)) 
+// cookieFormatter(setCookie(response.cookies))
 
 
 const httpController = {
@@ -34,13 +34,12 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    console.log('Inside openHTTPconnection in controller, reqResObj.request: ', reqResObj);
     if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
-      console.log('HTTPS, TRYING HTTP2');
+      // console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
     else {
-      console.log('HTTP REQUEST, MOVING TO FETCH');
+      // console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
   },
@@ -56,7 +55,7 @@ const httpController = {
 
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
 
-    console.log('Found HTTP2 Conn >', foundHTTP2Connection);
+    // console.log('Found HTTP2 Conn >', foundHTTP2Connection);
 
     // EXISTING HTTP2 CONNECTION IS FOUND -----
 
@@ -91,7 +90,7 @@ const httpController = {
     // --------------------------------------------------
 
     else {
-      console.log('New HTTP2 Conn:', reqResObj.host);
+      // console.log('New HTTP2 Conn:', reqResObj.host);
 
       const id = Math.random() * 100000;
       const client = http2.connect(reqResObj.host);
@@ -188,13 +187,15 @@ const httpController = {
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
-      reqResObj.response.events = [];
+      // reqResObj.response.events = []; // passing empty array to handleSingleEvent
+      // below instead of running this line. This invocation is different from
+      // when it is run below to Check if the URL provided is a stream (near line 327)
 
       // if cookies exists, parse the cookie(s)
       if (setCookie.parse(headers['set-cookie'])) {
         reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-        this.handleSingleEvent(body, reqResObj, theResponseHeaders);
+        this.handleSingleEvent([], reqResObj, headers);
       }
     })
 
@@ -282,7 +283,7 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
-    
+
     // if isSSE is true, then node-fetch to stream,
     if (reqResObj.request.isSSE) {
       // invoke another func that fetches to SSE and reads stream
@@ -304,7 +305,6 @@ const httpController = {
     // send information to the NODE side to do the fetch request
     this.sendToMainForFetch({ options })
       .then((response) => {
-        console.log('Response from main fetch:', response.headers);
 
         // Parse response headers now to decide if SSE or not.
         const heads = response.headers;

@@ -7,7 +7,6 @@ class OpenBtn extends Component {
   }
 
   render() {
-    console.log(this.props.content.id);
     return (
       <button
         className="btn"
@@ -15,7 +14,7 @@ class OpenBtn extends Component {
         type="button"
         onClick={() => ReqResCtrl.openReqRes(this.props.content.id)}
       >
-        Open
+        Send
       </button>
     );
   }

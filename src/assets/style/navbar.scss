@@ -45,3 +45,6 @@
     border: solid 1px white;
   }
 }
+::placeholder {
+  color: $yellowgrey;
+}

@@ -15,7 +15,7 @@ class HeaderEntryForm extends Component {
 
   componentDidMount() {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    if (headersDeepCopy[headersDeepCopy.length-1] && headersDeepCopy[headersDeepCopy.length-1].key !== "") this.addHeader(headersDeepCopy);
+    // if (headersDeepCopy[headersDeepCopy.length - 1] && headersDeepCopy[headersDeepCopy.length - 1].key !== "") this.addHeader(headersDeepCopy);
   }
 
   componentDidUpdate() {
@@ -24,13 +24,16 @@ class HeaderEntryForm extends Component {
       this.addHeader(headersDeepCopy);
     }
     this.checkContentTypeHeaderUpdate();
+
   }
 
   checkContentTypeHeaderUpdate() {
     let contentType;
-    if (this.props.newRequestBody.bodyType === 'none') {
-      contentType = '';
+
+    if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none' || this.props.newRequestBody.bodyType === 'raw') {
+      contentType = ''
     }
+
     else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
       contentType = 'x-www-form-urlencoded';
     }
@@ -42,8 +45,8 @@ class HeaderEntryForm extends Component {
     }
 
     // Attempt to update header in these conditions:
-    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => /content-type$/i.test(header.key.toLowerCase()) );
-    
+    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => /content-type$/i.test(header.key.toLowerCase()));
+
     // 1. if there is no contentTypeHeader, but there should be
     if (!foundHeader && contentType !== '') {
       this.addContentTypeHeader(contentType);
@@ -63,13 +66,12 @@ class HeaderEntryForm extends Component {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')));
 
     const contentTypeHeader = ({
-      id: this.props.newRequestHeaders.count,
+      id: this.props.newRequestHeaders.headersArr.length,
       active: true,
       key: 'Content-Type',
       value: contentType,
     });
-    headersDeepCopy.length > 1 ? headersDeepCopy.splice(headersDeepCopy.length-1, 0, contentTypeHeader) : headersDeepCopy.unshift(contentTypeHeader)
-
+    headersDeepCopy.push(contentTypeHeader)
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
@@ -78,8 +80,8 @@ class HeaderEntryForm extends Component {
 
   updateContentTypeHeader(contentType) {
     const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
-    filtered.unshift({
-      id: this.props.newRequestHeaders.count,
+    this.props.newRequestHeaders.headersArr.push({
+      id: this.props.newRequestHeaders.headersArr.length,
       active: true,
       key: 'Content-Type',
       value: contentType,
@@ -91,9 +93,10 @@ class HeaderEntryForm extends Component {
     });
   }
 
-  addHeader(headersDeepCopy) {
+  addHeader() {
+    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     headersDeepCopy.push({
-      id: this.props.newRequestHeaders.count,
+      id: this.props.newRequestHeaders.headersArr.length,
       active: false,
       key: '',
       value: '',
@@ -107,13 +110,14 @@ class HeaderEntryForm extends Component {
   }
 
   onChangeUpdateHeader(id, field, value) {
+
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
     // find header to update
     let indexToBeUpdated;
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
       if (headersDeepCopy[i].id === id) {
         indexToBeUpdated = i;
-        break;
+
       }
     }
     // update
@@ -124,23 +128,12 @@ class HeaderEntryForm extends Component {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
 
-    // determine if new header needs to be added
-    const emptyHeadersCount = headersDeepCopy
-      .reduce((count, curr) => {
-        if (!curr.key && !curr.value) ++count
-        return count
-      }, 0)
 
-    // depending on if headers is empty, update store, or first add a new header
-    if (emptyHeadersCount === 0) {
-      this.addHeader(headersDeepCopy);
-    }
-    else {
-      this.props.setNewRequestHeaders({
-        headersArr: headersDeepCopy,
-        count: headersDeepCopy.length,
-      });
-    }
+    this.props.setNewRequestHeaders({
+      headersArr: headersDeepCopy,
+      count: headersDeepCopy.length,
+    });
+
   }
 
   toggleShow() {
@@ -150,6 +143,18 @@ class HeaderEntryForm extends Component {
   }
 
   render() {
+    let headerName = 'Headers';
+    let addHeaderName = 'Add Header'
+    let headerClass = 'composer_submit http'
+    if (this.props.newRequestFields.gRPC) {
+      headerName = 'Metadata';
+      addHeaderName = 'Add Metadata';
+      headerClass = 'addMetadata grpc'
+    }
+    if (this.props.newRequestBody.bodyType === 'GQL') {
+      headerClass = 'composer_submit gql'
+    }
+
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <Header
         content={header}
@@ -169,10 +174,12 @@ class HeaderEntryForm extends Component {
         className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
         <img className={arrowClass} src={dropDownArrow}>
         </img>
-        Headers
+        {headerName}
       </div>
       <div className={headersContainerClass} >
         {headersArr}
+        <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
+
       </div>
     </div>;
   }

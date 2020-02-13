@@ -5,9 +5,8 @@ import { ipcRenderer } from 'electron';
 import uuid from 'uuid/v4';
 
 ipcRenderer.on('add-collection', (event, args) => {
-  console.log('here');
-      collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
-      collectionsController.getCollections();
+  collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
+  collectionsController.getCollections();
 });
 
 const collectionsController = {
