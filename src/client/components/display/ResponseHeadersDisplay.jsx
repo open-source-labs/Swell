@@ -7,7 +7,6 @@ class ResponseHeadersDisplay extends Component {
 
   render() {
     const displayContents = [];
-    console.log('props passed down to response headers display', this.props)
 
     // Step 1  - Locate responses from store add them to cache array
     const responsesCache = [];

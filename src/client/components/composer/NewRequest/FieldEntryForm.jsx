@@ -10,10 +10,7 @@ class FieldEntryForm extends Component {
   }
 
   onChangeHandler(e, property, graphQL) {
-    // console.log('graphQL from onchangehandler in field entry form', graphQL)
     let value = e.target.value;
-    // if (!e.target.value) value = 'GRPC'
-    // console.log('value from event in field entry form', value)
 
     switch (property) {
       case 'url': {
@@ -25,15 +22,6 @@ class FieldEntryForm extends Component {
         break;
       } 
       case 'protocol': {
-        // let grabbedProtocol, afterProtocol;
-        // if (!!this.props.newRequestFields.url) {
-        //   grabbedProtocol = this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/) !== null
-        //     ? this.props.newRequestFields.url.match(/(https?:\/\/)|(localhost:)|(wss?:\/\/)/)[0]
-        //     : ""
-        //   afterProtocol = this.props.newRequestFields.url.substring(grabbedProtocol.length, this.props.newRequestFields.url.length)
-        // }
-        // else afterProtocol = ''
-        // console.log('graphQL prop: ',graphQL)
         if (!!graphQL) { //if graphql
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
@@ -112,7 +100,6 @@ class FieldEntryForm extends Component {
         break;
       }
       case 'method': {
-        // console.log(value)
         const methodReplaceRegex = new RegExp(`${this.props.newRequestFields.method}`, 'mi')
         let newBody = "";
         if (!this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC) { //if one of 5 http methods (get, post, put, patch, delete)
@@ -169,16 +156,8 @@ class FieldEntryForm extends Component {
     }
   };
 
-  // handleKeyPress(event) {
-  //   if (event.key === 'Enter') {
-  //     this.props.addRequestProp();
-  //   }
-  // }
 
   render() {
-    // console.log('what is this field entry form', this.props.newRequestFields)
-
-
     return (
       <div>
         <ProtocolSelect

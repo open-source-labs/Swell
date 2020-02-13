@@ -1,4 +1,4 @@
-import protoParser from '../src/client/components/composer/protos/protoParser';
+import protoParser from '../src/client/protoParser';
 
 
 describe('testing protoParser', ()=> {
@@ -37,7 +37,6 @@ describe('testing protoParser', ()=> {
             it('should get packageName', () => {
                 const parsedProto = protoParser(protoFile)
                 .then(data => {
-                    // console.log(d)
                 expect(data.packageName).toEqual('helloworld')
                 })
                 
@@ -52,7 +51,6 @@ describe('testing protoParser', ()=> {
                 }]
                 const parsedProto = protoParser(protoFile)
                 .then(data => {
-                    // console.log(d)
                     expect(data.serviceArr[0].messages).toHaveLength(4);
                     expect(data.serviceArr[0].rpcs).toHaveLength(4);
                     expect(data.serviceArr[0].name).toEqual('Greeter');

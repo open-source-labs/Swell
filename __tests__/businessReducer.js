@@ -34,6 +34,7 @@ describe('Business reducer', () => {
         queryArr: null,
         protoPath: null,
         services: null,
+        protoContent: ''
       },
       newRequestCookies: {
         cookiesArr: [],

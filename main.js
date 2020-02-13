@@ -169,7 +169,6 @@ function createWindow() {
     });
   }
   else {
-    console.log('__dirname', __dirname);
     indexPath = url.format({// if we are not in dev mode load production build file
       protocol: 'file:',
       pathname: path.join(__dirname, 'dist', 'index.html'),
@@ -276,7 +275,7 @@ ipcMain.on('fatalError', () => {
   mainWindow.reload();
 });
 ipcMain.on('uncaughtException', () => {
-  console.log('received uncaguht fatal error')
+  console.log('received uncaught fatal error')
 });
 
 app.on('activate', () => {

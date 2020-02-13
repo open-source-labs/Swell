@@ -12,7 +12,6 @@ const ClearHistoryBtn = (props) => (
 
     dialog.showMessageBox(null, opts)
     .then((response) => {
-      console.log('in messageDialog .then resp :' , response)
       if (response.response === 0) {
         props.clearHistory();
       }
