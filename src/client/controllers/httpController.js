@@ -34,13 +34,12 @@ const httpController = {
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    console.log('Inside openHTTPconnection in controller, reqResObj.request: ', reqResObj);
     if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
-      console.log('HTTPS, TRYING HTTP2');
+      // console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
     }
     else {
-      console.log('HTTP REQUEST, MOVING TO FETCH');
+      // console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
   },
@@ -56,7 +55,7 @@ const httpController = {
 
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
 
-    console.log('Found HTTP2 Conn >', foundHTTP2Connection);
+    // console.log('Found HTTP2 Conn >', foundHTTP2Connection);
 
     // EXISTING HTTP2 CONNECTION IS FOUND -----
 
@@ -91,7 +90,7 @@ const httpController = {
     // --------------------------------------------------
 
     else {
-      console.log('New HTTP2 Conn:', reqResObj.host);
+      // console.log('New HTTP2 Conn:', reqResObj.host);
 
       const id = Math.random() * 100000;
       const client = http2.connect(reqResObj.host);
@@ -306,7 +305,6 @@ const httpController = {
     // send information to the NODE side to do the fetch request
     this.sendToMainForFetch({ options })
       .then((response) => {
-        console.log('Response from main fetch:', response.headers);
 
         // Parse response headers now to decide if SSE or not.
         const heads = response.headers;

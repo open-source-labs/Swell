@@ -76,7 +76,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.CLEAR_HISTORY: {
-      console.log('should have cleared history')
       historyController.clearHistoryFromIndexedDb();
       return {
         ...state,
@@ -230,7 +229,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SET_NEW_REQUEST_SSE: {
-      // console.log('action.payload',action.payload)
       return {
         ...state,
         newRequestSSE: {isSSE: action.payload},

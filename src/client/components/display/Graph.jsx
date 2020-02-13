@@ -73,7 +73,6 @@ class Graph extends Component {
   }
 
   componentDidUpdate() {
-    console.log('req res array in graph',this.props.reqResArray);
 
     let openRequestCount = 0;
     this.props.reqResArray.forEach((reqRes) => {

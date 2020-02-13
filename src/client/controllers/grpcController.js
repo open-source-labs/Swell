@@ -156,10 +156,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
           //Close Connection for client Stream
           reqResObj.connection = 'closed';
           let curTime = Date.now();
-          console.log('curTime client stream: ', curTime);
           reqResObj.response.times.forEach(time => {
             time.timeReceived = curTime;
-            console.log('time.timeReceived client stream: ', time.timeReceived);
             reqResObj.timeReceived = time.timeReceived;
 
           })
@@ -188,7 +186,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
 
 
           time.timeSent = timeSent;
-          console.log('time.timeSent client stream: ', time.timeSent );
           reqResObj.response.times.push(time)
 
 
@@ -208,7 +205,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         call.on("data", resp => {
           let time = {};
           time.timeReceived = Date.now();
-          console.log('time.timeReceived Server Stream: ', time.timeReceived);
           time.timeSent = reqResObj.timeSent;
           // add server response to reqResObj and dispatch to state/store
           reqResObj.response.events.push(resp)
@@ -224,10 +220,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         call.on('end', () => {
           // Close Connection for SERVER Stream
           reqResObj.connection = 'closed';
-
-          // reqResObj.timeReceived = Date.now();
-          // console.log('reqResObj.timeReceived Server Stream: ', reqResObj.timeReceived);
-
           // no need to push response to reqResObj, no event expected from on 'end'
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         })
@@ -253,8 +245,6 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         reqResObj.connection = 'pending';
         curTimeObj.timeReceived = Date.now();
         reqResObj.timeReceived = curTimeObj.timeReceived;
-        console.log('curTimeObj.timeReceived BIDI on data: ', curTimeObj.timeReceived);
-        console.log('reqResObj.timeReceived BIDI on data: ', reqResObj.timeReceived);
         reqResObj.response.events.push(response);
         reqResObj.response.times.push(curTimeObj);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -275,9 +265,7 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
         })
         call.on('end', (data)=> {
           //Close Final Server Connection for BIDIRECTIONAL Stream
-          reqResObj.connection = 'closed';
-          // reqResObj.timeReceived = Date.now();
-          // console.log('reqResObj.timeReceived BIDI on end: ', reqResObj.timeReceived);
+          reqResObj.connection = 'closed'
           // no need to push response to reqResObj, no event expected from on 'end'
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         });
@@ -292,17 +280,12 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
             reqResObj.connection = 'pending';
           }
           time.timeSent = Date.now();
-          console.log('time.timeSent open connection for BIDI: ', time.timeSent);
           reqResObj.timeSent = time.timeSent;
-          console.log('reqResObj.timeSent open connection for BIDI: ', reqResObj.timeSent);
           reqResObj.response.times.push(time)
           call.write(query);
         }
         call.end();
       }
-    // reqResObj.connection = 'closed';
-    // reqResObj.timeReceived = Date.now();
-    // console.log('reqResObj.timeReceived end of controller unspecified: ', reqResObj.timeReceived);
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 };
 export default grpcController;

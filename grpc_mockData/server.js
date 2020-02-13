@@ -35,9 +35,9 @@ function sayHello(ctx) {
   metadata.set('indeed', 'it do')
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
-  console.log("received metadata from client request", ctx.metadata)
-  console.dir(ctx.metadata, { depth: 3, colors: true });
-  console.log(`got sayHello request name: ${ctx.req.name}`);
+  // console.log("received metadata from client request", ctx.metadata)
+  // console.dir(ctx.metadata, { depth: 3, colors: true });
+  // console.log(`got sayHello request name: ${ctx.req.name}`);
 
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
@@ -47,7 +47,7 @@ function sayHello(ctx) {
   metadata.set('UNARY', 'yes')
   ctx.sendMetadata(metadata)
 
-  console.log(`set sayHello response: ${ctx.res.message}`);
+  // console.log(`set sayHello response: ${ctx.res.message}`);
 }
 // nested Unary stream
 
@@ -58,14 +58,14 @@ function sayHelloNested(ctx) {
   metadata.set('indeed', 'it do')
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
-  console.log("received metadata from client request", ctx.metadata)
-  console.dir(ctx.metadata, { depth: 3, colors: true });
+  // console.log("received metadata from client request", ctx.metadata)
+  // console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log("ctx line 64 from server.js", ctx)
 
   // nested unary response call
   let firstPerson = ctx.req.firstPerson.name;
   let secondPerson = ctx.req.secondPerson.name;
-  console.log("firstPerson line 68 from server.js:", firstPerson)
+  // console.log("firstPerson line 68 from server.js:", firstPerson)
   ctx.res = {"serverMessage": [{message: "Hello! " + firstPerson}, {message: 'Hello! ' + secondPerson}]}
 
   // send response header metadata object directly as an argument and that is set and sent
@@ -79,9 +79,9 @@ async function sayHellos(ctx) {
   metadata.set('it', 'works?')
   metadata.set('indeed', 'it do')
   // The execution context provides scripts and templates with access to the watch metadata
-  console.dir(ctx.metadata, { depth: 3, colors: true });
+  // console.dir(ctx.metadata, { depth: 3, colors: true });
   // converts a request into strings
-  console.log(`got sayHellos request name:`, JSON.stringify(ctx.req, null, 4));
+  // console.log(`got sayHellos request name:`, JSON.stringify(ctx.req, null, 4));
 
   // alias for ctx.request.req
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
@@ -98,7 +98,6 @@ async function sayHellos(ctx) {
   // send response header metadata object directly as an argument and that is set and sent
   ctx.sendMetadata(metadata)
 
-  console.log(`done sayHellos`);
   // ends server stream
   ctx.res.end()
 }
@@ -113,7 +112,7 @@ function sayHelloCs (ctx) {
   metadata.set('clientStream', 'indubitably')
   // The execution context provides scripts and templates with access to the watch metadata
   console.dir(ctx.metadata, { depth: 3, colors: true })
-  console.log('got sayHelloClients')
+  // console.log('got sayHelloClients')
   let counter = 0;
   let messages = [];
   // client streaming calls to write messages and end writing before you can get the response
@@ -121,7 +120,7 @@ function sayHelloCs (ctx) {
     hl(ctx.req)
       .map(message => {
         counter++
-        console.log('message content',message.name)
+        // console.log('message content',message.name)
         ctx.response.res = { message: 'Client stream: ' + message.name }
         messages.push(message.name)
         ctx.sendMetadata(metadata)
@@ -130,9 +129,9 @@ function sayHelloCs (ctx) {
       .collect()
       .toCallback((err, result) => {
         if (err) return reject(err)
-        console.log(`done sayHelloClients counter ${counter}`)
+        // console.log(`done sayHelloClients counter ${counter}`)
         ctx.response.res = { message: 'SAYHELLOCs Client stream: ' + messages }
-        console.log(ctx.response.res)
+        // console.log(ctx.response.res)
         resolve()
       })
   })
@@ -144,7 +143,7 @@ function sayHelloBidi(ctx) {
   let metadata = new grpc.Metadata();
   metadata.set('it', 'works?')
   metadata.set('indeed', 'it do')
-  console.log("got sayHelloBidi");
+  // console.log("got sayHelloBidi");
   // The execution context provides scripts and templates with access to the watch metadata
   console.dir(ctx.metadata, { depth: 3, colors: true });
   let counter = 0;
@@ -158,7 +157,7 @@ function sayHelloBidi(ctx) {
   ctx.sendMetadata(metadata);
   // calls end to client before closing server
   ctx.req.on("end", () => {
-    console.log(`done sayHelloBidi counter ${counter}`);
+    // console.log(`done sayHelloBidi counter ${counter}`);
     // ends server stream
     ctx.res.end();
   });
