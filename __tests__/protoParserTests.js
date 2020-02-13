@@ -1,4 +1,4 @@
-import protoParser from '../src/client/components/composer/protos/protoParser';
+import protoParser from '../src/client/protoParser';
 
 
 describe('testing protoParser', ()=> {
