@@ -58,5 +58,4 @@ ehthumbs.db
 
 # proto files #
 #####################
-src/client/components/composer/protos
-*.proto
+protos/
