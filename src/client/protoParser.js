@@ -4,7 +4,6 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const uuid = require('uuid');
 
-
 async function protoParserFunc(protoBodyData) {
 
   // define storage for .proto parsed content
@@ -15,31 +14,31 @@ async function protoParserFunc(protoBodyData) {
   let protoID = Math.floor(Math.random() * 10000);
   //if file path for that ID already exists, increment the ID
   try {
-    if (!fs.existsSync(path.join(process.cwd(), '/protos/'))) {
-      fs.mkdirSync(path.join(process.cwd(), '/protos/'));
+    if (!fs.existsSync(path.join(process.resourcesPath, '/protos/'))) {
+      fs.mkdirSync(path.join(process.resourcesPath, '/protos/'));
     }
   }catch(err) {
     console.error(err)
   }
-  
+
   try {
-    while (fs.existsSync(path.join(process.cwd(), '/protos/' + protoID + '.proto'))) {
+    while (fs.existsSync(path.join(process.resourcesPath, '/protos/' + protoID + '.proto'))) {
       //if file name exists try incrementing by 1
       protoID += 1;
     }
   } catch(err) {
     console.error(err)
   }
-  // const dirName = remote.app.getAppPath(); // remote.app.getAppPath() stopped working at some point so switched to process.cwd()
+  // const dirName = remote.app.getAppPath(); // remote.app.getAppPath() stopped working at some point so switched to process.resourcesPath
 
   // write to saveProto file for interaction with the server
-  fs.writeFileSync(path.join(process.cwd(), '/protos/' + protoID + '.proto'), protoBodyData, 'utf-8');
+  fs.writeFileSync(path.join(process.resourcesPath, '/protos/' + protoID + '.proto'), protoBodyData, 'utf-8');
 
   // define the modular client for testing
   // declare path variable of imported proto file
-  
-  
-  const PROTO_PATH = path.join(process.cwd(), '/protos/' + protoID + '.proto');
+
+
+  const PROTO_PATH = path.join(process.resourcesPath, '/protos/' + protoID + '.proto');
 
   // create gRPC package options
   const protoOptionsObj = {
