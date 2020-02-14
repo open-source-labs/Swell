@@ -205,6 +205,7 @@
     "isomorphic-fetch": "^2.2.1",
     "mali": "^0.20.0",
     "node-fetch": "^2.6.0",
+    "node-pre-gyp": "0.6.x",
     "node-sass": "^4.13.1",
     "nodemon": "^1.19.1",
     "path": "^0.12.7",
@@ -219,13 +220,13 @@
     "react-redux": "^5.0.6",
     "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.8",
     "rpmbuild": "0.0.22",
     "set-cookie-parser": "^2.4.0",
     "status-indicator": "^1.0.9",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2",
-    "ws": "^6.1.2",
-    "node-pre-gyp": "0.6.x"
+    "ws": "^6.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -258,7 +259,6 @@
     "postcss-nested": "^4.1.0",
     "postcss-pxtorem": "^4.0.1",
     "react-test-renderer": "^16.9.0",
-    "redux-devtools-extension": "^2.13.8",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.41.5",
