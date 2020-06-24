@@ -260,6 +260,7 @@
     "postcss-pxtorem": "^4.0.1",
     "react-test-renderer": "^16.9.0",
     "sass-loader": "^7.1.0",
+    "spectron": "^9.0.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.1.2",
