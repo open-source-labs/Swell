@@ -52,7 +52,6 @@ const httpController = {
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
-
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
 
     // console.log('Found HTTP2 Conn >', foundHTTP2Connection);
@@ -105,7 +104,7 @@ const httpController = {
       httpController.openHTTP2Connections.push(http2Connection);
 
       client.on('error', (err) => {
-        console.error('HTTP2 FAILED...trying HTTP1\n', err);
+        // console.error('HTTP2 FAILED...trying HTTP1\n', err);
         http2Connection.status = 'failed';
         client.destroy();
 
@@ -129,7 +128,7 @@ const httpController = {
 
       client.on('connect', () => {
         http2Connection.status = 'connected';
-
+        console.log('connected!')
         // attach request
         this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
       });
@@ -145,37 +144,45 @@ const httpController = {
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+    
     const formattedHeaders = {};
     reqResObj.request.headers.forEach((head) => {
       formattedHeaders[head.key] = head.value;
     });
     formattedHeaders[':path'] = reqResObj.path;
-
+    
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
-    // endStream false means we can continue to send more data, which we would for a body;
 
+    console.log('reqStream at THIS moment : ', {...reqStream})
+    
+    // endStream false means we can continue to send more data, which we would for a body;
     // Send body depending on method;
     if (reqResObj.request.method !== 'GET' && reqResObj.request.method !== 'HEAD') {
       reqStream.end(reqResObj.request.body);
     } else {
+      console.log('ending request')
       reqStream.end();
     }
 
+    console.log('reqStream at THIS moment : ', {...reqStream})
+    
     const openConnectionObj = {
       stream: reqStream,
       protocol: 'HTTP2',
       id: reqResObj.id,
     };
 
+  
+    console.log('connectionArry before push: ', JSON.parse(JSON.stringify(connectionArray)), '   openConnectionObj : ', JSON.parse(JSON.stringify(openConnectionObj)));
     connectionArray.push(openConnectionObj);
-
+    
+    
     let isSSE;
-
+    
     reqStream.on('response', (headers, flags) => {
       isSSE = headers['content-type'].includes('stream');
-
+      
       if (isSSE) {
         reqResObj.connection = 'open';
         reqResObj.connectionType = 'SSE';
@@ -183,14 +190,13 @@ const httpController = {
         reqResObj.connection = 'closed';
         reqResObj.connectionType = 'plain';
       }
-
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
       // reqResObj.response.events = []; // passing empty array to handleSingleEvent
       // below instead of running this line. This invocation is different from
       // when it is run below to Check if the URL provided is a stream (near line 327)
-
+      
       // if cookies exists, parse the cookie(s)
       if (setCookie.parse(headers['set-cookie'])) {
         reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
@@ -198,7 +204,7 @@ const httpController = {
         this.handleSingleEvent([], reqResObj, headers);
       }
     })
-
+    
     reqStream.setEncoding('utf8');
     let data = '';
     reqStream.on('data', (chunk) => {
@@ -230,7 +236,9 @@ const httpController = {
         }
       }
     });
+  
     reqStream.on('end', () => {
+
       if (isSSE) {
         const receivedEventFields = this.parseSSEFields(data);
         receivedEventFields.timeReceived = Date.now();

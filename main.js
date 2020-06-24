@@ -109,7 +109,7 @@ const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton,
 
 // Keep a reference for dev mode
 let dev = false;
-
+console.log('process.defaultApp :', process.defaultApp, 'process.execPath', process.execPath);
 if (
   process.defaultApp
   || /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
@@ -138,7 +138,7 @@ function createWindow() {
     title: 'Swell',
     allowRunningInsecureContent: true,
     webPreferences: {
-      "nodeIntegration": true,
+      // "nodeIntegration": true,
       "sandbox": false,
       webSecurity: true,
     },
