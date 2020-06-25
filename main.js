@@ -4,16 +4,27 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 // Import parts of electron to use
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
-const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  TouchBar,
+  ipcMain,
+  dialog
+} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
 
 // Import Auto-Updater- Swell will update itself
-const { autoUpdater } = require('electron-updater');
+const {
+  autoUpdater
+} = require('electron-updater');
 const log = require('electron-log');
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
-const { TouchBarButton, TouchBarSpacer } = TouchBar;
+const {
+  TouchBarButton,
+  TouchBarSpacer
+} = TouchBar;
 
 
 // basic http cookie parser
@@ -24,9 +35,15 @@ const fetch2 = require('node-fetch');
 // GraphQL imports
 const ApolloClient = require('apollo-client').ApolloClient;
 const gql = require('graphql-tag');
-const { InMemoryCache } = require('apollo-cache-inmemory');
-const { createHttpLink } = require('apollo-link-http');
-const { ApolloLink } = require('apollo-link');
+const {
+  InMemoryCache
+} = require('apollo-cache-inmemory');
+const {
+  createHttpLink
+} = require('apollo-link-http');
+const {
+  ApolloLink
+} = require('apollo-link');
 
 // configure logging
 autoUpdater.logger = log;
@@ -111,9 +128,9 @@ const touchBar = new TouchBar([tbSpacer, tbSelectAllButton, tbDeselectAllButton,
 let dev = false;
 console.log('process.defaultApp :', process.defaultApp, 'process.execPath', process.execPath);
 if (
-  process.defaultApp
-  || /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
-  || /[\\/]electron[\\/]/.test(process.execPath)
+  process.defaultApp ||
+  /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
+  /[\\/]electron[\\/]/.test(process.execPath)
 ) {
   dev = true;
 }
@@ -121,7 +138,7 @@ if (
 
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
-if (process.platform === 'win32') {// if user is on windows...
+if (process.platform === 'win32') { // if user is on windows...
   app.commandLine.appendSwitch('high-dpi-support', 'true');
   app.commandLine.appendSwitch('force-device-scale-factor', '1');
 }
@@ -138,7 +155,7 @@ function createWindow() {
     title: 'Swell',
     allowRunningInsecureContent: true,
     webPreferences: {
-      // "nodeIntegration": true,
+      "nodeIntegration": true,
       "sandbox": false,
       webSecurity: true,
     },
@@ -146,7 +163,11 @@ function createWindow() {
   })
 
   if (dev) {
-    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const {
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS,
+      REDUX_DEVTOOLS
+    } = require('electron-devtools-installer');
     // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
@@ -160,16 +181,15 @@ function createWindow() {
   // and load the index.html of the app.
   let indexPath;
 
-  if (dev && process.argv.indexOf('--noDevServer') === -1) {// if we are in dev mode load up 'http://localhost:8080/index.html'
+  if (dev && process.argv.indexOf('--noDevServer') === -1) { // if we are in dev mode load up 'http://localhost:8080/index.html'
     indexPath = url.format({
       protocol: 'http:',
       host: 'localhost:8080',
       pathname: 'index.html',
       slashes: true,
     });
-  }
-  else {
-    indexPath = url.format({// if we are not in dev mode load production build file
+  } else {
+    indexPath = url.format({ // if we are not in dev mode load production build file
       protocol: 'file:',
       pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
@@ -215,15 +235,17 @@ function createWindow() {
 app.on('ready', () => {
   // createLoadingScreen();
   createWindow();
-  if (!dev) { autoUpdater.checkForUpdates() };
+  if (!dev) {
+    autoUpdater.checkForUpdates()
+  };
 });
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {//darwin refers to macOS...
-    app.quit();// If User is on mac exit the program when all windows are closed
+  if (process.platform !== 'darwin') { //darwin refers to macOS...
+    app.quit(); // If User is on mac exit the program when all windows are closed
   }
 });
 
@@ -290,59 +312,60 @@ app.on('activate', () => {
 ipcMain.on('export-collection', (event, args) => {
   let content = JSON.stringify(args.collection);
   dialog.showSaveDialog(null)
-  .then((resp)=> {
-      if (resp.filePath === undefined){
-          console.log("You didn't save the file");
-          return;
+    .then((resp) => {
+      if (resp.filePath === undefined) {
+        console.log("You didn't save the file");
+        return;
       }
 
       // fileName is a string that contains the path and filename created in the save file dialog.
       fs.writeFile(resp.filePath, content, (err) => {
-          if(err){
-              console.log("An error ocurred creating the file "+ err.message)
-          }
-        })
+        if (err) {
+          console.log("An error ocurred creating the file " + err.message)
+        }
+      })
 
-  })})
+    })
+})
 
 
 ipcMain.on('import-collection', (event, args) => {
   dialog.showOpenDialog(null)
-  .then((fileNames) => {
-    // reusable error message options object
-    const options = {
-      type: 'error',
-      buttons: ['Okay'],
-      defaultId: 2,
-      title: 'Error',
-      message: '',
-      detail: '',
-    };
+    .then((fileNames) => {
+      // reusable error message options object
+      const options = {
+        type: 'error',
+        buttons: ['Okay'],
+        defaultId: 2,
+        title: 'Error',
+        message: '',
+        detail: '',
+      };
 
-    // fileNames is an array that contains all the selected
-    if(fileNames === undefined){
+      // fileNames is an array that contains all the selected
+      if (fileNames === undefined) {
         console.log("No file selected");
         return;
-    }
+      }
 
-    // get first file path - not dynamic for multiple files
-    let filepath = fileNames.filePaths[0];
+      // get first file path - not dynamic for multiple files
+      let filepath = fileNames.filePaths[0];
 
-    // get file extension
-    const ext = path.extname(filepath);
+      // get file extension
+      const ext = path.extname(filepath);
 
-    // make sure if there is an extension that it is .txt
-    if (ext && ext !== '.txt') {
-      options.message = 'Invalid File Type';
-      options.detail = 'Please use a .txt file';
-      dialog.showMessageBox(null, options);
-      return;
-    }
+      // make sure if there is an extension that it is .txt
+      if (ext && ext !== '.txt') {
+        options.message = 'Invalid File Type';
+        options.detail = 'Please use a .txt file';
+        dialog.showMessageBox(null, options);
+        return;
+      }
 
-    fs.readFile(filepath, 'utf-8', (err, data) => {
-        if(err){
-            alert("An error ocurred reading the file :" + err.message);
-            return;
+      fs.readFile(filepath, 'utf-8', (err, data) => {
+        if (err) {
+          alert("An error ocurred reading the file :" + err.message);
+          return;
         }
 
         // parse data, will throw error if not parsable
@@ -359,10 +382,10 @@ ipcMain.on('import-collection', (event, args) => {
         if (parsed) {
           // validate parsed data type and properties
           if (typeof parsed !== 'object' ||
-          !parsed['id'] ||
-          !parsed['name'] ||
-          !parsed['reqResArray'] ||
-          !parsed['created_at']) {
+            !parsed['id'] ||
+            !parsed['name'] ||
+            !parsed['reqResArray'] ||
+            !parsed['created_at']) {
             options.message = 'Invalid File';
             options.detail = 'Please try again.';
             dialog.showMessageBox(null, options);
@@ -371,40 +394,57 @@ ipcMain.on('import-collection', (event, args) => {
         }
 
         // send data to chromium for state update
-        event.sender.send('add-collection', {data});
+        event.sender.send('add-collection', {
+          data
+        });
+      });
     });
-});
 })
 
 
 // ipcMain listener that
 ipcMain.on('http1-fetch-message', (event, arg) => {
-  const { method, headers, body } = arg.options;
+  const {
+    method,
+    headers,
+    body
+  } = arg.options;
 
-  fetch2(headers.url, { method, headers, body })
+  fetch2(headers.url, {
+      method,
+      headers,
+      body
+    })
     .then((response) => {
       const headers = response.headers.raw();
       // check if the endpoint sends SSE
-        // add status code for regular http requests in the response header
+      // add status code for regular http requests in the response header
 
-        if (headers['content-type'][0].includes('stream')) {
-          // invoke another func that fetches to SSE and reads stream
-          // params: method, headers, body
-          event.sender.send('http1-fetch-reply', { headers, body: { error: 'This Is An SSE endpoint' } })
-         }
-        else {
-          headers[':status'] = response.status;
+      if (headers['content-type'][0].includes('stream')) {
+        // invoke another func that fetches to SSE and reads stream
+        // params: method, headers, body
+        event.sender.send('http1-fetch-reply', {
+          headers,
+          body: {
+            error: 'This Is An SSE endpoint'
+          }
+        })
+      } else {
+        headers[':status'] = response.status;
 
-          const receivedCookie = headers['set-cookie'];
-          headers.cookies = receivedCookie;
+        const receivedCookie = headers['set-cookie'];
+        headers.cookies = receivedCookie;
 
-          const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
-          contents
-            .then(body => {
-              event.sender.send('http1-fetch-reply', { headers, body })
+        const contents = /json/.test(response.headers.get('content-type')) ? response.json() : response.text();
+        contents
+          .then(body => {
+            event.sender.send('http1-fetch-reply', {
+              headers,
+              body
             })
-            .catch(error => console.log('ERROR', error))
-        }
+          })
+          .catch(error => console.log('ERROR', error))
+      }
     })
     .catch(error => console.log(error))
 })
@@ -421,7 +461,7 @@ ipcMain.on('open-gql', (event, args) => {
   // request cookies from reqResObj to request headers
   let cookies;
   if (reqResObj.request.cookies.length) {
-    cookies = reqResObj.request.cookies.reduce((acc,userCookie) => {
+    cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
     }, "")
   }
@@ -437,7 +477,7 @@ ipcMain.on('open-gql', (event, args) => {
         reqResObj.response.headers[key] = headerItem[1];
 
         // if cookies were sent by server, parse first key-value pair, then cookie.parse the rest
-        if (headerItem[0] === 'set-cookie'){
+        if (headerItem[0] === 'set-cookie') {
           const parsedCookies = [];
           const cookieStrArr = headerItem[1].split(', ');
           cookieStrArr.forEach(thisCookie => {
@@ -449,7 +489,11 @@ ipcMain.on('open-gql', (event, args) => {
             // cookie contents after first key value pair
             const parsedRemainingCookieProperties = cookie.parse(thisCookie.slice(idx + 1));
 
-            const parsedCookie = {...parsedRemainingCookieProperties, name: keyValueArr[0], value: keyValueArr[1]};
+            const parsedCookie = {
+              ...parsedRemainingCookieProperties,
+              name: keyValueArr[0],
+              value: keyValueArr[1]
+            };
 
             parsedCookies.push(parsedCookie);
           })
@@ -462,7 +506,12 @@ ipcMain.on('open-gql', (event, args) => {
   });
 
   // creates http connection to host
-  const httpLink = createHttpLink({ uri: reqResObj.url, headers, credentials: 'include', fetch: fetch2, });
+  const httpLink = createHttpLink({
+    uri: reqResObj.url,
+    headers,
+    credentials: 'include',
+    fetch: fetch2,
+  });
 
   // additive composition of multiple links
   const link = ApolloLink.from([
@@ -475,22 +524,37 @@ ipcMain.on('open-gql', (event, args) => {
     cache: new InMemoryCache(),
   });
 
-  const body = gql`${reqResObj.request.body}`;
+  const body = gql `${reqResObj.request.body}`;
   const variables = reqResObj.request.bodyVariables ? JSON.parse(reqResObj.request.bodyVariables) : {};
 
   if (reqResObj.request.method === 'QUERY') {
-    client.query({ query: body, variables })
+    client.query({
+        query: body,
+        variables
+      })
 
       .then(data => {
-        event.sender.send('reply-gql', {reqResObj, data})})
+        event.sender.send('reply-gql', {
+          reqResObj,
+          data
+        })
+      })
       .catch((err) => {
         console.error(err);
-        event.sender.send('reply-gql', {error: err.networkError, reqResObj});
+        event.sender.send('reply-gql', {
+          error: err.networkError,
+          reqResObj
+        });
       });
-    }
-    else if (reqResObj.request.method === 'MUTATION') {
-      client.mutate({ mutation: body, variables })
-      .then(data => event.sender.send('reply-gql', {reqResObj, data}))
+  } else if (reqResObj.request.method === 'MUTATION') {
+    client.mutate({
+        mutation: body,
+        variables
+      })
+      .then(data => event.sender.send('reply-gql', {
+        reqResObj,
+        data
+      }))
       .catch((err) => {
         console.error(err);
       });
