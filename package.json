@@ -244,7 +244,7 @@
     "csp-html-webpack-plugin": "^4.0.0",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "electron": "^7.0.1",
+    "electron": "~7.0.1",
     "electron-builder": "^22.7.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
