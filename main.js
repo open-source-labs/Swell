@@ -14,6 +14,11 @@ const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
 const path = require("path");
 const url = require("url");
 const fs = require("fs");
+const {
+  default: installExtension,
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} = require("electron-devtools-installer");
 
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require("electron-updater");
@@ -26,8 +31,11 @@ const cookie = require("cookie");
 // node-fetch for the fetch request
 const fetch2 = require("node-fetch");
 
+  // require menu file
+  require("./menu/mainMenu");
+
 // GraphQL imports
-const ApolloClient = require("apollo-client").ApolloClient;
+const { ApolloClient } = require("apollo-client");
 const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
@@ -121,7 +129,8 @@ const touchBar = new TouchBar([
 
 // Keep a reference for dev mode
 let dev = false;
-
+console.log("process.defaultApp ->", process.defaultApp);
+console.log("process.execPath -> ", process.execPath);
 if (
   process.defaultApp ||
   /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
@@ -129,7 +138,12 @@ if (
 ) {
   dev = true;
 }
-
+console.log(
+  "current regex test -> ",
+  /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
+);
+if (dev) console.log("dev is TRUE");
+if (dev === false) console.log("dev is FALSE");
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
 if (process.platform === "win32") {
@@ -158,11 +172,6 @@ function createWindow() {
   });
 
   if (dev) {
-    const {
-      default: installExtension,
-      REACT_DEVELOPER_TOOLS,
-      REDUX_DEVTOOLS,
-    } = require("electron-devtools-installer");
     // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -217,12 +226,11 @@ function createWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
 
-    //tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
+    // tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
     mainWindow = null;
   });
 
-  //require menu file
-  require("./menu/mainMenu");
+  // moved require mainmenu to top
 }
 
 // This method will be called when Electron has finished

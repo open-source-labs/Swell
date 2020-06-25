@@ -1,4 +1,5 @@
 // test to verify main window is opened with a title
+// use "npm run mocha" to run mocha tests for spectron
 const { Application } = require("spectron");
 const assert = require("assert");
 const electronPath = require("electron");
@@ -25,11 +26,11 @@ describe("Application launch", function () {
     }
   });
 
-  it("shows an initial window", function () {
+  it("shows an initial window & 3 dev tools", function () {
+    // console.log(this.app.client.windowHandles());
     return this.app.client.getWindowCount().then(function (count) {
-      assert.equal(count, 1);
-      // Please note that getWindowCount() will return 2 if `dev tools` are opened.
-      // assert.equal(count, 2)
+      assert.equal(count, 4);
+      // Please note that getWindowCount() will return 4 if `dev tools` are opened (initial window plus 3 dev tools windows including React & Redux extensions).
     });
   });
 });
