@@ -1,15 +1,14 @@
-import * as store from '../store';
-import * as actions from '../actions/actions';
+import * as store from "../store";
+import * as actions from "../actions/actions";
 
-const fetch2 = require('node-fetch');
-const { session } = require('electron').remote;
-const http2 = require('http2');
+const fetch2 = require("node-fetch");
+const { session } = require("electron").remote;
+const http2 = require("http2");
 
-const { ipcRenderer } = require('electron')
+const { ipcRenderer } = require("electron");
 
 // parsing through cookies
-const setCookie = require('set-cookie-parser');
-
+const setCookie = require("set-cookie-parser");
 
 //Included Functions
 
@@ -24,21 +23,20 @@ const setCookie = require('set-cookie-parser');
 // parseSSEFields(rawString)
 // cookieFormatter(setCookie(response.cookies))
 
-
 const httpController = {
   openHTTP2Connections: [],
 
   // ----------------------------------------------------------------------------
 
-  openHTTPconnection(reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
+  openHTTPconnection(reqResObj, connectionArray) {
+    //XXXXXXXXXXXXXXX
     /*
      * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
      */
-    if (reqResObj.protocol === 'https://' || reqResObj.protocol === 'http://') {
+    if (reqResObj.protocol === "https://" || reqResObj.protocol === "http://") {
       // console.log('HTTPS, TRYING HTTP2');
       httpController.establishHTTP2Connection(reqResObj, connectionArray);
-    }
-    else {
+    } else {
       // console.log('HTTP REQUEST, MOVING TO FETCH');
       httpController.establishHTTP1connection(reqResObj, connectionArray);
     }
@@ -46,14 +44,17 @@ const httpController = {
 
   // ----------------------------------------------------------------------------
 
-  establishHTTP2Connection(reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
+  establishHTTP2Connection(reqResObj, connectionArray) {
+    //XXXXXXXXXXXXXXX
     /*
       Attempt to find an existing HTTP2 connection in openHTTP2Connections Array.
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
 
-    const foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
+    const foundHTTP2Connection = httpController.openHTTP2Connections.find(
+      (conn) => conn.host === reqResObj.host
+    );
 
     // console.log('Found HTTP2 Conn >', foundHTTP2Connection);
 
@@ -64,12 +65,12 @@ const httpController = {
 
       // periodically check if the client is open or destroyed, and attach if conditions are met
       const interval = setInterval(() => {
-        if (foundHTTP2Connection.status === 'connected') {
+        if (foundHTTP2Connection.status === "connected") {
           this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
           clearInterval(interval);
         }
         // if failed, could because of protocol error. try HTTP1
-        else if (foundHTTP2Connection.status === 'failed' || client.destroyed) {
+        else if (foundHTTP2Connection.status === "failed" || client.destroyed) {
           httpController.establishHTTP1connection(reqResObj, connectionArray);
           clearInterval(interval);
         }
@@ -79,8 +80,8 @@ const httpController = {
       // --------------------------------------------------
       setTimeout(() => {
         clearInterval(interval);
-        if (foundHTTP2Connection.status === 'initialized') {
-          reqResObj.connection = 'error';
+        if (foundHTTP2Connection.status === "initialized") {
+          reqResObj.connection = "error";
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         }
       }, 10000);
@@ -88,7 +89,6 @@ const httpController = {
     // --------------------------------------------------
     // NO EXISTING HTTP2 CONNECTION - make it before attaching request
     // --------------------------------------------------
-
     else {
       // console.log('New HTTP2 Conn:', reqResObj.host);
 
@@ -100,18 +100,18 @@ const httpController = {
         client,
         id,
         host: reqResObj.host,
-        status: 'initialized',
+        status: "initialized",
       };
       httpController.openHTTP2Connections.push(http2Connection);
 
-      client.on('error', (err) => {
-        console.error('HTTP2 FAILED...trying HTTP1\n', err);
-        http2Connection.status = 'failed';
+      client.on("error", (err) => {
+        console.error("HTTP2 FAILED...trying HTTP1\n", err);
+        http2Connection.status = "failed";
         client.destroy();
 
         // if it exists in the openHTTP2Connections array, remove it
         httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(
-          conn => conn.id !== id,
+          (conn) => conn.id !== id
         );
 
         // need to filter connectionArray for existing connObj as a nonfunctioning
@@ -127,8 +127,8 @@ const httpController = {
         httpController.establishHTTP1connection(reqResObj, connectionArray);
       });
 
-      client.on('connect', () => {
-        http2Connection.status = 'connected';
+      client.on("connect", () => {
+        http2Connection.status = "connected";
 
         // attach request
         this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
@@ -138,11 +138,12 @@ const httpController = {
 
   // ----------------------------------------------------------------------------
 
-  attachRequestToHTTP2Client(client, reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
+  attachRequestToHTTP2Client(client, reqResObj, connectionArray) {
+    //XXXXXXXXXXXXXXX
     // start off by clearing existing response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
-    reqResObj.connection = 'pending';
+    reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
@@ -150,14 +151,17 @@ const httpController = {
     reqResObj.request.headers.forEach((head) => {
       formattedHeaders[head.key] = head.value;
     });
-    formattedHeaders[':path'] = reqResObj.path;
+    formattedHeaders[":path"] = reqResObj.path;
 
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
     // endStream false means we can continue to send more data, which we would for a body;
 
     // Send body depending on method;
-    if (reqResObj.request.method !== 'GET' && reqResObj.request.method !== 'HEAD') {
+    if (
+      reqResObj.request.method !== "GET" &&
+      reqResObj.request.method !== "HEAD"
+    ) {
       reqStream.end(reqResObj.request.body);
     } else {
       reqStream.end();
@@ -165,7 +169,7 @@ const httpController = {
 
     const openConnectionObj = {
       stream: reqStream,
-      protocol: 'HTTP2',
+      protocol: "HTTP2",
       id: reqResObj.id,
     };
 
@@ -173,15 +177,15 @@ const httpController = {
 
     let isSSE;
 
-    reqStream.on('response', (headers, flags) => {
-      isSSE = headers['content-type'].includes('stream');
+    reqStream.on("response", (headers, flags) => {
+      isSSE = headers["content-type"].includes("stream");
 
       if (isSSE) {
-        reqResObj.connection = 'open';
-        reqResObj.connectionType = 'SSE';
+        reqResObj.connection = "open";
+        reqResObj.connectionType = "SSE";
       } else {
-        reqResObj.connection = 'closed';
-        reqResObj.connectionType = 'plain';
+        reqResObj.connection = "closed";
+        reqResObj.connectionType = "plain";
       }
 
       reqResObj.isHTTP2 = true;
@@ -192,16 +196,18 @@ const httpController = {
       // when it is run below to Check if the URL provided is a stream (near line 327)
 
       // if cookies exists, parse the cookie(s)
-      if (setCookie.parse(headers['set-cookie'])) {
-        reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(headers['set-cookie']));
+      if (setCookie.parse(headers["set-cookie"])) {
+        reqResObj.response.cookies = this.cookieFormatter(
+          setCookie.parse(headers["set-cookie"])
+        );
         store.default.dispatch(actions.reqResUpdate(reqResObj));
         this.handleSingleEvent([], reqResObj, headers);
       }
-    })
+    });
 
-    reqStream.setEncoding('utf8');
-    let data = '';
-    reqStream.on('data', (chunk) => {
+    reqStream.setEncoding("utf8");
+    let data = "";
+    reqStream.on("data", (chunk) => {
       data += chunk;
       if (isSSE) {
         let couldBeEvents = true;
@@ -212,7 +218,9 @@ const httpController = {
 
           // if the array has a match, send it to be parsed, and send back to store
           if (possibleEventArr && possibleEventArr[0]) {
-            const receivedEventFields = httpController.parseSSEFields(possibleEventArr[0]);
+            const receivedEventFields = httpController.parseSSEFields(
+              possibleEventArr[0]
+            );
             receivedEventFields.timeReceived = wouldBeTimeReceived;
 
             reqResObj.response.events.push(receivedEventFields);
@@ -221,7 +229,7 @@ const httpController = {
             // splice possibleEventArr, recombine with \n\n to reconstruct original,
             // minus what was already parsed.
             possibleEventArr.splice(0, 1);
-            data = possibleEventArr.join('\n\n');
+            data = possibleEventArr.join("\n\n");
           }
           // if does not contain, end while loop
           else {
@@ -230,15 +238,15 @@ const httpController = {
         }
       }
     });
-    reqStream.on('end', () => {
+    reqStream.on("end", () => {
       if (isSSE) {
         const receivedEventFields = this.parseSSEFields(data);
         receivedEventFields.timeReceived = Date.now();
-        reqResObj.connection = 'closed';
+        reqResObj.connection = "closed";
         reqResObj.response.events.push(receivedEventFields);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       } else {
-        reqResObj.connection = 'closed';
+        reqResObj.connection = "closed";
         reqResObj.response.events.push(data);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
       }
@@ -247,22 +255,23 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   sendToMainForFetch(args) {
-    return new Promise(resolve => {
-      ipcRenderer.send('http1-fetch-message', args)
-      ipcRenderer.on('http1-fetch-reply', (event, result) => {
+    return new Promise((resolve) => {
+      ipcRenderer.send("http1-fetch-message", args);
+      ipcRenderer.on("http1-fetch-reply", (event, result) => {
         resolve(result);
-      })
-    })
+      });
+    });
   },
 
   // ----------------------------------------------------------------------------
 
-  establishHTTP1connection(reqResObj, connectionArray) { //XXXXXXXXXXXXXXX
+  establishHTTP1connection(reqResObj, connectionArray) {
+    //XXXXXXXXXXXXXXX
 
     // start off by clearing existing response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
-    reqResObj.connection = 'pending';
+    reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     connectionArray.forEach((obj, i) => {
@@ -272,7 +281,7 @@ const httpController = {
     });
     const openConnectionObj = {
       abort: new AbortController(),
-      protocol: 'HTTP1',
+      protocol: "HTTP1",
       id: reqResObj.id,
     };
     connectionArray.push(openConnectionObj);
@@ -290,25 +299,23 @@ const httpController = {
       // params: method, headers, body
       const { method, headers, body } = options;
 
-      fetch2(headers.url, { method, headers, body })
-        .then(response => {
-          const heads = {};
-          for (const entry of response.headers.entries()) {
-            heads[entry[0].toLowerCase()] = entry[1];
-          }
-          reqResObj.response.headers = heads;
-          this.handleSSE(response, reqResObj, heads);
-        })
+      fetch2(headers.url, { method, headers, body }).then((response) => {
+        const heads = {};
+        for (const entry of response.headers.entries()) {
+          heads[entry[0].toLowerCase()] = entry[1];
+        }
+        reqResObj.response.headers = heads;
+        this.handleSSE(response, reqResObj, heads);
+      });
     }
     // if not SSE, talk to main to fetch data and receive
     else {
-    // send information to the NODE side to do the fetch request
-    this.sendToMainForFetch({ options })
-      .then((response) => {
-
-        // Parse response headers now to decide if SSE or not.
-        const heads = response.headers;
-        reqResObj.response.headers = heads;
+      // send information to the NODE side to do the fetch request
+      this.sendToMainForFetch({ options })
+        .then((response) => {
+          // Parse response headers now to decide if SSE or not.
+          const heads = response.headers;
+          reqResObj.response.headers = heads;
 
           reqResObj.timeReceived = Date.now();
           store.default.dispatch(actions.reqResUpdate(reqResObj));
@@ -320,24 +327,24 @@ const httpController = {
 
           // if cookies exists, parse the cookie(s)
           if (setCookie.parse(theResponseHeaders.cookies)) {
-            reqResObj.response.cookies = this.cookieFormatter(setCookie.parse(theResponseHeaders.cookies));
+            reqResObj.response.cookies = this.cookieFormatter(
+              setCookie.parse(theResponseHeaders.cookies)
+            );
             store.default.dispatch(actions.reqResUpdate(reqResObj));
             this.handleSingleEvent(body, reqResObj, theResponseHeaders);
           }
-      })
-      .catch((err) => {
-        reqResObj.connection = 'error';
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
-      });
+        })
+        .catch((err) => {
+          reqResObj.connection = "error";
+          store.default.dispatch(actions.reqResUpdate(reqResObj));
+        });
     }
   },
 
   // ----------------------------------------------------------------------------
 
   parseFetchOptionsFromReqRes(reqResObject) {
-    let {
-      method, headers, body, cookies
-    } = reqResObject.request;
+    let { method, headers, body, cookies } = reqResObject.request;
 
     method = method.toUpperCase();
 
@@ -356,15 +363,15 @@ const httpController = {
 
     const outputObj = {
       method,
-      mode: 'cors', // no-cors, cors, *same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'include', // include, *same-origin, omit
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "include", // include, *same-origin, omit
       headers: formattedHeaders,
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // no-referrer, *client
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
     };
 
-    if (method !== 'GET' && method !== 'HEAD') {
+    if (method !== "GET" && method !== "HEAD") {
       outputObj.body = body;
     }
 
@@ -375,8 +382,8 @@ const httpController = {
 
   handleSingleEvent(response, originalObj, headers) {
     const newObj = JSON.parse(JSON.stringify(originalObj));
-    newObj.connection = 'closed';
-    newObj.connectionType = 'plain';
+    newObj.connection = "closed";
+    newObj.connectionType = "plain";
     newObj.timeReceived = Date.now();
     newObj.response.events.push(response);
     store.default.dispatch(actions.reqResUpdate(newObj));
@@ -387,7 +394,7 @@ const httpController = {
   /* handle SSE Streams for HTTP1.1 */
   handleSSE(response, originalObj, headers) {
     const reader = response.body.getReader();
-    let data = '';
+    let data = "";
     read();
 
     const newObj = JSON.parse(JSON.stringify(originalObj));
@@ -396,14 +403,14 @@ const httpController = {
     newObj.timeReceived = Date.now();
     newObj.response.headers = headers;
     newObj.response.events = [];
-    newObj.connection = 'open';
-    newObj.connectionType = 'SSE';
+    newObj.connection = "open";
+    newObj.connectionType = "SSE";
 
-    const decoder = new TextDecoder('utf-8');
+    const decoder = new TextDecoder("utf-8");
     function read() {
       reader.read().then((obj) => {
         // check if there is new info to add to data
-        if (decoder.decode(obj.value) !== '') {
+        if (decoder.decode(obj.value) !== "") {
           data += decoder.decode(obj.value);
         }
 
@@ -415,7 +422,9 @@ const httpController = {
 
           // if the array has a match, send it to be parsed, and send back to store
           if (possibleEventArr && possibleEventArr[0]) {
-            const receivedEventFields = httpController.parseSSEFields(possibleEventArr[0]);
+            const receivedEventFields = httpController.parseSSEFields(
+              possibleEventArr[0]
+            );
             receivedEventFields.timeReceived = wouldBeTimeReceived;
 
             newObj.response.events.push(receivedEventFields);
@@ -424,7 +433,7 @@ const httpController = {
             // splice possibleEventArr, recombine with \n\n to reconstruct original,
             // minus what was already parsed.
             possibleEventArr.splice(0, 1);
-            data = possibleEventArr.join('\n\n');
+            data = possibleEventArr.join("\n\n");
           }
           // if does not contain, end while loop
           else {
@@ -447,15 +456,15 @@ const httpController = {
     return (
       rawString
         // since the string is multi line, each for a different field, split by line
-        .split('\n')
+        .split("\n")
         // remove empty lines
-        .filter(field => field !== '')
+        .filter((field) => field !== "")
         // massage fields so they can be parsed into JSON
         .map((field) => {
           const fieldColonSplit = field
-            .replace(/:/, '&&&&')
-            .split('&&&&')
-            .map(kv => kv.trim());
+            .replace(/:/, "&&&&")
+            .split("&&&&")
+            .map((kv) => kv.trim());
 
           const fieldObj = {
             [fieldColonSplit[0]]: fieldColonSplit[1],
@@ -486,11 +495,11 @@ const httpController = {
         secure: eachCookie.secure ? eachCookie.secure : false,
         httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
         session: eachCookie.session ? eachCookie.session : false,
-        expriationDate: eachCookie.expires ? eachCookie.expires : '',
-      }
+        expriationDate: eachCookie.expires ? eachCookie.expires : "",
+      };
       return cookieFormat;
-    })
-  }
+    });
+  },
 };
 
 export default httpController;
