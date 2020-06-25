@@ -205,7 +205,6 @@ function createWindow() {
   // Don't show until we are ready and loaded
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
-
     // Open the DevTools automatically if developing
     if (dev) {
       mainWindow.webContents.openDevTools();

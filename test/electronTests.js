@@ -1,32 +1,32 @@
 // test to verify main window is opened with a title
-const Application = require("spectron").Application;
+const { Application } = require("spectron");
 const assert = require("assert");
 const electronPath = require("electron");
 const path = require("path");
 
 describe("Application launch", function () {
-  setTimeout(10000);
+  this.timeout(10000);
   beforeEach(function () {
-    app = new Application({
+    this.app = new Application({
       // Your electron path can be any binary
       // i.e for OSX an example path could be '/Applications/MyApp.app/Contents/MacOS/MyApp'
       // But for the sake of the example we fetch it from our node_modules.
-      path: path.resolve(__dirname, "../main.js"),
+      path: electronPath,
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.
-      // args: [path.join(__dirname, '..')]
+      args: [path.join(__dirname, "..")],
     });
-    return app.start();
+    return this.app.start();
   });
 
   afterEach(function () {
-    if (app && app.isRunning()) {
-      return app.stop();
+    if (this.app && this.app.isRunning()) {
+      this.app.stop();
     }
   });
 
   it("shows an initial window", function () {
-    return app.client.getWindowCount().then(function (count) {
+    return this.app.client.getWindowCount().then(function (count) {
       assert.equal(count, 1);
       // Please note that getWindowCount() will return 2 if `dev tools` are opened.
       // assert.equal(count, 2)
