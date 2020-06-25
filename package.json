@@ -242,7 +242,11 @@
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
+<<<<<<< HEAD
     "electron": "^7.0.1",
+=======
+    "electron": "~7.0.1",
+>>>>>>> 09c6ce38eebdee70390f80176ca678dad9437c50
     "electron-builder": "^22.7.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
