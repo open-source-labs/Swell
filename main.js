@@ -19,7 +19,7 @@ const {
   REDUX_DEVTOOLS,
 } = require("electron-devtools-installer");
 // Import Auto-Updater- Swell will update itself
-const { autoUpdater } = require("electron-updater");
+// const { autoUpdater } = require("electron-updater");
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
@@ -44,9 +44,9 @@ const { ApolloLink } = require("apollo-link");
 require("./menu/mainMenu");
 
 // configure logging
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = "info";
-log.info("App starting...");
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = "info";
+// log.info("App starting...");
 
 let mainWindow;
 
@@ -134,9 +134,11 @@ const touchBar = new TouchBar([
 // -----------------------------------------------
 
 let isDev;
-process.argv.includes("--noDevServer") ? (isDev = false) : (isDev = true);
-
-console.log("isDev->", isDev);
+// if using Spectron, run it in production
+process.argv.includes("--noDevServer") || process.argv.includes("TEST_MODE")
+  ? (isDev = false)
+  : (isDev = true);
+console.log("is this in dev mode? ", isDev);
 // let isDev = false;
 // console.log("process.defaultApp ->", process.defaultApp);
 // console.log("process.execPath -> ", process.execPath);
@@ -261,9 +263,9 @@ function createWindow() {
 app.on("ready", () => {
   // createLoadingScreen();
   createWindow();
-  if (!isDev) {
-    autoUpdater.checkForUpdates();
-  }
+  // if (!isDev) {
+  //   autoUpdater.checkForUpdates();
+  // }
 });
 
 // Quit when all windows are closed.
@@ -284,10 +286,10 @@ const sendStatusToWindow = (text) => {
   }
 };
 
-ipcMain.on("check-for-update", () => {
-  //listens to ipcRenderer in UpdatePopUpContainer.jsx
-  if (!isDev) autoUpdater.checkForUpdates();
-});
+// ipcMain.on("check-for-update", () => {
+//   //listens to ipcRenderer in UpdatePopUpContainer.jsx
+//   if (!isDev) autoUpdater.checkForUpdates();
+// });
 // autoUpdater.on('checking-for-update', () => {
 // sendStatusToWindow('Checking for update...');
 // // });
@@ -297,18 +299,18 @@ ipcMain.on("check-for-update", () => {
 // autoUpdater.on('update-not-available', info => {
 //   sendStatusToWindow('Update not available.');
 // });
-autoUpdater.on("error", (err) => {
-  console.error("autoUpdater error -> ", err);
-  sendStatusToWindow(`Error in auto-updater`);
-});
-autoUpdater.on("download-progress", (progressObj) => {
-  sendStatusToWindow(
-    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-  );
-});
-autoUpdater.on("update-downloaded", (info) => {
-  sendStatusToWindow("Update downloaded.");
-});
+// autoUpdater.on("error", (err) => {
+//   console.error("autoUpdater error -> ", err);
+//   sendStatusToWindow(`Error in auto-updater`);
+// });
+// autoUpdater.on("download-progress", (progressObj) => {
+//   sendStatusToWindow(
+//     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+//   );
+// });
+// autoUpdater.on("update-downloaded", (info) => {
+//   sendStatusToWindow("Update downloaded.");
+// });
 
 // autoUpdater.on('update-downloaded', info => {
 //   // Wait 5 seconds, then quit and install
@@ -316,9 +318,9 @@ autoUpdater.on("update-downloaded", (info) => {
 //   // You could call autoUpdater.quitAndInstall(); immediately
 //   autoUpdater.quitAndInstall();
 // });
-ipcMain.on("quit-and-install", () => {
-  autoUpdater.quitAndInstall();
-});
+// ipcMain.on("quit-and-install", () => {
+//   autoUpdater.quitAndInstall();
+// });
 // App page reloads when user selects "Refresh" from pop-up dialog
 ipcMain.on("fatalError", () => {
   console.log("received fatal error");
