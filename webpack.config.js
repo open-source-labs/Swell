@@ -107,8 +107,8 @@ module.exports = {
         policy: {
           "base-uri": "'self'",
           "object-src": "'none'",
-          "script-src": ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
-          "style-src": ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
+          "script-src": ["'self'"],
+          "style-src": ["'self'"],
         },
         hashEnabled: {
           "script-src": true,
@@ -121,25 +121,22 @@ module.exports = {
       },
     }),
 
-    new CspHtmlWebpackPlugin(
-      {
-        "base-uri": "'self'",
-        "object-src": "'none'",
-        "script-src": ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
-        "style-src": ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
+    new CspHtmlWebpackPlugin({
+      "base-uri": "'self'",
+      "object-src": "'none'",
+      "script-src": ["'self'"],
+      "style-src": ["'self'"],
+    }, {
+      enabled: true,
+      hashingMethod: "sha256",
+      hashEnabled: {
+        "script-src": true,
+        "style-src": true,
       },
-      {
-        enabled: true,
-        hashingMethod: "sha256",
-        hashEnabled: {
-          "script-src": true,
-          "style-src": true,
-        },
-        nonceEnabled: {
-          "script-src": true,
-          "style-src": true,
-        },
-      }
-    ),
+      nonceEnabled: {
+        "script-src": true,
+        "style-src": true,
+      },
+    }),
   ],
 };
