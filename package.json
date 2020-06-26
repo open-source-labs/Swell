@@ -23,7 +23,8 @@
     "email": "swell@getswell.io",
     "url": "http://www.getswell.io"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
       "url": "https://github.com/texpatnyc"
@@ -129,7 +130,8 @@
       "createDesktopShortcut": "always"
     },
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 130,
           "y": 220
         },
