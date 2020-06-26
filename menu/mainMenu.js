@@ -1,190 +1,195 @@
-const {Menu} = require('electron')
-const electron = require('electron')
-const app = electron.app
+const { Menu } = require("electron");
+const electron = require("electron");
+const app = electron.app;
 // --------------------------------------------------------------------------------------------------
 // Here we are creating an array of menu tabs. Each menu tab will have its own list items(aka a sub-menu).
 // This array called template will be our default menu set up
 // --------------------------------------------------------------------------------------------------
 const template = [
   {
-    label: 'Edit',
+    label: "Edit",
     submenu: [
       {
-        role: 'undo'
+        role: "undo",
       },
       {
-        role: 'redo'
+        role: "redo",
       },
       {
-        type: 'separator'// A dividing line between menu items
+        type: "separator", // A dividing line between menu items
       },
       {
-        role: 'cut'
+        role: "cut",
       },
       {
-        role: 'copy'
+        role: "copy",
       },
       {
-        role: 'paste'
+        role: "paste",
       },
       {
-        role: 'pasteandmatchstyle'
+        role: "pasteandmatchstyle",
       },
       {
-        role: 'delete'
+        role: "delete",
       },
       {
-        role: 'selectall'
-      }
-    ]
+        role: "selectall",
+      },
+    ],
   },
   {
-    label: 'View',
+    label: "View",
     submenu: [
       {
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',//keyboard shortcut that will reload the current window
-        click (item, focusedWindow) {
-          if (focusedWindow) focusedWindow.reload()
-        }
+        label: "Reload",
+        accelerator: "CmdOrCtrl+R", //keyboard shortcut that will reload the current window
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.reload();
+        },
       },
       {
-        label: 'Toggle Developer Tools',
-        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I', // another keyboard shortcut that will be conditionally assigned depending on whether or not user is on macOS
-        click (item, focusedWindow) {
-          if (focusedWindow) focusedWindow.webContents.toggleDevTools()
-        }
+        label: "Toggle Developer Tools",
+        accelerator:
+          process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I", // another keyboard shortcut that will be conditionally assigned depending on whether or not user is on macOS
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.toggleDevTools();
+        },
       },
       {
-        type: 'separator'
+        type: "separator",
       },
       {
-        role: 'resetzoom'
+        role: "resetzoom",
       },
       {
-        role: 'zoomin'
+        role: "zoomin",
       },
       {
-        role: 'zoomout'
+        role: "zoomout",
       },
       {
-        type: 'separator'
+        type: "separator",
       },
       {
-        role: 'togglefullscreen'
-      }
-    ]
+        role: "togglefullscreen",
+      },
+    ],
   },
   {
-    role: 'window',
+    role: "window",
     submenu: [
       {
-        role: 'minimize'
+        role: "minimize",
       },
       {
-        role: 'close'
-      }
-    ]
+        role: "close",
+      },
+    ],
   },
   {
-    role: 'help',
+    role: "help",
     submenu: [
       {
-        label: 'Learn More',
-        click () { require('electron').shell.openExternal('http://electron.atom.io') }
-      }
-    ]
-  }
-]
+        label: "Learn More",
+        click() {
+          require("electron").shell.openExternal("http://electron.atom.io");
+        },
+      },
+    ],
+  },
+];
 // --------------------------------------------------------------------------------------------------
-
-
 
 // --------------------------------------------------------------------------------------------------
 // If the user is on mac create an extra menu tab that will be labeled as the name of your app
 // This new tab will have submenu features that windows and linux users will not have access to
 // --------------------------------------------------------------------------------------------------
-if (process.platform === 'darwin') {// if user is on mac...
-  const name = app.getName()
-  template.unshift({// add on these new menu items
+if (process.platform === "darwin") {
+  // if user is on mac...
+  const name = app.name;
+  template.unshift({
+    // add on these new menu items
     label: name,
     submenu: [
       {
-        role: 'about'
+        role: "about",
       },
       {
-        type: 'separator'
+        type: "separator",
       },
       {
-        role: 'services',
-        submenu: []
+        role: "services",
+        submenu: [],
       },
       {
-        type: 'separator'
+        type: "separator",
       },
       {
-        role: 'hide'
+        role: "hide",
       },
       {
-        role: 'hideothers'
+        role: "hideothers",
       },
       {
-        role: 'unhide'
+        role: "unhide",
       },
       {
-        type: 'separator'
+        type: "separator",
       },
       {
-        role: 'quit'
-      }
-    ]
-  })
-  // template[1] refers to the Edit menu. 
-  template[1].submenu.push(// If user is on macOS also provide speech based submenu items in addition to the edit menu's other submenu items that were set earlier
+        role: "quit",
+      },
+    ],
+  });
+  // template[1] refers to the Edit menu.
+  template[1].submenu.push(
+    // If user is on macOS also provide speech based submenu items in addition to the edit menu's other submenu items that were set earlier
     {
-      type: 'separator'
+      type: "separator",
     },
     {
-      label: 'Speech',
+      label: "Speech",
       submenu: [
         {
-          role: 'startspeaking'
+          role: "startspeaking",
         },
         {
-          role: 'stopspeaking'
-        }
-      ]
+          role: "stopspeaking",
+        },
+      ],
     }
-  )
+  );
   //template[3] refers to the Window menu.
-  template[3].submenu = [ // if user is on macOS replace the Window menu that we created earlier with the submenu below 
+  template[3].submenu = [
+    // if user is on macOS replace the Window menu that we created earlier with the submenu below
     {
-      label: 'Close',
-      accelerator: 'CmdOrCtrl+W',
-      role: 'close'
+      label: "Close",
+      accelerator: "CmdOrCtrl+W",
+      role: "close",
     },
     {
-      label: 'Minimize',
-      accelerator: 'CmdOrCtrl+M',
-      role: 'minimize'
+      label: "Minimize",
+      accelerator: "CmdOrCtrl+M",
+      role: "minimize",
     },
     {
-      label: 'Zoom',
-      role: 'zoom'
+      label: "Zoom",
+      role: "zoom",
     },
     {
-      type: 'separator'
+      type: "separator",
     },
     {
-      label: 'Bring All to Front',
-      role: 'front'
-    }
-  ]
+      label: "Bring All to Front",
+      role: "front",
+    },
+  ];
 }
 // create our menu with the Menu module imported from electron,
 // use its built in method buildFromTemplate
 // and pass in the template we've just created
-const menu = Menu.buildFromTemplate(template)
+const menu = Menu.buildFromTemplate(template);
 
 // append our newly created menu to our app
-Menu.setApplicationMenu(menu) 
+Menu.setApplicationMenu(menu);
