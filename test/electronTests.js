@@ -31,25 +31,17 @@ describe("Browser Window Tests", function () {
   });
 
   it("window is visible", async () => {
-    try {
-      const isVisible = await app.browserWindow.isVisible();
-      assert.equal(isVisible, true);
-    } catch (err) {
-      console.log(err);
-    }
+    const isVisible = await app.browserWindow.isVisible();
+    assert.equal(isVisible, true);
   });
 
   it("window title is Swell", async () => {
-    try {
-      const title = await app.browserWindow.getTitle();
-      assert.equal(title, "Swell");
-    } catch (err) {
-      console.log(err);
-    }
+    const title = await app.browserWindow.getTitle();
+    assert.equal(title, "Swell");
   });
-  it("testing some spectron client methods", () => {
-    app.client.getMainProcessLogs().then((logs) => console.log(logs));
-    app.client.getRenderProcessLogs().then((logs) => console.log(logs));
+  it("Confirm window count is 1", async () => {
+    const windowCount = await app.client.getWindowCount();
+    assert.equal(1, windowCount);
   });
 });
 
