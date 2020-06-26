@@ -10,7 +10,7 @@ module.exports = merge(base, {
   devtool: "source-map",
   devServer: {
     host: "localhost",
-    port: "2077",
+    port: "8080",
     hot: true,
     compress: true,
     contentBase: path.resolve(__dirname, "dist"),
