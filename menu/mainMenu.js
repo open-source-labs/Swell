@@ -93,7 +93,7 @@ const template = [
       {
         label: "Learn More",
         click() {
-          electron.shell.openExternal("http://electron.atom.io");
+          require("electron").shell.openExternal("http://electron.atom.io");
         },
       },
     ],
