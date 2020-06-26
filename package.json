@@ -21,7 +21,7 @@
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
-    "postinstall": "npm rebuild grpc --runtime=electron --target=7.0.1"
+    "postinstall": "npm rebuild grpc --runtime=electron --target=7.3.2"
   },
   "author": {
     "name": "Swell",
@@ -201,7 +201,7 @@
     "dexie": "^2.0.4",
     "dompurify": "^2.0.11",
     "electron-devtools-installer": "^2.2.4",
-    "electron-log": "^2.2.17",
+    "electron-log": "^4.2.2",
     "electron-updater": "^4.3.1",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
@@ -254,7 +254,7 @@
     "chai-as-promised": "^7.1.1",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "electron": "~7.0.1",
+    "electron": "^7.3.2",
     "electron-builder": "^22.7.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
