@@ -11,6 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -58,14 +59,17 @@ module.exports = {
           extensions: [".scss"],
         },
       },
-      // {
-      //   test: /\.css$/,
-      //   include: [path.resolve(__dirname, "src")],
-      //   use: [MiniCssExtractPlugin.loader, "css-loader"],
-      //   resolve: {
-      //     extensions: [".css"],
-      //   },
-      // },
+      {
+        test: /\.css$/,
+        include: [
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "node_modules", "react-json-petty", "themes"),
+        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        resolve: {
+          extensions: [".css"],
+        },
+      },
       {
         test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif|)$/,
         use: "url-loader",
@@ -96,6 +100,8 @@ module.exports = {
     //   "worker-src": ["'none'"],
     // }),
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "index-csp.html"),
+      filename: "test-index.html",
       cspPlugin: {
         enabled: true,
         policy: {
