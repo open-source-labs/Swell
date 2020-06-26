@@ -43,6 +43,10 @@ describe("Browser Window Tests", function () {
     const windowCount = await app.client.getWindowCount();
     assert.equal(1, windowCount);
   });
+  it("devTool should NOT open since we are in production mode", async () => {
+    const isOpen = await app.browserWindow.isDevToolsOpened();
+    assert.equal(false, isOpen);
+  });
 });
 
 // const isDev = await app.browserWindow.isDevToolsOpened();
