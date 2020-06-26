@@ -10,29 +10,28 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 // Import parts of electron to use
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
+
+// npm libraries
 const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
-const path = require("path");
-const url = require("url");
-const fs = require("fs");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } = require("electron-devtools-installer");
-
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require("electron-updater");
-const log = require("electron-log");
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
+
+const path = require("path");
+const url = require("url");
+const fs = require("fs");
+const log = require("electron-log");
 
 // basic http cookie parser
 const cookie = require("cookie");
 // node-fetch for the fetch request
 const fetch2 = require("node-fetch");
-
-  // require menu file
-  require("./menu/mainMenu");
 
 // GraphQL imports
 const { ApolloClient } = require("apollo-client");
@@ -40,6 +39,9 @@ const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
+
+// require menu file
+require("./menu/mainMenu");
 
 // configure logging
 autoUpdater.logger = log;
@@ -127,23 +129,31 @@ const touchBar = new TouchBar([
   tbClearAllButton,
 ]);
 
-// Keep a reference for dev mode
-let dev = false;
-console.log("process.defaultApp ->", process.defaultApp);
-console.log("process.execPath -> ", process.execPath);
-if (
-  process.defaultApp ||
-  /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
-  /[\\/]electron[\\/]/.test(process.execPath)
-) {
-  dev = true;
-}
-console.log(
-  "current regex test -> ",
-  /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
-);
-if (dev) console.log("dev is TRUE");
-if (dev === false) console.log("dev is FALSE");
+// -----------------------------------------------
+// prod / dev mode determined by boolean 'isDev'
+// -----------------------------------------------
+
+let isDev;
+process.argv.includes("--noDevServer") ? (isDev = false) : (isDev = true);
+
+console.log("isDev->", isDev);
+// let isDev = false;
+// console.log("process.defaultApp ->", process.defaultApp);
+// console.log("process.execPath -> ", process.execPath);
+
+// if (
+//   process.defaultApp ||
+//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
+//   /[\\/]electron[\\/]/.test(process.execPath)
+// ) {
+//   isDev = true;
+// }
+// console.log(
+//   "current regex test -> ",
+//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
+// );
+// if (isDev) console.log("isDev is TRUE");
+// if (isDev === false) console.log("isDev is FALSE");
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
 if (process.platform === "win32") {
@@ -151,6 +161,10 @@ if (process.platform === "win32") {
   app.commandLine.appendSwitch("high-dpi-support", "true");
   app.commandLine.appendSwitch("force-device-scale-factor", "1");
 }
+
+/***********************************************
+ ******* createWindow function declaration ******
+ ***********************************************/
 
 function createWindow() {
   // Create the new browser window instance.
@@ -171,7 +185,7 @@ function createWindow() {
     icon: `${__dirname}/src/assets/icons/64x64.png`,
   });
 
-  if (dev) {
+  if (isDev) {
     // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -185,7 +199,7 @@ function createWindow() {
   // and load the index.html of the app.
   let indexPath;
 
-  if (dev && process.argv.indexOf("--noDevServer") === -1) {
+  if (isDev && process.argv.indexOf("--noDevServer") === -1) {
     // if we are in dev mode load up 'http://localhost:8080/index.html'
     indexPath = url.format({
       protocol: "http:",
@@ -215,7 +229,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (dev) {
+    if (isDev) {
       mainWindow.webContents.openDevTools();
     }
   });
@@ -233,13 +247,21 @@ function createWindow() {
   // moved require mainmenu to top
 }
 
-// This method will be called when Electron has finished
+/********* end of createWindow declaration ******/
+
+/****************************************
+ ************** EVENT LISTENERS **********
+ ****************************************/
+
+// app.on('ready') will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+
+// if in prod mode, checkForUpdates after the window is created
 app.on("ready", () => {
   // createLoadingScreen();
   createWindow();
-  if (!dev) {
+  if (!isDev) {
     autoUpdater.checkForUpdates();
   }
 });
@@ -264,7 +286,7 @@ const sendStatusToWindow = (text) => {
 
 ipcMain.on("check-for-update", () => {
   //listens to ipcRenderer in UpdatePopUpContainer.jsx
-  if (!dev) autoUpdater.checkForUpdates();
+  if (!isDev) autoUpdater.checkForUpdates();
 });
 // autoUpdater.on('checking-for-update', () => {
 // sendStatusToWindow('Checking for update...');
@@ -276,7 +298,7 @@ ipcMain.on("check-for-update", () => {
 //   sendStatusToWindow('Update not available.');
 // });
 autoUpdater.on("error", (err) => {
-  console.error(err);
+  console.error("autoUpdater error -> ", err);
   sendStatusToWindow(`Error in auto-updater`);
 });
 autoUpdater.on("download-progress", (progressObj) => {
@@ -316,7 +338,7 @@ app.on("activate", () => {
 
 // export collection ipc now promise-based
 ipcMain.on("export-collection", (event, args) => {
-  let content = JSON.stringify(args.collection);
+  const content = JSON.stringify(args.collection);
   dialog.showSaveDialog(null).then((resp) => {
     if (resp.filePath === undefined) {
       console.log("You didn't save the file");
@@ -326,7 +348,7 @@ ipcMain.on("export-collection", (event, args) => {
     // fileName is a string that contains the path and filename created in the save file dialog.
     fs.writeFile(resp.filePath, content, (err) => {
       if (err) {
-        console.log("An error ocurred creating the file " + err.message);
+        console.log("An error ocurred creating the file ", err.message);
       }
     });
   });
@@ -351,7 +373,7 @@ ipcMain.on("import-collection", (event, args) => {
     }
 
     // get first file path - not dynamic for multiple files
-    let filepath = fileNames.filePaths[0];
+    const filepath = fileNames.filePaths[0];
 
     // get file extension
     const ext = path.extname(filepath);
@@ -366,7 +388,7 @@ ipcMain.on("import-collection", (event, args) => {
 
     fs.readFile(filepath, "utf-8", (err, data) => {
       if (err) {
-        alert("An error ocurred reading the file :" + err.message);
+        alert("An error ocurred reading the file :", err.message);
         return;
       }
 
@@ -464,7 +486,7 @@ ipcMain.on("open-gql", (event, args) => {
     return forward(operation).map((response) => {
       const context = operation.getContext();
       const headers = context.response.headers.entries();
-      for (let headerItem of headers) {
+      for (const headerItem of headers) {
         const key = headerItem[0]
           .split("-")
           .map((item) => item[0].toUpperCase() + item.slice(1))

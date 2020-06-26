@@ -8,7 +8,7 @@
     "test": "jest",
     "test-mocha": "mocha",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
-    "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
+    "start": "webpack-dev-server --mode development --hot --host 0.0.0.0 --config=./webpack.dev.config.js ",
     "build": "webpack --config webpack.build.config.js --mode production",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
