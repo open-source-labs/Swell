@@ -48,6 +48,8 @@ require("./menu/mainMenu");
 // autoUpdater.logger.transports.file.level = "info";
 // log.info("App starting...");
 
+console.log("app.name is ->", app.name)
+
 let mainWindow;
 
 // -----------------------------------------------------------------
@@ -158,6 +160,7 @@ console.log("is this in dev mode? ", isDev);
 // if (isDev === false) console.log("isDev is FALSE");
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
+
 if (process.platform === "win32") {
   // if user is on windows...
   app.commandLine.appendSwitch("high-dpi-support", "true");
