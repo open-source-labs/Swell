@@ -204,14 +204,14 @@ function createWindow() {
     indexPath = url.format({
       protocol: "http:",
       host: "localhost:8080",
-      pathname: "index.html",
+      pathname: "test-index.html",
       slashes: true,
     });
   } else {
     indexPath = url.format({
       // if we are not in dev mode load production build file
       protocol: "file:",
-      pathname: path.join(__dirname, "dist", "index.html"),
+      pathname: path.join(__dirname, "dist", "test-index.html"),
       slashes: true,
     });
   }

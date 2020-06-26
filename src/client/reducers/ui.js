@@ -1,8 +1,8 @@
-import * as types from '../actions/actionTypes';
+import * as types from "../actions/actionTypes";
 
 const initialState = {
   warningIsDisplayed: true,
-  composerDisplay: 'Request',
+  composerDisplay: "Request",
 };
 
 const uiReducer = (state = initialState, action) => {
