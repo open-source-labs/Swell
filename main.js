@@ -48,7 +48,7 @@ autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
 log.info("App starting...");
 
-console.log("app.name is ->", app.name)
+console.log("app.name is ->", app.name);
 
 let mainWindow;
 
@@ -214,7 +214,7 @@ function createWindow() {
     indexPath = url.format({
       // if we are not in dev mode load production build file
       protocol: "file:",
-      pathname: path.join(__dirname, "dist", "test-index.html"),
+      pathname: path.resolve(__dirname, "dist", "test-index.html"),
       slashes: true,
     });
   }
