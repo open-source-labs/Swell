@@ -1,5 +1,5 @@
 const fs = require("fs");
-const grpc = require("grpc");
+const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
 const uuid = require("uuid");
@@ -77,8 +77,8 @@ async function protoParserFunc(protoBodyData) {
   // Store the services from the current .proto file
   const serviceArr = [];
   for (let [serviceName, serviceDef] of Object.entries(
-    protoStorage.descriptorDefinition
-  )) {
+      protoStorage.descriptorDefinition
+    )) {
     if (typeof serviceDef === "function") {
       const serviceObj = {};
       serviceObj.packageName = protoStorage.packageName;
@@ -87,8 +87,8 @@ async function protoParserFunc(protoBodyData) {
       serviceObj.messages = [];
 
       for (let [requestName, requestDef] of Object.entries(
-        serviceDef.service
-      )) {
+          serviceDef.service
+        )) {
         const streamingReq = requestDef.requestStream;
         const streamingRes = requestDef.responseStream;
 

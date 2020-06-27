@@ -102,12 +102,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index-csp.html"),
       filename: "test-index.html",
+      title: "Swell",
       cspPlugin: {
         enabled: true,
         policy: {
           "base-uri": "'self'",
           "object-src": "'none'",
-          "script-src": ["'self'"],
+          // unsafe-eval allowed because dependency (protobufjs) of @grpc/grpc-js uses eval(); hopefully, grpc will update their version of protobufjs, and that version will not use eval 
+          // related to this issue: https://github.com/protobufjs/protobuf.js/issues/997
+          "script-src": ["'self'", "'unsafe-eval'"],
           "style-src": ["'self'"],
         },
         hashEnabled: {
@@ -121,22 +124,23 @@ module.exports = {
       },
     }),
 
-    new CspHtmlWebpackPlugin({
-      "base-uri": "'self'",
-      "object-src": "'none'",
-      "script-src": ["'self'"],
-      "style-src": ["'self'"],
-    }, {
-      enabled: true,
-      hashingMethod: "sha256",
-      hashEnabled: {
-        "script-src": true,
-        "style-src": true,
-      },
-      nonceEnabled: {
-        "script-src": true,
-        "style-src": true,
-      },
-    }),
+    // new CspHtmlWebpackPlugin({
+    //   "base-uri": "'self'",
+    //   "object-src": "'none'",
+    //   "script-src": ["'self'"],
+    //   "style-src": ["'self'"],
+    // }, {
+    //   enabled: true,
+    //   hashingMethod: "sha256",
+    //   hashEnabled: {
+    //     "script-src": true,
+    //     "style-src": true,
+    //   },
+    //   nonceEnabled: {
+    //     "script-src": true,
+    //     "style-src": true,
+    //   },
+    // }),
+    new CspHtmlWebpackPlugin(),
   ],
 };

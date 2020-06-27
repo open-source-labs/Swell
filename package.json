@@ -187,6 +187,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
+    "@grpc/grpc-js": "^1.1.1",
     "@grpc/proto-loader": "^0.5.4",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
@@ -207,7 +208,6 @@
     "express": "^4.17.1",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
-    "grpc": "^1.24.2",
     "highland": "^2.13.5",
     "isomorphic-fetch": "^2.2.1",
     "mali": "^0.20.0",
