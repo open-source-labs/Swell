@@ -65,10 +65,15 @@ describe("Electron Tests", function () {
     it("Sidebar exists", async () => {
       await app.client.waitUntilWindowLoaded();
       const sidebar = await app.client.$(".sidebar_composer-console");
-      const trash = await app.client.$(".asldkfjlaksdjf");
-      // return assert.equal(sidebar.value)
-      console.log(trash);
-      return assert.equal(trash.value, null);
+      // $ is basically querySelector
+      const test = await app.client.$("#sadlfkj");
+      return assert.notEqual(sidebar.value, null);
     });
+    it("Main Component exists", async () => {
+      // logic for the main component
+    });
+    // add all components
+
+    // add basic events like click
   });
 });
