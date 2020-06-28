@@ -64,16 +64,23 @@ describe("Electron Tests", function () {
     });
     it("Sidebar exists", async () => {
       await app.client.waitUntilWindowLoaded();
-      const sidebar = await app.client.$(".sidebar_composer-console");
       // $ is basically querySelector
-      const test = await app.client.$("#sadlfkj");
+      const sidebar = await app.client.$(".sidebar_composer-console");
       return assert.notEqual(sidebar.value, null);
     });
     it("Main Component exists", async () => {
-      // logic for the main component
+      await app.client.waitUntilWindowLoaded();
+      const content = await app.client.$(".contents");
+      return assert.notEqual(content.value, null);
     });
     // add all components
-
+    // ient.$(".sidebar_composer-console");
+    // const composer = await app.clent.$(".historyDate-container");
+    // const collections = await app.client.$(".collections-container");
+    // const history = await app.cli
+    // return assert.notEqual(composer.value, null);
+    // return assert.notEqual(collections.value, null);
+    // return assert.notEqual(history, null);
     // add basic events like click
   });
 });
