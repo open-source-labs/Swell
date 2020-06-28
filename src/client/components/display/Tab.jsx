@@ -7,7 +7,7 @@ class Tab extends Component {
   }
 
   tabClickHandler() {
-    let selectedTab = this.props.tabName;
+    const selectedTab = this.props.tabName;
     this.props.onTabSelected(selectedTab);
   }
 
