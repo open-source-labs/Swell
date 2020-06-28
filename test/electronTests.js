@@ -73,14 +73,5 @@ describe("Electron Tests", function () {
       const content = await app.client.$(".contents");
       return assert.notEqual(content.value, null);
     });
-    // add all components
-    // ient.$(".sidebar_composer-console");
-    // const composer = await app.clent.$(".historyDate-container");
-    // const collections = await app.client.$(".collections-container");
-    // const history = await app.cli
-    // return assert.notEqual(composer.value, null);
-    // return assert.notEqual(collections.value, null);
-    // return assert.notEqual(history, null);
-    // add basic events like click
   });
 });
