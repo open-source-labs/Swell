@@ -1,5 +1,6 @@
 const { Menu } = require("electron");
 const electron = require("electron");
+
 const app = electron.app;
 // --------------------------------------------------------------------------------------------------
 // Here we are creating an array of menu tabs. Each menu tab will have its own list items(aka a sub-menu).
@@ -93,7 +94,7 @@ const template = [
       {
         label: "Learn More",
         click() {
-          require("electron").shell.openExternal("http://electron.atom.io");
+          electron.shell.openExternal("http://electron.atom.io");
         },
       },
     ],
