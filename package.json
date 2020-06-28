@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
-    "test": "jest",
+    "test-jest": "jest",
     "test-mocha": "mocha",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --mode development --hot --host 0.0.0.0 --config=./webpack.dev.config.js ",
@@ -23,8 +23,7 @@
     "email": "swell@getswell.io",
     "url": "http://www.getswell.io"
   },
-  "contributors": [
-    {
+  "contributors": [{
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
       "url": "https://github.com/texpatnyc"
@@ -130,8 +129,7 @@
       "createDesktopShortcut": "always"
     },
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
