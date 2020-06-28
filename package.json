@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
-    "test": "jest",
+    "test-jest": "jest",
     "test-mocha": "mocha",
     "prod": "electron --noDevServer .",
     "prod2": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
@@ -27,8 +27,7 @@
     "email": "swell@getswell.io",
     "url": "http://www.getswell.io"
   },
-  "contributors": [
-    {
+  "contributors": [{
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
       "url": "https://github.com/texpatnyc"
@@ -134,8 +133,7 @@
       "createDesktopShortcut": "always"
     },
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -249,8 +247,6 @@
     "babili-webpack-plugin": "^0.1.2",
     "cross-env": "^7.0.2",
     "csp-html-webpack-plugin": "^4.0.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^7.3.2",
