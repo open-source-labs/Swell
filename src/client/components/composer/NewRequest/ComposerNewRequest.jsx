@@ -60,7 +60,7 @@ class ComposerNewRequest extends Component {
         !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
         !this.props.newRequestFields.gRPC
       ) {
-        let URIWithoutProtocol = `${
+        const URIWithoutProtocol = `${
           this.props.newRequestFields.url.split(protocol)[1]
         }/`;
         const host = protocol + URIWithoutProtocol.split("/")[0];
@@ -127,7 +127,7 @@ class ComposerNewRequest extends Component {
       }
       // GraphQL Subscriptions
       else if (this.props.newRequestFields.graphQL) {
-        let URIWithoutProtocol = `${
+        const URIWithoutProtocol = `${
           this.props.newRequestFields.url.split(protocol)[1]
         }/`;
         const host = protocol + URIWithoutProtocol.split("/")[0];
@@ -205,13 +205,13 @@ class ComposerNewRequest extends Component {
 `;
         }
         // define array to hold client query strings
-        let queryArrStr = this.props.newRequestStreams.streamContent;
-        let queryArr = [];
+        const queryArrStr = this.props.newRequestStreams.streamContent;
+        const queryArr = [];
         // scrub client query strings to remove line breaks
         // convert strings to objects and push to array
         for (let i = 0; i < queryArrStr.length; i += 1) {
           let query = queryArrStr[i];
-          let regexVar = /\r?\n|\r|↵/g;
+          const regexVar = /\r?\n|\r|↵/g;
           query = query.replace(regexVar, "");
           queryArr.push(JSON.parse(query));
         }
@@ -252,7 +252,7 @@ class ComposerNewRequest extends Component {
           rpc: this.props.newRequestStreams.selectedRequest,
           packageName: this.props.newRequestStreams.selectedPackage,
           streamingType: this.props.newRequestStreams.streamingType,
-          queryArr: queryArr,
+          queryArr,
           initialQuery: this.props.newRequestStreams.initialQuery,
           streamsArr: this.props.newRequestStreams.streamsArr,
           streamContent: this.props.newRequestStreams.streamContent,
@@ -356,7 +356,7 @@ class ComposerNewRequest extends Component {
   }
 
   render() {
-    let HeaderEntryFormStyle = {
+    const HeaderEntryFormStyle = {
       //trying to change style to conditional created strange duplication effect when continuously changing protocol
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol)
         ? "block"
@@ -378,6 +378,7 @@ class ComposerNewRequest extends Component {
     }
     return (
       <div
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         style={{ display: "flex", flexDirection: "column", outline: "none" }}
       >

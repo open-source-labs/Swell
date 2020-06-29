@@ -5,15 +5,14 @@
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
-    "test": "jest",
+    "test-jest": "jest",
     "test-mocha": "mocha",
     "prod": "electron --noDevServer .",
     "prod2": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --mode development --hot --host 0.0.0.0 --config=./webpack.dev.config.js ",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack.development.js",
-    "dev": "cross-env NODE_ENV=development electron .",
-    "dev1": "concurrently --s first \"npm run dev-server\" \"npm run dev\" -k",
-    "build": "cross-env NODE_ENV=production npx webpack --mode=production --config ./webpack.production.js",
+    "dev": "electron .",
+    "build": "cross-env NODE_ENV=production webpack --mode=production --config ./webpack.production.js",
     "build2": "webpack --config webpack.build.config.js --mode production",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
@@ -28,8 +27,7 @@
     "email": "swell@getswell.io",
     "url": "http://www.getswell.io"
   },
-  "contributors": [
-    {
+  "contributors": [{
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
       "url": "https://github.com/texpatnyc"
@@ -135,8 +133,7 @@
       "createDesktopShortcut": "always"
     },
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -250,8 +247,6 @@
     "babili-webpack-plugin": "^0.1.2",
     "cross-env": "^7.0.2",
     "csp-html-webpack-plugin": "^4.0.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^7.3.2",

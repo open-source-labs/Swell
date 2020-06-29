@@ -15,24 +15,6 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.(html)$/,
-      //   include: [path.resolve(__dirname, "src")],
-      //   use: {
-      //     loader: "html-loader",
-      //     options: {
-      //       attributes: {
-      //         list: [
-      //           {
-      //             tag: "img",
-      //             attribute: "data-src",
-      //             type: "src",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      // },
       {
         test: /\.jsx?$/,
         include: [path.resolve(__dirname, "src")],
@@ -49,22 +31,14 @@ module.exports = {
       {
         test: /\.scss$/,
         include: [path.resolve(__dirname, "src")],
-        use: [
-          MiniCssExtractPlugin.loader,
-          // "style-loader",
-          "css-loader",
-          "sass-loader",
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         resolve: {
           extensions: [".scss"],
         },
       },
       {
         test: /\.css$/,
-        include: [
-          path.resolve(__dirname, "src"),
-          path.resolve(__dirname, "node_modules", "react-json-petty", "themes"),
-        ],
+        include: [path.resolve(__dirname, "src")],
         use: [MiniCssExtractPlugin.loader, "css-loader"],
         resolve: {
           extensions: [".css"],
@@ -77,28 +51,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // all options are optional
-      filename: "[name].css",
-      chunkFilename: "[id].css",
-      ignoreOrder: false, // Enable to remove warnings about conflicting order
-    }),
-    // new MiniCssExtractPlugin(),
-    // new HtmlWebpackPlugin({
-    //   cspPlugin: {
-    //     enabled: true,
-    //   },
-    //   filename: "index.html",
-    // }),
-    // new CspHtmlWebpackPlugin({
-    //   "base-uri": ["'self'"],
-    //   "object-src": ["'none'"],
-    //   // "script-src": ["'self'"],
-    //   "style-src": ["'self'"],
-    //   "frame-src": ["'none'"],
-    //   "worker-src": ["'none'"],
-    // }),
+    new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index-csp.html"),
       filename: "test-index.html",
@@ -108,7 +61,8 @@ module.exports = {
         policy: {
           "base-uri": "'self'",
           "object-src": "'none'",
-          // unsafe-eval allowed because dependency (protobufjs) of @grpc/grpc-js uses eval(); hopefully, grpc will update their version of protobufjs, and that version will not use eval 
+          // unsafe-eval allowed because dependency (protobufjs) of @grpc/grpc-js uses eval();
+          // hopefully, grpc will update their version of protobufjs, and that version will not use eval
           // related to this issue: https://github.com/protobufjs/protobuf.js/issues/997
           "script-src": ["'self'", "'unsafe-eval'"],
           "style-src": ["'self'"],
@@ -123,24 +77,6 @@ module.exports = {
         },
       },
     }),
-
-    // new CspHtmlWebpackPlugin({
-    //   "base-uri": "'self'",
-    //   "object-src": "'none'",
-    //   "script-src": ["'self'"],
-    //   "style-src": ["'self'"],
-    // }, {
-    //   enabled: true,
-    //   hashingMethod: "sha256",
-    //   hashEnabled: {
-    //     "script-src": true,
-    //     "style-src": true,
-    //   },
-    //   nonceEnabled: {
-    //     "script-src": true,
-    //     "style-src": true,
-    //   },
-    // }),
     new CspHtmlWebpackPlugin(),
   ],
 };
