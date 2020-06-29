@@ -148,15 +148,15 @@ process.argv.includes("--noDevServer") || process.argv.includes("TEST_MODE")
 isDev
   ? console.log(`
 
-========================
+=========================
   Launching in DEV mode
-========================
+=========================
   `)
   : console.log(`
 
-==============================
+================================
   Launching in PRODUCTION mode
-==============================
+================================
   `);
 
 // let isDev = false;
