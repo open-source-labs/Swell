@@ -48,17 +48,13 @@ require("./menu/mainMenu");
 // autoUpdater.logger.transports.file.level = "info";
 // log.info("App starting...");
 
-<<<<<<< HEAD
 console.log("app.name is ->", app.name);
 
-=======
->>>>>>> master
 let mainWindow;
 
-/****************************
- ** Create Touchbar buttons **
- *****************************/
-
+// -----------------------------------------------------------------
+// Create Touchbar buttons
+// -----------------------------------------------------------------
 const tbSelectAllButton = new TouchBarButton({
   label: "Select All",
   backgroundColor: "#3DADC2",
@@ -120,10 +116,9 @@ const tbSpacer = new TouchBarSpacer();
 const tbFlexSpacer = new TouchBarSpacer({
   size: "flexible",
 });
-
-/********************************
- ** Attach buttons to touchbar **
- ********************************/
+// -----------------------------------------------------------------
+// Attach earlier made buttons to a touch bar
+// -----------------------------------------------------------------
 
 const touchBar = new TouchBar([
   tbSpacer,
@@ -136,34 +131,16 @@ const touchBar = new TouchBar([
   tbClearAllButton,
 ]);
 
-/************************
- ******** SET isDev *****
- ************************/
+// -----------------------------------------------
+// prod / dev mode determined by boolean 'isDev'
+// -----------------------------------------------
 
 let isDev;
 // if using Spectron, run it in production
 process.argv.includes("--noDevServer") || process.argv.includes("TEST_MODE")
   ? (isDev = false)
   : (isDev = true);
-
-/*************************
- ******* MODE DISPLAY ****
- *************************/
-
-isDev
-  ? console.log(`
-
-=========================
-  Launching in DEV mode
-=========================
-  `)
-  : console.log(`
-
-================================
-  Launching in PRODUCTION mode
-================================
-  `);
-
+console.log("is this in dev mode? ", isDev);
 // let isDev = false;
 // console.log("process.defaultApp ->", process.defaultApp);
 // console.log("process.execPath -> ", process.execPath);
@@ -191,7 +168,7 @@ if (process.platform === "win32") {
 }
 
 /***********************************************
- ******* createWindow function declaration *****
+ ******* createWindow function declaration ******
  ***********************************************/
 
 function createWindow() {
@@ -213,18 +190,7 @@ function createWindow() {
     icon: `${__dirname}/src/assets/icons/64x64.png`,
   });
 
-  // and load the index.html of the app.
-  let indexPath;
-
   if (isDev) {
-    // if we are in dev mode load up 'http://localhost:8080/index.html'
-    indexPath = url.format({
-      protocol: "http:",
-      host: "localhost:8080",
-      pathname: "test-index.html",
-      slashes: true,
-    });
-
     // If we are in developer mode Add React & Redux DevTools to Electon App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -233,6 +199,19 @@ function createWindow() {
     installExtension(REDUX_DEVTOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log("An error occurred: ", err));
+  }
+
+  // and load the index.html of the app.
+  let indexPath;
+
+  if (isDev && process.argv.indexOf("--noDevServer") === -1) {
+    // if we are in dev mode load up 'http://localhost:8080/index.html'
+    indexPath = url.format({
+      protocol: "http:",
+      host: "localhost:8080",
+      pathname: "test-index.html",
+      slashes: true,
+    });
   } else {
     indexPath = url.format({
       // if we are not in dev mode load production build file
@@ -412,9 +391,6 @@ ipcMain.on("import-collection", (event, args) => {
       return;
     }
 
-    // names is the list of existing collection names in state
-    const collectionNames = args.map((obj) => obj.name);
-
     fs.readFile(filepath, "utf-8", (err, data) => {
       if (err) {
         alert("An error ocurred reading the file :", err.message);
@@ -423,7 +399,6 @@ ipcMain.on("import-collection", (event, args) => {
 
       // parse data, will throw error if not parsable
       let parsed;
-      // parsed.name already exists
       try {
         parsed = JSON.parse(data);
       } catch {
@@ -444,13 +419,6 @@ ipcMain.on("import-collection", (event, args) => {
         ) {
           options.message = "Invalid File";
           options.detail = "Please try again.";
-          dialog.showMessageBox(null, options);
-          return;
-        }
-        // duplicate collection exists already
-        if (collectionNames.includes(parsed.name)) {
-          options.message = "That collection already exists in the app";
-          options.detail = "Please rename file to something else";
           dialog.showMessageBox(null, options);
           return;
         }
