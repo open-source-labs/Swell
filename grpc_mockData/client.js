@@ -1,6 +1,6 @@
 const path = require("path");
 const protoLoader = require("@grpc/proto-loader");
-const grpc = require("grpc");
+const grpc = require("@grpc/grpc-js");
 
 // store proto path
 const PROTO_PATH = path.resolve(__dirname, "./protos/hw2.proto");
@@ -28,19 +28,18 @@ function main() {
   } else {
     user = "world";
   }
-  
+
   // create metadata
   const meta = new grpc.Metadata();
   meta.add("testing", "metadata is working");
-  
-  // unary
-  client.sayHello({ name: user }, meta, function(err, response) {
-    console.log("Greeting:", response.message);
 
+  // unary
+  client.sayHello({ name: user }, meta, function (err, response) {
+    console.log("Greeting:", response.message);
   });
   // server side streaming
   const call = client.sayHellos({ name: user }, meta);
-  call.on("data", data => {
+  call.on("data", (data) => {
     console.log("server streaming messages:", data);
   });
 
@@ -52,12 +51,12 @@ function main() {
       console.log(response);
     }
     client.close();
-  })
-  stream.write({ name: 'hello 1st client side stream'});
-  stream.write({name: 'hello 2nd client side stream' })
+  });
+  stream.write({ name: "hello 1st client side stream" });
+  stream.write({ name: "hello 2nd client side stream" });
   // ends client streaming
-  stream.end({ name: 'hello end client side stream'})
- 
+  stream.end({ name: "hello end client side stream" });
+
   // bidi streaming
   const streamBidi = client.sayHelloBidi(meta);
   // reads streaming data
@@ -65,8 +64,8 @@ function main() {
   streamBidi.on("data", console.log);
   streamBidi.on("end", () => client.close());
   // write data
-  streamBidi.write ({ name: 'hello 1st bi-di stream'});
+  streamBidi.write({ name: "hello 1st bi-di stream" });
   // ends data
-  streamBidi.end({ name: 'hello 2nd bi-di stream'})
+  streamBidi.end({ name: "hello 2nd bi-di stream" });
 }
 main();
