@@ -49,14 +49,13 @@ ${eventJSON}`;
           <JSONPretty
             data={resEvents}
             space="4"
-            theme={{
-              main:
-                "line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;",
-              key: "color:#0089D0;", // bluetwo
-              string: "color:#15B78F;", // greenone
-              value: "color:#fd971f;", // a nice orange
-              boolean: "color:#E00198;", // gqlpink
-            }}
+            className="__json-pretty__" //theme={{
+            //   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
+            //   key: 'color:#0089D0;', // bluetwo
+            //   string: 'color:#15B78F;',// greenone
+            //   value: 'color:#fd971f;', // a nice orange
+            //   boolean: 'color:#E00198;', // gqlpink
+            // }}
           />
         </div>
       );
@@ -70,14 +69,15 @@ ${eventJSON}`;
         <JSONPretty
           data={events[0]}
           space="4"
-          theme={{
-            main:
-              "line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;",
-            key: "color:#0089D0;", // bluetwo
-            string: "color:#15B78F;", // greenone
-            value: "color:#fd971f;", // a nice orange
-            boolean: "color:#E00198;", // gqlpink
-          }}
+          className="__json-pretty__"
+          // theme={{
+          //   main:
+          //     "line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;",
+          //   key: "color:#0089D0;", // bluetwo
+          //   string: "color:#15B78F;", // greenone
+          //   value: "color:#fd971f;", // a nice orange
+          //   boolean: "color:#E00198;", // gqlpink
+          // }}
         />
       </div>
     );
