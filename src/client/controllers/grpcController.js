@@ -1,32 +1,23 @@
 // import { Router } from "express";
-import {
-  ipcRenderer
-} from "electron";
-import {
-  remote
-} from 'electron';
-import * as store from '../store';
-import * as actions from '../actions/actions';
-import {
-  Metadata
-} from "@grpc/grpc-js";
+import { ipcRenderer } from "electron";
+import { remote } from "electron";
+import * as store from "../store";
+import * as actions from "../actions/actions";
+import { Metadata } from "@grpc/grpc-js";
 
-
-
-const async = require('async');
-const fs = require('fs');
-const parseArgs = require('minimist');
-const path = require('path');
-const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
+const async = require("async");
+const fs = require("fs");
+const parseArgs = require("minimist");
+const path = require("path");
+const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
 
 let grpcController = {};
-
 
 grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
   //check for connection, if not open one
 
-  reqResObj.connectionType = 'GRPC';
+  reqResObj.connectionType = "GRPC";
   reqResObj.response.times = [];
 
   // build out variables from reqresObj properties
@@ -77,107 +68,103 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
   for (let messageIdx in foundService.messages) {
     let message = foundService.messages[messageIdx];
 
-    if (foundRpc.req === message.name || foundRpc.req === 'stream ' + message.name) {
+    if (
+      foundRpc.req === message.name ||
+      foundRpc.req === "stream " + message.name
+    ) {
       messageDefObj = message.def;
       keysArray = [];
       Object.keys(messageDefObj).forEach((key) => {
-        keysArray.push(key)
-      })
+        keysArray.push(key);
+      });
     }
   }
   // build gRPC package definition with protoLoader module
   let PROTO_PATH = reqResObj.protoPath;
-  const packageDefinition = protoLoader.loadSync(
-    PROTO_PATH, {
-      keepCase: true,
-      longs: String,
-      enums: String,
-      defaults: true,
-      oneofs: true
-
-    }
-  )
+  const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true,
+  });
   // create client credentials
   let serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
-  let client = new serverName[service](`${url}`, grpc.credentials.createInsecure());
+  let client = new serverName[service](
+    `${url}`,
+    grpc.credentials.createInsecure()
+  );
 
   // create client requested metadata key and value pair for each type of streaming
-  let meta = new grpc.Metadata()
+  let meta = new grpc.Metadata();
   let metaArr = reqResObj.request.headers;
   for (let i = 0; i < metaArr.length; i += 1) {
     let currentHeader = metaArr[i];
-    meta.add(currentHeader.key, currentHeader.value)
+    meta.add(currentHeader.key, currentHeader.value);
   }
 
-  if (rpcType === 'UNARY') {
-    let query = reqResObj.queryArr[0]
+  if (rpcType === "UNARY") {
+    let query = reqResObj.queryArr[0];
     let time = {};
 
     // Open Connection and set time sent for Unary
-    reqResObj.connection = 'open';
+    reqResObj.connection = "open";
 
     time.timeSent = Date.now();
     // make Unary call
     client[rpc](query, meta, (err, data) => {
+      if (err) {
+        console.log("unary error", err);
+      }
+      // Close Connection and set time received for Unary
+      reqResObj.timeSent = time.timeSent;
 
-        if (err) {
-          console.log('unary error', err);
-        }
-        // Close Connection and set time received for Unary
-        reqResObj.timeSent = time.timeSent;
+      time.timeReceived = Date.now();
+      reqResObj.timeReceived = time.timeReceived;
 
-        time.timeReceived = Date.now();
-        reqResObj.timeReceived = time.timeReceived
-
-        reqResObj.connection = 'closed';
-        reqResObj.response.events.push(data)
-        reqResObj.response.times.push(time)
-        store.default.dispatch(actions.reqResUpdate(reqResObj));
-
-
-      }) // metadata from server
-      .on('metadata', (metadata) => {
+      reqResObj.connection = "closed";
+      reqResObj.response.events.push(data);
+      reqResObj.response.times.push(time);
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+    }) // metadata from server
+      .on("metadata", (metadata) => {
         // if metadata is sent back from the server, analyze and handle
-        let keys = Object.keys(metadata._internal_repr)
+        let keys = Object.keys(metadata._internal_repr);
         for (let i = 0; i < keys.length; i += 1) {
           let key = keys[i];
           reqResObj.response.headers[key] = metadata._internal_repr[key][0];
         }
-        store.default.dispatch(actions.reqResUpdate(reqResObj))
-      })
-
-  } else if (rpcType === 'CLIENT STREAM') {
+        store.default.dispatch(actions.reqResUpdate(reqResObj));
+      });
+  } else if (rpcType === "CLIENT STREAM") {
     // create call and open client stream connection
-    reqResObj.connection = 'open';
+    reqResObj.connection = "open";
     let timeSent = Date.now();
     reqResObj.timeSent = timeSent;
     let call = client[rpc](meta, function (error, response) {
       if (error) {
-        console.log('error in client stream', error);
+        console.log("error in client stream", error);
         return;
       } else {
         //Close Connection for client Stream
-        reqResObj.connection = 'closed';
+        reqResObj.connection = "closed";
         let curTime = Date.now();
-        reqResObj.response.times.forEach(time => {
+        reqResObj.response.times.forEach((time) => {
           time.timeReceived = curTime;
           reqResObj.timeReceived = time.timeReceived;
-
-        })
-        reqResObj.response.events.push(response)
+        });
+        reqResObj.response.events.push(response);
         store.default.dispatch(actions.reqResUpdate(reqResObj));
-
       }
-    }).on('metadata', (metadata) => {
+    }).on("metadata", (metadata) => {
       // if metadata is sent back from the server, analyze and handle
-      let keys = Object.keys(metadata._internal_repr)
+      let keys = Object.keys(metadata._internal_repr);
       for (let i = 0; i < keys.length; i += 1) {
         let key = keys[i];
         reqResObj.response.headers[key] = metadata._internal_repr[key][0];
       }
-      store.default.dispatch(actions.reqResUpdate(reqResObj))
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
-
 
     for (let i = 0; i < queryArr.length; i++) {
       let query = queryArr[i];
@@ -186,12 +173,10 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       // request without overwrite
       let time = {};
 
-      reqResObj.connection = 'pending';
-
+      reqResObj.connection = "pending";
 
       time.timeSent = timeSent;
-      reqResObj.response.times.push(time)
-
+      reqResObj.response.times.push(time);
 
       //reqResObj.connectionType = 'plain';
       // reqResObj.timeSent = Date.now();
@@ -199,76 +184,72 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       call.write(query);
     }
     call.end();
-  } else if (rpcType === 'SERVER STREAM') {
+  } else if (rpcType === "SERVER STREAM") {
     let timesArr = [];
     // Open Connection for SERVER Stream
-    reqResObj.connection = 'open';
+    reqResObj.connection = "open";
     reqResObj.timeSent = Date.now();
     const call = client[rpc](reqResObj.queryArr[0], meta);
-    call.on("data", resp => {
+    call.on("data", (resp) => {
       let time = {};
       time.timeReceived = Date.now();
       time.timeSent = reqResObj.timeSent;
       // add server response to reqResObj and dispatch to state/store
-      reqResObj.response.events.push(resp)
-      reqResObj.response.times.push(time)
+      reqResObj.response.events.push(resp);
+      reqResObj.response.times.push(time);
       reqResObj.timeReceived = time.timeReceived; //  overwritten on each call to get the final value
 
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-    })
-    call.on('error', () => {
+    });
+    call.on("error", () => {
       // for fatal error from server
-      console.log('server side stream erring out')
-    })
-    call.on('end', () => {
+      console.log("server side stream erring out");
+    });
+    call.on("end", () => {
       // Close Connection for SERVER Stream
-      reqResObj.connection = 'closed';
+      reqResObj.connection = "closed";
       // no need to push response to reqResObj, no event expected from on 'end'
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-    })
-    call.on('metadata', (metadata) => {
-      let keys = Object.keys(metadata._internal_repr)
+    });
+    call.on("metadata", (metadata) => {
+      let keys = Object.keys(metadata._internal_repr);
       for (let i = 0; i < keys.length; i += 1) {
         let key = keys[i];
         reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-
       }
-      store.default.dispatch(actions.reqResUpdate(reqResObj))
-    })
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+    });
   }
   //else BIDIRECTIONAL
   else {
     // Open duplex stream
     let counter = 0;
     let call = client[rpc](meta);
-    call.on('data', (response) => {
+    call.on("data", (response) => {
       let curTimeObj = reqResObj.response.times[counter];
       counter++;
       //Close Individual Server Response for BIDIRECTIONAL Stream
-      reqResObj.connection = 'pending';
+      reqResObj.connection = "pending";
       curTimeObj.timeReceived = Date.now();
       reqResObj.timeReceived = curTimeObj.timeReceived;
       reqResObj.response.events.push(response);
       reqResObj.response.times.push(curTimeObj);
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-
-
-    }) // metadata from server
-    call.on('metadata', (metadata) => {
-      let keys = Object.keys(metadata._internal_repr)
+    }); // metadata from server
+    call.on("metadata", (metadata) => {
+      let keys = Object.keys(metadata._internal_repr);
       for (let i = 0; i < keys.length; i += 1) {
         let key = keys[i];
         reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-
       }
-      store.default.dispatch(actions.reqResUpdate(reqResObj))
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
-    call.on('error', () => {
-      console.log('server ended connection with error')
-    })
-    call.on('end', (data) => {
+    call.on("error", () => {
+      console.log("server ended connection with error");
+    });
+    call.on("end", (data) => {
       //Close Final Server Connection for BIDIRECTIONAL Stream
-      reqResObj.connection = 'closed'
+      reqResObj.connection = "closed";
       // no need to push response to reqResObj, no event expected from on 'end'
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
@@ -278,13 +259,13 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
       let query = queryArr[i];
       //Open Connection for BIDIRECTIONAL Stream
       if (i === 0) {
-        reqResObj.connection = 'open';
+        reqResObj.connection = "open";
       } else {
-        reqResObj.connection = 'pending';
+        reqResObj.connection = "pending";
       }
       time.timeSent = Date.now();
       reqResObj.timeSent = time.timeSent;
-      reqResObj.response.times.push(time)
+      reqResObj.response.times.push(time);
       call.write(query);
     }
     call.end();
