@@ -1,6 +1,3 @@
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
-// const CspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
-const MiniCssExtractPlugin = require("csp-html-webpack-plugin");
 const path = require("path");
 const merge = require("webpack-merge");
 const { spawn } = require("child_process");
