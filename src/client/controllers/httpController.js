@@ -46,14 +46,10 @@ const httpController = {
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
-<<<<<<< HEAD
-    const foundHTTP2Connection = httpController.openHTTP2Connections.find(conn => conn.host === reqResObj.host);
-=======
 
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(
       (conn) => conn.host === reqResObj.host
     );
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
 
     // console.log('Found HTTP2 Conn >', foundHTTP2Connection);
 
