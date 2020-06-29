@@ -24,9 +24,12 @@ const ResponseEventsDisplay = ({ response }) => {
     headers["content-type"] &&
     headers["content-type"].includes("text/html")
   ) {
+    // console.log("headers:content-type ->", headers["content-type"]);
+    // console.log("events0 -> ", events[0]);
     displayContents.push(
       <div
         className="okay"
+        key="http2_html_content"
         dangerouslySetInnerHTML={{
           __html: createDOMPurify.sanitize(events[0]),
         }}
@@ -39,7 +42,7 @@ const ResponseEventsDisplay = ({ response }) => {
       for (const event of events) {
         eventJSON = JSON.stringify(event, null, 4);
         resEvents = `${resEvents}
-        ${eventJSON}`;
+${eventJSON}`;
       }
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
