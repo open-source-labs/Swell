@@ -233,7 +233,7 @@ function createWindow() {
     // if we are in dev mode load up 'http://localhost:8080/index.html'
     indexPath = url.format({
       protocol: "http:",
-      host: "localhost:8080",
+      host: "localhost:8090",
       pathname: "test-index.html",
       slashes: true,
     });
