@@ -150,10 +150,8 @@ const httpController = {
 
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
-
-    console.log("reqStream at THIS moment : ", { ...reqStream });
-
     // endStream false means we can continue to send more data, which we would for a body;
+
     // Send body depending on method;
     if (
       reqResObj.request.method !== "GET" &&
@@ -161,11 +159,8 @@ const httpController = {
     ) {
       reqStream.end(reqResObj.request.body);
     } else {
-      console.log("ending request");
       reqStream.end();
     }
-
-    console.log("reqStream at THIS moment : ", { ...reqStream });
 
     const openConnectionObj = {
       stream: reqStream,
@@ -173,12 +168,6 @@ const httpController = {
       id: reqResObj.id,
     };
 
-    console.log(
-      "connectionArry before push: ",
-      JSON.parse(JSON.stringify(connectionArray)),
-      "   openConnectionObj : ",
-      JSON.parse(JSON.stringify(openConnectionObj))
-    );
     connectionArray.push(openConnectionObj);
 
     let isSSE;
@@ -193,6 +182,7 @@ const httpController = {
         reqResObj.connection = "closed";
         reqResObj.connectionType = "plain";
       }
+
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
@@ -455,8 +445,6 @@ const httpController = {
       });
     }
   },
-
-  // ----------------------------------------------------------------------------
 
   parseSSEFields(rawString) {
     return (
