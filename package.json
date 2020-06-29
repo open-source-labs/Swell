@@ -12,7 +12,7 @@
     "start": "webpack-dev-server --mode development --hot --host 0.0.0.0 --config=./webpack.dev.config.js ",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack.development.js",
     "dev": "cross-env NODE_ENV=development electron .",
-    "dev1": "concurrently --success first \"npm run dev-server\" \"cross-env NODE_ENV=development electron .\" -k",
+    "dev1": "concurrently --s first \"npm run dev-server\" \"npm run dev\" -k",
     "build": "cross-env NODE_ENV=production npx webpack --mode=production --config ./webpack.production.js",
     "build2": "webpack --config webpack.build.config.js --mode production",
     "server": "nodemon test-server/server.js",
