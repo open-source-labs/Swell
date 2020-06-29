@@ -3,7 +3,9 @@
 const MiniCssExtractPlugin = require("csp-html-webpack-plugin");
 const path = require("path");
 const merge = require("webpack-merge");
-const { spawn } = require("child_process");
+const {
+  spawn
+} = require("child_process");
 const base = require("./webpack.config");
 
 module.exports = merge(base, {
@@ -21,10 +23,10 @@ module.exports = merge(base, {
     },
     before() {
       spawn("electron", ["."], {
-        shell: true,
-        env: process.env,
-        stdio: "inherit",
-      })
+          shell: true,
+          env: process.env,
+          stdio: "inherit",
+        })
         .on("close", (code) => process.exit(0))
         .on("error", (spawnError) => console.error(spawnError));
     },

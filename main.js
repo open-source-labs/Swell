@@ -12,7 +12,13 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 
 // npm libraries
-const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  TouchBar,
+  ipcMain,
+  dialog
+} = require("electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -21,7 +27,10 @@ const {
 // Import Auto-Updater- Swell will update itself
 // const { autoUpdater } = require("electron-updater");
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
-const { TouchBarButton, TouchBarSpacer } = TouchBar;
+const {
+  TouchBarButton,
+  TouchBarSpacer
+} = TouchBar;
 
 const path = require("path");
 const url = require("url");
@@ -34,11 +43,19 @@ const cookie = require("cookie");
 const fetch2 = require("node-fetch");
 
 // GraphQL imports
-const { ApolloClient } = require("apollo-client");
+const {
+  ApolloClient
+} = require("apollo-client");
 const gql = require("graphql-tag");
-const { InMemoryCache } = require("apollo-cache-inmemory");
-const { createHttpLink } = require("apollo-link-http");
-const { ApolloLink } = require("apollo-link");
+const {
+  InMemoryCache
+} = require("apollo-cache-inmemory");
+const {
+  createHttpLink
+} = require("apollo-link-http");
+const {
+  ApolloLink
+} = require("apollo-link");
 
 // require menu file
 require("./menu/mainMenu");
@@ -137,22 +154,23 @@ const touchBar = new TouchBar([
 
 let isDev;
 // if using Spectron, run it in production
-process.argv.includes("--noDevServer") || process.argv.includes("TEST_MODE")
-  ? (isDev = false)
-  : (isDev = true);
+process.argv.includes("--noDevServer") || process.argv.includes("TEST_MODE") ?
+  (isDev = false) :
+  (isDev = true);
 
 /*************************
  ******* MODE DISPLAY ****
  *************************/
 
 isDev
-  ? console.log(`
+  ?
+  console.log(`
 
 ========================
   Launching in DEV mode
 ========================
-  `)
-  : console.log(`
+  `) :
+  console.log(`
 
 ==============================
   Launching in PRODUCTION mode
@@ -452,16 +470,26 @@ ipcMain.on("import-collection", (event, args) => {
       }
 
       // send data to chromium for state update
-      event.sender.send("add-collection", { data });
+      event.sender.send("add-collection", {
+        data
+      });
     });
   });
 });
 
 // ipcMain listener that
 ipcMain.on("http1-fetch-message", (event, arg) => {
-  const { method, headers, body } = arg.options;
+  const {
+    method,
+    headers,
+    body
+  } = arg.options;
 
-  fetch2(headers.url, { method, headers, body })
+  fetch2(headers.url, {
+      method,
+      headers,
+      body
+    })
     .then((response) => {
       const headers = response.headers.raw();
       // check if the endpoint sends SSE
@@ -472,7 +500,9 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
         // params: method, headers, body
         event.sender.send("http1-fetch-reply", {
           headers,
-          body: { error: "This Is An SSE endpoint" },
+          body: {
+            error: "This Is An SSE endpoint"
+          },
         });
       } else {
         headers[":status"] = response.status;
@@ -480,12 +510,15 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
         const receivedCookie = headers["set-cookie"];
         headers.cookies = receivedCookie;
 
-        const contents = /json/.test(response.headers.get("content-type"))
-          ? response.json()
-          : response.text();
+        const contents = /json/.test(response.headers.get("content-type")) ?
+          response.json() :
+          response.text();
         contents
           .then((body) => {
-            event.sender.send("http1-fetch-reply", { headers, body });
+            event.sender.send("http1-fetch-reply", {
+              headers,
+              body
+            });
           })
           .catch((error) => console.log("ERROR", error));
       }
@@ -572,28 +605,42 @@ ipcMain.on("open-gql", (event, args) => {
     cache: new InMemoryCache(),
   });
 
-  const body = gql`
+  const body = gql `
     ${reqResObj.request.body}
   `;
-  const variables = reqResObj.request.bodyVariables
-    ? JSON.parse(reqResObj.request.bodyVariables)
-    : {};
+  const variables = reqResObj.request.bodyVariables ?
+    JSON.parse(reqResObj.request.bodyVariables) : {};
 
   if (reqResObj.request.method === "QUERY") {
     client
-      .query({ query: body, variables })
+      .query({
+        query: body,
+        variables
+      })
 
       .then((data) => {
-        event.sender.send("reply-gql", { reqResObj, data });
+        event.sender.send("reply-gql", {
+          reqResObj,
+          data
+        });
       })
       .catch((err) => {
         console.error(err);
-        event.sender.send("reply-gql", { error: err.networkError, reqResObj });
+        event.sender.send("reply-gql", {
+          error: err.networkError,
+          reqResObj
+        });
       });
   } else if (reqResObj.request.method === "MUTATION") {
     client
-      .mutate({ mutation: body, variables })
-      .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+      .mutate({
+        mutation: body,
+        variables
+      })
+      .then((data) => event.sender.send("reply-gql", {
+        reqResObj,
+        data
+      }))
       .catch((err) => {
         console.error(err);
       });
