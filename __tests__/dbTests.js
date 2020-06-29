@@ -22,9 +22,8 @@ db.version(1).stores({
 
 // for setup and teardown tasks that are asynchronous, take care to RETURN the promise
 describe("db test", () => {
-  beforeEach(() => {
-    return db.history.clear().catch((err) => console.log(err));
-  });
+  beforeEach(() => db.history.clear().catch((err) => console.log(err)));
+  afterEach(() => db.history.clear().catch((err) => console.log(err)));
   describe("history tests", () => {
     it("can add history with id", async () => {
       await db.history.put({ id: 8 });
