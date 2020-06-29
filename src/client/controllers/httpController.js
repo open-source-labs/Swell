@@ -99,15 +99,9 @@ const httpController = {
       };
       httpController.openHTTP2Connections.push(http2Connection);
 
-<<<<<<< HEAD
-      client.on('error', (err) => {
-        // console.error('HTTP2 FAILED...trying HTTP1\n', err);
-        http2Connection.status = 'failed';
-=======
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
         client.destroy();
 
         // if it exists in the openHTTP2Connections array, remove it
@@ -128,15 +122,9 @@ const httpController = {
         httpController.establishHTTP1connection(reqResObj, connectionArray);
       });
 
-<<<<<<< HEAD
-      client.on('connect', () => {
-        http2Connection.status = 'connected';
-        console.log('connected!')
-=======
       client.on("connect", () => {
         http2Connection.status = "connected";
 
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
         // attach request
         this.attachRequestToHTTP2Client(client, reqResObj, connectionArray);
       });
@@ -153,23 +141,18 @@ const httpController = {
     reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-    
+
     const formattedHeaders = {};
     reqResObj.request.headers.forEach((head) => {
       formattedHeaders[head.key] = head.value;
     });
-<<<<<<< HEAD
-    formattedHeaders[':path'] = reqResObj.path;
-    
-=======
     formattedHeaders[":path"] = reqResObj.path;
 
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
     // initiate request
     const reqStream = client.request(formattedHeaders, { endStream: false });
 
-    console.log('reqStream at THIS moment : ', {...reqStream})
-    
+    console.log("reqStream at THIS moment : ", { ...reqStream });
+
     // endStream false means we can continue to send more data, which we would for a body;
     // Send body depending on method;
     if (
@@ -178,35 +161,31 @@ const httpController = {
     ) {
       reqStream.end(reqResObj.request.body);
     } else {
-      console.log('ending request')
+      console.log("ending request");
       reqStream.end();
     }
 
-    console.log('reqStream at THIS moment : ', {...reqStream})
-    
+    console.log("reqStream at THIS moment : ", { ...reqStream });
+
     const openConnectionObj = {
       stream: reqStream,
       protocol: "HTTP2",
       id: reqResObj.id,
     };
 
-  
-    console.log('connectionArry before push: ', JSON.parse(JSON.stringify(connectionArray)), '   openConnectionObj : ', JSON.parse(JSON.stringify(openConnectionObj)));
+    console.log(
+      "connectionArry before push: ",
+      JSON.parse(JSON.stringify(connectionArray)),
+      "   openConnectionObj : ",
+      JSON.parse(JSON.stringify(openConnectionObj))
+    );
     connectionArray.push(openConnectionObj);
-    
-    
+
     let isSSE;
-<<<<<<< HEAD
-    
-    reqStream.on('response', (headers, flags) => {
-      isSSE = headers['content-type'].includes('stream');
-      
-=======
 
     reqStream.on("response", (headers, flags) => {
       isSSE = headers["content-type"].includes("stream");
 
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
       if (isSSE) {
         reqResObj.connection = "open";
         reqResObj.connectionType = "SSE";
@@ -220,7 +199,7 @@ const httpController = {
       // reqResObj.response.events = []; // passing empty array to handleSingleEvent
       // below instead of running this line. This invocation is different from
       // when it is run below to Check if the URL provided is a stream (near line 327)
-      
+
       // if cookies exists, parse the cookie(s)
       if (setCookie.parse(headers["set-cookie"])) {
         reqResObj.response.cookies = this.cookieFormatter(
@@ -229,19 +208,11 @@ const httpController = {
         store.default.dispatch(actions.reqResUpdate(reqResObj));
         this.handleSingleEvent([], reqResObj, headers);
       }
-<<<<<<< HEAD
-    })
-    
-    reqStream.setEncoding('utf8');
-    let data = '';
-    reqStream.on('data', (chunk) => {
-=======
     });
 
     reqStream.setEncoding("utf8");
     let data = "";
     reqStream.on("data", (chunk) => {
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
       data += chunk;
       if (isSSE) {
         let couldBeEvents = true;
@@ -272,13 +243,7 @@ const httpController = {
         }
       }
     });
-<<<<<<< HEAD
-  
-    reqStream.on('end', () => {
-
-=======
     reqStream.on("end", () => {
->>>>>>> 2f63f1636635f61c94e8ac80cf3ebad25d4a9d4e
       if (isSSE) {
         const receivedEventFields = this.parseSSEFields(data);
         receivedEventFields.timeReceived = Date.now();
