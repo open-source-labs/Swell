@@ -54,7 +54,7 @@ module.exports = {
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index-csp.html"),
-      filename: "test-index.html",
+      filename: "index.html",
       title: "Swell",
       cspPlugin: {
         enabled: true,
