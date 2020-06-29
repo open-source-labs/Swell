@@ -2,14 +2,10 @@ import * as store from "../store";
 import * as actions from "../actions/actions";
 
 const fetch2 = require("node-fetch");
-const {
-  session
-} = require("electron").remote;
+const { session } = require("electron").remote;
 const http2 = require("http2");
 
-const {
-  ipcRenderer
-} = require("electron");
+const { ipcRenderer } = require("electron");
 
 // parsing through cookies
 const setCookie = require("set-cookie-parser");
@@ -33,17 +29,12 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   openHTTPconnection(reqResObj, connectionArray) {
-    //XXXXXXXXXXXXXXX
-    /*
-     * TRY TO CONNECT AS HTTP2 FIRST IF HTTPS. If error, fallback to HTTP1.1 (WebAPI fetch)
-     */
-    if (reqResObj.protocol === "https://" || reqResObj.protocol === "http://") {
-      // console.log('HTTPS, TRYING HTTP2');
-      httpController.establishHTTP2Connection(reqResObj, connectionArray);
-    } else {
-      // console.log('HTTP REQUEST, MOVING TO FETCH');
-      httpController.establishHTTP1connection(reqResObj, connectionArray);
-    }
+    // chrome and firefox won't allow any http connection to use http2, so excluding that possibility
+
+    // if protol is https, try http2. if not, http1
+    reqResObj.protocol === "https://"
+      ? httpController.establishHTTP2Connection(reqResObj, connectionArray)
+      : httpController.establishHTTP1connection(reqResObj, connectionArray);
   },
 
   // ----------------------------------------------------------------------------
@@ -65,9 +56,7 @@ const httpController = {
     // EXISTING HTTP2 CONNECTION IS FOUND -----
 
     if (foundHTTP2Connection) {
-      const {
-        client
-      } = foundHTTP2Connection;
+      const { client } = foundHTTP2Connection;
 
       // periodically check if the client is open or destroyed, and attach if conditions are met
       const interval = setInterval(() => {
@@ -111,7 +100,7 @@ const httpController = {
       httpController.openHTTP2Connections.push(http2Connection);
 
       client.on("error", (err) => {
-        console.error("HTTP2 FAILED...trying HTTP1\n", err);
+        console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
         client.destroy();
 
@@ -160,15 +149,9 @@ const httpController = {
     formattedHeaders[":path"] = reqResObj.path;
 
     // initiate request
-    const reqStream = client.request(formattedHeaders, {
-      endStream: false
-    });
-
-    console.log('reqStream at THIS moment : ', {
-      ...reqStream
-    })
-
+    const reqStream = client.request(formattedHeaders, { endStream: false });
     // endStream false means we can continue to send more data, which we would for a body;
+
     // Send body depending on method;
     if (
       reqResObj.request.method !== "GET" &&
@@ -176,13 +159,8 @@ const httpController = {
     ) {
       reqStream.end(reqResObj.request.body);
     } else {
-      console.log('ending request')
       reqStream.end();
     }
-
-    console.log('reqStream at THIS moment : ', {
-      ...reqStream
-    })
 
     const openConnectionObj = {
       stream: reqStream,
@@ -190,10 +168,7 @@ const httpController = {
       id: reqResObj.id,
     };
 
-
-    console.log('connectionArry before push: ', JSON.parse(JSON.stringify(connectionArray)), '   openConnectionObj : ', JSON.parse(JSON.stringify(openConnectionObj)));
     connectionArray.push(openConnectionObj);
-
 
     let isSSE;
 
@@ -207,6 +182,7 @@ const httpController = {
         reqResObj.connection = "closed";
         reqResObj.connectionType = "plain";
       }
+
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
@@ -316,17 +292,9 @@ const httpController = {
     if (reqResObj.request.isSSE) {
       // invoke another func that fetches to SSE and reads stream
       // params: method, headers, body
-      const {
-        method,
-        headers,
-        body
-      } = options;
+      const { method, headers, body } = options;
 
-      fetch2(headers.url, {
-        method,
-        headers,
-        body
-      }).then((response) => {
+      fetch2(headers.url, { method, headers, body }).then((response) => {
         const heads = {};
         for (const entry of response.headers.entries()) {
           heads[entry[0].toLowerCase()] = entry[1];
@@ -338,9 +306,7 @@ const httpController = {
     // if not SSE, talk to main to fetch data and receive
     else {
       // send information to the NODE side to do the fetch request
-      this.sendToMainForFetch({
-          options
-        })
+      this.sendToMainForFetch({ options })
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
           const heads = response.headers;
@@ -351,9 +317,7 @@ const httpController = {
 
           const theResponseHeaders = response.headers;
 
-          const {
-            body
-          } = response;
+          const { body } = response;
           reqResObj.response.headers = theResponseHeaders;
 
           // if cookies exists, parse the cookie(s)
@@ -375,18 +339,12 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   parseFetchOptionsFromReqRes(reqResObject) {
-    let {
-      method,
-      headers,
-      body,
-      cookies
-    } = reqResObject.request;
+    const { headers, body, cookies } = reqResObject.request;
+    let { method } = reqResObject.request;
 
     method = method.toUpperCase();
 
-    const formattedHeaders = {
-      url: reqResObject.url
-    };
+    const formattedHeaders = { url: reqResObject.url };
     headers.forEach((head) => {
       if (head.active) {
         formattedHeaders[head.key] = head.value;
@@ -445,7 +403,6 @@ const httpController = {
     newObj.connectionType = "SSE";
 
     const decoder = new TextDecoder("utf-8");
-
     function read() {
       reader.read().then((obj) => {
         // check if there is new info to add to data
@@ -481,7 +438,8 @@ const httpController = {
         }
 
         // base case
-        if (obj.done) {} else {
+        if (obj.done) {
+        } else {
           read();
         }
       });
@@ -493,32 +451,32 @@ const httpController = {
   parseSSEFields(rawString) {
     return (
       rawString
-      // since the string is multi line, each for a different field, split by line
-      .split("\n")
-      // remove empty lines
-      .filter((field) => field !== "")
-      // massage fields so they can be parsed into JSON
-      .map((field) => {
-        const fieldColonSplit = field
-          .replace(/:/, "&&&&")
-          .split("&&&&")
-          .map((kv) => kv.trim());
+        // since the string is multi line, each for a different field, split by line
+        .split("\n")
+        // remove empty lines
+        .filter((field) => field !== "")
+        // massage fields so they can be parsed into JSON
+        .map((field) => {
+          const fieldColonSplit = field
+            .replace(/:/, "&&&&")
+            .split("&&&&")
+            .map((kv) => kv.trim());
 
-        const fieldObj = {
-          [fieldColonSplit[0]]: fieldColonSplit[1],
-        };
-        return fieldObj;
-      })
-      .reduce((acc, cur) => {
-        // handles if there are multiple fields of the same type, for example two data fields.
-        const key = Object.keys(cur)[0];
-        if (acc[key]) {
-          acc[key] = `${acc[key]}\n${cur[key]}`;
-        } else {
-          acc[key] = cur[key];
-        }
-        return acc;
-      }, {})
+          const fieldObj = {
+            [fieldColonSplit[0]]: fieldColonSplit[1],
+          };
+          return fieldObj;
+        })
+        .reduce((acc, cur) => {
+          // handles if there are multiple fields of the same type, for example two data fields.
+          const key = Object.keys(cur)[0];
+          if (acc[key]) {
+            acc[key] = `${acc[key]}\n${cur[key]}`;
+          } else {
+            acc[key] = cur[key];
+          }
+          return acc;
+        }, {})
     );
   },
 
