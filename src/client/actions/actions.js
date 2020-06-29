@@ -1,12 +1,12 @@
-import * as types from './actionTypes';
+import * as types from "./actionTypes";
 
 // BUSINESS LOGIC ACTIONS
-export const getHistory = history => ({
+export const getHistory = (history) => ({
   type: types.GET_HISTORY,
   payload: history,
 });
 
-export const deleteFromHistory = reqRes => ({
+export const deleteFromHistory = (reqRes) => ({
   type: types.DELETE_HISTORY,
   payload: reqRes,
 });
@@ -15,22 +15,22 @@ export const clearHistory = () => ({
   type: types.CLEAR_HISTORY,
 });
 
-export const getCollections = collections => ({
+export const getCollections = (collections) => ({
   type: types.GET_COLLECTIONS,
   payload: collections,
 });
 
-export const deleteFromCollection = collection => ({
+export const deleteFromCollection = (collection) => ({
   type: types.DELETE_COLLECTION,
   payload: collection,
 });
 
-export const collectionToReqRes = reqResArray => ({
+export const collectionToReqRes = (reqResArray) => ({
   type: types.COLLECTION_TO_REQRES,
   payload: reqResArray,
 });
 
-export const collectionAdd = collection => ({
+export const collectionAdd = (collection) => ({
   type: types.COLLECTION_ADD,
   payload: collection,
 });
@@ -39,55 +39,54 @@ export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
 
-export const reqResAdd = reqRes => ({
+export const reqResAdd = (reqRes) => ({
   type: types.REQRES_ADD,
   payload: reqRes,
 });
 
-export const reqResDelete = reqRes => ({
+export const reqResDelete = (reqRes) => ({
   type: types.REQRES_DELETE,
   payload: reqRes,
 });
 
-export const reqResUpdate = reqRes => ({
+export const reqResUpdate = (reqRes) => ({
   type: types.REQRES_UPDATE,
   payload: reqRes,
 });
 
-export const setComposerWarningMessage = message => ({
+export const setComposerWarningMessage = (message) => ({
   type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message,
 });
 
-
 export const setNewRequestFields = (requestObj) => ({
   type: types.SET_NEW_REQUEST_FIELDS,
-  payload : requestObj
+  payload: requestObj,
 });
 
 export const setNewRequestHeaders = (headers) => ({
   type: types.SET_NEW_REQUEST_HEADERS,
-  payload : headers
+  payload: headers,
 });
 
 export const setNewRequestStreams = (streams) => ({
   type: types.SET_NEW_REQUEST_STREAMS,
-  payload : streams
+  payload: streams,
 });
 
 export const setNewRequestBody = (body) => ({
   type: types.SET_NEW_REQUEST_BODY,
-  payload : body
+  payload: body,
 });
 
 export const setNewRequestCookies = (cookies) => ({
   type: types.SET_NEW_REQUEST_COOKIES,
-  payload : cookies
+  payload: cookies,
 });
 
 export const setNewRequestSSE = (SSEBool) => ({
   type: types.SET_NEW_REQUEST_SSE,
-  payload : SSEBool
+  payload: SSEBool,
 });
 
 export const setCurrentTab = (tab) => ({
@@ -100,17 +99,16 @@ export const setChecksAndMinis = (reqResArray) => ({
   payload: reqResArray,
 });
 
-
 // UI ACTIONS
-export const showWarning = () => ({
-  type: types.SHOW_WARNING,
-});
+// export const showWarning = () => ({
+//   type: types.SHOW_WARNING,
+// });
 
-export const hideWarning = () => ({
-  type: types.HIDE_WARNING,
-});
+// export const hideWarning = () => ({
+//   type: types.HIDE_WARNING,
+// });
 
-export const setComposerDisplay = composerDisplay => ({
+export const setComposerDisplay = (composerDisplay) => ({
   type: types.SET_COMPOSER_DISPLAY,
   payload: composerDisplay,
 });

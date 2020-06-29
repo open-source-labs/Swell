@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
-    "test": "jest",
+    "test-jest": "jest",
     "test-mocha": "mocha",
     "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
     "start": "webpack-dev-server --mode development --hot --host 0.0.0.0 --config=./webpack.dev.config.js ",
@@ -239,8 +239,6 @@
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.1.0",
     "babili-webpack-plugin": "^0.1.2",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^7.3.2",
