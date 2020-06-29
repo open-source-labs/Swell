@@ -407,6 +407,9 @@ ipcMain.on("import-collection", (event, args) => {
       return;
     }
 
+    // names is the list of existing collection names in state
+    const collectionNames = args.map((obj) => obj.name);
+
     fs.readFile(filepath, "utf-8", (err, data) => {
       if (err) {
         alert("An error ocurred reading the file :", err.message);
@@ -415,6 +418,7 @@ ipcMain.on("import-collection", (event, args) => {
 
       // parse data, will throw error if not parsable
       let parsed;
+      // parsed.name already exists
       try {
         parsed = JSON.parse(data);
       } catch {
@@ -435,6 +439,13 @@ ipcMain.on("import-collection", (event, args) => {
         ) {
           options.message = "Invalid File";
           options.detail = "Please try again.";
+          dialog.showMessageBox(null, options);
+          return;
+        }
+        // duplicate collection exists already
+        if (collectionNames.includes(parsed.name)) {
+          options.message = "That collection already exists in the app";
+          options.detail = "Please rename file to something else";
           dialog.showMessageBox(null, options);
           return;
         }
