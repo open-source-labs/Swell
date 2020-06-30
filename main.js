@@ -1,5 +1,5 @@
 // Allow self-signing HTTPS over TLS
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // Allow self-signing HTTPS over TLS
 // Disabling Node's rejection of invalid/unauthorized certificates
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
