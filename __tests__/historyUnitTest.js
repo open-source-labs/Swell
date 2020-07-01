@@ -3,13 +3,18 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import format from "date-fns/format";
 import uuid from "uuid/v4";
-import { render, screen, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  getAllByAltText,
+  queryAllByRole,
+} from "@testing-library/react";
 import HistoryContainer from "../src/client/components/containers/HistoryContainer";
 import * as actions from "../src/client/actions/actions.js";
 import reducers from "../src/client/reducers/index.js";
 import "@testing-library/jest-dom/extend-expect";
 // import store from "../src/client/store";
-import { getAllByAltText, queryAllByRole } from "@testing-library/react";
 
 //generate date for today
 let today = new Date();
