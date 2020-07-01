@@ -1,12 +1,16 @@
-import { ipcRenderer } from "electron";
+// import { ipcRenderer } from "electron";
 import uuid from "uuid/v4";
 import db from "../db";
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
-ipcRenderer.on("add-collection", (event, args) => {
-  collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
-  collectionsController.getCollections();
+const { api } = window; 
+
+
+api.receive('add-collection', (...args) => {
+    console.log('received data: ', JSON.parse(args.data));
+    collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
+    collectionsController.getCollections();
 });
 
 const collectionsController = {

@@ -5,8 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  target: "electron-renderer",
-  externals: [nodeExternals()],
+  target: "web",
+  // externals: [nodeExternals()],
   entry: ["./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -53,7 +53,8 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "index-csp.html"),
+      // if using template, add <title>Swell</title> and delete line 59.
+      // template: path.resolve(__dirname, "index-csp.html"),
       filename: "index.html",
       title: "Swell",
       cspPlugin: {

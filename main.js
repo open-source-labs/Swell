@@ -201,9 +201,12 @@ function createWindow() {
     title: "Swell",
     allowRunningInsecureContent: true,
     webPreferences: {
-      nodeIntegration: true,
-      sandbox: false,
+      nodeIntegration: false,
+      contextIsolation: true,
+      enableRemoteModule: false, 
+      sandbox: true,
       webSecurity: true,
+      preload: path.resolve(__dirname, 'preload.js')
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`,
   });
@@ -274,6 +277,8 @@ function createWindow() {
  ************** EVENT LISTENERS **********
  ****************************************/
 
+
+
 // app.on('ready') will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -296,6 +301,11 @@ app.on("window-all-closed", () => {
     app.quit(); // If User is on mac exit the program when all windows are closed
   }
 });
+
+ipcMain.on('toMain', (e, args) => {
+  console.log('received from ipcRenderer inside main: ', args); 
+  mainWindow.webContents.send('fromMain', `sending ${args} back to ipcRenderer`);
+})
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
@@ -452,10 +462,26 @@ ipcMain.on("import-collection", (event, args) => {
       }
 
       // send data to chromium for state update
-      event.sender.send("add-collection", { data });
+      ipcMain.send("add-collection", { data });
     });
   });
 });
+
+// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
+ipcMain.on('confirm-clear-history', (event) => {
+  const opts = {
+    type: "warning",
+    buttons: ["Okay", "Cancel"],
+    message: "Are you sure you want to clear history?",
+  };
+
+  dialog.showMessageBox(null, opts)
+  .then((response) => {
+    console.log('response to clear-history : ', response)
+    mainWindow.webContents.send('clear-history-response', response)
+  })
+  .catch(err => console.log(`Error on 'confirm-clear-history': ${err}`)); 
+})
 
 // ipcMain listener that
 ipcMain.on("http1-fetch-message", (event, arg) => {
