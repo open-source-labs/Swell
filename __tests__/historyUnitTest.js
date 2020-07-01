@@ -81,11 +81,9 @@ describe("history container test", () => {
     screen.debug();
   });
   test("renders all items in history array from store", () => {
-    //console.log(screen.queryAllByLabelText("queryDate"));
     expect(screen.queryAllByLabelText("queryDate").length).toBe(3);
   });
   test("correctly renders headers in history container", () => {
-    //let oldDay = format(twoDaysAgo, "MM/DD/YYYY");
     expect(screen.queryByText("Today")).toBeTruthy();
     expect(screen.queryByText("Yesterday")).toBeTruthy();
     expect(
@@ -100,18 +98,15 @@ describe("history container test", () => {
   test("correctly renders request method for each header in history", () => {
     expect(screen.queryAllByText("GET").length).toBe(3);
   });
-  test("clear history button clears history", () => {
-    
-  })
+  test("clear history button renders", () => {
+    expect(screen.queryByText("Clear History")).toBeTruthy();
+  });
+  /* Doesn't work in RTL at present */
+  // test("clear history pop-up clears history", () => {
+  //   store.dispatch(actions.clearHistory());
+  //   expect(screen.queryAllByLabelText("queryDate").length).toBe(0);
+  // });
 });
-//test if container renders
-// test("renders", () => {
-//   render(<HistoryContainer />);
-
-//   screen.debug();
-// });
-
-//
 
 /* FOR EACH COMPONENT - UNIT TESTING */
 //renders
