@@ -5,8 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  target: "electron-renderer",
-  externals: [nodeExternals()],
+  target: "web",
+  // externals: [nodeExternals()],
   entry: ["./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
