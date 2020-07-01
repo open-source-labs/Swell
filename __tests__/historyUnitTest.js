@@ -17,12 +17,12 @@ import "@testing-library/jest-dom/extend-expect";
 // import store from "../src/client/store";
 
 //generate date for today
-let today = new Date();
+const today = new Date();
 //generate date for yesterday
-let yesterday = new Date();
+const yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 //generate date for two days prior
-let twoDaysAgo = new Date();
+const twoDaysAgo = new Date();
 twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
 describe("history container test", () => {
