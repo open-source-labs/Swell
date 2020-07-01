@@ -464,8 +464,6 @@ const httpController = {
     }
   },
 
-  // ----------------------------------------------------------------------------
-
   parseSSEFields(rawString) {
     return (
       rawString

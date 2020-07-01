@@ -6,17 +6,16 @@
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "test-jest": "jest",
-    "test-mocha": "mocha",
-    "build": "cross-env NODE_ENV=production webpack --mode=production --config ./webpack.production.js",
-    "start": "electron --noDevServer .",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack.development.js",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && mocha",
+    "build": "webpack --mode=production --config ./webpack.production.js",
+    "dev": "webpack-dev-server --mode=development --config ./webpack.development.js",
+    "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
     "package-all": "electron-builder  build -mwl",
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
-    "gh-publish": "electron-builder build -mwl -p always",
-    "postinstall": "npm rebuild grpc --runtime=electron --target=7.3.2"
+    "gh-publish": "electron-builder build -mwl -p always"
   },
   "author": {
     "name": "Swell",
@@ -166,14 +165,6 @@
       "private": false
     }
   },
-  "jest": {
-    "verbose": true,
-    "collectCoverage": true,
-    "moduleNameMapper": {
-      "electron": "<rootDir>/__mocks__/electronMock.js",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/styleMocks.js"
-    }
-  },
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "engines": {
@@ -184,6 +175,9 @@
     "@babel/runtime": "^7.10.3",
     "@grpc/grpc-js": "^1.1.1",
     "@grpc/proto-loader": "^0.5.4",
+    "@jest-runner/electron": "^3.0.0",
+    "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/react": "^10.4.3",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",

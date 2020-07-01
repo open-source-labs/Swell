@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
-    publicPath: "./",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -53,7 +53,8 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "index-csp.html"),
+      // if using template, add <title>Swell</title> and delete line 59.
+      // template: path.resolve(__dirname, "index-csp.html"),
       filename: "index.html",
       title: "Swell",
       cspPlugin: {
