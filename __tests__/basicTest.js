@@ -20,74 +20,89 @@ yesterday.setDate(yesterday.getDate() - 1);
 let twoDaysAgo = new Date();
 twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-
 describe("history container test", () => {
   const initialState = {
-    business: {history: [
-      {
-        date: format(today, "MM/DD/YYYY"),
-        history: [
-          {
-            id: 1,
-            created_at: today,
-            url: "http://google.com",
-            request: {
-              method: "GET",
+    business: {
+      history: [
+        {
+          date: format(today, "MM/DD/YYYY"),
+          history: [
+            {
+              id: 1,
+              created_at: today,
+              url: "http://google.com",
+              request: {
+                method: "GET",
+              },
             },
-          },
-        ],
-      },
-      {
-        date: format(yesterday, "MM/DD/YYYY"),
-        history: [
-          {
-            id: 2,
-            created_at: yesterday,
-            url: "http://facebook.com",
-            request: {
-              method: "GET",
+          ],
+        },
+        {
+          date: format(yesterday, "MM/DD/YYYY"),
+          history: [
+            {
+              id: 2,
+              created_at: yesterday,
+              url: "http://facebook.com",
+              request: {
+                method: "GET",
+              },
             },
-          },
-        ],
-      },
-      {
-        date: format(twoDaysAgo, "MM/DD/YYYY"),
-        history: [
-          {
-            id: 3,
-            created_at: twoDaysAgo,
-            url: "http://instagram.com",
-            request: {
-              method: "GET",
+          ],
+        },
+        {
+          date: format(twoDaysAgo, "MM/DD/YYYY"),
+          history: [
+            {
+              id: 3,
+              created_at: twoDaysAgo,
+              url: "http://instagram.com",
+              request: {
+                method: "GET",
+              },
             },
-          },
-        ],
-      },
-    ],
-  }}
+          ],
+        },
+      ],
+    },
+  };
   const renderWithRedux = (
     component,
     { store = createStore(reducers, initialState) } = {}
   ) => {
-    console.log('store is: ', store.getState())
-    console.log('initial state is: ', initialState)
     return {
       ...render(<Provider store={store}>{component}</Provider>),
       store,
-    }
-  }
+    };
+  };
 
   beforeEach(() => {
-    renderWithRedux(<HistoryContainer />); 
+    renderWithRedux(<HistoryContainer />);
     screen.debug();
   });
-  test("renders history from store", () => {
-    console.log(screen.queryAllByRole("queryDate"));
-    expect(screen.queryAllByRole("queryDate").length).toBe(3);
+  test("renders all items in history array from store", () => {
+    //console.log(screen.queryAllByLabelText("queryDate"));
+    expect(screen.queryAllByLabelText("queryDate").length).toBe(3);
   });
-  // test('renders a history header', () => {
-  //   expect(screen.queryByRole('queryDate')).toBeInTheDocument();
-  // })
+  test("correctly renders headers in history container", () => {
+    //let oldDay = format(twoDaysAgo, "MM/DD/YYYY");
+    expect(screen.queryByText("Today")).toBeTruthy();
+    expect(screen.queryByText("Yesterday")).toBeTruthy();
+    expect(
+      screen.queryByText(format(twoDaysAgo, "ddd, MMM D, YYYY"))
+    ).toBeTruthy();
+  });
+  test("correctly renders url for each header in history", () => {
+    expect(screen.queryByText("http://google.com")).toBeTruthy();
+    expect(screen.queryByText("http://facebook.com")).toBeTruthy();
+    expect(screen.queryByText("http://instagram.com")).toBeTruthy();
+  });
+  test("correctly renders request method for each header in history", () => {
+    expect(screen.queryAllByText("GET").length).toBe(3);
+  });
+  test("clear history button clears history", () => {
+    
+  })
 });
 //test if container renders
 // test("renders", () => {
@@ -103,4 +118,3 @@ describe("history container test", () => {
 //buttons work (clear history, etc.)
 //forms function (accepts input)
 //state updates appropriately
-

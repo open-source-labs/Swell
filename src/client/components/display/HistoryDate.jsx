@@ -50,7 +50,7 @@ class HistoryDate extends Component {
 
     return (
       <div className="historyDate">
-        <h1 ariaLabel="queryDate">{date}</h1>
+        <h1 aria-label="queryDate">{date}</h1>
         {histArray}
       </div>
     );
