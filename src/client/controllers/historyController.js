@@ -3,7 +3,7 @@ import parse from "date-fns/parse";
 import * as store from "../store";
 import * as actions from "../actions/actions";
 import db from "../db";
-import collectionsController from "./collectionsController";
+// import collectionsController from "./collectionsController";
 
 const historyController = {
   addHistoryToIndexedDb(reqRes) {
