@@ -19,7 +19,7 @@ const {
   REDUX_DEVTOOLS,
 } = require("electron-devtools-installer");
 // Import Auto-Updater- Swell will update itself
-// const { autoUpdater } = require("electron-updater");
+const { autoUpdater } = require("electron-updater");
 // TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
@@ -41,7 +41,7 @@ const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
 
 // proto-parser func for parsing .proto files
-const protoParserFunc = require('./src/client/protoParser.js');
+const protoParserFunc = require("./src/client/protoParser.js");
 
 // require menu file
 require("./menu/mainMenu");
@@ -206,10 +206,10 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      enableRemoteModule: false, 
+      enableRemoteModule: false,
       sandbox: true,
       webSecurity: true,
-      preload: path.resolve(__dirname, 'preload.js')
+      preload: path.resolve(__dirname, "preload.js"),
     },
     icon: `${__dirname}/src/assets/icons/64x64.png`,
   });
@@ -280,8 +280,6 @@ function createWindow() {
  ************** EVENT LISTENERS **********
  ****************************************/
 
-
-
 // app.on('ready') will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -305,10 +303,13 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.on('toMain', (e, args) => {
-  console.log('received from ipcRenderer inside main: ', args); 
-  mainWindow.webContents.send('fromMain', `sending ${args} back to ipcRenderer`);
-})
+ipcMain.on("toMain", (e, args) => {
+  console.log("received from ipcRenderer inside main: ", args);
+  mainWindow.webContents.send(
+    "fromMain",
+    `sending ${args} back to ipcRenderer`
+  );
+});
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
@@ -350,9 +351,9 @@ const sendStatusToWindow = (text) => {
 //   // You could call autoUpdater.quitAndInstall(); immediately
 //   autoUpdater.quitAndInstall();
 // });
-// ipcMain.on("quit-and-install", () => {
-//   autoUpdater.quitAndInstall();
-// });
+ipcMain.on("quit-and-install", () => {
+  autoUpdater.quitAndInstall();
+});
 // App page reloads when user selects "Refresh" from pop-up dialog
 ipcMain.on("fatalError", () => {
   console.log("received fatal error");
@@ -471,50 +472,55 @@ ipcMain.on("import-collection", (event, args) => {
 });
 
 // ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
-ipcMain.on('confirm-clear-history', (event) => {
+ipcMain.on("confirm-clear-history", (event) => {
   const opts = {
     type: "warning",
     buttons: ["Okay", "Cancel"],
     message: "Are you sure you want to clear history?",
   };
 
-  dialog.showMessageBox(null, opts)
-  .then((response) => {
-    console.log('response to clear-history : ', response)
-    mainWindow.webContents.send('clear-history-response', response)
-  })
-  .catch(err => console.log(`Error on 'confirm-clear-history': ${err}`)); 
+  dialog
+    .showMessageBox(null, opts)
+    .then((response) => {
+      console.log("response to clear-history : ", response);
+      mainWindow.webContents.send("clear-history-response", response);
+    })
+    .catch((err) => console.log(`Error on 'confirm-clear-history': ${err}`));
 });
 
-ipcMain.on('import-proto', (event) => {
-  console.log('import-proto event fired!!')
+ipcMain.on("import-proto", (event) => {
+  console.log("import-proto event fired!!");
   let importedProto;
-  dialog.showOpenDialog({
-    buttonLabel : "Import Proto File",
-    properties: ['openFile', 'multiSelections'],
-    filters: [ { name: 'Protos', extensions: ['proto'] } ]
-  })
-  .then(filePaths => {
-    if (!filePaths) return undefined;
-    // read uploaded proto file & save protoContent in the store
-    fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
-      // handle read error
-      if (err) {
-        return console.log('error reading file : ', err);
-      };
-      importedProto = file; 
-      protoParserFunc(importedProto)
-      .then(protoObj => {
-        console.log('finished with logic. about to send importedProto : ', importedProto, ' and protoObj : ', protoObj)
-        mainWindow.webContents.send('proto-info', importedProto, protoObj)
-      })
+  dialog
+    .showOpenDialog({
+      buttonLabel: "Import Proto File",
+      properties: ["openFile", "multiSelections"],
+      filters: [{ name: "Protos", extensions: ["proto"] }],
+    })
+    .then((filePaths) => {
+      if (!filePaths) return undefined;
+      // read uploaded proto file & save protoContent in the store
+      fs.readFile(filePaths.filePaths[0], "utf-8", (err, file) => {
+        // handle read error
+        if (err) {
+          return console.log("error reading file : ", err);
+        }
+        importedProto = file;
+        protoParserFunc(importedProto).then((protoObj) => {
+          console.log(
+            "finished with logic. about to send importedProto : ",
+            importedProto,
+            " and protoObj : ",
+            protoObj
+          );
+          mainWindow.webContents.send("proto-info", importedProto, protoObj);
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  })
-  .catch(err => {
-    console.log(err);
-  })
- 
-})
+});
 
 // ipcMain listener that
 ipcMain.on("http1-fetch-message", (event, arg) => {
