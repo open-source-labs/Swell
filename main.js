@@ -40,6 +40,9 @@ const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
 
+// proto-parser func for parsing .proto files
+const protoParserFunc = require('./src/client/protoParser.js');
+
 // require menu file
 require("./menu/mainMenu");
 
@@ -481,6 +484,36 @@ ipcMain.on('confirm-clear-history', (event) => {
     mainWindow.webContents.send('clear-history-response', response)
   })
   .catch(err => console.log(`Error on 'confirm-clear-history': ${err}`)); 
+});
+
+ipcMain.on('import-proto', (event) => {
+  console.log('import-proto event fired!!')
+  let importedProto;
+  dialog.showOpenDialog({
+    buttonLabel : "Import Proto File",
+    properties: ['openFile', 'multiSelections'],
+    filters: [ { name: 'Protos', extensions: ['proto'] } ]
+  })
+  .then(filePaths => {
+    if (!filePaths) return undefined;
+    // read uploaded proto file & save protoContent in the store
+    fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+      // handle read error
+      if (err) {
+        return console.log('error reading file : ', err);
+      };
+      importedProto = file; 
+      protoParserFunc(importedProto)
+      .then(protoObj => {
+        console.log('finished with logic. about to send importedProto : ', importedProto, ' and protoObj : ', protoObj)
+        mainWindow.webContents.send('proto-info', importedProto, protoObj)
+      })
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  })
+ 
 })
 
 // ipcMain listener that
