@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { remote } from 'electron';
-import fs from 'fs';
+// import { remote } from 'electron';
+// import fs from 'fs';
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
-import protoParserFunc from "../../../../client/protoParser.js";
+// import protoParserFunc from "../../../protoParser.js";
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+
+const { api } = window; 
 
 class GRPCProtoEntryForm extends Component {
   constructor(props) {
@@ -44,30 +46,43 @@ class GRPCProtoEntryForm extends Component {
         protoContent: ''
       });
     }
-    // use electron dialog to import files that has .proto ext only
-    remote.dialog.showOpenDialog({
-      buttonLabel : "Import Proto File",
-      properties: ['openFile', 'multiSelections'],
-      filters: [ { name: 'Protos', extensions: ['proto'] } ]
-    })
-    .then(filePaths => {
-      if (!filePaths) return;
-      // read uploaded proto file & save protoContent in the store
-      const importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
+
+    api.receive('proto-info', (readProto, parsedProto) => {
+      console.log('received from main readProto : ', readProto, 'and parsed Proto : ', parsedProto)
       this.props.setNewRequestStreams({
         ...this.props.newRequestStreams,
-        protoContent: importedProto
+        protoContent: readProto,
+        services: parsedProto.serviceArr,
+        protoPath: parsedProto.protoPath
       });
-      // parse proto file via protoParserFunc imported from protoParser.js & save parsed proto file details in the store
-      protoParserFunc(this.props.newRequestStreams.protoContent)
-      .then(data => {
-        this.props.setNewRequestStreams({
-          ...this.props.newRequestStreams,
-          services: data.serviceArr,
-          protoPath: data.protoPath
-        })
-      }).catch((err) => console.log(err));
     });
+
+    api.send('import-proto');
+
+    // // use electron dialog to import files that has .proto ext only
+    // remote.dialog.showOpenDialog({
+    //   buttonLabel : "Import Proto File",
+    //   properties: ['openFile', 'multiSelections'],
+    //   filters: [ { name: 'Protos', extensions: ['proto'] } ]
+    // })
+    // .then(filePaths => {
+    //   if (!filePaths) return;
+    //   // read uploaded proto file & save protoContent in the store
+    //   const importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
+    //   this.props.setNewRequestStreams({
+    //     ...this.props.newRequestStreams,
+    //     protoContent: importedProto
+    //   });
+    //   // parse proto file via protoParserFunc imported from protoParser.js & save parsed proto file details in the store
+    //   protoParserFunc(this.props.newRequestStreams.protoContent)
+    //   .then(data => {
+    //     this.props.setNewRequestStreams({
+    //       ...this.props.newRequestStreams,
+    //       services: data.serviceArr,
+    //       protoPath: data.protoPath
+    //     })
+    //   }).catch((err) => console.log(err));
+    // });
   }
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
