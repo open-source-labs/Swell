@@ -2,7 +2,7 @@ const fs = require("fs");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
-const uuid = require("uuid");
+// const uuid = require("uuid");
 
 async function protoParserFunc(protoBodyData) {
   // define storage for .proto parsed content
@@ -169,4 +169,4 @@ async function protoParserFunc(protoBodyData) {
 
 // console.log(tempData);
 // protoParserFunc(tempData).catch((err) => console.log(err));
-export default protoParserFunc;
+module.exports = protoParserFunc; 
