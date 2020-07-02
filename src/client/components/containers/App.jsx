@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import '../../../assets/style/App.scss';
-const { api } = window; 
+import React, { Component } from "react";
+import "../../../assets/style/App.scss";
+const { api } = window;
 // import ContentsContainer from './ContentsContainer.jsx';
 // import ReqResCtrl from '../../controllers/reqResController';
-import SidebarContainer from './SidebarContainer.jsx';
-// import UpdatePopUpContainer from './UpdatePopUpContainer.jsx';
-import historyController from '../../controllers/historyController';
-import collectionsController from '../../controllers/collectionsController';
+import SidebarContainer from "./SidebarContainer.jsx";
+import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
+import historyController from "../../controllers/historyController";
+import collectionsController from "../../controllers/collectionsController";
 // const EventEmitter = require('events');
 // const {dialog} = require('electron').remote
 class App extends Component {
@@ -14,7 +14,8 @@ class App extends Component {
     super(props);
   }
 
-  componentDidMount() {// This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
+  componentDidMount() {
+    // This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
     // ipcRenderer.send('check-for-update');
     // api.send('check-for-update')
     // ipcRenderer.on('selectAll', ReqResCtrl.selectAllReqRes); // if the selectAll touchbar button was clicked (then run this method called selectAllReqRes) that is located in the connectionController...likewise for the rest
@@ -46,15 +47,14 @@ class App extends Component {
 
     historyController.getHistory();
     collectionsController.getCollections();
-
   }
 
   render() {
-    api.receive('fromMain', (data) => console.log(data)); 
-    api.send('toMain', 'MEAT WITH SAUCE')
+    api.receive("fromMain", (data) => console.log(data));
+    api.send("toMain", "MEAT WITH SAUCE");
     return (
       <div id="app">
-        {/* <UpdatePopUpContainer /> */}
+        <UpdatePopUpContainer />
         <SidebarContainer />
         {/* <ContentsContainer /> */}
       </div>
