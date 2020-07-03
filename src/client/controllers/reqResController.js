@@ -1,9 +1,11 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-import httpController from "./httpController.js";
-import wsController from "./wsController.js";
-import graphQLController from "./graphQLController.js";
-import grpcController from "./grpcController.js";
+// import httpController from "./httpController.js";
+// import wsController from "./wsController.js";
+// import graphQLController from "./graphQLController.js";
+// import grpcController from "./grpcController.js";
+
+const { api } = window; 
 
 const connectionController = {
   openConnectionArray: [],
@@ -57,7 +59,9 @@ const connectionController = {
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
     else {
-      httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
+      api.send('open-http', reqResObj, this.openConnectionArray);
+      api.receive('testing', (data) => console.log('just received :  ', data))
+      // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
     }
   },
 
