@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld("api", {
       "confirm-clear-history",
       "import-proto",
       "quit-and-install",
+      "protoParserFunc-request",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
@@ -22,6 +23,7 @@ contextBridge.exposeInMainWorld("api", {
       "clear-history-response",
       "proto-info",
       "message",
+      "protoParserFunc-return",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));

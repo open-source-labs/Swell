@@ -33,6 +33,10 @@ const cookie = require("cookie");
 // node-fetch for the fetch request
 const fetch2 = require("node-fetch");
 
+// grpc libraries
+const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
+
 // GraphQL imports
 const { ApolloClient } = require("apollo-client");
 const gql = require("graphql-tag");
@@ -488,6 +492,10 @@ ipcMain.on("confirm-clear-history", (event) => {
     .catch((err) => console.log(`Error on 'confirm-clear-history': ${err}`));
 });
 
+// ================= GRPCProtoEntryForm Calls that uses protoParserFunc =======
+
+// import-proto
+
 ipcMain.on("import-proto", (event) => {
   console.log("import-proto event fired!!");
   let importedProto;
@@ -521,6 +529,20 @@ ipcMain.on("import-proto", (event) => {
       console.log(err);
     });
 });
+
+// protoParserFunc-request. Just runs the function and returns the value back to GRPCProtoEntryForm
+
+ipcMain.on("protoParserFunc-request", (event, data) => {
+  protoParserFunc(data)
+    .then((result) => {
+      mainWindow.webContents.send("protoParserFunc-return", result);
+    })
+    .catch((err) =>
+      console.log("err inside protoParserFunc-request listener in main", err)
+    );
+});
+
+// ====================== OLDER STUFF =======================
 
 // ipcMain listener that
 ipcMain.on("http1-fetch-message", (event, arg) => {

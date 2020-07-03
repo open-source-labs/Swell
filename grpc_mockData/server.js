@@ -1,8 +1,10 @@
 const path = require("path");
-const Mali = require("mali");
-// consider replacing highland with normal node code for converting array to streams
 const hl = require("highland");
+const Mali = require("mali");
+// Mali needs the old grpc as a peer dependency so that should be installed as well
 const grpc = require("@grpc/grpc-js");
+
+// consider replacing highland with normal node code for converting array to streams
 
 const PROTO_PATH = path.join(__dirname, "./protos/hw2.proto");
 const HOSTPORT = "0.0.0.0:50051";
@@ -30,7 +32,7 @@ const dataStream = [
 // ctx = watch execution context
 function sayHello(ctx) {
   // create new metadata
-  let metadata = new grpc.Metadata();
+  const metadata = new grpc.Metadata();
   metadata.set("it", "works?");
   metadata.set("indeed", "it do");
   // Watcher creates a watch execution context for the watch
@@ -53,7 +55,7 @@ function sayHello(ctx) {
 
 function sayHelloNested(ctx) {
   // create new metadata
-  let metadata = new grpc.Metadata();
+  const metadata = new grpc.Metadata();
   metadata.set("it", "works?");
   metadata.set("indeed", "it do");
   // Watcher creates a watch execution context for the watch
@@ -63,8 +65,8 @@ function sayHelloNested(ctx) {
   // console.log("ctx line 64 from server.js", ctx)
 
   // nested unary response call
-  let firstPerson = ctx.req.firstPerson.name;
-  let secondPerson = ctx.req.secondPerson.name;
+  const firstPerson = ctx.req.firstPerson.name;
+  const secondPerson = ctx.req.secondPerson.name;
   // console.log("firstPerson line 68 from server.js:", firstPerson)
   ctx.res = {
     serverMessage: [
@@ -80,7 +82,7 @@ function sayHelloNested(ctx) {
 // used highland library to manage asynchronous data
 async function sayHellos(ctx) {
   // create new metadata
-  let metadata = new grpc.Metadata();
+  const metadata = new grpc.Metadata();
   metadata.set("it", "works?");
   metadata.set("indeed", "it do");
   // The execution context provides scripts and templates with access to the watch metadata
@@ -95,7 +97,7 @@ async function sayHellos(ctx) {
 
   dataStream.push(reqMessages);
   reqMessages = dataStream;
-  let streamData = await hl(reqMessages);
+  const streamData = await hl(reqMessages);
   ctx.res = streamData;
   metadata.set("serverStream", "indeed");
   dataStream.pop();
@@ -110,7 +112,7 @@ async function sayHellos(ctx) {
 // Client-Side stream
 function sayHelloCs(ctx) {
   // create new metadata
-  let metadata = new grpc.Metadata();
+  const metadata = new grpc.Metadata();
   metadata.set("it", "works?");
   metadata.set("indeed", "it do");
   metadata.set("clientStream", "indubitably");
@@ -118,7 +120,7 @@ function sayHelloCs(ctx) {
   console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log('got sayHelloClients')
   let counter = 0;
-  let messages = [];
+  const messages = [];
   // client streaming calls to write messages and end writing before you can get the response
   return new Promise((resolve, reject) => {
     hl(ctx.req)
@@ -144,7 +146,7 @@ function sayHelloCs(ctx) {
 // Bi-Di stream
 function sayHelloBidi(ctx) {
   // create new metadata
-  let metadata = new grpc.Metadata();
+  const metadata = new grpc.Metadata();
   metadata.set("it", "works?");
   metadata.set("indeed", "it do");
   // console.log("got sayHelloBidi");
