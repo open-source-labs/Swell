@@ -29,8 +29,8 @@ const graphQLController = {
   // handles graphQL queries and mutations
   sendGqlToMain(args) {
     return new Promise((resolve) => {
-      ipcRenderer.send("open-gql", args);
-      ipcRenderer.on("reply-gql", (event, result) => {
+      api.send("open-gql", args);
+      api.receive("reply-gql", (result) => {
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
