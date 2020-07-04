@@ -10,6 +10,10 @@ contextBridge.exposeInMainWorld("api", {
       "quit-and-install",
       "protoParserFunc-request",
       "open-http",
+      "open-gql",
+      "import-collection",
+      "export-collection",
+      "open-http",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -25,6 +29,8 @@ contextBridge.exposeInMainWorld("api", {
       "proto-info",
       "message",
       "protoParserFunc-return",
+      "reqResUpdate",
+      "reply-gql",
       "reqResUpdate",
     ];
     if (allowedChannels.includes(channel)) {
