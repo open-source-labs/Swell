@@ -50,6 +50,7 @@ const connectionController = {
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
     api.receive('reqResUpdate', (reqResObj) => store.default.dispatch(actions.reqResUpdate(reqResObj)));
+    
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
