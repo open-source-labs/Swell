@@ -173,6 +173,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
+    "@doyensec/electronegativity": "^1.6.0",
     "@grpc/grpc-js": "^1.1.1",
     "@grpc/proto-loader": "^0.5.4",
     "@jest-runner/electron": "^3.0.0",
@@ -195,6 +196,7 @@
     "electron-updater": "^4.3.1",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
+    "google-auth-library": "^6.0.2",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "grpc": "^1.24.3",
