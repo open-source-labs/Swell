@@ -1,7 +1,7 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
-  send: (channel, data) => {
+  send: (channel, ...data) => {
     // allowlist channels
     const allowedChannels = [
       "toMain",
@@ -10,9 +10,10 @@ contextBridge.exposeInMainWorld("api", {
       "quit-and-install",
       "protoParserFunc-request",
       "fetch-meta-and-client",
+      "open-http",
     ];
     if (allowedChannels.includes(channel)) {
-      ipcRenderer.send(channel, data);
+      ipcRenderer.send(channel, ...data);
     }
   },
   receive: (channel, cb) => {
@@ -26,6 +27,7 @@ contextBridge.exposeInMainWorld("api", {
       "message",
       "protoParserFunc-return",
       "meta-and-client",
+      "reqResUpdate",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));

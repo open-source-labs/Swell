@@ -1,6 +1,13 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 import ContentsContainer from "./ContentsContainer.jsx";
 import ReqResCtrl from "../../controllers/reqResController";
+=======
+import "../../../assets/style/App.scss";
+const { api } = window;
+import ContentsContainer from './ContentsContainer.jsx';
+// import ReqResCtrl from '../../controllers/reqResController';
+>>>>>>> preload
 import SidebarContainer from "./SidebarContainer.jsx";
 import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
 import historyController from "../../controllers/historyController";
