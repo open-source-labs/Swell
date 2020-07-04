@@ -40,7 +40,7 @@ class UpdatePopUpContainer extends Component {
         <p>{this.state.message}</p>
         {this.state.message === "Update downloaded." && (
           <>
-            <p class="updateMessage">
+            <p className="updateMessage">
               Do you want to restart and install now? <br /> (If not, will
               auto-install on restart.)
             </p>

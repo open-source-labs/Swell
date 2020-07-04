@@ -1,16 +1,20 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
-  send: (channel, data) => {
+  send: (channel, ...data) => {
     // allowlist channels
     const allowedChannels = [
       "toMain",
       "confirm-clear-history",
       "import-proto",
       "quit-and-install",
+      "open-gql",
+      "import-collection",
+      "export-collection",
+      'open-http',
     ];
     if (allowedChannels.includes(channel)) {
-      ipcRenderer.send(channel, data);
+      ipcRenderer.send(channel, ...data);
     }
   },
   receive: (channel, cb) => {
@@ -22,6 +26,8 @@ contextBridge.exposeInMainWorld("api", {
       "clear-history-response",
       "proto-info",
       "message",
+      "reply-gql",
+      'reqResUpdate'
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));

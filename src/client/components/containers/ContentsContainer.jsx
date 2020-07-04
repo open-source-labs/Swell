@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import GraphContainer from './GraphContainer.jsx';
+// import GraphContainer from './GraphContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
 import NavBarContainer from './NavBarContainer.jsx';
 
@@ -12,7 +12,7 @@ class Contents extends Component {
   render() {
     return(
       <div className={'contents'}>
-        <GraphContainer/>
+        {/* <GraphContainer/> */}
         <NavBarContainer/>
         <ReqResContainer/>
       </div>
