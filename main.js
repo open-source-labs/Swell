@@ -542,6 +542,35 @@ ipcMain.on("protoParserFunc-request", (event, data) => {
     );
 });
 
+// ======================= grpcController.openGrpcConnection
+
+ipcMain.on("fetch-meta-and-client", (event, data) => {
+  const { PROTO_PATH, headers, packageName, service, url } = data;
+  const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true,
+  });
+
+  // create client credentials
+  const serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
+  const client = new serverName[service](
+    url,
+    grpc.credentials.createInsecure()
+  );
+
+  // create client requested metadata key and value pair for each type of streaming
+  const meta = new grpc.Metadata();
+  const metaArr = headers;
+  for (let i = 0; i < metaArr.length; i += 1) {
+    const currentHeader = metaArr[i];
+    meta.add(currentHeader.key, currentHeader.value);
+  }
+  mainWindow.webContents.send("meta-and-client", { meta, client });
+});
+
 // ====================== OLDER STUFF =======================
 
 // ipcMain listener that

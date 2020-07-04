@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import "../../../assets/style/App.scss";
-const { api } = window;
-// import ContentsContainer from './ContentsContainer.jsx';
-// import ReqResCtrl from '../../controllers/reqResController';
+import ContentsContainer from "./ContentsContainer.jsx";
+import ReqResCtrl from "../../controllers/reqResController";
 import SidebarContainer from "./SidebarContainer.jsx";
 import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
 // const EventEmitter = require('events');
 // const {dialog} = require('electron').remote
+import "../../../assets/style/App.scss";
+
+const { api } = window;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -56,7 +57,7 @@ class App extends Component {
       <div id="app">
         <UpdatePopUpContainer />
         <SidebarContainer />
-        {/* <ContentsContainer /> */}
+        <ContentsContainer />
       </div>
     );
   }
