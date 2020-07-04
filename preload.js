@@ -8,7 +8,7 @@ contextBridge.exposeInMainWorld("api", {
       "confirm-clear-history",
       "import-proto",
       "quit-and-install",
-      'open-http'
+      'open-http',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -23,7 +23,7 @@ contextBridge.exposeInMainWorld("api", {
       "clear-history-response",
       "proto-info",
       "message",
-      'testing'
+      'reqResUpdate'
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));

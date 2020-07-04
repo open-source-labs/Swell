@@ -48,7 +48,8 @@ const connectionController = {
   },
 
   openReqRes(id) {
-    console.log("this.openConnectionArray ->", this.openConnectionArray);
+    // listens for reqResUpdate event from main process telling it to update reqResobj
+    api.receive('reqResUpdate', (reqResObj) => store.default.dispatch(actions.reqResUpdate(reqResObj)));
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
@@ -59,8 +60,8 @@ const connectionController = {
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
     else {
+      console.log('should be sending')
       api.send('open-http', reqResObj, this.openConnectionArray);
-      api.receive('testing', (data) => console.log('just received :  ', data))
       // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
     }
   },

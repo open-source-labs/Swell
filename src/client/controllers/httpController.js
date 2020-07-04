@@ -77,6 +77,7 @@ const httpController = {
         clearInterval(interval);
         if (foundHTTP2Connection.status === "initialized") {
           reqResObj.connection = "error";
+          // LISTEN FOR ERROR EVENTS FROM MAIN PROCESS HERE
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         }
       }, 10000);
@@ -141,7 +142,8 @@ const httpController = {
     reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+  
+    // format headers in chosen reqResObj so we can add them to our request
     const formattedHeaders = {};
     reqResObj.request.headers.forEach((head) => {
       formattedHeaders[head.key] = head.value;
@@ -150,15 +152,11 @@ const httpController = {
 
     // initiate request
     const reqStream = client.request(formattedHeaders, {
+      // do not immediately close the *writable* side of the http2 stream (i.e. what the request sends over), in case we are using a request method that sends a payload body
       endStream: false,
     });
 
-    console.log("reqStream at THIS moment : ", {
-      ...reqStream,
-    });
-
-    // endStream false means we can continue to send more data, which we would for a body;
-    // Send body depending on method;
+    // we can now close the writable side of our stream, either sending our request body or not, depending on our method
     if (
       reqResObj.request.method !== "GET" &&
       reqResObj.request.method !== "HEAD"
@@ -169,10 +167,11 @@ const httpController = {
       reqStream.end();
     }
 
-    console.log("reqStream at THIS moment : ", {
-      ...reqStream,
-    });
+    // console.log("reqStream at THIS moment : ", {
+    //   ...reqStream,
+    // });
 
+    // create an object that represents our open connection.
     const openConnectionObj = {
       stream: reqStream,
       protocol: "HTTP2",
@@ -185,11 +184,14 @@ const httpController = {
       "   openConnectionObj : ",
       JSON.parse(JSON.stringify(openConnectionObj))
     );
+
+    // this is the connection array that was passed into these controller functions from reqResController.js
     connectionArray.push(openConnectionObj);
 
     let isSSE;
 
     reqStream.on("response", (headers, flags) => {
+      // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
       isSSE = headers["content-type"].includes("stream");
 
       if (isSSE) {
@@ -201,6 +203,7 @@ const httpController = {
       }
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
+      console.log('this is the time inside the response event listener : ', Date.now())
       reqResObj.response.headers = headers;
       // reqResObj.response.events = []; // passing empty array to handleSingleEvent
       // below instead of running this line. This invocation is different from
@@ -208,10 +211,12 @@ const httpController = {
 
       // if cookies exists, parse the cookie(s)
       if (setCookie.parse(headers["set-cookie"])) {
+        console.log('made it into cookies')
         reqResObj.response.cookies = this.cookieFormatter(
           setCookie.parse(headers["set-cookie"])
         );
         store.default.dispatch(actions.reqResUpdate(reqResObj));
+        // RECEIVE A "RESPONSE EVENT"
         this.handleSingleEvent([], reqResObj, headers);
       }
     });
@@ -219,6 +224,7 @@ const httpController = {
     reqStream.setEncoding("utf8");
     let data = "";
     reqStream.on("data", (chunk) => {
+      console.log('is this a server sent event? ', isSSE)
       data += chunk;
       if (isSSE) {
         let couldBeEvents = true;
@@ -252,6 +258,7 @@ const httpController = {
     reqStream.on("end", () => {
       if (isSSE) {
         const receivedEventFields = this.parseSSEFields(data);
+        console.log('SSE triggered')
         receivedEventFields.timeReceived = Date.now();
         reqResObj.connection = "closed";
         reqResObj.response.events.push(receivedEventFields);
@@ -399,6 +406,8 @@ const httpController = {
     newObj.connection = "closed";
     newObj.connectionType = "plain";
     newObj.timeReceived = Date.now();
+    console.log('Date.now() inside handleSingleEvent : ', Date.now())
+    console.log('this is what was added : ', newObj.timeReceived)
     newObj.response.events.push(response);
     store.default.dispatch(actions.reqResUpdate(newObj));
   },
