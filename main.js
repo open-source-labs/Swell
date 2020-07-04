@@ -202,7 +202,7 @@ function createWindow() {
     backgroundColor: "-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)",
     show: false,
     title: "Swell",
-    allowRunningInsecureContent: true,
+    // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

@@ -7,16 +7,9 @@
   "scripts": {
     "test-jest": "jest",
     "test-mocha": "webpack --mode=production --config ./webpack.production.js && mocha",
-<<<<<<< HEAD
-    "build": "cross-env NODE_ENV=production webpack --mode=production --config ./webpack.production.js",
-    "start": "electron --noDevServer .",
-    "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
-    "dev": "webpack-dev-server --config ./webpack.development.js",
-=======
     "build": "webpack --mode=production --config ./webpack.production.js",
     "dev": "webpack-dev-server --mode=development --config ./webpack.development.js",
     "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
->>>>>>> 892abbce7ecb7a42642effcec82e49f74862552b
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
     "package-all": "electron-builder  build -mwl",
