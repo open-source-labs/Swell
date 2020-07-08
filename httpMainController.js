@@ -257,15 +257,50 @@ const httpController = {
   },
   // ----------------------------------------------------------------------------
 
-  // sendToMainForFetch(args) {
-  //   return new Promise((resolve) => {
-  //     ipcRenderer.send("http1-fetch-message", args);
-  //     ipcRenderer.on("http1-fetch-reply", (event, result) => {
-  //       resolve(result);
-  //     });
-  //   });
-  // },
+  sendToMainForFetch(args) {
+    return new Promise((resolve) => {
+    //   ipcRenderer.send("http1-fetch-message", args);
+    //   ipcRenderer.on("http1-fetch-reply", (event, result) => {
+    //     resolve(result);
+    //   });
+      const { method, headers, body } = args.options; 
 
+      fetch2(headers.url, { method, headers, body })
+      .then((response) => {
+        const headers = response.headers.raw();
+        // check if the endpoint sends SSE
+        // add status code for regular http requests in the response header
+
+        if (headers["content-type"][0].includes("stream")) {
+          // invoke another func that fetches to SSE and reads stream
+          // params: method, headers, body
+          resolve({
+            headers,
+            body: { error: "This Is An SSE endpoint" },
+          })
+        }
+        headers[":status"] = response.status;
+
+        const receivedCookie = headers["set-cookie"];
+        headers.cookies = receivedCookie;
+
+        const contents = /json/.test(response.headers.get("content-type"))
+          ? response.json()
+          : response.text();
+        contents
+          .then((body) => {
+            console.log('returned out of fetching')
+            resolve({ 
+              headers, 
+              body 
+            });
+          })
+          .catch((error) => console.log("ERROR", error));
+      
+      })
+      .catch((error) => console.log(error));
+    });
+  },
   // ----------------------------------------------------------------------------
 
   establishHTTP1connection(event, reqResObj, connectionArray) {
@@ -285,14 +320,12 @@ const httpController = {
       }
     });
     const openConnectionObj = {
-      abort: new AbortController(),
       protocol: "HTTP1",
       id: reqResObj.id,
     };
     connectionArray.push(openConnectionObj);
 
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
-    options.signal = openConnectionObj.abort.signal;
 
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
@@ -315,10 +348,10 @@ const httpController = {
     }
     // if not SSE, talk to main to fetch data and receive
     else {
-      // send information to the NODE side to do the fetch request
       this.sendToMainForFetch({ options })
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
+         
           const heads = response.headers;
           reqResObj.response.headers = heads;
 
@@ -401,7 +434,7 @@ const httpController = {
     console.log('this is what was added : ', newObj.timeReceived)
     newObj.response.events.push(response);
     // send back reqResObj to renderer so it can update the redux store
-    event.sender.send('reqResUpdate', reqResObj);
+    event.sender.send('reqResUpdate', newObj);
   },
 
   // ----------------------------------------------------------------------------
