@@ -2,6 +2,7 @@
 // import { ipcRenderer } from "electron";
 // import { remote } from "electron";
 // import { Metadata } from "@grpc/grpc-js";
+
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
@@ -22,7 +23,8 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
   reqResObj.response.times = [];
 
   // build out variables from reqresObj properties
-  const { service, rpc, services, packageName, url, queryArr } = reqResObj;
+  const { service, rpc, packageName, url, queryArr } = reqResObj;
+  const services = reqResObj.servicesObj;
   if (reqResObj.response.events === null) {
     reqResObj.response.events = [];
   }
@@ -265,4 +267,4 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
   }
   store.default.dispatch(actions.reqResUpdate(reqResObj));
 };
-export default grpcController;
+module.exports = grpcController;

@@ -50,7 +50,7 @@ const protoParserFunc = require("./src/client/protoParser.js");
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-require('./httpMainController.js')();
+require("./httpMainController.js")();
 
 
 // configure logging
@@ -691,4 +691,4 @@ ipcMain.on("open-gql", (event, args) => {
 });
 
 // export main window so we can access ipcMain from other files
-module.exports = mainWindow; 
+module.exports = mainWindow;
