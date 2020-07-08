@@ -50,8 +50,7 @@ const protoParserFunc = require("./src/client/protoParser.js");
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-require('./httpMainController.js')();
-
+require("./httpMainController.js")();
 
 // configure logging
 // autoUpdater.logger = log;
@@ -547,32 +546,87 @@ ipcMain.on("protoParserFunc-request", (event, data) => {
 
 // ======================= grpcController.openGrpcConnection
 
-ipcMain.on("fetch-meta-and-client", (event, data) => {
-  const { PROTO_PATH, headers, packageName, service, url } = data;
-  const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true,
+ipcMain
+  .on("fetch-meta-and-client", (event, data) => {
+    const { rpcType, reqResObj } = data;
+    const { protoPath: PROTO_PATH, packageName, service, url, rpc } = reqResObj;
+
+    // console.log("rpcType is", rpcType);
+    // console.log(
+    //   "PROTO_PATH, packageName, service, url, rpc",
+    //   PROTO_PATH,
+    //   packageName,
+    //   service,
+    //   url,
+    //   rpc
+    // );
+
+    const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+      keepCase: true,
+      longs: String,
+      enums: String,
+      defaults: true,
+      oneofs: true,
+    });
+
+    // create client credentials
+    const serverName = grpc.loadPackageDefinition(packageDefinition)[
+      packageName
+    ];
+    const client = new serverName[service](
+      `${url}`,
+      grpc.credentials.createInsecure()
+    );
+    // create client requested metadata key and value pair for each type of streaming
+    const meta = new grpc.Metadata();
+    const metaArr = reqResObj.request.headers;
+    for (let i = 0; i < metaArr.length; i += 1) {
+      const currentHeader = metaArr[i];
+      meta.add(currentHeader.key, currentHeader.value);
+    }
+    // console.log("rpcType", rpcType);
+    // instead of sending back meta and client, try to do more stuff directly inside here, in main
+    if (rpcType === "UNARY") {
+      // console.log("inside UNARY if statement");
+      const query = reqResObj.queryArr[0];
+      const time = {};
+
+      // Open Connection and set time sent for Unary
+      reqResObj.connection = "open";
+
+      time.timeSent = Date.now();
+      // make Unary call
+      client[rpc](query, meta, (err, data) => {
+        if (err) {
+          console.log("unary error", err);
+        } else {
+          console.log("client[rpc] WORKED in main!!!");
+        }
+      });
+
+      // Close Connection and set time received for Unary
+      reqResObj.timeSent = time.timeSent;
+
+      time.timeReceived = Date.now();
+      reqResObj.timeReceived = time.timeReceived;
+
+      reqResObj.connection = "closed";
+      reqResObj.response.events.push(data);
+      reqResObj.response.times.push(time);
+    }
+    // send back to grpc to save to front end
+    //   store.default.dispatch(actions.reqResUpdate(reqResObj));
+  }) // metadata from server
+  .on("metadata", (metadata) => {
+    // if metadata is sent back from the server, analyze and handle
+    console.log("INSIDE metadata listener!!!");
+    const keys = Object.keys(metadata._internal_repr);
+    for (let i = 0; i < keys.length; i += 1) {
+      const key = keys[i];
+      reqResObj.response.headers[key] = metadata._internal_repr[key][0];
+    }
+    // store.default.dispatch(actions.reqResUpdate(reqResObj));
   });
-
-  // create client credentials
-  const serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
-  const client = new serverName[service](
-    url,
-    grpc.credentials.createInsecure()
-  );
-
-  // create client requested metadata key and value pair for each type of streaming
-  const meta = new grpc.Metadata();
-  const metaArr = headers;
-  for (let i = 0; i < metaArr.length; i += 1) {
-    const currentHeader = metaArr[i];
-    meta.add(currentHeader.key, currentHeader.value);
-  }
-  mainWindow.webContents.send("meta-and-client", { meta, client });
-});
 
 // ====================== OLDER STUFF =======================
 
@@ -720,4 +774,4 @@ ipcMain.on("open-gql", (event, args) => {
 });
 
 // export main window so we can access ipcMain from other files
-module.exports = mainWindow; 
+module.exports = mainWindow;

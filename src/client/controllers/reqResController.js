@@ -3,13 +3,9 @@ import * as actions from "../actions/actions";
 // import httpController from "./httpController.js";
 // import wsController from "./wsController.js";
 // import graphQLController from "./graphQLController.js";
-<<<<<<< HEAD
 import grpcController from "./grpcController.js";
-=======
-// import grpcController from "./grpcController.js";
 
-const { api } = window; 
->>>>>>> preload
+const { api } = window;
 
 const connectionController = {
   openConnectionArray: [],
@@ -53,8 +49,10 @@ const connectionController = {
 
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
-    api.receive('reqResUpdate', (reqResObj) => store.default.dispatch(actions.reqResUpdate(reqResObj)));
-    
+    api.receive("reqResUpdate", (reqResObj) =>
+      store.default.dispatch(actions.reqResUpdate(reqResObj))
+    );
+
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
@@ -65,8 +63,8 @@ const connectionController = {
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
     else {
-      console.log('should be sending')
-      api.send('open-http', reqResObj, this.openConnectionArray);
+      console.log("should be sending");
+      api.send("open-http", reqResObj, this.openConnectionArray);
       // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
     }
   },
