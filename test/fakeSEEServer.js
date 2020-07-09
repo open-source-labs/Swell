@@ -7,14 +7,21 @@ http.createServer((request, response) => {
     'Cache-Control': 'no-cache',
     'Access-Control-Allow-Origin': '*'
   });
-  let id = 1;
-  // Send event every 3 seconds or so forever...
-  setInterval(() => {
-    console.log('sending')
-    response.write(
-      `id: ${id}\ndata: This is event ${id}\n\n`
-    );
-    response.write('\n\n');
-    id++;
-  }, 6000);
+  
+  sendSSEs(response); 
+  
+
 }).listen(5001, () => console.log('server listening on port 5001'));
+
+const sendSSEs = (response, id = 0, timeout) => {
+  response.write(
+    `id: ${id}\ndata: This is event ${id}\n\n`
+  );
+  id++; 
+
+  if (id < 6) {
+    timeout = setTimeout(() => {
+      sendSSEs(response, id, timeout);
+    }, 3000)
+  };
+} 

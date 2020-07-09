@@ -44,11 +44,11 @@ SSEController.createStream = (reqResObj, options, event) => {
   const { headers } = options;
   const startTime = Date.now(); 
 
-  http.get(headers.url, {
+  const req = http.get(headers.url, {
     headers,
     agent: false,
   }, (res) => {
-    console.log('res is : ', res)
+    console.log('made request')
     reqResObj.response.headers = {...res.headers};
     reqResObj.connection = 'open'; 
     reqResObj.connectionType = 'SSE';
@@ -57,21 +57,25 @@ SSEController.createStream = (reqResObj, options, event) => {
     //   console.log(res.headers)
     //   event.sender.send('testing-SSE', chunk.toString()); 
     // });
+    req.end()
   });
 };
 
 SSEController.readStream = (reqResObj, event, timeDiff) => {
   sse = new EventSource(reqResObj.url); 
-  console.log('fired!!')
   sse.onopen = () => console.log('opened!');
   sse.onmessage = (message) => {
+
     const newMessage = { ...message };
     newMessage.timeReceived = Date.now() - timeDiff; 
     // FIX THIS LATER!!!
     reqResObj.response.events.push(newMessage);
     // console.log('created this : ', newMessage.data, newMessage.timeReceived)
-    event.sender.send('reqResUpdate', reqResObj);
+    return event.sender.send('reqResUpdate', reqResObj);
   }; 
+sse.onerror = (err) => {
+  console.log('there was an error in SSEController.readStream', err)
+}
 }
 
 // module.exports = () => {
