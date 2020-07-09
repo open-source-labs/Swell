@@ -1,10 +1,13 @@
-import { ipcRenderer } from "electron";
+// import { ipcRenderer } from "electron";
 import uuid from "uuid/v4";
 import db from "../db";
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
-ipcRenderer.on("add-collection", (event, args) => {
+const { api } = window;
+
+api.receive("add-collection", (...args) => {
+  console.log("received data: ", JSON.parse(args.data));
   collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
   collectionsController.getCollections();
 });
@@ -59,7 +62,7 @@ const collectionsController = {
         foundCollection.name += " import";
         foundCollection.id = uuid();
 
-        ipcRenderer.send("export-collection", { collection: foundCollection });
+        api.send("export-collection", { collection: foundCollection });
       })
       .catch((error) => {
         console.error(error.stack || error);
@@ -68,7 +71,7 @@ const collectionsController = {
   },
 
   importCollection(collection) {
-    ipcRenderer.send("import-collection", collection);
+    api.send("import-collection", collection);
   },
 };
 

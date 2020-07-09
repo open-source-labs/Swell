@@ -3,11 +3,10 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
-//const { session } = require('electron').remote
-const { ipcRenderer } = require("electron");
-
 import * as store from "../store";
 import * as actions from "../actions/actions";
+
+const { api } = window;
 
 const graphQLController = {
   openGraphQLConnection(reqResObj) {
@@ -26,17 +25,20 @@ const graphQLController = {
     });
   },
 
-  // handles graphQL queries and mutations
+  // handles graphQL queries and mutationsnp
   sendGqlToMain(args) {
     return new Promise((resolve) => {
-      ipcRenderer.send("open-gql", args);
-      ipcRenderer.on("reply-gql", (event, result) => {
+      api.send("open-gql", args);
+      api.receive("reply-gql", (result) => {
+        console.log("This is result:", result);
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
+        console.log(result);
         resolve(result);
       });
+      api.send("open-gql", args);
     });
   },
 
