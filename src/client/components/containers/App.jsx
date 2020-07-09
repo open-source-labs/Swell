@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "../../../assets/style/App.scss";
-const { api } = window;
-import ContentsContainer from './ContentsContainer.jsx';
-// import ReqResCtrl from '../../controllers/reqResController';
+import { ContentsContainer } from "./ContentsContainer.tsx";
 import SidebarContainer from "./SidebarContainer.jsx";
 import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
+// import ReqResCtrl from '../../controllers/reqResController';
+
+const { api } = window;
 // const EventEmitter = require('events');
 // const {dialog} = require('electron').remote
 class App extends Component {
