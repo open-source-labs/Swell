@@ -12,10 +12,10 @@ const setCookie = require("set-cookie-parser");
 // openHTTPconnection(reqResObj, connectionArray)
 // establishHTTP2Connection(reqResObj, connectionArray)
 // attachRequestToHTTP2Client(client, reqResObj, connectionArray)
-// sendToMainForFetch(args)
+// makeFetch(args)
 // establishHTTP1connection(reqResObj, connectionArray)
 // parseFetchOptionsFromReqRes(reqResObject)
-// handleSingleEvent(response, originalObj, headers)
+// addSingleEvent(response, originalObj, headers)
 // handleSSE(response, originalObj, headers)
 // parseSSEFields(rawString)
 // cookieFormatter(setCookie(response.cookies))
@@ -173,9 +173,9 @@ const httpController = {
 
     reqStream.on("response", (headers, flags) => {
       // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
-
+      console.log('headers is : ', headers)
       // SSE will have 'stream' in the 'content-type' heading
-      isSSE = headers["content-type"].includes("stream");
+      isSSE = (headers["content-type"] && headers["content-type"].includes("stream"));
 
       if (isSSE) {
         reqResObj.connection = "open";
@@ -196,10 +196,10 @@ const httpController = {
         reqResObj.response.cookies = this.cookieFormatter(
           setCookie.parse(headers["set-cookie"])
         );
+        // update reqResObj to include newly added event
+        reqResObj = this.addSingleEvent([], reqResObj, event);
         // send back reqResObj to renderer so it can update the redux store
         event.sender.send('reqResUpdate', reqResObj);
-
-        this.handleSingleEvent([], reqResObj, event);
       }
     });
 
@@ -257,7 +257,7 @@ const httpController = {
   },
   // ----------------------------------------------------------------------------
 
-  sendToMainForFetch(args) {
+  makeFetch(args) {
     return new Promise((resolve) => {
     //   ipcRenderer.send("http1-fetch-message", args);
     //   ipcRenderer.on("http1-fetch-reply", (event, result) => {
@@ -330,25 +330,29 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
-
+    console.log('req res obj: ', reqResObj)
     // if isSSE is true, then node-fetch to stream,
     if (reqResObj.request.isSSE) {
       // invoke another func that fetches to SSE and reads stream
       // params: method, headers, body
       const { method, headers, body } = options;
+      console.log('just tracing the path....')
+      fetch2(headers.url, { method, headers, body })
+        .then((response) => {
+          const heads = {};
+          for (const entry of response.headers.entries()) {
+            heads[entry[0].toLowerCase()] = entry[1];
+          }
+          reqResObj.response.headers = heads;
+          console.log('response is: ', response, 'reqResObj is :', reqResObj)
+          this.handleSSE(response, reqResObj, heads);
+        })
+        .catch((err) => console.log('there was an error, ', err))
 
-      fetch2(headers.url, { method, headers, body }).then((response) => {
-        const heads = {};
-        for (const entry of response.headers.entries()) {
-          heads[entry[0].toLowerCase()] = entry[1];
-        }
-        reqResObj.response.headers = heads;
-        this.handleSSE(response, reqResObj, heads);
-      });
     }
     // if not SSE, talk to main to fetch data and receive
     else {
-      this.sendToMainForFetch({ options })
+      this.makeFetch({ options })
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
          
@@ -369,10 +373,11 @@ const httpController = {
             reqResObj.response.cookies = this.cookieFormatter(
               setCookie.parse(theResponseHeaders.cookies)
             );
+            // update reqres object to include new event
+            reqResObj = this.addSingleEvent(body, reqResObj, event);
             // send back reqResObj to renderer so it can update the redux store
             event.sender.send('reqResUpdate', reqResObj);
 
-            this.handleSingleEvent(body, reqResObj, event);
           }
         })
         .catch((err) => {
@@ -425,16 +430,12 @@ const httpController = {
 
   // ----------------------------------------------------------------------------
 
-  handleSingleEvent(response, reqResObj, event) {
-    const newObj = JSON.parse(JSON.stringify(reqResObj));
-    newObj.connection = "closed";
-    newObj.connectionType = "plain";
-    newObj.timeReceived = Date.now();
-    console.log('Date.now() inside handleSingleEvent : ', Date.now())
-    console.log('this is what was added : ', newObj.timeReceived)
-    newObj.response.events.push(response);
-    // send back reqResObj to renderer so it can update the redux store
-    event.sender.send('reqResUpdate', newObj);
+  addSingleEvent(response, reqResObj) {
+    // adds new event to reqResObj and returns it so obj can be sent back to renderer process
+    reqResObj.timeReceived = Date.now();
+    reqResObj.response.events.push(response);
+    // returns updated reqResObj 
+    return reqResObj; 
   },
 
   // ----------------------------------------------------------------------------

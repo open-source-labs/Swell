@@ -195,6 +195,7 @@
     "electron-log": "^4.2.2",
     "electron-updater": "^4.3.1",
     "es6-promise": "^4.2.8",
+    "eventsource": "^1.0.7",
     "express": "^4.17.1",
     "google-auth-library": "^6.0.2",
     "graphql": "^14.6.0",

@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld("api", {
       "import-collection",
       "export-collection",
       'open-http',
+      'testing-SSE'
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -27,7 +28,8 @@ contextBridge.exposeInMainWorld("api", {
       "proto-info",
       "message",
       "reply-gql",
-      'reqResUpdate'
+      'reqResUpdate',
+      'testing-SSE'
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));

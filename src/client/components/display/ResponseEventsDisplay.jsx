@@ -12,8 +12,9 @@ const ResponseEventsDisplay = ({ response }) => {
   if (
     headers &&
     headers["content-type"] &&
-    headers["content-type"].includes("text/event-stream")
+    headers["content-type"] === "text/event-stream"
   ) {
+    console.log('we have a match!!!')
     events.forEach((cur, idx) => {
       displayContents.push(<SSERow key={idx} content={cur} />);
     });
