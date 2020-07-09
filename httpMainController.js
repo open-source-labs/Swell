@@ -8,6 +8,7 @@ const http2 = require("http2");
 const setCookie = require("set-cookie-parser");
 
 //Included Functions
+const SSEController = require('./SSEController'); 
 
 // openHTTPconnection(reqResObj, connectionArray)
 // establishHTTP2Connection(reqResObj, connectionArray)
@@ -79,9 +80,9 @@ const httpController = {
     // --------------------------------------------------
     else {
       // console.log('New HTTP2 Conn:', reqResObj.host);
-
+      console.log('no pre-existing http2 found')
       const id = Math.random() * 100000;
-      const client = http2.connect(reqResObj.host);
+      const client = http2.connect(reqResObj.host, () => console.log('connected!'));
 
       // push HTTP2 connection to array
       const http2Connection = {
@@ -335,19 +336,20 @@ const httpController = {
     if (reqResObj.request.isSSE) {
       // invoke another func that fetches to SSE and reads stream
       // params: method, headers, body
-      const { method, headers, body } = options;
-      console.log('just tracing the path....')
-      fetch2(headers.url, { method, headers, body })
-        .then((response) => {
-          const heads = {};
-          for (const entry of response.headers.entries()) {
-            heads[entry[0].toLowerCase()] = entry[1];
-          }
-          reqResObj.response.headers = heads;
-          console.log('response is: ', response, 'reqResObj is :', reqResObj)
-          this.handleSSE(response, reqResObj, heads);
-        })
-        .catch((err) => console.log('there was an error, ', err))
+      SSEController.createStream(reqResObj, options, event)
+      // const { method, headers, body } = options;
+      // console.log('just tracing the path....')
+      // fetch2(headers.url, { method, headers, body })
+      //   .then((response) => {
+      //     const heads = {};
+      //     for (const entry of response.headers.entries()) {
+      //       heads[entry[0].toLowerCase()] = entry[1];
+      //     }
+      //     reqResObj.response.headers = heads;
+      //     console.log('response is: ', response, 'reqResObj is :', reqResObj)
+      //     this.handleSSE(response, reqResObj, heads);
+      //   })
+      //   .catch((err) => console.log('there was an error, ', err))
 
     }
     // if not SSE, talk to main to fetch data and receive

@@ -47,7 +47,7 @@ const protoParserFunc = require("./src/client/protoParser.js");
 require("./menu/mainMenu");
 // require http controller file
 require('./httpMainController.js')();
-require('./SSEController.js')();
+// require('./SSEController.js')();
 
 
 // configure logging

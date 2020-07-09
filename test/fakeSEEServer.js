@@ -16,5 +16,5 @@ http.createServer((request, response) => {
     );
     response.write('\n\n');
     id++;
-  }, 3000);
+  }, 6000);
 }).listen(5001, () => console.log('server listening on port 5001'));
