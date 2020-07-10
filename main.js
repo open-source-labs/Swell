@@ -50,7 +50,17 @@ const protoParserFunc = require("./src/client/protoParser.js");
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
+<<<<<<< HEAD
 require("./httpMainController.js")();
+=======
+<<<<<<< HEAD
+require("./httpMainController.js")();
+=======
+require('./httpMainController.js')();
+// require('./SSEController.js')();
+>>>>>>> e9698764eaf1422c198833622b9fcc38bc575fab
+
+>>>>>>> preload
 
 // configure logging
 // autoUpdater.logger = log;

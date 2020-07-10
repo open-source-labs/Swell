@@ -4,9 +4,14 @@ import * as actions from "../actions/actions";
 // import wsController from "./wsController.js";
 // import graphQLController from "./graphQLController.js";
 import grpcController from "./grpcController.js";
+<<<<<<< HEAD
 
 const { api } = window;
+=======
+>>>>>>> preload
 
+const { api } = window;
+let events;
 const connectionController = {
   openConnectionArray: [],
   // selectedArray:[],
@@ -61,6 +66,7 @@ const connectionController = {
       graphQLController.openGraphQLConnection(reqResObj);
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
+<<<<<<< HEAD
     else if (reqResObj.gRPC) {
       console.log(
         "reqResObj INSIDE reqResController BEFORE sending to GRPC controller",
@@ -71,6 +77,12 @@ const connectionController = {
       console.log("should be sending");
       api.send("open-http", reqResObj, this.openConnectionArray);
       // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
+=======
+    else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
+    else {
+      // sends request to main process to open an http connections
+      api.send("open-http", reqResObj, this.openConnectionArray);
+>>>>>>> preload
     }
   },
 

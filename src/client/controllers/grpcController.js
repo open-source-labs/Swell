@@ -2,6 +2,7 @@
 // import { ipcRenderer } from "electron";
 // import { remote } from "electron";
 // import { Metadata } from "@grpc/grpc-js";
+
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
@@ -267,4 +268,4 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     rpcType,
   });
 };
-export default grpcController;
+module.exports = grpcController;
