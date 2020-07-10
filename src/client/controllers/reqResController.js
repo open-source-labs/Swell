@@ -50,7 +50,7 @@ const connectionController = {
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
     api.receive('reqResUpdate', (reqResObj) => store.default.dispatch(actions.reqResUpdate(reqResObj)));
-     api.receive('testing-SSE', (data) => console.log('just got back :', data))
+    
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
@@ -60,15 +60,6 @@ const connectionController = {
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
-    // else if (reqResObj.request.isSSE) {
-    //   // events = new EventSource(reqResObj.url); 
-    //   // events.onopen = () => console.log('opeend!');
-    //   // events.onmessage = function(event){
-
-    //   //   console.log(event)
-    //   // };
-    //  api.receive('testing-SSE', (data) => console.log('just got back :', data))
-    //  api.send('testing-SSE', reqResObj.url, reqResObj); 
     else {
       // sends request to main process to open an http connections
       api.send('open-http', reqResObj, this.openConnectionArray);

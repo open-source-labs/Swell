@@ -1,90 +1,50 @@
-
-const { ipcMain }  = require('electron');
-const EventSource = require('eventsource');
-const fetch = require('node-fetch');
 const http = require('http');
+// native browser api that we are bringing in to work in a node environmnet
+const EventSource = require('eventsource');
 
 const SSEController = {};
 
+// keep reference to what will be our EventSource that listens for SSE's
 let sse; 
 
-SSEController.testing = (url, reqResObj, event) => {
-  // console.log('event before function :', event)
-  console.log('reqresobj : ', reqResObj)
-  let counter = 0; 
-  sse = new EventSource(url); 
-  console.log('fired!!')
-  sse.onopen = () => console.log('opened bitch!');
-  sse.onmessage = (message) => {
-    const newMessage = { ...message };
-    newMessage.timeReceived = Date.now(); 
-    // FIX THIS LATER!!!
-    if (!reqResObj.response.events) reqResObj.response.events = []; 
-    reqResObj.response.events.push(newMessage);
-    reqResObj.response.headers = {};
-    reqResObj.connection = 'initialized';
-    reqResObj.response.headers['content-type'] = 'text/event-stream'
-    console.log('created this : ', reqResObj.response)
-    event.sender.send('reqResUpdate', reqResObj);
-    counter++; 
-    if (counter === 5) sse.close(); 
-  }; 
-  // http.get(url, {
-  //   agent: false
-  // }, (res) => {
-  //   res.on('data', (chunk) => {
-  //     console.log(res.headers)
-  //     event.sender.send('testing-SSE', chunk.toString()); 
-  //   })
-  // })
-}
-
 SSEController.createStream = (reqResObj, options, event) => {
-  
+  // got options from httpController
   const { headers } = options;
+  // because EventSource cannot access headers, we are making a regular get request to SSE server to get its headers, and then passing those headers into function where we will be connecting our EventSource, there will a time delay between the time the user opens the request and the server sends back its first response. We keep reference to the time the first request was made to account for that time difference later on. 
   const startTime = Date.now(); 
 
-  const req = http.get(headers.url, {
+  http.get(headers.url, {
     headers,
     agent: false,
   }, (res) => {
-    console.log('made request')
+    // update info in reqResObj to reflect fact that connection was succesful
     reqResObj.response.headers = {...res.headers};
     reqResObj.connection = 'open'; 
     reqResObj.connectionType = 'SSE';
+    // invoke function that will create an EventSource
     SSEController.readStream(reqResObj, event, Date.now() - startTime);
-    // res.on('data', (chunk) => {
-    //   console.log(res.headers)
-    //   event.sender.send('testing-SSE', chunk.toString()); 
-    // });
-    req.end()
   });
 };
 
 SSEController.readStream = (reqResObj, event, timeDiff) => {
-  sse = new EventSource(reqResObj.url); 
-  sse.onopen = () => console.log('opened!');
+  // EventSource listens for SSE's and process specially formatted data from them, as well as adding other useful information
+  sse = new EventSource(reqResObj.url);
+  // event listeners 
+  sse.onopen = () => console.log(`SSE at ${reqResObj.url} opened!`);
+  // this is where incoming messages are processed
   sse.onmessage = (message) => {
-
+    // message is not a javascript object, so we spread its contents into one
     const newMessage = { ...message };
+    // this is where where account for any time lost between the first AJAX request and the creation of the EventSource
     newMessage.timeReceived = Date.now() - timeDiff; 
-    // FIX THIS LATER!!!
+    // add processed message to events array on reqResObj
     reqResObj.response.events.push(newMessage);
-    // console.log('created this : ', newMessage.data, newMessage.timeReceived)
+    // ...and send back to renderer process to be added to the store
     return event.sender.send('reqResUpdate', reqResObj);
   }; 
-sse.onerror = (err) => {
-  console.log('there was an error in SSEController.readStream', err)
-}
-}
-
-// module.exports = () => {
-//   // creating our event listeners for IPC events
-//   ipcMain.on('testing-SSE', (event, url, reqResObj) => {
-//     console.log('received!!!')
-//     // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
-//     SSEController.testing(url, reqResObj, event);
-//   })
-// }; 
+  sse.onerror = (err) => {
+    console.log('there was an error in SSEController.readStream', err)
+    };
+};
 
 module.exports = SSEController; 
