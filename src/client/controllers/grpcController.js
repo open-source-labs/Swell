@@ -268,4 +268,4 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     rpcType,
   });
 };
-module.exports = grpcController;
+export default grpcController;

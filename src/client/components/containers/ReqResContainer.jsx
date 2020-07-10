@@ -23,10 +23,10 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    const reqResArr = this.props.reqResArray
-      .map((reqRes, index) => {
-        // console.log('from the sto : ', reqRes.response)
-        return <SingleReqResContainer
+    const reqResArr = this.props.reqResArray.map((reqRes, index) => {
+      // console.log('from the sto : ', reqRes.response)
+      return (
+        <SingleReqResContainer
           className="reqResChild"
           content={reqRes}
           key={index}

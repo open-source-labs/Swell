@@ -37,7 +37,7 @@ function sayHello(ctx) {
   metadata.set("indeed", "it do");
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
-  // console.log("received metadata from client request", ctx.metadata)
+  // console.log("received metadata from client request", ctx.metadata);
   // console.dir(ctx.metadata, { depth: 3, colors: true });
   // console.log(`got sayHello request name: ${ctx.req.name}`);
 

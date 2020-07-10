@@ -50,17 +50,9 @@ const protoParserFunc = require("./src/client/protoParser.js");
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-<<<<<<< HEAD
-require("./httpMainController.js")();
-=======
-<<<<<<< HEAD
-require("./httpMainController.js")();
-=======
-require('./httpMainController.js')();
-// require('./SSEController.js')();
->>>>>>> e9698764eaf1422c198833622b9fcc38bc575fab
 
->>>>>>> preload
+require("./httpMainController.js")();
+// require('./SSEController.js')();
 
 // configure logging
 // autoUpdater.logger = log;
@@ -618,10 +610,6 @@ ipcMain.on("fetch-meta-and-client", (event, data) => {
       .on("metadata", (metadata) => {
         console.log("metadata back from server!!");
         console.log("the data coming BACK from the server is", metadata);
-        console.log(
-          "metadata.internalRepr.options",
-          JSON.parse(JSON.stringify(metadata.internalRepr.get("options")))
-        );
 
         // const keys = Object.keys(metadata._internal_repr);
         // for (let i = 0; i < keys.length; i += 1) {
