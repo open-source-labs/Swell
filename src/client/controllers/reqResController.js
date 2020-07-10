@@ -6,7 +6,7 @@ import * as actions from "../actions/actions";
 // import grpcController from "./grpcController.js";
 
 const { api } = window; 
-let events; 
+
 const connectionController = {
   openConnectionArray: [],
   // selectedArray:[],
@@ -94,7 +94,8 @@ const connectionController = {
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-
+    
+    console.log('open connection array is : ', this.openConnectionArray)
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {

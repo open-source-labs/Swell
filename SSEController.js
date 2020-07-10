@@ -13,16 +13,19 @@ SSEController.createStream = (reqResObj, options, event) => {
   // because EventSource cannot access headers, we are making a regular get request to SSE server to get its headers, and then passing those headers into function where we will be connecting our EventSource, there will a time delay between the time the user opens the request and the server sends back its first response. We keep reference to the time the first request was made to account for that time difference later on. 
   const startTime = Date.now(); 
 
-  http.get(headers.url, {
+  const req = http.get(headers.url, {
     headers,
     agent: false,
-  }, (res) => {
-    // update info in reqResObj to reflect fact that connection was succesful
-    reqResObj.response.headers = {...res.headers};
-    reqResObj.connection = 'open'; 
-    reqResObj.connectionType = 'SSE';
-    // invoke function that will create an EventSource
-    SSEController.readStream(reqResObj, event, Date.now() - startTime);
+  });
+  req.once('response', (res) => {
+      console.log('wrong thing got response, budy1')
+      // update info in reqResObj to reflect fact that connection was succesful
+      reqResObj.response.headers = {...res.headers};
+      reqResObj.connection = 'open'; 
+      reqResObj.connectionType = 'SSE';
+      // invoke function that will create an EventSource
+      SSEController.readStream(reqResObj, event, Date.now() - startTime);
+      req.destroy(); 
   });
 };
 
@@ -43,8 +46,9 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
     return event.sender.send('reqResUpdate', reqResObj);
   }; 
   sse.onerror = (err) => {
-    console.log('there was an error in SSEController.readStream', err)
-    };
+    console.log('there was an error in SSEController.readStream', err);
+    see.close();
+  };
 };
 
 module.exports = SSEController; 
