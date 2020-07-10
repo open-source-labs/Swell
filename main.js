@@ -577,12 +577,12 @@ ipcMain.on("fetch-meta-and-client", (event, data) => {
     meta.add(currentHeader.key, currentHeader.value);
   }
   // just send a hardcoded 'name' - 'test' key value pair
-  meta.add("name", "SayHello");
+  // meta.add("name", "SayHello");
 
-  console.log("meta is", meta);
+  console.log("line 582 meta is", meta);
 
   if (rpcType === "UNARY") {
-    console.log("inside UNARY if statement");
+    console.log("\n \n inside UNARY if statement");
     const query = reqResObj.queryArr[0];
     const time = {};
 
@@ -608,15 +608,15 @@ ipcMain.on("fetch-meta-and-client", (event, data) => {
       // store.default.dispatch(actions.reqResUpdate(reqResObj));
     }) // metadata from server
       .on("metadata", (metadata) => {
-        console.log("metadata back from server!!");
-        console.log("the data coming BACK from the server is", metadata);
+        console.log("\n metadata back from server!! \n");
+        console.log("\n the data coming BACK from the server is \n", metadata);
 
         // const keys = Object.keys(metadata._internal_repr);
         // for (let i = 0; i < keys.length; i += 1) {
         //   const key = keys[i];
         //   reqResObj.response.headers[key] = metadata._internal_repr[key][0];
         // }
-        console.log("\n line 611!!! \n");
+
         // store.default.dispatch(actions.reqResUpdate(reqResObj));
       });
   }

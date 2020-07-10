@@ -30,11 +30,12 @@ const dataStream = [
 
 // Unary stream
 // ctx = watch execution context
-function sayHello(ctx) {
+async function sayHello(ctx) {
   // create new metadata
-  const metadata = new grpc.Metadata();
-  metadata.set("it", "works?");
-  metadata.set("indeed", "it do");
+
+  // const metadata = new grpc.Metadata();
+  ctx.set("it", "works?");
+  ctx.response.set("indeed", "it do");
   // Watcher creates a watch execution context for the watch
   // The execution context provides scripts and templates with access to the watch metadata
   // console.log("received metadata from client request", ctx.metadata);
@@ -43,12 +44,15 @@ function sayHello(ctx) {
 
   // an alias to ctx.response.res
   // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
-  ctx.res = { message: "Hello " + ctx.req.name };
-
+  // ctx.res = { message: "Hello " + ctx.req.name };
+  ctx.response.res = { message: "Hello " + ctx.req.name };
+  // ctx.res will do the same as above
+  console.log("ctx.res", ctx.res);
+  console.log("ctx.response", ctx.response);
   // send response header metadata object directly as an argument and that is set and sent
-  metadata.set("UNARY", "yes");
-  ctx.sendMetadata(metadata);
-  console.log("metadata is", metadata);
+  // metadata.set("UNARY", "yes");
+  // ctx.sendMetadata(metadata);
+  // console.log("metadata is", metadata);
   console.log(`set sayHello response from gRPC server: ${ctx.res.message}`);
 }
 // nested Unary stream
