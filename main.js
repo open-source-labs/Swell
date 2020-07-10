@@ -546,64 +546,53 @@ ipcMain.on("protoParserFunc-request", (event, data) => {
 
 // ======================= grpcController.openGrpcConnection
 
-ipcMain
-  .on("fetch-meta-and-client", (event, data) => {
-    const { rpcType, reqResObj } = data;
-    const { protoPath: PROTO_PATH, packageName, service, url, rpc } = reqResObj;
+ipcMain.on("fetch-meta-and-client", (event, data) => {
+  const { reqResObj } = data;
+  const { rpcType } = data;
+  const PROTO_PATH = reqResObj.protoPath;
+  const { packageName, service, url, rpc } = data.reqResObj;
 
-    // console.log("rpcType is", rpcType);
-    // console.log(
-    //   "PROTO_PATH, packageName, service, url, rpc",
-    //   PROTO_PATH,
-    //   packageName,
-    //   service,
-    //   url,
-    //   rpc
-    // );
+  const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true,
+  });
+  // create client credentials
+  const serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
+  const client = new serverName[service](
+    url,
+    grpc.credentials.createInsecure()
+  );
 
-    const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-      keepCase: true,
-      longs: String,
-      enums: String,
-      defaults: true,
-      oneofs: true,
-    });
+  // create client requested metadata key and value pair for each type of streaming
+  const meta = new grpc.Metadata();
+  // this is doing nothing right now
+  const metaArr = reqResObj.request.headers;
+  for (let i = 0; i < metaArr.length; i += 1) {
+    const currentHeader = metaArr[i];
+    meta.add(currentHeader.key, currentHeader.value);
+  }
+  // just send a hardcoded 'name' - 'test' key value pair
+  meta.add("name", "SayHello");
 
-    // create client credentials
-    const serverName = grpc.loadPackageDefinition(packageDefinition)[
-      packageName
-    ];
-    const client = new serverName[service](
-      `${url}`,
-      grpc.credentials.createInsecure()
-    );
-    // create client requested metadata key and value pair for each type of streaming
-    const meta = new grpc.Metadata();
-    const metaArr = reqResObj.request.headers;
-    for (let i = 0; i < metaArr.length; i += 1) {
-      const currentHeader = metaArr[i];
-      meta.add(currentHeader.key, currentHeader.value);
-    }
-    // console.log("rpcType", rpcType);
-    // instead of sending back meta and client, try to do more stuff directly inside here, in main
-    if (rpcType === "UNARY") {
-      // console.log("inside UNARY if statement");
-      const query = reqResObj.queryArr[0];
-      const time = {};
+  console.log("meta is", meta);
 
-      // Open Connection and set time sent for Unary
-      reqResObj.connection = "open";
+  if (rpcType === "UNARY") {
+    console.log("inside UNARY if statement");
+    const query = reqResObj.queryArr[0];
+    const time = {};
 
-      time.timeSent = Date.now();
-      // make Unary call
-      client[rpc](query, meta, (err, data) => {
-        if (err) {
-          console.log("unary error", err);
-        } else {
-          console.log("client[rpc] WORKED in main!!!");
-        }
-      });
+    // Open Connection and set time sent for Unary
+    reqResObj.connection = "open";
 
+    time.timeSent = Date.now();
+    // make Unary call
+    client[rpc](query, meta, (err, data) => {
+      if (err) {
+        console.log("unary error", err);
+      }
       // Close Connection and set time received for Unary
       reqResObj.timeSent = time.timeSent;
 
@@ -613,20 +602,28 @@ ipcMain
       reqResObj.connection = "closed";
       reqResObj.response.events.push(data);
       reqResObj.response.times.push(time);
-    }
-    // send back to grpc to save to front end
-    //   store.default.dispatch(actions.reqResUpdate(reqResObj));
-  }) // metadata from server
-  .on("metadata", (metadata) => {
-    // if metadata is sent back from the server, analyze and handle
-    console.log("INSIDE metadata listener!!!");
-    const keys = Object.keys(metadata._internal_repr);
-    for (let i = 0; i < keys.length; i += 1) {
-      const key = keys[i];
-      reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-    }
-    // store.default.dispatch(actions.reqResUpdate(reqResObj));
-  });
+      // send stuff back for store
+      // store.default.dispatch(actions.reqResUpdate(reqResObj));
+    }) // metadata from server
+      .on("metadata", (metadata) => {
+        console.log("metadata back from server!!");
+        console.log("the data coming BACK from the server is", metadata);
+        console.log(
+          "metadata.internalRepr.options",
+          JSON.parse(JSON.stringify(metadata.internalRepr.get("options")))
+        );
+
+        // const keys = Object.keys(metadata._internal_repr);
+        // for (let i = 0; i < keys.length; i += 1) {
+        //   const key = keys[i];
+        //   reqResObj.response.headers[key] = metadata._internal_repr[key][0];
+        // }
+        console.log("\n line 611!!! \n");
+        // store.default.dispatch(actions.reqResUpdate(reqResObj));
+      });
+  }
+  // mainWindow.webContents.send("meta-and-client", meta, client);
+});
 
 // ====================== OLDER STUFF =======================
 

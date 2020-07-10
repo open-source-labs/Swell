@@ -61,8 +61,13 @@ const connectionController = {
       graphQLController.openGraphQLConnection(reqResObj);
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
-    else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
-    else {
+    else if (reqResObj.gRPC) {
+      console.log(
+        "reqResObj INSIDE reqResController BEFORE sending to GRPC controller",
+        reqResObj
+      );
+      grpcController.openGrpcConnection(reqResObj);
+    } else {
       console.log("should be sending");
       api.send("open-http", reqResObj, this.openConnectionArray);
       // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);

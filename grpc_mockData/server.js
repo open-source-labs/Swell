@@ -48,8 +48,8 @@ function sayHello(ctx) {
   // send response header metadata object directly as an argument and that is set and sent
   metadata.set("UNARY", "yes");
   ctx.sendMetadata(metadata);
-
-  // console.log(`set sayHello response: ${ctx.res.message}`);
+  console.log("metadata is", metadata);
+  console.log(`set sayHello response from gRPC server: ${ctx.res.message}`);
 }
 // nested Unary stream
 

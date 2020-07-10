@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import * as actions from '../../actions/actions';
 import { connect } from "react-redux";
+import React, { Component } from "react";
+import * as actions from "../../actions/actions";
 import SingleReqResContainer from "./SingleReqResContainer.jsx";
 
-const mapStateToProps = store => ({
+const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
   currentTab: store.business.currentTab,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   reqResDelete: (reqRes) => {
     dispatch(actions.reqResDelete(reqRes));
   },
@@ -23,22 +23,21 @@ class ReqResContainer extends Component {
   }
 
   render() {
-    const reqResArr = this.props.reqResArray
-      .map((reqRes, index) => {
-        return <SingleReqResContainer
+    const reqResArr = this.props.reqResArray.map((reqRes, index) => {
+      return (
+        <SingleReqResContainer
           className="reqResChild"
           content={reqRes}
           key={index}
           reqResDelete={this.props.reqResDelete}
           reqResUpdate={this.props.reqResUpdate}
-        />;
-      });
+        />
+      );
+    });
 
     return (
       <div id="reqResContainer">
-        <div id='reqResContainer_inner' >
-          {reqResArr}
-        </div>
+        <div id="reqResContainer_inner">{reqResArr}</div>
       </div>
     );
   }
