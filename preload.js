@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld("api", {
       "proto-info",
       "message",
       "reply-gql",
-      'reqResUpdate'
+      'reqResUpdate',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
