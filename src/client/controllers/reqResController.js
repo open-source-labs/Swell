@@ -6,7 +6,7 @@ import * as actions from "../actions/actions";
 // import grpcController from "./grpcController.js";
 
 const { api } = window; 
-
+let events; 
 const connectionController = {
   openConnectionArray: [],
   // selectedArray:[],
@@ -61,9 +61,8 @@ const connectionController = {
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
     else {
-      console.log('should be sending')
+      // sends request to main process to open an http connections
       api.send('open-http', reqResObj, this.openConnectionArray);
-      // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
     }
   },
 

@@ -8,11 +8,11 @@ const ResponseEventsDisplay = ({ response }) => {
   const displayContents = [];
 
   // If it's an SSE, render event rows
-
+  console.log('response is : ', response, 'headers is : ', headers)
   if (
     headers &&
     headers["content-type"] &&
-    headers["content-type"].includes("text/event-stream")
+    headers["content-type"] === "text/event-stream"
   ) {
     events.forEach((cur, idx) => {
       displayContents.push(<SSERow key={idx} content={cur} />);
