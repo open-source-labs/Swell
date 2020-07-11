@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 const hl = require("highland");
 const Mali = require("mali");
 // Mali needs the old grpc as a peer dependency so that should be installed as well
@@ -16,7 +17,6 @@ async function sayHello(ctx) {
   // sets key-value pair inside ctx.response.metadata as a replacement for headers
   ctx.set("UNARY", "true");
   ctx.res = { message: "Hello " + ctx.req.name };
-  console.log(`set sayHello response from gRPC server: ${ctx.res.message}`);
 }
 // nested Unary stream
 async function sayHelloNested(ctx) {
@@ -30,14 +30,11 @@ async function sayHelloNested(ctx) {
       { message: "Hello! " + secondPerson },
     ],
   };
-  console.log(
-    `set sayHelloNested response from gRPC server ${ctx.res.serverMessage[0]} ${ctx.res.serverMessage[1]}`
-  );
 }
 // Server-Side Stream
 // used highland library to manage asynchronous data
 async function sayHellosSs(ctx) {
-  ctx.set("SERVER-SIDE STREAM", "true");
+  ctx.set("Server-side-stream", "true");
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
 
   const dataStream = [
@@ -58,44 +55,35 @@ async function sayHellosSs(ctx) {
   const reqMessages = { message: "hello!!! " + ctx.req.name };
   // combine template with reqMessage
   const updatedStream = [...dataStream, reqMessages];
-  // research what await hl(array of objects) does
   const makeStreamData = await hl(updatedStream);
   ctx.res = makeStreamData;
-
   // ends server stream
   ctx.res.end();
 }
 
 // Client-Side stream
-function sayHelloCs(ctx) {
+async function sayHelloCs(ctx) {
   // create new metadata
-  const metadata = new grpc.Metadata();
-  metadata.set("it", "works?");
-  metadata.set("indeed", "it do");
-  metadata.set("clientStream", "indubitably");
-  // The execution context provides scripts and templates with access to the watch metadata
-  console.dir(ctx.metadata, { depth: 3, colors: true });
-  // console.log('got sayHelloClients')
-  let counter = 0;
+  ctx.set("client-side-stream", "true");
+
   const messages = [];
-  // client streaming calls to write messages and end writing before you can get the response
+
   return new Promise((resolve, reject) => {
+    // ctx.req is the incoming readable stream
     hl(ctx.req)
       .map((message) => {
-        counter++;
-        // console.log('message content',message.name)
-        ctx.response.res = { message: "Client stream: " + message.name };
-        messages.push(message.name);
-        ctx.sendMetadata(metadata);
+        console.log("parsed stream message with name key, ", message);
+        // currently the proto file is setup to only read streams with the key "name"
+        // other named keys will be pushed as an empty object
+        messages.push(message);
+        return undefined;
       })
-      // returns all the elements as an array
       .collect()
       .toCallback((err, result) => {
         if (err) return reject(err);
-        // console.log(`done sayHelloClients counter ${counter}`)
-        ctx.response.res = { message: "SAYHELLOCs Client stream: " + messages };
-        // console.log(ctx.response.res)
-        resolve();
+        console.log("messages ->", messages);
+        ctx.response.res = { message: `received ${messages.length} messages` };
+        return resolve();
       });
   });
 }
@@ -103,19 +91,16 @@ function sayHelloCs(ctx) {
 // Bi-Di stream
 function sayHelloBidi(ctx) {
   // create new metadata
-  const metadata = new grpc.Metadata();
-  metadata.set("it", "works?");
-  metadata.set("indeed", "it do");
-  // console.log("got sayHelloBidi");
+  ctx.set("bidi-stream", "true");
+  console.log("got sayHelloBidi");
   // The execution context provides scripts and templates with access to the watch metadata
   console.dir(ctx.metadata, { depth: 3, colors: true });
   let counter = 0;
-  ctx.req.on("data", (d) => {
+  ctx.req.on("data", (data) => {
     counter++;
-    ctx.res.write({ message: "bidi stream: " + d.name });
+    ctx.res.write({ message: "bidi stream: " + data.name });
   });
-  metadata.set("bidiStream", "ohyes");
-  ctx.sendMetadata(metadata);
+
   // calls end to client before closing server
   ctx.req.on("end", () => {
     // console.log(`done sayHelloBidi counter ${counter}`);
