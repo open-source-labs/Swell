@@ -9,105 +9,58 @@ const grpc = require("@grpc/grpc-js");
 const PROTO_PATH = path.join(__dirname, "./protos/hw2.proto");
 const HOSTPORT = "0.0.0.0:50051";
 
-const dataStream = [
-  {
-    message: "You",
-  },
-  {
-    message: "Are",
-  },
-  {
-    message: "doing IT",
-  },
-  {
-    message: "Champ",
-  },
-];
-
-/**
- * Implements the SayHello RPC method.
- */
-
 // Unary stream
 // ctx = watch execution context
 async function sayHello(ctx) {
-  // create new metadata
-
-  // const metadata = new grpc.Metadata();
-  ctx.set("it", "works?");
-  ctx.response.set("indeed", "it do");
-  // Watcher creates a watch execution context for the watch
-  // The execution context provides scripts and templates with access to the watch metadata
-  // console.log("received metadata from client request", ctx.metadata);
-  // console.dir(ctx.metadata, { depth: 3, colors: true });
-  // console.log(`got sayHello request name: ${ctx.req.name}`);
-
-  // an alias to ctx.response.res
-  // This is set only in case of DUPLEX calls, to the the gRPC call reference itself
-  // ctx.res = { message: "Hello " + ctx.req.name };
-  ctx.response.res = { message: "Hello " + ctx.req.name };
-  // ctx.res will do the same as above
-  console.log("ctx.res", ctx.res);
-  console.log("ctx.response", ctx.response);
-  // send response header metadata object directly as an argument and that is set and sent
-  // metadata.set("UNARY", "yes");
-  // ctx.sendMetadata(metadata);
-  // console.log("metadata is", metadata);
+  // ctx contains both req and res objects
+  // sets key-value pair inside ctx.response.metadata as a replacement for headers
+  ctx.set("UNARY", "true");
+  ctx.res = { message: "Hello " + ctx.req.name };
   console.log(`set sayHello response from gRPC server: ${ctx.res.message}`);
 }
 // nested Unary stream
-
-function sayHelloNested(ctx) {
-  // create new metadata
-  const metadata = new grpc.Metadata();
-  metadata.set("it", "works?");
-  metadata.set("indeed", "it do");
-  // Watcher creates a watch execution context for the watch
-  // The execution context provides scripts and templates with access to the watch metadata
-  // console.log("received metadata from client request", ctx.metadata)
-  // console.dir(ctx.metadata, { depth: 3, colors: true });
-  // console.log("ctx line 64 from server.js", ctx)
-
+async function sayHelloNested(ctx) {
+  ctx.set("UNARY", "true");
   // nested unary response call
   const firstPerson = ctx.req.firstPerson.name;
   const secondPerson = ctx.req.secondPerson.name;
-  // console.log("firstPerson line 68 from server.js:", firstPerson)
   ctx.res = {
     serverMessage: [
       { message: "Hello! " + firstPerson },
       { message: "Hello! " + secondPerson },
     ],
   };
-
-  // send response header metadata object directly as an argument and that is set and sent
-  ctx.sendMetadata(metadata);
+  console.log(
+    `set sayHelloNested response from gRPC server ${ctx.res.serverMessage[0]} ${ctx.res.serverMessage[1]}`
+  );
 }
 // Server-Side Stream
 // used highland library to manage asynchronous data
 async function sayHellos(ctx) {
-  // create new metadata
-  const metadata = new grpc.Metadata();
-  metadata.set("it", "works?");
-  metadata.set("indeed", "it do");
-  // The execution context provides scripts and templates with access to the watch metadata
-  // console.dir(ctx.metadata, { depth: 3, colors: true });
-  // converts a request into strings
-  // console.log(`got sayHellos request name:`, JSON.stringify(ctx.req, null, 4));
-
-  // alias for ctx.request.req
+  ctx.set("SERVER-SIDE STREAM", "true");
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
 
-  let reqMessages = { message: "hello!!! " + ctx.req.name };
+  const dataStream = [
+    {
+      message: "You",
+    },
+    {
+      message: "Are",
+    },
+    {
+      message: "doing IT",
+    },
+    {
+      message: "Champ",
+    },
+  ];
 
-  dataStream.push(reqMessages);
-  reqMessages = dataStream;
-  const streamData = await hl(reqMessages);
-  ctx.res = streamData;
-  metadata.set("serverStream", "indeed");
-  dataStream.pop();
-
-  // send response header metadata object directly as an argument and that is set and sent
-  ctx.sendMetadata(metadata);
+  const reqMessages = { message: "hello!!! " + ctx.req.name };
+  // combine template with reqMessage
+  const updatedStream = [...dataStream, reqMessages];
+  // research what await hl(array of objects) does
+  const makeStreamData = await hl(updatedStream);
+  ctx.res = makeStreamData;
 
   // ends server stream
   ctx.res.end();
