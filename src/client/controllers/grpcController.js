@@ -1,20 +1,4 @@
-// import { Router } from "express";
-// import { ipcRenderer } from "electron";
-// import { remote } from "electron";
-// import { Metadata } from "@grpc/grpc-js";
-
-import * as store from "../store";
-import * as actions from "../actions/actions";
-
 const { api } = window;
-
-// const async = require("async");
-// const fs = require("fs");
-// const parseArgs = require("minimist");
-// const path = require("path");
-
-// const grpc = require("@grpc/grpc-js");
-// const protoLoader = require("@grpc/proto-loader");
 
 const grpcController = {};
 
@@ -57,9 +41,9 @@ grpcController.openGrpcConnection = (reqResObj, connectionArray) => {
     }
   }
 
-  console.log("foundService", foundService);
-  console.log("foundRpc", foundRpc);
-  console.log("rpcType", rpcType);
+  // console.log("foundService", foundService);
+  // console.log("foundRpc", foundRpc);
+  // console.log("rpcType", rpcType);
 
   // build gRPC package definition with protoLoader module
   const PROTO_PATH = reqResObj.protoPath;

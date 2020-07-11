@@ -552,7 +552,7 @@ ipcMain.on("fetch-meta-and-client", (event, data) => {
   const { reqResObj } = data;
   const { rpcType } = data;
   const PROTO_PATH = reqResObj.protoPath;
-  const { packageName, service, url, rpc } = data.reqResObj;
+  const { packageName, service, url, rpc, queryArr } = data.reqResObj;
 
   const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
@@ -620,7 +620,6 @@ ipcMain.on("fetch-meta-and-client", (event, data) => {
     const call = client[rpc](meta, function (error, response) {
       if (error) {
         console.log("error in client stream", error);
-        return undefined;
       }
       //Close Connection for client Stream
       reqResObj.connection = "closed";
@@ -630,15 +629,16 @@ ipcMain.on("fetch-meta-and-client", (event, data) => {
         reqResObj.timeReceived = time.timeReceived;
       });
       reqResObj.response.events.push(response);
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
-    }).on("metadata", (metadata) => {
-      // if metadata is sent back from the server, analyze and handle
-      const keys = Object.keys(metadata._internal_repr);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        reqResObj.response.headers[key] = metadata._internal_repr[key][0];
-      }
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
+      // update state
+      mainWindow.webContents.send("reqResUpdate", reqResObj);
+    }).on("metadata", (data) => {
+      // metadata is a Map, not an object
+      const metadata = data.internalRepr;
+
+      metadata.forEach((value, key) => {
+        reqResObj.response.headers[key] = value[0];
+      });
+      mainWindow.webContents.send("reqResUpdate", reqResObj);
     });
 
     for (let i = 0; i < queryArr.length; i++) {

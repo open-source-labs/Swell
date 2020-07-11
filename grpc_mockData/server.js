@@ -36,7 +36,7 @@ async function sayHelloNested(ctx) {
 }
 // Server-Side Stream
 // used highland library to manage asynchronous data
-async function sayHellos(ctx) {
+async function sayHellosSs(ctx) {
   ctx.set("SERVER-SIDE STREAM", "true");
   // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
 
@@ -130,7 +130,7 @@ function sayHelloBidi(ctx) {
  */
 function main() {
   const app = new Mali(PROTO_PATH, "Greeter");
-  app.use({ sayHello, sayHelloNested, sayHellos, sayHelloCs, sayHelloBidi });
+  app.use({ sayHello, sayHelloNested, sayHellosSs, sayHelloCs, sayHelloBidi });
   app.start(HOSTPORT);
   console.log(`Greeter service running @ ${HOSTPORT}`);
 }
