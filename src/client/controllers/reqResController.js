@@ -62,7 +62,8 @@ const connectionController = {
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) {
-      grpcController.openGrpcConnection(reqResObj);
+      api.send("open-grpc", reqResObj);
+      // grpcController.openGrpcConnection(reqResObj);
     } else {
       console.log("should be sending");
       api.send("open-http", reqResObj, this.openConnectionArray);

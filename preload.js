@@ -9,12 +9,12 @@ contextBridge.exposeInMainWorld("api", {
       "import-proto",
       "quit-and-install",
       "protoParserFunc-request",
-      "fetch-meta-and-client",
       "open-http",
       "open-gql",
       "import-collection",
       "export-collection",
       "open-http",
+      "open-grpc",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -30,10 +30,8 @@ contextBridge.exposeInMainWorld("api", {
       "proto-info",
       "message",
       "protoParserFunc-return",
-      "meta-and-client",
       "reqResUpdate",
       "reply-gql",
-      "reqResUpdate",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
