@@ -3,7 +3,6 @@ import * as actions from "../actions/actions";
 // import httpController from "./httpController.js";
 // import wsController from "./wsController.js";
 // import graphQLController from "./graphQLController.js";
-import grpcController from "./grpcController.js";
 
 const { api } = window;
 let events;

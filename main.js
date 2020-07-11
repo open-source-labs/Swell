@@ -50,9 +50,8 @@ const protoParserFunc = require("./src/client/protoParser.js");
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-
 require("./main_httpController.js")();
-// require('./SSEController.js')();
+// require grpc controller file
 require("./main_grpcController.js")();
 
 // configure logging
