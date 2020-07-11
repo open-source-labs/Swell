@@ -83,6 +83,7 @@ module.exports = {
     "arrow-body-style": 0,
     camelcase: 0,
     "class-methods-use-this": 0,
+    "consistent-return": 0,
     "comma-dangle": 0,
     "dot-notation": 0,
     "func-names": 0,
