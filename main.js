@@ -690,6 +690,3 @@ ipcMain.on("open-gql", (event, args) => {
       });
   }
 });
-
-// export main window so we can access ipcMain from other files
-module.exports = mainWindow;
