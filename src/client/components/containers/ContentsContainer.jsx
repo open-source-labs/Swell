@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 // import GraphContainer from './GraphContainer.jsx';
-import ReqResContainer from './ReqResContainer.jsx';
-import NavBarContainer from './NavBarContainer.jsx';
+import ReqResContainer from "./ReqResContainer.jsx";
+import NavBarContainer from "./NavBarContainer.jsx";
 
 class Contents extends Component {
   constructor(props) {
@@ -10,11 +10,11 @@ class Contents extends Component {
   }
 
   render() {
-    return(
-      <div className={'contents'}>
+    return (
+      <div className="contents">
         {/* <GraphContainer/> */}
-        <NavBarContainer/>
-        <ReqResContainer/>
+        <NavBarContainer />
+        <ReqResContainer />
       </div>
     );
   }
