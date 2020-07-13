@@ -1,12 +1,12 @@
 {
   "name": "Swell",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "test-jest": "jest",
-    "test-mocha": "webpack --mode=production --config ./webpack.production.js && mocha",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && SET NODE_ENV=test & mocha",
     "build": "webpack --mode=production --config ./webpack.production.js",
     "dev": "webpack-dev-server --mode=development --config ./webpack.development.js",
     "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
@@ -107,6 +107,31 @@
       "name": "Amruth Uppaluri",
       "email": "amruth@uppaluri.org",
       "url": "https://github.com/amuuth"
+    },
+    {
+      "name": "Hideaki Aomori",
+      "email": "https://www.linkedin.com/in/hideaki-aomori",
+      "url": "http://github.com/h15200"
+    },
+    {
+      "name": "Matt Gin",
+      "email": "mgin1013@gmail.com",
+      "url": "https://github.com/ChunsonHoag"
+    },
+    {
+      "name": "Nick Healy",
+      "email": "nickrhealy@gmail.com",
+      "url": "http://github.com/nickhealy"
+    },
+    {
+      "name": "Grace Spletzer",
+      "email": "gracespletzer05@gmail.com",
+      "url": "https://github.com/gspletzer"
+    },
+    {
+      "name": "Stephanie Wood",
+      "email": "wood.steph@gmail.com",
+      "url": "https://github.com/StephWood"
     }
   ],
   "build": {
