@@ -1,14 +1,17 @@
 import React, { Component } from "react";
+import ContentsContainer from "./ContentsContainer.jsx";
+import ReqResCtrl from "../../controllers/reqResController";
 import "../../../assets/style/App.scss";
-const { api } = window;
-import ContentsContainer from './ContentsContainer.jsx';
-// import ReqResCtrl from '../../controllers/reqResController';
 import SidebarContainer from "./SidebarContainer.jsx";
 import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
+
+const { api } = window;
+// import ReqResCtrl from '../../controllers/reqResController';
 // const EventEmitter = require('events');
 // const {dialog} = require('electron').remote
+
 class App extends Component {
   constructor(props) {
     super(props);
