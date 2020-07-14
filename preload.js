@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld("api", {
     // allowlist channels
     const allowedChannels = [
       "toMain",
+      "check-for-update",
       "confirm-clear-history",
       "import-proto",
       "quit-and-install",

@@ -20,7 +20,7 @@ class App extends Component {
   componentDidMount() {
     // This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
     // ipcRenderer.send('check-for-update');
-    // api.send('check-for-update')
+    api.send("check-for-update");
     // ipcRenderer.on('selectAll', ReqResCtrl.selectAllReqRes); // if the selectAll touchbar button was clicked (then run this method called selectAllReqRes) that is located in the connectionController...likewise for the rest
     // ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllReqRes);
     // ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
