@@ -99,12 +99,7 @@ const connectionController = {
       (obj) => obj.id === id
     );
 
-<<<<<<< HEAD
-    console.log('this is openConnection array : ', this.openConnectionArray)
-
-=======
     console.log("open connection array is : ", this.openConnectionArray);
->>>>>>> 09e73ade0dd640e48017f78b82dd8ccb438592cc
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {
