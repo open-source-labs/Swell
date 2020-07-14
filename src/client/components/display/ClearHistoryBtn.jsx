@@ -6,18 +6,18 @@ import historyController from "../../controllers/historyController";
 const { api } = window; 
 
 const ClearHistoryBtn = (props) => {
-  api.receive('clear-history-response', (res) => {
-    // a response of 0 from main means user has selected 'confirm'
-    console.log('response from main:', res.response)
-    if (res.response === 0) {
-      historyController.clearHistoryFromIndexedDb();
-      props.clearHistory();
-    };
-  });
+  // api.receive('clear-history-response', (res) => {
+  //   // a response of 0 from main means user has selected 'confirm'
+  //   console.log('response from main:', res.response)
+  //   if (res.response === 0) {
+  //     historyController.clearHistoryFromIndexedDb();
+  //     props.clearHistory();
+  //   };
+  // });
 
   const handleClick = () => {
 
-    api.send('confirm-clear-history'); 
+    // api.send('confirm-clear-history'); 
 
   };
   return <button onClick={handleClick}>Clear History</button>;
