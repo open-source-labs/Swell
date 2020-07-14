@@ -29,13 +29,13 @@ class SSERow extends Component {
         <div className={'grid-4'}>
           <div>
             <span className="tertiary-title">
-              ID {this.props.content.id}
+              ID {this.props.content.lastEventId}
             </span>
           </div>
 
           <div>
             <span className="tertiary-title">
-              Event {this.props.content.event}
+              Event {this.props.content.type}
             </span>
           </div>
 
@@ -53,7 +53,7 @@ class SSERow extends Component {
         <div className={'title-row data-inner'}>
           <div>
             <span className={'tertiary-title'}>
-              Data {contentBody}
+              Data: {contentBody}
             </span>
           </div>
         </div>

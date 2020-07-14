@@ -1,10 +1,11 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-import httpController from "./httpController.js";
+// import httpController from "./httpController.js";
 import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
-import grpcController from "./grpcController.js";
 
+const { api } = window;
+let events;
 const connectionController = {
   openConnectionArray: [],
   // selectedArray:[],
@@ -46,7 +47,11 @@ const connectionController = {
   },
 
   openReqRes(id) {
-    console.log("this.openConnectionArray ->", this.openConnectionArray);
+    // listens for reqResUpdate event from main process telling it to update reqResobj
+    api.receive("reqResUpdate", (reqResObj) =>
+      store.default.dispatch(actions.reqResUpdate(reqResObj))
+    );
+
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
@@ -55,9 +60,13 @@ const connectionController = {
       graphQLController.openGraphQLConnection(reqResObj);
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
-    else if (reqResObj.gRPC) grpcController.openGrpcConnection(reqResObj);
-    else {
-      httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
+    else if (reqResObj.gRPC) {
+      api.send("open-grpc", reqResObj);
+      // grpcController.openGrpcConnection(reqResObj);
+    } else {
+      console.log("should be sending");
+      api.send("open-http", reqResObj, this.openConnectionArray);
+      // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
     }
   },
 
@@ -90,8 +99,12 @@ const connectionController = {
       (obj) => obj.id === id
     );
 
+<<<<<<< HEAD
     console.log('this is openConnection array : ', this.openConnectionArray)
 
+=======
+    console.log("open connection array is : ", this.openConnectionArray);
+>>>>>>> 09e73ade0dd640e48017f78b82dd8ccb438592cc
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {
