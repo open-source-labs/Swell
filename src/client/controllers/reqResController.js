@@ -1,8 +1,8 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
 // import httpController from "./httpController.js";
-// import wsController from "./wsController.js";
-// import graphQLController from "./graphQLController.js";
+import wsController from "./wsController.js";
+import graphQLController from "./graphQLController.js";
 
 const { api } = window;
 let events;
@@ -98,8 +98,8 @@ const connectionController = {
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-    
-    console.log('open connection array is : ', this.openConnectionArray)
+
+    console.log("open connection array is : ", this.openConnectionArray);
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {
