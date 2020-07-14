@@ -20,6 +20,7 @@ const sendSSEs = (response, id = 0, timeout) => {
     `id: ${id}\ndata: This is event ${id}\n\n`
   );
   id++; 
+  console.log('just sent something else! ')
 
   if (id < 6) {
     timeout = setTimeout(() => {
