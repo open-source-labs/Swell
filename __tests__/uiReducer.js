@@ -30,22 +30,4 @@ describe("UI Reducer", () => {
       });
     });
   });
-
-  // describe("SHOW_WARNING", () => {
-  //   const action = { type: "SHOW_WARNING" };
-
-  //   it("should set warningIsDisplayed to true", () => {
-  //     const { warningIsDisplayed } = reducer(state, action);
-  //     expect(warningIsDisplayed).toBe(true);
-  //   });
-  // });
-
-  // describe("HIDE_WARNING", () => {
-  //   const action = { type: "HIDE_WARNING" };
-
-  //   it("should set warningIsDisplayed to false", () => {
-  //     const { warningIsDisplayed } = reducer(state, action);
-  //     expect(warningIsDisplayed).toBe(false);
-  //   });
-  // });
 });

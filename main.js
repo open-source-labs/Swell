@@ -289,14 +289,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.on("toMain", (e, args) => {
-  console.log("received from ipcRenderer inside main: ", args);
-  mainWindow.webContents.send(
-    "fromMain",
-    `sending ${args} back to ipcRenderer`
-  );
-});
-
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
   log.info(text);
