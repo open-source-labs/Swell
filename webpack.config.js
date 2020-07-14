@@ -5,8 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  target: "electron-renderer",
-  externals: [nodeExternals()],
+  target: "web",
+  // externals: [nodeExternals()],
   entry: ["./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -65,7 +65,7 @@ module.exports = {
           // unsafe-eval allowed because dependency (protobufjs) of @grpc/grpc-js uses eval();
           // hopefully, grpc will update their version of protobufjs, and that version will not use eval
           // related to this issue: https://github.com/protobufjs/protobuf.js/issues/997
-          "script-src": ["'self'", "'unsafe-eval'"],
+          "script-src": ["'self'"],
           "style-src": ["'self'"],
         },
         hashEnabled: {

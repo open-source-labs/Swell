@@ -1,12 +1,12 @@
 {
   "name": "Swell",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "test-jest": "jest",
-    "test-mocha": "webpack --mode=production --config ./webpack.production.js && mocha",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && SET NODE_ENV=test & mocha",
     "build": "webpack --mode=production --config ./webpack.production.js",
     "dev": "webpack-dev-server --mode=development --config ./webpack.development.js",
     "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
@@ -107,6 +107,31 @@
       "name": "Amruth Uppaluri",
       "email": "amruth@uppaluri.org",
       "url": "https://github.com/amuuth"
+    },
+    {
+      "name": "Hideaki Aomori",
+      "email": "https://www.linkedin.com/in/hideaki-aomori",
+      "url": "http://github.com/h15200"
+    },
+    {
+      "name": "Matt Gin",
+      "email": "mgin1013@gmail.com",
+      "url": "https://github.com/ChunsonHoag"
+    },
+    {
+      "name": "Nick Healy",
+      "email": "nickrhealy@gmail.com",
+      "url": "http://github.com/nickhealy"
+    },
+    {
+      "name": "Grace Spletzer",
+      "email": "gracespletzer05@gmail.com",
+      "url": "https://github.com/gspletzer"
+    },
+    {
+      "name": "Stephanie Wood",
+      "email": "wood.steph@gmail.com",
+      "url": "https://github.com/StephWood"
     }
   ],
   "build": {
@@ -173,6 +198,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
+    "@doyensec/electronegativity": "^1.6.0",
     "@grpc/grpc-js": "^1.1.1",
     "@grpc/proto-loader": "^0.5.4",
     "@jest-runner/electron": "^3.0.0",
@@ -194,13 +220,16 @@
     "electron-log": "^4.2.2",
     "electron-updater": "^4.3.1",
     "es6-promise": "^4.2.8",
+    "eventsource": "^1.0.7",
     "express": "^4.17.1",
+    "google-auth-library": "^6.0.2",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "grpc": "^1.24.3",
     "highland": "^2.13.5",
     "identity-obj-proxy": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "mali": "^0.20.0",
+    "mali": "^0.21.0",
     "node-fetch": "^2.6.0",
     "node-pre-gyp": "0.6.x",
     "node-sass": "^4.14.1",
