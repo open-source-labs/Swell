@@ -118,7 +118,7 @@ const httpController = {
 
       client.on("connect", () => {
         http2Connection.status = "connected";
-
+        console.log('about to attach request to http 2 client')
         // attach request, again passing in event so we can send response to renderer with event.sender.send()
         this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
       });
@@ -154,6 +154,7 @@ const httpController = {
       reqResObj.request.method !== "GET" &&
       reqResObj.request.method !== "HEAD"
     ) {
+      console.log('if this fires soemthing unexpected is happening')
       reqStream.end(reqResObj.request.body);
     } else {
       console.log("ending request");
@@ -173,8 +174,9 @@ const httpController = {
     let isSSE;
 
     reqStream.on("response", (headers, flags) => {
+      console.log('GOT BACK A RESPONSE, HALLELUJAH')
       // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
-      console.log('headers is : ', headers)
+      console.log('headers from line 178 is : ', headers)
       // SSE will have 'stream' in the 'content-type' heading
       isSSE = (headers["content-type"] && headers["content-type"].includes("stream"));
 
@@ -195,8 +197,8 @@ const httpController = {
           setCookie.parse(headers["set-cookie"])
         );
         // send back reqResObj to renderer so it can update the redux store
-        event.sender.send('reqResUpdate', reqResObj);
       }
+      event.sender.send('reqResUpdate', reqResObj);
     });
 
     reqStream.setEncoding("utf8");
@@ -245,8 +247,9 @@ const httpController = {
         event.sender.send('reqResUpdate', reqResObj);
       } else {
         reqResObj.connection = "closed";
-        reqResObj.response.events.push(JSON.parse(data));
+        reqResObj.response.events.push(data ? JSON.parse(data) : '');
         // send back reqResObj to renderer so it can update the redux store
+        console.log('ended, now sending back')
         event.sender.send('reqResUpdate', reqResObj);
       }
     });
@@ -410,10 +413,10 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   addSingleEvent(event, reqResObj) {
-    console.log('event in addSingleEvent :', event)
     // adds new event to reqResObj and returns it so obj can be sent back to renderer process
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(event);
+    reqResObj.connectionType = 'plain';
     // returns updated reqResObj 
     return reqResObj; 
   },

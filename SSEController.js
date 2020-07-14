@@ -18,11 +18,12 @@ SSEController.createStream = (reqResObj, options, event) => {
     agent: false,
   });
   req.once('response', (res) => {
-      console.log('wrong thing got response, budy1')
       // update info in reqResObj to reflect fact that connection was succesful
       reqResObj.response.headers = {...res.headers};
       reqResObj.connection = 'open'; 
       reqResObj.connectionType = 'SSE';
+      // this is for purpose of logic in graph.jsx, which needs the entire req/res obj to have a timeReceived
+      reqResObj.timeReceived = Date.now();
       // invoke function that will create an EventSource
       SSEController.readStream(reqResObj, event, Date.now() - startTime);
       req.destroy(); 
@@ -47,7 +48,7 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
   }; 
   sse.onerror = (err) => {
     console.log('there was an error in SSEController.readStream', err);
-    see.close();
+    sse.close();
   };
 };
 
