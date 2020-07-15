@@ -378,9 +378,9 @@ class ComposerNewRequest extends Component {
     }
     return (
       <div
+        className="composerContents_content"
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
-        style={{ display: "flex", flexDirection: "column", outline: "none" }}
       >
         <h1 className="composer_title">Create New Request</h1>
 

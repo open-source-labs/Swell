@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 
 import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
-// import ComposerWarning from "./Warning/ComposerWarning.jsx";
+import ComposerWarning from "./Warning/ComposerWarning.jsx";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -51,22 +51,6 @@ const mapDispatchToProps = (dispatch) => ({
 class ComposerContainer extends Component {
   constructor(props) {
     super(props);
-    // this.state = {};
-  }
-
-  componentDidMount() {
-    // this.setState({
-    //   composerDisplay: this.props.composerDisplay,
-    // });
-  }
-
-  componentDidUpdate() {
-    //keeping the redux store state in sync with this component's local state
-    // if (this.props.composerDisplay !== this.state.composerDisplay) {
-    //   this.setState({
-    //     composerDisplay: this.props.composerDisplay,
-    //   });
-    // }
   }
 
   render() {
@@ -99,12 +83,12 @@ class ComposerContainer extends Component {
         break;
       }
       case "Warning": {
-        // composerContents = (
-        //   // <ComposerWarning
-        //   //   warningMessage={this.props.warningMessage}
-        //   //   setComposerDisplay={this.props.setComposerDisplay}
-        //   // />
-        // );
+        composerContents = (
+          <ComposerWarning
+            warningMessage={this.props.warningMessage}
+            setComposerDisplay={this.props.setComposerDisplay}
+          />
+        );
         break;
       }
       default:

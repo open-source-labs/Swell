@@ -17,7 +17,7 @@ module.exports = merge(base, {
       ignored: /node_modules/,
     },
     before() {
-      spawn("electron", ["."], {
+      spawn("electron", [".", "dev"], {
         shell: true,
         env: process.env,
         stdio: "inherit",
