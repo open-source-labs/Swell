@@ -65,9 +65,6 @@ module.exports = {
         policy: {
           "base-uri": "'self'",
           "object-src": "'none'",
-          // unsafe-eval allowed because dependency (protobufjs) of @grpc/grpc-js uses eval();
-          // hopefully, grpc will update their version of protobufjs, and that version will not use eval
-          // related to this issue: https://github.com/protobufjs/protobuf.js/issues/997
           "script-src": ["'self'"],
           "style-src": ["'self'"],
         },

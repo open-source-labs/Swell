@@ -20,12 +20,16 @@ class NavBarContainer extends Component {
     super(props);
     this.state = {
       showModal: false,
+      input: "",
+      collectionNameInputStyles: {},
+      collectionNameErrorStyles: { display: "none" },
     };
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.saveCollection = this.saveCollection.bind(this);
     this.saveName = this.saveName.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleOpenModal() {
@@ -37,23 +41,25 @@ class NavBarContainer extends Component {
   }
 
   saveName() {
-    const inputName = document.querySelector("#collectionNameInput").value;
-    if (!!inputName.trim()) {
+    if (!!this.state.input.trim()) {
       collectionsController
-        .collectionNameExists({ name: inputName })
+        .collectionNameExists({ name: this.state.input })
         .catch((err) =>
           console.error("error in checking collection name: ", err)
         )
         .then((found) => {
           if (found) {
-            //if the name already exists
-            document
-              .querySelector("#collectionNameInput")
-              .setAttribute("style", "border-color: red;");
-            document
-              .querySelector("#collectionNameError")
-              .setAttribute("style", "display: block");
-          } else this.saveCollection(inputName);
+            //if the name already exists, change style state
+            this.setState({
+              ...this.state,
+              collectionNameInputStyles: {
+                borderColor: "red",
+              },
+              collectionNameErrorStyles: {
+                display: "block",
+              },
+            });
+          } else this.saveCollection(this.state.input);
         });
     }
   }
@@ -83,14 +89,22 @@ class NavBarContainer extends Component {
   }
 
   handleKeyPress(event) {
-    const warning = document.querySelector("#collectionNameError");
     if (event.key === "Enter") this.saveName();
-    else if (warning.style.display === "block") {
-      warning.setAttribute("style", "display: none !important");
-      document
-        .querySelector("#collectionNameInput")
-        .setAttribute("style", "border: 2px solid $yellowgrey !important;");
+    else if (this.state.collectionNameErrorStyles.display === "block") {
+      this.setState({
+        ...this.state,
+        collectionNameErrorStyles: {
+          display: "none",
+        },
+        collectionNameInputStyles: {
+          border: "2px solid #808080",
+        },
+      });
     }
+  }
+
+  handleChange(e) {
+    this.setState({ ...this.state, input: e.target.value });
   }
 
   render(props) {
@@ -177,12 +191,18 @@ class NavBarContainer extends Component {
           >
             <h1 id="heading">Name your collection</h1>
             <input
+              style={this.state.collectionNameInputStyles}
+              input={this.state.input}
               type="text"
               id="collectionNameInput"
               onKeyDown={(e) => this.handleKeyPress(e)}
+              onChange={this.handleChange}
               autoFocus
             />
-            <p id="collectionNameError" style={{ display: "none" }}>
+            <p
+              id="collectionNameError"
+              style={this.state.collectionNameErrorStyles}
+            >
               Collection name already exists!
             </p>
             <div>
