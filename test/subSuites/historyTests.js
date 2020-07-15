@@ -1,5 +1,5 @@
 const assert = require('assert'); 
-const sideBar = require('./pageObjects/Sidebar.js'); 
+const sideBar = require('../pageObjects/Sidebar.js'); 
 
 
 module.exports = () => {

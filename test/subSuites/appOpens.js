@@ -1,7 +1,7 @@
 const assert = require("assert");
 const path = require("path");
 const fs = require("fs");
-const app = require('./testApp');
+const app = require('../testApp');
 
 
 module.exports = () => {

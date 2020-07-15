@@ -1,13 +1,9 @@
 // Integration test for electron for spectron
 // ****** use "npm run test-mocha" to run these tests ******
 
-const assert = require("assert");
-const path = require("path");
-const fs = require("fs");
-
 // import other tests
-const historyTests = require('./historyTests');
-const appOpensTests = require('./appOpens'); 
+const historyTests = require('./subSuites/historyTests');
+const appOpensTests = require('./subSuites/appOpens'); 
 
 const app = require('./testApp');
 
@@ -23,6 +19,7 @@ describe("Electron Tests", function () {
     }
   });
 
+  // these are are test suites within this broader suite
   appOpensTests();
   historyTests();
 });
