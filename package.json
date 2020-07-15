@@ -141,14 +141,20 @@
     "extends": null,
     "files": [
       "dist/index.html",
-      "dist/main.js",
+      "dist/bundle.js",
+      "dist/main.css",
       "dist/img/swell-bg__2JecU.png",
       "dist/img/Trashcan__3piXy.png",
       "dist/img/arrow_drop_down_white_192x192__3cp1B.png",
       "menu/mainMenu.js",
       "package.json",
       "main.js",
-      "httpserver.js"
+      "httpserver.js",
+      "src/client/protoParser.js",
+      "main_grpcController.js",
+      "main_httpController.js",
+      "SSEController.js",
+      "preload.js"
     ],
     "nodeVersion": "12.14.1",
     "nsis": {
