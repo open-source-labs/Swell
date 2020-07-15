@@ -18,17 +18,17 @@ class BodyEntryForm extends Component {
   }
 
   render() {
-    let rawTypeStyles = {
+    const rawTypeStyles = {
       display: this.props.newRequestBody.bodyType === "raw" ? "block" : "none",
     };
 
-    let bodyEntryArea = (() => {
+    const bodyEntryArea = (() => {
       //BodyType of none : display nothing
       if (this.props.newRequestBody.bodyType === "none") {
         return;
       }
       //BodyType of XWWW... : display WWWForm entry
-      else if (this.props.newRequestBody.bodyType === "x-www-form-urlencoded") {
+      if (this.props.newRequestBody.bodyType === "x-www-form-urlencoded") {
         return (
           <WWWForm
             setNewRequestBody={this.props.setNewRequestBody}
@@ -37,7 +37,7 @@ class BodyEntryForm extends Component {
         );
       }
       //RawType of application/json : Text area box with error checking
-      else if (this.props.newRequestBody.rawType === "application/json") {
+      if (this.props.newRequestBody.rawType === "application/json") {
         return (
           <JSONTextArea
             setNewRequestBody={this.props.setNewRequestBody}
@@ -46,24 +46,22 @@ class BodyEntryForm extends Component {
         );
       }
       //all other cases..just plain text area
-      else {
-        return (
-          <textarea
-            value={this.props.newRequestBody.bodyContent}
-            className={"composer_textarea"}
-            style={{ resize: "none" }}
-            type="text"
-            placeholder="Body"
-            rows={10}
-            onChange={(e) => {
-              this.props.setNewRequestBody({
-                ...this.props.newRequestBody,
-                bodyContent: e.target.value,
-              });
-            }}
-          ></textarea>
-        );
-      }
+
+      return (
+        <textarea
+          value={this.props.newRequestBody.bodyContent}
+          className="composer_textarea"
+          type="text"
+          placeholder="Body"
+          rows={10}
+          onChange={(e) => {
+            this.props.setNewRequestBody({
+              ...this.props.newRequestBody,
+              bodyContent: e.target.value,
+            });
+          }}
+        />
+      );
     })();
 
     const arrowClass = this.state.show
@@ -80,7 +78,7 @@ class BodyEntryForm extends Component {
           onClick={this.toggleShow}
           style={this.props.stylesObj}
         >
-          <img className={arrowClass} src={dropDownArrow}></img>
+          <img className={arrowClass} src={dropDownArrow} alt="down arrow" />
           Body
         </div>
 

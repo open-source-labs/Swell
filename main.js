@@ -12,6 +12,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 
 // npm libraries
+// debugger
 const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
 const {
   default: installExtension,
@@ -145,12 +146,12 @@ const touchBar = new TouchBar([
 /************************
  ******** SET isDev *****
  ************************/
-
-let isDev;
-// if using Spectron, run it in production
-process.argv.includes("--noDevServer") || process.argv.includes("TEST_MODE")
-  ? (isDev = false)
-  : (isDev = true);
+// default to production mode
+let isDev = false;
+// if running webpack-server, change to development mode
+if (process.argv.includes("dev")) {
+  isDev = true;
+}
 
 /*************************
  ******* MODE DISPLAY ****
@@ -274,9 +275,9 @@ function createWindow() {
 app.on("ready", () => {
   // createLoadingScreen();
   createWindow();
-  // if (!isDev) {
-  //   autoUpdater.checkForUpdates();
-  // }
+  if (!isDev) {
+    autoUpdater.checkForUpdates();
+  }
 });
 
 // Quit when all windows are closed.
