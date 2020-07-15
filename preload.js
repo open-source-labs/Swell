@@ -2,9 +2,8 @@ const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
   send: (channel, ...data) => {
-    // allowlist channels
+    // allowlist channels SENDING to Main
     const allowedChannels = [
-      "toMain",
       "check-for-update",
       "confirm-clear-history",
       "export-collection",
@@ -24,9 +23,8 @@ contextBridge.exposeInMainWorld("api", {
   },
   receive: (channel, cb) => {
     console.log("listening on channel : ", channel);
-    // allowlist channels
+    // allowlist channels LISTENING
     const allowedChannels = [
-      "fromMain",
       "add-collection",
       "clear-history-response",
       "message",

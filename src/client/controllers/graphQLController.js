@@ -3,11 +3,11 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
-//const { session } = require('electron').remote
-const { api } = window;
 
 import * as store from "../store";
 import * as actions from "../actions/actions";
+
+const { api } = window;
 
 const graphQLController = {
   openGraphQLConnection(reqResObj) {

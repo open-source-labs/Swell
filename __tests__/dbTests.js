@@ -1,3 +1,7 @@
+// started  dexie testing set up.
+// I would suggest continue TDD by writing some collection tests, then
+// importing the actual controllers and testing directlyerly
+
 // const collectionsController = require("../src/client/controllers/collectionsController");
 // const historyController = require("../src/client/controllers/historyController");
 
