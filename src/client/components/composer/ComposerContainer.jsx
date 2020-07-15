@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 
 import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
-// import ComposerWarning from "./Warning/ComposerWarning.jsx";
+import ComposerWarning from "./Warning/ComposerWarning.jsx";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -99,12 +99,12 @@ class ComposerContainer extends Component {
         break;
       }
       case "Warning": {
-        // composerContents = (
-        //   // <ComposerWarning
-        //   //   warningMessage={this.props.warningMessage}
-        //   //   setComposerDisplay={this.props.setComposerDisplay}
-        //   // />
-        // );
+        composerContents = (
+          <ComposerWarning
+            warningMessage={this.props.warningMessage}
+            setComposerDisplay={this.props.setComposerDisplay}
+          />
+        );
         break;
       }
       default:
