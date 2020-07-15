@@ -194,9 +194,9 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true,
-      enableRemoteModule: false,
-      sandbox: true,
+      contextIsolation: (process.env.NODE_ENV !== 'test'),
+      // enableRemoteModule: false,
+      sandbox: (process.env.NODE_ENV !== 'test'),
       webSecurity: true,
       preload: path.resolve(__dirname, "preload.js"),
     },
@@ -245,7 +245,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (isDev) {
+    if (isDev && process.env.NODE_ENV !== 'test') {
       mainWindow.webContents.openDevTools();
     }
   });

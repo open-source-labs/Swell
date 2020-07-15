@@ -6,7 +6,7 @@
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "test-jest": "jest",
-    "test-mocha": "webpack --mode=production --config ./webpack.production.js && SET NODE_ENV=test & mocha",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha",
     "build": "webpack --mode=production --config ./webpack.production.js",
     "dev": "webpack-dev-server --mode=development --config ./webpack.development.js",
     "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
