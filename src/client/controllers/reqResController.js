@@ -1,6 +1,5 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-// import httpController from "./httpController.js";
 import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
@@ -8,7 +7,6 @@ const { api } = window;
 let events;
 const connectionController = {
   openConnectionArray: [],
-  // selectedArray:[],
 
   getReqRes_CurrentTabAndSelected() {
     const { reqResArray } = store.default.getState().business;
@@ -62,11 +60,9 @@ const connectionController = {
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);
-      // grpcController.openGrpcConnection(reqResObj);
     } else {
       console.log("should be sending");
       api.send("open-http", reqResObj, this.openConnectionArray);
-      // httpController.openHTTPconnection(reqResObj, this.openConnectionArray);
     }
   },
 

@@ -8,9 +8,6 @@ import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
 
 const { api } = window;
-// import ReqResCtrl from '../../controllers/reqResController';
-// const EventEmitter = require('events');
-// const {dialog} = require('electron').remote
 
 class App extends Component {
   constructor(props) {
@@ -18,9 +15,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+    api.send("check-for-update");
     // This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
-    // ipcRenderer.send('check-for-update');
-    // api.send('check-for-update')
+    // current disabled as none of us have a touch bar. If activated, follow the api.send method.
+
     // ipcRenderer.on('selectAll', ReqResCtrl.selectAllReqRes); // if the selectAll touchbar button was clicked (then run this method called selectAllReqRes) that is located in the connectionController...likewise for the rest
     // ipcRenderer.on('deselectAll', ReqResCtrl.deselectAllReqRes);
     // ipcRenderer.on('openAllSelected', ReqResCtrl.openAllSelectedReqRes);
@@ -53,8 +51,6 @@ class App extends Component {
   }
 
   render() {
-    api.receive("fromMain", (data) => console.log(data));
-    api.send("toMain", "MEAT WITH SAUCE");
     return (
       <div id="app">
         <UpdatePopUpContainer />

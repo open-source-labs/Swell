@@ -1,5 +1,6 @@
 // Integration test for electron for spectron
 // ****** use "npm run test-mocha" to run these tests ******
+// current issue running these tests because of security implementation (sandbox)
 
 const { Application } = require("spectron");
 const assert = require("assert");
