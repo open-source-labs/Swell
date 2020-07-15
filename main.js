@@ -27,7 +27,7 @@ const { TouchBarButton, TouchBarSpacer } = TouchBar;
 const path = require("path");
 const url = require("url");
 const fs = require("fs");
-// const log = require("electron-log");
+const log = require("electron-log");
 
 // basic http cookie parser
 const cookie = require("cookie");
@@ -56,9 +56,9 @@ require("./main_httpController.js")();
 require("./main_grpcController.js")();
 
 // configure logging
-// autoUpdater.logger = log;
-// autoUpdater.logger.transports.file.level = "info";
-// log.info("App starting...");
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
+log.info("App starting...");
 
 let mainWindow;
 
