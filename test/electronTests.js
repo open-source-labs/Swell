@@ -27,9 +27,9 @@ describe("Electron Tests", function () {
   });
 
   after(function () {
-    // if (app && app.isRunning()) {
-    // return app.stop();
-    // }
+    if (app && app.isRunning()) {
+      return app.stop();
+    }
   });
 
   describe("Browser Window Tests", () => {
