@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Header = ({
-  content, changeHandler, Key, value,
+  type, content, changeHandler, Key, value,
 }) => (
-  <div style={styles} className='composer_header'>
+  <div style={styles} className={`composer_header ${type === 'header' ? 'header_container' : 'cookie_container'}`}>
     <input
-      className='composer_header_checkbox'
+      className={`composer_header_checkbox ${type === 'header' ? 'header_checkbox' : 'cookie_checkbox'}`}
       type="checkbox"
       checked={content.active}
       onChange={e => changeHandler(content.id, 'active', e.target.checked)}
     />
 
     <input
-      className="composer_header_input composer_header_input_first"
+      className={`composer_header_input composer_header_input_first ${type === 'header' ? 'header_key' : 'cookie_key'}`}
       type="text"
       placeholder="Key"
       value={Key}
@@ -21,7 +21,7 @@ const Header = ({
     />
 
     <input
-      className="composer_header_input"
+      className={`composer_header_input ${type === 'header' ? 'header_value' : 'cookie_value'}`}
       type="text"
       placeholder="Value"
       value={value}

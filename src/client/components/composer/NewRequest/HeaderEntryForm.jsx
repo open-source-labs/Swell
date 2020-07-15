@@ -157,6 +157,7 @@ class HeaderEntryForm extends Component {
 
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <Header
+        type='header'
         content={header}
         changeHandler={this.onChangeUpdateHeader}
         key={index} //key

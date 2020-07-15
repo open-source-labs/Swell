@@ -1,6 +1,6 @@
 const assert = require('assert'); 
 const sideBar = require('../pageObjects/Sidebar.js'); 
-
+const app = require('../testApp.js')
 
 module.exports = () => {
   describe('CRUD/History functionality', function(){
@@ -26,40 +26,47 @@ module.exports = () => {
       });
     })
 
-    // describe('headers inputs', async () => {
-    //   let inputs;
-    //   let headerChecked; 
+    describe('headers inputs', async () => {
+      let headers;
+      let headerChecked; 
 
-    //   it('should open headers input, rendering single input at first', async () => {
-    //     await sideBar.activateHeaders.click();
-    //     inputs = await sideBar.headerCheckbox[0];
-    //     assert.strictEqual(inputs.length, 1); 
-    //   }); 
+      it('should open headers input, rendering single input at first', async () => {
+        await sideBar.activateHeaders.click();
+        headers = await sideBar.headers;
+        assert.strictEqual(headers.length, 1); 
+      }); 
 
-    //   it('can type new headers in request', async () => {
-    //     await sideBar.headerKey.addValue('testing');
-    //     const headerKey = await sideBar.headerKey.getValue();
-    //     assert.strictEqual(headerKey, 'testing'); 
+      it('can type new headers in request', async () => {
+        await sideBar.headerKey.addValue('testing');
+        const headerKey = await sideBar.headerKey.getValue();
+        assert.strictEqual(headerKey, 'testing'); 
   
-    //     await sideBar.headerValue.addValue('true'); 
-    //     const headerValue = await sideBar.headerValue.getValue();
-    //     assert.strictEqual(headerValue, 'true'); 
+        await sideBar.headerValue.addValue('true'); 
+        const headerValue = await sideBar.headerValue.getValue();
+        assert.strictEqual(headerValue, 'true'); 
   
-    //   });
+      });
 
-    //   it('new headers initialize as checked', async () => {
-    //     headerChecked = await sideBar.headerCheckbox.isSelected();
-    //     assert.strictEqual(headerChecked, true);
-    //   });
+      it('new headers initialize as checked', async () => {
+        // const checkbox = await sideBar.headerCheckbox;
+        // let firstCheckBox = await checkbox[0];
+        // let isSelected = await firstCheckBox.isSelected();
 
-    //   // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
-    //   it('deleting text in input eliminates checkmark', async () => {
-    //     await sideBar.headerKey.clearValue();
-    //     await sideBar.headerValue.clearVAlue();
-    //     headerChecked = await sideBar.headerCheckbox.isSelected();
-    //     assert.strictEqual(headerChecked, false);
-    //   })
-    // })
+        const checkbox = await app.client.$('input.header_checkbox'); 
+        console.log('just selected : ', checkbox)
+        const isSelected = await checkbox.getValue();
+        console.log('value of checkbox')
+        assert.strictEqual(isSelected, true);
+      });
+
+      // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
+      // it('deleting text in input eliminates checkmark', async () => {
+      //   await sideBar.headerKey.clearValue();
+      //   await sideBar.headerValue.clearVAlue();
+      //   headerChecked = await sideBar.headerCheckbox.isSelected();
+      //   assert.strictEqual(headerChecked, false);
+      // })
+    })
 
   });
 }

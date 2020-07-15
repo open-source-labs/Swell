@@ -22,8 +22,12 @@ class Sidebar {
     return app.client.$('.composer_subtitle=Headers'); 
   };
 
+  get headers(){
+    return app.client.$$('.header_container');
+  }
+
   get headerCheckbox(){
-    return app.client.$$('header_checkbox');
+    return app.client.$$('.header_checkbox');
   };
 
   get headerKey(){
