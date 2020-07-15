@@ -1,3 +1,7 @@
+// using react-testing-library instead of enzyme as it seems like a better idea.
+// google the enzyme shallow problem
+// currently we can't find a way to run these tests with our current security setup (nodeIntegration false, global api instead of ipcRenderer)
+
 import React from "react";
 import { createStore } from "redux";
 import { Provider } from "react-redux";

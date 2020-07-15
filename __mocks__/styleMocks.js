@@ -1,3 +1,3 @@
-// module.exports = 'test-file-stub';
+// see jest.config
 
 module.exports = {};

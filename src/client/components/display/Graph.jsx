@@ -120,9 +120,9 @@ class Graph extends Component {
 
     const newDataSets = [];
     this.props.reqResArray.forEach((reqRes, index) => {
-      console.log('reqRes in graph component : ', reqRes)
-      console.log('should be true :', reqRes.timeReceived > this.state.currentTime)
-      console.log('TIME RECEIVED : ', reqRes.timeReceived, 'CURRENT TIME : ', this.state.currentTime)
+      // console.log('reqRes in graph component : ', reqRes)
+      // console.log('should be true :', reqRes.timeReceived > this.state.currentTime)
+      // console.log('TIME RECEIVED : ', reqRes.timeReceived, 'CURRENT TIME : ', this.state.currentTime)
       if (
         (reqRes.response.events &&
           reqRes.timeReceived > this.state.currentTime) ||
@@ -224,7 +224,10 @@ class Graph extends Component {
           }
           case "SSE": {
             reqRes.response.events.forEach((event) => {
-              console.log('getting back this time received: ', event.timeReceived)
+              console.log(
+                "getting back this time received: ",
+                event.timeReceived
+              );
               if (
                 Date.now() - event.timeReceived <
                 this.state.timeFromNowToDisplay

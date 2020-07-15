@@ -8,7 +8,7 @@ const ResponseEventsDisplay = ({ response }) => {
   const displayContents = [];
 
   // If it's an SSE, render event rows
-  console.log('response is : ', response, 'headers is : ', headers)
+  // console.log('response is : ', response, 'headers is : ', headers)
   if (
     headers &&
     headers["content-type"] &&
