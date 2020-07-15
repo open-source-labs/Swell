@@ -244,7 +244,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (isDev) {
+    if (isDev && process.env.NODE_ENV !== 'test') {
       mainWindow.webContents.openDevTools();
     }
   });
