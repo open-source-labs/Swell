@@ -13,8 +13,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 
 // npm libraries
 // debugger
-const unhandled = require("electron-unhandled");
-unhandled();
 const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
 const {
   default: installExtension,
