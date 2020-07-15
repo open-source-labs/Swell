@@ -6,7 +6,6 @@ const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   target: "web",
-  // externals: [nodeExternals()],
   entry: ["./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -16,16 +15,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(ts|js)x?$/,
         include: [path.resolve(__dirname, "src")],
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/typescript",
+            ],
           },
         },
         resolve: {
-          extensions: [".js", ".jsx", ".json"],
+          extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
         },
       },
       {
