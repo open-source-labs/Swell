@@ -297,57 +297,57 @@ ipcMain.on("toMain", (e, args) => {
   );
 });
 
-// // Auto Updating Functionality
-// const sendStatusToWindow = (text) => {
-//   log.info(text);
-//   if (mainWindow) {
-//     mainWindow.webContents.send("message", text);
-//   }
-// };
+// Auto Updating Functionality
+const sendStatusToWindow = (text) => {
+  log.info(text);
+  if (mainWindow) {
+    mainWindow.webContents.send("message", text);
+  }
+};
 
-// ipcMain.on("check-for-update", () => {
-//   //listens to ipcRenderer in UpdatePopUpContainer.jsx
-//   if (!isDev) autoUpdater.checkForUpdates();
-// });
-// autoUpdater.on("checking-for-update", () => {
-//   sendStatusToWindow("Checking for update...");
-// });
-// autoUpdater.on("update-available", (info) => {
-//   sendStatusToWindow("Update available.");
-// });
-// autoUpdater.on("update-not-available", (info) => {
-//   sendStatusToWindow("Update not available.");
-// });
-// autoUpdater.on("error", (err) => {
-//   console.error("autoUpdater error -> ", err);
-//   sendStatusToWindow(`Error in auto-updater`);
-// });
-// autoUpdater.on("download-progress", (progressObj) => {
-//   sendStatusToWindow(
-//     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-//   );
-// });
-// autoUpdater.on("update-downloaded", (info) => {
-//   sendStatusToWindow("Update downloaded.");
-// });
+ipcMain.on("check-for-update", () => {
+  //listens to ipcRenderer in UpdatePopUpContainer.jsx
+  if (!isDev) autoUpdater.checkForUpdates();
+});
+autoUpdater.on("checking-for-update", () => {
+  sendStatusToWindow("Checking for update...");
+});
+autoUpdater.on("update-available", (info) => {
+  sendStatusToWindow("Update available.");
+});
+autoUpdater.on("update-not-available", (info) => {
+  sendStatusToWindow("Update not available.");
+});
+autoUpdater.on("error", (err) => {
+  console.error("autoUpdater error -> ", err);
+  sendStatusToWindow(`Error in auto-updater`);
+});
+autoUpdater.on("download-progress", (progressObj) => {
+  sendStatusToWindow(
+    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+  );
+});
+autoUpdater.on("update-downloaded", (info) => {
+  sendStatusToWindow("Update downloaded.");
+});
 
-// autoUpdater.on("update-downloaded", (info) => {
-//   // Wait 5 seconds, then quit and install
-//   // In your application, you don't need to wait 500 ms.
-//   // You could call autoUpdater.quitAndInstall(); immediately
-//   autoUpdater.quitAndInstall();
-// });
-// ipcMain.on("quit-and-install", () => {
-//   autoUpdater.quitAndInstall();
-// });
-// // App page reloads when user selects "Refresh" from pop-up dialog
-// ipcMain.on("fatalError", () => {
-//   console.log("received fatal error");
-//   mainWindow.reload();
-// });
-// ipcMain.on("uncaughtException", () => {
-//   console.log("received uncaught fatal error");
-// });
+autoUpdater.on("update-downloaded", (info) => {
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 500 ms.
+  // You could call autoUpdater.quitAndInstall(); immediately
+  autoUpdater.quitAndInstall();
+});
+ipcMain.on("quit-and-install", () => {
+  autoUpdater.quitAndInstall();
+});
+// App page reloads when user selects "Refresh" from pop-up dialog
+ipcMain.on("fatalError", () => {
+  console.log("received fatal error");
+  mainWindow.reload();
+});
+ipcMain.on("uncaughtException", () => {
+  console.log("received uncaught fatal error");
+});
 
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
