@@ -2,9 +2,8 @@ const { ipcRenderer, contextBridge } = require("electron");
 
 const apiObj =  {
   send: (channel, ...data) => {
-    // allowlist channels
+    // allowlist channels SENDING to Main
     const allowedChannels = [
-      "toMain",
       "check-for-update",
       "confirm-clear-history",
       "export-collection",
@@ -25,7 +24,6 @@ const apiObj =  {
   receive: (channel, cb) => {
     // allowlist channels
     const allowedChannels = [
-      "fromMain",
       "add-collection",
       "clear-history-response",
       "message",
