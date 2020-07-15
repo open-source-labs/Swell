@@ -12,7 +12,8 @@
     "prod": "webpack --mode production --config ./webpack.production.js && electron --noDevServer .",
     "server": "nodemon test-server/server.js",
     "package-mac": "electron-builder  build --x64 --mac",
-    "package-all": "electron-builder  build -mwl",
+    "package-all": "electron-builder build -mwl",
+    "package-win": "electron-builder  build --x64 --win",
     "package-linux": "electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
@@ -175,7 +176,7 @@
       ]
     },
     "win": {
-      "target": "NSIS",
+      "target": "nsis",
       "icon": "icon.ico"
     },
     "linux": {
