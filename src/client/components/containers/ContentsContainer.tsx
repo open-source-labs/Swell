@@ -19,5 +19,3 @@ export class ContentsContainer extends React.Component<any, any> {
     );
   }
 }
-
-// export default Contents;
