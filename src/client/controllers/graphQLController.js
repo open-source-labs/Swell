@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
-
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
@@ -29,6 +28,7 @@ const graphQLController = {
   // handles graphQL queries and mutationsnp
   sendGqlToMain(args) {
     return new Promise((resolve) => {
+      api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
         console.log("This is result:", result);
         // needs formatting because component reads them in a particular order

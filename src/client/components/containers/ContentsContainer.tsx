@@ -1,18 +1,18 @@
-import React, { Component } from "react";
+import * as React from "react";
 
-import GraphContainer from './GraphContainer.jsx';
+import { GraphContainer } from "./GraphContainer";
 import ReqResContainer from "./ReqResContainer.jsx";
 import NavBarContainer from "./NavBarContainer.jsx";
 
-class Contents extends Component {
-  constructor(props) {
+export class ContentsContainer extends React.Component<any, any> {
+  constructor(props: any) {
     super(props);
   }
 
   render() {
     return (
       <div className="contents">
-        <GraphContainer/>
+        <GraphContainer />
         <NavBarContainer />
         <ReqResContainer />
       </div>
@@ -20,4 +20,4 @@ class Contents extends Component {
   }
 }
 
-export default Contents;
+// export default Contents;
