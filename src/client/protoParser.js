@@ -1,12 +1,9 @@
-// this file is being required into main.
-// This function, protoParserFunc, should only be called inside main.
-// Renderer processes must use contextBridge to tell main to use this func
+// this file is being required into main. this function, protoParserFunc, should only be called inside main.
 
 const fs = require("fs");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
-// const uuid = require("uuid");
 
 async function protoParserFunc(protoBodyData) {
   // define storage for .proto parsed content
@@ -149,28 +146,5 @@ async function protoParserFunc(protoBodyData) {
   protoStorage.serviceArr = serviceArr;
   return protoStorage;
 }
-// test run of protoParser
-// protoParser(tempData);
-//
-//current target shape of parsed grpc service object for frontend
-//this.state.services = [
-// {name: 'ServiceName',
-// messages: [{
-//   name: messageNameReq,
-//   def: {
-//     [mName]: {
-//       type:msgObj.type,
-//       nested: bool,
-//       dependent: msgObj.typeName}
-//     }
-// }]
-// rpcs: [{name: 'RPC Name',
-//         type: 'Stream Type',
-//         req: 'MessageName for Requst',
-//         res: 'MessageName for Response'}]
-//  }]
-//
 
-// console.log(tempData);
-// protoParserFunc(tempData).catch((err) => console.log(err));
 module.exports = protoParserFunc;
