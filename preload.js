@@ -5,13 +5,18 @@ const apiObj =  {
     // allowlist channels
     const allowedChannels = [
       "toMain",
+      "check-for-update",
       "confirm-clear-history",
-      "import-proto",
-      "quit-and-install",
-      "open-gql",
-      "import-collection",
       "export-collection",
-      'open-http',
+      "fatalError",
+      "import-collection",
+      "import-proto",
+      "open-http",
+      "open-gql",
+      "open-grpc",
+      "protoParserFunc-request",
+      "quit-and-install",
+      "uncaughtException",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -23,10 +28,11 @@ const apiObj =  {
       "fromMain",
       "add-collection",
       "clear-history-response",
-      "proto-info",
       "message",
+      "proto-info",
+      "protoParserFunc-return",
       "reply-gql",
-      'reqResUpdate',
+      "reqResUpdate",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));

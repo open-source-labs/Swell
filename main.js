@@ -33,6 +33,10 @@ const cookie = require("cookie");
 // node-fetch for the fetch request
 const fetch2 = require("node-fetch");
 
+// grpc libraries
+const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
+
 // GraphQL imports
 const { ApolloClient } = require("apollo-client");
 const gql = require("graphql-tag");
@@ -46,14 +50,14 @@ const protoParserFunc = require("./src/client/protoParser.js");
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-require('./httpMainController.js')();
-// require('./SSEController.js')();
-
+require("./main_httpController.js")();
+// require grpc controller file
+require("./main_grpcController.js")();
 
 // configure logging
-// autoUpdater.logger = log;
-// autoUpdater.logger.transports.file.level = "info";
-// log.info("App starting...");
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
+log.info("App starting...");
 
 let mainWindow;
 
@@ -166,26 +170,6 @@ isDev
 ================================
   `);
 
-// let isDev = false;
-// console.log("process.defaultApp ->", process.defaultApp);
-// console.log("process.execPath -> ", process.execPath);
-
-// if (
-//   process.defaultApp ||
-//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
-//   /[\\/]electron[\\/]/.test(process.execPath)
-// ) {
-//   isDev = true;
-// }
-// console.log(
-//   "current regex test -> ",
-//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
-// );
-// if (isDev) console.log("isDev is TRUE");
-// if (isDev === false) console.log("isDev is FALSE");
-// Temporary fix broken high-dpi scale factor on Windows (125% scaling)
-// info: https://github.com/electron/electron/issues/9691
-
 if (process.platform === "win32") {
   // if user is on windows...
   app.commandLine.appendSwitch("high-dpi-support", "true");
@@ -274,8 +258,6 @@ function createWindow() {
     // tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
     mainWindow = null;
   });
-
-  // moved require mainmenu to top
 }
 
 /********* end of createWindow declaration ******/
@@ -323,38 +305,38 @@ const sendStatusToWindow = (text) => {
   }
 };
 
-// ipcMain.on("check-for-update", () => {
-//   //listens to ipcRenderer in UpdatePopUpContainer.jsx
-//   if (!isDev) autoUpdater.checkForUpdates();
-// });
-// autoUpdater.on('checking-for-update', () => {
-// sendStatusToWindow('Checking for update...');
-// // });
-// autoUpdater.on('update-available', info => {
-//   sendStatusToWindow('Update available.');
-// });
-// autoUpdater.on('update-not-available', info => {
-//   sendStatusToWindow('Update not available.');
-// });
-// autoUpdater.on("error", (err) => {
-//   console.error("autoUpdater error -> ", err);
-//   sendStatusToWindow(`Error in auto-updater`);
-// });
-// autoUpdater.on("download-progress", (progressObj) => {
-//   sendStatusToWindow(
-//     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-//   );
-// });
-// autoUpdater.on("update-downloaded", (info) => {
-//   sendStatusToWindow("Update downloaded.");
-// });
+ipcMain.on("check-for-update", () => {
+  //listens to ipcRenderer in UpdatePopUpContainer.jsx
+  if (!isDev) autoUpdater.checkForUpdates();
+});
+autoUpdater.on("checking-for-update", () => {
+  sendStatusToWindow("Checking for update...");
+});
+autoUpdater.on("update-available", (info) => {
+  sendStatusToWindow("Update available.");
+});
+autoUpdater.on("update-not-available", (info) => {
+  sendStatusToWindow("Update not available.");
+});
+autoUpdater.on("error", (err) => {
+  console.error("autoUpdater error -> ", err);
+  sendStatusToWindow(`Error in auto-updater`);
+});
+autoUpdater.on("download-progress", (progressObj) => {
+  sendStatusToWindow(
+    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+  );
+});
+autoUpdater.on("update-downloaded", (info) => {
+  sendStatusToWindow("Update downloaded.");
+});
 
-// autoUpdater.on('update-downloaded', info => {
-//   // Wait 5 seconds, then quit and install
-//   // In your application, you don't need to wait 500 ms.
-//   // You could call autoUpdater.quitAndInstall(); immediately
-//   autoUpdater.quitAndInstall();
-// });
+autoUpdater.on("update-downloaded", (info) => {
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 500 ms.
+  // You could call autoUpdater.quitAndInstall(); immediately
+  autoUpdater.quitAndInstall();
+});
 ipcMain.on("quit-and-install", () => {
   autoUpdater.quitAndInstall();
 });
@@ -492,6 +474,10 @@ ipcMain.on("confirm-clear-history", (event) => {
     .catch((err) => console.log(`Error on 'confirm-clear-history': ${err}`));
 });
 
+// ================= GRPCProtoEntryForm Calls that uses protoParserFunc =======
+
+// import-proto
+
 ipcMain.on("import-proto", (event) => {
   console.log("import-proto event fired!!");
   let importedProto;
@@ -525,6 +511,20 @@ ipcMain.on("import-proto", (event) => {
       console.log(err);
     });
 });
+
+// protoParserFunc-request. Just runs the function and returns the value back to GRPCProtoEntryForm
+
+ipcMain.on("protoParserFunc-request", (event, data) => {
+  protoParserFunc(data)
+    .then((result) => {
+      mainWindow.webContents.send("protoParserFunc-return", result);
+    })
+    .catch((err) =>
+      console.log("err inside protoParserFunc-request listener in main", err)
+    );
+});
+
+// ====================== OLDER STUFF =======================
 
 // ipcMain listener that
 ipcMain.on("http1-fetch-message", (event, arg) => {
@@ -668,6 +668,3 @@ ipcMain.on("open-gql", (event, args) => {
       });
   }
 });
-
-// export main window so we can access ipcMain from other files
-module.exports = mainWindow; 

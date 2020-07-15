@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import { ipcRenderer } from 'electron';
 const { api } = window;
 
 const mapDispatchToProps = (dispatch) => ({});
@@ -30,7 +29,6 @@ class UpdatePopUpContainer extends Component {
 
   handleUpdateClick() {
     this.toggleShow();
-    // ipcRenderer.send('quit-and-install');
     api.send("quit-and-install");
   }
 
