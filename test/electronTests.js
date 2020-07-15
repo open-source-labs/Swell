@@ -1,25 +1,14 @@
 // Integration test for electron for spectron
 // ****** use "npm run test-mocha" to run these tests ******
-// current issue running these tests because of security implementation (sandbox)
 
-const { Application } = require("spectron");
 const assert = require("assert");
-const electronPath = require("electron");
 const path = require("path");
 const fs = require("fs");
 
-const TEST_MODE = "TEST_MODE";
+// import other tests
+const historyTests = require('./historyTests');
 
-const app = new Application({
-  // Your electron path can be any binary
-  // i.e for OSX an example path could be '/Applications/MyApp.app/Contents/MacOS/MyApp'
-  // But for the sake of the example we fetch it from our node_modules.
-  requireName: 'electronRequire',
-  path: electronPath,
-  // The following line tells spectron to look and use the main.js file
-  // and the package.json located 1 level above along with an arg, 'TEST_MODE'
-  args: [path.join(__dirname, ".."), TEST_MODE],
-});
+const app = require('./testApp');
 
 describe("Electron Tests", function () {
   this.timeout(10000);
@@ -76,4 +65,6 @@ describe("Electron Tests", function () {
       return assert.notEqual(content.value, null);
     });
   });
+
+  historyTests();
 });
