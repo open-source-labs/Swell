@@ -55,9 +55,9 @@ require("./main_httpController.js")();
 require("./main_grpcController.js")();
 
 // configure logging
-// autoUpdater.logger = log;
-// autoUpdater.logger.transports.file.level = "info";
-// log.info("App starting...");
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
+log.info("App starting...");
 
 let mainWindow;
 
@@ -170,26 +170,6 @@ isDev
 ================================
   `);
 
-// let isDev = false;
-// console.log("process.defaultApp ->", process.defaultApp);
-// console.log("process.execPath -> ", process.execPath);
-
-// if (
-//   process.defaultApp ||
-//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
-//   /[\\/]electron[\\/]/.test(process.execPath)
-// ) {
-//   isDev = true;
-// }
-// console.log(
-//   "current regex test -> ",
-//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
-// );
-// if (isDev) console.log("isDev is TRUE");
-// if (isDev === false) console.log("isDev is FALSE");
-// Temporary fix broken high-dpi scale factor on Windows (125% scaling)
-// info: https://github.com/electron/electron/issues/9691
-
 if (process.platform === "win32") {
   // if user is on windows...
   app.commandLine.appendSwitch("high-dpi-support", "true");
@@ -278,8 +258,6 @@ function createWindow() {
     // tldr: Remove the BrowserWindow instance that we created earlier by setting its value to null when we exit Swell
     mainWindow = null;
   });
-
-  // moved require mainmenu to top
 }
 
 /********* end of createWindow declaration ******/
@@ -311,14 +289,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.on("toMain", (e, args) => {
-  console.log("received from ipcRenderer inside main: ", args);
-  mainWindow.webContents.send(
-    "fromMain",
-    `sending ${args} back to ipcRenderer`
-  );
-});
-
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
   log.info(text);
@@ -327,38 +297,38 @@ const sendStatusToWindow = (text) => {
   }
 };
 
-// ipcMain.on("check-for-update", () => {
-//   //listens to ipcRenderer in UpdatePopUpContainer.jsx
-//   if (!isDev) autoUpdater.checkForUpdates();
-// });
-// autoUpdater.on('checking-for-update', () => {
-// sendStatusToWindow('Checking for update...');
-// // });
-// autoUpdater.on('update-available', info => {
-//   sendStatusToWindow('Update available.');
-// });
-// autoUpdater.on('update-not-available', info => {
-//   sendStatusToWindow('Update not available.');
-// });
-// autoUpdater.on("error", (err) => {
-//   console.error("autoUpdater error -> ", err);
-//   sendStatusToWindow(`Error in auto-updater`);
-// });
-// autoUpdater.on("download-progress", (progressObj) => {
-//   sendStatusToWindow(
-//     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-//   );
-// });
-// autoUpdater.on("update-downloaded", (info) => {
-//   sendStatusToWindow("Update downloaded.");
-// });
+ipcMain.on("check-for-update", () => {
+  //listens to ipcRenderer in UpdatePopUpContainer.jsx
+  if (!isDev) autoUpdater.checkForUpdates();
+});
+autoUpdater.on("checking-for-update", () => {
+  sendStatusToWindow("Checking for update...");
+});
+autoUpdater.on("update-available", (info) => {
+  sendStatusToWindow("Update available.");
+});
+autoUpdater.on("update-not-available", (info) => {
+  sendStatusToWindow("Update not available.");
+});
+autoUpdater.on("error", (err) => {
+  console.error("autoUpdater error -> ", err);
+  sendStatusToWindow(`Error in auto-updater`);
+});
+autoUpdater.on("download-progress", (progressObj) => {
+  sendStatusToWindow(
+    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+  );
+});
+autoUpdater.on("update-downloaded", (info) => {
+  sendStatusToWindow("Update downloaded.");
+});
 
-// autoUpdater.on('update-downloaded', info => {
-//   // Wait 5 seconds, then quit and install
-//   // In your application, you don't need to wait 500 ms.
-//   // You could call autoUpdater.quitAndInstall(); immediately
-//   autoUpdater.quitAndInstall();
-// });
+autoUpdater.on("update-downloaded", (info) => {
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 500 ms.
+  // You could call autoUpdater.quitAndInstall(); immediately
+  autoUpdater.quitAndInstall();
+});
 ipcMain.on("quit-and-install", () => {
   autoUpdater.quitAndInstall();
 });
