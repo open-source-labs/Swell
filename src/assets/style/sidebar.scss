@@ -45,6 +45,14 @@
   width: 100%;
 }
 
+.composerContents_content {
+  display: flex;
+  flex-direction: column;
+  outline: none;
+}
+
+
+
 .composer_submit,
 .addMetadata {
   -webkit-appearance: none;
@@ -426,6 +434,7 @@
   padding: 5px;
   width: 100%;
   font-size: 14px;
+  resize: none;
 
   &:focus {
     outline: 0 none;
