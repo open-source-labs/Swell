@@ -1,6 +1,6 @@
 const assert = require('assert'); 
 const sideBar = require('./pageObjects/Sidebar.js'); 
-const { FieldsOnCorrectTypeRule } = require('graphql');
+
 
 module.exports = () => {
   describe('CRUD/History functionality', function(){
