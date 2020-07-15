@@ -5,16 +5,18 @@ contextBridge.exposeInMainWorld("api", {
     // allowlist channels
     const allowedChannels = [
       "toMain",
+      "check-for-update",
       "confirm-clear-history",
+      "export-collection",
+      "fatalError",
+      "import-collection",
       "import-proto",
-      "quit-and-install",
-      "protoParserFunc-request",
       "open-http",
       "open-gql",
-      "import-collection",
-      "export-collection",
-      "open-http",
       "open-grpc",
+      "protoParserFunc-request",
+      "quit-and-install",
+      "uncaughtException",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -27,11 +29,11 @@ contextBridge.exposeInMainWorld("api", {
       "fromMain",
       "add-collection",
       "clear-history-response",
-      "proto-info",
       "message",
+      "proto-info",
       "protoParserFunc-return",
-      "reqResUpdate",
       "reply-gql",
+      "reqResUpdate",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
