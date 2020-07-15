@@ -22,7 +22,8 @@
     "email": "swell@getswell.io",
     "url": "http://www.getswell.io"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
       "url": "https://github.com/texpatnyc"
@@ -139,7 +140,8 @@
     "extends": null,
     "files": [
       "dist/index.html",
-      "dist/main.js",
+      "dist/bundle.js",
+      "dist/main.css",
       "dist/img/swell-bg__2JecU.png",
       "dist/img/Trashcan__3piXy.png",
       "dist/img/arrow_drop_down_white_192x192__3cp1B.png",
@@ -149,14 +151,17 @@
       "httpserver.js",
       "src/client/protoParser.js",
       "main_grpcController.js",
-      "main_httpController.js"
+      "main_httpController.js",
+      "SSEController.js",
+      "preload.js"
     ],
     "nodeVersion": "12.14.1",
     "nsis": {
       "createDesktopShortcut": "always"
     },
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 130,
           "y": 220
         },
@@ -219,6 +224,7 @@
     "dompurify": "^2.0.11",
     "electron-devtools-installer": "^2.2.4",
     "electron-log": "^4.2.2",
+    "electron-unhandled": "^3.0.2",
     "electron-updater": "^4.3.1",
     "es6-promise": "^4.2.8",
     "eventsource": "^1.0.7",
