@@ -208,10 +208,10 @@ function createWindow() {
     title: "Swell",
     // allowRunningInsecureContent: true,
     webPreferences: {
-      nodeIntegration: true,
-      // contextIsolation: true,
+      nodeIntegration: false,
+      contextIsolation: (process.env.NODE_ENV !== 'test'),
       // enableRemoteModule: false,
-      sandbox: false,
+      sandbox: (process.env.NODE_ENV !== 'test'),
       webSecurity: true,
       preload: path.resolve(__dirname, "preload.js"),
     },
@@ -260,9 +260,9 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (isDev) {
-      mainWindow.webContents.openDevTools();
-    }
+    // if (isDev) {
+    //   mainWindow.webContents.openDevTools();
+    // }
   });
 
   // Emitted when the window is closed.

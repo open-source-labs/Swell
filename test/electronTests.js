@@ -13,6 +13,7 @@ const app = new Application({
   // Your electron path can be any binary
   // i.e for OSX an example path could be '/Applications/MyApp.app/Contents/MacOS/MyApp'
   // But for the sake of the example we fetch it from our node_modules.
+  requireName: 'electronRequire',
   path: electronPath,
   // The following line tells spectron to look and use the main.js file
   // and the package.json located 1 level above along with an arg, 'TEST_MODE'
@@ -27,7 +28,7 @@ describe("Electron Tests", function () {
 
   after(function () {
     // if (app && app.isRunning()) {
-    return app.stop();
+    // return app.stop();
     // }
   });
 
