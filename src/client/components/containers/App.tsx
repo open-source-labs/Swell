@@ -1,16 +1,24 @@
-import React, { Component } from "react";
-import ContentsContainer from "./ContentsContainer.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
+import * as React from "react";
 import "../../../assets/style/App.scss";
-import SidebarContainer from "./SidebarContainer.jsx";
+import { ContentsContainer } from "./ContentsContainer";
+import { SidebarContainer } from "./SidebarContainer";
 import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
+// import ReqResCtrl from '../../controllers/reqResController';
 
-const { api } = window;
+//const { api } = window;
+declare global {
+  interface Window {
+    api: any;
+  }
+}
 
-class App extends Component {
-  constructor(props) {
+let api = window.api;
+// const EventEmitter = require('events');
+// const {dialog} = require('electron').remote
+export class App extends React.Component<any, any> {
+  constructor(props: any) {
     super(props);
   }
 
@@ -30,7 +38,7 @@ class App extends Component {
     // window on error fires for any error in program, opens a dialog allowing
     // user to continue or refresh.
     // refresh sends to ipcMain
-    let errorCount = 0;
+    let errorCount: number = 0;
     // window.onerror = (error, url, line) => {
     //   // implement an error counter and a check for odd numbered errors due to
     //   // behavior of react cross origin error in electron. This attempts to ignore
@@ -51,6 +59,8 @@ class App extends Component {
   }
 
   render() {
+    api.receive("fromMain", (data: {}) => console.log(data));
+    api.send("toMain", "MEAT WITH SAUCE");
     return (
       <div id="app">
         <UpdatePopUpContainer />
@@ -61,4 +71,4 @@ class App extends Component {
   }
 }
 
-export default App;
+//export default App;
