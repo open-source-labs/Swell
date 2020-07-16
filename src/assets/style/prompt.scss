@@ -1,9 +1,9 @@
 .collectionModal {
   background-color: #2c3e50;
-	border: 2px solid #808080;
-	font-weight: bold;
+  border: 2px solid #808080;
+  font-weight: bold;
   height: 250px;
-	outline: 0 none;
+  outline: 0 none;
   color: white;
   display: flex;
   flex-flow: column nowrap;
@@ -13,16 +13,19 @@
   border-radius: 10px;
   opacity: 1 !important;
   z-index: 12;
+
   h1 {
     margin: 20px;
     font-size: 26px;
   }
+
   div {
     margin: 10px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
   }
+
   input {
     font-size: 18px;
     text-align: center;
@@ -33,25 +36,28 @@
     border: 2px solid $yellowgrey;
     outline: none;
   }
+
   button {
     width: 40%;
-	  border: 2px solid #808080;
-  	border-radius: 5px;
+    border: 2px solid #808080;
+    border-radius: 5px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-  	font-size: .9rem;
+    font-size: .9rem;
     font-weight: bold;
     padding: 4px 18px;
     margin: 10px;
     outline: none;
   }
+
   p {
-    color: white;
+    color: $remove;
     font-size: 20px;
   }
 }
+
 .collectionModalOverlay {
   height: 100vh;
   width: 100vw;
@@ -66,6 +72,6 @@
   justify-content: center;
   align-items: center;
   outline: none;
-  background-color:rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 12;
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class JSONTextArea extends Component {
   constructor(props) {
@@ -9,112 +9,128 @@ class JSONTextArea extends Component {
   }
 
   handleKeyPress(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-      const jsonBodyEntryTextArea = document.querySelector('#jsonBodyEntryTextArea')
-      const start = jsonBodyEntryTextArea.selectionStart
-      const second = jsonBodyEntryTextArea.value.substring(jsonBodyEntryTextArea.selectionStart)
+    if (event.key === "Tab") {
+      event.preventDefault();
+      const jsonBodyEntryTextArea = document.querySelector(
+        "#jsonBodyEntryTextArea"
+      );
+      const start = jsonBodyEntryTextArea.selectionStart;
+      const second = jsonBodyEntryTextArea.value.substring(
+        jsonBodyEntryTextArea.selectionStart
+      );
       // if you call the action/reducer, cursor jumps to bottom, this will update the textarea value without modifying state but it's fine because any subsequent keys will
       // to account for edge case where tab is last key entered, alter addNewReq in ComposerNewRequest.jsx
       // this.props.setNewRequestBody({
       //   ...this.props.newRequestBody,
       //   bodyContent: jsonBodyEntryTextArea.value.substring(0, start) + `  ` + jsonBodyEntryTextArea.value.substring(start)
       // })
-      jsonBodyEntryTextArea.value = jsonBodyEntryTextArea.value.substring(0, start) + `  ` + jsonBodyEntryTextArea.value.substring(start)
-      jsonBodyEntryTextArea.setSelectionRange(jsonBodyEntryTextArea.value.length - second.length, jsonBodyEntryTextArea.value.length - second.length)
+      jsonBodyEntryTextArea.value =
+        jsonBodyEntryTextArea.value.substring(0, start) +
+        `  ` +
+        jsonBodyEntryTextArea.value.substring(start);
+      jsonBodyEntryTextArea.setSelectionRange(
+        jsonBodyEntryTextArea.value.length - second.length,
+        jsonBodyEntryTextArea.value.length - second.length
+      );
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.newRequestBody.bodyContent === "") {
       this.props.setNewRequestBody({
         ...this.props.newRequestBody,
-        bodyContent : '{}',
+        bodyContent: "{}",
       });
       return;
     }
     try {
       JSON.parse(this.props.newRequestBody.bodyContent);
-      if(!this.props.newRequestBody.JSONFormatted) {
+      if (!this.props.newRequestBody.JSONFormatted) {
         this.props.setNewRequestBody({
           ...this.props.newRequestBody,
-          JSONFormatted : true
+          JSONFormatted: true,
         });
       }
-    }
-    catch (error) {
-      if(this.props.newRequestBody.JSONFormatted) {
+    } catch (error) {
+      if (this.props.newRequestBody.JSONFormatted) {
         this.props.setNewRequestBody({
           ...this.props.newRequestBody,
-          JSONFormatted : false,
+          JSONFormatted: false,
         });
       }
     }
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (this.props.newRequestBody.bodyContent === "") {
       this.props.setNewRequestBody({
         ...this.props.newRequestBody,
-        bodyContent : '{}',
+        bodyContent: "{}",
       });
       return;
     }
     try {
       JSON.parse(this.props.newRequestBody.bodyContent);
-      if(!this.props.newRequestBody.JSONFormatted) {
+      if (!this.props.newRequestBody.JSONFormatted) {
         this.props.setNewRequestBody({
           ...this.props.newRequestBody,
-          JSONFormatted : true
+          JSONFormatted: true,
         });
       }
-    }
-    catch (error) {
-      if(this.props.newRequestBody.JSONFormatted) {
+    } catch (error) {
+      if (this.props.newRequestBody.JSONFormatted) {
         this.props.setNewRequestBody({
           ...this.props.newRequestBody,
-          JSONFormatted : false,
+          JSONFormatted: false,
         });
       }
     }
   }
 
-  prettyPrintJSON () {
-    let prettyString = JSON.stringify(JSON.parse(this.props.newRequestBody.bodyContent), null, 4);
+  prettyPrintJSON() {
+    const prettyString = JSON.stringify(
+      JSON.parse(this.props.newRequestBody.bodyContent),
+      null,
+      4
+    );
     this.props.setNewRequestBody({
       ...this.props.newRequestBody,
-      bodyContent : prettyString,
-    })
+      bodyContent: prettyString,
+    });
   }
 
   render() {
-    let prettyPrintDisplay = {
-      'display' : this.props.newRequestBody.JSONFormatted ? 'block' : 'none',
-    }
-    let textAreaClass = this.props.newRequestBody.JSONFormatted ? 'composer_textarea' : 'composer_textarea composer_textarea-error';
-    
-    return(
+    const prettyPrintDisplay = {
+      display: this.props.newRequestBody.JSONFormatted ? "block" : "none",
+    };
+    const textAreaClass = this.props.newRequestBody.JSONFormatted
+      ? "composer_textarea"
+      : "composer_textarea composer_textarea-error";
+
+    return (
       <div>
-        <textarea 
+        <textarea
           className={textAreaClass}
-          id = 'jsonBodyEntryTextArea'
-          style={{'resize' : 'none', 'width' : '100%'}} 
-          type='text' 
+          id="jsonBodyEntryTextArea"
+          style={{ resize: "none", width: "100%" }}
+          type="text"
           rows={8}
           onKeyDown={(e) => this.handleKeyPress(e)}
           value={this.props.newRequestBody.bodyContent}
-          placeholder='Body' 
+          placeholder="Body"
           onChange={(e) => {
             this.props.setNewRequestBody({
               ...this.props.newRequestBody,
-              bodyContent : e.target.value,
+              bodyContent: e.target.value,
             });
-          }}>
-        </textarea>
-        <div 
+          }}
+        ></textarea>
+        <div
           style={prettyPrintDisplay}
-          className={'composer_pretty_print'} 
-          onClick={this.prettyPrintJSON}>JSON correctly formatted. Pretty print?
+          className={"composer_pretty_print"}
+          onClick={this.prettyPrintJSON}
+        >
+          JSON correctly formatted. Pretty print?
         </div>
       </div>
     );
@@ -122,8 +138,8 @@ class JSONTextArea extends Component {
 }
 
 JSONTextArea.propTypes = {
-  setNewRequestBody : PropTypes.func.isRequired,
-  newRequestBody : PropTypes.object.isRequired,
+  setNewRequestBody: PropTypes.func.isRequired,
+  newRequestBody: PropTypes.object.isRequired,
 };
 
 export default JSONTextArea;

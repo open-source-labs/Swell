@@ -59,3 +59,6 @@ ehthumbs.db
 # proto files #
 #####################
 protos/
+
+# testing #
+test/snapshot.png

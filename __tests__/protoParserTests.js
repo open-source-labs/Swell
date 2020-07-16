@@ -1,9 +1,7 @@
-import protoParser from '../src/client/protoParser';
+import protoParser from "../src/client/protoParser";
 
-
-describe('testing protoParser', ()=> {
-
-        const protoFile = `syntax = 'proto3';
+describe("testing protoParser", () => {
+  const protoFile = `syntax = 'proto3';
         
         package helloworld;
         
@@ -32,55 +30,70 @@ describe('testing protoParser', ()=> {
         }
         message HelloAge {
           int32 age = 1;
-        }`
-        describe('parser parses protos correctly', ()=> {
-            it('should get packageName', () => {
-                const parsedProto = protoParser(protoFile)
-                .then(data => {
-                expect(data.packageName).toEqual('helloworld')
-                })
-                
-            })
-            it('should get serviceArray', () => {
-                const testArr = [{
-                    messages: [{}, {}, {}, {}], 
-                    name: 'Greeter',
-                    packageName: 'helloworld',
-                    rpcs: [{}, {}, {}, {}],
-        
-                }]
-                const parsedProto = protoParser(protoFile)
-                .then(data => {
-                    expect(data.serviceArr[0].messages).toHaveLength(4);
-                    expect(data.serviceArr[0].rpcs).toHaveLength(4);
-                    expect(data.serviceArr[0].name).toEqual('Greeter');
-                    expect(data.serviceArr[0].packageName).toEqual('helloworld');
-                })
-               
-            })
+        }`;
+  describe("parser parses protos correctly", () => {
+    it("should get packageName", () => {
+      const parsedProto = protoParser(protoFile).then((data) => {
+        expect(data.packageName).toEqual("helloworld");
+      });
+    });
+    it("should get serviceArray", () => {
+      const testArr = [
+        {
+          messages: [{}, {}, {}, {}],
+          name: "Greeter",
+          packageName: "helloworld",
+          rpcs: [{}, {}, {}, {}],
+        },
+      ];
+      const parsedProto = protoParser(protoFile).then((data) => {
+        expect(data.serviceArr[0].messages).toHaveLength(4);
+        expect(data.serviceArr[0].rpcs).toHaveLength(4);
+        expect(data.serviceArr[0].name).toEqual("Greeter");
+        expect(data.serviceArr[0].packageName).toEqual("helloworld");
+      });
+    });
 
-            it('should fill message content', () => {
-                const testArr = [{
-                    messages: [
-                        {name: "HelloRequest", def: {name: {type: "TYPE_STRING", nested: false, dependent: ''}}},
-                        {name: "HelloRequest", def: {name: {type: "TYPE_STRING", nested: false, dependent: ''}}},
-                        {name: "HelloRequest", def: {name: {type: "TYPE_STRING", nested: false, dependent: ''}}}, 
-                        {name: "HelloRequest", def: {name: {type: "TYPE_STRING", nested: false, dependent: ''}}}
-                ], 
-                    name: 'Greeter',
-                    packageName: 'helloworld',
-                    rpcs: [{}, {}, {}, {}],
-        
-                }]
-                const parsedProto = protoParser(protoFile)
-                .then(data => {
-                    expect(data.serviceArr[0].messages[0]).toEqual(testArr[0].messages[0]);
-                    expect(data.serviceArr[0].messages[0].def.name.type).toEqual("TYPE_STRING");
-                })
-               
-            })
-        
-        
-        })
-})
-
+    it("should fill message content", () => {
+      const testArr = [
+        {
+          messages: [
+            {
+              name: "HelloRequest",
+              def: {
+                name: { type: "TYPE_STRING", nested: false, dependent: "" },
+              },
+            },
+            {
+              name: "HelloRequest",
+              def: {
+                name: { type: "TYPE_STRING", nested: false, dependent: "" },
+              },
+            },
+            {
+              name: "HelloRequest",
+              def: {
+                name: { type: "TYPE_STRING", nested: false, dependent: "" },
+              },
+            },
+            {
+              name: "HelloRequest",
+              def: {
+                name: { type: "TYPE_STRING", nested: false, dependent: "" },
+              },
+            },
+          ],
+          name: "Greeter",
+          packageName: "helloworld",
+          rpcs: [{}, {}, {}, {}],
+        },
+      ];
+      const parsedProto = protoParser(protoFile).then((data) => {
+        expect(data.serviceArr[0].messages[0]).toEqual(testArr[0].messages[0]);
+        expect(data.serviceArr[0].messages[0].def.name.type).toEqual(
+          "TYPE_STRING"
+        );
+      });
+    });
+  });
+});
