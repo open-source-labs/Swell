@@ -52,11 +52,9 @@ module.exports = () => {
         // let firstCheckBox = await checkbox[0];
         // let isSelected = await firstCheckBox.isSelected();
 
-        const checkbox = await app.client.$('input.header_checkbox'); 
-        console.log('just selected : ', checkbox)
-        const isSelected = await checkbox.getValue();
-        console.log('value of checkbox')
-        assert.strictEqual(isSelected, true);
+        const checkboxes = await sideBar.firstHeaderCheckbox.getAttribute('checked')
+        // headerChecked = await checkboxes.getAttribute('checked'); 
+        assert.strictEqual(checkboxes, 'true');
       });
 
       // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
