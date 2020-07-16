@@ -100,7 +100,7 @@ class CookieEntryForm extends Component {
     });
 
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open' : 'composer_headers_container-closed'
+    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open cookies_container' : 'composer_headers_container-closed cookies_container'
 
     return (
       <div>
