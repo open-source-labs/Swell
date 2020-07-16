@@ -36,6 +36,11 @@ module.exports = () => {
         assert.strictEqual(headers.length, 1); 
       }); 
 
+      it('new headers initialize as un-checked', async () => {
+        headerChecked = await sideBar.firstHeaderCheckbox.isSelected();
+        assert.strictEqual(headerChecked, false)
+      })
+
       it('can type new headers in request', async () => {
         await sideBar.headerKey.addValue('testing');
         const headerKey = await sideBar.headerKey.getValue();
@@ -47,15 +52,12 @@ module.exports = () => {
   
       });
 
-      it('new headers initialize as checked', async () => {
-        // const checkbox = await sideBar.headerCheckbox;
-        // let firstCheckBox = await checkbox[0];
-        // let isSelected = await firstCheckBox.isSelected();
-
-        const checkboxes = await sideBar.firstHeaderCheckbox.getAttribute('checked')
-        // headerChecked = await checkboxes.getAttribute('checked'); 
-        assert.strictEqual(checkboxes, 'true');
+      it('header is checked after input', async () => {
+        isSelected = await sideBar.firstHeaderCheckbox.isSelected();
+        assert.strictEqual(isSelected, true);
       });
+
+
 
       // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
       // it('deleting text in input eliminates checkmark', async () => {
@@ -64,6 +66,18 @@ module.exports = () => {
       //   headerChecked = await sideBar.headerCheckbox.isSelected();
       //   assert.strictEqual(headerChecked, false);
       // })
+
+      it('creates new input fields for new header when header is added', async () => {
+        await sideBar.addHeader.click();
+        headers = await sideBar.headers; 
+        assert.strictEqual(headers.length, 2);
+      });
+
+      it('can uncheck a header after creating it', async () => {
+        await sideBar.firstHeaderCheckbox.click(); 
+        isSelected = await sideBar.firstHeaderCheckbox.isSelected();
+        assert.strictEqual(isSelected, false);
+      })
     })
 
   });

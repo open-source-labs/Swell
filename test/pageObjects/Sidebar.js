@@ -27,13 +27,7 @@ class Sidebar {
   }
 
   get firstHeaderCheckbox(){
-    return (async () => {
-      const checkbox = await app.client.$('//*[@id="app"]/div[1]/div[1]/div/div[2]/div[2]/div/input[1]');
-      const first = checkbox[0]; 
-      const firstinput = await first.$('.header_checkbox')
-      // console.log('first is  :', first)
-      return firstinput; 
-    })();
+    return app.client.$('.header_checkbox')
   };
 
   get headerKey(){
@@ -42,6 +36,10 @@ class Sidebar {
 
   get headerValue(){
     return app.client.$('.header_value'); 
+  };
+
+  get addHeader(){
+    return app.client.$('button=Add Header')
   }
 }; 
 
