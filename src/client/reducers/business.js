@@ -1,19 +1,18 @@
-import format from 'date-fns/format';
-import * as types from '../actions/actionTypes';
-import historyController from '../controllers/historyController'
+import format from "date-fns/format";
+import * as types from "../actions/actionTypes";
 
 const initialState = {
-  currentTab: 'First Tab',
+  currentTab: "First Tab",
   reqResArray: [],
   history: [],
   collections: [],
   warningMessage: "",
   newRequestFields: {
-    protocol: '',
-    url: 'http://',
-    method: 'GET',
+    protocol: "",
+    url: "http://",
+    method: "GET",
     graphQL: false,
-    gRPC: false
+    gRPC: false,
   },
   newRequestHeaders: {
     headersArr: [],
@@ -31,22 +30,22 @@ const initialState = {
     queryArr: null,
     protoPath: null,
     services: null,
-    protoContent: ''
+    protoContent: "",
   },
   newRequestCookies: {
     cookiesArr: [],
     count: 0,
   },
   newRequestBody: {
-    bodyContent: '',
-    bodyVariables: '',
-    bodyType: 'raw',
-    rawType: 'Text (text/plain)',
+    bodyContent: "",
+    bodyVariables: "",
+    bodyType: "raw",
+    rawType: "Text (text/plain)",
     JSONFormatted: true,
   },
   newRequestSSE: {
-    isSSE: false
-  }
+    isSSE: false,
+  },
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -60,15 +59,15 @@ const businessReducer = (state = initialState, action) => {
 
     case types.DELETE_HISTORY: {
       const deleteId = action.payload.id;
-      const deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
+      const deleteDate = format(action.payload.created_at, "MM/DD/YYYY");
       const newHistory = JSON.parse(JSON.stringify(state.history));
       newHistory.forEach((obj, i) => {
         if (obj.date === deleteDate)
-          obj.history = obj.history.filter(hist => hist.id !== deleteId);
+          obj.history = obj.history.filter((hist) => hist.id !== deleteId);
         if (obj.history.length === 0) {
-          newHistory.splice(i, 1)
+          newHistory.splice(i, 1);
         }
-      })
+      });
       return {
         ...state,
         history: newHistory,
@@ -76,10 +75,9 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.CLEAR_HISTORY: {
-      historyController.clearHistoryFromIndexedDb();
       return {
         ...state,
-        history: []
+        history: [],
       };
     }
 
@@ -95,9 +93,9 @@ const businessReducer = (state = initialState, action) => {
       const newCollections = JSON.parse(JSON.stringify(state.collections));
       newCollections.forEach((obj, i) => {
         if (obj.id === deleteId) {
-          newCollections.splice(i, 1)
+          newCollections.splice(i, 1);
         }
-      })
+      });
       return {
         ...state,
         collections: newCollections,
@@ -105,14 +103,15 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.COLLECTION_TO_REQRES: {
-      const reqResArray = [...action.payload]
+      const reqResArray = [...action.payload];
       return {
         ...state,
         reqResArray,
       };
     }
 
-    case types.COLLECTION_ADD: { //add to collection to array in state
+    case types.COLLECTION_ADD: {
+      //add to collection to array in state
       return {
         ...state,
         collections: [action.payload, ...state.collections],
@@ -129,7 +128,7 @@ const businessReducer = (state = initialState, action) => {
     case types.REQRES_ADD: {
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
-      const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
+      const addDate = format(action.payload.created_at, "MM/DD/YYYY");
       const newHistory = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       //if there is history for added date, add query to beginning of history
@@ -155,30 +154,37 @@ const businessReducer = (state = initialState, action) => {
 
     case types.REQRES_DELETE: {
       const deleteId = action.payload.id;
-      const newReqResArray = state.reqResArray.filter(reqRes => reqRes.id !== deleteId)
+      const newReqResArray = state.reqResArray.filter(
+        (reqRes) => reqRes.id !== deleteId
+      );
       return {
         ...state,
-        reqResArray: newReqResArray
-      }
+        reqResArray: newReqResArray,
+      };
     }
 
     case types.SET_CHECKS_AND_MINIS: {
       return {
         ...state,
-        reqResArray: JSON.parse(JSON.stringify(action.payload))
-      }
+        reqResArray: JSON.parse(JSON.stringify(action.payload)),
+      };
     }
 
     case types.REQRES_UPDATE: {
-      let reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
+      const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
         if (reqRes.id === action.payload.id) indexToBeUpdated = index;
       });
       if (indexToBeUpdated !== undefined) {
         action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
-        action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
-        reqResDeepCopy.splice(indexToBeUpdated, 1, JSON.parse(JSON.stringify(action.payload))); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
+        action.payload.minimized =
+          state.reqResArray[indexToBeUpdated].minimized;
+        reqResDeepCopy.splice(
+          indexToBeUpdated,
+          1,
+          JSON.parse(JSON.stringify(action.payload))
+        ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
       return {
         ...state,
@@ -189,15 +195,15 @@ const businessReducer = (state = initialState, action) => {
     case types.SET_COMPOSER_WARNING_MESSAGE: {
       return {
         ...state,
-        warningMessage: action.payload
-      }
+        warningMessage: action.payload,
+      };
     }
 
     case types.SET_NEW_REQUEST_FIELDS: {
       return {
         ...state,
         newRequestFields: action.payload,
-      }
+      };
     }
 
     case types.SET_NEW_REQUEST_HEADERS: {
@@ -231,7 +237,7 @@ const businessReducer = (state = initialState, action) => {
     case types.SET_NEW_REQUEST_SSE: {
       return {
         ...state,
-        newRequestSSE: {isSSE: action.payload},
+        newRequestSSE: { isSSE: action.payload },
       };
     }
 
@@ -239,7 +245,7 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         currentTab: action.payload,
-      }
+      };
     }
 
     default:

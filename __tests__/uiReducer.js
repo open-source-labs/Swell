@@ -1,39 +1,33 @@
-import reducer from '../src/client/reducers/ui'
+import uiReducer from "../src/client/reducers/ui";
+import { SET_COMPOSER_DISPLAY } from "../src/client/actions/actionTypes";
 
-describe('UI Reducer', () => {
+describe("UI Reducer", () => {
   let state;
-  
+
   beforeEach(() => {
     state = {
-      warningIsDisplayed: null,
-      composerDisplay: 'Request',
+      composerDisplay: "Request",
     };
-  })
+  });
 
-  describe('SHOW_WARNING', () => {
-    const action = { type: 'SHOW_WARNING'};
+  describe("default state", () => {
+    it("should return a default state when given an undefined input", () => {
+      expect(uiReducer(undefined, { type: undefined })).toEqual(state);
+    });
+    it("should return default state with unrecognized action types", () => {
+      expect(uiReducer(undefined, { type: "BAD_TYPE" })).toEqual(state);
+    });
+  });
 
-    it('should set warningIsDisplayed to true', () => {
-      const { warningIsDisplayed } = reducer(state, action);
-      expect(warningIsDisplayed).toBe(true);
-    })
-  })
-
-  describe('HIDE_WARNING', () => {
-    const action = { type: 'HIDE_WARNING'};
-
-    it('should set warningIsDisplayed to false', () => {
-      const { warningIsDisplayed } = reducer(state, action);
-      expect(warningIsDisplayed).toBe(false);
-    })
-  })
-
-  describe('SET_COMPOSER_DISPLAY', () => {
-    const action = { type: 'SET_COMPOSER_DISPLAY', payload: 'CHANGE' }
-
-    it('should update the composerDisplay', () => {
-      const { composerDisplay } = reducer(state, action);
-      expect(composerDisplay).toEqual(action.payload);
-    })
-  })
-})
+  describe("should handle SET_COMPOSER_DISPLAY", () => {
+    it("should update the composerDisplay", () => {
+      const action = {
+        type: SET_COMPOSER_DISPLAY,
+        payload: "Warning",
+      };
+      expect(uiReducer(undefined, action)).toEqual({
+        composerDisplay: "Warning",
+      });
+    });
+  });
+});
