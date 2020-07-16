@@ -88,11 +88,19 @@ class CookieEntryForm extends Component {
 
   render() {
     let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
-      return (<Header content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Header>)
+      return (
+        <Header 
+          type='cookie' 
+          content={cookie} 
+          changeHandler={this.onChangeUpdateCookie} 
+          key={index} Key={cookie.key} 
+          value={cookie.value}>
+        </Header>
+        )
     });
 
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open' : 'composer_headers_container-closed'
+    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open cookies_container' : 'composer_headers_container-closed cookies_container'
 
     return (
       <div>

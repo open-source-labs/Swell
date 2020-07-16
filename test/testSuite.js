@@ -2,8 +2,9 @@
 // ****** use "npm run test-mocha" to run these tests ******
 
 // import other tests
-const historyTests = require('./subSuites/historyTests');
 const appOpensTests = require('./subSuites/appOpens'); 
+const reqInputTests = require('./subSuites/reqInputTests');
+const addRequestTests = require('./subSuites/addRequestTests')
 
 const app = require('./testApp');
 
@@ -21,5 +22,11 @@ describe("Electron Tests", function () {
 
   // these are are test suites within this broader suite
   appOpensTests();
-  historyTests();
+
+  describe('CRUD functionality', function(){
+    
+    reqInputTests();
+    addRequestTests();
+  });
+  
 });
