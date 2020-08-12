@@ -62,6 +62,7 @@ const connectionController = {
       api.send("open-grpc", reqResObj);
     } else {
       console.log("should be sending");
+      console.log(this.openConnectionArray)
       api.send("open-http", reqResObj, this.openConnectionArray);
     }
   },

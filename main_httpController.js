@@ -256,13 +256,14 @@ const httpController = {
   },
   // ----------------------------------------------------------------------------
 
-  makeFetch(args) {
+  makeFetch(args, event, reqResObj) {
     return new Promise((resolve) => {
     //   ipcRenderer.send("http1-fetch-message", args);
     //   ipcRenderer.on("http1-fetch-reply", (event, result) => {
     //     resolve(result);
     //   });
       const { method, headers, body } = args.options; 
+      console.log("args", args)
 
       fetch2(headers.url, { method, headers, body })
       .then((response) => {
@@ -294,16 +295,21 @@ const httpController = {
               body 
             });
           })
-          .catch((error) => console.log("ERROR", error));
+          .catch((error) => console.log("ERROR from makeFetch", error));
       
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log('error from makeFetch outside', error);
+        reqResObj.error = error
+        event.sender.send('reqResUpdate', reqResObj);
+
+      })
     });
   },
   // ----------------------------------------------------------------------------
 
   establishHTTP1connection(event, reqResObj, connectionArray) {
-
+    console.log("event306", event)
     // start off by clearing existing response data, and make note of when response was created
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -334,10 +340,10 @@ const httpController = {
       SSEController.createStream(reqResObj, options, event)
       // if not SSE, talk to main to fetch data and receive
     } else {
-      this.makeFetch({ options })
+      this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
-         
+          console.log("makeFetch Success");
           const heads = response.headers;
           reqResObj.response.headers = heads;
 

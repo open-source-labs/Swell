@@ -549,10 +549,10 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
           .then((body) => {
             event.sender.send("http1-fetch-reply", { headers, body });
           })
-          .catch((error) => console.log("ERROR", error));
+          .catch((error) => console.log("ERROR in http1-fetch-message", error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log("error in http1-fetch-message", error));
 });
 
 ipcMain.on("open-gql", (event, args) => {

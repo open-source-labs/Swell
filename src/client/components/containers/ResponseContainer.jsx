@@ -66,6 +66,9 @@ class ResponseContainer extends Component {
           handleTabSelect={this.handleTabSelect}
           openResponseTab={this.state.openTab}
         />
+        {this.props.content.error && (
+          <div>{this.props.content.error.message}</div>
+        )}
         {this.state.openTab === "Response Events" &&
           this.props.content.request.method === "SUBSCRIPTION" && (
             <ResponseSubscriptionDisplay
