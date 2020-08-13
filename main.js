@@ -558,6 +558,7 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
 const { onError } = require('apollo-link-error');
 
 ipcMain.on("open-gql", (event, args) => {
+  console.log('in open-gql');
   const reqResObj = args.reqResObj;
 
   // populating headers object with response headers - except for Content-Type
@@ -577,6 +578,7 @@ ipcMain.on("open-gql", (event, args) => {
   }
   headers.Cookie = cookies;
 
+  console.log('before afterlink');
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
     console.log('forward(operation)', forward(operation))
@@ -623,6 +625,7 @@ ipcMain.on("open-gql", (event, args) => {
       return response;
     });
   });
+  console.log('after afterlink');
 
   // creates http connection to host
   const httpLink = createHttpLink({
@@ -647,19 +650,25 @@ ipcMain.on("open-gql", (event, args) => {
   // additive composition of multiple links
   const link = ApolloLink.from([afterLink, errorLink, httpLink]);
 
+  console.log('before client');
   const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
   });
-
-  const body = gql`
+  console.log('after client')
+  console.log('reqResObj.request.body', reqResObj.request.body)
+  
+  try {
+    const body = gql`
     ${reqResObj.request.body}
-  `;
+    `;
+    console.log('after body');
   const variables = reqResObj.request.bodyVariables
     ? JSON.parse(reqResObj.request.bodyVariables)
     : {};
-
+  console.log('before query');
   if (reqResObj.request.method === "QUERY") {
+    console.log('sending query');
     client
       .query({ query: body, variables })
 
@@ -679,4 +688,9 @@ ipcMain.on("open-gql", (event, args) => {
         console.error('gql mutation error', err);
       });
   }
+  } catch (e) {
+    console.log(e);
+    event.sender.send("reply-gql", { error: e, reqResObj })
+  }
+  
 });

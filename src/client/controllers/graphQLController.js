@@ -10,6 +10,7 @@ const { api } = window;
 
 const graphQLController = {
   openGraphQLConnection(reqResObj) {
+    console.log('in graphQL connection')
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -27,6 +28,7 @@ const graphQLController = {
 
   // handles graphQL queries and mutationsnp
   sendGqlToMain(args) {
+    console.log('in sendGqlToMain');
     return new Promise((resolve) => {
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
@@ -38,7 +40,7 @@ const graphQLController = {
         console.log('2nd Results', result);
         resolve(result);
       });
-      api.send("open-gql", args);
+      // api.send("open-gql", args);
     });
   },
 
