@@ -486,7 +486,7 @@ ipcMain.on("import-proto", (event) => {
       fs.readFile(filePaths.filePaths[0], "utf-8", (err, file) => {
         // handle read error
         if (err) {
-          return console.log("error reading file : ", err);
+          return console.log("import-proto error reading file : ", err);
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
@@ -501,7 +501,7 @@ ipcMain.on("import-proto", (event) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log('error in import-proto', err);
     });
 });
 
@@ -555,6 +555,8 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
     .catch((error) => console.log("error in http1-fetch-message", error));
 });
 
+const { onError } = require('apollo-link-error');
+
 ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
 
@@ -577,7 +579,11 @@ ipcMain.on("open-gql", (event, args) => {
 
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
+    console.log('forward(operation)', forward(operation))
+
     return forward(operation).map((response) => {
+      // console.log('response', response)
+
       const context = operation.getContext();
       const headers = context.response.headers.entries();
       for (const headerItem of headers) {
@@ -626,8 +632,20 @@ ipcMain.on("open-gql", (event, args) => {
     fetch: fetch2,
   });
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) =>{
+        console.log(
+          `errorLink [GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+        return message;
+      }
+      );
+    if (networkError) console.log(`errorLink [Network error]: ${networkError}`);
+  });
+
   // additive composition of multiple links
-  const link = ApolloLink.from([afterLink, httpLink]);
+  const link = ApolloLink.from([afterLink, errorLink, httpLink]);
 
   const client = new ApolloClient({
     link,
@@ -646,10 +664,11 @@ ipcMain.on("open-gql", (event, args) => {
       .query({ query: body, variables })
 
       .then((data) => {
+        console.log('succesful query gql')
         event.sender.send("reply-gql", { reqResObj, data });
       })
       .catch((err) => {
-        console.error(err);
+        console.error('gql query error', err);
         event.sender.send("reply-gql", { error: err.networkError, reqResObj });
       });
   } else if (reqResObj.request.method === "MUTATION") {
@@ -657,7 +676,7 @@ ipcMain.on("open-gql", (event, args) => {
       .mutate({ mutation: body, variables })
       .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
       .catch((err) => {
-        console.error(err);
+        console.error('gql mutation error', err);
       });
   }
 });

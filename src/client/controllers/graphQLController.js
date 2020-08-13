@@ -22,7 +22,7 @@ const graphQLController = {
       response.error
         ? this.handleError(response.error, response.reqResObj)
         : this.handleResponse(response.data, response.reqResObj);
-    });
+    }).catch( err => console.log("error in sendGqlToMain", err));
   },
 
   // handles graphQL queries and mutationsnp
@@ -35,7 +35,7 @@ const graphQLController = {
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
-        console.log(result);
+        console.log('2nd Results', result);
         resolve(result);
       });
       api.send("open-gql", args);
@@ -79,6 +79,7 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
+    console.log('inside handleResponse gqlController');
     reqResObj.connection = "closed";
     reqResObj.connectionType = "plain";
     reqResObj.timeReceived = Date.now();
@@ -87,6 +88,7 @@ const graphQLController = {
   },
 
   handleError(errorsObj, reqResObj) {
+    console.log('in handleError');
     reqResObj.connection = "error";
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(errorsObj));
