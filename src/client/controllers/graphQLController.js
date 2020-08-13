@@ -111,6 +111,13 @@ const graphQLController = {
       return cookieFormat;
     });
   },
+
+  introspect(url) {
+    api.send("introspect", url);
+    api.receive("introspect-reply", (SI) => {
+      console.log("here's the reply ", SI);
+    });
+  },
 };
 
 export default graphQLController;

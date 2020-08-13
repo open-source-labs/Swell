@@ -44,6 +44,7 @@ const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
+const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./src/client/protoParser.js");
@@ -194,9 +195,9 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: (process.env.NODE_ENV !== 'test'),
+      contextIsolation: process.env.NODE_ENV !== "test",
       // enableRemoteModule: false,
-      sandbox: (process.env.NODE_ENV !== 'test'),
+      sandbox: process.env.NODE_ENV !== "test",
       webSecurity: true,
       preload: path.resolve(__dirname, "preload.js"),
     },
@@ -245,7 +246,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (isDev && process.env.NODE_ENV !== 'test') {
+    if (isDev && process.env.NODE_ENV !== "test") {
       mainWindow.webContents.openDevTools();
     }
   });
@@ -646,6 +647,7 @@ ipcMain.on("open-gql", (event, args) => {
       .query({ query: body, variables })
 
       .then((data) => {
+        console.log({ reqResObj, data });
         event.sender.send("reply-gql", { reqResObj, data });
       })
       .catch((err) => {
@@ -660,4 +662,17 @@ ipcMain.on("open-gql", (event, args) => {
         console.error(err);
       });
   }
+});
+
+ipcMain.on("introspect", (event, url) => {
+  fetch2(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: introspectionQuery }),
+  })
+    .then((resp) => resp.json())
+    .then((data) => {
+      return event.sender.send("introspect-reply", { data });
+    })
+    .catch((err) => console.log(err));
 });
