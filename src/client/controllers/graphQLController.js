@@ -114,8 +114,9 @@ const graphQLController = {
 
   introspect(url) {
     api.send("introspect", url);
-    api.receive("introspect-reply", (SI) => {
-      console.log("here's the reply ", SI);
+    api.receive("introspect-reply", (data) => {
+      console.log("here's the reply ", data);
+      store.default.dispatch(actions.setIntrospectionData(data));
     });
   },
 };
