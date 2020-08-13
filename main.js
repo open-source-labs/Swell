@@ -672,6 +672,7 @@ ipcMain.on("introspect", (event, url) => {
   })
     .then((resp) => resp.json())
     .then((data) => {
+      fs.writeFileSync("./introspection-data.json", JSON.stringify(data));
       return event.sender.send("introspect-reply", { data });
     })
     .catch((err) => console.log(err));
