@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror-graphql/mode';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/monokai.css';
+import 'codemirror/addon/lint/lint';
+import 'codemirror-graphql/lint';
 
 
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+
 
 class GraphQLBodyEntryForm extends Component {
   constructor(props) {
@@ -45,35 +49,34 @@ class GraphQLBodyEntryForm extends Component {
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
-
+    // console.log('value ', (this.node ? this.node.editor.getValue() : 'nothing yet'));
+    // this.node ? this.node.editor.getValue() : this.value
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
           <img className={arrowClass} src={dropDownArrow} />
           Body
         </div>
-        <div  id='gqlBodyEntryTextArea'>
-        <CodeMirror 
-          value={this.props.newRequestBody.bodyContent}
-          options={{
-            mode: 'graphql',
-            theme: 'monokai'
-          }}
-          // width="500px"
-          height="18vh"
-
-          style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
-          type='text'
-          placeholder='Body'
-          rows={10}
-          onKeyDown={(e) => this.handleKeyPress(e)}
-          // onChange={(e) => {
-          //   this.props.setNewRequestBody({
-          //     ...this.props.newRequestBody,
-          //     bodyContent: e.target.value
-          //   })
-          // }}
-        />
+        <div className={'composer_textarea gql ' + bodyContainerClass} >
+          <CodeMirror
+            value={this.props.newRequestBody.bodyContent}
+            options={{
+              mode: 'graphql',
+              // theme: 'monokai',
+              scrollbarStyle: 'null',
+              lineNumbers: false,
+              lint: true
+            }}
+            // width="500px"
+            ref={node => this.node = node}
+            height="15vh"
+            onChange={(e) => {
+              this.props.setNewRequestBody({
+                ...this.props.newRequestBody,
+                bodyContent: this.node ? this.node.editor.getValue() : this.value
+              })
+            }}
+          />
 
         </div>
 
