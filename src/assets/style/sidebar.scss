@@ -4,7 +4,7 @@
 }
 
 .sidebar_composer-console {
-  background: #2c3e50;
+  background: #424242;
   color: #FCF7F8;
   display: flex;
   flex-direction: column;
@@ -57,7 +57,7 @@
 .addMetadata {
   -webkit-appearance: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   color: white;
   cursor: pointer;
   display: block;
@@ -128,8 +128,8 @@
 
 .composer_protocol_button {
   background-color: $liteblack;
-  border: 2px solid $yellowgrey;
-  border-radius: 5px;
+  border: 1px solid $liteblack;
+  border-radius: 3px;
   cursor: pointer;
   font-size: .9rem;
   font-weight: bold;
@@ -214,9 +214,9 @@
     background: $bluetwo;
 
     &:hover {
-      color: $medbluegray;
-      background: $huntergreen;
-      border: 2px solid $litebluegray;
+      color: $bluethree;
+      background: $bluetwo;
+      border: 1px solid white;
     }
   }
 

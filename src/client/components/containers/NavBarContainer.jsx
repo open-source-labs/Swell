@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import ReactModal from "react-modal";
 import uuid from "uuid/v4";
+import Button from "@material-ui/core/Button";
 import ReqResCtrl from "../../controllers/reqResController.js";
 import collectionsController from "../../controllers/collectionsController.js";
 import * as actions from "../../actions/actions";
@@ -41,7 +42,7 @@ class NavBarContainer extends Component {
   }
 
   saveName() {
-    if (!!this.state.input.trim()) {
+    if (this.state.input.trim()) {
       collectionsController
         .collectionNameExists({ name: this.state.input })
         .catch((err) =>
@@ -170,13 +171,13 @@ class NavBarContainer extends Component {
             Clear All
           </button>
 
-          <button
+          <Button
             className="btn save-btn"
             type="button"
             onClick={this.handleOpenModal}
           >
             Save Collection
-          </button>
+          </Button>
 
           <ReactModal
             isOpen={this.state.showModal}
@@ -184,7 +185,7 @@ class NavBarContainer extends Component {
             overlayClassName="collectionModalOverlay"
             contentLabel="Enter a Collection Name"
             onRequestClose={this.handleCloseModal}
-            shouldCloseOnOverlayClick={true}
+            shouldCloseOnOverlayClick
             aria={{
               labelledby: "heading",
             }}
