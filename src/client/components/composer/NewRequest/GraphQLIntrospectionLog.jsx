@@ -26,9 +26,11 @@ class GraphQLIntrospectionLog extends Component {
     const bodyContainerClass = this.state.show
       ? "composer_bodyform_container-open"
       : "composer_bodyform_container-closed";
-    const logAreaClass = introspectionData
-      ? "introspection-big"
-      : "introspection-small";
+    const logAreaClass =
+      introspectionData &&
+      introspectionData !== "Error: Please enter a valid GraphQL API URI"
+        ? "introspection-big"
+        : "introspection-small";
 
     return (
       <div>

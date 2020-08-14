@@ -683,5 +683,10 @@ ipcMain.on("introspect", (event, url) => {
       return event.sender.send("introspect-reply", schemaSDL);
       // return event.sender.send("introspect-reply", { data });
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      event.sender.send(
+        "introspect-reply",
+        "Error: Please enter a valid GraphQL API URI"
+      )
+    );
 });
