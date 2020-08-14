@@ -78,6 +78,7 @@ class ComposerContainer extends Component {
             setNewRequestCookies={this.props.setNewRequestCookies}
             setNewRequestBody={this.props.setNewRequestBody}
             setNewRequestSSE={this.props.setNewRequestSSE}
+            warningMessage={this.props.warningMessage}
           />
         );
         break;

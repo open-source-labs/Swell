@@ -7,6 +7,7 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
+import gql from "graphql-tag";
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -39,7 +40,17 @@ class ComposerNewRequest extends Component {
         !this.props.newRequestBody.bodyContent
       ) {
         validationMessage = "Missing body.";
-      }
+      } else if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
+        console.log('bodycontent', this.props.newRequestBody.bodyContent)
+        try {
+          const body = gql`
+          ${this.props.newRequestBody.bodyContent}
+          `;
+        } catch (e) {
+          console.log('error in gql-tag for client', e);
+          validationMessage = e.message;
+        }
+        }
     }
     return validationMessage || true;
   }
@@ -349,9 +360,10 @@ class ComposerNewRequest extends Component {
         });
       }
       this.props.setNewRequestSSE(false);
+      this.props.setComposerWarningMessage("");
     } else {
       this.props.setComposerWarningMessage(validated);
-      this.props.setComposerDisplay("Warning");
+      // this.props.setComposerDisplay("Warning");
     }
   }
 
@@ -450,6 +462,7 @@ class ComposerNewRequest extends Component {
               Server Sent Events
             </div>
           )}
+          {this.props.warningMessage}
         <button
           className={SubmitButtonClassName}
           onClick={this.addNewRequest}

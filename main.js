@@ -445,9 +445,13 @@ ipcMain.on("import-collection", (event, args) => {
       }
 
       // send data to chromium for state update
-      ipcMain.send("add-collection", { data });
+      // ipcMain.send("add-collection", { data });
+      console.log('before add-collection in import', data);
+      // mainWindow.webContents.send('add-collection', {data});
+      event.sender.send('add-collection', {data});
     });
-  });
+  })
+  //.catch( err => console.log('error in import-collection', err));
 });
 
 // ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
