@@ -411,6 +411,7 @@ class ComposerNewRequest extends Component {
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
           warningMessage={this.props.warningMessage}
+          setComposerWarningMessage={this.props.setComposerWarningMessage}
         />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}

@@ -11,7 +11,7 @@ class FieldEntryForm extends Component {
 
   onChangeHandler(e, property, graphQL) {
     let value = e.target.value;
-
+    this.props.setComposerWarningMessage({});
     switch (property) {
       case 'url': {
         let url = value;
@@ -165,6 +165,7 @@ class FieldEntryForm extends Component {
           onChangeHandler={this.onChangeHandler}
           graphQL={this.props.newRequestFields.graphQL}
           gRPC={this.props.newRequestFields.gRPC}
+          setComposerWarningMessage={this.props.setComposerWarningMessage}
         />
 
         <div className={'composer_method_url_container'}>
