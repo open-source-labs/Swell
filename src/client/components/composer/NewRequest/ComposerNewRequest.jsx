@@ -7,7 +7,6 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
-import graphQLController from "../../../controllers/graphQLController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
 
 class ComposerNewRequest extends Component {
@@ -433,23 +432,12 @@ class ComposerNewRequest extends Component {
               newRequestBody={this.props.newRequestBody}
               setNewRequestBody={this.props.setNewRequestBody}
             />
-            <button
-              className={SubmitButtonClassName}
-              onClick={() =>
-                graphQLController.introspect(this.props.newRequestFields.url)
-              }
-            >
-              Introspect
-            </button>
-          </>
-        )}
-        {this.props.newRequestFields.graphQL &&
-          this.props.introspectionData && (
             <GraphQLIntrospectionLog
               introspectionData={this.props.introspectionData}
               url={this.props.newRequestFields.url}
             />
-          )}
+          </>
+        )}
         {this.props.newRequestFields.gRPC && (
           <GRPCProtoEntryForm
             newRequestStreams={this.props.newRequestStreams}

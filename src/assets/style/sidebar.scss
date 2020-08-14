@@ -446,7 +446,11 @@
     margin-bottom: 10px;
   }
 
-  &.introspection {
+  &.introspection-small {
+    height: 60px;
+  }
+
+  &.introspection-big {
     height: 300px;
   }
 }

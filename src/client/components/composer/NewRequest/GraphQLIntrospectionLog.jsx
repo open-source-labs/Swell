@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
+import graphQLController from "../../../controllers/graphQLController";
+
 import { render } from "react-dom";
 
 class GraphQLIntrospectionLog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
+      show: false,
     };
     this.toggleShow = this.toggleShow.bind(this);
   }
@@ -24,7 +26,10 @@ class GraphQLIntrospectionLog extends Component {
     const bodyContainerClass = this.state.show
       ? "composer_bodyform_container-open"
       : "composer_bodyform_container-closed";
-    console.log(introspectionData);
+    const logAreaClass = introspectionData
+      ? "introspection-big"
+      : "introspection-small";
+
     return (
       <div>
         <div
@@ -33,13 +38,23 @@ class GraphQLIntrospectionLog extends Component {
           style={this.props.stylesObj}
         >
           <img className={arrowClass} src={dropDownArrow}></img>
-          Schema Introspection
+          Schema
         </div>
-        <textarea
-          readOnly
-          className={`composer_textarea gql introspection ${bodyContainerClass}`}
-          value={introspectionData}
-        />
+        <div className={bodyContainerClass}>
+          <textarea
+            readOnly
+            className={`composer_textarea gql introspection-small ${logAreaClass}`}
+            value={
+              introspectionData || 'Click "Introspect" to view GraphQL Schema'
+            }
+          />
+          <button
+            className="composer_submit gql"
+            onClick={() => graphQLController.introspect(url)}
+          >
+            Introspect
+          </button>
+        </div>
       </div>
     );
   }
