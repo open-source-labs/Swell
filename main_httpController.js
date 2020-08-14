@@ -82,7 +82,7 @@ const httpController = {
       // console.log('New HTTP2 Conn:', reqResObj.host);
       console.log('no pre-existing http2 found')
       const id = Math.random() * 100000;
-      const client = http2.connect(reqResObj.host, () => console.log('connected!'));
+      const client = http2.connect(reqResObj.host, () => console.log('connected!, reqRes.Obj.host', reqResObj.host));
 
       // push HTTP2 connection to array
       const http2Connection = {
