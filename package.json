@@ -233,6 +233,7 @@
     "google-auth-library": "^6.0.2",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "graphqlviz": "^3.1.0",
     "grpc": "^1.24.3",
     "highland": "^2.13.5",
     "identity-obj-proxy": "^3.0.0",

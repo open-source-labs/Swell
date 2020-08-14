@@ -44,7 +44,11 @@ const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
-const { introspectionQuery } = require("graphql");
+const {
+  introspectionQuery,
+  buildClientSchema,
+  printSchema,
+} = require("graphql");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./src/client/protoParser.js");
@@ -672,8 +676,12 @@ ipcMain.on("introspect", (event, url) => {
   })
     .then((resp) => resp.json())
     .then((data) => {
-      fs.writeFileSync("./introspection-data.json", JSON.stringify(data));
-      return event.sender.send("introspect-reply", { data });
+      // fs.writeFileSync("./introspection-data.json", JSON.stringify(data));
+      const schemaObj = buildClientSchema(data.data);
+      const schemaSDL = printSchema(schemaObj);
+      // console.log(schemaSDL);
+      return event.sender.send("introspect-reply", schemaSDL);
+      // return event.sender.send("introspect-reply", { data });
     })
     .catch((err) => console.log(err));
 });
