@@ -116,7 +116,7 @@ const graphQLController = {
     api.send("introspect", url);
     api.receive("introspect-reply", (data) => {
       // const introspectionData = JSON.parse(data);
-      console.log("here's the reply ", data);
+      // console.log("here's the reply ", data);
       store.default.dispatch(actions.setIntrospectionData(data));
     });
   },
