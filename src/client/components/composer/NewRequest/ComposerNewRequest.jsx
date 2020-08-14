@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
 import BodyEntryForm from "./BodyEntryForm.jsx";
@@ -78,6 +78,7 @@ class ComposerNewRequest extends Component {
             .value;
         } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) {
+          
           historyBodyContent = this.props.newRequestBody.bodyContent;
         } else historyBodyContent = "";
         let historyBodyVariables;
@@ -140,13 +141,15 @@ class ComposerNewRequest extends Component {
         }
         path = path.replace(/wss?:\//g, "ws://");
         let historyBodyContent;
+        console.log('newrequest ', CodeMirrorDOMNode)
         if (document.querySelector("#gqlBodyEntryTextArea")) {
           historyBodyContent = document.querySelector("#gqlBodyEntryTextArea")
             .value;
         } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) {
           historyBodyContent = this.props.newRequestBody.bodyContent;
-        } else historyBodyContent = "";
+        } else historyBodyContent = this.props.newRequestBody.bodyContent;
+        // historyBodyContent = "";
         let historyBodyVariables;
         if (document.querySelector("#gqlVariableEntryTextArea")) {
           historyBodyVariables = document.querySelector(
@@ -356,6 +359,7 @@ class ComposerNewRequest extends Component {
   }
 
   render() {
+    const CodeMirrorDOMNode = React.createRef();
     const HeaderEntryFormStyle = {
       //trying to change style to conditional created strange duplication effect when continuously changing protocol
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol)
@@ -427,6 +431,7 @@ class ComposerNewRequest extends Component {
           )}
         {this.props.newRequestFields.graphQL && (
           <GraphQLBodyEntryForm
+            ref={CodeMirrorDOMNode}
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
           />

@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror-graphql/mode';
 import 'codemirror/addon/edit/matchbrackets';
@@ -8,58 +7,33 @@ import 'codemirror/theme/monokai.css';
 import 'codemirror/addon/lint/lint';
 import 'codemirror-graphql/lint';
 
-
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
+const GraphQLBodyEntryForm = React.forwardRef((props, CodeMirrorDOMNode) => {
+  const [show, setShow] = useState(true);
 
-class GraphQLBodyEntryForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: true,
-    };
-    this.toggleShow = this.toggleShow.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+  // using useRef to get around the fact that CodeMirrorDOMNode.current (as the arguement itself) is null after first render and mount
+  // we need it immediately to access editor.getValue() and get the value of the codemirror component without further UI interaction
+  CodeMirrorDOMNode = useRef(CodeMirrorDOMNode);
+
+  const toggleShow = () => {
+    setShow(!show)
   }
 
-  toggleShow() {
-    this.setState({
-      show: !this.state.show
-    });
-  }
+  const { newRequestBody: { bodyContent }, setNewRequestBody, stylesObj, newRequestBody } = props
+  const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
+  const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
-  handleKeyPress(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-      const gqlBodyEntryTextArea = document.querySelector('#gqlBodyEntryTextArea')
-      const start = gqlBodyEntryTextArea.selectionStart
-      const second = gqlBodyEntryTextArea.value.substring(gqlBodyEntryTextArea.selectionStart)
-      // if you call the action/reducer, cursor jumps to bottom, this will update the textarea value without modifying state but it's fine because any subsequent keys will
-      // to account for edge case where tab is last key entered, alter addNewReq in ComposerNewRequest.jsx
-      // this.props.setNewRequestBody({
-      //   ...this.props.newRequestBody,
-      //   bodyContent: gqlBodyEntryTextArea.value.substring(0, start) + `  ` + gqlBodyEntryTextArea.value.substring(start)
-      // })
-      gqlBodyEntryTextArea.value = gqlBodyEntryTextArea.value.substring(0, start) + `  ` + gqlBodyEntryTextArea.value.substring(start)
-      gqlBodyEntryTextArea.setSelectionRange(gqlBodyEntryTextArea.value.length - second.length, gqlBodyEntryTextArea.value.length - second.length)
-    }
-  }
-
-  render() {
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
-    // console.log('value ', (this.node ? this.node.editor.getValue() : 'nothing yet'));
-    // this.node ? this.node.editor.getValue() : this.value
-    return (
+  return (
       <div >
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow} />
+        <div className='composer_subtitle' onClick={ toggleShow } style={ stylesObj }>
+          <img className={ arrowClass } src={ dropDownArrow } alt="" />
           Body
         </div>
         <div className={'composer_textarea gql ' + bodyContainerClass} >
           <CodeMirror
-            value={this.props.newRequestBody.bodyContent}
+            value={ bodyContent }
             options={{
               mode: 'graphql',
               // theme: 'monokai',
@@ -67,26 +41,24 @@ class GraphQLBodyEntryForm extends Component {
               lineNumbers: false,
               lint: true
             }}
-            // width="500px"
-            ref={node => this.node = node}
+            ref={CodeMirrorDOMNode}
             height="15vh"
-            onChange={(e) => {
-              this.props.setNewRequestBody({
-                ...this.props.newRequestBody,
-                bodyContent: this.node ? this.node.editor.getValue() : this.value
+            // get the body content of codemirror editor object by accessing the DOM node via ref
+            // see: https://github.com/uiwjs/react-codemirror/issues/43
+            onChange={() => {
+              setNewRequestBody({
+                ...newRequestBody,
+                bodyContent: CodeMirrorDOMNode.current.editor ? CodeMirrorDOMNode.current.editor.getValue() : bodyContent
               })
             }}
           />
-
         </div>
-
         <GraphQLVariableEntryForm
-          newRequestBody={this.props.newRequestBody}
-          setNewRequestBody={this.props.setNewRequestBody}
+          newRequestBody={ newRequestBody }
+          setNewRequestBody= { setNewRequestBody }
         />
       </div>
-    );
-  }
-}
+  )
+})
 
 export default GraphQLBodyEntryForm;
