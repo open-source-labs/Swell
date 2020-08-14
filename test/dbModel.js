@@ -22,14 +22,6 @@ const bookStoreSchema = new Schema({
 	author:	{
     type: String,
     required: true
-	},
-	year: {
-    type: Number,
-    required: true
-	},
-	pages: {
-    type: Number,
-    required: true
 	}
 });
 

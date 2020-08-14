@@ -5,6 +5,10 @@ class ReqRes {
 		return app.client.$('button=Send')
 	}
 
+	get removeBtn() {
+		return app.client.$('button=Remove')
+	}
+
 	get jsonPretty() {
 		return app.client.$('pre.__json-pretty__')
 	}
