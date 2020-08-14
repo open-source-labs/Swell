@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const { resolve } = require('path');
 const sideBar = require('../pageObjects/Sidebar.js'); 
 const reqRes = require('../pageObjects/ReqRes.js');
+const db = require('../dbModel')
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -28,8 +29,19 @@ module.exports = () => {
 			});
 		})
 
+		/*
+		For the below tests to work, you have to start up the mock server by typing in
+		*/
 		describe('local API', () => {
-			
+			it('it should GET from local API', (done) => {
+				chai.request('http://localhost:3000')
+				.get('/')
+				.end((err, res) => {
+					expect(err).to.be.null;
+					expect(res).to.have.status(201);
+					done();
+				})
+			})
 		})
 	})
 }

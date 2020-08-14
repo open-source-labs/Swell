@@ -1,19 +1,42 @@
-const { Pool } = require('pg');
-
+const mongoose = require('mongoose');
 require("dotenv").config();
 
+mongoose.connect(process.env.MONGO_URI, {
+  // options for the connect method to parse the URI
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // sets the name of the DB that our collections are part of
+  // dbName: 'swell'
+})
+.then(()=>console.log('Connected to Mongo DB.'))
+.catch(err=>console.log(err));
 
-// create a new pool here using the connection string above
-const pool = new Pool({
-  connectionString: process.env.PG_URI
+const Schema = mongoose.Schema;
+
+// sets a schema for the 'bookSore' collection
+const bookStoreSchema = new Schema({
+	title:	{
+    type: String,
+    required: true
+	},
+	author:	{
+    type: String,
+    required: true
+	},
+	year: {
+    type: Number,
+    required: true
+	},
+	pages: {
+    type: Number,
+    required: true
+	}
 });
 
-// We export an object that contains a property called query,
-// which is a function that returns the invocation of pool.query() after logging the query
-// This will be required in the controllers to be the access point to the database
+// creats a model for the 'bookStore' collection that will be part of the export
+const BookStore = mongoose.model('bookStore', bookStoreSchema);
+
+// exports all the models in an object to be used in the controller
 module.exports = {
-  query: (text, params, callback) => {
-    console.log('executed query', text);
-    return pool.query(text, params, callback);
-  }
-};
+	BookStore
+}
