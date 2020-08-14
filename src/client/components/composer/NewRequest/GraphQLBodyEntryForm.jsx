@@ -63,6 +63,7 @@ class GraphQLBodyEntryForm extends Component {
             })
           }}
         ></textarea>
+        {this.props.warningMessage.body && (<div>{this.props.warningMessage.body}</div>)}
         <GraphQLVariableEntryForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}

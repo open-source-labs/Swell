@@ -37,7 +37,7 @@ const graphQLController = {
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
-        console.log('2nd Results', result);
+        // console.log('2nd Results', result);
         resolve(result);
       });
       // api.send("open-gql", args);

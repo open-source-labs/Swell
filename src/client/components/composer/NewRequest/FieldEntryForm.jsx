@@ -211,6 +211,7 @@ class FieldEntryForm extends Component {
             }}
           ></input>
         </div>
+        {this.props.warningMessage.uri && (<div>{this.props.warningMessage.uri}</div>)}
       </div>
     )
   }

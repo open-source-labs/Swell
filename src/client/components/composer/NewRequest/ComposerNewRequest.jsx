@@ -17,30 +17,33 @@ class ComposerNewRequest extends Component {
   }
 
   requestValidationCheck() {
-    let validationMessage;
+    let validationMessage = {};
     //Error conditions...
     if (this.props.newRequestFields.gRPC) {
       return true;
     }
     if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) {
       //if url is only http/https/ws/wss://
-      validationMessage = "Please enter a valid URI.";
+      validationMessage.uri = "Please enter a valid URI.";
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(this.props.newRequestFields.url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage = "Please enter a valid URI.";
-    } else if (
+      validationMessage.uri = "Please enter a valid URI.";
+    } 
+    if (
       !this.props.newRequestBody.JSONFormatted &&
       this.props.newRequestBody.rawType === "application/json"
     ) {
-      validationMessage = "Please fix JSON body formatting errors.";
-    } else if (this.props.newRequestFields.method === "QUERY") {
+      validationMessage.json = "Please fix JSON body formatting errors.";
+    } 
+    if (this.props.newRequestFields.method === "QUERY") {
       if (
         this.props.newRequestFields.url &&
         !this.props.newRequestBody.bodyContent
       ) {
-        validationMessage = "Missing body.";
-      } else if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
+        validationMessage.body = "Missing body.";
+      } 
+      if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
         console.log('bodycontent', this.props.newRequestBody.bodyContent)
         try {
           const body = gql`
@@ -48,11 +51,11 @@ class ComposerNewRequest extends Component {
           `;
         } catch (e) {
           console.log('error in gql-tag for client', e);
-          validationMessage = e.message;
+          validationMessage.body = 'invalid gql body request';
         }
         }
     }
-    return validationMessage || true;
+    return validationMessage;
   }
 
   handleSSEPayload(e) {
@@ -407,6 +410,7 @@ class ComposerNewRequest extends Component {
           setNewRequestStreams={this.props.setNewRequestStreams}
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
+          warningMessage={this.props.warningMessage}
         />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
@@ -441,6 +445,7 @@ class ComposerNewRequest extends Component {
           <GraphQLBodyEntryForm
             newRequestBody={this.props.newRequestBody}
             setNewRequestBody={this.props.setNewRequestBody}
+            warningMessage={this.props.warningMessage}
           />
         )}
         {this.props.newRequestFields.gRPC && (
@@ -462,7 +467,7 @@ class ComposerNewRequest extends Component {
               Server Sent Events
             </div>
           )}
-          {this.props.warningMessage}
+          {/* {this.props.warningMessage} */}
         <button
           className={SubmitButtonClassName}
           onClick={this.addNewRequest}
