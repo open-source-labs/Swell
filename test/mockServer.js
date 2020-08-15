@@ -22,6 +22,18 @@ app.post('/book', bookController.addBook, (req, res) =>
 	res.status(200).json(res.locals.books)
 );
 
+app.put('/book/:title', bookController.updateEntireBook, (req, res) => 
+	res.status(200).json(res.locals.books)
+);
+
+app.patch('/book/:title', bookController.patchBook, (req, res) => 
+	res.status(200).json(res.locals.books)
+);
+
+app.delete('/book/:title', bookController.deleteBook, (req, res) => 
+	res.status(200).json(res.locals.books)
+);
+
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
 });

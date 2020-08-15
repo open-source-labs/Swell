@@ -22,6 +22,10 @@ const bookStoreSchema = new Schema({
 	author:	{
     type: String,
     required: true
+	},
+	pages: {
+    type: Number,
+    required: true
 	}
 });
 
