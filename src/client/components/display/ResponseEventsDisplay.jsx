@@ -4,6 +4,7 @@ import createDOMPurify from "dompurify";
 import SSERow from "./SSERow.jsx";
 
 const ResponseEventsDisplay = ({ response }) => {
+  console.log(response);
   const { events, headers } = response;
   const displayContents = [];
 

@@ -25,24 +25,24 @@ class ComposerNewRequest extends Component {
     }
     if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) {
       //if url is only http/https/ws/wss://
-      validationMessage.uri = "Please enter a valid URI.";
+      validationMessage.uri = "Enter a valid URI";
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(this.props.newRequestFields.url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = "Please enter a valid URI.";
+      validationMessage.uri = "Enter a valid URI";
     } 
     if (
       !this.props.newRequestBody.JSONFormatted &&
       this.props.newRequestBody.rawType === "application/json"
     ) {
-      validationMessage.json = "Please fix JSON body formatting errors.";
+      validationMessage.json = "Please fix JSON body formatting errors";
     } 
     if (this.props.newRequestFields.method === "QUERY") {
       if (
         this.props.newRequestFields.url &&
         !this.props.newRequestBody.bodyContent
       ) {
-        validationMessage.body = "Missing body.";
+        validationMessage.body = "GraphQL Body is Missing";
       } 
       if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
         console.log('bodycontent', this.props.newRequestBody.bodyContent)
@@ -52,7 +52,7 @@ class ComposerNewRequest extends Component {
           `;
         } catch (e) {
           console.log('error in gql-tag for client', e);
-          validationMessage.body = 'invalid gql body request';
+          validationMessage.body = 'Invalid GraphQL Body';
         }
         }
     }
