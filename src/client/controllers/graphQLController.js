@@ -10,7 +10,6 @@ const { api } = window;
 
 const graphQLController = {
   openGraphQLConnection(reqResObj) {
-    console.log('in graphQL connection')
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -28,17 +27,14 @@ const graphQLController = {
 
   // handles graphQL queries and mutationsnp
   sendGqlToMain(args) {
-    console.log('in sendGqlToMain');
     return new Promise((resolve) => {
       //send object to the context bridge
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
-        console.log("This is result:", result);
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
-        // console.log('2nd Results', result);
         resolve(result);
       });
     });
@@ -81,7 +77,6 @@ const graphQLController = {
   },
 
   handleResponse(response, reqResObj) {
-    console.log('inside handleResponse gqlController');
     reqResObj.connection = "closed";
     reqResObj.connectionType = "plain";
     reqResObj.timeReceived = Date.now();
@@ -90,7 +85,6 @@ const graphQLController = {
   },
 
   handleError(errorsObj, reqResObj) {
-    console.log('in handleError');
     reqResObj.connection = "error";
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(errorsObj));
