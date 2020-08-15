@@ -46,16 +46,11 @@ module.exports = () => {
 			}
 		)
 
-		// afterEach(async () => {
-		// 	await reqRes.removeBtn.click()
-		// 	}
-		// )
-
 		describe('public API', () => {
 
 			it('it should GET information from a public API', async () => {
 				await sideBar.chooseGet.click();
-				urlAndClick('https://pokeapi.co/api/v2/pokemon?limit=5', 'GET');
+				await urlAndClick('https://pokeapi.co/api/v2/pokemon?limit=5', 'GET');
 				await new Promise((resolve) => setTimeout( async () => {
 					const statusCode = await reqRes.statusCode.getText();
 					const jsonPretty = await reqRes.jsonPretty.getText();
@@ -66,6 +61,8 @@ module.exports = () => {
 			});
 		})
 
+		/***************** !! FOR BELOW TO WORK, YOU MUST ADD YOUR OWN MONGO URI TO A .ENV FILE WITH (MONGO_URI = "YOUR_URI") !! *****************/
+
 		describe('local API', () => {
 			before('CLEAR DB', (done) => {
 				chai.request('http://localhost:3000')
@@ -74,8 +71,6 @@ module.exports = () => {
 					done();
 				})
 			})
-
-
 
 			after('CLEAR DB', (done) => {
 				chai.request('http://localhost:3000')
