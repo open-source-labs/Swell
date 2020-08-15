@@ -46,6 +46,7 @@ const initialState = {
   newRequestSSE: {
     isSSE: false,
   },
+  introspectionData: null,
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -245,6 +246,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         currentTab: action.payload,
+      };
+    }
+
+    case types.SET_INTROSPECTION_DATA: {
+      return {
+        ...state,
+        introspectionData: action.payload,
       };
     }
 
