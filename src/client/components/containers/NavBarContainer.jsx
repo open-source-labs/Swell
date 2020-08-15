@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import ReactModal from "react-modal";
 import uuid from "uuid/v4";
-import Button from "@material-ui/core/Button";
 import ReqResCtrl from "../../controllers/reqResController.js";
 import collectionsController from "../../controllers/collectionsController.js";
 import * as actions from "../../actions/actions";
@@ -171,12 +170,13 @@ class NavBarContainer extends Component {
             Clear All
           </button>
 
-          <Button
+          <button
             className="btn save-btn"
+            type="button"
             onClick={this.handleOpenModal}
           >
             Save Collection
-          </Button>
+          </button>
 
           <ReactModal
             isOpen={this.state.showModal}
