@@ -295,12 +295,15 @@ const httpController = {
               body 
             });
           })
-          .catch((error) => console.log("ERROR from makeFetch", error));
+          .catch((error) => console.log("ERROR from makeFetch contents", error));
       
       })
       .catch((error) => {
+        //error in connections
         console.log('error from makeFetch outside', error);
+        reqResObj.connection = 'error';
         reqResObj.error = error
+        reqResObj.response.events.push(JSON.stringify(error));
         event.sender.send('reqResUpdate', reqResObj);
 
       })

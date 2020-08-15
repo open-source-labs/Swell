@@ -20,3 +20,31 @@
   color: #66d9ef;
   overflow: auto;
 }
+
+
+
+.__json-pretty__error {
+  line-height: 1.3;
+  color: red;
+  overflow: auto;
+}
+.__json-pretty__error .__json-key__ {
+  color: red;
+
+}
+.__json-pretty__error .__json-value__ {
+  color: red;
+
+}
+.__json-pretty__error .__json-string__ {
+  color: red;
+
+}
+.__json-pretty__error .__json-boolean__ {
+  color: red;
+}
+.__json-pretty-error__error {
+  line-height: 1.3;
+  color: red;
+  overflow: auto;
+}
