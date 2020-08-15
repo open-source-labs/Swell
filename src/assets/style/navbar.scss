@@ -3,6 +3,8 @@
 	justify-content: center;
   width: 100%;
   background: #4e4e4e;
+  border: solid 1px #424242; 
+  border-radius: 3px;
 }
 
 .navbar-console_inner {
@@ -10,10 +12,13 @@
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  background: #424242;
+  border: solid 1px #424242; 
+  border-radius: 3px;
 	.btn {
-		background: #4e4e4e;
-    border: solid 1px #4e4e4e;
-    border-radius: 5px;
+		background: #424242;
+    border: solid 1px #424242;
+    border-radius: 3px;
 		color: white;
 		// font-size: 8px;
 		margin: 4px;
@@ -24,25 +29,7 @@
     font-weight: 425;
   }
   .btn:hover {
-    background: #2c3e50;
-    border: solid 1px white;
-  }
-  .save-btn {
-    background: $bluetwo;
-    border: solid 1px #white;
-    border-radius: 5px;
-		color: white;
-		// font-size: 8px;
-		margin: 4px;
-    padding: .5rem;
-    cursor: pointer;
-    font-size: 12px;
-    outline: none;
-    font-weight: 425;
-  }
-  .save-btn:hover {
-    background: $bluethree;
-    border: solid 1px white;
+    background: #212121;
   }
 }
 ::placeholder {
