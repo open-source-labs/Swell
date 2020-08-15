@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import ReqResCtrl from '../../controllers/reqResController';
+import React, { Component } from "react";
+import ReqResCtrl from "../../controllers/reqResController";
 
 class OpenBtn extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class OpenBtn extends Component {
         className="btn"
         style={this.props.stylesObj}
         type="button"
+        //Button opens connection to network through reqResController function, passing in only the ReqRes ID
         onClick={() => ReqResCtrl.openReqRes(this.props.content.id)}
       >
         Send

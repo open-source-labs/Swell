@@ -16,6 +16,7 @@ const mapStateToProps = (store) => ({
   newRequestSSE: store.business.newRequestSSE,
   currentTab: store.business.currentTab,
   warningMessage: store.business.warningMessage,
+  introspectionData: store.business.introspectionData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -78,6 +79,7 @@ class ComposerContainer extends Component {
             setNewRequestCookies={this.props.setNewRequestCookies}
             setNewRequestBody={this.props.setNewRequestBody}
             setNewRequestSSE={this.props.setNewRequestSSE}
+            introspectionData={this.props.introspectionData}
           />
         );
         break;

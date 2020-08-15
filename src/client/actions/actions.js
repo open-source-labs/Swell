@@ -99,6 +99,10 @@ export const setChecksAndMinis = (reqResArray) => ({
   payload: reqResArray,
 });
 
+export const setIntrospectionData = (dataObj) => ({
+  type: types.SET_INTROSPECTION_DATA,
+  payload: dataObj,
+});
 // UI ACTIONS
 // export const showWarning = () => ({
 //   type: types.SHOW_WARNING,

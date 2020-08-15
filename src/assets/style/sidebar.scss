@@ -1,5 +1,5 @@
 .sidebar_radio-label {
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: bold;
 }
 
@@ -52,8 +52,6 @@
   outline: none;
 }
 
-
-
 .composer_submit,
 .addMetadata {
   -webkit-appearance: none;
@@ -62,7 +60,7 @@
   color: white;
   cursor: pointer;
   display: block;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: bold;
   height: 35px;
   margin: 5px 0 15px;
@@ -95,7 +93,7 @@
   color: white;
   cursor: pointer;
   display: inline-block;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: bold;
   height: 35px;
   margin: 4px 4px;
@@ -134,7 +132,11 @@
   background-color: $liteblack;
   border: 1px solid $liteblack; 
   cursor: pointer;
+<<<<<<< HEAD
   font-size: .7rem;
+=======
+  font-size: 0.9rem;
+>>>>>>> 936d9b0f537e64a2771f1ede4e5209aa89488dee
   font-weight: bold;
   height: 30px;
   line-height: 28px;
@@ -357,7 +359,7 @@
 
   &:checked {
     background: rgb(53, 78, 104);
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/200px-White_check.svg.png');
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/200px-White_check.svg.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: 18px 18px;
@@ -375,7 +377,7 @@
   outline: 0 none;
   padding: 8px 4px;
   text-overflow: ellipsis;
-  width: calc((100% - 22px)/2);
+  width: calc((100% - 22px) / 2);
 }
 
 .composer_header_input_first {
@@ -478,6 +480,14 @@
   &.grpc {
     margin-bottom: 10px;
   }
+
+  &.introspection-small {
+    height: 60px;
+  }
+
+  &.introspection-big {
+    height: 300px;
+  }
 }
 
 .composer_textarea-error {
@@ -507,10 +517,11 @@
   margin-top: 15px;
 }
 
-.historyDate-container::-webkit-scrollbar {}
+.historyDate-container::-webkit-scrollbar {
+}
 
 .historyDate h1,
-.collections-container>h1 {
+.collections-container > h1 {
   font-weight: 700;
   margin-bottom: 5px;
   margin-top: 15px;
@@ -522,7 +533,7 @@ stream-container {
   border-radius: 5px;
   color: white;
   cursor: pointer;
-  font-size: .95rem;
+  font-size: 0.95rem;
   height: 28px;
   margin: 1px 0px 1px 0px;
   // overflow: hidden;
@@ -557,7 +568,7 @@ stream-container {
   border-radius: 5px;
   color: white;
   cursor: pointer;
-  font-size: .95rem;
+  font-size: 0.95rem;
   height: 28px;
   margin: 1px 0px 1px 0px;
   // overflow: hidden;
