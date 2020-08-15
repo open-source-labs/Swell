@@ -1,8 +1,9 @@
 #reqResContainer {
   bottom: 0;
   width: 100%;
+  height: 100%;
   margin: 0;
-  background-color: #ecf1f5;
+  background-color: #eeeeee;
   border-top: solid 1px #ebeff2;
   background-image: url('../img/swell-bg.png');
   background-position: center center;
@@ -17,21 +18,21 @@
 //-------------------------------------------------------------------
 #reqResContainer::-webkit-scrollbar{
   width:0.5px;
-  background-color:#cccccc;
+  background-color:#eeeeee;
   }
   #reqResContainer::-webkit-scrollbar-thumb{
   width:0.5px;
-  background-color:#cccccc;
+  background-color:#eeeeee;
   border-radius:10px;
   }
   #reqResContainer::-webkit-scrollbar-thumb:hover{
   width:0.5px;
-  background-color:#cccccc;
+  background-color:#eeeeee;
   }
   #reqResContainer::-webkit-scrollbar-thumb:active{
   width:0.5px;
-  background-color:#cccccc;
-  border:1px solid #cccccc;
+  background-color:#eeeeee;
+  border:1px solid #eeeeee;
   }
 //-------------------------------------------------------------------
 #reqResContainer_inner {

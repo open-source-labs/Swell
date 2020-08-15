@@ -40,7 +40,7 @@ class ProtocolSelect extends Component {
           onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol')
           }
         >
-          HTTP/S
+          REST
         </div>
         <div
           title="Enter WebSocket url"

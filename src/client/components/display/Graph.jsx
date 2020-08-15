@@ -49,9 +49,9 @@ class Graph extends Component {
         },
         tooltips: {
           callbacks: {
-            label: function (tooltipItem, data) {
+            label (tooltipItem, data) {
               //data
-              let hoverLabel = data.datasets[tooltipItem.datasetIndex].label;
+              const hoverLabel = data.datasets[tooltipItem.datasetIndex].label;
               return hoverLabel;
             },
           },
@@ -330,26 +330,20 @@ class Graph extends Component {
   }
 
   render() {
-    let chartDisplayStyles = {
+    const chartDisplayStyles = {
       display: this.state.eventCounter > 0 ? "block" : "none",
     };
-    let warningDisplayStyles = {
+    const warningDisplayStyles = {
       display: this.state.eventCounter === 0 ? "block" : "none",
     };
 
     return (
       <div>
-        <div style={warningDisplayStyles} className={"warningContainer"}>
-          <div className={"warning"}>
-            Please add a request and hit the "Send" button to see response
-            timing information.
-          </div>
-        </div>
         <canvas className="chart" style={chartDisplayStyles} id="line-chart" />
-        <div className={"chartTime"} style={chartDisplayStyles}>
+        <div className="chartTime" style={chartDisplayStyles}>
           <select
             onChange={this.updateTimeFromNowToDisplay}
-            className={"chartTimeSelect"}
+            className="chartTimeSelect"
             defaultValue={30000}
           >
             <option value={10000}>Past 10 seconds</option>
