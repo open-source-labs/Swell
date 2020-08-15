@@ -64,7 +64,7 @@ class ComposerNewRequest extends Component {
 
   addNewRequest() {
     const validated = this.requestValidationCheck();
-    if (validated === true) {
+    if (Object.keys(validated).length === 0) {
       let reqRes;
       const protocol = this.props.newRequestFields.gRPC
         ? ""
@@ -363,7 +363,7 @@ class ComposerNewRequest extends Component {
         });
       }
       this.props.setNewRequestSSE(false);
-      this.props.setComposerWarningMessage("");
+      this.props.setComposerWarningMessage({});
     } else {
       this.props.setComposerWarningMessage(validated);
       // this.props.setComposerDisplay("Warning");
