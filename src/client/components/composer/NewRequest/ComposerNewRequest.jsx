@@ -430,6 +430,7 @@ class ComposerNewRequest extends Component {
         {this.props.newRequestFields.graphQL && (
           <>
             <GraphQLBodyEntryForm
+              introspectionData={this.props.introspectionData}
               newRequestBody={this.props.newRequestBody}
               setNewRequestBody={this.props.setNewRequestBody}
             />

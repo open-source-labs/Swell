@@ -8,6 +8,8 @@ import 'codemirror/addon/lint/lint';
 import 'codemirror-graphql/lint';
 import 'codemirror-graphql/hint';
 
+
+
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
@@ -20,8 +22,8 @@ const GraphQLBodyEntryForm = props => {
     setShow(!show)
   }
 
-  const { newRequestBody: { bodyContent }, setNewRequestBody, stylesObj, newRequestBody } = props
-
+  const { newRequestBody: { bodyContent }, setNewRequestBody, stylesObj, newRequestBody, introspectionData } = props
+  
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
@@ -40,8 +42,12 @@ const GraphQLBodyEntryForm = props => {
               theme: 'darcula',
               scrollbarStyle: 'null',
               lineNumbers: false,
-              lint: true,
-              hint: true
+              lint: {
+                schema: JSON.parse(introspectionData),
+              },
+              hintOptions: {
+                schema: JSON.parse(introspectionData),
+              },
             }}
             height="15vh"
             // get the body content of codemirror editor object by accessing the DOM node via ref
