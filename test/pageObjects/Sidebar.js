@@ -10,14 +10,26 @@ class Sidebar {
   get requestMethod() { 
     return app.client.$('select.composer_method_select.http');
   };
+  
+  get chooseGet(){ 
+    return app.client.$('option=GET');
+  };
 
   get choosePost() { 
     return app.client.$('option=POST');
   }; 
 
-  get chooseGet(){ 
-    return app.client.$('option=GET');
-  };
+  get choosePut() { 
+    return app.client.$('option=PUT');
+  }; 
+
+  get choosePatch() { 
+    return app.client.$('option=PATCH');
+  }; 
+
+  get chooseDelete() {
+    return app.client.$('option=DELETE')
+  }
 
   // BODY INPUTS
   get activateBodyInput(){
