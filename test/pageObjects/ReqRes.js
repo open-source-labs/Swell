@@ -9,6 +9,10 @@ class ReqRes {
 		return app.client.$('button=Remove')
 	}
 
+	get jsonPrettyError() {
+		return app.client.$('pre.__json-pretty-error__')
+	}
+
 	get jsonPretty() {
 		return app.client.$('pre.__json-pretty__')
 	}

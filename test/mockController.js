@@ -27,7 +27,7 @@ bookController.addBook = (req, res, next) => {
       next(err);
     }
     res.locals.books = books;
-    console.log(books);
+    // console.log(books);
     next();
 	})
 }
