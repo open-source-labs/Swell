@@ -62,7 +62,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('bulbasaur')
 					resolve()
-				}, 2000))
+				}, 1000))
 			});
 		})
 
@@ -94,7 +94,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.equal('[]')
 					resolve()
-				}, 2000))
+				}, 1000))
 				// await reqRes.removeBtn.click();
 			})
 
@@ -106,7 +106,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 500')
 					expect(jsonPrettyError).to.include('validation failed');
 					resolve()
-				}, 2000))
+				}, 1000))
 			})
 
 			it('it should POST to local API', async () => {
@@ -117,7 +117,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('JK Rowling')
 					resolve()
-				}, 3000))
+				}, 1000))
 			})
 
 			it('it should PUT to local API given a param', async () => {
@@ -128,7 +128,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('Ron Weasley')
 					resolve()
-				}, 3000))
+				}, 1000))
 			})
 
 			it('it should PATCH to local API given a param', async () => {
@@ -139,7 +139,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('Hermoine Granger')
 					resolve()
-				}, 3000))
+				}, 1000))
 			})
 
 			it('it should DELETE in local API given a param', async () => {
@@ -150,7 +150,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('Hermoine Granger')
 					resolve()
-				}, 3000))
+				}, 1000))
 				await reqRes.removeBtn.click();
 				await sideBar.chooseGet.click();
 				await urlAndClick('http://localhost:3000/book', 'GET');
@@ -160,7 +160,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.equal('[]')
 					resolve()
-				}, 2000))
+				}, 1000))
 			})
 		})
 	})
