@@ -4,7 +4,8 @@
 // import other tests
 const appOpensTests = require('./subSuites/appOpens'); 
 const reqInputTests = require('./subSuites/reqInputTests');
-const addRequestTests = require('./subSuites/addRequestTests')
+const addRequestTests = require('./subSuites/addRequestTests');
+const httpTest = require('./subSuites/httpTest')
 
 const app = require('./testApp');
 
@@ -27,6 +28,7 @@ describe("Electron Tests", function () {
     
     reqInputTests();
     addRequestTests();
+    httpTest();
   });
   
 });
