@@ -38,7 +38,6 @@ class GraphQLBodyEntryForm extends Component {
   render() {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
-
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
@@ -63,6 +62,7 @@ class GraphQLBodyEntryForm extends Component {
             })
           }}
         ></textarea>
+        {this.props.warningMessage.body && (<div class='warningMessage'>{this.props.warningMessage.body}</div>)}
         <GraphQLVariableEntryForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}

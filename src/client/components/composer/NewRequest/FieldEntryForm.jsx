@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProtocolSelect from "./ProtocolSelect.jsx";
+import colors from '../../../../assets/style/colors.scss';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 class FieldEntryForm extends Component {
@@ -11,7 +12,11 @@ class FieldEntryForm extends Component {
 
   onChangeHandler(e, property, graphQL) {
     let value = e.target.value;
-
+    if(this.props.warningMessage.uri) {
+      let warningMessage = {...this.props.warningMessage};
+      delete warningMessage.uri;
+      this.props.setComposerWarningMessage({...warningMessage});
+    }
     switch (property) {
       case 'url': {
         let url = value;
@@ -22,6 +27,8 @@ class FieldEntryForm extends Component {
         break;
       } 
       case 'protocol': {
+      this.props.setComposerWarningMessage({});
+
         if (!!graphQL) { //if graphql
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
@@ -158,6 +165,7 @@ class FieldEntryForm extends Component {
 
 
   render() {
+    const borderColor = this.props.warningMessage.uri ? 'red' : 'white';
     return (
       <div>
         <ProtocolSelect
@@ -165,6 +173,7 @@ class FieldEntryForm extends Component {
           onChangeHandler={this.onChangeHandler}
           graphQL={this.props.newRequestFields.graphQL}
           gRPC={this.props.newRequestFields.gRPC}
+          setComposerWarningMessage={this.props.setComposerWarningMessage}
         />
 
         <div className={'composer_method_url_container'}>
@@ -203,7 +212,7 @@ class FieldEntryForm extends Component {
             <button style={{ display: 'block' }} id='stream' value='STREAM' className={'composer_method_select grpc'}>STREAM</button>
           }
 
-          <input className={'composer_url_input'} type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
+          <input className={'composer_url_input'} type='text' placeholder='URL' style={{borderColor}} value={this.props.newRequestFields.url} onChange={(e) => {
             this.onChangeHandler(e, 'url')
           }} onKeyPress={this.handleKeyPress}
             ref={input => {
@@ -211,6 +220,7 @@ class FieldEntryForm extends Component {
             }}
           ></input>
         </div>
+        {this.props.warningMessage.uri && (<div class='warningMessage'>{this.props.warningMessage.uri}</div>)}
       </div>
     )
   }
