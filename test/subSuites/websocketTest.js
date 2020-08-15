@@ -10,7 +10,7 @@ module.exports = () => {
 	describe('Websocket requests', () => {
 
 		it('it should send and receive messages', async () => {
-			await reqRes.removeBtn.click()
+			await reqRes.removeBtn.click();
 			await sideBar.websocket.click();
 			await sideBar.url.clearElement();
 			await sideBar.url.addValue('wss://echo.websocket.org'); 
