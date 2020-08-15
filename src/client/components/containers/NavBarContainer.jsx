@@ -41,7 +41,7 @@ class NavBarContainer extends Component {
   }
 
   saveName() {
-    if (!!this.state.input.trim()) {
+    if (this.state.input.trim()) {
       collectionsController
         .collectionNameExists({ name: this.state.input })
         .catch((err) =>
@@ -184,7 +184,7 @@ class NavBarContainer extends Component {
             overlayClassName="collectionModalOverlay"
             contentLabel="Enter a Collection Name"
             onRequestClose={this.handleCloseModal}
-            shouldCloseOnOverlayClick={true}
+            shouldCloseOnOverlayClick
             aria={{
               labelledby: "heading",
             }}
