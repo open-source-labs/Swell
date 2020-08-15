@@ -339,6 +339,12 @@ class Graph extends Component {
 
     return (
       <div>
+        <div style={warningDisplayStyles} className="warningContainer">
+          <div className="warning">
+            Please add a request and hit the "Send" button to see response
+            timing information.
+          </div>
+        </div>
         <canvas className="chart" style={chartDisplayStyles} id="line-chart" />
         <div className="chartTime" style={chartDisplayStyles}>
           <select
