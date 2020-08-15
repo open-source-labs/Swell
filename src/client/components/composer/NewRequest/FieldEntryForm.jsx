@@ -12,6 +12,11 @@ class FieldEntryForm extends Component {
 
   onChangeHandler(e, property, graphQL) {
     let value = e.target.value;
+    if(this.props.warningMessage.uri) {
+      let warningMessage = {...this.props.warningMessage};
+      delete warningMessage.uri;
+      this.props.setComposerWarningMessage({...warningMessage});
+    }
     switch (property) {
       case 'url': {
         let url = value;
