@@ -63,3 +63,6 @@ protos/
 
 # testing #
 test/snapshot.png
+
+# db #
+.env
