@@ -155,7 +155,8 @@
       "main_grpcController.js",
       "main_httpController.js",
       "SSEController.js",
-      "preload.js"
+      "preload.js",
+      "main_touchbar.js"
     ],
     "nodeVersion": "12.14.1",
     "nsis": {
