@@ -210,7 +210,6 @@
     "@grpc/grpc-js": "^1.1.1",
     "@grpc/proto-loader": "^0.5.4",
     "@jest-runner/electron": "^3.0.0",
-    "@material-ui/core": "^4.11.0",
     "@testing-library/jest-dom": "^5.11.0",
     "@testing-library/react": "^10.4.3",
     "apollo-cache-inmemory": "^1.6.6",
