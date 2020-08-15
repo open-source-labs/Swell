@@ -173,7 +173,6 @@ class NavBarContainer extends Component {
 
           <Button
             className="btn save-btn"
-            type="button"
             onClick={this.handleOpenModal}
           >
             Save Collection

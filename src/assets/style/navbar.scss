@@ -31,23 +31,6 @@
   .btn:hover {
     background: #212121;
   }
-  .save-btn {
-    background: $bluetwo;
-    border: solid 1px #white;
-    border-radius: 3px;
-		color: white;
-		// font-size: 8px;
-		margin: 4px;
-    padding: .5rem;
-    cursor: pointer;
-    font-size: 12px;
-    outline: none;
-    font-weight: 425;
-  }
-  .save-btn:hover {
-    background: $bluethree;
-    border: solid 1px white;
-  }
 }
 ::placeholder {
   color: $yellowgrey;
