@@ -50,7 +50,7 @@ module.exports = () => {
 
 			it('it should GET information from a public API', async () => {
 				await sideBar.chooseGet.click();
-				urlAndClick('https://pokeapi.co/api/v2/pokemon?limit=5', 'GET');
+				await urlAndClick('https://pokeapi.co/api/v2/pokemon?limit=5', 'GET');
 				await new Promise((resolve) => setTimeout( async () => {
 					const statusCode = await reqRes.statusCode.getText();
 					const jsonPretty = await reqRes.jsonPretty.getText();
