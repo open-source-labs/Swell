@@ -4,8 +4,8 @@
 }
 
 .sidebar_composer-console {
-  background: #2c3e50;
-  color: #fcf7f8;
+  background: #424242;
+  color: #FCF7F8;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -34,6 +34,7 @@
 .composer_title {
   font-size: 1.1rem;
   font-weight: bold;
+  padding-bottom: 4;
 }
 
 .composerContents {
@@ -55,7 +56,7 @@
 .addMetadata {
   -webkit-appearance: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   color: white;
   cursor: pointer;
   display: block;
@@ -113,7 +114,10 @@
 .composer_protocol_container {
   display: flex;
   margin: 15px 0 15px 0;
-  justify-content: space-between;
+  justify-content: center;
+  border-radius: 3px;
+  box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+   -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
 
   &.gqlbody {
     justify-content: space-evenly;
@@ -126,8 +130,7 @@
 
 .composer_protocol_button {
   background-color: $liteblack;
-  border: 2px solid $yellowgrey;
-  border-radius: 5px;
+  border: 1px solid $liteblack; 
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: bold;
@@ -136,50 +139,73 @@
   outline: 0 none;
   text-align: center;
   width: 32%;
+  box-sizing: border-box;
 
+  box-shadow: 
+    12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset,
+    -8px -8px 16px 0 rgba(0, 0, 0, .25) inset;
   &.http:hover {
-    background: $bluetwo;
+    color: $liteblack;
     border: 2px solid $bluetwo;
     line-height: 28px;
+    font-size: 1rem;
   }
-
   &.ws:hover {
     background: $greenone;
     border: 2px solid $greenone;
-    line-height: 28px;
+    font-size: 1rem;
   }
 
   &.gql:hover {
     background: $gqlpink;
     border: 2px solid $gqlpink;
-    line-height: 28px;
+    font-size: 1rem;
   }
 
   &.grpc:hover {
     background: $grpcorange;
     border: 2px solid $grpcorange;
-    line-height: 28px;
+    font-size: 1rem;
   }
 }
-
 .composer_protocol_button-selected_http {
-  background: $bluetwo;
-  border: none;
+  background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+  $bluefour;
+  border: 1px solid;
+  font-size: 1rem;
+  box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+    -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
 }
 
 .composer_protocol_button-selected_ws {
-  background: $greenone;
+  background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+  $bluefour;
   border: none;
+  font-size: 1rem;
+  box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+    -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
 }
 
 .composer_protocol_button-selected_gql {
-  background: $gqlpink;
+  background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+  $bluefour;
   border: none;
+  font-size: 1rem;
+  box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+    -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
 }
 
 .composer_protocol_button-selected_grpc {
-  background: $grpcorange;
+  background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+  $bluefour;
   border: none;
+  font-size: 1rem;
+  box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+    -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
 }
 
 .composer_method_url_container {
@@ -190,13 +216,16 @@
   margin: 0 0 15px;
   margin-top: 7px;
   overflow: hidden;
+  box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+    -13px -8px 12px 0 rgba(255, 255, 255, 0.3);
 }
 
 .composer_method_select {
   -webkit-appearance: none;
   border: none;
   border-radius: 0px;
-  color: white;
+  color: $liteblack;
   cursor: pointer;
   display: block;
   font-size: 0.9rem;
@@ -209,12 +238,14 @@
   outline: 0 none;
 
   &.http {
-    background: $bluetwo;
+    background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+    $bluefour;
 
     &:hover {
-      color: $medbluegray;
-      background: $huntergreen;
-      border: 2px solid $litebluegray;
+      color: white;
+      background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+      $bluefour;
+      border: 1px solid white;
     }
   }
 
@@ -656,8 +687,8 @@ stream-container {
 }
 
 .collection-export-container button {
-  background: transparent;
-  color: rgb(216, 216, 216);
+  background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+    $bluefour;
   border: 0;
   cursor: pointer;
   outline: none;
@@ -675,11 +706,19 @@ stream-container {
 }
 
 .collection-import-container button {
-  background: transparent;
-  color: rgb(216, 216, 216);
-  border: 0;
-  cursor: pointer;
-  outline: none;
+  .element {
+    align-items: center;
+    
+    background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(255,255,255,0.25)),
+      $bluefour;
+    box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+     -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    width: 200px;
+  }
 }
 
 .collections-container {
