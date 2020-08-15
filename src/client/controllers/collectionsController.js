@@ -71,7 +71,15 @@ const collectionsController = {
   },
 
   importCollection(collection) {
+    return new Promise((resolve) => {
     api.send("import-collection", collection);
+    api.receive("add-collection", (...args) => {
+      console.log("received data: ", JSON.parse(args.data));
+      collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
+      collectionsController.getCollections();
+      resolve();
+    });
+  })
   },
 };
 
