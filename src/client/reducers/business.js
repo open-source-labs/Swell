@@ -6,7 +6,7 @@ const initialState = {
   reqResArray: [],
   history: [],
   collections: [],
-  warningMessage: "",
+  warningMessage: {},
   newRequestFields: {
     protocol: "",
     url: "http://",

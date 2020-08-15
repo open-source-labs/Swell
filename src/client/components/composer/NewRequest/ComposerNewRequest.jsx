@@ -7,11 +7,8 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
-<<<<<<< HEAD
 import gql from "graphql-tag";
-=======
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
->>>>>>> master
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -21,7 +18,7 @@ class ComposerNewRequest extends Component {
   }
 
   requestValidationCheck() {
-    let validationMessage = {};
+    const validationMessage = {};
     //Error conditions...
     if (this.props.newRequestFields.gRPC) {
       return true;
@@ -375,6 +372,7 @@ class ComposerNewRequest extends Component {
   }
 
   render() {
+    console.log(this.props.warningMessage);
     const HeaderEntryFormStyle = {
       //trying to change style to conditional created strange duplication effect when continuously changing protocol
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol)
@@ -447,24 +445,17 @@ class ComposerNewRequest extends Component {
             />
           )}
         {this.props.newRequestFields.graphQL && (
-<<<<<<< HEAD
-          <GraphQLBodyEntryForm
-            newRequestBody={this.props.newRequestBody}
-            setNewRequestBody={this.props.setNewRequestBody}
-            warningMessage={this.props.warningMessage}
-          />
-=======
           <>
             <GraphQLBodyEntryForm
               newRequestBody={this.props.newRequestBody}
               setNewRequestBody={this.props.setNewRequestBody}
+              warningMessage={this.props.warningMessage}
             />
             <GraphQLIntrospectionLog
               introspectionData={this.props.introspectionData}
               url={this.props.newRequestFields.url}
             />
           </>
->>>>>>> master
         )}
         {this.props.newRequestFields.gRPC && (
           <GRPCProtoEntryForm

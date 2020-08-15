@@ -600,11 +600,8 @@ ipcMain.on("open-gql", (event, args) => {
       .query({ query: body, variables })
 
       .then((data) => {
-<<<<<<< HEAD
         console.log('succesful query gql')
-=======
         console.log({ reqResObj, data });
->>>>>>> master
         event.sender.send("reply-gql", { reqResObj, data });
       })
       .catch((err) => {
