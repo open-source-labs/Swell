@@ -1,6 +1,18 @@
 const app = require('../testApp.js');
 
 class Sidebar {
+  // NETWORK PROTOCOL
+  get websocket() {
+    return app.client.$('div.composer_protocol_button.ws')
+  }
+
+  get graphQL() {
+    return app.client.$('div.composer_protocol_button.gql')
+  }
+
+  get gRPC() {
+    return app.client.$('div.composer_protocol_button.grpc')
+  }
 
   // URL/METHOD INPUTS
   get url() { 
