@@ -41,7 +41,7 @@ const httpController = {
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
-   
+   console.log()
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(
       (conn) => conn.host === reqResObj.host
     );
@@ -83,6 +83,7 @@ const httpController = {
       console.log('no pre-existing http2 found')
       const id = Math.random() * 100000;
       const client = http2.connect(reqResObj.host, () => console.log('connected!, reqRes.Obj.host', reqResObj.host));
+      console.log('client', client)
 
       // push HTTP2 connection to array
       const http2Connection = {
@@ -96,13 +97,14 @@ const httpController = {
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
-        client.destroy();
+        
+        client.destroy((err) => console.log('error in client.destroy', err));
+        console.log('after client.destroy');
 
         // if it exists in the openHTTP2Connections array, remove it
         httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(
           (conn) => conn.id !== id
         );
-
         // need to filter connectionArray for existing connObj as a nonfunctioning
         // one may have been pushed in establishHTTP2connection...
         // can't actually use filter though due to object renaming
@@ -264,9 +266,10 @@ const httpController = {
     //   });
       const { method, headers, body } = args.options; 
       console.log("args", args)
-
+      console.log(JSON.parse(body));
       fetch2(headers.url, { method, headers, body })
       .then((response) => {
+        console.log('inside successful fetch 2');
         const headers = response.headers.raw();
         // check if the endpoint sends SSE
         // add status code for regular http requests in the response header
@@ -353,6 +356,7 @@ const httpController = {
           reqResObj.timeReceived = Date.now();
           // send back reqResObj to renderer so it can update the redux store
           event.sender.send('reqResUpdate', reqResObj);
+          console.log('after event sender')
 
           const theResponseHeaders = response.headers;
 

@@ -7,8 +7,8 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
-import gql from "graphql-tag";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
+import gql from "graphql-tag";
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -372,7 +372,6 @@ class ComposerNewRequest extends Component {
   }
 
   render() {
-    console.log(this.props.warningMessage);
     const HeaderEntryFormStyle = {
       //trying to change style to conditional created strange duplication effect when continuously changing protocol
       display: !/wss?:\/\//.test(this.props.newRequestFields.protocol)

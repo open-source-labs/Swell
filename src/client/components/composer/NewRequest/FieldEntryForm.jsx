@@ -220,7 +220,7 @@ class FieldEntryForm extends Component {
             }}
           ></input>
         </div>
-        {this.props.warningMessage.uri && (<div style={{color: 'red'}}>{this.props.warningMessage.uri}</div>)}
+        {this.props.warningMessage.uri && (<div class='warningMessage'>{this.props.warningMessage.uri}</div>)}
       </div>
     )
   }
