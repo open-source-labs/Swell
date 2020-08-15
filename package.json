@@ -155,7 +155,8 @@
       "main_grpcController.js",
       "main_httpController.js",
       "SSEController.js",
-      "preload.js"
+      "preload.js",
+      "main_touchbar.js"
     ],
     "nodeVersion": "12.14.1",
     "nsis": {
@@ -205,6 +206,7 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
+    "@babel/cli": "^7.10.5",
     "@babel/runtime": "^7.10.3",
     "@doyensec/electronegativity": "^1.6.0",
     "@grpc/grpc-js": "^1.1.1",
@@ -219,6 +221,7 @@
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
     "apollo-link-ws": "^1.0.20",
+    "body-parser": "^1.19.0",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "codemirror-graphql": "^0.12.1",
@@ -226,6 +229,7 @@
     "date-fns": "^1.29.0",
     "dexie": "^2.0.4",
     "dompurify": "^2.0.11",
+    "dotenv": "^8.2.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-log": "^4.2.2",
     "electron-updater": "^4.3.1",
@@ -240,6 +244,7 @@
     "identity-obj-proxy": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
     "mali": "^0.21.0",
+    "mongoose": "^5.9.29",
     "node-fetch": "^2.6.0",
     "node-pre-gyp": "0.6.x",
     "node-sass": "^4.14.1",
@@ -290,6 +295,8 @@
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.1.0",
     "babili-webpack-plugin": "^0.1.2",
+    "chai": "*",
+    "chai-http": "^4.3.0",
     "cross-env": "^7.0.2",
     "csp-html-webpack-plugin": "^4.0.0",
     "css-loader": "^1.0.0",
@@ -313,7 +320,7 @@
     "html-webpack-plugin": "^4.3.0",
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.9.0",
-    "mocha": "^8.0.1",
+    "mocha": "*",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",

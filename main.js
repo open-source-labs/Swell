@@ -158,7 +158,7 @@ function createWindow() {
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
-  const touchBar = require("./main_touchbar.js");
+  const { touchBar } = require("./main_touchbar.js");
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
