@@ -378,20 +378,6 @@ class ComposerNewRequest extends Component {
         ? "block"
         : "none",
     };
-    let SubmitButtonClassName = "composer_submit";
-    if (
-      /wss?:\/\//.test(this.props.newRequestFields.protocol) &&
-      !this.props.newRequestFields.graphQL &&
-      !this.props.newRequestFields.gRPC
-    ) {
-      SubmitButtonClassName += " ws";
-    } else if (this.props.newRequestFields.graphQL) {
-      SubmitButtonClassName += " gql";
-    } else if (this.props.newRequestFields.gRPC) {
-      SubmitButtonClassName += " grpc";
-    } else {
-      SubmitButtonClassName += " http";
-    }
     return (
       <div
         className="composerContents_content"
@@ -477,7 +463,7 @@ class ComposerNewRequest extends Component {
           )}
           {/* {this.props.warningMessage} */}
         <button
-          className={SubmitButtonClassName}
+          className="composer_submit"
           onClick={this.addNewRequest}
           type="button"
         >

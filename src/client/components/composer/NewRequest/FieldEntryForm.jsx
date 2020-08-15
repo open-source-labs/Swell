@@ -165,7 +165,7 @@ class FieldEntryForm extends Component {
 
 
   render() {
-    const borderColor = this.props.warningMessage.uri ? 'red' : colors.yellowgrey;
+    const borderColor = this.props.warningMessage.uri ? 'red' : 'white';
     return (
       <div>
         <ProtocolSelect

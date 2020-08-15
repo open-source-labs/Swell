@@ -266,7 +266,6 @@ const httpController = {
     //   });
       const { method, headers, body } = args.options; 
       console.log("args", args)
-      console.log(JSON.parse(body));
       fetch2(headers.url, { method, headers, body })
       .then((response) => {
         console.log('inside successful fetch 2');
@@ -307,6 +306,7 @@ const httpController = {
         reqResObj.connection = 'error';
         reqResObj.error = error
         reqResObj.response.events.push(JSON.stringify(error));
+        console.log('response.events',reqResObj.response.events);
         event.sender.send('reqResUpdate', reqResObj);
 
       })
