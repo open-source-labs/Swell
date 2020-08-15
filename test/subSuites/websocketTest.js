@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const sideBar = require('../pageObjects/Sidebar.js'); 
+const sideBar = require('../pageObjects/Sidebar.js');
 const reqRes = require('../pageObjects/ReqRes.js');
 
 chai.use(chaiHttp);
@@ -8,8 +8,9 @@ const expect = chai.expect;
 
 module.exports = () => {
 	describe('Websocket requests', () => {
+
 		it('it should send and receive messages', async () => {
-			// await reqRes.removeBtn.click()
+			await reqRes.removeBtn.click()
 			await sideBar.websocket.click();
 			await sideBar.url.clearElement();
 			await sideBar.url.addValue('wss://echo.websocket.org'); 
