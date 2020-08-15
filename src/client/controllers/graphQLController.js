@@ -18,7 +18,7 @@ const graphQLController = {
     reqResObj.connection = "open";
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+    //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj }).then((response) => {
       response.error
         ? this.handleError(response.error, response.reqResObj)
@@ -30,6 +30,7 @@ const graphQLController = {
   sendGqlToMain(args) {
     console.log('in sendGqlToMain');
     return new Promise((resolve) => {
+      //send object to the context bridge
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
         console.log("This is result:", result);
@@ -40,7 +41,6 @@ const graphQLController = {
         // console.log('2nd Results', result);
         resolve(result);
       });
-      // api.send("open-gql", args);
     });
   },
 
@@ -112,6 +112,15 @@ const graphQLController = {
         expriationDate: eachCookie.expires ? eachCookie.expires : "",
       };
       return cookieFormat;
+    });
+  },
+
+  introspect(url) {
+    api.send("introspect", url);
+    api.receive("introspect-reply", (data) => {
+      // const introspectionData = JSON.parse(data);
+      // console.log("here's the reply ", data);
+      store.default.dispatch(actions.setIntrospectionData(data));
     });
   },
 };

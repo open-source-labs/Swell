@@ -50,9 +50,10 @@ const connectionController = {
     api.receive("reqResUpdate", (reqResObj) =>
       store.default.dispatch(actions.reqResUpdate(reqResObj))
     );
-
+    //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
+<<<<<<< HEAD
     console.log('after receive');
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
@@ -60,10 +61,21 @@ const connectionController = {
     console.log('in graphQL')
       graphQLController.openGraphQLConnection(reqResObj);
     }
+=======
+    //GraphQL subscription
+    if (reqResObj.request.method === "SUBSCRIPTION")
+      graphQLController.openSubscription(reqResObj);
+    //GraphQL query or mutation
+    else if (reqResObj.graphQL)
+      graphQLController.openGraphQLConnection(reqResObj);
+    //WebSocket Connection
+>>>>>>> master
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    //gRPC  connection
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);
+      //Standard HTTP?
     } else {
       console.log("should be sending");
       console.log(this.openConnectionArray)

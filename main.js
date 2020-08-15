@@ -13,7 +13,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 
 // npm libraries
 // debugger
-const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -21,8 +21,6 @@ const {
 } = require("electron-devtools-installer");
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require("electron-updater");
-// TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
-const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
 const path = require("path");
 const url = require("url");
@@ -44,6 +42,11 @@ const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
+const {
+  introspectionQuery,
+  buildClientSchema,
+  printSchema,
+} = require("graphql");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./src/client/protoParser.js");
@@ -61,87 +64,6 @@ autoUpdater.logger.transports.file.level = "info";
 log.info("App starting...");
 
 let mainWindow;
-
-/****************************
- ** Create Touchbar buttons **
- *****************************/
-
-const tbSelectAllButton = new TouchBarButton({
-  label: "Select All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("selectAll");
-  },
-});
-
-const tbDeselectAllButton = new TouchBarButton({
-  label: "Deselect All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("deselectAll");
-  },
-});
-
-const tbOpenSelectedButton = new TouchBarButton({
-  label: "Open Selected",
-  backgroundColor: "#00E28B",
-  click: () => {
-    mainWindow.webContents.send("openAllSelected");
-  },
-});
-
-const tbCloseSelectedButton = new TouchBarButton({
-  label: "Close Selected",
-  backgroundColor: "#DB5D58",
-  click: () => {
-    mainWindow.webContents.send("closeAllSelected");
-  },
-});
-
-const tbMinimizeAllButton = new TouchBarButton({
-  label: "Minimize All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("minimizeAll");
-  },
-});
-
-const tbExpandAllButton = new TouchBarButton({
-  label: "Expand All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("expandedAll");
-  },
-});
-
-const tbClearAllButton = new TouchBarButton({
-  label: "Clear All",
-  backgroundColor: "#708090",
-  click: () => {
-    mainWindow.webContents.send("clearAll");
-  },
-});
-
-const tbSpacer = new TouchBarSpacer();
-
-const tbFlexSpacer = new TouchBarSpacer({
-  size: "flexible",
-});
-
-/********************************
- ** Attach buttons to touchbar **
- ********************************/
-
-const touchBar = new TouchBar([
-  tbSpacer,
-  tbSelectAllButton,
-  tbDeselectAllButton,
-  tbOpenSelectedButton,
-  tbCloseSelectedButton,
-  tbMinimizeAllButton,
-  tbExpandAllButton,
-  tbClearAllButton,
-]);
 
 /************************
  ******** SET isDev *****
@@ -194,9 +116,9 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: (process.env.NODE_ENV !== 'test'),
+      contextIsolation: process.env.NODE_ENV !== "test",
       // enableRemoteModule: false,
-      sandbox: (process.env.NODE_ENV !== 'test'),
+      sandbox: process.env.NODE_ENV !== "test",
       webSecurity: true,
       preload: path.resolve(__dirname, "preload.js"),
     },
@@ -236,6 +158,7 @@ function createWindow() {
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
+  const touchBar = require("./main_touchbar.js");
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -245,7 +168,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (isDev && process.env.NODE_ENV !== 'test') {
+    if (isDev && process.env.NODE_ENV !== "test") {
       mainWindow.webContents.openDevTools();
     }
   });
@@ -677,7 +600,11 @@ ipcMain.on("open-gql", (event, args) => {
       .query({ query: body, variables })
 
       .then((data) => {
+<<<<<<< HEAD
         console.log('succesful query gql')
+=======
+        console.log({ reqResObj, data });
+>>>>>>> master
         event.sender.send("reply-gql", { reqResObj, data });
       })
       .catch((err) => {
@@ -699,4 +626,27 @@ ipcMain.on("open-gql", (event, args) => {
     event.sender.send("reply-gql", { error: e, reqResObj })
   }
   
+});
+
+ipcMain.on("introspect", (event, url) => {
+  fetch2(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: introspectionQuery }),
+  })
+    .then((resp) => resp.json())
+    .then((data) => {
+      // fs.writeFileSync("./introspection-data.json", JSON.stringify(data));
+      const schemaObj = buildClientSchema(data.data);
+      const schemaSDL = printSchema(schemaObj);
+      // console.log(schemaSDL);
+      return event.sender.send("introspect-reply", schemaSDL);
+      // return event.sender.send("introspect-reply", { data });
+    })
+    .catch((err) =>
+      event.sender.send(
+        "introspect-reply",
+        "Error: Please enter a valid GraphQL API URI"
+      )
+    );
 });
