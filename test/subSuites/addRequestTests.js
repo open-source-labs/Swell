@@ -1,8 +1,8 @@
 const assert = require('assert'); 
-const sideBar = require('../pageObjects/Sidebar.js'); 
-const app = require('../testApp');
 const fs = require('fs');
 const path = require('path');
+const sideBar = require('../pageObjects/Sidebar.js'); 
+const app = require('../testApp');
 
 
 module.exports = () => {
