@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 import graphQLController from "../../../controllers/graphQLController";
 
+// const {
+//   introspectionQuery,
+//   buildClientSchema,
+//   printSchema,
+// } = require("graphql");
+
 import { render } from "react-dom";
 
 class GraphQLIntrospectionLog extends Component {
@@ -20,6 +26,10 @@ class GraphQLIntrospectionLog extends Component {
 
   render() {
     const { introspectionData, url } = this.props;
+
+    const schemaSDL = introspectionData.schemaSDL;
+    
+
     const arrowClass = this.state.show
       ? "composer_subtitle_arrow-open"
       : "composer_subtitle_arrow-closed";
@@ -47,7 +57,7 @@ class GraphQLIntrospectionLog extends Component {
             readOnly
             className={`composer_textarea gql introspection-small ${logAreaClass}`}
             value={
-              introspectionData || 'Click "Introspect" to view GraphQL Schema'
+              schemaSDL || 'Click "Introspect" to view GraphQL Schema'
             }
           />
           <button

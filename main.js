@@ -594,12 +594,7 @@ ipcMain.on("introspect", (event, url) => {
   })
     .then((resp) => resp.json())
     .then((data) => {
-      // fs.writeFileSync("./introspection-data.json", JSON.stringify(data));
-      const schemaObj = buildClientSchema(data.data);
-      const schemaSDL = printSchema(schemaObj);
-      // console.log(schemaSDL);
-      return event.sender.send("introspect-reply", schemaSDL);
-      // return event.sender.send("introspect-reply", { data });
+      return event.sender.send("introspect-reply", data.data);
     })
     .catch((err) =>
       event.sender.send(

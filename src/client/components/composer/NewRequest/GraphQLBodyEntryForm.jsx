@@ -1,13 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror-graphql/mode';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/darcula.css';
+import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/lint/lint';
-import 'codemirror-graphql/lint';
 import 'codemirror-graphql/hint';
-
+import 'codemirror-graphql/lint';
+import 'codemirror-graphql/mode';
+import { buildSchema, buildClientSchema } from 'graphql'
 
 
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
@@ -15,15 +16,20 @@ import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x19
 
 const GraphQLBodyEntryForm = props => {
   const [show, setShow] = useState(true);
+  const { newRequestBody: { bodyContent }, setNewRequestBody, stylesObj, newRequestBody, introspectionData } = props
+  // let introspection = introspectionData ? buildClientSchema(introspectionData) : null;
+  
+  // let introspection;
+  // useEffect(() => {
 
+  // });
   const CodeMirrorDOMNode = useRef(null);
 
   const toggleShow = () => {
     setShow(!show)
   }
 
-  const { newRequestBody: { bodyContent }, setNewRequestBody, stylesObj, newRequestBody, introspectionData } = props
-  
+  // console.log(introspection);
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
@@ -33,7 +39,6 @@ const GraphQLBodyEntryForm = props => {
           <img className={ arrowClass } src={ dropDownArrow } alt="" />
           Body
         </div>
-        {/* <div className={'composer_textarea gql ' + bodyContainerClass} > */}
         <div className={bodyContainerClass} style={{ marginBottom: '10px' }}>
           <CodeMirror
             value={ bodyContent }
@@ -42,12 +47,8 @@ const GraphQLBodyEntryForm = props => {
               theme: 'darcula',
               scrollbarStyle: 'null',
               lineNumbers: false,
-              lint: {
-                schema: JSON.parse(introspectionData),
-              },
-              hintOptions: {
-                schema: JSON.parse(introspectionData),
-              },
+              lint: introspectionData.clientSchema ? { schema: introspectionData.clientSchema } : true,
+              hintOptions: introspectionData.clientSchema ? { schema: introspectionData.clientSchema } : true,
             }}
             height="15vh"
             // get the body content of codemirror editor object by accessing the DOM node via ref
@@ -57,7 +58,10 @@ const GraphQLBodyEntryForm = props => {
               setNewRequestBody({
                 ...newRequestBody,
                 bodyContent: CodeMirrorDOMNode.current ? CodeMirrorDOMNode.current.editor.getValue() : bodyContent
-              })
+              });
+              console.log('introspection', introspectionData);
+              console.log('domnode', CodeMirrorDOMNode.current);
+              if (introspectionData && CodeMirrorDOMNode.current) { console.log('test'); CodeMirrorDOMNode.current.editor.showHint()};
             }}
           />
         </div>

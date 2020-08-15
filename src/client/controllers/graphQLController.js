@@ -5,6 +5,7 @@ import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import * as store from "../store";
 import * as actions from "../actions/actions";
+import { buildSchema, buildClientSchema, printSchema } from 'graphql'
 
 const { api } = window;
 
@@ -117,7 +118,17 @@ const graphQLController = {
     api.receive("introspect-reply", (data) => {
       // const introspectionData = JSON.parse(data);
       // console.log("here's the reply ", data);
-      store.default.dispatch(actions.setIntrospectionData(data));
+      // get schemaSDL for prety render
+      // get schema instance from buildclientschema for hinter
+      if (data !== "Error: Please enter a valid GraphQL API URI") {
+        const clientSchema = buildClientSchema(data);
+        const schemaSDL = printSchema(clientSchema);
+
+        const modifiedData = { schemaSDL, clientSchema }
+        store.default.dispatch(actions.setIntrospectionData(modifiedData));
+      } else {
+        store.default.dispatch(actions.setIntrospectionData(data));
+      }
     });
   },
 };
