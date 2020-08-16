@@ -45,7 +45,6 @@ class ComposerNewRequest extends Component {
         validationMessage.body = "GraphQL Body is Missing";
       } 
       if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
-        console.log('bodycontent', this.props.newRequestBody.bodyContent)
         try {
           const body = gql`
           ${this.props.newRequestBody.bodyContent}
@@ -89,16 +88,12 @@ class ComposerNewRequest extends Component {
         path = path.replace(/https?:\//g, "http://");
         let historyBodyContent;
         if (this.props.newRequestBody.bodyContent) {
-          console.log('in the else if')
           historyBodyContent = this.props.newRequestBody.bodyContent;
         } else historyBodyContent = "";
         let historyBodyVariables;
-        if (document.querySelector("#gqlVariableEntryTextArea")) {
-          historyBodyVariables = document.querySelector(
-            "#gqlVariableEntryTextArea"
-          ).value;
-        } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = "";
+        if (this.props.newRequestBody.bodyContent) {
+          historyBodyContent = this.props.newRequestBody.bodyContent;
+        } else historyBodyVariables = "";
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -136,6 +131,7 @@ class ComposerNewRequest extends Component {
           minimized: false,
           tab: this.props.currentTab,
         };
+        console.log('reqresObj', reqRes)
       }
       // GraphQL Subscriptions
       else if (this.props.newRequestFields.graphQL) {

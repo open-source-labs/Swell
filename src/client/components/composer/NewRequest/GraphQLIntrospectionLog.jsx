@@ -27,11 +27,14 @@ const GraphQLIntrospectionLog = (props) => {
         Schema
       </div>
       <div className={bodyContainerClass}>
+      <div style={{ color: 'red' }}>
+        {introspectionData === "Error: Please enter a valid GraphQL API URI" ? introspectionData: "" }
+      </div>
         <textarea
           readOnly
           className={`composer_textarea gql introspection-small ${logAreaClass}`}
           value={
-            introspectionData.schemaSDL || 'Click "Introspect" to view GraphQL Schema'
+            introspectionData.schemaSDL || 'Click "Introspect" to view GraphQL Schema' || introspectionData
           }
         />
         <button
