@@ -3,9 +3,9 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { buildClientSchema, printSchema } from 'graphql'
 import * as store from "../store";
 import * as actions from "../actions/actions";
-import { buildSchema, buildClientSchema, printSchema } from 'graphql'
 
 const { api } = window;
 
@@ -116,14 +116,11 @@ const graphQLController = {
   introspect(url) {
     api.send("introspect", url);
     api.receive("introspect-reply", (data) => {
-      // const introspectionData = JSON.parse(data);
-      // console.log("here's the reply ", data);
-      // get schemaSDL for prety render
-      // get schema instance from buildclientschema for hinter
       if (data !== "Error: Please enter a valid GraphQL API URI") {
+        //formatted for Codemirror hint and lint
         const clientSchema = buildClientSchema(data);
+        // formatted for pretty schema display
         const schemaSDL = printSchema(clientSchema);
-
         const modifiedData = { schemaSDL, clientSchema }
         store.default.dispatch(actions.setIntrospectionData(modifiedData));
       } else {

@@ -8,7 +8,6 @@ import 'codemirror/addon/lint/lint';
 import 'codemirror-graphql/hint';
 import 'codemirror-graphql/lint';
 import 'codemirror-graphql/mode';
-import { buildSchema, buildClientSchema } from 'graphql'
 
 
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
@@ -16,20 +15,30 @@ import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x19
 
 const GraphQLBodyEntryForm = props => {
   const [show, setShow] = useState(true);
-  const { newRequestBody: { bodyContent }, setNewRequestBody, stylesObj, newRequestBody, introspectionData } = props
-  // let introspection = introspectionData ? buildClientSchema(introspectionData) : null;
-  
-  // let introspection;
-  // useEffect(() => {
+  const [intro, setIntro] = useState(null);
 
-  // });
+  const { 
+    newRequestBody: { bodyContent }, 
+    newRequestBody, 
+    setNewRequestBody, 
+    stylesObj, 
+    introspectionData
+  } = props
+  
   const CodeMirrorDOMNode = useRef(null);
 
   const toggleShow = () => {
     setShow(!show)
   }
 
-  // console.log(introspection);
+  useEffect(() => {
+    if (introspectionData.clientSchema) {
+    setIntro(introspectionData.clientSchema);
+    console.log('intro set', intro)
+    } 
+  }, [introspectionData.clientSchema])
+
+  
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
@@ -39,16 +48,16 @@ const GraphQLBodyEntryForm = props => {
           <img className={ arrowClass } src={ dropDownArrow } alt="" />
           Body
         </div>
-        <div className={bodyContainerClass} style={{ marginBottom: '10px' }}>
+        <div className={ bodyContainerClass } style={{ marginBottom: '10px' }}>
           <CodeMirror
             value={ bodyContent }
             options={{
               mode: 'graphql',
               theme: 'darcula',
-              scrollbarStyle: 'null',
+              scrollbarStyle: 'native',
               lineNumbers: false,
-              lint: introspectionData.clientSchema ? { schema: introspectionData.clientSchema } : true,
-              hintOptions: introspectionData.clientSchema ? { schema: introspectionData.clientSchema } : true,
+              lint: true,
+              hintOptions: true,
             }}
             height="15vh"
             // get the body content of codemirror editor object by accessing the DOM node via ref
@@ -59,9 +68,8 @@ const GraphQLBodyEntryForm = props => {
                 ...newRequestBody,
                 bodyContent: CodeMirrorDOMNode.current ? CodeMirrorDOMNode.current.editor.getValue() : bodyContent
               });
-              console.log('introspection', introspectionData);
-              console.log('domnode', CodeMirrorDOMNode.current);
-              if (introspectionData && CodeMirrorDOMNode.current) { console.log('test'); CodeMirrorDOMNode.current.editor.showHint()};
+
+              console.log('intro', intro)
             }}
           />
         </div>
