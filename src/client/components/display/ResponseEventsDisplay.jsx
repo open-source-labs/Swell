@@ -3,9 +3,10 @@ import JSONPretty from "react-json-pretty";
 import createDOMPurify from "dompurify";
 import SSERow from "./SSERow.jsx";
 
-const ResponseEventsDisplay = ({ response }) => {
-  const { events, headers } = response;
+const ResponseEventsDisplay = (props) => {
+  const { events, headers } = props.content.response;
   const displayContents = [];
+  const className = props.content.connection === 'error' ? '__json-pretty__error' : '__json-pretty__';
 
   // If it's an SSE, render event rows
   // console.log('response is : ', response, 'headers is : ', headers)
@@ -49,7 +50,7 @@ ${eventJSON}`;
           <JSONPretty
             data={resEvents}
             space="4"
-            className="__json-pretty__" //theme={{
+            className={className}//theme={{
             //   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
             //   key: 'color:#0089D0;', // bluetwo
             //   string: 'color:#15B78F;',// greenone
@@ -69,7 +70,7 @@ ${eventJSON}`;
         <JSONPretty
           data={events[0]}
           space="4"
-          className="__json-pretty__"
+          className={className}
           // theme={{
           //   main:
           //     "line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;",

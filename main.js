@@ -368,9 +368,13 @@ ipcMain.on("import-collection", (event, args) => {
       }
 
       // send data to chromium for state update
-      ipcMain.send("add-collection", { data });
+      // ipcMain.send("add-collection", { data });
+      console.log('before add-collection in import', data);
+      // mainWindow.webContents.send('add-collection', {data});
+      event.sender.send('add-collection', {data});
     });
-  });
+  })
+  //.catch( err => console.log('error in import-collection', err));
 });
 
 // ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
@@ -409,7 +413,7 @@ ipcMain.on("import-proto", (event) => {
       fs.readFile(filePaths.filePaths[0], "utf-8", (err, file) => {
         // handle read error
         if (err) {
-          return console.log("error reading file : ", err);
+          return console.log("import-proto error reading file : ", err);
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
@@ -424,7 +428,7 @@ ipcMain.on("import-proto", (event) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log('error in import-proto', err);
     });
 });
 
@@ -472,11 +476,13 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
           .then((body) => {
             event.sender.send("http1-fetch-reply", { headers, body });
           })
-          .catch((error) => console.log("ERROR", error));
+          .catch((error) => console.log("ERROR in http1-fetch-message", error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log("error in http1-fetch-message", error));
 });
+
+const { onError } = require('apollo-link-error');
 
 ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
@@ -500,7 +506,9 @@ ipcMain.on("open-gql", (event, args) => {
 
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
+
     return forward(operation).map((response) => {
+
       const context = operation.getContext();
       const headers = context.response.headers.entries();
       for (const headerItem of headers) {
@@ -549,31 +557,43 @@ ipcMain.on("open-gql", (event, args) => {
     fetch: fetch2,
   });
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) =>{
+        console.log(
+          `errorLink [GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+        return message;
+      }
+      );
+    if (networkError) console.log(`errorLink [Network error]: ${networkError}`);
+  });
+
   // additive composition of multiple links
-  const link = ApolloLink.from([afterLink, httpLink]);
+  const link = ApolloLink.from([afterLink, errorLink, httpLink]);
 
   const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
   });
-
-  const body = gql`
+  
+  try {
+    const body = gql`
     ${reqResObj.request.body}
-  `;
+    `;
   const variables = reqResObj.request.bodyVariables
     ? JSON.parse(reqResObj.request.bodyVariables)
     : {};
-
   if (reqResObj.request.method === "QUERY") {
     client
       .query({ query: body, variables })
 
       .then((data) => {
-        console.log({ reqResObj, data });
         event.sender.send("reply-gql", { reqResObj, data });
       })
       .catch((err) => {
-        console.error(err);
+        console.error('gql query error', err);
+        reqResObj.error = err;
         event.sender.send("reply-gql", { error: err.networkError, reqResObj });
       });
   } else if (reqResObj.request.method === "MUTATION") {
@@ -581,9 +601,15 @@ ipcMain.on("open-gql", (event, args) => {
       .mutate({ mutation: body, variables })
       .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
       .catch((err) => {
-        console.error(err);
+        console.error('gql mutation error', err);
       });
   }
+  } catch (e) {
+    console.log('error in open-gql, main.js', e);
+    reqResObj.error = err;
+    event.sender.send("reply-gql", { error: e, reqResObj })
+  }
+  
 });
 
 ipcMain.on("introspect", (event, url) => {

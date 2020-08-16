@@ -45,6 +45,7 @@ const connectionController = {
   },
 
   openReqRes(id) {
+    console.log('in openReqRes');
     // listens for reqResUpdate event from main process telling it to update reqResobj
     api.receive("reqResUpdate", (reqResObj) =>
       store.default.dispatch(actions.reqResUpdate(reqResObj))
@@ -52,13 +53,13 @@ const connectionController = {
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
-    //GraphQL subscription
+    console.log('after receive');
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
-    //GraphQL query or mutation
-    else if (reqResObj.graphQL)
+    else if (reqResObj.graphQL){
+    console.log('in graphQL')
       graphQLController.openGraphQLConnection(reqResObj);
-    //WebSocket Connection
+    }
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     //gRPC  connection
@@ -67,6 +68,7 @@ const connectionController = {
       //Standard HTTP?
     } else {
       console.log("should be sending");
+      console.log(this.openConnectionArray)
       api.send("open-http", reqResObj, this.openConnectionArray);
     }
   },

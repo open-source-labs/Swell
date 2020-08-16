@@ -23,7 +23,7 @@ const graphQLController = {
       response.error
         ? this.handleError(response.error, response.reqResObj)
         : this.handleResponse(response.data, response.reqResObj);
-    });
+    }).catch( err => console.log("error in sendGqlToMain", err));
   },
 
   // handles graphQL queries and mutationsnp
@@ -32,15 +32,12 @@ const graphQLController = {
       //send object to the context bridge
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
-        console.log("This is result:", result);
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
         resolve(result);
       });
-      //Why is api.send called twice?
-      api.send("open-gql", args);
     });
   },
 
