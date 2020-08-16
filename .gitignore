@@ -63,6 +63,8 @@ protos/
 
 # testing #
 test/snapshot.png
+test/subSuites/addedReq.png
+test/subSuites/snapshot.png
 
 # db #
 .env
