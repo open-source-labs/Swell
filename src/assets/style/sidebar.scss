@@ -80,8 +80,11 @@
 .save-proto {
   -webkit-appearance: none;
   border: none;
-  border-radius: 5px;
-  color: white;
+  border-radius: 15px;
+  background: linear-gradient(315deg, #ffffff, #d6d6d6);
+  box-shadow:  -8px -8px 16px #b0b0b0, 
+              8px 8px 16px #ffffff;
+  color: $bluefour;
   cursor: pointer;
   display: inline-block;
   font-size: 0.9rem;
@@ -91,7 +94,7 @@
   padding: 8px;
   width: 48%;
   outline: none;
-  background-color: $grpcorange;
+  background-color: #eeeeee;
 }
 
 .small-btn-open {
@@ -171,8 +174,7 @@
   align-content: center;
   align-items: center;
   display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 15px 0px 15px 0px;
 }
 
 .composer_method_select {
@@ -242,7 +244,7 @@
   border-radius: 15px;
   background: $liteblack;
   box-shadow:  -8px -8px 16px #b0b0b0, 
-             8px 8px 16px #ffffff;
+             8px 8px 16px #b0b0b0;
 }
 
 .composer_subtitle {
@@ -317,10 +319,11 @@
   overflow: hidden;
 }
 
+
 .composer_header {
   border: 1px solid #eeeeee;
   border-radius: 15px;
-  
+  color: white;
   margin-bottom: 25px;
   overflow: hidden;
 }
@@ -362,6 +365,9 @@
   padding: 8px 4px;
   text-overflow: ellipsis;
   width: calc((100% - 22px) / 2);
+  &::placeholder {
+    color: white;
+  }
 }
 
 .composer_header_input_first {
@@ -445,13 +451,16 @@
 .composer_textarea {
   background-color: $liteblack;
   border: 1px solid $yellowgrey;
-  border-radius: 5px;
+  border-radius: 15px;
   color: white;
   margin-top: 7px;
   padding: 5px;
   width: 100%;
   font-size: 14px;
   resize: none;
+  &::placeholder {
+    color: white;
+  }
 
   &:focus {
     outline: 0 none;
@@ -521,13 +530,40 @@ stream-container {
   width: 100%;
   box-shadow: inset -12px -12px 24px #b0b0b0, 
   inset 12px 12px 24px #ffffff;
+}
 
-  &:hover .history-delete-image {
-    opacity: 1;
+.history-container {
+  &:hover .history-delete-container {
+    display: flex;
   }
 }
 
-.clear-history button{
+.import-collections {
+  border-radius: 15px;
+  background: linear-gradient(315deg, #ffffff, #d6d6d6);
+  box-shadow:  -3px -3px 12px #b0b0b0, 
+             6px 6px 12px #ffffff;
+  cursor: pointer;
+  color: $bluefour;
+  font-size: 0.8rem;
+  font-weight: bold;
+  height: 30px;
+  line-height: 28px;
+  outline: 0 none;
+  text-align: center;
+  float: right;
+  width: 100%;
+  box-sizing: border-box;
+  margin-right: 7px;
+  &:hover {
+    border-radius: 15px;
+    background: #eeeeee;
+    box-shadow: inset -12px -12px 24px #b0b0b0, 
+    inset 12px 12px 24px #ffffff;
+}
+}
+
+.clear-history button {
   border-radius: 15px;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
   box-shadow:  -3px -3px 12px #b0b0b0, 
@@ -554,17 +590,14 @@ stream-container {
 
 .collection-container {
   border-radius: 15px;
+  color: $bluefour;
   cursor: pointer;
   font-size: 0.95rem;
   height: 28px;
-  margin-top: 23px;
   width: 100%;
-
-  &:hover .collection-delete-image {
-    opacity: 1;
-  }
-
-  &:hover .collection-export-container {
+  box-shadow: inset -12px -12px 24px #b0b0b0, 
+  inset 12px 12px 24px #ffffff;
+  &:hover .collection-delete-container {
     display: flex;
   }
 }
@@ -577,8 +610,8 @@ stream-container {
   flex-shrink: 100;
   overflow-y: scroll;
 }
-
 .collection-text-container {
+  margin-left: 3px;
   height: 28px;
 }
 
@@ -631,42 +664,7 @@ stream-container {
   background-color: #eeeeee;
 }
 
-.history-delete-container,
-.collection-delete-container {
-  display: flex;
-  float: right;
-  height: 26px;
-  position: relative;
-  right: 0px;
-  top: -28px;
-  z-index: 0;
-}
-
-.history-delete-fade,
-.collection-delete-fade {
-  // background: linear-gradient(to right, rgba(40, 40, 40, 0), rgba(40, 40, 40, 1));
-  color: white;
-  height: 26px;
-  width: 32px;
-}
-
-.history-delete-button,
-.collection-delete-button {
-  // background: rgba(40, 40, 40, 1);
-  height: 100%;
-  width: 20px;
-}
-
-.history-delete-image,
-.collection-delete-image {
-  height: 22px;
-  margin-top: 2px;
-  margin-right: 3px;
-  opacity: 0;
-  width: 16px;
-}
-
-.collection-export-container {
+.history-delete-container {
   display: none;
   float: right;
   height: 26px;
@@ -674,7 +672,47 @@ stream-container {
   right: 0px;
   top: -28px;
   z-index: 0;
-  padding-left: 10px;
+}
+
+.collection-delete-container {
+  display: none;
+  float: right;
+  height: 26px;
+  position: relative;
+  right: 13px;
+  top: -28px;
+  z-index: 0;
+  background-color: transparent;
+}
+
+.history-delete-button,
+.collection-delete-button {
+  height: 100%;
+  width: 20px;
+  float: right;
+  margin-top: 7px;
+  }
+
+.collection-delete-button {
+  width: 25%;
+  padding-right: 5px;
+  border-right: 1px $liteblack;
+}
+
+.collection-export-button {
+  float: right;
+  height: 26px;
+  width: 75%;
+  position: relative;
+  right: 0px;
+  z-index: 0;
+  margin-top: 7px;
+  padding-left: 5px;
+  background-color: transparent;
+}
+
+.collections {
+  margin-top: 15px;
 }
 
 .collection-import-container {
@@ -685,20 +723,15 @@ stream-container {
   right: 0px;
   top: -25px;
   z-index: 0;
-  padding-right: 10px;
 }
 
-.import-collections,
 .collection-export-container button {
   border-radius: 15px;
-  background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow:  -3px -3px 12px #b0b0b0, 
-             6px 6px 12px #ffffff;
   cursor: pointer;
   color: $bluefour;
   font-size: 0.8rem;
   font-weight: bold;
-  height: 30px;
+  height: 25px;
   line-height: 28px;
   outline: 0 none;
   text-align: center;
@@ -706,10 +739,7 @@ stream-container {
   box-sizing: border-box;
   margin-right: 7px;
   &:hover {
-    border-radius: 15px;
     background: #eeeeee;
-    box-shadow: inset -12px -12px 24px #b0b0b0, 
-    inset 12px 12px 24px #ffffff;
 }
 }
 

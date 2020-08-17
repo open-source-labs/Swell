@@ -74,7 +74,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #eeeeee;
   height: auto;
   overflow: hidden;
 }
@@ -84,7 +84,7 @@
   flex-direction: column;
   height: auto;
   overflow: hidden;
-  background: white;
+  background: #eeeeee;
   animation: fadeIn 400ms ease-in;
 }
 
@@ -232,12 +232,9 @@
 
 .httptwo {    
   padding: 10px 15px;
-  background-color: white;
+  background-color: #eeeeee;
   color: #15B78F;
   font-weight: 800;
-  border-top: 1px solid #ebeff2;
-  border-left: 1px solid #ebeff2;
-  border-right: 1px solid #ebeff2;
   display: none;
   height: auto;
   font-size: .7rem;

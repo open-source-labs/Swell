@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 import GRPCBodyStream from "./GRPCBodyStream.jsx";
 
 class GRPCBodyEntryForm extends Component {
@@ -13,12 +13,14 @@ class GRPCBodyEntryForm extends Component {
     this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
     this.addStream = this.addStream.bind(this);
   }
+
   // event handler on the arrow button that allows you to open/close the section 
   toggleShow() {
     this.setState({
       show: !this.state.show
     });
   }
+
   // when application first loads
   componentDidMount() {
     if (this.props.newRequestStreams.streamsArr.length === 0) {
@@ -38,6 +40,7 @@ class GRPCBodyEntryForm extends Component {
       });
     }
   }
+
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   addStream() {
     const streamsArr = this.props.newRequestStreams.streamsArr;
@@ -54,11 +57,12 @@ class GRPCBodyEntryForm extends Component {
     // update mew state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
-      streamsArr: streamsArr,
+      streamsArr,
       count: streamsArr.length,
-      streamContent: streamContent
+      streamContent
     });
   }
+
   // event handler that updates state in the store when typing into the stream query body
   onChangeUpdateStream(streamID, value) {
     // if client makes additional edits to proto file after hitting save
@@ -73,12 +77,13 @@ class GRPCBodyEntryForm extends Component {
         this.props.newRequestStreams.streamContent[streamID] = value;
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
-          streamsArr: streamsArr,
+          streamsArr,
           streamContent: this.props.newRequestStreams.streamContent
         });
       };
     }
   }
+
   render() {
     // for each stream body in the streamArr, render the GRPCBodyStream component
     const streamArr = this.props.newRequestStreams.streamsArr.map((stream, index) => (
@@ -117,7 +122,7 @@ class GRPCBodyEntryForm extends Component {
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow}></img>
+          <img className={arrowClass} src={dropDownArrow} />
           Body
         </div>
         <section className={bodyContainerClass}>

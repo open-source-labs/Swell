@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class GraphQLBodyEntryForm extends Component {
   constructor(props) {
@@ -42,8 +42,7 @@ class GraphQLBodyEntryForm extends Component {
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow}>
-          </img>
+          <img className={arrowClass} src={dropDownArrow} />
           Body
         </div>
 
@@ -62,7 +61,7 @@ class GraphQLBodyEntryForm extends Component {
               bodyContent: e.target.value
             })
           }}
-        ></textarea>
+         />
         <GraphQLVariableEntryForm
           newRequestBody={this.props.newRequestBody}
           setNewRequestBody={this.props.setNewRequestBody}
