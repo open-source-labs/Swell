@@ -47,12 +47,13 @@ const httpController = {
     );
 
     // EXISTING HTTP2 CONNECTION IS FOUND -----
+    let interval;
 
     if (foundHTTP2Connection) {
       const { client } = foundHTTP2Connection;
 
       // periodically check if the client is open or destroyed, and attach if conditions are met
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         if (foundHTTP2Connection.status === "connected") {
           this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
           clearInterval(interval);
@@ -97,22 +98,27 @@ const httpController = {
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
-        
+        clearInterval(interval)
         client.destroy((err) => console.log('error in client.destroy', err));
         console.log('after client.destroy');
-
+        console.log('foundHTTP2Connection',foundHTTP2Connection)
+        console.log('openHTTP2Connections before', httpController.openHTTP2Connections)
         // if it exists in the openHTTP2Connections array, remove it
         httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(
           (conn) => conn.id !== id
         );
+        console.log('openHTTP2Connections after', httpController.openHTTP2Connections)
+
         // need to filter connectionArray for existing connObj as a nonfunctioning
         // one may have been pushed in establishHTTP2connection...
         // can't actually use filter though due to object renaming
+        console.log('connections array before', connectionArray);
         connectionArray.forEach((obj, i) => {
           if (obj.id === reqResObj.id) {
             connectionArray.splice(i, 1);
           }
         });
+        console.log('connections array after', connectionArray);
 
         // try again with fetch (HTTP1);
         httpController.establishHTTP1connection(event, reqResObj, connectionArray);
