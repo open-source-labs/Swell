@@ -58,6 +58,7 @@ class ResponseContainer extends Component {
   }
 
   render() {
+    console.log('this.props.content',this.props.content)
     return (
       <div className="resreq_res-container">
         <ResponseTabs
@@ -75,7 +76,7 @@ class ResponseContainer extends Component {
           )}
         {this.state.openTab === "Response Events" &&
           this.props.content.request.method !== "SUBSCRIPTION" && (
-            <ResponseEventsDisplay response={this.props.content.response} />
+            <ResponseEventsDisplay content={this.props.content} />
           )}
         {this.state.openTab === "Response Headers" && (
           <ResponseHeadersDisplay
