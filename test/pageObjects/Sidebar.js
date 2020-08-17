@@ -93,14 +93,6 @@ class Sidebar {
     return app.client.$('select#dropdownRequest.dropdownRequest.composer_bodyform_container-open')
   }
 
-  get greeter() {
-    return app.client.$('option=Greeter')
-  }
-
-  get sayHello() {
-    return app.client.$('option=SayHello')
-  }
-  
   // HEADER INPUTS
 
   get activateHeaders(){

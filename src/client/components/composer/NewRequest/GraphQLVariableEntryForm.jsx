@@ -42,8 +42,7 @@ class GraphQLVariableEntryForm extends Component {
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow}>
-          </img>
+          <img className={arrowClass} src={dropDownArrow} />
           Variables
         </div>
 
@@ -62,7 +61,7 @@ class GraphQLVariableEntryForm extends Component {
               bodyVariables: e.target.value
             })
           }}
-          ></textarea>
+           />
 
       </div>
     );

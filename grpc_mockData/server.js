@@ -55,7 +55,7 @@ async function sayHellosSs(ctx) {
   const reqMessages = { message: "hello!!! " + ctx.req.name };
   // combine template with reqMessage
   const updatedStream = [...dataStream, reqMessages];
-  const makeStreamData = await hl(updatedStream);
+  const makeStreamData = hl(updatedStream);
   ctx.res = makeStreamData;
   // ends server stream
   ctx.res.end();
@@ -81,7 +81,7 @@ async function sayHelloCs(ctx) {
       .collect()
       .toCallback((err, result) => {
         if (err) return reject(err);
-        console.log("messages ->", messages);
+        // console.log("messages ->", messages);
         ctx.response.res = { message: `received ${messages.length} messages` };
         return resolve();
       });

@@ -100,6 +100,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         });
         event.sender.send("reqResUpdate", reqResObj);
       });
+
   } else if (rpcType === "SERVER STREAM") {
     console.log("SERVER STREAM inside gRPC");
     const timesArr = [];
@@ -112,7 +113,14 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       time.timeReceived = Date.now();
       time.timeSent = reqResObj.timeSent;
       // add server response to reqResObj and dispatch to state/store
-      reqResObj.response.events.push(resp);
+      if (!reqResObj.response.events[0]) {
+        reqResObj.response.events[0] = {}
+        reqResObj.response.events[0].response = [];
+        reqResObj.response.events[0].response.push(resp)
+      }
+      else {
+        reqResObj.response.events[0].response.push(resp)
+      }
       reqResObj.response.times.push(time);
       reqResObj.timeReceived = time.timeReceived; //  overwritten on each call to get the final value
 
