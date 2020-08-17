@@ -1,4 +1,4 @@
-const { ipcMain } = require('electron'); 
+const { ipcMain } = require("electron");
 
 const fetch2 = require("node-fetch");
 //const { session } = require("electron").remote;
@@ -8,7 +8,7 @@ const http2 = require("http2");
 const setCookie = require("set-cookie-parser");
 
 //Included Functions
-const SSEController = require('./SSEController'); 
+const SSEController = require("./SSEController");
 
 // openHTTPconnection(reqResObj, connectionArray)
 // establishHTTP2Connection(reqResObj, connectionArray)
@@ -29,8 +29,16 @@ const httpController = {
   openHTTPconnection(event, reqResObj, connectionArray) {
     // HTTP2 currently only on HTTPS
     reqResObj.protocol === "https://"
-      ? httpController.establishHTTP2Connection(event, reqResObj, connectionArray)
-      : httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+      ? httpController.establishHTTP2Connection(
+          event,
+          reqResObj,
+          connectionArray
+        )
+      : httpController.establishHTTP1connection(
+          event,
+          reqResObj,
+          connectionArray
+        );
   },
 
   // ----------------------------------------------------------------------------
@@ -41,7 +49,6 @@ const httpController = {
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
-   console.log()
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(
       (conn) => conn.host === reqResObj.host
     );
@@ -54,12 +61,21 @@ const httpController = {
       // periodically check if the client is open or destroyed, and attach if conditions are met
       const interval = setInterval(() => {
         if (foundHTTP2Connection.status === "connected") {
-          this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
+          this.attachRequestToHTTP2Client(
+            client,
+            event,
+            reqResObj,
+            connectionArray
+          );
           clearInterval(interval);
         }
         // if failed, could because of protocol error. try HTTP1
         else if (foundHTTP2Connection.status === "failed" || client.destroyed) {
-          httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+          httpController.establishHTTP1connection(
+            event,
+            reqResObj,
+            connectionArray
+          );
           clearInterval(interval);
         }
       }, 50);
@@ -71,7 +87,7 @@ const httpController = {
         if (foundHTTP2Connection.status === "initialized") {
           reqResObj.connection = "error";
           // SEND BACK REQ RES OBJECT TO RENDERER SO IT CAN UPDATE REDUX STORE
-          event.sender.send('reqResUpdate', reqResObj);
+          event.sender.send("reqResUpdate", reqResObj);
         }
       }, 10000);
     }
@@ -80,10 +96,12 @@ const httpController = {
     // --------------------------------------------------
     else {
       // console.log('New HTTP2 Conn:', reqResObj.host);
-      console.log('no pre-existing http2 found')
+      console.log("no pre-existing http2 found");
       const id = Math.random() * 100000;
-      const client = http2.connect(reqResObj.host, () => console.log('connected!, reqRes.Obj.host', reqResObj.host));
-      console.log('client', client)
+      const client = http2.connect(reqResObj.host, () =>
+        console.log("connected!, reqRes.Obj.host", reqResObj.host)
+      );
+      console.log("client", client);
 
       // push HTTP2 connection to array
       const http2Connection = {
@@ -97,9 +115,9 @@ const httpController = {
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
-        
-        client.destroy((err) => console.log('error in client.destroy', err));
-        console.log('after client.destroy');
+
+        client.destroy((err) => console.log("error in client.destroy", err));
+        console.log("after client.destroy");
 
         // if it exists in the openHTTP2Connections array, remove it
         httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(
@@ -115,14 +133,23 @@ const httpController = {
         });
 
         // try again with fetch (HTTP1);
-        httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+        httpController.establishHTTP1connection(
+          event,
+          reqResObj,
+          connectionArray
+        );
       });
 
       client.on("connect", () => {
         http2Connection.status = "connected";
-        console.log('about to attach request to http 2 client')
+        console.log("about to attach request to http 2 client");
         // attach request, again passing in event so we can send response to renderer with event.sender.send()
-        this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
+        this.attachRequestToHTTP2Client(
+          client,
+          event,
+          reqResObj,
+          connectionArray
+        );
       });
     }
   },
@@ -136,8 +163,8 @@ const httpController = {
     reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
     // send back reqResObj to renderer so it can update the redux store
-    event.sender.send('reqResUpdate', reqResObj);
-  
+    event.sender.send("reqResUpdate", reqResObj);
+
     // format headers in chosen reqResObj so we can add them to our request
     const formattedHeaders = {};
     reqResObj.request.headers.forEach((head) => {
@@ -156,7 +183,7 @@ const httpController = {
       reqResObj.request.method !== "GET" &&
       reqResObj.request.method !== "HEAD"
     ) {
-      console.log('if this fires soemthing unexpected is happening')
+      console.log("if this fires soemthing unexpected is happening");
       reqStream.end(reqResObj.request.body);
     } else {
       console.log("ending request");
@@ -176,11 +203,12 @@ const httpController = {
     let isSSE;
 
     reqStream.on("response", (headers, flags) => {
-      console.log('GOT BACK A RESPONSE, HALLELUJAH')
+      console.log("GOT BACK A RESPONSE, HALLELUJAH");
       // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
-      console.log('headers from line 178 is : ', headers)
+      console.log("headers from line 178 is : ", headers);
       // SSE will have 'stream' in the 'content-type' heading
-      isSSE = (headers["content-type"] && headers["content-type"].includes("stream"));
+      isSSE =
+        headers["content-type"] && headers["content-type"].includes("stream");
 
       if (isSSE) {
         reqResObj.connection = "open";
@@ -200,13 +228,13 @@ const httpController = {
         );
         // send back reqResObj to renderer so it can update the redux store
       }
-      event.sender.send('reqResUpdate', reqResObj);
+      event.sender.send("reqResUpdate", reqResObj);
     });
 
     reqStream.setEncoding("utf8");
     let data = "";
     reqStream.on("data", (chunk) => {
-      console.log('is this a server sent event? ', isSSE)
+      console.log("is this a server sent event? ", isSSE);
       data += chunk;
       if (isSSE) {
         let couldBeEvents = true;
@@ -224,7 +252,7 @@ const httpController = {
 
             reqResObj.response.events.push(receivedEventFields);
             // send back reqResObj to renderer so it can update the redux store
-            event.sender.send('reqResUpdate', reqResObj);
+            event.sender.send("reqResUpdate", reqResObj);
 
             // splice possibleEventArr, recombine with \n\n to reconstruct original,
             // minus what was already parsed.
@@ -241,18 +269,18 @@ const httpController = {
     reqStream.on("end", () => {
       if (isSSE) {
         const receivedEventFields = this.parseSSEFields(data);
-      
+
         receivedEventFields.timeReceived = Date.now();
         reqResObj.connection = "closed";
         reqResObj.response.events.push(receivedEventFields);
         // send back reqResObj to renderer so it can update the redux store
-        event.sender.send('reqResUpdate', reqResObj);
+        event.sender.send("reqResUpdate", reqResObj);
       } else {
         reqResObj.connection = "closed";
-        reqResObj.response.events.push(data ? JSON.parse(data) : '');
+        reqResObj.response.events.push(data ? JSON.parse(data) : "");
         // send back reqResObj to renderer so it can update the redux store
-        console.log('ended, now sending back')
-        event.sender.send('reqResUpdate', reqResObj);
+        console.log("ended, now sending back");
+        event.sender.send("reqResUpdate", reqResObj);
       }
     });
   },
@@ -260,69 +288,69 @@ const httpController = {
 
   makeFetch(args, event, reqResObj) {
     return new Promise((resolve) => {
-    //   ipcRenderer.send("http1-fetch-message", args);
-    //   ipcRenderer.on("http1-fetch-reply", (event, result) => {
-    //     resolve(result);
-    //   });
-      const { method, headers, body } = args.options; 
-      console.log("args", args)
+      //   ipcRenderer.send("http1-fetch-message", args);
+      //   ipcRenderer.on("http1-fetch-reply", (event, result) => {
+      //     resolve(result);
+      //   });
+      const { method, headers, body } = args.options;
+      console.log("args", args);
       fetch2(headers.url, { method, headers, body })
-      .then((response) => {
-        console.log('inside successful fetch 2');
-        const headers = response.headers.raw();
-        // check if the endpoint sends SSE
-        // add status code for regular http requests in the response header
+        .then((response) => {
+          console.log("inside successful fetch 2");
+          const headers = response.headers.raw();
+          // check if the endpoint sends SSE
+          // add status code for regular http requests in the response header
 
-        if (headers["content-type"][0].includes("stream")) {
-          // invoke another func that fetches to SSE and reads stream
-          // params: method, headers, body
-          resolve({
-            headers,
-            body: { error: "This Is An SSE endpoint" },
-          })
-        }
-        headers[":status"] = response.status;
-
-        const receivedCookie = headers["set-cookie"];
-        headers.cookies = receivedCookie;
-
-        const contents = /json/.test(response.headers.get("content-type"))
-          ? response.json()
-          : response.text();
-        contents
-          .then((body) => {
-            console.log('returned out of fetching')
-            resolve({ 
-              headers, 
-              body 
+          if (headers["content-type"][0].includes("stream")) {
+            // invoke another func that fetches to SSE and reads stream
+            // params: method, headers, body
+            resolve({
+              headers,
+              body: { error: "This Is An SSE endpoint" },
             });
-          })
-          .catch((error) => console.log("ERROR from makeFetch contents", error));
-      
-      })
-      .catch((error) => {
-        //error in connections
-        console.log('error from makeFetch outside', error);
-        reqResObj.connection = 'error';
-        reqResObj.error = error
-        reqResObj.response.events.push(JSON.stringify(error));
-        console.log('response.events',reqResObj.response.events);
-        event.sender.send('reqResUpdate', reqResObj);
+          }
+          headers[":status"] = response.status;
 
-      })
+          const receivedCookie = headers["set-cookie"];
+          headers.cookies = receivedCookie;
+
+          const contents = /json/.test(response.headers.get("content-type"))
+            ? response.json()
+            : response.text();
+          contents
+            .then((body) => {
+              console.log("returned out of fetching");
+              resolve({
+                headers,
+                body,
+              });
+            })
+            .catch((error) =>
+              console.log("ERROR from makeFetch contents", error)
+            );
+        })
+        .catch((error) => {
+          //error in connections
+          console.log("error from makeFetch outside", error);
+          reqResObj.connection = "error";
+          reqResObj.error = error;
+          reqResObj.response.events.push(JSON.stringify(error));
+          console.log("response.events", reqResObj.response.events);
+          event.sender.send("reqResUpdate", reqResObj);
+        });
     });
   },
   // ----------------------------------------------------------------------------
 
   establishHTTP1connection(event, reqResObj, connectionArray) {
-    console.log("event306", event)
+    console.log("event306", event);
     // start off by clearing existing response data, and make note of when response was created
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
     // send back reqResObj to renderer so it can update the redux store
-    event.sender.send('reqResUpdate', reqResObj);
+    event.sender.send("reqResUpdate", reqResObj);
 
     connectionArray.forEach((obj, i) => {
       if (obj.id === reqResObj.id) {
@@ -343,7 +371,7 @@ const httpController = {
     //--------------------------------------------------------------------------------------------------------------
     if (reqResObj.request.isSSE) {
       // if so, send us over to SSEController
-      SSEController.createStream(reqResObj, options, event)
+      SSEController.createStream(reqResObj, options, event);
       // if not SSE, talk to main to fetch data and receive
     } else {
       this.makeFetch({ options }, event, reqResObj)
@@ -355,8 +383,8 @@ const httpController = {
 
           reqResObj.timeReceived = Date.now();
           // send back reqResObj to renderer so it can update the redux store
-          event.sender.send('reqResUpdate', reqResObj);
-          console.log('after event sender')
+          event.sender.send("reqResUpdate", reqResObj);
+          console.log("after event sender");
 
           const theResponseHeaders = response.headers;
 
@@ -368,17 +396,16 @@ const httpController = {
             reqResObj.response.cookies = this.cookieFormatter(
               setCookie.parse(theResponseHeaders.cookies)
             );
-            
           }
           // update reqres object to include new event
           reqResObj = this.addSingleEvent(body, reqResObj);
           // send back reqResObj to renderer so it can update the redux store
-          event.sender.send('reqResUpdate', reqResObj);
+          event.sender.send("reqResUpdate", reqResObj);
         })
         .catch((err) => {
           reqResObj.connection = "error";
           // send back reqResObj to renderer so it can update the redux store
-          event.sender.send('reqResUpdate', reqResObj);
+          event.sender.send("reqResUpdate", reqResObj);
         });
     }
   },
@@ -429,11 +456,10 @@ const httpController = {
     // adds new event to reqResObj and returns it so obj can be sent back to renderer process
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(event);
-    reqResObj.connectionType = 'plain';
-    // returns updated reqResObj 
-    return reqResObj; 
+    reqResObj.connectionType = "plain";
+    // returns updated reqResObj
+    return reqResObj;
   },
-
 
   cookieFormatter(cookieArray) {
     return cookieArray.map((eachCookie) => {
@@ -455,8 +481,8 @@ const httpController = {
 
 module.exports = () => {
   // creating our event listeners for IPC events
-  ipcMain.on('open-http', (event, reqResObj, connectionArray) => {
+  ipcMain.on("open-http", (event, reqResObj, connectionArray) => {
     // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
     httpController.openHTTPconnection(event, reqResObj, connectionArray);
-  })
-}; 
+  });
+};

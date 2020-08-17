@@ -47,6 +47,7 @@ const initialState = {
     isSSE: false,
   },
   introspectionData: null,
+  dataPoints: [],
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -172,6 +173,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_UPDATE: {
+      // console.log("reqRes update: ", action.payload);
       const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
@@ -187,9 +189,23 @@ const businessReducer = (state = initialState, action) => {
           JSON.parse(JSON.stringify(action.payload))
         ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
+      const dataPoints = [...state.dataPoints];
+      if (
+        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent) &&
+        action.payload.timeSent &&
+        action.payload.timeReceived
+      ) {
+        dataPoints.push({
+          url: action.payload.url,
+          timeSent: action.payload.timeSent,
+          timeReceived: action.payload.timeReceived,
+          created_at: action.payload.created_at,
+        });
+      }
       return {
         ...state,
         reqResArray: reqResDeepCopy,
+        dataPoints: dataPoints,
       };
     }
 

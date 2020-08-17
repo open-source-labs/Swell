@@ -30,31 +30,34 @@ class ComposerNewRequest extends Component {
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(this.props.newRequestFields.url)) {
       //if url doesn't have http/https/ws/wss://
       validationMessage.uri = "Enter a valid URI";
-    } 
+    }
     if (
       !this.props.newRequestBody.JSONFormatted &&
       this.props.newRequestBody.rawType === "application/json"
     ) {
       validationMessage.json = "Please fix JSON body formatting errors";
-    } 
+    }
     if (this.props.newRequestFields.method === "QUERY") {
       if (
         this.props.newRequestFields.url &&
         !this.props.newRequestBody.bodyContent
       ) {
         validationMessage.body = "GraphQL Body is Missing";
-      } 
-      if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
-        console.log('bodycontent', this.props.newRequestBody.bodyContent)
+      }
+      if (
+        this.props.newRequestFields.url &&
+        this.props.newRequestBody.bodyContent
+      ) {
+        // console.log('bodycontent', this.props.newRequestBody.bodyContent)
         try {
           const body = gql`
-          ${this.props.newRequestBody.bodyContent}
+            ${this.props.newRequestBody.bodyContent}
           `;
         } catch (e) {
-          console.log('error in gql-tag for client', e);
-          validationMessage.body = 'Invalid GraphQL Body';
+          console.log("error in gql-tag for client", e);
+          validationMessage.body = "Invalid GraphQL Body";
         }
-        }
+      }
     }
     return validationMessage;
   }
@@ -461,7 +464,7 @@ class ComposerNewRequest extends Component {
               Server Sent Events
             </div>
           )}
-          {/* {this.props.warningMessage} */}
+        {/* {this.props.warningMessage} */}
         <button
           className="composer_submit"
           onClick={this.addNewRequest}

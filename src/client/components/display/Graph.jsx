@@ -49,7 +49,7 @@ class Graph extends Component {
         },
         tooltips: {
           callbacks: {
-            label (tooltipItem, data) {
+            label(tooltipItem, data) {
               //data
               const hoverLabel = data.datasets[tooltipItem.datasetIndex].label;
               return hoverLabel;
