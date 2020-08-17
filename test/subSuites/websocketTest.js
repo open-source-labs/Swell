@@ -25,9 +25,9 @@ module.exports = () => {
 					expect(messageClient).to.equal('testing websocket protocol')
 					expect(messageServer).to.equal(messageClient)
 					resolve()
-				}, 1000))
+				}, 100))
 				resolve()
-			}, 1000))
+			}, 800))
 		})
 	})
 }
