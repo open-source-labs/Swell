@@ -31,6 +31,7 @@ const ResponseEventsDisplay = (props) => {
       <div
         className="okay"
         key="http2_html_content"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: createDOMPurify.sanitize(events[0]),
         }}
@@ -45,10 +46,13 @@ const ResponseEventsDisplay = (props) => {
         resEvents = `${resEvents}
 ${eventJSON}`;
       }
+      console.log('in here')
+      console.log(resEvents)
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
           <JSONPretty
             data={resEvents}
+            onJSONPrettyError={e => console.error(e)}
             space="4"
             className={className}//theme={{
             //   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
@@ -65,10 +69,13 @@ ${eventJSON}`;
 
   // Otherwise, render a single display
   else if (events) {
+    console.log('else if in here')
+    console.log(events[0])
     displayContents.push(
       <div className="json-response" key="jsonresponsediv">
         <JSONPretty
           data={events[0]}
+          onJSONPrettyError={e => console.error(e)}
           space="4"
           className={className}
           // theme={{

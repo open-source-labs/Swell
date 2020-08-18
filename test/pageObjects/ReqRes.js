@@ -28,6 +28,22 @@ class ReqRes {
 	get jsonValue() {
 		return app.client.$('span.__json-value__')
 	}
+
+	get messageTextArea() {
+		return app.client.$('input.websocket_input-text')
+	}
+
+	get messageBtn() {
+		return app.client.$('button.websocket_input-btn')
+	}
+
+	get messageClient() {
+		return app.client.$('div#id_websocket_message-client')
+	}
+
+	get messageServer() {
+		return app.client.$('div#id_websocket_message-server')
+	}
 }
 
 module.exports = new ReqRes(); 
