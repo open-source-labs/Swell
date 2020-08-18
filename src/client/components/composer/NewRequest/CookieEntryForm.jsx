@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class CookieEntryForm extends Component {
   constructor(props) {
@@ -43,10 +43,10 @@ class CookieEntryForm extends Component {
   }
 
   onChangeUpdateCookie(id, field, value) {
-    let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+    const cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
 
     //find cookie to update
-    let indexToBeUpdated = undefined;
+    let indexToBeUpdated;
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
       if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
@@ -62,7 +62,7 @@ class CookieEntryForm extends Component {
     }
 
     //determine if new cookie needs to be added
-    let emptyCookiesCount = cookiesDeepCopy.map(cookie => {
+    const emptyCookiesCount = cookiesDeepCopy.map(cookie => {
       return (!cookie.key && !cookie.value) ? 1 : 0
     }).reduce((acc, cur) => {
       return acc + cur;
@@ -87,15 +87,14 @@ class CookieEntryForm extends Component {
   }
 
   render() {
-    let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
+    const cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
       return (
         <Header 
           type='cookie' 
           content={cookie} 
           changeHandler={this.onChangeUpdateCookie} 
           key={index} Key={cookie.key} 
-          value={cookie.value}>
-        </Header>
+          value={cookie.value} />
         )
     });
 
@@ -105,8 +104,7 @@ class CookieEntryForm extends Component {
     return (
       <div>
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} style={{ 'marginTop': '-6px' }} src={dropDownArrow}>
-          </img>
+          <img className={arrowClass} style={{ 'marginTop': '-6px' }} src={dropDownArrow} />
           Cookies
         </div>
         <div className={cookiesContainerClass}>

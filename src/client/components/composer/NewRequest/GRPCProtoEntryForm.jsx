@@ -3,7 +3,7 @@ import React, { Component } from "react";
 // import fs from 'fs';
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 // import protoParserFunc from "../../../protoParser.js";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 
 const { api } = window;
 
@@ -181,7 +181,7 @@ class GRPCProtoEntryForm extends Component {
           onClick={this.toggleShow}
           style={this.props.stylesObj}
         >
-          <img className={arrowClass} src={dropDownArrow}></img>
+          <img className={arrowClass} src={dropDownArrow} />
           Proto
         </div>
 
@@ -193,7 +193,7 @@ class GRPCProtoEntryForm extends Component {
           placeholder="Import .proto file or paste a copy"
           rows={8}
           onChange={(e) => this.updateProtoBody(e.target.value)}
-        ></textarea>
+         />
 
         <button
           className={"import-proto " + smallBtn}

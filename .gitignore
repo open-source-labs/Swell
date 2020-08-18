@@ -66,5 +66,8 @@ test/snapshot.png
 test/subSuites/addedReq.png
 test/subSuites/snapshot.png
 
+test/subSuites/websocketTest.js
+
+
 # db #
 .env

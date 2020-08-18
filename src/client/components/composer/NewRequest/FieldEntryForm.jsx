@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import ProtocolSelect from "./ProtocolSelect.jsx";
+import colors from "../../../../assets/style/colors.scss";
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const FieldEntryForm = (props) => {
   // this.handleKeyPress = this.handleKeyPress.bind(this); <-- never used?
@@ -23,7 +25,7 @@ const FieldEntryForm = (props) => {
       case "protocol": {
         props.setComposerWarningMessage({});
 
-        if (!!graphQL) {
+        if (graphQL) {
           //if graphql
           props.setNewRequestFields({
             ...props.newRequestFields,

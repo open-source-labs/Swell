@@ -4,7 +4,6 @@ import graphQLController from "../../../controllers/graphQLController";
 
 const GraphQLIntrospectionLog = (props) => {
   const [show, toggleShow] = useState(false);
-
   const { introspectionData, url } = props;
   const arrowClass = show
     ? "composer_subtitle_arrow-open"
@@ -13,11 +12,10 @@ const GraphQLIntrospectionLog = (props) => {
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
   const logAreaClass =
-    introspectionData &&
+    introspectionData.schemaSDL &&
     introspectionData !== "Error: Please enter a valid GraphQL API URI"
       ? "introspection-big"
       : "introspection-small";
-
   return (
     <div>
       <div
@@ -25,15 +23,22 @@ const GraphQLIntrospectionLog = (props) => {
         onClick={() => toggleShow((show) => !show)}
         style={props.stylesObj}
       >
-        <img className={arrowClass} src={dropDownArrow}></img>
+        <img className={arrowClass} src={dropDownArrow} alt="" />
         Schema
       </div>
       <div className={bodyContainerClass}>
+        <div style={{ color: "red" }}>
+          {introspectionData === "Error: Please enter a valid GraphQL API URI"
+            ? introspectionData
+            : ""}
+        </div>
         <textarea
           readOnly
           className={`composer_textarea gql introspection-small ${logAreaClass}`}
           value={
-            introspectionData || 'Click "Introspect" to view GraphQL Schema'
+            introspectionData.schemaSDL ||
+            'Click "Introspect" to view GraphQL Schema' ||
+            introspectionData
           }
         />
         <button
@@ -46,5 +51,4 @@ const GraphQLIntrospectionLog = (props) => {
     </div>
   );
 };
-
 export default GraphQLIntrospectionLog;

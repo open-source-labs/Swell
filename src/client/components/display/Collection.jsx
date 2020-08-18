@@ -21,18 +21,17 @@ class Collection extends Component {
 
   render() {
     return (
-      <div className={'collection-container'}>
-        <div className={'collection-text-container'} onClick={this.addCollectionToReqResContainer}>
-          <div className={'collection-name'}> {this.props.content.name}</div>
+      <div className="collection-container">
+        <div className="collection-text-container" onClick={this.addCollectionToReqResContainer}>
+          <div className="collection-name"> {this.props.content.name}</div>
         </div>
-        <div className="collection-export-container">
-          <button onClick={() => collectionsController.exportCollection(this.props.content.id)}>Export</button>
-        </div>
+        
         <div className='collection-delete-container'>
-          <div className='collection-delete-fade'>
+          <div className="collection-export-button" onClick={() => collectionsController.exportCollection(this.props.content.id)}>
+            Export&nbsp;
           </div>
-          <div className={'collection-delete-button'} onClick={this.deleteCollection}>
-            <img className='collection-delete-image' src={Trashcan} id={this.props.content.id} ></img>
+          <div className="collection-delete-button" onClick={this.deleteCollection}>
+            |&nbsp;&nbsp;X
           </div>
         </div>
       </div>

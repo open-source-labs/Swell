@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import historyController from '../../controllers/historyController';
-import Trashcan from '../../../assets/img/Trashcan.png';
 
 class History extends Component {
   constructor(props) {
@@ -9,6 +8,7 @@ class History extends Component {
     this.addHistoryToNewRequest = this.addHistoryToNewRequest.bind(this);
     this.deleteHistory = this.deleteHistory.bind(this);
   }
+
   addHistoryToNewRequest() {
     const requestFieldObj = {
       method: this.props.content.request.method ? this.props.content.request.method : 'GET',
@@ -38,11 +38,11 @@ class History extends Component {
       })
     }
     const requestHeadersObj = {
-      headersArr: headerDeeperCopy ? headerDeeperCopy : [],
+      headersArr: headerDeeperCopy || [],
       count: headerDeeperCopy ? headerDeeperCopy.length : 1,
     }
     const requestCookiesObj = {
-      cookiesArr: cookieDeeperCopy ? cookieDeeperCopy : [],
+      cookiesArr: cookieDeeperCopy || [],
       count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
     }
     const requestBodyObj = {
@@ -106,18 +106,16 @@ class History extends Component {
 
   render() {
     return (
-      <div className={'history-container'} onClick={this.props.focusOnForm} >
-        <div className={'history-text-container'} onClick={this.addHistoryToNewRequest}>
-          <div className={'history-method'}>{this.props.content.request.method}
+      <div className="history-container" onClick={this.props.focusOnForm} >
+        <div className="history-text-container" onClick={this.addHistoryToNewRequest}>
+          <div className="history-method">{this.props.content.request.method}
           </div>
-          <div className={'history-url'}> {this.props.content.url}
+          <div className="history-url"> {this.props.content.url}
           </div>
         </div>
         <div className='history-delete-container'>
-          <div className='history-delete-fade'>
-          </div>
-          <div className={'history-delete-button'} onClick={this.deleteHistory}>
-            <img className='history-delete-image' src={Trashcan} id={this.props.content.id} ></img>
+          <div className="history-delete-button" onClick={this.deleteHistory}>
+            X
           </div>
         </div>
       </div>
