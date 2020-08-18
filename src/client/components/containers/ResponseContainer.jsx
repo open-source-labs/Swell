@@ -58,7 +58,6 @@ class ResponseContainer extends Component {
   }
 
   render() {
-    console.log('this.props.content',this.props.content)
     return (
       <div className="resreq_res-container">
         <ResponseTabs

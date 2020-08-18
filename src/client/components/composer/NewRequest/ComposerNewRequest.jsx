@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
+import gql from "graphql-tag";
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
@@ -8,7 +9,7 @@ import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
-import gql from "graphql-tag";
+import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -45,7 +46,6 @@ class ComposerNewRequest extends Component {
         validationMessage.body = "GraphQL Body is Missing";
       } 
       if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
-        console.log('bodycontent', this.props.newRequestBody.bodyContent)
         try {
           const body = gql`
           ${this.props.newRequestBody.bodyContent}
@@ -88,20 +88,13 @@ class ComposerNewRequest extends Component {
         }
         path = path.replace(/https?:\//g, "http://");
         let historyBodyContent;
-        if (document.querySelector("#gqlBodyEntryTextArea")) {
-          historyBodyContent = document.querySelector("#gqlBodyEntryTextArea")
-            .value;
-        } //grabs the input value in case tab was last key pressed
-        else if (this.props.newRequestBody.bodyContent) {
+        if (this.props.newRequestBody.bodyContent) {
           historyBodyContent = this.props.newRequestBody.bodyContent;
         } else historyBodyContent = "";
         let historyBodyVariables;
-        if (document.querySelector("#gqlVariableEntryTextArea")) {
-          historyBodyVariables = document.querySelector(
-            "#gqlVariableEntryTextArea"
-          ).value;
-        } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = "";
+        if (this.props.newRequestBody.bodyContent) {
+          historyBodyContent = this.props.newRequestBody.bodyContent;
+        } else historyBodyVariables = "";
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -155,13 +148,17 @@ class ComposerNewRequest extends Component {
         }
         path = path.replace(/wss?:\//g, "ws://");
         let historyBodyContent;
+        // don't think we need this conditional. bodyContent from state will be populated
+        // from the text entered in the "body" box onChange
         if (document.querySelector("#gqlBodyEntryTextArea")) {
           historyBodyContent = document.querySelector("#gqlBodyEntryTextArea")
             .value;
         } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) {
+          console.log('in the ws else if')
           historyBodyContent = this.props.newRequestBody.bodyContent;
-        } else historyBodyContent = "";
+        } else historyBodyContent = this.props.newRequestBody.bodyContent;
+        // historyBodyContent = "";
         let historyBodyVariables;
         if (document.querySelector("#gqlVariableEntryTextArea")) {
           historyBodyVariables = document.querySelector(
@@ -432,9 +429,14 @@ class ComposerNewRequest extends Component {
         {this.props.newRequestFields.graphQL && (
           <>
             <GraphQLBodyEntryForm
+              introspectionData={this.props.introspectionData}
               newRequestBody={this.props.newRequestBody}
               setNewRequestBody={this.props.setNewRequestBody}
               warningMessage={this.props.warningMessage}
+            />
+            <GraphQLVariableEntryForm
+              newRequestBody={ this.props.newRequestBody }
+              setNewRequestBody= { this.props.setNewRequestBody }
             />
             <GraphQLIntrospectionLog
               introspectionData={this.props.introspectionData}
