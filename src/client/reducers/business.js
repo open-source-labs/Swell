@@ -193,7 +193,8 @@ const businessReducer = (state = initialState, action) => {
       if (
         !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent) &&
         action.payload.timeSent &&
-        action.payload.timeReceived
+        action.payload.timeReceived &&
+        action.payload.connection === "closed"
       ) {
         dataPoints.push({
           url: action.payload.url,
@@ -210,7 +211,6 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         reqResArray: reqResDeepCopy,
-        dataPoints: dataPoints,
       };
     }
 
