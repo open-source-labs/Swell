@@ -15,6 +15,7 @@ class WebSocketMessage extends Component {
     };
 
     const webSocketMessageClassNames =  this.props.source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
+    const webSocketMessageIDNames =  this.props.source === 'server' ? 'id_websocket_message-server' : 'id_websocket_message-client'
     let hours = new Date(this.props.timeReceived).getHours();
     let minutes = new Date(this.props.timeReceived).getMinutes();
 
@@ -23,8 +24,8 @@ class WebSocketMessage extends Component {
 
     return (
       <div style={styles} className={webSocketMessageClassNames}>
-        <div style={styles} className={'websocket_message-data'}><div>{this.props.data}</div></div>
-        <div  className={'websocket_message-time'}>{`${hours}:${minutes}`}</div>
+        <div style={styles} className="websocket_message-data"><div id={webSocketMessageIDNames}>{this.props.data}</div></div>
+        <div  className="websocket_message-time">{`${hours}:${minutes}`}</div>
       </div>
     );
   }

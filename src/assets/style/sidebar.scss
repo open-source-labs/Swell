@@ -8,7 +8,6 @@
 .sidebar_composer-console {
   background: #eeeeee;
   color: $bluefour;
-  font-family: 'Roboto', sans-serif;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -38,6 +37,7 @@
   font-size: 1.1rem;
   font-weight: bold;
   padding-bottom: 4;
+  color: $liteblack;
 }
 
 .composerContents {
@@ -57,6 +57,7 @@
 .composer_submit,
 .addMetadata {
   border-radius: 15px;
+  border: 1px #eeeeee;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
   box-shadow:  -8px -8px 16px #b0b0b0, 
               8px 8px 16px #ffffff;
@@ -69,7 +70,6 @@
   height: 35px;
   width: 100%;
   &:hover {
-    border-radius: 15px;
     background: #eeeeee;
     box-shadow: inset -21px -21px 42px #b0b0b0, 
                 inset 21px 21px 42px #ffffff;
@@ -95,6 +95,11 @@
   width: 48%;
   outline: none;
   background-color: #eeeeee;
+  &:hover {
+    background: #eeeeee;
+    box-shadow: inset -21px -21px 42px #b0b0b0, 
+                inset 21px 21px 42px #ffffff;
+  }
 }
 
 .small-btn-open {
@@ -180,7 +185,7 @@
 .composer_method_select {
   -webkit-appearance: none;
   border: none;
-  color: $liteblack;
+  color: $bluefour;
   cursor: pointer;
   display: block;
   font-size: 0.9rem;
@@ -310,7 +315,7 @@
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   margin-top: 18px;
 }
 
@@ -321,17 +326,19 @@
 
 
 .composer_header {
-  border: 1px solid #eeeeee;
   border-radius: 15px;
   color: white;
   margin-bottom: 25px;
   overflow: hidden;
+  background: $liteblack;
+  box-shadow:  3px 3px 7px #5f5f5f, 
+             -3px -3px 7px #ffffff;
 }
 
 .composer_header_checkbox {
   -webkit-appearance: none;
   appearance: none;
-  background: $liteblack;
+  background: transparent;
   border-radius: 1px;
   border-right: 1px solid $yellowgrey;
   border-width: 0;
@@ -345,7 +352,7 @@
   width: 22px;
 
   &:checked {
-    background: $liteblack;
+    background: transparent;
     background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/200px-White_check.svg.png");
     background-position: center;
     background-repeat: no-repeat;
@@ -355,7 +362,7 @@
 
 .composer_header_input {
   -webkit-appearance: none;
-  background: $liteblack;
+  background: transparent;
   font-size: 14px;
   border: none;
   color: white;
@@ -450,7 +457,7 @@
 
 .composer_textarea {
   background-color: $liteblack;
-  border: 1px solid $yellowgrey;
+  border: 1px $litegray;
   border-radius: 15px;
   color: white;
   margin-top: 7px;
@@ -458,6 +465,8 @@
   width: 100%;
   font-size: 14px;
   resize: none;
+  box-shadow:  9px 9px 10px #5f5f5f, 
+             -9px -9px 10px #ffffff;
   &::placeholder {
     color: white;
   }
@@ -538,9 +547,16 @@ stream-container {
   }
 }
 
+.history_title {
+  color: $liteblack;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
 .import-collections {
   border-radius: 15px;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
+  border: 1px #eeeeee;
   box-shadow:  -3px -3px 12px #b0b0b0, 
              6px 6px 12px #ffffff;
   cursor: pointer;
@@ -568,6 +584,7 @@ stream-container {
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
   box-shadow:  -3px -3px 12px #b0b0b0, 
              6px 6px 12px #ffffff;
+  border: 1px #eeeeee;
   cursor: pointer;
   color: $bluefour;
   font-size: 0.8rem;
@@ -586,6 +603,12 @@ stream-container {
     box-shadow: inset -12px -12px 24px #b0b0b0, 
     inset 12px 12px 24px #ffffff;
 }
+}
+
+.collection-heading {
+  color: $liteblack;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .collection-container {
@@ -630,6 +653,7 @@ stream-container {
 
 .historyDate-container {
   width: 100%;
+  border: 3px #eeeeee;
 }
 
 .history-text-container::-webkit-scrollbar,

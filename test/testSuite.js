@@ -2,15 +2,17 @@
 // ****** use "npm run test-mocha" to run these tests ******
 
 // import other tests
-const appOpensTests = require('./subSuites/appOpens'); 
-const reqInputTests = require('./subSuites/reqInputTests');
-const addRequestTests = require('./subSuites/addRequestTests');
-const httpTest = require('./subSuites/httpTest')
+const appOpensTests = require("./subSuites/appOpens");
+const reqInputTests = require("./subSuites/reqInputTests");
+const addRequestTests = require("./subSuites/addRequestTests");
+const httpTest = require("./subSuites/httpTest");
+const websocketTest = require("./subSuites/websocketTest");
+const grpcTest = require("./subSuites/grpcTest");
 
-const app = require('./testApp');
+const app = require("./testApp");
 
 describe("Electron Tests", function () {
-  this.timeout(10000);
+  this.timeout(40000);
   before(function () {
     return app.start();
   });
@@ -24,11 +26,11 @@ describe("Electron Tests", function () {
   // these are are test suites within this broader suite
   appOpensTests();
 
-  describe('CRUD functionality', function(){
-    
+  describe("CRUD functionality", function () {
     reqInputTests();
     addRequestTests();
     httpTest();
+    websocketTest();
+    grpcTest();
   });
-  
 });
