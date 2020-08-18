@@ -45,11 +45,12 @@
 }
 
 .resreq_wrap {
+  border-radius: 15px;
   width: calc(100vw - 340px);
   margin: 15px;
   flex: 0 0 auto;
   min-width: 800px;
-  padding-right: 200px;
+  padding-right: 15px;
 }
 
 .reqResContainer_inner-page {
