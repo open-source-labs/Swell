@@ -44,13 +44,15 @@ class CollectionsContainer extends Component {
 
     return (
       <div className="collections-container">
-        <h1>Collections</h1>
+        <h1 className="collection-heading">Collections</h1>
         <div className="collection-import-container">
           <button className="import-collections" onClick={this.handleClick}>
             Import Collection
           </button>
         </div>
-        {collectionComponents}
+        <div className="collections">
+          {collectionComponents}
+        </div>
       </div>
     );
   }

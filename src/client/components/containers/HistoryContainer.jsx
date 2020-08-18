@@ -44,7 +44,7 @@ class HistoryContainer extends Component {
 
     return (
       <div className="historyDate-container">
-        <h1>History
+        <h1 className="history_title">History
           <span className="clear-history">
             <ClearHistoryBtn clearHistory={this.props.clearHistory} />
           </span>
