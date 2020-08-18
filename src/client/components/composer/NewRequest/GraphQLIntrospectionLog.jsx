@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
+import { render } from "react-dom";
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 import graphQLController from "../../../controllers/graphQLController";
 
-import { render } from "react-dom";
 
 class GraphQLIntrospectionLog extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class GraphQLIntrospectionLog extends Component {
     };
     this.toggleShow = this.toggleShow.bind(this);
   }
+
   toggleShow() {
     this.setState({
       show: !this.state.show,
@@ -39,7 +40,7 @@ class GraphQLIntrospectionLog extends Component {
           onClick={this.toggleShow}
           style={this.props.stylesObj}
         >
-          <img className={arrowClass} src={dropDownArrow}></img>
+          <img className={arrowClass} src={dropDownArrow} />
           Schema
         </div>
         <div className={bodyContainerClass}>

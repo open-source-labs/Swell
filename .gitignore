@@ -63,6 +63,9 @@ protos/
 
 # testing #
 test/snapshot.png
+test/subSuites/snapshot.png
+test/subSuites/websocketTest.js
+
 
 # db #
 .env

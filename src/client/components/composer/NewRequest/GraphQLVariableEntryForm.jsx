@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class GraphQLVariableEntryForm extends Component {
   constructor(props) {
@@ -42,8 +42,7 @@ class GraphQLVariableEntryForm extends Component {
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow}>
-          </img>
+          <img className={arrowClass} src={dropDownArrow} />
           Variables
         </div>
 
@@ -62,7 +61,7 @@ class GraphQLVariableEntryForm extends Component {
               bodyVariables: e.target.value
             })
           }}
-          ></textarea>
+           />
 
       </div>
     );
