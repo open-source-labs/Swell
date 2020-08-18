@@ -21,7 +21,7 @@ module.exports = () => {
     });
     const sideBarSetup = async () => {
       await sideBar.gRPC.click();
-      await sideBar.url.addValue("0.0.0.0:50051");
+      await sideBar.url.setValue("0.0.0.0:50051");
       await sideBar.grpcBody.addValue(body);
       await sideBar.saveChanges.click();
     };
@@ -45,46 +45,30 @@ module.exports = () => {
     });
     it("it should work on a nested unary request", async () => {
       const jsonPretty = await requestSetup(2);
-      await new Promise((resolve) =>
-        setTimeout(async () => {
-          expect(jsonPretty).to.include(
-            `{\n    "serverMessage": [\n        {\n            "message": "Hello! string"\n        },\n        {\n            "message": "Hello! string"\n        }\n    ]\n}`
-          );
-          resolve();
-        }, 800)
+
+      expect(jsonPretty).to.include(
+        `{\n    "serverMessage": [\n        {\n            "message": "Hello! string"\n        },\n        {\n            "message": "Hello! string"\n        }\n    ]\n}`
       );
     });
     it("it should work on a server stream", async () => {
       const jsonPretty = await requestSetup(3);
-      await new Promise((resolve) =>
-        setTimeout(async () => {
-          expect(jsonPretty).to.include(
-            `{\n    "response": [\n        {\n            "message": "You"\n        },\n        {\n            "message": "Are"\n        },\n        {\n            "message": "doing IT"\n        },\n        {\n            "": \n        },\n        {\n            "message": "hello!!! string"\n        }\n    ]\n}`
-          );
-          resolve();
-        }, 800)
+
+      expect(jsonPretty).to.include(
+        `{\n    "response": [\n        {\n            "message": "You"\n        },\n        {\n            "message": "Are"\n`
       );
     });
     it("it should work on a client stream", async () => {
       const jsonPretty = await requestSetup(4);
-      await new Promise((resolve) =>
-        setTimeout(async () => {
-          expect(jsonPretty).to.include(
-            `{\n    "message": "received 1 messages"\n}`
-          );
-          resolve();
-        }, 800)
+
+      expect(jsonPretty).to.include(
+        `{\n    "message": "received 1 messages"\n}`
       );
     });
     it("it should work on a bidirectional stream", async () => {
       const jsonPretty = await requestSetup(5);
-      await new Promise((resolve) =>
-        setTimeout(async () => {
-          expect(jsonPretty).to.include(
-            `{\n    "message": "bidi stream: string"\n}`
-          );
-          resolve();
-        }, 800)
+
+      expect(jsonPretty).to.include(
+        `{\n    "message": "bidi stream: string"\n}`
       );
     });
   });
