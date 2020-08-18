@@ -201,6 +201,11 @@ const businessReducer = (state = initialState, action) => {
           timeReceived: action.payload.timeReceived,
           created_at: action.payload.created_at,
         });
+        return {
+          ...state,
+          reqResArray: reqResDeepCopy,
+          dataPoints: dataPoints,
+        };
       }
       return {
         ...state,

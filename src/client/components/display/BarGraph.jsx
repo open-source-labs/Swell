@@ -17,9 +17,18 @@ const BarGraph = (props) => {
   });
 
   let barChart;
+  const redrawChart = () => {
+    // const canvas = document.createElement("canvas");
+    // canvas.id = "#bar-chart";
+    // document.querySelector("#chartContainer").appendChild(canvas);
+    // canvas.className = "chart";
+    // canvas.style = { display: "block" };
 
-  useEffect(() => {
-    const context = document.querySelector("#bar-chart");
+    if (barChart) {
+      console.log("should be destroying");
+      barChart.destroy();
+    }
+    // const context = document.querySelector("#bar-chart");
     const ctx = document.querySelector("canvas").getContext("2d");
     ctx.canvas.width = "100%";
     ctx.canvas.height = "50%";
@@ -28,11 +37,8 @@ const BarGraph = (props) => {
     const times = data.map((elem) =>
       Math.abs(elem.timeReceived - elem.timeSent)
     );
-    if (context.barChart) {
-      console.log("destroying");
-      barChart.destroy();
-    }
-    barChart = new Chart(context, {
+
+    barChart = new Chart(ctx, {
       type: "bar",
       data: {
         labels: urls,
@@ -72,18 +78,20 @@ const BarGraph = (props) => {
           ],
         },
         animation: {
-          duration: 0,
+          // duration: 0,
         },
-        maintainAspectRatio: false,
-        hoverBorderWidth: false,
+        maintainAspectRatio: true,
       },
     });
-  });
+    console.log(barChart);
+  };
+
+  useEffect(redrawChart);
 
   return (
     <div>
       <div style={{ display: "none" }} className="warningContainer"></div>
-      <div>
+      <div id="chartContainer">
         <canvas className="chart" style={{ display: "block" }} id="bar-chart" />
       </div>
     </div>
