@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { buildClientSchema, printSchema } from 'graphql'
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
@@ -19,9 +20,10 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj }).then((response) => {
-      response.error
-        ? this.handleError(response.error, response.reqResObj)
-        : this.handleResponse(response.data, response.reqResObj);
+      // extra case for chance that response has "errors" prop instead of "error"
+      if (response.error) this.handleError(response.error, response.reqResObj)
+      else if (response.errors) this.handleError(response.errors, response.reqResObj)
+      else this.handleResponse(response.data, response.reqResObj);
     }).catch( err => console.log("error in sendGqlToMain", err));
   },
 
@@ -112,9 +114,16 @@ const graphQLController = {
   introspect(url) {
     api.send("introspect", url);
     api.receive("introspect-reply", (data) => {
-      // const introspectionData = JSON.parse(data);
-      // console.log("here's the reply ", data);
-      store.default.dispatch(actions.setIntrospectionData(data));
+      if (data !== "Error: Please enter a valid GraphQL API URI") {
+        //formatted for Codemirror hint and lint
+        const clientSchema = buildClientSchema(data);
+        // formatted for pretty schema display
+        const schemaSDL = printSchema(clientSchema);
+        const modifiedData = { schemaSDL, clientSchema }
+        store.default.dispatch(actions.setIntrospectionData(modifiedData));
+      } else {
+        store.default.dispatch(actions.setIntrospectionData(data));
+      }
     });
   },
 };
