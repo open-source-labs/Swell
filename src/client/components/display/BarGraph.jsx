@@ -21,14 +21,19 @@ const BarGraph = (props) => {
     const ctx = document.querySelector("canvas").getContext("2d");
     ctx.canvas.width = "100%";
     ctx.canvas.height = "50%";
+
+    const urls = data.map((elem) => elem.url);
+    const times = data.map((elem) =>
+      Math.abs(elem.timeReceived - elem.timeSent)
+    );
     const barChart = new Chart(context, {
       type: "bar",
       data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: urls,
         datasets: [
           {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
+            label: "Response (ms)",
+            data: times,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -49,6 +54,7 @@ const BarGraph = (props) => {
           },
         ],
       },
+
       options: {
         scales: {
           yAxes: [
@@ -59,11 +65,14 @@ const BarGraph = (props) => {
             },
           ],
         },
+        animation: {
+          duration: 0,
+        },
+        maintainAspectRatio: false,
+        hoverborderwidth: null,
       },
     });
   });
-
-  //   console.log("bar graph rendering");
 
   return (
     <div>
