@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
 import Header from './Header.jsx';
@@ -172,8 +173,8 @@ class HeaderEntryForm extends Component {
     return <div style={this.props.stylesObj}>
       <div
         title="Add Request Headers"
-        className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-        <img className={arrowClass} src={dropDownArrow} />
+        className='composer_subtitle' onClick={this.toggleShow}>
+        <input type="checkbox" name="check" className={arrowClass}  />
         {headerName}
       </div>
       <div className={headersContainerClass} >
@@ -181,6 +182,15 @@ class HeaderEntryForm extends Component {
         <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
 
       </div>
+      <label className="composer_subtitle"
+        title="Add Request Headers"
+        onClick={this.toggleShow}>
+        <div className="toggle">
+          <input className="toggle-state" type="checkbox" name="check" value="check" />
+          <div className="indicator" />
+        </div>
+        <div className="label-text">no more emails plz</div>
+      </label>
     </div>;
   }
 }
