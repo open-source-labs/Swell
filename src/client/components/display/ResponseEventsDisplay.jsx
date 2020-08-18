@@ -49,20 +49,11 @@ const ResponseEventsDisplay = (props) => {
         resEvents = `${resEvents}
 ${eventJSON}`;
       }
-<<<<<<< HEAD
-      // console.log('in here')
-      // console.log(resEvents)
-=======
->>>>>>> master
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
           <JSONPretty
             data={resEvents}
-<<<<<<< HEAD
-            // onJSONPrettyError={(e) => console.error(e)}
-=======
             // onJSONPrettyError={e => console.error(e)}
->>>>>>> master
             space="4"
             className={className} //theme={{
             //   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
@@ -79,20 +70,11 @@ ${eventJSON}`;
 
   // Otherwise, render a single display
   else if (events) {
-<<<<<<< HEAD
-    // console.log('else if in here')
-    // console.log(events[0])
-=======
->>>>>>> master
     displayContents.push(
       <div className="json-response" key="jsonresponsediv">
         <JSONPretty
           data={events[0]}
-<<<<<<< HEAD
-          // onJSONPrettyError={(e) => console.error(e)}
-=======
           // onJSONPrettyError={e => console.error(e)}
->>>>>>> master
           space="4"
           className={className}
           // theme={{

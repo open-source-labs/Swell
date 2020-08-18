@@ -44,17 +44,11 @@ class ComposerNewRequest extends Component {
         !this.props.newRequestBody.bodyContent
       ) {
         validationMessage.body = "GraphQL Body is Missing";
-<<<<<<< HEAD
       }
       if (
         this.props.newRequestFields.url &&
         this.props.newRequestBody.bodyContent
       ) {
-        // console.log('bodycontent', this.props.newRequestBody.bodyContent)
-=======
-      } 
-      if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
->>>>>>> master
         try {
           const body = gql`
             ${this.props.newRequestBody.bodyContent}
@@ -164,7 +158,7 @@ class ComposerNewRequest extends Component {
             .value;
         } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) {
-          console.log('in the ws else if')
+          console.log("in the ws else if");
           historyBodyContent = this.props.newRequestBody.bodyContent;
         } else historyBodyContent = this.props.newRequestBody.bodyContent;
         // historyBodyContent = "";
@@ -444,8 +438,8 @@ class ComposerNewRequest extends Component {
               warningMessage={this.props.warningMessage}
             />
             <GraphQLVariableEntryForm
-              newRequestBody={ this.props.newRequestBody }
-              setNewRequestBody= { this.props.setNewRequestBody }
+              newRequestBody={this.props.newRequestBody}
+              setNewRequestBody={this.props.setNewRequestBody}
             />
             <GraphQLIntrospectionLog
               introspectionData={this.props.introspectionData}

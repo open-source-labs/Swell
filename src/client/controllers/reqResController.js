@@ -45,10 +45,6 @@ const connectionController = {
   },
 
   openReqRes(id) {
-<<<<<<< HEAD
-    // console.log('in openReqRes');
-=======
->>>>>>> master
     // listens for reqResUpdate event from main process telling it to update reqResobj
     api.receive("reqResUpdate", (reqResObj) =>
       store.default.dispatch(actions.reqResUpdate(reqResObj))
@@ -56,17 +52,9 @@ const connectionController = {
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
-<<<<<<< HEAD
-    // console.log('after receive');
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
-      // console.log('in graphQL')
-=======
-    if (reqResObj.request.method === "SUBSCRIPTION")
-      graphQLController.openSubscription(reqResObj);
-    else if (reqResObj.graphQL){
->>>>>>> master
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
@@ -75,11 +63,6 @@ const connectionController = {
       api.send("open-grpc", reqResObj);
       //Standard HTTP?
     } else {
-<<<<<<< HEAD
-      // console.log("should be sending");
-      // console.log(this.openConnectionArray)
-=======
->>>>>>> master
       api.send("open-http", reqResObj, this.openConnectionArray);
     }
   },
@@ -112,11 +95,6 @@ const connectionController = {
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-<<<<<<< HEAD
-
-    // console.log("open connection array is : ", this.openConnectionArray);
-=======
->>>>>>> master
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {
