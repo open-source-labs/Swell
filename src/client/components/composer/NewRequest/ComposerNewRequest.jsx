@@ -329,7 +329,7 @@ class ComposerNewRequest extends Component {
         ...this.props.newRequestFields,
         method: this.props.newRequestFields.method,
         protocol: "",
-        url: "http://",
+        url: this.props.newRequestFields.url,
         graphQL: this.props.newRequestFields.graphQL,
         gRPC: this.props.newRequestFields.gRPC,
       });
@@ -357,7 +357,7 @@ class ComposerNewRequest extends Component {
       if (this.props.newRequestFields.protocol === "ws://") {
         this.props.setNewRequestFields({
           protocol: "ws://",
-          url: "ws://",
+          url: this.props.newRequestFields.url,
         });
       }
       this.props.setNewRequestSSE(false);

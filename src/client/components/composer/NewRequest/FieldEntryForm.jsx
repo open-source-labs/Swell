@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { Component } from "react";
 import ProtocolSelect from "./ProtocolSelect.jsx";
 import colors from "../../../../assets/style/colors.scss";
@@ -11,9 +12,9 @@ class FieldEntryForm extends Component {
   }
 
   onChangeHandler(e, property, graphQL) {
-    let value = e.target.value;
+    const value = e.target.value;
     if (this.props.warningMessage.uri) {
-      let warningMessage = { ...this.props.warningMessage };
+      const warningMessage = { ...this.props.warningMessage };
       delete warningMessage.uri;
       this.props.setComposerWarningMessage({ ...warningMessage });
     }
