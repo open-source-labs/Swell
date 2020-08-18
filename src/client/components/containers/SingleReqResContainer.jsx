@@ -62,8 +62,6 @@ class SingleReqResContainer extends Component {
 
   render() {
     const contentBody = [];
-    console.log(this.props.content)
-
     if (
       /wss?:\/\//.test(this.props.content.protocol) &&
       !this.props.content.graphQL
