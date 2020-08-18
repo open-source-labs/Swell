@@ -46,7 +46,7 @@ const initialState = {
   newRequestSSE: {
     isSSE: false,
   },
-  introspectionData: null,
+  introspectionData: { schemaSDL: null, clientSchema: null },
   dataPoints: [],
 };
 
