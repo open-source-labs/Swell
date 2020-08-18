@@ -257,6 +257,7 @@ const httpController = {
       }
     });
     reqStream.on("end", () => {
+      console.log('inside end')
       if (isSSE) {
         const receivedEventFields = this.parseSSEFields(data);
       
@@ -267,7 +268,12 @@ const httpController = {
         event.sender.send('reqResUpdate', reqResObj);
       } else {
         reqResObj.connection = "closed";
-        reqResObj.response.events.push(data ? JSON.parse(data) : '');
+        console.log('before parse of end');
+        console.log('data', data);
+        console.log('headers',reqResObj.response.headers);
+        console.log('content-type', reqResObj.response.headers['content-type'])
+        reqResObj.response.events.push(data && reqResObj.response.headers['content-type'].includes('application/json') ? 
+        JSON.parse(data) : data);
         // send back reqResObj to renderer so it can update the redux store
         console.log('ended, now sending back')
         //test for destroying client to not reuse connection
