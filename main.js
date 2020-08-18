@@ -594,7 +594,7 @@ ipcMain.on("open-gql", (event, args) => {
       .catch((err) => {
         console.error('gql query error', err);
         reqResObj.error = err;
-        event.sender.send("reply-gql", { error: err.networkError, reqResObj });
+        event.sender.send("reply-gql", { error: err, reqResObj });
       });
   } else if (reqResObj.request.method === "MUTATION") {
     client

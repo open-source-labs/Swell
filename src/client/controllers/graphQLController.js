@@ -20,9 +20,10 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj }).then((response) => {
-      response.error
-        ? this.handleError(response.error, response.reqResObj)
-        : this.handleResponse(response.data, response.reqResObj);
+      // extra case for chance that response has "errors" prop instead of "error"
+      if (response.error) this.handleError(response.error, response.reqResObj)
+      else if (response.errors) this.handleError(response.errors, response.reqResObj)
+      else this.handleResponse(response.data, response.reqResObj);
     }).catch( err => console.log("error in sendGqlToMain", err));
   },
 

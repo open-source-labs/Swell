@@ -50,6 +50,8 @@ const GraphQLBodyEntryForm = props => {
               hintOptions: true,
               matchBrackets: true,
               autoCloseBrackets: true,
+              indentUnit: 2,
+              tabSize: 2,
             }}
             onBeforeChange={(editor, data, value) => {
               setValue(value)

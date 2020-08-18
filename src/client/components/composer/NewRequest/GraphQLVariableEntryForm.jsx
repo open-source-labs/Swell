@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
@@ -24,6 +24,11 @@ const GraphQLVariableEntryForm = (props) => {
   const [show, setShow] = useState(false);
   const [cmValue, setValue] = useState(bodyVariables)
 
+  useEffect(() => {
+    console.log('useeffect')
+    if (cmValue !== bodyVariables) setValue(bodyVariables)
+  }, [bodyVariables])
+
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
@@ -45,15 +50,18 @@ const GraphQLVariableEntryForm = (props) => {
             hintOptions: true,
             matchBrackets: true,
             autoCloseBrackets: true,
+            indentUnit: 2,
+            tabSize: 2,
           }}
           onBeforeChange={(editor, data, value) => {
+            // editor.setSize(100,100)
             setValue(value)
             console.log('before changing')
             console.log(editor);
           }}
           onChange={(editor, data, value) => {
             console.log('changing')
-            console.log('value', value);
+            console.log('onchange value', value);
             setNewRequestBody({
               ...newRequestBody,
               bodyVariables: value
