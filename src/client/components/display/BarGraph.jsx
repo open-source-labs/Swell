@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { Chart } from "chart.js";
 
@@ -14,7 +14,7 @@ const BarGraph = (props) => {
   let times;
   let urls;
 
-  let barChart;
+  let barChart = useRef(null);
 
   const redrawChart = () => {
     if (times && urls) {
@@ -104,7 +104,12 @@ const BarGraph = (props) => {
   return (
     <div>
       <div id="chartContainer">
-        <canvas className="chart" style={{ display: "block" }} id="bar-chart" />
+        <canvas
+          ref={barChart}
+          className="chart"
+          style={{ display: "block" }}
+          id="bar-chart"
+        />
       </div>
     </div>
   );
