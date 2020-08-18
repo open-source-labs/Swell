@@ -1,19 +1,19 @@
-import React, { useState, useRef } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+import React, { useState, useEffect } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/twilight.css';
-import 'codemirror/addon/lint/lint';
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/hint/show-hint.css";
 import 'codemirror-graphql/hint';
 import 'codemirror-graphql/lint';
 import 'codemirror-graphql/mode';
+import 'codemirror/addon/lint/lint.css'
 
-import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 const GraphQLBodyEntryForm = props => {
-  const [show, setShow] = useState(true);
-
   const { 
     newRequestBody: { bodyContent }, 
     newRequestBody,
@@ -21,9 +21,13 @@ const GraphQLBodyEntryForm = props => {
     stylesObj,
     introspectionData
   } = props
+  const [show, setShow] = useState(true);
+  const [cmValue, setValue] = useState(bodyContent)
   
-  // ref to get the Codemirror.editor methods
-  const cmQuery = useRef(null);
+  useEffect(() => {
+    console.log('useeffect')
+    if (cmValue !== bodyContent) setValue(bodyContent)
+  }, [bodyContent])
 
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
@@ -36,32 +40,33 @@ const GraphQLBodyEntryForm = props => {
         </div>
         <div className={ bodyContainerClass } style={{ marginBottom: '10px' }}>
           <CodeMirror
-            value={ bodyContent }
-            options={{
+            value={ cmValue }
+            options={{         
               mode: 'graphql',
               theme: 'twilight',
               scrollbarStyle: 'native',
               lineNumbers: false,
               lint: true,
               hintOptions: true,
+              matchBrackets: true,
+              autoCloseBrackets: true,
             }}
-            height="15vh"
-            // get the body content of codemirror editor object by accessing the DOM node via ref
-            // see: https://github.com/uiwjs/react-codemirror/issues/43
-            ref={ cmQuery }
-            onChange={() => {
-              console.log('new reqbody entryform', newRequestBody)
+            onBeforeChange={(editor, data, value) => {
+              setValue(value)
+              editor.setOption('lint', { schema: introspectionData.clientSchema });
+              editor.setOption('hintOptions', { schema: introspectionData.clientSchema });
+            }}
+            onChange={(editor, data, value) => {
+              editor.showHint()
+              console.log('changing')
+              console.log('value', value);
               setNewRequestBody({
                 ...newRequestBody,
-                bodyContent: cmQuery.current ? cmQuery.current.editor.getValue() : bodyContent
+                bodyContent: value
               });
             }}
           />
         </div>
-        <GraphQLVariableEntryForm
-          newRequestBody={ newRequestBody }
-          setNewRequestBody= { setNewRequestBody }
-        />
       </div>
   )
 }

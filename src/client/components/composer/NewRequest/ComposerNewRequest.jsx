@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
+import gql from "graphql-tag";
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
@@ -8,7 +9,7 @@ import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
-import gql from "graphql-tag";
+import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -433,6 +434,10 @@ class ComposerNewRequest extends Component {
               newRequestBody={this.props.newRequestBody}
               setNewRequestBody={this.props.setNewRequestBody}
               warningMessage={this.props.warningMessage}
+            />
+            <GraphQLVariableEntryForm
+              newRequestBody={ this.props.newRequestBody }
+              setNewRequestBody= { this.props.setNewRequestBody }
             />
             <GraphQLIntrospectionLog
               introspectionData={this.props.introspectionData}
