@@ -16,6 +16,8 @@ const BarGraph = (props) => {
     updateData(props.dataPoints);
   });
 
+  let barChart;
+
   useEffect(() => {
     const context = document.querySelector("#bar-chart");
     const ctx = document.querySelector("canvas").getContext("2d");
@@ -26,7 +28,11 @@ const BarGraph = (props) => {
     const times = data.map((elem) =>
       Math.abs(elem.timeReceived - elem.timeSent)
     );
-    const barChart = new Chart(context, {
+    if (context.barChart) {
+      console.log("destroying");
+      barChart.destroy();
+    }
+    barChart = new Chart(context, {
       type: "bar",
       data: {
         labels: urls,
@@ -69,16 +75,14 @@ const BarGraph = (props) => {
           duration: 0,
         },
         maintainAspectRatio: false,
-        hoverborderwidth: null,
+        hoverBorderWidth: false,
       },
     });
   });
 
   return (
     <div>
-      <div style={{ display: "none" }} className="warningContainer">
-        <div className="warning">HELLO?????? {divs}</div>
-      </div>
+      <div style={{ display: "none" }} className="warningContainer"></div>
       <div>
         <canvas className="chart" style={{ display: "block" }} id="bar-chart" />
       </div>
