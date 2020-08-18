@@ -31,6 +31,7 @@ const ResponseEventsDisplay = (props) => {
       <div
         className="okay"
         key="http2_html_content"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: createDOMPurify.sanitize(events[0]),
         }}
@@ -49,6 +50,7 @@ ${eventJSON}`;
         <div className="json-response" key="jsonresponsediv">
           <JSONPretty
             data={resEvents}
+            // onJSONPrettyError={e => console.error(e)}
             space="4"
             className={className}//theme={{
             //   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
@@ -69,6 +71,7 @@ ${eventJSON}`;
       <div className="json-response" key="jsonresponsediv">
         <JSONPretty
           data={events[0]}
+          // onJSONPrettyError={e => console.error(e)}
           space="4"
           className={className}
           // theme={{

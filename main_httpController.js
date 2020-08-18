@@ -42,26 +42,38 @@ const httpController = {
       If not, create connection, push to array, and then initiate request
     */
    console.log('openhttp2connections', this.openHTTP2Connections);
+   // finds if an http2connection to host exist, returns blank if no host connection exists
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(
       (conn) => conn.host === reqResObj.host
     );
 
     // EXISTING HTTP2 CONNECTION IS FOUND -----
     let interval;
-
+    
+    //if the connection is exist, check if destroyed/closed
     if (foundHTTP2Connection) {
       const { client } = foundHTTP2Connection;
 
       // periodically check if the client is open or destroyed, and attach if conditions are met
       interval = setInterval(() => {
-        if (foundHTTP2Connection.status === "connected") {
-          this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
-          clearInterval(interval);
-        }
         // if failed, could because of protocol error. try HTTP1
-        else if (foundHTTP2Connection.status === "failed" || client.destroyed) {
-          httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+        // if destroyed, remove from the conections array and try to create a newhttp2 connection
+        // create a new connection / http1?
+        if (client.destroyed || client.closed) {
+          console.log('in client.destroyed client.closed', this.openHTTP2Connections)
           clearInterval(interval);
+          this.openHTTP2Connections = this.openHTTP2Connections.filter((obj, i) => {
+            return obj.host !== reqResObj.host;
+          });
+          console.log('connection array after filter', this.openHTTP2Connections)
+          this.openHTTPconnection(event, reqResObj, connectionArray);
+        }
+        else if (foundHTTP2Connection.status === "failed" ) {
+          clearInterval(interval);
+          httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+        } else if (foundHTTP2Connection.status === "connected") {
+          clearInterval(interval);
+          this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
         }
       }, 50);
       // --------------------------------------------------
@@ -258,6 +270,10 @@ const httpController = {
         reqResObj.response.events.push(data ? JSON.parse(data) : '');
         // send back reqResObj to renderer so it can update the redux store
         console.log('ended, now sending back')
+        //test for destroying client to not reuse connection
+        // this.openHTTP2Connections[0].client.destroyed = false;
+        // client.destroy();
+        // console.log('open http2 connections after ending', this.openHTTP2Connections)
         event.sender.send('reqResUpdate', reqResObj);
       }
     });
