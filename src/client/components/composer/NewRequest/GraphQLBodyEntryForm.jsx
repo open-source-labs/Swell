@@ -24,9 +24,9 @@ const GraphQLBodyEntryForm = props => {
   const [show, setShow] = useState(true);
   const [cmValue, setValue] = useState(bodyContent)
   
-  useEffect(() => {
-    if (cmValue !== bodyContent) setValue(bodyContent)
-  }, [bodyContent])
+  // useEffect(() => {
+  //   if (cmValue !== bodyContent) setValue(bodyContent)
+  // }, [bodyContent])
 
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
