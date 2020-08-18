@@ -19,17 +19,21 @@ class FieldEntryForm extends Component {
     }
     switch (property) {
       case 'url': {
-        let url = value;
+        const url = value;
         this.props.setNewRequestFields({
           ...this.props.newRequestFields,
-          url: url,
+          url,
         })
         break;
       } 
       case 'protocol': {
+<<<<<<< HEAD
+        if (graphQL) { //if graphql
+=======
       this.props.setComposerWarningMessage({});
 
         if (!!graphQL) { //if graphql
+>>>>>>> d5fbb2e8ee3f5339b6f8e216720cb7312286333f
           this.props.setNewRequestFields({
             ...this.props.newRequestFields,
             protocol: '',
@@ -70,7 +74,7 @@ class FieldEntryForm extends Component {
             ...this.props.newRequestFields,
             protocol: '',
             // url: `${afterProtocol}`,
-            url: '',
+            url: 'URL',
             method: '',
             graphQL: false,
             gRPC: true
@@ -176,13 +180,13 @@ class FieldEntryForm extends Component {
           setComposerWarningMessage={this.props.setComposerWarningMessage}
         />
 
-        <div className={'composer_method_url_container'}>
+        <div className="composer_method_url_container">
 
           {/* below conditional method selection rendering for http/s */}
           {
             !/wss?:\/\//.test(this.props.newRequestFields.protocol) && !this.props.newRequestFields.graphQL && !this.props.newRequestFields.gRPC &&
 
-            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select http'} onChange={(e) => {
+            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className="composer_method_select http" onChange={(e) => {
               this.onChangeHandler(e, 'method')
             }}>
               <option value='GET'>GET</option>
@@ -197,7 +201,7 @@ class FieldEntryForm extends Component {
             // !/wss?:\/\//.test(this.props.newRequestFields.protocol) && 
             this.props.newRequestFields.graphQL &&
 
-            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className={'composer_method_select gql'} onChange={(e) => {
+            <select style={{ display: 'block' }} value={this.props.newRequestFields.method} className="composer_method_select gql" onChange={(e) => {
               this.onChangeHandler(e, 'method')
             }}>
               <option value='QUERY'>QUERY</option>
@@ -209,16 +213,20 @@ class FieldEntryForm extends Component {
           {/* gRPC stream type button */}
           {
             this.props.newRequestFields.gRPC &&
-            <button style={{ display: 'block' }} id='stream' value='STREAM' className={'composer_method_select grpc'}>STREAM</button>
+            <button style={{ display: 'block' }} id='stream' value='STREAM' className="composer_method_select grpc">STREAM</button>
           }
 
+<<<<<<< HEAD
+          <input className="composer_url_input" type='text' placeholder='URL' value={this.props.newRequestFields.url} onChange={(e) => {
+=======
           <input className={'composer_url_input'} type='text' placeholder='URL' style={{borderColor}} value={this.props.newRequestFields.url} onChange={(e) => {
+>>>>>>> d5fbb2e8ee3f5339b6f8e216720cb7312286333f
             this.onChangeHandler(e, 'url')
           }} onKeyPress={this.handleKeyPress}
             ref={input => {
               this.myInput = input;
             }}
-          ></input>
+           />
         </div>
         {this.props.warningMessage.uri && (<div class='warningMessage'>{this.props.warningMessage.uri}</div>)}
       </div>

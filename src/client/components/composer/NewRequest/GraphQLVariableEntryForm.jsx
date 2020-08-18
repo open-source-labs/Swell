@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class GraphQLVariableEntryForm extends Component {
   constructor(props) {

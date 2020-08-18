@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
 import Header from './Header.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -173,8 +173,7 @@ class HeaderEntryForm extends Component {
       <div
         title="Add Request Headers"
         className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-        <img className={arrowClass} src={dropDownArrow}>
-        </img>
+        <img className={arrowClass} src={dropDownArrow} />
         {headerName}
       </div>
       <div className={headersContainerClass} >
