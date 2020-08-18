@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/addon/edit/matchbrackets';
@@ -11,11 +10,6 @@ import 'codemirror-graphql/hint';
 import 'codemirror-graphql/lint';
 import 'codemirror-graphql/mode';
 import 'codemirror/addon/lint/lint.css'
-=======
-import React, { Component } from 'react';
-import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
->>>>>>> master
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
@@ -31,7 +25,6 @@ const GraphQLBodyEntryForm = props => {
   const [cmValue, setValue] = useState(bodyContent)
   
   useEffect(() => {
-    console.log('useeffect')
     if (cmValue !== bodyContent) setValue(bodyContent)
   }, [bodyContent])
 
@@ -66,8 +59,8 @@ const GraphQLBodyEntryForm = props => {
             }}
             onChange={(editor, data, value) => {
               editor.showHint()
-              console.log('changing')
-              console.log('value', value);
+              // console.log('changing')
+              // console.log('value', value);
               setNewRequestBody({
                 ...newRequestBody,
                 bodyContent: value

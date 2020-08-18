@@ -25,21 +25,11 @@ const GraphQLVariableEntryForm = (props) => {
   const [cmValue, setValue] = useState(bodyVariables)
 
   useEffect(() => {
-    console.log('useeffect')
     if (cmValue !== bodyVariables) setValue(bodyVariables)
   }, [bodyVariables])
 
-<<<<<<< HEAD
   const arrowClass = show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
   const bodyContainerClass = show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
-=======
-    return (
-      <div >
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow} />
-          Variables
-        </div>
->>>>>>> master
 
   return (
     <div >
@@ -62,26 +52,21 @@ const GraphQLVariableEntryForm = (props) => {
             indentUnit: 2,
             tabSize: 2,
           }}
-<<<<<<< HEAD
           onBeforeChange={(editor, data, value) => {
             // editor.setSize(100,100)
             setValue(value)
-            console.log('before changing')
-            console.log(editor);
+            // console.log('before changing')
+            // console.log(editor);
           }}
           onChange={(editor, data, value) => {
-            console.log('changing')
-            console.log('onchange value', value);
+            // console.log('changing')
+            // console.log('onchange value', value);
             setNewRequestBody({
               ...newRequestBody,
               bodyVariables: value
             });
           }}
         />
-=======
-           />
-
->>>>>>> master
       </div>
     </div>
   );

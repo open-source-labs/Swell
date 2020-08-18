@@ -132,7 +132,6 @@ class ComposerNewRequest extends Component {
           minimized: false,
           tab: this.props.currentTab,
         };
-        console.log('reqresObj', reqRes)
       }
       // GraphQL Subscriptions
       else if (this.props.newRequestFields.graphQL) {

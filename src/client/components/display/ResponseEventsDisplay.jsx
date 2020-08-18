@@ -46,8 +46,6 @@ const ResponseEventsDisplay = (props) => {
         resEvents = `${resEvents}
 ${eventJSON}`;
       }
-      console.log('in here')
-      console.log(resEvents)
       displayContents.push(
         <div className="json-response" key="jsonresponsediv">
           <JSONPretty
@@ -69,8 +67,6 @@ ${eventJSON}`;
 
   // Otherwise, render a single display
   else if (events) {
-    console.log('else if in here')
-    console.log(events[0])
     displayContents.push(
       <div className="json-response" key="jsonresponsediv">
         <JSONPretty

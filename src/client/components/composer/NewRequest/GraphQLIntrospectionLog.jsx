@@ -23,7 +23,7 @@ const GraphQLIntrospectionLog = (props) => {
         onClick={() => toggleShow((show) => !show)}
         style={props.stylesObj}
       >
-        <img className={arrowClass} src={dropDownArrow}></img>
+        <img className={arrowClass} src={dropDownArrow} alt=""/>
         Schema
       </div>
       <div className={bodyContainerClass}>
