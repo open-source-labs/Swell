@@ -57,7 +57,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('bulbasaur')
 					resolve()
-				}, 1000))
+				}, 700))
 			});
 		})
 
@@ -89,8 +89,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.equal('[]')
 					resolve()
-				}, 1000))
-				// await reqRes.removeBtn.click();
+				}, 200))
 			})
 
 			it('it should not POST without a required field', async () => {
@@ -101,7 +100,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 500')
 					expect(jsonPrettyError).to.include('validation failed');
 					resolve()
-				}, 1000))
+				}, 200))
 			})
 
 			it('it should POST to local API', async () => {
@@ -112,7 +111,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('JK Rowling')
 					resolve()
-				}, 1000))
+				}, 200))
 			})
 
 			it('it should PUT to local API given a param', async () => {
@@ -123,7 +122,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('Ron Weasley')
 					resolve()
-				}, 1000))
+				}, 200))
 			})
 
 			it('it should PATCH to local API given a param', async () => {
@@ -134,7 +133,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('Hermoine Granger')
 					resolve()
-				}, 1000))
+				}, 200))
 			})
 
 			it('it should DELETE in local API given a param', async () => {
@@ -145,7 +144,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.include('Hermoine Granger')
 					resolve()
-				}, 1000))
+				}, 200))
 				await reqRes.removeBtn.click();
 				await sideBar.chooseGet.click();
 				await urlAndClick('http://localhost:3000/book', 'GET');
@@ -155,7 +154,7 @@ module.exports = () => {
 					expect(statusCode).to.equal('Status: 200')
 					expect(jsonPretty).to.equal('[]')
 					resolve()
-				}, 1000))
+				}, 200))
 			})
 		})
 	})

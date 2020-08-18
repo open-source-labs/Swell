@@ -6,11 +6,13 @@ const appOpensTests = require('./subSuites/appOpens');
 const reqInputTests = require('./subSuites/reqInputTests');
 const addRequestTests = require('./subSuites/addRequestTests');
 const httpTest = require('./subSuites/httpTest')
+const websocketTest = require('./subSuites/websocketTest')
+const grpcTest = require('./subSuites/grpcTest')
 
 const app = require('./testApp');
 
 describe("Electron Tests", function () {
-  this.timeout(10000);
+  this.timeout(30000);
   before(function () {
     return app.start();
   });
@@ -29,6 +31,8 @@ describe("Electron Tests", function () {
     reqInputTests();
     addRequestTests();
     httpTest();
+    websocketTest();
+    grpcTest();
   });
   
 });
