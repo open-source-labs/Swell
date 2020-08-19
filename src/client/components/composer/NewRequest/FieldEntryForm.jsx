@@ -6,26 +6,19 @@ import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x19
 const FieldEntryForm = (props) => {
   // this.handleKeyPress = this.handleKeyPress.bind(this); <-- never used?
 
-<<<<<<< HEAD
-  onChangeHandler(e, property, graphQL) {
-    const value = e.target.value;
-    if (this.props.warningMessage.uri) {
-      const warningMessage = { ...this.props.warningMessage };
-=======
   const onChangeHandler = (e, property, graphQL) => {
-    let value = e.target.value;
+    const value = e.target.value;
     if (props.warningMessage.uri) {
-      let warningMessage = { ...props.warningMessage };
->>>>>>> dac1746101e4e96d071d95b301b8850651bdb69f
+      const warningMessage = { ...props.warningMessage };
       delete warningMessage.uri;
       props.setComposerWarningMessage({ ...warningMessage });
     }
     switch (property) {
       case "url": {
-        let url = value;
+        const url = value;
         props.setNewRequestFields({
           ...props.newRequestFields,
-          url: url,
+          url,
         });
         break;
       }
@@ -197,7 +190,7 @@ const FieldEntryForm = (props) => {
         setComposerWarningMessage={props.setComposerWarningMessage}
       />
 
-      <div className={"composer_method_url_container"}>
+      <div className="composer_method_url_container">
         {/* below conditional method selection rendering for http/s */}
         {!/wss?:\/\//.test(props.newRequestFields.protocol) &&
           !props.newRequestFields.graphQL &&
@@ -205,7 +198,7 @@ const FieldEntryForm = (props) => {
             <select
               style={{ display: "block" }}
               value={props.newRequestFields.method}
-              className={"composer_method_select http"}
+              className="composer_method_select http"
               onChange={(e) => {
                 onChangeHandler(e, "method");
               }}
@@ -224,7 +217,7 @@ const FieldEntryForm = (props) => {
             <select
               style={{ display: "block" }}
               value={props.newRequestFields.method}
-              className={"composer_method_select gql"}
+              className="composer_method_select gql"
               onChange={(e) => {
                 onChangeHandler(e, "method");
               }}
@@ -242,14 +235,14 @@ const FieldEntryForm = (props) => {
             style={{ display: "block" }}
             id="stream"
             value="STREAM"
-            className={"composer_method_select grpc"}
+            className="composer_method_select grpc"
           >
             STREAM
           </button>
         )}
 
         <input
-          className={"composer_url_input"}
+          className="composer_url_input"
           type="text"
           placeholder="URL"
           style={{ borderColor }}
@@ -261,7 +254,7 @@ const FieldEntryForm = (props) => {
           ref={(input) => {
             inputEl.current = input;
           }}
-        ></input>
+         />
       </div>
       {props.warningMessage.uri && (
         <div className="warningMessage">{props.warningMessage.uri}</div>

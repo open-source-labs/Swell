@@ -2,18 +2,21 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  color: #394a56;
+  margin-bottom: 16px;
 }
 
 .label-text {
-  margin-left: 16px;
+
+  font-size: 16px;
+  color: $liteblack;
 }
 
 .toggle {
+  margin-left: 16px;
   isolation: isolate;
   position: relative;
-  height: 30px;
-  width: 60px;
+  height: 21px;
+  width: 42px;
   border-radius: 15px;
   overflow: hidden;
   box-shadow:
@@ -342,27 +345,16 @@
   }
 }
 
-.composer_subtitle_arrow-closed {
-  height: 28px;
-  margin: -3px -6px -8px -7px;
-  transform: rotate(270deg);
-}
-
-.composer_subtitle_arrow-open {
-  height: 28px;
-  margin: -3px -6px -8px -7px;
-}
-
 .composer_headers_container-open {
   border-radius: 15px;
-  display: flex;
+  height: 100%;
   flex-direction: column;
   margin-bottom: 18px;
   margin-top: 18px;
 }
 
 .composer_headers_container-closed {
-  display: none;
+  height: 0px;
   overflow: hidden;
 }
 

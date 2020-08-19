@@ -171,26 +171,20 @@ class HeaderEntryForm extends Component {
     const headersContainerClass = this.state.show ? 'composer_headers_container-closed' : 'composer_headers_container-open'
 
     return <div style={this.props.stylesObj}>
-      <div
-        title="Add Request Headers"
-        className='composer_subtitle' onClick={this.toggleShow}>
-        <input type="checkbox" name="check" className={arrowClass}  />
-        {headerName}
-      </div>
+      <label
+      title="Add Request Headers"
+      className='label' >
+        <div className="label-text" onClick={this.toggleShow}>{headerName}</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state"/>
+          <div className="indicator"/>
+        </div>
+      </label>
       <div className={headersContainerClass} >
         {headersArr}
         <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
 
       </div>
-      <label className="composer_subtitle"
-        title="Add Request Headers"
-        onClick={this.toggleShow}>
-        <div className="toggle">
-          <input className="toggle-state" type="checkbox" name="check" value="check" />
-          <div className="indicator" />
-        </div>
-        <div className="label-text">no more emails plz</div>
-      </label>
     </div>;
   }
 }
