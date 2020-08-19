@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { useRef } from "react";
 import ProtocolSelect from "./ProtocolSelect.jsx";
 import colors from "../../../../assets/style/colors.scss";
@@ -43,6 +44,7 @@ const FieldEntryForm = (props) => {
             bodyContent: `query {
 
 }`,
+            bodyVariables: `# write any variables here!`
           });
           break;
         } else if (value === "http://") {
@@ -140,6 +142,7 @@ const FieldEntryForm = (props) => {
           props.setNewRequestBody({
             ...props.newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         } else if (value === "MUTATION") {
           newBody = methodReplaceRegex.test(props.newRequestBody.bodyContent)
@@ -152,6 +155,7 @@ const FieldEntryForm = (props) => {
           props.setNewRequestBody({
             ...props.newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         } else if (value === "SUBSCRIPTION") {
           newBody = methodReplaceRegex.test(props.newRequestBody.bodyContent)
@@ -164,6 +168,7 @@ const FieldEntryForm = (props) => {
           props.setNewRequestBody({
             ...props.newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         }
 
