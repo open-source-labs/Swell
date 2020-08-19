@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Chart } from "chart.js";
+import { Bar } from "react-chartjs-2";
 
+//neccessary for graph styling due to CSP
 Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
@@ -9,108 +10,153 @@ const mapStateToProps = (store) => ({
 });
 
 const BarGraph = (props) => {
-  const [data, updateData] = useState(props.dataPoints);
+  const [dataPoints, updateData] = useState(props.dataPoints);
+  const [chartOptions, updateOptions] = useState({
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          ticks: {
+            display: true, //this will remove only the label
+          },
+        },
+      ],
+    },
+    animation: {
+      duration: 0,
+    },
+    maintainAspectRatio: false,
+  });
+  const [chartData, updateChart] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Response (ms)",
+        data: [],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+        maxBarThickness: 6,
+      },
+    ],
+  });
 
-  let times;
-  let urls;
+  const dataUpdater = (labelArr, dataArr) => {
+    return {
+      labels: labelArr,
+      datasets: [
+        {
+          label: "Response (ms)",
+          data: dataArr,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+          maxBarThickness: 300,
+        },
+      ],
+    };
+  };
 
-  let barChart = useRef(null);
-
-  const redrawChart = () => {
-    if (times && urls) {
-      // if (barChart) {
-      //   console.log("should be destroying");
-      //   barChart.destroy();
-      // }
-      // const context = document.querySelector("#bar-chart");
-      const ctx = document.querySelector("canvas").getContext("2d");
-      ctx.canvas.width = "100%";
-      ctx.canvas.height = "50%";
-
-      barChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: urls,
-          datasets: [
+  const optionsUpdater = (arr) => {
+    if (arr.length > 3)
+      return {
+        scales: {
+          yAxes: [
             {
-              label: "Response (ms)",
-              data: times,
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-                "rgba(75, 192, 192, 0.2)",
-                "rgba(153, 102, 255, 0.2)",
-                "rgba(255, 159, 64, 0.2)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(153, 102, 255, 1)",
-                "rgba(255, 159, 64, 1)",
-              ],
-              borderWidth: 1,
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              ticks: {
+                display: false,
+              },
             },
           ],
         },
-
-        options: {
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-          animation: {
-            // duration: 0,
-          },
-          maintainAspectRatio: true,
+        animation: {
+          duration: 0,
         },
-      });
-      console.log(barChart);
-    }
+        maintainAspectRatio: false,
+      };
+    else
+      return {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              ticks: {
+                display: true,
+              },
+            },
+          ],
+        },
+        animation: {
+          duration: 0,
+        },
+        maintainAspectRatio: false,
+      };
   };
 
-  useEffect(() => {
-    updateData(props.dataPoints);
-    urls = data.map((elem) => elem.url);
-    times = data.map((elem) => elem.timeReceived - elem.timeSent);
-    redrawChart();
-  });
+  useEffect(() => updateData(props.dataPoints));
 
-  // const graphRender = barChart ? (
-  //   barChart && (
-  //     <div>
-  //       <div id="chartContainer">
-  //         <canvas
-  //           className="chart"
-  //           style={{ display: "block" }}
-  //           id="bar-chart"
-  //         />
-  //       </div>
-  //     </div>
-  //   )
-  // ) : (
-  //   <div style={{ display: "block" }} className="warningContainer">
-  //     warning
-  //   </div>
-  // );
+  useEffect(() => {
+    const urls = dataPoints.length ? dataPoints.map((point) => point.url) : [];
+
+    const times = dataPoints.length
+      ? dataPoints.map((point) => point.timeReceived - point.timeSent)
+      : [];
+    const updatedChart = dataUpdater(urls, times);
+
+    updateChart(updatedChart);
+    if (!urls.length || urls.length > 3) updateOptions(optionsUpdater(urls));
+  }, [dataPoints]);
 
   return (
-    <div>
-      <div id="chartContainer">
-        <canvas
-          ref={barChart}
-          className="chart"
-          style={{ display: "block" }}
-          id="bar-chart"
-        />
-      </div>
+    <div id="chartContainer" className="chart">
+      <Bar data={chartData} width={50} height={100} options={chartOptions} />
     </div>
   );
 };
