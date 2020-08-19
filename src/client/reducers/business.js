@@ -9,10 +9,15 @@ const initialState = {
   warningMessage: {},
   newRequestFields: {
     protocol: "",
+    restUrl: "http://",
+    wsUrl: "ws://",
+    gqlUrl: "https://",
+    grpcUrl: "",
     url: "http://",
     method: "GET",
     graphQL: false,
     gRPC: false,
+    network: 'rest',
   },
   newRequestHeaders: {
     headersArr: [],
