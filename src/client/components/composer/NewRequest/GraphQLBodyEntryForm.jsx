@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/edit/closebrackets";
@@ -10,6 +10,7 @@ import "codemirror-graphql/hint";
 import "codemirror-graphql/lint";
 import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
+import "codemirror/addon/display/autorefresh"
 
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
@@ -22,6 +23,7 @@ const GraphQLBodyEntryForm = (props) => {
     stylesObj,
     introspectionData,
   } = props;
+
   const [show, setShow] = useState(true);
   const [cmValue, setValue] = useState(bodyContent);
 
@@ -50,8 +52,6 @@ const GraphQLBodyEntryForm = (props) => {
         Body
       </div>
       <div className={bodyContainerClass} style={{ marginBottom: "10px" }}>
-        {/* conditional render to show custom keys for autocomplete */}
-        {/* {introspectionData.clientSchema ? <div>Press ___ to autocomplete</div> : '' } */}
         <CodeMirror
           value={cmValue}
           options={{
@@ -65,16 +65,13 @@ const GraphQLBodyEntryForm = (props) => {
             autoCloseBrackets: true,
             indentUnit: 2,
             tabSize: 2,
+            autoRefresh: true,
           }}
           editorDidMount={editor => { editor.setSize('100%', 150) }}
           onBeforeChange={(editor, data, value) => {
             const optionObj = {
               schema: introspectionData.clientSchema,
-              // customKeys: {
-              //   Tab: 'defaultTab', 
-              //   Enter: 'newlineAndIndent', 
-              //   Alt: 'autocomplete'
-              // }
+              completeSingle: false,
             }
             setValue(value);
             editor.setOption("lint", optionObj);
