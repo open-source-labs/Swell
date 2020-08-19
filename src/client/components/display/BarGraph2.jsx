@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Bar } from "react-chartjs-2";
 
+//neccessary for graph styling due to CSP
 Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
