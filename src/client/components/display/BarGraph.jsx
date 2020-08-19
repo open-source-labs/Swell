@@ -15,6 +15,10 @@ const BarGraph = (props) => {
     scales: {
       yAxes: [
         {
+          scaleLabel: {
+            display: true,
+            labelString: "Roundtrip in milliseconds",
+          },
           ticks: {
             beginAtZero: true,
           },
@@ -37,7 +41,7 @@ const BarGraph = (props) => {
     labels: [],
     datasets: [
       {
-        label: "Response (ms)",
+        label: "Roundtrip (ms)",
         data: [],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -92,52 +96,35 @@ const BarGraph = (props) => {
   };
 
   const optionsUpdater = (arr) => {
-    if (arr.length > 3)
-      return {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
+    const showLabels = arr.length > 3 ? false : true;
+    return {
+      legend: {
+        display: false,
+      },
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: showLabels,
             },
-          ],
-          xAxes: [
-            {
-              ticks: {
-                display: false,
-              },
+            ticks: {
+              beginAtZero: true,
             },
-          ],
-        },
-        animation: {
-          duration: 0,
-        },
-        maintainAspectRatio: false,
-      };
-    else
-      return {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              display: showLabels,
             },
-          ],
-          xAxes: [
-            {
-              ticks: {
-                display: true,
-              },
-            },
-          ],
-        },
-        animation: {
-          duration: 0,
-        },
-        maintainAspectRatio: false,
-      };
+          },
+        ],
+      },
+      animation: {
+        duration: 0,
+      },
+      maintainAspectRatio: false,
+    };
   };
 
   useEffect(() => updateData(props.dataPoints));
