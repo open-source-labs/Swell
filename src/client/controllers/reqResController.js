@@ -18,29 +18,15 @@ const connectionController = {
     );
   },
 
-  selectAllReqRes() {
+  toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
+    console.log(reqResArray);
 
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (!reqRes.checked && reqRes.tab === currentTab) {
-        reqRes.checked = true;
-      }
-    });
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
-  },
-
-  deselectAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (reqRes.checked && reqRes.tab === currentTab) {
-        reqRes.checked = false;
-      }
-    });
+    if (reqResArray.every((obj) => obj.checked === true)) {
+      reqResArray.forEach((obj) => (obj.checked = false));
+    } else {
+      reqResArray.forEach((obj) => (obj.checked = true));
+    }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
 

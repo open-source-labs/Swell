@@ -70,15 +70,12 @@ const BarGraph = (props) => {
 
   useEffect(() => {
     const urls = dataPoints.length ? dataPoints.map((point) => point.url) : [];
-    const times = props.dataPoints.length
+    const times = dataPoints.length
       ? dataPoints.map((point) => point.timeReceived - point.timeSent)
       : [];
     const updatedChart = dataUpdater(urls, times);
-    console.log(urls.length, "  ", chartData.labels.length);
-    if (chartData.labels.length !== urls.length) {
-      console.log(chartData.labels);
-      updateChart(updatedChart);
-    }
+
+    updateChart(updatedChart);
   }, [dataPoints]);
 
   return (

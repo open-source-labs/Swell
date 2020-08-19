@@ -115,19 +115,9 @@ class NavBarContainer extends Component {
           <button
             className="btn"
             type="button"
-            onClick={ReqResCtrl.selectAllReqRes}
+            onClick={ReqResCtrl.toggleSelectAll}
           >
-            Select All
-          </button>
-
-          <button
-            className="btn"
-            type="button"
-            onClick={(e) => {
-              ReqResCtrl.deselectAllReqRes(e);
-            }}
-          >
-            Deselect All
+            Select/Deselect All
           </button>
 
           <button
