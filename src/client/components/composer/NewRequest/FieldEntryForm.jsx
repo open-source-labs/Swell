@@ -65,6 +65,7 @@ const FieldEntryForm = (props) => {
             bodyContent: `query {
 
 }`,
+            bodyVariables: `# write any variables here!`
           });
           break;
         } else if (network === 'rest') {
@@ -165,6 +166,7 @@ const FieldEntryForm = (props) => {
           props.setNewRequestBody({
             ...props.newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         } else if (value === "MUTATION") {
           newBody = methodReplaceRegex.test(props.newRequestBody.bodyContent)
@@ -177,6 +179,7 @@ const FieldEntryForm = (props) => {
           props.setNewRequestBody({
             ...props.newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         } else if (value === "SUBSCRIPTION") {
           newBody = methodReplaceRegex.test(props.newRequestBody.bodyContent)
@@ -189,6 +192,7 @@ const FieldEntryForm = (props) => {
           props.setNewRequestBody({
             ...props.newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         }
 

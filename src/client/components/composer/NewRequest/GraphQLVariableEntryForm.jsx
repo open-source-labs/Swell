@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/edit/closebrackets";
@@ -10,12 +10,14 @@ import "codemirror-graphql/hint";
 import "codemirror-graphql/lint";
 import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
+import "codemirror/addon/display/autorefresh"
 
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const GraphQLVariableEntryForm = (props) => {
   const {
     newRequestBody: { bodyVariables },
+    newRequestBody: { bodyIsNew },
     newRequestBody,
     setNewRequestBody,
     stylesObj,
@@ -24,9 +26,13 @@ const GraphQLVariableEntryForm = (props) => {
   const [show, setShow] = useState(false);
   const [cmValue, setValue] = useState(bodyVariables);
 
-  // useEffect(() => {
-  //   if (cmValue !== bodyVariables) setValue(bodyVariables)
-  // }, [bodyVariables])
+  // ref to get the codemirror instance
+  const cmVariables = useRef(null);
+
+  // set a new value for codemirror only if loading from history or changing gQL type
+  useEffect(() => {
+    if (!bodyIsNew) setValue(bodyVariables);
+  }, [bodyVariables])
 
   const arrowClass = show
     ? "composer_subtitle_arrow-open"
@@ -41,39 +47,38 @@ const GraphQLVariableEntryForm = (props) => {
         className="composer_subtitle"
         onClick={() => {
           setShow(!show);
+          // focus the editor after showing
+          cmVariables.current.editor.focus();
         }}
         style={stylesObj}
       >
         <img className={arrowClass} src={dropDownArrow} alt="" />
         Variables
       </div>
-      <div className={bodyContainerClass} style={{ marginBottom: "10px" }}>
+      <div className={bodyContainerClass} style={{ marginBottom: '10px' }}>
         <CodeMirror
+        ref={cmVariables}
           value={cmValue}
           options={{
-            mode: "graphql",
-            theme: "twilight",
-            scrollbarStyle: "native",
+            mode: 'graphql',
+            theme: 'twilight',
+            scrollbarStyle: 'native',
             lineNumbers: false,
-            lint: true,
-            hintOptions: true,
             matchBrackets: true,
             autoCloseBrackets: true,
             indentUnit: 2,
             tabSize: 2,
+            autoRefresh: true,
           }}
+          editorDidMount={editor => { editor.setSize('100%', 100) }}
           onBeforeChange={(editor, data, value) => {
-            // editor.setSize(100,100)
             setValue(value);
-            // console.log('before changing')
-            // console.log(editor);
           }}
           onChange={(editor, data, value) => {
-            // console.log('changing')
-            // console.log('onchange value', value);
             setNewRequestBody({
               ...newRequestBody,
               bodyVariables: value,
+              bodyIsNew: true,
             });
           }}
         />

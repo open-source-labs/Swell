@@ -41,26 +41,36 @@ const httpController = {
       If exists, use connection to initiate request
       If not, create connection, push to array, and then initiate request
     */
-   console.log()
+   // finds if an http2connection to host exist, returns blank if no host connection exists
     const foundHTTP2Connection = httpController.openHTTP2Connections.find(
       (conn) => conn.host === reqResObj.host
     );
 
     // EXISTING HTTP2 CONNECTION IS FOUND -----
-
+    let interval;
+    
+    //if the connection is exist, check if destroyed/closed
     if (foundHTTP2Connection) {
       const { client } = foundHTTP2Connection;
 
       // periodically check if the client is open or destroyed, and attach if conditions are met
-      const interval = setInterval(() => {
-        if (foundHTTP2Connection.status === "connected") {
-          this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
-          clearInterval(interval);
-        }
+      interval = setInterval(() => {
         // if failed, could because of protocol error. try HTTP1
-        else if (foundHTTP2Connection.status === "failed" || client.destroyed) {
-          httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+        // if destroyed, remove from the conections array and try to create a newhttp2 connection
+        // create a new connection / http1?
+        if (client.destroyed || client.closed) {
           clearInterval(interval);
+          this.openHTTP2Connections = this.openHTTP2Connections.filter((obj, i) => {
+            return obj.host !== reqResObj.host;
+          });
+          this.openHTTPconnection(event, reqResObj, connectionArray);
+        }
+        else if (foundHTTP2Connection.status === "failed" ) {
+          clearInterval(interval);
+          httpController.establishHTTP1connection(event, reqResObj, connectionArray);
+        } else if (foundHTTP2Connection.status === "connected") {
+          clearInterval(interval);
+          this.attachRequestToHTTP2Client(client, event, reqResObj, connectionArray);
         }
       }, 50);
       // --------------------------------------------------
@@ -83,7 +93,6 @@ const httpController = {
       console.log('no pre-existing http2 found')
       const id = Math.random() * 100000;
       const client = http2.connect(reqResObj.host, () => console.log('connected!, reqRes.Obj.host', reqResObj.host));
-      console.log('client', client)
 
       // push HTTP2 connection to array
       const http2Connection = {
@@ -97,14 +106,12 @@ const httpController = {
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
-        
-        client.destroy((err) => console.log('error in client.destroy', err));
-        console.log('after client.destroy');
-
+        client.destroy();
         // if it exists in the openHTTP2Connections array, remove it
         httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(
           (conn) => conn.id !== id
         );
+
         // need to filter connectionArray for existing connObj as a nonfunctioning
         // one may have been pushed in establishHTTP2connection...
         // can't actually use filter though due to object renaming
@@ -144,14 +151,15 @@ const httpController = {
       formattedHeaders[head.key] = head.value;
     });
     formattedHeaders[":path"] = reqResObj.path;
-
+    
     // initiate request
     const reqStream = client.request(formattedHeaders, {
       // do not immediately close the *writable* side of the http2 stream (i.e. what the request sends over), in case we are using a request method that sends a payload body
       endStream: false,
     });
-
-    // we can now close the writable side of our stream, either sending our request body or not, depending on our method
+    
+    //we can now close the writable side of our stream, either sending our request body or not, depending on our method
+    //if method is not a get request, end stream and send reqResObj.request.body
     if (
       reqResObj.request.method !== "GET" &&
       reqResObj.request.method !== "HEAD"
@@ -249,12 +257,16 @@ const httpController = {
         event.sender.send('reqResUpdate', reqResObj);
       } else {
         reqResObj.connection = "closed";
-        reqResObj.response.events.push(data ? JSON.parse(data) : '');
+        //conditional to parse JSON only when the content-type is JSON, otherwise leave data
+        data = data && reqResObj.response.headers['content-type'].includes('application/json') ? 
+        JSON.parse(data) : data;
+        //parse into JSON if contents are JSON
+        reqResObj.response.events.push(data);
         // send back reqResObj to renderer so it can update the redux store
-        console.log('ended, now sending back')
         event.sender.send('reqResUpdate', reqResObj);
       }
     });
+   
   },
   // ----------------------------------------------------------------------------
 
@@ -268,7 +280,6 @@ const httpController = {
       console.log("args", args)
       fetch2(headers.url, { method, headers, body })
       .then((response) => {
-        console.log('inside successful fetch 2');
         const headers = response.headers.raw();
         // check if the endpoint sends SSE
         // add status code for regular http requests in the response header
@@ -291,7 +302,6 @@ const httpController = {
           : response.text();
         contents
           .then((body) => {
-            console.log('returned out of fetching')
             resolve({ 
               headers, 
               body 
@@ -302,11 +312,9 @@ const httpController = {
       })
       .catch((error) => {
         //error in connections
-        console.log('error from makeFetch outside', error);
         reqResObj.connection = 'error';
         reqResObj.error = error
         reqResObj.response.events.push(JSON.stringify(error));
-        console.log('response.events',reqResObj.response.events);
         event.sender.send('reqResUpdate', reqResObj);
 
       })
@@ -349,14 +357,12 @@ const httpController = {
       this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
-          console.log("makeFetch Success");
           const heads = response.headers;
           reqResObj.response.headers = heads;
 
           reqResObj.timeReceived = Date.now();
           // send back reqResObj to renderer so it can update the redux store
           event.sender.send('reqResUpdate', reqResObj);
-          console.log('after event sender')
 
           const theResponseHeaders = response.headers;
 
