@@ -119,29 +119,15 @@ const connectionController = {
     store.default.dispatch(actions.reqResClear());
   },
 
-  minimizeAllReqRes() {
+  toggleMinimizeAll() {
     const { reqResArray } = store.default.getState().business;
+    console.log(reqResArray);
 
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (!reqRes.minimized && reqRes.tab === currentTab) {
-        reqRes.minimized = true;
-      }
-    });
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
-  },
-
-  expandAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (reqRes.minimized && reqRes.tab === currentTab) {
-        reqRes.minimized = false;
-      }
-    });
+    if (reqResArray.every((obj) => obj.minimized === true)) {
+      reqResArray.forEach((obj) => (obj.minimized = false));
+    } else {
+      reqResArray.forEach((obj) => (obj.minimized = true));
+    }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
 };

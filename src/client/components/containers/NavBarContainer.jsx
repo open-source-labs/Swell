@@ -139,17 +139,9 @@ class NavBarContainer extends Component {
           <button
             className="btn"
             type="button"
-            onClick={ReqResCtrl.minimizeAllReqRes}
+            onClick={ReqResCtrl.toggleMinimizeAll}
           >
-            Minimize All
-          </button>
-
-          <button
-            className="btn"
-            type="button"
-            onClick={ReqResCtrl.expandAllReqRes}
-          >
-            Expand All
+            Expand/Minimize All
           </button>
 
           <button
