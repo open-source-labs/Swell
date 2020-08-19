@@ -42,6 +42,7 @@ const initialState = {
     bodyType: "raw",
     rawType: "Text (text/plain)",
     JSONFormatted: true,
+    bodyIsNew: false,
   },
   newRequestSSE: {
     isSSE: false,

@@ -69,6 +69,10 @@ class ComposerNewRequest extends Component {
   addNewRequest() {
     const validated = this.requestValidationCheck();
     if (Object.keys(validated).length === 0) {
+      const {
+        newRequestBody: { bodyContent, bodyVariables },
+      } = this.props;
+
       let reqRes;
       const protocol = this.props.newRequestFields.gRPC
         ? ""
@@ -90,14 +94,6 @@ class ComposerNewRequest extends Component {
           path = path.substring(0, path.length - 1);
         }
         path = path.replace(/https?:\//g, "http://");
-        let historyBodyContent;
-        if (this.props.newRequestBody.bodyContent) {
-          historyBodyContent = this.props.newRequestBody.bodyContent;
-        } else historyBodyContent = "";
-        let historyBodyVariables;
-        if (this.props.newRequestBody.bodyContent) {
-          historyBodyContent = this.props.newRequestBody.bodyContent;
-        } else historyBodyVariables = "";
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -121,9 +117,9 @@ class ComposerNewRequest extends Component {
             cookies: this.props.newRequestCookies.cookiesArr.filter(
               (cookie) => cookie.active && !!cookie.key
             ),
-            body: historyBodyContent,
+            body: bodyContent || "",
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: historyBodyVariables,
+            bodyVariables: bodyVariables || "",
             rawType: this.props.newRequestBody.rawType,
             isSSE: this.props.newRequestSSE.isSSE,
           },
@@ -150,25 +146,6 @@ class ComposerNewRequest extends Component {
           path = path.substring(0, path.length - 1);
         }
         path = path.replace(/wss?:\//g, "ws://");
-        let historyBodyContent;
-        // don't think we need this conditional. bodyContent from state will be populated
-        // from the text entered in the "body" box onChange
-        if (document.querySelector("#gqlBodyEntryTextArea")) {
-          historyBodyContent = document.querySelector("#gqlBodyEntryTextArea")
-            .value;
-        } //grabs the input value in case tab was last key pressed
-        else if (this.props.newRequestBody.bodyContent) {
-          console.log("in the ws else if");
-          historyBodyContent = this.props.newRequestBody.bodyContent;
-        } else historyBodyContent = this.props.newRequestBody.bodyContent;
-        // historyBodyContent = "";
-        let historyBodyVariables;
-        if (document.querySelector("#gqlVariableEntryTextArea")) {
-          historyBodyVariables = document.querySelector(
-            "#gqlVariableEntryTextArea"
-          ).value;
-        } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = "";
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -191,9 +168,9 @@ class ComposerNewRequest extends Component {
             cookies: this.props.newRequestCookies.cookiesArr.filter(
               (cookie) => cookie.active && !!cookie.key
             ),
-            body: historyBodyContent,
+            body: bodyContent || "",
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: historyBodyVariables,
+            bodyVariables: bodyVariables || "",
             rawType: this.props.newRequestBody.rawType,
           },
           response: {

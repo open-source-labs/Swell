@@ -51,6 +51,7 @@ class History extends Component {
       bodyVariables: this.props.content.request.bodyVariables ? this.props.content.request.bodyVariables : '',
       rawType: this.props.content.request.rawType ? this.props.content.request.rawType : 'Text (text/plain)',
       JSONFormatted: this.props.content.request.JSONFormatted ? this.props.content.request.JSONFormatted : true,
+      bodyIsNew: false,
     }
     this.props.setNewRequestFields(requestFieldObj);
     this.props.setNewRequestHeaders(requestHeadersObj);
