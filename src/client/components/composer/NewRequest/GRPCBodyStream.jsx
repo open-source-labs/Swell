@@ -1,3 +1,4 @@
+/* eslint-disable lines-between-class-members */
 import React, { Component } from 'react';
 
 class GRPCBodyStream extends Component {
@@ -7,6 +8,7 @@ class GRPCBodyStream extends Component {
     this.deleteStream = this.deleteStream.bind(this);
   }
   // event handler that allows the client to delete a stream body
+  // eslint-disable-next-line lines-between-class-members
   deleteStream(id) {
     const streamsArr = this.props.newRequestStreams.streamsArr;
     const streamContent = this.props.newRequestStreams.streamContent;
@@ -20,9 +22,9 @@ class GRPCBodyStream extends Component {
     // update the state in the store
     this.props.setNewRequestStreams({
       ...this.props.newRequestStreams,
-      streamsArr: streamsArr,
+      streamsArr,
       count: streamsArr.length,
-      streamContent: streamContent
+      streamContent
     });
   }
   render() {
@@ -30,32 +32,32 @@ class GRPCBodyStream extends Component {
     let streamBody;
     let deleteStreamBtn;
     // grabs the query based on the stream id/number
-    let streamContent = this.props.newRequestStreams.streamContent[this.props.stream.id];
+    const streamContent = this.props.newRequestStreams.streamContent[this.props.stream.id];
     // if none or the first stream query in the array
     if (this.props.stream.id === 1) {
       streamBody = (
         <textarea
-          value={`${streamContent ? streamContent : ''}`}
-          className={"composer_textarea grpc"}
+          value={`${streamContent || ''}`}
+          className="composer_textarea grpc"
           id='grpcBodyEntryTextArea'
           type='text'
           placeholder='Type query'
           rows={4}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
-        ></textarea>
+         />
       )
     } else {
       // for subsequent stream query
       streamBody = (
         <textarea
           value={streamContent}
-          className={"composer_textarea grpc"}
+          className="composer_textarea grpc"
           id='grpcBodyEntryTextArea'
           type='text'
           placeholder='Type query'
           rows={4}
           onChange={e => this.props.changeHandler(this.props.stream.id, e.target.value)}
-        ></textarea>
+         />
       )
     }
     // displays the stream number & delete btn next to the stream body for client or bidirectionbal streaming
@@ -66,7 +68,7 @@ class GRPCBodyStream extends Component {
           className='stream-number'        
           type="text"
           readOnly="readonly"
-        ></input>
+         />
       );
       deleteStreamBtn = (
         <button 

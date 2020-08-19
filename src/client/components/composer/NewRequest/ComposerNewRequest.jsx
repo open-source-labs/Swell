@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
+import gql from "graphql-tag";
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
@@ -7,6 +8,8 @@ import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
+import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
+import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
 class ComposerNewRequest extends Component {
   constructor(props) {
@@ -16,32 +19,44 @@ class ComposerNewRequest extends Component {
   }
 
   requestValidationCheck() {
-    let validationMessage;
+    const validationMessage = {};
     //Error conditions...
     if (this.props.newRequestFields.gRPC) {
       return true;
     }
     if (/https?:\/\/$|wss?:\/\/$/.test(this.props.newRequestFields.url)) {
       //if url is only http/https/ws/wss://
-      validationMessage = "Please enter a valid URI.";
+      validationMessage.uri = "Enter a valid URI";
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(this.props.newRequestFields.url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage = "Please enter a valid URI.";
-    } else if (
+      validationMessage.uri = "Enter a valid URI";
+    } 
+    if (
       !this.props.newRequestBody.JSONFormatted &&
       this.props.newRequestBody.rawType === "application/json"
     ) {
-      validationMessage = "Please fix JSON body formatting errors.";
-    } else if (this.props.newRequestFields.method === "QUERY") {
+      validationMessage.json = "Please fix JSON body formatting errors";
+    } 
+    if (this.props.newRequestFields.method === "QUERY") {
       if (
         this.props.newRequestFields.url &&
         !this.props.newRequestBody.bodyContent
       ) {
-        validationMessage = "Missing body.";
-      }
+        validationMessage.body = "GraphQL Body is Missing";
+      } 
+      if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
+        try {
+          const body = gql`
+          ${this.props.newRequestBody.bodyContent}
+          `;
+        } catch (e) {
+          console.log('error in gql-tag for client', e);
+          validationMessage.body = 'Invalid GraphQL Body';
+        }
+        }
     }
-    return validationMessage || true;
+    return validationMessage;
   }
 
   handleSSEPayload(e) {
@@ -50,7 +65,7 @@ class ComposerNewRequest extends Component {
 
   addNewRequest() {
     const validated = this.requestValidationCheck();
-    if (validated === true) {
+    if (Object.keys(validated).length === 0) {
       let reqRes;
       const protocol = this.props.newRequestFields.gRPC
         ? ""
@@ -73,20 +88,13 @@ class ComposerNewRequest extends Component {
         }
         path = path.replace(/https?:\//g, "http://");
         let historyBodyContent;
-        if (document.querySelector("#gqlBodyEntryTextArea")) {
-          historyBodyContent = document.querySelector("#gqlBodyEntryTextArea")
-            .value;
-        } //grabs the input value in case tab was last key pressed
-        else if (this.props.newRequestBody.bodyContent) {
+        if (this.props.newRequestBody.bodyContent) {
           historyBodyContent = this.props.newRequestBody.bodyContent;
         } else historyBodyContent = "";
         let historyBodyVariables;
-        if (document.querySelector("#gqlVariableEntryTextArea")) {
-          historyBodyVariables = document.querySelector(
-            "#gqlVariableEntryTextArea"
-          ).value;
-        } //grabs the input value in case tab was last key pressed
-        else historyBodyVariables = "";
+        if (this.props.newRequestBody.bodyContent) {
+          historyBodyContent = this.props.newRequestBody.bodyContent;
+        } else historyBodyVariables = "";
         reqRes = {
           id: uuid(),
           created_at: new Date(),
@@ -140,13 +148,17 @@ class ComposerNewRequest extends Component {
         }
         path = path.replace(/wss?:\//g, "ws://");
         let historyBodyContent;
+        // don't think we need this conditional. bodyContent from state will be populated
+        // from the text entered in the "body" box onChange
         if (document.querySelector("#gqlBodyEntryTextArea")) {
           historyBodyContent = document.querySelector("#gqlBodyEntryTextArea")
             .value;
         } //grabs the input value in case tab was last key pressed
         else if (this.props.newRequestBody.bodyContent) {
+          console.log('in the ws else if')
           historyBodyContent = this.props.newRequestBody.bodyContent;
-        } else historyBodyContent = "";
+        } else historyBodyContent = this.props.newRequestBody.bodyContent;
+        // historyBodyContent = "";
         let historyBodyVariables;
         if (document.querySelector("#gqlVariableEntryTextArea")) {
           historyBodyVariables = document.querySelector(
@@ -349,9 +361,10 @@ class ComposerNewRequest extends Component {
         });
       }
       this.props.setNewRequestSSE(false);
+      this.props.setComposerWarningMessage({});
     } else {
       this.props.setComposerWarningMessage(validated);
-      this.props.setComposerDisplay("Warning");
+      // this.props.setComposerDisplay("Warning");
     }
   }
 
@@ -362,20 +375,6 @@ class ComposerNewRequest extends Component {
         ? "block"
         : "none",
     };
-    let SubmitButtonClassName = "composer_submit";
-    if (
-      /wss?:\/\//.test(this.props.newRequestFields.protocol) &&
-      !this.props.newRequestFields.graphQL &&
-      !this.props.newRequestFields.gRPC
-    ) {
-      SubmitButtonClassName += " ws";
-    } else if (this.props.newRequestFields.graphQL) {
-      SubmitButtonClassName += " gql";
-    } else if (this.props.newRequestFields.gRPC) {
-      SubmitButtonClassName += " grpc";
-    } else {
-      SubmitButtonClassName += " http";
-    }
     return (
       <div
         className="composerContents_content"
@@ -395,6 +394,8 @@ class ComposerNewRequest extends Component {
           setNewRequestStreams={this.props.setNewRequestStreams}
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
+          warningMessage={this.props.warningMessage}
+          setComposerWarningMessage={this.props.setComposerWarningMessage}
         />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
@@ -426,10 +427,22 @@ class ComposerNewRequest extends Component {
             />
           )}
         {this.props.newRequestFields.graphQL && (
-          <GraphQLBodyEntryForm
-            newRequestBody={this.props.newRequestBody}
-            setNewRequestBody={this.props.setNewRequestBody}
-          />
+          <>
+            <GraphQLBodyEntryForm
+              introspectionData={this.props.introspectionData}
+              newRequestBody={this.props.newRequestBody}
+              setNewRequestBody={this.props.setNewRequestBody}
+              warningMessage={this.props.warningMessage}
+            />
+            <GraphQLVariableEntryForm
+              newRequestBody={ this.props.newRequestBody }
+              setNewRequestBody= { this.props.setNewRequestBody }
+            />
+            <GraphQLIntrospectionLog
+              introspectionData={this.props.introspectionData}
+              url={this.props.newRequestFields.url}
+            />
+          </>
         )}
         {this.props.newRequestFields.gRPC && (
           <GRPCProtoEntryForm
@@ -450,8 +463,9 @@ class ComposerNewRequest extends Component {
               Server Sent Events
             </div>
           )}
+          {/* {this.props.warningMessage} */}
         <button
-          className={SubmitButtonClassName}
+          className="composer_submit"
           onClick={this.addNewRequest}
           type="button"
         >

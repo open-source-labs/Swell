@@ -7,7 +7,7 @@ const grpc = require("@grpc/grpc-js");
 
 // consider replacing highland with normal node code for converting array to streams
 
-const PROTO_PATH = path.join(__dirname, "./protos/hw2.proto");
+const PROTO_PATH = path.join(__dirname, "./hw2.proto");
 const HOSTPORT = "0.0.0.0:50051";
 
 // Unary stream
@@ -55,7 +55,7 @@ async function sayHellosSs(ctx) {
   const reqMessages = { message: "hello!!! " + ctx.req.name };
   // combine template with reqMessage
   const updatedStream = [...dataStream, reqMessages];
-  const makeStreamData = hl(updatedStream);
+  const makeStreamData = await hl(updatedStream);
   ctx.res = makeStreamData;
   // ends server stream
   ctx.res.end();
@@ -72,7 +72,6 @@ async function sayHelloCs(ctx) {
     // ctx.req is the incoming readable stream
     hl(ctx.req)
       .map((message) => {
-        console.log("parsed stream message with name key, ", message);
         // currently the proto file is setup to only read streams with the key "name"
         // other named keys will be pushed as an empty object
         messages.push(message);
@@ -81,7 +80,6 @@ async function sayHelloCs(ctx) {
       .collect()
       .toCallback((err, result) => {
         if (err) return reject(err);
-        // console.log("messages ->", messages);
         ctx.response.res = { message: `received ${messages.length} messages` };
         return resolve();
       });
@@ -92,9 +90,7 @@ async function sayHelloCs(ctx) {
 function sayHelloBidi(ctx) {
   // create new metadata
   ctx.set("bidi-stream", "true");
-  console.log("got sayHelloBidi");
   // The execution context provides scripts and templates with access to the watch metadata
-  console.dir(ctx.metadata, { depth: 3, colors: true });
   let counter = 0;
   ctx.req.on("data", (data) => {
     counter++;

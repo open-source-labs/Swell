@@ -27,7 +27,7 @@ class HistoryContainer extends Component {
   render() {
     // history is already sorted by created_at from getHistory
     // 1) map through history state and create date component. 2) pass props to new component 
-    let historyDates = this.props.history.map((date, i) => { //nvm nvm
+    const historyDates = this.props.history.map((date, i) => { //nvm nvm
     // let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)).map((date, i) => { //wtf
       return <HistoryDate
         className="historyDate"
@@ -43,11 +43,12 @@ class HistoryContainer extends Component {
     })
 
     return (
-      <div className={'historyDate-container'}>
-        <h1>History</h1>
-        <div className="clear-history">
-          <ClearHistoryBtn clearHistory={this.props.clearHistory} />
-        </div>
+      <div className="historyDate-container">
+        <h1 className="history_title">History
+          <span className="clear-history">
+            <ClearHistoryBtn clearHistory={this.props.clearHistory} />
+          </span>
+        </h1>
         {historyDates}
       </div>
     )

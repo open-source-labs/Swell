@@ -1,75 +1,89 @@
-import React, { Component } from 'react';
-import GraphQLVariableEntryForm from './GraphQLVariableEntryForm.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import React, { useState, useEffect } from "react";
+import { Controlled as CodeMirror } from "react-codemirror2";
+import "codemirror/addon/edit/matchbrackets";
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/theme/twilight.css";
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/hint/show-hint.css";
+import "codemirror-graphql/hint";
+import "codemirror-graphql/lint";
+import "codemirror-graphql/mode";
+import "codemirror/addon/lint/lint.css";
 
-class GraphQLBodyEntryForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: true,
-    };
-    this.toggleShow = this.toggleShow.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-  }
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
-  toggleShow() {
-    this.setState({
-      show: !this.state.show
-    });
-  }
+const GraphQLBodyEntryForm = (props) => {
+  const {
+    newRequestBody: { bodyContent },
+    newRequestBody,
+    setNewRequestBody,
+    stylesObj,
+    introspectionData,
+  } = props;
+  const [show, setShow] = useState(true);
+  const [cmValue, setValue] = useState(bodyContent);
 
-  handleKeyPress(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-      const gqlBodyEntryTextArea = document.querySelector('#gqlBodyEntryTextArea')
-      const start = gqlBodyEntryTextArea.selectionStart
-      const second = gqlBodyEntryTextArea.value.substring(gqlBodyEntryTextArea.selectionStart)
-      // if you call the action/reducer, cursor jumps to bottom, this will update the textarea value without modifying state but it's fine because any subsequent keys will
-      // to account for edge case where tab is last key entered, alter addNewReq in ComposerNewRequest.jsx
-      // this.props.setNewRequestBody({
-      //   ...this.props.newRequestBody,
-      //   bodyContent: gqlBodyEntryTextArea.value.substring(0, start) + `  ` + gqlBodyEntryTextArea.value.substring(start)
-      // })
-      gqlBodyEntryTextArea.value = gqlBodyEntryTextArea.value.substring(0, start) + `  ` + gqlBodyEntryTextArea.value.substring(start)
-      gqlBodyEntryTextArea.setSelectionRange(gqlBodyEntryTextArea.value.length - second.length, gqlBodyEntryTextArea.value.length - second.length)
-    }
-  }
+  // useEffect(() => {
+  //   if (cmValue !== bodyContent) setValue(bodyContent)
+  // }, [bodyContent])
 
-  render() {
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
+  const arrowClass = show
+    ? "composer_subtitle_arrow-open"
+    : "composer_subtitle_arrow-closed";
+  const bodyContainerClass = show
+    ? "composer_bodyform_container-open"
+    : "composer_bodyform_container-closed";
 
-    return (
-      <div >
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow}>
-          </img>
-          Body
-        </div>
-
-        <textarea
-          value={this.props.newRequestBody.bodyContent}
-          className={'composer_textarea gql ' + bodyContainerClass}
-          id='gqlBodyEntryTextArea'
-          style={{ 'resize': 'none' }} //tried making top-margin/topMargin -10px but it didn't care
-          type='text'
-          placeholder='Body'
-          rows={10}
-          onKeyDown={(e) => this.handleKeyPress(e)}
-          onChange={(e) => {
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              bodyContent: e.target.value
-            })
+  return (
+    <div>
+      <div
+        className="composer_subtitle"
+        onClick={() => {
+          setShow(!show);
+        }}
+        style={stylesObj}
+      >
+        <img className={arrowClass} src={dropDownArrow} alt="" />
+        Body
+      </div>
+      <div className={bodyContainerClass} style={{ marginBottom: "10px" }}>
+        <CodeMirror
+          value={cmValue}
+          options={{
+            mode: "graphql",
+            theme: "twilight",
+            scrollbarStyle: "native",
+            lineNumbers: false,
+            lint: true,
+            hintOptions: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            indentUnit: 2,
+            tabSize: 2,
           }}
-        ></textarea>
-        <GraphQLVariableEntryForm
-          newRequestBody={this.props.newRequestBody}
-          setNewRequestBody={this.props.setNewRequestBody}
+          onBeforeChange={(editor, data, value) => {
+            setValue(value);
+            editor.setOption("lint", {
+              schema: introspectionData.clientSchema,
+            });
+            editor.setOption("hintOptions", {
+              schema: introspectionData.clientSchema,
+            });
+          }}
+          onChange={(editor, data, value) => {
+            editor.showHint();
+            // console.log('changing')
+            // console.log('value', value);
+            setNewRequestBody({
+              ...newRequestBody,
+              bodyContent: value,
+            });
+          }}
         />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default GraphQLBodyEntryForm;

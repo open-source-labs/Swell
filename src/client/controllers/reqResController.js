@@ -49,19 +49,21 @@ const connectionController = {
     api.receive("reqResUpdate", (reqResObj) =>
       store.default.dispatch(actions.reqResUpdate(reqResObj))
     );
-
+    //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
-    else if (reqResObj.graphQL)
+    else if (reqResObj.graphQL){
       graphQLController.openGraphQLConnection(reqResObj);
+    }
     else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    //gRPC  connection
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);
+      //Standard HTTP?
     } else {
-      console.log("should be sending");
       api.send("open-http", reqResObj, this.openConnectionArray);
     }
   },
@@ -94,8 +96,6 @@ const connectionController = {
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-
-    console.log("open connection array is : ", this.openConnectionArray);
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {

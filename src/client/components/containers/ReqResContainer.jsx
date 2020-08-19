@@ -38,7 +38,7 @@ class ReqResContainer extends Component {
 
     return (
       <div id="reqResContainer">
-        <div id="reqResContainer_inner">{reqResArr}</div>
+        <div id="reqResContainer_inner">{reqResArr.reverse()}</div>
       </div>
     );
   }

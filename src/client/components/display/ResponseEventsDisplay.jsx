@@ -3,9 +3,10 @@ import JSONPretty from "react-json-pretty";
 import createDOMPurify from "dompurify";
 import SSERow from "./SSERow.jsx";
 
-const ResponseEventsDisplay = ({ response }) => {
-  const { events, headers } = response;
+const ResponseEventsDisplay = (props) => {
+  const { events, headers } = props.content.response;
   const displayContents = [];
+  const className = props.content.connection === 'error' ? '__json-pretty__error' : '__json-pretty__';
 
   // If it's an SSE, render event rows
   // console.log('response is : ', response, 'headers is : ', headers)
@@ -30,6 +31,7 @@ const ResponseEventsDisplay = ({ response }) => {
       <div
         className="okay"
         key="http2_html_content"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: createDOMPurify.sanitize(events[0]),
         }}
@@ -48,8 +50,9 @@ ${eventJSON}`;
         <div className="json-response" key="jsonresponsediv">
           <JSONPretty
             data={resEvents}
+            // onJSONPrettyError={e => console.error(e)}
             space="4"
-            className="__json-pretty__" //theme={{
+            className={className}//theme={{
             //   main: 'line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;',
             //   key: 'color:#0089D0;', // bluetwo
             //   string: 'color:#15B78F;',// greenone
@@ -68,8 +71,9 @@ ${eventJSON}`;
       <div className="json-response" key="jsonresponsediv">
         <JSONPretty
           data={events[0]}
+          // onJSONPrettyError={e => console.error(e)}
           space="4"
-          className="__json-pretty__"
+          className={className}
           // theme={{
           //   main:
           //     "line-height:1.3; color: midnightblue; background:#RRGGBB; overflow:auto;",

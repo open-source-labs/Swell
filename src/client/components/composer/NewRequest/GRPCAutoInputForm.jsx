@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
 class GRPCAutoInputForm extends Component {
@@ -55,8 +55,8 @@ class GRPCAutoInputForm extends Component {
       selectedPackage: null,
       selectedRequest: null,
       selectedStreamingType: null,
-      streamContent: streamContent,
-      streamsArr: streamsArr
+      streamContent,
+      streamsArr
     });
     // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
     const dropdownRequest = document.getElementById('dropdownRequest');
@@ -101,7 +101,7 @@ class GRPCAutoInputForm extends Component {
         ...this.state
       }, () => {
         let req;
-        let results = {};
+        const results = {};
         /*
         for each service obj in the services array, if its name matches the current selected service option then:
         - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
@@ -123,7 +123,7 @@ class GRPCAutoInputForm extends Component {
                     for (const submess of service.messages) {
                       if (submess.name === message.def[key].dependent ) {
                         // define obj for the submessage definition
-                        let subObj = {};
+                        const subObj = {};
                         for (const subKey in submess.def) {
                           subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase()
                         }
@@ -151,8 +151,8 @@ class GRPCAutoInputForm extends Component {
         // set state in the store with updated content
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
-          streamsArr: streamsArr,
-          streamContent: streamContent,
+          streamsArr,
+          streamContent,
           initialQuery: queryJSON
         });
       });
@@ -171,7 +171,7 @@ class GRPCAutoInputForm extends Component {
     const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
 
-    let services = this.props.newRequestStreams.services;
+    const services = this.props.newRequestStreams.services;
     const servicesList =[];
     const rpcsList = [];
     // autopopulates the service dropdown list
@@ -179,7 +179,7 @@ class GRPCAutoInputForm extends Component {
       for (let i = 0; i < services.length; i++) {
         servicesList.push(<option key={i} value={i}>{services[i].name}</option>)
       }
-      let selectedService = this.props.newRequestStreams.selectedService;
+      const selectedService = this.props.newRequestStreams.selectedService;
           // autopopulates the request dropdown list
       for (const service of services) {
         if (service.name === selectedService) {
@@ -198,7 +198,7 @@ class GRPCAutoInputForm extends Component {
     return (
       <div >
         <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} src={dropDownArrow}></img>
+          <img className={arrowClass} src={dropDownArrow} />
           Stream
         </div>
 

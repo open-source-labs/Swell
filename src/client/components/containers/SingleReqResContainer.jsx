@@ -62,7 +62,6 @@ class SingleReqResContainer extends Component {
 
   render() {
     const contentBody = [];
-
     if (
       /wss?:\/\//.test(this.props.content.protocol) &&
       !this.props.content.graphQL
@@ -235,12 +234,15 @@ class SingleReqResContainer extends Component {
                 </div>
                 <div style={http2Display} className={"httptwo"}>
                   HTTP2 connection: Requests with the same host will share a
-                  single HTTP2 connection.
+                  single HTTP2 connection
                 </div>
 
-                <div style={errorStyles} className="networkerror">
-                  There was a network error in connecting to endpoint.
-                </div>
+                {this.props.content.connection === "error" && (<div className="networkerror">
+                  There was a network error in connecting to endpoint
+                </div>)}
+                {/* {this.props.content.error && (
+          <div className='networkerror'>{this.props.content.error.message}</div>
+        )} */}
                 {contentBody}
               </>
             )

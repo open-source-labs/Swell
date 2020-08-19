@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { buildClientSchema, printSchema } from 'graphql'
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
@@ -17,28 +18,27 @@ const graphQLController = {
     reqResObj.connection = "open";
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+    //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj }).then((response) => {
-      response.error
-        ? this.handleError(response.error, response.reqResObj)
-        : this.handleResponse(response.data, response.reqResObj);
-    });
+      // extra case for chance that response has "errors" prop instead of "error"
+      if (response.error) this.handleError(response.error, response.reqResObj)
+      else if (response.errors) this.handleError(response.errors, response.reqResObj)
+      else this.handleResponse(response.data, response.reqResObj);
+    }).catch( err => console.log("error in sendGqlToMain", err));
   },
 
   // handles graphQL queries and mutationsnp
   sendGqlToMain(args) {
     return new Promise((resolve) => {
+      //send object to the context bridge
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
-        console.log("This is result:", result);
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
-        console.log(result);
         resolve(result);
       });
-      api.send("open-gql", args);
     });
   },
 
@@ -108,6 +108,22 @@ const graphQLController = {
         expriationDate: eachCookie.expires ? eachCookie.expires : "",
       };
       return cookieFormat;
+    });
+  },
+
+  introspect(url) {
+    api.send("introspect", url);
+    api.receive("introspect-reply", (data) => {
+      if (data !== "Error: Please enter a valid GraphQL API URI") {
+        //formatted for Codemirror hint and lint
+        const clientSchema = buildClientSchema(data);
+        // formatted for pretty schema display
+        const schemaSDL = printSchema(clientSchema);
+        const modifiedData = { schemaSDL, clientSchema }
+        store.default.dispatch(actions.setIntrospectionData(modifiedData));
+      } else {
+        store.default.dispatch(actions.setIntrospectionData(data));
+      }
     });
   },
 };
