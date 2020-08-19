@@ -130,6 +130,10 @@ const connectionController = {
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
+
+  clearGraph() {
+    store.default.dispatch(actions.clearGraph());
+  },
 };
 
 export default connectionController;

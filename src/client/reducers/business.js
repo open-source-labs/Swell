@@ -214,6 +214,13 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.CLEAR_GRAPH: {
+      return {
+        ...state,
+        dataPoints: [],
+      };
+    }
+
     case types.SET_COMPOSER_WARNING_MESSAGE: {
       return {
         ...state,

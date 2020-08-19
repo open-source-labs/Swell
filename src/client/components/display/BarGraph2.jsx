@@ -95,7 +95,7 @@ const BarGraph = (props) => {
             ],
           },
           animation: {
-            // duration: 0,
+            duration: 0,
           },
           maintainAspectRatio: false,
         }}

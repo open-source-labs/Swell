@@ -149,7 +149,10 @@ class NavBarContainer extends Component {
             type="button"
             onClick={ReqResCtrl.clearAllReqRes}
           >
-            Clear All
+            Clear Active Requests
+          </button>
+          <button className="btn" type="button" onClick={ReqResCtrl.clearGraph}>
+            Reset Graph
           </button>
 
           <button
