@@ -31,30 +31,33 @@ class ComposerNewRequest extends Component {
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(this.props.newRequestFields.url)) {
       //if url doesn't have http/https/ws/wss://
       validationMessage.uri = "Enter a valid URI";
-    } 
+    }
     if (
       !this.props.newRequestBody.JSONFormatted &&
       this.props.newRequestBody.rawType === "application/json"
     ) {
       validationMessage.json = "Please fix JSON body formatting errors";
-    } 
+    }
     if (this.props.newRequestFields.method === "QUERY") {
       if (
         this.props.newRequestFields.url &&
         !this.props.newRequestBody.bodyContent
       ) {
         validationMessage.body = "GraphQL Body is Missing";
-      } 
-      if (this.props.newRequestFields.url && this.props.newRequestBody.bodyContent) {
+      }
+      if (
+        this.props.newRequestFields.url &&
+        this.props.newRequestBody.bodyContent
+      ) {
         try {
           const body = gql`
-          ${this.props.newRequestBody.bodyContent}
+            ${this.props.newRequestBody.bodyContent}
           `;
         } catch (e) {
-          console.log('error in gql-tag for client', e);
-          validationMessage.body = 'Invalid GraphQL Body';
+          console.log("error in gql-tag for client", e);
+          validationMessage.body = "Invalid GraphQL Body";
         }
-        }
+      }
     }
     return validationMessage;
   }
@@ -66,14 +69,10 @@ class ComposerNewRequest extends Component {
   addNewRequest() {
     const validated = this.requestValidationCheck();
     if (Object.keys(validated).length === 0) {
-
-      const { 
-        newRequestBody: { 
-          bodyContent, 
-          bodyVariables 
-        }
+      const {
+        newRequestBody: { bodyContent, bodyVariables },
       } = this.props;
-      
+
       let reqRes;
       const protocol = this.props.newRequestFields.gRPC
         ? ""
@@ -118,9 +117,9 @@ class ComposerNewRequest extends Component {
             cookies: this.props.newRequestCookies.cookiesArr.filter(
               (cookie) => cookie.active && !!cookie.key
             ),
-            body: bodyContent || '',
+            body: bodyContent || "",
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: bodyVariables || '',
+            bodyVariables: bodyVariables || "",
             rawType: this.props.newRequestBody.rawType,
             isSSE: this.props.newRequestSSE.isSSE,
           },
@@ -169,9 +168,9 @@ class ComposerNewRequest extends Component {
             cookies: this.props.newRequestCookies.cookiesArr.filter(
               (cookie) => cookie.active && !!cookie.key
             ),
-            body: bodyContent || '',
+            body: bodyContent || "",
             bodyType: this.props.newRequestBody.bodyType,
-            bodyVariables: bodyVariables || '',
+            bodyVariables: bodyVariables || "",
             rawType: this.props.newRequestBody.rawType,
           },
           response: {
@@ -416,8 +415,8 @@ class ComposerNewRequest extends Component {
               warningMessage={this.props.warningMessage}
             />
             <GraphQLVariableEntryForm
-              newRequestBody={ this.props.newRequestBody }
-              setNewRequestBody= { this.props.setNewRequestBody }
+              newRequestBody={this.props.newRequestBody}
+              setNewRequestBody={this.props.setNewRequestBody}
             />
             <GraphQLIntrospectionLog
               introspectionData={this.props.introspectionData}
@@ -444,7 +443,7 @@ class ComposerNewRequest extends Component {
               Server Sent Events
             </div>
           )}
-          {/* {this.props.warningMessage} */}
+        {/* {this.props.warningMessage} */}
         <button
           className="composer_submit"
           onClick={this.addNewRequest}
