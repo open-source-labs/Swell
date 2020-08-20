@@ -54,6 +54,10 @@ export const reqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
+export const clearGraph = () => ({
+  type: types.CLEAR_GRAPH,
+});
+
 export const setComposerWarningMessage = (message) => ({
   type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message,
