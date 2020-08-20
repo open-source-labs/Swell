@@ -48,6 +48,7 @@ const initialState = {
     isSSE: false,
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
+  dataPoints: [],
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -188,9 +189,49 @@ const businessReducer = (state = initialState, action) => {
           JSON.parse(JSON.stringify(action.payload))
         ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
+      //dataPoints to be used by graph
+      const dataPoints =
+        //if more than 12 points, data will shift down an index
+        state.dataPoints.length < 12
+          ? [...state.dataPoints]
+          : [...state.dataPoints.slice(1)];
+      //check if new object is a closed request with timeSent and timeReceived
+      if (
+        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent) &&
+        action.payload.timeSent &&
+        action.payload.timeReceived &&
+        action.payload.connection === "closed"
+      ) {
+        //generate random rgb color to be assigned to this datapoint. Stored as string.
+        const color = [
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+        ].join(", ");
+        //add dataPoint to array and return to state
+        dataPoints.push({
+          url: action.payload.url,
+          timeSent: action.payload.timeSent,
+          timeReceived: action.payload.timeReceived,
+          created_at: action.payload.created_at,
+          color: color,
+        });
+        return {
+          ...state,
+          reqResArray: reqResDeepCopy,
+          dataPoints: dataPoints,
+        };
+      }
       return {
         ...state,
         reqResArray: reqResDeepCopy,
+      };
+    }
+
+    case types.CLEAR_GRAPH: {
+      return {
+        ...state,
+        dataPoints: [],
       };
     }
 

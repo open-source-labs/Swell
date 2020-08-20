@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
 import Header from './Header.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -166,16 +166,18 @@ class HeaderEntryForm extends Component {
       />
     ));
 
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-closed' : 'composer_subtitle_arrow-open';
     const headersContainerClass = this.state.show ? 'composer_headers_container-closed' : 'composer_headers_container-open'
 
     return <div style={this.props.stylesObj}>
-      <div
-        title="Add Request Headers"
-        className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-        <img className={arrowClass} src={dropDownArrow} />
-        {headerName}
-      </div>
+      <label
+      title="Add Request Headers"
+      className='composer_subtitle' >
+        <div className="label-text" onClick={this.toggleShow}>{headerName}</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state"/>
+          <div className="indicator"/>
+        </div>
+      </label>
       <div className={headersContainerClass} >
         {headersArr}
         <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
