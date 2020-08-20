@@ -1,14 +1,14 @@
 /* eslint-disable no-param-reassign */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import WebSocketMessage from './WebSocketMessage.jsx';
-import wsController from '../../controllers/wsController';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import WebSocketMessage from "./WebSocketMessage.jsx";
+import wsController from "../../controllers/wsController";
 
 class WebSocketWindow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      outgoingMessage: '',
+      outgoingMessage: "",
     };
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendToWSController = this.sendToWSController.bind(this);
@@ -20,27 +20,30 @@ class WebSocketWindow extends Component {
     });
   }
   handleKeyPress(event) {
-    if (event.key === 'Enter') {
-      this.sendToWSController()
+    if (event.key === "Enter") {
+      this.sendToWSController();
     }
   }
   sendToWSController() {
-    wsController.sendWebSocketMessage(this.props.id, this.state.outgoingMessage)
-    this.updateOutgoingMessage("")
-    document.querySelector(".websocket_input-text").value = ""
+    wsController.sendWebSocketMessage(
+      this.props.id,
+      this.state.outgoingMessage
+    );
+    this.updateOutgoingMessage("");
+    document.querySelector(".websocket_input-text").value = "";
   }
 
   render() {
     const combinedMessagesReactArr = this.props.outgoingMessages
       .map((message) => {
-        message.source = 'client';
+        message.source = "client";
         return message;
       })
       .concat(
         this.props.incomingMessages.map((message) => {
-          message.source = 'server';
+          message.source = "server";
           return message;
-        }),
+        })
       )
       .sort((a, b) => a.timeReceived - b.timeReceived)
       .map((message, index) => (
@@ -53,36 +56,32 @@ class WebSocketWindow extends Component {
       ));
 
     const messageInputStyles = {
-      display: this.props.connection === 'open' ? 'block' : 'none',
+      display: this.props.connection === "open" ? "block" : "none",
     };
     return (
-      <div
-        style={{}}
-        className={'websocket_container'}
-      >
-        <div style={messageInputStyles} className={'websocket_input'}>
+      <div style={{}} className={"websocket_container"}>
+        <div style={messageInputStyles} className={"websocket_input"}>
           <input
-            className={'websocket_input-text'}
+            className={"websocket_input-text"}
             value={this.state.outgoingMessage}
             onKeyPress={this.handleKeyPress}
             placeholder="Message"
-            onChange={e => this.updateOutgoingMessage(e.target.value)}
+            onChange={(e) => this.updateOutgoingMessage(e.target.value)}
           />
 
           <button
-            className={'websocket_input-btn'}
+            className={"websocket_input-btn"}
             onClick={this.sendToWSController}
             type="button"
           >
             Send Message
           </button>
         </div>
-        {
-          this.props.connection === 'open' &&
-          <div className={'websocket_message_container'}>
+        {this.props.connection === "open" && (
+          <div className={"websocket_message_container"}>
             {combinedMessagesReactArr}
           </div>
-        }
+        )}
       </div>
     );
   }

@@ -31,7 +31,7 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
       //if url doesn't have http/https/ws/wss://
       validationMessage.uri = "Enter a valid URI";
-    } 
+    }
     if (
       !JSONFormatted &&
       rawType === "application/json"
@@ -51,10 +51,10 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
           ${bodyContent}
           `;
         } catch (e) {
-          console.log('error in gql-tag for client', e);
-          validationMessage.body = 'Invalid GraphQL Body';
+          console.log("error in gql-tag for client", e);
+          validationMessage.body = "Invalid GraphQL Body";
         }
-        }
+      }
     }
     return validationMessage;
   }

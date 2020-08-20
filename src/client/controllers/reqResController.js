@@ -4,7 +4,6 @@ import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
-let events;
 const connectionController = {
   openConnectionArray: [],
 
@@ -18,29 +17,15 @@ const connectionController = {
     );
   },
 
-  selectAllReqRes() {
+  //toggles checked in state for entire reqResArray
+  toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
 
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (!reqRes.checked && reqRes.tab === currentTab) {
-        reqRes.checked = true;
-      }
-    });
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
-  },
-
-  deselectAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (reqRes.checked && reqRes.tab === currentTab) {
-        reqRes.checked = false;
-      }
-    });
+    if (reqResArray.every((obj) => obj.checked === true)) {
+      reqResArray.forEach((obj) => (obj.checked = false));
+    } else {
+      reqResArray.forEach((obj) => (obj.checked = true));
+    }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
 
@@ -54,10 +39,9 @@ const connectionController = {
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
-    else if (reqResObj.graphQL){
+    else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    }
-    else if (/wss?:\/\//.test(reqResObj.protocol))
+    } else if (/wss?:\/\//.test(reqResObj.protocol))
       wsController.openWSconnection(reqResObj, this.openConnectionArray);
     //gRPC  connection
     else if (reqResObj.gRPC) {
@@ -134,30 +118,20 @@ const connectionController = {
     store.default.dispatch(actions.reqResClear());
   },
 
-  minimizeAllReqRes() {
+  //toggles minimized in ReqRes array in state
+  toggleMinimizeAll() {
     const { reqResArray } = store.default.getState().business;
 
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (!reqRes.minimized && reqRes.tab === currentTab) {
-        reqRes.minimized = true;
-      }
-    });
+    if (reqResArray.every((obj) => obj.minimized === true)) {
+      reqResArray.forEach((obj) => (obj.minimized = false));
+    } else {
+      reqResArray.forEach((obj) => (obj.minimized = true));
+    }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-
-  expandAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (reqRes.minimized && reqRes.tab === currentTab) {
-        reqRes.minimized = false;
-      }
-    });
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
+  //clears dataPoints from state
+  clearGraph() {
+    store.default.dispatch(actions.clearGraph());
   },
 };
 

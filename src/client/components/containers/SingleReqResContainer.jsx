@@ -237,9 +237,11 @@ class SingleReqResContainer extends Component {
                   single HTTP2 connection
                 </div>
 
-                {this.props.content.connection === "error" && (<div className="networkerror">
-                  There was a network error in connecting to endpoint
-                </div>)}
+                {this.props.content.connection === "error" && (
+                  <div className="networkerror">
+                    There was a network error in connecting to endpoint
+                  </div>
+                )}
                 {/* {this.props.content.error && (
           <div className='networkerror'>{this.props.content.error.message}</div>
         )} */}
