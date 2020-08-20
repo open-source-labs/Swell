@@ -41,46 +41,20 @@ const BarGraph = ({ dataPoints }) => {
       ],
     },
     animation: {
-      duration: 0,
+      // duration: 0,
     },
     maintainAspectRatio: false,
   });
 
-  const dataUpdater = (labelArr, dataArr) => {
+  const dataUpdater = (labelArr, dataArr, BGsArr, bordersArr) => {
     return {
       labels: labelArr,
       datasets: [
         {
           label: "Roundtrip (ms)",
           data: dataArr,
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(235, 99, 132, 0.2)",
-            "rgba(34, 162, 235, 0.2)",
-            "rgba(235, 206, 86, 0.2)",
-            "rgba(55, 192, 192, 0.2)",
-            "rgba(133, 102, 255, 0.2)",
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(235, 99, 132, 1)",
-            "rgba(34, 162, 235, 1)",
-            "rgba(235, 206, 86, 1)",
-            "rgba(55, 192, 192, 1)",
-            "rgba(133, 102, 255, 1)",
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-          ],
+          backgroundColor: BGsArr,
+          borderColor: bordersArr,
           borderWidth: 1,
           maxBarThickness: 300,
         },
@@ -114,22 +88,25 @@ const BarGraph = ({ dataPoints }) => {
         ],
       },
       animation: {
-        duration: 0,
+        // duration: 0,
       },
       maintainAspectRatio: false,
     };
   };
 
   useEffect(() => {
-    const urls = dataPoints.length ? dataPoints.map((point) => point.url) : [];
+    let urls, times, BGs, borders;
+    if (dataPoints.length) {
+      urls = dataPoints.map((point) => point.url);
+      times = dataPoints.map((point) => point.timeReceived - point.timeSent);
+      BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
+      borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
+    }
 
-    const times = dataPoints.length
-      ? dataPoints.map((point) => point.timeReceived - point.timeSent)
-      : [];
+    updateChart(dataUpdater(urls, times, BGs, borders));
 
-    updateChart(dataUpdater(urls, times));
-
-    if (!urls.length || urls.length > 3) updateOptions(optionsUpdater(urls));
+    if (!dataPoints.length || dataPoints.length > 3)
+      updateOptions(optionsUpdater(dataPoints));
   }, [dataPoints]);
 
   return (

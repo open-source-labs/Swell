@@ -200,11 +200,17 @@ const businessReducer = (state = initialState, action) => {
         action.payload.timeReceived &&
         action.payload.connection === "closed"
       ) {
+        const color = [
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+        ].join(", ");
         dataPoints.push({
           url: action.payload.url,
           timeSent: action.payload.timeSent,
           timeReceived: action.payload.timeReceived,
           created_at: action.payload.created_at,
+          color: color,
         });
         return {
           ...state,
