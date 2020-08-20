@@ -3,6 +3,7 @@
   align-items: center;
   cursor: pointer;
   margin-bottom: 16px;
+  transition: 0.4s;
 }
 
 .label-text {
@@ -36,7 +37,7 @@
   background: #ecf0f3;
   border-radius: 15px;
   transform: translate3d(-75%, 0, 0);
-  transition: transform 0.4s cubic-bezier(0.85, 0.05, 0.18, 1.35);
+  transition: transform 0.2s cubic-bezier(0.85, 0.05, 0.18, 1.35);
   box-shadow:
     -8px -4px 8px 0px #ffffff,
     8px 4px 12px 0px #d1d9e6;
@@ -362,6 +363,7 @@
   flex-direction: column;
   margin-bottom: 18px;
   margin-top: 18px;
+  transition: max-height 0.2s ease-out;
 }
 
 .composer_headers_container-closed {
