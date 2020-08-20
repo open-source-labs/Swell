@@ -10,7 +10,6 @@ import "codemirror-graphql/hint";
 import "codemirror-graphql/lint";
 import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
-import "codemirror/addon/display/autorefresh"
 
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
@@ -65,7 +64,6 @@ const GraphQLBodyEntryForm = (props) => {
             autoCloseBrackets: true,
             indentUnit: 2,
             tabSize: 2,
-            autoRefresh: true,
           }}
           editorDidMount={editor => { editor.setSize('100%', 150) }}
           onBeforeChange={(editor, data, value) => {
