@@ -44,7 +44,7 @@ const FieldEntryForm = (props) => {
             bodyContent: `query {
 
 }`,
-            bodyVariables: `# write any variables here!`
+            bodyVariables: ""
           });
           break;
         } else if (value === "http://") {
