@@ -141,7 +141,7 @@ class NavBarContainer extends Component {
             type="button"
             onClick={ReqResCtrl.toggleMinimizeAll}
           >
-            Expand/Minimize All
+            Expand/Collapse All
           </button>
 
           <button
@@ -149,10 +149,10 @@ class NavBarContainer extends Component {
             type="button"
             onClick={ReqResCtrl.clearAllReqRes}
           >
-            Clear Active Requests
+            Clear Requests
           </button>
           <button className="btn" type="button" onClick={ReqResCtrl.clearGraph}>
-            Reset Graph
+            Clear Graph
           </button>
 
           <button
