@@ -190,7 +190,10 @@ const businessReducer = (state = initialState, action) => {
           JSON.parse(JSON.stringify(action.payload))
         ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
-      const dataPoints = [...state.dataPoints];
+      const dataPoints =
+        state.dataPoints.length < 12
+          ? [...state.dataPoints]
+          : [...state.dataPoints.slice(1)];
       if (
         !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent) &&
         action.payload.timeSent &&

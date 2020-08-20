@@ -9,8 +9,16 @@ const mapStateToProps = (store) => ({
   dataPoints: store.business.dataPoints,
 });
 
-const BarGraph = (props) => {
-  const [dataPoints, updateData] = useState(props.dataPoints);
+const BarGraph = ({ dataPoints }) => {
+  const [chartData, updateChart] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+      },
+    ],
+  });
+
   const [chartOptions, updateOptions] = useState({
     scales: {
       yAxes: [
@@ -27,7 +35,7 @@ const BarGraph = (props) => {
       xAxes: [
         {
           ticks: {
-            display: true, //this will remove only the label
+            display: true,
           },
         },
       ],
@@ -37,40 +45,13 @@ const BarGraph = (props) => {
     },
     maintainAspectRatio: false,
   });
-  const [chartData, updateChart] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Roundtrip (ms)",
-        data: [],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-        maxBarThickness: 6,
-      },
-    ],
-  });
 
   const dataUpdater = (labelArr, dataArr) => {
     return {
       labels: labelArr,
       datasets: [
         {
-          label: "Response (ms)",
+          label: "Roundtrip (ms)",
           data: dataArr,
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
@@ -78,7 +59,13 @@ const BarGraph = (props) => {
             "rgba(255, 206, 86, 0.2)",
             "rgba(75, 192, 192, 0.2)",
             "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
+            "rgba(235, 99, 132, 0.2)",
+            "rgba(34, 162, 235, 0.2)",
+            "rgba(235, 206, 86, 0.2)",
+            "rgba(55, 192, 192, 0.2)",
+            "rgba(133, 102, 255, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
           ],
           borderColor: [
             "rgba(255, 99, 132, 1)",
@@ -86,7 +73,13 @@ const BarGraph = (props) => {
             "rgba(255, 206, 86, 1)",
             "rgba(75, 192, 192, 1)",
             "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)",
+            "rgba(235, 99, 132, 1)",
+            "rgba(34, 162, 235, 1)",
+            "rgba(235, 206, 86, 1)",
+            "rgba(55, 192, 192, 1)",
+            "rgba(133, 102, 255, 1)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
           ],
           borderWidth: 1,
           maxBarThickness: 300,
@@ -127,17 +120,15 @@ const BarGraph = (props) => {
     };
   };
 
-  useEffect(() => updateData(props.dataPoints));
-
   useEffect(() => {
     const urls = dataPoints.length ? dataPoints.map((point) => point.url) : [];
 
     const times = dataPoints.length
       ? dataPoints.map((point) => point.timeReceived - point.timeSent)
       : [];
-    const updatedChart = dataUpdater(urls, times);
 
-    updateChart(updatedChart);
+    updateChart(dataUpdater(urls, times));
+
     if (!urls.length || urls.length > 3) updateOptions(optionsUpdater(urls));
   }, [dataPoints]);
 
