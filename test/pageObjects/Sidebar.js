@@ -96,7 +96,7 @@ class Sidebar {
   // HEADER INPUTS
 
   get activateHeaders(){
-    return app.client.$('.composer_subtitle=Headers'); 
+    return app.client.$('#headers-click'); 
   };
 
   get headers(){
@@ -125,7 +125,7 @@ class Sidebar {
   };
 
   get activateCookies(){
-    return app.client.$('.composer_subtitle=Cookies');
+    return app.client.$('#cookie-click');
   }
 
   get firstCookieCheckbox(){
