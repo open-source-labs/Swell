@@ -69,7 +69,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
             bodyContent: `query {
 
 }`,
-            bodyVariables: `# write any variables here!`
+            bodyVariables: ""
           });
           break;
         } else if (network === 'rest') {

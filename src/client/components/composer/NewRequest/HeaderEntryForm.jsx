@@ -172,7 +172,7 @@ class HeaderEntryForm extends Component {
       <label
       title="Add Request Headers"
       className='composer_subtitle' >
-        <div className="label-text" onClick={this.toggleShow}>{headerName}</div>
+        <div className="label-text" id="headers-click" onClick={this.toggleShow}>{headerName}</div>
         <div className="toggle">
           <input type="checkbox" name="check" className="toggle-state"/>
           <div className="indicator"/>
