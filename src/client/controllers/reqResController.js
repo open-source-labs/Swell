@@ -4,7 +4,6 @@ import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
-let events;
 const connectionController = {
   openConnectionArray: [],
 
@@ -18,9 +17,9 @@ const connectionController = {
     );
   },
 
+  //toggles checked in state for entire reqResArray
   toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
-    console.log(reqResArray);
 
     if (reqResArray.every((obj) => obj.checked === true)) {
       reqResArray.forEach((obj) => (obj.checked = false));
@@ -119,9 +118,9 @@ const connectionController = {
     store.default.dispatch(actions.reqResClear());
   },
 
+  //toggles minimized in ReqRes array in state
   toggleMinimizeAll() {
     const { reqResArray } = store.default.getState().business;
-    console.log(reqResArray);
 
     if (reqResArray.every((obj) => obj.minimized === true)) {
       reqResArray.forEach((obj) => (obj.minimized = false));
@@ -130,7 +129,7 @@ const connectionController = {
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-
+  //clears dataPoints from state
   clearGraph() {
     store.default.dispatch(actions.clearGraph());
   },

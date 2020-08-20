@@ -174,7 +174,6 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_UPDATE: {
-      // console.log("reqRes update: ", action.payload);
       const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
@@ -190,21 +189,26 @@ const businessReducer = (state = initialState, action) => {
           JSON.parse(JSON.stringify(action.payload))
         ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
+      //dataPoints to be used by graph
       const dataPoints =
+        //if more than 12 points, data will shift down an index
         state.dataPoints.length < 12
           ? [...state.dataPoints]
           : [...state.dataPoints.slice(1)];
+      //check if new object is a closed request with timeSent and timeReceived
       if (
         !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent) &&
         action.payload.timeSent &&
         action.payload.timeReceived &&
         action.payload.connection === "closed"
       ) {
+        //generate random rgb color to be assigned to this datapoint. Stored as string.
         const color = [
           Math.floor(Math.random() * 255),
           Math.floor(Math.random() * 255),
           Math.floor(Math.random() * 255),
         ].join(", ");
+        //add dataPoint to array and return to state
         dataPoints.push({
           url: action.payload.url,
           timeSent: action.payload.timeSent,

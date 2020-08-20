@@ -10,6 +10,7 @@ const mapStateToProps = (store) => ({
 });
 
 const BarGraph = ({ dataPoints }) => {
+  //Default state for chart data
   const [chartData, updateChart] = useState({
     labels: [],
     datasets: [
@@ -18,7 +19,7 @@ const BarGraph = ({ dataPoints }) => {
       },
     ],
   });
-
+  //default state for chart options
   const [chartOptions, updateOptions] = useState({
     scales: {
       yAxes: [
@@ -41,11 +42,12 @@ const BarGraph = ({ dataPoints }) => {
       ],
     },
     animation: {
-      // duration: 0,
+      duration: 0, //buggy animation, get rid of transition
     },
     maintainAspectRatio: false,
   });
 
+  //helper function that returns chart data object
   const dataUpdater = (labelArr, dataArr, BGsArr, bordersArr) => {
     return {
       labels: labelArr,
@@ -62,7 +64,9 @@ const BarGraph = ({ dataPoints }) => {
     };
   };
 
+  //helper function that returns chart options object
   const optionsUpdater = (arr) => {
+    //Event labels and Y-axis title disappear after three requests
     const showLabels = arr.length > 3 ? false : true;
     return {
       legend: {
@@ -72,7 +76,7 @@ const BarGraph = ({ dataPoints }) => {
         yAxes: [
           {
             scaleLabel: {
-              display: showLabels,
+              display: showLabels, //boolean
             },
             ticks: {
               beginAtZero: true,
@@ -82,29 +86,30 @@ const BarGraph = ({ dataPoints }) => {
         xAxes: [
           {
             ticks: {
-              display: showLabels,
+              display: showLabels, //boolean
             },
           },
         ],
       },
       animation: {
-        // duration: 0,
+        duration: 0,
       },
-      maintainAspectRatio: false,
+      maintainAspectRatio: false, //necessary for keeping chart within container
     };
   };
 
   useEffect(() => {
     let urls, times, BGs, borders;
     if (dataPoints.length) {
+      //extract arrays from data point properties to be used in chart data/options
       urls = dataPoints.map((point) => point.url);
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
       borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
     }
-
+    //update state with updated dataset
     updateChart(dataUpdater(urls, times, BGs, borders));
-
+    //conditionally update options based on length of dataPoints array
     if (!dataPoints.length || dataPoints.length > 3)
       updateOptions(optionsUpdater(dataPoints));
   }, [dataPoints]);
