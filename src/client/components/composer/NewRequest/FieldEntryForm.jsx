@@ -56,7 +56,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
           setNewRequestFields({
             ...newRequestFields,
             protocol: "",
-            // url: "http://",
+            url: newRequestFields.gqlUrl,
             method: "QUERY",
             graphQL: true,
             gRPC: false,
@@ -77,7 +77,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
           setNewRequestFields({
             ...newRequestFields,
             protocol: "",
-            // url: "http://",
+            url: newRequestFields.restUrl,
             method: "GET",
             graphQL: false,
             gRPC: false,
@@ -95,7 +95,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
           setNewRequestFields({
             ...newRequestFields,
             protocol: "",
-            // url: "",
+            url: newRequestFields.grpcUrl,
             method: "",
             graphQL: false,
             gRPC: true,
@@ -113,7 +113,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
           setNewRequestFields({
             ...newRequestFields,
             protocol: value,
-            // url: newRequestFields.wsUrl,
+            url: newRequestFields.wsUrl,
             method: "",
             graphQL: false,
             gRPC: false,

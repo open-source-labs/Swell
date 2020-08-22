@@ -355,7 +355,7 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
         });
         setNewRequestFields({
           ...newRequestFields,
-          url: grpcUrl,
+          url: gqlUrl,
           gqlUrl,
         });
       }

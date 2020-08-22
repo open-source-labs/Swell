@@ -11,19 +11,55 @@ const History = ({ newRequestFields, content, content: { request : { method,
   setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm }) => {
 
   const addHistoryToNewRequest = () => {
-    const requestFieldObj = {
-      ...newRequestFields,
-      method: method || 'GET',
-      protocol: protocol || 'http://',
-      url,
-      restUrl,
-      wsUrl,
-      gqlUrl,
-      grpcUrl,
-      graphQL: graphQL || false,
-      gRPC: gRPC || false,
-      network,
-    }
+    let requestFieldObj = {};
+    if (network === 'rest') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: method || 'GET',
+        protocol: protocol || 'http://',
+        url,
+        restUrl,
+        graphQL: graphQL || false,
+        gRPC: gRPC || false,
+        network,
+      }
+    };
+    if (network === 'ws') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: method || 'GET',
+        protocol: protocol || 'http://',
+        url,
+        wsUrl,
+        graphQL: graphQL || false,
+        gRPC: gRPC || false,
+        network,
+      }
+    };
+    if (network === 'graphQL') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: method || 'GET',
+        protocol: protocol || 'http://',
+        url,
+        gqlUrl,
+        graphQL: graphQL || false,
+        gRPC: gRPC || false,
+        network,
+      }
+    };
+    if (network === 'grpc') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: method || 'GET',
+        protocol: protocol || 'http://',
+        url,
+        grpcUrl,
+        graphQL: graphQL || false,
+        gRPC: gRPC || false,
+        network,
+      }
+    };
     let headerDeeperCopy;
     if (headers) {
       headerDeeperCopy = JSON.parse(JSON.stringify(headers));

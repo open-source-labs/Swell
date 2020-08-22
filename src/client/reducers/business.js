@@ -194,6 +194,14 @@ const businessReducer = (state = initialState, action) => {
           JSON.parse(JSON.stringify(action.payload))
         ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
+
+      return {
+        ...state,
+        reqResArray: reqResDeepCopy,
+      };
+    }
+
+    case types.UPDATE_GRAPH: {
       //dataPoints to be used by graph
       const dataPoints =
         //if more than 12 points, data will shift down an index
@@ -202,10 +210,7 @@ const businessReducer = (state = initialState, action) => {
           : [...state.dataPoints.slice(1)];
       //check if new object is a closed request with timeSent and timeReceived
       if (
-        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent) &&
-        action.payload.timeSent &&
-        action.payload.timeReceived &&
-        action.payload.connection === "closed"
+        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent)
       ) {
         //generate random rgb color to be assigned to this datapoint. Stored as string.
         const color = [
@@ -223,14 +228,9 @@ const businessReducer = (state = initialState, action) => {
         });
         return {
           ...state,
-          reqResArray: reqResDeepCopy,
           dataPoints: dataPoints,
         };
-      }
-      return {
-        ...state,
-        reqResArray: reqResDeepCopy,
-      };
+      } else return state;
     }
 
     case types.CLEAR_GRAPH: {
