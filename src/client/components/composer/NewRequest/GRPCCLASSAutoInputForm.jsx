@@ -1,12 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
-const GRPCAutoInputForm = (props) => {
-  const [show, toggleShow] = useState(true);
+class GRPCAutoInputForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: true,
+    };
+    // need to bind the 'this' of the event handler to the component instance when it is being rendered
+    this.toggleShow = this.toggleShow.bind(this);
+    this.setService = this.setService.bind(this);
+    this.setRequest = this.setRequest.bind(this);
+  }
+
+  // event handler on the arrow button that allows you to open/close the section
+  toggleShow() {
+    this.setState({
+      show: !this.state.show,
+    });
+  }
 
   // event handler for changes made to the Select Services dropdown list
-  const setService = () => {
+  setService() {
     // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
     const dropdownService = document.getElementById("dropdownService");
     const serviceName =
@@ -16,41 +32,48 @@ const GRPCAutoInputForm = (props) => {
     // grabs the request dropdown list and resets it to the first option "Select Request"
     document.getElementById("dropdownRequest").selectedIndex = 0;
     // clears all stream query bodies except the first one
-    props.clearStreamBodies();
+    this.props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
-    props.setNewRequestStreams({
-      ...props.newRequestStreams,
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       selectedService: serviceName,
     });
-  };
+  }
 
-  const setRequest = () => {
-    const streamsArr = props.newRequestStreams.streamsArr; //.slice(0, 1);
-    const streamContent = props.newRequestStreams.streamContent; //.slice(0, 1);
-
-    const dropdownRequest = document.getElementById("dropdownRequest");
-    const requestName =
-      dropdownRequest.options[dropdownRequest.selectedIndex].text;
-
+  // event handler for changes made to the Select Request dropdown list
+  setRequest() {
+    const streamsArr = this.props.newRequestStreams.streamsArr;
+    const streamContent = this.props.newRequestStreams.streamContent;
+    // clears all stream bodies except the first when switching from client/directional stream to something else
     while (streamsArr.length > 1) {
       streamsArr.pop();
       streamContent.pop();
-      props.newRequestStreams.count -= 1;
+      this.props.newRequestStreams.count -= 1;
     }
-
-    props.setNewRequestStreams({
-      ...props.newRequestStreams,
+    // update state in the store
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
       selectedPackage: null,
       selectedRequest: null,
       selectedStreamingType: null,
-      selectedRequest: requestName,
       streamContent,
       streamsArr,
     });
-  };
-  
-  useEffect(()=> {
-    // save the selected service/request and array of all the service objs in variables,
+    // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
+    const dropdownRequest = document.getElementById("dropdownRequest");
+    const requestName =
+      dropdownRequest.options[dropdownRequest.selectedIndex].text;
+    // the selected request name is saved in state of the store
+    this.props.setNewRequestStreams({
+      ...this.props.newRequestStreams,
+      selectedRequest: requestName,
+    });
+    this.setState(
+      {
+        ...this.state,
+      },
+      () => {
+        // save the selected service/request and array of all the service objs in variables,
         // which is currently found in the state of the store
         const selectedService = this.props.newRequestStreams.selectedService;
         const selectedRequest = this.props.newRequestStreams.selectedRequest;
@@ -78,18 +101,11 @@ const GRPCAutoInputForm = (props) => {
           selectedPackage: packageName,
           selectedStreamingType: streamingType,
         });
-// update button display for streaming type listed next to url
-const streamBtn = document.getElementById("stream");
-if (streamingType === undefined) {
-  streamBtn.innerText = "STREAM";
-} else {
-  streamBtn.innerText = streamingType;
-}
-})
-   
-      
-      
-          useEffect(() => {
+        this.setState(
+          {
+            ...this.state,
+          },
+          () => {
             let req;
             const results = {};
             /*
@@ -151,89 +167,108 @@ if (streamingType === undefined) {
             });
           }
         );
+        // update button display for streaming type listed next to url
+        const streamBtn = document.getElementById("stream");
+        if (streamingType === undefined) {
+          streamBtn.innerText = "STREAM";
+        } else {
+          streamBtn.innerText = streamingType;
+        }
       }
+    );
+  }
 
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
-    : "composer_bodyform_container-closed";
+  render() {
+    // arrow button used to collapse or open the Stream section
+    const arrowClass = this.state.show
+      ? "composer_subtitle_arrow-open"
+      : "composer_subtitle_arrow-closed";
+    const bodyContainerClass = this.state.show
+      ? "composer_bodyform_container-open"
+      : "composer_bodyform_container-closed";
 
-  const services = props.newRequestStreams.services;
-  const servicesList = [];
-  const rpcsList = [];
-  // autopopulates the service dropdown list
-  if (services) {
-    for (let i = 0; i < services.length; i++) {
-      servicesList.push(
-        <option key={i} value={i}>
-          {services[i].name}
-        </option>
-      );
-    }
-    const selectedService = props.newRequestStreams.selectedService;
-    // autopopulates the request dropdown list
-    for (const service of services) {
-      if (service.name === selectedService) {
-        for (let i = 0; i < service.rpcs.length; i++) {
-          rpcsList.push(
-            <option key={i} value={i}>
-              {service.rpcs[i].name}
-            </option>
-          );
+    const services = this.props.newRequestStreams.services;
+    const servicesList = [];
+    const rpcsList = [];
+    // autopopulates the service dropdown list
+    if (services) {
+      for (let i = 0; i < services.length; i++) {
+        servicesList.push(
+          <option key={i} value={i}>
+            {services[i].name}
+          </option>
+        );
+      }
+      const selectedService = this.props.newRequestStreams.selectedService;
+      // autopopulates the request dropdown list
+      for (const service of services) {
+        if (service.name === selectedService) {
+          for (let i = 0; i < service.rpcs.length; i++) {
+            rpcsList.push(
+              <option key={i} value={i}>
+                {service.rpcs[i].name}
+              </option>
+            );
+          }
         }
       }
     }
-  }
+    /*
+    pseudocode for the return section
+     - first div renders the arrow button along with the title "Stream"
+     - renders the dropdown lists for services and requests
+     - the GRPCBodyEntryForm component renders the stream query bodies
+     */
+    return (
+      <div>
+        <div
+          className="composer_subtitle"
+          onClick={this.toggleShow}
+          style={this.props.stylesObj}
+        >
+          <img className={arrowClass} src={dropDownArrow} />
+          Stream
+        </div>
 
-  return (
-    <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => toggleShow(!show)}
-        style={props.stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} />
-        Stream
+        <select
+          id="dropdownService"
+          onChange={this.setService}
+          ref="dropdownService"
+          name="dropdownService"
+          className={"dropdownService " + bodyContainerClass}
+        >
+          <option value="services" defaultValue="">
+            Select Service
+          </option>
+          {servicesList}
+        </select>
+
+        <select
+          id="dropdownRequest"
+          onChange={this.setRequest}
+          ref="dropdownRequest"
+          name="dropdownRequest"
+          className={"dropdownRequest " + bodyContainerClass}
+        >
+          <option value="requests" defaultValue="">
+            Select Request
+          </option>
+          {rpcsList}
+        </select>
+
+        <GRPCBodyEntryForm
+          newRequestStreams={this.props.newRequestStreams}
+          setNewRequestStreams={this.props.setNewRequestStreams}
+          selectedPackage={this.props.newRequestStreams.selectedPackage}
+          selectedService={this.props.newRequestStreams.selectedService}
+          selectedRequest={this.props.newRequestStreams.selectedRequest}
+          selectedStreamingType={
+            this.props.newRequestStreams.selectedStreamingType
+          }
+        />
       </div>
-
-      <select
-        id="dropdownService"
-        onChange={setService}
-        // ref="dropdownService"
-        name="dropdownService"
-        className={"dropdownService " + bodyContainerClass}
-      >
-        <option value="services" defaultValue="">
-          Select Service
-        </option>
-        {servicesList}
-      </select>
-
-      <select
-        id="dropdownRequest"
-        onChange={setRequest}
-        // ref="dropdownRequest"
-        name="dropdownRequest"
-        className={"dropdownRequest " + bodyContainerClass}
-      >
-        <option value="requests" defaultValue="">
-          Select Request
-        </option>
-        {rpcsList}
-      </select>
-
-      <GRPCBodyEntryForm
-        newRequestStreams={props.newRequestStreams}
-        setNewRequestStreams={props.setNewRequestStreams}
-        selectedPackage={props.newRequestStreams.selectedPackage}
-        selectedService={props.newRequestStreams.selectedService}
-        selectedRequest={props.newRequestStreams.selectedRequest}
-        selectedStreamingType={props.newRequestStreams.selectedStreamingType}
-      />
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default GRPCAutoInputForm;
