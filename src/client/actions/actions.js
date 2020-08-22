@@ -54,6 +54,11 @@ export const reqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
+export const updateGraph = (reqRes) => ({
+  type: types.UPDATE_GRAPH,
+  payload: reqRes,
+});
+
 export const clearGraph = () => ({
   type: types.CLEAR_GRAPH,
 });
