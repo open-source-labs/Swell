@@ -34,8 +34,7 @@ module.exports = () => {
         await sideBar.bodyInput.clearElement();
         await sideBar.bodyInput.addValue(body);
       }
-      await sideBar.url.clearElement();
-      await sideBar.url.addValue(url);
+      await sideBar.url.setValue(url);
       await sideBar.addRequestBtn.click();
       await reqRes.sendBtn.click();
     };
