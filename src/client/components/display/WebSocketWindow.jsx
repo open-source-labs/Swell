@@ -14,12 +14,14 @@ class WebSocketWindow extends Component {
     this.sendToWSController = this.sendToWSController.bind(this);
   }
 
+  //updates the outgoing message when it changes
   updateOutgoingMessage(value) {
     this.setState({
       outgoingMessage: value,
     });
   }
 
+  //when you press enter send the message
   handleKeyPress(event) {
     if (event.key === "Enter") {
       this.sendToWSController();
@@ -38,18 +40,23 @@ class WebSocketWindow extends Component {
   }
 
   render() {
+    //maps outgoing Messages, sets them as client,
     const combinedMessagesReactArr = this.props.outgoingMessages
       .map((message) => {
         message.source = "client";
         return message;
       })
+      //and combines to one array by 
+      //maps incoming messages, sets them to server 
       .concat(
         this.props.incomingMessages.map((message) => {
           message.source = "server";
           return message;
         })
       )
+      //sorts by time
       .sort((a, b) => a.timeReceived - b.timeReceived)
+      //then maps the combined array to a WebSocket Component
       .map((message, index) => (
         <WebSocketMessage
           key={index}
@@ -58,7 +65,10 @@ class WebSocketWindow extends Component {
           timeReceived={message.timeReceived}
         />
       ));
-
+    
+    //sets the message style depending on if the connection is open
+    //hides when connection is not open
+    //possible memory leak
     const messageInputStyles = {
       display: this.props.connection === "open" ? "block" : "none",
     };
@@ -81,6 +91,7 @@ class WebSocketWindow extends Component {
             Send Message
           </button>
         </div>
+        {/* when the connection is open, show the ws messages */}
         {this.props.connection === "open" && (
           <div className={"websocket_message_container"}>
             {combinedMessagesReactArr}
