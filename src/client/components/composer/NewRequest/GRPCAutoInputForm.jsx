@@ -58,7 +58,7 @@ const GRPCAutoInputForm = (props) => {
 
     const selectedService = props.newRequestStreams.selectedService;
     const selectedRequest = props.newRequestStreams.selectedRequest;
-    const services = props.services;
+    const services = props.newRequestStreams.services;
     if (services) {
       // save the selected service/request and array of all the service objs in variables,
       // which is currently found in the state of the store
@@ -94,13 +94,13 @@ const GRPCAutoInputForm = (props) => {
         selectedStreamingType: streamingType,
       });
     }
-  }, [props.selectedRequest]);
+  }, [props.newRequestStreams.selectedRequest]);
 
   useEffect(() => {
     console.log("useEffect 2");
     const selectedService = props.newRequestStreams.selectedService;
     const selectedRequest = props.newRequestStreams.selectedRequest;
-    const services = props.services;
+    const services = props.newRequestStreams.services;
     const streamsArr = props.newRequestStreams.streamsArr;
     const streamContent = props.newRequestStreams.streamContent;
 
@@ -163,7 +163,7 @@ then push each key/value pair of the message definition into the results array
         initialQuery: queryJSON,
       });
     }
-  }, [props.packageName, props.selectedStreamingType]);
+  }, [props.newRequestStreams.selectedStreamingType]);
 
   // arrow button used to collapse or open the Stream section
   const arrowClass = show
@@ -173,7 +173,7 @@ then push each key/value pair of the message definition into the results array
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
-  const services = props.services;
+  const services = props.newRequestStreams.services;
   const servicesList = [];
   const rpcsList = [];
   // autopopulates the service dropdown list

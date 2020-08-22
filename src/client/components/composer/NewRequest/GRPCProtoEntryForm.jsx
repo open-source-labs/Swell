@@ -211,13 +211,6 @@ class GRPCProtoEntryForm extends Component {
 
         <GRPCAutoInputForm
           newRequestStreams={this.props.newRequestStreams}
-          services={this.props.newRequestStreams.services}
-          selectedRequest={this.props.newRequestStreams.selectedRequest}
-          selectedPackage={this.props.newRequestStreams.selectedPackage}
-          selectedPackage={this.props.newRequestStreams.selectedPackage}
-          selectedStreamingType={
-            this.props.newRequestStreams.selectedStreamingType
-          }
           setNewRequestStreams={this.props.setNewRequestStreams}
           clearStreamBodies={this.clearStreamBodies}
         />
