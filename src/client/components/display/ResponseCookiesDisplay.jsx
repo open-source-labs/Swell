@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CookieTable from './CookieTable.jsx';
+import CookieTable from './CookieTable.tsx';
 
 class ResponseCookiesDisplay extends Component {
   constructor(props) {
