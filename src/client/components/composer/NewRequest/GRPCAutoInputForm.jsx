@@ -25,134 +25,131 @@ const GRPCAutoInputForm = (props) => {
   };
 
   const setRequest = () => {
-    const streamsArr = props.newRequestStreams.streamsArr; //.slice(0, 1);
-    const streamContent = props.newRequestStreams.streamContent; //.slice(0, 1);
-
-    const dropdownRequest = document.getElementById("dropdownRequest");
-    const requestName =
-      dropdownRequest.options[dropdownRequest.selectedIndex].text;
-
-    while (streamsArr.length > 1) {
-      streamsArr.pop();
-      streamContent.pop();
-      props.newRequestStreams.count -= 1;
+    {
+      const streamsArr = props.newRequestStreams.streamsArr;
+      const streamContent = props.newRequestStreams.streamContent;
+      // clears all stream bodies except the first when switching from client/directional stream to something else
+      while (streamsArr.length > 1) {
+        streamsArr.pop();
+        streamContent.pop();
+        props.newRequestStreams.count -= 1;
+      }
+      // grabs the name of the current selected option from the select request dropdown to be saved in the state of the store
+      const dropdownRequest = document.getElementById("dropdownRequest");
+      const requestName =
+        dropdownRequest.options[dropdownRequest.selectedIndex].text;
+      // update state in the store
+      props.setNewRequestStreams({
+        ...props.newRequestStreams,
+        selectedPackage: null,
+        selectedRequest: requestName,
+        selectedStreamingType: null,
+        streamContent,
+        streamsArr,
+      });
     }
-
-    props.setNewRequestStreams({
-      ...props.newRequestStreams,
-      selectedPackage: null,
-      selectedRequest: null,
-      selectedStreamingType: null,
-      selectedRequest: requestName,
-      streamContent,
-      streamsArr,
-    });
   };
-  
-  useEffect(()=> {
+
+  useEffect(() => {
+    console.log("effect used!");
     // save the selected service/request and array of all the service objs in variables,
-        // which is currently found in the state of the store
-        const selectedService = this.props.newRequestStreams.selectedService;
-        const selectedRequest = this.props.newRequestStreams.selectedRequest;
-        const services = this.props.newRequestStreams.services;
-        let streamingType;
-        let packageName;
-        /*
-      for each service obj in the services array, if its name matches the current selected service option then:
-      - save the package name
-      - iterate through the rpcs and if its name matches the current selected request then save its streaming type
-      */
-        for (const service of services) {
-          if (service.name === selectedService) {
-            packageName = service.packageName;
-            for (const rpc of service.rpcs) {
-              if (rpc.name === selectedRequest) {
-                streamingType = rpc.type;
-              }
+    // which is currently found in the state of the store
+    const streamsArr = props.newRequestStreams.streamsArr;
+    const streamContent = props.newRequestStreams.streamContent;
+
+    const selectedService = props.newRequestStreams.selectedService;
+    const selectedRequest = props.newRequestStreams.selectedRequest;
+    const services = props.newRequestStreams.services;
+    if (services) {
+      let streamingType;
+      let packageName;
+      /*
+        for each service obj in the services array, if its name matches the current selected service option then:
+        - save the package name
+        - iterate through the rpcs and if its name matches the current selected request then save its streaming type
+        */
+      for (const service of services) {
+        if (service.name === selectedService) {
+          packageName = service.packageName;
+          for (const rpc of service.rpcs) {
+            if (rpc.name === selectedRequest) {
+              streamingType = rpc.type;
             }
           }
         }
-        // update the selected package name and streaming type in the state of the store
-        this.props.setNewRequestStreams({
-          ...this.props.newRequestStreams,
-          selectedPackage: packageName,
-          selectedStreamingType: streamingType,
-        });
-// update button display for streaming type listed next to url
-const streamBtn = document.getElementById("stream");
-if (streamingType === undefined) {
-  streamBtn.innerText = "STREAM";
-} else {
-  streamBtn.innerText = streamingType;
-}
-})
-   
-      
-      
-          useEffect(() => {
-            let req;
-            const results = {};
-            /*
-        for each service obj in the services array, if its name matches the current selected service option then:
-        - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
-        - iterate through the messages and if its name matches the saved req/rpc name,
-        then push each key/value pair of the message definition into the results array
-        */
-            for (const service of services) {
-              if (service.name === selectedService) {
-                for (const rpc of service.rpcs) {
-                  if (rpc.name === selectedRequest) {
-                    req = rpc.req;
-                  }
-                }
-                for (const message of service.messages) {
-                  if (message.name === req) {
-                    for (const key in message.def) {
-                      // if message type is a nested message (message.def.nested === true)
-                      if (message.def[key].nested) {
-                        for (const submess of service.messages) {
-                          if (submess.name === message.def[key].dependent) {
-                            // define obj for the submessage definition
-                            const subObj = {};
-                            for (const subKey in submess.def) {
-                              subObj[subKey] = submess.def[subKey].type
-                                .slice(5)
-                                .toLowerCase();
-                            }
-                            results[key] = subObj;
-                            break;
-                          }
-                        }
-                      } else {
-                        results[key] = message.def[key].type
+      }
+      const streamBtn = document.getElementById("stream");
+      if (streamingType === undefined) {
+        streamBtn.innerText = "STREAM";
+      } else {
+        streamBtn.innerText = streamingType;
+      }
+
+      let req;
+      const results = {};
+      /*
+          for each service obj in the services array, if its name matches the current selected service option then:
+          - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
+          - iterate through the messages and if its name matches the saved req/rpc name,
+          then push each key/value pair of the message definition into the results array
+          */
+      for (const service of services) {
+        if (service.name === selectedService) {
+          for (const rpc of service.rpcs) {
+            if (rpc.name === selectedRequest) {
+              req = rpc.req;
+            }
+          }
+          for (const message of service.messages) {
+            if (message.name === req) {
+              for (const key in message.def) {
+                // if message type is a nested message (message.def.nested === true)
+                if (message.def[key].nested) {
+                  for (const submess of service.messages) {
+                    if (submess.name === message.def[key].dependent) {
+                      // define obj for the submessage definition
+                      const subObj = {};
+                      for (const subKey in submess.def) {
+                        subObj[subKey] = submess.def[subKey].type
                           .slice(5)
                           .toLowerCase();
                       }
+                      results[key] = subObj;
+                      break;
                     }
-                    break;
                   }
+                } else {
+                  results[key] = message.def[key].type.slice(5).toLowerCase();
                 }
               }
+              break;
             }
-            // push JSON formatted query in streamContent arr
-            const queryJSON = JSON.stringify(results, null, 4);
-            if (streamsArr[0] !== "") {
-              streamsArr[0].query = queryJSON;
-            }
-            // remove initial empty string then push new query to stream content arr
-            streamContent.pop();
-            streamContent.push(queryJSON);
-            // set state in the store with updated content
-            this.props.setNewRequestStreams({
-              ...this.props.newRequestStreams,
-              streamsArr,
-              streamContent,
-              initialQuery: queryJSON,
-            });
           }
-        );
+        }
       }
+      // push JSON formatted query in streamContent arr
+      const queryJSON = JSON.stringify(results, null, 4);
+      if (streamsArr[0] !== "") {
+        streamsArr[0].query = queryJSON;
+      }
+      // remove initial empty string then push new query to stream content arr
+      streamContent.pop();
+      streamContent.push(queryJSON);
+      // set state in the store with updated content
 
+      // update the selected package name and streaming type in the state of the store
+      props.setNewRequestStreams({
+        ...props.newRequestStreams,
+        streamsArr,
+        streamContent,
+        initialQuery: queryJSON,
+        selectedPackage: packageName,
+        selectedStreamingType: streamingType,
+      });
+    }
+  }, [props.newRequestStreams.services]);
+
+  // arrow button used to collapse or open the Stream section
   const arrowClass = show
     ? "composer_subtitle_arrow-open"
     : "composer_subtitle_arrow-closed";
