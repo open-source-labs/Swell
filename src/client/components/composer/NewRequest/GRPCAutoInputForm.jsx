@@ -5,6 +5,15 @@ import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 const GRPCAutoInputForm = (props) => {
   const [show, toggleShow] = useState(true);
 
+  const {
+    selectedService,
+    selectedRequest,
+    services,
+    streamsArr,
+    streamContent,
+    selectedStreamingType,
+  } = props.newRequestStreams;
+
   // event handler for changes made to the Select Services dropdown list
   const setService = () => {
     // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
@@ -25,8 +34,6 @@ const GRPCAutoInputForm = (props) => {
   };
 
   const setRequest = () => {
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
     // clears all stream bodies except the first when switching from client/directional stream to something else
     while (streamsArr.length > 1) {
       streamsArr.pop();
@@ -56,9 +63,6 @@ const GRPCAutoInputForm = (props) => {
   useEffect(() => {
     console.log("useEffect 1");
 
-    const selectedService = props.newRequestStreams.selectedService;
-    const selectedRequest = props.newRequestStreams.selectedRequest;
-    const services = props.newRequestStreams.services;
     if (services) {
       // save the selected service/request and array of all the service objs in variables,
       // which is currently found in the state of the store
@@ -94,15 +98,10 @@ const GRPCAutoInputForm = (props) => {
         selectedStreamingType: streamingType,
       });
     }
-  }, [props.newRequestStreams.selectedRequest]);
+  }, [selectedRequest]);
 
   useEffect(() => {
     console.log("useEffect 2");
-    const selectedService = props.newRequestStreams.selectedService;
-    const selectedRequest = props.newRequestStreams.selectedRequest;
-    const services = props.newRequestStreams.services;
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
 
     if (services) {
       let req;
@@ -163,7 +162,7 @@ then push each key/value pair of the message definition into the results array
         initialQuery: queryJSON,
       });
     }
-  }, [props.newRequestStreams.selectedStreamingType]);
+  }, [selectedStreamingType]);
 
   // arrow button used to collapse or open the Stream section
   const arrowClass = show
@@ -173,7 +172,6 @@ then push each key/value pair of the message definition into the results array
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
-  const services = props.newRequestStreams.services;
   const servicesList = [];
   const rpcsList = [];
   // autopopulates the service dropdown list
@@ -185,7 +183,6 @@ then push each key/value pair of the message definition into the results array
         </option>
       );
     }
-    const selectedService = props.newRequestStreams.selectedService;
     // autopopulates the request dropdown list
     for (const service of services) {
       if (service.name === selectedService) {
