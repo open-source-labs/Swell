@@ -101,7 +101,7 @@ const BarGraph = ({ dataPoints }) => {
   useEffect(() => {
     let urls, times, BGs, borders;
     if (dataPoints.length) {
-      //extract arrays from data point properties to be used in chart data/options
+      //extract arrays from data point properties to be used in chart data/options that take separate arrays
       urls = dataPoints.map((point) => point.url);
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");

@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { WebSocketLink } from "apollo-link-ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
-import { buildClientSchema, printSchema } from 'graphql'
+import { buildClientSchema, printSchema } from "graphql";
 import * as store from "../store";
 import * as actions from "../actions/actions";
 
@@ -19,12 +19,16 @@ const graphQLController = {
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     //send reqRes object to main process through context bridge
-    this.sendGqlToMain({ reqResObj }).then((response) => {
-      // extra case for chance that response has "errors" prop instead of "error"
-      if (response.error) this.handleError(response.error, response.reqResObj)
-      else if (response.errors) this.handleError(response.errors, response.reqResObj)
-      else this.handleResponse(response.data, response.reqResObj);
-    }).catch( err => console.log("error in sendGqlToMain", err));
+    this.sendGqlToMain({ reqResObj })
+      .then((response) => {
+        // extra case for chance that response has "errors" prop instead of "error"
+        if (response.error)
+          this.handleError(response.error, response.reqResObj);
+        else if (response.errors)
+          this.handleError(response.errors, response.reqResObj);
+        else this.handleResponse(response.data, response.reqResObj);
+      })
+      .catch((err) => console.log("error in sendGqlToMain", err));
   },
 
   // handles graphQL queries and mutationsnp
@@ -84,6 +88,7 @@ const graphQLController = {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
   handleError(errorsObj, reqResObj) {
@@ -119,7 +124,7 @@ const graphQLController = {
         const clientSchema = buildClientSchema(data);
         // formatted for pretty schema display
         const schemaSDL = printSchema(clientSchema);
-        const modifiedData = { schemaSDL, clientSchema }
+        const modifiedData = { schemaSDL, clientSchema };
         store.default.dispatch(actions.setIntrospectionData(modifiedData));
       } else {
         store.default.dispatch(actions.setIntrospectionData(data));
