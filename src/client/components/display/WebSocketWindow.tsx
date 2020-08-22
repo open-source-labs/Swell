@@ -3,29 +3,46 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import WebSocketMessage from "./WebSocketMessage.jsx";
 import wsController from "../../controllers/wsController";
+import { Message, WebSocketWindowProps } from "../../../types"
 
-const WebSocketWindow = props => {
-  const [outgoingMessage, setOutgoingMessage] = useState('');
-  const { id, outgoingMessages, incomingMessages, connection } = props
+// interface Message {
+//   source: string;
+//   timeReceived: number;
+//   data: string;
+// }
+// interface WebSocketWindowProps {
+//   id: number;
+//   outgoingMessages: Array<Message>;
+//   incomingMessages: Array<Message>;
+//   connection: string;
+// }
+
+const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ 
+  id,
+  outgoingMessages,
+  incomingMessages,
+  connection
+ }) => {
+  const [inputMessage, setInputMessage] = useState('');
 
   //updates the outgoing message when it changes
-  const updateOutgoingMessage = (value) => {
-    setOutgoingMessage(value);
+  const updateOutgoingMessage = (value: string) => {
+    setInputMessage(value);
   }
   
   //sends to WScontroller to send the message
   const sendToWSController = () =>  {
     wsController.sendWebSocketMessage(
       id,
-      outgoingMessage
+      inputMessage
     );
     //resets the outgoing message textbox, did this twice???
-    updateOutgoingMessage('');
+    setInputMessage('');
     // document.querySelector(".websocket_input-text").value = "";
   }
 
   //when you press enter send the message
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: {key: string}) => {
     if (event.key === "Enter") {
       sendToWSController();
     }
@@ -69,7 +86,7 @@ const WebSocketWindow = props => {
         <div style={messageInputStyles} className="websocket_input">
           <input
             className="websocket_input-text"
-            value={outgoingMessage}
+            value={inputMessage}
             onKeyPress={handleKeyPress}
             placeholder="Message"
             onChange={(e) => updateOutgoingMessage(e.target.value)}
