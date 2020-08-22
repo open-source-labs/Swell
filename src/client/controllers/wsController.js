@@ -10,7 +10,7 @@ const wsController = {
     reqResObj.closeCode = 0;
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+    console.log('connectionArray', connectionArray);
     let socket;
     try {
       socket = new WebSocket(reqResObj.url);
