@@ -11,8 +11,8 @@ import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
 import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
-const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestFields: { gRPC, url, method, protocol, graphQL, restUrl, wsUrl, gqlUrl, grpcUrl },
-  setNewRequestBody, newRequestBody, newRequestBody: { JSONFormatted, rawType, bodyContent, bodyType },
+const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestFields: { gRPC, url, method, protocol, graphQL, restUrl, wsUrl, gqlUrl, grpcUrl, network },
+  setNewRequestBody, newRequestBody, newRequestBody: { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType },
   setNewRequestHeaders, newRequestHeaders, newRequestHeaders: { headersArr }, setNewRequestCookies, newRequestCookies, newRequestCookies: { cookiesArr },
   setNewRequestStreams, newRequestStreams, newRequestStreams: { selectedService, selectedRequest, selectedPackage, streamingType, initialQuery,
     streamsArr, streamContent, services, protoPath, protoContent }, 
@@ -66,13 +66,6 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
   const addNewRequest = () => {
     const validated = requestValidationCheck();
     if (Object.keys(validated).length === 0) {
-
-      const { 
-        newRequestBody: { 
-          bodyContent, 
-          bodyVariables 
-        }
-      } = props;
       
       let reqRes;
       const protocol = gRPC
@@ -123,6 +116,11 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
             bodyVariables: bodyVariables || '',
             rawType,
             isSSE,
+            network,
+            restUrl,
+            wsUrl,
+            gqlUrl,
+            grpcUrl,
           },
           response: {
             headers: null,
@@ -173,6 +171,11 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
             bodyType,
             bodyVariables: bodyVariables || '',
             rawType,
+            network,
+            restUrl,
+            wsUrl,
+            gqlUrl,
+            grpcUrl,
           },
           response: {
             headers: null,
@@ -231,6 +234,11 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
             body: streamQueries,
             bodyType,
             rawType,
+            network,
+            restUrl,
+            wsUrl,
+            gqlUrl,
+            grpcUrl,
           },
           response: {
             cookies: [],
@@ -269,6 +277,11 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
           request: {
             method: "WS",
             messages: [],
+            network,
+            restUrl,
+            wsUrl,
+            gqlUrl,
+            grpcUrl,
           },
           response: {
             messages: [],
@@ -319,6 +332,7 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
         gRPC,
       });
 
+      // GRPC REQUESTS
       if (gRPC) {
         setNewRequestBody({
           ...newRequestBody,
@@ -328,13 +342,11 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
         setNewRequestFields({
           ...newRequestFields,
           url: grpcUrl,
-          restUrl,
-          wsUrl,
-          gqlUrl,
           grpcUrl,
         });
       }
 
+      // GRAPHQL REQUESTS
       if (graphQL) {
         setNewRequestBody({
           ...newRequestBody,
@@ -344,21 +356,16 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
         setNewRequestFields({
           ...newRequestFields,
           url: grpcUrl,
-          restUrl,
-          wsUrl,
           gqlUrl,
-          grpcUrl,
         });
       }
 
-      if (protocol === "ws://") {
+      if (network === 'ws') {
         setNewRequestFields({
+          ...newRequestFields,
           protocol: "ws://",
           url: wsUrl,
-          restUrl,
           wsUrl,
-          gqlUrl,
-          grpcUrl,
         });
       }
       setNewRequestSSE(false);

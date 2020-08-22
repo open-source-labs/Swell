@@ -6,6 +6,7 @@ import ClearHistoryBtn from '../display/ClearHistoryBtn.jsx';
 
 const mapStateToProps = store => ({
   history: store.business.history,
+  newRequestFields: store.business.newRequestFields,
   newRequestStreams: store.business.newRequestStreams
 });
 
@@ -39,6 +40,7 @@ class HistoryContainer extends Component {
         setNewRequestCookies={this.props.setNewRequestCookies}
         setNewRequestBody={this.props.setNewRequestBody}
         setNewRequestStreams={this.props.setNewRequestStreams}
+        newRequestFields={this.props.newRequestFields}
       />
     })
 
