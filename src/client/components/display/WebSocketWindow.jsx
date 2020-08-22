@@ -19,18 +19,22 @@ class WebSocketWindow extends Component {
       outgoingMessage: value,
     });
   }
+
   handleKeyPress(event) {
     if (event.key === "Enter") {
       this.sendToWSController();
     }
   }
+
+  //sends to WScontroller to send the message
   sendToWSController() {
     wsController.sendWebSocketMessage(
       this.props.id,
       this.state.outgoingMessage
     );
+    //resets the outgoing message textbox, did this twice???
     this.updateOutgoingMessage("");
-    document.querySelector(".websocket_input-text").value = "";
+    // document.querySelector(".websocket_input-text").value = "";
   }
 
   render() {
