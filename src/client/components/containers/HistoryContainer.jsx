@@ -6,6 +6,7 @@ import ClearHistoryBtn from '../display/ClearHistoryBtn.jsx';
 
 const mapStateToProps = store => ({
   history: store.business.history,
+  newRequestFields: store.business.newRequestFields,
   newRequestStreams: store.business.newRequestStreams
 });
 
