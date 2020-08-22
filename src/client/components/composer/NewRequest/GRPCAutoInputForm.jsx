@@ -42,8 +42,8 @@ const GRPCAutoInputForm = (props) => {
       props.setNewRequestStreams({
         ...props.newRequestStreams,
         selectedPackage: null,
-        selectedRequest: requestName,
         selectedStreamingType: null,
+        selectedRequest: requestName,
         streamContent,
         streamsArr,
       });
@@ -51,11 +51,9 @@ const GRPCAutoInputForm = (props) => {
   };
 
   useEffect(() => {
-    console.log("effect used!");
+    console.log("effect 1 used!");
     // save the selected service/request and array of all the service objs in variables,
     // which is currently found in the state of the store
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
 
     const selectedService = props.newRequestStreams.selectedService;
     const selectedRequest = props.newRequestStreams.selectedRequest;
@@ -63,6 +61,8 @@ const GRPCAutoInputForm = (props) => {
     if (services) {
       let streamingType;
       let packageName;
+      let req;
+
       /*
         for each service obj in the services array, if its name matches the current selected service option then:
         - save the package name
@@ -85,14 +85,26 @@ const GRPCAutoInputForm = (props) => {
         streamBtn.innerText = streamingType;
       }
 
-      let req;
-      const results = {};
-      /*
-          for each service obj in the services array, if its name matches the current selected service option then:
-          - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
-          - iterate through the messages and if its name matches the saved req/rpc name,
-          then push each key/value pair of the message definition into the results array
-          */
+      props.setNewRequestStreams({
+        ...props.newRequestStreams,
+        selectedPackage: packageName,
+        selectedStreamingType: streamingType,
+      });
+    }
+  }, [props.newRequestStreams.services]);
+
+  useEffect(() => {
+    console.log("effect 2 used");
+    const streamsArr = props.newRequestStreams.streamsArr;
+    const streamContent = props.newRequestStreams.streamContent;
+    const results = {};
+    /*
+        for each service obj in the services array, if its name matches the current selected service option then:
+        - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
+        - iterate through the messages and if its name matches the saved req/rpc name,
+        then push each key/value pair of the message definition into the results array
+        */
+    if (services) {
       for (const service of services) {
         if (service.name === selectedService) {
           for (const rpc of service.rpcs) {
@@ -143,12 +155,9 @@ const GRPCAutoInputForm = (props) => {
         streamsArr,
         streamContent,
         initialQuery: queryJSON,
-        selectedPackage: packageName,
-        selectedStreamingType: streamingType,
       });
     }
-  }, [props.newRequestStreams.services]);
-
+  }, [props.newRequestStreams.packageName]);
   // arrow button used to collapse or open the Stream section
   const arrowClass = show
     ? "composer_subtitle_arrow-open"
