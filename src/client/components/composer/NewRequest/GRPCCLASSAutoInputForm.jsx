@@ -95,6 +95,13 @@ class GRPCAutoInputForm extends Component {
             }
           }
         }
+        // update button display for streaming type listed next to url
+        const streamBtn = document.getElementById("stream");
+        if (streamingType === undefined) {
+          streamBtn.innerText = "STREAM";
+        } else {
+          streamBtn.innerText = streamingType;
+        }
         // update the selected package name and streaming type in the state of the store
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
@@ -167,13 +174,6 @@ class GRPCAutoInputForm extends Component {
             });
           }
         );
-        // update button display for streaming type listed next to url
-        const streamBtn = document.getElementById("stream");
-        if (streamingType === undefined) {
-          streamBtn.innerText = "STREAM";
-        } else {
-          streamBtn.innerText = streamingType;
-        }
       }
     );
   }
