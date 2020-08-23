@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import PropTypes, { string } from "prop-types";
 import WebSocketMessage from "./WebSocketMessage.jsx";
 import wsController from "../../controllers/wsController";
-import { Message, WebSocketWindowProps } from "../../../types"
+import { WebSocketWindowProps } from "../../../types"
 
 // interface Message {
 //   source: string;

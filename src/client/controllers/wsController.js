@@ -10,6 +10,7 @@ const wsController = {
     reqResObj.closeCode = 0;
     reqResObj.timeSent = Date.now();
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    console.log('reqResObj',reqResObj)
     console.log('connectionArray', connectionArray);
     let socket;
     try {
@@ -35,7 +36,7 @@ const wsController = {
       reqResObj = store.default
         .getState()
         .business.reqResArray.find(obj => obj.id === reqResObj.id);
-
+      console.log('reqResObj message incoming', reqResObj);
       reqResObj.response.messages.push({
         data: event.data,
         timeReceived: Date.now(),
@@ -99,6 +100,7 @@ const wsController = {
       timeReceived: Date.now(),
     });
     console.log('reqRes after', reqResObj);
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 };
 
