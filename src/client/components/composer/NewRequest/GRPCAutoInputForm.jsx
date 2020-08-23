@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
@@ -12,6 +12,7 @@ const GRPCAutoInputForm = (props) => {
     streamsArr,
     streamContent,
     selectedStreamingType,
+    selectedPackage,
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
@@ -162,7 +163,7 @@ then push each key/value pair of the message definition into the results array
         initialQuery: queryJSON,
       });
     }
-  }, [selectedStreamingType]);
+  }, [selectedRequest]);
 
   // arrow button used to collapse or open the Stream section
   const arrowClass = show
@@ -174,6 +175,9 @@ then push each key/value pair of the message definition into the results array
 
   const servicesList = [];
   const rpcsList = [];
+  // const dropdownService = useRef(null);
+  // const dropdownRequest = useRef(null);
+
   // autopopulates the service dropdown list
   if (services) {
     for (let i = 0; i < services.length; i++) {
@@ -211,7 +215,7 @@ then push each key/value pair of the message definition into the results array
       <select
         id="dropdownService"
         onChange={setService}
-        // ref="dropdownService"
+        // ref={dropdownService}
         name="dropdownService"
         className={"dropdownService " + bodyContainerClass}
       >
@@ -224,7 +228,7 @@ then push each key/value pair of the message definition into the results array
       <select
         id="dropdownRequest"
         onChange={setRequest}
-        // ref="dropdownRequest"
+        // ref={dropdownRequest}
         name="dropdownRequest"
         className={"dropdownRequest " + bodyContainerClass}
       >
