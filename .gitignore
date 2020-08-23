@@ -63,7 +63,7 @@ protos/
 
 # testing #
 test/snapshot.png
-test/subSuites/*.png
+test/addedReq.png
 
 test/subSuites/websocketTest.js
 
