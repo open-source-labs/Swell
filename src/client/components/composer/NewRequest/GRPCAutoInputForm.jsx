@@ -21,7 +21,7 @@ const GRPCAutoInputForm = (props) => {
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
-    selectServiceOption(e.target.value)
+    selectServiceOption(e.target.value);
     // clears all stream query bodies except the first one
     props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
@@ -33,7 +33,7 @@ const GRPCAutoInputForm = (props) => {
 
   // event handler for changes made to the Select Requests dropdown list
   const setRequest = (e) => {
-    selectRequestOption(e.target.value)
+    selectRequestOption(e.target.value);
 
     // clears all stream bodies except the first when switching from client/directional stream to something else
     const newStreamsArr = [streamsArr[0]];
@@ -64,41 +64,34 @@ const GRPCAutoInputForm = (props) => {
     //  - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
     //  - iterate through the messages and if its name matches the saved req/rpc name,
     //  then push each key/value pair of the message definition into the results array
+    const serviceObj = services.find((ser) => ser.name === selectedService);
+    const rpc = serviceObj.rpcs.find((rpc) => rpc.name === selectedRequest);
 
-    for (const service of services) {
-      if (service.name === selectedService) {
-        packageName = service.packageName;
-        for (const rpc of service.rpcs) {
-          if (rpc.name === selectedRequest) {
-            streamingType = rpc.type;
-            req = rpc.req;
-          }
-        }
-        for (const message of service.messages) {
-          if (message.name === req) {
-            for (const key in message.def) {
-              // if message type is a nested message (message.def.nested === true)
-              if (message.def[key].nested) {
-                for (const submess of service.messages) {
-                  if (submess.name === message.def[key].dependent) {
-                    // define obj for the submessage definition
-                    const subObj = {};
-                    for (const subKey in submess.def) {
-                      subObj[subKey] = submess.def[subKey].type
-                        .slice(5)
-                        .toLowerCase();
-                    }
-                    results[key] = subObj;
-                    break;
-                  }
+    [req, streamingType] = [rpc.req, rpc.type];
+
+    for (const message of serviceObj.messages) {
+      if (message.name === req) {
+        for (const key in message.def) {
+          // if message type is a nested message (message.def.nested === true)
+          if (message.def[key].nested) {
+            for (const submess of serviceObj.messages) {
+              if (submess.name === message.def[key].dependent) {
+                // define obj for the submessage definition
+                const subObj = {};
+                for (const subKey in submess.def) {
+                  subObj[subKey] = submess.def[subKey].type
+                    .slice(5)
+                    .toLowerCase();
                 }
-              } else {
-                results[key] = message.def[key].type.slice(5).toLowerCase();
+                results[key] = subObj;
+                break;
               }
             }
-            break;
+          } else {
+            results[key] = message.def[key].type.slice(5).toLowerCase();
           }
         }
+        break;
       }
     }
 
@@ -129,34 +122,34 @@ const GRPCAutoInputForm = (props) => {
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
-    //default options shown for services and request dropdowns
+  //default options shown for services and request dropdowns
   const servicesList = [
     <option key="default" value="services">
       Select Service
-    </option>
+    </option>,
   ];
   const rpcsList = [
     <option key="default" value="requests">
       Select Request
-    </option>
+    </option>,
   ];
 
   // autopopulates the service dropdown list
   if (services) {
-    for (let i = 0; i < services.length; i++) {
+    services.forEach((ser, i) => {
       servicesList.push(
-        <option key={i} value={services[i].name}>
-          {services[i].name}
+        <option key={i} value={ser.name}>
+          {ser.name}
         </option>
       );
-    }
+    });
     // autopopulates the request dropdown list
-    for (const service of services) {
-      if (service.name === selectedService) {
-        for (let i = 0; i < service.rpcs.length; i++) {
+    for (const ser of services) {
+      if (ser.name === selectedService) {
+        for (let i = 0; i < ser.rpcs.length; i++) {
           rpcsList.push(
-            <option key={i} value={service.rpcs[i].name}>
-              {service.rpcs[i].name}
+            <option key={i} value={ser.rpcs[i].name}>
+              {ser.rpcs[i].name}
             </option>
           );
         }
