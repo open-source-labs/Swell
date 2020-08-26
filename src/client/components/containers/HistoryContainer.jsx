@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import HistoryDate from '../display/HistoryDate.jsx';
@@ -20,41 +20,45 @@ const mapDispatchToProps = dispatch => ({
   setNewRequestStreams: (requestStreamsObj) => { dispatch(actions.setNewRequestStreams(requestStreamsObj))}
 });
 
-class HistoryContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
+const HistoryContainer = (props) => {
+  const { 
+    history,
+    clearHistory,
+    deleteFromHistory,
+    setNewRequestFields,
+    setNewRequestHeaders,
+    setNewRequestCookies,
+    setNewRequestBody,
+    setNewRequestStreams
+  } = props;
+  
+  // history is already sorted by created_at from getHistory
+  // 1) map through history state and create date component. 2) pass props to new component 
+  const historyDates = history.map((date, i) => {
+    return <HistoryDate
+      className="historyDate"
+      content={date} 
+      key={i}
+      history={history}
+      deleteFromHistory={deleteFromHistory}
+      setNewRequestFields={setNewRequestFields}
+      setNewRequestHeaders={setNewRequestHeaders}
+      setNewRequestCookies={setNewRequestCookies}
+      setNewRequestBody={setNewRequestBody}
+      setNewRequestStreams={setNewRequestStreams}
+    />
+  })
 
-  render() {
-    // history is already sorted by created_at from getHistory
-    // 1) map through history state and create date component. 2) pass props to new component 
-    const historyDates = this.props.history.map((date, i) => { //nvm nvm
-    // let historyDates = this.props.history.slice().sort((a, b) => parse(b) - parse(a)).map((date, i) => { //wtf
-      return <HistoryDate
-        className="historyDate"
-        content={date} key={i}
-        history={this.props.history}
-        deleteFromHistory={this.props.deleteFromHistory}
-        setNewRequestFields={this.props.setNewRequestFields}
-        setNewRequestHeaders={this.props.setNewRequestHeaders}
-        setNewRequestCookies={this.props.setNewRequestCookies}
-        setNewRequestBody={this.props.setNewRequestBody}
-        setNewRequestStreams={this.props.setNewRequestStreams}
-        newRequestFields={this.props.newRequestFields}
-      />
-    })
-
-    return (
-      <div className="historyDate-container">
-        <h1 className="history_title">History
-          <span className="clear-history">
-            <ClearHistoryBtn clearHistory={this.props.clearHistory} />
-          </span>
-        </h1>
-        {historyDates}
-      </div>
-    )
-  }
+  return (
+    <div className="historyDate-container">
+      <h1 className="history_title">History
+        <span className="clear-history">
+          <ClearHistoryBtn clearHistory={clearHistory} />
+        </span>
+      </h1>
+      {historyDates}
+    </div>
+  )
 }
 
 export default connect(
