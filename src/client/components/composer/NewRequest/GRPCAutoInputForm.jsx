@@ -4,8 +4,8 @@ import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
 const GRPCAutoInputForm = (props) => {
   const [show, toggleShow] = useState(true);
-  const [serviceNameOption, selectServiceOption] = useState(null);
-  const [requestNameOption, selectRequesteOption] = useState(null);
+  const [serviceNameOption, selectServiceOption] = useState("Select Service");
+  const [requestNameOption, selectRequesteOption] = useState("Select Request");
 
   const {
     selectedService,
@@ -18,14 +18,17 @@ const GRPCAutoInputForm = (props) => {
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
-  const setService = () => {
-    selectServiceOption();
-    // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
-    const dropdownService = document.getElementById("dropdownService");
-    const serviceName =
-      dropdownService.options[dropdownService.selectedIndex].text;
+  const setService = (e) => {
+    if (e.target.value) selectServiceOption(e.target.value);
+    console.log(serviceNameOption);
     // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
     document.getElementById("stream").innerText = "STREAM";
+
+    // // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
+    // const dropdownService = document.getElementById("dropdownService");
+    // const serviceName =
+    //   dropdownService.options[dropdownService.selectedIndex].text;
+
     // grabs the request dropdown list and resets it to the first option "Select Request"
     document.getElementById("dropdownRequest").selectedIndex = 0;
     // clears all stream query bodies except the first one
@@ -33,7 +36,7 @@ const GRPCAutoInputForm = (props) => {
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
-      selectedService: serviceName,
+      selectedService: serviceNameOption,
     });
   };
 
@@ -146,14 +149,14 @@ const GRPCAutoInputForm = (props) => {
     : "composer_bodyform_container-closed";
 
   const servicesList = [
-    <option value="services" defaultValue="">
-      Select Service
-    </option>,
+    // <option key="default" value="services">
+    //   Select Service
+    // </option>,
   ];
   const rpcsList = [
-    <option value="requests" defaultValue="">
-      Select Request
-    </option>,
+    // <option key="default" value="requests">
+    //   Select Request
+    // </option>,
   ];
   // const dropdownService = useRef(selectedService);
   // const dropdownRequest = useRef(selectedRequest);
@@ -195,6 +198,7 @@ const GRPCAutoInputForm = (props) => {
       <select
         id="dropdownService"
         onChange={setService}
+        value={serviceNameOption}
         // ref={dropdownService}
         name="dropdownService"
         className={"dropdownService " + bodyContainerClass}
@@ -204,6 +208,7 @@ const GRPCAutoInputForm = (props) => {
 
       <select
         id="dropdownRequest"
+        value={requestNameOption}
         onChange={setRequest}
         // ref={dropdownRequest}
         name="dropdownRequest"
