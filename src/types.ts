@@ -56,3 +56,15 @@ export interface NewRequestBody {
 export interface NewRequestSSE {
   isSSE: boolean;
 };
+
+export interface Message {
+  source: string;
+  timeReceived: number;
+  data: string;
+}
+export interface WebSocketWindowProps {
+  id: number;
+  outgoingMessages: Array<Message>;
+  incomingMessages: Array<Message>;
+  connection: string;
+}
