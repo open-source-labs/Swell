@@ -1,11 +1,9 @@
 import * as React from "react";
 import CookieTableCell from "./CookieTableCell";
-import { any } from "prop-types";
-import { CookieProps } from "../../../types";
 
-const CookieTableRow = ({ cookies }: CookieProps) => {
+const CookieTableRow = ({ cookies }) => {
 
-  let tableCellArray: any[] = [];
+  let tableCellArray;
   for (const key in cookies) {
     tableCellArray.push(
       <CookieTableCell detail={cookies[key]} key={key} />

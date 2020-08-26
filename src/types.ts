@@ -59,15 +59,7 @@ export interface NewRequestSSE {
   isSSE: boolean;
 };
 
-type cookies = {
-  [key: string]: string;
-}
-
 export interface CookieProps {
-  // cookies?: {
-  //   expirationDate?: string;
-    key: keyof cookies;
-  //  };
   cookies: {
     expirationDate: string;
   }
