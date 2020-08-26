@@ -11,6 +11,8 @@ const GRPCAutoInputForm = (props) => {
     services,
     streamsArr,
     streamContent,
+    selectedPackage,
+    selectedStreamingType,
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
@@ -208,10 +210,10 @@ const GRPCAutoInputForm = (props) => {
       <GRPCBodyEntryForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}
-        selectedPackage={props.newRequestStreams.selectedPackage}
-        selectedService={props.newRequestStreams.selectedService}
-        selectedRequest={props.newRequestStreams.selectedRequest}
-        selectedStreamingType={props.newRequestStreams.selectedStreamingType}
+        selectedPackage={selectedPackage}
+        selectedService={selectedService}
+        selectedRequest={selectedRequest}
+        selectedStreamingType={selectedStreamingType}
       />
     </div>
   );
