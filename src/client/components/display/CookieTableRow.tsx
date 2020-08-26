@@ -1,25 +1,22 @@
 import * as React from "react";
-import { CookieTableCell } from "./CookieTableCell";
+import CookieTableCell from "./CookieTableCell";
 import { any } from "prop-types";
+import { CookieProps } from "../../../types";
 
-export class CookieTableRow extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {};
-  }
+const CookieTableRow = ({ cookies }: CookieProps) => {
 
-  render() {
-    let tableCellArray: any[] = [];
-    for (const key in this.props.cookie) {
-      tableCellArray.push(
-        <CookieTableCell detail={this.props.cookie[key]} key={key} />
-      );
-    }
-    if (!this.props.cookie.expirationDate) {
-      tableCellArray.push(<CookieTableCell detail="" key="expirationDate" />);
-    }
-    return <div className="cookieTableRow grid-9">{tableCellArray}</div>;
+  let tableCellArray: any[] = [];
+  for (const key in cookies) {
+    tableCellArray.push(
+      <CookieTableCell detail={cookies[key]} key={key} />
+    );
   }
+  if (!cookies.expirationDate) {
+    tableCellArray.push(<CookieTableCell detail="" key="expirationDate" />);
+  }
+  return (
+    <div className="cookieTableRow grid-9">{tableCellArray}</div>
+  )
 }
 
-//export default CookieTableRow;
+export default CookieTableRow;
