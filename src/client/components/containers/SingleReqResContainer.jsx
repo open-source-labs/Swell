@@ -81,7 +81,7 @@ const SingleReqResContainer = (props) => {
         key={0}
         outgoingMessages={request.messages}
         incomingMessages={response.messages}
-        id={id}
+        content={content}
         connection={connection}
       />
     );

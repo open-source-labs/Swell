@@ -49,7 +49,10 @@ const connectionController = {
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol))
-      wsController.openWSconnection(reqResObj, this.openConnectionArray);
+      // wsController.openWSconnection(reqResObj, this.openConnectionArray);
+      //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      api.send("open-ws", reqResObj, this.openConnectionArray);
+
     //gRPC  connection
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);

@@ -63,7 +63,7 @@ export interface Message {
   data: string;
 }
 export interface WebSocketWindowProps {
-  id: number;
+  content: object[];
   outgoingMessages: Array<Message>;
   incomingMessages: Array<Message>;
   connection: string;

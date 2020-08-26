@@ -5,6 +5,8 @@ import WebSocketMessage from "./WebSocketMessage.jsx";
 import wsController from "../../controllers/wsController";
 import { WebSocketWindowProps } from "../../../types"
 
+const { api } = window;
+
 // interface Message {
 //   source: string;
 //   timeReceived: number;
@@ -18,7 +20,7 @@ import { WebSocketWindowProps } from "../../../types"
 // }
 
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ 
-  id,
+  content,
   outgoingMessages,
   incomingMessages,
   connection
@@ -32,10 +34,14 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
   
   //sends to WScontroller to send the message
   const sendToWSController = () =>  {
-    wsController.sendWebSocketMessage(
-      id,
-      inputMessage
-    );
+    // wsController.sendWebSocketMessage(
+    //   id,
+    //   inputMessage
+    // );
+
+    //send to controller in main node process to send WS message
+    api.send("send-ws", content, inputMessage);
+
     //resets the outgoing message textbox, did this twice???
     setInputMessage('');
     // document.querySelector(".websocket_input-text").value = "";
@@ -113,7 +119,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
 WebSocketWindow.propTypes = {
   outgoingMessages: PropTypes.array.isRequired,
   incomingMessages: PropTypes.array.isRequired,
-  id: PropTypes.any.isRequired,
+  // id: PropTypes.any.isRequired,
   connection: PropTypes.string.isRequired,
 };
 

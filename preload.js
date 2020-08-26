@@ -17,6 +17,8 @@ const apiObj = {
       "quit-and-install",
       "uncaughtException",
       "introspect",
+      "open-ws",
+      "send-ws"
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
