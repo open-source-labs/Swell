@@ -4,6 +4,8 @@ import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
 const GRPCAutoInputForm = (props) => {
   const [show, toggleShow] = useState(true);
+  const [serviceNameOption, selectServiceOption] = useState(null);
+  const [requestNameOption, selectRequesteOption] = useState(null);
 
   const {
     selectedService,
@@ -17,6 +19,7 @@ const GRPCAutoInputForm = (props) => {
 
   // event handler for changes made to the Select Services dropdown list
   const setService = () => {
+    selectServiceOption();
     // grabs the name of the current selected option from the select services dropdown to be saved in the state of the store
     const dropdownService = document.getElementById("dropdownService");
     const serviceName =
@@ -142,8 +145,16 @@ const GRPCAutoInputForm = (props) => {
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
-  const servicesList = [];
-  const rpcsList = [];
+  const servicesList = [
+    <option value="services" defaultValue="">
+      Select Service
+    </option>,
+  ];
+  const rpcsList = [
+    <option value="requests" defaultValue="">
+      Select Request
+    </option>,
+  ];
   // const dropdownService = useRef(selectedService);
   // const dropdownRequest = useRef(selectedRequest);
 
@@ -151,7 +162,7 @@ const GRPCAutoInputForm = (props) => {
   if (services) {
     for (let i = 0; i < services.length; i++) {
       servicesList.push(
-        <option key={i} value={i}>
+        <option key={i} value={services[i].name}>
           {services[i].name}
         </option>
       );
@@ -161,7 +172,7 @@ const GRPCAutoInputForm = (props) => {
       if (service.name === selectedService) {
         for (let i = 0; i < service.rpcs.length; i++) {
           rpcsList.push(
-            <option key={i} value={i}>
+            <option key={i} value={service.rpcs[i].name}>
               {service.rpcs[i].name}
             </option>
           );
@@ -188,9 +199,6 @@ const GRPCAutoInputForm = (props) => {
         name="dropdownService"
         className={"dropdownService " + bodyContainerClass}
       >
-        <option value="services" defaultValue="">
-          Select Service
-        </option>
         {servicesList}
       </select>
 
@@ -201,9 +209,6 @@ const GRPCAutoInputForm = (props) => {
         name="dropdownRequest"
         className={"dropdownRequest " + bodyContainerClass}
       >
-        <option value="requests" defaultValue="">
-          Select Request
-        </option>
         {rpcsList}
       </select>
 
