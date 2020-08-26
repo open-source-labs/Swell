@@ -110,7 +110,7 @@ const graphQLController = {
         secure: eachCookie.secure ? eachCookie.secure : false,
         httpOnly: eachCookie.httponly ? eachCookie.httponly : false,
         session: eachCookie.session ? eachCookie.session : false,
-        expriationDate: eachCookie.expires ? eachCookie.expires : "",
+        expirationDate: eachCookie.expires ? eachCookie.expires : "",
       };
       return cookieFormat;
     });
