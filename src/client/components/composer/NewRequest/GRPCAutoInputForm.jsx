@@ -58,9 +58,7 @@ const GRPCAutoInputForm = (props) => {
     if (!services) return;
     // save the selected service/request and array of all the service objs in variables,
     // which is currently found in the state of the store
-    let streamingType;
-    let packageName;
-    let req;
+    let streamingType, packageName, req;
     const results = {};
     //   for each service obj in the services array, if its name matches the current selected service option then:
     //   - save the package name
