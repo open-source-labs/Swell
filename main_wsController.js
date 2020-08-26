@@ -15,9 +15,9 @@ const wsController = {
 
       console.log('reqResObj',reqResObj)
       //if connection exist, don't create a new one
-      if(connectionArray.filter(obj => obj.id === reqResObj.url)){
-      let socket;
-      try {
+      if(connectionArray.filter(obj => obj.id === reqResObj.url).length !== 1){
+        try {
+          let socket;
         // let socket1 = new WebSocket(reqResObj.url);
         // console.log('socket1', socket1)
         console.log('inside try')

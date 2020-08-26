@@ -1,3 +1,5 @@
+import { string } from "prop-types"
+
 export interface initialState {
   currentTab: string;
   reqResArray: object[];
@@ -57,6 +59,7 @@ export interface NewRequestSSE {
   isSSE: boolean;
 };
 
+<<<<<<< HEAD
 export interface Message {
   source: string;
   timeReceived: number;
@@ -68,3 +71,12 @@ export interface WebSocketWindowProps {
   incomingMessages: Array<Message>;
   connection: string;
 }
+=======
+export interface CookieProps {
+  cookies: {
+    expirationDate: string;
+  }
+  detail?: string;
+  className?: string;
+}
+>>>>>>> master

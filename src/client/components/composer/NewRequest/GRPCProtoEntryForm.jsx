@@ -193,7 +193,7 @@ class GRPCProtoEntryForm extends Component {
           placeholder="Import .proto file or paste a copy"
           rows={8}
           onChange={(e) => this.updateProtoBody(e.target.value)}
-         />
+        />
 
         <button
           className={"import-proto " + smallBtn}
