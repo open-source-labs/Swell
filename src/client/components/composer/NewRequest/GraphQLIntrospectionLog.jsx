@@ -23,18 +23,22 @@ const GraphQLIntrospectionLog = (props) => {
         onClick={() => toggleShow((show) => !show)}
         style={props.stylesObj}
       >
-        <img className={arrowClass} src={dropDownArrow} alt=""/>
+        <img className={arrowClass} src={dropDownArrow} alt="" />
         Schema
       </div>
       <div className={bodyContainerClass}>
-      <div style={{ color: 'red' }}>
-        {introspectionData === "Error: Please enter a valid GraphQL API URI" ? introspectionData: "" }
-      </div>
+        <div style={{ color: "red" }}>
+          {introspectionData === "Error: Please enter a valid GraphQL API URI"
+            ? introspectionData
+            : ""}
+        </div>
         <textarea
           readOnly
           className={`composer_textarea gql introspection-small ${logAreaClass}`}
           value={
-            introspectionData.schemaSDL || 'Click "Introspect" to view GraphQL Schema' || introspectionData
+            introspectionData.schemaSDL ||
+            'Click "Introspect" to view GraphQL Schema' ||
+            introspectionData
           }
         />
         <button

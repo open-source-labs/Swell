@@ -11,8 +11,7 @@ module.exports = () => {
     it("it should send and receive messages", async () => {
       await reqRes.removeBtn.click();
       await sideBar.websocket.click();
-      await sideBar.url.clearElement();
-      await sideBar.url.addValue("wss://echo.websocket.org");
+      await sideBar.url.setValue("wss://echo.websocket.org");
       await sideBar.addRequestBtn.click();
       await reqRes.sendBtn.click();
       await new Promise((resolve) =>

@@ -18,11 +18,6 @@ module.exports = () => {
       before(async function() {
         await sideBar.addRequestBtn.click();
       })
-      
-      it('url input resets', async () => {
-        value = await sideBar.url.getValue(); 
-        assert.strictEqual(value, 'http://');
-      });
 
       it('custom headers disappear', async () => {
         await sideBar.activateHeaders.click();

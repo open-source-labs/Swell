@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import History from "./History.jsx";
 import parse from "date-fns/parse";
 import isYesterday from "date-fns/is_yesterday";
 import isToday from "date-fns/is_today";
 import format from "date-fns/format";
+import History from "./History.jsx";
 
 class HistoryDate extends Component {
   constructor(props) {
@@ -13,12 +13,12 @@ class HistoryDate extends Component {
   }
 
   focusOnForm(event) {
-    let composerUrlField = document.querySelector(".composer_url_input");
+    const composerUrlField = document.querySelector(".composer_url_input");
     composerUrlField.focus();
   }
 
   render() {
-    let current = this.props.history.find(
+    const current = this.props.history.find(
       (a) => a.date === this.props.content.date
     );
     let date = parse(current.date);
@@ -32,7 +32,7 @@ class HistoryDate extends Component {
       date = format(date, "ddd, MMM D, YYYY");
     }
 
-    let histArray = current.history.map((history, i) => {
+    const histArray = current.history.map((history, i) => {
       return (
         <History
           content={history}
@@ -44,6 +44,7 @@ class HistoryDate extends Component {
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
           setNewRequestStreams={this.props.setNewRequestStreams}
+          newRequestFields={this.props.newRequestFields}
         />
       );
     });

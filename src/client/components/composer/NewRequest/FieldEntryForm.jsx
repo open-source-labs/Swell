@@ -1,112 +1,135 @@
-import React, { Component } from "react";
+/* eslint-disable default-case */
+import React, { useRef } from "react";
 import ProtocolSelect from "./ProtocolSelect.jsx";
 import colors from "../../../../assets/style/colors.scss";
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
-class FieldEntryForm extends Component {
-  constructor(props) {
-    super(props);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
-    // this.handleKeyPress = this.handleKeyPress.bind(this);
-  }
+const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewRequestFields, newRequestFields, 
+  setNewRequestBody, newRequestBody,	setNewRequestHeaders, newRequestHeaders:  { headersArr } }) => {
+  // this.handleKeyPress = this.handleKeyPress.bind(this); <-- never used?
 
-  onChangeHandler(e, property, graphQL) {
+  const onChangeHandler = (e, property, network) => {
     const value = e.target.value;
-    if (this.props.warningMessage.uri) {
-      const warningMessage = { ...this.props.warningMessage };
+    if (warningMessage.uri) {
+      const warningMessage = { ...warningMessage };
       delete warningMessage.uri;
-      this.props.setComposerWarningMessage({ ...warningMessage });
+      setComposerWarningMessage({ ...warningMessage });
     }
     switch (property) {
       case "url": {
         const url = value;
-        this.props.setNewRequestFields({
-          ...this.props.newRequestFields,
-          url,
-        });
+        if (network === 'rest') {
+          setNewRequestFields({
+            ...newRequestFields,
+            restUrl: url,
+            url,
+          });
+        }
+        if (network === 'ws') {
+          setNewRequestFields({
+            ...newRequestFields,
+            wsUrl: url,
+            url,
+          });
+        }
+        if (network === 'graphQL') {
+          setNewRequestFields({
+            ...newRequestFields,
+            gqlUrl: url,
+            url,
+          });
+        }
+        if (network === 'grpc') {
+          setNewRequestFields({
+            ...newRequestFields,
+            grpcUrl: url,
+            url,
+          });
+        }
         break;
       }
       case "protocol": {
-        this.props.setComposerWarningMessage({});
+        setComposerWarningMessage({});
 
-        if (graphQL) {
+        if (network === 'graphQL') {
           //if graphql
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
+          setNewRequestFields({
+            ...newRequestFields,
             protocol: "",
-            // url: `http://${afterProtocol}`,
-            url: "http://",
+            url: newRequestFields.gqlUrl,
             method: "QUERY",
             graphQL: true,
             gRPC: false,
+            network: 'graphQL'
           });
-          this.props.setNewRequestBody({
+          setNewRequestBody({
             //when switching to GQL clear body
-            ...this.props.newRequestBody,
+            ...newRequestBody,
             bodyType: "GQL",
             bodyContent: `query {
 
 }`,
+            bodyVariables: ""
           });
           break;
-        } else if (value === "http://") {
+        } else if (network === 'rest') {
           //if http/s
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
+          setNewRequestFields({
+            ...newRequestFields,
             protocol: "",
-            // url: `http://${afterProtocol}`,
-            url: "http://",
+            url: newRequestFields.restUrl,
             method: "GET",
             graphQL: false,
             gRPC: false,
+            network: 'rest'
           });
-          this.props.setNewRequestBody({
+          setNewRequestBody({
             //when switching to http clear body
-            ...this.props.newRequestBody,
+            ...newRequestBody,
             bodyType: "none",
             bodyContent: ``,
           });
           break;
-        } else if (value === "") {
+        } else if (network === 'grpc') {
           //if gRPC
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
+          setNewRequestFields({
+            ...newRequestFields,
             protocol: "",
-            // url: `${afterProtocol}`,
-            url: "URL",
+            url: newRequestFields.grpcUrl,
             method: "",
             graphQL: false,
             gRPC: true,
+            network: 'grpc'
           });
-          this.props.setNewRequestBody({
+          setNewRequestBody({
             //when switching to gRPC clear body
-            ...this.props.newRequestBody,
+            ...newRequestBody,
             bodyType: "GRPC",
             bodyContent: ``,
           });
           break;
-        } else if (value === "ws://") {
+        } else if (network === 'ws') {
           //if ws
-          this.props.setNewRequestFields({
-            ...this.props.newRequestFields,
+          setNewRequestFields({
+            ...newRequestFields,
             protocol: value,
-            // url: value + afterProtocol,
-            url: "ws://",
+            url: newRequestFields.wsUrl,
             method: "",
             graphQL: false,
             gRPC: false,
+            network: 'ws'
           });
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
+          setNewRequestBody({
+            ...newRequestBody,
             bodyType: "none",
             bodyContent: "",
           });
         }
         //removes Content-Type Header
-        const filtered = this.props.newRequestHeaders.headersArr.filter(
+        const filtered = headersArr.filter(
           (header) => header.key.toLowerCase() !== "content-type"
         );
-        this.props.setNewRequestHeaders({
+        setNewRequestHeaders({
           headersArr: filtered,
           count: filtered.length,
         });
@@ -114,17 +137,14 @@ class FieldEntryForm extends Component {
       }
       case "method": {
         const methodReplaceRegex = new RegExp(
-          `${this.props.newRequestFields.method}`,
+          `${newRequestFields.method}`,
           "mi"
         );
         let newBody = "";
-        if (
-          !this.props.newRequestFields.graphQL &&
-          !this.props.newRequestFields.gRPC
-        ) {
+        if (!newRequestFields.graphQL && !newRequestFields.gRPC) {
           //if one of 5 http methods (get, post, put, patch, delete)
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
+          setNewRequestBody({
+            ...newRequestBody,
             bodyType: "raw",
             bodyContent: "",
           });
@@ -132,149 +152,192 @@ class FieldEntryForm extends Component {
         // GraphQL features
         else if (value === "QUERY") {
           //if switching to graphQL = true
-          if (!this.props.newRequestFields.graphQL)
+          if (!newRequestFields.graphQL)
             newBody = `query {
 
 }`;
           else
-            newBody = methodReplaceRegex.test(
-              this.props.newRequestBody.bodyContent
-            )
-              ? this.props.newRequestBody.bodyContent.replace(
+            newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
+              ? newRequestBody.bodyContent.replace(
                   methodReplaceRegex,
                   "query"
                 )
-              : `query ${this.props.newRequestBody.bodyContent}`;
+              : `query ${newRequestBody.bodyContent}`;
 
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
+          setNewRequestBody({
+            ...newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         } else if (value === "MUTATION") {
-          newBody = methodReplaceRegex.test(
-            this.props.newRequestBody.bodyContent
-          )
-            ? this.props.newRequestBody.bodyContent.replace(
+          newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
+            ? newRequestBody.bodyContent.replace(
                 methodReplaceRegex,
                 "mutation"
               )
-            : `mutation ${this.props.newRequestBody.bodyContent}`;
+            : `mutation ${newRequestBody.bodyContent}`;
 
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
+          setNewRequestBody({
+            ...newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         } else if (value === "SUBSCRIPTION") {
-          newBody = methodReplaceRegex.test(
-            this.props.newRequestBody.bodyContent
-          )
-            ? this.props.newRequestBody.bodyContent.replace(
+          newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
+            ? newRequestBody.bodyContent.replace(
                 methodReplaceRegex,
                 "subscription"
               )
-            : `subscription ${this.props.newRequestBody.bodyContent}`;
+            : `subscription ${newRequestBody.bodyContent}`;
 
-          this.props.setNewRequestBody({
-            ...this.props.newRequestBody,
+          setNewRequestBody({
+            ...newRequestBody,
             bodyContent: newBody,
+            bodyIsNew: false,
           });
         }
 
         //always set new method
-        this.props.setNewRequestFields({
-          ...this.props.newRequestFields,
+        setNewRequestFields({
+          ...newRequestFields,
           method: value,
           protocol: value === "SUBSCRIPTION" ? "ws://" : "",
-          url: value === "SUBSCRIPTION" ? "ws://" : "https://",
+          // url: value === "SUBSCRIPTION" ? "ws://" : "https://",
         });
       }
     }
-  }
+  };
 
-  render() {
-    const borderColor = this.props.warningMessage.uri ? "red" : "white";
-    return (
-      <div>
-        <ProtocolSelect
-          currentProtocol={this.props.newRequestFields.protocol}
-          onChangeHandler={this.onChangeHandler}
-          graphQL={this.props.newRequestFields.graphQL}
-          gRPC={this.props.newRequestFields.gRPC}
-          setComposerWarningMessage={this.props.setComposerWarningMessage}
-        />
+  const borderColor = warningMessage.uri ? "red" : "white";
+  const inputEl = useRef(null);
+  return(
+		<div>
+			<ProtocolSelect
+        currentProtocol={newRequestFields.protocol}
+        onChangeHandler={onChangeHandler}
+        graphQL={newRequestFields.graphQL}
+        gRPC={newRequestFields.gRPC}
+        setComposerWarningMessage={setComposerWarningMessage}
+      />
+		
+		<div>
 
-        <div className="composer_method_url_container">
-          {/* below conditional method selection rendering for http/s */}
-          {!/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
-            !this.props.newRequestFields.graphQL &&
-            !this.props.newRequestFields.gRPC && (
-              <select
-                style={{ display: "block" }}
-                value={this.props.newRequestFields.method}
-                className="composer_method_select http"
-                onChange={(e) => {
-                  this.onChangeHandler(e, "method");
-                }}
-              >
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-                <option value="PATCH">PATCH</option>
-                <option value="DELETE">DELETE</option>
-              </select>
-            )}
-          {/* below conditional method selection rendering for graphql */}
-          {
-            // !/wss?:\/\//.test(this.props.newRequestFields.protocol) &&
-            this.props.newRequestFields.graphQL && (
-              <select
-                style={{ display: "block" }}
-                value={this.props.newRequestFields.method}
-                className="composer_method_select gql"
-                onChange={(e) => {
-                  this.onChangeHandler(e, "method");
-                }}
-              >
-                <option value="QUERY">QUERY</option>
-                <option value="MUTATION">MUTATION</option>
-                <option value="SUBSCRIPTION">SUBSCRIPTION</option>
-              </select>
-            )
-          }
+			{/* below conditional method selection rendering for http/s */}
+			{newRequestFields.network === 'rest' && (
+				<div className="composer_method_url_container">
+					<select
+						style={{ display: "block" }}
+						value={newRequestFields.method}
+						className="composer_method_select http"
+						onChange={(e) => {
+							onChangeHandler(e, "method");
+						}}
+					>
+						<option value="GET">GET</option>
+						<option value="POST">POST</option>
+						<option value="PUT">PUT</option>
+						<option value="PATCH">PATCH</option>
+						<option value="DELETE">DELETE</option>
+					</select>
+					<input
+					className="composer_url_input"
+					type="text"
+					placeholder="URL"
+					style={{ borderColor }}
+					value={newRequestFields.restUrl}
+					onChange={(e) => {
+						onChangeHandler(e, "url", newRequestFields.network);
+					}}
+					ref={(input) => {
+						inputEl.current = input;
+					}}
+					/>
+				</div>
+			)}
 
-          {/* gRPC stream type button */}
-          {this.props.newRequestFields.gRPC && (
-            <button
-              style={{ display: "block" }}
-              id="stream"
-              value="STREAM"
-              className="composer_method_select grpc"
-            >
-              STREAM
-            </button>
-          )}
+			{/* below conditional rendering for ws */}
+			{newRequestFields.network === 'ws' && (
+				<input
+				className="composer_url_input"
+				type="text"
+				placeholder="URL"
+				style={{ borderColor }}
+				value={newRequestFields.wsUrl}
+				onChange={(e) => {
+					onChangeHandler(e, "url", newRequestFields.network);
+				}}
+				ref={(input) => {
+					inputEl.current = input;
+				}}
+				/>
+			)}
 
-          <input
-            className="composer_url_input"
-            type="text"
-            placeholder="URL"
-            style={{ borderColor }}
-            value={this.props.newRequestFields.url}
-            onChange={(e) => {
-              this.onChangeHandler(e, "url");
-            }}
-            onKeyPress={this.handleKeyPress}
-            ref={(input) => {
-              this.myInput = input;
-            }}
+			{/* below conditional method selection rendering for graphql */}
+			{newRequestFields.network === 'graphQL' && (
+				<div className="composer_method_url_container">
+					<select
+						style={{ display: "block" }}
+						value={newRequestFields.method}
+						className="composer_method_select gql"
+						onChange={(e) => {
+							onChangeHandler(e, "method");
+						}}
+					>
+						<option value="QUERY">QUERY</option>
+						<option value="MUTATION">MUTATION</option>
+						<option value="SUBSCRIPTION">SUBSCRIPTION</option>
+					</select>
+					<input
+          className="composer_url_input"
+          type="text"
+          placeholder="URL"
+          style={{ borderColor }}
+          value={newRequestFields.gqlUrl}
+          onChange={(e) => {
+            onChangeHandler(e, "url", newRequestFields.network);
+          }}
+          ref={(input) => {
+            inputEl.current = input;
+          }}
           />
-        </div>
-        {this.props.warningMessage.uri && (
-          <div className="warningMessage">{this.props.warningMessage.uri}</div>
+				</div>
+			)}
+
+        {/* gRPC stream type button */}
+        {newRequestFields.network === 'grpc' && (
+          <div className="composer_method_url_container">
+						<button
+							style={{ display: "block" }}
+							id="stream"
+							value="STREAM"
+							className="composer_method_select grpc"
+						>
+							STREAM
+						</button>
+						<input
+						className="composer_url_input"
+						type="text"
+						placeholder="URL"
+						style={{ borderColor }}
+						value={newRequestFields.grpcUrl}
+						onChange={(e) => {
+							onChangeHandler(e, "url", newRequestFields.network);
+						}}
+						ref={(input) => {
+							inputEl.current = input;
+						}}
+						/>
+					</div>
         )}
+
       </div>
-    );
-  }
-}
+
+      {warningMessage.uri && (
+        <div className="warningMessage">{warningMessage.uri}</div>
+      )}
+
+		</div>
+	)
+};
 
 export default FieldEntryForm;

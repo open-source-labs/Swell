@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Header from './Header.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
 
 class CookieEntryForm extends Component {
   constructor(props) {
@@ -98,15 +97,19 @@ class CookieEntryForm extends Component {
         )
     });
 
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
     const cookiesContainerClass = this.state.show ? 'composer_headers_container-open cookies_container' : 'composer_headers_container-closed cookies_container'
 
     return (
       <div>
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} style={{ 'marginTop': '-6px' }} src={dropDownArrow} />
-          Cookies
+        <label
+        title="Add Request Headers"
+        className='composer_subtitle'>
+        <div className="label-text" id="cookie-click" onClick={this.toggleShow}>Cookies</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state"/>
+          <div className="indicator"/>
         </div>
+      </label>
         <div className={cookiesContainerClass}>
           {cookiesArr}
         </div>

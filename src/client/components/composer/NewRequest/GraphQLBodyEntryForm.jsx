@@ -16,17 +16,20 @@ import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x19
 const GraphQLBodyEntryForm = (props) => {
   const {
     newRequestBody: { bodyContent },
+    newRequestBody: { bodyIsNew },
     newRequestBody,
     setNewRequestBody,
     stylesObj,
     introspectionData,
   } = props;
+
   const [show, setShow] = useState(true);
   const [cmValue, setValue] = useState(bodyContent);
 
-  // useEffect(() => {
-  //   if (cmValue !== bodyContent) setValue(bodyContent)
-  // }, [bodyContent])
+  // set a new value for codemirror only if loading from history or changing query type
+  useEffect(() => {
+    if (!bodyIsNew) setValue(bodyContent)
+  }, [bodyContent])
 
   const arrowClass = show
     ? "composer_subtitle_arrow-open"
@@ -62,22 +65,22 @@ const GraphQLBodyEntryForm = (props) => {
             indentUnit: 2,
             tabSize: 2,
           }}
+          editorDidMount={editor => { editor.setSize('100%', 150) }}
           onBeforeChange={(editor, data, value) => {
+            const optionObj = {
+              schema: introspectionData.clientSchema,
+              completeSingle: false,
+            }
             setValue(value);
-            editor.setOption("lint", {
-              schema: introspectionData.clientSchema,
-            });
-            editor.setOption("hintOptions", {
-              schema: introspectionData.clientSchema,
-            });
+            editor.setOption("lint", optionObj);
+            editor.setOption("hintOptions", optionObj);
           }}
           onChange={(editor, data, value) => {
             editor.showHint();
-            // console.log('changing')
-            // console.log('value', value);
             setNewRequestBody({
               ...newRequestBody,
               bodyContent: value,
+              bodyIsNew: true,
             });
           }}
         />

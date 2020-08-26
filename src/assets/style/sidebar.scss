@@ -1,4 +1,50 @@
+.label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
 
+.label-text {
+
+  font-size: 16px;
+  color: $liteblack;
+}
+
+.toggle {
+  margin-left: 16px;
+  isolation: isolate;
+  position: relative;
+  height: 21px;
+  width: 42px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow:
+    -8px -4px 8px 0px #ffffff,
+    8px 4px 12px 0px #d1d9e6,
+    4px 4px 4px 0px #d1d9e6 inset,
+    -4px -4px 4px 0px #ffffff inset;
+}
+
+.toggle-state {
+  display: none;
+}
+
+.indicator {
+  height: 100%;
+  width: 200%;
+  background: #ecf0f3;
+  border-radius: 15px;
+  transform: translate3d(-75%, 0, 0);
+  transition: transform 0.2s cubic-bezier(0.85, 0.05, 0.18, 1.35);
+  box-shadow:
+    -8px -4px 8px 0px #ffffff,
+    8px 4px 12px 0px #d1d9e6;
+}
+
+.toggle-state:checked ~ .indicator {
+  transform: translate3d(25%, 0, 0);
+}
 
 .sidebar_radio-label {
   font-size: 0.9rem;
@@ -146,7 +192,6 @@
     inset 12px 12px 24px #ffffff;
 }
 }
-
 .composer_protocol_button-selected_http {
   border-radius: 15px;
   background: #eeeeee;
@@ -237,6 +282,24 @@
   }
 }
 
+.composer_subitle {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.composer_subtitle_arrow-closed {
+  height: 28px;
+  margin: -3px -6px -8px -7px;
+  transform: rotate(270deg);
+}
+
+.composer_subtitle_arrow-open {
+  height: 28px;
+  margin: -3px -6px -8px -7px;
+}
+
 .composer_url_input {
   color: white;
   border: 5px #eeeeee;
@@ -300,27 +363,17 @@
   }
 }
 
-.composer_subtitle_arrow-closed {
-  height: 28px;
-  margin: -3px -6px -8px -7px;
-  transform: rotate(270deg);
-}
-
-.composer_subtitle_arrow-open {
-  height: 28px;
-  margin: -3px -6px -8px -7px;
-}
-
 .composer_headers_container-open {
   border-radius: 15px;
-  display: flex;
+  height: 100%;
   flex-direction: column;
   margin-bottom: 18px;
   margin-top: 18px;
+  transition: max-height 0.2s ease-out;
 }
 
 .composer_headers_container-closed {
-  display: none;
+  height: 0px;
   overflow: hidden;
 }
 

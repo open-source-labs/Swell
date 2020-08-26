@@ -9,10 +9,15 @@ const initialState = {
   warningMessage: {},
   newRequestFields: {
     protocol: "",
+    restUrl: "http://",
+    wsUrl: "ws://",
+    gqlUrl: "https://",
+    grpcUrl: "",
     url: "http://",
     method: "GET",
     graphQL: false,
     gRPC: false,
+    network: 'rest',
   },
   newRequestHeaders: {
     headersArr: [],
@@ -42,11 +47,13 @@ const initialState = {
     bodyType: "raw",
     rawType: "Text (text/plain)",
     JSONFormatted: true,
+    bodyIsNew: false,
   },
   newRequestSSE: {
     isSSE: false,
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
+  dataPoints: [],
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -187,9 +194,49 @@ const businessReducer = (state = initialState, action) => {
           JSON.parse(JSON.stringify(action.payload))
         ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
+
       return {
         ...state,
         reqResArray: reqResDeepCopy,
+      };
+    }
+
+    case types.UPDATE_GRAPH: {
+      //dataPoints to be used by graph
+      const dataPoints =
+        //if more than 12 points, data will shift down an index
+        state.dataPoints.length < 12
+          ? [...state.dataPoints]
+          : [...state.dataPoints.slice(1)];
+      //check if new object is a closed request with timeSent and timeReceived
+      if (
+        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent)
+      ) {
+        //generate random rgb color to be assigned to this datapoint. Stored as string.
+        const color = [
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+        ].join(", ");
+        //add dataPoint to array and return to state
+        dataPoints.push({
+          url: action.payload.url,
+          timeSent: action.payload.timeSent,
+          timeReceived: action.payload.timeReceived,
+          created_at: action.payload.created_at,
+          color: color,
+        });
+        return {
+          ...state,
+          dataPoints: dataPoints,
+        };
+      } else return state;
+    }
+
+    case types.CLEAR_GRAPH: {
+      return {
+        ...state,
+        dataPoints: [],
       };
     }
 
