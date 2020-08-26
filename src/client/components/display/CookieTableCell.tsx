@@ -1,16 +1,10 @@
 import * as React from "react";
+import { CookieProps } from "../../../types";
 
-export class CookieTableCell extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <div className="cookieTableCell">{this.props.detail.toString()}</div>
-    );
-  }
+const CookieTableCell = ({ detail }: CookieProps) => {
+  return (
+    <div className="cookieTableCell">{detail.toString()}</div>
+  );
 }
 
-//export default CookieTableCell;
+export default CookieTableCell;

@@ -484,7 +484,7 @@ const httpController = {
         secure: eachCookie.secure ? eachCookie.secure : false,
         httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
         session: eachCookie.session ? eachCookie.session : false,
-        expriationDate: eachCookie.expires ? eachCookie.expires : "",
+        expirationDate: eachCookie.expires ? eachCookie.expires : "",
       };
       return cookieFormat;
     });
