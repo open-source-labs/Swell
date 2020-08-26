@@ -393,7 +393,7 @@ const httpController = {
           // Parse response headers now to decide if SSE or not.
           const heads = response.headers;
           reqResObj.response.headers = heads;
-
+          reqResObj.connection = "closed";
           reqResObj.timeReceived = Date.now();
           // send back reqResObj to renderer so it can update the redux store
           event.sender.send("reqResUpdate", reqResObj);
