@@ -41,6 +41,7 @@ const connectionController = {
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
+    console.log('connectionArray', this.openConnectionArray)
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
