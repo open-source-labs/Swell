@@ -22,8 +22,6 @@ const GRPCAutoInputForm = (props) => {
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
     selectServiceOption(e.target.value)
-    // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
-    document.getElementById("stream").innerText = "STREAM";
     // clears all stream query bodies except the first one
     props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
@@ -102,13 +100,6 @@ const GRPCAutoInputForm = (props) => {
           }
         }
       }
-    }
-    // update button display for streaming type listed next to url
-    const streamBtn = document.getElementById("stream");
-    if (streamingType === undefined) {
-      streamBtn.innerText = "STREAM";
-    } else {
-      streamBtn.innerText = streamingType;
     }
 
     // push JSON formatted query in streamContent arr
