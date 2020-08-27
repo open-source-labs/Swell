@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_black_192x192.png'
+import React, { Component } from "react";
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 import GRPCBodyStream from "./GRPCBodyStream.jsx";
 
 class GRPCBodyEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true
+      show: true,
     };
     // need to bind the 'this' of the event handler to the component instance when it is being rendered
     this.toggleShow = this.toggleShow.bind(this);
@@ -14,29 +14,31 @@ class GRPCBodyEntryForm extends Component {
     this.addStream = this.addStream.bind(this);
   }
 
-  // event handler on the arrow button that allows you to open/close the section 
+  // event handler on the arrow button that allows you to open/close the section
   toggleShow() {
     this.setState({
-      show: !this.state.show
+      show: !this.state.show,
     });
   }
 
   // when application first loads
   componentDidMount() {
     if (this.props.newRequestStreams.streamsArr.length === 0) {
-      const streamsDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestStreams.streamsArr));
+      const streamsDeepCopy = JSON.parse(
+        JSON.stringify(this.props.newRequestStreams.streamsArr)
+      );
       // add fist stream body to the streamsArr (streamsDeepCopy)
       streamsDeepCopy.push({
         id: this.props.newRequestStreams.count,
-        query: ''
+        query: "",
       });
       // sets the first query in the intial stream body to an empty string
-      this.props.newRequestStreams.streamContent.push('')
+      this.props.newRequestStreams.streamContent.push("");
       // update state in the store
       this.props.setNewRequestStreams({
         streamsArr: streamsDeepCopy,
         count: streamsDeepCopy.length,
-        streamContent: this.props.newRequestStreams.streamContent
+        streamContent: this.props.newRequestStreams.streamContent,
       });
     }
   }
@@ -50,8 +52,8 @@ class GRPCBodyEntryForm extends Component {
     // construct new stream body obj & push into the streamsArr
     const newStream = {};
     newStream.id = this.props.newRequestStreams.count;
-    newStream.query = firstBodyQuery
-    streamsArr.push(newStream)
+    newStream.query = firstBodyQuery;
+    streamsArr.push(newStream);
     // push query of initial stream body into streamContent array
     streamContent.push(firstBodyQuery);
     // update mew state in the store
@@ -59,7 +61,7 @@ class GRPCBodyEntryForm extends Component {
       ...this.props.newRequestStreams,
       streamsArr,
       count: streamsArr.length,
-      streamContent
+      streamContent,
     });
   }
 
@@ -78,40 +80,49 @@ class GRPCBodyEntryForm extends Component {
         this.props.setNewRequestStreams({
           ...this.props.newRequestStreams,
           streamsArr,
-          streamContent: this.props.newRequestStreams.streamContent
+          streamContent: this.props.newRequestStreams.streamContent,
         });
-      };
+      }
     }
   }
 
   render() {
     // for each stream body in the streamArr, render the GRPCBodyStream component
-    const streamArr = this.props.newRequestStreams.streamsArr.map((stream, index) => (
-      <GRPCBodyStream
-      newRequestStreams={this.props.newRequestStreams}
-      setNewRequestStreams={this.props.setNewRequestStreams}
-      selectedPackage={this.props.newRequestStreams.selectedPackage}
-      selectedService={this.props.selectedService}
-      selectedRequest={this.props.selectedRequest}
-      selectedStreamingType={this.props.selectedStreamingType}
-      changeHandler={this.onChangeUpdateStream}
-      stream={stream}
-      key={index}
-      streamNum={index}
-      history={this.props.history}
-    />
-    ))
+    const streamArr = this.props.newRequestStreams.streamsArr.map(
+      (stream, index) => (
+        <GRPCBodyStream
+          newRequestStreams={this.props.newRequestStreams}
+          setNewRequestStreams={this.props.setNewRequestStreams}
+          selectedPackage={this.props.newRequestStreams.selectedPackage}
+          selectedService={this.props.selectedService}
+          selectedRequest={this.props.selectedRequest}
+          selectedStreamingType={this.props.selectedStreamingType}
+          changeHandler={this.onChangeUpdateStream}
+          stream={stream}
+          key={index}
+          streamNum={index}
+          history={this.props.history}
+        />
+      )
+    );
     // arrow button used to collapse or open the Body section
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const bodyContainerClass = this.state.show ? 'composer_bodyform_container-open' : 'composer_bodyform_container-closed';
+    const arrowClass = this.state.show
+      ? "composer_subtitle_arrow-open"
+      : "composer_subtitle_arrow-closed";
+    const bodyContainerClass = this.state.show
+      ? "composer_bodyform_container-open"
+      : "composer_bodyform_container-closed";
     //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
     let addStreamBtn;
-    if (this.props.selectedStreamingType === "CLIENT STREAM" || this.props.selectedStreamingType === "BIDIRECTIONAL") {
+    if (
+      this.props.selectedStreamingType === "CLIENT STREAM" ||
+      this.props.selectedStreamingType === "BIDIRECTIONAL"
+    ) {
       addStreamBtn = (
-        <div className="add-stream-btn">
-         <button className="add-stream-btn button" onClick={this.addStream}>Add Stream</button>
-        </div>
-      )
+        <button className="add-stream-btn" onClick={this.addStream}>
+          Add Stream
+        </button>
+      );
     }
     /*
     pseudocode for the return section
@@ -120,14 +131,16 @@ class GRPCBodyEntryForm extends Component {
      - if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
      */
     return (
-      <div >
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
+      <div>
+        <div
+          className="composer_subtitle"
+          onClick={this.toggleShow}
+          style={this.props.stylesObj}
+        >
           <img className={arrowClass} src={dropDownArrow} />
           Body
         </div>
-        <section className={bodyContainerClass}>
-          {streamArr}
-        </section>
+        <section className={bodyContainerClass}>{streamArr}</section>
         {addStreamBtn}
       </div>
     );
