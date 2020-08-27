@@ -17,7 +17,7 @@ const initialState = {
     method: "GET",
     graphQL: false,
     gRPC: false,
-    network: 'rest',
+    network: "rest",
   },
   newRequestHeaders: {
     headersArr: [],
@@ -30,6 +30,8 @@ const initialState = {
     selectedPackage: null,
     selectedRequest: null,
     selectedService: null,
+    selectedServiceObj: null,
+    selectedRequestObj: null,
     selectedStreamingType: null,
     initialQuery: null,
     queryArr: null,

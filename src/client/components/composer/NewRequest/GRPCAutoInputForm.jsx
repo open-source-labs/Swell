@@ -17,17 +17,20 @@ const GRPCAutoInputForm = (props) => {
     streamContent,
     selectedPackage,
     selectedStreamingType,
+    selectedServiceObj,
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
     selectServiceOption(e.target.value);
+    const serviceObj = services.find((ser) => ser.name === e.target.value);
     // clears all stream query bodies except the first one
     props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       selectedService: e.target.value,
+      selectedServiceObj: serviceObj,
     });
   };
 
@@ -51,10 +54,9 @@ const GRPCAutoInputForm = (props) => {
   };
 
   useEffect(() => {
-    if (!services) return;
+    if (!selectedRequest || !selectedServiceObj) return;
     // save the selected service/request and array of all the service objs in variables,
     // which is currently found in the state of the store
-    let streamingType, packageName, req;
     const results = {};
     //   for each service obj in the services array, if its name matches the current selected service option then:
     //   - save the package name
@@ -64,34 +66,32 @@ const GRPCAutoInputForm = (props) => {
     //  - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
     //  - iterate through the messages and if its name matches the saved req/rpc name,
     //  then push each key/value pair of the message definition into the results array
-    const serviceObj = services.find((ser) => ser.name === selectedService);
-    const rpc = serviceObj.rpcs.find((rpc) => rpc.name === selectedRequest);
 
-    [req, streamingType] = [rpc.req, rpc.type];
+    // const serviceObj = services.find((ser) => ser.name === selectedService);
+    const rpc = selectedServiceObj.rpcs.find(
+      (rpc) => rpc.name === selectedRequest
+    );
 
-    for (const message of serviceObj.messages) {
-      if (message.name === req) {
-        for (const key in message.def) {
-          // if message type is a nested message (message.def.nested === true)
-          if (message.def[key].nested) {
-            for (const submess of serviceObj.messages) {
-              if (submess.name === message.def[key].dependent) {
-                // define obj for the submessage definition
-                const subObj = {};
-                for (const subKey in submess.def) {
-                  subObj[subKey] = submess.def[subKey].type
-                    .slice(5)
-                    .toLowerCase();
-                }
-                results[key] = subObj;
-                break;
-              }
+    const message = selectedServiceObj.messages.find(
+      (msg) => msg.name === rpc.req
+    );
+
+    for (const key in message.def) {
+      // if message type is a nested message (message.def.nested === true)
+      if (message.def[key].nested) {
+        for (const submess of selectedServiceObj.messages) {
+          if (submess.name === message.def[key].dependent) {
+            // define obj for the submessage definition
+            const subObj = {};
+            for (const subKey in submess.def) {
+              subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase();
             }
-          } else {
-            results[key] = message.def[key].type.slice(5).toLowerCase();
+            results[key] = subObj;
+            break;
           }
         }
-        break;
+      } else {
+        results[key] = message.def[key].type.slice(5).toLowerCase();
       }
     }
 
@@ -106,8 +106,8 @@ const GRPCAutoInputForm = (props) => {
 
     props.setNewRequestStreams({
       ...props.newRequestStreams,
-      selectedPackage: serviceObj.packageName,
-      selectedStreamingType: streamingType,
+      selectedPackage: selectedServiceObj.packageName,
+      selectedStreamingType: rpc.type,
       streamsArr,
       streamContent,
       initialQuery: queryJSON,
@@ -143,17 +143,15 @@ const GRPCAutoInputForm = (props) => {
         </option>
       );
     });
-    // autopopulates the request dropdown list
-    for (const ser of services) {
-      if (ser.name === selectedService) {
-        for (let i = 0; i < ser.rpcs.length; i++) {
-          rpcsList.push(
-            <option key={i} value={ser.rpcs[i].name}>
-              {ser.rpcs[i].name}
-            </option>
-          );
-        }
-      }
+  }
+  // autopopulates the request dropdown list
+  if (selectedServiceObj) {
+    for (let i = 0; i < selectedServiceObj.rpcs.length; i++) {
+      rpcsList.push(
+        <option key={i} value={selectedServiceObj.rpcs[i].name}>
+          {selectedServiceObj.rpcs[i].name}
+        </option>
+      );
     }
   }
 
