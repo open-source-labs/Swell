@@ -41,6 +41,7 @@ const GRPCAutoInputForm = (props) => {
     selectRequestOption(e.target.value);
     const requestName =
       e.target.value !== "Select Request" ? e.target.value : null;
+    props.clearStreamBodies();
 
     // clears all stream bodies except the first when switching from client/directional stream to something else
     const newStreamsArr = [streamsArr[0]];
@@ -52,13 +53,15 @@ const GRPCAutoInputForm = (props) => {
       selectedPackage: null,
       selectedRequest: requestName,
       selectedStreamingType: null,
-      newStreamContent,
-      newStreamsArr,
+      streamContent: newStreamContent,
+      streamsArr: newStreamsArr,
     });
   };
 
   useEffect(() => {
-    if (!selectedRequest || !selectedServiceObj) return;
+    if (!selectedRequest || !selectedServiceObj) {
+      return;
+    }
     // save the selected service/request and array of all the service objs in variables,
     // which is currently found in the state of the store
     const results = {};
