@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import WWWForm from "./WWWForm.jsx";
 import BodyTypeSelect from "./BodyTypeSelect.jsx";
 import JSONTextArea from "./JSONTextArea.jsx";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const BodyEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
