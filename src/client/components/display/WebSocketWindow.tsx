@@ -34,6 +34,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
   
   //sends to WScontroller to send the message
   const sendToWSController = () =>  {
+    console.log('content', content)
     // wsController.sendWebSocketMessage(
     //   id,
     //   inputMessage
@@ -41,6 +42,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
 
     //send to controller in main node process to send WS message
     api.send("send-ws", content, inputMessage);
+    console.log('sending ws to node process')
 
     //resets the outgoing message textbox, did this twice???
     setInputMessage('');

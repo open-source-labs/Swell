@@ -37,21 +37,44 @@ const wsController = {
 			event.sender.send("reqResUpdate", reqResObj);
 			return;
 		}
-
+		// let connect;
 		socket.on('connect', (connection) => {
 			console.log('inside open event')
+			// connection.close();
+			console.log('after close')
 			reqResObj.connection = 'open';
+			console.log('connection', connection)
+			const openConnectionObj = {
+				connection: connection,
+				protocol: 'WS',
+				id: reqResObj.id,
+			};
+			// console.log('before openconnection push')
+			console.log('connectionArray', connectionArray)
+			connectionArray.push(openConnectionObj);
+			console.log('connectionArray after', connectionArray)
+			event.sender.send("update-connectionArray", connectionArray);
+			// connect = connection;
 			// reqResObj.socket = socket;
 			// store.default.dispatch(actions.reqResUpdate(reqResObj));
 			event.sender.send("reqResUpdate", reqResObj);
-
+			connection.on('close', () => {
+        console.log('closed WS');
+		});
+			//listen for close event from client
+			ipcMain.on('close-ws', (event) => {
+				console.log('closing connection')
+				connection.close();
+			})
 			//listen for messages sent from client
 			ipcMain.on("send-ws", (event, reqResObj, inputMessage) => {
 				console.log('in sendWSMessage')
+				console.log('reqResObj.id', reqResObj.id);
+				console.log('request messages', reqResObj.request.messages)
 				// const state = store.getState();
 				// console.log('reqResObj',reqResObj)
-		// const matchedConnection = connectionController.getConnectionObject(reqResId);
-				connection.sendUTF(inputMessage);
+				// const matchedConnection = connectionController.getConnectionObject(reqResId);
+				connection.send(inputMessage);
 
 		// get fresh copy of reqRes
 		// const reqResObj = store.default.getState().business.reqResArray
@@ -63,7 +86,8 @@ const wsController = {
 					data: inputMessage,
 					timeReceived: Date.now(),
 				});
-				console.log('reqRes after sending', reqResObj);
+				console.log('reqRes after sending', reqResObj.request.messages);
+
 				event.sender.send("reqResUpdate", reqResObj);
 				connection.on('message', (e) => {
 					console.log('inside message event')
@@ -121,16 +145,7 @@ const wsController = {
 
 		// });
 
-		const openConnectionObj = {
-			socket,
-			protocol: 'WS',
-			id: reqResObj.id,
-		};
-		// console.log('before openconnection push')
-		console.log('connectionArray', connectionArray)
-		connectionArray.push(openConnectionObj);
-		console.log('connectionArray after', connectionArray)
-		// event.sender.send("reqResUpdate", reqResObj);
+		
 	},
 
 	// sendWebSocketMessage(event, reqResObj, message) {
