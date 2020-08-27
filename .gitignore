@@ -62,9 +62,7 @@ ehthumbs.db
 protos/
 
 # testing #
-test/*.png
-
-test/subSuites/websocketTest.js
+test/subSuites/*.png
 
 
 # db #
