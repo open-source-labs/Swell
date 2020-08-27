@@ -158,15 +158,14 @@ const GRPCAutoInputForm = (props) => {
 
   return (
     <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => toggleShow(!show)}
-        style={props.stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} />
-        Stream
-      </div>
-
+      <label
+        className='composer_subtitle' >
+          <div className="label-text" id="cookie-click">Stream</div>
+          <div className="toggle">
+            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
+            <div className="indicator_body" />
+          </div>
+        </label>
       <select
         id="dropdownService"
         value={serviceNameOption}
