@@ -3,9 +3,10 @@ import React, { useRef } from "react";
 import ProtocolSelect from "./ProtocolSelect.jsx";
 import colors from "../../../../assets/style/colors.scss";
 import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
+import { setNewRequestStreams } from "../../../actions/actions.js";
 
 const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewRequestFields, newRequestFields, 
-  setNewRequestBody, newRequestBody,	setNewRequestHeaders, newRequestHeaders:  { headersArr } }) => {
+  setNewRequestBody, newRequestBody,	setNewRequestHeaders, newRequestStreams, newRequestHeaders:  { headersArr } }) => {
   // this.handleKeyPress = this.handleKeyPress.bind(this); <-- never used?
 
   const onChangeHandler = (e, property, network) => {
@@ -210,6 +211,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
 
   const borderColor = warningMessage.uri ? "red" : "white";
   const inputEl = useRef(null);
+  const grpcStreamLabel = newRequestStreams.selectedStreamingType || 'STREAM' 
   return(
 		<div>
 			<ProtocolSelect
@@ -312,7 +314,7 @@ const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewReques
 							value="STREAM"
 							className="composer_method_select grpc"
 						>
-							STREAM
+							{grpcStreamLabel}
 						</button>
 						<input
 						className="composer_url_input"
