@@ -17,25 +17,31 @@ const GRPCAutoInputForm = (props) => {
     streamContent,
     selectedPackage,
     selectedStreamingType,
+    selectedServiceObj,
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
-    selectServiceOption(e.target.value)
-    // grabs the stream button next the URL and resets the text to "STREAM" after another service is selected
-    document.getElementById("stream").innerText = "STREAM";
+    selectServiceOption(e.target.value);
+    const serviceName =
+      e.target.value !== "Select Service" ? e.target.value : null;
+    const serviceObj = services.find((ser) => ser.name === e.target.value);
     // clears all stream query bodies except the first one
     props.clearStreamBodies();
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
-      selectedService: e.target.value,
+      selectedService: serviceName,
+      selectedServiceObj: serviceObj,
     });
   };
 
   // event handler for changes made to the Select Requests dropdown list
   const setRequest = (e) => {
-    selectRequestOption(e.target.value)
+    selectRequestOption(e.target.value);
+    const requestName =
+      e.target.value !== "Select Request" ? e.target.value : null;
+    props.clearStreamBodies();
 
     // clears all stream bodies except the first when switching from client/directional stream to something else
     const newStreamsArr = [streamsArr[0]];
@@ -45,87 +51,66 @@ const GRPCAutoInputForm = (props) => {
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       selectedPackage: null,
-      selectedRequest: e.target.value,
+      selectedRequest: requestName,
       selectedStreamingType: null,
-      newStreamContent,
-      newStreamsArr,
+      streamContent: newStreamContent,
+      streamsArr: newStreamsArr,
     });
   };
 
   useEffect(() => {
-    if (!services) return;
-    // save the selected service/request and array of all the service objs in variables,
-    // which is currently found in the state of the store
-    let streamingType, packageName, req;
+    //if no selected request or service object, return out and don't update
+    if (!selectedRequest || !selectedServiceObj) return;
+
+    //find rpc object that matches selectedRequest name
+    const rpc = selectedServiceObj.rpcs.find(
+      (rpc) => rpc.name === selectedRequest
+    );
+    //find message object that matches rpc request name
+    const message = selectedServiceObj.messages.find(
+      (msg) => msg.name === rpc.req
+    );
+
+    //declare empty results obj that will become the initial query
     const results = {};
-    //   for each service obj in the services array, if its name matches the current selected service option then:
-    //   - save the package name
-    //   - iterate through the rpcs and if its name matches the current selected request then save its streaming type
-
-    //  for each service obj in the services array, if its name matches the current selected service option then:
-    //  - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
-    //  - iterate through the messages and if its name matches the saved req/rpc name,
-    //  then push each key/value pair of the message definition into the results array
-
-    for (const service of services) {
-      if (service.name === selectedService) {
-        packageName = service.packageName;
-        for (const rpc of service.rpcs) {
-          if (rpc.name === selectedRequest) {
-            streamingType = rpc.type;
-            req = rpc.req;
-          }
-        }
-        for (const message of service.messages) {
-          if (message.name === req) {
-            for (const key in message.def) {
-              // if message type is a nested message (message.def.nested === true)
-              if (message.def[key].nested) {
-                for (const submess of service.messages) {
-                  if (submess.name === message.def[key].dependent) {
-                    // define obj for the submessage definition
-                    const subObj = {};
-                    for (const subKey in submess.def) {
-                      subObj[subKey] = submess.def[subKey].type
-                        .slice(5)
-                        .toLowerCase();
-                    }
-                    results[key] = subObj;
-                    break;
-                  }
-                }
-              } else {
-                results[key] = message.def[key].type.slice(5).toLowerCase();
-              }
+    // push each key/value pair of the message definition into the results obj
+    for (const key in message.def) {
+      // if message type is a nested message (message.def.nested === true)
+      if (message.def[key].nested) {
+        for (const submess of selectedServiceObj.messages) {
+          if (submess.name === message.def[key].dependent) {
+            // define obj for the submessage definition
+            const subObj = {};
+            for (const subKey in submess.def) {
+              subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase();
             }
+            results[key] = subObj;
             break;
           }
         }
+      } else {
+        results[key] = message.def[key].type.slice(5).toLowerCase();
       }
     }
-    // update button display for streaming type listed next to url
-    const streamBtn = document.getElementById("stream");
-    if (streamingType === undefined) {
-      streamBtn.innerText = "STREAM";
-    } else {
-      streamBtn.innerText = streamingType;
-    }
+    //shally copy streamsArr and streamCopy to reassign in store
+    const streamsArrCopy = [...streamsArr];
+    const streamContentCopy = [...streamContent];
 
     // push JSON formatted query in streamContent arr
     const queryJSON = JSON.stringify(results, null, 4);
-    if (streamsArr[0] !== "") {
-      streamsArr[0].query = queryJSON;
+    if (streamsArrCopy[0] !== "") {
+      streamsArrCopy[0].query = queryJSON;
     }
     // remove initial empty string then push new query to stream content arr
-    streamContent.pop();
-    streamContent.push(queryJSON);
+    streamContentCopy.pop();
+    streamContentCopy.push(queryJSON);
 
     props.setNewRequestStreams({
       ...props.newRequestStreams,
-      selectedPackage: packageName,
-      selectedStreamingType: streamingType,
-      streamsArr,
-      streamContent,
+      selectedPackage: selectedServiceObj.packageName,
+      selectedStreamingType: rpc.type,
+      streamsArr: streamsArrCopy,
+      streamContent: streamContentCopy,
       initialQuery: queryJSON,
     });
   }, [selectedRequest]);
@@ -138,38 +123,36 @@ const GRPCAutoInputForm = (props) => {
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
-    //default options shown for services and request dropdowns
+  //default options shown for services and request dropdowns
   const servicesList = [
-    <option key="default" value="services">
+    <option key="default" value="Select Service">
       Select Service
-    </option>
+    </option>,
   ];
   const rpcsList = [
-    <option key="default" value="requests">
+    <option key="default" value="Select Request">
       Select Request
-    </option>
+    </option>,
   ];
 
   // autopopulates the service dropdown list
   if (services) {
-    for (let i = 0; i < services.length; i++) {
+    services.forEach((ser, i) => {
       servicesList.push(
-        <option key={i} value={services[i].name}>
-          {services[i].name}
+        <option key={i} value={ser.name}>
+          {ser.name}
         </option>
       );
-    }
-    // autopopulates the request dropdown list
-    for (const service of services) {
-      if (service.name === selectedService) {
-        for (let i = 0; i < service.rpcs.length; i++) {
-          rpcsList.push(
-            <option key={i} value={service.rpcs[i].name}>
-              {service.rpcs[i].name}
-            </option>
-          );
-        }
-      }
+    });
+  }
+  // autopopulates the request dropdown list
+  if (selectedServiceObj) {
+    for (let i = 0; i < selectedServiceObj.rpcs.length; i++) {
+      rpcsList.push(
+        <option key={i} value={selectedServiceObj.rpcs[i].name}>
+          {selectedServiceObj.rpcs[i].name}
+        </option>
+      );
     }
   }
 

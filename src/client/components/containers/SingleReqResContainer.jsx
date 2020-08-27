@@ -30,12 +30,12 @@ const SingleReqResContainer = (props) => {
     reqResDelete,
   } = props;
 
-  // checked and minimized probably shouldn't be in state,
-  // buuut they currently have many dependecies so leaving this way for now
-  let { checked, minimized } = content;
+// content.minimized and content.checked are not destructured.
+// There is an issue with destructuring them from content, updating them, and passing
+// the new content in reqResUpdate
 
   const onCheckHandler = () => {
-    checked = !checked;
+    content.checked = !content.checked;
     reqResUpdate(content);
   }
 
@@ -45,7 +45,7 @@ const SingleReqResContainer = (props) => {
   }
 
   const minimize = () => {
-    minimized = !minimized;
+    content.minimized = !content.minimized;
     reqResUpdate(content);
   }
 
@@ -144,7 +144,7 @@ const SingleReqResContainer = (props) => {
   }
 
   // TODO: remove later
-  const arrowClass = !minimized
+  const arrowClass = !content.minimized
     ? "composer_subtitle_arrow-open"
     : "composer_subtitle_arrow-closed";
   
@@ -170,13 +170,13 @@ const SingleReqResContainer = (props) => {
           //----------------------------------------
           //Contitionally minimize the current reqRescontainer
           //----------------------------------------
-          !minimized && (
+          !content.minimized && (
             <>
               <div className="grid-7">
                 <div>
                   <input
                     id={id}
-                    checked={checked}
+                    checked={content.checked}
                     className="reqres_select-radio"
                     name="resreq-select"
                     type="checkbox"
