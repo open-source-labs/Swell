@@ -31,7 +31,6 @@ const initialState = {
     selectedRequest: null,
     selectedService: null,
     selectedServiceObj: null,
-    selectedRequestObj: null,
     selectedStreamingType: null,
     initialQuery: null,
     queryArr: null,
