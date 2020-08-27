@@ -483,6 +483,7 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
 });
 
 const { onError } = require('apollo-link-error');
+const { response } = require("express");
 
 ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
@@ -558,15 +559,29 @@ ipcMain.on("open-gql", (event, args) => {
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.forEach(({ message, locations, path }) =>{
-        console.log(
-          `errorLink [GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-        return message;
-      }
-      );
-    if (networkError) console.log(`errorLink [Network error]: ${networkError}`);
+    console.log('graphqlerrors in errorlink', graphQLErrors);
+    // check if there are any errors in the array
+    if (graphQLErrors.length !== 0) { 
+      reqResObj.error = graphQLErrors[0];
+      // console.log(`errorLink [Network error]: ${networkError}`)
+      event.sender.send("reply-gql",{ error: graphQLErrors[0], reqResObj })
+    }
+      // graphQLErrors.forEach(({ message, locations, path }) =>{
+      //   console.log(
+      //     `errorLink [GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      //   )
+      //   return message;
+      // }
+      // );
+    if (networkError) {
+      console.log('inif network error', networkError)
+      reqResObj.error = networkError;
+      console.log(`errorLink [Network error]: ${networkError}`)
+      event.sender.send("reply-gql",{ error: networkError, reqResObj })
+    };
+
+    // reqResObj.error = err;
+    //     event.sender.send("reply-gql", { error: err, reqResObj });
   });
 
   // additive composition of multiple links
@@ -581,33 +596,33 @@ ipcMain.on("open-gql", (event, args) => {
     const body = gql`
     ${reqResObj.request.body}
     `;
-  const variables = reqResObj.request.bodyVariables
-    ? JSON.parse(reqResObj.request.bodyVariables)
-    : {};
-  if (reqResObj.request.method === "QUERY") {
-    client
-      .query({ query: body, variables })
-
-      .then((data) => {
-        event.sender.send("reply-gql", { reqResObj, data });
-      })
-      .catch((err) => {
-        console.error('gql query error', err);
-        reqResObj.error = err;
-        event.sender.send("reply-gql", { error: err, reqResObj });
-      });
-  } else if (reqResObj.request.method === "MUTATION") {
-    client
-      .mutate({ mutation: body, variables })
-      .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
-      .catch((err) => {
-        console.error('gql mutation error', err);
-      });
-  }
+    const variables = reqResObj.request.bodyVariables
+      ? JSON.parse(reqResObj.request.bodyVariables)
+      : {};
+    if (reqResObj.request.method === "QUERY") {
+      client
+        .query({ query: body, variables })
+        .then((data) => {
+          event.sender.send("reply-gql", { reqResObj, data });
+        })
+        .catch((err) => {
+          console.log('error handled?')
+          // console.error('gql query error', err);
+          // reqResObj.error = err;
+          // event.sender.send("reply-gql", { error: err, reqResObj });
+        });
+    } else if (reqResObj.request.method === "MUTATION") {
+      client
+        .mutate({ mutation: body, variables })
+        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .catch((err) => {
+          console.error('gql mutation error', err);
+        });
+    }
   } catch (e) {
-    console.log('error in open-gql, main.js', e);
-    reqResObj.error = err;
-    event.sender.send("reply-gql", { error: e, reqResObj })
+    // console.log('error in open-gql, main.js', e);
+    // reqResObj.error = e;
+    // event.sender.send("reply-gql", { error: e, reqResObj })
   }
   
 });

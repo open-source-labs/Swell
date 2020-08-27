@@ -21,6 +21,7 @@ const graphQLController = {
     //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
+        console.log('sendtoGQLMain response', response)
         // extra case for chance that response has "errors" prop instead of "error"
         if (response.error)
           this.handleError(response.error, response.reqResObj);
@@ -86,15 +87,20 @@ const graphQLController = {
     reqResObj.connection = "closed";
     reqResObj.connectionType = "plain";
     reqResObj.timeReceived = Date.now();
+    console.log('handle respose',response)
+    console.log('handle respose reqres',reqResObj)
     reqResObj.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
   handleError(errorsObj, reqResObj) {
+    console.log('in handle error', errorsObj)
     reqResObj.connection = "error";
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(errorsObj));
+    // reset error property to get fix circular json tpye error
+    reqResObj.error = errorsObj.error
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 
