@@ -2,22 +2,9 @@
 import React, { useState } from "react";
 import PropTypes, { string } from "prop-types";
 import WebSocketMessage from "./WebSocketMessage.jsx";
-import wsController from "../../controllers/wsController";
 import { WebSocketWindowProps } from "../../../types"
 
 const { api } = window;
-
-// interface Message {
-//   source: string;
-//   timeReceived: number;
-//   data: string;
-// }
-// interface WebSocketWindowProps {
-//   id: number;
-//   outgoingMessages: Array<Message>;
-//   incomingMessages: Array<Message>;
-//   connection: string;
-// }
 
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ 
   content,
@@ -34,36 +21,24 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
   
   //sends to WScontroller to send the message
   const sendToWSController = () =>  {
-    console.log('content', content)
-    // wsController.sendWebSocketMessage(
-    //   id,
-    //   inputMessage
-    // );
-
-    //send to controller in main node process to send WS message
     api.send("send-ws", content, inputMessage);
-    console.log('sending ws to node process')
-
-    //resets the outgoing message textbox, did this twice???
+    //reset inputbox
     setInputMessage('');
-    // document.querySelector(".websocket_input-text").value = "";
   }
 
-  //when you press enter send the message
+  //when you press enter send the message, send message to socket
   const handleKeyPress = (event: {key: string}) => {
     if (event.key === "Enter") {
       sendToWSController();
     }
   }
 
-    //maps outgoing Messages, sets them as client,
+  //maps the messages to view in chronological order and by whom
   const combinedMessagesReactArr = outgoingMessages
       .map((message) => {
         message.source = "client";
         return message;
       })
-      //and combines to one array by 
-      //maps incoming messages, sets them to server 
       .concat(
         incomingMessages.map((message) => {
           message.source = "server";
@@ -99,7 +74,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
             placeholder="Message"
             onChange={(e) => updateOutgoingMessage(e.target.value)}
           />
-
           <button
             className="websocket_input-btn"
             onClick={sendToWSController}
@@ -108,7 +82,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
             Send Message
           </button>
         </div>
-        {/* when the connection is open, show the ws messages */}
+        {/* only show the ws messages when connection is open */}
         {connection === "open" && (
           <div className="websocket_message_container">
             {combinedMessagesReactArr}
@@ -121,7 +95,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
 WebSocketWindow.propTypes = {
   outgoingMessages: PropTypes.array.isRequired,
   incomingMessages: PropTypes.array.isRequired,
-  // id: PropTypes.any.isRequired,
+  content: PropTypes.any.isRequired,
   connection: PropTypes.string.isRequired,
 };
 
