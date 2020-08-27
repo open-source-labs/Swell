@@ -1,3 +1,5 @@
+import { string } from "prop-types"
+
 export interface initialState {
   currentTab: string;
   reqResArray: object[];
@@ -56,3 +58,11 @@ export interface NewRequestBody {
 export interface NewRequestSSE {
   isSSE: boolean;
 };
+
+export interface CookieProps {
+  cookies: {
+    expirationDate: string;
+  }
+  detail?: string;
+  className?: string;
+}

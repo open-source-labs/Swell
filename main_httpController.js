@@ -393,7 +393,7 @@ const httpController = {
           // Parse response headers now to decide if SSE or not.
           const heads = response.headers;
           reqResObj.response.headers = heads;
-
+          reqResObj.connection = "closed";
           reqResObj.timeReceived = Date.now();
           // send back reqResObj to renderer so it can update the redux store
           event.sender.send("reqResUpdate", reqResObj);
@@ -484,7 +484,7 @@ const httpController = {
         secure: eachCookie.secure ? eachCookie.secure : false,
         httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
         session: eachCookie.session ? eachCookie.session : false,
-        expriationDate: eachCookie.expires ? eachCookie.expires : "",
+        expirationDate: eachCookie.expires ? eachCookie.expires : "",
       };
       return cookieFormat;
     });
