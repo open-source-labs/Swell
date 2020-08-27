@@ -103,11 +103,11 @@ class CookieEntryForm extends Component {
       <div>
         <label
         title="Add Request Headers"
-        className='composer_subtitle'>
-        <div className="label-text" id="cookie-click" onClick={this.toggleShow}>Cookies</div>
+        className='composer_subtitle' >
+        <div className="label-text" >Cookies</div>
         <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state"/>
-          <div className="indicator"/>
+          <input type="checkbox" name="check" className="toggle-state" id="cookie-click" onClick={this.toggleShow}/>
+          <div className="indicator" />
         </div>
       </label>
         <div className={cookiesContainerClass}>
