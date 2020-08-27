@@ -106,7 +106,7 @@ const GRPCAutoInputForm = (props) => {
 
     props.setNewRequestStreams({
       ...props.newRequestStreams,
-      selectedPackage: packageName,
+      selectedPackage: serviceObj.packageName,
       selectedStreamingType: streamingType,
       streamsArr,
       streamContent,
