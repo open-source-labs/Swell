@@ -461,14 +461,19 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
       {!graphQL &&
         !gRPC &&
         !/wss?:\/\//.test(protocol) && (
-          <div className="composer_subtitle_SSE">
-            <input
-              type="checkbox"
-              onChange={(e) => {handleSSEPayload(e)}}
-              checked={isSSE}
-            />
-            Server Sent Events
-          </div>
+          <label className="composer_subtitle_SSE">
+            <div className="label-text" >Server Sent Events</div>
+            <span className="toggle" >
+              <input
+                type="checkbox"
+                className="toggle-state"
+                name="check"
+                onClick={(e) => {handleSSEPayload(e)}}
+                checked={isSSE}
+              />
+              <div className="indicator" />
+            </span>
+          </label>
         )}
         {/* {props.warningMessage} */}
       <button
