@@ -22,11 +22,8 @@ const graphQLController = {
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
         console.log('sendtoGQLMain response', response)
-        // extra case for chance that response has "errors" prop instead of "error"
         if (response.error)
           this.handleError(response.error, response.reqResObj);
-        else if (response.errors)
-          this.handleError(response.errors, response.reqResObj);
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log("error in sendGqlToMain", err));
@@ -100,7 +97,7 @@ const graphQLController = {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(errorsObj));
     // reset error property to get fix circular json tpye error
-    reqResObj.error = errorsObj.error
+    // reqResObj.error = errorsObj.error
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 

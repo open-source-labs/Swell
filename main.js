@@ -561,20 +561,13 @@ ipcMain.on("open-gql", (event, args) => {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     console.log('graphqlerrors in errorlink', graphQLErrors);
     // check if there are any errors in the array
-    if (graphQLErrors.length !== 0) { 
-      reqResObj.error = graphQLErrors[0];
-      // console.log(`errorLink [Network error]: ${networkError}`)
-      event.sender.send("reply-gql",{ error: graphQLErrors[0], reqResObj })
+    if (graphQLErrors.length !== 0) {
+      graphQLErrors.forEach((currError) => {
+        reqResObj.error = JSON.stringify(currError);
+        event.sender.send("reply-gql",{ error: currError, reqResObj })
+      });
     }
-      // graphQLErrors.forEach(({ message, locations, path }) =>{
-      //   console.log(
-      //     `errorLink [GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      //   )
-      //   return message;
-      // }
-      // );
     if (networkError) {
-      console.log('inif network error', networkError)
       reqResObj.error = networkError;
       console.log(`errorLink [Network error]: ${networkError}`)
       event.sender.send("reply-gql",{ error: networkError, reqResObj })
@@ -620,9 +613,7 @@ ipcMain.on("open-gql", (event, args) => {
         });
     }
   } catch (e) {
-    // console.log('error in open-gql, main.js', e);
-    // reqResObj.error = e;
-    // event.sender.send("reply-gql", { error: e, reqResObj })
+    console.log('error trying gql query/mutation in main.js');
   }
   
 });
