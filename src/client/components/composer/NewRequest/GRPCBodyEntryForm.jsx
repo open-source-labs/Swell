@@ -3,10 +3,6 @@ import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x19
 import GRPCBodyStream from "./GRPCBodyStream.jsx";
 
 const GRPCBodyEntryForm = (props) => {
-  // need to bind the 'this' of the event handler to the component instance when it is being rendered
-  // this.onChangeUpdateStream = this.onChangeUpdateStream.bind(this);
-  // this.addStream = this.addStream.bind(this);
-
   const [show, toggleShow] = useState(true);
 
   // when application first loads
@@ -29,7 +25,7 @@ const GRPCBodyEntryForm = (props) => {
         streamContent: props.newRequestStreams.streamContent,
       });
     }
-  }, [props.newRequestStreams]);
+  }, []);
 
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   const addStream = () => {
