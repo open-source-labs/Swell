@@ -1,17 +1,14 @@
-.label {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 16px;
-}
 
 .label-text {
-
   font-size: 16px;
-  color: $liteblack;
+  color: $liteblack; 
+  width: 75%;
+  white-space: nowrap;
 }
 
+
 .toggle {
+  cursor: pointer;
   margin-left: 16px;
   isolation: isolate;
   position: relative;
@@ -19,11 +16,8 @@
   width: 42px;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow:
-    -8px -4px 8px 0px #ffffff,
-    8px 4px 12px 0px #d1d9e6,
-    4px 4px 4px 0px #d1d9e6 inset,
-    -4px -4px 4px 0px #ffffff inset;
+  box-shadow: -8px -4px 8px 0px #ffffff, 8px 4px 12px 0px #d1d9e6,
+    4px 4px 4px 0px #d1d9e6 inset, -4px -4px 4px 0px #ffffff inset;
 }
 
 .toggle-state {
@@ -37,6 +31,16 @@
   border-radius: 15px;
   transform: translate3d(-75%, 0, 0);
   transition: transform 0.2s cubic-bezier(0.85, 0.05, 0.18, 1.35);
+  box-shadow: -8px -4px 8px 0px #ffffff, 8px 4px 12px 0px #d1d9e6;
+}
+
+.indicator_body {
+  height: 100%;
+  width: 200%;
+  background: #ecf0f3;
+  border-radius: 15px;
+  transform: translate3d(25%, 0, 0);
+  transition: transform 0.2s cubic-bezier(0.85, 0.05, 0.18, 1.35);
   box-shadow:
     -8px -4px 8px 0px #ffffff,
     8px 4px 12px 0px #d1d9e6;
@@ -44,6 +48,10 @@
 
 .toggle-state:checked ~ .indicator {
   transform: translate3d(25%, 0, 0);
+}
+
+.toggle-state:checked ~ .indicator_body {
+  transform: translate3d(-75%, 0, 0);
 }
 
 .sidebar_radio-label {
@@ -105,8 +113,7 @@
   border-radius: 15px;
   border: 1px #eeeeee;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow:  -8px -8px 16px #b0b0b0, 
-              8px 8px 16px #ffffff;
+  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
   color: $bluefour;
   cursor: pointer;
   display: inline-block;
@@ -117,8 +124,7 @@
   width: 100%;
   &:hover {
     background: #eeeeee;
-    box-shadow: inset -21px -21px 42px #b0b0b0, 
-                inset 21px 21px 42px #ffffff;
+    box-shadow: inset -21px -21px 42px #b0b0b0, inset 21px 21px 42px #ffffff;
   }
 }
 
@@ -128,8 +134,7 @@
   border: none;
   border-radius: 15px;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow:  -8px -8px 16px #b0b0b0, 
-              8px 8px 16px #ffffff;
+  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
   color: $bluefour;
   cursor: pointer;
   display: inline-block;
@@ -143,8 +148,7 @@
   background-color: #eeeeee;
   &:hover {
     background: #eeeeee;
-    box-shadow: inset -21px -21px 42px #b0b0b0, 
-                inset 21px 21px 42px #ffffff;
+    box-shadow: inset -21px -21px 42px #b0b0b0, inset 21px 21px 42px #ffffff;
   }
 }
 
@@ -158,7 +162,7 @@
 
 .composer_protocol_container {
   display: flex;
-  margin: 15px 0 15px 0;
+  margin: 15px 0 20px 0;
   justify-content: center;
 
   &.gqlbody {
@@ -173,8 +177,7 @@
 .composer_protocol_button {
   border-radius: 15px;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow:  -8px -8px 16px #b0b0b0, 
-              8px 8px 16px #ffffff;
+  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: bold;
@@ -186,38 +189,28 @@
   box-sizing: border-box;
   margin-right: 7px;
   &:hover {
-    border-radius: 15px;
     background: #eeeeee;
-    box-shadow: inset -12px -12px 24px #b0b0b0, 
-    inset 12px 12px 24px #ffffff;
-}
+    box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+  }
 }
 .composer_protocol_button-selected_http {
-  border-radius: 15px;
   background: #eeeeee;
-  box-shadow: inset -12px -12px 24px #b0b0b0, 
-              inset 12px 12px 24px #ffffff;
+  box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
 }
 
 .composer_protocol_button-selected_ws {
-  border-radius: 15px;
   background: #eeeeee;
-  box-shadow: inset -12px -12px 24px #b0b0b0, 
-              inset 12px 12px 24px #ffffff;
+  box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
 }
 
 .composer_protocol_button-selected_gql {
-  border-radius: 15px;
   background: #eeeeee;
-  box-shadow: inset -12px -12px 24px #b0b0b0, 
-              inset 12px 12px 24px #ffffff;
+  box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
 }
 
 .composer_protocol_button-selected_grpc {
-  border-radius: 15px;
   background: #eeeeee;
-  box-shadow: inset -12px -12px 24px #b0b0b0, 
-              inset 12px 12px 24px #ffffff;
+  box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
 }
 
 .composer_method_url_container {
@@ -246,58 +239,41 @@
   &.http {
     border-radius: 15px;
     background: linear-gradient(315deg, #ffffff, #d6d6d6);
-    box-shadow:  -12px -12px 24px #b0b0b0, 
-                12px 12px 24px #ffffff;
+    box-shadow: -12px -12px 24px #b0b0b0, 12px 12px 24px #ffffff;
     &:hover {
       border-radius: 15px;
       background: #eeeeee;
-      box-shadow: inset -12px -12px 24px #b0b0b0, 
-                  inset 12px 12px 24px #ffffff;
-  }
+      box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+    }
   }
   &.gql {
     border-radius: 15px;
     background: linear-gradient(315deg, #ffffff, #d6d6d6);
-    box-shadow:  -12px -12px 24px #b0b0b0, 
-                12px 12px 24px #ffffff;
-      &:hover {
-        border-radius: 15px;
-        background: #eeeeee;
-        box-shadow: inset -12px -12px 24px #b0b0b0, 
-                    inset 12px 12px 24px #ffffff;
-      }
+    box-shadow: -12px -12px 24px #b0b0b0, 12px 12px 24px #ffffff;
+    &:hover {
+      border-radius: 15px;
+      background: #eeeeee;
+      box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+    }
   }
 
   &.grpc {
     border-radius: 15px;
     background: linear-gradient(315deg, #ffffff, #d6d6d6);
-    box-shadow:  -12px -12px 24px #b0b0b0, 
-                12px 12px 24px #ffffff;
-      &:hover {
-        border-radius: 15px;
-        background: #eeeeee;
-        box-shadow: inset -12px -12px 24px #b0b0b0, 
-                    inset 12px 12px 24px #ffffff;
-      }
+    box-shadow: -12px -12px 24px #b0b0b0, 12px 12px 24px #ffffff;
+    &:hover {
+      border-radius: 15px;
+      background: #eeeeee;
+      box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+    }
   }
 }
 
 .composer_subitle {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    margin-bottom: 16px;
-}
-
-.composer_subtitle_arrow-closed {
-  height: 28px;
-  margin: -3px -6px -8px -7px;
-  transform: rotate(270deg);
-}
-
-.composer_subtitle_arrow-open {
-  height: 28px;
-  margin: -3px -6px -8px -7px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 16px;
 }
 
 .composer_url_input {
@@ -311,8 +287,7 @@
   font-size: 1rem;
   border-radius: 15px;
   background: $liteblack;
-  box-shadow:  -8px -8px 16px #b0b0b0, 
-             8px 8px 16px #b0b0b0;
+  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #b0b0b0;
 }
 
 .composer_subtitle {
@@ -324,16 +299,23 @@
   width: 28%;
 }
 
+.composer_subtitle_arrow-closed {
+  height: 28px;
+  margin: -3px -6px -8px -7px;
+  transform: rotate(270deg);
+}
+.composer_subtitle_arrow-open {
+  height: 28px;
+  margin: -3px -6px -8px -7px;
+}
+
 .composer_subtitle_SSE {
+  cursor: pointer;
   display: flex;
   font-size: 16px;
   justify-items: center;
   margin: 0 0 15px;
-  width: 40%;
-  padding: 3px;
-}
-.composer_subtitle_SSE input{
-  float: center;
+  width: 42%;
 }
 
 .composer_warning {
@@ -344,7 +326,7 @@
   font-size: 0.9rem;
   font-weight: bold;
 }
-.composer_warning button{
+.composer_warning button {
   cursor: pointer;
   color: $bluefour;
   margin-top: 20px;
@@ -353,13 +335,11 @@
   display: inline-block;
   font-weight: bold;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow:  -8px -8px 16px #b0b0b0, 
-              8px 8px 16px #ffffff;
+  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
   height: 25px;
   width: 100%;
   &:hover {
-    box-shadow: inset -21px -21px 42px #b0b0b0, 
-                inset 21px 21px 42px #ffffff;
+    box-shadow: inset -21px -21px 42px #b0b0b0, inset 21px 21px 42px #ffffff;
   }
 }
 
@@ -377,15 +357,13 @@
   overflow: hidden;
 }
 
-
 .composer_header {
   border-radius: 15px;
   color: white;
   margin-bottom: 25px;
   overflow: hidden;
   background: $liteblack;
-  box-shadow:  3px 3px 7px #5f5f5f, 
-             -3px -3px 7px #ffffff;
+  box-shadow: 3px 3px 7px #5f5f5f, -3px -3px 7px #ffffff;
 }
 
 .composer_header_checkbox {
@@ -485,26 +463,28 @@
 
 .composer_rawtype_select {
   -webkit-appearance: none;
-  background: $greenfour;
   border: none;
-  border-radius: 5px;
-  color: white;
+  color: $bluefour;
   cursor: pointer;
   display: block;
-  font-size: 14px;
-  height: 25px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  height: 30px;
   line-height: 15px;
-  margin-top: 2px;
-  overflow: hidden;
-  padding: 0px 8px;
+  padding: 0px auto;
   text-align-last: center;
   width: 100%;
-  outline: none;
-
+  outline: 0 none;
+  margin-right: 7px;
+  border-radius: 15px;
+  background: linear-gradient(315deg, #ffffff, #d6d6d6);
+  box-shadow:  -12px -12px 24px #b0b0b0, 
+                12px 12px 24px #ffffff;
   &:hover {
-    color: $medbluegray;
-    background: $huntergreen;
-    border: 2px solid $litebluegray;
+    border-radius: 15px;
+    background: #eeeeee;
+    box-shadow: inset -12px -12px 24px #b0b0b0, 
+                inset 12px 12px 24px #ffffff;
   }
 }
 
@@ -519,7 +499,9 @@
   font-size: 14px;
   resize: none;
   box-shadow:  9px 9px 10px #5f5f5f, 
-             -9px -9px 10px #ffffff;
+              -9px -9px 10px #ffffff;
+  margin-bottom: 15px;
+  margin-top: 15px;
   &::placeholder {
     color: white;
   }
@@ -590,8 +572,7 @@ stream-container {
   font-size: 0.95rem;
   height: 28px;
   width: 100%;
-  box-shadow: inset -12px -12px 24px #b0b0b0, 
-  inset 12px 12px 24px #ffffff;
+  box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
 }
 
 .history-container {
@@ -610,8 +591,7 @@ stream-container {
   border-radius: 15px;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
   border: 1px #eeeeee;
-  box-shadow:  -3px -3px 12px #b0b0b0, 
-             6px 6px 12px #ffffff;
+  box-shadow: -3px -3px 12px #b0b0b0, 6px 6px 12px #ffffff;
   cursor: pointer;
   color: $bluefour;
   font-size: 0.8rem;
@@ -627,16 +607,14 @@ stream-container {
   &:hover {
     border-radius: 15px;
     background: #eeeeee;
-    box-shadow: inset -12px -12px 24px #b0b0b0, 
-    inset 12px 12px 24px #ffffff;
-}
+    box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+  }
 }
 
 .clear-history button {
   border-radius: 15px;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow:  -3px -3px 12px #b0b0b0, 
-             6px 6px 12px #ffffff;
+  box-shadow: -3px -3px 12px #b0b0b0, 6px 6px 12px #ffffff;
   border: 1px #eeeeee;
   cursor: pointer;
   color: $bluefour;
@@ -653,9 +631,8 @@ stream-container {
   &:hover {
     border-radius: 15px;
     background: #eeeeee;
-    box-shadow: inset -12px -12px 24px #b0b0b0, 
-    inset 12px 12px 24px #ffffff;
-}
+    box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+  }
 }
 
 .collection-heading {
@@ -671,8 +648,7 @@ stream-container {
   font-size: 0.95rem;
   height: 28px;
   width: 100%;
-  box-shadow: inset -12px -12px 24px #b0b0b0, 
-  inset 12px 12px 24px #ffffff;
+  box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
   &:hover .collection-delete-container {
     display: flex;
   }
@@ -768,7 +744,7 @@ stream-container {
   width: 20px;
   float: right;
   margin-top: 7px;
-  }
+}
 
 .collection-delete-button {
   width: 25%;
@@ -817,7 +793,7 @@ stream-container {
   margin-right: 7px;
   &:hover {
     background: #eeeeee;
-}
+  }
 }
 
 .collections-container {
@@ -842,19 +818,27 @@ stream-container {
 }
 
 .add-stream-btn {
-  display: flex;
-  float: right;
-  height: 26px;
-  position: relative;
-  z-index: 0;
-  padding-right: 10px;
-
-  &.button {
-    background: transparent;
-    color: rgb(216, 216, 216);
-    border: 0;
-    cursor: pointer;
-    outline: none;
+  z-index: 1;
+  border-radius: 15px;
+  background: linear-gradient(315deg, #ffffff, #d6d6d6);
+  border: 1px #eeeeee;
+  box-shadow: -3px -3px 12px #b0b0b0, 6px 6px 12px #ffffff;
+  cursor: pointer;
+  color: $bluefour;
+  font-size: 0.8rem;
+  font-weight: bold;
+  height: 30px;
+  line-height: 28px;
+  outline: 0 none;
+  text-align: center;
+  float: left;
+  width: 30%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  &:hover {
+    border-radius: 15px;
+    background: #eeeeee;
+    box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
   }
 }
 

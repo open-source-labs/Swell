@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import WWWForm from "./WWWForm.jsx";
 import BodyTypeSelect from "./BodyTypeSelect.jsx";
 import JSONTextArea from "./JSONTextArea.jsx";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const BodyEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
@@ -60,23 +59,20 @@ const BodyEntryForm = (props) => {
     );
   })();
 
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
   const bodyContainerClass = show
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
   return (
     <div style={stylesObj}>
-      <div
-        className="composer_subtitle"
-        onClick={() => toggleShow((show) => !show)}
-        style={stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} alt="down arrow" />
-        Body
-      </div>
+      <label
+      className='composer_subtitle' >
+        <div className="label-text" >Body</div>
+          <div className="toggle" >
+            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow((show) => !show)}/>
+            <div className="indicator_body" />
+          </div>
+      </label>
 
       <div className={bodyContainerClass}>
         <BodyTypeSelect
@@ -89,7 +85,7 @@ const BodyEntryForm = (props) => {
         <div className="composer_rawtype_textarea_container">
           <select
             style={rawTypeStyles}
-            className={"composer_rawtype_select"}
+            className="composer_rawtype_select"
             onChange={(e) =>
               setNewRequestBody({
                 ...newRequestBody,
