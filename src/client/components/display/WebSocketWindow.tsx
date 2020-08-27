@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useState } from "react";
 import PropTypes, { string } from "prop-types";
-import WebSocketMessage from "./WebSocketMessage.jsx";
+import WebSocketMessage from "./WebSocketMessage";
 import { WebSocketWindowProps } from "../../../types"
 
 const { api } = window;

@@ -59,7 +59,6 @@ export interface NewRequestSSE {
   isSSE: boolean;
 };
 
-<<<<<<< HEAD
 export interface Message {
   source: string;
   timeReceived: number;
@@ -71,7 +70,11 @@ export interface WebSocketWindowProps {
   incomingMessages: Array<Message>;
   connection: string;
 }
-=======
+export interface WebSocketMessageProps {
+  source: string;
+  data: string;
+  timeReceived: number;
+}
 export interface CookieProps {
   cookies: {
     expirationDate: string;
@@ -79,4 +82,3 @@ export interface CookieProps {
   detail?: string;
   className?: string;
 }
->>>>>>> master
