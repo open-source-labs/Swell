@@ -43,6 +43,15 @@ const wsController = {
 			});			
 		});
 
+		//listener for failed socket connection,
+		socket.on('connectFailed', (error) => {
+			console.log('WS Connect Error: ' + error.toString());
+			reqResObj.connection = "error";
+    	reqResObj.timeReceived = Date.now();
+    	// reqResObj.response.events.push(JSON.stringify(errorsObj));
+			event.sender.send("reqResUpdate", reqResObj);
+		});
+
 		//connect socket
 		socket.connect(reqResObj.url);
 	},
@@ -55,7 +64,7 @@ const wsController = {
 		//send message to ws server
 		this.wsConnect.send(inputMessage);
 
-		//push sent message to reqResObj message array
+		//push sent message to reqResObj message array as a request message
 		reqResObj.request.messages.push({
 			data: inputMessage,
 			timeReceived: Date.now(),
@@ -65,6 +74,7 @@ const wsController = {
 		event.sender.send("reqResUpdate", reqResObj);
 
 		//listener for return message from ws server
+		//push into message array under responses
 		this.wsConnect.on('message', (e) => {
 			reqResObj.response.messages.push({
 				data: e.utf8Data,
@@ -76,9 +86,9 @@ const wsController = {
 	},
 };
 module.exports = () => {
+		// we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
     // listener to open wsconnection
     ipcMain.on("open-ws", (event, reqResObj, connectionArray) => {
-      // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
       wsController.openWSconnection(event, reqResObj, connectionArray);
 		});
 		//listener for sending messages to server

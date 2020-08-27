@@ -1,6 +1,6 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-import wsController from "./wsController.js";
+// import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
@@ -41,7 +41,6 @@ const connectionController = {
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
     });
-    console.log('connectionArray', this.openConnectionArray)
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
@@ -50,16 +49,15 @@ const connectionController = {
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol)) {
-      // wsController.openWSconnection(reqResObj, this.openConnectionArray);
       //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send("open-ws", reqResObj, this.openConnectionArray);
-      api.receive("update-connectionArray", (connectionArray) => {
-        console.log('inside receive');
 
+      //update the connectionArray when connection is open from ws
+      api.receive("update-connectionArray", (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
       })
     }
-    //gRPC  connection
+    //gRPC connection
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);
       //Standard HTTP?
@@ -93,14 +91,9 @@ const connectionController = {
 
   closeReqRes(id) {
     this.setReqResConnectionToClosed(id);
-    console.log('inside closeReqRes')
-    console.log('id', id)
-    console.log('this.openConnectionArray',this.openConnectionArray)
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-
-    console.log('foundAbort.connection', foundAbortController.connection)
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {
@@ -112,8 +105,6 @@ const connectionController = {
           break;
         }
         case "WS": {
-          console.log('inside WS close case');
-          // foundAbortController.connection.close()
           api.send('close-ws')
           break;
         }
@@ -126,7 +117,6 @@ const connectionController = {
     this.openConnectionArray = this.openConnectionArray.filter(
       (obj) => obj.id !== id
     );
-    console.log('openconnection after filter', this.openConnectionArray)
   },
 
   /* Closes all open endpoint */

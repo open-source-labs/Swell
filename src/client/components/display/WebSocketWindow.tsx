@@ -19,7 +19,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
     setInputMessage(value);
   }
   
-  //sends to WScontroller to send the message
+  //sends to WScontroller in main.js to send the message to server
   const sendToWSController = () =>  {
     api.send("send-ws", content, inputMessage);
     //reset inputbox
@@ -33,7 +33,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
     }
   }
 
-  //maps the messages to view in chronological order and by whom
+  //maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
       .map((message) => {
         message.source = "client";
@@ -59,7 +59,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
     
     //sets the message style depending on if the connection is open
     //hides when connection is not open
-    //possible memory leak
     const messageInputStyles = {
       display: connection === "open" ? "block" : "none",
     };
