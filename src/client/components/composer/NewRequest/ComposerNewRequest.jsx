@@ -468,7 +468,7 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
                 type="checkbox"
                 className="toggle-state"
                 name="check"
-                onClick={(e) => {handleSSEPayload(e)}}
+                onChange={(e) => {handleSSEPayload(e)}}
                 checked={isSSE}
               />
               <div className="indicator" />

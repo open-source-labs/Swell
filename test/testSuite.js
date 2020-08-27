@@ -12,7 +12,7 @@ const grpcTest = require("./subSuites/grpcTest");
 const app = require("./testApp");
 
 describe("Electron Tests", function () {
-  this.timeout(40000);
+  this.timeout(60000);
   before(function () {
     return app.start();
   });
