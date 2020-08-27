@@ -59,30 +59,21 @@ const GRPCAutoInputForm = (props) => {
   };
 
   useEffect(() => {
-    if (!selectedRequest || !selectedServiceObj) {
-      return;
-    }
-    // save the selected service/request and array of all the service objs in variables,
-    // which is currently found in the state of the store
-    const results = {};
-    //   for each service obj in the services array, if its name matches the current selected service option then:
-    //   - save the package name
-    //   - iterate through the rpcs and if its name matches the current selected request then save its streaming type
+    //if no selected request or service object, return out and don't update
+    if (!selectedRequest || !selectedServiceObj) return;
 
-    //  for each service obj in the services array, if its name matches the current selected service option then:
-    //  - iterate through the rpcs and if its name matches the current selected request then save the name of req/rpc
-    //  - iterate through the messages and if its name matches the saved req/rpc name,
-    //  then push each key/value pair of the message definition into the results array
-
-    // const serviceObj = services.find((ser) => ser.name === selectedService);
+    //find rpc object that matches selectedRequest name
     const rpc = selectedServiceObj.rpcs.find(
       (rpc) => rpc.name === selectedRequest
     );
-
+    //find message object that matches rpc request name
     const message = selectedServiceObj.messages.find(
       (msg) => msg.name === rpc.req
     );
 
+    //declare empty results obj that will become the initial query
+    const results = {};
+    // push each key/value pair of the message definition into the results obj
     for (const key in message.def) {
       // if message type is a nested message (message.def.nested === true)
       if (message.def[key].nested) {
@@ -101,22 +92,25 @@ const GRPCAutoInputForm = (props) => {
         results[key] = message.def[key].type.slice(5).toLowerCase();
       }
     }
+    //shally copy streamsArr and streamCopy to reassign in store
+    const streamsArrCopy = [...streamsArr];
+    const streamContentCopy = [...streamContent];
 
     // push JSON formatted query in streamContent arr
     const queryJSON = JSON.stringify(results, null, 4);
-    if (streamsArr[0] !== "") {
-      streamsArr[0].query = queryJSON;
+    if (streamsArrCopy[0] !== "") {
+      streamsArrCopy[0].query = queryJSON;
     }
     // remove initial empty string then push new query to stream content arr
-    streamContent.pop();
-    streamContent.push(queryJSON);
+    streamContentCopy.pop();
+    streamContentCopy.push(queryJSON);
 
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       selectedPackage: selectedServiceObj.packageName,
       selectedStreamingType: rpc.type,
-      streamsArr,
-      streamContent,
+      streamsArr: streamsArrCopy,
+      streamContent: streamContentCopy,
       initialQuery: queryJSON,
     });
   }, [selectedRequest]);
