@@ -60,7 +60,7 @@ const BodyEntryForm = (props) => {
   })();
 
   const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
+    ? "composer_bodyform_container-open-rest"
     : "composer_bodyform_container-closed";
 
   return (
