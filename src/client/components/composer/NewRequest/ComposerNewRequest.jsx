@@ -10,8 +10,6 @@ import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
 import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
-import ComposerWarning from "../Warning/ComposerWarning.jsx";
-import { setComposerDisplay } from "../../../actions/actions.js";
 
 const ComposerNewRequest = ({
   setNewRequestFields, 
@@ -472,24 +470,25 @@ const ComposerNewRequest = ({
             setNewRequestCookies={setNewRequestCookies}
           />
         )}
-      {warningMessage ? <ComposerWarning setComposerDisplay={setComposerDisplay} warningMessage={warningMessage}/> : null}
       {!graphQL &&
         !gRPC &&
         method !== "GET" &&
         !/wss?:\/\//.test(protocol) && (
           <BodyEntryForm
-            newRequestHeaders={newRequestHeaders}
+            warningMessage={warningMessage}
             newRequestBody={newRequestBody}
-            setNewRequestHeaders={setNewRequestHeaders}
             setNewRequestBody={setNewRequestBody}
+            newRequestHeaders={newRequestHeaders}
+            setNewRequestHeaders={setNewRequestHeaders}
           />
         )}
       {graphQL && (
         <>
           <GraphQLBodyEntryForm
-            introspectionData={introspectionData}
+            warningMessage={warningMessage}
             newRequestBody={newRequestBody}
             setNewRequestBody={setNewRequestBody}
+            introspectionData={introspectionData}
           />
           <GraphQLVariableEntryForm
             newRequestBody={ newRequestBody }
@@ -525,7 +524,6 @@ const ComposerNewRequest = ({
             </span>
           </label>
         )}
-        {/* {props.warningMessage} */}
       <button
         className="composer_submit"
         onClick={() => {addNewRequest()}}

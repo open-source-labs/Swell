@@ -42,11 +42,7 @@ const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
-const {
-  introspectionQuery,
-  buildClientSchema,
-  printSchema,
-} = require("graphql");
+const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./src/client/protoParser.js");
@@ -560,24 +556,21 @@ ipcMain.on("open-gql", (event, args) => {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     console.log('graphqlerrors in errorlink', graphQLErrors);
-    // check if there are any errors in the array
+    // check if there are any errors in the graphQLErrors array
     if (graphQLErrors.length !== 0) {
       graphQLErrors.forEach((currError) => {
         reqResObj.error = JSON.stringify(currError);
-        event.sender.send("reply-gql",{ error: currError, reqResObj })
+        event.sender.send("reply-gql",{ error: currError, reqResObj });
       });
     }
     if (networkError) {
       reqResObj.error = networkError;
-      console.log(`errorLink [Network error]: ${networkError}`)
-      event.sender.send("reply-gql",{ error: networkError, reqResObj })
+      event.sender.send("reply-gql",{ error: networkError, reqResObj });
     };
-
-    // reqResObj.error = err;
-    //     event.sender.send("reply-gql", { error: err, reqResObj });
   });
 
   // additive composition of multiple links
+  // https://www.apollographql.com/docs/react/api/link/introduction/#composing-a-link-chain
   const link = ApolloLink.from([afterLink, errorLink, httpLink]);
 
   const client = new ApolloClient({
@@ -599,17 +592,16 @@ ipcMain.on("open-gql", (event, args) => {
           event.sender.send("reply-gql", { reqResObj, data });
         })
         .catch((err) => {
-          console.log('error handled?')
-          // console.error('gql query error', err);
-          // reqResObj.error = err;
-          // event.sender.send("reply-gql", { error: err, reqResObj });
+          // error is actually sent to graphQLController via "errorLink"
+          console.log('gql query error in main.js', err)
         });
     } else if (reqResObj.request.method === "MUTATION") {
       client
         .mutate({ mutation: body, variables })
         .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
         .catch((err) => {
-          console.error('gql mutation error', err);
+          // error is actually sent to graphQLController via "errorLink"
+          console.error('gql mutation error in main.js', err);
         });
     }
   } catch (e) {

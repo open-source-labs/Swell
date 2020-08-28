@@ -15,10 +15,11 @@ import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x19
 
 const GraphQLBodyEntryForm = (props) => {
   const {
+    newRequestBody,
     newRequestBody: { bodyContent },
     newRequestBody: { bodyIsNew },
-    newRequestBody,
     setNewRequestBody,
+    warningMessage,
     stylesObj,
     introspectionData,
   } = props;
@@ -50,6 +51,13 @@ const GraphQLBodyEntryForm = (props) => {
         <img className={arrowClass} src={dropDownArrow} alt="" />
         Body
       </div>
+      { // conditionally render warning message
+        warningMessage ? 
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {warningMessage.body}
+          </div>
+        : null 
+      }
       <div className={bodyContainerClass} style={{ marginBottom: "10px" }}>
         <CodeMirror
           value={cmValue}
