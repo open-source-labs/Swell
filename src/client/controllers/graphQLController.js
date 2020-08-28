@@ -50,7 +50,11 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     const wsUri = reqResObj.url;
-    const wsClient = new SubscriptionClient(wsUri, { reconnect: true });
+
+    // have to replace http with ws to connect to the websocket
+    const httpToWs = wsUri.replace(/http/gi, 'ws')
+    const wsClient = new SubscriptionClient(httpToWs, { reconnect: true });
+
     const wsLink = new WebSocketLink(wsClient);
 
     const apolloClient = new ApolloClient({
@@ -76,6 +80,9 @@ const graphQLController = {
           reqResObj.response.events.push(JSON.stringify(subsEvent.data));
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         },
+        error(err) {
+          console.error(err)
+        }
       });
   },
 
