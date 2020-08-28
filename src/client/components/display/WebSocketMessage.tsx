@@ -1,0 +1,40 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { WebSocketMessageProps } from "../../../types"
+
+const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
+  source,
+  timeReceived,
+  data
+}) => {
+
+  //conditional classNames and id for messages for styling depending on source
+  const webSocketMessageClassNames = source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
+  const webSocketMessageIDNames =  source === 'server' ? 'id_websocket_message-server' : 'id_websocket_message-client'
+  
+  //timestamp for messages
+  const buildTime = (time:number):string  => {
+    const hours = new Date(time).getHours();
+    const h = hours >= 10 ? `${hours}` : `0${JSON.stringify(hours)}`
+    const minutes= new Date(time).getMinutes();
+    const m = minutes >= 10 ? `${minutes}` : `0${JSON.stringify(minutes)}`
+    const seconds = new Date(time).getSeconds();
+    const s = seconds >= 10 ? `${seconds}` : `0${JSON.stringify(seconds)}`
+    return `${h}:${m}:${s}`
+  }
+
+  return (
+    <div className={webSocketMessageClassNames}>
+      <div className="websocket_message-data"><div id={webSocketMessageIDNames}>{data}</div></div>
+      <div className="websocket_message-time">{buildTime(timeReceived)}</div>
+    </div>
+  );
+}
+
+WebSocketMessage.propTypes = {
+  source: PropTypes.string.isRequired,
+  data: PropTypes.any.isRequired,
+  timeReceived: PropTypes.any.isRequired,
+};
+
+export default WebSocketMessage;
