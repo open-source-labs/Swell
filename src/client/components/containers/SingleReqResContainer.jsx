@@ -1,4 +1,3 @@
-
 import React from "react";
 import connectionController from "../../controllers/reqResController";
 import OpenBtn from "../display/OpenBtn.jsx";
@@ -233,7 +232,6 @@ const SingleReqResContainer = (props) => {
                     ms
                   </span>
                 )}
-
                 <div className="tertiary-title">
                   {renderStatusCode()}
                 </div>
@@ -255,5 +253,4 @@ const SingleReqResContainer = (props) => {
     </div>
   );
 }
-
 export default SingleReqResContainer;
