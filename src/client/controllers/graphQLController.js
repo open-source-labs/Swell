@@ -21,17 +21,14 @@ const graphQLController = {
     //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
-        // extra case for chance that response has "errors" prop instead of "error"
         if (response.error)
           this.handleError(response.error, response.reqResObj);
-        else if (response.errors)
-          this.handleError(response.errors, response.reqResObj);
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log("error in sendGqlToMain", err));
   },
 
-  // handles graphQL queries and mutationsnp
+  // handles graphQL queries and mutations
   sendGqlToMain(args) {
     return new Promise((resolve) => {
       //send object to the context bridge
