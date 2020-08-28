@@ -86,11 +86,11 @@ class Sidebar {
   }
 
   get selectService() {
-    return app.client.$('select#dropdownService.dropdownService.composer_bodyform_container-open')
+    return app.client.$('select#dropdownService.dropdownService.composer_bodyform_container-open-rest')
   }
 
   get selectRequest() {
-    return app.client.$('select#dropdownRequest.dropdownRequest.composer_bodyform_container-open')
+    return app.client.$('select#dropdownRequest.dropdownRequest.composer_bodyform_container-open-rest')
   }
 
   // HEADER INPUTS

@@ -85,9 +85,8 @@ const GRPCBodyEntryForm = (props) => {
       history={props.history}
     />
   ));
-  // arrow button used to collapse or open the Body section
   const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
+    ? "composer_bodyform_container-open-grpc"
     : "composer_bodyform_container-closed";
   //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
   let addStreamBtn;
