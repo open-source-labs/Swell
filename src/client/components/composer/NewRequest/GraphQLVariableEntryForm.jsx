@@ -12,7 +12,6 @@ import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/display/autorefresh"
 
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const GraphQLVariableEntryForm = (props) => {
   const {
@@ -20,7 +19,6 @@ const GraphQLVariableEntryForm = (props) => {
     newRequestBody: { bodyIsNew },
     newRequestBody,
     setNewRequestBody,
-    stylesObj,
   } = props;
 
   const [show, setShow] = useState(false);
@@ -32,29 +30,22 @@ const GraphQLVariableEntryForm = (props) => {
   // set a new value for codemirror only if loading from history or changing gQL type
   useEffect(() => {
     if (!bodyIsNew) setValue(bodyVariables);
-  }, [bodyVariables])
-
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
+  }, [bodyVariables]);
   const bodyContainerClass = show
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
   return (
     <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => {
-          setShow(!show);
-          // focus the editor after showing
-          cmVariables.current.editor.focus();
-        }}
-        style={stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} alt="" />
-        Variables
-      </div>
+      <label
+      className='composer_subtitle' >
+        <div className="label-text" id="cookie-click">Variables</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state" onClick={() => {
+          setShow(!show);}}/>
+          <div className="indicator" />
+        </div>
+      </label>
       <div className={bodyContainerClass} style={{ marginBottom: '10px' }}>
         <CodeMirror
         ref={cmVariables}
