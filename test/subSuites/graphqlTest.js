@@ -36,5 +36,13 @@ const reqRes = require("../pageObjects/ReqRes.js");
   }
   */
 // subscriptions work
+/*
+subscription {
+  newLink {
+    id
+    description
+  }
+}
+*/
 // entering wrong query/mutation will give you the appropriate error message
 // can use variables

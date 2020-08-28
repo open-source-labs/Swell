@@ -53,8 +53,11 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     const wsUri = reqResObj.url;
-    const wsClient = new SubscriptionClient(wsUri, { reconnect: true });
+    console.log('wsUri', wsUri)
+    const wsClient = new SubscriptionClient('ws://localhost:4000/graphql', { reconnect: true });
+    console.log('wsClient', wsClient)
     const wsLink = new WebSocketLink(wsClient);
+    console.log('wsLink', wsLink)
 
     const apolloClient = new ApolloClient({
       link: wsLink,
