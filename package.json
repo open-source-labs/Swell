@@ -156,7 +156,8 @@
       "main_httpController.js",
       "SSEController.js",
       "preload.js",
-      "main_touchbar.js"
+      "main_touchbar.js",
+      "main_wsController.js"
     ],
     "nodeVersion": "12.14.1",
     "nsis": {
@@ -266,6 +267,7 @@
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.4.0",
     "webpack-merge": "^4.2.2",
+    "websocket": "^1.0.31",
     "ws": "^6.1.2"
   },
   "devDependencies": {

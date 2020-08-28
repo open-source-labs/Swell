@@ -11,8 +11,6 @@ import "codemirror-graphql/lint";
 import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
 
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
-
 const GraphQLBodyEntryForm = (props) => {
   const {
     newRequestBody,
@@ -20,7 +18,6 @@ const GraphQLBodyEntryForm = (props) => {
     newRequestBody: { bodyIsNew },
     setNewRequestBody,
     warningMessage,
-    stylesObj,
     introspectionData,
   } = props;
 
@@ -32,25 +29,21 @@ const GraphQLBodyEntryForm = (props) => {
     if (!bodyIsNew) setValue(bodyContent)
   }, [bodyContent])
 
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
   const bodyContainerClass = show
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
 
   return (
     <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => {
-          setShow(!show);
-        }}
-        style={stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} alt="" />
-        Body
-      </div>
+      <label
+      className='composer_subtitle' >
+        <div className="label-text" id="cookie-click">Body</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state" onClick={() => {
+          setShow(!show);}}/>
+          <div className="indicator_body" />
+        </div>
+      </label>
       { // conditionally render warning message
         warningMessage ? 
           <div style={{ color: "red", marginBottom: "10px" }}>
@@ -58,7 +51,7 @@ const GraphQLBodyEntryForm = (props) => {
           </div>
         : null 
       }
-      <div className={bodyContainerClass} style={{ marginBottom: "10px" }}>
+      <div className={bodyContainerClass} >
         <CodeMirror
           value={cmValue}
           options={{

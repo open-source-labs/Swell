@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 // import protoParserFunc from "../../../protoParser.js";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 
 const { api } = window;
 
@@ -136,10 +135,6 @@ const GRPCProtoEntryForm = (props) => {
     document.getElementById("save-proto").innerText = "Changes Saved";
   };
 
-  // arrow button used to collapse or open the Proto section
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
   const bodyContainerClass = show
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
@@ -153,15 +148,15 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => toggleShow(!show)}
-        style={props.stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} />
-        Proto
-      </div>
-
+      <label
+        className='composer_subtitle' >
+        <div className="label-text" id="cookie-click">Proto</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
+          <div className="indicator" />
+        </div>
+      </label>
+      
       <textarea
         value={props.newRequestStreams.protoContent}
         className={"composer_textarea grpc " + bodyContainerClass}

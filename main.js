@@ -53,6 +53,9 @@ require("./menu/mainMenu");
 require("./main_httpController.js")();
 // require grpc controller file
 require("./main_grpcController.js")();
+// require ws controller
+require("./main_wsController.js")();
+
 
 // configure logging
 autoUpdater.logger = log;
@@ -555,18 +558,21 @@ ipcMain.on("open-gql", (event, args) => {
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    console.log('graphqlerrors in errorlink', graphQLErrors);
-    // check if there are any errors in the graphQLErrors array
-    if (graphQLErrors.length !== 0) {
-      graphQLErrors.forEach((currError) => {
-        reqResObj.error = JSON.stringify(currError);
-        event.sender.send("reply-gql",{ error: currError, reqResObj });
-      });
-    }
     if (networkError) {
       reqResObj.error = networkError;
       event.sender.send("reply-gql",{ error: networkError, reqResObj });
-    };
+    }
+    try {
+      // check if there are any errors in the graphQLErrors array
+      if (graphQLErrors.length !== 0) {
+        graphQLErrors.forEach((currError) => {
+          reqResObj.error = JSON.stringify(currError);
+          event.sender.send("reply-gql",{ error: currError, reqResObj });
+        });
+      }
+    } catch(err) {
+      console.log('Error in errorLink:', err);
+    }
   });
 
   // additive composition of multiple links
