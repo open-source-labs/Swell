@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_black_192x192.png";
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 
 const GRPCAutoInputForm = (props) => {
@@ -115,12 +114,8 @@ const GRPCAutoInputForm = (props) => {
     });
   }, [selectedRequest]);
 
-  // arrow button used to collapse or open the Stream section
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
   const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
+    ? "composer_bodyform_container-open-rest"
     : "composer_bodyform_container-closed";
 
   //default options shown for services and request dropdowns
@@ -158,15 +153,14 @@ const GRPCAutoInputForm = (props) => {
 
   return (
     <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => toggleShow(!show)}
-        style={props.stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} />
-        Stream
-      </div>
-
+      <label
+        className='composer_subtitle' >
+          <div className="label-text" id="cookie-click">Stream</div>
+          <div className="toggle">
+            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
+            <div className="indicator_body" />
+          </div>
+        </label>
       <select
         id="dropdownService"
         value={serviceNameOption}

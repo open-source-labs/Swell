@@ -5,7 +5,7 @@ import OpenBtn from "../display/OpenBtn.jsx";
 import CloseBtn from "../display/CloseBtn.jsx";
 import RequestTabs from "../display/RequestTabs.jsx";
 import ResponseContainer from "./ResponseContainer.jsx";
-import WebSocketWindow from "../display/WebSocketWindow.jsx";
+import WebSocketWindow from "../display/WebSocketWindow";
 import dropDownArrow from "../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const SingleReqResContainer = (props) => {
@@ -81,7 +81,7 @@ const SingleReqResContainer = (props) => {
         key={0}
         outgoingMessages={request.messages}
         incomingMessages={response.messages}
-        id={id}
+        content={content}
         connection={connection}
       />
     );

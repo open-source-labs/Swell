@@ -57,6 +57,9 @@ require("./menu/mainMenu");
 require("./main_httpController.js")();
 // require grpc controller file
 require("./main_grpcController.js")();
+// require ws controller
+require("./main_wsController.js")();
+
 
 // configure logging
 autoUpdater.logger = log;

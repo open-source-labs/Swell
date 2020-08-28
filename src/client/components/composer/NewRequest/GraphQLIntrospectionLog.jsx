@@ -9,7 +9,7 @@ const GraphQLIntrospectionLog = (props) => {
     ? "composer_subtitle_arrow-open"
     : "composer_subtitle_arrow-closed";
   const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
+    ? "composer_bodyform_container-open-grpc"
     : "composer_bodyform_container-closed";
   const logAreaClass =
     introspectionData.schemaSDL &&
