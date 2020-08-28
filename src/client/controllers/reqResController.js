@@ -1,6 +1,6 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-import wsController from "./wsController.js";
+// import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
@@ -48,9 +48,16 @@ const connectionController = {
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol))
-      wsController.openWSconnection(reqResObj, this.openConnectionArray);
-    //gRPC  connection
+    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
+      //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      api.send("open-ws", reqResObj, this.openConnectionArray);
+
+      //update the connectionArray when connection is open from ws
+      api.receive("update-connectionArray", (connectionArray) => {
+        this.openConnectionArray.push(...connectionArray);
+      })
+    }
+    //gRPC connection
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);
       //Standard HTTP?
@@ -74,6 +81,7 @@ const connectionController = {
   },
 
   setReqResConnectionToClosed(id) {
+    console.log('inside setReqResConnection to Closed')
     const reqResArr = store.default.getState().business.reqResArray;
 
     const foundReqRes = reqResArr.find((reqRes) => reqRes.id === id);
@@ -83,7 +91,6 @@ const connectionController = {
 
   closeReqRes(id) {
     this.setReqResConnectionToClosed(id);
-
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
@@ -98,7 +105,7 @@ const connectionController = {
           break;
         }
         case "WS": {
-          foundAbortController.socket.close();
+          api.send('close-ws')
           break;
         }
         default:
