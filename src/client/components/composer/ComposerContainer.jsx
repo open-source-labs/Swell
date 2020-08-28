@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 
 import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
-import ComposerWarning from "./Warning/ComposerWarning.jsx";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -50,27 +49,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
-  let composerContents;
-  switch (
-    props.composerDisplay // conditional rendering of components based on the value of composerDisplay in redux store
-  ) {
-    case "Request": {
-      composerContents = <ComposerNewRequest {...props} />;
-      break;
-    }
-    case "Warning": {
-      composerContents = (
-        <ComposerWarning
-          warningMessage={props.warningMessage}
-          setComposerDisplay={props.setComposerDisplay}
-        />
-      );
-      break;
-    }
-    default:
-      console.log("Incorrect Model Display setting");
-  }
-  return <div className="composerContents">{composerContents}</div>;
+  return (
+    <div className="composerContents">
+      <ComposerNewRequest {...props} />
+    </div>
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComposerContainer);

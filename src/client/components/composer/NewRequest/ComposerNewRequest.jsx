@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import gql from "graphql-tag";
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
@@ -11,14 +11,61 @@ import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
 import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
-const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestFields: { gRPC, url, method, protocol, graphQL, restUrl, wsUrl, gqlUrl, grpcUrl, network },
-  setNewRequestBody, newRequestBody, newRequestBody: { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType },
-  setNewRequestHeaders, newRequestHeaders, newRequestHeaders: { headersArr }, setNewRequestCookies, newRequestCookies, newRequestCookies: { cookiesArr },
-  setNewRequestStreams, newRequestStreams, newRequestStreams: { selectedService, selectedRequest, selectedPackage, streamingType, initialQuery,
-    streamsArr, streamContent, services, protoPath, protoContent }, 
-  setNewRequestSSE, newRequestSSE: { isSSE }, currentTab, introspectionData, setComposerWarningMessage, warningMessage, reqResAdd }) => {
+const ComposerNewRequest = ({
+  setNewRequestFields, 
+  newRequestFields, 
+  newRequestFields: {
+    gRPC, 
+    url, 
+    method, 
+    protocol, 
+    graphQL, 
+    restUrl, 
+    wsUrl, 
+    gqlUrl, 
+    grpcUrl, 
+    network
+  },
+  setNewRequestBody, 
+  newRequestBody, 
+  newRequestBody: {
+    JSONFormatted,
+    rawType, 
+    bodyContent, 
+    bodyVariables,
+    bodyType 
+  },
+  setNewRequestHeaders,
+  newRequestHeaders,
+  newRequestHeaders: { headersArr },
+  setNewRequestCookies,
+  newRequestCookies, 
+  newRequestCookies: { cookiesArr },
+  setNewRequestStreams,
+  newRequestStreams,
+  newRequestStreams: { 
+    selectedService,
+    selectedRequest,
+    selectedPackage,
+    streamingType,
+    initialQuery,
+    streamsArr, 
+    streamContent, 
+    services, 
+    protoPath, 
+    protoContent 
+  }, 
+  setNewRequestSSE, 
+  newRequestSSE: { isSSE }, 
+  currentTab, 
+  introspectionData, 
+  setComposerWarningMessage,
+  setComposerDisplay,
+  warningMessage,
+  reqResAdd
+  }) => {
 
-  const requestValidationCheck = () => {     
+  const requestValidationCheck = () => {  
     const validationMessage = {};
     //Error conditions...
     if (gRPC) {
@@ -52,9 +99,10 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
           `;
         } catch (e) {
           console.log("error in gql-tag for client", e);
-          validationMessage.body = "Invalid GraphQL Body";
+          validationMessage.body = `Invalid graphQL body: \n ${e.message}`;
         }
       }
+      // need to add validation check for gql variables
     }
     return validationMessage;
   }
@@ -372,7 +420,7 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
       setComposerWarningMessage({});
     } else {
       setComposerWarningMessage(validated);
-      // props.setComposerDisplay("Warning");
+      // setComposerDisplay("Warning");
     }
   }
 
@@ -427,19 +475,20 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
         method !== "GET" &&
         !/wss?:\/\//.test(protocol) && (
           <BodyEntryForm
-            newRequestHeaders={newRequestHeaders}
+            warningMessage={warningMessage}
             newRequestBody={newRequestBody}
-            setNewRequestHeaders={setNewRequestHeaders}
             setNewRequestBody={setNewRequestBody}
+            newRequestHeaders={newRequestHeaders}
+            setNewRequestHeaders={setNewRequestHeaders}
           />
         )}
       {graphQL && (
         <>
           <GraphQLBodyEntryForm
-            introspectionData={introspectionData}
+            warningMessage={warningMessage}
             newRequestBody={newRequestBody}
             setNewRequestBody={setNewRequestBody}
-            warningMessage={warningMessage}
+            introspectionData={introspectionData}
           />
           <GraphQLVariableEntryForm
             newRequestBody={ newRequestBody }
@@ -475,7 +524,6 @@ const ComposerNewRequest = ({ setNewRequestFields, newRequestFields, newRequestF
             </span>
           </label>
         )}
-        {/* {props.warningMessage} */}
       <button
         className="composer_submit"
         onClick={() => {addNewRequest()}}

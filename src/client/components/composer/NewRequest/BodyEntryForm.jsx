@@ -11,6 +11,7 @@ const BodyEntryForm = (props) => {
     stylesObj,
     newRequestHeaders,
     setNewRequestHeaders,
+    warningMessage,
   } = props;
 
   const rawTypeStyles = {
@@ -104,6 +105,13 @@ const BodyEntryForm = (props) => {
             <option value="text/xml">XML (text/xml)</option>
             <option value="text/html">HTML (text/html)</option>
           </select>
+          { // conditionally render warning message
+            warningMessage ? 
+            <div>
+              <div style={{ color: "red", marginTop: "10px" }}>{warningMessage.body || warningMessage.json}</div>
+            </div>
+            : null 
+          }
           {bodyEntryArea}
         </div>
       </div>

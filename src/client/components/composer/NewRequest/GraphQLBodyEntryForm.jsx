@@ -13,10 +13,11 @@ import "codemirror/addon/lint/lint.css";
 
 const GraphQLBodyEntryForm = (props) => {
   const {
+    newRequestBody,
     newRequestBody: { bodyContent },
     newRequestBody: { bodyIsNew },
-    newRequestBody,
     setNewRequestBody,
+    warningMessage,
     introspectionData,
   } = props;
 
@@ -43,6 +44,13 @@ const GraphQLBodyEntryForm = (props) => {
           <div className="indicator_body" />
         </div>
       </label>
+      { // conditionally render warning message
+        warningMessage ? 
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {warningMessage.body}
+          </div>
+        : null 
+      }
       <div className={bodyContainerClass} >
         <CodeMirror
           value={cmValue}
