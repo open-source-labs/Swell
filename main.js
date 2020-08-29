@@ -439,7 +439,7 @@ ipcMain.on("protoParserFunc-request", (event, data) => {
     })
     .catch((err) => {
       console.log("error in protoParserFunc-request:, ", err);
-      mainWindow.webContents.send("protoParserFunc-return", err);
+      mainWindow.webContents.send("protoParserFunc-return", { error: err });
     });
 });
 

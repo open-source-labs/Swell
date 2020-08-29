@@ -6,6 +6,7 @@ const { api } = window;
 
 const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
+  const [protoError, showError] = useState(null);
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
@@ -47,6 +48,7 @@ const GRPCProtoEntryForm = (props) => {
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
   const updateProtoBody = (value) => {
+    showError(null);
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       protoContent: value,
@@ -84,6 +86,9 @@ const GRPCProtoEntryForm = (props) => {
     // then call props.setNewRequestSTreams etc.. with the data
 
     api.receive("protoParserFunc-return", (data) => {
+      if (data.error)
+        showError(".proto parsing error: Please enter or import valid .proto");
+      else showError(null);
       const services = data.serviceArr ? data.serviceArr : null;
       const protoPath = data.protoPath ? data.protoPath : null;
 
@@ -132,7 +137,7 @@ const GRPCProtoEntryForm = (props) => {
           <div className="indicator" />
         </div>
       </label>
-
+      <div className="warningMessage">{protoError}</div>
       <textarea
         value={props.newRequestStreams.protoContent}
         className={"composer_textarea grpc " + bodyContainerClass}
