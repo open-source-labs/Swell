@@ -42,7 +42,7 @@ class BodyTypeSelect extends Component {
         style={{ marginTop: "4px" }}
       >
         <div
-          style={{ width: "33%" }}
+          style={{ width: "25%" }}
           className={RawStyleClasses}
           onMouseDown={() =>
             this.props.setNewRequestBody({
@@ -54,7 +54,7 @@ class BodyTypeSelect extends Component {
           Raw
         </div>
         <div
-          style={{ width: "33%" }}
+          style={{ width: "50%" }}
           className={XWWWFormUrlEncodedStyleClasses}
           onMouseDown={() =>
             this.props.setNewRequestBody({
@@ -63,10 +63,10 @@ class BodyTypeSelect extends Component {
             })
           }
         >
-          Form-urlencoded
+          x-www-form-urlencoded
         </div>
         <div
-          style={{ width: "33%" }}
+          style={{ width: "25%" }}
           className={NoneStyleClasses}
           onMouseDown={() => {
             this.props.setNewRequestBody({
