@@ -53,7 +53,7 @@ class Sidebar {
   };
 
   get urlencodedBtn(){
-    return app.client.$('.composer_bodytype_button=x-www-form-urlencoded');
+    return app.client.$('.composer_bodytype_button=Form-urlencoded');
   };
 
   get noneBtn(){
