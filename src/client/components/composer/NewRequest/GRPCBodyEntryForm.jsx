@@ -51,10 +51,11 @@ const GRPCBodyEntryForm = (props) => {
   // event handler that updates state in the store when typing into the stream query body
   const onChangeUpdateStream = (streamID, value) => {
     // if client makes additional edits to proto file after hitting save
-    let saveProtoBtn = document.getElementById("save-proto").innerText;
-    if (saveProtoBtn === "Changes Saved") {
-      saveProtoBtn = "Save Changes";
-    }
+    // let saveProtoBtn = document.getElementById("save-proto").innerText;
+    // if (saveProtoBtn === "Changes Saved") {
+    //   saveProtoBtn = "Save Changes";
+    // }
+    props.saveChanges(!props.changesSaved);
     const streamsArr = props.newRequestStreams.streamsArr;
     for (let i = 0; i < streamsArr.length; i++) {
       if (streamsArr[i].id === streamID) {
@@ -108,15 +109,21 @@ const GRPCBodyEntryForm = (props) => {
      */
   return (
     <div>
-      <label
-      className='composer_subtitle' >
-        <div className="label-text" id="cookie-click">Body</div>
+      <label className="composer_subtitle">
+        <div className="label-text" id="cookie-click">
+          Body
+        </div>
         <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
+          <input
+            type="checkbox"
+            name="check"
+            className="toggle-state"
+            onClick={() => toggleShow(!show)}
+          />
           <div className="indicator_body" />
         </div>
       </label>
-      
+
       <section className={bodyContainerClass}>{streamArr}</section>
       {addStreamBtn}
     </div>

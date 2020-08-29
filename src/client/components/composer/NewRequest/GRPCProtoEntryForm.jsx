@@ -7,13 +7,13 @@ const { api } = window;
 const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
+  const [changesSaved, saveChanges] = useState(false);
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
     // clear all stream bodies except first one upon clicking on import proto file
     clearStreamBodies();
     // reset streaming type next to the URL & reset Select Service dropdown to default option
-    document.getElementById("stream").innerText = "STREAM";
     // reset selected package name, service, request, streaming type & protoContent
     if (props.newRequestStreams.protoContent !== null) {
       props.setNewRequestStreams({
@@ -53,7 +53,8 @@ const GRPCProtoEntryForm = (props) => {
       ...props.newRequestStreams,
       protoContent: value,
     });
-    document.getElementById("save-proto").innerText = "Save Changes";
+    // document.getElementById("save-proto").innerText = "Save Changes";
+    saveChanges(false);
   };
 
   // clears stream body query when proto file or selected service is changed
@@ -74,7 +75,6 @@ const GRPCProtoEntryForm = (props) => {
   // update protoContent state in the store after making changes to the proto file
   const submitUpdatedProto = () => {
     // reset streaming type, select default for dropdowns, & set first stream query body to empty string
-    document.getElementById("stream").innerText = "STREAM";
 
     props.newRequestStreams.streamContent[0] = "";
     // parse new updated proto file and save to store
@@ -107,7 +107,8 @@ const GRPCProtoEntryForm = (props) => {
     api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
 
     // changes the button label from "Save Changes" to "Changes Saved"
-    document.getElementById("save-proto").innerText = "Changes Saved";
+    // document.getElementById("save-proto").innerText = "Changes Saved";
+    saveChanges(true);
   };
 
   const bodyContainerClass = show
@@ -163,6 +164,8 @@ const GRPCProtoEntryForm = (props) => {
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}
         clearStreamBodies={clearStreamBodies}
+        changesSaved={changesSaved}
+        saveChanges={saveChanges}
       />
     </div>
   );

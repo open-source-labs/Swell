@@ -205,6 +205,8 @@ const GRPCAutoInputForm = (props) => {
         selectedService={selectedService}
         selectedRequest={selectedRequest}
         selectedStreamingType={selectedStreamingType}
+        changesSaved={props.changesSaved}
+        saveChanges={props.saveChanges}
       />
     </div>
   );
