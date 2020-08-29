@@ -588,6 +588,7 @@ ipcMain.on("open-gql", (event, args) => {
     const body = gql`
     ${reqResObj.request.body}
     `;
+    // graphql variables: https://graphql.org/learn/queries/#variables
     const variables = reqResObj.request.bodyVariables
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
@@ -610,8 +611,10 @@ ipcMain.on("open-gql", (event, args) => {
           console.error('gql mutation error in main.js', err);
         });
     }
-  } catch (e) {
-    console.log('error trying gql query/mutation in main.js');
+  } catch (err) {
+    console.log('error trying gql query/mutation in main.js', err);
+    reqResObj.error = JSON.stringify(err);
+    event.sender.send("reply-gql",{ error: err, reqResObj });
   }
   
 });
