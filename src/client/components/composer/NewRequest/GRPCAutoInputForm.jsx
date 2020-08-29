@@ -67,9 +67,7 @@ const GRPCAutoInputForm = (props) => {
     );
     //find message object that matches rpc request name
     const message = selectedServiceObj.messages.find((msg) => {
-      if (msg) {
-        msg.name === rpc.req;
-      }
+      if (msg && msg.name === rpc.req) return msg;
     });
 
     //declare empty results obj that will become the initial query
