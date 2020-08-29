@@ -8,7 +8,6 @@ const BodyEntryForm = (props) => {
   const {
     newRequestBody,
     setNewRequestBody,
-    stylesObj,
     newRequestHeaders,
     setNewRequestHeaders,
     warningMessage,
@@ -65,7 +64,7 @@ const BodyEntryForm = (props) => {
     : "composer_bodyform_container-closed";
 
   return (
-    <div style={stylesObj}>
+    <div>
       <label
       className='composer_subtitle' >
         <div className="label-text" >Body</div>

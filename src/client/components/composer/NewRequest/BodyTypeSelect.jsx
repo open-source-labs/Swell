@@ -20,17 +20,17 @@ class BodyTypeSelect extends Component {
   }
 
   render() {
-    let RawStyleClasses = classNames({
+    const RawStyleClasses = classNames({
       composer_bodytype_button: true,
       "composer_bodytype_button-selected":
         this.props.newRequestBody.bodyType === "raw",
     });
-    let XWWWFormUrlEncodedStyleClasses = classNames({
+    const XWWWFormUrlEncodedStyleClasses = classNames({
       composer_bodytype_button: true,
       "composer_bodytype_button-selected":
         this.props.newRequestBody.bodyType === "x-www-form-urlencoded",
     });
-    let NoneStyleClasses = classNames({
+    const NoneStyleClasses = classNames({
       composer_bodytype_button: true,
       "composer_bodytype_button-selected":
         this.props.newRequestBody.bodyType === "none",
@@ -38,11 +38,11 @@ class BodyTypeSelect extends Component {
 
     return (
       <div
-        className={"composer_protocol_container httpbody"}
+        className="composer_protocol_container httpbody"
         style={{ marginTop: "4px" }}
       >
         <div
-          style={{ width: "14%" }}
+          style={{ width: "33%" }}
           className={RawStyleClasses}
           onMouseDown={() =>
             this.props.setNewRequestBody({
@@ -54,7 +54,7 @@ class BodyTypeSelect extends Component {
           Raw
         </div>
         <div
-          style={{ width: "65%" }}
+          style={{ width: "33%" }}
           className={XWWWFormUrlEncodedStyleClasses}
           onMouseDown={() =>
             this.props.setNewRequestBody({
@@ -63,10 +63,10 @@ class BodyTypeSelect extends Component {
             })
           }
         >
-          x-www-form-urlencoded
+          Form-urlencoded
         </div>
         <div
-          style={{ width: "17%" }}
+          style={{ width: "33%" }}
           className={NoneStyleClasses}
           onMouseDown={() => {
             this.props.setNewRequestBody({
