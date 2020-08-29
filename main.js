@@ -586,6 +586,7 @@ ipcMain.on("open-gql", (event, args) => {
     const body = gql`
       ${reqResObj.request.body}
     `;
+    // graphql variables: https://graphql.org/learn/queries/#variables
     const variables = reqResObj.request.bodyVariables
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
