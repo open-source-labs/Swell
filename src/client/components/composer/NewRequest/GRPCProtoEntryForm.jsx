@@ -13,7 +13,6 @@ const GRPCProtoEntryForm = (props) => {
     clearStreamBodies();
     // reset streaming type next to the URL & reset Select Service dropdown to default option
     document.getElementById("stream").innerText = "STREAM";
-    document.getElementById("dropdownService").selectedIndex = 0;
     // reset selected package name, service, request, streaming type & protoContent
     if (props.newRequestStreams.protoContent !== null) {
       props.setNewRequestStreams({
@@ -22,6 +21,7 @@ const GRPCProtoEntryForm = (props) => {
         selectedService: null,
         selectedRequest: null,
         selectedStreamingType: null,
+        services: [],
         streamContent: props.newRequestStreams.streamContent,
         protoContent: "",
       });
@@ -43,31 +43,6 @@ const GRPCProtoEntryForm = (props) => {
     });
 
     api.send("import-proto");
-
-    // // use electron dialog to import files that has .proto ext only
-    // remote.dialog.showOpenDialog({
-    //   buttonLabel : "Import Proto File",
-    //   properties: ['openFile', 'multiSelections'],
-    //   filters: [ { name: 'Protos', extensions: ['proto'] } ]
-    // })
-    // .then(filePaths => {
-    //   if (!filePaths) return;
-    //   // read uploaded proto file & save protoContent in the store
-    //   const importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
-    //   props.setNewRequestStreams({
-    //     ...props.newRequestStreams,
-    //     protoContent: importedProto
-    //   });
-    //   // parse proto file via protoParserFunc imported from protoParser.js & save parsed proto file details in the store
-    //   protoParserFunc(props.newRequestStreams.protoContent)
-    //   .then(data => {
-    //     props.setNewRequestStreams({
-    //       ...props.newRequestStreams,
-    //       services: data.serviceArr,
-    //       protoPath: data.protoPath
-    //     })
-    //   }).catch((err) => console.log(err));
-    // });
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
@@ -98,8 +73,7 @@ const GRPCProtoEntryForm = (props) => {
   const submitUpdatedProto = () => {
     // reset streaming type, select default for dropdowns, & set first stream query body to empty string
     document.getElementById("stream").innerText = "STREAM";
-    document.getElementById("dropdownService").selectedIndex = 0;
-    document.getElementById("dropdownRequest").selectedIndex = 0;
+
     props.newRequestStreams.streamContent[0] = "";
     // parse new updated proto file and save to store
 
@@ -110,26 +84,22 @@ const GRPCProtoEntryForm = (props) => {
     // then call props.setNewRequestSTreams etc.. with the data
 
     api.receive("protoParserFunc-return", (data) => {
+      const services = data.serviceArr ? data.serviceArr : null;
+      const protoPath = data.protoPath ? data.protoPath : null;
+
       props.setNewRequestStreams({
         ...props.newRequestStreams,
-        services: data.serviceArr,
-        protoPath: data.protoPath,
+        selectedPackage: null,
+        selectedService: null,
+        selectedRequest: null,
+        selectedStreamingType: null,
+        selectedServiceObj: null,
+        services,
+        protoPath,
       });
     });
 
     api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
-    /*
-
-    protoParserFunc(props.newRequestStreams.protoContent)
-      .then((data) => {
-        props.setNewRequestStreams({
-          ...props.newRequestStreams,
-          services: data.serviceArr,
-          protoPath: data.protoPath,
-        });
-      })
-      .catch((err) => console.log(err));
-*/
 
     // changes the button label from "Save Changes" to "Changes Saved"
     document.getElementById("save-proto").innerText = "Changes Saved";
@@ -148,15 +118,21 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div>
-      <label
-        className='composer_subtitle' >
-        <div className="label-text" id="cookie-click">Proto</div>
+      <label className="composer_subtitle">
+        <div className="label-text" id="cookie-click">
+          Proto
+        </div>
         <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
+          <input
+            type="checkbox"
+            name="check"
+            className="toggle-state"
+            onClick={() => toggleShow(!show)}
+          />
           <div className="indicator" />
         </div>
       </label>
-      
+
       <textarea
         value={props.newRequestStreams.protoContent}
         className={"composer_textarea grpc " + bodyContainerClass}

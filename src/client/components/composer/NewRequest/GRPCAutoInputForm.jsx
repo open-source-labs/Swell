@@ -17,6 +17,7 @@ const GRPCAutoInputForm = (props) => {
     selectedPackage,
     selectedStreamingType,
     selectedServiceObj,
+    protoContent,
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
@@ -118,6 +119,11 @@ const GRPCAutoInputForm = (props) => {
       initialQuery: queryJSON,
     });
   }, [selectedRequest]);
+
+  useEffect(() => {
+    selectServiceOption("Select Service");
+    selectRequestOption("Select Request");
+  }, [protoContent]);
 
   const bodyContainerClass = show
     ? "composer_bodyform_container-open-rest"
