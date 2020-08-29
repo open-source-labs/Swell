@@ -66,32 +66,39 @@ const GRPCAutoInputForm = (props) => {
       (rpc) => rpc.name === selectedRequest
     );
     //find message object that matches rpc request name
-    const message = selectedServiceObj.messages.find(
-      (msg) => msg.name === rpc.req
-    );
+    const message = selectedServiceObj.messages.find((msg) => {
+      if (msg) {
+        msg.name === rpc.req;
+      }
+    });
 
     //declare empty results obj that will become the initial query
     const results = {};
-    // push each key/value pair of the message definition into the results obj
-    for (const key in message.def) {
-      // if message type is a nested message (message.def.nested === true)
-      if (message.def[key].nested) {
-        for (const submess of selectedServiceObj.messages) {
-          if (submess.name === message.def[key].dependent) {
-            // define obj for the submessage definition
-            const subObj = {};
-            for (const subKey in submess.def) {
-              subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase();
+
+    if (message) {
+      // push each key/value pair of the message definition into the results obj
+      for (const key in message.def) {
+        // if message type is a nested message (message.def.nested === true)
+        if (message.def[key].nested) {
+          for (const submess of selectedServiceObj.messages) {
+            if (submess.name === message.def[key].dependent) {
+              // define obj for the submessage definition
+              const subObj = {};
+              for (const subKey in submess.def) {
+                subObj[subKey] = submess.def[subKey].type
+                  .slice(5)
+                  .toLowerCase();
+              }
+              results[key] = subObj;
+              break;
             }
-            results[key] = subObj;
-            break;
           }
+        } else {
+          results[key] = message.def[key].type.slice(5).toLowerCase();
         }
-      } else {
-        results[key] = message.def[key].type.slice(5).toLowerCase();
       }
     }
-    //shally copy streamsArr and streamCopy to reassign in store
+    //shallow copy streamsArr and streamCopy to reassign in store
     const streamsArrCopy = [...streamsArr];
     const streamContentCopy = [...streamContent];
 
@@ -153,14 +160,20 @@ const GRPCAutoInputForm = (props) => {
 
   return (
     <div>
-      <label
-        className='composer_subtitle' >
-          <div className="label-text" id="cookie-click">Stream</div>
-          <div className="toggle">
-            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
-            <div className="indicator_body" />
-          </div>
-        </label>
+      <label className="composer_subtitle">
+        <div className="label-text" id="cookie-click">
+          Stream
+        </div>
+        <div className="toggle">
+          <input
+            type="checkbox"
+            name="check"
+            className="toggle-state"
+            onClick={() => toggleShow(!show)}
+          />
+          <div className="indicator_body" />
+        </div>
+      </label>
       <select
         id="dropdownService"
         value={serviceNameOption}
