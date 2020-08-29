@@ -567,11 +567,24 @@
 }
 
 .composer_pretty_print {
-  color: $yellowgrey;
+  border-radius: 15px;
+  background: linear-gradient(315deg, #ffffff, #d6d6d6);
+  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
   cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  line-height: 28px;
+  outline: 0 none;
+  text-align: center;
+  width: 100%;
+  padding-top: 4px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
   margin-top: 0px;
+  &:hover {
+    background: #eeeeee;
+    box-shadow: inset -12px -12px 24px #b0b0b0, inset 12px 12px 24px #ffffff;
+  }
 }
 
 .historyDate-container {
