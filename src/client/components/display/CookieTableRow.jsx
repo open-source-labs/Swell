@@ -3,7 +3,7 @@ import CookieTableCell from "./CookieTableCell";
 
 const CookieTableRow = ({ cookies }) => {
 
-  let tableCellArray;
+  const tableCellArray = [];
   for (const key in cookies) {
     tableCellArray.push(
       <CookieTableCell detail={cookies[key]} key={key} />
