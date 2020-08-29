@@ -153,7 +153,7 @@ const GRPCProtoEntryForm = (props) => {
         <div className="label-text" id="cookie-click">Proto</div>
         <div className="toggle">
           <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
-          <div className="indicator" />
+          <div className="indicator_body" />
         </div>
       </label>
       
