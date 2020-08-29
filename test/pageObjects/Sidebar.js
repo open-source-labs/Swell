@@ -93,6 +93,25 @@ class Sidebar {
     return app.client.$('select#dropdownRequest.dropdownRequest.composer_bodyform_container-open-rest')
   }
 
+  // graphQL
+  get schemaOpen() {
+    return app.client.$('#schema-click')
+  }
+
+  get introspect() {
+    return app.client.$('button=Introspect')
+  }
+
+  get introspectionText() {
+    return app.client.$('textarea#introspection-text')
+  }
+
+  get graphqlText() {
+    const codeMirror = app.client.$('div#graphql-body');
+    codeMirror.click();
+    return codeMirror.$("textarea")
+  }
+
   // HEADER INPUTS
 
   get activateHeaders(){

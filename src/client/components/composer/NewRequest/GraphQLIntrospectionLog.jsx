@@ -20,6 +20,7 @@ const GraphQLIntrospectionLog = (props) => {
     <div>
       <div
         className="composer_subtitle"
+        id="schema-click"
         onClick={() => toggleShow((show) => !show)}
         style={props.stylesObj}
       >
@@ -34,6 +35,7 @@ const GraphQLIntrospectionLog = (props) => {
         </div>
         <textarea
           readOnly
+          id="introspection-text"
           className={`composer_textarea gql introspection-small ${logAreaClass}`}
           value={
             introspectionData.schemaSDL ||

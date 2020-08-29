@@ -8,6 +8,7 @@ const addRequestTests = require("./subSuites/addRequestTests");
 const httpTest = require("./subSuites/httpTest");
 const websocketTest = require("./subSuites/websocketTest");
 const grpcTest = require("./subSuites/grpcTest");
+const graphqlTest = require('./subSuites/graphqlTest')
 
 const app = require("./testApp");
 
@@ -24,13 +25,14 @@ describe("Electron Tests", function () {
   });
 
   // these are are test suites within this broader suite
-  appOpensTests();
+  // appOpensTests();
 
   describe("CRUD functionality", function () {
-    reqInputTests();
-    addRequestTests();
-    httpTest();
-    websocketTest();
-    grpcTest();
+    // reqInputTests();
+    // addRequestTests();
+    // httpTest();
+    // websocketTest();
+    // grpcTest();
+    graphqlTest();
   });
 });
