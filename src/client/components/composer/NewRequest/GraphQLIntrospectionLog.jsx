@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 import graphQLController from "../../../controllers/graphQLController";
 
 const GraphQLIntrospectionLog = (props) => {
   const [show, toggleShow] = useState(false);
   const { introspectionData, url } = props;
-  const arrowClass = show
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
   const bodyContainerClass = show
     ? "composer_bodyform_container-open-grpc"
     : "composer_bodyform_container-closed";
@@ -18,14 +14,14 @@ const GraphQLIntrospectionLog = (props) => {
       : "introspection-small";
   return (
     <div>
-      <div
-        className="composer_subtitle"
-        onClick={() => toggleShow((show) => !show)}
-        style={props.stylesObj}
-      >
-        <img className={arrowClass} src={dropDownArrow} alt="" />
-        Schema
-      </div>
+      <label
+      className='composer_subtitle' >
+        <div className="label-text" id="cookie-click">Schema</div>
+        <div className="toggle">
+          <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow((show) => !show)}/>
+          <div className="indicator" />
+        </div>
+      </label>
       <div className={bodyContainerClass}>
         <div style={{ color: "red" }}>
           {introspectionData === "Error: Please enter a valid GraphQL API URI"
