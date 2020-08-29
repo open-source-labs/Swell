@@ -4,14 +4,9 @@ import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/edit/closebrackets";
 import "codemirror/theme/twilight.css";
 import "codemirror/lib/codemirror.css";
-import "codemirror/addon/hint/show-hint";
-import "codemirror/addon/hint/show-hint.css";
-import "codemirror-graphql/hint";
-import "codemirror-graphql/lint";
-import "codemirror-graphql/mode";
-import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/display/autorefresh"
-
+import "codemirror/addon/display/placeholder"
+import "codemirror/mode/javascript/javascript"
 
 const GraphQLVariableEntryForm = (props) => {
   const {
@@ -31,6 +26,7 @@ const GraphQLVariableEntryForm = (props) => {
   useEffect(() => {
     if (!bodyIsNew) setValue(bodyVariables);
   }, [bodyVariables]);
+
   const bodyContainerClass = show
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
@@ -51,7 +47,7 @@ const GraphQLVariableEntryForm = (props) => {
         ref={cmVariables}
           value={cmValue}
           options={{
-            mode: 'graphql',
+            mode: { name: "javascript", json: true },
             theme: 'twilight',
             scrollbarStyle: 'native',
             lineNumbers: false,
@@ -60,6 +56,7 @@ const GraphQLVariableEntryForm = (props) => {
             indentUnit: 2,
             tabSize: 2,
             autoRefresh: true,
+            placeholder: 'Variables must be JSON format'
           }}
           editorDidMount={editor => { editor.setSize('100%', 100) }}
           onBeforeChange={(editor, data, value) => {

@@ -1,9 +1,6 @@
 /* eslint-disable default-case */
 import React, { useRef } from "react";
 import ProtocolSelect from "./ProtocolSelect.jsx";
-import colors from "../../../../assets/style/colors.scss";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
-import { setNewRequestStreams } from "../../../actions/actions.js";
 
 const FieldEntryForm = ({warningMessage, setComposerWarningMessage, setNewRequestFields, newRequestFields, 
   setNewRequestBody, newRequestBody,	setNewRequestHeaders, newRequestStreams, newRequestHeaders:  { headersArr } }) => {

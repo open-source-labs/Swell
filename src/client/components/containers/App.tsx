@@ -2,7 +2,6 @@ import * as React from "react";
 import "../../../assets/style/App.scss";
 import { ContentsContainer } from "./ContentsContainer";
 import { SidebarContainer } from "./SidebarContainer";
-import UpdatePopUpContainer from "./UpdatePopUpContainer.jsx";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
 // import ReqResCtrl from '../../controllers/reqResController';
@@ -63,7 +62,6 @@ export class App extends React.Component<any, any> {
     api.send("toMain", "MEAT WITH SAUCE");
     return (
       <div id="app">
-        <UpdatePopUpContainer />
         <SidebarContainer />
         <ContentsContainer />
       </div>
