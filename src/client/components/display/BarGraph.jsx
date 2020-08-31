@@ -10,6 +10,9 @@ const mapStateToProps = (store) => ({
 });
 
 const BarGraph = ({ dataPoints }) => {
+  //state for showing graph, depending on whether there are datapoints or not.
+  //must default to true, because graph will not render if initial container's display is 'none'
+  const [show, toggleShow] = useState(true);
   //Default state for chart data
   const [chartData, updateChart] = useState({
     labels: [],
@@ -106,6 +109,11 @@ const BarGraph = ({ dataPoints }) => {
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
       borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
+      //show graph upon receiving data points
+      toggleShow(true);
+    } else {
+      //hide graph when no data points
+      toggleShow(false);
     }
     //update state with updated dataset
     updateChart(dataUpdater(urls, times, BGs, borders));
@@ -114,8 +122,10 @@ const BarGraph = ({ dataPoints }) => {
       updateOptions(optionsUpdater(dataPoints));
   }, [dataPoints]);
 
+  const chartClass = show ? "chart" : "chart-closed";
+
   return (
-    <div id="chartContainer" className="chart">
+    <div id="chartContainer" className={chartClass}>
       <Bar data={chartData} width={50} height={100} options={chartOptions} />
     </div>
   );
