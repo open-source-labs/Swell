@@ -5,8 +5,8 @@ const GRPCBodyStream = (props) => {
   // event handler that allows the client to delete a stream body
   // eslint-disable-next-line lines-between-class-members
   const deleteStream = (id) => {
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
+    const streamsArr = [...props.newRequestStreams.streamsArr];
+    const streamContent = [...props.newRequestStreams.streamContent];
     // delete the query from the streamContent arr and the stream body from streamsArr
     streamContent.splice(id, 1);
     streamsArr.splice(id, 1);
@@ -26,12 +26,13 @@ const GRPCBodyStream = (props) => {
   let streamBody;
   let deleteStreamBtn;
   // grabs the query based on the stream id/number
-  const streamContent = props.newRequestStreams.streamContent[props.stream.id];
+  const streamContentID =
+    props.newRequestStreams.streamContent[props.stream.id];
   // if none or the first stream query in the array
   if (props.stream.id === 1) {
     streamBody = (
       <textarea
-        value={`${streamContent || ""}`}
+        value={`${streamContentID || ""}`}
         className="composer_textarea grpc"
         id="grpcBodyEntryTextArea"
         type="text"
@@ -44,7 +45,7 @@ const GRPCBodyStream = (props) => {
     // for subsequent stream query
     streamBody = (
       <textarea
-        value={streamContent}
+        value={streamContentID}
         className="composer_textarea grpc"
         id="grpcBodyEntryTextArea"
         type="text"

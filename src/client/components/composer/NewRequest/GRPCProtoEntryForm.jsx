@@ -9,6 +9,21 @@ const GRPCProtoEntryForm = (props) => {
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
 
+  // clears stream body query when proto file or selected service is changed
+  const clearStreamBodies = () => {
+    // clear all stream query bodies except the first one and reset first query to an empty string & streaming type to default value
+    let streamsArr = [props.newRequestStreams.streamsArr[0]];
+    let streamContent = [""];
+
+    props.setNewRequestStreams({
+      ...props.newRequestStreams,
+      streamsArr: streamsArr,
+      streamcontent: streamContent,
+      selectedStreamingType: null,
+      count: 1,
+    });
+  };
+
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
     // clear all stream bodies except first one upon clicking on import proto file
@@ -23,7 +38,6 @@ const GRPCProtoEntryForm = (props) => {
         selectedRequest: null,
         selectedStreamingType: null,
         services: [],
-        streamContent: props.newRequestStreams.streamContent,
         protoContent: "",
       });
     }
@@ -50,49 +64,39 @@ const GRPCProtoEntryForm = (props) => {
     saveChanges(false);
   };
 
-  // clears stream body query when proto file or selected service is changed
-  const clearStreamBodies = () => {
-    // clear all stream query bodies except the first one and reset first query to an empty string & streaming type to default value
-
-    let streamsArr = [props.newRequestStreams.streamsArr[0]];
-    let streamContent = [""];
-
-    props.setNewRequestStreams({
-      ...props.newRequestStreams,
-      streamsArr: streamsArr,
-      streamcontent: streamContent,
-      selectedStreamingType: null,
-      count: 1,
-    });
-  };
-
   // update protoContent state in the store after making changes to the proto file
   const submitUpdatedProto = () => {
-    // parse new updated proto file and save to store
-    api.receive("protoParserFunc-return", (data) => {
-      if (data.error) {
-        showError(".proto parsing error: Please enter or import valid .proto");
-        saveChanges(false);
-      } else {
-        showError(null);
-        saveChanges(true);
-      }
-      const services = data.serviceArr ? data.serviceArr : null;
-      const protoPath = data.protoPath ? data.protoPath : null;
+    //only update if changes aren't saved
+    if (!changesSaved) {
+      // parse new updated proto file and save to store
+      api.receive("protoParserFunc-return", (data) => {
+        if (data.error) {
+          clearStreamBodies();
+          showError(
+            ".proto parsing error: Please enter or import valid .proto"
+          );
+          saveChanges(false);
+        } else {
+          showError(null);
+          saveChanges(true);
+        }
+        const services = data.serviceArr ? data.serviceArr : null;
+        const protoPath = data.protoPath ? data.protoPath : null;
 
-      props.setNewRequestStreams({
-        ...props.newRequestStreams,
-        selectedPackage: null,
-        selectedService: null,
-        selectedRequest: null,
-        selectedStreamingType: null,
-        selectedServiceObj: null,
-        services,
-        protoPath,
+        props.setNewRequestStreams({
+          ...props.newRequestStreams,
+          selectedPackage: null,
+          selectedService: null,
+          selectedRequest: null,
+          selectedStreamingType: null,
+          selectedServiceObj: null,
+          services,
+          protoPath,
+        });
       });
-    });
 
-    api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
+      api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
+    }
   };
 
   const bodyContainerClass = show

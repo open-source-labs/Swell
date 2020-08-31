@@ -28,8 +28,8 @@ const GRPCBodyEntryForm = (props) => {
 
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   const addStream = () => {
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
+    const streamsArr = [...props.newRequestStreams.streamsArr];
+    const streamContent = [...props.newRequestStreams.streamContent];
     // save query of initial stream body
     const firstBodyQuery = props.newRequestStreams.initialQuery;
     // construct new stream body obj & push into the streamsArr
@@ -50,21 +50,18 @@ const GRPCBodyEntryForm = (props) => {
 
   // event handler that updates state in the store when typing into the stream query body
   const onChangeUpdateStream = (streamID, value) => {
-    // if client makes additional edits to proto file after hitting save
-    // let saveProtoBtn = document.getElementById("save-proto").innerText;
-    // if (saveProtoBtn === "Changes Saved") {
-    //   saveProtoBtn = "Save Changes";
-    // }
-    props.saveChanges(!props.changesSaved);
-    const streamsArr = props.newRequestStreams.streamsArr;
+    // props.saveChanges(false);
+    const streamsArr = [...props.newRequestStreams.streamsArr];
+    const streamContent = [...props.newRequestStreams.streamContent];
+
     for (let i = 0; i < streamsArr.length; i++) {
       if (streamsArr[i].id === streamID) {
         streamsArr[streamID].query = value;
-        props.newRequestStreams.streamContent[streamID] = value;
+        streamContent[streamID] = value;
         props.setNewRequestStreams({
           ...props.newRequestStreams,
           streamsArr,
-          streamContent: props.newRequestStreams.streamContent,
+          streamContent,
         });
       }
     }
