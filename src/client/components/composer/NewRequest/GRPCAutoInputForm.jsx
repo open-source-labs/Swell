@@ -45,12 +45,14 @@ const GRPCAutoInputForm = (props) => {
 
   // event handler for changes made to the Select Requests dropdown list
   const setRequest = (e) => {
+    //update component state
     selectRequestOption(e.target.value);
+    //clear streams array and content except first index
     const newStreamsArr = [streamsArr[0]];
     const newStreamContent = [streamContent[0]];
 
     let requestName = e.target.value;
-
+    //clear stream bodies and set request to null if none selected
     if (e.target.value === "Select Request") {
       newStreamContent[0] = "";
       requestName = null;
