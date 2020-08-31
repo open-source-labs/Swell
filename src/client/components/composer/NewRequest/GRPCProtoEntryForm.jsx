@@ -86,9 +86,13 @@ const GRPCProtoEntryForm = (props) => {
     // then call props.setNewRequestSTreams etc.. with the data
 
     api.receive("protoParserFunc-return", (data) => {
-      if (data.error)
+      if (data.error) {
         showError(".proto parsing error: Please enter or import valid .proto");
-      else showError(null);
+        saveChanges(false);
+      } else {
+        showError(null);
+        saveChanges(true);
+      }
       const services = data.serviceArr ? data.serviceArr : null;
       const protoPath = data.protoPath ? data.protoPath : null;
 
@@ -115,6 +119,8 @@ const GRPCProtoEntryForm = (props) => {
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
   const smallBtn = show ? "small-btn-open" : "small-btn-closed";
+
+  const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
   /*
     pseudocode for the return section
      - first div renders the arrow button along with the title "Proto"
@@ -157,7 +163,7 @@ const GRPCProtoEntryForm = (props) => {
         className={"save-proto " + smallBtn}
         onClick={submitUpdatedProto}
       >
-        Save Changes
+        {saveChangesBtnText}
       </button>
 
       <GRPCAutoInputForm
