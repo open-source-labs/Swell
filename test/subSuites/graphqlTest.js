@@ -1,7 +1,7 @@
 const chai = require("chai");
-const { collapseTextChangeRangesAcrossMultipleVersions } = require("typescript");
 const sideBar = require("../pageObjects/Sidebar.js");
 const reqRes = require("../pageObjects/ReqRes.js");
+const graphqlServer = require('../graphqlServer')
 
 const expect = chai.expect;
 
@@ -36,6 +36,15 @@ module.exports = () => {
       }
     }
 
+    after(() => {
+      try {
+        graphqlServer.close();
+         console.log('graphqlServer closed')
+      } catch(err) {
+        console.error(err)
+      }
+    })
+
     it("it should be able to introspect the schema", async () => {
       try {
         await sideBar.graphQL.click();
@@ -51,7 +60,7 @@ module.exports = () => {
             } catch(err) {
               console.error(err)
             }
-          }, 2000)
+          }, 3000)
         });
       } catch(err) {
         console.error(err)

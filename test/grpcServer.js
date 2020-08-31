@@ -109,11 +109,16 @@ function sayHelloBidi(ctx) {
  * Starts an RPC server that receives requests for the Greeter service at the
  * sample server port
  */
-function main() {
+function main(status) {
   const app = new Mali(PROTO_PATH, "Greeter");
-  app.use({ sayHello, sayHelloNested, sayHellosSs, sayHelloCs, sayHelloBidi });
-  app.start(HOSTPORT);
-  console.log(`GRPC Greeter service running @ ${HOSTPORT}`);
+  if (status === 'open') {
+    app.use({ sayHello, sayHelloNested, sayHellosSs, sayHelloCs, sayHelloBidi });
+    app.start(HOSTPORT);
+    console.log(`GRPC Greeter service running @ ${HOSTPORT}`);
+  } else if (status === 'close') {
+    app.close();
+    console.log('grpcServer closed')
+  }
 }
 
-main();
+module.exports = main
