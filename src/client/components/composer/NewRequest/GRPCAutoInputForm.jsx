@@ -28,11 +28,15 @@ const GRPCAutoInputForm = (props) => {
     const serviceObj = services.find((ser) => ser.name === e.target.value);
     // clears all stream query bodies except the first one
     props.clearStreamBodies();
+    selectRequestOption("Select Request");
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       selectedService: serviceName,
       selectedServiceObj: serviceObj,
+      selectedRequest: null,
+      selectedStreamingType: null,
+      selectedPackage: null,
     });
   };
 
