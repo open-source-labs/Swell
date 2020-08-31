@@ -1,6 +1,8 @@
 import * as React from "react";
+import loadable from "@loadable/component";
 
-import BarGraph from "../display/BarGraph";
+const BarGraph = loadable(() => import('../display/BarGraph'))
+// import BarGraph from "../display/BarGraph";
 import ReqResContainer from "./ReqResContainer.jsx";
 import NavBarContainer from "./NavBarContainer.jsx";
 
