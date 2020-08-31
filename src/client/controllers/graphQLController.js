@@ -22,7 +22,7 @@ const graphQLController = {
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
         if (response.error)
-          this.handleError(response.error, response.reqResObj);
+          this.handleError(response.reqResObj.error, response.reqResObj);
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log("error in sendGqlToMain", err));
@@ -98,7 +98,7 @@ const graphQLController = {
   handleError(errorsObj, reqResObj) {
     reqResObj.connection = "error";
     reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(errorsObj));
+    reqResObj.response.events.push(errorsObj);
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 

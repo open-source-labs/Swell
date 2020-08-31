@@ -140,7 +140,7 @@ const GRPCAutoInputForm = (props) => {
   }, [protoContent]);
 
   const bodyContainerClass = show
-    ? "composer_bodyform_container-open-rest"
+    ? "dropdownService"
     : "composer_bodyform_container-closed";
 
   //default options shown for services and request dropdowns
@@ -197,7 +197,7 @@ const GRPCAutoInputForm = (props) => {
         value={serviceNameOption}
         onChange={setService}
         name="dropdownService"
-        className={"dropdownService " + bodyContainerClass}
+        className={bodyContainerClass}
       >
         {servicesList}
       </select>
@@ -207,7 +207,7 @@ const GRPCAutoInputForm = (props) => {
         value={requestNameOption}
         onChange={setRequest}
         name="dropdownRequest"
-        className={"dropdownRequest " + bodyContainerClass}
+        className={bodyContainerClass}
       >
         {rpcsList}
       </select>

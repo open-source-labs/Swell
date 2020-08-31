@@ -35,14 +35,14 @@ const GraphQLVariableEntryForm = (props) => {
     <div>
       <label
       className='composer_subtitle' >
-        <div className="label-text" id="cookie-click">Variables</div>
+        <div className="label-text" id="variable-click">Variables</div>
         <div className="toggle">
           <input type="checkbox" name="check" className="toggle-state" onClick={() => {
           setShow(!show);}}/>
           <div className="indicator" />
         </div>
       </label>
-      <div className={bodyContainerClass} style={{ marginBottom: '10px' }}>
+      <div className={bodyContainerClass} id="graphql-variable" style={{ marginBottom: '10px' }}>
         <CodeMirror
         ref={cmVariables}
           value={cmValue}

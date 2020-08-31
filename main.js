@@ -557,14 +557,14 @@ ipcMain.on("open-gql", (event, args) => {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError) {
-      reqResObj.error = networkError;
+      reqResObj.error = JSON.stringify(networkError);
       event.sender.send("reply-gql", { error: networkError, reqResObj });
     }
     try {
       // check if there are any errors in the graphQLErrors array
       if (graphQLErrors.length !== 0) {
         graphQLErrors.forEach((currError) => {
-          reqResObj.error = JSON.stringify(currError);
+          reqResObj.error = currError;
           event.sender.send("reply-gql", { error: currError, reqResObj });
         });
       }
@@ -609,8 +609,8 @@ ipcMain.on("open-gql", (event, args) => {
           console.error("gql mutation error in main.js", err);
         });
     }
-  } catch (e) {
-    console.log("error trying gql query/mutation in main.js");
+  } catch (err) {
+    console.log("error trying gql query/mutation in main.js", err);
   }
 });
 

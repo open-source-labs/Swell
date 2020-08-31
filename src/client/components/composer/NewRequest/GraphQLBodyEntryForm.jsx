@@ -51,7 +51,7 @@ const GraphQLBodyEntryForm = (props) => {
           </div>
         : null 
       }
-      <div className={bodyContainerClass} >
+      <div className={bodyContainerClass} id="graphql-body">
         <CodeMirror
           value={cmValue}
           options={{
