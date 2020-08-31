@@ -1,15 +1,15 @@
 .warningContainer {
-  width : 100%;
-  height : 240px;
-  padding : 17px;
+  width: 100%;
+  height: 240px;
+  padding: 17px;
 }
 
 .warning {
-  width : 100%;
-  height : 100%;
-  padding : 20px;
-  border-radius : 4px;
-  color : $liteblack;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border-radius: 4px;
+  color: $liteblack;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -18,15 +18,19 @@
 }
 
 .warningMessage {
-  color:red;
+  color: red;
   font-size: 16px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 
 .chart {
-  padding : 10px 10px 0px 10px;
-  width : 100%;
-  height : 240px !important;
+  padding: 10px 10px 0px 10px;
+  width: 100%;
+  height: 240px !important;
+}
+
+.chart-closed {
+  display: none;
 }
 
 .chartTime {
@@ -44,7 +48,7 @@
   justify-content: center;
   align-items: center;
 }
-.chartTimeSelect{
+.chartTimeSelect {
   display: flex;
   justify-content: center;
   margin-left: 10px;
