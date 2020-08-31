@@ -27,7 +27,8 @@ const GRPCAutoInputForm = (props) => {
       e.target.value !== "Select Service" ? e.target.value : null;
     const serviceObj = services.find((ser) => ser.name === e.target.value);
     // clears all stream query bodies except the first one
-    props.clearStreamBodies();
+    let streamsArr = [props.newRequestStreams.streamsArr[0]];
+    let streamContent = [""];
     selectRequestOption("Select Request");
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
@@ -37,19 +38,25 @@ const GRPCAutoInputForm = (props) => {
       selectedRequest: null,
       selectedStreamingType: null,
       selectedPackage: null,
+      streamsArr,
+      streamContent,
     });
   };
 
   // event handler for changes made to the Select Requests dropdown list
   const setRequest = (e) => {
     selectRequestOption(e.target.value);
-    const requestName =
-      e.target.value !== "Select Request" ? e.target.value : null;
-    props.clearStreamBodies();
-
-    // clears all stream bodies except the first when switching from client/directional stream to something else
     const newStreamsArr = [streamsArr[0]];
     const newStreamContent = [streamContent[0]];
+
+    let requestName = e.target.value;
+
+    if (e.target.value === "Select Request") {
+      newStreamContent[0] = "";
+      requestName = null;
+    }
+
+    // clears all stream bodies except the first when switching from client/directional stream to something else
 
     // the selected request name is saved in state of the store
     props.setNewRequestStreams({
@@ -59,6 +66,7 @@ const GRPCAutoInputForm = (props) => {
       selectedStreamingType: null,
       streamContent: newStreamContent,
       streamsArr: newStreamsArr,
+      count: 1,
     });
   };
 

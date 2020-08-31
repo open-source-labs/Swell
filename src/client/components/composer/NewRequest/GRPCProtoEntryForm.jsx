@@ -9,25 +9,11 @@ const GRPCProtoEntryForm = (props) => {
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
 
-  // clears stream body query when proto file or selected service is changed
-  const clearStreamBodies = () => {
-    // clear all stream query bodies except the first one and reset first query to an empty string & streaming type to default value
-    let streamsArr = [props.newRequestStreams.streamsArr[0]];
-    let streamContent = [""];
-
-    props.setNewRequestStreams({
-      ...props.newRequestStreams,
-      streamsArr: streamsArr,
-      streamcontent: streamContent,
-      selectedStreamingType: null,
-      count: 1,
-    });
-  };
-
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
     // clear all stream bodies except first one upon clicking on import proto file
-    clearStreamBodies();
+    let streamsArr = [props.newRequestStreams.streamsArr[0]];
+    let streamContent = [""];
     // reset streaming type next to the URL & reset Select Service dropdown to default option
     // reset selected package name, service, request, streaming type & protoContent
     if (props.newRequestStreams.protoContent !== null) {
@@ -39,6 +25,9 @@ const GRPCProtoEntryForm = (props) => {
         selectedStreamingType: null,
         services: [],
         protoContent: "",
+        streamsArr,
+        streamContent,
+        count: 1,
       });
     }
     //listens for imported proto content from main process
@@ -72,7 +61,6 @@ const GRPCProtoEntryForm = (props) => {
       // parse new updated proto file and save to store
       api.receive("protoParserFunc-return", (data) => {
         if (data.error) {
-          clearStreamBodies();
           showError(
             ".proto parsing error: Please enter or import valid .proto"
           );
@@ -81,9 +69,10 @@ const GRPCProtoEntryForm = (props) => {
           showError(null);
           saveChanges(true);
         }
-        clearStreamBodies();
         const services = data.serviceArr ? data.serviceArr : null;
         const protoPath = data.protoPath ? data.protoPath : null;
+        const streamsArr = [props.newRequestStreams.streamsArr[0]];
+        const streamContent = [""];
 
         props.setNewRequestStreams({
           ...props.newRequestStreams,
@@ -94,6 +83,9 @@ const GRPCProtoEntryForm = (props) => {
           selectedServiceObj: null,
           services,
           protoPath,
+          streamsArr,
+          streamContent,
+          count: 1,
         });
       });
 
@@ -155,7 +147,6 @@ const GRPCProtoEntryForm = (props) => {
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}
-        clearStreamBodies={clearStreamBodies}
         changesSaved={changesSaved}
         saveChanges={saveChanges}
       />
