@@ -8,6 +8,7 @@ const addRequestTests = require("./subSuites/addRequestTests");
 const httpTest = require("./subSuites/httpTest");
 const websocketTest = require("./subSuites/websocketTest");
 const grpcTest = require("./subSuites/grpcTest");
+const graphqlTest = require('./subSuites/graphqlTest')
 
 const app = require("./testApp");
 
@@ -32,5 +33,6 @@ describe("Electron Tests", function () {
     httpTest();
     websocketTest();
     grpcTest();
+    graphqlTest();
   });
 });

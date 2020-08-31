@@ -18,64 +18,64 @@ const GraphQLVariableEntryForm = loadable(() => import('./GraphQLVariableEntryFo
 
 
 const ComposerNewRequest = ({
-  setNewRequestFields, 
-  newRequestFields, 
+  setNewRequestFields,
+  newRequestFields,
   newRequestFields: {
-    gRPC, 
-    url, 
-    method, 
-    protocol, 
-    graphQL, 
-    restUrl, 
-    wsUrl, 
-    gqlUrl, 
-    grpcUrl, 
-    network
+    gRPC,
+    url,
+    method,
+    protocol,
+    graphQL,
+    restUrl,
+    wsUrl,
+    gqlUrl,
+    grpcUrl,
+    network,
   },
-  setNewRequestBody, 
-  newRequestBody, 
+  setNewRequestBody,
+  newRequestBody,
   newRequestBody: {
     JSONFormatted,
-    rawType, 
-    bodyContent, 
+    rawType,
+    bodyContent,
     bodyVariables,
-    bodyType 
+    bodyType,
   },
   setNewRequestHeaders,
   newRequestHeaders,
   newRequestHeaders: { headersArr },
   setNewRequestCookies,
-  newRequestCookies, 
+  newRequestCookies,
   newRequestCookies: { cookiesArr },
   setNewRequestStreams,
   newRequestStreams,
-  newRequestStreams: { 
+  newRequestStreams: {
     selectedService,
     selectedRequest,
     selectedPackage,
     streamingType,
     initialQuery,
-    streamsArr, 
-    streamContent, 
-    services, 
-    protoPath, 
-    protoContent 
-  }, 
-  setNewRequestSSE, 
-  newRequestSSE: { isSSE }, 
-  currentTab, 
-  introspectionData, 
+    streamsArr,
+    streamContent,
+    services,
+    protoPath,
+    protoContent,
+  },
+  setNewRequestSSE,
+  newRequestSSE: { isSSE },
+  currentTab,
+  introspectionData,
   setComposerWarningMessage,
   setComposerDisplay,
   warningMessage,
-  reqResAdd
-  }) => {
-
-  const requestValidationCheck = () => {  
+  reqResAdd,
+}) => {
+  const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
     if (gRPC) {
-      return true;
+      if (newRequestFields.grpcUrl) return true;
+      else validationMessage.uri = "Enter a valid URI";
     }
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
@@ -85,23 +85,17 @@ const ComposerNewRequest = ({
       //if url doesn't have http/https/ws/wss://
       validationMessage.uri = "Enter a valid URI";
     }
-    if (
-      !JSONFormatted &&
-      rawType === "application/json"
-    ) {
+    if (!JSONFormatted && rawType === "application/json") {
       validationMessage.json = "Please fix JSON body formatting errors";
-    } 
+    }
     if (method === "QUERY") {
-      if (
-        url &&
-        !bodyContent
-      ) {
+      if (url && !bodyContent) {
         validationMessage.body = "GraphQL Body is Missing";
-      } 
+      }
       if (url && bodyContent) {
         try {
           const body = gql`
-          ${bodyContent}
+            ${bodyContent}
           `;
         } catch (e) {
           console.log("error in gql-tag for client", e);
@@ -111,28 +105,20 @@ const ComposerNewRequest = ({
       // need to add validation check for gql variables
     }
     return validationMessage;
-  }
+  };
 
   const handleSSEPayload = (e) => {
     setNewRequestSSE(e.target.checked);
-  }
+  };
 
   const addNewRequest = () => {
     const validated = requestValidationCheck();
     if (Object.keys(validated).length === 0) {
-      
       let reqRes;
-      const protocol = gRPC
-        ? ""
-        : url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+      const protocol = gRPC ? "" : url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
       // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-      if (
-        !/wss?:\/\//.test(protocol) &&
-        !gRPC
-      ) {
-        const URIWithoutProtocol = `${
-          url.split(protocol)[1]
-        }/`;
+      if (!/wss?:\/\//.test(protocol) && !gRPC) {
+        const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split("/")[0];
         let path = `/${URIWithoutProtocol.split("/")
           .splice(1)
@@ -165,9 +151,9 @@ const ComposerNewRequest = ({
             cookies: cookiesArr.filter(
               (cookie) => cookie.active && !!cookie.key
             ),
-            body: bodyContent || '',
+            body: bodyContent || "",
             bodyType,
-            bodyVariables: bodyVariables || '',
+            bodyVariables: bodyVariables || "",
             rawType,
             isSSE,
             network,
@@ -187,9 +173,7 @@ const ComposerNewRequest = ({
       }
       // GraphQL Subscriptions
       else if (graphQL) {
-        const URIWithoutProtocol = `${
-          url.split(protocol)[1]
-        }/`;
+        const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
         const host = protocol + URIWithoutProtocol.split("/")[0];
         let path = `/${URIWithoutProtocol.split("/")
           .splice(1)
@@ -221,9 +205,9 @@ const ComposerNewRequest = ({
             cookies: cookiesArr.filter(
               (cookie) => cookie.active && !!cookie.key
             ),
-            body: bodyContent || '',
+            body: bodyContent || "",
             bodyType,
-            bodyVariables: bodyVariables || '',
+            bodyVariables: bodyVariables || "",
             rawType,
             network,
             restUrl,
@@ -244,11 +228,7 @@ const ComposerNewRequest = ({
       else if (gRPC) {
         // saves all stream body queries to history & reqres request body
         let streamQueries = "";
-        for (
-          let i = 0;
-          i < streamContent.length;
-          i++
-        ) {
+        for (let i = 0; i < streamContent.length; i++) {
           // quries MUST be in format, do NOT edit template literal unless necessary
           streamQueries += `${streamContent[i]}
           
@@ -414,7 +394,7 @@ const ComposerNewRequest = ({
         });
       }
 
-      if (network === 'ws') {
+      if (network === "ws") {
         setNewRequestFields({
           ...newRequestFields,
           protocol: "ws://",
@@ -428,13 +408,11 @@ const ComposerNewRequest = ({
       setComposerWarningMessage(validated);
       // setComposerDisplay("Warning");
     }
-  }
+  };
 
   const HeaderEntryFormStyle = {
     //trying to change style to conditional created strange duplication effect when continuously changing protocol
-    display: !/wss?:\/\//.test(protocol)
-      ? "block"
-      : "none",
+    display: !/wss?:\/\//.test(protocol) ? "block" : "none",
   };
 
   return (
@@ -467,27 +445,22 @@ const ComposerNewRequest = ({
         setNewRequestHeaders={setNewRequestHeaders}
         setNewRequestStreams={setNewRequestStreams}
       />
-      {method &&
-        !/wss?:\/\//.test(protocol) &&
-        !gRPC && (
-          <CookieEntryForm
-            newRequestCookies={newRequestCookies}
-            newRequestBody={newRequestBody}
-            setNewRequestCookies={setNewRequestCookies}
-          />
-        )}
-      {!graphQL &&
-        !gRPC &&
-        method !== "GET" &&
-        !/wss?:\/\//.test(protocol) && (
-          <BodyEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-            newRequestHeaders={newRequestHeaders}
-            setNewRequestHeaders={setNewRequestHeaders}
-          />
-        )}
+      {method && !/wss?:\/\//.test(protocol) && !gRPC && (
+        <CookieEntryForm
+          newRequestCookies={newRequestCookies}
+          newRequestBody={newRequestBody}
+          setNewRequestCookies={setNewRequestCookies}
+        />
+      )}
+      {!graphQL && !gRPC && method !== "GET" && !/wss?:\/\//.test(protocol) && (
+        <BodyEntryForm
+          warningMessage={warningMessage}
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+          newRequestHeaders={newRequestHeaders}
+          setNewRequestHeaders={setNewRequestHeaders}
+        />
+      )}
       {graphQL && (
         <>
           <GraphQLBodyEntryForm
@@ -497,8 +470,8 @@ const ComposerNewRequest = ({
             introspectionData={introspectionData}
           />
           <GraphQLVariableEntryForm
-            newRequestBody={ newRequestBody }
-            setNewRequestBody= { setNewRequestBody }
+            newRequestBody={newRequestBody}
+            setNewRequestBody={setNewRequestBody}
           />
           <GraphQLIntrospectionLog
             introspectionData={introspectionData}
@@ -513,32 +486,34 @@ const ComposerNewRequest = ({
         />
       )}
       {/* SSE CHeckbox, update newRequestSSE in store */}
-      {!graphQL &&
-        !gRPC &&
-        !/wss?:\/\//.test(protocol) && (
-          <label className="composer_subtitle_SSE">
-            <div className="label-text" >Server Sent Events</div>
-            <span className="toggle" >
-              <input
-                type="checkbox"
-                className="toggle-state"
-                name="check"
-                onChange={(e) => {handleSSEPayload(e)}}
-                checked={isSSE}
-              />
-              <div className="indicator" />
-            </span>
-          </label>
-        )}
+      {!graphQL && !gRPC && !/wss?:\/\//.test(protocol) && (
+        <label className="composer_subtitle_SSE">
+          <div className="label-text">Server Sent Events</div>
+          <span className="toggle">
+            <input
+              type="checkbox"
+              className="toggle-state"
+              name="check"
+              onChange={(e) => {
+                handleSSEPayload(e);
+              }}
+              checked={isSSE}
+            />
+            <div className="indicator" />
+          </span>
+        </label>
+      )}
       <button
         className="composer_submit"
-        onClick={() => {addNewRequest()}}
+        onClick={() => {
+          addNewRequest();
+        }}
         type="button"
       >
         Add New Request
       </button>
     </div>
   );
-}
+};
 
 export default ComposerNewRequest;

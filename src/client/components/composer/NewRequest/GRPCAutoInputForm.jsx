@@ -17,6 +17,7 @@ const GRPCAutoInputForm = (props) => {
     selectedPackage,
     selectedStreamingType,
     selectedServiceObj,
+    protoContent,
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
@@ -26,25 +27,38 @@ const GRPCAutoInputForm = (props) => {
       e.target.value !== "Select Service" ? e.target.value : null;
     const serviceObj = services.find((ser) => ser.name === e.target.value);
     // clears all stream query bodies except the first one
-    props.clearStreamBodies();
+    let streamsArr = [props.newRequestStreams.streamsArr[0]];
+    let streamContent = [""];
+    selectRequestOption("Select Request");
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       selectedService: serviceName,
       selectedServiceObj: serviceObj,
+      selectedRequest: null,
+      selectedStreamingType: null,
+      selectedPackage: null,
+      streamsArr,
+      streamContent,
     });
   };
 
   // event handler for changes made to the Select Requests dropdown list
   const setRequest = (e) => {
+    //update component state
     selectRequestOption(e.target.value);
-    const requestName =
-      e.target.value !== "Select Request" ? e.target.value : null;
-    props.clearStreamBodies();
-
-    // clears all stream bodies except the first when switching from client/directional stream to something else
+    //clear streams array and content except first index
     const newStreamsArr = [streamsArr[0]];
     const newStreamContent = [streamContent[0]];
+
+    let requestName = e.target.value;
+    //clear stream bodies and set request to null if none selected
+    if (e.target.value === "Select Request") {
+      newStreamContent[0] = "";
+      requestName = null;
+    }
+
+    // clears all stream bodies except the first when switching from client/directional stream to something else
 
     // the selected request name is saved in state of the store
     props.setNewRequestStreams({
@@ -54,6 +68,7 @@ const GRPCAutoInputForm = (props) => {
       selectedStreamingType: null,
       streamContent: newStreamContent,
       streamsArr: newStreamsArr,
+      count: 1,
     });
   };
 
@@ -66,32 +81,37 @@ const GRPCAutoInputForm = (props) => {
       (rpc) => rpc.name === selectedRequest
     );
     //find message object that matches rpc request name
-    const message = selectedServiceObj.messages.find(
-      (msg) => msg.name === rpc.req
-    );
+    const message = selectedServiceObj.messages.find((msg) => {
+      if (msg && msg.name === rpc.req) return msg;
+    });
 
     //declare empty results obj that will become the initial query
     const results = {};
-    // push each key/value pair of the message definition into the results obj
-    for (const key in message.def) {
-      // if message type is a nested message (message.def.nested === true)
-      if (message.def[key].nested) {
-        for (const submess of selectedServiceObj.messages) {
-          if (submess.name === message.def[key].dependent) {
-            // define obj for the submessage definition
-            const subObj = {};
-            for (const subKey in submess.def) {
-              subObj[subKey] = submess.def[subKey].type.slice(5).toLowerCase();
+
+    if (message) {
+      // push each key/value pair of the message definition into the results obj
+      for (const key in message.def) {
+        // if message type is a nested message (message.def.nested === true)
+        if (message.def[key].nested) {
+          for (const submess of selectedServiceObj.messages) {
+            if (submess.name === message.def[key].dependent) {
+              // define obj for the submessage definition
+              const subObj = {};
+              for (const subKey in submess.def) {
+                subObj[subKey] = submess.def[subKey].type
+                  .slice(5)
+                  .toLowerCase();
+              }
+              results[key] = subObj;
+              break;
             }
-            results[key] = subObj;
-            break;
           }
+        } else {
+          results[key] = message.def[key].type.slice(5).toLowerCase();
         }
-      } else {
-        results[key] = message.def[key].type.slice(5).toLowerCase();
       }
     }
-    //shally copy streamsArr and streamCopy to reassign in store
+    //shallow copy streamsArr and streamCopy to reassign in store
     const streamsArrCopy = [...streamsArr];
     const streamContentCopy = [...streamContent];
 
@@ -114,8 +134,13 @@ const GRPCAutoInputForm = (props) => {
     });
   }, [selectedRequest]);
 
+  useEffect(() => {
+    selectServiceOption("Select Service");
+    selectRequestOption("Select Request");
+  }, [protoContent]);
+
   const bodyContainerClass = show
-    ? "composer_bodyform_container-open-rest"
+    ? "dropdownService"
     : "composer_bodyform_container-closed";
 
   //default options shown for services and request dropdowns
@@ -153,20 +178,26 @@ const GRPCAutoInputForm = (props) => {
 
   return (
     <div>
-      <label
-        className='composer_subtitle' >
-          <div className="label-text" id="cookie-click">Stream</div>
-          <div className="toggle">
-            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
-            <div className="indicator_body" />
-          </div>
-        </label>
+      <label className="composer_subtitle">
+        <div className="label-text" id="cookie-click">
+          Stream
+        </div>
+        <div className="toggle">
+          <input
+            type="checkbox"
+            name="check"
+            className="toggle-state"
+            onClick={() => toggleShow(!show)}
+          />
+          <div className="indicator_body" />
+        </div>
+      </label>
       <select
         id="dropdownService"
         value={serviceNameOption}
         onChange={setService}
         name="dropdownService"
-        className={"dropdownService " + bodyContainerClass}
+        className={bodyContainerClass}
       >
         {servicesList}
       </select>
@@ -176,7 +207,7 @@ const GRPCAutoInputForm = (props) => {
         value={requestNameOption}
         onChange={setRequest}
         name="dropdownRequest"
-        className={"dropdownRequest " + bodyContainerClass}
+        className={bodyContainerClass}
       >
         {rpcsList}
       </select>
@@ -188,6 +219,8 @@ const GRPCAutoInputForm = (props) => {
         selectedService={selectedService}
         selectedRequest={selectedRequest}
         selectedStreamingType={selectedStreamingType}
+        changesSaved={props.changesSaved}
+        saveChanges={props.saveChanges}
       />
     </div>
   );
