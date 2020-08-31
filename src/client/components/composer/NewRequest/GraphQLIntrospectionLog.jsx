@@ -14,9 +14,8 @@ const GraphQLIntrospectionLog = (props) => {
       : "introspection-small";
   return (
     <div>
-      <label
-      className='composer_subtitle' >
-        <div className="label-text" id="cookie-click">Schema</div>
+      <label className='composer_subtitle'>
+        <div className="label-text" id="schema-click">Schema</div>
         <div className="toggle">
           <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow((show) => !show)}/>
           <div className="indicator" />
@@ -30,6 +29,7 @@ const GraphQLIntrospectionLog = (props) => {
         </div>
         <textarea
           readOnly
+          id="introspection-text"
           className={`composer_textarea gql introspection-small ${logAreaClass}`}
           value={
             introspectionData.schemaSDL ||

@@ -45,7 +45,7 @@ const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
-const protoParserFunc = require("./src/client/protoParser.js");
+const protoParserFunc = require("./protoParser.js");
 
 // require menu file
 require("./menu/mainMenu");
@@ -55,7 +55,6 @@ require("./main_httpController.js")();
 require("./main_grpcController.js")();
 // require ws controller
 require("./main_wsController.js")();
-
 
 // configure logging
 autoUpdater.logger = log;
@@ -368,11 +367,11 @@ ipcMain.on("import-collection", (event, args) => {
 
       // send data to chromium for state update
       // ipcMain.send("add-collection", { data });
-      console.log('before add-collection in import', data);
+      console.log("before add-collection in import", data);
       // mainWindow.webContents.send('add-collection', {data});
-      event.sender.send('add-collection', {data});
+      event.sender.send("add-collection", { data });
     });
-  })
+  });
   //.catch( err => console.log('error in import-collection', err));
 });
 
@@ -427,7 +426,7 @@ ipcMain.on("import-proto", (event) => {
       });
     })
     .catch((err) => {
-      console.log('error in import-proto', err);
+      console.log("error in import-proto", err);
     });
 });
 
@@ -438,9 +437,10 @@ ipcMain.on("protoParserFunc-request", (event, data) => {
     .then((result) => {
       mainWindow.webContents.send("protoParserFunc-return", result);
     })
-    .catch((err) =>
-      console.log("err inside protoParserFunc-request listener in main", err)
-    );
+    .catch((err) => {
+      console.log("error in protoParserFunc-request:, ", err);
+      mainWindow.webContents.send("protoParserFunc-return", { error: err });
+    });
 });
 
 // ====================== OLDER STUFF =======================
@@ -481,7 +481,7 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
     .catch((error) => console.log("error in http1-fetch-message", error));
 });
 
-const { onError } = require('apollo-link-error');
+const { onError } = require("apollo-link-error");
 const { response } = require("express");
 
 ipcMain.on("open-gql", (event, args) => {
@@ -506,9 +506,7 @@ ipcMain.on("open-gql", (event, args) => {
 
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
-
     return forward(operation).map((response) => {
-
       const context = operation.getContext();
       const headers = context.response.headers.entries();
       for (const headerItem of headers) {
@@ -559,19 +557,19 @@ ipcMain.on("open-gql", (event, args) => {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError) {
-      reqResObj.error = networkError;
-      event.sender.send("reply-gql",{ error: networkError, reqResObj });
+      reqResObj.error = JSON.stringify(networkError);
+      event.sender.send("reply-gql", { error: networkError, reqResObj });
     }
     try {
       // check if there are any errors in the graphQLErrors array
       if (graphQLErrors.length !== 0) {
         graphQLErrors.forEach((currError) => {
-          reqResObj.error = JSON.stringify(currError);
-          event.sender.send("reply-gql",{ error: currError, reqResObj });
+          reqResObj.error = currError;
+          event.sender.send("reply-gql", { error: currError, reqResObj });
         });
       }
-    } catch(err) {
-      console.log('Error in errorLink:', err);
+    } catch (err) {
+      console.log("Error in errorLink:", err);
     }
   });
 
@@ -583,10 +581,10 @@ ipcMain.on("open-gql", (event, args) => {
     link,
     cache: new InMemoryCache(),
   });
-  
+
   try {
     const body = gql`
-    ${reqResObj.request.body}
+      ${reqResObj.request.body}
     `;
     // graphql variables: https://graphql.org/learn/queries/#variables
     const variables = reqResObj.request.bodyVariables
@@ -600,7 +598,7 @@ ipcMain.on("open-gql", (event, args) => {
         })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
-          console.log('gql query error in main.js', err)
+          console.log("gql query error in main.js", err);
         });
     } else if (reqResObj.request.method === "MUTATION") {
       client
@@ -608,15 +606,12 @@ ipcMain.on("open-gql", (event, args) => {
         .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
-          console.error('gql mutation error in main.js', err);
+          console.error("gql mutation error in main.js", err);
         });
     }
   } catch (err) {
-    console.log('error trying gql query/mutation in main.js', err);
-    reqResObj.error = JSON.stringify(err);
-    event.sender.send("reply-gql",{ error: err, reqResObj });
+    console.log("error trying gql query/mutation in main.js", err);
   }
-  
 });
 
 ipcMain.on("introspect", (event, url) => {

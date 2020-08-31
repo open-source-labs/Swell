@@ -6,14 +6,15 @@ const { api } = window;
 
 const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
+  const [protoError, showError] = useState(null);
+  const [changesSaved, saveChanges] = useState(false);
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
     // clear all stream bodies except first one upon clicking on import proto file
-    clearStreamBodies();
+    let streamsArr = [props.newRequestStreams.streamsArr[0]];
+    let streamContent = [""];
     // reset streaming type next to the URL & reset Select Service dropdown to default option
-    document.getElementById("stream").innerText = "STREAM";
-    document.getElementById("dropdownService").selectedIndex = 0;
     // reset selected package name, service, request, streaming type & protoContent
     if (props.newRequestStreams.protoContent !== null) {
       props.setNewRequestStreams({
@@ -22,18 +23,16 @@ const GRPCProtoEntryForm = (props) => {
         selectedService: null,
         selectedRequest: null,
         selectedStreamingType: null,
-        streamContent: props.newRequestStreams.streamContent,
+        services: [],
         protoContent: "",
+        streamsArr,
+        streamContent,
+        count: 1,
       });
     }
-
+    //listens for imported proto content from main process
     api.receive("proto-info", (readProto, parsedProto) => {
-      console.log(
-        "received from main readProto : ",
-        readProto,
-        "and parsed Proto : ",
-        parsedProto
-      );
+      saveChanges(true);
       props.setNewRequestStreams({
         ...props.newRequestStreams,
         protoContent: readProto,
@@ -43,102 +42,63 @@ const GRPCProtoEntryForm = (props) => {
     });
 
     api.send("import-proto");
-
-    // // use electron dialog to import files that has .proto ext only
-    // remote.dialog.showOpenDialog({
-    //   buttonLabel : "Import Proto File",
-    //   properties: ['openFile', 'multiSelections'],
-    //   filters: [ { name: 'Protos', extensions: ['proto'] } ]
-    // })
-    // .then(filePaths => {
-    //   if (!filePaths) return;
-    //   // read uploaded proto file & save protoContent in the store
-    //   const importedProto = fs.readFileSync(filePaths.filePaths[0], 'utf-8');
-    //   props.setNewRequestStreams({
-    //     ...props.newRequestStreams,
-    //     protoContent: importedProto
-    //   });
-    //   // parse proto file via protoParserFunc imported from protoParser.js & save parsed proto file details in the store
-    //   protoParserFunc(props.newRequestStreams.protoContent)
-    //   .then(data => {
-    //     props.setNewRequestStreams({
-    //       ...props.newRequestStreams,
-    //       services: data.serviceArr,
-    //       protoPath: data.protoPath
-    //     })
-    //   }).catch((err) => console.log(err));
-    // });
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
   const updateProtoBody = (value) => {
+    showError(null);
     props.setNewRequestStreams({
       ...props.newRequestStreams,
       protoContent: value,
     });
-    document.getElementById("save-proto").innerText = "Save Changes";
-  };
-
-  // clears stream body query when proto file or selected service is changed
-  const clearStreamBodies = () => {
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
-    // clears all stream query bodies except the first one
-    while (streamsArr.length > 1) {
-      streamsArr.pop();
-      streamContent.pop();
-      props.newRequestStreams.count -= 1;
-    }
-    // reset first query to an empty string & streaming type to default value
-    streamContent[0] = "";
-    props.newRequestStreams.selectedStreamingType = null;
+    saveChanges(false);
   };
 
   // update protoContent state in the store after making changes to the proto file
   const submitUpdatedProto = () => {
-    // reset streaming type, select default for dropdowns, & set first stream query body to empty string
-    document.getElementById("stream").innerText = "STREAM";
-    document.getElementById("dropdownService").selectedIndex = 0;
-    document.getElementById("dropdownRequest").selectedIndex = 0;
-    props.newRequestStreams.streamContent[0] = "";
-    // parse new updated proto file and save to store
+    //only update if changes aren't saved
+    if (!changesSaved) {
+      // parse new updated proto file and save to store
+      api.receive("protoParserFunc-return", (data) => {
+        if (data.error) {
+          showError(
+            ".proto parsing error: Please enter or import valid .proto"
+          );
+          saveChanges(false);
+        } else {
+          showError(null);
+          saveChanges(true);
+        }
+        const services = data.serviceArr ? data.serviceArr : null;
+        const protoPath = data.protoPath ? data.protoPath : null;
+        const streamsArr = [props.newRequestStreams.streamsArr[0]];
+        const streamContent = [""];
 
-    // instead of calling protoParserFunc directly from the file, which contains a bunch of node modules
-    // and will break,
-    // send a message to main to use protoParserFunc()
-    // get message back with data
-    // then call props.setNewRequestSTreams etc.. with the data
-
-    api.receive("protoParserFunc-return", (data) => {
-      props.setNewRequestStreams({
-        ...props.newRequestStreams,
-        services: data.serviceArr,
-        protoPath: data.protoPath,
-      });
-    });
-
-    api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
-    /*
-
-    protoParserFunc(props.newRequestStreams.protoContent)
-      .then((data) => {
         props.setNewRequestStreams({
           ...props.newRequestStreams,
-          services: data.serviceArr,
-          protoPath: data.protoPath,
+          selectedPackage: null,
+          selectedService: null,
+          selectedRequest: null,
+          selectedStreamingType: null,
+          selectedServiceObj: null,
+          services,
+          protoPath,
+          streamsArr,
+          streamContent,
+          count: 1,
         });
-      })
-      .catch((err) => console.log(err));
-*/
+      });
 
-    // changes the button label from "Save Changes" to "Changes Saved"
-    document.getElementById("save-proto").innerText = "Changes Saved";
+      api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
+    }
   };
 
   const bodyContainerClass = show
     ? "composer_bodyform_container-open"
     : "composer_bodyform_container-closed";
   const smallBtn = show ? "small-btn-open" : "small-btn-closed";
+
+  const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
   /*
     pseudocode for the return section
      - first div renders the arrow button along with the title "Proto"
@@ -148,15 +108,21 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div>
-      <label
-        className='composer_subtitle' >
-        <div className="label-text" id="cookie-click">Proto</div>
+      <label className="composer_subtitle">
+        <div className="label-text" id="cookie-click">
+          Proto
+        </div>
         <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow(!show)}/>
-          <div className="indicator_body" />
+          <input
+            type="checkbox"
+            name="check"
+            className="toggle-state"
+            onClick={() => toggleShow(!show)}
+          />
+          <div className="indicator" />
         </div>
       </label>
-      
+      <div className="warningMessage">{protoError}</div>
       <textarea
         value={props.newRequestStreams.protoContent}
         className={"composer_textarea grpc " + bodyContainerClass}
@@ -175,13 +141,14 @@ const GRPCProtoEntryForm = (props) => {
         className={"save-proto " + smallBtn}
         onClick={submitUpdatedProto}
       >
-        Save Changes
+        {saveChangesBtnText}
       </button>
 
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}
-        clearStreamBodies={clearStreamBodies}
+        changesSaved={changesSaved}
+        saveChanges={saveChanges}
       />
     </div>
   );

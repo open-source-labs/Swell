@@ -33,7 +33,6 @@ async function protoParserFunc(protoBodyData) {
   } catch (err) {
     console.error(err);
   }
-  // const dirName = remote.app.getAppPath(); // remote.app.getAppPath() stopped working at some point so switched to process.resourcesPath
 
   // write to saveProto file for interaction with the server
   fs.writeFileSync(
@@ -44,7 +43,6 @@ async function protoParserFunc(protoBodyData) {
 
   // define the modular client for testing
   // declare path variable of imported proto file
-
   const PROTO_PATH = path.join(
     process.resourcesPath,
     "/protos/" + protoID + ".proto"
@@ -144,7 +142,8 @@ async function protoParserFunc(protoBodyData) {
     }
   }
   protoStorage.serviceArr = serviceArr;
-  return protoStorage;
+
+  return protoStorage ? protoStorage : "Error: please enter valid .proto file";
 }
 
 module.exports = protoParserFunc;
