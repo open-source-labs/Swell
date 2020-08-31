@@ -15,9 +15,9 @@ const GraphQLIntrospectionLog = (props) => {
   return (
     <div>
       <label className='composer_subtitle'>
-        <div className="label-text" id="cookie-click">Schema</div>
+        <div className="label-text" id="schema-click">Schema</div>
         <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state" id="schema-click" onClick={() => toggleShow((show) => !show)}/>
+          <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow((show) => !show)}/>
           <div className="indicator" />
         </div>
       </label>

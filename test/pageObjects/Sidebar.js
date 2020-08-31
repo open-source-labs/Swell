@@ -98,6 +98,10 @@ class Sidebar {
     return app.client.$('#schema-click')
   }
 
+  get variableOpen() {
+    return app.client.$('#variable-click')
+  }
+
   get introspect() {
     return app.client.$('button=Introspect')
   }
@@ -111,6 +115,20 @@ class Sidebar {
     codeMirror.click();
     return codeMirror.$("textarea")
   }
+
+  get graphqlVariable() {
+    const codeMirrorVariable = app.client.$('div#graphql-variable');
+    codeMirrorVariable.click();
+    return codeMirrorVariable.$("textarea")
+  }
+
+  get chooseMutation() { 
+    return app.client.$('option=MUTATION');
+  }; 
+
+  get chooseSubscription() { 
+    return app.client.$('option=SUBSCRIPTION');
+  }; 
 
   // HEADER INPUTS
 
@@ -158,6 +176,11 @@ class Sidebar {
   get cookieValue(){
     return app.client.$('.cookie_value');
   };
+
+  // HISTORY
+  get history(){
+    return app.client.$('div.history-url')
+  }
 
   // ADD REQUEST BUTTON
   get addRequestBtn(){

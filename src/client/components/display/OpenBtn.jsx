@@ -1,24 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import ReqResCtrl from "../../controllers/reqResController";
 
-class OpenBtn extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <button
-        className="btn"
-        style={this.props.stylesObj}
-        type="button"
-        //Button opens connection to network through reqResController function, passing in only the ReqRes ID
-        onClick={() => ReqResCtrl.openReqRes(this.props.content.id)}
-      >
-        Send
-      </button>
-    );
-  }
+const OpenBtn = ({ stylesObj, content }) => {
+  return (
+    <button
+      className="btn"
+      style={stylesObj}
+      type="button"
+      //Button opens connection to network through reqResController function, passing in only the ReqRes ID
+      onClick={() => ReqResCtrl.openReqRes(content.id)}
+    >
+      Send
+    </button>
+  );
 }
 
 export default OpenBtn;

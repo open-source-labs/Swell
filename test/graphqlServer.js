@@ -56,7 +56,6 @@ const resolvers = {
         url: args.url,
       }
 			links.push(link);
-			console.log({newLink: link})
 			pubsub.publish("NEW_LINK", {newLink: link})
       return link
     },
@@ -90,7 +89,6 @@ ws.listen(PORT, () => {
     execute,
     subscribe,
 	  schema,
-		onConnect: () => console.log('client connected')
   }, {
     server: ws,
     path: '/graphql',
