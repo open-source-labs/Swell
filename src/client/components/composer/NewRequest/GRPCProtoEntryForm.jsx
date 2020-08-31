@@ -27,14 +27,8 @@ const GRPCProtoEntryForm = (props) => {
         protoContent: "",
       });
     }
-
+    //listens for imported proto content from main process
     api.receive("proto-info", (readProto, parsedProto) => {
-      console.log(
-        "received from main readProto : ",
-        readProto,
-        "and parsed Proto : ",
-        parsedProto
-      );
       props.setNewRequestStreams({
         ...props.newRequestStreams,
         protoContent: readProto,
@@ -53,38 +47,28 @@ const GRPCProtoEntryForm = (props) => {
       ...props.newRequestStreams,
       protoContent: value,
     });
-    // document.getElementById("save-proto").innerText = "Save Changes";
     saveChanges(false);
   };
 
   // clears stream body query when proto file or selected service is changed
   const clearStreamBodies = () => {
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
-    // clears all stream query bodies except the first one
-    while (streamsArr.length > 1) {
-      streamsArr.pop();
-      streamContent.pop();
-      props.newRequestStreams.count -= 1;
-    }
-    // reset first query to an empty string & streaming type to default value
-    streamContent[0] = "";
-    props.newRequestStreams.selectedStreamingType = null;
+    // clear all stream query bodies except the first one and reset first query to an empty string & streaming type to default value
+
+    let streamsArr = [props.newRequestStreams.streamsArr[0]];
+    let streamContent = [""];
+
+    props.setNewRequestStreams({
+      ...props.newRequestStreams,
+      streamsArr: streamsArr,
+      streamcontent: streamContent,
+      selectedStreamingType: null,
+      count: 1,
+    });
   };
 
   // update protoContent state in the store after making changes to the proto file
   const submitUpdatedProto = () => {
-    // reset streaming type, select default for dropdowns, & set first stream query body to empty string
-
-    props.newRequestStreams.streamContent[0] = "";
     // parse new updated proto file and save to store
-
-    // instead of calling protoParserFunc directly from the file, which contains a bunch of node modules
-    // and will break,
-    // send a message to main to use protoParserFunc()
-    // get message back with data
-    // then call props.setNewRequestSTreams etc.. with the data
-
     api.receive("protoParserFunc-return", (data) => {
       if (data.error) {
         showError(".proto parsing error: Please enter or import valid .proto");
@@ -109,10 +93,6 @@ const GRPCProtoEntryForm = (props) => {
     });
 
     api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
-
-    // changes the button label from "Save Changes" to "Changes Saved"
-    // document.getElementById("save-proto").innerText = "Changes Saved";
-    saveChanges(true);
   };
 
   const bodyContainerClass = show
