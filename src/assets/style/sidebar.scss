@@ -853,46 +853,27 @@ stream-container {
 }
 
 .dropdownService {
+  -webkit-appearance: none;
+  border: none;
   border-radius: 15px;
-  border: 1px #eeeeee;
   background: linear-gradient(315deg, #ffffff, #d6d6d6);
   box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
   color: $bluefour;
   cursor: pointer;
   display: inline-block;
-  margin-top: 8px;
-  margin-right: 7px;
   font-size: 0.9rem;
-  outline: 0 none;
   font-weight: bold;
   height: 35px;
-  width: 45%;
+  margin: 11px 4px 11px 4px;
+  padding: 8px;
+  width: 48%;
+  outline: none;
+  background-color: #eeeeee;
   &:hover {
     background: #eeeeee;
     box-shadow: inset -21px -21px 42px #b0b0b0, inset 21px 21px 42px #ffffff;
   }
 }
-.dropdownRequest {
-  border-radius: 15px;
-  border: 1px #eeeeee;
-  background: linear-gradient(315deg, #ffffff, #d6d6d6);
-  box-shadow: -8px -8px 16px #b0b0b0, 8px 8px 16px #ffffff;
-  color: $bluefour;
-  cursor: pointer;
-  display: inline-block;
-  margin-top: 8px;
-  margin-right: 7px;
-  font-size: 0.9rem;
-  outline: 0 none;
-  font-weight: bold;
-  height: 35px;
-  width: 45%;
-  &:hover {
-    background: #eeeeee;
-    box-shadow: inset -21px -21px 42px #b0b0b0, inset 21px 21px 42px #ffffff;
-  }
-}
-
 .add-stream-btn {
   z-index: 1;
   border-radius: 15px;
