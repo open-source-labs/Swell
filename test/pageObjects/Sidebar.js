@@ -86,12 +86,49 @@ class Sidebar {
   }
 
   get selectService() {
-    return app.client.$('select#dropdownService.dropdownService.composer_bodyform_container-open-rest')
+    return app.client.$('select#dropdownService.dropdownService')
   }
 
   get selectRequest() {
-    return app.client.$('select#dropdownRequest.dropdownRequest.composer_bodyform_container-open-rest')
+    return app.client.$('select#dropdownRequest.dropdownService')
   }
+
+  // graphQL
+  get schemaOpen() {
+    return app.client.$('#schema-click')
+  }
+
+  get variableOpen() {
+    return app.client.$('#variable-click')
+  }
+
+  get introspect() {
+    return app.client.$('button=Introspect')
+  }
+
+  get introspectionText() {
+    return app.client.$('textarea#introspection-text')
+  }
+
+  get graphqlText() {
+    const codeMirror = app.client.$('div#graphql-body');
+    codeMirror.click();
+    return codeMirror.$("textarea")
+  }
+
+  get graphqlVariable() {
+    const codeMirrorVariable = app.client.$('div#graphql-variable');
+    codeMirrorVariable.click();
+    return codeMirrorVariable.$("textarea")
+  }
+
+  get chooseMutation() { 
+    return app.client.$('option=MUTATION');
+  }; 
+
+  get chooseSubscription() { 
+    return app.client.$('option=SUBSCRIPTION');
+  }; 
 
   // HEADER INPUTS
 
@@ -139,6 +176,11 @@ class Sidebar {
   get cookieValue(){
     return app.client.$('.cookie_value');
   };
+
+  // HISTORY
+  get history(){
+    return app.client.$('div.history-url')
+  }
 
   // ADD REQUEST BUTTON
   get addRequestBtn(){

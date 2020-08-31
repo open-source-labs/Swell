@@ -113,7 +113,7 @@ function main() {
   const app = new Mali(PROTO_PATH, "Greeter");
   app.use({ sayHello, sayHelloNested, sayHellosSs, sayHelloCs, sayHelloBidi });
   app.start(HOSTPORT);
-  console.log(`Greeter service running @ ${HOSTPORT}`);
+  console.log(`GRPC Greeter service running @ ${HOSTPORT}`);
 }
 
 main();
