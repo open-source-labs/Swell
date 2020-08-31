@@ -1,12 +1,17 @@
 /* eslint-disable lines-between-class-members */
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const GRPCBodyStream = (props) => {
+  const [showError, setError] = useState(null);
   // event handler that allows the client to delete a stream body
   // eslint-disable-next-line lines-between-class-members
   const deleteStream = (id) => {
-    const streamsArr = props.newRequestStreams.streamsArr;
-    const streamContent = props.newRequestStreams.streamContent;
+    if (props.newRequestStreams.streamsArr.length === 1) {
+      setError("Error: Must have at least one stream body");
+      return;
+    }
+    const streamsArr = [...props.newRequestStreams.streamsArr];
+    const streamContent = [...props.newRequestStreams.streamContent];
     // delete the query from the streamContent arr and the stream body from streamsArr
     streamContent.splice(id, 1);
     streamsArr.splice(id, 1);
@@ -22,16 +27,22 @@ const GRPCBodyStream = (props) => {
       streamContent,
     });
   };
+
+  useEffect(() => {
+    if (showError) setError(null);
+  }, [props.newRequestStreams]);
+
   let streamNum;
   let streamBody;
   let deleteStreamBtn;
   // grabs the query based on the stream id/number
-  const streamContent = props.newRequestStreams.streamContent[props.stream.id];
+  const streamContentID =
+    props.newRequestStreams.streamContent[props.stream.id];
   // if none or the first stream query in the array
   if (props.stream.id === 1) {
     streamBody = (
       <textarea
-        value={`${streamContent || ""}`}
+        value={`${streamContentID || ""}`}
         className="composer_textarea grpc"
         id="grpcBodyEntryTextArea"
         type="text"
@@ -44,7 +55,7 @@ const GRPCBodyStream = (props) => {
     // for subsequent stream query
     streamBody = (
       <textarea
-        value={streamContent}
+        value={streamContentID}
         className="composer_textarea grpc"
         id="grpcBodyEntryTextArea"
         type="text"
@@ -77,15 +88,19 @@ const GRPCBodyStream = (props) => {
       </button>
     );
   }
+
   // pseudocode for the return section:
   // renders the stream body (and the stream number if for client or bidirectional stream)
   return (
-    <div style={{ display: "flex" }}>
-      <div>
-        {deleteStreamBtn}
-        {streamNum}
+    <div>
+      <div className="warningMessage">{showError}</div>
+      <div style={{ display: "flex" }}>
+        <div>
+          {deleteStreamBtn}
+          {streamNum}
+        </div>
+        {streamBody}
       </div>
-      {streamBody}
     </div>
   );
 };
