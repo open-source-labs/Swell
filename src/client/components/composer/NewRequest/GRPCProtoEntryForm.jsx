@@ -43,6 +43,7 @@ const GRPCProtoEntryForm = (props) => {
     }
     //listens for imported proto content from main process
     api.receive("proto-info", (readProto, parsedProto) => {
+      saveChanges(true);
       props.setNewRequestStreams({
         ...props.newRequestStreams,
         protoContent: readProto,
@@ -80,6 +81,7 @@ const GRPCProtoEntryForm = (props) => {
           showError(null);
           saveChanges(true);
         }
+        clearStreamBodies();
         const services = data.serviceArr ? data.serviceArr : null;
         const protoPath = data.protoPath ? data.protoPath : null;
 
