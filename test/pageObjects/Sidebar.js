@@ -86,11 +86,11 @@ class Sidebar {
   }
 
   get selectService() {
-    return app.client.$('select#dropdownService.dropdownService.composer_bodyform_container-open-rest')
+    return app.client.$('select#dropdownService.dropdownService')
   }
 
   get selectRequest() {
-    return app.client.$('select#dropdownRequest.dropdownRequest.composer_bodyform_container-open-rest')
+    return app.client.$('select#dropdownRequest.dropdownService')
   }
 
   // graphQL
