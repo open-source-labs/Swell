@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import collectionsController from '../../controllers/collectionsController';
-import Trashcan from '../../../assets/img/Trashcan.png'
 
 class Collection extends Component {
   constructor(props) {
@@ -30,7 +29,7 @@ class Collection extends Component {
           <div className="collection-export-button" onClick={() => collectionsController.exportCollection(this.props.content.id)}>
             Export&nbsp;
           </div>
-          <div className="collection-delete-button" onClick={this.deleteCollection}>
+          <div className="collection-delete-button" onClick={this.deleteCollection} id={this.props.content.id}>
             |&nbsp;&nbsp;X
           </div>
         </div>
