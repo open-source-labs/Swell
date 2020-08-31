@@ -9,6 +9,10 @@ class ReqRes {
 		return app.client.$('button=Remove')
 	}
 
+	get mutationRemoveBtn() {
+		return app.client.$('button#MUTATION')
+	}
+
 	get jsonPrettyError() {
 		return app.client.$('pre.__json-pretty-error__')
 	}

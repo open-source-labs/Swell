@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import connectionController from "../../controllers/reqResController";
 import OpenBtn from "../display/OpenBtn.jsx";
 import CloseBtn from "../display/CloseBtn.jsx";
@@ -182,7 +182,6 @@ const SingleReqResContainer = (props) => {
                     onChange={onCheckHandler}
                   />
                 </div>
-
                 <div className="btn-sm">
                   <OpenBtn
                     stylesObj={openButtonStyles}
@@ -201,6 +200,7 @@ const SingleReqResContainer = (props) => {
                   <button
                     type="button"
                     className="btn resreq_remove"
+                    id={request.method}
                     onClick={removeReqRes}
                   >
                     Remove
