@@ -1,30 +1,32 @@
-const http = require('http');
+// SSE Server created by previous group but wasn't being used in any of the tests so they've been commented out in case a future group wants to use them
 
-http.createServer((request, response) => {
-  // these headers tell our 'browser' to keep the connection open
-  response.writeHead(200, {
-    'Connection': 'keep-alive',
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Access-Control-Allow-Origin': '*'
-  });
+// const http = require('http');
+
+// http.createServer((request, response) => {
+//   // these headers tell our 'browser' to keep the connection open
+//   response.writeHead(200, {
+//     'Connection': 'keep-alive',
+//     'Content-Type': 'text/event-stream',
+//     'Cache-Control': 'no-cache',
+//     'Access-Control-Allow-Origin': '*'
+//   });
   
-  sendSSEs(response); 
+//   sendSSEs(response); 
   
 
-}).listen(5001, () => console.log('SSE Server listening on port 5001'));
+// }).listen(5001, () => console.log('SSE Server listening on port 5001'));
 
-// this function sends messages every 3 seconds 
-const sendSSEs = (response, id = 0, timeout) => {
-  response.write(
-    `id: ${id}\ndata: This is event ${id}\n\n`
-  );
-  id++; 
-  console.log('just sent something else! ')
+// // this function sends messages every 3 seconds 
+// const sendSSEs = (response, id = 0, timeout) => {
+//   response.write(
+//     `id: ${id}\ndata: This is event ${id}\n\n`
+//   );
+//   id++; 
+//   console.log('just sent something else! ')
 
-  if (id < 6) {
-    timeout = setTimeout(() => {
-      sendSSEs(response, id, timeout);
-    }, 3000)
-  };
-} 
+//   if (id < 6) {
+//     timeout = setTimeout(() => {
+//       sendSSEs(response, id, timeout);
+//     }, 3000)
+//   };
+// } 

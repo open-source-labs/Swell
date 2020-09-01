@@ -83,7 +83,7 @@ const apolloServer = new ApolloServer({ schema });
 
 apolloServer.applyMiddleware({ app });
 
-ws.listen(PORT, () => {
+const graphqlApp = ws.listen(PORT, () => {
 	console.log(`GraphQL Server is now running on http://localhost:${PORT}`);
 	new SubscriptionServer({
     execute,
@@ -95,4 +95,4 @@ ws.listen(PORT, () => {
   });
 });
 
-module.exports = app;
+module.exports = graphqlApp;
