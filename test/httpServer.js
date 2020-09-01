@@ -34,8 +34,8 @@ app.delete('/book/:title', bookController.deleteBook, (req, res) =>
 	res.status(200).json(res.locals.books)
 );
 
-app.listen(PORT, () => {
+const httpApp = app.listen(PORT, () => {
   console.log(`HTTP Server listening on port: ${PORT}`);
 });
 
-module.exports = app;
+module.exports = httpApp;

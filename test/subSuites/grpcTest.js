@@ -3,11 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const sideBar = require("../pageObjects/Sidebar.js");
 const reqRes = require("../pageObjects/ReqRes.js");
+const grpcServer = require('../grpcServer')
 
 const expect = chai.expect;
 
 module.exports = () => {
   describe("gRPC requests", () => {
+
     beforeEach(async () => {
       try {
         await reqRes.removeBtn.click();
@@ -15,7 +17,9 @@ module.exports = () => {
         console.error(err)
       }
     });
+
     let body = "";
+
     before((done) => {
       fs.readFile(path.join(__dirname, "../hw2.proto"), "utf8", (err, data) => {
         if (err) console.log(err);
@@ -23,6 +27,23 @@ module.exports = () => {
         done();
       });
     });
+
+    before(() => {
+      try {
+        grpcServer('open')
+      } catch(err) {
+        console.error(err)
+      }
+    });
+
+    after(() => {
+      try {
+        grpcServer('close');
+      } catch(err) {
+        console.error(err)
+      }
+    });
+
     const sideBarSetup = async () => {
       try {
         await sideBar.gRPC.click();

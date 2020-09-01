@@ -2,6 +2,7 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const sideBar = require("../pageObjects/Sidebar.js");
 const reqRes = require("../pageObjects/ReqRes.js");
+const httpServer = require('../httpServer');
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -56,6 +57,15 @@ module.exports = () => {
         console.error(err)
       }
     });
+
+    after(() => {
+      try {
+         httpServer.close();
+         console.log('httpServer closed')
+      } catch(err) {
+        console.error(err)
+      }
+    })
 
     describe("public API", () => {
       it("it should GET information from a public API", async () => {
