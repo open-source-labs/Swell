@@ -1,8 +1,9 @@
 import * as React from "react";
 import loadable from "@loadable/component";
 
+// lazy loading to reduce bundle size (chart.js)
 const BarGraph = loadable(() => import('../display/BarGraph'))
-// import BarGraph from "../display/BarGraph";
+
 import ReqResContainer from "./ReqResContainer.jsx";
 import NavBarContainer from "./NavBarContainer.jsx";
 
