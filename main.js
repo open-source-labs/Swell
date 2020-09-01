@@ -564,7 +564,7 @@ ipcMain.on("open-gql", (event, args) => {
       // check if there are any errors in the graphQLErrors array
       if (graphQLErrors.length !== 0) {
         graphQLErrors.forEach((currError) => {
-          reqResObj.error = currError;
+          reqResObj.error = JSON.stringify(currError);
           event.sender.send("reply-gql", { error: currError, reqResObj });
         });
       }
