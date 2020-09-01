@@ -10,9 +10,8 @@ import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
-// import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm.jsx";
-// import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
+// lazy loading to reduce bundle size (codemirror)
 const GraphQLBodyEntryForm = loadable(() => import('./GraphQLBodyEntryForm'));
 const GraphQLVariableEntryForm = loadable(() => import('./GraphQLVariableEntryForm')); 
 
