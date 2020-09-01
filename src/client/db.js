@@ -1,8 +1,5 @@
-import loadable from "@loadable/component";
-
-// lazy loading to reduce bundle size (dexie)
-const Dexie = loadable(() => import('dexie'))
-
+import Dexie from 'dexie'
+ 
 const db = new Dexie("Swell");
 
 db.on("versionchange", function (event) {
