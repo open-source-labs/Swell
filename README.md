@@ -34,7 +34,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 * *Server-Sent Events (SSE)*: Swell displays SSE events one by one as they come in.
-<kbd><img src="./ReadMeGifs/Swell_API_3_SSE.gif"
+<kbd><img src="./ReadMeGifs/Swell_API_SSE.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
@@ -67,12 +67,8 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ## Additional Features
 * *Collections*: Swell allows you to save collections for easier testing of multiple requests.
-<kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
-     style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
-
-
 * *Import/Export Collections*: Swell allows you to import and export collections, making it easy to share collections with your team.
-<kbd><img src="./ReadMeGifs/Swell_API_ImportExportCol.gif"
+<kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 ## How to run tests
