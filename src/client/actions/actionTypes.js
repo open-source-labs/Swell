@@ -3,6 +3,9 @@ export const REQRES_CLEAR = "REQRES_CLEAR";
 export const REQRES_ADD = "REQRES_ADD";
 export const REQRES_DELETE = "REQRES_DELETE";
 export const REQRES_UPDATE = "REQRES_UPDATE";
+export const UPDATE_GRAPH = "UPDATE_GRAPH";
+
+export const CLEAR_GRAPH = "CLEAR_GRAPH";
 
 export const GET_HISTORY = "GET_HISTORY";
 export const DELETE_HISTORY = "DELETE_HISTORY";
@@ -25,6 +28,8 @@ export const SET_NEW_REQUEST_SSE = "SET_NEW_REQUEST_SSE";
 export const SET_CURRENT_TAB = "SET_CURRENT_TAB";
 
 export const SET_CHECKS_AND_MINIS = "SET_CHECKS_AND_MINIS";
+
+export const SET_INTROSPECTION_DATA = "SET_INTROSPECTION_DATA";
 
 //UI ACTIONS
 // export const SHOW_WARNING = "SHOW_WARNING";

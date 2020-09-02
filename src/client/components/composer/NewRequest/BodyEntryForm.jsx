@@ -1,123 +1,121 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import WWWForm from "./WWWForm.jsx";
 import BodyTypeSelect from "./BodyTypeSelect.jsx";
 import JSONTextArea from "./JSONTextArea.jsx";
-import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
-class BodyEntryForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { show: true };
-    this.toggleShow = this.toggleShow.bind(this);
-  }
+const BodyEntryForm = (props) => {
+  const [show, toggleShow] = useState(true);
+  const {
+    newRequestBody,
+    setNewRequestBody,
+    newRequestHeaders,
+    setNewRequestHeaders,
+    warningMessage,
+  } = props;
 
-  toggleShow() {
-    this.setState({
-      show: !this.state.show,
-    });
-  }
+  const rawTypeStyles = {
+    display: newRequestBody.bodyType === "raw" ? "block" : "none",
+  };
 
-  render() {
-    const rawTypeStyles = {
-      display: this.props.newRequestBody.bodyType === "raw" ? "block" : "none",
-    };
-
-    const bodyEntryArea = (() => {
-      //BodyType of none : display nothing
-      if (this.props.newRequestBody.bodyType === "none") {
-        return;
-      }
-      //BodyType of XWWW... : display WWWForm entry
-      if (this.props.newRequestBody.bodyType === "x-www-form-urlencoded") {
-        return (
-          <WWWForm
-            setNewRequestBody={this.props.setNewRequestBody}
-            newRequestBody={this.props.newRequestBody}
-          />
-        );
-      }
-      //RawType of application/json : Text area box with error checking
-      if (this.props.newRequestBody.rawType === "application/json") {
-        return (
-          <JSONTextArea
-            setNewRequestBody={this.props.setNewRequestBody}
-            newRequestBody={this.props.newRequestBody}
-          />
-        );
-      }
-      //all other cases..just plain text area
-
+  const bodyEntryArea = (() => {
+    //BodyType of none : display nothing
+    if (newRequestBody.bodyType === "none") {
+      return;
+    }
+    //BodyType of XWWW... : display WWWForm entry
+    if (newRequestBody.bodyType === "x-www-form-urlencoded") {
       return (
-        <textarea
-          value={this.props.newRequestBody.bodyContent}
-          className="composer_textarea"
-          type="text"
-          placeholder="Body"
-          rows={10}
-          onChange={(e) => {
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              bodyContent: e.target.value,
-            });
-          }}
+        <WWWForm
+          setNewRequestBody={setNewRequestBody}
+          newRequestBody={newRequestBody}
         />
       );
-    })();
-
-    const arrowClass = this.state.show
-      ? "composer_subtitle_arrow-open"
-      : "composer_subtitle_arrow-closed";
-    const bodyContainerClass = this.state.show
-      ? "composer_bodyform_container-open"
-      : "composer_bodyform_container-closed";
+    }
+    //RawType of application/json : Text area box with error checking
+    if (newRequestBody.rawType === "application/json") {
+      return (
+        <JSONTextArea
+          setNewRequestBody={setNewRequestBody}
+          newRequestBody={newRequestBody}
+        />
+      );
+    }
+    //all other cases..just plain text area
 
     return (
-      <div style={this.props.stylesObj}>
-        <div
-          className="composer_subtitle"
-          onClick={this.toggleShow}
-          style={this.props.stylesObj}
-        >
-          <img className={arrowClass} src={dropDownArrow} alt="down arrow" />
-          Body
-        </div>
+      <textarea
+        value={newRequestBody.bodyContent}
+        className="composer_textarea"
+        type="text"
+        placeholder="Body"
+        rows={10}
+        onChange={(e) => {
+          setNewRequestBody({
+            ...newRequestBody,
+            bodyContent: e.target.value,
+          });
+        }}
+      />
+    );
+  })();
 
-        <div className={bodyContainerClass}>
-          <BodyTypeSelect
-            setNewRequestBody={this.props.setNewRequestBody}
-            newRequestBody={this.props.newRequestBody}
-            setNewRequestHeaders={this.props.setNewRequestHeaders}
-            newRequestHeaders={this.props.newRequestHeaders}
-          />
+  const bodyContainerClass = show
+    ? "composer_bodyform_container-open-rest"
+    : "composer_bodyform_container-closed";
 
-          <div className="composer_rawtype_textarea_container">
-            <select
-              style={rawTypeStyles}
-              className={"composer_rawtype_select"}
-              onChange={(e) =>
-                this.props.setNewRequestBody({
-                  ...this.props.newRequestBody,
-                  rawType: e.target.value,
-                })
-              }
-              value={this.props.newRequestBody.rawType}
-            >
-              Raw Type:
-              <option value="text/plain">Text (text/plain)</option>
-              <option value="application/json">JSON (application/json)</option>
-              <option value="application/javascript">
-                Javascript (application/javascript)
-              </option>
-              <option value="application/xml">XML (application/xml)</option>
-              <option value="text/xml">XML (text/xml)</option>
-              <option value="text/html">HTML (text/html)</option>
-            </select>
-            {bodyEntryArea}
+  return (
+    <div>
+      <label
+      className='composer_subtitle' >
+        <div className="label-text" >Body</div>
+          <div className="toggle" >
+            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow((show) => !show)}/>
+            <div className="indicator_body" />
           </div>
+      </label>
+
+      <div className={bodyContainerClass}>
+        <BodyTypeSelect
+          setNewRequestBody={setNewRequestBody}
+          newRequestBody={newRequestBody}
+          setNewRequestHeaders={setNewRequestHeaders}
+          newRequestHeaders={newRequestHeaders}
+        />
+
+        <div className="composer_rawtype_textarea_container">
+          <select
+            style={rawTypeStyles}
+            className="composer_rawtype_select"
+            onChange={(e) =>
+              setNewRequestBody({
+                ...newRequestBody,
+                rawType: e.target.value,
+              })
+            }
+            value={newRequestBody.rawType}
+          >
+            Raw Type:
+            <option value="text/plain">Text (text/plain)</option>
+            <option value="application/json">JSON (application/json)</option>
+            <option value="application/javascript">
+              Javascript (application/javascript)
+            </option>
+            <option value="application/xml">XML (application/xml)</option>
+            <option value="text/xml">XML (text/xml)</option>
+            <option value="text/html">HTML (text/html)</option>
+          </select>
+          { // conditionally render warning message
+            warningMessage ? 
+            <div>
+              <div style={{ color: "red", marginTop: "10px" }}>{warningMessage.body || warningMessage.json}</div>
+            </div>
+            : null 
+          }
+          {bodyEntryArea}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default BodyEntryForm;

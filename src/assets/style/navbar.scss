@@ -2,7 +2,9 @@
 	display: flex;
 	justify-content: center;
   width: 100%;
-  background: #4e4e4e;
+  float: center;
+  background: #eeeeee;
+  border-radius: 15px;
 }
 
 .navbar-console_inner {
@@ -10,41 +12,28 @@
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  background: #eeeeee;
+  box-shadow:  6px 6px 28px #b0b0b0, 
+             -6px -6px 28px #ffffff;
 	.btn {
-		background: #4e4e4e;
-    border: solid 1px #4e4e4e;
-    border-radius: 5px;
-		color: white;
-		// font-size: 8px;
+		background: transparent;
+    border: solid 1px #eeeeee;
+    border-radius: 3px;
+		color: $bluefour;
 		margin: 4px;
     padding: .5rem;
     cursor: pointer;
     font-size: 12px;
     outline: none;
     font-weight: 425;
-  }
-  .btn:hover {
-    background: #2c3e50;
-    border: solid 1px white;
-  }
-  .save-btn {
-    background: $bluetwo;
-    border: solid 1px #white;
-    border-radius: 5px;
-		color: white;
-		// font-size: 8px;
-		margin: 4px;
-    padding: .5rem;
-    cursor: pointer;
-    font-size: 12px;
-    outline: none;
-    font-weight: 425;
-  }
-  .save-btn:hover {
-    background: $bluethree;
-    border: solid 1px white;
-  }
+    }
+    .btn:hover {
+    border-radius: 15px;
+    background: #eeeeee;
+    box-shadow: inset -12px -12px 24px #b0b0b0, 
+    inset 12px 12px 24px #ffffff;
+}
 }
 ::placeholder {
-  color: $yellowgrey;
+  color: $bluefour;
 }

@@ -9,12 +9,12 @@ module.exports = () => {
     it('can select a request method', async () => {
       await sideBar.requestMethod.click();
       await sideBar.choosePost.click();
-      let isSelected = await sideBar.choosePost.isSelected();
+      const isSelected = await sideBar.choosePost.isSelected();
       assert.strictEqual(isSelected, true); 
     });
 
     it('can type url into url input', async () => {
-      await sideBar.url.addValue('pokeapi.co/api/v2/pokemon?limit=5');
+      await sideBar.url.setValue('https://pokeapi.co/api/v2/pokemon?limit=5');
       const input = await sideBar.url.getValue();
   
       return assert.strictEqual(input, 'https://pokeapi.co/api/v2/pokemon?limit=5');

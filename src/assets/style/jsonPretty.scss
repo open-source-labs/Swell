@@ -1,3 +1,5 @@
+@import 'colors';
+
 .__json-pretty__ {
   line-height: 1.3;
   color: #66d9ef;
@@ -18,5 +20,33 @@
 .__json-pretty-error__ {
   line-height: 1.3;
   color: #66d9ef;
+  overflow: auto;
+}
+
+
+
+.__json-pretty__error {
+  line-height: 1.3;
+  color: $remove;
+  overflow: auto;
+}
+.__json-pretty__error .__json-key__ {
+  color: $remove;
+
+}
+.__json-pretty__error .__json-value__ {
+  color: $remove;
+
+}
+.__json-pretty__error .__json-string__ {
+  color: $remove;
+
+}
+.__json-pretty__error .__json-boolean__ {
+  color: $remove;
+}
+.__json-pretty-error__error {
+  line-height: 1.3;
+  color: $remove;
   overflow: auto;
 }

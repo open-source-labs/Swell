@@ -37,17 +37,17 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={HTTPSStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol')
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol', 'rest')
           }
         >
-          HTTP/S
+          REST
         </div>
         <div
           title="Enter WebSocket url"
           role="button"
           tabIndex={0}
           className={WSStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'ws://' } }, 'protocol')}
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'ws://' } }, 'protocol', 'ws')}
         >
           WS
         </div>
@@ -56,7 +56,7 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GQLStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', 'graphQLtrue')
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', 'graphQL')
           }
         >
           GRAPHQL
@@ -66,7 +66,7 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GRPCStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', false)
+          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', 'grpc')
           }
         >
           GRPC

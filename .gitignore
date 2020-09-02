@@ -11,6 +11,7 @@ node_modules/
 *.compiled.*
 package-lock.json
 coverage/
+.vscode
 
 # Folder config file #
 ######################
@@ -61,4 +62,8 @@ ehthumbs.db
 protos/
 
 # testing #
-test/snapshot.png
+test/subSuites/*.png
+
+
+# db #
+.env

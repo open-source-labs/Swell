@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package helloworld;
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc SayHelloNested (HelloNestedRequest) returns (HelloNestedReply) {}
+  rpc SayHellosSs (HelloRequest) returns (stream HelloReply) {}
+  rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
+  rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
+
+message HelloNestedRequest {
+  HelloRequest firstPerson = 1;
+  HelloRequest secondPerson = 2; 
+}
+
+message HelloNestedReply {
+  repeated HelloReply serverMessage = 1;
+  
+}
+message HelloHowOldRequest {
+  int32 age = 1;
+}
+message HelloAge {
+  int32 age = 1;
+}

@@ -1,5 +1,5 @@
-import Dexie from "dexie";
-
+import Dexie from 'dexie'
+ 
 const db = new Dexie("Swell");
 
 db.on("versionchange", function (event) {

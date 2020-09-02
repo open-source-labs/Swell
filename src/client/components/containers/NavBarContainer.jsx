@@ -41,7 +41,7 @@ class NavBarContainer extends Component {
   }
 
   saveName() {
-    if (!!this.state.input.trim()) {
+    if (this.state.input.trim()) {
       collectionsController
         .collectionNameExists({ name: this.state.input })
         .catch((err) =>
@@ -115,19 +115,9 @@ class NavBarContainer extends Component {
           <button
             className="btn"
             type="button"
-            onClick={ReqResCtrl.selectAllReqRes}
+            onClick={ReqResCtrl.toggleSelectAll}
           >
-            Select All
-          </button>
-
-          <button
-            className="btn"
-            type="button"
-            onClick={(e) => {
-              ReqResCtrl.deselectAllReqRes(e);
-            }}
-          >
-            Deselect All
+            Select/Deselect All
           </button>
 
           <button
@@ -149,17 +139,9 @@ class NavBarContainer extends Component {
           <button
             className="btn"
             type="button"
-            onClick={ReqResCtrl.minimizeAllReqRes}
+            onClick={ReqResCtrl.toggleMinimizeAll}
           >
-            Minimize All
-          </button>
-
-          <button
-            className="btn"
-            type="button"
-            onClick={ReqResCtrl.expandAllReqRes}
-          >
-            Expand All
+            Expand/Collapse All
           </button>
 
           <button
@@ -167,7 +149,10 @@ class NavBarContainer extends Component {
             type="button"
             onClick={ReqResCtrl.clearAllReqRes}
           >
-            Clear All
+            Clear Requests
+          </button>
+          <button className="btn" type="button" onClick={ReqResCtrl.clearGraph}>
+            Clear Graph
           </button>
 
           <button
@@ -184,7 +169,7 @@ class NavBarContainer extends Component {
             overlayClassName="collectionModalOverlay"
             contentLabel="Enter a Collection Name"
             onRequestClose={this.handleCloseModal}
-            shouldCloseOnOverlayClick={true}
+            shouldCloseOnOverlayClick
             aria={{
               labelledby: "heading",
             }}

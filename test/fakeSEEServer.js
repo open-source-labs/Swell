@@ -1,3 +1,5 @@
+// SSE Server created by previous group but wasn't being used in any of the tests so they've been commented out in case a future group wants to use them
+
 const http = require('http');
 
 http.createServer((request, response) => {
@@ -12,7 +14,7 @@ http.createServer((request, response) => {
   sendSSEs(response); 
   
 
-}).listen(5001, () => console.log('server listening on port 5001'));
+}).listen(5001, () => console.log('SSE Server listening on port 5001'));
 
 // this function sends messages every 3 seconds 
 const sendSSEs = (response, id = 0, timeout) => {

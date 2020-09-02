@@ -1,8 +1,8 @@
 const assert = require('assert'); 
-const sideBar = require('../pageObjects/Sidebar.js'); 
-const app = require('../testApp');
 const fs = require('fs');
 const path = require('path');
+const sideBar = require('../pageObjects/Sidebar.js'); 
+const app = require('../testApp');
 
 
 module.exports = () => {
@@ -18,11 +18,6 @@ module.exports = () => {
       before(async function() {
         await sideBar.addRequestBtn.click();
       })
-      
-      it('url input resets', async () => {
-        value = await sideBar.url.getValue(); 
-        assert.strictEqual(value, 'http://');
-      });
 
       it('custom headers disappear', async () => {
         await sideBar.activateHeaders.click();

@@ -54,6 +54,15 @@ export const reqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
+export const updateGraph = (reqRes) => ({
+  type: types.UPDATE_GRAPH,
+  payload: reqRes,
+});
+
+export const clearGraph = () => ({
+  type: types.CLEAR_GRAPH,
+});
+
 export const setComposerWarningMessage = (message) => ({
   type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message,
@@ -99,6 +108,10 @@ export const setChecksAndMinis = (reqResArray) => ({
   payload: reqResArray,
 });
 
+export const setIntrospectionData = (dataObj) => ({
+  type: types.SET_INTROSPECTION_DATA,
+  payload: dataObj,
+});
 // UI ACTIONS
 // export const showWarning = () => ({
 //   type: types.SHOW_WARNING,

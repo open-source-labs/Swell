@@ -1,6 +1,18 @@
 const app = require('../testApp.js');
 
 class Sidebar {
+  // NETWORK PROTOCOL
+  get websocket() {
+    return app.client.$('div.composer_protocol_button.ws')
+  }
+
+  get graphQL() {
+    return app.client.$('div.composer_protocol_button.gql')
+  }
+
+  get gRPC() {
+    return app.client.$('div.composer_protocol_button.grpc')
+  }
 
   // URL/METHOD INPUTS
   get url() { 
@@ -10,14 +22,26 @@ class Sidebar {
   get requestMethod() { 
     return app.client.$('select.composer_method_select.http');
   };
+  
+  get chooseGet(){ 
+    return app.client.$('option=GET');
+  };
 
   get choosePost() { 
     return app.client.$('option=POST');
   }; 
 
-  get chooseGet(){ 
-    return app.client.$('option=GET');
-  };
+  get choosePut() { 
+    return app.client.$('option=PUT');
+  }; 
+
+  get choosePatch() { 
+    return app.client.$('option=PATCH');
+  }; 
+
+  get chooseDelete() {
+    return app.client.$('option=DELETE')
+  }
 
   // BODY INPUTS
   get activateBodyInput(){
@@ -48,15 +72,68 @@ class Sidebar {
     return app.client.$('textarea.composer_textarea');
   };
 
-
   get prettyJSON(){
     return app.client.$('.composer_pretty_print');
   };
-  
+
+  // gRPC
+  get grpcBody(){
+    return app.client.$('textarea#grpcProtoEntryTextArea.composer_textarea.grpc.composer_bodyform_container-open');
+  };
+
+  get saveChanges() {
+    return app.client.$('button#save-proto.save-proto.small-btn-open')
+  }
+
+  get selectService() {
+    return app.client.$('select#dropdownService.dropdownService')
+  }
+
+  get selectRequest() {
+    return app.client.$('select#dropdownRequest.dropdownService')
+  }
+
+  // graphQL
+  get schemaOpen() {
+    return app.client.$('#schema-click')
+  }
+
+  get variableOpen() {
+    return app.client.$('#variable-click')
+  }
+
+  get introspect() {
+    return app.client.$('button=Introspect')
+  }
+
+  get introspectionText() {
+    return app.client.$('textarea#introspection-text')
+  }
+
+  get graphqlText() {
+    const codeMirror = app.client.$('div#graphql-body');
+    codeMirror.click();
+    return codeMirror.$("textarea")
+  }
+
+  get graphqlVariable() {
+    const codeMirrorVariable = app.client.$('div#graphql-variable');
+    codeMirrorVariable.click();
+    return codeMirrorVariable.$("textarea")
+  }
+
+  get chooseMutation() { 
+    return app.client.$('option=MUTATION');
+  }; 
+
+  get chooseSubscription() { 
+    return app.client.$('option=SUBSCRIPTION');
+  }; 
+
   // HEADER INPUTS
 
   get activateHeaders(){
-    return app.client.$('.composer_subtitle=Headers'); 
+    return app.client.$('#headers-click'); 
   };
 
   get headers(){
@@ -85,7 +162,7 @@ class Sidebar {
   };
 
   get activateCookies(){
-    return app.client.$('.composer_subtitle=Cookies');
+    return app.client.$('#cookie-click');
   }
 
   get firstCookieCheckbox(){
@@ -99,6 +176,11 @@ class Sidebar {
   get cookieValue(){
     return app.client.$('.cookie_value');
   };
+
+  // HISTORY
+  get history(){
+    return app.client.$('div.history-url')
+  }
 
   // ADD REQUEST BUTTON
   get addRequestBtn(){
