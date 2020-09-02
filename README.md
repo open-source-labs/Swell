@@ -47,6 +47,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
+
+* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
+<kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
+     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+     
 ### **Latest Swell v.0.6.0 update**
 * *New Look*: Improved navigation and faster rendering processes
 <kbd><img src="./ReadMeGifs/ui-showcase.gif"
@@ -55,12 +60,12 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * *GraphQL*: Schema Introspection and smart code editor features
 <kbd><img src="./ReadMeGifs/introspection.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-
-## Additional Features
-* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
+     
+* *gRPC*: Front-end for the gRPC composer section has been heavily optimized and refactored. Unnecessary component re-renders, as well as extraneous Redux reducer dispatch actions have been eliminated. 
 <kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
+## Additional Features
 * *Collections*: Swell allows you to save collections for easier testing of multiple requests.
 <kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
