@@ -134,6 +134,31 @@
       "name": "Stephanie Wood",
       "email": "wood.steph@gmail.com",
       "url": "https://github.com/StephWood"
+    },
+    {
+      "name": "Wyatt Bell",
+      "email": "www.linkedin.com/in/wyatt-bell1",
+      "url": "https://github.com/wcbell51"
+    },
+    {
+      "name": "Grace Kim",
+      "email": "https://www.linkedin.com/in/gracekiim/",
+      "url": "https://github.com/gracekiim"
+    },
+    {
+      "name": "John Madrigal",
+      "email": "www.linkedin.com/in/john-r-madrigal",
+      "url": "https://github.com/johnmadrigal "
+    },
+    {
+      "name": "Michael Miller",
+      "email": "https://www.linkedin.com/in/migueljmiller/",
+      "url": "https://github.com/mjmiguel"
+    },
+    {
+      "name": "Alex Sanhueza",
+      "email": "https://www.linkedin.com/in/alex-sanhueza/",
+      "url": "https://github.com/alexsanhueza"
     }
   ],
   "build": {
@@ -151,14 +176,13 @@
       "menu/mainMenu.js",
       "package.json",
       "main.js",
-      "httpserver.js",
-      "src/client/protoParser.js",
-      "main_grpcController.js",
-      "main_httpController.js",
-      "SSEController.js",
-      "preload.js",
-      "main_touchbar.js",
-      "main_wsController.js"
+      "main_process/protoParser.js",
+      "main_process/main_grpcController.js",
+      "main_process/main_httpController.js",
+      "main_process/main_wsController.js",
+      "main_process/main_touchbar.js",
+      "main_process/SSEController.js",
+      "preload.js"
     ],
     "nodeVersion": "12.14.1",
     "nsis": {
@@ -245,7 +269,6 @@
     "highland": "^2.13.5",
     "http": "0.0.1-security",
     "identity-obj-proxy": "^3.0.0",
-    "isomorphic-fetch": "^2.2.1",
     "mali": "^0.21.0",
     "mongoose": "^5.9.29",
     "node-fetch": "^2.6.0",

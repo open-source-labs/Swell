@@ -45,16 +45,16 @@ const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
-const protoParserFunc = require("./protoParser.js");
+const protoParserFunc = require("./main_process/protoParser.js");
 
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-require("./main_httpController.js")();
+require("./main_process/main_httpController.js")();
 // require grpc controller file
-require("./main_grpcController.js")();
+require("./main_process/main_grpcController.js")();
 // require ws controller
-require("./main_wsController.js")();
+require("./main_process/main_wsController.js")();
 
 // configure logging
 autoUpdater.logger = log;
@@ -156,7 +156,7 @@ function createWindow() {
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
-  const { touchBar } = require("./main_touchbar.js");
+  const { touchBar } = require("./main_process/main_touchbar.js");
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -367,7 +367,6 @@ ipcMain.on("import-collection", (event, args) => {
 
       // send data to chromium for state update
       // ipcMain.send("add-collection", { data });
-      console.log("before add-collection in import", data);
       // mainWindow.webContents.send('add-collection', {data});
       event.sender.send("add-collection", { data });
     });
@@ -386,7 +385,6 @@ ipcMain.on("confirm-clear-history", (event) => {
   dialog
     .showMessageBox(null, opts)
     .then((response) => {
-      console.log("response to clear-history : ", response);
       mainWindow.webContents.send("clear-history-response", response);
     })
     .catch((err) => console.log(`Error on 'confirm-clear-history': ${err}`));
@@ -397,7 +395,6 @@ ipcMain.on("confirm-clear-history", (event) => {
 // import-proto
 
 ipcMain.on("import-proto", (event) => {
-  console.log("import-proto event fired!!");
   let importedProto;
   dialog
     .showOpenDialog({
