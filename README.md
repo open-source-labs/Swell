@@ -47,12 +47,20 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
-### **Latest Swell v.0.4.0 update**
+### **Latest Swell v.0.6.0 update**
+* *New Look*: Improved navigation and faster rendering processes
+<kbd><img src="./ReadMeGifs/ui-showcase.gif"
+     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
+* *GraphQL*: Schema Introspection and smart code editor features
+<kbd><img src="./ReadMeGifs/introspection.gif"
+     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
+## Additional Features
 * *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
 <kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
-## Additional Features
 * *Collections*: Swell allows you to save collections for easier testing of multiple requests.
 <kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
@@ -85,6 +93,16 @@ E.g., MONGO_URI = "mongodb+srv://YOUR_URL"
 
 ## Authors
 
+* **Grace Kim** - [gracekiim](https://github.com/gracekiim)
+* **Alex Sanhueza** - [alexsanhueza](https://github.com/alexsanhueza)
+* **Wyatt Bell** - [wcbell51](https://github.com/wcbell51)
+* **John Madrigal** - [johnmadrigal](https://github.com/johnmadrigal)
+* **Michael Miller** - [mjmiguel](https://github.com/mjmiguel)
+* **Hideaki Aomori** - [h15200](https://github.com/h15200)
+* **Matt Gin** - [chinsonhoag](https://github.com/chunsonhoag)
+* **Nick Healy** - [nickhealy](http://github.com/nickhealy)
+* **Grace Spletzer** - [gspletzer](https://github.com/gspletzer)
+* **Stephanie Wood** - [stephwood](https://github.com/stephwood)
 * **Anthony Terruso** - [discrete projects](https://github.com/discrete-projects)
 * **Brandon Marrero** - [brandon6190](https://github.com/brandon6190)
 * **Jason Ou** - [jasonou1994](https://github.com/jasonou1994)
