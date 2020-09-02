@@ -124,10 +124,10 @@ class JSONTextArea extends Component {
               bodyContent: e.target.value,
             });
           }}
-        ></textarea>
+         />
         <div
           style={prettyPrintDisplay}
-          className={"composer_pretty_print"}
+          className="composer_pretty_print"
           onClick={this.prettyPrintJSON}
         >
           JSON correctly formatted. Pretty print?

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 import Collection from "../display/Collection.jsx";
@@ -17,43 +17,43 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-class CollectionsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
+const CollectionsContainer = (props) => {
+  const { 
+    collections,
+    deleteFromCollection,
+    collectionToReqRes,
+  } = props;
+
+  const handleClick = () => {
+    collectionsController.importCollection(collections);
   }
 
-  handleClick() {
-    // console.log("props ->", this.props.collections);
-    collectionsController.importCollection(this.props.collections);
-  }
+  const collectionComponents = collections.map(
+    (collection, idx) => {
+      return (
+        <Collection
+          content={collection}
+          key={idx}
+          deleteFromCollection={deleteFromCollection}
+          collectionToReqRes={collectionToReqRes}
+        />
+      );
+    }
+  );
 
-  render() {
-    const collectionComponents = this.props.collections.map(
-      (collection, idx) => {
-        return (
-          <Collection
-            content={collection}
-            key={idx}
-            deleteFromCollection={this.props.deleteFromCollection}
-            collectionToReqRes={this.props.collectionToReqRes}
-          />
-        );
-      }
-    );
-
-    return (
-      <div className="collections-container">
-        <h1>Collections</h1>
-        <div className="collection-import-container">
-          <button className="import-collections" onClick={this.handleClick}>
-            Import Collection
-          </button>
-        </div>
+  return (
+    <div className="collections-container">
+      <h1 className="collection-heading">Collections</h1>
+      <div className="collection-import-container">
+        <button className="import-collections" onClick={handleClick}>
+          Import Collection
+        </button>
+      </div>
+      <div className="collections">
         {collectionComponents}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default connect(

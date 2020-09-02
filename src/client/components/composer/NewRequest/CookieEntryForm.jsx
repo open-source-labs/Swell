@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Header from './Header.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 
 class CookieEntryForm extends Component {
   constructor(props) {
@@ -43,10 +42,10 @@ class CookieEntryForm extends Component {
   }
 
   onChangeUpdateCookie(id, field, value) {
-    let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+    const cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
 
     //find cookie to update
-    let indexToBeUpdated = undefined;
+    let indexToBeUpdated;
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
       if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
@@ -62,7 +61,7 @@ class CookieEntryForm extends Component {
     }
 
     //determine if new cookie needs to be added
-    let emptyCookiesCount = cookiesDeepCopy.map(cookie => {
+    const emptyCookiesCount = cookiesDeepCopy.map(cookie => {
       return (!cookie.key && !cookie.value) ? 1 : 0
     }).reduce((acc, cur) => {
       return acc + cur;
@@ -87,20 +86,29 @@ class CookieEntryForm extends Component {
   }
 
   render() {
-    let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
-      return (<Header content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Header>)
+    const cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
+      return (
+        <Header 
+          type='cookie' 
+          content={cookie} 
+          changeHandler={this.onChangeUpdateCookie} 
+          key={index} Key={cookie.key} 
+          value={cookie.value} />
+        )
     });
 
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open' : 'composer_headers_container-closed'
+    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open cookies_container' : 'composer_headers_container-closed cookies_container'
 
     return (
       <div>
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} style={{ 'marginTop': '-6px' }} src={dropDownArrow}>
-          </img>
-          Cookies
-        </div>
+        <label
+        className='composer_subtitle' >
+          <div className="label-text" id="cookie-click">Cookies</div>
+          <div className="toggle">
+            <input type="checkbox" name="check" className="toggle-state" onClick={this.toggleShow}/>
+            <div className="indicator" />
+          </div>
+        </label>
         <div className={cookiesContainerClass}>
           {cookiesArr}
         </div>

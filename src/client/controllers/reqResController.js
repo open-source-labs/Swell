@@ -1,10 +1,9 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-import wsController from "./wsController.js";
+// import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
-let events;
 const connectionController = {
   openConnectionArray: [],
 
@@ -18,50 +17,51 @@ const connectionController = {
     );
   },
 
-  selectAllReqRes() {
+  //toggles checked in state for entire reqResArray
+  toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
 
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (!reqRes.checked && reqRes.tab === currentTab) {
-        reqRes.checked = true;
-      }
-    });
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
-  },
-
-  deselectAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (reqRes.checked && reqRes.tab === currentTab) {
-        reqRes.checked = false;
-      }
-    });
+    if (reqResArray.every((obj) => obj.checked === true)) {
+      reqResArray.forEach((obj) => (obj.checked = false));
+    } else {
+      reqResArray.forEach((obj) => (obj.checked = true));
+    }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
 
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
-    api.receive("reqResUpdate", (reqResObj) =>
-      store.default.dispatch(actions.reqResUpdate(reqResObj))
-    );
-
+    api.receive("reqResUpdate", (reqResObj) => {
+      if (
+        reqResObj.connection === "closed" &&
+        reqResObj.timeSent &&
+        reqResObj.timeReceived
+      ) {
+        store.default.dispatch(actions.updateGraph(reqResObj));
+      }
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+    });
+    //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
-    else if (reqResObj.graphQL)
+    else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    else if (/wss?:\/\//.test(reqResObj.protocol))
-      wsController.openWSconnection(reqResObj, this.openConnectionArray);
+    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
+      //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      api.send("open-ws", reqResObj, this.openConnectionArray);
+
+      //update the connectionArray when connection is open from ws
+      api.receive("update-connectionArray", (connectionArray) => {
+        this.openConnectionArray.push(...connectionArray);
+      })
+    }
+    //gRPC connection
     else if (reqResObj.gRPC) {
       api.send("open-grpc", reqResObj);
+      //Standard HTTP?
     } else {
-      console.log("should be sending");
       api.send("open-http", reqResObj, this.openConnectionArray);
     }
   },
@@ -81,6 +81,7 @@ const connectionController = {
   },
 
   setReqResConnectionToClosed(id) {
+    console.log('inside setReqResConnection to Closed')
     const reqResArr = store.default.getState().business.reqResArray;
 
     const foundReqRes = reqResArr.find((reqRes) => reqRes.id === id);
@@ -90,12 +91,9 @@ const connectionController = {
 
   closeReqRes(id) {
     this.setReqResConnectionToClosed(id);
-
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-
-    console.log("open connection array is : ", this.openConnectionArray);
     if (foundAbortController) {
       switch (foundAbortController.protocol) {
         case "HTTP1": {
@@ -107,7 +105,7 @@ const connectionController = {
           break;
         }
         case "WS": {
-          foundAbortController.socket.close();
+          api.send('close-ws')
           break;
         }
         default:
@@ -134,30 +132,20 @@ const connectionController = {
     store.default.dispatch(actions.reqResClear());
   },
 
-  minimizeAllReqRes() {
+  //toggles minimized in ReqRes array in state
+  toggleMinimizeAll() {
     const { reqResArray } = store.default.getState().business;
 
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (!reqRes.minimized && reqRes.tab === currentTab) {
-        reqRes.minimized = true;
-      }
-    });
+    if (reqResArray.every((obj) => obj.minimized === true)) {
+      reqResArray.forEach((obj) => (obj.minimized = false));
+    } else {
+      reqResArray.forEach((obj) => (obj.minimized = true));
+    }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-
-  expandAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-
-    const { currentTab } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes) => {
-      if (reqRes.minimized && reqRes.tab === currentTab) {
-        reqRes.minimized = false;
-      }
-    });
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
+  //clears dataPoints from state
+  clearGraph() {
+    store.default.dispatch(actions.clearGraph());
   },
 };
 

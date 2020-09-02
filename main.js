@@ -13,7 +13,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 
 // npm libraries
 // debugger
-const { app, BrowserWindow, TouchBar, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -21,8 +21,6 @@ const {
 } = require("electron-devtools-installer");
 // Import Auto-Updater- Swell will update itself
 const { autoUpdater } = require("electron-updater");
-// TouchBarButtons are our nav buttons(ex: Select All, Deselect All, Open Selected, Close Selected, Clear All)
-const { TouchBarButton, TouchBarSpacer } = TouchBar;
 
 const path = require("path");
 const url = require("url");
@@ -44,16 +42,19 @@ const gql = require("graphql-tag");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
+const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
-const protoParserFunc = require("./src/client/protoParser.js");
+const protoParserFunc = require("./main_process/protoParser.js");
 
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
-require("./main_httpController.js")();
+require("./main_process/main_httpController.js")();
 // require grpc controller file
-require("./main_grpcController.js")();
+require("./main_process/main_grpcController.js")();
+// require ws controller
+require("./main_process/main_wsController.js")();
 
 // configure logging
 autoUpdater.logger = log;
@@ -61,87 +62,6 @@ autoUpdater.logger.transports.file.level = "info";
 log.info("App starting...");
 
 let mainWindow;
-
-/****************************
- ** Create Touchbar buttons **
- *****************************/
-
-const tbSelectAllButton = new TouchBarButton({
-  label: "Select All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("selectAll");
-  },
-});
-
-const tbDeselectAllButton = new TouchBarButton({
-  label: "Deselect All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("deselectAll");
-  },
-});
-
-const tbOpenSelectedButton = new TouchBarButton({
-  label: "Open Selected",
-  backgroundColor: "#00E28B",
-  click: () => {
-    mainWindow.webContents.send("openAllSelected");
-  },
-});
-
-const tbCloseSelectedButton = new TouchBarButton({
-  label: "Close Selected",
-  backgroundColor: "#DB5D58",
-  click: () => {
-    mainWindow.webContents.send("closeAllSelected");
-  },
-});
-
-const tbMinimizeAllButton = new TouchBarButton({
-  label: "Minimize All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("minimizeAll");
-  },
-});
-
-const tbExpandAllButton = new TouchBarButton({
-  label: "Expand All",
-  backgroundColor: "#3DADC2",
-  click: () => {
-    mainWindow.webContents.send("expandedAll");
-  },
-});
-
-const tbClearAllButton = new TouchBarButton({
-  label: "Clear All",
-  backgroundColor: "#708090",
-  click: () => {
-    mainWindow.webContents.send("clearAll");
-  },
-});
-
-const tbSpacer = new TouchBarSpacer();
-
-const tbFlexSpacer = new TouchBarSpacer({
-  size: "flexible",
-});
-
-/********************************
- ** Attach buttons to touchbar **
- ********************************/
-
-const touchBar = new TouchBar([
-  tbSpacer,
-  tbSelectAllButton,
-  tbDeselectAllButton,
-  tbOpenSelectedButton,
-  tbCloseSelectedButton,
-  tbMinimizeAllButton,
-  tbExpandAllButton,
-  tbClearAllButton,
-]);
 
 /************************
  ******** SET isDev *****
@@ -194,9 +114,9 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: (process.env.NODE_ENV !== 'test'),
+      contextIsolation: process.env.NODE_ENV !== "test",
       // enableRemoteModule: false,
-      sandbox: (process.env.NODE_ENV !== 'test'),
+      sandbox: process.env.NODE_ENV !== "test",
       webSecurity: true,
       preload: path.resolve(__dirname, "preload.js"),
     },
@@ -236,6 +156,7 @@ function createWindow() {
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
+  const { touchBar } = require("./main_process/main_touchbar.js");
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -245,7 +166,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     // Open the DevTools automatically if developing
-    if (isDev && process.env.NODE_ENV !== 'test') {
+    if (isDev && process.env.NODE_ENV !== "test") {
       mainWindow.webContents.openDevTools();
     }
   });
@@ -445,9 +366,12 @@ ipcMain.on("import-collection", (event, args) => {
       }
 
       // send data to chromium for state update
-      ipcMain.send("add-collection", { data });
+      // ipcMain.send("add-collection", { data });
+      // mainWindow.webContents.send('add-collection', {data});
+      event.sender.send("add-collection", { data });
     });
   });
+  //.catch( err => console.log('error in import-collection', err));
 });
 
 // ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
@@ -461,7 +385,6 @@ ipcMain.on("confirm-clear-history", (event) => {
   dialog
     .showMessageBox(null, opts)
     .then((response) => {
-      console.log("response to clear-history : ", response);
       mainWindow.webContents.send("clear-history-response", response);
     })
     .catch((err) => console.log(`Error on 'confirm-clear-history': ${err}`));
@@ -472,7 +395,6 @@ ipcMain.on("confirm-clear-history", (event) => {
 // import-proto
 
 ipcMain.on("import-proto", (event) => {
-  console.log("import-proto event fired!!");
   let importedProto;
   dialog
     .showOpenDialog({
@@ -486,7 +408,7 @@ ipcMain.on("import-proto", (event) => {
       fs.readFile(filePaths.filePaths[0], "utf-8", (err, file) => {
         // handle read error
         if (err) {
-          return console.log("error reading file : ", err);
+          return console.log("import-proto error reading file : ", err);
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
@@ -501,7 +423,7 @@ ipcMain.on("import-proto", (event) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log("error in import-proto", err);
     });
 });
 
@@ -512,9 +434,10 @@ ipcMain.on("protoParserFunc-request", (event, data) => {
     .then((result) => {
       mainWindow.webContents.send("protoParserFunc-return", result);
     })
-    .catch((err) =>
-      console.log("err inside protoParserFunc-request listener in main", err)
-    );
+    .catch((err) => {
+      console.log("error in protoParserFunc-request:, ", err);
+      mainWindow.webContents.send("protoParserFunc-return", { error: err });
+    });
 });
 
 // ====================== OLDER STUFF =======================
@@ -549,11 +472,14 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
           .then((body) => {
             event.sender.send("http1-fetch-reply", { headers, body });
           })
-          .catch((error) => console.log("ERROR", error));
+          .catch((error) => console.log("ERROR in http1-fetch-message", error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log("error in http1-fetch-message", error));
 });
+
+const { onError } = require("apollo-link-error");
+const { response } = require("express");
 
 ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
@@ -626,38 +552,79 @@ ipcMain.on("open-gql", (event, args) => {
     fetch: fetch2,
   });
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (networkError) {
+      reqResObj.error = JSON.stringify(networkError);
+      event.sender.send("reply-gql", { error: networkError, reqResObj });
+    }
+    try {
+      // check if there are any errors in the graphQLErrors array
+      if (graphQLErrors.length !== 0) {
+        graphQLErrors.forEach((currError) => {
+          reqResObj.error = JSON.stringify(currError);
+          event.sender.send("reply-gql", { error: currError, reqResObj });
+        });
+      }
+    } catch (err) {
+      console.log("Error in errorLink:", err);
+    }
+  });
+
   // additive composition of multiple links
-  const link = ApolloLink.from([afterLink, httpLink]);
+  // https://www.apollographql.com/docs/react/api/link/introduction/#composing-a-link-chain
+  const link = ApolloLink.from([afterLink, errorLink, httpLink]);
 
   const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
   });
 
-  const body = gql`
-    ${reqResObj.request.body}
-  `;
-  const variables = reqResObj.request.bodyVariables
-    ? JSON.parse(reqResObj.request.bodyVariables)
-    : {};
-
-  if (reqResObj.request.method === "QUERY") {
-    client
-      .query({ query: body, variables })
-
-      .then((data) => {
-        event.sender.send("reply-gql", { reqResObj, data });
-      })
-      .catch((err) => {
-        console.error(err);
-        event.sender.send("reply-gql", { error: err.networkError, reqResObj });
-      });
-  } else if (reqResObj.request.method === "MUTATION") {
-    client
-      .mutate({ mutation: body, variables })
-      .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
-      .catch((err) => {
-        console.error(err);
-      });
+  try {
+    const body = gql`
+      ${reqResObj.request.body}
+    `;
+    // graphql variables: https://graphql.org/learn/queries/#variables
+    const variables = reqResObj.request.bodyVariables
+      ? JSON.parse(reqResObj.request.bodyVariables)
+      : {};
+    if (reqResObj.request.method === "QUERY") {
+      client
+        .query({ query: body, variables })
+        .then((data) => {
+          event.sender.send("reply-gql", { reqResObj, data });
+        })
+        .catch((err) => {
+          // error is actually sent to graphQLController via "errorLink"
+          console.log("gql query error in main.js", err);
+        });
+    } else if (reqResObj.request.method === "MUTATION") {
+      client
+        .mutate({ mutation: body, variables })
+        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .catch((err) => {
+          // error is actually sent to graphQLController via "errorLink"
+          console.error("gql mutation error in main.js", err);
+        });
+    }
+  } catch (err) {
+    console.log("error trying gql query/mutation in main.js", err);
   }
+});
+
+ipcMain.on("introspect", (event, url) => {
+  fetch2(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: introspectionQuery }),
+  })
+    .then((resp) => resp.json())
+    .then((data) => {
+      return event.sender.send("introspect-reply", data.data);
+    })
+    .catch((err) =>
+      event.sender.send(
+        "introspect-reply",
+        "Error: Please enter a valid GraphQL API URI"
+      )
+    );
 });

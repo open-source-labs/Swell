@@ -1,5 +1,5 @@
+import React from "react";
 import { connect } from "react-redux";
-import React, { Component } from "react";
 import * as actions from "../../actions/actions";
 import SingleReqResContainer from "./SingleReqResContainer.jsx";
 
@@ -17,31 +17,33 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-class ReqResContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
+const ReqResContainer = (props) => {
+  const {
+    reqResArray,
+    reqResDelete,
+    reqResUpdate,
+  } = props;
 
-  render() {
-    const reqResArr = this.props.reqResArray.map((reqRes, index) => {
-      // console.log('from the sto : ', reqRes.response)
-      return (
-        <SingleReqResContainer
-          className="reqResChild"
-          content={reqRes}
-          key={index}
-          reqResDelete={this.props.reqResDelete}
-          reqResUpdate={this.props.reqResUpdate}
-        />
-      );
-    });
-
+  const reqResMapped = reqResArray.map((reqRes, index) => {
     return (
-      <div id="reqResContainer">
-        <div id="reqResContainer_inner">{reqResArr}</div>
-      </div>
+      <SingleReqResContainer
+        className="reqResChild"
+        content={reqRes}
+        key={index}
+        reqResDelete={reqResDelete}
+        reqResUpdate={reqResUpdate}
+      />
     );
-  }
+  });
+
+  return (
+    <div id="reqResContainer">
+      <div id="reqResContainer_inner">{reqResMapped.reverse()}</div>
+    </div>
+  );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReqResContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps)
+  (ReqResContainer);

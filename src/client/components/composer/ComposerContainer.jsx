@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 
 import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
-import ComposerWarning from "./Warning/ComposerWarning.jsx";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -16,6 +15,7 @@ const mapStateToProps = (store) => ({
   newRequestSSE: store.business.newRequestSSE,
   currentTab: store.business.currentTab,
   warningMessage: store.business.warningMessage,
+  introspectionData: store.business.introspectionData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -48,54 +48,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-class ComposerContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    let composerContents;
-    switch (
-      this.props.composerDisplay // conditional rendering of components based on the value of composerDisplay in redux store
-    ) {
-      case "Request": {
-        composerContents = (
-          <ComposerNewRequest
-            composerDisplay={this.props.composerDisplay}
-            newRequestFields={this.props.newRequestFields}
-            newRequestHeaders={this.props.newRequestHeaders}
-            newRequestStreams={this.props.newRequestStreams}
-            newRequestCookies={this.props.newRequestCookies}
-            newRequestBody={this.props.newRequestBody}
-            newRequestSSE={this.props.newRequestSSE}
-            currentTab={this.props.currentTab}
-            reqResAdd={this.props.reqResAdd}
-            setComposerWarningMessage={this.props.setComposerWarningMessage}
-            setComposerDisplay={this.props.setComposerDisplay}
-            setNewRequestFields={this.props.setNewRequestFields}
-            setNewRequestHeaders={this.props.setNewRequestHeaders}
-            setNewRequestStreams={this.props.setNewRequestStreams}
-            setNewRequestCookies={this.props.setNewRequestCookies}
-            setNewRequestBody={this.props.setNewRequestBody}
-            setNewRequestSSE={this.props.setNewRequestSSE}
-          />
-        );
-        break;
-      }
-      case "Warning": {
-        composerContents = (
-          <ComposerWarning
-            warningMessage={this.props.warningMessage}
-            setComposerDisplay={this.props.setComposerDisplay}
-          />
-        );
-        break;
-      }
-      default:
-        console.log("Incorrect Model Display setting");
-    }
-    return <div className="composerContents">{composerContents}</div>;
-  }
-}
+const ComposerContainer = (props) => {
+  return (
+    <div className="composerContents">
+      <ComposerNewRequest {...props} />
+    </div>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComposerContainer);

@@ -2,9 +2,9 @@
   bottom: 0;
   width: 100%;
   margin: 0;
-  background-color: #ecf1f5;
+  background-color: #eeeeee;
   border-top: solid 1px #ebeff2;
-  background-image: url('../img/swell-bg.png');
+  background-image: url("../img/swell-bg.png");
   background-position: center center;
   background-size: 200px 200px;
   background-repeat: no-repeat;
@@ -15,28 +15,28 @@
 //-------------------------------------------------------------------
 //This is a fix for the ugly windows and linux scrollbars
 //-------------------------------------------------------------------
-#reqResContainer::-webkit-scrollbar{
-  width:0.5px;
-  background-color:#cccccc;
-  }
-  #reqResContainer::-webkit-scrollbar-thumb{
-  width:0.5px;
-  background-color:#cccccc;
-  border-radius:10px;
-  }
-  #reqResContainer::-webkit-scrollbar-thumb:hover{
-  width:0.5px;
-  background-color:#cccccc;
-  }
-  #reqResContainer::-webkit-scrollbar-thumb:active{
-  width:0.5px;
-  background-color:#cccccc;
-  border:1px solid #cccccc;
-  }
+#reqResContainer::-webkit-scrollbar {
+  width: 0.5px;
+  background-color: #eeeeee;
+}
+#reqResContainer::-webkit-scrollbar-thumb {
+  width: 0.5px;
+  background-color: #eeeeee;
+  border-radius: 10px;
+}
+#reqResContainer::-webkit-scrollbar-thumb:hover {
+  width: 0.5px;
+  background-color: #eeeeee;
+}
+#reqResContainer::-webkit-scrollbar-thumb:active {
+  width: 0.5px;
+  background-color: #eeeeee;
+  border: 1px solid #eeeeee;
+}
 //-------------------------------------------------------------------
 #reqResContainer_inner {
   width: auto;
-  height: calc(100vh - 260px);
+  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   white-space: nowrap;
@@ -45,10 +45,12 @@
 }
 
 .resreq_wrap {
+  border-radius: 15px;
   width: calc(100vw - 340px);
   margin: 15px;
   flex: 0 0 auto;
   min-width: 800px;
+  // padding-right: 15px;
   padding-right: 200px;
 }
 
@@ -74,22 +76,22 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #eeeeee;
   height: auto;
   overflow: hidden;
 }
 
-.response_sse {    
+.response_sse {
   display: flex;
   flex-direction: column;
   height: auto;
   overflow: hidden;
-  background: white;
+  background: #eeeeee;
   animation: fadeIn 400ms ease-in;
 }
 
-.response_sse:nth-of-type(odd){
-	background:$litegray;
+.response_sse:nth-of-type(odd) {
+  background: $litegray;
 }
 
 .data-inner {
@@ -98,8 +100,8 @@
 }
 
 .expand-btn {
-  padding:3px;
-  display:block;
+  padding: 3px;
+  display: block;
   cursor: pointer;
   &:before {
     content: "+";
@@ -112,17 +114,17 @@
     width: 11px;
     height: 12px;
     display: -webkit-box;
-   }
+  }
 }
 
 .expand-btn.expand-active {
   &:before {
-    transform:rotate(-225deg);
+    transform: rotate(-225deg);
   }
 }
 
 .expanded {
-  height: auto!important;
+  height: auto !important;
   overflow-x: scroll;
   border-bottom: solid 1px $bordergray;
 }
@@ -145,7 +147,7 @@
     outline: none;
     width: 100%;
     height: 30px;
-    font-size: .7rem;
+    font-size: 0.7rem;
     font-weight: bold;
     line-height: 1;
     background-color: $greenseven;
@@ -159,11 +161,11 @@
   }
 }
 
-.resreq_remove{
-  background-color: $remove!important;
-  color: $litegray!important;
+.resreq_remove {
+  background-color: $remove !important;
+  color: $litegray !important;
   &:hover {
-    background-color:#B93F3E!important;
+    background-color: #b93f3e !important;
   }
 }
 
@@ -174,13 +176,11 @@
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: scale(.8);
-    
+    transform: scale(0.8);
   }
   100% {
     opacity: 1;
     transform: scale(1);
-    
   }
 }
 
@@ -198,21 +198,21 @@
   border-left: solid 1px $bordergray;
   border-right: solid 1px $bordergray;
 }
-.resreq_res-container::-webkit-scrollbar{
-	width: 0.5px;
-	background-color: transparent;
+.resreq_res-container::-webkit-scrollbar {
+  width: 0.5px;
+  background-color: transparent;
 }
 .resreq_res-container::-webkit-scrollbar-thumb {
-	width: 0.5px;
-	background-color: transparent;
+  width: 0.5px;
+  background-color: transparent;
 }
 .resreq_res-container::-webkit-scrollbar-thumb:hover {
-	width: 0.5px;
-	background-color: transparent;
+  width: 0.5px;
+  background-color: transparent;
 }
 .resreq_res-container::-webkit-scrollbar:active {
-	width: 0.5px;
-	background-color: transparent;
+  width: 0.5px;
+  background-color: transparent;
 }
 
 .headers {
@@ -230,17 +230,14 @@
   font-weight: bold;
 }
 
-.httptwo {    
+.httptwo {
   padding: 10px 15px;
-  background-color: white;
-  color: #15B78F;
+  background-color: #eeeeee;
+  color: #15b78f;
   font-weight: 800;
-  border-top: 1px solid #ebeff2;
-  border-left: 1px solid #ebeff2;
-  border-right: 1px solid #ebeff2;
   display: none;
   height: auto;
-  font-size: .7rem;
+  font-size: 0.7rem;
   word-wrap: break-word;
   width: 100%;
   overflow: scroll;
@@ -254,9 +251,8 @@
   border-top: 1px solid $bordergray;
   border-left: 1px solid $bordergray;
   border-right: 1px solid $bordergray;
-  display: none;
   height: auto;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 // status-loader:
@@ -284,7 +280,6 @@
   --status-indicator-color-negative-semi: rgba(255, 77, 77, 0.5);
   --status-indicator-color-negative-transparent: rgba(255, 77, 77, 0);
 }
-
 
 status-indicator {
   display: inline-block;
