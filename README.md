@@ -21,7 +21,7 @@ Swell is currently available for OS X, Linux and Windows.
 Swell is a one-stop shop for sending and monitoring your API requests
 
 * Send and monitor streams over HTTP2 (including SSEs) and WebSockets
-* Create GraphQL queries, mutations, and subscriptions
+* Create GraphQL queries, introspections, mutations, and subscriptions
 * Provides full streaming testing support for gRPC
 * Support for up to six concurrent connections
 * View request/response timing information in an interactive chart
