@@ -77,10 +77,6 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ## How to run tests
 
-* Jest
-To run unit tests that check for relevant component rendering, use: "npm run test-jest"
-
-* Mocha
 To run functional tests that check for functionality of each API network protocol, use: "npm run test-mocha"
 
 Note: For the HTTP test to work, you will have to add a .env file with any MONGO URI.
