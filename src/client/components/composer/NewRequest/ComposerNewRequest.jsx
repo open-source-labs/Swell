@@ -1,8 +1,6 @@
 import React from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import gql from "graphql-tag";
-import loadable from "@loadable/component";
-
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
@@ -10,10 +8,8 @@ import FieldEntryForm from "./FieldEntryForm.jsx";
 import CookieEntryForm from "./CookieEntryForm.jsx";
 import historyController from "../../../controllers/historyController";
 import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
-
-// lazy loading to reduce bundle size (codemirror)
-const GraphQLBodyEntryForm = loadable(() => import('./GraphQLBodyEntryForm'));
-const GraphQLVariableEntryForm = loadable(() => import('./GraphQLVariableEntryForm')); 
+import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm";
+import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
 
 
 const ComposerNewRequest = ({
