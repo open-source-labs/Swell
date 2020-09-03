@@ -4,6 +4,7 @@ import { ContentsContainer } from "./ContentsContainer";
 import { SidebarContainer } from "./SidebarContainer";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
+import UpdatePopUpContainer from "./UpdatePopUpContainer";
 // import ReqResCtrl from '../../controllers/reqResController';
 
 //const { api } = window;
@@ -64,6 +65,7 @@ export class App extends React.Component<any, any> {
       <div id="app">
         <SidebarContainer />
         <ContentsContainer />
+        <UpdatePopUpContainer />
       </div>
     );
   }
