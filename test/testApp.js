@@ -2,6 +2,13 @@ const { Application } = require("spectron");
 const electronPath = require("electron");
 const path = require("path");
 
+/* ## How to run tests
+
+To run functional tests that check for functionality of each API network protocol, use: "npm run test-mocha"
+
+Note: For the HTTP test to work, you will have to add a .env file with any MONGO URI.
+E.g., MONGO_URI = "mongodb+srv://YOUR_URL"
+*/
 
 const TEST_MODE = "TEST_MODE";
 
