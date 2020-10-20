@@ -8,7 +8,7 @@ import History from "./History.jsx";
 class HistoryDate extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    // this.state = {};
     this.focusOnForm = this.focusOnForm.bind(this);
   }
 
