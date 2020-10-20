@@ -146,13 +146,13 @@ const ComposerContainer = (props) => {
   return (
 
     <div className="composerContents">
-      <HashRouter>
+      {/* <HashRouter> */}
         <div>
           {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
-          <Link to="/compose-rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link>
-          <Link to="/compose-grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link>
-          <Link to="/compose-graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link>
-          <Link to="/compose-ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link>
+          <Link to="/compose-rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link><br/>
+          <Link to="/compose-grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link><br/>
+          <Link to="/compose-graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link><br/>
+          <Link to="/compose-ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link><br/>
           {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
         </div>
         <Switch>
@@ -163,7 +163,7 @@ const ComposerContainer = (props) => {
           <Route path="/"> <RestContainer {...props} /> </Route>
         </Switch>
 
-      </HashRouter>
+      {/* </HashRouter> */}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { HashRouter } from "react-router-dom";
 import "../../../assets/style/App.scss";
 import { ContentsContainer } from "./ContentsContainer";
 import { SidebarContainer } from "./SidebarContainer";
@@ -63,9 +64,11 @@ export class App extends React.Component<any, any> {
     api.send("toMain", "MEAT WITH SAUCE");
     return (
       <div id="app">
-        <SidebarContainer />
-        <ContentsContainer />
-        <UpdatePopUpContainer />
+        <HashRouter>
+          <SidebarContainer />
+          <ContentsContainer />
+          <UpdatePopUpContainer />
+        </HashRouter>
       </div>
     );
   }
