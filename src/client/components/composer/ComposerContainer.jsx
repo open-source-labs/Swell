@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 import { HashRouter, Route, Switch, Link } from 'react-router-dom';
 
-
-import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
 import RestContainer from "./RestContainer.jsx";
 import GraphQLContainer from "./GraphQLContainer.jsx";
 import GRPCContainer from "./GRPCContainer.jsx";
@@ -55,6 +53,104 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
+
+  const onProtocolSelect = (network) => {
+    if (props.warningMessage.uri) {
+      const warningMessage = { ...props.warningMessage };
+      delete warningMessage.uri;
+      props.setComposerWarningMessage({ ...warningMessage });
+    }
+    props.setComposerWarningMessage({});
+    switch (network) {
+      case "graphQL": {
+          //if graphql
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: props.newRequestFields.gqlUrl,
+            method: "QUERY",
+            graphQL: true,
+            gRPC: false,
+            network: "graphQL",
+          });
+          props.setNewRequestBody({
+            //when switching to GQL clear body
+            ...props.newRequestBody,
+            bodyType: "GQL",
+            bodyContent: `query {
+
+}`,
+            bodyVariables: "",
+          });
+          break;
+      }
+      case "rest": {
+          //if http/s
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: props.newRequestFields.restUrl,
+            method: "GET",
+            graphQL: false,
+            gRPC: false,
+            network: "rest",
+          });
+          props.setNewRequestBody({
+            //when switching to http clear body
+            ...props.newRequestBody,
+            bodyType: "none",
+            bodyContent: ``,
+          });
+          break;
+      }
+      case "grpc": {
+          //if gRPC
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: newRequestFields.grpcUrl,
+            method: "",
+            graphQL: false,
+            gRPC: true,
+            network: "grpc",
+          });
+          props.setNewRequestBody({
+            //when switching to gRPC clear body
+            ...props.newRequestBody,
+            bodyType: "GRPC",
+            bodyContent: ``,
+          });
+          break;
+      }
+      case "ws": {
+          //if ws
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: value,
+            url: props.newRequestFields.wsUrl,
+            method: "",
+            graphQL: false,
+            gRPC: false,
+            network: "ws",
+          });
+          props.setNewRequestBody({
+            ...props.newRequestBody,
+            bodyType: "none",
+            bodyContent: "",
+          });
+      }
+        //removes Content-Type Header
+        const filtered = headersArr.filter(
+          (header) => header.key.toLowerCase() !== "content-type"
+        );
+        props.setNewRequestHeaders({
+          headersArr: filtered,
+          count: filtered.length,
+        });
+        break;
+      }
+  };
+
   return (
     //  OLD CODE
     // <div className="composerContents">
@@ -65,10 +161,10 @@ const ComposerContainer = (props) => {
       <HashRouter>
         <div>
           {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
-          <Link to="/compose-rest">Rest</Link>
-          <Link to="/compose-grpc">GRPC</Link>
-          <Link to="/compose-graphql">GraphQL</Link>
-          <Link to="/compose-ws">WebSockets</Link>
+          <Link to="/compose-rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link>
+          <Link to="/compose-grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link>
+          <Link to="/compose-graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link>
+          <Link to="/compose-ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link>
           {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
         </div>
         <Switch>
