@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 import Collection from "../display/Collection.jsx";
 import collectionsController from "../../controllers/collectionsController";
+import { HashRouter, Route, Switch, Link } from 'react-router-dom';
 
 const mapStateToProps = (store) => ({
   collections: store.business.collections,

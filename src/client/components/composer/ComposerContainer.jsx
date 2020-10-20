@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
-import { HashRouter, Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 
 import RestContainer from "./RestContainer.jsx";
 import GraphQLContainer from "./GraphQLContainer.jsx";
@@ -146,13 +146,13 @@ const ComposerContainer = (props) => {
   return (
 
     <div className="composerContents">
-      {/* <HashRouter> */}
         <div>
           {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
           <Link to="/compose-rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link><br/>
           <Link to="/compose-grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link><br/>
           <Link to="/compose-graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link><br/>
           <Link to="/compose-ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link><br/>
+          <hr/>
           {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
         </div>
         <Switch>
@@ -162,8 +162,6 @@ const ComposerContainer = (props) => {
           <Route path="/compose-ws"> <WSContainer {...props} /> </Route>
           <Route path="/"> <RestContainer {...props} /> </Route>
         </Switch>
-
-      {/* </HashRouter> */}
     </div>
   );
 };
