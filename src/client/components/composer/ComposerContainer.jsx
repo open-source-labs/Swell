@@ -108,7 +108,7 @@ const ComposerContainer = (props) => {
           props.setNewRequestFields({
             ...props.newRequestFields,
             protocol: "",
-            url: newRequestFields.grpcUrl,
+            url: props.newRequestFields.grpcUrl,
             method: "",
             graphQL: false,
             gRPC: true,
@@ -126,7 +126,7 @@ const ComposerContainer = (props) => {
           //if ws
           props.setNewRequestFields({
             ...props.newRequestFields,
-            protocol: value,
+            protocol: "",
             url: props.newRequestFields.wsUrl,
             method: "",
             graphQL: false,
@@ -138,24 +138,12 @@ const ComposerContainer = (props) => {
             bodyType: "none",
             bodyContent: "",
           });
+          break;
       }
-        //removes Content-Type Header
-        const filtered = headersArr.filter(
-          (header) => header.key.toLowerCase() !== "content-type"
-        );
-        props.setNewRequestHeaders({
-          headersArr: filtered,
-          count: filtered.length,
-        });
-        break;
       }
   };
 
   return (
-    //  OLD CODE
-    // <div className="composerContents">
-    //   <ComposerNewRequest {...props} />
-    // </div>
 
     <div className="composerContents">
       <HashRouter>

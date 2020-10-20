@@ -222,7 +222,7 @@ const FieldEntryForm = ({
       /> */}
 
       <div>
-        FIELD ENTRY FORM START
+        ************** FieldEntryForm **************
         {/* below conditional method selection rendering for http/s */}
         {newRequestFields.network === "rest" && (
           <div className="composer_method_url_container">
@@ -335,7 +335,7 @@ const FieldEntryForm = ({
       {warningMessage.uri && (
         <div className="warningMessage">{warningMessage.uri}</div>
       )}
-      FIELD ENTRY FORM END
+        ************** ^^^^^^^^^^^^^ **************
     </div>
   );
 };
