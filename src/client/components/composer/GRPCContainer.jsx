@@ -436,6 +436,19 @@ export default function GRPCContainer({
         setNewRequestHeaders={setNewRequestHeaders}
         setNewRequestStreams={setNewRequestStreams}
       />
+      <GRPCProtoEntryForm
+        newRequestStreams={newRequestStreams}
+        setNewRequestStreams={setNewRequestStreams}
+      />
+      <button
+        className="composer_submit"
+        onClick={() => {
+          addNewRequest();
+        }}
+        type="button"
+      >
+        Add New Request
+      </button>
     </div>
   )
 }

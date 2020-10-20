@@ -436,6 +436,15 @@ export default function WSContainer({
         setNewRequestHeaders={setNewRequestHeaders}
         setNewRequestStreams={setNewRequestStreams}
       />
+      <button
+        className="composer_submit"
+        onClick={() => {
+          addNewRequest();
+        }}
+        type="button"
+      >
+        Add New Request
+      </button>
     </div>
   )
 }
