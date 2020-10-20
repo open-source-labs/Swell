@@ -12,7 +12,8 @@ export class SidebarContainer extends React.Component<any, any> {
     return (
       <div className="sidebar_composer-console">
         <ComposerContainer />
-        <CollectionsContainer />
+        {/* TEMPORARILY CUT OUT CollectionsContainer */}
+        {/* <CollectionsContainer /> */}
         <HistoryContainer />
       </div>
     );
