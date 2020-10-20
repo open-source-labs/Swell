@@ -12,11 +12,11 @@ class HeaderEntryForm extends Component {
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
   }
-
-  componentDidMount() {
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    // if (headersDeepCopy[headersDeepCopy.length - 1] && headersDeepCopy[headersDeepCopy.length - 1].key !== "") this.addHeader(headersDeepCopy);
-  }
+  // COMPONENT DID MOUNT DOES NOT NEED TO EXIST , NOT CURRENTLY DOING ANYTHING
+  // componentDidMount() {
+  //   const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+  //   // if (headersDeepCopy[headersDeepCopy.length - 1] && headersDeepCopy[headersDeepCopy.length - 1].key !== "") this.addHeader(headersDeepCopy);
+  // }
 
   componentDidUpdate() {
     if (this.props.newRequestHeaders.headersArr.length === 0) {

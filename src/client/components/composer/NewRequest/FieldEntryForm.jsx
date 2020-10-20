@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import React, { useRef } from "react";
-import ProtocolSelect from "./ProtocolSelect.jsx";
+// import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const FieldEntryForm = ({
   warningMessage,
@@ -212,13 +212,14 @@ const FieldEntryForm = ({
   const grpcStreamLabel = newRequestStreams.selectedStreamingType || "STREAM";
   return (
     <div>
-      <ProtocolSelect
+      {/* OLD PROTOCOL SELECTION COMPONENT */}
+      {/* <ProtocolSelect
         currentProtocol={newRequestFields.protocol}
         onChangeHandler={onChangeHandler}
         graphQL={newRequestFields.graphQL}
         gRPC={newRequestFields.gRPC}
         setComposerWarningMessage={setComposerWarningMessage}
-      />
+      /> */}
 
       <div>
         {/* below conditional method selection rendering for http/s */}

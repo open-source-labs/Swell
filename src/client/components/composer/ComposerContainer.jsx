@@ -1,8 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
+import { HashRouter, Route, Switch, Link } from 'react-router-dom';
+
 
 import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
+import RestContainer from "./RestContainer.jsx";
+import GraphQLContainer from "./GraphQLContainer.jsx";
+import GRPCContainer from "./GRPCContainer.jsx";
+import WSContainer from "./WSContainer.jsx";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -50,8 +56,30 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ComposerContainer = (props) => {
   return (
+    //  OLD CODE
+    // <div className="composerContents">
+    //   <ComposerNewRequest {...props} />
+    // </div>
+
     <div className="composerContents">
-      <ComposerNewRequest {...props} />
+      <HashRouter>
+        <div>
+          {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
+          <Link to="/compose-rest">Rest</Link>
+          <Link to="/compose-grpc">GRPC</Link>
+          <Link to="/compose-graphql">GraphQL</Link>
+          <Link to="/compose-ws">WebSockets</Link>
+          {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
+        </div>
+        <Switch>
+          <Route path="/compose-rest"> <RestContainer {...props} /> </Route>
+          <Route path="/compose-grpc"> <GRPCContainer {...props} /> </Route>
+          <Route path="/compose-graphql"> <GraphQLContainer {...props} /> </Route>
+          <Route path="/compose-ws"> <WSContainer {...props} /> </Route>
+          <Route path="/"> <RestContainer {...props} /> </Route>
+        </Switch>
+
+      </HashRouter>
     </div>
   );
 };
