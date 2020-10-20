@@ -12,11 +12,11 @@ class HeaderEntryForm extends Component {
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
   }
-
-  componentDidMount() {
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-    // if (headersDeepCopy[headersDeepCopy.length - 1] && headersDeepCopy[headersDeepCopy.length - 1].key !== "") this.addHeader(headersDeepCopy);
-  }
+  // COMPONENT DID MOUNT DOES NOT NEED TO EXIST , NOT CURRENTLY DOING ANYTHING
+  // componentDidMount() {
+  //   const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+  //   // if (headersDeepCopy[headersDeepCopy.length - 1] && headersDeepCopy[headersDeepCopy.length - 1].key !== "") this.addHeader(headersDeepCopy);
+  // }
 
   componentDidUpdate() {
     if (this.props.newRequestHeaders.headersArr.length === 0) {
@@ -168,22 +168,25 @@ class HeaderEntryForm extends Component {
 
     const headersContainerClass = this.state.show ? 'composer_headers_container-closed' : 'composer_headers_container-open'
 
-    return <div style={this.props.stylesObj}>
-      <label
-      title="Add Request Headers"
-      className='composer_subtitle' >
-        <div className="label-text" id="headers-click" >{headerName}</div>
-          <div className="toggle" >
-            <input type="checkbox" name="check" className="toggle-state" onClick={this.toggleShow}/>
-            <div className="indicator" />
-          </div>
-      </label>
-      <div className={headersContainerClass} >
-        {headersArr}
-        <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
+    return (
+      <div style={this.props.stylesObj}>
+        ************** HeaderEntryForm **************
+        <label
+        title="Add Request Headers"
+        className='composer_subtitle' >
+          <div className="label-text" id="headers-click" >{headerName}</div>
+            <div className="toggle" >
+              <input type="checkbox" name="check" className="toggle-state" onClick={this.toggleShow}/>
+              <div className="indicator" />
+            </div>
+        </label>
+        <div className={headersContainerClass} >
+          {headersArr}
+          <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
 
+        </div>
       </div>
-    </div>;
+    );
   }
 }
 

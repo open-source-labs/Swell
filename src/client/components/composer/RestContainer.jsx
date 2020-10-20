@@ -1,18 +1,12 @@
-import React from "react";
+import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import gql from "graphql-tag";
-import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
-import HeaderEntryForm from "./HeaderEntryForm.jsx";
-import BodyEntryForm from "./BodyEntryForm.jsx";
-import FieldEntryForm from "./FieldEntryForm.jsx";
-import CookieEntryForm from "./CookieEntryForm.jsx";
-import historyController from "../../../controllers/historyController";
-import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
-import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm";
-import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
+import historyController from "../../controllers/historyController";
+import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
+import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
+import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
+import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 
-
-const ComposerNewRequest = ({
+export default function RestContainer({
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
@@ -64,46 +58,14 @@ const ComposerNewRequest = ({
   setComposerDisplay,
   warningMessage,
   reqResAdd,
-}) => {
+}) {
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
-    if (gRPC) {
-      if (newRequestFields.grpcUrl) return true;
-      else validationMessage.uri = "Enter a valid URI";
-    }
-    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
-      //if url is only http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
-    }
-    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
-      //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
-    }
     if (!JSONFormatted && rawType === "application/json") {
       validationMessage.json = "Please fix JSON body formatting errors";
     }
-    if (method === "QUERY") {
-      if (url && !bodyContent) {
-        validationMessage.body = "GraphQL Body is Missing";
-      }
-      if (url && bodyContent) {
-        try {
-          const body = gql`
-            ${bodyContent}
-          `;
-        } catch (e) {
-          console.log("error in gql-tag for client", e);
-          validationMessage.body = `Invalid graphQL body: \n ${e.message}`;
-        }
-      }
-      // need to add validation check for gql variables
-    }
     return validationMessage;
-  };
-
-  const handleSSEPayload = (e) => {
-    setNewRequestSSE(e.target.checked);
   };
 
   const addNewRequest = () => {
@@ -405,18 +367,16 @@ const ComposerNewRequest = ({
     }
   };
 
-  const HeaderEntryFormStyle = {
-    //trying to change style to conditional created strange duplication effect when continuously changing protocol
-    display: !/wss?:\/\//.test(protocol) ? "block" : "none",
+  const handleSSEPayload = (e) => {
+    setNewRequestSSE(e.target.checked);
   };
 
   return (
     <div
       className="composerContents_content"
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
     >
-      <h1 className="composer_title">Create New Request</h1>
+      <h1 className="composer_title">Create New REST Request</h1>
 
       <FieldEntryForm
         newRequestFields={newRequestFields}
@@ -432,7 +392,6 @@ const ComposerNewRequest = ({
         setComposerWarningMessage={setComposerWarningMessage}
       />
       <HeaderEntryForm
-        stylesObj={HeaderEntryFormStyle}
         newRequestHeaders={newRequestHeaders}
         newRequestStreams={newRequestStreams}
         newRequestBody={newRequestBody}
@@ -440,14 +399,12 @@ const ComposerNewRequest = ({
         setNewRequestHeaders={setNewRequestHeaders}
         setNewRequestStreams={setNewRequestStreams}
       />
-      {method && !/wss?:\/\//.test(protocol) && !gRPC && (
-        <CookieEntryForm
-          newRequestCookies={newRequestCookies}
-          newRequestBody={newRequestBody}
-          setNewRequestCookies={setNewRequestCookies}
-        />
-      )}
-      {!graphQL && !gRPC && method !== "GET" && !/wss?:\/\//.test(protocol) && (
+      <CookieEntryForm
+        newRequestCookies={newRequestCookies}
+        newRequestBody={newRequestBody}
+        setNewRequestCookies={setNewRequestCookies}
+      />
+      {method !== "GET" && (
         <BodyEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
@@ -456,48 +413,23 @@ const ComposerNewRequest = ({
           setNewRequestHeaders={setNewRequestHeaders}
         />
       )}
-      {graphQL && (
-        <>
-          <GraphQLBodyEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-            introspectionData={introspectionData}
-          />
-          <GraphQLVariableEntryForm
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-          />
-          <GraphQLIntrospectionLog
-            introspectionData={introspectionData}
-            url={url}
-          />
-        </>
-      )}
-      {gRPC && (
-        <GRPCProtoEntryForm
-          newRequestStreams={newRequestStreams}
-          setNewRequestStreams={setNewRequestStreams}
-        />
-      )}
       {/* SSE CHeckbox, update newRequestSSE in store */}
-      {!graphQL && !gRPC && !/wss?:\/\//.test(protocol) && (
-        <label className="composer_subtitle_SSE">
-          <div className="label-text">Server Sent Events</div>
-          <span className="toggle">
-            <input
-              type="checkbox"
-              className="toggle-state"
-              name="check"
-              onChange={(e) => {
-                handleSSEPayload(e);
-              }}
-              checked={isSSE}
-            />
-            <div className="indicator" />
-          </span>
-        </label>
-      )}
+      <label className="composer_subtitle_SSE">
+        <div className="label-text">Server Sent Events</div>
+        <span className="toggle">
+          <input
+            type="checkbox"
+            className="toggle-state"
+            name="check"
+            onChange={(e) => {
+              handleSSEPayload(e);
+            }}
+            checked={isSSE}
+          />
+          <div className="indicator" />
+        </span>
+      </label>
+
       <button
         className="composer_submit"
         onClick={() => {
@@ -508,7 +440,5 @@ const ComposerNewRequest = ({
         Add New Request
       </button>
     </div>
-  );
-};
-
-export default ComposerNewRequest;
+  )
+}

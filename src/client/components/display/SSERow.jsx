@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+ import React, { Component } from "react";
 
 class SSERow extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    // this.state = {};
     this.handleClick = this.handleClick.bind(this);
   }
 

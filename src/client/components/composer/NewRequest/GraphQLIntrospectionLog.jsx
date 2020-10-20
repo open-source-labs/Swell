@@ -14,6 +14,7 @@ const GraphQLIntrospectionLog = (props) => {
       : "introspection-small";
   return (
     <div>
+      ************** GraphQLIntrospectionLog **************
       <label className='composer_subtitle'>
         <div className="label-text" id="schema-click">Schema</div>
         <div className="toggle">

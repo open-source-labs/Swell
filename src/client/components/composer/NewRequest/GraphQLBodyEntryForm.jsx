@@ -35,6 +35,7 @@ const GraphQLBodyEntryForm = (props) => {
 
   return (
     <div>
+      ************** GraphQLBodyEntryForm **************
       <label
       className='composer_subtitle' >
         <div className="label-text" id="cookie-click">Body</div>

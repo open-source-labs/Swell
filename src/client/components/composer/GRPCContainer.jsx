@@ -1,18 +1,16 @@
-import React from "react";
+import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import gql from "graphql-tag";
-import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
-import HeaderEntryForm from "./HeaderEntryForm.jsx";
-import BodyEntryForm from "./BodyEntryForm.jsx";
-import FieldEntryForm from "./FieldEntryForm.jsx";
-import CookieEntryForm from "./CookieEntryForm.jsx";
-import historyController from "../../../controllers/historyController";
-import GraphQLIntrospectionLog from "./GraphQLIntrospectionLog";
-import GraphQLBodyEntryForm from "./GraphQLBodyEntryForm";
-import GraphQLVariableEntryForm from "./GraphQLVariableEntryForm";
+import GRPCProtoEntryForm from "./NewRequest/GRPCProtoEntryForm.jsx";
+import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
+import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
+import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
+import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
+import historyController from "../../controllers/historyController";
+import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog";
+import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm";
+import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm";
 
-
-const ComposerNewRequest = ({
+export default function GRPCContainer({
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
@@ -64,7 +62,7 @@ const ComposerNewRequest = ({
   setComposerDisplay,
   warningMessage,
   reqResAdd,
-}) => {
+}) {
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
@@ -409,14 +407,12 @@ const ComposerNewRequest = ({
     //trying to change style to conditional created strange duplication effect when continuously changing protocol
     display: !/wss?:\/\//.test(protocol) ? "block" : "none",
   };
-
   return (
     <div
       className="composerContents_content"
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
     >
-      <h1 className="composer_title">Create New Request</h1>
+      <h1 className="composer_title">Create New GRPC Request</h1>
 
       <FieldEntryForm
         newRequestFields={newRequestFields}
@@ -440,64 +436,10 @@ const ComposerNewRequest = ({
         setNewRequestHeaders={setNewRequestHeaders}
         setNewRequestStreams={setNewRequestStreams}
       />
-      {method && !/wss?:\/\//.test(protocol) && !gRPC && (
-        <CookieEntryForm
-          newRequestCookies={newRequestCookies}
-          newRequestBody={newRequestBody}
-          setNewRequestCookies={setNewRequestCookies}
-        />
-      )}
-      {!graphQL && !gRPC && method !== "GET" && !/wss?:\/\//.test(protocol) && (
-        <BodyEntryForm
-          warningMessage={warningMessage}
-          newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
-          newRequestHeaders={newRequestHeaders}
-          setNewRequestHeaders={setNewRequestHeaders}
-        />
-      )}
-      {graphQL && (
-        <>
-          <GraphQLBodyEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-            introspectionData={introspectionData}
-          />
-          <GraphQLVariableEntryForm
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-          />
-          <GraphQLIntrospectionLog
-            introspectionData={introspectionData}
-            url={url}
-          />
-        </>
-      )}
-      {gRPC && (
-        <GRPCProtoEntryForm
-          newRequestStreams={newRequestStreams}
-          setNewRequestStreams={setNewRequestStreams}
-        />
-      )}
-      {/* SSE CHeckbox, update newRequestSSE in store */}
-      {!graphQL && !gRPC && !/wss?:\/\//.test(protocol) && (
-        <label className="composer_subtitle_SSE">
-          <div className="label-text">Server Sent Events</div>
-          <span className="toggle">
-            <input
-              type="checkbox"
-              className="toggle-state"
-              name="check"
-              onChange={(e) => {
-                handleSSEPayload(e);
-              }}
-              checked={isSSE}
-            />
-            <div className="indicator" />
-          </span>
-        </label>
-      )}
+      <GRPCProtoEntryForm
+        newRequestStreams={newRequestStreams}
+        setNewRequestStreams={setNewRequestStreams}
+      />
       <button
         className="composer_submit"
         onClick={() => {
@@ -508,7 +450,5 @@ const ComposerNewRequest = ({
         Add New Request
       </button>
     </div>
-  );
-};
-
-export default ComposerNewRequest;
+  )
+}

@@ -41,6 +41,7 @@ class BodyTypeSelect extends Component {
         className="composer_protocol_container httpbody"
         style={{ marginTop: "4px" }}
       >
+        ************** BodyTypeSelect **************
         <div
           style={{ width: "25%" }}
           className={RawStyleClasses}

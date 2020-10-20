@@ -1,8 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
+import { Route, Switch, Link } from 'react-router-dom';
 
-import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
+import RestContainer from "./RestContainer.jsx";
+import GraphQLContainer from "./GraphQLContainer.jsx";
+import GRPCContainer from "./GRPCContainer.jsx";
+import WSContainer from "./WSContainer.jsx";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -49,9 +53,115 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
+
+  const onProtocolSelect = (network) => {
+    if (props.warningMessage.uri) {
+      const warningMessage = { ...props.warningMessage };
+      delete warningMessage.uri;
+      props.setComposerWarningMessage({ ...warningMessage });
+    }
+    props.setComposerWarningMessage({});
+    switch (network) {
+      case "graphQL": {
+          //if graphql
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: props.newRequestFields.gqlUrl,
+            method: "QUERY",
+            graphQL: true,
+            gRPC: false,
+            network: "graphQL",
+          });
+          props.setNewRequestBody({
+            //when switching to GQL clear body
+            ...props.newRequestBody,
+            bodyType: "GQL",
+            bodyContent: `query {
+
+}`,
+            bodyVariables: "",
+          });
+          break;
+      }
+      case "rest": {
+          //if http/s
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: props.newRequestFields.restUrl,
+            method: "GET",
+            graphQL: false,
+            gRPC: false,
+            network: "rest",
+          });
+          props.setNewRequestBody({
+            //when switching to http clear body
+            ...props.newRequestBody,
+            bodyType: "none",
+            bodyContent: ``,
+          });
+          break;
+      }
+      case "grpc": {
+          //if gRPC
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: props.newRequestFields.grpcUrl,
+            method: "",
+            graphQL: false,
+            gRPC: true,
+            network: "grpc",
+          });
+          props.setNewRequestBody({
+            //when switching to gRPC clear body
+            ...props.newRequestBody,
+            bodyType: "GRPC",
+            bodyContent: ``,
+          });
+          break;
+      }
+      case "ws": {
+          //if ws
+          props.setNewRequestFields({
+            ...props.newRequestFields,
+            protocol: "",
+            url: props.newRequestFields.wsUrl,
+            method: "",
+            graphQL: false,
+            gRPC: false,
+            network: "ws",
+          });
+          props.setNewRequestBody({
+            ...props.newRequestBody,
+            bodyType: "none",
+            bodyContent: "",
+          });
+          break;
+      }
+      }
+  };
+
   return (
+
     <div className="composerContents">
-      <ComposerNewRequest {...props} />
+        <div>
+          {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
+          <Link to="/compose-rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link><br/>
+          <Link to="/compose-grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link><br/>
+          <Link to="/compose-graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link><br/>
+          <Link to="/compose-ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link><br/>
+          <hr/>
+          {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
+        </div>
+        <Switch>
+          <Route path="/compose-rest"> <RestContainer {...props} /> </Route>
+          <Route path="/compose-grpc"> <GRPCContainer {...props} /> </Route>
+          <Route path="/compose-graphql"> <GraphQLContainer {...props} /> </Route>
+          <Route path="/compose-ws"> <WSContainer {...props} /> </Route>
+          <Route path="/"> <RestContainer {...props} /> </Route>
+        </Switch>
     </div>
   );
 };

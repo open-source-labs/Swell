@@ -178,6 +178,7 @@ const GRPCAutoInputForm = (props) => {
 
   return (
     <div>
+      ************** GRPCAutoInputForm **************
       <label className="composer_subtitle">
         <div className="label-text" id="cookie-click">
           Stream
