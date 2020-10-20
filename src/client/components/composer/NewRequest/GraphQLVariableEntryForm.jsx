@@ -33,6 +33,7 @@ const GraphQLVariableEntryForm = (props) => {
 
   return (
     <div>
+      ************** GraphQLVariableEntryForm **************
       <label
       className='composer_subtitle' >
         <div className="label-text" id="variable-click">Variables</div>

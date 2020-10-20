@@ -109,6 +109,7 @@ class JSONTextArea extends Component {
 
     return (
       <div>
+        ************** JSONTextArea **************
         <textarea
           className={textAreaClass}
           id="jsonBodyEntryTextArea"

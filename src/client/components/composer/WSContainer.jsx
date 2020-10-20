@@ -413,6 +413,29 @@ export default function WSContainer({
       tabIndex={0}
     >
       <h1 className="composer_title">Create New WS Request</h1>
+
+      <FieldEntryForm
+        newRequestFields={newRequestFields}
+        newRequestHeaders={newRequestHeaders}
+        newRequestStreams={newRequestStreams}
+        newRequestBody={newRequestBody}
+        setNewRequestFields={setNewRequestFields}
+        setNewRequestHeaders={setNewRequestHeaders}
+        setNewRequestStreams={setNewRequestStreams}
+        setNewRequestCookies={setNewRequestCookies}
+        setNewRequestBody={setNewRequestBody}
+        warningMessage={warningMessage}
+        setComposerWarningMessage={setComposerWarningMessage}
+      />
+      <HeaderEntryForm
+        stylesObj={HeaderEntryFormStyle}
+        newRequestHeaders={newRequestHeaders}
+        newRequestStreams={newRequestStreams}
+        newRequestBody={newRequestBody}
+        newRequestFields={newRequestFields}
+        setNewRequestHeaders={setNewRequestHeaders}
+        setNewRequestStreams={setNewRequestStreams}
+      />
     </div>
   )
 }

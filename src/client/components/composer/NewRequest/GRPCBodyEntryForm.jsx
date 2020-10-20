@@ -106,6 +106,7 @@ const GRPCBodyEntryForm = (props) => {
      */
   return (
     <div>
+      ************** GRPCBodyEntryForm **************
       <label className="composer_subtitle">
         <div className="label-text" id="cookie-click">
           Body

@@ -335,7 +335,6 @@ const FieldEntryForm = ({
       {warningMessage.uri && (
         <div className="warningMessage">{warningMessage.uri}</div>
       )}
-        ************** ^^^^^^^^^^^^^ **************
     </div>
   );
 };

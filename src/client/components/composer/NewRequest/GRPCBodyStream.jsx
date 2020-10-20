@@ -93,6 +93,7 @@ const GRPCBodyStream = (props) => {
   // renders the stream body (and the stream number if for client or bidirectional stream)
   return (
     <div>
+      ************** GRPCBodyStream **************
       <div className="warningMessage">{showError}</div>
       <div style={{ display: "flex" }}>
         <div>

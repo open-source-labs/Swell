@@ -108,6 +108,7 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div>
+      ************** GRPCProtoEntryForm **************
       <label className="composer_subtitle">
         <div className="label-text" id="cookie-click">
           Proto
