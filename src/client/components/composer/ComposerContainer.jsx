@@ -148,18 +148,18 @@ const ComposerContainer = (props) => {
     <div className="composerContents">
         <div>
           {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
-          <Link to="/compose-rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link><br/>
-          <Link to="/compose-grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link><br/>
-          <Link to="/compose-graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link><br/>
-          <Link to="/compose-ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link><br/>
+          <Link to="/composer/rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link><br/>
+          <Link to="/composer/grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link><br/>
+          <Link to="/composer/graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link><br/>
+          <Link to="/composer/ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link><br/>
           <hr/>
           {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
         </div>
         <Switch>
-          <Route path="/compose-rest"> <RestContainer {...props} /> </Route>
-          <Route path="/compose-grpc"> <GRPCContainer {...props} /> </Route>
-          <Route path="/compose-graphql"> <GraphQLContainer {...props} /> </Route>
-          <Route path="/compose-ws"> <WSContainer {...props} /> </Route>
+          <Route path="/composer/rest"> <RestContainer {...props} /> </Route>
+          <Route path="/composer/grpc"> <GRPCContainer {...props} /> </Route>
+          <Route path="/composer/graphql"> <GraphQLContainer {...props} /> </Route>
+          <Route path="/composer/ws"> <WSContainer {...props} /> </Route>
           <Route path="/"> <RestContainer {...props} /> </Route>
         </Switch>
     </div>
