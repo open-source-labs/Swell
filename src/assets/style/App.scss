@@ -1,16 +1,5 @@
 @import "colors";
-@import "sidebar";
-@import "reset";
+
+@import "@fortawesome/fontawesome-free";
 @import "base";
-@import "grid";
-@import "type";
-@import "reqres";
-@import "chart";
-@import "navbar";
-@import "tabs";
-@import "sidebar";
-@import "cookieTable";
-@import "prompt";
-@import "websocket";
-@import "jsonPretty.scss";
-@import "popup.scss";
+@import "bulma";

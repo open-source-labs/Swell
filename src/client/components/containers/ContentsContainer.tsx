@@ -10,7 +10,7 @@ export class ContentsContainer extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="contents">
+      <div className="column is-one-third">
         <BarGraph />
         <NavBarContainer />
         <ReqResContainer />
