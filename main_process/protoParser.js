@@ -7,7 +7,7 @@ const path = require("path");
 
 async function protoParserFunc(protoBodyData) {
   // define storage for .proto parsed content
-  let protoStorage = {};
+  const protoStorage = {};
   //store the original .proto content in the storage before parsing
   protoStorage.protoMaster = protoBodyData;
   //make unique protoID for file we are saving
@@ -47,6 +47,8 @@ async function protoParserFunc(protoBodyData) {
     process.resourcesPath,
     "/protos/" + protoID + ".proto"
   );
+  // store the proto Path on proto storage object
+  protoStorage.protoPath = PROTO_PATH;
 
   // create gRPC package options
   const protoOptionsObj = {
@@ -62,32 +64,42 @@ async function protoParserFunc(protoBodyData) {
     PROTO_PATH,
     protoOptionsObj
   );
-
+    
+  
   //create descriptor from package packageDefinition
   //descriptor --> gRPC uses the Protobuf .proto file format to define your messages, services and some aspects of the code generation.
   protoStorage.descriptor = grpc.loadPackageDefinition(
     protoStorage.packageDefinition
   );
   protoStorage.packageName = Object.keys(protoStorage.descriptor)[0];
-  protoStorage.descriptorDefinition =
-    protoStorage.descriptor[protoStorage.packageName];
-  protoStorage.protoPath = PROTO_PATH;
 
+  // a recursive helper function to find our service definition. if it's nested, we need to find the actual rpc data
+  const findNestedService = (obj) => {
+    if (Object.values(obj).length > 1) return obj; // otherwise...
+    return findNestedService(Object.values(obj)[0])
+  }
+  // invoke the function to add our rpc data onto our protoStorage object
+  protoStorage.descriptorDefinition = findNestedService(protoStorage.descriptor)
+  
   // Store the services from the current .proto file
   const serviceArr = [];
-  for (let [serviceName, serviceDef] of Object.entries(
+
+  for (const [serviceName, serviceDef] of Object.entries(
     protoStorage.descriptorDefinition
   )) {
+    
     if (typeof serviceDef === "function") {
+      // here a service is defined.
       const serviceObj = {};
       serviceObj.packageName = protoStorage.packageName;
       serviceObj.name = serviceName;
       serviceObj.rpcs = [];
       serviceObj.messages = [];
 
-      for (let [requestName, requestDef] of Object.entries(
+      for (const [requestName, requestDef] of Object.entries(
         serviceDef.service
       )) {
+        console.log('request name: ', requestName)
         const streamingReq = requestDef.requestStream;
         const streamingRes = requestDef.responseStream;
 
@@ -95,8 +107,8 @@ async function protoParserFunc(protoBodyData) {
         if (streamingReq) stream = "CLIENT STREAM";
         if (streamingRes) stream = "SERVER STREAM";
         if (streamingReq && streamingRes) stream = "BIDIRECTIONAL";
-        let messageNameReq = requestDef.requestType.type.name;
-        let messageNameRes = requestDef.responseType.type.name;
+        const messageNameReq = requestDef.requestType.type.name;
+        const messageNameRes = requestDef.responseType.type.name;
         serviceObj.rpcs.push({
           name: requestName,
           type: stream,
@@ -107,7 +119,7 @@ async function protoParserFunc(protoBodyData) {
         // create object with proto info that is formatted for interaction with Swell frontend
         let draftObj;
         requestDef.requestType.type.field.forEach((msgObj) => {
-          let mName = msgObj.name;
+          const mName = msgObj.name;
           // bool will track if the message is a nested type
           let bool = false;
           if (msgObj.type === "TYPE_MESSAGE") bool = true;
@@ -134,16 +146,17 @@ async function protoParserFunc(protoBodyData) {
           // }
         });
         serviceObj.messages.push(draftObj);
-
+        
         // not using the details of the response object (requestDef.responseType) since user will run
         // their own server
       }
       serviceArr.push(serviceObj);
     }
   }
+  console.log('service array length - is this ever more than 1?', serviceArr.length)
   protoStorage.serviceArr = serviceArr;
-
-  return protoStorage ? protoStorage : "Error: please enter valid .proto file";
+  
+  return protoStorage || "Error: please enter valid .proto file";
 }
 
 module.exports = protoParserFunc;

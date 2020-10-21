@@ -412,12 +412,12 @@ ipcMain.on("import-proto", (event) => {
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
-          console.log(
-            "finished with logic. about to send importedProto : ",
-            importedProto,
-            " and protoObj : ",
-            protoObj
-          );
+          // console.log(
+          //   "finished with logic. about to send importedProto : ",
+          //   importedProto,
+          //   " and protoObj : ",
+          //   protoObj
+          // );
           mainWindow.webContents.send("proto-info", importedProto, protoObj);
         });
       });
