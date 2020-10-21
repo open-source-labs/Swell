@@ -9,13 +9,18 @@ describe("Business reducer", () => {
       reqResArray: [],
       history: [],
       collections: [],
-      warningMessage: "",
+      warningMessage: {},
       newRequestFields: {
         protocol: "",
+        restUrl: "http://",
+        wsUrl: "ws://",
+        gqlUrl: "https://",
+        grpcUrl: "",
         url: "http://",
         method: "GET",
         graphQL: false,
         gRPC: false,
+        network: "rest",
       },
       newRequestHeaders: {
         headersArr: [],
@@ -28,6 +33,7 @@ describe("Business reducer", () => {
         selectedPackage: null,
         selectedRequest: null,
         selectedService: null,
+        selectedServiceObj: null,
         selectedStreamingType: null,
         initialQuery: null,
         queryArr: null,
@@ -45,10 +51,13 @@ describe("Business reducer", () => {
         bodyType: "raw",
         rawType: "Text (text/plain)",
         JSONFormatted: true,
+        bodyIsNew: false,
       },
       newRequestSSE: {
         isSSE: false,
       },
+      introspectionData: { schemaSDL: null, clientSchema: null },
+      dataPoints: [],
     };
   });
 
