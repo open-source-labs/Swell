@@ -9,6 +9,7 @@ class WWWField extends Component {
   render() {
     return (
       <div style={{ display: 'flex' }} className='composer_header'>
+        ************** WWWField **************
         <input
           type="checkbox"
           className='composer_header_checkbox'

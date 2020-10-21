@@ -101,6 +101,7 @@ class CookieEntryForm extends Component {
 
     return (
       <div>
+        ************** CookieEntryForm **************
         <label
         className='composer_subtitle' >
           <div className="label-text" id="cookie-click">Cookies</div>
