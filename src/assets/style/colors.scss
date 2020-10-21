@@ -1,44 +1,38 @@
-$navy: #001e38;
-$green: #15b78f;
-$litegray: #fafafa;
-$yellowgrey: #808080;
-$medgray: #E6EBEC;
-$liteblack: #141414;
-$darkblack: #141414;
-$litebluegray: #D4DCEC;
-$medbluegray: #ecf1f5;
+$primary-100: #FFD645;
+$primary-200: #F66B61;
+$primary-400: #50809B;
+$primary-500: #3734A9;
 
-$teal: #3DADC2;
-$lightgray: #dcdcdd;
-$mediumgray: #c5c3c6;
-$darkgraygreen: #46494c;
-$huntergreen: #4c5c68;
+$rest: #6843FF;
+$graphql: #DE33A6;
+$grpc: #6CACC1;
+$websockets: #F47D31;
 
-$bordergray: #ebeff2;
+$neutral-100: #ffffff;
+$neutral-200: #f4f5f7;
+$neutral-300: #e1e1e1;
+$neutral-400: #737581;
+$neutral-500: #4a4b53;
+$neutral-600: #000000;
 
-$highlight: #8FF7A7;
-$remove: #DB5D58;
+// BULMA COLORS
+$primary: $primary-500;
+$danger: $primary-200;
+$text: $neutral-500;
+// $link: $blue
+// $info: $cyan
+// $success: $green
+// $warning: $yellow
+// $dark: $grey-darker
 
-$greenzero:#ECFDF6;
 
-$greenone: #3157C0; //rgb(21,183,143)
-$greentwo: #3157C0; //rgb(0,161,147)
-$greenthree: #3157C0; //rgb(0,116,131)
-$greenfour: #3157C0; //
-$greenfive: #3157C0;
-$greensix: #3157C0;
-$greenseven: #3157C0;
+// COLOR SCHEMES
+.is-primary-100 {
+  color: $neutral-500;
+  background-color: $primary-100;
+}
 
-$blueone: #2196f3; //rgb(0,155,191)
-$bluetwo: #82b1ff; //rgb(0,137,208)
-$bluethree: #3157C0;
-$bluefour: #3157C0; //rgb(49,87,192)
-
-$grayone: #E6EBEC;
-$graytwo: #C4CED4;
-$graythree: #A9B0BE;
-
-$gqlpink: #3157C0;
-$gqlpinktwo: #3157C0;
-
-$grpcorange: #3157C0;
+.is-primary-200 {
+  color: $neutral-500;
+  background-color: $primary-100;
+}

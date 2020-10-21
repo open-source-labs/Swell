@@ -1,0 +1,23 @@
+* {
+	box-sizing: border-box;
+}
+html {
+	background-color: #eeeeee;
+	overflow: hidden;
+}
+body {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	color: $liteblack;
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	height: 100vh;
+	margin: 0;
+	width: 100vw;
+}
+.header_entry-form {
+	width: 100%;
+}
+.header_entry-form input {
+	width: 100%;
+}

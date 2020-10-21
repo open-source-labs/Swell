@@ -6,6 +6,7 @@ import { SidebarContainer } from "./SidebarContainer";
 import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
 import UpdatePopUpContainer from "./UpdatePopUpContainer";
+import ResponsePaneContainer from "./ResponsePaneContainer";
 // import ReqResCtrl from '../../controllers/reqResController';
 
 //const { api } = window;
@@ -63,12 +64,13 @@ export class App extends React.Component<any, any> {
     api.receive("fromMain", (data: {}) => console.log(data));
     api.send("toMain", "MEAT WITH SAUCE");
     return (
-      <div id="app">
+      <div id='app' className='columns'>
         <HashRouter>
           <SidebarContainer />
           <ContentsContainer />
-          <UpdatePopUpContainer />
-        </HashRouter>
+          <ResponsePaneContainer />
+          {/* <UpdatePopUpContainer /> */}
+        </HashRouter> 
       </div>
     );
   }
