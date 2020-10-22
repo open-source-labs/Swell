@@ -3,13 +3,12 @@ import connectionController from "../../controllers/reqResController";
 import OpenBtn from "../display/OpenBtn.jsx";
 import CloseBtn from "../display/CloseBtn.jsx";
 import RequestTabs from "../display/RequestTabs.jsx";
-import RestRequestContent from "../display/RestRequestContent.jsx";
 import ResponseContainer from "./ResponseContainer.jsx";
 import WebSocketWindow from "../display/WebSocketWindow";
 import dropDownArrow from "../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 const SingleReqResContainer = (props) => {
-  // console.log(props.content.request);
+  console.log(props.content.request.network);
 
   const {
     content,
@@ -80,15 +79,29 @@ const SingleReqResContainer = (props) => {
 
   // WEBSOCKETS:
   if(network === 'ws') {
-    // TREAT WEBSOCKETS
-    // INSERT CODE HERE
+    contentBody.push(
+      <WebSocketWindow
+        key={0}
+        outgoingMessages={request.messages}
+        incomingMessages={response.messages}
+        content={content}
+        connection={connection}
+      />
+    );
   } else {
     // GRAPHQL, GRPC, REST:
     contentBody.push(
       <RequestTabs requestContent={request} key={0} />
     );
     if (connection !== "uninitialized") {
-      // IF NOT SENT, BUTTON NEEDS TO READ SEND
+      contentBody.push(
+        <ResponseContainer
+          content={content}
+          connectionType={connectionType}
+          reqResUpdate={reqResUpdate}
+          key={1}
+        />
+      );
     }
   }
 
@@ -140,26 +153,23 @@ const SingleReqResContainer = (props) => {
     : "composer_subtitle_arrow-closed";
   
   return (
-  //   <span
-  //   className="primary-title highlighter title_reverse-offset"
-  //   onClick={minimize}
-  // >
     <div>
-      <div>
-        {/* TITLE BAR */}
-        <div className='columns is-gapless cards-titlebar'>
-          <div className={`column is-one-quarter is-${network}`}>{request.method}</div>
-          <div className='column is-size-7'>{url}</div>
+      <div className="resreq_wrap" id={id}>
+        <div className="title-row">
+          <span
+            className="primary-title highlighter title_reverse-offset"
+            onClick={minimize}
+          >
+            <span>
+              <img className={arrowClass} src={dropDownArrow} alt=""/>
+            </span>
+            <pre>
+              <p> </p>
+            </pre>
+            {request.method}
+          </span>
+          <span className="primary-title ">{url}</span>
         </div>
-        {/* VIEW REQUEST DETAILS / MINIMIZE */}
-        <div className='is-neutral-300 is-size-7 cards-dropdown' >View Request Details</div>
-        {/* REQUEST ELEMENTS */}
-        <div className='is-neutral-200-box'>
-          {network === 'rest' &&
-            <RestRequestContent request={content.request}/>
-          }
-        </div>
-
         {
           //----------------------------------------
           //Contitionally minimize the current reqRescontainer

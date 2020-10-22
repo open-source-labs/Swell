@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import BarGraph from "../display/BarGraph"
-import ReqResContainer from "./ReqResContainer.jsx";
 import NavBarContainer from "./NavBarContainer.jsx";
 import CollectionsContainer from "./CollectionsContainer";
 
@@ -34,12 +33,9 @@ export const ContentsContainer = () => {
       </div>
       {/* WORKSPACE CONTENT */}
       <div>
-        
+
         {activeTab === 'workspace' && 
-          <div>
-            <NavBarContainer />
-            <ReqResContainer />
-          </div>
+          <NavBarContainer />
         }
 
         {activeTab === 'saved-workspace' && 

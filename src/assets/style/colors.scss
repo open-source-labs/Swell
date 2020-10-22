@@ -36,3 +36,33 @@ $text: $neutral-500;
   color: $neutral-500;
   background-color: $primary-100;
 }
+
+.is-rest {
+  color: $neutral-200;
+  background-color: $rest;
+}
+
+.is-graphQL {
+  color: $neutral-200;
+  background-color: $graphql;
+}
+
+.is-grpc {
+  color: $neutral-200;
+  background-color: $grpc;
+}
+
+.is-ws {
+  color: $neutral-200;
+  background-color: $websockets;
+}
+
+.is-neutral-300 {
+  color: $neutral-600;
+  background-color: $neutral-300;
+}
+
+.is-neutral-200-box {
+  border: 1px solid $neutral-300;
+  background-color: $neutral-200;
+}

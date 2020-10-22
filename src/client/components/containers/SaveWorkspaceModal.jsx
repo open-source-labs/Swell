@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import ReactModal from "react-modal";
 import uuid from "uuid/v4";
-import ReqResCtrl from "../../controllers/reqResController.js";
 import collectionsController from "../../controllers/collectionsController.js";
-import * as actions from "../../actions/actions";
 
 export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
-  // console.log("SaveWorkspaceModal",match);
   const dispatch = useDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');

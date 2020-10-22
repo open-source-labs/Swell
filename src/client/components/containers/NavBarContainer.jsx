@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useRouteMatch } from 'react-router-dom';
 
 import ReqResCtrl from "../../controllers/reqResController.js";
 import SaveWorkspaceModal from './SaveWorkspaceModal'
+import ReqResContainer from "./ReqResContainer.jsx";
 
 export default function NavBarContainer() {
 
@@ -11,26 +11,30 @@ export default function NavBarContainer() {
 
   return (
     <div>
+      {/* NAV BAR */}
+      <div className="columns mr-9">
+        <button
+          className="button is-small is-primary is-outlined column"
+          type="button"
+          onClick={ReqResCtrl.clearAllReqRes}
+        >
+          Clear Workspace
+        </button>
 
-      <button
-        className="btn save-btn"
-        type="button"
-        onClick={() => { setShowModal(true) } }
-      >Save Collection
-      </button>
+        <button
+          className="button is-small is-primary is-outlined column"
+          type="button"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          Save Workspace
+        </button>
+      </div>
 
-      < SaveWorkspaceModal
-        showModal = {showModal}
-        setShowModal = {setShowModal}
-      />
-
-      <button
-        className="btn"
-        type="button"
-        onClick={ReqResCtrl.clearAllReqRes}
-      >Clear Requests
-      </button>
-
+      <SaveWorkspaceModal showModal={showModal} setShowModal={setShowModal} />
+      {/* REQUEST CARDS */}
+      <ReqResContainer />
     </div>
-  )
+  );
 }
