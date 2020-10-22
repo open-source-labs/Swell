@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 import Collection from "../display/Collection.jsx";
 import collectionsController from "../../controllers/collectionsController";
-import { HashRouter, Route, Switch, Link } from 'react-router-dom';
 
 const mapStateToProps = (store) => ({
   collections: store.business.collections,
@@ -44,10 +43,10 @@ const CollectionsContainer = (props) => {
 
   return (
     <div className="collections-container">
-      <h1 className="collection-heading">Collections</h1>
+      <h1 className="collection-heading">Saved Workspaces</h1>
       <div className="collection-import-container">
         <button className="import-collections" onClick={handleClick}>
-          Import Collection
+          Import Workspace
         </button>
       </div>
       <div className="collections">
