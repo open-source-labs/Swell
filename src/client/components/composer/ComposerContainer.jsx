@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
 import { Route, Switch, Link } from 'react-router-dom';
 
+import NetworkDropdown from "./NetworkDropdown"
 import RestContainer from "./RestContainer.jsx";
 import GraphQLContainer from "./GraphQLContainer.jsx";
 import GRPCContainer from "./GRPCContainer.jsx";
@@ -62,7 +63,7 @@ const ComposerContainer = (props) => {
     }
     props.setComposerWarningMessage({});
     switch (network) {
-      case "graphQL": {
+      case "graphql": {
           //if graphql
           props.setNewRequestFields({
             ...props.newRequestFields,
@@ -144,24 +145,20 @@ const ComposerContainer = (props) => {
   };
 
   return (
-
     <div className="composerContents">
-        <div>
-          {/* INSERT PROTOCOL DROPDOWN SELECTOR HERE */}
-          <Link to="/composer/rest" onClick={() => { onProtocolSelect("rest"); }} >Rest</Link><br/>
-          <Link to="/composer/grpc" onClick={() => { onProtocolSelect("grpc") }} >GRPC</Link><br/>
-          <Link to="/composer/graphql" onClick={() => { onProtocolSelect("graphQL") }} >GraphQL</Link><br/>
-          <Link to="/composer/ws" onClick={() => { onProtocolSelect("ws") }} >WebSockets</Link><br/>
-          <hr/>
-          {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
-        </div>
-        <Switch>
-          <Route path="/composer/rest"> <RestContainer {...props} /> </Route>
-          <Route path="/composer/grpc"> <GRPCContainer {...props} /> </Route>
-          <Route path="/composer/graphql"> <GraphQLContainer {...props} /> </Route>
-          <Route path="/composer/ws"> <WSContainer {...props} /> </Route>
-          <Route path="/"> <RestContainer {...props} /> </Route>
-        </Switch>
+      {/* DROPDOWN PROTOCOL SELECTOR */}
+
+      {/* BULMA TAB */}
+      < NetworkDropdown onProtocolSelect={onProtocolSelect} network={props.newRequestFields.network}/>
+
+      {/* COMPOSER CONTENT ROUTING */}
+      <Switch>
+        <Route path="/compose-rest"> <RestContainer {...props} /> </Route>
+        <Route path="/compose-grpc"> <GRPCContainer {...props} /> </Route>
+        <Route path="/compose-graphql"> <GraphQLContainer {...props} /> </Route>
+        <Route path="/compose-ws"> <WSContainer {...props} /> </Route>
+        <Route path="/"> <RestContainer {...props} /> </Route>
+      </Switch>
     </div>
   );
 };
