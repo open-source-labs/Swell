@@ -10,9 +10,6 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestFields,
   setNewRequestBody,
   newRequestBody,
-  setNewRequestHeaders,
-  newRequestStreams,
-  newRequestHeaders: { headersArr },
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   
@@ -47,9 +44,6 @@ const RestMethodAndEndpointEntryForm = ({
       url,
     }); 
   };
-
-  const borderColor = warningMessage.uri ? "red" : "white";
-  const grpcStreamLabel = newRequestStreams.selectedStreamingType || "STREAM";
 
   return (
     <div>

@@ -67,7 +67,7 @@ export default function GraphQLContainer({
     //Error conditions...
     if (gRPC) {
       if (newRequestFields.grpcUrl) return true;
-      else validationMessage.uri = "Enter a valid URI";
+      validationMessage.uri = "Enter a valid URI";
     }
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
