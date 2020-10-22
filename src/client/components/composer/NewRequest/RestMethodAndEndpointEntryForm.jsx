@@ -1,5 +1,6 @@
-/* eslint-disable default-case */
-import React, { useRef } from "react";
+/* eslint-disable */
+
+import React, { useState, useRef } from "react";
 // import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const RestMethodAndEndpointEntryForm = ({
@@ -13,109 +14,118 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestStreams,
   newRequestHeaders: { headersArr },
 }) => {
-  const onChangeHandler = (e, property, network) => {
-    const value = e.target.value;
+  const [dropdownIsActive, setDropdownIsActive] = useState(false);
+  
+  const methodChangeHandler = (newMethodStr) => {
+    //if one of 5 http methods (get, post, put, patch, delete)
+    setNewRequestBody({
+      ...newRequestBody,
+      bodyType: "raw",
+      bodyContent: "",
+    });
+    
+    //always set new method
+    setNewRequestFields({
+      ...newRequestFields,
+      method: newMethodStr,
+      protocol: '',
+    });
+  } 
+
+  const urlChangeHandler = (e, network) => {
+    const url = e.target.value;
+
     if (warningMessage.uri) {
       const warningMessage = { ...warningMessage };
       delete warningMessage.uri;
       setComposerWarningMessage({ ...warningMessage });
     }
-    switch (property) {
-      case "url": {
-        const url = value;
-        setNewRequestFields({
-          ...newRequestFields,
-          restUrl: url,
-          url,
-        }); 
-        break;
-      }
-      case "protocol": {
-        setComposerWarningMessage({});
-          setNewRequestFields({
-            ...newRequestFields,
-            protocol: "",
-            url: newRequestFields.restUrl,
-            method: "GET",
-            graphQL: false,
-            gRPC: false,
-            network: "rest",
-          });
-          setNewRequestBody({
-            //when switching to http clear body
-            ...newRequestBody,
-            bodyType: "none",
-            bodyContent: ``,
-          });
-         
-        
-        //removes Content-Type Header
-        const filtered = headersArr.filter(
-          (header) => header.key.toLowerCase() !== "content-type"
-        );
-        setNewRequestHeaders({
-          headersArr: filtered,
-          count: filtered.length,
-        });
-        break;
-      }
-      case "method": {
-        const methodReplaceRegex = new RegExp(
-          `${newRequestFields.method}`,
-          "mi"
-        );
-        const newBody = "";
-        
-          //if one of 5 http methods (get, post, put, patch, delete)
-          setNewRequestBody({
-            ...newRequestBody,
-            bodyType: "raw",
-            bodyContent: "",
-          });
-        
-        //always set new method
-        setNewRequestFields({
-          ...newRequestFields,
-          method: value,
-          protocol: value === "",
-        });
-      }
-    }
+
+    setNewRequestFields({
+      ...newRequestFields,
+      restUrl: url,
+      url,
+    }); 
   };
 
   const borderColor = warningMessage.uri ? "red" : "white";
-  const inputEl = useRef(null);
   const grpcStreamLabel = newRequestStreams.selectedStreamingType || "STREAM";
+
   return (
     <div>
-      ************** FieldEntryForm **************
-      {/* below conditional method selection rendering for http/s */}
-      <div className="composer_method_url_container">
-        <select
-          style={{ display: "block" }}
-          value={newRequestFields.method}
-          className="composer_method_select http"
-          onChange={(e) => {
-            onChangeHandler(e, "method");
-          }}
-        >
-          <option value="GET">GET</option>
-          <option value="POST">POST</option>
-          <option value="PUT">PUT</option>
-          <option value="PATCH">PATCH</option>
-          <option value="DELETE">DELETE</option>
-        </select>
+      {/* ************** RestMethodAndEndpointEntryForm ************** */}
+        <div className={`dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+    
+          <div className="dropdown-trigger">
+            <button id="restMethodButton" className="button is-primary-100" aria-haspopup="true" aria-controls="dropdown-menu"
+              onClick={() => setDropdownIsActive(!dropdownIsActive)}
+            >
+              <span>{newRequestFields.method}</span>
+              <span className="icon is-small">
+                <i className="fas fa-caret-down" aria-hidden="true" />
+              </span>
+            </button>
+          </div>
+  
+          <div className="dropdown-menu" id="dropdown-menu">
+            <ul className="dropdown-content">
+              {newRequestFields.method !== 'GET' &&
+                (<li 
+                  onClick={() => {
+                    setDropdownIsActive(false);
+                    methodChangeHandler("GET");
+                  }} 
+                  className="dropdown-item" 
+                >GET</li>)
+              }
+              {newRequestFields.method !== 'POST' &&
+                (<li
+                  onClick={() => {
+                    setDropdownIsActive(false);
+                    methodChangeHandler("POST"); 
+                  }} 
+                  className="dropdown-item" 
+                >POST</li>)
+              }
+              {newRequestFields.method !== 'PUT' &&
+                (<li 
+                  onClick={() => {
+                    setDropdownIsActive(false);
+                    methodChangeHandler("PUT");
+                  }} 
+                  className="dropdown-item" 
+                >PUT</li>)
+              }
+              {newRequestFields.method !== 'PATCH' &&
+                (<li  
+                  onClick={() => {
+                    setDropdownIsActive(false);
+                    methodChangeHandler("PATCH")
+                  }} 
+                  className="dropdown-item" 
+                >PATCH</li>)
+              }
+              {newRequestFields.method !== 'DELETE' &&
+                (<li  
+                  onClick={() => {
+                    setDropdownIsActive(false);
+                    methodChangeHandler("DELETE")
+                  }} 
+                  className="dropdown-item" 
+                >DELETE</li>)
+              }
+            </ul>
+          </div>
+  
+      
         <input
-          className="composer_url_input"
+          className=" input input-is-medium is-info"
           type="text"
-          placeholder="URL"
+          placeholder="Enter endpoint"
           style={{ borderColor }}
           value={newRequestFields.restUrl}
           onChange={(e) => {
-            onChangeHandler(e, "url", newRequestFields.network);
-          }}
-          ref={(input) => {
-            inputEl.current = input;
+            urlChangeHandler(e, newRequestFields.network);
           }}
         />
       </div>

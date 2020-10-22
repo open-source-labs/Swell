@@ -13,12 +13,12 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
         >
           <span>{network.toUpperCase()}</span>
           <span className="icon is-small">
-            <i className="fas fa-caret-down" aria-hidden="true"></i>
+            <i className="fas fa-caret-down" aria-hidden="true" />
           </span>
         </button>
       </div>
 
-      <div className="dropdown-menu" id="dropdown-menu">
+      <div className="dropdown-menu">
         <div className="dropdown-content">
           <Link to="/compose-rest" 
             onClick={() => {

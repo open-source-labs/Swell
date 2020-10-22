@@ -3,7 +3,6 @@ import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a uniq
 import historyController from "../../controllers/historyController";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
-import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
 
@@ -191,7 +190,7 @@ export default function RestContainer({
     >
       <h1 className="composer_title">Create New REST Request</h1>
 
-      <FieldEntryForm
+      <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestHeaders={newRequestHeaders}
         newRequestStreams={newRequestStreams}
