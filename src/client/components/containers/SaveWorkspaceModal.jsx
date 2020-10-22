@@ -6,8 +6,8 @@ import ReqResCtrl from "../../controllers/reqResController.js";
 import collectionsController from "../../controllers/collectionsController.js";
 import * as actions from "../../actions/actions";
 
-export default function SaveWorkspaceModal({ showModal, setShowModal }) {
-  
+export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
+  // console.log("SaveWorkspaceModal",match);
   const dispatch = useDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');

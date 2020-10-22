@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Route, Switch, Link } from 'react-router-dom';
 
 import BarGraph from "../display/BarGraph"
 import ReqResContainer from "./ReqResContainer.jsx";
@@ -20,28 +19,33 @@ export const ContentsContainer = () => {
       <div className="tabs">
         <ul>
           <li className={activeTab === 'workspace' ? 'is-active' : ''}>
-            <Link 
-              to="/workspace"
+            <a 
               onClick={() => setActiveTab('workspace')}
             >Requests
-            </Link>
+            </a>
           </li>
           <li className={activeTab === 'saved-workspace' ? 'is-active' : ''}>
-            <Link 
-              to="/saved-workspace"
+            <a 
               onClick={() => setActiveTab('saved-workspace')}
             >Saved Workspace
-            </Link>
+            </a>
           </li>
         </ul>
       </div>
       {/* WORKSPACE CONTENT */}
       <div>
-        <Switch>
-          <Route path="/workspace"> <NavBarContainer /> <ReqResContainer /> </Route>
-          <Route path="/saved-workspace"> <CollectionsContainer /> </Route>
-          <Route path="/"> <NavBarContainer /> <ReqResContainer /> </Route>
-        </Switch>
+        
+        {activeTab === 'workspace' && 
+          <div>
+            <NavBarContainer />
+            <ReqResContainer />
+          </div>
+        }
+
+        {activeTab === 'saved-workspace' && 
+          <CollectionsContainer />
+        }
+
       </div>
       {/* BARGRAPH CONTENT */}
       {/* NEEDS TO BE MADE COLLAPSABLE */}
