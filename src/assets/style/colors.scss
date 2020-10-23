@@ -28,8 +28,8 @@ $text: $neutral-500;
 
 // COLOR SCHEMES
 .is-primary-100 {
-  color: $neutral-500;
-  background-color: $primary-100;
+  color: $neutral-500 !important;
+  background-color: $primary-100 !important;
 }
 
 .is-primary-200 {
@@ -60,6 +60,11 @@ $text: $neutral-500;
 .is-neutral-300 {
   color: $neutral-600;
   background-color: $neutral-300;
+}
+
+.is-neutral-100 {
+  color: $neutral-600 !important;
+  background-color: $neutral-100 !important;
 }
 
 .is-neutral-200-box {
