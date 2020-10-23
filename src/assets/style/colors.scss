@@ -19,6 +19,8 @@ $neutral-600: #000000;
 $primary: $primary-500;
 $danger: $primary-200;
 $text: $neutral-500;
+$button-hover-color: $primary-200;
+$button-hover-border-color: $primary-200;
 // $link: $blue
 // $info: $cyan
 // $success: $green
@@ -65,4 +67,15 @@ $text: $neutral-500;
 .is-neutral-200-box {
   border: 1px solid $neutral-300;
   background-color: $neutral-200;
+}
+
+.is-danger-btn {
+  border: 1px solid $neutral-500;
+  background-color: red;
+  color: $neutral-600;
+}
+
+.is-danger-btn:hover {
+  border: 1px dotted red;
+  color: red;
 }

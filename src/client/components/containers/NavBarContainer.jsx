@@ -12,9 +12,9 @@ export default function NavBarContainer() {
   return (
     <div>
       {/* NAV BAR */}
-      <div className="columns mr-9">
+      <div className="is-flex is-flex-direction-row is-justify-content-flex-end is-align-items-center">
         <button
-          className="button is-small is-primary is-outlined column"
+          className="button is-small is-outlined button-padding-vertical button-hover-color"
           type="button"
           onClick={ReqResCtrl.clearAllReqRes}
         >
@@ -22,7 +22,7 @@ export default function NavBarContainer() {
         </button>
 
         <button
-          className="button is-small is-primary is-outlined column"
+          className="button is-small is-primary is-outlined button-padding-verticals ml-3"
           type="button"
           onClick={() => {
             setShowModal(true);
