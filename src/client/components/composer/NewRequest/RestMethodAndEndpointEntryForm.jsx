@@ -50,7 +50,7 @@ const RestMethodAndEndpointEntryForm = ({
   return (
     <div>
       {/* ************** RestMethodAndEndpointEntryForm ************** */}
-        <div className={`dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+        <div className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
     
           <div className="dropdown-trigger">
             <button id="restMethodButton" className="button is-primary-100" aria-haspopup="true" aria-controls="dropdown-menu"
@@ -115,7 +115,7 @@ const RestMethodAndEndpointEntryForm = ({
   
       
         <input
-          className=" input input-is-medium is-info"
+          className="ml-1 input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
           value={newRequestFields.restUrl}

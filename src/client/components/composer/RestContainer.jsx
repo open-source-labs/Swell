@@ -192,13 +192,8 @@ export default function RestContainer({
 
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
-        newRequestHeaders={newRequestHeaders}
-        newRequestStreams={newRequestStreams}
         newRequestBody={newRequestBody}
         setNewRequestFields={setNewRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestStreams={setNewRequestStreams}
-        setNewRequestCookies={setNewRequestCookies}
         setNewRequestBody={setNewRequestBody}
         warningMessage={warningMessage}
         setComposerWarningMessage={setComposerWarningMessage}
