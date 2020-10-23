@@ -1,12 +1,14 @@
 #restMethodButton {
-
-
-/* rest */
-
 background-color: $rest;
 
 height: 40px;
 color: whitesmoke;
+}
+
+#graphQLMethodButton {
+  background-color: $graphql;
+  height: 40px;
+  color: whitesmoke;
 }
 
 

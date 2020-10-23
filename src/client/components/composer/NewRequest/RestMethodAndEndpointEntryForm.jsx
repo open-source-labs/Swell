@@ -13,7 +13,16 @@ const RestMethodAndEndpointEntryForm = ({
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   
+  const warningCheck = () => {
+    if (warningMessage.uri) {
+      const newWarningMessage = { ...warningMessage };
+      delete warningMessage.uri;
+      setComposerWarningMessage({ ...newWarningMessage });
+    }
+  }
+
   const methodChangeHandler = (newMethodStr) => {
+    warningCheck();
     //if one of 5 http methods (get, post, put, patch, delete)
     setNewRequestBody({
       ...newRequestBody,
@@ -29,15 +38,10 @@ const RestMethodAndEndpointEntryForm = ({
     });
   } 
 
+
   const urlChangeHandler = (e, network) => {
+    warningCheck();
     const url = e.target.value;
-
-    if (warningMessage.uri) {
-      const warningMessage = { ...warningMessage };
-      delete warningMessage.uri;
-      setComposerWarningMessage({ ...warningMessage });
-    }
-
     setNewRequestFields({
       ...newRequestFields,
       restUrl: url,

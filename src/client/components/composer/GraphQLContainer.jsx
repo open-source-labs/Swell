@@ -285,7 +285,7 @@ export default function GraphQLContainer({
     >
       <h1 className="composer_title">Create New GraphQL Request</h1>
 
-      <FieldEntryForm
+      <GraphQLMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestHeaders={newRequestHeaders}
         newRequestStreams={newRequestStreams}
