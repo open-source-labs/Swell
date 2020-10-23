@@ -44,6 +44,8 @@ const RestMethodAndEndpointEntryForm = ({
       url,
     }); 
   };
+  
+  
 
   return (
     <div>
@@ -116,7 +118,6 @@ const RestMethodAndEndpointEntryForm = ({
           className=" input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
-          style={{ borderColor }}
           value={newRequestFields.restUrl}
           onChange={(e) => {
             urlChangeHandler(e, newRequestFields.network);
