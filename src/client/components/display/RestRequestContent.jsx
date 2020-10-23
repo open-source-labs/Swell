@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import {UnControlled as CodeMirror} from 'react-codemirror2';
 
 import ContentReqRow from './ContentReqRow';
 
@@ -36,14 +37,47 @@ export default function RestRequestContent({ request }) {
       {/* REQUEST DETAILS */}
       <div className="p-3">
         {/* HEADERS */}
-        <div>Headers</div>
+        {headerRows.length > 0 && 
+          <div>Headers</div>
+        }
         {headerRows}
         {/* COOKIES */}
-        <div>Cookies</div>
+        {cookieRows.length > 0 && 
+          <div>Cookies</div>
+        }
         {cookieRows}
         {/* BODY */}
         <div>Body</div>
         {/* FIGURE OUT CODEMIRROR!!!!!!!!!!!!!!!!!! */}
+        {bodyType == 'Text (text/plain)' &&
+        // we just want to show text, but maybe as codemirror still
+          <div>BODY TYPE: RAW</div>
+        }
+        {rawType == 'application/json' &&
+        // we want to show codemirror here
+          <div>BODY TYPE: RAW</div>
+        }
+        {bodyType == '"application/javascript"' &&
+          <div>BODY TYPE: RAW</div>
+        }
+        {bodyType == 'raw' &&
+          <div>BODY TYPE: RAW</div>
+        }
+        {bodyType == 'raw' &&
+          <div>BODY TYPE: RAW</div>
+        }
+
+
+
+
+        <CodeMirror
+          value={body}
+          options={{
+            mode: 'application/json',
+            theme: 'neo readonly',
+            lineNumbers: true,
+          }}
+        />
       </div>
       {/* BUTTONS */}
       <div className="columns">

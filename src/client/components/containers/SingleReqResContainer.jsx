@@ -145,11 +145,11 @@ const SingleReqResContainer = (props) => {
   //   onClick={minimize}
   // >
     <div>
-      <div>
+      <div className="hello">
         {/* TITLE BAR */}
-        <div className='columns is-gapless cards-titlebar'>
-          <div className={`column is-one-quarter is-${network}`}>{request.method}</div>
-          <div className='column is-size-7'>{url}</div>
+        <div className='is-flex cards-titlebar'>
+          <div className={`is-flex-grow-1 is-${network}`}>{request.method}</div>
+          <div className={'is-flex-grow-3 is-size-7'}>{url}</div>
         </div>
         {/* VIEW REQUEST DETAILS / MINIMIZE */}
         <div className='is-neutral-300 is-size-7 cards-dropdown' >View Request Details</div>
