@@ -25,7 +25,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     }
   }
   
-  const urlChangeHandler = (e, property, network) => {
+  const urlChangeHandler = (e) => {
     warningCheck();
     const url = e.target.value;
 
@@ -93,34 +93,8 @@ const GraphQLMethodAndEndpointEntryForm = ({
     });  
   }
 
-
   return (
     <div>
-      
-      {/* below conditional method selection rendering for graphql */}
-      {/* <div className="composer_method_url_container">
-        <select
-          value={newRequestFields.method}
-          className="composer_method_select gql"
-          onChange={(e) => {
-            onChangeHandler(e, "method");
-          }}
-        >
-          <option value="QUERY">QUERY</option>
-          <option value="MUTATION">MUTATION</option>
-          <option value="SUBSCRIPTION">SUBSCRIPTION</option>
-        </select>
-        <input
-          className="composer_url_input"
-          type="text"
-          placeholder="URL"
-          
-          value={newRequestFields.gqlUrl}
-          onChange={(e) => {
-            onChangeHandler(e, "url", newRequestFields.network);
-          }}
-        />
-      </div> */}
       <div className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
     
           <div className="dropdown-trigger">
@@ -165,15 +139,15 @@ const GraphQLMethodAndEndpointEntryForm = ({
               }
             </ul>
           </div>
-  
+          
       
         <input
           className="ml-1 input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
-          value={newRequestFields.restUrl}
+          value={newRequestFields.gqlUrl}
           onChange={(e) => {
-            urlChangeHandler(e, newRequestFields.network);
+            urlChangeHandler(e);
           }}
         />
       </div>

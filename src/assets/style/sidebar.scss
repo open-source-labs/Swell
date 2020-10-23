@@ -1,13 +1,20 @@
 #restMethodButton {
 background-color: $rest;
-
-height: 40px;
 color: whitesmoke;
 }
 
 #graphQLMethodButton {
   background-color: $graphql;
-  height: 40px;
+  color: whitesmoke;
+}
+
+#stream {
+  background-color: $grpc;
+  color: whitesmoke;
+}
+
+#webSocketButton {
+  background-color: $websockets;
   color: whitesmoke;
 }
 
