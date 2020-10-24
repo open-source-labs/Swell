@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import ReactModal from "react-modal";
 import uuid from "uuid/v4";
 import collectionsController from "../../controllers/collectionsController.js";
 
@@ -53,36 +52,46 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     }
   }
   return (
-    <ReactModal
-      isOpen={showModal}
-      className="collectionModal"
-      overlayClassName="collectionModalOverlay"
-      contentLabel="Enter a Collection Name"
-      onRequestClose={() => { setShowModal(false) } }
-      shouldCloseOnOverlayClick
-      aria={{
-        labelledby: "heading",
-      }}
-    >
-      <h1 id="heading">Name your collection</h1>
-      <input
-        style={collectionNameInputStyles}
-        input={input}
-        type="text"
-        id="collectionNameInput"
-        onChange={ e => setInput(e.target.value) }
-        autoFocus
-      />
-      <p
-        id="collectionNameError"
-        style={collectionNameErrorStyles}
-      >
-        Collection name already exists!
-      </p>
-      <div>
-        <button onClick={saveName}>Save</button>
-        <button onClick={() => { setShowModal(false) } }>Cancel</button>
-      </div>
-    </ReactModal>
+    <div>
+      {showModal && 
+        <div className="modal is-active">
+          <div className="modal-background"
+            onClick={() => { setShowModal(false) }}
+            />
+          <div 
+            className="modal-content is-border-neutral-300
+              is-modal-workspaces"
+            >
+            <div className="is-flex is-flex-direction-column m-3">
+              {/* CUSTOM MODAL */}
+              <h1 className="m-3">Name your saved workspace</h1>
+              <div className="is-flex m-3">
+                <input
+                  input={input}
+                  type="text"
+                  onChange={ e => setInput(e.target.value) }
+                  autoFocus
+                  // style={collectionNameInputStyles}
+                  className="input"
+                  />
+              </div>
+              <p
+                id="collectionNameError"
+                style={collectionNameErrorStyles}
+                className="m-3"
+                >
+                  Collection name already exists!
+              </p>
+              <div
+                className="is-flex is-align-items-center is-justify-content-space-around"
+                >
+                <button className="button is-small is-fullwidth m-3 " onClick={saveName}>Save</button>
+                <button className="button is-small is-fullwidth m-3 " onClick={() => { setShowModal(false) } }>Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
   )
 }

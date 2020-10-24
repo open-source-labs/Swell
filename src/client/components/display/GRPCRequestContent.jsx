@@ -1,42 +1,49 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
+import {UnControlled as CodeMirror} from 'react-codemirror2';
 
-export default function GRPCRequestContent({ request }) {
-  // const [showModal, setShowModal] = useState(false);
-  // const dispatch = useDispatch();
-  // PULL elements FROM store
-  // const content = useSelector(store => store.business.content);
-  console.log("RestRequestContent:",request);
+import ContentReqRow from './ContentReqRow';
+
+export default function GRPCRequestContent({ request, rpc, service, servicesObj }) {
 
   const { 
-    method, // "POST"
-    headers, // [{id: 0, active: true, key: 'key', value: 'value'}]
-    cookies, // [{id: 0, active: true, key: 'key', value: 'value'}]
+    headers, // refers to meta-data in a GRPC request
     body, // "body Content text"
-    bodyType, // "raw", x-www-form-urlencoded
-    bodyVariables, // ""
-    rawType, // "Text (text/plain)"
-    // rawType Options: 
-    // Text (text/plain)
-    // text/plain
-    // application/json
-    // application/javascript
-    // application/xml
-    // text/html
-    // text/xml
-    // raw
-    isSSE, // false/true
-    network, // "rest"
-    restUrl, // "http://sdfgsdfgdsfg"
-    wsUrl, // "ws://"
-    gqlUrl, // "https://"
-    grcpUrl // ""
   } = request;
 
+  // CREATE META-DATA COMPONENTS
+  const metadataRows = headers.map((header, index) => <ContentReqRow data={header} key={`h${index}`}/>);
 
   return (
     <div>
-      GRPC CONTENT
+      {/* REQUEST DETAILS */}
+      <div className="p-3">
+        {/* METADATA */}
+          {metadataRows.length > 0 && 
+            <div className="is-size-7">Metadata</div>
+          }
+          {metadataRows}
+        {/* REQUEST / SERVICE */}
+          <div className="is-size-7">Service / Request</div>
+          <div className="is-flex">
+            <input className="input" type="text" value={`Service: ${service}`} className="is-justify-content-center is-flex-grow-1 p-1" readOnly />
+            <input className="input" type="text" value={`Request: ${rpc}`} className="is-justify-content-center is-flex-grow-1 p-1" readOnly />
+          </div>
+        {/* BODY */}
+          <div>
+            <div className="is-size-7">Body</div>
+            <CodeMirror
+              value={body}
+              options={{
+                mode: 'application/json',
+                theme: 'neo readonly',
+                lineNumbers: true,
+                tabSize: 4,
+                lineWrapping: true,
+                readOnly: true,
+              }}
+              />
+          </div>
+      </div>
     </div>
   )
 }

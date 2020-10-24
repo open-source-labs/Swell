@@ -1,23 +1,16 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 
 import ContentReqRow from './ContentReqRow';
 
 export default function RestRequestContent({ request }) {
-  // const [showModal, setShowModal] = useState(false);
-  // const dispatch = useDispatch();
-  // PULL elements FROM store
-  // const content = useSelector(store => store.business.content);
-  console.log("RestRequestContent:",request);
 
+  // ORGANIZE PROPS
   const { 
-    method, // "POST"
     headers, // [{id: 0, active: true, key: 'key', value: 'value'}]
     cookies, // [{id: 0, active: true, key: 'key', value: 'value'}]
     body, // "body Content text"
     bodyType, // "raw", x-www-form-urlencoded
-    bodyVariables, // ""
     rawType, // "Text (text/plain)"
     // rawType Options: 
     // Text (text/plain)
@@ -29,13 +22,7 @@ export default function RestRequestContent({ request }) {
     // text/xml
     // raw
     isSSE, // false/true
-    network, // "rest"
-    restUrl, // "http://sdfgsdfgdsfg"
-    wsUrl, // "ws://"
-    gqlUrl, // "https://"
-    grcpUrl // ""
   } = request;
-
 
   // CREATE HEADER COMPONENTS
   const headerRows = headers.map((header, index) => <ContentReqRow data={header} key={`h${index}`}/>);
@@ -45,7 +32,6 @@ export default function RestRequestContent({ request }) {
 
   // CREATE FORM DATA BODY COMPONENTS
   // body = key1=value1&key2=value2
-  // 
   const parseQueryString = (string) => {
     // input: key1=value1&key2=value2
     // output: [ {id: 1, key: key1, value: value1 ...etc } ]
@@ -68,6 +54,9 @@ export default function RestRequestContent({ request }) {
     formRows = parsedFormBody.map((item, index) => <ContentReqRow data={item} key={`h${index}`}/>);
   }
 
+  // PRETTY-PRINT BODY IF JSON
+  const bodyText = (rawType === 'application/json') ? ( JSON.stringify( JSON.parse(bodyText), null, 4 ) ) : ( body );
+
   return (
     <div>
       {/* REQUEST DETAILS */}
@@ -88,7 +77,7 @@ export default function RestRequestContent({ request }) {
             <div>
               <div className="is-size-7">Body</div>
               <CodeMirror
-                value={body}
+                value={bodyText}
                 options={{
                   mode: {rawType},
                   theme: 'neo readonly',
@@ -107,7 +96,12 @@ export default function RestRequestContent({ request }) {
               {formRows}
             </div>
           }
-
+        {/* SSE CONFIRMATION */}
+        { isSSE && 
+          <div className="is-size-7"> 
+            SSE: true
+          </div>
+        }
       </div>
     </div>
   )

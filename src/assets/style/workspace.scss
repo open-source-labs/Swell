@@ -12,8 +12,30 @@
   flex-basis: 0;
 }
 
+.is-margin-top-auto {
+  margin-top: 50px;
+}
+
 .minimize-card:hover {
   cursor: pointer;
+}
+
+.is-tall {
+  height: 100% !important;
+  min-height: 100%;
+}
+
+.is-graph-footer {
+  background-color: $neutral-200;
+  color: $primary-500;
+  height: 3rem;
+  margin-top: auto;
+}
+
+.is-modal-workspaces {
+  color: $neutral-500;
+  background-color: $neutral-100 !important;
+  width: 33% !important;
 }
 
 // CODEMIRROR STYLES
@@ -21,7 +43,7 @@
 .cm-s-readonly {
   background-color: $neutral-100;
   color: $neutral-400;
-  max-height: 200px !important;
+  max-height: 150px !important;
   border: 1px solid $neutral-300;
   font-family: Arial, Helvetica, sans-serif !important;
   font-size: .75em;

@@ -117,6 +117,11 @@ export const setIntrospectionData = (dataObj) => ({
   type: types.SET_INTROSPECTION_DATA,
   payload: dataObj,
 });
+
+export const saveCurrentResponseData = (dataObj) => ({
+  type: types.SAVE_CURRENT_RESPONSE_DATA,
+  payload: dataObj,
+});
 // UI ACTIONS
 // export const showWarning = () => ({
 //   type: types.SHOW_WARNING,

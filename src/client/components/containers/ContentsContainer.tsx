@@ -6,9 +6,10 @@ import CollectionsContainer from "./CollectionsContainer";
 
 export const ContentsContainer = () => {
   const [activeTab, setActiveTab] = useState('workspace');
+  const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="column is-one-third">
+    <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300">
       {/* HEADER */}
       <div className="hero is-primary has-text-centered">
         <h3>Workspace</h3>
@@ -32,7 +33,7 @@ export const ContentsContainer = () => {
         </ul>
       </div>
       {/* WORKSPACE CONTENT */}
-      <div>
+      <div className="is-flex-grow-3">
 
         {activeTab === 'workspace' && 
           <NavBarContainer />
@@ -43,9 +44,22 @@ export const ContentsContainer = () => {
         }
 
       </div>
+
       {/* BARGRAPH CONTENT */}
-      {/* NEEDS TO BE MADE COLLAPSABLE */}
-      {/* <BarGraph /> */}
+        {showGraph &&
+          <BarGraph />
+        }
+        <div 
+          className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
+          onClick={() => setShowGraph(showGraph === false)}
+          >
+            {showGraph &&
+              'Hide Performance Charts'
+            }
+            {!showGraph &&
+              'View Performance Charts'
+            }
+        </div>
     </div>
   );
 }

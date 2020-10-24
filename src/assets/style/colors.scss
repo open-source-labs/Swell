@@ -82,3 +82,12 @@ $text: $neutral-500;
   border: 1px dotted red;
   color: red;
 }
+
+.is-border-neutral-300 {
+  border: 1px solid $neutral-300;
+}
+
+.is-divider-neutral-300 {
+  border-left: 1px solid $neutral-300;
+  border-right: 1px solid $neutral-300;
+}

@@ -1,19 +1,19 @@
 * {
 	box-sizing: border-box;
 }
+
+#root {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
 html {
 	// background-color: #eeeeee;
-	overflow: hidden;
-}
-#app {
-	// display: flex;
-	// justify-content: space-between;
-	// align-items: flex-start;
-	// color: $liteblack;
-	// font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
-	// height: 100vh;
-	// margin: 0;
-	// width: 100vw;
+  overflow: hidden;
+  height: 100% !important;
 }
 
 .header_entry-form {

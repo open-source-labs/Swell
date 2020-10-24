@@ -64,7 +64,7 @@ export class App extends React.Component<any, any> {
     api.receive("fromMain", (data: {}) => console.log(data));
     api.send("toMain", "MEAT WITH SAUCE");
     return (
-      <div id='app' className='columns is-gapless'>
+      <div id='app' className='columns is-gapless is-tall'>
         <HashRouter>
           <SidebarContainer />
           <ContentsContainer />
