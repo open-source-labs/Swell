@@ -32,6 +32,12 @@
   margin-top: auto;
 }
 
+.is-modal-workspaces {
+  color: $neutral-500;
+  background-color: $neutral-100 !important;
+  width: 33% !important;
+}
+
 // CODEMIRROR STYLES
 
 .cm-s-readonly {
