@@ -11,8 +11,8 @@
   border-color: lightslategrey
 }
 
-.add-header-button {
-  float: right;
+.add-header-or-cookie-button {
   color: $primary;
-  border-color: $primary
+  border-color: $primary;
+  width: 100px;
 }

@@ -160,7 +160,7 @@ class HeaderEntryForm extends Component {
         <div className=' is-flex is-justify-content-space-between is-align-content-center'>
           {headerName}
           <button 
-            className="button is-small add-header-button"
+            className="button is-small add-header-or-cookie-button"
             onClick={() => this.addHeader()}> 
             {addHeaderName} 
           </button>
