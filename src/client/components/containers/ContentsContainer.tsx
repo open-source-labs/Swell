@@ -45,7 +45,7 @@ export const ContentsContainer = () => {
       </div>
       {/* BARGRAPH CONTENT */}
       {/* NEEDS TO BE MADE COLLAPSABLE */}
-      <BarGraph />
+      {/* <BarGraph /> */}
     </div>
   );
 }

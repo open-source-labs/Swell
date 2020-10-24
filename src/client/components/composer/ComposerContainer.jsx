@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
 import { Route, Switch, Link } from 'react-router-dom';
+import * as actions from "../../actions/actions";
 
 import NetworkDropdown from "./NetworkDropdown"
 import RestContainer from "./RestContainer.jsx";
@@ -141,6 +141,7 @@ const ComposerContainer = (props) => {
           });
           break;
       }
+      default:
       }
   };
 

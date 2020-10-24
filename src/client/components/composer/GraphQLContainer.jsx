@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import historyController from "../../controllers/historyController";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
 import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
+import GraphQLMethodAndEndpointEntryForm from './NewRequest/GraphQLMethodAndEndpointEntryForm.jsx'
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm.jsx";
 import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm.jsx";
@@ -65,10 +66,6 @@ export default function GraphQLContainer({
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
-    if (gRPC) {
-      if (newRequestFields.grpcUrl) return true;
-      else validationMessage.uri = "Enter a valid URI";
-    }
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
       validationMessage.uri = "Enter a valid URI";
@@ -99,15 +96,11 @@ export default function GraphQLContainer({
     return validationMessage;
   };
 
-  const handleSSEPayload = (e) => {
-    setNewRequestSSE(e.target.checked);
-  };
-
   const addNewRequest = () => {
     const validated = requestValidationCheck();
     if (Object.keys(validated).length === 0) {
       let reqRes;
-      const protocol = gRPC ? "" : url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+      const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
       // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
       if (!/wss?:\/\//.test(protocol) && !gRPC) {
         const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
@@ -216,106 +209,6 @@ export default function GraphQLContainer({
           tab: currentTab,
         };
       }
-      // gRPC requests
-      else if (gRPC) {
-        // saves all stream body queries to history & reqres request body
-        let streamQueries = "";
-        for (let i = 0; i < streamContent.length; i++) {
-          // quries MUST be in format, do NOT edit template literal unless necessary
-          streamQueries += `${streamContent[i]}
-          
-`;
-        }
-        // define array to hold client query strings
-        const queryArrStr = streamContent;
-        const queryArr = [];
-        // scrub client query strings to remove line breaks
-        // convert strings to objects and push to array
-        for (let i = 0; i < queryArrStr.length; i += 1) {
-          let query = queryArrStr[i];
-          const regexVar = /\r?\n|\r|↵/g;
-          query = query.replace(regexVar, "");
-          queryArr.push(JSON.parse(query));
-        }
-        // grabbing streaming type to set method in reqRes.request.method
-        const grpcStream = document.getElementById("stream").innerText;
-        // create reqres obj to be passed to controller for further actions/tasks
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: "",
-          url,
-          graphQL,
-          gRPC,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: null,
-          checkSelected: false,
-          request: {
-            method: grpcStream,
-            headers: headersArr.filter(
-              (header) => header.active && !!header.key
-            ),
-            body: streamQueries,
-            bodyType,
-            rawType,
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            grpcUrl,
-          },
-          response: {
-            cookies: [],
-            headers: {},
-            stream: null,
-            events: [],
-          },
-          checked: false,
-          minimized: false,
-          tab: currentTab,
-          service: selectedService,
-          rpc: selectedRequest,
-          packageName: selectedPackage,
-          streamingType,
-          queryArr,
-          initialQuery,
-          streamsArr,
-          streamContent,
-          servicesObj: services,
-          protoPath,
-          protoContent,
-        };
-      }
-      // WEBSOCKET REQUESTS
-      else {
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: url.match(/wss?:\/\//)[0],
-          url,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: "WebSocket",
-          checkSelected: false,
-          request: {
-            method: "WS",
-            messages: [],
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            grpcUrl,
-          },
-          response: {
-            messages: [],
-          },
-          checked: false,
-          tab: currentTab,
-        };
-      }
 
       // add request to history
       historyController.addHistoryToIndexedDb(reqRes);
@@ -357,21 +250,7 @@ export default function GraphQLContainer({
         graphQL,
         gRPC,
       });
-
-      // GRPC REQUESTS
-      if (gRPC) {
-        setNewRequestBody({
-          ...newRequestBody,
-          bodyType: "GRPC",
-          rawType: "",
-        });
-        setNewRequestFields({
-          ...newRequestFields,
-          url: grpcUrl,
-          grpcUrl,
-        });
-      }
-
+      
       // GRAPHQL REQUESTS
       if (graphQL) {
         setNewRequestBody({
@@ -383,15 +262,6 @@ export default function GraphQLContainer({
           ...newRequestFields,
           url: gqlUrl,
           gqlUrl,
-        });
-      }
-
-      if (network === "ws") {
-        setNewRequestFields({
-          ...newRequestFields,
-          protocol: "ws://",
-          url: wsUrl,
-          wsUrl,
         });
       }
       setNewRequestSSE(false);
@@ -415,7 +285,7 @@ export default function GraphQLContainer({
     >
       <h1 className="composer_title">Create New GraphQL Request</h1>
 
-      <FieldEntryForm
+      <GraphQLMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestHeaders={newRequestHeaders}
         newRequestStreams={newRequestStreams}
