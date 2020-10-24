@@ -6,12 +6,10 @@ import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
 import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import historyController from "../../controllers/historyController";
-import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog";
-import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm";
-import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm";
 import GRPCTypeAndEndpointEntryForm from "./NewRequest/GRPCTypeAndEndpointEntryForm";
 
 export default function GRPCContainer({
+  resetComposerFields,
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
@@ -67,163 +65,24 @@ export default function GRPCContainer({
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
-    if (gRPC) {
       if (newRequestFields.grpcUrl) return true;
       else validationMessage.uri = "Enter a valid URI";
-    }
-    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
-      //if url is only http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
-    }
-    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
-      //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
-    }
-    if (!JSONFormatted && rawType === "application/json") {
-      validationMessage.json = "Please fix JSON body formatting errors";
-    }
-    if (method === "QUERY") {
-      if (url && !bodyContent) {
-        validationMessage.body = "GraphQL Body is Missing";
-      }
-      if (url && bodyContent) {
-        try {
-          const body = gql`
-            ${bodyContent}
-          `;
-        } catch (e) {
-          console.log("error in gql-tag for client", e);
-          validationMessage.body = `Invalid graphQL body: \n ${e.message}`;
-        }
-      }
-      // need to add validation check for gql variables
-    }
     return validationMessage;
   };
 
-  const handleSSEPayload = (e) => {
-    setNewRequestSSE(e.target.checked);
-  };
-
   const addNewRequest = () => {
-    const validated = requestValidationCheck();
-    if (Object.keys(validated).length === 0) {
+    const warnings = requestValidationCheck();
+    if (Object.keys(warnings).length > 0) {
+      setComposerWarningMessage(warnings);
+      return;
+    } 
       let reqRes;
-      const protocol = gRPC ? "" : url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-      // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-      if (!/wss?:\/\//.test(protocol) && !gRPC) {
-        const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-        const host = protocol + URIWithoutProtocol.split("/")[0];
-        let path = `/${URIWithoutProtocol.split("/")
-          .splice(1)
-          .join("/")
-          .replace(/\/{2,}/g, "/")}`;
-        if (path.charAt(path.length - 1) === "/" && path.length > 1) {
-          path = path.substring(0, path.length - 1);
-        }
-        path = path.replace(/https?:\//g, "http://");
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: url.match(/https?:\/\//)[0],
-          host,
-          path,
-          url,
-          graphQL,
-          gRPC,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: null,
-          checkSelected: false,
-          protoPath,
-          request: {
-            method,
-            headers: headersArr.filter(
-              (header) => header.active && !!header.key
-            ),
-            cookies: cookiesArr.filter(
-              (cookie) => cookie.active && !!cookie.key
-            ),
-            body: bodyContent || "",
-            bodyType,
-            bodyVariables: bodyVariables || "",
-            rawType,
-            isSSE,
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            grpcUrl,
-          },
-          response: {
-            headers: null,
-            events: null,
-          },
-          checked: false,
-          minimized: false,
-          tab: currentTab,
-        };
-      }
-      // GraphQL Subscriptions
-      else if (graphQL) {
-        const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-        const host = protocol + URIWithoutProtocol.split("/")[0];
-        let path = `/${URIWithoutProtocol.split("/")
-          .splice(1)
-          .join("/")
-          .replace(/\/{2,}/g, "/")}`;
-        if (path.charAt(path.length - 1) === "/" && path.length > 1) {
-          path = path.substring(0, path.length - 1);
-        }
-        path = path.replace(/wss?:\//g, "ws://");
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: "ws://",
-          host,
-          path,
-          url,
-          graphQL,
-          gRPC,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: null,
-          checkSelected: false,
-          request: {
-            method,
-            headers: headersArr.filter(
-              (header) => header.active && !!header.key
-            ),
-            cookies: cookiesArr.filter(
-              (cookie) => cookie.active && !!cookie.key
-            ),
-            body: bodyContent || "",
-            bodyType,
-            bodyVariables: bodyVariables || "",
-            rawType,
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            grpcUrl,
-          },
-          response: {
-            headers: null,
-            events: null,
-          },
-          checked: false,
-          minimized: false,
-          tab: currentTab,
-        };
-      }
-      // gRPC requests
-      else if (gRPC) {
+      const protocol = ""
+      
         // saves all stream body queries to history & reqres request body
         let streamQueries = "";
         for (let i = 0; i < streamContent.length; i++) {
-          // quries MUST be in format, do NOT edit template literal unless necessary
+          // queries MUST be in format, do NOT edit template literal unless necessary
           streamQueries += `${streamContent[i]}
           
 `;
@@ -289,119 +148,29 @@ export default function GRPCContainer({
           protoPath,
           protoContent,
         };
-      }
-      // WEBSOCKET REQUESTS
-      else {
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: url.match(/wss?:\/\//)[0],
-          url,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: "WebSocket",
-          checkSelected: false,
-          request: {
-            method: "WS",
-            messages: [],
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            grpcUrl,
-          },
-          response: {
-            messages: [],
-          },
-          checked: false,
-          tab: currentTab,
-        };
-      }
-
+      
       // add request to history
       historyController.addHistoryToIndexedDb(reqRes);
       reqResAdd(reqRes);
 
       //reset for next request
-      setNewRequestHeaders({
-        headersArr: [],
-        count: 0,
-      });
-
-      setNewRequestStreams({
-        ...newRequestStreams,
-      });
-
-      setNewRequestCookies({
-        cookiesArr: [],
-        count: 0,
-      });
-
+      resetComposerFields();
+    
+      // GRPC REQUESTS
       setNewRequestBody({
         ...newRequestBody,
-        bodyContent: "",
-        bodyVariables: "",
-        bodyType: "raw",
-        rawType: "Text (text/plain)",
-        JSONFormatted: true,
+        bodyType: "GRPC",
+        rawType: "",
       });
-
       setNewRequestFields({
         ...newRequestFields,
-        method,
-        protocol: "",
-        url,
-        restUrl,
-        wsUrl,
-        gqlUrl,
+        url: grpcUrl,
         grpcUrl,
-        graphQL,
-        gRPC,
       });
-
-      // GRPC REQUESTS
-      if (gRPC) {
-        setNewRequestBody({
-          ...newRequestBody,
-          bodyType: "GRPC",
-          rawType: "",
-        });
-        setNewRequestFields({
-          ...newRequestFields,
-          url: grpcUrl,
-          grpcUrl,
-        });
-      }
-
-      // GRAPHQL REQUESTS
-      if (graphQL) {
-        setNewRequestBody({
-          ...newRequestBody,
-          bodyType: "GQL",
-          rawType: "",
-        });
-        setNewRequestFields({
-          ...newRequestFields,
-          url: gqlUrl,
-          gqlUrl,
-        });
-      }
-
-      if (network === "ws") {
-        setNewRequestFields({
-          ...newRequestFields,
-          protocol: "ws://",
-          url: wsUrl,
-          wsUrl,
-        });
-      }
+    
       setNewRequestSSE(false);
       setComposerWarningMessage({});
-    } else {
-      setComposerWarningMessage(validated);
-      // setComposerDisplay("Warning");
-    }
+   
   };
 
   const HeaderEntryFormStyle = {

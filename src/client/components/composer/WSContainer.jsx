@@ -1,17 +1,10 @@
 import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import GRPCProtoEntryForm from "./NewRequest/GRPCProtoEntryForm.jsx";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
-import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
-import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
-import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import historyController from "../../controllers/historyController";
-import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog";
-import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm";
-import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm";
 import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
 
 export default function WSContainer({
+  resetComposerFields,
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
@@ -117,42 +110,43 @@ export default function WSContainer({
     reqResAdd(reqRes);
 
     //reset for next request
-    setNewRequestHeaders({
-      headersArr: [],
-      count: 0,
-    });
+    // setNewRequestHeaders({
+    //   headersArr: [],
+    //   count: 0,
+    // });
 
-    setNewRequestStreams({
-      ...newRequestStreams,
-    });
+    // setNewRequestStreams({
+    //   ...newRequestStreams,
+    // });
 
-    setNewRequestCookies({
-      cookiesArr: [],
-      count: 0,
-    });
+    // setNewRequestCookies({
+    //   cookiesArr: [],
+    //   count: 0,
+    // });
 
-    setNewRequestBody({
-      ...newRequestBody,
-      bodyContent: "",
-      bodyVariables: "",
-      bodyType: "raw",
-      rawType: "Text (text/plain)",
-      JSONFormatted: true,
-    });
+    // setNewRequestBody({
+    //   ...newRequestBody,
+    //   bodyContent: "",
+    //   bodyVariables: "",
+    //   bodyType: "raw",
+    //   rawType: "Text (text/plain)",
+    //   JSONFormatted: true,
+    // });
 
-    setNewRequestFields({
-      ...newRequestFields,
-      method,
-      protocol: "",
-      url,
-      restUrl,
-      wsUrl,
-      gqlUrl,
-      grpcUrl,
-      graphQL,
-      gRPC,
-    });
+    // setNewRequestFields({
+    //   ...newRequestFields,
+    //   method,
+    //   protocol: "",
+    //   url,
+    //   restUrl,
+    //   wsUrl,
+    //   gqlUrl,
+    //   grpcUrl,
+    //   graphQL,
+    //   gRPC,
+    // });
 
+    resetComposerFields();
 
     setNewRequestFields({
       ...newRequestFields,
