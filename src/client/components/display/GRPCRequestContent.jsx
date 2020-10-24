@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
+import {UnControlled as CodeMirror} from 'react-codemirror2';
+
+import ContentReqRow from './ContentReqRow';
 
 export default function GRPCRequestContent({ request }) {
   // const [showModal, setShowModal] = useState(false);
