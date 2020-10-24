@@ -67,7 +67,7 @@ export default function WSContainer({
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
-    //if url is only http/https/ws/wss://
+    // if url is only http/https/ws/wss://
     // OR if url doesn't contain http/https/ws/wss
     if ((/https?:\/\/$|wss?:\/\/$/.test(url)) 
       || (!/(https?:\/\/)|(wss?:\/\/)/.test(url))) {

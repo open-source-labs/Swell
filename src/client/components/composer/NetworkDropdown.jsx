@@ -1,11 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 export default function NetworkDropdown({ onProtocolSelect, network }) {
   const [dropdownIsActive, setDropdownIsActive] = useState();
+  const dropdownEl = useRef();
+
+  useEffect(() => {
+    const closeDropdown = (event) => {
+      if (!dropdownEl.current.contains(event.target)) {
+        setDropdownIsActive(false);
+      }
+    }
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, []);
 
   return (
-    <div className={`dropdown full-width is-fullwidth ${dropdownIsActive ? 'is-active' : ''}`}>
+    <div ref={dropdownEl} className={`dropdown full-width is-fullwidth ${dropdownIsActive ? 'is-active' : ''}`}>
         
       <div className="dropdown-trigger full-width is-fullwidth">
         <button className="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu"

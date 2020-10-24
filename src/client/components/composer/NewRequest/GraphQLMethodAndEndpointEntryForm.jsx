@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 /* eslint-disable */
 
@@ -16,6 +16,17 @@ const GraphQLMethodAndEndpointEntryForm = ({
   newRequestHeaders: { headersArr },
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
+  const dropdownEl = useRef();
+
+  useEffect(() => {
+    const closeDropdown = (event) => {
+      if (!dropdownEl.current.contains(event.target)) {
+        setDropdownIsActive(false);
+      }
+    }
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, []);
 
   const warningCheck = () => {
     if (warningMessage.uri) {
@@ -95,10 +106,10 @@ const GraphQLMethodAndEndpointEntryForm = ({
 
   return (
     <div>
-      <div className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+      <div ref={dropdownEl} className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
     
           <div className="dropdown-trigger">
-            <button id="graphQLMethodButton" className="button is-primary-100" aria-haspopup="true" aria-controls="dropdown-menu"
+            <button className="button is-graphQL" aria-haspopup="true" aria-controls="dropdown-menu"
               onClick={() => setDropdownIsActive(!dropdownIsActive)}
             >
               <span>{newRequestFields.method}</span>
