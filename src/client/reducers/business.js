@@ -134,6 +134,10 @@ const businessReducer = (state = initialState, action) => {
           ...state.newRequestFields,
           protocol: "",
         },
+        newRequestSSE: {
+          isSSE: false,
+        },
+        warningMessage: {},
       }
     }
 

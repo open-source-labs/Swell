@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
 import Header from './Header.jsx';
-import ContentReqRowComposer from "./ContentReqRowComposer.jsx"
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -113,6 +112,7 @@ class HeaderEntryForm extends Component {
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
       if (headersDeepCopy[i].id === id) {
         indexToBeUpdated = i;
+
       }
     }
     // update
@@ -139,34 +139,46 @@ class HeaderEntryForm extends Component {
 
   render() {
     let headerName = 'Headers';
-    let addHeaderName = '+ Header'
-    // let headerClass = 'composer_submit http'
+    let addHeaderName = 'Add Header'
+    let headerClass = 'composer_submit http'
     if (this.props.newRequestFields.gRPC) {
       headerName = 'Metadata';
-      addHeaderName = '+ Metadata';
+      addHeaderName = 'Add Metadata';
+      headerClass = 'addMetadata grpc'
     }
-    
+    if (this.props.newRequestBody.bodyType === 'GQL') {
+      headerClass = 'composer_submit gql'
+    }
 
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
-      <ContentReqRowComposer
-        data={header}
+      <Header
+        type='header'
+        content={header}
         changeHandler={this.onChangeUpdateHeader}
         key={index} //key
+        Key={header.key} //prop
+        value={header.value}
       />
     ));
 
+    const headersContainerClass = this.state.show ? 'composer_headers_container-closed' : 'composer_headers_container-open'
+
     return (
-      <div >
-        <div className=' is-flex is-justify-content-space-between is-align-content-center'>
-          {headerName}
-          <button 
-            className="button is-small add-header-button"
-            onClick={() => this.addHeader()}> 
-            {addHeaderName} 
-          </button>
-        </div>
-        <div>
+      <div style={this.props.stylesObj}>
+        ************** HeaderEntryForm **************
+        <label
+        title="Add Request Headers"
+        className='composer_subtitle' >
+          <div className="label-text" id="headers-click" >{headerName}</div>
+            <div className="toggle" >
+              <input type="checkbox" name="check" className="toggle-state" onClick={this.toggleShow}/>
+              <div className="indicator" />
+            </div>
+        </label>
+        <div className={headersContainerClass} >
           {headersArr}
+          <button onClick={() => this.addHeader()} className={headerClass}> {addHeaderName} </button>
+
         </div>
       </div>
     );

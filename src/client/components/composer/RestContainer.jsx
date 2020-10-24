@@ -1,10 +1,11 @@
 import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import historyController from "../../controllers/historyController";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
+import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
+
 
 export default function RestContainer({
   resetComposerFields,
@@ -145,11 +146,9 @@ export default function RestContainer({
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
-
+    
+    //reset for next request
     resetComposerFields();
-
-    setNewRequestSSE(false);
-    setComposerWarningMessage({});
   };
 
   const handleSSEPayload = (e) => {
@@ -158,7 +157,7 @@ export default function RestContainer({
 
   return (
     <div
-      className="composerContents_content"
+      className="ml-2 mr-2"
       tabIndex={0}
     >
       <h1 className="composer_title">Create New REST Request</h1>

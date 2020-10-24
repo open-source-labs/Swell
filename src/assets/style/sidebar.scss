@@ -1,3 +1,18 @@
 
 
 
+.include-header-checkbox {
+  background: #FFFFFF;
+  /* neutral-300 */
+  border: 1px solid black;
+  box-sizing: border-box;
+  border-radius: 2px;
+  padding: 0px 5px;
+  border-color: lightslategrey
+}
+
+.add-header-button {
+  float: right;
+  color: $primary;
+  border-color: $primary
+}

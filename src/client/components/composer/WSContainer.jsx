@@ -19,41 +19,9 @@ export default function WSContainer({
     grpcUrl,
     network,
   },
-  setNewRequestBody,
-  newRequestBody,
-  newRequestBody: {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  },
-  setNewRequestHeaders,
-  newRequestHeaders,
-  newRequestHeaders: { headersArr },
-  setNewRequestCookies,
-  newRequestCookies,
-  newRequestCookies: { cookiesArr },
-  setNewRequestStreams,
-  newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
   setNewRequestSSE,
-  newRequestSSE: { isSSE },
   currentTab,
-  introspectionData,
   setComposerWarningMessage,
-  setComposerDisplay,
   warningMessage,
   reqResAdd,
 }) {
@@ -104,48 +72,11 @@ export default function WSContainer({
       tab: currentTab,
     };
       
-
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
 
     //reset for next request
-    // setNewRequestHeaders({
-    //   headersArr: [],
-    //   count: 0,
-    // });
-
-    // setNewRequestStreams({
-    //   ...newRequestStreams,
-    // });
-
-    // setNewRequestCookies({
-    //   cookiesArr: [],
-    //   count: 0,
-    // });
-
-    // setNewRequestBody({
-    //   ...newRequestBody,
-    //   bodyContent: "",
-    //   bodyVariables: "",
-    //   bodyType: "raw",
-    //   rawType: "Text (text/plain)",
-    //   JSONFormatted: true,
-    // });
-
-    // setNewRequestFields({
-    //   ...newRequestFields,
-    //   method,
-    //   protocol: "",
-    //   url,
-    //   restUrl,
-    //   wsUrl,
-    //   gqlUrl,
-    //   grpcUrl,
-    //   graphQL,
-    //   gRPC,
-    // });
-
     resetComposerFields();
 
     setNewRequestFields({
@@ -154,13 +85,10 @@ export default function WSContainer({
       url: wsUrl,
       wsUrl,
     });
-
-    setNewRequestSSE(false);
-    setComposerWarningMessage({});
   };
 
   return (
-    <div>
+    <div className="ml-2 mr-2">
       <WSEndpointEntryForm
         newRequestFields={newRequestFields}
         setNewRequestFields={setNewRequestFields}

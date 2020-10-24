@@ -167,10 +167,6 @@ export default function GRPCContainer({
         url: grpcUrl,
         grpcUrl,
       });
-    
-      setNewRequestSSE(false);
-      setComposerWarningMessage({});
-   
   };
 
   const HeaderEntryFormStyle = {
@@ -179,7 +175,7 @@ export default function GRPCContainer({
   };
   return (
     <div
-      className="composerContents_content"
+      className="ml-2 mr-2"
       tabIndex={0}
     >
       <h1 className="composer_title">Create New GRPC Request</h1>

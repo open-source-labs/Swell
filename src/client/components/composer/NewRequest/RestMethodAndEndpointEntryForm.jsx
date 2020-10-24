@@ -68,7 +68,7 @@ const RestMethodAndEndpointEntryForm = ({
       {/* ************** RestMethodAndEndpointEntryForm ************** */}
         <div 
           ref={dropdownEl} 
-          className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}
+          className={` is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}
         >
     
           <div className="dropdown-trigger">

@@ -234,14 +234,11 @@ export default function GraphQLContainer({
         gqlUrl,
       });
     
-    setNewRequestSSE(false);
-    setComposerWarningMessage({});
-   
   };
 
   return (
     <div
-      className="composerContents_content"
+      className="ml-2 mr-2"
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
     >
