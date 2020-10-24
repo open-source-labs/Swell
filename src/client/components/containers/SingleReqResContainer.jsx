@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import connectionController from "../../controllers/reqResController";
 import RequestTabs from "../display/RequestTabs.jsx";
 import RestRequestContent from "../display/RestRequestContent.jsx";
+import WSRequestContent from "../display/WSRequestContent.jsx";
+import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
+import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
@@ -154,6 +157,15 @@ const SingleReqResContainer = (props) => {
         <div className='is-neutral-200-box'>
           {network === 'rest' &&
             <RestRequestContent request={content.request}/>
+          }
+          {network === 'ws' &&
+            <WSRequestContent request={content.request}/>
+          }
+          {network === 'grpc' &&
+            <GRPCRequestContent request={content.request}/>
+          }
+          {network === 'graphQL' &&
+            <GraphQLRequestContent request={content.request}/>
           }
         </div>
       }
