@@ -55,6 +55,7 @@ const initialState = {
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
   dataPoints: [],
+  currentResponse: {},
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -301,6 +302,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         introspectionData: action.payload,
+      };
+    }
+
+    case types.SAVE_CURRENT_RESPONSE_DATA: {
+      return {
+        ...state,
+        currentResponse: action.payload,
       };
     }
 

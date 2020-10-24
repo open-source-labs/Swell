@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from "../../../../src/client/actions/actions.js";
+
 import connectionController from "../../controllers/reqResController";
 import RequestTabs from "../display/RequestTabs.jsx";
 import RestRequestContent from "../display/RestRequestContent.jsx";
@@ -9,6 +12,7 @@ import ReqResCtrl from "../../controllers/reqResController";
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     content,
@@ -149,7 +153,9 @@ const SingleReqResContainer = (props) => {
             {connection === "uninitialized" &&
               <button
                 className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7"
-                onClick={() => ReqResCtrl.openReqRes(content.id)}
+                onClick={() => {
+                  ReqResCtrl.openReqRes(content.id);
+                }}
                 >
                 Send
               </button>
@@ -158,7 +164,10 @@ const SingleReqResContainer = (props) => {
             {connection !== "uninitialized" &&
               <button
                 className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
-                onClick={() => ReqResCtrl.openReqRes(content.id)}
+                onClick={() => {
+                  ReqResCtrl.openReqRes(content.id);
+                  dispatch(actions.saveCurrentResponseData(content));
+                }}
                 >
                 View Response
               </button>
