@@ -37,7 +37,6 @@ export const ResponsePaneContainer = () => {
         </div>
         {/* RESPONSES CONTENT */}
       { activeTab === 'events' && <EventsContainer />}
-      
       { activeTab === 'headers' && <HeadersContainer />}
       { activeTab === 'cookies' && <CookiesContainer />}
 

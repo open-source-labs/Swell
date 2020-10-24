@@ -4,6 +4,7 @@ import ResponseEventsDisplay from "../display/ResponseEventsDisplay.jsx";
 import ResponseHeadersDisplay from "../display/ResponseHeadersDisplay.jsx";
 import ResponseCookiesDisplay from "../display/ResponseCookiesDisplay.jsx";
 import ResponseSubscriptionDisplay from "../display/ResponseSubscriptionDisplay.jsx";
+import HeadersContainer from "./HeadersContainer"
 
 class ResponseContainer extends Component {
   constructor(props) {
@@ -82,6 +83,10 @@ class ResponseContainer extends Component {
             tabName={this.state.openTab}
             responseContent={this.props.content.response}
           />
+          // <HeadersContainer
+          //   tabName={this.state.openTab}
+          //   responseContent={this.props.content.response}
+          // />
         )}
         {this.state.openTab === "Response Metadata" && (
           <ResponseHeadersDisplay
