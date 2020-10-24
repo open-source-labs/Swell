@@ -1,5 +1,7 @@
 import React, { Component, useState } from 'react'
 import EventsContainer from './EventsContainer'
+import HeadersContainer from './HeadersContainer'
+import CookiesContainer from './CookiesContainer'
 
 export const ResponsePaneContainer = () => {
   const [activeTab, setActiveTab] = useState('events');
@@ -14,25 +16,30 @@ export const ResponsePaneContainer = () => {
         <div className="tabs">
           <ul className="is-flex is-justify-content-space-evenly">
             <li className={activeTab === 'events' ? 'is-active' : ''}>
-              <a onClick={() => setActiveTab('events')} > Events
-              </a>
-            </li>
+            <a 
+              onClick={() => setActiveTab('events')}
+            > Events
+            </a>
+          </li>
             <li className={activeTab === 'headers' ? 'is-active' : ''}>
               <a 
                 onClick={() => setActiveTab('headers')}
-              >Headers
+              > Headers
               </a>
             </li>
             <li className={activeTab === 'cookies' ? 'is-active' : ''}>
               <a 
                 onClick={() => setActiveTab('cookies')}
-              >Cookies
+              > Cookies
               </a>
             </li>
           </ul>
         </div>
         {/* RESPONSES CONTENT */}
       { activeTab === 'events' && <EventsContainer />}
+      
+      { activeTab === 'headers' && <HeadersContainer />}
+      { activeTab === 'cookies' && <CookiesContainer />}
 
       </div>
   )

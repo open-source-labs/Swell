@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default function EventsContainer() {
+export default function CookiesContainer() {
 
   return (
     <div className='mx-3'>
-      Events
+      Cookies
     </div>
   )
 }
