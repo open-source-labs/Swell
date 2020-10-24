@@ -22,7 +22,7 @@ export default function NavBarContainer() {
         </button>
 
         <button
-          className="button is-small is-primary is-outlined button-padding-verticals ml-3"
+          className="button is-small is-primary is-outlined button-padding-verticals mx-3"
           type="button"
           onClick={() => {
             setShowModal(true);

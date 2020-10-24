@@ -10,7 +10,7 @@ export const ContentsContainer = () => {
   return (
     <div className="column is-one-third">
       {/* HEADER */}
-      <div className="hero is-primary">
+      <div className="hero is-primary has-text-centered">
         <h3>Workspace</h3>
       </div>
 
