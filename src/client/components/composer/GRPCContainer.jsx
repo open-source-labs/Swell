@@ -9,6 +9,7 @@ import historyController from "../../controllers/historyController";
 import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog";
 import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm";
 import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm";
+import GRPCTypeAndEndpointEntryForm from "./NewRequest/GRPCTypeAndEndpointEntryForm";
 
 export default function GRPCContainer({
   setNewRequestFields,
@@ -414,7 +415,7 @@ export default function GRPCContainer({
     >
       <h1 className="composer_title">Create New GRPC Request</h1>
 
-      <FieldEntryForm
+      <GRPCTypeAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestHeaders={newRequestHeaders}
         newRequestStreams={newRequestStreams}
