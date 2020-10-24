@@ -25,6 +25,8 @@ const SingleReqResContainer = (props) => {
       url,
       timeReceived,
       timeSent,
+      rpc,
+      service,
     },
     reqResUpdate,
     reqResDelete,
@@ -160,7 +162,7 @@ const SingleReqResContainer = (props) => {
             <RestRequestContent request={content.request}/>
           }
           {network === 'grpc' &&
-            <GRPCRequestContent request={content.request}/>
+            <GRPCRequestContent request={content.request} rpc={content.rpc} service={content.service}/>
           }
           {network === 'graphQL' &&
             <GraphQLRequestContent request={content.request}/>
