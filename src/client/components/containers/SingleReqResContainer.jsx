@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import connectionController from "../../controllers/reqResController";
 import RequestTabs from "../display/RequestTabs.jsx";
 import RestRequestContent from "../display/RestRequestContent.jsx";
-import WSRequestContent from "../display/WSRequestContent.jsx";
 import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
 import WebSocketWindow from "../display/WebSocketWindow";
@@ -147,19 +146,18 @@ const SingleReqResContainer = (props) => {
         <div className={'is-flex-grow-3 is-size-7'}>{url}</div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
-      <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card' 
-        onClick={() => { setShowDetails(showDetails === false)}}
-        >
-        View Request Details
-      </div>
+      {network !== 'ws' &&
+        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card' 
+          onClick={() => { setShowDetails(showDetails === false)}}
+          >
+          View Request Details
+        </div>
+      }
       {/* REQUEST ELEMENTS */}
       {showDetails === true &&
         <div className='is-neutral-200-box'>
           {network === 'rest' &&
             <RestRequestContent request={content.request}/>
-          }
-          {network === 'ws' &&
-            <WSRequestContent request={content.request}/>
           }
           {network === 'grpc' &&
             <GRPCRequestContent request={content.request}/>
