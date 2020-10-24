@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import connectionController from "../../controllers/reqResController";
-import OpenBtn from "../display/OpenBtn.jsx";
-import CloseBtn from "../display/CloseBtn.jsx";
 import RequestTabs from "../display/RequestTabs.jsx";
-import ResponseContainer from "./ResponseContainer.jsx";
+import RestRequestContent from "../display/RestRequestContent.jsx";
+import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
+import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
 import WebSocketWindow from "../display/WebSocketWindow";
-import dropDownArrow from "../../../assets/icons/arrow_drop_down_white_192x192.png";
+import ReqResCtrl from "../../controllers/reqResController";
 
 const SingleReqResContainer = (props) => {
+  const [showDetails, setShowDetails] = useState(false);
 
   const {
     content,
@@ -28,6 +29,7 @@ const SingleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
   } = props;
+  const network = content.request.network;
 
 // content.minimized and content.checked are not destructured.
 // There is an issue with destructuring them from content, updating them, and passing
@@ -74,29 +76,18 @@ const SingleReqResContainer = (props) => {
   }
 
   const contentBody = [];
-  if (/wss?:\/\//.test(protocol) && !graphQL) {
-    contentBody.push(
-      <WebSocketWindow
-        key={0}
-        outgoingMessages={request.messages}
-        incomingMessages={response.messages}
-        content={content}
-        connection={connection}
-      />
-    );
+
+  // WEBSOCKETS:
+  if(network === 'ws') {
+    // TREAT WEBSOCKETS
+    // INSERT CODE HERE
   } else {
+    // GRAPHQL, GRPC, REST:
     contentBody.push(
       <RequestTabs requestContent={request} key={0} />
     );
     if (connection !== "uninitialized") {
-      contentBody.push(
-        <ResponseContainer
-          content={content}
-          connectionType={connectionType}
-          reqResUpdate={reqResUpdate}
-          key={1}
-        />
-      );
+      // IF NOT SENT, BUTTON NEEDS TO READ SEND
     }
   }
 
@@ -148,108 +139,52 @@ const SingleReqResContainer = (props) => {
     : "composer_subtitle_arrow-closed";
   
   return (
-    <div>
-      <div className="resreq_wrap" id={id}>
-        <div className="title-row">
-          <span
-            className="primary-title highlighter title_reverse-offset"
-            onClick={minimize}
-          >
-            <span>
-              <img className={arrowClass} src={dropDownArrow} alt=""/>
-            </span>
-            <pre>
-              <p> </p>
-            </pre>
-            {request.method}
-          </span>
-          <span className="primary-title ">{url}</span>
-        </div>
-        {
-          //----------------------------------------
-          //Contitionally minimize the current reqRescontainer
-          //----------------------------------------
-          !content.minimized && (
-            <>
-              <div className="grid-7">
-                <div>
-                  <input
-                    id={id}
-                    checked={content.checked}
-                    className="reqres_select-radio"
-                    name="resreq-select"
-                    type="checkbox"
-                    onChange={onCheckHandler}
-                  />
-                </div>
-                <div className="btn-sm">
-                  <OpenBtn
-                    stylesObj={openButtonStyles}
-                    content={content}
-                    connectionStatus={connection}
-                    reqResUpdate={reqResUpdate}
-                  />
-                  <CloseBtn
-                    stylesObj={closeButtonStyles}
-                    content={content}
-                    connectionStatus={connection}
-                  />
-                </div>
-
-                <div className="btn-sm">
-                  <button
-                    type="button"
-                    className="btn resreq_remove"
-                    id={request.method}
-                    onClick={removeReqRes}
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <div>{statusLight}</div>
-                
-                <span className="tertiary-title">
-                  {connectionType}
-                </span>
-
-                {request.method === "SUBSCRIPTION" ||
-                /wss?:\/\//.test(protocol) ||
-                connectionType === "SSE" ? (
-                  <></>
-                ) : (
-                  <span
-                    className="tertiary-title roundtrip"
-                    title="The amount of time it takes to receive response"
-                  >
-                    Roundtrip:{" "}
-                    {connection === "open" ||
-                    connection === "pending" ||
-                    timeReceived === null
-                      ? 0
-                      : timeReceived -
-                        timeSent}{" "}
-                    ms
-                  </span>
-                )}
-                <div className="tertiary-title">
-                  {renderStatusCode()}
-                </div>
-              </div>
-              <div style={http2Display} className="httptwo">
-                HTTP2 connection: Requests with the same host will share a
-                single HTTP2 connection
-              </div>
-              {connection === "error" && (
-                <div className="networkerror">
-                  There was a network error in connecting to endpoint
-                </div>
-              )}
-              {contentBody}
-            </>
-          )
-        }
+    <div className="m-3">
+      {/* TITLE BAR */}
+      <div className='is-flex cards-titlebar'>
+        <div className={`is-flex-grow-1 is-${network}`}>{request.method}</div>
+        <div className={'is-flex-grow-3 is-size-7'}>{url}</div>
       </div>
+      {/* VIEW REQUEST DETAILS / MINIMIZE */}
+      {network !== 'ws' &&
+        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card' 
+          onClick={() => { setShowDetails(showDetails === false)}}
+          >
+          View Request Details
+        </div>
+      }
+      {/* REQUEST ELEMENTS */}
+      {showDetails === true &&
+        <div className='is-neutral-200-box'>
+          {network === 'rest' &&
+            <RestRequestContent request={content.request}/>
+          }
+          {network === 'grpc' &&
+            <GRPCRequestContent request={content.request}/>
+          }
+          {network === 'graphQL' &&
+            <GraphQLRequestContent request={content.request}/>
+          }
+        </div>
+      }
+      {/* REMOVE / SEND BUTTONS */}
+      <div className="is-flex">
+        <button 
+          className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+          id={request.method}
+          onClick={removeReqRes}
+          >
+          Remove
+        </button>
+
+        <button
+          className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7"
+          onClick={() => ReqResCtrl.openReqRes(content.id)}
+          >
+          Send
+        </button>
+      </div>
+
     </div>
   );
 }

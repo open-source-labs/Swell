@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
+import { useHistory } from "react-router-dom";
 import historyController from '../../controllers/historyController';
 
 const History = ({ newRequestFields, content, content: { request : { method, 
@@ -10,9 +11,16 @@ const History = ({ newRequestFields, content, content: { request : { method,
   servicesObj, protoContent }, setNewRequestFields, setNewRequestHeaders, setNewRequestCookies, 
   setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm }) => {
 
+  const routerHistory = useHistory();
+  const routeChange = (path) => { 
+    routerHistory.push(path);
+  }
+  
   const addHistoryToNewRequest = () => {
+    
     let requestFieldObj = {};
     if (network === 'rest') {
+      routeChange('/composer/rest');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -25,6 +33,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
     };
     if (network === 'ws') {
+      routeChange('/composer/ws');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -37,6 +46,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
     };
     if (network === 'graphQL') {
+      routeChange('/composer/graphql');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -49,6 +59,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
     };
     if (network === 'grpc') {
+      routeChange('/composer/grpc');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -121,21 +132,24 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
       setNewRequestStreams(requestStreamsObj)
 
+      // BELOW WAS COMMENTED OUT IN v7
       // grab the dropdown lists and set its selected value to equal what is in the history
-      const dropdownService = document.getElementById('dropdownService').options;
-      for (const option of dropdownService) {
-        if (option.text === service) {
-          option.selected = true;
-        }
-      }
-      const dropdownRequest = document.getElementById('dropdownRequest').options;
-      for (const option of dropdownRequest) {
-        if (option.text === rpc) {
-          option.selected = true;
-        }
-      }
+      // const dropdownService = document.getElementById('dropdownService').options;
+      // for (const option of dropdownService) {
+      //   if (option.text === service) {
+      //     option.selected = true;
+      //   }
+      // }
+      // const dropdownRequest = document.getElementById('dropdownRequest').options;
+      // console.log(dropdownRequest);
+      // for (const option of dropdownRequest) {
+      //   console.log(option);
+      //   if (option.text === rpc) {
+      //     option.selected = true;
+      //   }
+      // }
       // update streaming type button displayed next to the URL
-      document.getElementById('stream').innerText = method;
+      // document.getElementById('stream').innerText = method;
     }
   }
 
@@ -145,7 +159,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
   }
 
     return (
-      <div className="history-container" onClick={() => focusOnForm()} >
+      <div className="history-container" >
         <div className="history-text-container" onClick={() => addHistoryToNewRequest()}>
           <div className="history-method"> {method} </div>
           <div className="history-url"> {url} </div>
