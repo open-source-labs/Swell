@@ -33,23 +33,9 @@ const SingleReqResContainer = (props) => {
   } = props;
   const network = content.request.network;
 
-// content.minimized and content.checked are not destructured.
-// There is an issue with destructuring them from content, updating them, and passing
-// the new content in reqResUpdate
-
-  const onCheckHandler = () => {
-    content.checked = !content.checked;
-    reqResUpdate(content);
-  }
-
   const removeReqRes = () => {
     connectionController.closeReqRes(id);
     reqResDelete(content);
-  }
-
-  const minimize = () => {
-    content.minimized = !content.minimized;
-    reqResUpdate(content);
   }
 
   const renderStatusCode = () => {
@@ -78,20 +64,6 @@ const SingleReqResContainer = (props) => {
   }
 
   const contentBody = [];
-
-  // WEBSOCKETS:
-  if(network === 'ws') {
-    // TREAT WEBSOCKETS
-    // INSERT CODE HERE
-  } else {
-    // GRAPHQL, GRPC, REST:
-    contentBody.push(
-      <RequestTabs requestContent={request} key={0} />
-    );
-    if (connection !== "uninitialized") {
-      // IF NOT SENT, BUTTON NEEDS TO READ SEND
-    }
-  }
 
   const openButtonStyles = {
     display:
@@ -134,11 +106,6 @@ const SingleReqResContainer = (props) => {
     default:
       console.log("not a valid connection for content object");
   }
-
-  // TODO: remove later
-  const arrowClass = !content.minimized
-    ? "composer_subtitle_arrow-open"
-    : "composer_subtitle_arrow-closed";
   
   return (
     <div className="m-3">
@@ -170,22 +137,33 @@ const SingleReqResContainer = (props) => {
         </div>
       }
       {/* REMOVE / SEND BUTTONS */}
-      <div className="is-flex">
-        <button 
-          className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
-          id={request.method}
-          onClick={removeReqRes}
-          >
-          Remove
-        </button>
-
-        <button
-          className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7"
-          onClick={() => ReqResCtrl.openReqRes(content.id)}
-          >
-          Send
-        </button>
-      </div>
+        <div className="is-flex">
+          <button 
+            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+            id={request.method}
+            onClick={removeReqRes}
+            >
+            Remove
+          </button>
+          {/* SEND BUTTON */}
+            {connection === "uninitialized" &&
+              <button
+                className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7"
+                onClick={() => ReqResCtrl.openReqRes(content.id)}
+                >
+                Send
+              </button>
+            }
+            {/* VIEW RESPONSE BUTTON */}
+            {connection !== "uninitialized" &&
+              <button
+                className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+                onClick={() => ReqResCtrl.openReqRes(content.id)}
+                >
+                View Response
+              </button>
+            }
+        </div>
 
     </div>
   );
