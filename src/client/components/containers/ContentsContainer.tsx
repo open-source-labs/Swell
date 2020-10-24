@@ -9,7 +9,7 @@ export const ContentsContainer = () => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="column is-one-third is-flex is-flex-direction-column is-tall">
+    <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300">
       {/* HEADER */}
       <div className="hero is-primary has-text-centered">
         <h3>Workspace</h3>
@@ -46,20 +46,12 @@ export const ContentsContainer = () => {
       </div>
 
       {/* BARGRAPH CONTENT */}
-        {/* <div
-          className="is-bottom is-flex-wrap-full"
-          > */}
-          <div 
-            className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable"
-            onClick={() => setShowGraph(showGraph === false)}
-            >
-              {/* <div
-                className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-wide"
-                > */}
-                  View Performance Charts
-              {/* </div> */}
-          </div>
-        {/* </div> */}
+        <div 
+          className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
+          onClick={() => setShowGraph(showGraph === false)}
+          >
+            View Performance Charts
+        </div>
         {/* <BarGraph /> */}
     </div>
   );
