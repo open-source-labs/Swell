@@ -51,6 +51,9 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
   },
+  resetComposerFields : () => {
+    dispatch(actions.resetComposerFields());
+  }
 });
 
 const ComposerContainer = (props) => {

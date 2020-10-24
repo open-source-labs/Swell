@@ -1,21 +1,18 @@
-#restMethodButton {
-background-color: $rest;
-color: whitesmoke;
+
+
+
+.include-header-checkbox {
+  background: #FFFFFF;
+  /* neutral-300 */
+  border: 1px solid black;
+  box-sizing: border-box;
+  border-radius: 2px;
+  padding: 0px 5px;
+  border-color: lightslategrey
 }
 
-#graphQLMethodButton {
-  background-color: $graphql;
-  color: whitesmoke;
+.add-header-or-cookie-button {
+  color: $primary;
+  border-color: $primary;
+  width: 100px;
 }
-
-#stream {
-  background-color: $grpc;
-  color: whitesmoke;
-}
-
-#webSocketButton {
-  background-color: $websockets;
-  color: whitesmoke;
-}
-
-

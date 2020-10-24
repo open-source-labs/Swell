@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Component, useEffect } from "react";
 // import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const RestMethodAndEndpointEntryForm = ({
@@ -12,6 +12,18 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBody,
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
+  const dropdownEl = useRef();
+
+  
+  useEffect(() => {
+    const closeDropdown = (event) => {
+      if (!dropdownEl.current.contains(event.target)) {
+        setDropdownIsActive(false);
+      }
+    }
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, []);
   
   const warningCheck = () => {
     if (warningMessage.uri) {
@@ -49,15 +61,18 @@ const RestMethodAndEndpointEntryForm = ({
     }); 
   };
   
-  
+
 
   return (
     <div>
       {/* ************** RestMethodAndEndpointEntryForm ************** */}
-        <div className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+        <div 
+          ref={dropdownEl} 
+          className={` is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}
+        >
     
           <div className="dropdown-trigger">
-            <button id="restMethodButton" className="button is-primary-100" aria-haspopup="true" aria-controls="dropdown-menu"
+            <button className="is-rest button" aria-haspopup="true" aria-controls="dropdown-menu"
               onClick={() => setDropdownIsActive(!dropdownIsActive)}
             >
               <span>{newRequestFields.method}</span>

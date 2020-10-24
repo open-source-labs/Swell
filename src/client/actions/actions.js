@@ -68,6 +68,11 @@ export const setComposerWarningMessage = (message) => ({
   payload: message,
 });
 
+export const resetComposerFields = () => ({
+  type: types.RESET_COMPOSER_FIELDS
+});
+
+
 export const setNewRequestFields = (requestObj) => ({
   type: types.SET_NEW_REQUEST_FIELDS,
   payload: requestObj,

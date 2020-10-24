@@ -34,7 +34,7 @@ const GRPCTypeAndEndpointEntryForm = ({
   return (
     <div className={`ml-2 mr-2 is-flex is-justify-content-center `}>
       {/* button id is now stream for vanilla JS selector, this should change */}
-      <button id="stream" className="button is-primary-100" >
+      <button id="stream" className="button is-grpc" >
         <span>{grpcStreamLabel}</span>
       </button>
       <input
