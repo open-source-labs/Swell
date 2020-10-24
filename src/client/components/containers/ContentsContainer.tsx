@@ -46,13 +46,20 @@ export const ContentsContainer = () => {
       </div>
 
       {/* BARGRAPH CONTENT */}
+        {showGraph &&
+          <BarGraph />
+        }
         <div 
           className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
           onClick={() => setShowGraph(showGraph === false)}
           >
-            View Performance Charts
+            {showGraph &&
+              'Hide Performance Charts'
+            }
+            {!showGraph &&
+              'View Performance Charts'
+            }
         </div>
-        {/* <BarGraph /> */}
     </div>
   );
 }
