@@ -1,5 +1,5 @@
 /* eslint-disable default-case */
-import React, { useRef } from "react";
+import React from "react";
 
 const WSEndpointEntryForm = ({
   warningMessage,
@@ -28,7 +28,7 @@ const WSEndpointEntryForm = ({
 
   return (
     <div className={`ml-2 mr-2 is-flex is-justify-content-center `}>
-      <div id="webSocketButton" className="button is-primary-100">
+      <div id="webSocketButton" className="button is-ws">
         <span>WS</span>
       </div>
       <input

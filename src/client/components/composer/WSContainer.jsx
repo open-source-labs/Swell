@@ -1,17 +1,10 @@
 import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import GRPCProtoEntryForm from "./NewRequest/GRPCProtoEntryForm.jsx";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
-import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
-import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
-import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import historyController from "../../controllers/historyController";
-import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog";
-import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm";
-import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm";
 import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
 
 export default function WSContainer({
+  resetComposerFields,
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
@@ -26,48 +19,16 @@ export default function WSContainer({
     grpcUrl,
     network,
   },
-  setNewRequestBody,
-  newRequestBody,
-  newRequestBody: {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  },
-  setNewRequestHeaders,
-  newRequestHeaders,
-  newRequestHeaders: { headersArr },
-  setNewRequestCookies,
-  newRequestCookies,
-  newRequestCookies: { cookiesArr },
-  setNewRequestStreams,
-  newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
   setNewRequestSSE,
-  newRequestSSE: { isSSE },
   currentTab,
-  introspectionData,
   setComposerWarningMessage,
-  setComposerDisplay,
   warningMessage,
   reqResAdd,
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
-    //if url is only http/https/ws/wss://
+    // if url is only http/https/ws/wss://
     // OR if url doesn't contain http/https/ws/wss
     if ((/https?:\/\/$|wss?:\/\/$/.test(url)) 
       || (!/(https?:\/\/)|(wss?:\/\/)/.test(url))) {
@@ -111,48 +72,12 @@ export default function WSContainer({
       tab: currentTab,
     };
       
-
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
 
     //reset for next request
-    setNewRequestHeaders({
-      headersArr: [],
-      count: 0,
-    });
-
-    setNewRequestStreams({
-      ...newRequestStreams,
-    });
-
-    setNewRequestCookies({
-      cookiesArr: [],
-      count: 0,
-    });
-
-    setNewRequestBody({
-      ...newRequestBody,
-      bodyContent: "",
-      bodyVariables: "",
-      bodyType: "raw",
-      rawType: "Text (text/plain)",
-      JSONFormatted: true,
-    });
-
-    setNewRequestFields({
-      ...newRequestFields,
-      method,
-      protocol: "",
-      url,
-      restUrl,
-      wsUrl,
-      gqlUrl,
-      grpcUrl,
-      graphQL,
-      gRPC,
-    });
-
+    resetComposerFields();
 
     setNewRequestFields({
       ...newRequestFields,
@@ -160,13 +85,10 @@ export default function WSContainer({
       url: wsUrl,
       wsUrl,
     });
-
-    setNewRequestSSE(false);
-    setComposerWarningMessage({});
   };
 
   return (
-    <div>
+    <div className="ml-2 mr-2">
       <WSEndpointEntryForm
         newRequestFields={newRequestFields}
         setNewRequestFields={setNewRequestFields}

@@ -38,28 +38,28 @@ $text: $neutral-500;
 }
 
 .is-rest {
-  color: $neutral-200;
-  background-color: $rest;
+  color: $neutral-200  !important;
+  background-color: $rest  !important;
 }
 
 .is-graphQL {
-  color: $neutral-200;
-  background-color: $graphql;
+  color: $neutral-200 !important;
+  background-color: $graphql !important;
 }
 
 .is-grpc {
-  color: $neutral-200;
-  background-color: $grpc;
+  color: $neutral-200 !important;
+  background-color: $grpc !important;
 }
 
 .is-ws {
-  color: $neutral-200;
-  background-color: $websockets;
+  color: $neutral-200 !important;
+  background-color: $websockets !important;
 }
 
 .is-neutral-300 {
-  color: $neutral-600;
-  background-color: $neutral-300;
+  color: $neutral-600 !important;
+  background-color: $neutral-300 !important;
 }
 
 .is-neutral-100 {

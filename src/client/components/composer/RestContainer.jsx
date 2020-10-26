@@ -1,12 +1,14 @@
 import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import historyController from "../../controllers/historyController";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
+import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
 
+
 export default function RestContainer({
+  resetComposerFields,
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
@@ -62,6 +64,14 @@ export default function RestContainer({
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
+    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
+      //if url is only http/https/ws/wss://
+      validationMessage.uri = "Enter a valid URI";
+    }
+    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
+      //if url doesn't have http/https/ws/wss://
+      validationMessage.uri = "Enter a valid URI";
+    }
     if (!JSONFormatted && rawType === "application/json") {
       validationMessage.json = "Please fix JSON body formatting errors";
     }
@@ -69,114 +79,76 @@ export default function RestContainer({
   };
 
   const addNewRequest = () => {
-    const validated = requestValidationCheck();
-    if (Object.keys(validated).length === 0) {
-      let reqRes;
-      const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-      // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-      if (!/wss?:\/\//.test(protocol) && !gRPC) {
-        const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-        const host = protocol + URIWithoutProtocol.split("/")[0];
-        let path = `/${URIWithoutProtocol.split("/")
-          .splice(1)
-          .join("/")
-          .replace(/\/{2,}/g, "/")}`;
-        if (path.charAt(path.length - 1) === "/" && path.length > 1) {
-          path = path.substring(0, path.length - 1);
-        }
-        path = path.replace(/https?:\//g, "http://");
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: url.match(/https?:\/\//)[0],
-          host,
-          path,
-          url,
-          graphQL,
-          gRPC,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: null,
-          checkSelected: false,
-          protoPath,
-          request: {
-            method,
-            headers: headersArr.filter(
-              (header) => header.active && !!header.key
-            ),
-            cookies: cookiesArr.filter(
-              (cookie) => cookie.active && !!cookie.key
-            ),
-            body: bodyContent || "",
-            bodyType,
-            bodyVariables: bodyVariables || "",
-            rawType,
-            isSSE,
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            grpcUrl,
-          },
-          response: {
-            headers: null,
-            events: null,
-          },
-          checked: false,
-          minimized: false,
-          tab: currentTab,
-        };
+    const warnings = requestValidationCheck();
+    if (Object.keys(warnings).length > 0) {
+      setComposerWarningMessage(warnings);
+      return;
+    } 
+
+    let reqRes;
+    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
+    if (!/wss?:\/\//.test(protocol) && !gRPC) {
+      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
+      const host = protocol + URIWithoutProtocol.split("/")[0];
+      let path = `/${URIWithoutProtocol.split("/")
+        .splice(1)
+        .join("/")
+        .replace(/\/{2,}/g, "/")}`;
+      if (path.charAt(path.length - 1) === "/" && path.length > 1) {
+        path = path.substring(0, path.length - 1);
       }
-      
-      // add request to history
-      historyController.addHistoryToIndexedDb(reqRes);
-      reqResAdd(reqRes);
-
-      //reset for next request
-      setNewRequestHeaders({
-        headersArr: [],
-        count: 0,
-      });
-
-      setNewRequestStreams({
-        ...newRequestStreams,
-      });
-
-      setNewRequestCookies({
-        cookiesArr: [],
-        count: 0,
-      });
-
-      setNewRequestBody({
-        ...newRequestBody,
-        bodyContent: "",
-        bodyVariables: "",
-        bodyType: "raw",
-        rawType: "Text (text/plain)",
-        JSONFormatted: true,
-      });
-
-      setNewRequestFields({
-        ...newRequestFields,
-        method,
-        protocol: "",
+      path = path.replace(/https?:\//g, "http://");
+      reqRes = {
+        id: uuid(),
+        created_at: new Date(),
+        protocol: url.match(/https?:\/\//)[0],
+        host,
+        path,
         url,
-        restUrl,
-        wsUrl,
-        gqlUrl,
-        grpcUrl,
         graphQL,
         gRPC,
-      });
-
-    
-      setNewRequestSSE(false);
-      setComposerWarningMessage({});
-    } else {
-      setComposerWarningMessage(validated);
-      // setComposerDisplay("Warning");
+        timeSent: null,
+        timeReceived: null,
+        connection: "uninitialized",
+        connectionType: null,
+        checkSelected: false,
+        protoPath,
+        request: {
+          method,
+          headers: headersArr.filter(
+            (header) => header.active && !!header.key
+          ),
+          cookies: cookiesArr.filter(
+            (cookie) => cookie.active && !!cookie.key
+          ),
+          body: bodyContent || "",
+          bodyType,
+          bodyVariables: bodyVariables || "",
+          rawType,
+          isSSE,
+          network,
+          restUrl,
+          wsUrl,
+          gqlUrl,
+          grpcUrl,
+        },
+        response: {
+          headers: null,
+          events: null,
+        },
+        checked: false,
+        minimized: false,
+        tab: currentTab,
+      };
     }
+    
+    // add request to history
+    historyController.addHistoryToIndexedDb(reqRes);
+    reqResAdd(reqRes);
+    
+    //reset for next request
+    resetComposerFields();
   };
 
   const handleSSEPayload = (e) => {
@@ -185,7 +157,7 @@ export default function RestContainer({
 
   return (
     <div
-      className="composerContents_content"
+      className="ml-2 mr-2"
       tabIndex={0}
     >
       <h1 className="composer_title">Create New REST Request</h1>

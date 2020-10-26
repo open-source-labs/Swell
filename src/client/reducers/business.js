@@ -112,6 +112,36 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.RESET_COMPOSER_FIELDS: {
+      return {
+        ...state,
+        newRequestHeaders: {
+          headersArr: [],
+          count: 0,
+        },
+        newRequestCookies: {
+          cookiesArr: [],
+          count: 0,
+        },
+        newRequestBody: {
+          ...state.newRequestBody,
+          bodyContent: "",
+          bodyVariables: "",
+          bodyType: "raw",
+          rawType: "Text (text/plain)",
+          JSONFormatted: true,
+        },
+        newRequestFields: {
+          ...state.newRequestFields,
+          protocol: "",
+        },
+        newRequestSSE: {
+          isSSE: false,
+        },
+        warningMessage: {},
+      }
+    }
+
     case types.COLLECTION_TO_REQRES: {
       const reqResArray = [...action.payload];
       return {
