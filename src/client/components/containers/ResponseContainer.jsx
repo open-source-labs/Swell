@@ -83,10 +83,6 @@ class ResponseContainer extends Component {
             tabName={this.state.openTab}
             responseContent={this.props.content.response}
           />
-          // <HeadersContainer
-          //   tabName={this.state.openTab}
-          //   responseContent={this.props.content.response}
-          // />
         )}
         {this.state.openTab === "Response Metadata" && (
           <ResponseHeadersDisplay
