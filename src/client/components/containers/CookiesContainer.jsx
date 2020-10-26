@@ -1,23 +1,20 @@
 import React from 'react';
+import CookieContainer from './CookieContainer'
 
-export default function CookiesContainer() {
+export default function CookiesContainer({ currentResponse }) {
+
+  const responseCookies = currentResponse.response.cookies.map((cookie, index) => {
+
+    
+
+    return (
+       <CookieContainer key={index} cookie={cookie} />
+    )
+  })
 
   return (
   <div className='mx-3'>
-      <table className="table is-fullwidth">
-        <thead className="is-size-7">
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody className="is-size-7">
-          <tr>
-            <td>content-type</td>
-            <td>application/json</td>
-          </tr>
-        </tbody>
-      </table>
+      {responseCookies}
     </div>
   )
 }
