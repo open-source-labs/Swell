@@ -1,89 +1,96 @@
-import React, { Component } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const classNames = require("classnames");
 
-class BodyTypeSelect extends Component {
-  constructor(props) {
-    super(props);
-    this.removeContentTypeHeader = this.removeContentTypeHeader.bind(this);
-  }
+const BodyTypeSelect = (props) => {
+  const {
+    setNewRequestBody,
+    newRequestBody,
+    setNewRequestHeaders,
+    newRequestHeaders,
+  } = props;
 
-  removeContentTypeHeader() {
-    const filtered = this.props.newRequestHeaders.headersArr.filter(
+  const [dropdownIsActive, setDropdownIsActive] = useState();
+  const dropdownEl = useRef();
+
+  useEffect(() => {
+    const closeDropdown = (event) => {
+      if (!dropdownEl.current.contains(event.target)) {
+        setDropdownIsActive(false);
+      }
+    }
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, []);
+
+  const removeContentTypeHeader = () => {
+    const filtered = newRequestHeaders.headersArr.filter(
       (header) => header.key.toLowerCase() !== "content-type"
     );
-    this.props.setNewRequestHeaders({
+    setNewRequestHeaders({
       headersArr: filtered,
       count: filtered.length,
     });
   }
 
-  render() {
-    const RawStyleClasses = classNames({
-      composer_bodytype_button: true,
-      "composer_bodytype_button-selected":
-        this.props.newRequestBody.bodyType === "raw",
-    });
-    const XWWWFormUrlEncodedStyleClasses = classNames({
-      composer_bodytype_button: true,
-      "composer_bodytype_button-selected":
-        this.props.newRequestBody.bodyType === "x-www-form-urlencoded",
-    });
-    const NoneStyleClasses = classNames({
-      composer_bodytype_button: true,
-      "composer_bodytype_button-selected":
-        this.props.newRequestBody.bodyType === "none",
-    });
+  const setNewBodyType = (bodyTypeStr) => {
+    setNewRequestBody({
+      ...newRequestBody,
+      bodyType: bodyTypeStr,
+    })
+  }
 
-    return (
-      <div
-        className="composer_protocol_container httpbody"
-        style={{ marginTop: "4px" }}
-      >
-        ************** BodyTypeSelect **************
-        <div
-          style={{ width: "25%" }}
-          className={RawStyleClasses}
-          onMouseDown={() =>
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              bodyType: "raw",
-            })
-          }
+  return (
+    <div ref={dropdownEl} className={`body-type-select  dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+
+      <div className="dropdown-trigger">
+        <button className="button is-small add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
+          onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
-          Raw
-        </div>
-        <div
-          style={{ width: "50%" }}
-          className={XWWWFormUrlEncodedStyleClasses}
-          onMouseDown={() =>
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              bodyType: "x-www-form-urlencoded",
-            })
-          }
-        >
-          x-www-form-urlencoded
-        </div>
-        <div
-          style={{ width: "25%" }}
-          className={NoneStyleClasses}
-          onMouseDown={() => {
-            this.props.setNewRequestBody({
-              ...this.props.newRequestBody,
-              bodyType: "none",
-              bodyContent: "",
-            });
-            this.removeContentTypeHeader();
-          }}
-        >
-          None
-        </div>
+          <span>{newRequestBody.bodyType}</span>
+          <span className="icon is-small">
+            <i className="fas fa-caret-down" aria-hidden="true" />
+          </span>
+        </button>
       </div>
+
+      <div className="dropdown-menu">
+        <ul className="dropdown-content">
+          {newRequestBody.bodyType !== 'raw' &&
+            <li 
+              onClick={() => {
+                setDropdownIsActive(false); 
+                setNewBodyType("raw")
+              }} 
+              className="dropdown-item" 
+            >raw</li>
+          }
+          {newRequestBody.bodyType !== 'x-www-form-urlencoded' &&
+            <li  
+              onClick={() => {
+                setDropdownIsActive(false);
+                setNewBodyType('x-www-form-urlencoded'); 
+              }} 
+              className="dropdown-item" 
+            >x-www-form-urlencoded</li>
+          }
+          {newRequestBody.bodyType !== 'none' &&
+            <li 
+              onClick={() => {
+                setDropdownIsActive(false);
+                setNewBodyType('none')
+                removeContentTypeHeader();
+              }} 
+              className="dropdown-item" 
+            >none</li>
+          }
+        </ul>
+      </div>
+    </div>
     );
   }
-}
+
 
 BodyTypeSelect.propTypes = {
   newRequestBody: PropTypes.object.isRequired,

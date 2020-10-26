@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import WWWForm from "./WWWForm.jsx";
 import BodyTypeSelect from "./BodyTypeSelect.jsx";
 import JSONTextArea from "./JSONTextArea.jsx";
+import RawBodyTypeSelect from "./RawBodyTypeSelect.jsx"
 
 const BodyEntryForm = (props) => {
-  const [show, toggleShow] = useState(true);
+  // const [show, toggleShow] = useState(true);
   const {
     newRequestBody,
     setNewRequestBody,
@@ -13,11 +14,7 @@ const BodyEntryForm = (props) => {
     warningMessage,
   } = props;
 
-  const rawTypeStyles = {
-    display: newRequestBody.bodyType === "raw" ? "block" : "none",
-  };
-
-  const bodyEntryArea = (() => {
+  const bodyEntryArea = () => {
     //BodyType of none : display nothing
     if (newRequestBody.bodyType === "none") {
       return;
@@ -57,63 +54,39 @@ const BodyEntryForm = (props) => {
         }}
       />
     );
-  })();
+  }
 
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open-rest"
-    : "composer_bodyform_container-closed";
+  
 
   return (
     <div>
-      <label
-      className='composer_subtitle' >
-        <div className="label-text" >Body</div>
-          <div className="toggle" >
-            <input type="checkbox" name="check" className="toggle-state" onClick={() => toggleShow((show) => !show)}/>
-            <div className="indicator_body" />
-          </div>
-      </label>
-
-      <div className={bodyContainerClass}>
+      <div className='is-flex'>
         <BodyTypeSelect
           setNewRequestBody={setNewRequestBody}
           newRequestBody={newRequestBody}
           setNewRequestHeaders={setNewRequestHeaders}
           newRequestHeaders={newRequestHeaders}
         />
-
-        <div className="composer_rawtype_textarea_container">
-          <select
-            style={rawTypeStyles}
-            className="composer_rawtype_select"
-            onChange={(e) =>
-              setNewRequestBody({
-                ...newRequestBody,
-                rawType: e.target.value,
-              })
-            }
-            value={newRequestBody.rawType}
-          >
-            Raw Type:
-            <option value="text/plain">Text (text/plain)</option>
-            <option value="application/json">JSON (application/json)</option>
-            <option value="application/javascript">
-              Javascript (application/javascript)
-            </option>
-            <option value="application/xml">XML (application/xml)</option>
-            <option value="text/xml">XML (text/xml)</option>
-            <option value="text/html">HTML (text/html)</option>
-          </select>
-          { // conditionally render warning message
-            warningMessage ? 
-            <div>
-              <div style={{ color: "red", marginTop: "10px" }}>{warningMessage.body || warningMessage.json}</div>
-            </div>
-            : null 
-          }
-          {bodyEntryArea}
-        </div>
+          
+        {/* DROP DOWN MENU FOR SELECTING RAW TEXT TYPE */}
+        { newRequestBody.bodyType === "raw" &&
+          <RawBodyTypeSelect
+            setNewRequestBody={setNewRequestBody}
+            newRequestBody={newRequestBody}
+            setNewRequestHeaders={setNewRequestHeaders}
+            newRequestHeaders={newRequestHeaders}
+          /> 
+        }
       </div>
+          
+      { // conditionally render warning message
+        warningMessage ? 
+        <div>
+          <div >{warningMessage.body || warningMessage.json}</div>
+        </div>
+        : null 
+      }
+      {bodyEntryArea()}
     </div>
   );
 };

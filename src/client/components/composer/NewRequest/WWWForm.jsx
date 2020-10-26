@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import WWWField from './WWWField.jsx';
+import ContentReqRowComposer from './ContentReqRowComposer.jsx';
 
 class WWWForm extends Component {
   constructor(props) {
@@ -129,7 +129,11 @@ class WWWForm extends Component {
   render() {
     let wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
       return (
-        <WWWField key={index} id={wwwField.id} active={wwwField.active} Key={wwwField.key} value={wwwField.value} updateCallback={this.updateWwwField} />
+        <ContentReqRowComposer 
+          data={wwwField} 
+          changeHandler={this.updateWwwField}
+          key={`crrcwwwfield${index}`}
+        />
       )
     })
 
