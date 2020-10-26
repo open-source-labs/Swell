@@ -33,7 +33,7 @@ export const ContentsContainer = () => {
         </ul>
       </div>
       {/* WORKSPACE CONTENT */}
-      <div className="is-flex-grow-3">
+      <div className="is-flex-grow-3 add-vertical-scroll">
 
         {activeTab === 'workspace' && 
           <NavBarContainer />
