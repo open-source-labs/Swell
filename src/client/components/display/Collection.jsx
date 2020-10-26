@@ -18,7 +18,6 @@ class Collection extends Component {
   }
   
   render() {
-    console.log(this.props.content);
     return (
       <div>
 
