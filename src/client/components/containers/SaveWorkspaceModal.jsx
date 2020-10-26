@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from "uuid/v4";
 import collectionsController from "../../controllers/collectionsController.js";
+import * as actions from "../../../../src/client/actions/actions.js";
 
 export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
       reqResArray: clonedArray,
     };
     collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
+    dispatch(actions.collectionAdd(collectionObj));
     setShowModal(false);
   }
 

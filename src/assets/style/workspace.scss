@@ -38,6 +38,12 @@
   width: 33% !important;
 }
 
+.is-primary-link {
+  &:hover {
+    color: $primary-500;
+  }
+}
+
 // CODEMIRROR STYLES
 
 .cm-s-readonly {
