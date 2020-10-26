@@ -1,10 +1,14 @@
 import React, { Component, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import EventsContainer from './EventsContainer'
 import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
+import ResponseContainer from './ResponseContainer'
 
 export const ResponsePaneContainer = () => {
   const [activeTab, setActiveTab] = useState('events');
+  const currentResponse = useSelector(store => store.business.currentResponse); 
+  console.log(currentResponse);
 
   return (
       <div className='column is-one-third'>
@@ -37,9 +41,9 @@ export const ResponsePaneContainer = () => {
         </div>
         {/* RESPONSES CONTENT */}
       { activeTab === 'events' && <EventsContainer />}
-      { activeTab === 'headers' && <HeadersContainer />}
-      { activeTab === 'cookies' && <CookiesContainer />}
-
+      { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
+      { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
+      {currentResponse.response && <ResponseContainer content={currentResponse} />}
       </div>
   )
 

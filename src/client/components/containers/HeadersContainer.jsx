@@ -1,8 +1,19 @@
 import React from 'react';
+import ContentReqRow from '../display/ContentReqRow'
 
-export default function HeadersContainer(props) {
-  console.log('props from headers -=--> ', props)
-  return (
+export default function HeadersContainer({ currentResponse }) {
+
+  const responseHeaders = Object.entries(currentResponse.response.headers).map(([key, value], index) => {
+    return (
+      // <ContentReqRow data={{'key': key, 'value': value}} key={`r${index}`}/>
+      <tr key={index}>
+        <td>{key}</td>
+        <td>{value}</td>
+      </tr>
+    );
+  });
+
+  return ( 
     <div className='mx-3'>
       <table className="table is-fullwidth">
         <thead className="is-size-7">
@@ -12,10 +23,7 @@ export default function HeadersContainer(props) {
           </tr>
         </thead>
         <tbody className="is-size-7">
-          <tr>
-            <td>content-type</td>
-            <td>application/json</td>
-          </tr>
+      {responseHeaders}
         </tbody>
       </table>
     </div>

@@ -27,6 +27,7 @@ export default function RestRequestContent({ request }) {
   // CREATE HEADER COMPONENTS
   const headerRows = headers.map((header, index) => <ContentReqRow data={header} key={`h${index}`}/>);
 
+
   // CREATE COOKIE COMPONENTS
   const cookieRows = cookies.map((cookie, index) => <ContentReqRow data={cookie} key={`h${index}`}/>);
 

@@ -1,6 +1,16 @@
 import React from 'react';
 
-export default function CookiesContainer() {
+export default function CookiesContainer({ currentResponse }) {
+
+  const responseHeaders = Object.entries(currentResponse.response.cookies[0]).map(([key, value], index) => {
+    console.log({key}, {value})
+    return (
+      <tr key={index}>
+        <td>{key}</td>
+        <td>{value.toString()}</td>
+      </tr>
+    )
+  })
 
   return (
   <div className='mx-3'>
@@ -12,12 +22,9 @@ export default function CookiesContainer() {
           </tr>
         </thead>
         <tbody className="is-size-7">
-          <tr>
-            <td>content-type</td>
-            <td>application/json</td>
-          </tr>
+          {responseHeaders}
         </tbody>
-      </table>
+      </table> 
     </div>
   )
 }
