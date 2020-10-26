@@ -6,9 +6,12 @@ export default function ContentReqRowComposer({ data, changeHandler }) {
     <div className="include-header-checkbox">
       <input
         type="checkbox"
+        id={data.id}
+        className='is-checkradio is-black has-no-border'
         checked={data.active}
         onChange={e => changeHandler(data.id, 'active', e.target.checked)}
       />
+      <label htmlFor={data.id}></label>
     </div>
     <input 
       onChange={e => changeHandler(data.id, 'key', e.target.value)} 

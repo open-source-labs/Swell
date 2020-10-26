@@ -4,11 +4,10 @@
 .include-header-checkbox {
   background: #FFFFFF;
   /* neutral-300 */
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   box-sizing: border-box;
   border-radius: 2px;
-  padding: 0px 5px;
-  border-color: lightslategrey
+  
 }
 
 .add-header-or-cookie-button {
@@ -55,4 +54,8 @@
 
 .add-request-button {
   border: 1px solid #3734A9 !important;
+}
+
+.input {
+  outline: none !important;
 }

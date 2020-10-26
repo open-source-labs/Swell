@@ -1,5 +1,14 @@
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
+  
+}
+
+input:focus {
+  outline: none;
+}
+
+.input:focus {
+  outline: none;
 }
 
 #root {
