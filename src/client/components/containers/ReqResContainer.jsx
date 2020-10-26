@@ -37,8 +37,10 @@ const ReqResContainer = (props) => {
   });
 
   return (
-    <div id="reqResContainer">
-      <div id="reqResContainer_inner">{reqResMapped.reverse()}</div>
+    <div>
+      <div>
+        {reqResMapped.reverse()}
+      </div>
     </div>
   );
 }

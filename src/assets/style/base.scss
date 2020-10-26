@@ -1,9 +1,10 @@
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #root {
   height: 100%;
+  // overflow-y: hidden;
 }
 
 body {
@@ -12,7 +13,7 @@ body {
 
 html {
 	// background-color: #eeeeee;
-  overflow: hidden;
+  // overflow: hidden;
   height: 100% !important;
 }
 
@@ -25,4 +26,8 @@ html {
 
 .full-width {
 	width: 100%;
+}
+
+.add-vertical-scroll {
+  overflow-y: auto !important; 
 }
