@@ -5,6 +5,7 @@ import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
+import NewRequestButton from './NewRequest/NewRequestButton.jsx'
 
 
 export default function RestContainer({
@@ -156,11 +157,7 @@ export default function RestContainer({
   };
 
   return (
-    <div
-      className="ml-2 mr-2"
-      tabIndex={0}
-    >
-      <h1 className="composer_title">Create New REST Request</h1>
+    <div className="ml-3 mr-3 ">
 
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
@@ -192,32 +189,25 @@ export default function RestContainer({
           setNewRequestHeaders={setNewRequestHeaders}
         />
       )}
-      {/* SSE CHeckbox, update newRequestSSE in store */}
-      <label className="composer_subtitle_SSE">
-        <div className="label-text">Server Sent Events</div>
-        <span className="toggle">
-          <input
-            type="checkbox"
-            className="toggle-state"
-            name="check"
-            onChange={(e) => {
-              handleSSEPayload(e);
-            }}
-            checked={isSSE}
-          />
-          <div className="indicator" />
-        </span>
-      </label>
 
-      <button
-        className="composer_submit"
-        onClick={() => {
-          addNewRequest();
-        }}
-        type="button"
-      >
-        Add New Request
-      </button>
+      {/* SSE TOGGLE SWITCH */}
+      <div className="field">
+        <input 
+          id="SSEswitch"
+          type="checkbox" 
+          className="switch is-rtl is-outlined is-warning" 
+          onChange={(e) => {
+            handleSSEPayload(e);
+          }}
+          checked={isSSE}
+        ></input>
+        <label htmlFor="SSEswitch">
+          <span className="composer-section-title">Server Sent Events</span>  
+        </label>
+      </div>
+
+      <NewRequestButton onClick={addNewRequest} />
+
     </div>
   )
 }

@@ -7,6 +7,7 @@ import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import historyController from "../../controllers/historyController";
 import GRPCTypeAndEndpointEntryForm from "./NewRequest/GRPCTypeAndEndpointEntryForm";
+import NewRequestButton from './NewRequest/NewRequestButton.jsx'
 
 export default function GRPCContainer({
   resetComposerFields,
@@ -176,7 +177,7 @@ export default function GRPCContainer({
   return (
     <div
       className="ml-2 mr-2"
-      tabIndex={0}
+      // tabIndex={0}
     >
       <h1 className="composer_title">Create New GRPC Request</h1>
 
@@ -206,15 +207,7 @@ export default function GRPCContainer({
         newRequestStreams={newRequestStreams}
         setNewRequestStreams={setNewRequestStreams}
       />
-      <button
-        className="composer_submit"
-        onClick={() => {
-          addNewRequest();
-        }}
-        type="button"
-      >
-        Add New Request
-      </button>
+     <NewRequestButton onClick={addNewRequest} />
     </div>
   )
 }

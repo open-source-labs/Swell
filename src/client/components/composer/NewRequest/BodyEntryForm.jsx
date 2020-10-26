@@ -3,6 +3,8 @@ import WWWForm from "./WWWForm.jsx";
 import BodyTypeSelect from "./BodyTypeSelect.jsx";
 import JSONTextArea from "./JSONTextArea.jsx";
 import RawBodyTypeSelect from "./RawBodyTypeSelect.jsx"
+import JSONPrettify from "./JSONPrettify.jsx"
+import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx"
 
 const BodyEntryForm = (props) => {
   // const [show, toggleShow] = useState(true);
@@ -13,6 +15,7 @@ const BodyEntryForm = (props) => {
     setNewRequestHeaders,
     warningMessage,
   } = props;
+
 
   const bodyEntryArea = () => {
     //BodyType of none : display nothing
@@ -37,19 +40,15 @@ const BodyEntryForm = (props) => {
         />
       );
     }
-    //all other cases..just plain text area
 
     return (
-      <textarea
+      <TextCodeAreaEditable 
+        mode={newRequestBody.rawType}
         value={newRequestBody.bodyContent}
-        className="composer_textarea"
-        type="text"
-        placeholder="Body"
-        rows={10}
-        onChange={(e) => {
+        onChange={(editor, data, value) => {
           setNewRequestBody({
             ...newRequestBody,
-            bodyContent: e.target.value,
+            bodyContent: value,
           });
         }}
       />
@@ -60,22 +59,32 @@ const BodyEntryForm = (props) => {
 
   return (
     <div>
-      <div className='is-flex'>
-        <BodyTypeSelect
-          setNewRequestBody={setNewRequestBody}
-          newRequestBody={newRequestBody}
-          setNewRequestHeaders={setNewRequestHeaders}
-          newRequestHeaders={newRequestHeaders}
-        />
-          
-        {/* DROP DOWN MENU FOR SELECTING RAW TEXT TYPE */}
-        { newRequestBody.bodyType === "raw" &&
-          <RawBodyTypeSelect
+      <div className="composer-section-title">Body</div>
+      <div className='is-flex is-align-items-center is-justify-content-space-between'>
+        <span>
+          <BodyTypeSelect
             setNewRequestBody={setNewRequestBody}
             newRequestBody={newRequestBody}
             setNewRequestHeaders={setNewRequestHeaders}
             newRequestHeaders={newRequestHeaders}
-          /> 
+          />
+              
+          {/* DROP DOWN MENU FOR SELECTING RAW TEXT TYPE */}
+          { newRequestBody.bodyType === "raw" &&
+            <RawBodyTypeSelect
+              setNewRequestBody={setNewRequestBody}
+              newRequestBody={newRequestBody}
+              setNewRequestHeaders={setNewRequestHeaders}
+              newRequestHeaders={newRequestHeaders}
+            /> 
+          }
+        </span>
+        { newRequestBody.bodyType === "raw" &&
+          newRequestBody.rawType === 'application/json' &&
+          <JSONPrettify
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+          />
         }
       </div>
           

@@ -42,10 +42,10 @@ const BodyTypeSelect = (props) => {
   }
 
   return (
-    <div ref={dropdownEl} className={`body-type-select  dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+    <div ref={dropdownEl} className={`body-type-select dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
 
       <div className="dropdown-trigger">
-        <button className="button is-small add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
+        <button className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
           <span>{newRequestBody.bodyType}</span>

@@ -80,7 +80,7 @@ export default function RestRequestContent({ request }) {
               <CodeMirror
                 value={bodyText}
                 options={{
-                  mode: {rawType},
+                  mode: rawType,
                   theme: 'neo readonly',
                   lineNumbers: true,
                   tabSize: 4,

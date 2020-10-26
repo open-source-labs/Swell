@@ -101,7 +101,7 @@ class CookieEntryForm extends Component {
     return (
       <div >
         <div className='is-flex is-justify-content-space-between is-align-content-center'>
-          Cookies
+        <div className="composer-section-title">Cookies</div>
           <button 
             className="button is-small add-header-or-cookie-button"
             onClick={() => this.addCookie(this.createDeepCookieCopy())}> 
