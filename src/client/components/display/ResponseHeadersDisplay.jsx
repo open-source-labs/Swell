@@ -5,6 +5,7 @@ class ResponseHeadersDisplay extends Component {
     super(props);
   }
 
+  
   render() {
     const displayContents = [];
 
