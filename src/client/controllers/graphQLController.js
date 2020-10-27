@@ -54,7 +54,6 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers = {};
-    console.log('reqResObj:',reqResObj);
     reqResObj.request.headers.forEach(({key, value, active}) => {
       if(active) headers[key] = value;
     })
@@ -91,6 +90,7 @@ const graphQLController = {
       .subscribe({
         next(subsEvent) {
           // Notify your application with the new arrived data
+          console.log('new event:', JSON.stringify(subsEvent));
           reqResObj.response.events.push(JSON.stringify(subsEvent.data));
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         },

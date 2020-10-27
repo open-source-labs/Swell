@@ -323,13 +323,11 @@ ipcMain.on("import-collection", (event, args) => {
 
     // names is the list of existing collection names in state
     const collectionNames = args.map((obj) => obj.name);
-
     fs.readFile(filepath, "utf-8", (err, data) => {
       if (err) {
         alert("An error ocurred reading the file :", err.message);
         return;
       }
-
       // parse data, will throw error if not parsable
       let parsed;
       // parsed.name already exists
@@ -364,11 +362,8 @@ ipcMain.on("import-collection", (event, args) => {
           return;
         }
       }
-
       // send data to chromium for state update
-      // ipcMain.send("add-collection", { data });
-      // mainWindow.webContents.send('add-collection', {data});
-      event.sender.send("add-collection", { data });
+      event.sender.send("add-collection", JSON.stringify(JSON.parse(data)));
     });
   });
   //.catch( err => console.log('error in import-collection', err));
