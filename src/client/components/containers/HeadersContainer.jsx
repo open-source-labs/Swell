@@ -1,17 +1,23 @@
 import React from 'react';
-import ContentReqRow from '../display/ContentReqRow'
+import EmptyState from '../display/EmptyState'
 
 export default function HeadersContainer({ currentResponse }) {  
-  
+
+  if (!currentResponse.response) {
+    return (
+      <EmptyState />
+    )
+  } 
+
   const responseHeaders = Object.entries(currentResponse.response.headers).map(([key, value], index) => {
     return (
-      // <ContentReqRow data={{'key': key, 'value': value}} key={`r${index}`}/>
       <tr key={index}>
         <td>{key}</td>
-        <td>{value}</td>
+        <td className="table-value">{value}</td>
       </tr>
     );
-    });
+    }); 
+  
  
 
   return ( 
@@ -24,9 +30,9 @@ export default function HeadersContainer({ currentResponse }) {
           </tr>
         </thead>
         <tbody className="is-size-7">
-        {responseHeaders}
+        {responseHeaders} 
         </tbody>
       </table>
     </div>
   )
-}
+} 

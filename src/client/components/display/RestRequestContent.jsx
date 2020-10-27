@@ -1,6 +1,5 @@
 import React from "react";
 import {UnControlled as CodeMirror} from 'react-codemirror2';
-
 import ContentReqRow from './ContentReqRow';
 
 export default function RestRequestContent({ request }) {
