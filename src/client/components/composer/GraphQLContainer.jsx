@@ -240,12 +240,11 @@ export default function GraphQLContainer({
   return (
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
       <div
-        className="ml-3 mr-3 is-flex-grow-3 add-vertical-scroll"
+        className="is-flex-grow-3 add-vertical-scroll"
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >
-        <h1 className="composer_title">Create New GraphQL Request</h1>
-
+        
         <GraphQLMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}

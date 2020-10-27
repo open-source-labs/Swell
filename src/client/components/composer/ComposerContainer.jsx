@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Route, Switch, Link } from 'react-router-dom';
+// import { Route, Switch, Link } from 'react-router-dom';
 import * as actions from "../../actions/actions";
 
 import NetworkDropdown from "./NetworkDropdown"
@@ -66,7 +66,7 @@ const ComposerContainer = (props) => {
     }
     props.setComposerWarningMessage({});
     switch (network) {
-      case "graphql": {
+      case "graphQL": {
           //if graphql
           props.setNewRequestFields({
             ...props.newRequestFields,
@@ -75,7 +75,7 @@ const ComposerContainer = (props) => {
             method: "QUERY",
             graphQL: true,
             gRPC: false,
-            network: "graphQL",
+            network,
           });
           props.setNewRequestBody({
             //when switching to GQL clear body
@@ -97,7 +97,7 @@ const ComposerContainer = (props) => {
             method: "GET",
             graphQL: false,
             gRPC: false,
-            network: "rest",
+            network,
           });
           props.setNewRequestBody({
             //when switching to http clear body
@@ -116,7 +116,7 @@ const ComposerContainer = (props) => {
             method: "",
             graphQL: false,
             gRPC: true,
-            network: "grpc",
+            network,
           });
           props.setNewRequestBody({
             //when switching to gRPC clear body
@@ -135,7 +135,7 @@ const ComposerContainer = (props) => {
             method: "",
             graphQL: false,
             gRPC: false,
-            network: "ws",
+            network,
           });
           props.setNewRequestBody({
             ...props.newRequestBody,
@@ -156,13 +156,24 @@ const ComposerContainer = (props) => {
       < NetworkDropdown onProtocolSelect={onProtocolSelect} network={props.newRequestFields.network}/>
 
       {/* COMPOSER CONTENT ROUTING */}
-      <Switch>
-        <Route path="/compose-rest"> <RestContainer {...props} /> </Route>
-        <Route path="/compose-grpc"> <GRPCContainer {...props} /> </Route>
-        <Route path="/compose-graphql"> <GraphQLContainer {...props} /> </Route>
-        <Route path="/compose-ws"> <WSContainer {...props} /> </Route>
-        <Route path="/"> <RestContainer {...props} /> </Route>
-      </Switch>
+      <div className='is-tall p-3'>
+        {
+          props.newRequestFields.network === 'rest' &&
+          <RestContainer {...props} />
+        }
+        {
+          props.newRequestFields.network === 'graphQL' &&
+          <GraphQLContainer {...props} />
+        }
+        {
+          props.newRequestFields.network === 'ws' &&
+          <WSContainer {...props} />
+        }
+        {
+          props.newRequestFields.network === 'grpc' &&
+          <GRPCContainer {...props} />
+        }
+      </div>
     </div>
   );
 };

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 export default function NetworkDropdown({ onProtocolSelect, network }) {
   const [dropdownIsActive, setDropdownIsActive] = useState();
   const dropdownEl = useRef();
 
-  useEffect(() => {
+  useEffect(() => { 
     const closeDropdown = (event) => {
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
@@ -15,50 +15,61 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
+  let networkTitle = '';
+  switch (network) {
+    case 'rest' : networkTitle = 'REST'; break;
+    case 'graphQL' : networkTitle = 'GRAPHQL'; break;
+    case 'grpc' : networkTitle = 'gRPC'; break;
+    case 'ws' : networkTitle = 'WEB SOCKETS'; break;
+  }
+
   return (
     <div ref={dropdownEl} className={`dropdown full-width is-fullwidth ${dropdownIsActive ? 'is-active' : ''}`}>
         
       <div className="dropdown-trigger full-width is-fullwidth">
-        <button className="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu"
-          onClick={() => setDropdownIsActive(!dropdownIsActive)}
+        <div 
+        className="button protocol-select-button is-fullwidth columns is-gapless" 
+        aria-haspopup="true" 
+        aria-controls="dropdown-menu"
+        onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
-          <span>{network.toUpperCase()}</span>
-          <span className="icon is-small">
+          <span className="column">{networkTitle}</span>
+          <span className="column">
             <i className="fas fa-caret-down" aria-hidden="true" />
           </span>
-        </button>
+        </div>
       </div>
 
       <div className="dropdown-menu">
         <div className="dropdown-content">
-          <Link to="/compose-rest" 
+          <a  
             onClick={() => {
               setDropdownIsActive(false);
               onProtocolSelect("rest"); 
             }} 
             className="dropdown-item" 
-          >REST</Link>
-          <Link to="/compose-graphql" 
+          >REST</a>
+          <a
             onClick={() => {
               setDropdownIsActive(false);
-              onProtocolSelect("graphql"); 
+              onProtocolSelect("graphQL"); 
             }} 
             className="dropdown-item" 
-          >GRAPHQL</Link>
-          <Link to="/compose-grpc" 
+          >GRAPHQL</a>
+          <a  
             onClick={() => {
               setDropdownIsActive(false);
               onProtocolSelect("grpc");
             }} 
             className="dropdown-item" 
-          >GRPC</Link>
-          <Link to="/compose-ws" 
+          >gRPC</a>
+          <a  
             onClick={() => {
               setDropdownIsActive(false);
               onProtocolSelect("ws"); 
             }} 
             className="dropdown-item" 
-          >WEB SOCKETS</Link>
+          >WEB SOCKETS</a>
         </div>
       </div>
 

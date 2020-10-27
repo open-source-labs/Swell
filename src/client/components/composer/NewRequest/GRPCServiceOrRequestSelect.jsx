@@ -29,14 +29,14 @@ const GRPCServiceOrRequestSelect = (props) => {
   items.forEach((itemStr, index) => {
     if (value !== itemStr){
       listItems.push(
-        <li 
+        <a
           onClick={(e) => {
             setDropdownIsActive(false); 
             onClick(e);
           }}
           key={`listItem${index}`}
           className="dropdown-item" 
-        >{itemStr}</li>
+        >{itemStr}</a>
       );
     }
   });

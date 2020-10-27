@@ -20,6 +20,11 @@
   float: right;
 }
 
+.protocol-select-button {
+  border: none !important;
+  border-bottom: 1px solid $neutral-300 !important;
+}
+
 .body-type-select {
 
 }
@@ -29,7 +34,7 @@
 }
 
 .is-hack-height {
-  height: 85%
+  height: 88%
 }
 
 // CODE MIRROR

@@ -177,10 +177,9 @@ export default function GRPCContainer({
   return (
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
       <div
-        className="ml-3 mr-3 is-flex-grow-3 add-vertical-scroll"
+        className="is-flex-grow-3 add-vertical-scroll"
         // tabIndex={0}
       >
-        <h1 className="composer_title">Create New GRPC Request</h1>
 
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
