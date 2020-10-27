@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
+import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
 // import protoParserFunc from "../../../protoParser.js";
 
 const { api } = window;
@@ -93,11 +94,6 @@ const GRPCProtoEntryForm = (props) => {
     }
   };
 
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
-    : "composer_bodyform_container-closed";
-  const smallBtn = show ? "small-btn-open" : "small-btn-closed";
-
   const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
   /*
     pseudocode for the return section
@@ -108,43 +104,31 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div>
-      ************** GRPCProtoEntryForm **************
-      <label className="composer_subtitle">
-        <div className="label-text" id="cookie-click">
-          Proto
+      <div className='is-flex is-justify-content-space-between is-align-content-center'>
+        <div className="composer-section-title">Proto</div>
+        <div>
+          <button 
+            className="button is-small add-header-or-cookie-button"
+            onClick={importProtos}> 
+            Load Proto 
+          </button>
+            <button
+            className="button is-small add-header-or-cookie-button"
+            id="save-proto"
+            onClick={submitUpdatedProto}
+            >
+            {saveChangesBtnText}
+          </button>
         </div>
-        <div className="toggle">
-          <input
-            type="checkbox"
-            name="check"
-            className="toggle-state"
-            onClick={() => toggleShow(!show)}
-          />
-          <div className="indicator" />
-        </div>
-      </label>
+      </div>
+   
       <div className="warningMessage">{protoError}</div>
-      <textarea
-        value={props.newRequestStreams.protoContent}
-        className={"composer_textarea grpc " + bodyContainerClass}
+      <TextCodeAreaEditable 
         id="grpcProtoEntryTextArea"
-        type="text"
-        placeholder="Import .proto file or paste a copy"
-        rows={8}
-        onChange={(e) => updateProtoBody(e.target.value)}
+        onChange={(editor, data, value) => updateProtoBody(value)}
+        value={props.newRequestStreams.protoContent}
+        mode="proto"
       />
-
-      <button className={"import-proto " + smallBtn} onClick={importProtos}>
-        Import Proto File
-      </button>
-      <button
-        id="save-proto"
-        className={"save-proto " + smallBtn}
-        onClick={submitUpdatedProto}
-      >
-        {saveChangesBtnText}
-      </button>
-
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}
