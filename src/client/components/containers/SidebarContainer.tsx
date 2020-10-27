@@ -38,11 +38,7 @@ export const SidebarContainer = () => {
         {activeTab === "history" &&
         <HistoryContainer />
       }
-      {/* <Switch>
-        <Route path="/composer"> <ComposerContainer /> </Route>
-        <Route path="/history"> <HistoryContainer /> </Route>
-        <Route path="/"> <ComposerContainer /> </Route>
-      </Switch> */}
+      
     </div>
   );
 }

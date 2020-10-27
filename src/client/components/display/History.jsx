@@ -165,8 +165,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
           <div className="history-url"> {url} </div>
         </div>
         <div className='history-delete-container'>
-          <div className="history-delete-button" onClick={(e) => deleteHistory(e)} id={content.id}>
-            X
+          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id}>
           </div>
         </div>
       </div>

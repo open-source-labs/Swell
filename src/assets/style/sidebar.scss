@@ -83,6 +83,9 @@
 
 .add-request-button {
   border: 1px solid #3734A9 !important;
+  &:hover {
+    box-shadow: 1px 1px 1px 1px $neutral-300;
+  }
 }
 
 .input {

@@ -90,7 +90,7 @@ export default function WSContainer({
 
   return (
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
-      <div className=" is-flex-grow-3 add-vertical-scroll">
+      <div className="is-flex-grow-3 add-vertical-scroll">
         <WSEndpointEntryForm
           newRequestFields={newRequestFields}
           setNewRequestFields={setNewRequestFields}
