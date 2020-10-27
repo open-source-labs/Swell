@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function ContentReqRowComposer({ data, changeHandler }) {
+export default function ContentReqRowComposer({ data, changeHandler, index, deleteItem }) {
   return (
-  <div className="is-flex">
+  <div className="is-flex mt-1">
     <div className="include-header-checkbox">
       <input
         type="checkbox"
@@ -23,7 +23,9 @@ export default function ContentReqRowComposer({ data, changeHandler }) {
       placeholder="Value"
       className="input" type="text" value={data.value} className="is-justify-content-center is-flex-grow-4 p-1" 
     />
-    <div className='delete'></div>
+    <div 
+    className='delete'
+    onClick={() => deleteItem(index)}></div>
   </div>
   )
 }
