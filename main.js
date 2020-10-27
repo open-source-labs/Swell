@@ -600,7 +600,10 @@ ipcMain.on("open-gql", (event, args) => {
     } else if (reqResObj.request.method === "MUTATION") {
       client
         .mutate({ mutation: body, variables })
-        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .then((data) => {
+          // return response from GRAPHQL MUTATION
+          return event.sender.send("reply-gql", { reqResObj, data })
+        })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
           console.error("gql mutation error in main.js", err);
