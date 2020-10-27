@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import EventsContainer from './EventsContainer'
 import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
-import ResponseContainer from './ResponseContainer'
 import WebSocketWindow from "../display/WebSocketWindow";
 
 export const ResponsePaneContainer = () => {
@@ -16,7 +15,7 @@ export const ResponsePaneContainer = () => {
   return (
       <div className='column is-one-third'>
         {/* HEADER */}
-        <div className="hero is-primary has-text-centered">
+        <div className="hero is-primary has-text-centered header-bar">
           <h3>Responses</h3>
         </div>
         {/* IF WEBSOCKETS */}

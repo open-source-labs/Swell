@@ -16,14 +16,14 @@ export default function CookieContainer({ cookie }) {
       return (
         <tr key={index}>
           <td>{key}</td>
-          <td>{value.toString()}</td>
+          <td className='table-value'>{value.toString()}</td>
         </tr>
       )
-    }
-  });
+    } 
+  }); 
 
   return (
-     <table className="table is-fullwidth" onClick={()=>{setShowCookie(showCookie === false) }} >
+     <table className="cookie-container table" onClick={()=>{setShowCookie(showCookie === false) }} >
         <thead>
           <tr className="is-size-7">
             <th>Key</th>
