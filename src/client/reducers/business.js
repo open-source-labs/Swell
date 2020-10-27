@@ -55,7 +55,11 @@ const initialState = {
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
   dataPoints: [],
-  currentResponse: {},
+  currentResponse: {
+    request: {
+      network: ''
+    }
+  },
 };
 
 const businessReducer = (state = initialState, action) => {
