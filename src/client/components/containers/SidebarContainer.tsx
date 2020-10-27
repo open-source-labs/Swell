@@ -9,7 +9,7 @@ export const SidebarContainer = () => {
   const [activeTab, setActiveTab] = useState('composer');
 
   return (
-    <div className='column is-one-third'>
+    <div className='column is-one-third is-tall'>
       {/* HEADER */}
       <div className="hero is-primary has-text-centered">
         <h3>Composer</h3>
@@ -33,13 +33,11 @@ export const SidebarContainer = () => {
         </ul>
       </div>
       {/* SIDEBAR CONTENT */}
-      <div>
-        <Switch>
-          <Route path="/composer"> <ComposerContainer /> </Route>
-          <Route path="/history"> <HistoryContainer /> </Route>
-          <Route path="/"> <ComposerContainer /> </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/composer"> <ComposerContainer /> </Route>
+        <Route path="/history"> <HistoryContainer /> </Route>
+        <Route path="/"> <ComposerContainer /> </Route>
+      </Switch>
     </div>
   );
 }

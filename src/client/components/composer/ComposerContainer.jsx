@@ -149,7 +149,7 @@ const ComposerContainer = (props) => {
   };
 
   return (
-    <div className="composerContents">
+    <div className="composerContents is-hack-height">
       {/* DROPDOWN PROTOCOL SELECTOR */}
 
       {/* BULMA TAB */}

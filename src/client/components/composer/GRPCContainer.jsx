@@ -175,39 +175,43 @@ export default function GRPCContainer({
     display: !/wss?:\/\//.test(protocol) ? "block" : "none",
   };
   return (
-    <div
-      className="ml-2 mr-2"
-      // tabIndex={0}
-    >
-      <h1 className="composer_title">Create New GRPC Request</h1>
+    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+      <div
+        className="ml-2 mr-2"
+        // tabIndex={0}
+      >
+        <h1 className="composer_title">Create New GRPC Request</h1>
 
-      <GRPCTypeAndEndpointEntryForm
-        newRequestFields={newRequestFields}
-        newRequestHeaders={newRequestHeaders}
-        newRequestStreams={newRequestStreams}
-        newRequestBody={newRequestBody}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestStreams={setNewRequestStreams}
-        setNewRequestCookies={setNewRequestCookies}
-        setNewRequestBody={setNewRequestBody}
-        warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
-      />
-      <HeaderEntryForm
-        stylesObj={HeaderEntryFormStyle}
-        newRequestHeaders={newRequestHeaders}
-        newRequestStreams={newRequestStreams}
-        newRequestBody={newRequestBody}
-        newRequestFields={newRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestStreams={setNewRequestStreams}
-      />
-      <GRPCProtoEntryForm
-        newRequestStreams={newRequestStreams}
-        setNewRequestStreams={setNewRequestStreams}
-      />
-     <NewRequestButton onClick={addNewRequest} />
+        <GRPCTypeAndEndpointEntryForm
+          newRequestFields={newRequestFields}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          setNewRequestFields={setNewRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+          setNewRequestCookies={setNewRequestCookies}
+          setNewRequestBody={setNewRequestBody}
+          warningMessage={warningMessage}
+          setComposerWarningMessage={setComposerWarningMessage}
+        />
+        <HeaderEntryForm
+          stylesObj={HeaderEntryFormStyle}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          newRequestFields={newRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+        />
+        <GRPCProtoEntryForm
+          newRequestStreams={newRequestStreams}
+          setNewRequestStreams={setNewRequestStreams}
+        />
+      </div>
+      <div className="is-graph-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </div>
   )
 }
