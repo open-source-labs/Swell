@@ -12,6 +12,7 @@ class HeaderEntryForm extends Component {
     }
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
+    this.deleteHeader = this.deleteHeader.bind(this);
   } 
 
   componentDidUpdate() {
@@ -20,7 +21,6 @@ class HeaderEntryForm extends Component {
       this.addHeader(headersDeepCopy);
     }
     this.checkContentTypeHeaderUpdate();
-
   }
 
   checkContentTypeHeaderUpdate() {
@@ -60,7 +60,6 @@ class HeaderEntryForm extends Component {
 
   addContentTypeHeader(contentType) {
     const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')));
-
     const contentTypeHeader = ({
       id: this.props.newRequestHeaders.headersArr.length,
       active: true,
@@ -137,6 +136,15 @@ class HeaderEntryForm extends Component {
     });
   }
 
+  deleteHeader(index) {
+    const newHeadersArr = this.props.newRequestHeaders.headersArr.slice();
+    newHeadersArr.splice(index, 1);
+    this.props.setNewRequestHeaders({
+      headersArr: newHeadersArr,
+      count: newHeadersArr.length,
+    });
+  }
+
   render() {
     let headerName = 'Headers';
     let addHeaderName = '+ Header'
@@ -150,6 +158,8 @@ class HeaderEntryForm extends Component {
     const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
       <ContentReqRowComposer
         data={header}
+        index={index}
+        deleteItem={this.deleteHeader}
         changeHandler={this.onChangeUpdateHeader}
         key={index} //key
       />
@@ -158,7 +168,7 @@ class HeaderEntryForm extends Component {
     return (
       <div >
         <div className=' is-flex is-justify-content-space-between is-align-content-center'>
-          {headerName}
+        <div className="composer-section-title">{headerName}</div>
           <button 
             className="button is-small add-header-or-cookie-button"
             onClick={() => this.addHeader()}> 

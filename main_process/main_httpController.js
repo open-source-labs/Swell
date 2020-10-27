@@ -244,7 +244,7 @@ const httpController = {
     reqStream.setEncoding("utf8");
     let data = "";
     reqStream.on("data", (chunk) => {
-      console.log("is this a server sent event? ", isSSE);
+      // console.log("is this a server sent event? ", isSSE);
       data += chunk;
       if (isSSE) {
         let couldBeEvents = true;

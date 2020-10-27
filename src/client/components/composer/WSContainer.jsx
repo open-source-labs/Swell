@@ -2,6 +2,7 @@ import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import historyController from "../../controllers/historyController";
 import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
+import NewRequestButton from './NewRequest/NewRequestButton.jsx'
 
 export default function WSContainer({
   resetComposerFields,
@@ -95,9 +96,7 @@ export default function WSContainer({
         warningMessage={warningMessage}
         setComposerWarningMessage={setComposerWarningMessage}
       />
-      <button onClick={addNewRequest}>
-        Add New Request
-      </button>
+      <NewRequestButton onClick={addNewRequest} />
     </div>
   )
 }

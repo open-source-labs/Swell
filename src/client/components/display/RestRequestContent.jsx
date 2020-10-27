@@ -53,9 +53,10 @@ export default function RestRequestContent({ request }) {
     const parsedFormBody = parseQueryString(body);
     formRows = parsedFormBody.map((item, index) => <ContentReqRow data={item} key={`h${index}`}/>);
   }
-
+  
   // PRETTY-PRINT BODY IF JSON
-  const bodyText = (rawType === 'application/json') ? ( JSON.stringify( JSON.parse(bodyText), null, 4 ) ) : ( body );
+  // const bodyText = body;
+  const bodyText = (rawType === 'application/json') ? ( JSON.stringify( JSON.parse(body), null, 4 ) ) : ( body );
 
   return (
     <div>
@@ -79,7 +80,7 @@ export default function RestRequestContent({ request }) {
               <CodeMirror
                 value={bodyText}
                 options={{
-                  mode: {rawType},
+                  mode: rawType,
                   theme: 'neo readonly',
                   lineNumbers: true,
                   tabSize: 4,

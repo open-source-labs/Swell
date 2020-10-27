@@ -9,6 +9,7 @@ import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm.jsx";
 import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm.jsx";
 import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog.jsx";
+import NewRequestButton from './NewRequest/NewRequestButton.jsx'
 
 export default function GraphQLContainer({
   resetComposerFields,
@@ -240,7 +241,7 @@ export default function GraphQLContainer({
     <div
       className="ml-2 mr-2"
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-      tabIndex={0}
+      // tabIndex={0}
     >
       <h1 className="composer_title">Create New GraphQL Request</h1>
 
@@ -284,15 +285,7 @@ export default function GraphQLContainer({
         introspectionData={introspectionData}
         url={url}
       />
-      <button
-        className="composer_submit"
-        onClick={() => {
-          addNewRequest();
-        }}
-        type="button"
-      >
-        Add New Request
-      </button>
+     <NewRequestButton onClick={addNewRequest} />
     </div>
   )
 }

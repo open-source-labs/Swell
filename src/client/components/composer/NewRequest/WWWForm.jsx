@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import WWWField from './WWWField.jsx';
+import ContentReqRowComposer from './ContentReqRowComposer.jsx';
 
 class WWWForm extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class WWWForm extends Component {
       rawString: '',
     }
     this.updateWwwField = this.updateWwwField.bind(this);
+    this.deleteWwwField = this.deleteWwwField.bind(this)
   }
 
   componentDidMount() {
@@ -126,10 +127,32 @@ class WWWForm extends Component {
       .reduce((acc, cur) => acc + cur) === 0;
   }
 
+  deleteWwwField(index) {
+    const newFields = this.state.wwwFields.slice();
+    newFields.splice(index, 1);
+    if (!newFields.length) {
+      newFields.push({
+        id: Math.floor(Math.random() * 100000),
+        active: false,
+        key: '',
+        value: '',
+      });
+    }
+    this.setState({
+      wwwFields: newFields,
+    })
+  }
+
   render() {
     let wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
       return (
-        <WWWField key={index} id={wwwField.id} active={wwwField.active} Key={wwwField.key} value={wwwField.value} updateCallback={this.updateWwwField} />
+        <ContentReqRowComposer 
+          index={index}
+          deleteItem={this.deleteWwwField}
+          data={wwwField} 
+          changeHandler={this.updateWwwField}
+          key={`crrcwwwfield${index}`}
+        />
       )
     })
 
@@ -137,7 +160,6 @@ class WWWForm extends Component {
       <div
         className={'composer_headers_container-open'}
       >
-        ************** WWWForm **************
         {wwwFieldsReactArr}
       </div>
     );

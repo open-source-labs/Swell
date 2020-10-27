@@ -9,6 +9,7 @@ class CookieEntryForm extends Component {
     }
     this.onChangeUpdateCookie = this.onChangeUpdateCookie.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
+    this.deleteCookie = this.deleteCookie.bind(this)
   }
 
   componentDidMount() {
@@ -83,6 +84,15 @@ class CookieEntryForm extends Component {
     }
   }
 
+  deleteCookie = (index) => {
+    const newCookies = this.createDeepCookieCopy();
+    newCookies.splice(index, 1);
+    this.props.setNewRequestCookies({
+      cookiesArr: newCookies,
+      count: newCookies.length,
+    });
+  }
+
   toggleShow() {
     this.setState({
       show: !this.state.show
@@ -92,7 +102,9 @@ class CookieEntryForm extends Component {
   render() {
     const cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => (
       <ContentReqRowComposer 
+        deleteItem={this.deleteCookie}
         data={cookie} 
+        index={index}
         changeHandler={this.onChangeUpdateCookie} 
         key={index}
       />
@@ -101,7 +113,7 @@ class CookieEntryForm extends Component {
     return (
       <div >
         <div className='is-flex is-justify-content-space-between is-align-content-center'>
-          Cookies
+        <div className="composer-section-title">Cookies</div>
           <button 
             className="button is-small add-header-or-cookie-button"
             onClick={() => this.addCookie(this.createDeepCookieCopy())}> 

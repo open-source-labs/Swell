@@ -4,15 +4,58 @@
 .include-header-checkbox {
   background: #FFFFFF;
   /* neutral-300 */
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   box-sizing: border-box;
   border-radius: 2px;
-  padding: 0px 5px;
-  border-color: lightslategrey
+  
 }
 
 .add-header-or-cookie-button {
   color: $primary;
   border-color: $primary;
-  width: 100px;
+  
+}
+
+.prettify-select {
+  float: right;
+}
+
+.body-type-select {
+
+}
+
+.composer-section-title {
+
+}
+
+// CODE MIRROR
+.cm-s-sidebar {
+  background-color: $neutral-100;
+  color: $neutral-400;
+  max-height: 150px !important;
+  border: 1px solid $neutral-300;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: .75em;
+}
+.cm-s-sidebar .CodeMirror-gutters {
+  border: none;
+  background-color: $neutral-100;
+  color: $neutral-300;
+}
+.cm-s-sidebar .CodeMirror-linenumber {
+  border: none;
+  color: $neutral-300;
+}
+
+.switch:focus {
+  border: none;
+  outline: none;
+}
+
+.add-request-button {
+  border: 1px solid #3734A9 !important;
+}
+
+.input {
+  outline: none !important;
 }

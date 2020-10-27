@@ -247,6 +247,8 @@
     "apollo-server-express": "^2.17.0",
     "body-parser": "^1.19.0",
     "bulma": "^0.9.1",
+    "bulma-checkradio": "^1.1.1",
+    "bulma-switch": "^2.0.0",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "codemirror": "^5.56.0",

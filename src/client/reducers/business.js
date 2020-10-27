@@ -46,7 +46,7 @@ const initialState = {
     bodyContent: "",
     bodyVariables: "",
     bodyType: "raw",
-    rawType: "Text (text/plain)",
+    rawType: "text/plain",
     JSONFormatted: true,
     bodyIsNew: false,
   },
@@ -128,7 +128,7 @@ const businessReducer = (state = initialState, action) => {
           bodyContent: "",
           bodyVariables: "",
           bodyType: "raw",
-          rawType: "Text (text/plain)",
+          rawType: "text/plain",
           JSONFormatted: true,
         },
         newRequestFields: {
