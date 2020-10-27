@@ -57,7 +57,7 @@ const GRPCServiceOrRequestSelect = (props) => {
       <div className="dropdown-menu">
         { !!listItems.length &&
           <ul className="dropdown-content">
-          {listItems}
+            {listItems} 
           </ul>
         }
       </div>

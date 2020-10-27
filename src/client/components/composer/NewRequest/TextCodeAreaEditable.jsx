@@ -2,7 +2,7 @@ import React from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 
 
-export default function TextCodeAreaEditable ({ value, mode, onChange }) {
+export default function TextCodeAreaEditable ({ value, mode, onChange, theme }) {
 
   return (
     <div className='is-neutral-200-box p-3'>
@@ -10,7 +10,7 @@ export default function TextCodeAreaEditable ({ value, mode, onChange }) {
         value={value}
         options={{
           mode: mode,
-          theme: 'neo sidebar',
+          theme: theme || 'neo sidebar',
           lineNumbers: true,
           tabSize: 4,
           lineWrapping: true,

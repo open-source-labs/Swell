@@ -1,7 +1,7 @@
 import React from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import gql from "graphql-tag";
-import GRPCProtoEntryForm from "./GRPCProtoEntryForm.jsx";
+import GRPCProtoEntryForm from "./GRPCFormEditor.jsx";
 import HeaderEntryForm from "./HeaderEntryForm.jsx";
 import BodyEntryForm from "./BodyEntryForm.jsx";
 import FieldEntryForm from "./FieldEntryForm.jsx";
