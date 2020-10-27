@@ -2,9 +2,19 @@ import React from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import JSONPretty from "react-json-pretty";
 import createDOMPurify from "dompurify";
+import EmptyState from '../display/EmptyState';
 import SSERow from "../display/SSERow.jsx";
+import 'codemirror/theme/neo.css'
+
 
 export default function EventsContainer({currentResponse}) {
+
+  if (!currentResponse.response) {
+    return (
+      <EmptyState />
+    )
+  }
+
   if(currentResponse.response) {
     const { events, headers } = currentResponse.response;
     const displayContents = [];
@@ -88,11 +98,5 @@ export default function EventsContainer({currentResponse}) {
 
     return <div className="tab_content-response">{displayContents}</div>;
   }
-  else {
-    return (
-      <div>
-        NO VALUES HERE  
-      </div>
-    )
-  }
+
 }

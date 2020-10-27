@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Source+Sans+Pro:wght@400;600&display=swap');
+
+
+// EMPTY STATE
+.empty-state-wrapper {
+  height: 640px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-state-img {
+  max-width: 160px;
+}
+
+// EVENTS (CODEMIRROR STYLES)
+.CodeMirror {
+  font-family: Roboto Mono, monospace;
+}
+
+.cm-s-responsebody {
+  background-color: $neutral-100;
+  color: $neutral-400;
+  height: 700px !important;
+  border: 1px solid $neutral-300;
+  font-size: 0.75rem;
+}
+.cm-s-responsebody .CodeMirror-gutters {
+  border: none;
+  color: $neutral-300;
+}
+.cm-s-responsebody .CodeMirror-linenumber {
+  border: none;
+  color: $neutral-300;
+
+}
+
+// HEADERS & COOKIES
+
+table {
+    margin-bottom: 2rem;
+    max-width: 200px;
+    overflow-wrap: break-word;
+  }
+  
+  td {
+    min-width: 6rem;
+    max-width: 18rem;
+  }
+  
+
+.cookie-container thead:hover {
+  cursor: pointer;
+  background-color: $primary-100;
+  transition: 0.3s;
+}
+

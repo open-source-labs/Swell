@@ -1,6 +1,22 @@
+ @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Source+Sans+Pro:wght@400;600&display=swap');
+
+
 * {
   box-sizing: border-box;
+  font-family: 'Source Sans Pro', sans-serif;
 }
+
+// BULMA ADJUSTMENTS
+.hero {
+  height: 2.5rem;
+  padding-top: 0.5rem;
+}
+
+.hero h3 {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+}
+
 
 input:focus {
   outline: none;
