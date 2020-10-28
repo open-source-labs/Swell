@@ -43,7 +43,6 @@ const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
-// const { setContext } = require("apollo-link-context");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
@@ -482,21 +481,21 @@ ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
 
   // populating headers object with response headers - except for Content-Type
-  const headerItems = {};
+  const headers = {};
   reqResObj.request.headers
-    // .filter((item) => item.key !== "Content-Type")
+    .filter((item) => item.key !== "Content-Type")
     .forEach((item) => {
-      headerItems[item.key] = item.value;
+      headers[item.key] = item.value;
     });
 
   // request cookies from reqResObj to request headers
-  // let cookies = ;
+  let cookies = '';
   if (reqResObj.request.cookies.length) {
     cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
     }, "");
   }
-  headerItems.Cookie = cookies;
+  headers.Cookie = cookies;
 
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
@@ -541,22 +540,12 @@ ipcMain.on("open-gql", (event, args) => {
     });
   });
 
-  // const authLink = setContext((_, { headers }) => {
-  //   // return the headers to the context so httpLink can read them
-  //   return {
-  //     headers: {
-  //       ...headers,
-  //       authorization: headerItems.authorization ? `Bearer ${token}` : "",
-  //     }
-  //   }
-  // });
-
   // IT SEEMS THAT HEADERS ARE NOT READING |HERE
   console.log(headers);
   // creates http connection to host
   const httpLink = createHttpLink({
     uri: reqResObj.url,
-    headers: headerItems,
+    headers,
     credentials: "include",
     fetch: fetch2,
   });
