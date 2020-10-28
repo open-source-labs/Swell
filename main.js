@@ -43,7 +43,6 @@ const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
-const { setContext } = require("apollo-link-context");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
