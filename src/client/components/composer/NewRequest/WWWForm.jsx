@@ -25,7 +25,6 @@ class WWWForm extends Component {
       if (!this.props.newRequestBody.bodyContent.includes('&')) {
         let key = this.props.newRequestBody.bodyContent.split('=')[0];
         let value = this.props.newRequestBody.bodyContent.split('=')[1];
-        console.log("this.state.wwwFields:", this.state.wwwFields)
         this.setState({
           wwwFields: [{
             id: `id${this.state.wwwFields.length}`,
@@ -98,7 +97,6 @@ class WWWForm extends Component {
       key: '',
       value: ''
     })
-    console.log(wwwFieldsDeepCopy)
     this.setState({
       wwwFields: wwwFieldsDeepCopy
     });
@@ -123,11 +121,9 @@ class WWWForm extends Component {
 
     //also switch checkbox if they are typing
     if (field === 'key' || field === 'value') {
-      console.log('key or value')
       target.active = true;
       this.addWwwField();
     }
-
    
       this.setState({
         wwwFields: wwwFieldsDeepCopy,
