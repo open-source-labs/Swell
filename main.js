@@ -622,7 +622,8 @@ ipcMain.on("introspect", (event, introspectionObject) => {
   let cookies = '';
   if (req.cookies.length) {
     cookies = req.cookies.reduce((acc, userCookie) => {
-      return acc + `${userCookie.key}=${userCookie.value}; `;
+      if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+      else return acc;
     }, '');
   }
   headers.Cookie = cookies;

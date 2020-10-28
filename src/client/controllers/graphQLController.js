@@ -54,9 +54,19 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers = {};
-    reqResObj.request.headers.forEach(({key, value, active}) => {
+    reqResObj.request.headers.forEach(({ active, key, value }) => {
       if(active) headers[key] = value;
     })
+
+    // Reformat cookies
+    let cookies = '';
+    if (reqResObj.request.cookies.length) {
+      cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
+        if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+        else return acc;
+      }, '');
+    }
+    headers.Cookie = cookies;
     
     const wsLink = new WebSocketLink(
       new SubscriptionClient(
