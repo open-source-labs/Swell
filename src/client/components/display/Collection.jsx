@@ -9,7 +9,8 @@ class Collection extends Component {
   }
   
   addCollectionToReqResContainer() {
-    this.props.collectionToReqRes(this.props.content.reqResArray)
+    this.props.collectionToReqRes(this.props.content.reqResArray);
+    this.props.setWorkspaceTab('workspace');
   }
   
   deleteCollection(e) {

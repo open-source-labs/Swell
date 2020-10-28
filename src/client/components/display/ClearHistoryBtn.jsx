@@ -20,7 +20,13 @@ const ClearHistoryBtn = (props) => {
   const handleClick = () => {
     api.send("confirm-clear-history");
   };
-  return <button onClick={handleClick}>Clear</button>;
+  return (
+    <button 
+      className="ml-0 mt-3 mb-3 button is-small is-primary is-outlined button-padding-verticals"  
+      onClick={handleClick}
+    >
+    Clear History</button>
+  );
 };
 
 export default ClearHistoryBtn;
