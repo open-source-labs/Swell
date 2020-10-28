@@ -59,6 +59,22 @@ $text: $neutral-500;
   background-color: $websockets !important;
 }
 
+.is-rest-color {
+  color: $rest  !important;
+}
+
+.is-graphQL-color {
+  color: $graphql !important;
+}
+
+.is-grpc-color {
+  color: $grpc !important;
+}
+
+.is-ws-color {
+  color: $websockets !important;
+}
+
 .is-neutral-300 {
   color: $neutral-600 !important;
   background-color: $neutral-300 !important;

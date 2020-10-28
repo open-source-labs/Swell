@@ -30,7 +30,7 @@
 }
 
 .composer-section-title {
-
+    
 }
 
 .is-hack-height {
@@ -90,4 +90,10 @@
 
 .input {
   outline: none !important;
+}
+
+.historyDate {
+  size: 200em;
+  color: $primary;
+  text-transform: uppercase;
 }
