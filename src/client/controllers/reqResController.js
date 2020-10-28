@@ -31,6 +31,7 @@ const connectionController = {
 
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
+    // REST EVENTS
     api.receive("reqResUpdate", (reqResObj) => {
       if (
         reqResObj.connection === "closed" &&
@@ -40,6 +41,7 @@ const connectionController = {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
+      store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     });
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
