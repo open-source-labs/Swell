@@ -5,7 +5,7 @@ import {UnControlled as CodeMirror} from 'react-codemirror2';
 export default function TextCodeAreaEditable ({ value, mode, onChange, theme }) {
 
   return (
-    <div className='is-neutral-200-box p-3'>
+    <div className='is-neutral-200-box p-3 mt-1'>
       <CodeMirror
         value={value}
         options={{

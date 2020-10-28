@@ -58,10 +58,10 @@ const BodyEntryForm = (props) => {
   
 
   return (
-    <div>
+    <div className = "mt-1">
       <div className="composer-section-title">Body</div>
       <div className='is-flex is-align-items-center is-justify-content-space-between'>
-        <span>
+        <span className="is-flex is-align-items-center">
           <BodyTypeSelect
             setNewRequestBody={setNewRequestBody}
             newRequestBody={newRequestBody}
@@ -95,7 +95,8 @@ const BodyEntryForm = (props) => {
         </div>
         : null 
       }
-      {bodyEntryArea()}
+      <div className="mt-2">{bodyEntryArea()}</div>
+      
     </div>
   );
 };

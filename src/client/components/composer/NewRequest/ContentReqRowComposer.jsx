@@ -23,9 +23,12 @@ export default function ContentReqRowComposer({ data, changeHandler, index, dele
       placeholder="Value"
       className="input" type="text" value={data.value} className="is-justify-content-center is-flex-grow-4 p-1" 
     />
+    <div className="is-flex is-justify-content-center is-align-items-center ml-1">
     <div 
-    className='delete'
+    className='delete m-auto'
     onClick={() => deleteItem(index)}></div>
+    </div>
+    
   </div>
   )
 }
