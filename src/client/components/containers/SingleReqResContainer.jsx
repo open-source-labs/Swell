@@ -165,7 +165,6 @@ const SingleReqResContainer = (props) => {
               <button
                 className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
                 onClick={() => {
-                  ReqResCtrl.openReqRes(content.id);
                   dispatch(actions.saveCurrentResponseData(content));
                 }}
                 >
