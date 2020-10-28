@@ -15,7 +15,7 @@
 
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror {
-  font-family: Roboto Mono, monospace;
+  font-family: 'Roboto Mono', monospace;
 }
 
 .cm-s-responsebody {
@@ -55,3 +55,22 @@ table {
   transition: 0.3s;
 }
 
+// STATUS BUTTONS
+.status-placement {
+  position: absolute;
+  right: 1rem;
+}
+
+.status-tag {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 12px;
+  margin: auto;
+  border: 0px;
+  border-radius: 2px;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+}
