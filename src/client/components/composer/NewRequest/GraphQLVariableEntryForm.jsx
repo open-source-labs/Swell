@@ -16,7 +16,6 @@ const GraphQLVariableEntryForm = (props) => {
     setNewRequestBody,
   } = props;
 
-  const [show, setShow] = useState(false);
   const [cmValue, setValue] = useState(bodyVariables);
 
   // ref to get the codemirror instance
@@ -27,29 +26,16 @@ const GraphQLVariableEntryForm = (props) => {
     if (!bodyIsNew) setValue(bodyVariables);
   }, [bodyVariables]);
 
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
-    : "composer_bodyform_container-closed";
-
   return (
     <div>
-      ************** GraphQLVariableEntryForm **************
-      <label
-      className='composer_subtitle' >
-        <div className="label-text" id="variable-click">Variables</div>
-        <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state" onClick={() => {
-          setShow(!show);}}/>
-          <div className="indicator" />
-        </div>
-      </label>
-      <div className={bodyContainerClass} id="graphql-variable" style={{ marginBottom: '10px' }}>
+     <div className="composer-section-title">Variables</div>
+      <div className="is-neutral-200-box p-3">
         <CodeMirror
         ref={cmVariables}
           value={cmValue}
           options={{
             mode: { name: "javascript", json: true },
-            theme: 'twilight',
+            theme: 'neo sidebar',
             scrollbarStyle: 'native',
             lineNumbers: false,
             matchBrackets: true,

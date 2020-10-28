@@ -89,14 +89,18 @@ export default function WSContainer({
   };
 
   return (
-    <div className="ml-2 mr-2">
-      <WSEndpointEntryForm
-        newRequestFields={newRequestFields}
-        setNewRequestFields={setNewRequestFields}
-        warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
-      />
-      <NewRequestButton onClick={addNewRequest} />
+    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+      <div className="is-flex-grow-3 add-vertical-scroll">
+        <WSEndpointEntryForm
+          newRequestFields={newRequestFields}
+          setNewRequestFields={setNewRequestFields}
+          warningMessage={warningMessage}
+          setComposerWarningMessage={setComposerWarningMessage}
+        />
+      </div>
+      <div className="is-graph-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </div>
   )
 }

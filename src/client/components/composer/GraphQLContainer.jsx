@@ -238,54 +238,57 @@ export default function GraphQLContainer({
   };
 
   return (
-    <div
-      className="ml-2 mr-2"
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-      // tabIndex={0}
-    >
-      <h1 className="composer_title">Create New GraphQL Request</h1>
-
-      <GraphQLMethodAndEndpointEntryForm
-        newRequestFields={newRequestFields}
-        newRequestHeaders={newRequestHeaders}
-        newRequestStreams={newRequestStreams}
-        newRequestBody={newRequestBody}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestStreams={setNewRequestStreams}
-        setNewRequestCookies={setNewRequestCookies}
-        setNewRequestBody={setNewRequestBody}
-        warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
-      />
-      <HeaderEntryForm
-        newRequestHeaders={newRequestHeaders}
-        newRequestStreams={newRequestStreams}
-        newRequestBody={newRequestBody}
-        newRequestFields={newRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestStreams={setNewRequestStreams}
-      />
-      <CookieEntryForm
-        newRequestCookies={newRequestCookies}
-        newRequestBody={newRequestBody}
-        setNewRequestCookies={setNewRequestCookies}
-      />
-      <GraphQLBodyEntryForm
-        warningMessage={warningMessage}
-        newRequestBody={newRequestBody}
-        setNewRequestBody={setNewRequestBody}
-        introspectionData={introspectionData}
-      />
-      <GraphQLVariableEntryForm
-        newRequestBody={newRequestBody}
-        setNewRequestBody={setNewRequestBody}
-      />
-      <GraphQLIntrospectionLog
-        introspectionData={introspectionData}
-        url={url}
-      />
-     <NewRequestButton onClick={addNewRequest} />
+    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+        // tabIndex={0}
+      >
+        
+        <GraphQLMethodAndEndpointEntryForm
+          newRequestFields={newRequestFields}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          setNewRequestFields={setNewRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+          setNewRequestCookies={setNewRequestCookies}
+          setNewRequestBody={setNewRequestBody}
+          warningMessage={warningMessage}
+          setComposerWarningMessage={setComposerWarningMessage}
+        />
+        <HeaderEntryForm
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          newRequestFields={newRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+        />
+        <CookieEntryForm
+          newRequestCookies={newRequestCookies}
+          newRequestBody={newRequestBody}
+          setNewRequestCookies={setNewRequestCookies}
+        />
+        <GraphQLBodyEntryForm
+          warningMessage={warningMessage}
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+          introspectionData={introspectionData}
+        />
+        <GraphQLVariableEntryForm
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+        />
+        <GraphQLIntrospectionLog
+          introspectionData={introspectionData}
+          url={url}
+        />
+      </div>
+      <div className="is-graph-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </div>
   )
 }

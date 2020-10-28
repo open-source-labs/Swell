@@ -85,49 +85,49 @@ const RestMethodAndEndpointEntryForm = ({
           <div className="dropdown-menu" id="dropdown-menu">
             <ul className="dropdown-content">
               {newRequestFields.method !== 'GET' &&
-                (<li 
+                (<a 
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("GET");
                   }} 
                   className="dropdown-item" 
-                >GET</li>)
+                >GET</a>)
               }
               {newRequestFields.method !== 'POST' &&
-                (<li
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("POST"); 
                   }} 
                   className="dropdown-item" 
-                >POST</li>)
+                >POST</a>)
               }
               {newRequestFields.method !== 'PUT' &&
-                (<li 
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("PUT");
                   }} 
                   className="dropdown-item" 
-                >PUT</li>)
+                >PUT</a>)
               }
               {newRequestFields.method !== 'PATCH' &&
-                (<li  
+                (<a 
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("PATCH")
                   }} 
                   className="dropdown-item" 
-                >PATCH</li>)
+                >PATCH</a>)
               }
               {newRequestFields.method !== 'DELETE' &&
-                (<li  
+                (<a  
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("DELETE")
                   }} 
                   className="dropdown-item" 
-                >DELETE</li>)
+                >DELETE</a>)
               }
             </ul>
           </div>

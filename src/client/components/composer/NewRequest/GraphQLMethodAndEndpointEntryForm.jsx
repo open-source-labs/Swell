@@ -122,31 +122,31 @@ const GraphQLMethodAndEndpointEntryForm = ({
           <div className="dropdown-menu" id="dropdown-menu">
             <ul className="dropdown-content">
               {newRequestFields.method !== 'QUERY' &&
-                (<li 
+                (<a 
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("QUERY");
                   }} 
                   className="dropdown-item" 
-                >QUERY</li>)
+                >QUERY</a>)
               }
               {newRequestFields.method !== 'MUTATION' &&
-                (<li
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("MUTATION"); 
                   }} 
                   className="dropdown-item" 
-                >MUTATION</li>)
+                >MUTATION</a>)
               }
               {newRequestFields.method !== 'SUBSCRIPTION' &&
-                (<li 
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("SUBSCRIPTION");
                   }} 
                   className="dropdown-item" 
-                >SUBSCRIPTION</li>)
+                >SUBSCRIPTION</a>)
               }
             </ul>
           </div>

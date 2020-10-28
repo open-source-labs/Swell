@@ -58,32 +58,32 @@ const BodyTypeSelect = (props) => {
       <div className="dropdown-menu">
         <ul className="dropdown-content">
           {newRequestBody.bodyType !== 'raw' &&
-            <li 
+            <a 
               onClick={() => {
                 setDropdownIsActive(false); 
                 setNewBodyType("raw")
               }} 
               className="dropdown-item" 
-            >raw</li>
+            >raw</a>
           }
           {newRequestBody.bodyType !== 'x-www-form-urlencoded' &&
-            <li  
+            <a
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewBodyType('x-www-form-urlencoded'); 
               }} 
               className="dropdown-item" 
-            >x-www-form-urlencoded</li>
+            >x-www-form-urlencoded</a>
           }
           {newRequestBody.bodyType !== 'none' &&
-            <li 
+            <a
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewBodyType('none')
                 removeContentTypeHeader();
               }} 
               className="dropdown-item" 
-            >none</li>
+            >none</a>
           }
         </ul>
       </div>
