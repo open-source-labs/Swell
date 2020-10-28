@@ -19,7 +19,7 @@ class CookieEntryForm extends Component {
 
   componentDidUpdate() {
     const cookiesDeepCopy = this.createDeepCookieCopy();
-    if (this.props.newRequestCookies.cookiesArr.length == 0) {
+    if (cookiesDeepCopy.length == 0) {
       this.addCookie([]);
     }
     else if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") {
@@ -33,7 +33,7 @@ class CookieEntryForm extends Component {
 
   addCookie(cookiesDeepCopy) {
     cookiesDeepCopy.push({
-      id: this.props.newRequestCookies.count,
+      id: `cookie${this.props.newRequestCookies.count}`,
       active: false,
       key: '',
       value: ''
@@ -48,7 +48,7 @@ class CookieEntryForm extends Component {
 
   onChangeUpdateCookie(id, field, value) {
     const cookiesDeepCopy = this.createDeepCookieCopy();
-
+    
     //find cookie to update
     let indexToBeUpdated;
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
@@ -65,23 +65,12 @@ class CookieEntryForm extends Component {
       cookiesDeepCopy[indexToBeUpdated].active = true;
     }
 
-    //determine if new cookie needs to be added
-    const emptyCookiesCount = cookiesDeepCopy.map(cookie => {
-      return (!cookie.key && !cookie.value) ? 1 : 0
-    }).reduce((acc, cur) => {
-      return acc + cur;
-    });
-
-    //depending on if cookies is empty, update store, or first add a new cookie
-    if (emptyCookiesCount === 0) {
-      this.addCookie(cookiesDeepCopy);
-    }
-    else {
+   
       this.props.setNewRequestCookies({
         cookiesArr: cookiesDeepCopy,
         count: cookiesDeepCopy.length,
       });
-    }
+    
   }
 
   deleteCookie = (index) => {
@@ -111,7 +100,7 @@ class CookieEntryForm extends Component {
     ));
 
     return (
-      <div className="mt-1">
+      <div className="mt-2">
         <div className='is-flex is-justify-content-space-between is-align-content-center'>
         <div className="composer-section-title">Cookies</div>
           <button 
