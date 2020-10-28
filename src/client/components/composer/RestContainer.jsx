@@ -157,57 +157,58 @@ export default function RestContainer({
   };
 
   return (
-    <div className="ml-3 mr-3 ">
-
-      <RestMethodAndEndpointEntryForm
-        newRequestFields={newRequestFields}
-        newRequestBody={newRequestBody}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestBody={setNewRequestBody}
-        warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
-      />
-      <HeaderEntryForm
-        newRequestHeaders={newRequestHeaders}
-        newRequestStreams={newRequestStreams}
-        newRequestBody={newRequestBody}
-        newRequestFields={newRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestStreams={setNewRequestStreams}
-      />
-      <CookieEntryForm
-        newRequestCookies={newRequestCookies}
-        newRequestBody={newRequestBody}
-        setNewRequestCookies={setNewRequestCookies}
-      />
-      {method !== "GET" && (
-        <BodyEntryForm
-          warningMessage={warningMessage}
+    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+      <div className="is-flex-grow-3 add-vertical-scroll">
+        <RestMethodAndEndpointEntryForm
+          newRequestFields={newRequestFields}
           newRequestBody={newRequestBody}
+          setNewRequestFields={setNewRequestFields}
           setNewRequestBody={setNewRequestBody}
-          newRequestHeaders={newRequestHeaders}
-          setNewRequestHeaders={setNewRequestHeaders}
+          warningMessage={warningMessage}
+          setComposerWarningMessage={setComposerWarningMessage}
         />
-      )}
+        <HeaderEntryForm
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          newRequestFields={newRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+        />
+        <CookieEntryForm
+          newRequestCookies={newRequestCookies}
+          newRequestBody={newRequestBody}
+          setNewRequestCookies={setNewRequestCookies}
+        />
+        {method !== "GET" && (
+          <BodyEntryForm
+            warningMessage={warningMessage}
+            newRequestBody={newRequestBody}
+            setNewRequestBody={setNewRequestBody}
+            newRequestHeaders={newRequestHeaders}
+            setNewRequestHeaders={setNewRequestHeaders}
+          />
+        )}
 
-      {/* SSE TOGGLE SWITCH */}
-      <div className="field">
-      <span className="composer-section-title mr-3">Server Sent Events</span>  
-        <input 
-          id="SSEswitch"
-          type="checkbox" 
-          className="switch is-outlined is-warning" 
-          onChange={(e) => {
-            handleSSEPayload(e);
-          }}
-          checked={isSSE}
-        ></input>
-        <label htmlFor="SSEswitch">
-        </label>
+        {/* SSE TOGGLE SWITCH */}
+        <div className="field">
+        <span className="composer-section-title mr-3">Server Sent Events</span>  
+          <input 
+            id="SSEswitch"
+            type="checkbox" 
+            className="switch is-outlined is-warning" 
+            onChange={(e) => {
+              handleSSEPayload(e);
+            }}
+            checked={isSSE}
+          ></input>
+          <label htmlFor="SSEswitch">
+          </label>
+        </div>
       </div>
-
-      <NewRequestButton onClick={addNewRequest} />
-
+      <div className="is-graph-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </div>
-  )
+  );
 }

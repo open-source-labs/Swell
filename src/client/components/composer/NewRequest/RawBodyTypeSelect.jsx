@@ -58,58 +58,58 @@ const RawBodyTypeSelect = (props) => {
       <div className="dropdown-menu">
         <ul className="dropdown-content">
           {newRequestBody.rawType !== 'text/plain' &&  
-            <li 
+            <a
               onClick={() => {
                 setDropdownIsActive(false); 
                 setNewRawBodyType("text/plain")
               }} 
               className="dropdown-item" 
-            >text/plain</li>
+            >text/plain</a>
           }
           {newRequestBody.rawType !== 'application/json' &&
-            <li  
+            <a  
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewRawBodyType('application/json'); 
               }} 
               className="dropdown-item" 
-            >application/json</li>
+            >application/json</a>
           }
           {newRequestBody.rawType !== 'application/javascript' && 
-            <li 
+            <a
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewRawBodyType('application/javascript')
               }} 
               className="dropdown-item" 
-            >application/javascript</li>
+            >application/javascript</a>
           }
           {newRequestBody.rawType !== 'application/xml' && 
-            <li 
+            <a
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewRawBodyType('application/xml')
               }} 
               className="dropdown-item" 
-            >application/xml</li>
+            >application/xml</a>
           }
           {newRequestBody.rawType !== 'text/xml' && 
-            <li 
+            <a
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewRawBodyType('text/xml')     
               }} 
               className="dropdown-item" 
-            >text/xml</li>
+            >text/xml</a>
           }
           {newRequestBody.rawType !== 'text/html' && 
-            <li 
+            <a 
               onClick={() => {
                 setDropdownIsActive(false);
                 setNewRawBodyType('text/html')
               }} 
               className="dropdown-item" 
-            >text/html</li>
+            >text/html</a>
           }
         </ul>
       </div>

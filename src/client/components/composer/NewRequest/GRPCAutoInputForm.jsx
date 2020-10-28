@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
+import GRPCServiceOrRequestSelect from "./GRPCServiceOrRequestSelect.jsx"
 
 const GRPCAutoInputForm = (props) => {
   //component state for toggling show/hide
   const [show, toggleShow] = useState(true);
   //component state for service and request dropdown
-  const [serviceNameOption, selectServiceOption] = useState("Select Service");
-  const [requestNameOption, selectRequestOption] = useState("Select Request");
+  const [serviceOption, setServiceOption] = useState("Select Service");
+  const [requestOption, setRequestOption] = useState("Select Request");
 
   const {
     selectedService,
@@ -22,14 +23,14 @@ const GRPCAutoInputForm = (props) => {
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
-    selectServiceOption(e.target.value);
+    setServiceOption(e.target.textContent);
     const serviceName =
-      e.target.value !== "Select Service" ? e.target.value : null;
-    const serviceObj = services.find((ser) => ser.name === e.target.value);
+      e.target.textContent !== "Select Service" ? e.target.textContent : null;
+    const serviceObj = services.find((ser) => ser.name === e.target.textContent);
     // clears all stream query bodies except the first one
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
     let streamContent = [""];
-    selectRequestOption("Select Request");
+    setRequestOption("Select Request");
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
@@ -46,14 +47,14 @@ const GRPCAutoInputForm = (props) => {
   // event handler for changes made to the Select Requests dropdown list
   const setRequest = (e) => {
     //update component state
-    selectRequestOption(e.target.value);
+    setRequestOption(e.target.textContent);
     //clear streams array and content except first index
     const newStreamsArr = [streamsArr[0]];
     const newStreamContent = [streamContent[0]];
 
-    let requestName = e.target.value;
+    let requestName = e.target.textContent;
     //clear stream bodies and set request to null if none selected
-    if (e.target.value === "Select Request") {
+    if (e.target.textContent === "Select Request") {
       newStreamContent[0] = "";
       requestName = null;
     }
@@ -135,84 +136,45 @@ const GRPCAutoInputForm = (props) => {
   }, [selectedRequest]);
 
   useEffect(() => {
-    selectServiceOption("Select Service");
-    selectRequestOption("Select Request");
+    setServiceOption("Select Service");
+    setRequestOption("Select Request");
   }, [protoContent]);
 
-  const bodyContainerClass = show
-    ? "dropdownService"
-    : "composer_bodyform_container-closed";
 
   //default options shown for services and request dropdowns
-  const servicesList = [
-    <option key="default" value="Select Service">
-      Select Service
-    </option>,
-  ];
-  const rpcsList = [
-    <option key="default" value="Select Request">
-      Select Request
-    </option>,
-  ];
+  const servicesList = [];
+  const rpcsList = [];
 
   // autopopulates the service dropdown list
   if (services) {
     services.forEach((ser, i) => {
-      servicesList.push(
-        <option key={i} value={ser.name}>
-          {ser.name}
-        </option>
-      );
+      servicesList.push(ser.name)
     });
   }
   // autopopulates the request dropdown list
   if (selectedServiceObj) {
     for (let i = 0; i < selectedServiceObj.rpcs.length; i++) {
-      rpcsList.push(
-        <option key={i} value={selectedServiceObj.rpcs[i].name}>
-          {selectedServiceObj.rpcs[i].name}
-        </option>
-      );
+      rpcsList.push(selectedServiceObj.rpcs[i].name);
     }
   }
 
   return (
     <div>
-      ************** GRPCAutoInputForm **************
-      <label className="composer_subtitle">
-        <div className="label-text" id="cookie-click">
-          Stream
-        </div>
-        <div className="toggle">
-          <input
-            type="checkbox"
-            name="check"
-            className="toggle-state"
-            onClick={() => toggleShow(!show)}
+      <div className="composer-section-title">Stream</div>
+      <span>
+        <GRPCServiceOrRequestSelect 
+          value={serviceOption}
+          onClick={setService}
+          items={servicesList}
+        />
+        { serviceOption !== "Select Service" && 
+          <GRPCServiceOrRequestSelect 
+            value={requestOption}
+            onClick={setRequest}
+            items={rpcsList}
           />
-          <div className="indicator_body" />
-        </div>
-      </label>
-      <select
-        id="dropdownService"
-        value={serviceNameOption}
-        onChange={setService}
-        name="dropdownService"
-        className={bodyContainerClass}
-      >
-        {servicesList}
-      </select>
-
-      <select
-        id="dropdownRequest"
-        value={requestNameOption}
-        onChange={setRequest}
-        name="dropdownRequest"
-        className={bodyContainerClass}
-      >
-        {rpcsList}
-      </select>
-
+        }
+      </span>
       <GRPCBodyEntryForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}

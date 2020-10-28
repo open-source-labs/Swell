@@ -14,7 +14,7 @@ export default function TextCodeAreaEditable ({ value, mode, onChange, theme }) 
           lineNumbers: true,
           tabSize: 4,
           lineWrapping: true,
-          readOnly: false,
+          readOnly: true,
         }}
         onChange={onChange}
       />
