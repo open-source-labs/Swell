@@ -106,6 +106,7 @@ const graphQLController = {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 

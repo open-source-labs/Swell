@@ -587,7 +587,9 @@ ipcMain.on("open-gql", (event, args) => {
     if (reqResObj.request.method === "QUERY") {
       client
         .query({ query: body, variables, context: headers })
-        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .then((data) => {
+          event.sender.send("reply-gql", { reqResObj, data })
+        })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
           console.log("gql query error in main.js", err);
@@ -595,7 +597,9 @@ ipcMain.on("open-gql", (event, args) => {
     } else if (reqResObj.request.method === "MUTATION") {
       client
         .mutate({ mutation: body, variables, context: headers })
-        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .then((data) => {
+          event.sender.send("reply-gql", { reqResObj, data })
+        })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
           console.error("gql mutation error in main.js", err);
