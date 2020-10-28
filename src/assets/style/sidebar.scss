@@ -1,5 +1,5 @@
 
-
+// COMPOSER TAB
 
 .include-data-checkbox {
   background: #FFFFFF;
@@ -9,7 +9,11 @@
   border-radius: 2px;
   max-width: 26px;
   max-height: 26px;
-  
+}
+
+.switch:focus {
+  border: none;
+  outline: none;
 }
 
 .add-header-or-cookie-button {
@@ -18,25 +22,50 @@
   min-width: 80px;
 }
 
+.composer-section-title {
+    // access to all section headers in Composer Pane
+}
+
+
 .prettify-select {
+  // for application JSON body in REST requests
   float: right;
 }
 
+// grpc
 .protocol-select-button {
   border: none !important;
   border-bottom: 1px solid $neutral-300 !important;
 }
 
-.body-type-select {
-
+.stream-title {
+  font-size: 70%
 }
 
-.composer-section-title {
-    
-}
-
+// needed for add new request button
 .is-hack-height {
   height: 86.75%
+}
+
+
+.add-request-button {
+  border: 1px solid #3734A9 !important;
+  &:hover {
+    box-shadow: 1px 1px 1px 1px $neutral-300;
+  }
+}
+
+.input {
+  outline: none !important;
+}
+
+// HISTORY TAB
+.history-date {
+  font-size: 120%;
+}
+
+.history-method {
+  width: 130px;
 }
 
 // CODE MIRROR
@@ -74,34 +103,4 @@
 .cm-s-grpc .CodeMirror-linenumber {
   border: none;
   color: $neutral-300;
-}
-
-
-
-.switch:focus {
-  border: none;
-  outline: none;
-}
-
-.add-request-button {
-  border: 1px solid #3734A9 !important;
-  &:hover {
-    box-shadow: 1px 1px 1px 1px $neutral-300;
-  }
-}
-
-.input {
-  outline: none !important;
-}
-
-.history-date {
-  font-size: 120%;
-}
-
-.history-method {
-  width: 130px;
-}
-
-.stream-title {
-  font-size: 70%
 }
