@@ -29,8 +29,8 @@ export const ResponsePaneContainer = () => {
             key={0}
             outgoingMessages={currentResponse.request.messages}
             incomingMessages={currentResponse.response.messages}
-            content={content}
-            connection={connection} 
+            content={currentResponse}
+            connection={currentResponse.connection} 
           />
         }
         

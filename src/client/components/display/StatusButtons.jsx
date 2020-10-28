@@ -5,7 +5,10 @@ function StatusButtons({ currentResponse }) {
   // currentResponse.response.headers.status
 
   
-  if (!currentResponse.response || (Object.keys(currentResponse.response.headers).length === 0) || !currentResponse.response.headers[":status"]) {
+  if (!currentResponse.response ||
+    !currentResponse.response.headers ||
+    (Object.keys(currentResponse.response.headers).length === 0) || 
+    !currentResponse.response.headers[":status"]) {
     return (null)
   }
   
