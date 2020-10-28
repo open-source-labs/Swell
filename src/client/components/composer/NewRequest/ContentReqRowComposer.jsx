@@ -3,7 +3,7 @@ import React from 'react'
 export default function ContentReqRowComposer({ data, changeHandler, index, deleteItem }) {
   return (
   <div className="is-flex mt-1">
-    <div className="include-header-checkbox">
+    <div className="include-data-checkbox">
       <input
         type="checkbox"
         id={data.id}
