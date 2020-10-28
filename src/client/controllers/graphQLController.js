@@ -35,9 +35,9 @@ const graphQLController = {
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
         // needs formatting because component reads them in a particular order
-          result.reqResObj.response.cookies = this.cookieFormatter(
+        result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
-        );
+          );
         resolve(result);
       });
     });
@@ -106,6 +106,7 @@ const graphQLController = {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
