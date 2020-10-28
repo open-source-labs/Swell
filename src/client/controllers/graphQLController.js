@@ -135,8 +135,13 @@ const graphQLController = {
     });
   },
 
-  introspect(url) {
-    api.send("introspect", url);
+  introspect(url, headers, cookies) {
+    const introspectionObject = {
+      url,
+      headers,
+      cookies
+    }
+    api.send("introspect", JSON.stringify(introspectionObject));
     api.receive("introspect-reply", (data) => {
       if (data !== "Error: Please enter a valid GraphQL API URI") {
         //formatted for Codemirror hint and lint

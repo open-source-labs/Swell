@@ -610,10 +610,26 @@ ipcMain.on("open-gql", (event, args) => {
   }
 });
 /* NEED TO INCORPORATE COOKIES AND HEADERS IN INTROSPECTION */
-ipcMain.on("introspect", (event, url) => {
-  fetch2(url, {
+ipcMain.on("introspect", (event, introspectionObject) => {
+  const req = JSON.parse(introspectionObject);
+
+  // Reformat headers
+  const headers = {};
+  req.headers.forEach(({ active, key, value }) => {
+    if(active) headers[key] = value;
+  });
+  // Reformat cookies
+  let cookies = '';
+  if (req.cookies.length) {
+    cookies = req.cookies.reduce((acc, userCookie) => {
+      return acc + `${userCookie.key}=${userCookie.value}; `;
+    }, '');
+  }
+  headers.Cookie = cookies;
+  
+  fetch2(req.url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ query: introspectionQuery }),
   })
     .then((resp) => resp.json())
