@@ -21,18 +21,23 @@ export default function HeadersContainer({ currentResponse }) {
  
 
   return ( 
-    <div className='table-container mx-3'>
-      <table className="table">
-        <thead className="is-size-7">
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody className="is-size-7">
-        {responseHeaders} 
-        </tbody>
-      </table>
+    <div>
+      <div className='add-vertical-scroll'>
+        <div className='table-container mx-3'>
+          <table className="table">
+            <thead className="is-size-7">
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody className="is-size-7">
+            {responseHeaders} 
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
   )
 } 

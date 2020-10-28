@@ -37,6 +37,14 @@
 
 // HEADERS & COOKIES
 
+.scrollable-containers {
+  overflow-y: scroll;
+}
+
+.header-bar {
+  min-height: 2.5rem;
+}
+
 table {
     margin-bottom: 2rem;
     max-width: 200px;
@@ -45,7 +53,7 @@ table {
   
   td {
     min-width: 6rem;
-    max-width: 18rem;
+    max-width: 50%;
   }
   
 

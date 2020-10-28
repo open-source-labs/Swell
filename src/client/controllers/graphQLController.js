@@ -114,7 +114,10 @@ const graphQLController = {
     reqResObj.connection = "closed";
     reqResObj.connectionType = "plain";
     reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(response.data));
+    
+    // reqResObj.response.events.push(JSON.stringify(response.data));
+    reqResObj.response.events.push(response.data);
+
     store.default.dispatch(actions.reqResUpdate(reqResObj));
     store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.updateGraph(reqResObj));
@@ -123,7 +126,10 @@ const graphQLController = {
   handleError(errorsObj, reqResObj) {
     reqResObj.connection = "error";
     reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(errorsObj);
+
+    // reqResObj.response.events.push(errorsObj);
+    reqResObj.response.events.push(JSON.parse(errorsObj));
+    
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 
