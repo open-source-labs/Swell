@@ -3,11 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from "../../../../src/client/actions/actions.js";
 
 import connectionController from "../../controllers/reqResController";
-import RequestTabs from "../display/RequestTabs.jsx";
 import RestRequestContent from "../display/RestRequestContent.jsx";
 import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
-import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
 const SingleReqResContainer = (props) => {
@@ -41,86 +39,17 @@ const SingleReqResContainer = (props) => {
     connectionController.closeReqRes(id);
     reqResDelete(content);
   }
-
-  const renderStatusCode = () => {
-    const { events, headers } = response;
-    // graphQL
-    if (graphQL) {
-      if (!events || !events.length) {
-        return '';
-      } if (events && events.length) {
-        const statusCode = JSON.parse(events[0]).statusCode;
-        if (statusCode) return `Status: ${statusCode}`;
-        return 'Status: 200';
-      }
-    }
-    if (/wss?:\/\//.test(protocol)) {
-      // ws - close codes
-      return closeCode
-        ? `Close Code: ${closeCode}`
-        : "";
-    } 
-    // http
-    return headers &&
-      headers[":status"]
-      ? "Status: " + headers[":status"]
-      : "";
-  }
-
-  const contentBody = [];
-
-  const openButtonStyles = {
-    display:
-      connection === "uninitialized" ||
-      connection === "closed" ||
-      connection === "error"
-        ? "block"
-        : "none",
-  };
-
-  const closeButtonStyles = {
-    display:
-      connection === "pending" ||
-      connection === "open"
-        ? "block"
-        : "none",
-  };
-
-  const http2Display = {
-    display: isHTTP2 ? "block" : "none",
-  };
-
-  let statusLight;
-  switch (connection) {
-    case "uninitialized":
-      statusLight = <status-indicator />;
-      break;
-    case "pending":
-      statusLight = <status-indicator intermediary pulse />;
-      break;
-    case "open":
-      statusLight = <status-indicator positive pulse />;
-      break;
-    case "closed":
-      statusLight = <status-indicator negative />;
-      break;
-    case "error":
-      statusLight = <status-indicator negative />;
-      break;
-    default:
-      console.log("not a valid connection for content object");
-  }
   
   return (
     <div className="m-3">
       {/* TITLE BAR */}
       <div className='is-flex cards-titlebar'>
-        <div className={`is-flex-grow-1 is-${network}`}>{request.method}</div>
-        <div className={'is-flex-grow-3 is-size-7'}>{url}</div>
+        <div className={`is-flex-grow-1 is-${network} is-flex-basis-0 is-flex is-justify-content-center is-align-items-center has-text-weight-medium`}>{request.method}</div>
+        <div className={'is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center ml-2'}>{url}</div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
       {network !== 'ws' &&
-        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card' 
+        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card pl-2 is-flex is-align-items-center' 
           onClick={() => { setShowDetails(showDetails === false)}}
           >
           View Request Details
@@ -143,7 +72,7 @@ const SingleReqResContainer = (props) => {
       {/* REMOVE / SEND BUTTONS */}
         <div className="is-flex">
           <button 
-            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
             id={request.method}
             onClick={removeReqRes}
             >
@@ -152,7 +81,7 @@ const SingleReqResContainer = (props) => {
           {/* SEND BUTTON */}
             {connection === "uninitialized" &&
               <button
-                className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7"
+                className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
                 onClick={() => {
                   ReqResCtrl.openReqRes(content.id);
                 }}
@@ -163,7 +92,7 @@ const SingleReqResContainer = (props) => {
             {/* VIEW RESPONSE BUTTON */}
             {connection !== "uninitialized" &&
               <button
-                className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+                className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
                 onClick={() => {
                   dispatch(actions.saveCurrentResponseData(content));
                 }}

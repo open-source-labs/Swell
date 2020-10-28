@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import dropDownArrow from "../../../assets/icons/caret-down.svg";
 // import { Link } from 'react-router-dom';
 
 export default function NetworkDropdown({ onProtocolSelect, network }) {
@@ -35,7 +36,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
         >
           <span className="column">{networkTitle}</span>
           <span className="column">
-            <i className="fas fa-caret-down" aria-hidden="true" />
+            <img src={dropDownArrow}  className="is-awesome-icon" aria-hidden="true" />
           </span>
         </div>
       </div>
