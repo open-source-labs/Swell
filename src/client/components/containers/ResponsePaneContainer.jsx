@@ -9,12 +9,13 @@ import WebSocketWindow from "../display/WebSocketWindow";
 export const ResponsePaneContainer = () => {
   const [activeTab, setActiveTab] = useState('events');
   const currentResponse = useSelector(store => store.business.currentResponse); 
-  console.log('currentResponse --> ', currentResponse);
+  
+  console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
   // currentResponse.request.network
 
 
   return (
-      <div className='column is-one-third'>
+      <div className='column is-one-third is-flex is-flex-direction-column is-tall'>
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
             <h3>
@@ -42,7 +43,7 @@ export const ResponsePaneContainer = () => {
               <li className={`column ${activeTab === 'events' ? 'is-active' : ''}`}>
               <a 
                 onClick={() => setActiveTab('events')}
-              > {'Events'}
+              > Events
               </a>
             </li>
               <li className={`column ${activeTab === 'headers' ? 'is-active' : ''}`}>
@@ -61,9 +62,11 @@ export const ResponsePaneContainer = () => {
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-        { activeTab === 'events' && <EventsContainer currentResponse={currentResponse} key='EC1'/>}
-        { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
-        { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
+        <div className="is-flex-grow-3 add-vertical-scroll">
+          { activeTab === 'events' && <EventsContainer currentResponse={currentResponse} />}
+          { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
+          { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
+        </div>
       </div>
         }
     </div>
