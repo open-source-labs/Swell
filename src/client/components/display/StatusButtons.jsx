@@ -5,7 +5,7 @@ function StatusButtons({ currentResponse }) {
   // currentResponse.response.headers.status
 
   
-  if (!currentResponse.response) {
+  if (!currentResponse.response || (Object.keys(currentResponse.response.headers).length === 0)) {
     return (null)
   }
   
