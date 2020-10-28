@@ -17,14 +17,14 @@ export const ContentsContainer = () => {
 
       {/* TAB SELECTOR */}
       <div className="tabs">
-        <ul>
-          <li className={activeTab === 'workspace' ? 'is-active' : ''}>
+        <ul className='columns is-gapless'>
+          <li className={`column ${activeTab === 'workspace' ? 'is-active' : '' }`}>
             <a 
               onClick={() => setActiveTab('workspace')}
             >Requests
             </a>
           </li>
-          <li className={activeTab === 'saved-workspace' ? 'is-active' : ''}>
+          <li className={`column ${activeTab === 'saved-workspace' ? 'is-active' : '' }`}>
             <a 
               onClick={() => setActiveTab('saved-workspace')}
             >Saved Workspace

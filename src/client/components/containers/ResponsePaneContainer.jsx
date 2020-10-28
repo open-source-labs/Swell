@@ -34,21 +34,21 @@ export const ResponsePaneContainer = () => {
         <div>
           {/* TAB SELECTOR */}
           <div className="tabs">
-            <ul className="is-flex is-justify-content-space-evenly">
-              <li className={activeTab === 'events' ? 'is-active' : ''}>
+            <ul className="columns is-gapless">
+              <li className={`column ${activeTab === 'events' ? 'is-active' : ''}`}>
               <a 
                 onClick={() => setActiveTab('events')}
               > {'Events'}
               </a>
             </li>
-              <li className={activeTab === 'headers' ? 'is-active' : ''}>
+              <li className={`column ${activeTab === 'headers' ? 'is-active' : ''}`}>
                 <a 
                   onClick={() => setActiveTab('headers')}
                 > 
                 {currentResponse.gRPC === true ? 'Metadata' : 'Headers'}
                 </a>
               </li>
-              <li className={activeTab === 'cookies' ? 'is-active' : ''}>
+              <li className={`column ${activeTab === 'cookies' ? 'is-active' : ''}`}>
                 <a 
                   onClick={() => setActiveTab('cookies')}
                 > Cookies
