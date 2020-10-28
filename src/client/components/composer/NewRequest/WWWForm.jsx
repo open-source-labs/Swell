@@ -158,7 +158,7 @@ class WWWForm extends Component {
 
     return (
       <div
-        className={'composer_headers_container-open'}
+        className={'composer_headers_container-open mt-1'}
       >
         {wwwFieldsReactArr}
       </div>

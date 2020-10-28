@@ -13,7 +13,7 @@
 .add-header-or-cookie-button {
   color: $primary;
   border-color: $primary;
-  
+  min-width: 80px;
 }
 
 .prettify-select {
@@ -34,7 +34,7 @@
 }
 
 .is-hack-height {
-  height: 88%
+  height: 86.75%
 }
 
 // CODE MIRROR
@@ -92,8 +92,11 @@
   outline: none !important;
 }
 
-.historyDate {
-  size: 200em;
-  color: $primary;
-  text-transform: uppercase;
+.history-date {
+  font-size: 120%;
+
+}
+
+.stream-title {
+  font-size: 70%
 }

@@ -170,7 +170,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
   const urlDisplay = url.length > 40 ? url.slice(0, 40) + '...' : url;
 
     return (
-      <div className="history-container is-flex is-justify-content-space-between m-5" >
+      <div className="history-container is-flex is-justify-content-space-between m-3" >
         <div className="is-clickable is-primary-link is-flex" onClick={() => addHistoryToNewRequest()}>
           <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
           <div className="history-url"> {urlDisplay} </div>

@@ -103,12 +103,12 @@ const GRPCProtoEntryForm = (props) => {
      - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
      */
   return (
-    <div>
+    <div className="mt-1">
       <div className='is-flex is-justify-content-space-between is-align-content-center'>
         <div className="composer-section-title">Proto</div>
         <div>
           <button 
-            className="button is-small add-header-or-cookie-button"
+            className="button is-small add-header-or-cookie-button mr-1"
             onClick={importProtos}> 
             Load Proto 
           </button>

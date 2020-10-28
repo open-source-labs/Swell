@@ -166,7 +166,7 @@ class HeaderEntryForm extends Component {
     ));
 
     return (
-      <div >
+      <div className="mt-1" >
         <div className='is-flex is-justify-content-space-between is-align-content-center'>
         <div className="composer-section-title">{headerName}</div>
           <button 

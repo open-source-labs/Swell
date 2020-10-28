@@ -100,7 +100,7 @@ const GRPCBodyEntryForm = (props) => {
      - if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
      */
   return (
-    <div>
+    <div className = "mt-1">
       <div className="composer-section-title">Body</div>
       <section>{streamArr}</section>
       {addStreamBtn}

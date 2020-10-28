@@ -191,19 +191,19 @@ export default function RestContainer({
         )}
 
         {/* SSE TOGGLE SWITCH */}
-        <div className="field">
-        <span className="composer-section-title mr-3">Server Sent Events</span>  
-          <input 
-            id="SSEswitch"
-            type="checkbox" 
-            className="switch is-outlined is-warning" 
-            onChange={(e) => {
-              handleSSEPayload(e);
-            }}
-            checked={isSSE}
-          ></input>
-          <label htmlFor="SSEswitch">
-          </label>
+        <div className="field mt-2">
+          <span className="composer-section-title mr-3">Server Sent Events</span>  
+            <input 
+              id="SSEswitch"
+              type="checkbox" 
+              className="switch is-outlined is-warning" 
+              onChange={(e) => {
+                handleSSEPayload(e);
+              }}
+              checked={isSSE}
+            ></input>
+            <label htmlFor="SSEswitch">
+            </label>
         </div>
       </div>
       <div className="is-graph-footer is-clickable is-margin-top-auto">
