@@ -93,7 +93,7 @@ class WWWForm extends Component {
     const wwwFieldsDeepCopy = this.createWWWClone();
     wwwFieldsDeepCopy.push({
       id: `id${this.state.wwwFields.length}`,
-      active: true,
+      active: false,
       key: '',
       value: ''
     })
