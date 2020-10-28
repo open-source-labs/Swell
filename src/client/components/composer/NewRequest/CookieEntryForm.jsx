@@ -14,7 +14,7 @@ class CookieEntryForm extends Component {
 
   componentDidMount() {
     const cookiesDeepCopy = this.createDeepCookieCopy();
-    if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") this.addCookie(cookiesDeepCopy);
+    if (cookiesDeepCopy[cookiesDeepCopy.length-1]?.key !== "") this.addCookie(cookiesDeepCopy);
   }
 
   componentDidUpdate() {
@@ -22,7 +22,7 @@ class CookieEntryForm extends Component {
     if (cookiesDeepCopy.length == 0) {
       this.addCookie([]);
     }
-    else if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") {
+    else if (cookiesDeepCopy[cookiesDeepCopy.length-1]?.key !== "") {
       this.addCookie(cookiesDeepCopy);
     }
   }
