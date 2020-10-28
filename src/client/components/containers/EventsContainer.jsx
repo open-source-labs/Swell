@@ -30,6 +30,7 @@ export default function EventsContainer({currentResponse}) {
       headers["content-type"] &&
       headers["content-type"] === "text/event-stream"
     ) {
+      console.log('EventsContainer1')
       events.forEach((cur, idx) => {
         displayContents.push(<SSERow key={idx} content={cur} />);
       });
@@ -40,6 +41,8 @@ export default function EventsContainer({currentResponse}) {
       headers["content-type"] &&
       headers["content-type"].includes("text/html")
     ) {
+      console.log('EventsContainer2')
+
       // console.log("headers:content-type ->", headers["content-type"]);
       // console.log("events0 -> ", events[0]);
       displayContents.push(
@@ -53,6 +56,8 @@ export default function EventsContainer({currentResponse}) {
         />
       );
     } else if (events && events.length > 1) {
+      console.log('EventsContainer3')
+
       if (events) {
         let resEvents = "";
         let eventJSON;
@@ -81,6 +86,8 @@ export default function EventsContainer({currentResponse}) {
 
     // Otherwise, render a single display
     else if (events) {
+      console.log('EventsContainer4', events[0])
+
       displayContents.push(
         <CodeMirror
           value={JSON.stringify(events[0], null, 4)}
