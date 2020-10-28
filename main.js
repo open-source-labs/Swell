@@ -43,6 +43,10 @@ const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
+<<<<<<< HEAD
+=======
+// const { setContext } = require("apollo-link-context");
+>>>>>>> 44fe393b97d833f80a7f6ec89ed8bf7e15b394bf
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
@@ -489,7 +493,7 @@ ipcMain.on("open-gql", (event, args) => {
     });
 
   // request cookies from reqResObj to request headers
-  let cookies = ;
+  // let cookies = ;
   if (reqResObj.request.cookies.length) {
     cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
