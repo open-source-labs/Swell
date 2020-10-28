@@ -35,7 +35,7 @@ const graphQLController = {
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
         // needs formatting because component reads them in a particular order
-        result.reqResObj.response.cookies = this.cookieFormatter(
+          result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
         );
         resolve(result);
@@ -49,13 +49,26 @@ const graphQLController = {
     reqResObj.connection = "open";
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-    const wsUri = reqResObj.url;
-
     // have to replace http with ws to connect to the websocket
-    const httpToWs = wsUri.replace(/http/gi, 'ws')
-    const wsClient = new SubscriptionClient(httpToWs, { reconnect: true });
+    let wsUri = reqResObj.url.replace(/http/gi, 'ws');
 
-    const wsLink = new WebSocketLink(wsClient);
+    // Map all headers to headers object
+    const headers = {};
+    reqResObj.request.headers.forEach(({key, value, active}) => {
+      if(active) headers[key] = value;
+    })
+    
+    const wsLink = new WebSocketLink(
+      new SubscriptionClient(
+        wsUri, 
+        { 
+          reconnect: true, 
+          timeout: 30000,
+          connectionParams: {
+            headers
+          }
+        })
+    );
 
     const apolloClient = new ApolloClient({
       link: wsLink,
@@ -77,6 +90,7 @@ const graphQLController = {
       .subscribe({
         next(subsEvent) {
           // Notify your application with the new arrived data
+          console.log('new event:', JSON.stringify(subsEvent));
           reqResObj.response.events.push(JSON.stringify(subsEvent.data));
           store.default.dispatch(actions.reqResUpdate(reqResObj));
         },

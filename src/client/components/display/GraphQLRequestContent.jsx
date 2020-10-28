@@ -21,9 +21,11 @@ export default function GraphQLRequestContent({ request }) {
   const cookieRows = cookies.map((cookie, index) => <ContentReqRow data={cookie} key={`h${index}`}/>);
 
   // PRETTY-PRINT JSON IN BODY
-  const bodyText = ( JSON.stringify( JSON.parse(body), null, 4 ) );
+  const bodyText = body;
+  // const bodyText = ( JSON.stringify( JSON.parse(body), null, 4 ) );
   // PRETTY-PRINT JSON IN VARIABLES
-  const bodyVarText = ( JSON.stringify( JSON.parse(bodyVariables), null, 4 ) );
+  const bodyVarText = bodyVariables;
+  // const bodyVarText = ( JSON.stringify( JSON.parse(bodyVariables), null, 4 ) );
 
   return (
     <div>

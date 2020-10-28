@@ -43,6 +43,7 @@ const { InMemoryCache } = require("apollo-cache-inmemory");
 const { createHttpLink } = require("apollo-link-http");
 const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
+const { setContext } = require("apollo-link-context");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
@@ -323,13 +324,11 @@ ipcMain.on("import-collection", (event, args) => {
 
     // names is the list of existing collection names in state
     const collectionNames = args.map((obj) => obj.name);
-
     fs.readFile(filepath, "utf-8", (err, data) => {
       if (err) {
         alert("An error ocurred reading the file :", err.message);
         return;
       }
-
       // parse data, will throw error if not parsable
       let parsed;
       // parsed.name already exists
@@ -364,11 +363,8 @@ ipcMain.on("import-collection", (event, args) => {
           return;
         }
       }
-
       // send data to chromium for state update
-      // ipcMain.send("add-collection", { data });
-      // mainWindow.webContents.send('add-collection', {data});
-      event.sender.send("add-collection", { data });
+      event.sender.send("add-collection", JSON.stringify(JSON.parse(data)));
     });
   });
   //.catch( err => console.log('error in import-collection', err));
@@ -481,25 +477,26 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
 const { onError } = require("apollo-link-error");
 const { response } = require("express");
 
+/* NEED TO INCORPORATE COOKIES AND HEADERS IN QUERIES AND MUTATIONS */
 ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
 
   // populating headers object with response headers - except for Content-Type
-  const headers = {};
+  const headerItems = {};
   reqResObj.request.headers
-    .filter((item) => item.key !== "Content-Type")
+    // .filter((item) => item.key !== "Content-Type")
     .forEach((item) => {
-      headers[item.key] = item.value;
+      headerItems[item.key] = item.value;
     });
 
   // request cookies from reqResObj to request headers
-  let cookies;
+  let cookies = ;
   if (reqResObj.request.cookies.length) {
     cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
     }, "");
   }
-  headers.Cookie = cookies;
+  headerItems.Cookie = cookies;
 
   // afterware takes headers from context response object, copies to reqResObj
   const afterLink = new ApolloLink((operation, forward) => {
@@ -544,10 +541,22 @@ ipcMain.on("open-gql", (event, args) => {
     });
   });
 
+  // const authLink = setContext((_, { headers }) => {
+  //   // return the headers to the context so httpLink can read them
+  //   return {
+  //     headers: {
+  //       ...headers,
+  //       authorization: headerItems.authorization ? `Bearer ${token}` : "",
+  //     }
+  //   }
+  // });
+
+  // IT SEEMS THAT HEADERS ARE NOT READING |HERE
+  console.log(headers);
   // creates http connection to host
   const httpLink = createHttpLink({
     uri: reqResObj.url,
-    headers,
+    headers: headerItems,
     credentials: "include",
     fetch: fetch2,
   });
@@ -600,7 +609,10 @@ ipcMain.on("open-gql", (event, args) => {
     } else if (reqResObj.request.method === "MUTATION") {
       client
         .mutate({ mutation: body, variables })
-        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .then((data) => {
+          // return response from GRAPHQL MUTATION
+          return event.sender.send("reply-gql", { reqResObj, data })
+        })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
           console.error("gql mutation error in main.js", err);
@@ -610,7 +622,7 @@ ipcMain.on("open-gql", (event, args) => {
     console.log("error trying gql query/mutation in main.js", err);
   }
 });
-
+/* NEED TO INCORPORATE COOKIES AND HEADERS IN INTROSPECTION */
 ipcMain.on("introspect", (event, url) => {
   fetch2(url, {
     method: "POST",

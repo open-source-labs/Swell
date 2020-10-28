@@ -111,7 +111,7 @@ const httpController = {
       console.log("no pre-existing http2 found");
       const id = Math.random() * 100000;
       const client = http2.connect(reqResObj.host, () =>
-        console.log("connected!, reqRes.Obj.host", reqResObj.host)
+      console.log("connected!, reqRes.Obj.host", reqResObj.host)
       );
 
       // push HTTP2 connection to array
@@ -213,9 +213,10 @@ const httpController = {
     let isSSE;
 
     reqStream.on("response", (headers, flags) => {
-      console.log("GOT BACK A RESPONSE, HALLELUJAH");
+      console.log(`main_httpController -> reqStream.on("response", (headers, flags)`);
       // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
-      console.log("headers from line 178 is : ", headers);
+      // console.log("headers: ", headers);
+
       // SSE will have 'stream' in the 'content-type' heading
       isSSE =
         headers["content-type"] && headers["content-type"].includes("stream");
