@@ -36,7 +36,7 @@ export const SidebarContainer = () => {
         <ComposerContainer />
       }
         {activeTab === "history" &&
-        <HistoryContainer />
+        <HistoryContainer setSidebarTab={setActiveTab}/>
       }
       
     </div>

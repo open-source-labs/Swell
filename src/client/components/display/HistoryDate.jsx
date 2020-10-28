@@ -45,14 +45,16 @@ class HistoryDate extends Component {
           setNewRequestBody={this.props.setNewRequestBody}
           setNewRequestStreams={this.props.setNewRequestStreams}
           newRequestFields={this.props.newRequestFields}
+          setSidebarTab={this.props.setSidebarTab}
         />
       );
     });
 
     return (
-      <div className="historyDate">
-        <h1 aria-label="queryDate">{date}</h1>
+      <div >
+        <h1 className="subtitle" aria-label="queryDate">{date}</h1>
         {histArray}
+        <hr />
       </div>
     );
   }

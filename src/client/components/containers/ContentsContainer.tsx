@@ -40,7 +40,7 @@ export const ContentsContainer = () => {
         }
 
         {activeTab === 'saved-workspace' && 
-          <CollectionsContainer />
+          <CollectionsContainer setWorkspaceTab={setActiveTab}/>
         }
 
       </div>
