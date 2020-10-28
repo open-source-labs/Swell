@@ -171,16 +171,14 @@ const History = ({ newRequestFields, content, content: { request : { method,
 
     return (
       <div className="history-container is-flex is-justify-content-space-between m-3" >
-        <div className="is-clickable is-primary-link is-flex" onClick={() => addHistoryToNewRequest()}>
-          <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
-          <div className="history-url"> {urlDisplay} </div>
+        <div className="is-clickable is-primary-link" onClick={() => addHistoryToNewRequest()}>
+          <span className={`history-method mr-2 ${colorClass}`}> {method} </span>
+          <span className="history-url"> {urlDisplay} </span>
         </div>
         <div className='history-delete-container'>
           <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id}></div>
         </div>
-      
       </div>
-      
     );
 }
 
