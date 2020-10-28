@@ -54,7 +54,7 @@ const GRPCBodyStream = (props) => {
     props.selectedStreamingType === "BIDIRECTIONAL"
   ) {
     streamNum = (
-      <span>
+      <span className='ml-1 stream-title'>
         Stream {props.streamNum + 1}
       </span>
     );
@@ -73,7 +73,7 @@ const GRPCBodyStream = (props) => {
     <div>
       <div className="warningMessage">{showError}</div>
       <div >
-        <div>
+        <div className="mt-1 is-flex is-align-items-center">
           {deleteStreamBtn}
           {streamNum}
         </div>
