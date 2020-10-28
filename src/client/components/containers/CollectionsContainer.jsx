@@ -4,7 +4,7 @@ import * as actions from "../../../../src/client/actions/actions.js";
 import Collection from "../display/Collection.jsx";
 import collectionsController from "../../controllers/collectionsController";
 
-export default function CollectionsContainer() {
+export default function CollectionsContainer({ setWorkspaceTab }) {
   const dispatch = useDispatch();
 
   const collections = useSelector(store => store.business.collections); 
@@ -18,6 +18,7 @@ export default function CollectionsContainer() {
       return (
         <Collection
           content={collection}
+          setWorkspaceTab={setWorkspaceTab}
           key={idx}
           deleteFromCollection={() => {dispatch(actions.deleteFromCollection(collection))}}
           collectionToReqRes={() => {dispatch(actions.collectionToReqRes(collection.reqResArray))}}

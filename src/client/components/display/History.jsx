@@ -9,7 +9,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
   restUrl, wsUrl, gqlUrl, grpcUrl }, protocol, url, graphQL, gRPC, streamsArr, 
   streamContent, queryArr, packageName, rpc, service, initialQuery, protoPath, 
   servicesObj, protoContent }, setNewRequestFields, setNewRequestHeaders, setNewRequestCookies, 
-  setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm }) => {
+  setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm, setSidebarTab }) => {
 
   const routerHistory = useHistory();
   const routeChange = (path) => { 
@@ -151,25 +151,39 @@ const History = ({ newRequestFields, content, content: { request : { method,
       // update streaming type button displayed next to the URL
       // document.getElementById('stream').innerText = method;
     }
+    setSidebarTab('composer');
+  }
+
+  let colorClass;
+  switch (network) {
+    case 'grpc': colorClass = 'is-grpc-color'; break;
+    case 'rest': colorClass = 'is-rest-color'; break;
+    case 'graphQL': colorClass = 'is-graphQL-color'; break;
+    case 'ws': colorClass = 'is-ws-color'; break;
   }
 
   const deleteHistory = (e) => {
     deleteFromHistory(content);
     historyController.deleteHistoryFromIndexedDb(e.target.id);
   }
+  
+  const urlDisplay = url.length > 40 ? url.slice(0, 40) + '...' : url;
 
     return (
-      <div className="history-container" >
-        <div className="history-text-container" onClick={() => addHistoryToNewRequest()}>
-          <div className="history-method"> {method} </div>
-          <div className="history-url"> {url} </div>
+      <div className="history-container is-flex is-justify-content-space-between m-5" >
+        <div className="is-clickable is-primary-link is-flex" onClick={() => addHistoryToNewRequest()}>
+          <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
+          <div className="history-url"> {urlDisplay} </div>
         </div>
         <div className='history-delete-container'>
-          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id}>
-          </div>
+          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id}></div>
         </div>
+      
       </div>
-    )
+      
+    );
 }
+
+
 
 export default History;

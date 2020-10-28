@@ -281,10 +281,7 @@ export default function GraphQLContainer({
           newRequestBody={newRequestBody}
           setNewRequestBody={setNewRequestBody}
         />
-        <GraphQLIntrospectionLog
-          introspectionData={introspectionData}
-          url={url}
-        />
+        <GraphQLIntrospectionLog />
       </div>
       <div className="is-graph-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />

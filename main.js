@@ -540,8 +540,6 @@ ipcMain.on("open-gql", (event, args) => {
     });
   });
 
-  // IT SEEMS THAT HEADERS ARE NOT READING |HERE
-  console.log(headers);
   // creates http connection to host
   const httpLink = createHttpLink({
     uri: reqResObj.url,
@@ -585,11 +583,12 @@ ipcMain.on("open-gql", (event, args) => {
     const variables = reqResObj.request.bodyVariables
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
+    
     if (reqResObj.request.method === "QUERY") {
       client
-        .query({ query: body, variables })
+        .query({ query: body, variables, context: headers })
         .then((data) => {
-          event.sender.send("reply-gql", { reqResObj, data });
+          event.sender.send("reply-gql", { reqResObj, data })
         })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
@@ -597,10 +596,9 @@ ipcMain.on("open-gql", (event, args) => {
         });
     } else if (reqResObj.request.method === "MUTATION") {
       client
-        .mutate({ mutation: body, variables })
+        .mutate({ mutation: body, variables, context: headers })
         .then((data) => {
-          // return response from GRAPHQL MUTATION
-          return event.sender.send("reply-gql", { reqResObj, data })
+          event.sender.send("reply-gql", { reqResObj, data })
         })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
@@ -612,10 +610,27 @@ ipcMain.on("open-gql", (event, args) => {
   }
 });
 /* NEED TO INCORPORATE COOKIES AND HEADERS IN INTROSPECTION */
-ipcMain.on("introspect", (event, url) => {
-  fetch2(url, {
+ipcMain.on("introspect", (event, introspectionObject) => {
+  const req = JSON.parse(introspectionObject);
+
+  // Reformat headers
+  const headers = {};
+  req.headers.forEach(({ active, key, value }) => {
+    if(active) headers[key] = value;
+  });
+  // Reformat cookies
+  let cookies = '';
+  if (req.cookies.length) {
+    cookies = req.cookies.reduce((acc, userCookie) => {
+      if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+      else return acc;
+    }, '');
+  }
+  headers.Cookie = cookies;
+  
+  fetch2(req.url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ query: introspectionQuery }),
   })
     .then((resp) => resp.json())

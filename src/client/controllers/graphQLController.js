@@ -35,9 +35,9 @@ const graphQLController = {
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
         // needs formatting because component reads them in a particular order
-          result.reqResObj.response.cookies = this.cookieFormatter(
+        result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
-        );
+          );
         resolve(result);
       });
     });
@@ -54,9 +54,19 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers = {};
-    reqResObj.request.headers.forEach(({key, value, active}) => {
+    reqResObj.request.headers.forEach(({ active, key, value }) => {
       if(active) headers[key] = value;
     })
+
+    // Reformat cookies
+    let cookies = '';
+    if (reqResObj.request.cookies.length) {
+      cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
+        if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+        else return acc;
+      }, '');
+    }
+    headers.Cookie = cookies;
     
     const wsLink = new WebSocketLink(
       new SubscriptionClient(
@@ -106,6 +116,7 @@ const graphQLController = {
     reqResObj.timeReceived = Date.now();
     reqResObj.response.events.push(JSON.stringify(response.data));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
@@ -134,8 +145,13 @@ const graphQLController = {
     });
   },
 
-  introspect(url) {
-    api.send("introspect", url);
+  introspect(url, headers, cookies) {
+    const introspectionObject = {
+      url,
+      headers,
+      cookies
+    }
+    api.send("introspect", JSON.stringify(introspectionObject));
     api.receive("introspect-reply", (data) => {
       if (data !== "Error: Please enter a valid GraphQL API URI") {
         //formatted for Codemirror hint and lint

@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import graphQLController from "../../../controllers/graphQLController";
 import TextCodeAreaReadOnly from './TextCodeAreaReadOnly';
+import { useSelector, useDispatch } from 'react-redux';
 
-const GraphQLIntrospectionLog = (props) => {
 
-  const { introspectionData, url } = props;
+const GraphQLIntrospectionLog = () => {
+  const headers = useSelector(store => store.business.newRequestHeaders.headersArr);
+  const cookies = useSelector(store => store.business.newRequestCookies.cookiesArr);
+  const introspectionData = useSelector(store => store.business.introspectionData);
+  const url = useSelector(store => store.business.newRequestFields.url);
       
   return (
     <div>
        <button
           className="button is-small add-header-or-cookie-button"
-          onClick={() => graphQLController.introspect(url)}
+          onClick={() => graphQLController.introspect(url, headers, cookies)}
         >
           Introspect
         </button>
