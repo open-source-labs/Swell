@@ -9,9 +9,7 @@ export default function ContentReqRowComposer({ data, changeHandler, index, dele
         id={data.id}
         className='is-checkradio is-black has-no-border'
         checked={data.active}
-        onChange={e => {
-          changeHandler(data.id, 'active', e.target.checked)
-        }}
+        onChange={e => changeHandler(data.id, 'active', e.target.checked)}
       />
       <label htmlFor={data.id}></label>
     </div>

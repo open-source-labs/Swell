@@ -67,6 +67,7 @@ const ComposerContainer = (props) => {
     props.setComposerWarningMessage({});
     switch (network) {
       case "graphQL": {
+         props.resetComposerFields();
           //if graphql
           props.setNewRequestFields({
             ...props.newRequestFields,
@@ -89,6 +90,7 @@ const ComposerContainer = (props) => {
           break;
       }
       case "rest": {
+       props.resetComposerFields();
           //if http/s
           props.setNewRequestFields({
             ...props.newRequestFields,
@@ -108,6 +110,7 @@ const ComposerContainer = (props) => {
           break;
       }
       case "grpc": {
+       props.resetComposerFields();
           //if gRPC
           props.setNewRequestFields({
             ...props.newRequestFields,
@@ -127,6 +130,7 @@ const ComposerContainer = (props) => {
           break;
       }
       case "ws": {
+       props.resetComposerFields();
           //if ws
           props.setNewRequestFields({
             ...props.newRequestFields,
