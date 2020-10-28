@@ -1,5 +1,6 @@
 $primary-100: #FFD645;
 $primary-200: #F66B61;
+$primary-300: #21D4A4;
 $primary-400: #50809B;
 $primary-500: #3734A9;
 
@@ -17,6 +18,7 @@ $neutral-600: #000000;
 
 // BULMA COLORS
 $primary: $primary-500;
+$success: $primary-300;
 $danger: $primary-200;
 $text: $neutral-500;
 // $link: $blue
@@ -72,16 +74,16 @@ $text: $neutral-500;
   background-color: $neutral-200;
 }
 
-.is-danger-btn {
-  border: 1px solid $neutral-500;
-  background-color: red;
-  color: $neutral-600;
+.is-success {
+  background-color: $primary-300;
+  color: $neutral-100;
 }
 
-.is-danger-btn:hover {
-  border: 1px dotted red;
-  color: red;
+.is-danger {
+  background-color: $primary-200;
+  color: $neutral-100;
 }
+
 
 .is-border-neutral-300 {
   border: 1px solid $neutral-300;

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import EventsContainer from './EventsContainer'
 import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
+import StatusButtons from '../display/StatusButtons'
 import WebSocketWindow from "../display/WebSocketWindow";
 
 export const ResponsePaneContainer = () => {
@@ -15,9 +16,12 @@ export const ResponsePaneContainer = () => {
   return (
       <div className='column is-one-third'>
         {/* HEADER */}
-        <div className="hero is-primary has-text-centered header-bar">
-          <h3>Responses</h3>
-        </div>
+          <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
+            <h3>
+              Responses
+            </h3>
+            <StatusButtons currentResponse={currentResponse} />
+          </div>
         {/* IF WEBSOCKETS */}
         {currentResponse.request.network === 'ws' && 
           <WebSocketWindow
@@ -25,7 +29,7 @@ export const ResponsePaneContainer = () => {
             outgoingMessages={currentResponse.request.messages}
             incomingMessages={currentResponse.response.messages}
             content={content}
-            connection={connection}
+            connection={connection} 
           />
         }
         
