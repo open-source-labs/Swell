@@ -10,6 +10,7 @@ import * as actions from "../actions/actions";
 const { api } = window;
 
 const graphQLController = {
+
   openGraphQLConnection(reqResObj) {
     // initialize response data
     reqResObj.response.headers = {};
@@ -100,9 +101,13 @@ const graphQLController = {
       .subscribe({
         next(subsEvent) {
           // Notify your application with the new arrived data
-          console.log('new event:', JSON.stringify(subsEvent));
-          reqResObj.response.events.push(JSON.stringify(subsEvent.data));
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
+          console.log('new graphQL SUBSCRIPTION event:');
+          // console.log('new graphQL SUBSCRIPTION event:', JSON.stringify(subsEvent));
+
+          reqResObj.response.events.push(subsEvent.data);
+          const newReqRes = JSON.parse(JSON.stringify(reqResObj));
+          store.default.dispatch(actions.saveCurrentResponseData(newReqRes));
+          store.default.dispatch(actions.reqResUpdate(newReqRes));
         },
         error(err) {
           console.error(err)

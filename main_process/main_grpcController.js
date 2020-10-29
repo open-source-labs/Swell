@@ -118,7 +118,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         reqResObj.response.events[0].response = [];
         reqResObj.response.events[0].response.push(resp)
       }
-      else {
+      else o{
         reqResObj.response.events[0].response.push(resp)
       }
       reqResObj.response.times.push(time);
