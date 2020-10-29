@@ -42,7 +42,7 @@ const RawBodyTypeSelect = (props) => {
   }
 
   return (
-    <div ref={dropdownEl} className={`mt-1  mr-3 body-type-select dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
+    <div ref={dropdownEl} className={`mt-1  mr-3 dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
 
       <div className="dropdown-trigger">
         <button className="button is-small is-primary is-outlined add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
