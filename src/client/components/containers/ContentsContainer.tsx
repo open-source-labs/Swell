@@ -47,7 +47,9 @@ export const ContentsContainer = () => {
 
       {/* BARGRAPH CONTENT */}
         {showGraph &&
+        <div className = "bar-graph">
           <BarGraph />
+          </div>
         }
         <div 
           className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
