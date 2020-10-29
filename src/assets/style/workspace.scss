@@ -42,6 +42,45 @@
   margin-top: auto;
 }
 
+.req-status{
+  
+}
+
+.connection-uninitialized {
+  // border-radius: 30px;
+  // background-color: red;
+  // height: 12px;
+  // width: 12px;
+  // position: relative;
+  // display: inline-block;
+  // text-align: center;
+}
+
+.connection-closed {
+  border-radius: 30px;
+  background-color: $primary-300;
+  height: 12px;
+  width: 12px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.connection-open {
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite; 
+  opacity: 0.0;
+
+  /* you dont need the stuff below, but its what I used to create the loading circle */
+  border: 2px solid $neutral-400;
+  border-radius: 30px;
+  height: 12px;
+  width: 12px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
 .is-modal-workspaces {
   color: $neutral-500;
   background-color: $neutral-100 !important;
