@@ -119,6 +119,7 @@ const BarGraph = (props) => {
 
   // click handling to load response data
   const getElementAtEvent = element => {
+    if (!element.length) return;
     // get the response data corresponding to the clicked element
     const index = element[0]._index
     const reqResToSend = element[0]._chart.config.data.datasets[0].reqRes[index]
