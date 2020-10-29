@@ -2,7 +2,7 @@
 
 // EMPTY STATE
 .empty-state-wrapper {
-  // height: 80%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +40,7 @@
 }
 
 .header-bar {
+  position: relative;
   height: 2.5em !important;
   min-height: 2.5em !important;
 }
@@ -77,6 +78,7 @@ td {
   font-family: "Roboto Mono", monospace;
   font-weight: 600;
 }
+
 
 .is-edit{
   height:100%;

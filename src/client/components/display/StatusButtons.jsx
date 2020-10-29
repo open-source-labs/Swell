@@ -4,12 +4,21 @@ function StatusButtons({ currentResponse }) {
   // console.log('Console from Status Buttons ==> ', currentResponse)
   // currentResponse.response.headers.status
 
-  if (currentResponse.error) {
+  if (currentResponse.error || !currentResponse) {
     return (
       <div className='status-tag is-danger'>
           Error
       </div>
     );
+  }
+
+  // STATUS FOR GRAPHQL
+  if (currentResponse.graphql = true && currentResponse.response) {
+    return (
+      <div className='status-tag is-success'>
+        Success
+      </div>
+    )
   }
   
   if (!currentResponse.response ||
