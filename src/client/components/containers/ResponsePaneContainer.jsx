@@ -73,7 +73,7 @@ export const ResponsePaneContainer = () => {
         { currentResponse.id 
           && currentResponse.request.network !== 'ws'
           && currentResponse.request.method !== 'SUBSCRIPTION' &&
-          <div className="is-3rem-footer ml-3 mr-3">
+          <div className="is-3rem-footer mx-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
               onClick={() => {
