@@ -29,7 +29,7 @@ const BarGraph = ({ dataPoints }) => {
         {
           scaleLabel: {
             display: true,
-            labelString: "Roundtrip in milliseconds",
+            labelString: "Response time",
           },
           ticks: {
             beginAtZero: true,
@@ -45,7 +45,7 @@ const BarGraph = ({ dataPoints }) => {
       ],
     },
     animation: {
-      duration: 0, //buggy animation, get rid of transition
+      duration: 500, //buggy animation, get rid of transition
     },
     maintainAspectRatio: false,
   });
@@ -56,7 +56,7 @@ const BarGraph = ({ dataPoints }) => {
       labels: labelArr,
       datasets: [
         {
-          label: "Roundtrip (ms)",
+          label: "Response Time",
           data: dataArr,
           backgroundColor: BGsArr,
           borderColor: bordersArr,
@@ -70,7 +70,7 @@ const BarGraph = ({ dataPoints }) => {
   //helper function that returns chart options object
   const optionsUpdater = (arr) => {
     //Event labels and Y-axis title disappear after three requests
-    const showLabels = arr.length > 3 ? false : true;
+    const showLabels = arr.length > 5 ? false : true;
     return {
       legend: {
         display: false,
@@ -105,7 +105,7 @@ const BarGraph = ({ dataPoints }) => {
     let urls, times, BGs, borders;
     if (dataPoints.length) {
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
-      urls = dataPoints.map((point) => point.url);
+      urls = dataPoints.map((point) => point.url.slice(point.url.length - 20, point.url.length));
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
       borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
@@ -126,7 +126,7 @@ const BarGraph = ({ dataPoints }) => {
 
   return (
     <div id="chartContainer" className={chartClass}>
-      <Bar data={chartData} width={50} height={100} options={chartOptions} />
+      <Bar data={chartData} width={50} height={200} options={chartOptions} />
     </div>
   );
 };
