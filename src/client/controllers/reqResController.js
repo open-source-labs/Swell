@@ -116,7 +116,7 @@ const connectionController = {
         default:
           console.log("Invalid Protocol");
       }
-      console.log("Connection aborted.");c
+      console.log("Connection aborted.");
     }
 
     this.openConnectionArray = this.openConnectionArray.filter(
