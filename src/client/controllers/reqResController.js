@@ -36,7 +36,8 @@ const connectionController = {
       if (
         reqResObj.connection === "closed" &&
         reqResObj.timeSent &&
-        reqResObj.timeReceived
+        reqResObj.timeReceived &&
+        reqResObj.response.events.length > 0
       ) {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
