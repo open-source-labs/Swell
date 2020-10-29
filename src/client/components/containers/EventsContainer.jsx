@@ -63,13 +63,13 @@ export default function EventsContainer({currentResponse}) {
         let eventJSON;
         for (const event of events) {
           eventJSON = JSON.stringify(event, null, 4);
-          resEvents = `${resEvents}
-  ${eventJSON}`;
+          resEvents = resEvents + '\n' + eventJSON;
         }
         displayContents.push(
           <div className="json-response" key="jsonresponsediv">
           <CodeMirror
-            value={JSON.stringify(resEvents, null, 4)}
+            // value={JSON.stringify(resEvents, null, 4)}
+            value={resEvents}
             options={{
               mode: 'application/json',
               theme: 'neo responsebody',
@@ -86,7 +86,7 @@ export default function EventsContainer({currentResponse}) {
 
     // Otherwise, render a single display
     else if (events) {
-      console.log('EventsContainer4', events[0])
+      console.log('EventsContainer4')
 
       displayContents.push(
         <CodeMirror
