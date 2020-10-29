@@ -169,12 +169,23 @@ const SingleReqResContainer = (props) => {
     reqResDelete(content);
   }
   
+  console.log(connection);
+
   return (
     <div className="m-3">
       {/* TITLE BAR */}
       <div className='is-flex cards-titlebar'>
         <div className={`is-flex-grow-1 is-${network} is-flex-basis-0 is-flex is-justify-content-center is-align-items-center has-text-weight-medium`}>{request.method}</div>
-        <div className={'is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center ml-2'}>{url}</div>
+        <div className='is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between'>
+          <div className='is-flex is-align-items-center ml-2'>
+            {url}
+          </div>
+          <div className='req-status mr-1 is-flex is-align-items-center'>
+            { connection === "uninitialized" && <div className='connection-uninitialized' /> }
+            { connection === "open" && <div className='connection-open' /> }
+            { connection === "closed" && <div className='connection-closed' /> }
+          </div>
+        </div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
       {network !== 'ws' &&
@@ -189,10 +200,11 @@ const SingleReqResContainer = (props) => {
           }
           {showDetails === true &&
           <div 
-            className="is-clickable is-primary-link m-3" 
+            className="is-clickable is-primary-link ml-3" 
             onClick={addHistoryToNewRequest}
           >
             Copy to Composer
+            
           </div>
           }
         </div>
