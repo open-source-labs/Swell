@@ -87,8 +87,8 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
               <div
                 className="is-flex is-align-items-center is-justify-content-space-around"
                 >
-                <button className="button is-small is-fullwidth m-3 " onClick={saveName}>Save</button>
                 <button className="button is-small is-fullwidth m-3 " onClick={() => { setShowModal(false) } }>Cancel</button>
+                <button className="button is-small is-fullwidth m-3 " onClick={saveName}>Save</button>
               </div>
             </div>
           </div>

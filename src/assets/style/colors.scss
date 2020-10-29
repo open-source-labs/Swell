@@ -109,3 +109,16 @@ $text: $neutral-500;
   border-left: 1px solid $neutral-300;
   border-right: 1px solid $neutral-300;
 }
+
+.is-awesome-icon {
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  stroke-width: 0;
+  stroke: $neutral-200;
+  fill: $neutral-200;
+  line-height: 1;
+  position: relative;
+  top: -.07em;
+  vertical-align: middle;
+}

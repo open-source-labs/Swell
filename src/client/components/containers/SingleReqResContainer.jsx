@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import * as actions from "../../../../src/client/actions/actions.js";
 
 import connectionController from "../../controllers/reqResController";
-import RequestTabs from "../display/RequestTabs.jsx";
 import RestRequestContent from "../display/RestRequestContent.jsx";
 import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
-import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
+
+  const newRequestFields = useSelector(store => store.business.newRequestFields); 
+  const newRequestStreams = useSelector(store => store.business.newRequestStreams); 
+
+  const routerHistory = useHistory();
+  const routeChange = (path) => { 
+    routerHistory.push(path);
+  }
 
   const {
     content,
@@ -35,96 +42,161 @@ const SingleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
   } = props;
-  const network = content.request.network;
+  const network = content.request.network;  
+
+  const addHistoryToNewRequest = () => {
+    
+    let requestFieldObj = {};
+    if (network === 'rest') {
+      routeChange('/composer/rest');
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        restUrl: content.request.restUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+      }
+    };
+    if (network === 'ws') {
+      routeChange('/composer/ws');
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method  || 'GET',
+        protocol: content.protocol  || 'http://',
+        url: content.url,
+        wsUrl: content.request.wsUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+      }
+    };
+    if (network === 'graphQL') {
+      routeChange('/composer/graphql');
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        gqlUrl: content.request.gqlUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+      }
+    };
+    if (network === 'grpc') {
+      routeChange('/composer/grpc');
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        grpcUrl: content.request.grpcUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+      }
+    };
+    let headerDeeperCopy;
+    if (content.request.headers) {
+      headerDeeperCopy = JSON.parse(JSON.stringify(content.request.headers));
+      headerDeeperCopy.push({
+        id: content.request.headers.length + 1,
+        active: false,
+        key: '',
+        value: '',
+      })
+    }
+    let cookieDeeperCopy;
+    if (content.request.cookies && !/ws/.test(protocol)) {
+      cookieDeeperCopy = JSON.parse(JSON.stringify(content.request.cookies));
+      cookieDeeperCopy.push({
+        id: content.request.cookies.length + 1,
+        active: false,
+        key: '',
+        value: '',
+      })
+    }
+    const requestHeadersObj = {
+      headersArr: headerDeeperCopy || [],
+      count: headerDeeperCopy ? headerDeeperCopy.length : 1,
+    }
+    const requestCookiesObj = {
+      cookiesArr: cookieDeeperCopy || [],
+      count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
+    }
+    const requestBodyObj = {
+      bodyType: content.request.bodyType || 'raw',
+      bodyContent: content.request.body || '',
+      bodyVariables: content.request.bodyVariables || '',
+      rawType: content.request.rawType || 'Text (text/plain)',
+      JSONFormatted: true,
+      bodyIsNew: false,
+    }
+    dispatch(actions.setNewRequestFields(requestFieldObj));
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+    dispatch(actions.setNewRequestBody(requestBodyObj));
+
+    // // for gRPC ===> NEED TO FILL OUT
+    // if (content && content.gRPC) {
+    //   const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
+    //   const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
+    //   // construct the streams obj from passed in history content & set state in store
+    //   const requestStreamsObj = {
+    //     streamsArr: streamsDeepCopy,
+    //     count: queryArr.length,
+    //     streamContent: contentsDeepCopy,
+    //     selectedPackage: content.selectedPackage,
+    //     selectedRequest: content.selectedRequest,
+    //     selectedService:  content.selectedService,
+    //     selectedStreamingType: content.selectedStreamingType,
+    //     initialQuery: content.initialQuery,
+    //     queryArr: content.queryArr,
+    //     protoPath: content.protoPath,
+    //     services: content.services,
+    //     protoContent: content.protoContent,
+    //   }
+    //   dispatch(actions.setNewRequestStreams(requestStreamsObj))
+    // }
+    // setSidebarTab('composer');
+  }
 
   const removeReqRes = () => {
     connectionController.closeReqRes(id);
     reqResDelete(content);
-  }
-
-  const renderStatusCode = () => {
-    const { events, headers } = response;
-    // graphQL
-    if (graphQL) {
-      if (!events || !events.length) {
-        return '';
-      } if (events && events.length) {
-        const statusCode = JSON.parse(events[0]).statusCode;
-        if (statusCode) return `Status: ${statusCode}`;
-        return 'Status: 200';
-      }
-    }
-    if (/wss?:\/\//.test(protocol)) {
-      // ws - close codes
-      return closeCode
-        ? `Close Code: ${closeCode}`
-        : "";
-    } 
-    // http
-    return headers &&
-      headers[":status"]
-      ? "Status: " + headers[":status"]
-      : "";
-  }
-
-  const contentBody = [];
-
-  const openButtonStyles = {
-    display:
-      connection === "uninitialized" ||
-      connection === "closed" ||
-      connection === "error"
-        ? "block"
-        : "none",
-  };
-
-  const closeButtonStyles = {
-    display:
-      connection === "pending" ||
-      connection === "open"
-        ? "block"
-        : "none",
-  };
-
-  const http2Display = {
-    display: isHTTP2 ? "block" : "none",
-  };
-
-  let statusLight;
-  switch (connection) {
-    case "uninitialized":
-      statusLight = <status-indicator />;
-      break;
-    case "pending":
-      statusLight = <status-indicator intermediary pulse />;
-      break;
-    case "open":
-      statusLight = <status-indicator positive pulse />;
-      break;
-    case "closed":
-      statusLight = <status-indicator negative />;
-      break;
-    case "error":
-      statusLight = <status-indicator negative />;
-      break;
-    default:
-      console.log("not a valid connection for content object");
   }
   
   return (
     <div className="m-3">
       {/* TITLE BAR */}
       <div className='is-flex cards-titlebar'>
-        <div className={`is-flex-grow-1 is-${network}`}>{request.method}</div>
-        <div className={'is-flex-grow-3 is-size-7'}>{url}</div>
+        <div className={`is-flex-grow-1 is-${network} is-flex-basis-0 is-flex is-justify-content-center is-align-items-center has-text-weight-medium`}>{request.method}</div>
+        <div className={'is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center ml-2'}>{url}</div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
       {network !== 'ws' &&
-        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card' 
+        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card pl-2 is-flex is-align-items-center is-justify-content-space-between' 
           onClick={() => { setShowDetails(showDetails === false)}}
           >
-          View Request Details
+          {showDetails === true &&
+            "Hide Request Details"
+          }
+          {showDetails === false &&
+            "View Request Details"
+          }
+          {showDetails === true &&
+          <div 
+            className="is-clickable is-primary-link m-3" 
+            onClick={addHistoryToNewRequest}
+          >
+            Copy to Composer
+          </div>
+          }
         </div>
+        
       }
       {/* REQUEST ELEMENTS */}
       {showDetails === true &&
@@ -143,7 +215,7 @@ const SingleReqResContainer = (props) => {
       {/* REMOVE / SEND BUTTONS */}
         <div className="is-flex">
           <button 
-            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
             id={request.method}
             onClick={removeReqRes}
             >
@@ -152,7 +224,7 @@ const SingleReqResContainer = (props) => {
           {/* SEND BUTTON */}
             {connection === "uninitialized" &&
               <button
-                className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7"
+                className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
                 onClick={() => {
                   ReqResCtrl.openReqRes(content.id);
                 }}
@@ -163,7 +235,7 @@ const SingleReqResContainer = (props) => {
             {/* VIEW RESPONSE BUTTON */}
             {connection !== "uninitialized" &&
               <button
-                className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7"
+                className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
                 onClick={() => {
                   dispatch(actions.saveCurrentResponseData(content));
                 }}

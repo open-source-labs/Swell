@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import React, { useState, useRef, Component, useEffect } from "react";
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 // import ProtocolSelect from "./ProtocolSelect.jsx";
 
 const RestMethodAndEndpointEntryForm = ({
@@ -77,7 +78,7 @@ const RestMethodAndEndpointEntryForm = ({
             >
               <span>{newRequestFields.method}</span>
               <span className="icon is-small">
-                <i className="fas fa-caret-down" aria-hidden="true" />
+                <img src={dropDownArrow} className="is-awesome-icon" aria-hidden="true" />
               </span>
             </button>
           </div>
