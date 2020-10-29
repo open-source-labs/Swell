@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Bar } from "react-chartjs-2";
-
+import * as store from "../../store";
 import * as actions from "../../actions/actions";
 
 
-//neccessary for graph styling due to CSP
+//necessary for graph styling due to CSP
 Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
@@ -66,13 +66,13 @@ const BarGraph = (props) => {
   });
 
   //helper function that returns chart data object
-  const dataUpdater = (labelArr, dataArr, BGsArr, bordersArr, reqResArr) => {
+  const dataUpdater = (labelArr, timesArr, BGsArr, bordersArr, reqResArr) => {
     return {
       labels: labelArr,
       datasets: [
         {
           label: "Response Time",
-          data: dataArr,
+          data: timesArr,
           backgroundColor: BGsArr,
           borderColor: bordersArr,
           borderWidth: 1,
@@ -86,7 +86,7 @@ const BarGraph = (props) => {
   //helper function that returns chart options object
   const optionsUpdater = (arr) => {
     //Event labels and Y-axis title disappear after one request
-    const showLabels = arr.length >= 0 ? false : true;
+    const showLabels = arr.length >= 3 ? false : true;
     return {
       legend: {
         display: false,
@@ -95,7 +95,7 @@ const BarGraph = (props) => {
         yAxes: [
           {
             scaleLabel: {
-              display: showLabels, //boolean
+              display: false, //boolean
             },
             ticks: {
               beginAtZero: true,
@@ -117,7 +117,7 @@ const BarGraph = (props) => {
     };
   };
 
-  // testing click handling
+  // click handling to load response data
   const getElementAtEvent = element => {
     // get the response data corresponding to the clicked element
     const index = element[0]._index
@@ -132,14 +132,11 @@ const BarGraph = (props) => {
     if (dataPoints.length) {
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
       urls = dataPoints.map((point) => {
-        // regex to get just the main domain 
-        if (point.url.charAt(0).toLowerCase() === "h") {
-          const domain = point.url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+          // if grpc, just return the server IP
+          if (point.reqRes.gRPC) return `${point.url}`
           // if point.url is lengthy, just return the domain and the end of the uri string
+          const domain = point.url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
           return `${domain} ${(point.url.length > domain.length + 8) ? `- ..${point.url.slice(point.url.length - 8, point.url.length)}` : ""}`
-        } 
-        // if grpc, just return the server IP
-        return `${point.url}`
         });
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
@@ -161,6 +158,7 @@ const BarGraph = (props) => {
   const chartClass = show ? "chart" : "chart-closed";
 
   return (
+    <div>
     <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
       <Bar 
       data={chartData} 
@@ -169,6 +167,10 @@ const BarGraph = (props) => {
       options={chartOptions} 
       getElementAtEvent={getElementAtEvent}
       />
+    </div>
+    <button className="button is-small add-header-or-cookie-button clear-chart-button mr-3" onClick={props.clearGraph}>
+        Clear Chart
+      </button>
     </div>
   );
 };
