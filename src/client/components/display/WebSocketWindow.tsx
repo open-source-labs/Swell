@@ -4,7 +4,6 @@ import PropTypes, { string } from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
 import WebSocketMessage from "./WebSocketMessage";
 import { WebSocketWindowProps } from "../../../types"
-import ReqResCtrl from "../../controllers/reqResController";
 import * as actions from "../../../../src/client/actions/actions.js";
 
 const { api } = window;
@@ -12,7 +11,6 @@ const { api } = window;
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
 
   const [inputMessage, setInputMessage] = useState('');
-  const [showCloseButton, setShowCloseButton] = useState('open');
 
   //updates the outgoing message when it changes
   const updateOutgoingMessage = (value: string) => {
@@ -74,10 +72,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
           />
           <button
             className="websocket_input-btn"
-            onClick={() => {
-              setShowCloseButton("open");
-              sendToWSController();
-            }}
+            onClick={sendToWSController}
             type="button"
           >
             Send Message
@@ -89,21 +84,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
             {combinedMessagesReactArr}
           </div>
         )}
-        { showCloseButton === 'open' &&
-          <div className="is-3rem-footer ml-3 mr-3">
-            <button
-              className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
-              onClick={() => { 
-                setShowCloseButton("closed");
-                ReqResCtrl.closeReqRes(content.id);
-                return;
-              }}
-              type="button"
-            >
-              Close Connection
-            </button>
-          </div>
-        }
       </div>
     );
 }

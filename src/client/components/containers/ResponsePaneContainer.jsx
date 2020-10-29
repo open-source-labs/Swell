@@ -7,12 +7,12 @@ import StatusButtons from '../display/StatusButtons'
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
-export const ResponsePaneContainer = () => {
+export const ResponsePaneContainer = (store) => {
   const [activeTab, setActiveTab] = useState('events');
   const currentResponse = useSelector(store => store.business.currentResponse); 
+  const connection = useSelector(store => store.business.currentResponse.connection); 
   
   console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
-  // currentResponse.request.network
 
 
   return (
@@ -68,6 +68,7 @@ export const ResponsePaneContainer = () => {
           { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
           { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
         </div>
+          {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR CONNECTIONS THAT ARE CLOSED */}
         { currentResponse.id 
           && currentResponse.request.network !== 'ws'
           && currentResponse.request.method !== 'SUBSCRIPTION' &&
@@ -84,6 +85,20 @@ export const ResponsePaneContainer = () => {
           </div>
         }
       </div>
+        }
+        { currentResponse.request.network === 'ws' && connection === 'open' &&
+          <div className="is-3rem-footer ml-3 mr-3">
+            <button
+              className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
+              onClick={() => { 
+                ReqResCtrl.closeReqRes(currentResponse.id);
+                return;
+              }}
+              type="button"
+            >
+              Close Connection
+            </button>
+          </div>
         }
     </div>
 

@@ -15,7 +15,7 @@ export const SidebarContainer = () => {
         <h3>Composer</h3>
       </div>
       {/* TAB SELECTOR */}
-      <div className="tabs mb-0 ">
+      <div className="tabs mb-0  header-bar">
         <ul className="columns is-gapless ">
           <li className={`column ${activeTab === 'composer' ? 'is-active' : '' }`}>
             <a 
