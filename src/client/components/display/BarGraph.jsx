@@ -105,7 +105,16 @@ const BarGraph = ({ dataPoints }) => {
     let urls, times, BGs, borders;
     if (dataPoints.length) {
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
-      urls = dataPoints.map((point) => point.url.slice(point.url.length - 20, point.url.length));
+      urls = dataPoints.map(({ url }) => {
+        // regex to get just the main domain 
+        if (url.charAt(0).toLowerCase() === "h") {
+          const domain = url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+          // if url is lengthy, just return the domain and the end of the uri string
+          return `${domain} ${(url.length > domain.length + 8) ? `- ..${url.slice(url.length - 8, url.length)}` : ""}`
+        } 
+        // if grpc, just return the server IP
+        return url
+        });
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
       borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
