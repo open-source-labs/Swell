@@ -2,6 +2,7 @@ import * as store from "../store";
 import * as actions from "../actions/actions";
 // import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
+import { useSelector, useDispatch } from 'react-redux';
 
 const { api } = window;
 const connectionController = {
@@ -85,11 +86,10 @@ const connectionController = {
 
   setReqResConnectionToClosed(id) {
     console.log('inside setReqResConnection to Closed')
-    console.log(id);
-    const reqResArr = store.default.getState().business.reqResArray;
-
-    const foundReqRes = reqResArr.find((reqRes) => reqRes.id === id);
     
+    const reqResArr = store.default.getState().business.reqResArray;
+    const foundReqRes = JSON.parse( JSON.stringify( reqResArr.find( (reqRes) => reqRes.id === id )));
+    console.log ('setReqResConnectionToClosed',foundReqRes.connection);
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
   },
