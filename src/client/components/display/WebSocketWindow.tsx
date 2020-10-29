@@ -67,14 +67,14 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
       <div style={{}} className="websocket_container">
         <div style={messageInputStyles} className="websocket_input">
           <input
-            className="websocket_input-text"
+            className="ml-1 input input-is-medium"
             value={inputMessage}
             onKeyPress={handleKeyPress}
             placeholder="Message"
             onChange={(e) => updateOutgoingMessage(e.target.value)}
           />
           <button
-            className="websocket_input-btn"
+            className="button is-small is-primary is-outlined button-padding-verticals mx-3"
             onClick={sendToWSController}
             type="button"
           >
