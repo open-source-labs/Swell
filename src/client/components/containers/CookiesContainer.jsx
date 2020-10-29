@@ -4,7 +4,10 @@ import EmptyState from '../display/EmptyState'
 
 export default function CookiesContainer({ currentResponse }) {
 
-  if (!currentResponse.response) {
+  if (!currentResponse.response || 
+    !currentResponse.response.cookies ||
+    !currentResponse.response.cookies.length
+    ) {
     return (
       <EmptyState />
     )

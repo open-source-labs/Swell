@@ -1,9 +1,16 @@
 import React from 'react'
 
 function StatusButtons({ currentResponse }) {
-  console.log('Console from Status Buttons ==> ', currentResponse)
+  // console.log('Console from Status Buttons ==> ', currentResponse)
   // currentResponse.response.headers.status
 
+  if (currentResponse.error) {
+    return (
+      <div className='status-tag is-danger'>
+          Error
+      </div>
+    );
+  }
   
   if (!currentResponse.response ||
     !currentResponse.response.headers ||
@@ -12,6 +19,7 @@ function StatusButtons({ currentResponse }) {
     return (null)
   }
   
+
   // RECEIVING STATUS CODE AND CONVERTING INTO STRING
   const statusCode = currentResponse.response.headers[":status"].toString()
 

@@ -350,7 +350,8 @@ const httpController = {
           //error in connections
           reqResObj.connection = "error";
           reqResObj.error = error;
-          reqResObj.response.events.push(JSON.stringify(error));
+          // reqResObj.response.events.push(JSON.stringify(error));
+          reqResObj.response.events.push(error);
           event.sender.send("reqResUpdate", reqResObj);
         });
     });
