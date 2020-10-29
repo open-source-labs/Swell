@@ -256,6 +256,7 @@ const businessReducer = (state = initialState, action) => {
 
         //add dataPoint to array and return to state
         dataPoints.push({
+          reqRes: action.payload,
           url: action.payload.url,
           timeSent: action.payload.timeSent,
           timeReceived: action.payload.timeReceived,

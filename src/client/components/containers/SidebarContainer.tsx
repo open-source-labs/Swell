@@ -11,7 +11,7 @@ export const SidebarContainer = () => {
   return (
     <div className='column is-one-third is-tall'>
       {/* HEADER */}
-      <div className="hero is-primary has-text-centered">
+      <div className="hero is-primary has-text-centered header-bar">
         <h3>Composer</h3>
       </div>
       {/* TAB SELECTOR */}
