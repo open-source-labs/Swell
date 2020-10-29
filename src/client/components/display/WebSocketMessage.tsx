@@ -13,7 +13,7 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
   const webSocketMessageIDNames =  source === 'server' ? 'id_websocket_message-server' : 'id_websocket_message-client'
 
   const message_background = source === 'server' ? 'server-background' : 'client-background'
-  const message_sender = source === 'server' ? 'server-sender' : 'client-sender'
+  const message_sender = source === 'server' ? 'server' : 'client'
   
   //timestamp for messages
   const buildTime = (time:number):string  => {
