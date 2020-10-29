@@ -153,14 +153,14 @@ const ComposerContainer = (props) => {
   };
 
   return (
-    <div className="composerContents is-hack-height">
+    <div className="composerContents is-flex is-flex-direction-column is-tall">
       {/* DROPDOWN PROTOCOL SELECTOR */}
 
       {/* BULMA TAB */}
       < NetworkDropdown onProtocolSelect={onProtocolSelect} network={props.newRequestFields.network}/>
 
       {/* COMPOSER CONTENT ROUTING */}
-      <div className='is-tall p-3'>
+      <div className='is-tall pt-3 pl-3 pr-3'>
         {
           props.newRequestFields.network === 'rest' &&
           <RestContainer {...props} />

@@ -206,7 +206,7 @@ export default function RestContainer({
             </label>
         </div>
       </div>
-      <div className="is-graph-footer is-clickable is-margin-top-auto">
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
       </div>
     </div>

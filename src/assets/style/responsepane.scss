@@ -3,7 +3,6 @@
 
 // EMPTY STATE
 .empty-state-wrapper {
-  height: 640px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,3 +81,11 @@ table {
   font-family: 'Roboto Mono', monospace;
   font-weight: 600;
 } 
+
+.is-edit{
+  height:100%;
+}
+
+.is-not-3rem-tall {
+  height: calc(100% - 3rem);
+}

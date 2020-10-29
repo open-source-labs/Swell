@@ -55,6 +55,7 @@
   }
 }
 
+
 .input {
   outline: none !important;
 }
@@ -66,6 +67,7 @@
 
 .history-method {
   width: 130px;
+
 }
 
 // CODE MIRROR
@@ -103,4 +105,41 @@
 .cm-s-grpc .CodeMirror-linenumber {
   border: none;
   color: $neutral-300;
+}
+
+
+
+
+.switch:focus {
+  border: none;
+  outline: none;
+}
+
+.add-request-button {
+  border: 1px solid #3734A9 !important;
+  &:hover {
+    box-shadow: 1px 1px 1px 1px $neutral-300;
+  }
+}
+
+.input {
+  outline: none !important;
+}
+
+.history-date {
+  font-size: 120%;
+}
+
+.history-method {
+  width: 130px;
+}
+
+.stream-title {
+  font-size: 70%
+}
+
+.is-button-footer {
+  min-height: 2.3rem !important;
+  height: 2.3rem !important;
+  margin-top: auto !important;
 }
