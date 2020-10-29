@@ -11,6 +11,9 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
   //conditional classNames and id for messages for styling depending on source
   const webSocketMessageClassNames = source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
   const webSocketMessageIDNames =  source === 'server' ? 'id_websocket_message-server' : 'id_websocket_message-client'
+
+  const message_background = source === 'server' ? 'server-background' : 'client-background'
+  const message_sender = source === 'server' ? 'server-sender' : 'client-sender'
   
   //timestamp for messages
   const buildTime = (time:number):string  => {
@@ -24,9 +27,14 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
   }
 
   return (
-    <div className={webSocketMessageClassNames}>
-      <div className="websocket_message-data"><div id={webSocketMessageIDNames}>{data}</div></div>
-      <div className="websocket_message-time">{buildTime(timeReceived)}</div>
+    <div>
+      <div className={webSocketMessageClassNames}>
+        <div className={message_background}>
+          <div className="websocket_message-data"><div id={webSocketMessageIDNames}>{data}</div></div>
+          <div className="websocket_message-time">{buildTime(timeReceived)}</div>
+        </div>
+      </div>
+      <div className={message_sender}>{message_sender}</div>
     </div>
   );
 }
