@@ -5,6 +5,7 @@ import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
 import StatusButtons from '../display/StatusButtons'
 import WebSocketWindow from "../display/WebSocketWindow";
+import ReqResCtrl from "../../controllers/reqResController";
 
 export const ResponsePaneContainer = () => {
   const [activeTab, setActiveTab] = useState('events');
@@ -36,7 +37,7 @@ export const ResponsePaneContainer = () => {
         
         {/* IF NOT WEBSOCKETS */}
         {currentResponse.request.network !== 'ws' && 
-        <div>
+        <div className="is-flex is-flex-direction-column is-tall">
           {/* TAB SELECTOR */}
           <div className="tabs">
             <ul className="columns is-gapless">
@@ -62,19 +63,21 @@ export const ResponsePaneContainer = () => {
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-        <div className="is-flex-grow-3 add-vertical-scroll is-tall">
+        <div className="is-flex-grow-3 add-vertical-scroll is-not-3rem-tall">
           { activeTab === 'events' && <EventsContainer currentResponse={currentResponse} />}
           { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
           { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
         </div>
         { activeTab ===  'events' &&
-          <div className="is-3rem-footer">
+          <div className="is-3rem-footer ml-3 mr-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
-              // onClick={onClick}
+              onClick={() => {
+                ReqResCtrl.openReqRes(currentResponse.id);
+              }}
               type="button"
             >
-              Add New Request
+              Re-Send Request
             </button>
           </div>
         }
