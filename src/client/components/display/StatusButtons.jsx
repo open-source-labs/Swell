@@ -1,7 +1,7 @@
 import React from 'react'
 
 function StatusButtons({ currentResponse }) {
-  console.log('Console from Status Buttons ==> ', currentResponse)
+  // console.log('Console from Status Buttons ==> ', currentResponse)
   // currentResponse.response.headers.status
 
   if (currentResponse.error) {
