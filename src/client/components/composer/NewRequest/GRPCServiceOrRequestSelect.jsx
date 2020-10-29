@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import dropDownArrow from "../../../../assets/icons/caret-down.svg";
 
 const classNames = require("classnames");
 
@@ -50,7 +51,7 @@ const GRPCServiceOrRequestSelect = (props) => {
         >
           <span>{value}</span>
           <span className="icon is-small">
-            <i className="fas fa-caret-down" aria-hidden="true" />
+            <img src={dropDownArrow}  className="is-awesome-icon" aria-hidden="true" />
           </span>
         </button>
       </div>

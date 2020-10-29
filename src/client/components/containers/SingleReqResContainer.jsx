@@ -169,8 +169,6 @@ const SingleReqResContainer = (props) => {
     reqResDelete(content);
   }
   
-  console.log(connection);
-
   return (
     <div className="m-3">
       {/* TITLE BAR */}

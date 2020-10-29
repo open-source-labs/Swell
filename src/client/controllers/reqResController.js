@@ -84,9 +84,11 @@ const connectionController = {
 
   setReqResConnectionToClosed(id) {
     console.log('inside setReqResConnection to Closed')
+    console.log(id);
     const reqResArr = store.default.getState().business.reqResArray;
 
     const foundReqRes = reqResArr.find((reqRes) => reqRes.id === id);
+    
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
   },

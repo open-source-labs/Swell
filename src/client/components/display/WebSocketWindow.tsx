@@ -1,18 +1,18 @@
 /* eslint-disable no-param-reassign */
 import React, { useState } from "react";
 import PropTypes, { string } from "prop-types";
+import { useSelector, useDispatch } from 'react-redux';
 import WebSocketMessage from "./WebSocketMessage";
 import { WebSocketWindowProps } from "../../../types"
+import ReqResCtrl from "../../controllers/reqResController";
+import * as actions from "../../../../src/client/actions/actions.js";
 
 const { api } = window;
 
-const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ 
-  content,
-  outgoingMessages,
-  incomingMessages,
-  connection
- }) => {
+const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
+
   const [inputMessage, setInputMessage] = useState('');
+  const [showCloseButton, setShowCloseButton] = useState('open');
 
   //updates the outgoing message when it changes
   const updateOutgoingMessage = (value: string) => {
@@ -32,7 +32,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
       sendToWSController();
     }
   }
-
   //maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
       .map((message) => {
@@ -64,7 +63,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
     };
 
     return (
-      <div style={{}} className="websocket_container">
+      <div style={{}} className="websocket_container is-tall is-flex is-flex-direction-column">
         <div style={messageInputStyles} className="websocket_input">
           <input
             className="ml-1 input input-is-medium"
@@ -74,8 +73,14 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
             onChange={(e) => updateOutgoingMessage(e.target.value)}
           />
           <button
+          
             className="button is-small is-primary is-outlined button-padding-verticals mx-3"
-            onClick={sendToWSController}
+            // onClick={sendToWSController}
+            // className="websocket_input-btn"
+            onClick={() => {
+              setShowCloseButton("open");
+              sendToWSController();
+            }}
             type="button"
           >
             Send Message
@@ -87,6 +92,21 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({
             {combinedMessagesReactArr}
           </div>
         )}
+        { showCloseButton === 'open' &&
+          <div className="is-3rem-footer ml-3 mr-3">
+            <button
+              className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
+              onClick={() => { 
+                setShowCloseButton("closed");
+                ReqResCtrl.closeReqRes(content.id);
+                return;
+              }}
+              type="button"
+            >
+              Close Connection
+            </button>
+          </div>
+        }
       </div>
     );
 }

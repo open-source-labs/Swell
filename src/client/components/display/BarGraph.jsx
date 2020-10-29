@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Bar } from "react-chartjs-2";
+import * as store from "../../store";
+import * as actions from "../../actions/actions";
 
-//neccessary for graph styling due to CSP
+
+//necessary for graph styling due to CSP
 Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
   dataPoints: store.business.dataPoints,
 });
 
-const BarGraph = ({ dataPoints }) => {
+const mapDispatchToProps = (dispatch) => ({
+  saveCurrentResponseData: (reqRes) => {
+    dispatch(actions.saveCurrentResponseData(reqRes));;
+  },
+  clearGraph: () => {
+    store.default.dispatch(actions.clearGraph());
+  }
+});
+
+
+
+const BarGraph = (props) => {
+  const { dataPoints } = props
   //state for showing graph, depending on whether there are datapoints or not.
   //must default to true, because graph will not render if initial container's display is 'none'
   const [show, toggleShow] = useState(true);
@@ -29,7 +44,7 @@ const BarGraph = ({ dataPoints }) => {
         {
           scaleLabel: {
             display: true,
-            labelString: "Roundtrip in milliseconds",
+            labelString: "Response time",
           },
           ticks: {
             beginAtZero: true,
@@ -45,23 +60,24 @@ const BarGraph = ({ dataPoints }) => {
       ],
     },
     animation: {
-      duration: 0, //buggy animation, get rid of transition
+      duration: 500, //buggy animation, get rid of transition
     },
     maintainAspectRatio: false,
   });
 
   //helper function that returns chart data object
-  const dataUpdater = (labelArr, dataArr, BGsArr, bordersArr) => {
+  const dataUpdater = (labelArr, timesArr, BGsArr, bordersArr, reqResArr) => {
     return {
       labels: labelArr,
       datasets: [
         {
-          label: "Roundtrip (ms)",
-          data: dataArr,
+          label: "Response Time",
+          data: timesArr,
           backgroundColor: BGsArr,
           borderColor: bordersArr,
           borderWidth: 1,
           maxBarThickness: 300,
+          reqRes: reqResArr,
         },
       ],
     };
@@ -69,8 +85,8 @@ const BarGraph = ({ dataPoints }) => {
 
   //helper function that returns chart options object
   const optionsUpdater = (arr) => {
-    //Event labels and Y-axis title disappear after three requests
-    const showLabels = arr.length > 3 ? false : true;
+    //Event labels and Y-axis title disappear after one request
+    const showLabels = arr.length >= 3 ? false : true;
     return {
       legend: {
         display: false,
@@ -79,7 +95,7 @@ const BarGraph = ({ dataPoints }) => {
         yAxes: [
           {
             scaleLabel: {
-              display: showLabels, //boolean
+              display: false, //boolean
             },
             ticks: {
               beginAtZero: true,
@@ -95,20 +111,37 @@ const BarGraph = ({ dataPoints }) => {
         ],
       },
       animation: {
-        duration: 0,
+        duration: 500,
       },
       maintainAspectRatio: false, //necessary for keeping chart within container
     };
   };
 
+  // click handling to load response data
+  const getElementAtEvent = element => {
+    // get the response data corresponding to the clicked element
+    const index = element[0]._index
+    const reqResToSend = element[0]._chart.config.data.datasets[0].reqRes[index]
+    // send the data to the response panel
+    props.saveCurrentResponseData(reqResToSend);
+  }
+  
+
   useEffect(() => {
-    let urls, times, BGs, borders;
+    let urls, times, BGs, borders, reqResObjs;
     if (dataPoints.length) {
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
-      urls = dataPoints.map((point) => point.url);
+      urls = dataPoints.map((point) => {
+          // if grpc, just return the server IP
+          if (point.reqRes.gRPC) return `${point.url}`
+          // if point.url is lengthy, just return the domain and the end of the uri string
+          const domain = point.url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+          return `${domain} ${(point.url.length > domain.length + 8) ? `- ..${point.url.slice(point.url.length - 8, point.url.length)}` : ""}`
+        });
       times = dataPoints.map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
       borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
+      reqResObjs = dataPoints.map((point) => point.reqRes);
       //show graph upon receiving data points
       toggleShow(true);
     } else {
@@ -116,7 +149,7 @@ const BarGraph = ({ dataPoints }) => {
       toggleShow(false);
     }
     //update state with updated dataset
-    updateChart(dataUpdater(urls, times, BGs, borders));
+    updateChart(dataUpdater(urls, times, BGs, borders, reqResObjs));
     //conditionally update options based on length of dataPoints array
     if (!dataPoints.length || dataPoints.length > 3)
       updateOptions(optionsUpdater(dataPoints));
@@ -125,10 +158,21 @@ const BarGraph = ({ dataPoints }) => {
   const chartClass = show ? "chart" : "chart-closed";
 
   return (
-    <div id="chartContainer" className={chartClass}>
-      <Bar data={chartData} width={50} height={100} options={chartOptions} />
+    <div>
+    <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
+      <Bar 
+      data={chartData} 
+      width={50} 
+      height={200} 
+      options={chartOptions} 
+      getElementAtEvent={getElementAtEvent}
+      />
+    </div>
+    <button className="button is-small add-header-or-cookie-button clear-chart-button mr-3" onClick={props.clearGraph}>
+        Clear Chart
+      </button>
     </div>
   );
 };
 
-export default connect(mapStateToProps)(BarGraph);
+export default connect(mapStateToProps, mapDispatchToProps)(BarGraph);

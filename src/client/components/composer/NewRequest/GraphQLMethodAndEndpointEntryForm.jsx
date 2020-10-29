@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import dropDownArrow from "../../../../assets/icons/arrow_drop_down_white_192x192.png";
 
 /* eslint-disable */
 
@@ -114,7 +115,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
             >
               <span>{newRequestFields.method}</span>
               <span className="icon is-small">
-                <i className="fas fa-caret-down" aria-hidden="true" />
+                <img src={dropDownArrow}  className="is-awesome-icon" aria-hidden="true" />
               </span>
             </button>
           </div>
