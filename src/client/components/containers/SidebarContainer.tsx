@@ -9,7 +9,7 @@ export const SidebarContainer = () => {
   const [activeTab, setActiveTab] = useState('composer');
 
   return (
-    <div className='column is-one-third is-tall'>
+    <div className='column is-one-third is-flex is-flex-direction-column is-tall '>
       {/* HEADER */}
       <div className="hero is-primary has-text-centered">
         <h3>Composer</h3>

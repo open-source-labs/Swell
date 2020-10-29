@@ -62,11 +62,22 @@ export const ResponsePaneContainer = () => {
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-        <div className="is-flex-grow-3 add-vertical-scroll">
+        <div className="is-flex-grow-3 add-vertical-scroll is-tall">
           { activeTab === 'events' && <EventsContainer currentResponse={currentResponse} />}
           { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
           { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
         </div>
+        { activeTab ===  'events' &&
+          <div className="is-3rem-footer">
+            <button
+              className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
+              // onClick={onClick}
+              type="button"
+            >
+              Add New Request
+            </button>
+          </div>
+        }
       </div>
         }
     </div>

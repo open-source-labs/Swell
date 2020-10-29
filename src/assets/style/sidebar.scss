@@ -34,7 +34,7 @@
 }
 
 .is-hack-height {
-  height: 86.75%
+  height: 100%;
 }
 
 // CODE MIRROR
@@ -102,4 +102,10 @@
 
 .stream-title {
   font-size: 70%
+}
+
+.is-button-footer {
+  min-height: 2.3rem !important;
+  height: 2.3rem !important;
+  margin-top: auto !important;
 }
