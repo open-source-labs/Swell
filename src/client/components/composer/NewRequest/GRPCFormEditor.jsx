@@ -122,7 +122,7 @@ const GRPCProtoEntryForm = (props) => {
         </div>
       </div>
    
-      <div className="warningMessage">{protoError}</div>
+      <div className="is-danger subtitle">{protoError}</div>
       <TextCodeAreaEditable 
         id="grpcProtoEntryTextArea"
         onChange={(editor, data, value) => updateProtoBody(value)}

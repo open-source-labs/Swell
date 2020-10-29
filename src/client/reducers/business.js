@@ -241,26 +241,27 @@ const businessReducer = (state = initialState, action) => {
       //dataPoints to be used by graph
       const dataPoints =
         //if more than 12 points, data will shift down an index
-        state.dataPoints.length < 12
+        state.dataPoints.length < 8
           ? [...state.dataPoints]
           : [...state.dataPoints.slice(1)];
       //check if new object is a closed request with timeSent and timeReceived
       if (
         !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent)
       ) {
-        //generate random rgb color to be assigned to this datapoint. Stored as string.
-        const color = [
-          Math.floor(Math.random() * 255),
-          Math.floor(Math.random() * 255),
-          Math.floor(Math.random() * 255),
-        ].join(", ");
+        //generate specific rgb color for each request type to be attached to this datapoint.
+        let color;
+        if (action.payload.graphQL) color ="222, 51, 166";
+        else if (action.payload.gRPC) color = "108, 172, 193";
+        else color = "104, 67, 255"
+
         //add dataPoint to array and return to state
         dataPoints.push({
+          reqRes: action.payload,
           url: action.payload.url,
           timeSent: action.payload.timeSent,
           timeReceived: action.payload.timeReceived,
           created_at: action.payload.created_at,
-          color: color,
+          color,
         });
         return {
           ...state,

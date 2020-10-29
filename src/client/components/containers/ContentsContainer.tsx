@@ -11,12 +11,12 @@ export const ContentsContainer = () => {
   return (
     <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300">
       {/* HEADER */}
-      <div className="hero is-primary has-text-centered">
+      <div className="hero is-primary has-text-centered header-bar">
         <h3>Workspace</h3>
       </div>
 
       {/* TAB SELECTOR */}
-      <div className="tabs">
+      <div className="tabs header-bar">
         <ul className='columns is-gapless'>
           <li className={`column ${activeTab === 'workspace' ? 'is-active' : '' }`}>
             <a 
@@ -46,9 +46,7 @@ export const ContentsContainer = () => {
       </div>
 
       {/* BARGRAPH CONTENT */}
-        {showGraph &&
-          <BarGraph />
-        }
+
         <div 
           className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
           onClick={() => setShowGraph(showGraph === false)}
@@ -60,6 +58,11 @@ export const ContentsContainer = () => {
               'View Performance Charts'
             }
         </div>
+        {showGraph &&
+          <div>
+          <BarGraph />
+          </div>
+        }
     </div>
   );
 }

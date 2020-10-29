@@ -157,7 +157,7 @@ const ComposerContainer = (props) => {
       {/* DROPDOWN PROTOCOL SELECTOR */}
 
       {/* BULMA TAB */}
-      < NetworkDropdown onProtocolSelect={onProtocolSelect} network={props.newRequestFields.network}/>
+      < NetworkDropdown onProtocolSelect={onProtocolSelect} network={props.newRequestFields.network} className="header-bar"/>
 
       {/* COMPOSER CONTENT ROUTING */}
       <div className='is-tall pt-3 pl-3 pr-3'>

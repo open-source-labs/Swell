@@ -66,6 +66,7 @@ class ResponseContainer extends Component {
           responseContent={this.props.content.response}
           handleTabSelect={this.handleTabSelect}
           openResponseTab={this.state.openTab}
+          className="header-bar"
         />
         {this.state.openTab === "Response Events" &&
           this.props.content.request.method === "SUBSCRIPTION" && (
