@@ -61,10 +61,10 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
     };
 
     return (
-      <div style={{}} className="websocket_container is-tall is-flex is-flex-direction-column">
-        <div style={messageInputStyles} className="websocket_input">
+      <div style={{}} className="websocket_container is-tall is-flex is-flex-direction-column m-3">
+        <div className="is-flex is-align-items-center">
           <input
-            className="websocket_input-text"
+            className="ml-1 mr-1 input input-is-medium"
             value={inputMessage}
             onKeyPress={handleKeyPress}
             placeholder="Message"
@@ -80,7 +80,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
         </div>
         {/* only show the ws messages when connection is open */}
         {connection === "open" && (
-          <div className="websocket_message_container">
+          <div className="websocket_message_container m-3">
             {combinedMessagesReactArr}
           </div>
         )}

@@ -3,7 +3,10 @@ import EmptyState from '../display/EmptyState'
 
 export default function HeadersContainer({ currentResponse }) {  
 
-  if (!currentResponse.response) {
+  if (!currentResponse.response || 
+    !currentResponse.response.headers ||
+    Object.entries(currentResponse.response.headers).length === 0
+    ) {
     return (
       <EmptyState />
     )
