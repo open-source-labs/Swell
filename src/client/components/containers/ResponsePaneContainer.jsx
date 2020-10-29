@@ -4,6 +4,7 @@ import EventsContainer from './EventsContainer'
 import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
 import StatusButtons from '../display/StatusButtons'
+import ResponseTime from '../display/ResponseTime'
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
@@ -19,6 +20,7 @@ export const ResponsePaneContainer = () => {
       <div className='column is-one-third is-flex is-flex-direction-column is-tall'>
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
+            <ResponseTime currentResponse={currentResponse} /> 
             <h3>
               Responses
             </h3>
