@@ -30,7 +30,6 @@ const HistoryContainer = (props) => {
     setNewRequestCookies,
     setNewRequestBody,
     setNewRequestStreams,
-    setSidebarTab,
   } = props;
   
   // history is already sorted by created_at from getHistory
@@ -47,7 +46,6 @@ const HistoryContainer = (props) => {
       setNewRequestCookies={setNewRequestCookies}
       setNewRequestBody={setNewRequestBody}
       setNewRequestStreams={setNewRequestStreams}
-      setSidebarTab={setSidebarTab}
     />
   })
 

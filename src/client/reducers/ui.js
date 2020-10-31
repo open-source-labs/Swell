@@ -1,29 +1,30 @@
 import * as types from "../actions/actionTypes";
 
 const initialState = {
-  // warningIsDisplayed: true,
-  composerDisplay: "Request",
+  composerDisplay: 'Request',
+  sidebarActiveTab: 'composer',
+  workspaceActiveTab: 'workspace',
 };
 
 const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case types.SHOW_WARNING: {
-    //   return {
-    //     ...state,
-    //     warningIsDisplayed: true,
-    //   };
-    // }
-
-    // case types.HIDE_WARNING: {
-    //   return {
-    //     ...state,
-    //     warningIsDisplayed: false,
-    //   };
-    // }
-
     case types.SET_COMPOSER_DISPLAY: {
       return {
+        ...state,
         composerDisplay: action.payload,
+      };
+    }
+
+    case types.SET_SIDEBAR_ACTIVE_TAB : {
+      return {
+        ...state,
+        sidebarActiveTab: action.payload,
+      };
+    }
+    case types.SET_WORKSPACE_ACTIVE_TAB : {
+      return {
+        ...state,
+        workspaceActiveTab: action.payload,
       };
     }
 

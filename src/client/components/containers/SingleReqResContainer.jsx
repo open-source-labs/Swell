@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
 import * as actions from "../../../../src/client/actions/actions.js";
 
 import connectionController from "../../controllers/reqResController";
@@ -16,10 +15,6 @@ const SingleReqResContainer = (props) => {
   const newRequestFields = useSelector(store => store.business.newRequestFields); 
   const newRequestStreams = useSelector(store => store.business.newRequestStreams); 
 
-  const routerHistory = useHistory();
-  const routeChange = (path) => { 
-    routerHistory.push(path);
-  }
 
   const {
     content,
@@ -48,7 +43,6 @@ const SingleReqResContainer = (props) => {
     
     let requestFieldObj = {};
     if (network === 'rest') {
-      routeChange('/composer/rest');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -61,7 +55,6 @@ const SingleReqResContainer = (props) => {
       }
     };
     if (network === 'ws') {
-      routeChange('/composer/ws');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method  || 'GET',
@@ -74,7 +67,6 @@ const SingleReqResContainer = (props) => {
       }
     };
     if (network === 'graphQL') {
-      routeChange('/composer/graphql');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -87,7 +79,6 @@ const SingleReqResContainer = (props) => {
       }
     };
     if (network === 'grpc') {
-      routeChange('/composer/grpc');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -139,6 +130,7 @@ const SingleReqResContainer = (props) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
     dispatch(actions.setNewRequestBody(requestBodyObj));
+    dispatch(actions.setSidebarActiveTab('composer'));
 
     // // for gRPC ===> NEED TO FILL OUT
     // if (content && content.gRPC) {

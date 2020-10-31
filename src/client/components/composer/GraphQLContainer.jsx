@@ -64,6 +64,7 @@ export default function GraphQLContainer({
   setComposerDisplay,
   warningMessage,
   reqResAdd,
+  setWorkspaceActiveTab,
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
@@ -224,17 +225,18 @@ export default function GraphQLContainer({
     
     // GRAPHQL REQUESTS
     
-      setNewRequestBody({
-        ...newRequestBody,
-        bodyType: "GQL",
-        rawType: "",
-      });
-      setNewRequestFields({
-        ...newRequestFields,
-        url: gqlUrl,
-        gqlUrl,
-      });
-    
+    setNewRequestBody({
+      ...newRequestBody,
+      bodyType: "GQL",
+      rawType: "",
+    });
+    setNewRequestFields({
+      ...newRequestFields,
+      url: gqlUrl,
+      gqlUrl,
+    });
+  
+    setWorkspaceActiveTab('workspace');
   };
 
   return (

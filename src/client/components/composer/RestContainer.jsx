@@ -61,6 +61,7 @@ export default function RestContainer({
   setComposerDisplay,
   warningMessage,
   reqResAdd,
+  setWorkspaceActiveTab,
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
@@ -150,6 +151,7 @@ export default function RestContainer({
     
     //reset for next request
     resetComposerFields();
+    setWorkspaceActiveTab('workspace');
   };
 
   const handleSSEPayload = (e) => {

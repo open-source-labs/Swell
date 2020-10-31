@@ -1,47 +1,44 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import collectionsController from '../../controllers/collectionsController';
 
-class Collection extends Component {
-  constructor(props) {
-    super(props);
-    this.deleteCollection = this.deleteCollection.bind(this);
-    this.addCollectionToReqResContainer = this.addCollectionToReqResContainer.bind(this);
+const Collection = (props) => {
+  const dispatch = useDispatch();
+  const setWorkspaceTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
+
+  const addCollectionToReqResContainer = () => {
+    props.collectionToReqRes(props.content.reqResArray);
+    setWorkspaceTab('workspace');
   }
   
-  addCollectionToReqResContainer() {
-    this.props.collectionToReqRes(this.props.content.reqResArray);
-    this.props.setWorkspaceTab('workspace');
-  }
-  
-  deleteCollection(e) {
-    this.props.deleteFromCollection(this.props.content); //a function we need to make in the container
+  const deleteCollection = (e) => {
+    props.deleteFromCollection(props.content); //a function we need to make in the container
     collectionsController.deleteCollectionFromIndexedDb(e.target.id);
   }
   
-  render() {
-    return (
-      <div>
+  return (
+    <div>
 
-        <div className="is-flex is-justify-content-space-between m-5">
-          <div 
-            className="is-clickable is-primary-link is-align-items-center is-flex"
-            onClick={(this.addCollectionToReqResContainer)}
-          >
-            {this.props.content.name}
+      <div className="is-flex is-justify-content-space-between m-5">
+        <div 
+          className="is-clickable is-primary-link is-align-items-center is-flex"
+          onClick={(addCollectionToReqResContainer)}
+        >
+          {props.content.name}
+        </div>
+        <div className="is-flex is-justify-content-space-between is-align-items-center">
+          <div className="is-clickable is-primary-link m-3" onClick={() => collectionsController.exportCollection(props.content.id)}>
+            Export
           </div>
-          <div className="is-flex is-justify-content-space-between is-align-items-center">
-            <div className="is-clickable is-primary-link m-3" onClick={() => collectionsController.exportCollection(this.props.content.id)}>
-              Export
-            </div>
-            <div className="is-clickable flex-grow-1 delete m-3" onClick={this.deleteCollection} id={this.props.content.id}>
-            </div>
+          <div className="is-clickable flex-grow-1 delete m-3" onClick={deleteCollection} id={props.content.id}>
           </div>
         </div>
-
-        <hr/>        
       </div>
-    )
-  }
+
+      <hr/>        
+    </div>
+  );
 }
 
 export default Collection;

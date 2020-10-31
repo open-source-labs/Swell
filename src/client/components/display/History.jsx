@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
-import { useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import historyController from '../../controllers/historyController';
 
 const History = ({ newRequestFields, content, content: { request : { method, 
@@ -9,18 +10,14 @@ const History = ({ newRequestFields, content, content: { request : { method,
   restUrl, wsUrl, gqlUrl, grpcUrl }, protocol, url, graphQL, gRPC, streamsArr, 
   streamContent, queryArr, packageName, rpc, service, initialQuery, protoPath, 
   servicesObj, protoContent }, setNewRequestFields, setNewRequestHeaders, setNewRequestCookies, 
-  setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm, setSidebarTab }) => {
+  setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm }) => {
 
-  const routerHistory = useHistory();
-  const routeChange = (path) => { 
-    routerHistory.push(path);
-  }
+  const dispatch = useDispatch();
+  const setSidebarTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
   
   const addHistoryToNewRequest = () => {
-    
     let requestFieldObj = {};
     if (network === 'rest') {
-      routeChange('/composer/rest');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -33,7 +30,6 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
     };
     if (network === 'ws') {
-      routeChange('/composer/ws');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -46,7 +42,6 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
     };
     if (network === 'graphQL') {
-      routeChange('/composer/graphql');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
@@ -59,7 +54,6 @@ const History = ({ newRequestFields, content, content: { request : { method,
       }
     };
     if (network === 'grpc') {
-      routeChange('/composer/grpc');
       requestFieldObj = {
         ...newRequestFields,
         method: method || 'GET',
