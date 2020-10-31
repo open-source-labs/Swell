@@ -13,7 +13,7 @@ function StatusButtons({ currentResponse }) {
   }
 
   // STATUS FOR GRAPHQL
-  if (currentResponse.graphql = true && currentResponse.response) {
+  if (currentResponse.graphQL === true && currentResponse.response) {
     return (
       <div className='status-tag is-success'>
         Success

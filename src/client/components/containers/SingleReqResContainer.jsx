@@ -179,7 +179,7 @@ const SingleReqResContainer = (props) => {
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
       {network !== 'ws' &&
-        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card pl-2 is-flex is-align-items-center is-justify-content-space-between' 
+        <div className='is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between' 
           onClick={() => { setShowDetails(showDetails === false)}}
           >
           {showDetails === true &&
@@ -190,7 +190,7 @@ const SingleReqResContainer = (props) => {
           }
           {showDetails === true &&
           <div 
-            className="is-clickable is-primary-link ml-3" 
+            className="is-clickable is-primary-link mr-3" 
             onClick={addHistoryToNewRequest}
           >
             Copy to Composer
