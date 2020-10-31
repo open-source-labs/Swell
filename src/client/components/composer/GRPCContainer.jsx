@@ -62,6 +62,7 @@ export default function GRPCContainer({
   setComposerDisplay,
   warningMessage,
   reqResAdd,
+  setWorkspaceActiveTab,
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
@@ -168,6 +169,8 @@ export default function GRPCContainer({
         url: grpcUrl,
         grpcUrl,
       });
+
+      setWorkspaceActiveTab('workspace');
   };
 
   const HeaderEntryFormStyle = {

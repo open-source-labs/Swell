@@ -5,6 +5,7 @@ export default function CookieContainer({ cookie }) {
   const [showCookie, setShowCookie] = useState(false);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
+    if (!key || !value) return;
     if (showCookie === true && index > 1) {
       return (
         <tr key={index}>

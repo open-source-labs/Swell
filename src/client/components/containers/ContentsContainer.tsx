@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import BarGraph from "../display/BarGraph"
 import WorkspaceContainer from "./WorkspaceContainer.jsx";
 import CollectionsContainer from "./CollectionsContainer";
 
 export const ContentsContainer = () => {
-  const [activeTab, setActiveTab] = useState('workspace');
+  // const [activeTab, setActiveTab] = useState('workspace');
+  const dispatch = useDispatch();
+  const activeTab = useSelector(store => store.ui.workspaceActiveTab);
+  const setActiveTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
+
   const [showGraph, setShowGraph] = useState(false);
 
   return (
@@ -40,7 +45,7 @@ export const ContentsContainer = () => {
         }
 
         {activeTab === 'saved-workspace' && 
-          <CollectionsContainer setWorkspaceTab={setActiveTab}/>
+          <CollectionsContainer />
         }
 
       </div>
@@ -52,10 +57,10 @@ export const ContentsContainer = () => {
           onClick={() => setShowGraph(showGraph === false)}
           >
             {showGraph &&
-              'Hide Performance Charts'
+              'Hide Response History'
             }
             {!showGraph &&
-              'View Performance Charts'
+              'View Response History'
             }
         </div>
         {showGraph &&

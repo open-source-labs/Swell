@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import EventsContainer from './EventsContainer'
 import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
@@ -9,7 +10,10 @@ import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
 export const ResponsePaneContainer = (store) => {
-  const [activeTab, setActiveTab] = useState('events');
+  const dispatch = useDispatch();
+  const activeTab = useSelector(store => store.ui.responsePaneActiveTab);
+  const setActiveTab = (tabName) => dispatch(actions.setResponsePaneActiveTab(tabName));
+
   const currentResponse = useSelector(store => store.business.currentResponse); 
   const connection = useSelector(store => store.business.currentResponse.connection); 
   

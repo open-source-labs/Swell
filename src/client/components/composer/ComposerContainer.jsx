@@ -53,6 +53,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   resetComposerFields : () => {
     dispatch(actions.resetComposerFields());
+  },
+  setWorkspaceActiveTab : (tabName) => {
+    dispatch(actions.setWorkspaceActiveTab(tabName));
   }
 });
 

@@ -127,16 +127,25 @@ export const saveCurrentResponseData = (dataObj) => ({
   type: types.SAVE_CURRENT_RESPONSE_DATA,
   payload: dataObj,
 });
-// UI ACTIONS
-// export const showWarning = () => ({
-//   type: types.SHOW_WARNING,
-// });
 
-// export const hideWarning = () => ({
-//   type: types.HIDE_WARNING,
-// });
+// UI ACTIONS
 
 export const setComposerDisplay = (composerDisplay) => ({
   type: types.SET_COMPOSER_DISPLAY,
   payload: composerDisplay,
+});
+
+export const setSidebarActiveTab = (tabName) => ({
+  type: types.SET_SIDEBAR_ACTIVE_TAB,
+  payload: tabName,
+});
+
+export const setWorkspaceActiveTab = (tabName) => ({
+  type: types.SET_WORKSPACE_ACTIVE_TAB,
+  payload: tabName,
+});
+
+export const setResponsePaneActiveTab = (tabName) => ({
+  type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
+  payload: tabName,
 });
