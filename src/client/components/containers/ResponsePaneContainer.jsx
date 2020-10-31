@@ -41,7 +41,7 @@ export const ResponsePaneContainer = (store) => {
         {currentResponse.request.network !== 'ws' && 
         <div className="is-flex is-flex-direction-column is-tall">
           {/* TAB SELECTOR */}
-          <div className="tabs">
+          <div className="tabs header-bar">
             <ul className="columns is-gapless">
               <li className={`column ${activeTab === 'events' ? 'is-active' : ''}`}>
               <a 
@@ -65,7 +65,7 @@ export const ResponsePaneContainer = (store) => {
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-        <div className="is-flex-grow-3 add-vertical-scroll is-not-3rem-tall">
+        <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
           { activeTab === 'events' && <EventsContainer currentResponse={currentResponse} />}
           { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
           { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}

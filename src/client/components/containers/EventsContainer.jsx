@@ -73,6 +73,7 @@ export default function EventsContainer({currentResponse}) {
             tabSize: 4,
             lineWrapping: true,
             readOnly: true,
+            setSize: '100%',
           }}
         />
         </div>

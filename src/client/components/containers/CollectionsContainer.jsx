@@ -30,7 +30,7 @@ export default function CollectionsContainer({ setWorkspaceTab }) {
   return (
     <div>
       
-      <div>
+      <div className="mt-3">
         <button
           className="button is-small is-primary is-outlined button-padding-verticals mx-3"
           type="button"
