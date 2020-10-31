@@ -25,6 +25,11 @@ const collectionsController = {
       .catch((err) => console.log("Error in deleteFromCollection", err));
   },
 
+  updateCollectionInIndexedDb(collection) {
+    collectionsController.deleteCollectionFromIndexedDb(collection.id);
+    collectionsController.addCollectionToIndexedDb(collection);
+  },
+
   getCollections() {
     db.table("collections")
       .toArray()

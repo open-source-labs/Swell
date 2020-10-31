@@ -4,7 +4,7 @@ import ReqResCtrl from "../../controllers/reqResController.js";
 import SaveWorkspaceModal from './SaveWorkspaceModal'
 import ReqResContainer from "./ReqResContainer.jsx";
 
-export default function NavBarContainer() {
+export default function WorkspaceContainer() {
 
   // LOCAL STATE HOOKS
   const [showModal, setShowModal] = useState(false);
@@ -12,7 +12,7 @@ export default function NavBarContainer() {
   return (
     <div>
       {/* NAV BAR */}
-      <div className="is-flex is-flex-direction-row is-justify-content-flex-end is-align-items-center">
+      <div className="is-flex is-flex-direction-row is-justify-content-flex-end is-align-items-center mt-3">
         <button
           className="button is-small is-outlined button-padding-vertical button-hover-color"
           type="button"

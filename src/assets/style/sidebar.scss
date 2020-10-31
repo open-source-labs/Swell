@@ -148,3 +148,11 @@
   height: 2.3rem !important;
   margin-top: auto !important;
 }
+
+.is-tall-not-5rem {
+  height: calc( 100% - 5rem );
+}
+
+.tabs {
+  margin-bottom: 0 !important;
+}
