@@ -5,6 +5,7 @@ import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
 import StatusButtons from '../display/StatusButtons'
 import ResponseTime from '../display/ResponseTime'
+import ResponseSize from '../display/ResponseSize'
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
@@ -21,6 +22,7 @@ export const ResponsePaneContainer = (store) => {
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
             <ResponseTime currentResponse={currentResponse} /> 
+            <ResponseSize currentResponse={currentResponse} /> 
             <h3>
               Responses
             </h3>
