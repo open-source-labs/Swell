@@ -180,6 +180,8 @@ const SingleReqResContainer = (props) => {
           </div>
           <div className='req-status mr-1 is-flex is-align-items-center'>
             { connection === "uninitialized" && <div className='connection-uninitialized' /> }
+            {/* GRAPHQL ERRORS */}
+            { connection === "error" && <div className='connection-error' /> }
             { connection === "open" && <div className='connection-open' /> }
             { connection === "closed" && <div className='connection-closed' /> }
           </div>
