@@ -16,7 +16,7 @@ export default function NavBarContainer() {
         <button
           className="button is-small is-outlined button-padding-vertical button-hover-color"
           type="button"
-          onClick={ReqResCtrl.clearAllReqRes}
+          onClick={ReqResCtrl.clearAllReqRes, ReqResCtrl.clearGraph}
         >
           Clear Workspace
         </button>
