@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import BarGraph from "../display/BarGraph"
-import NavBarContainer from "./NavBarContainer.jsx";
+import WorkspaceContainer from "./WorkspaceContainer.jsx";
 import CollectionsContainer from "./CollectionsContainer";
 
 export const ContentsContainer = () => {
@@ -36,7 +36,7 @@ export const ContentsContainer = () => {
       <div className="is-flex-grow-3 add-vertical-scroll">
 
         {activeTab === 'workspace' && 
-          <NavBarContainer />
+          <WorkspaceContainer />
         }
 
         {activeTab === 'saved-workspace' && 
