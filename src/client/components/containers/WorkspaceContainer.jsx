@@ -12,7 +12,7 @@ export default function WorkspaceContainer() {
   return (
     <div>
       {/* NAV BAR */}
-      <div className="is-flex is-flex-direction-row is-justify-content-flex-end is-align-items-center">
+      <div className="is-flex is-flex-direction-row is-justify-content-flex-end is-align-items-center mt-3">
         <button
           className="button is-small is-outlined button-padding-vertical button-hover-color"
           type="button"
