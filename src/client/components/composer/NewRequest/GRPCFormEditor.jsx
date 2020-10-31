@@ -127,7 +127,7 @@ const GRPCProtoEntryForm = (props) => {
         id="grpcProtoEntryTextArea"
         onChange={(editor, data, value) => updateProtoBody(value)}
         value={props.newRequestStreams.protoContent}
-        mode="proto"
+        mode="application/json"
       />
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
