@@ -4,6 +4,7 @@ const initialState = {
   composerDisplay: 'Request',
   sidebarActiveTab: 'composer',
   workspaceActiveTab: 'workspace',
+  responsePaneActiveTab: 'events',
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -25,6 +26,13 @@ const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         workspaceActiveTab: action.payload,
+      };
+    }
+
+    case types.SET_RESPONSE_PANE_ACTIVE_TAB : {
+      return {
+        ...state,
+        responsePaneActiveTab: action.payload,
       };
     }
 

@@ -139,3 +139,8 @@ export const setWorkspaceActiveTab = (tabName) => ({
   type: types.SET_WORKSPACE_ACTIVE_TAB,
   payload: tabName,
 });
+
+export const setResponsePaneActiveTab = (tabName) => ({
+  type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
+  payload: tabName,
+});
