@@ -15,6 +15,7 @@ class Collection extends Component {
   
   deleteCollection(e) {
     this.props.deleteFromCollection(this.props.content); //a function we need to make in the container
+    console.log(e.target.id);
     collectionsController.deleteCollectionFromIndexedDb(e.target.id);
   }
   
