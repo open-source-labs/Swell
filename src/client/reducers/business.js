@@ -162,6 +162,22 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.COLLECTION_UPDATE: {
+      //update collection from state
+      const collectionName = action.payload.name;
+      const newCollections = JSON.parse(JSON.stringify(state.collections));
+      newCollections.forEach((obj, i) => {
+        if (obj.name === collectionName) {
+          newCollections[i] = action.payload;
+        }
+      });
+
+      return {
+        ...state,
+        collections: newCollections,
+      };
+    }
+
     case types.REQRES_CLEAR: {
       return {
         ...state,
