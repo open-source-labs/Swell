@@ -6,6 +6,7 @@ import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
 import StatusButtons from '../display/StatusButtons'
 import ResponseTime from '../display/ResponseTime'
+import ResponseSize from '../display/ResponseSize'
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
@@ -25,6 +26,7 @@ export const ResponsePaneContainer = (store) => {
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
             <ResponseTime currentResponse={currentResponse} /> 
+            <ResponseSize currentResponse={currentResponse} /> 
             <h3>
               Responses
             </h3>
@@ -45,7 +47,7 @@ export const ResponsePaneContainer = (store) => {
         {currentResponse.request.network !== 'ws' && 
         <div className="is-flex is-flex-direction-column is-tall">
           {/* TAB SELECTOR */}
-          <div className="tabs">
+          <div className="tabs header-bar">
             <ul className="columns is-gapless">
               <li className={`column ${activeTab === 'events' ? 'is-active' : ''}`}>
               <a 
@@ -69,7 +71,7 @@ export const ResponsePaneContainer = (store) => {
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-        <div className="is-flex-grow-3 add-vertical-scroll is-not-3rem-tall">
+        <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
           { activeTab === 'events' && <EventsContainer currentResponse={currentResponse} />}
           { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
           { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}

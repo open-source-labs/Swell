@@ -12,6 +12,13 @@
   max-width: 160px;
 }
 
+.is-not-8rem-tall {
+  height: calc(100%-8rem) !important;
+}
+.is-not-5rem-tall {
+  height: calc(100%-5rem) !important;
+}
+
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror {
   font-family: 'Roboto Mono', monospace;
@@ -20,9 +27,10 @@
 .cm-s-responsebody {
   background-color: $neutral-100;
   color: $neutral-400;
-  height: 700px !important;
   border: 1px solid $neutral-300;
   font-size: 0.75rem;
+  margin-bottom: 0 !important;
+  height: 1000zpx !important;
 }
 .cm-s-responsebody .CodeMirror-gutters {
   border: none;
@@ -72,11 +80,12 @@ td {
   justify-content: center;
   align-items: center;
   padding: 0px 12px;
-  margin: auto;
+  margin-top: 2px;
   border: 0px;
   border-radius: 2px;
   font-family: "Roboto Mono", monospace;
   font-weight: 600;
+  font-size: 0.85rem;
 }
 
 
@@ -89,4 +98,17 @@ td {
   left: 1rem;
   font-family: "Roboto Mono", monospace;
   font-weight: 600;
+  font-size: 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.response-size-placement {
+  position: absolute;
+  left: 4rem;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+  font-size: 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
 }

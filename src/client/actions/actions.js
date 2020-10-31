@@ -35,6 +35,11 @@ export const collectionAdd = (collection) => ({
   payload: collection,
 });
 
+export const collectionUpdate = (collection) => ({
+  type: types.COLLECTION_UPDATE,
+  payload: collection,
+});
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });

@@ -18,7 +18,7 @@ function ResponseTime({ currentResponse }) {
 
     return (
         <div className='response-time-placement'>
-          {responseTime}ms
+          {`${responseTime}ms`}
         </div>
     )
   }
