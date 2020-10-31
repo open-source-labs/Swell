@@ -39,7 +39,7 @@ const SingleReqResContainer = (props) => {
   } = props;
   const network = content.request.network;  
 
-  const addHistoryToNewRequest = () => {
+  const copyToComposer = () => {
     
     let requestFieldObj = {};
     if (network === 'rest') {
@@ -130,30 +130,30 @@ const SingleReqResContainer = (props) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
     dispatch(actions.setNewRequestBody(requestBodyObj));
-    dispatch(actions.setSidebarActiveTab('composer'));
+    
+    // for gRPC ===> NEED TO FILL OUT
+    if (content && content.gRPC) {
+      const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
+      const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
+      // construct the streams obj from passed in history content & set state in store
+      const requestStreamsObj = {
+        streamsArr: streamsDeepCopy,
+        count: content.queryArr.length,
+        streamContent: contentsDeepCopy,
+        selectedPackage: content.selectedPackage,
+        selectedRequest: content.selectedRequest,
+        selectedService:  content.selectedService,
+        selectedStreamingType: content.selectedStreamingType,
+        initialQuery: content.initialQuery,
+        queryArr: content.queryArr,
+        protoPath: content.protoPath,
+        services: content.services,
+        protoContent: content.protoContent,
+      }
+      dispatch(actions.setNewRequestStreams(requestStreamsObj))
+    }
 
-    // // for gRPC ===> NEED TO FILL OUT
-    // if (content && content.gRPC) {
-    //   const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
-    //   const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
-    //   // construct the streams obj from passed in history content & set state in store
-    //   const requestStreamsObj = {
-    //     streamsArr: streamsDeepCopy,
-    //     count: queryArr.length,
-    //     streamContent: contentsDeepCopy,
-    //     selectedPackage: content.selectedPackage,
-    //     selectedRequest: content.selectedRequest,
-    //     selectedService:  content.selectedService,
-    //     selectedStreamingType: content.selectedStreamingType,
-    //     initialQuery: content.initialQuery,
-    //     queryArr: content.queryArr,
-    //     protoPath: content.protoPath,
-    //     services: content.services,
-    //     protoContent: content.protoContent,
-    //   }
-    //   dispatch(actions.setNewRequestStreams(requestStreamsObj))
-    // }
-    // setSidebarTab('composer');
+    dispatch(actions.setSidebarActiveTab('composer'));
   }
 
   const removeReqRes = () => {
@@ -193,7 +193,7 @@ const SingleReqResContainer = (props) => {
           {showDetails === true &&
           <div 
             className="is-clickable is-primary-link mr-3" 
-            onClick={addHistoryToNewRequest}
+            onClick={copyToComposer}
           >
             Copy to Composer
             
