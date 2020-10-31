@@ -8,8 +8,7 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');
-  const [collectionNameInputStyles, setCollectionNameInputStyles] = useState({});
-  const [collectionNameErrorStyles, setCollectionNameErrorStyles] = useState({ display: "none" });
+  const [collectionNameErrorStyles, setCollectionNameErrorStyles] = useState(false);
   // PULL elements FROM store
   const reqResArray = useSelector(store => store.business.reqResArray);
   
@@ -35,6 +34,7 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
     dispatch(actions.collectionAdd(collectionObj));
     setShowModal(false);
+    setCollectionNameErrorStyles(false);
   }
 
   const saveName = () => {
@@ -47,8 +47,7 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
         .then((found) => {
           if (found) {
             //if the name already exists, change style state
-            setCollectionNameInputStyles({ borderColor: "red" });
-            setCollectionNameErrorStyles({ display: "block" });
+            setCollectionNameErrorStyles(true);
           } else saveCollection(input);
         });
     }
@@ -73,21 +72,18 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
                   type="text"
                   onChange={ e => setInput(e.target.value) }
                   autoFocus
-                  // style={collectionNameInputStyles}
                   className="input"
                   />
               </div>
-              <p
-                id="collectionNameError"
-                style={collectionNameErrorStyles}
-                className="m-3"
-                >
+              { collectionNameErrorStyles &&
+                <p id="collectionNameError" className="m-3">
                   Collection name already exists!
-              </p>
+                </p>
+              }
               <div
                 className="is-flex is-align-items-center is-justify-content-space-around"
                 >
-                <button className="button is-small is-fullwidth m-3 " onClick={() => { setShowModal(false) } }>Cancel</button>
+                <button className="button is-small is-fullwidth m-3 " onClick={() => { setShowModal(false); setCollectionNameErrorStyles(false); } }>Cancel</button>
                 <button className="button is-small is-fullwidth m-3 " onClick={saveName}>Save</button>
               </div>
             </div>
