@@ -10,7 +10,6 @@ import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
 export const ResponsePaneContainer = (store) => {
-  // const [activeTab, setActiveTab] = useState('events');
   const dispatch = useDispatch();
   const activeTab = useSelector(store => store.ui.responsePaneActiveTab);
   const setActiveTab = (tabName) => dispatch(actions.setResponsePaneActiveTab(tabName));
