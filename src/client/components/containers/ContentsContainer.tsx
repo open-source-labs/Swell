@@ -57,10 +57,10 @@ export const ContentsContainer = () => {
           onClick={() => setShowGraph(showGraph === false)}
           >
             {showGraph &&
-              'Hide Performance Charts'
+              'Hide Response History'
             }
             {!showGraph &&
-              'View Performance Charts'
+              'View Response History'
             }
         </div>
         {showGraph &&
