@@ -1,6 +1,6 @@
 import reducer from "../src/client/reducers/business";
 
-xdescribe("Business reducer", () => {
+describe("Business reducer", () => {
   let state;
 
   beforeEach(() => {
@@ -49,7 +49,7 @@ xdescribe("Business reducer", () => {
         bodyContent: "",
         bodyVariables: "",
         bodyType: "raw",
-        rawType: "Text (text/plain)",
+        rawType: "text/plain",
         JSONFormatted: true,
         bodyIsNew: false,
       },
@@ -58,6 +58,11 @@ xdescribe("Business reducer", () => {
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
       dataPoints: [],
+      currentResponse: {
+        request: {
+          network: ''
+        }
+      },
     };
   });
 
