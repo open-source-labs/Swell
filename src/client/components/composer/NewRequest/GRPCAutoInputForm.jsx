@@ -22,12 +22,6 @@ const GRPCAutoInputForm = (props) => {
     initialQuery
   } = props.newRequestStreams;
 
-  //component state for toggling show/hide
-  const [show, toggleShow] = useState(true);
-  //component state for service and request dropdown
-  const [serviceOption, setServiceOption] = useState("Select Service");
-  const [requestOption, setRequestOption] = useState("Select Request");
-
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
