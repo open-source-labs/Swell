@@ -1,6 +1,6 @@
 import reducer from "../src/client/reducers/business";
 
-describe("Business reducer", () => {
+xdescribe("Business reducer", () => {
   let state;
 
   beforeEach(() => {

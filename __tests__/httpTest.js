@@ -7,8 +7,8 @@ import SingleReqResContainer from '../src/client/components/containers/SingleReq
 
 configure({ adapter: new Adapter() });
 
-describe('HTTP/S requests', () => {
-describe('public API', () => {
+xdescribe('HTTP/S requests', () => {
+xdescribe('public API', () => {
 	it('it should GET information from a public API', () => {
     const props = {
       newRequestFields: {

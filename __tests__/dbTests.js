@@ -25,7 +25,7 @@ db.version(1).stores({
 // now we have db.history and db.collections
 
 // for setup and teardown tasks that are asynchronous, take care to RETURN the promise
-describe("db test", () => {
+xdescribe("db test", () => {
   beforeEach(() => db.history.clear().catch((err) => console.log(err)));
   afterEach(() => db.history.clear().catch((err) => console.log(err)));
   describe("history tests", () => {

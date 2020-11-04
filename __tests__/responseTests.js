@@ -9,7 +9,7 @@ import ResponseSubscriptionDisplay from "../src/client/components/display/Respon
 
 configure({ adapter: new Adapter() });
 
-describe("ResponseContainer", () => {
+xdescribe("ResponseContainer", () => {
   let props;
   beforeAll(() => {
     props = {
@@ -63,9 +63,9 @@ describe("ResponseContainer", () => {
   });
 });
 
-describe("ResponseTabs", () => {
+xdescribe("ResponseTabs", () => {
   it("should render three tabs", () => {
-    const wrapper = shallow(<ResponseTabs content={"not grpc"} />);
+    const wrapper = shallow(<ResponseTabs content="not grpc" />);
     expect(wrapper.find("Tab")).toHaveLength(3);
   });
   it("grpc should render two tabs", () => {
@@ -74,7 +74,7 @@ describe("ResponseTabs", () => {
   });
 });
 
-describe("ResponseEventsDisplay", () => {
+xdescribe("ResponseEventsDisplay", () => {
   it("if SSE, should render event rows", () => {
     const props = {
       response: {
@@ -98,7 +98,7 @@ describe("ResponseEventsDisplay", () => {
   });
 });
 
-describe("ResponseSubscriptionDisplay", () => {
+xdescribe("ResponseSubscriptionDisplay", () => {
   let props;
   let wrapper;
   const testURL = "ws://localhost:4000/";

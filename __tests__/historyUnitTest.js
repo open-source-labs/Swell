@@ -29,7 +29,7 @@ yesterday.setDate(yesterday.getDate() - 1);
 const twoDaysAgo = new Date();
 twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-describe("history container test", () => {
+xdescribe("history container test", () => {
   const initialState = {
     business: {
       history: [
