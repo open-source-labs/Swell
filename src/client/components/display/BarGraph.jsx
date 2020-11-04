@@ -15,7 +15,10 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   saveCurrentResponseData: (reqRes) => {
-    dispatch(actions.saveCurrentResponseData(reqRes));;
+    dispatch(actions.saveCurrentResponseData(reqRes));
+  },
+  updateGraph: (reqRes) => {
+    dispatch(actions.updateGraph(reqRes));
   },
   clearGraph: (id) => {
     store.default.dispatch(actions.clearGraph(id));
@@ -162,9 +165,9 @@ const BarGraph = (props) => {
     //conditionally update options based on length of dataPoints array
     if (!dataPoints[id]?.length || dataPoints[id]?.length > 3)
       updateOptions(optionsUpdater(dataPoints[id]));
-  }, [dataPoints]);
+  }, [dataPoints, currentResponse]);
 
- 
+  // useEffect(updateGraph(currentResponse), [currentResponse])
 
   const chartClass = show ? "chart" : "chart-closed";
   const clearButtonTextAddition = currentResponse.host ? ` for ${currentResponse.host.slice(8)}` : ''

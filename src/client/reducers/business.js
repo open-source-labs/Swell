@@ -290,7 +290,10 @@ const businessReducer = (state = initialState, action) => {
           ...state,
           dataPoints: dataPointsCopy,
         };
-      } else return state;
+      } else return {
+          ...state,
+          dataPoints: dataPointsCopy,
+        };
     }
 
     case types.CLEAR_GRAPH: {
