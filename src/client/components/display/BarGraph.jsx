@@ -157,6 +157,7 @@ const BarGraph = (props) => {
       //show graph upon receiving data points
       toggleShow(true);
     } else {
+      setHost(null)
       //hide graph when no data points
       toggleShow(false);
     }
@@ -186,7 +187,6 @@ const BarGraph = (props) => {
       <button className="button is-small add-header-or-cookie-button clear-chart-button mb-3" 
         onClick={() => {
           props.clearGraph(currentResponse.id)
-          setHost(null)
         }}
         >
         Clear Response History 
