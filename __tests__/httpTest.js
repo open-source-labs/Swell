@@ -7,30 +7,9 @@ import SingleReqResContainer from '../src/client/components/containers/SingleReq
 
 configure({ adapter: new Adapter() });
 
-xdescribe('HTTP/S requests', () => {
-xdescribe('public API', () => {
-	it('it should GET information from a public API', () => {
-    const props = {
-      newRequestFields: {
-        method: "GET",
-				protocol: "https://",
-				url: "https://pokeapi.co/api/v2/pokemon?limit=2"
-			}
-		};
-		const response = {
-			content: {
-				response: {
-					headers: {
-						status: 200
-					},
-					events: [{'count': 964}]
-				}
-			}
-		}
-		const fieldWrapper = shallow(<FieldEntryForm {...props} />);
-		fieldWrapper.setState({reqResAdd: jest.fn()})
-		const wrapper = shallow(<ResponseEventsDisplay {...response} />);
-		expect(wrapper.find("JSONPretty")).toHaveLength(1);
-	});
-})
+describe('HTTP/S requests', () => {
+  describe('public API', () => {
+    it('it should GET information from a public API', () => {
+    })
+  })
 })
