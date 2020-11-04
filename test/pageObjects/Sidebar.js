@@ -1,22 +1,39 @@
 const app = require('../testApp.js');
 
 class Sidebar {
+
+  // COMPOSER PANE TAB SELECTORS
+  get tabsComposer() {
+    return app.client.$('a=Composer')
+  }
+
+  get tabsHistory() {
+    return app.client.$('a=History')
+  }
+
+  // COMPOSER => COMPOSER
+  // PROTOCOL SELECTOR
+  get selectedNetwork() {
+    return app.client.$('#selected-network')
+  }
+
   // NETWORK PROTOCOL
-  get websocket() {
-    return app.client.$('div.composer_protocol_button.ws')
-  }
+  // get websocket() {
+  //   return app.client.$('div.composer_protocol_button.ws')
+  // }
 
-  get graphQL() {
-    return app.client.$('div.composer_protocol_button.gql')
-  }
 
-  get gRPC() {
-    return app.client.$('div.composer_protocol_button.grpc')
-  }
+  // get graphQL() {
+  //   return app.client.$('div.composer_protocol_button.gql')
+  // }
+
+  // get gRPC() {
+  //   return app.client.$('div.composer_protocol_button.grpc')
+  // }
 
   // URL/METHOD INPUTS
   get url() { 
-    return app.client.$('input.composer_url_input');
+    return app.client.$('.input-is-medium');
   };
 
   get requestMethod() { 

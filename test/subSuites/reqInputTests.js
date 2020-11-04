@@ -6,22 +6,158 @@ const app = require('../testApp.js');
 module.exports = () => {
   describe('URL/request method inputs', () => {
 
-    it('can select a request method', async () => {
-      await sideBar.requestMethod.click();
-      await sideBar.choosePost.click();
-      const isSelected = await sideBar.choosePost.isSelected();
-      assert.strictEqual(isSelected, true); 
+    it('can switch tabs in the composer pane', async () => {
+      // click and check history
+      await sideBar.tabsHistory.click();
+      const historySelected = await app.client.$(".is-active").getText();
+      assert.strictEqual(historySelected, "History");
+      
+      // click and check composer
+      await sideBar.tabsComposer.click();
+      const composerSelected = await app.client.$(".is-active").getText();
+      return assert.strictEqual(composerSelected, "Composer");
+    });
+
+    it('can select a request type', async () => {
+      // click and check graphQL
+      await sideBar.selectedNetwork.click();
+      await app.client.$('a=GRAPHQL').click();
+      assert.strictEqual(await sideBar.selectedNetwork.getText(), "GRAPHQL");
+
+      // click and check WS
+      await sideBar.selectedNetwork.click();
+      await app.client.$('a=WEB SOCKETS').click();
+      assert.strictEqual(await sideBar.selectedNetwork.getText(), "WEB SOCKETS");
+
+      // click and check gRPC
+      await sideBar.selectedNetwork.click();
+      await app.client.$('a=gRPC').click();
+      assert.strictEqual(await sideBar.selectedNetwork.getText(), "gRPC");
+
+      // click and check REST
+      await sideBar.selectedNetwork.click();
+      await app.client.$('a=REST').click();
+      return assert.strictEqual(await sideBar.selectedNetwork.getText(), "REST");
+    });
+
+    it('can select a REST method', async () => {
+      // click and select POST
+      await app.client.$('span=GET').click();
+      await app.client.$('a=POST').click();
+      assert.notEqual(await app.client.$('span=POST'), null);
+
+      // click and select PUT
+      await app.client.$('span=POST').click();
+      await app.client.$('a=PUT').click();
+      return assert.notEqual(await app.client.$('span=PUT'), null);
     });
 
     it('can type url into url input', async () => {
-      await sideBar.url.setValue('https://pokeapi.co/api/v2/pokemon?limit=5');
+      await sideBar.url.setValue('http://jsonplaceholder.typicode.com/posts/1');
       const input = await sideBar.url.getValue();
   
-      return assert.strictEqual(input, 'https://pokeapi.co/api/v2/pokemon?limit=5');
+      return assert.strictEqual(input, 'http://jsonplaceholder.typicode.com/posts/1');
     });
   })
 
-  describe('request body inputs', () => {
+  xdescribe('headers inputs', async () => {
+    let headers;
+    let headerChecked; 
+    
+    it('should open headers input, rendering single input at first', async () => {
+      await sideBar.activateHeaders.click();
+      headers = await sideBar.headers;
+      assert.strictEqual(headers.length, 1); 
+    }); 
+
+    it('new headers initialize as un-checked', async () => {
+      headerChecked = await sideBar.firstHeaderCheckbox.isSelected();
+      assert.strictEqual(headerChecked, false)
+    })
+
+    it('can type new headers in request', async () => {
+      await sideBar.headerKey.addValue('testing');
+      const headerKey = await sideBar.headerKey.getValue();
+      assert.strictEqual(headerKey, 'testing'); 
+
+      await sideBar.headerValue.addValue('true'); 
+      const headerValue = await sideBar.headerValue.getValue();
+      assert.strictEqual(headerValue, 'true'); 
+      
+    });
+
+    it('header is checked after input', async () => {
+      isSelected = await sideBar.firstHeaderCheckbox.isSelected();
+      assert.strictEqual(isSelected, true);
+    });
+
+    
+
+    // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
+    // it('deleting text in input eliminates checkmark', async () => {
+      //   await sideBar.headerKey.clearValue();
+      //   await sideBar.headerValue.clearVAlue();
+    //   headerChecked = await sideBar.headerCheckbox.isSelected();
+    //   assert.strictEqual(headerChecked, false);
+    // })
+
+    it('creates new input fields for new header when header is added', async () => {
+      await sideBar.addHeader.click();
+      headers = await sideBar.headers; 
+      assert.strictEqual(headers.length, 2);
+    });
+
+    it('can uncheck a header after creating it', async () => {
+      await sideBar.firstHeaderCheckbox.click(); 
+      isSelected = await sideBar.firstHeaderCheckbox.isSelected();
+      assert.strictEqual(isSelected, false);
+    });
+  });
+
+  xdescribe('cookies inputs', async () => {
+    let cookies;
+    let cookieChecked; 
+
+    it('should open cookies input, rendering single input at first', async () => {
+      await sideBar.activateCookies.click();
+      cookies = await sideBar.cookies;
+      assert.strictEqual(cookies.length, 1); 
+    }); 
+
+    it('new cookies initialize as un-checked', async () => {
+      cookieChecked = await sideBar.firstCookieCheckbox.isSelected();
+      assert.strictEqual(cookieChecked, false)
+    })
+
+    it('can type new cookies in request', async () => {
+      await sideBar.cookieKey.addValue('testing');
+      const cookieKey = await sideBar.cookieKey.getValue();
+      assert.strictEqual(cookieKey, 'testing'); 
+
+      await sideBar.cookieValue.addValue('true'); 
+      const cookieValue = await sideBar.cookieValue.getValue();
+      assert.strictEqual(cookieValue, 'true'); 
+
+    });
+
+    it('cookie is checked after input', async () => {
+      isSelected = await sideBar.firstCookieCheckbox.isSelected();
+      assert.strictEqual(isSelected, true);
+    });
+
+    it('creates new input fields for new cookie when cookie is added', async () => {
+      cookies = await sideBar.cookies; 
+      assert.strictEqual(cookies.length, 2);
+    });
+
+    it('can uncheck a cookie after creating it', async () => {
+      await sideBar.firstCookieCheckbox.click(); 
+      isSelected = await sideBar.firstCookieCheckbox.isSelected();
+      assert.strictEqual(isSelected, false);
+    });
+  });
+
+  xdescribe('request body inputs', () => {
     let bodyInputVisible; 
     let btnClass; 
     let body; 
@@ -108,104 +244,4 @@ module.exports = () => {
     })
   });
   
-
-  describe('headers inputs', async () => {
-    let headers;
-    let headerChecked; 
-    
-    it('should open headers input, rendering single input at first', async () => {
-      await sideBar.activateHeaders.click();
-      headers = await sideBar.headers;
-      assert.strictEqual(headers.length, 1); 
-    }); 
-
-    it('new headers initialize as un-checked', async () => {
-      headerChecked = await sideBar.firstHeaderCheckbox.isSelected();
-      assert.strictEqual(headerChecked, false)
-    })
-
-    it('can type new headers in request', async () => {
-      await sideBar.headerKey.addValue('testing');
-      const headerKey = await sideBar.headerKey.getValue();
-      assert.strictEqual(headerKey, 'testing'); 
-
-      await sideBar.headerValue.addValue('true'); 
-      const headerValue = await sideBar.headerValue.getValue();
-      assert.strictEqual(headerValue, 'true'); 
-      
-    });
-
-    it('header is checked after input', async () => {
-      isSelected = await sideBar.firstHeaderCheckbox.isSelected();
-      assert.strictEqual(isSelected, true);
-    });
-
-    
-
-    // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
-    // it('deleting text in input eliminates checkmark', async () => {
-      //   await sideBar.headerKey.clearValue();
-      //   await sideBar.headerValue.clearVAlue();
-    //   headerChecked = await sideBar.headerCheckbox.isSelected();
-    //   assert.strictEqual(headerChecked, false);
-    // })
-
-    it('creates new input fields for new header when header is added', async () => {
-      await sideBar.addHeader.click();
-      headers = await sideBar.headers; 
-      assert.strictEqual(headers.length, 2);
-    });
-
-    it('can uncheck a header after creating it', async () => {
-      await sideBar.firstHeaderCheckbox.click(); 
-      isSelected = await sideBar.firstHeaderCheckbox.isSelected();
-      assert.strictEqual(isSelected, false);
-    });
-  });
-
-  describe('cookies inputs', async () => {
-    let cookies;
-    let cookieChecked; 
-
-    it('should open cookies input, rendering single input at first', async () => {
-      await sideBar.activateCookies.click();
-      cookies = await sideBar.cookies;
-      assert.strictEqual(cookies.length, 1); 
-    }); 
-
-    it('new cookies initialize as un-checked', async () => {
-      cookieChecked = await sideBar.firstCookieCheckbox.isSelected();
-      assert.strictEqual(cookieChecked, false)
-    })
-
-    it('can type new cookies in request', async () => {
-      await sideBar.cookieKey.addValue('testing');
-      const cookieKey = await sideBar.cookieKey.getValue();
-      assert.strictEqual(cookieKey, 'testing'); 
-
-      await sideBar.cookieValue.addValue('true'); 
-      const cookieValue = await sideBar.cookieValue.getValue();
-      assert.strictEqual(cookieValue, 'true'); 
-
-    });
-
-    it('cookie is checked after input', async () => {
-      isSelected = await sideBar.firstCookieCheckbox.isSelected();
-      assert.strictEqual(isSelected, true);
-    });
-
-    it('creates new input fields for new cookie when cookie is added', async () => {
-      cookies = await sideBar.cookies; 
-      assert.strictEqual(cookies.length, 2);
-    });
-
-    it('can uncheck a cookie after creating it', async () => {
-      await sideBar.firstCookieCheckbox.click(); 
-      isSelected = await sideBar.firstCookieCheckbox.isSelected();
-      assert.strictEqual(isSelected, false);
-    });
-  });
-
-  
-
 };
