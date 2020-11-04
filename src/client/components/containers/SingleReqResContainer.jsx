@@ -136,13 +136,14 @@ const SingleReqResContainer = (props) => {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
       const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
       // construct the streams obj from passed in history content & set state in store
+     
       const requestStreamsObj = {
         streamsArr: streamsDeepCopy,
         count: content.queryArr.length,
         streamContent: contentsDeepCopy,
-        selectedPackage: content.selectedPackage,
-        selectedRequest: content.selectedRequest,
-        selectedService:  content.selectedService,
+        selectedPackage: content.packageName,
+        selectedRequest: content.rpc,
+        selectedService:  content.service,
         selectedStreamingType: content.selectedStreamingType,
         initialQuery: content.initialQuery,
         queryArr: content.queryArr,

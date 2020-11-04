@@ -3,12 +3,6 @@ import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 import GRPCServiceOrRequestSelect from "./GRPCServiceOrRequestSelect.jsx"
 
 const GRPCAutoInputForm = (props) => {
-  //component state for toggling show/hide
-  const [show, toggleShow] = useState(true);
-  //component state for service and request dropdown
-  const [serviceOption, setServiceOption] = useState("Select Service");
-  const [requestOption, setRequestOption] = useState("Select Request");
-
   const {
     selectedService,
     selectedRequest,
@@ -20,6 +14,13 @@ const GRPCAutoInputForm = (props) => {
     selectedServiceObj,
     protoContent,
   } = props.newRequestStreams;
+
+  //component state for toggling show/hide
+  const [show, toggleShow] = useState(true);
+  //component state for service and request dropdown
+  const [serviceOption, setServiceOption] = useState(selectedService || "Select Service");
+  const [requestOption, setRequestOption] = useState(selectedRequest || "Select Request");
+
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
@@ -136,8 +137,8 @@ const GRPCAutoInputForm = (props) => {
   }, [selectedRequest]);
 
   useEffect(() => {
-    setServiceOption("Select Service");
-    setRequestOption("Select Request");
+    setServiceOption(selectedService || "Select Service");
+    setRequestOption(selectedRequest || "Select Request");
   }, [protoContent]);
 
 

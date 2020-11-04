@@ -1,6 +1,6 @@
 import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import GRPCFormEditor from "./NewRequest/GRPCFormEditor.jsx";
+import GRPCProtoEntryForm from "./NewRequest/GRPCProtoEntryForm.jsx";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
 import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
@@ -206,7 +206,7 @@ export default function GRPCContainer({
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestStreams={setNewRequestStreams}
         />
-        <GRPCFormEditor
+        <GRPCProtoEntryForm
           newRequestStreams={newRequestStreams}
           setNewRequestStreams={setNewRequestStreams}
         />
