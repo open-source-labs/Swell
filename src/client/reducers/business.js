@@ -263,7 +263,7 @@ const businessReducer = (state = initialState, action) => {
       //if more than 8 points, data will shift down an index
       if (!dataPointsCopy[id]) {
         dataPointsCopy[id] = []
-      } else if (dataPointsCopy[id].length > 8) {
+      } else if (dataPointsCopy[id].length > 5) {
         dataPointsCopy[id] = dataPointsCopy[id].slice(1)
       }
       
