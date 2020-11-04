@@ -281,9 +281,9 @@ const businessReducer = (state = initialState, action) => {
         });
         return {
           ...state,
-          dataPoints: dataPoints,
+          dataPoints,
         };
-      } else return state;
+      } return state;
     }
 
     case types.CLEAR_GRAPH: {
