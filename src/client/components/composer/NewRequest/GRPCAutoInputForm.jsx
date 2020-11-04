@@ -13,13 +13,14 @@ const GRPCAutoInputForm = (props) => {
     selectedStreamingType,
     selectedServiceObj,
     protoContent,
+    initialQuery
   } = props.newRequestStreams;
 
   //component state for toggling show/hide
   const [show, toggleShow] = useState(true);
   //component state for service and request dropdown
-  const [serviceOption, setServiceOption] = useState(selectedService || "Select Service");
-  const [requestOption, setRequestOption] = useState(selectedRequest || "Select Request");
+  const [serviceOption, setServiceOption] = useState("Select Service");
+  const [requestOption, setRequestOption] = useState("Select Request");
 
 
   // event handler for changes made to the Select Services dropdown list
@@ -75,9 +76,9 @@ const GRPCAutoInputForm = (props) => {
   };
 
   useEffect(() => {
+    console.log('service and request - grpc auto input form', selectedService, selectedRequest)
     //if no selected request or service object, return out and don't update
     if (!selectedRequest || !selectedServiceObj) return;
-
     //find rpc object that matches selectedRequest name
     const rpc = selectedServiceObj.rpcs.find(
       (rpc) => rpc.name === selectedRequest
@@ -139,7 +140,7 @@ const GRPCAutoInputForm = (props) => {
   useEffect(() => {
     setServiceOption(selectedService || "Select Service");
     setRequestOption(selectedRequest || "Select Request");
-  }, [protoContent]);
+  }, [streamContent]);
 
 
   //default options shown for services and request dropdowns

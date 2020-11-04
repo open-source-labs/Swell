@@ -10,14 +10,8 @@ const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
-  console.log("gRPC proto entry props --->", props.newRequestStreams)
+  console.log("gRPC proto entry props new req streams --->", props.newRequestStreams)
 
-  // useEffect(() => {
-  //   if (props.newRequestStreams.protoContent) {
-  //     saveChanges(true)
-  //     submitUpdatedProto()
-  //   }
-  // }, [])
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
