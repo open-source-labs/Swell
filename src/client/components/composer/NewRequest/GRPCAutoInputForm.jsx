@@ -3,6 +3,12 @@ import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
 import GRPCServiceOrRequestSelect from "./GRPCServiceOrRequestSelect.jsx"
 
 const GRPCAutoInputForm = (props) => {
+  //component state for toggling show/hide
+  const [show, toggleShow] = useState(true);
+  //component state for service and request dropdown
+  const [serviceOption, setServiceOption] = useState("Select Service");
+  const [requestOption, setRequestOption] = useState("Select Request");
+
   const {
     selectedService,
     selectedRequest,

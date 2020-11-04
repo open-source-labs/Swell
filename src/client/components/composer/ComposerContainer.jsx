@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
-  
+
   const onProtocolSelect = (network) => {
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
