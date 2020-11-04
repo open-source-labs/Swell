@@ -76,7 +76,6 @@ const GRPCAutoInputForm = (props) => {
   };
 
   useEffect(() => {
-    console.log('service and request - grpc auto input form', selectedService, selectedRequest)
     //if no selected request or service object, return out and don't update
     if (!selectedRequest || !selectedServiceObj) return;
     //find rpc object that matches selectedRequest name
