@@ -1,6 +1,6 @@
 import protoParser from "../main_process/protoParser";
 
-xdescribe("testing protoParser", () => {
+describe("testing protoParser", () => {
   const protoFile = `syntax = 'proto3';
         
         package helloworld;
