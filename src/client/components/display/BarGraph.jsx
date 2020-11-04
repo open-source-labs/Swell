@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Bar } from "react-chartjs-2";
+import { HorizontalBar } from "react-chartjs-2";
 import * as store from "../../store";
 import * as actions from "../../actions/actions";
 
@@ -25,10 +25,6 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-
-
-
-
 const BarGraph = (props) => {
   const { dataPoints, currentResponse } = props
 
@@ -45,6 +41,7 @@ const BarGraph = (props) => {
       },
     ],
   });
+
   //default state for chart options
   const [chartOptions, updateOptions] = useState({
     scales: {
@@ -52,7 +49,7 @@ const BarGraph = (props) => {
         {
           scaleLabel: {
             display: true,
-            labelString: "Response time",
+            labelString: "why",
           },
           ticks: {
             beginAtZero: true,
@@ -91,41 +88,6 @@ const BarGraph = (props) => {
     };
   };
 
-  //helper function that returns chart options object
-  const optionsUpdater = (arr) => {
-    if (!arr) return;
-    //Event labels and Y-axis title disappear after one request
-    const showLabels = arr.length >= 3 ? false : true;
-    return {
-      legend: {
-        display: false,
-      },
-      scales: {
-        yAxes: [
-          {
-            scaleLabel: {
-              display: false, //boolean
-            },
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            ticks: {
-              display: showLabels, //boolean
-            },
-          },
-        ],
-      },
-      animation: {
-        duration: 500,
-      },
-      maintainAspectRatio: false, //necessary for keeping chart within container
-    };
-  };
-
   // click handling to load response data
   const getElementAtEvent = element => {
     if (!element.length) return;
@@ -140,16 +102,13 @@ const BarGraph = (props) => {
   useEffect(() => {
     const { id, host } = currentResponse
     setHost(host?.slice(7))
-    let urls, times, BGs, borders, reqResObjs;
+
+    let url, urls, times, BGs, borders, reqResObjs;
     if (dataPoints[id]?.length) {
+      
+
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
-      urls = dataPoints[id].map((point) => {
-          // if grpc, just return the server IP
-          if (point.reqRes.gRPC) return `${point.url}`
-          // if point.url is lengthy, just return the domain and the end of the uri string
-          const domain = point.url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
-          return `${domain} ${(point.url.length > domain.length + 8) ? `- ..${point.url.slice(point.url.length - 8, point.url.length)}` : ""}`
-        });
+      urls = dataPoints[id].map((point, index) => index + 1);
       times = dataPoints[id].map((point) => point.timeReceived - point.timeSent);
       BGs = dataPoints[id].map((point) => "rgba(" + point.color + ", 0.2)");
       borders = dataPoints[id].map((point) => "rgba(" + point.color + ", 1)");
@@ -164,8 +123,8 @@ const BarGraph = (props) => {
     //update state with updated dataset
     updateChart(dataUpdater(urls, times, BGs, borders, reqResObjs));
     //conditionally update options based on length of dataPoints array
-    if (!dataPoints[id]?.length || dataPoints[id]?.length > 3)
-      updateOptions(optionsUpdater(dataPoints[id]));
+    // if (!dataPoints[id]?.length || dataPoints[id]?.length > 3)
+    //   updateOptions(optionsUpdater(dataPoints[id]));
   }, [dataPoints, currentResponse]);
 
   // useEffect(updateGraph(currentResponse), [currentResponse])
@@ -175,7 +134,7 @@ const BarGraph = (props) => {
   return (
     <div>
     <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
-      <Bar 
+      <HorizontalBar 
       data={chartData} 
       width={50} 
       height={200} 
