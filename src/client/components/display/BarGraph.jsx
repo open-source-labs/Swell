@@ -17,15 +17,19 @@ const mapDispatchToProps = (dispatch) => ({
   saveCurrentResponseData: (reqRes) => {
     dispatch(actions.saveCurrentResponseData(reqRes));;
   },
-  clearGraph: () => {
-    store.default.dispatch(actions.clearGraph());
+  clearGraph: (id) => {
+    store.default.dispatch(actions.clearGraph(id));
   }
 });
 
 
 
+
+
 const BarGraph = (props) => {
   const { dataPoints, currentResponse } = props
+
+  const [ host, setHost ] = useState(null)
   //state for showing graph, depending on whether there are datapoints or not.
   //must default to true, because graph will not render if initial container's display is 'none'
   const [show, toggleShow] = useState(true);
@@ -131,8 +135,8 @@ const BarGraph = (props) => {
   
 
   useEffect(() => {
-    const { id } = currentResponse
-
+    const { id, host } = currentResponse
+    setHost(host?.slice(7))
     let urls, times, BGs, borders, reqResObjs;
     if (dataPoints[id]?.length) {
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
@@ -160,8 +164,10 @@ const BarGraph = (props) => {
       updateOptions(optionsUpdater(dataPoints[id]));
   }, [dataPoints]);
 
-  const chartClass = show ? "chart" : "chart-closed";
+ 
 
+  const chartClass = show ? "chart" : "chart-closed";
+  const clearButtonTextAddition = currentResponse.host ? ` for ${currentResponse.host.slice(8)}` : ''
   return (
     <div>
     <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
@@ -173,9 +179,19 @@ const BarGraph = (props) => {
       getElementAtEvent={getElementAtEvent}
       />
     </div>
-    <button className="button is-small add-header-or-cookie-button clear-chart-button mr-3" onClick={props.clearGraph}>
-        Clear Chart
+    <div className="is-flex is-justify-content-center">
+      <button className="button is-small add-header-or-cookie-button clear-chart-button mb-3" 
+        onClick={() => {
+          props.clearGraph(currentResponse.id)
+          setHost(null)
+        }}
+        >
+        Clear Response History 
+        {host && 
+          <span> - <b>{host}</b></span>
+        }
       </button>
+    </div>
     </div>
   );
 };

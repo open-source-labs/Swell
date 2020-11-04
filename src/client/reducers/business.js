@@ -254,10 +254,9 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.UPDATE_GRAPH: {
-      
       const { id } = action.payload
-      
       // action.payload is the latest reqRes object
+
       //dataPoints to be used by graph
       const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints))
       dataPointsCopy.current = id
@@ -272,14 +271,13 @@ const businessReducer = (state = initialState, action) => {
       if (
         !dataPointsCopy[id].some((elem) => elem.timeSent === action.payload.timeSent)
       ) {
+        // if a color hasn't been added to this specific request id, add a new one
+        const color = 
+          (!dataPointsCopy[id][0]?.color) 
+          ? `${Math.random() * 256}, ${Math.random() * 256}, ${Math.random() * 256}`
+          : dataPointsCopy[id][0].color
         
-        //generate specific rgb color for each request type to be attached to this datapoint.
-        let color;
-        if (action.payload.graphQL) color ="222, 51, 166";
-        else if (action.payload.gRPC) color = "108, 172, 193";
-        else color = "104, 67, 255"
-
-        //add dataPoint to array connected to it's id and return to state
+        //add dataPoint to array connected to its id -and return to state
         dataPointsCopy[id].push({
           reqRes: action.payload,
           url: action.payload.url,
@@ -296,9 +294,11 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.CLEAR_GRAPH: {
+      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints))
+      dataPointsCopy[action.payload] = []
       return {
         ...state,
-        dataPoints: [],
+        dataPoints: dataPointsCopy,
       };
     }
 
