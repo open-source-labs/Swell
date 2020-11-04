@@ -5,7 +5,7 @@ import ProtocolSelect from "../src/client/components/composer/NewRequest/Protoco
 
 configure({ adapter: new Adapter() });
 
-xdescribe("GraphQL Composer", () => {
+describe("GraphQL Composer", () => {
   let state;
   state = {
     currentTab: "First Tab",
@@ -34,7 +34,7 @@ xdescribe("GraphQL Composer", () => {
       bodyVariables: "",
     },
   };
-  xdescribe("Setting GQL fields, headers, and body", () => {
+  describe("Setting GQL fields, headers, and body", () => {
     describe("ProtocolSelect", () => {
       let wrapper;
       const props = {
