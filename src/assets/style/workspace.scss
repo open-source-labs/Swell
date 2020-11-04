@@ -56,6 +56,16 @@
   // text-align: center;
 }
 
+.connection-closedsocket {
+  border: 2px solid $neutral-400;
+  border-radius: 30px;
+  height: 12px;
+  width: 12px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
 .connection-error {
   border-radius: 30px;
   background-color: $primary-200;

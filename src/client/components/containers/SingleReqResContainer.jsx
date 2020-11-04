@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from "../../../../src/client/actions/actions.js";
+import * as actions from "../../actions/actions.js";
 
 import connectionController from "../../controllers/reqResController";
 import RestRequestContent from "../display/RestRequestContent.jsx";
@@ -37,7 +37,8 @@ const SingleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
   } = props;
-  const network = content.request.network;  
+  const network = content.request.network;
+  const method = content.request.method;
 
   const copyToComposer = () => {
     
@@ -170,12 +171,17 @@ const SingleReqResContainer = (props) => {
           <div className='is-flex is-align-items-center ml-2'>
             {url}
           </div>
+          {/* RENDER STATUS */}
           <div className='req-status mr-1 is-flex is-align-items-center'>
             { connection === "uninitialized" && <div className='connection-uninitialized' /> }
-            {/* GRAPHQL ERRORS */}
             { connection === "error" && <div className='connection-error' /> }
             { connection === "open" && <div className='connection-open' /> }
-            { connection === "closed" && <div className='connection-closed' /> }
+            { connection === "closed" && method != 'WS' && method !== 'SUBSCRIPTION' &&
+              <div className='connection-closed' /> 
+            }
+            { connection === "closed" && (method === 'WS' || method === 'SUBSCRIPTION') &&
+              <div className='connection-closedsocket' /> 
+            }
           </div>
         </div>
       </div>
