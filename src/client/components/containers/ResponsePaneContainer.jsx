@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import EventsContainer from './EventsContainer'
@@ -100,7 +100,7 @@ export const ResponsePaneContainer = (store) => {
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
               onClick={() => { 
                 ReqResCtrl.closeReqRes(currentResponse.id);
-                return;
+                
               }}
               type="button"
             >
