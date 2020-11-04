@@ -10,7 +10,7 @@ export const SidebarContainer = () => {
   const setActiveTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
 
   return (
-    <div className='column is-one-third is-flex is-flex-direction-column is-tall '>
+    <div className='column is-one-third is-flex is-flex-direction-column is-tall ' id='composer'>
       {/* HEADER */}
       <div className="hero is-primary has-text-centered header-bar">
         <h3>Composer</h3>

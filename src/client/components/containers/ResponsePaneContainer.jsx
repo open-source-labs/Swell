@@ -22,7 +22,7 @@ export const ResponsePaneContainer = (store) => {
 
 
   return (
-      <div className='column is-one-third is-flex is-flex-direction-column is-tall'>
+      <div className='column is-one-third is-flex is-flex-direction-column is-tall' id='responses'>
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
             <ResponseTime currentResponse={currentResponse} /> 

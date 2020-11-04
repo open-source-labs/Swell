@@ -14,7 +14,7 @@ export const ContentsContainer = () => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300">
+    <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300" id='workspace'>
       {/* HEADER */}
       <div className="hero is-primary has-text-centered header-bar">
         <h3>Workspace</h3>
