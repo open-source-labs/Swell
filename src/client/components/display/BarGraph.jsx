@@ -10,6 +10,7 @@ Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
   dataPoints: store.business.dataPoints,
+  currentResponse: store.business.currentResponse
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -24,7 +25,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 const BarGraph = (props) => {
-  const { dataPoints } = props
+  const { dataPoints, currentResponse } = props
   //state for showing graph, depending on whether there are datapoints or not.
   //must default to true, because graph will not render if initial container's display is 'none'
   const [show, toggleShow] = useState(true);
@@ -85,6 +86,7 @@ const BarGraph = (props) => {
 
   //helper function that returns chart options object
   const optionsUpdater = (arr) => {
+    if (!arr) return;
     //Event labels and Y-axis title disappear after one request
     const showLabels = arr.length >= 3 ? false : true;
     return {
@@ -129,20 +131,22 @@ const BarGraph = (props) => {
   
 
   useEffect(() => {
+    const { id } = currentResponse
+
     let urls, times, BGs, borders, reqResObjs;
-    if (dataPoints.length) {
+    if (dataPoints[id]?.length) {
       //extract arrays from data point properties to be used in chart data/options that take separate arrays
-      urls = dataPoints.map((point) => {
+      urls = dataPoints[id].map((point) => {
           // if grpc, just return the server IP
           if (point.reqRes.gRPC) return `${point.url}`
           // if point.url is lengthy, just return the domain and the end of the uri string
           const domain = point.url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
           return `${domain} ${(point.url.length > domain.length + 8) ? `- ..${point.url.slice(point.url.length - 8, point.url.length)}` : ""}`
         });
-      times = dataPoints.map((point) => point.timeReceived - point.timeSent);
-      BGs = dataPoints.map((point) => "rgba(" + point.color + ", 0.2)");
-      borders = dataPoints.map((point) => "rgba(" + point.color + ", 1)");
-      reqResObjs = dataPoints.map((point) => point.reqRes);
+      times = dataPoints[id].map((point) => point.timeReceived - point.timeSent);
+      BGs = dataPoints[id].map((point) => "rgba(" + point.color + ", 0.2)");
+      borders = dataPoints[id].map((point) => "rgba(" + point.color + ", 1)");
+      reqResObjs = dataPoints[id].map((point) => point.reqRes);
       //show graph upon receiving data points
       toggleShow(true);
     } else {
@@ -152,8 +156,8 @@ const BarGraph = (props) => {
     //update state with updated dataset
     updateChart(dataUpdater(urls, times, BGs, borders, reqResObjs));
     //conditionally update options based on length of dataPoints array
-    if (!dataPoints.length || dataPoints.length > 3)
-      updateOptions(optionsUpdater(dataPoints));
+    if (!dataPoints[id]?.length || dataPoints[id]?.length > 3)
+      updateOptions(optionsUpdater(dataPoints[id]));
   }, [dataPoints]);
 
   const chartClass = show ? "chart" : "chart-closed";
