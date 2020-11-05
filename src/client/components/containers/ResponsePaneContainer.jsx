@@ -18,7 +18,7 @@ export const ResponsePaneContainer = (store) => {
   const currentResponse = useSelector(store => store.business.currentResponse); 
   const connection = useSelector(store => store.business.currentResponse.connection); 
   
-  console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
+  // console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
 
 
   return (
