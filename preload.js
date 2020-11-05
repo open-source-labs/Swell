@@ -11,6 +11,7 @@ const apiObj = {
       "import-collection",
       "import-proto",
       "open-http",
+      "close-http",
       "open-gql",
       "open-grpc",
       "protoParserFunc-request",

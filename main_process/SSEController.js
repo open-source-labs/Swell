@@ -5,7 +5,7 @@ const EventSource = require('eventsource');
 const SSEController = {};
 
 // keep reference to what will be our EventSource that listens for SSE's
-let sse; 
+SSEController.sseOpenConnections = {};
 
 SSEController.createStream = (reqResObj, options, event) => {
   // got options from httpController
@@ -34,18 +34,20 @@ SSEController.createStream = (reqResObj, options, event) => {
 
 SSEController.readStream = (reqResObj, event, timeDiff) => {
   // EventSource listens for SSE's and process specially formatted data from them, as well as adding other useful information
-  sse = new EventSource(reqResObj.url);
-  // event listeners 
-  sse.onopen = () => console.log(`SSE at ${reqResObj.url} opened!`);
-  // this is where incoming messages are processed
+  const sse = new EventSource(reqResObj.url);
+  this.sseOpenConnections[reqResObj.id] = sse;
+  
+  sse.onopen = () => {
+    console.log(`SSE at ${reqResObj.url} opened!`);
+  }
+  
   sse.onmessage = (message) => {
     // message is not a javascript object, so we spread its contents into one
     const newMessage = { ...message };
     // this is where where account for any time lost between the first AJAX request and the creation of the EventSource
     newMessage.timeReceived = Date.now() - timeDiff; 
-    // add processed message to events array on reqResObj
+
     reqResObj.response.events.push(newMessage);
-    // ...and send back to renderer process to be added to the store
     return event.sender.send('reqResUpdate', reqResObj);
   }; 
   sse.onerror = (err) => {
@@ -53,5 +55,16 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
     sse.close();
   };
 };
+
+SSEController.closeConnection = (reqResId) => {
+  if (!this.sseOpenConnections[reqResId]) {
+    console.log(`no current open connections associated with reqResID ${reqResId}`);
+    return;
+  }
+
+  const sse = this.sseOpenConnections[reqResId];
+  sse.close();
+  delete this.sseOpenConnections[reqResId];
+}
 
 module.exports = SSEController; 

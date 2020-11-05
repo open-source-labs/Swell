@@ -41,7 +41,22 @@ const httpController = {
         );
   },
 
+  closeHTTPconnection(event, reqResObj) {
+    if (reqResObj.isHTTP2) this.closeHTTP2Connection(event, reqResObj);
+    else this.closeHTTP1Connection(event, reqResObj);
+  },
+
   // ----------------------------------------------------------------------------
+
+  closeHTTP1Connection(event, reqResObj) {
+    if (reqResObj.request.isSSE) {
+      SSEController.closeConnection(reqResObj.id)
+    }
+  },
+
+  closeHTTP2Connection(event, reqResObj) {
+    console.log('do something here');
+  },
 
   establishHTTP2Connection(event, reqResObj, connectionArray) {
     /*
@@ -359,7 +374,6 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   establishHTTP1connection(event, reqResObj, connectionArray) {
-    console.log("event306", event);
     // start off by clearing existing response data, and make note of when response was created
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -379,7 +393,7 @@ const httpController = {
       id: reqResObj.id,
     };
     connectionArray.push(openConnectionObj);
-
+    
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
 
     //--------------------------------------------------------------------------------------------------------------
@@ -498,5 +512,9 @@ module.exports = () => {
   ipcMain.on("open-http", (event, reqResObj, connectionArray) => {
     // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
     httpController.openHTTPconnection(event, reqResObj, connectionArray);
+  });
+
+  ipcMain.on('close-http', (event, reqResObj) => {
+    httpController.closeHTTPconnection(event, reqResObj);
   });
 };
