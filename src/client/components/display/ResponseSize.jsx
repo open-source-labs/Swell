@@ -1,16 +1,22 @@
-import React from 'react'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from "../../actions/actions"
+import * as store from "../../store";
+
 
 function ResponseSize({ currentResponse }) {
-  // console.log('Console from Status Buttons ==> ', currentResponse)
-  // currentResponse.response.headers.status
 
-  if (!currentResponse ||
-    !currentResponse.response ||
-    !currentResponse.response.headers) 
-  {
-    return (null)
-  }
+  const dispatch = useDispatch();
 
+    // Check if a headers exist. This is needed to start the application.
+    if (!currentResponse ||
+      !currentResponse.response ||
+      !currentResponse.response.headers) 
+    {
+      return (null)
+    }
+
+  // Content length is received in different cases. Whichever is returned will be used as the length for the calculation.
   let length;
   if (currentResponse.response.headers["content-length"]) {
     length = "content-length"
@@ -20,12 +26,17 @@ function ResponseSize({ currentResponse }) {
     return null;
   }
 
-  // RECEIVING CONTENT-LENGTH AND CONVERTING INTO BYTES
+  // Converting content length octets into bytes
   const conversionFigure = 1023.89427;
   const octetToByteConversion =   currentResponse.response.headers[`${length}`] / conversionFigure
 
   
   const size =  Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100
+
+  const data = useSelector(store => store.business.dataobj); 
+
+// Dispatch to redux store to be accessed by graphs
+// store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
 
     return (
         <div className='response-size-placement'>

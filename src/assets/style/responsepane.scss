@@ -71,8 +71,7 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0px 12px;
-  margin-top: 2px;
+  padding: 2px 12px;
   border: 0px;
   border-radius: 2px;
   font-family: "Roboto Mono", monospace;
@@ -97,7 +96,7 @@ td {
 
 .response-size-placement {
   position: absolute;
-  left: 4rem;
+  left: 5rem;
   font-family: "Roboto Mono", monospace;
   font-weight: 600;
   font-size: 1rem;
