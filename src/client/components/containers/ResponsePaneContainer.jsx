@@ -96,7 +96,8 @@ export const ResponsePaneContainer = (store) => {
         }
         {/* CLOSE RESPONSE BUTTON */}
         { ( currentResponse.request.method === 'WS' || 
-              currentResponse.request.method === 'SUBSCRIPTIONS'
+              currentResponse.request.method === 'SUBSCRIPTIONS' ||
+              currentResponse.request.isSSE
             ) && 
             connection === 'open' &&
           <div className="is-3rem-footer ml-3 mr-3">
@@ -113,7 +114,8 @@ export const ResponsePaneContainer = (store) => {
         }
         {/* RENDER OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
         { ( currentResponse.request.method === 'WS' || 
-              currentResponse.request.method === 'SUBSCRIPTIONS'
+              currentResponse.request.method === 'SUBSCRIPTIONS' ||
+              currentResponse.request.isSSE
             ) && 
             connection === 'closed' &&
           <div className="is-3rem-footer mx-3">
