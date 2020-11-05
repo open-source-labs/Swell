@@ -8,7 +8,8 @@ http.createServer((request, response) => {
     'Connection': 'keep-alive',
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'wut-wut': 'ya'
   });
   
   sendSSEs(response); 
@@ -21,8 +22,8 @@ const sendSSEs = (response, id = 0, timeout) => {
   response.write(
     `id: ${id}\ndata: This is event ${id}\n\n`
   );
+  console.log(id, 'just sent something')
   id++; 
-  console.log('just sent something else! ')
 
   if (id < 6) {
     timeout = setTimeout(() => {

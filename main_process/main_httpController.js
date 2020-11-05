@@ -213,7 +213,7 @@ const httpController = {
     let isSSE;
 
     reqStream.on("response", (headers, flags) => {
-      console.log(`main_httpController -> reqStream.on("response", (headers, flags)`);
+      // console.log(`main_httpController -> reqStream.on("response", (headers, flags)`);
       // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
       // console.log("headers: ", headers);
 
