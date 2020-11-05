@@ -60,58 +60,41 @@ module.exports = () => {
     });
   })
 
-  xdescribe('headers inputs', async () => {
+  describe('headers inputs', async () => {
     let headers;
-    let headerChecked; 
     
     it('should open headers input, rendering single input at first', async () => {
-      await sideBar.activateHeaders.click();
-      headers = await sideBar.headers;
+      // count header rows
+      headers = await app.client.$$('.header-row');
+      console.log(await headers);
       assert.strictEqual(headers.length, 1); 
     }); 
 
-    it('new headers initialize as un-checked', async () => {
-      headerChecked = await sideBar.firstHeaderCheckbox.isSelected();
-      assert.strictEqual(headerChecked, false)
-    })
+    xit('can add new headers in request and type in values', async () => {
+      // click add header
+      await app.client.$('button=+ Header').click();
 
-    it('can type new headers in request', async () => {
-      await sideBar.headerKey.addValue('testing');
-      const headerKey = await sideBar.headerKey.getValue();
-      assert.strictEqual(headerKey, 'testing'); 
+      // select headers
+      headers = await app.client.$$('.header-row');
+      const lastHeader = await headers[headers.length - 1];
+      const firstHeader = await headers[0];
 
-      await sideBar.headerValue.addValue('true'); 
-      const headerValue = await sideBar.headerValue.getValue();
-      assert.strictEqual(headerValue, 'true'); 
+      console.log(await firstHeader.client.$('.key').getValue());
+      // const headerKey = await sideBar.headerKey.getValue();
+      // assert.strictEqual(headerKey, 'testing'); 
+
+      // await sideBar.headerValue.addValue('true'); 
+      // const headerValue = await sideBar.headerValue.getValue();
+      // assert.strictEqual(headerValue, 'true'); 
       
     });
 
-    it('header is checked after input', async () => {
-      isSelected = await sideBar.firstHeaderCheckbox.isSelected();
-      assert.strictEqual(isSelected, true);
-    });
-
-    
-
-    // NOTE : THIS WILL FAIL FOR NOW, THIS IS UI DETAIL THAT NEEDS TO BE IMPLEMENTED IN FUTURE
-    // it('deleting text in input eliminates checkmark', async () => {
-      //   await sideBar.headerKey.clearValue();
-      //   await sideBar.headerValue.clearVAlue();
-    //   headerChecked = await sideBar.headerCheckbox.isSelected();
-    //   assert.strictEqual(headerChecked, false);
-    // })
-
-    it('creates new input fields for new header when header is added', async () => {
+    xit('creates new input fields for new header when header is added', async () => {
       await sideBar.addHeader.click();
       headers = await sideBar.headers; 
       assert.strictEqual(headers.length, 2);
     });
 
-    it('can uncheck a header after creating it', async () => {
-      await sideBar.firstHeaderCheckbox.click(); 
-      isSelected = await sideBar.firstHeaderCheckbox.isSelected();
-      assert.strictEqual(isSelected, false);
-    });
   });
 
   xdescribe('cookies inputs', async () => {

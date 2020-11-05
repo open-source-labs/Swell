@@ -93,6 +93,7 @@ class CookieEntryForm extends Component {
       <ContentReqRowComposer 
         deleteItem={this.deleteCookie}
         data={cookie} 
+        type='cookie-row'
         index={index}
         changeHandler={this.onChangeUpdateCookie} 
         key={index}
