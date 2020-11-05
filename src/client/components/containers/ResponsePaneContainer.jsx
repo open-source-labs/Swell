@@ -94,12 +94,12 @@ export const ResponsePaneContainer = (store) => {
         }
       </div>
         }
-        { currentResponse.request.network === 'ws' && connection === 'open' &&
+        { connection === 'open' &&
           <div className="is-3rem-footer ml-3 mr-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
               onClick={() => { 
-                ReqResCtrl.closeReqRes(currentResponse.id);
+                ReqResCtrl.closeReqRes(currentResponse);
                 return;
               }}
               type="button"

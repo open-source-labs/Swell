@@ -35,7 +35,7 @@ SSEController.createStream = (reqResObj, options, event) => {
 SSEController.readStream = (reqResObj, event, timeDiff) => {
   // EventSource listens for SSE's and process specially formatted data from them, as well as adding other useful information
   const sse = new EventSource(reqResObj.url);
-  this.sseOpenConnections[reqResObj.id] = sse;
+  SSEController.sseOpenConnections[reqResObj.id] = sse;
   
   sse.onopen = () => {
     console.log(`SSE at ${reqResObj.url} opened!`);
@@ -57,14 +57,14 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
 };
 
 SSEController.closeConnection = (reqResId) => {
-  if (!this.sseOpenConnections[reqResId]) {
+  if (!SSEController.sseOpenConnections[reqResId]) {
     console.log(`no current open connections associated with reqResID ${reqResId}`);
     return;
   }
 
-  const sse = this.sseOpenConnections[reqResId];
+  const sse = SSEController.sseOpenConnections[reqResId];
   sse.close();
-  delete this.sseOpenConnections[reqResId];
+  delete SSEController.sseOpenConnections[reqResId];
 }
 
 module.exports = SSEController; 
