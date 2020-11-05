@@ -34,7 +34,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
         aria-controls="dropdown-menu"
         onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
-          <span className="column">{networkTitle}</span>
+          <span className="column" id="selected-network">{networkTitle}</span>
           <span className="column">
             <img src={dropDownArrow}  className="is-awesome-icon" aria-hidden="true" />
           </span>

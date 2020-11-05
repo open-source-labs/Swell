@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import EventsContainer from './EventsContainer'
@@ -22,7 +22,7 @@ export const ResponsePaneContainer = (store) => {
 
 
   return (
-      <div className='column is-one-third is-flex is-flex-direction-column is-tall'>
+      <div className='column is-one-third is-flex is-flex-direction-column is-tall' id='responses'>
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
             <ResponseTime currentResponse={currentResponse} /> 
@@ -76,10 +76,10 @@ export const ResponsePaneContainer = (store) => {
           { activeTab === 'headers' && <HeadersContainer currentResponse={currentResponse}/>}
           { activeTab === 'cookies' && <CookiesContainer currentResponse={currentResponse}/>}
         </div>
-          {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR CONNECTIONS THAT ARE CLOSED */}
-        { currentResponse.id 
-          && currentResponse.request.network !== 'ws'
-          && currentResponse.request.method !== 'SUBSCRIPTION' &&
+        {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
+        { currentResponse.id && 
+            currentResponse.request.method !== 'WS' && 
+            currentResponse.request.method !== 'SUBSCRIPTION' &&
           <div className="is-3rem-footer mx-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
@@ -94,17 +94,37 @@ export const ResponsePaneContainer = (store) => {
         }
       </div>
         }
-        { currentResponse.request.network === 'ws' && connection === 'open' &&
+        {/* CLOSE RESPONSE BUTTON */}
+        { ( currentResponse.request.method === 'WS' || 
+              currentResponse.request.method === 'SUBSCRIPTIONS'
+            ) && 
+            connection === 'open' &&
           <div className="is-3rem-footer ml-3 mr-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
               onClick={() => { 
                 ReqResCtrl.closeReqRes(currentResponse.id);
-                return;
               }}
               type="button"
             >
               Close Connection
+            </button>
+          </div>
+        }
+        {/* RENDER OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
+        { ( currentResponse.request.method === 'WS' || 
+              currentResponse.request.method === 'SUBSCRIPTIONS'
+            ) && 
+            connection === 'closed' &&
+          <div className="is-3rem-footer mx-3">
+            <button
+              className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
+              onClick={() => {
+                ReqResCtrl.openReqRes(currentResponse.id);
+              }}
+              type="button"
+            >
+              Re-Open Connection
             </button>
           </div>
         }

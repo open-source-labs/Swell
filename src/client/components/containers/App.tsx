@@ -66,9 +66,9 @@ export class App extends React.Component<any, any> {
     return (
       <div id='app' className='columns is-gapless is-tall'>
         <HashRouter>
-          <SidebarContainer />
-          <ContentsContainer />
-          <ResponsePaneContainer />
+          <SidebarContainer/>
+          <ContentsContainer/>
+          <ResponsePaneContainer/>
           {/* <UpdatePopUpContainer /> */}
         </HashRouter> 
       </div>

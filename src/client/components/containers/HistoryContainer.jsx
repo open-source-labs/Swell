@@ -50,7 +50,7 @@ const HistoryContainer = (props) => {
   })
 
   return (
-    <div className="p-3 is-flex is-flex-direction-column is-tall-not-5rem">
+    <div className="p-3 is-flex is-flex-direction-column is-tall-not-5rem" id="history-container">
       <div>
         <ClearHistoryBtn clearHistory={clearHistory} />
       </div>

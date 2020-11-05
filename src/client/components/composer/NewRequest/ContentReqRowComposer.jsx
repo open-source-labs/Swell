@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function ContentReqRowComposer({ data, changeHandler, index, deleteItem }) {
+export default function ContentReqRowComposer({ data, changeHandler, index, deleteItem, type }) {
   return (
-  <div className="is-flex mt-1">
+  <div className={`is-flex mt-1 ${type}`}>
     <div className="include-data-checkbox">
       <input
         type="checkbox"
@@ -11,22 +11,22 @@ export default function ContentReqRowComposer({ data, changeHandler, index, dele
         checked={data.active}
         onChange={e => changeHandler(data.id, 'active', e.target.checked)}
       />
-      <label htmlFor={data.id}></label>
+      <label htmlFor={data.id} />
     </div>
     <input 
       onChange={e => changeHandler(data.id, 'key', e.target.value)} 
       placeholder='Key'
-      className="input" type="text" value={data.key} className="is-justify-content-center p-1" 
+      className="input" type="text" value={data.key} className="is-justify-content-center p-1 key" 
     />
     <input 
       onChange={e => changeHandler(data.id, 'value', e.target.value)} 
       placeholder="Value"
-      className="input" type="text" value={data.value} className="is-justify-content-center is-flex-grow-4 p-1" 
+      className="input" type="text" value={data.value} className="is-justify-content-center is-flex-grow-4 p-1 value" 
     />
     <div className="is-flex is-justify-content-center is-align-items-center ml-1">
     <div 
     className='delete m-auto'
-    onClick={() => deleteItem(index)}></div>
+    onClick={() => deleteItem(index)} />
     </div>
     
   </div>

@@ -29,10 +29,10 @@ describe("Electron Tests", function () {
 
   describe("CRUD functionality", function () {
     reqInputTests();
-    addRequestTests();
-    httpTest();
-    websocketTest();
-    grpcTest();
-    graphqlTest();
+    // addRequestTests();
+    // httpTest();
+    // websocketTest();
+    // grpcTest();
+    // graphqlTest();
   });
 });

@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 module.exports = () => {
-  describe("HTTP/S requests", () => {
+  xdescribe("HTTP/S requests", () => {
     const urlAndClick = async (method, body, header) => {
       try {
         if (method !== "GET") {
