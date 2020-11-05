@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from "../../../../src/client/actions/actions.js";
+import * as actions from "../../actions/actions.js";
 
 import connectionController from "../../controllers/reqResController";
 import RestRequestContent from "../display/RestRequestContent.jsx";
@@ -37,7 +37,8 @@ const SingleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
   } = props;
-  const network = content.request.network;  
+  const network = content.request.network;
+  const method = content.request.method;
 
   const copyToComposer = () => {
     
@@ -136,18 +137,19 @@ const SingleReqResContainer = (props) => {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
       const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
       // construct the streams obj from passed in history content & set state in store
+      
       const requestStreamsObj = {
         streamsArr: streamsDeepCopy,
         count: content.queryArr.length,
         streamContent: contentsDeepCopy,
-        selectedPackage: content.selectedPackage,
-        selectedRequest: content.selectedRequest,
-        selectedService:  content.selectedService,
-        selectedStreamingType: content.selectedStreamingType,
+        selectedPackage: content.packageName,
+        selectedRequest: content.rpc,
+        selectedService:  content.service,
+        selectedStreamingType: content.request.method,
         initialQuery: content.initialQuery,
         queryArr: content.queryArr,
         protoPath: content.protoPath,
-        services: content.services,
+        services: content.servicesObj,
         protoContent: content.protoContent,
       }
       dispatch(actions.setNewRequestStreams(requestStreamsObj))
@@ -170,12 +172,17 @@ const SingleReqResContainer = (props) => {
           <div className='is-flex is-align-items-center ml-2'>
             {url}
           </div>
+          {/* RENDER STATUS */}
           <div className='req-status mr-1 is-flex is-align-items-center'>
             { connection === "uninitialized" && <div className='connection-uninitialized' /> }
-            {/* GRAPHQL ERRORS */}
             { connection === "error" && <div className='connection-error' /> }
             { connection === "open" && <div className='connection-open' /> }
-            { connection === "closed" && <div className='connection-closed' /> }
+            { connection === "closed" && method != 'WS' && method !== 'SUBSCRIPTION' &&
+              <div className='connection-closed' /> 
+            }
+            { connection === "closed" && (method === 'WS' || method === 'SUBSCRIPTION') &&
+              <div className='connection-closedsocket' /> 
+            }
           </div>
         </div>
       </div>

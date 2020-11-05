@@ -159,6 +159,7 @@ class HeaderEntryForm extends Component {
       <ContentReqRowComposer
         data={header}
         index={index}
+        type='header-row'
         deleteItem={this.deleteHeader}
         changeHandler={this.onChangeUpdateHeader}
         key={index} //key
