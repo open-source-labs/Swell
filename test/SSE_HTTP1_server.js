@@ -25,7 +25,7 @@ const sendStream = () => {
 
 const dispatchStreamOrHeaders = (req, res, next) => {
   if (req.headers.accept === 'text/event-stream') {
-    setTimeout(go, timeInterval);
+    setTimeout(sendStream, timeInterval);
     return next();
   }
 
