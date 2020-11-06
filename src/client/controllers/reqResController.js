@@ -32,9 +32,7 @@ const connectionController = {
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
     // REST EVENTS
-    console.log('open reqres connection array:', this.openConnectionArray);
     api.receive("reqResUpdate", (reqResObj) => {
-      console.log('req res update', reqResObj.connection ,this.openConnectionArray);
       if (
         reqResObj.connection === "closed" &&
         reqResObj.timeSent &&

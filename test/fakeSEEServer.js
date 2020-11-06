@@ -9,7 +9,6 @@ http.createServer((request, response) => {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Access-Control-Allow-Origin': '*',
-    'wut-wut': 'ya'
   });
   
   sendSSEs(response); 
