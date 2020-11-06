@@ -36,11 +36,9 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
   // EventSource listens for SSE's and process specially formatted data from them, as well as adding other useful information
   const sse = new EventSource(reqResObj.url);
   SSEController.sseOpenConnections[reqResObj.id] = sse;
-  
-  console.log('open new SSE connection', SSEController.sseOpenConnections);
 
   sse.onopen = () => {
-    console.log(`SSE at ${reqResObj.url} opened!`);
+    // console.log(`SSE at ${reqResObj.url} opened!`);
   }
   
   sse.onmessage = (message) => {
