@@ -222,6 +222,8 @@ const httpController = {
       id: reqResObj.id,
     };
 
+  
+
     // this is the connection array that was passed into these controller functions from reqResController.js
     connectionArray.push(openConnectionObj);
 
@@ -240,8 +242,26 @@ const httpController = {
         reqResObj.connection = "open";
         reqResObj.connectionType = "SSE";
       } else {
-        reqResObj.connection = "closed";
-        reqResObj.connectionType = "plain";
+
+  // Setting response size based on Content-length. Check if response comes with content-length
+  if (!headers["content-length"] && headers["Content-Length"]) {
+    reqResObj.responseSize = null;
+  } else {
+    let contentLength;
+    headers["content-length"] ? contentLength = "content-length" : contentLength = "Content-Length"
+  
+    // Converting content length octets into bytes
+    const conversionFigure = 1023.89427;
+    const octetToByteConversion = headers[`${contentLength}`] / conversionFigure
+    const responseSize =  Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100
+      
+    reqResObj.responseSize = responseSize;
+  }
+
+  // Content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.  
+  
+      reqResObj.connection = "closed";
+      reqResObj.connectionType = "plain";
       }
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
@@ -404,6 +424,7 @@ const httpController = {
       SSEController.createStream(reqResObj, options, event);
       // if not SSE, talk to main to fetch data and receive
     } else {
+
       this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
           // Parse response headers now to decide if SSE or not.

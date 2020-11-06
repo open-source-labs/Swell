@@ -6,7 +6,6 @@ import HeadersContainer from './HeadersContainer'
 import CookiesContainer from './CookiesContainer'
 import StatusButtons from '../display/StatusButtons'
 import ResponseTime from '../display/ResponseTime'
-import ResponseSize from '../display/ResponseSize'
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
@@ -18,15 +17,18 @@ export const ResponsePaneContainer = (store) => {
   const currentResponse = useSelector(store => store.business.currentResponse); 
   const connection = useSelector(store => store.business.currentResponse.connection); 
   
-  // console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
-
+  console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);  
 
   return (
       <div className='column is-one-third is-flex is-flex-direction-column is-tall' id='responses'>
         {/* HEADER */}
           <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
-            <ResponseTime currentResponse={currentResponse} /> 
-            <ResponseSize currentResponse={currentResponse} /> 
+            <ResponseTime currentResponse={currentResponse} />
+            {currentResponse.responseSize &&  
+              <div className="response-size-placement">
+                {`${currentResponse.responseSize}kb`}
+              </div>
+            } 
             <h3>
               Responses
             </h3>
