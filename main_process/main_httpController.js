@@ -21,6 +21,7 @@ const SSEController = require("./SSEController");
 // parseSSEFields(rawString)
 // cookieFormatter(setCookie(response.cookies))
 
+
 const httpController = {
   openHTTP2Connections: [],
 
@@ -242,9 +243,12 @@ const httpController = {
         reqResObj.connection = "open";
         reqResObj.connectionType = "SSE";
       } else {
+        reqResObj.connection = "closed";
+        reqResObj.connectionType = "plain";
+        }
 
   // Setting response size based on Content-length. Check if response comes with content-length
-  if (!headers["content-length"] && headers["Content-Length"]) {
+  if (!headers["content-length"] && !headers["Content-Length"]) {
     reqResObj.responseSize = null;
   } else {
     let contentLength;
@@ -260,9 +264,6 @@ const httpController = {
 
   // Content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.  
   
-      reqResObj.connection = "closed";
-      reqResObj.connectionType = "plain";
-      }
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
