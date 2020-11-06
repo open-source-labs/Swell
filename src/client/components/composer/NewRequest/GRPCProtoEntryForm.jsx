@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { POINT_CONVERSION_UNCOMPRESSED } from "constants";
+import React, { useState, useEffect } from "react";
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
 import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
 // import protoParserFunc from "../../../protoParser.js";
@@ -9,6 +10,8 @@ const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
+  console.log("gRPC proto entry props new req streams --->", props.newRequestStreams)
+
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
@@ -93,7 +96,8 @@ const GRPCProtoEntryForm = (props) => {
       api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
     }
   };
-
+  
+  
   const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
   /*
     pseudocode for the return section

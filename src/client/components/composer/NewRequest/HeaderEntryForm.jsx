@@ -25,8 +25,8 @@ class HeaderEntryForm extends Component {
 
   checkContentTypeHeaderUpdate() {
     let contentType;
-
-    if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none' || this.props.newRequestBody.bodyType === 'raw') {
+    
+    if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none') {
       contentType = ''
     }
 
@@ -66,7 +66,7 @@ class HeaderEntryForm extends Component {
       key: 'Content-Type',
       value: contentType,
     });
-    headersDeepCopy.push(contentTypeHeader)
+    headersDeepCopy.unshift(contentTypeHeader)
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
@@ -159,6 +159,7 @@ class HeaderEntryForm extends Component {
       <ContentReqRowComposer
         data={header}
         index={index}
+        type='header-row'
         deleteItem={this.deleteHeader}
         changeHandler={this.onChangeUpdateHeader}
         key={index} //key

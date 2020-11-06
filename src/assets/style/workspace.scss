@@ -38,7 +38,8 @@
 }
 
 .is-3rem-footer {
-  height: 3rem;
+  // height: 3rem !important;
+  margin-bottom: .7rem;
   margin-top: auto;
 }
 
@@ -54,6 +55,26 @@
   // position: relative;
   // display: inline-block;
   // text-align: center;
+}
+
+.connection-closedsocket {
+  border: 2px solid $neutral-400;
+  border-radius: 30px;
+  height: 12px;
+  width: 12px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.connection-error {
+  border-radius: 30px;
+  background-color: $primary-200;
+  height: 12px;
+  width: 12px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
 }
 
 .connection-closed {

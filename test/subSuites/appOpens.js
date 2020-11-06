@@ -38,16 +38,21 @@ module.exports = () => {
         const isOpen = await app.browserWindow.isDevToolsOpened();
         return assert.equal(isOpen, false);
       });
-      it("Sidebar exists", async () => {
+      it("Composer panel exists", async () => {
         await app.client.waitUntilWindowLoaded();
         // $ is basically querySelector
-        const sidebar = await app.client.$(".sidebar_composer-console");
-        return assert.notEqual(sidebar.value, null);
+        const composer = await app.client.$("#composer");
+        return assert.notEqual(composer.value, null);
       });
-      it("Main Component exists", async () => {
+      it("Workspace exists", async () => {
         await app.client.waitUntilWindowLoaded();
-        const content = await app.client.$(".contents");
-        return assert.notEqual(content.value, null);
+        const workspace = await app.client.$("#workspace");
+        return assert.notEqual(workspace.value, null);
+      });
+      it("Responses panel exists", async () => {
+        await app.client.waitUntilWindowLoaded();
+        const responses = await app.client.$("#responses");
+        return assert.notEqual(responses.value, null);
       });
     });
   }); 

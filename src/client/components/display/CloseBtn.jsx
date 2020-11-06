@@ -7,7 +7,7 @@ const CloseBtn = ({ stylesObj, content }) => {
       className="btn"
       style={stylesObj}
       type="button"
-      onClick={() => ReqResCtrl.closeReqRes(content.id)}
+      onClick={() => ReqResCtrl.closeReqRes(content)}
     >
         Close
     </button>

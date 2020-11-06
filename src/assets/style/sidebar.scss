@@ -121,6 +121,7 @@
 
 .add-request-button {
   border: 1px solid #3734A9 !important;
+  position: absolute;
   &:hover {
     box-shadow: 1px 1px 1px 1px $neutral-300;
   }
@@ -146,4 +147,12 @@
   min-height: 2.3rem !important;
   height: 2.3rem !important;
   margin-top: auto !important;
+}
+
+.is-tall-not-5rem {
+  height: calc( 100% - 5rem );
+}
+
+.tabs {
+  margin-bottom: 0 !important;
 }

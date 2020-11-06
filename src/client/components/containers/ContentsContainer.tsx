@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import BarGraph from "../display/BarGraph"
-import NavBarContainer from "./NavBarContainer.jsx";
+import WorkspaceContainer from "./WorkspaceContainer.jsx";
 import CollectionsContainer from "./CollectionsContainer";
 
 export const ContentsContainer = () => {
-  const [activeTab, setActiveTab] = useState('workspace');
+  // const [activeTab, setActiveTab] = useState('workspace');
+  const dispatch = useDispatch();
+  const activeTab = useSelector(store => store.ui.workspaceActiveTab);
+  const setActiveTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
+
   const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300">
+    <div className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300" id='workspace'>
       {/* HEADER */}
       <div className="hero is-primary has-text-centered header-bar">
         <h3>Workspace</h3>
@@ -36,11 +41,11 @@ export const ContentsContainer = () => {
       <div className="is-flex-grow-3 add-vertical-scroll">
 
         {activeTab === 'workspace' && 
-          <NavBarContainer />
+          <WorkspaceContainer />
         }
 
         {activeTab === 'saved-workspace' && 
-          <CollectionsContainer setWorkspaceTab={setActiveTab}/>
+          <CollectionsContainer />
         }
 
       </div>
@@ -52,10 +57,10 @@ export const ContentsContainer = () => {
           onClick={() => setShowGraph(showGraph === false)}
           >
             {showGraph &&
-              'Hide Performance Charts'
+              'Hide Response History'
             }
             {!showGraph &&
-              'View Performance Charts'
+              'View Response History'
             }
         </div>
         {showGraph &&

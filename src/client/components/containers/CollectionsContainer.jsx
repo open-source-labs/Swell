@@ -4,7 +4,7 @@ import * as actions from "../../../../src/client/actions/actions.js";
 import Collection from "../display/Collection.jsx";
 import collectionsController from "../../controllers/collectionsController";
 
-export default function CollectionsContainer({ setWorkspaceTab }) {
+export default function CollectionsContainer() {
   const dispatch = useDispatch();
 
   const collections = useSelector(store => store.business.collections); 
@@ -18,7 +18,6 @@ export default function CollectionsContainer({ setWorkspaceTab }) {
       return (
         <Collection
           content={collection}
-          setWorkspaceTab={setWorkspaceTab}
           key={idx}
           deleteFromCollection={() => {dispatch(actions.deleteFromCollection(collection))}}
           collectionToReqRes={() => {dispatch(actions.collectionToReqRes(collection.reqResArray))}}
@@ -30,7 +29,7 @@ export default function CollectionsContainer({ setWorkspaceTab }) {
   return (
     <div>
       
-      <div>
+      <div className="mt-3">
         <button
           className="button is-small is-primary is-outlined button-padding-verticals mx-3"
           type="button"

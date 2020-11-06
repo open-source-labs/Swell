@@ -6,7 +6,6 @@ import uiReducer from './ui';
 
 // combine reducers
 const reducers = combineReducers({
-  // if we had other reducers, they would go here
   business: businessReducer,
   ui: uiReducer,
 });

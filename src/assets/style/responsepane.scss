@@ -12,6 +12,13 @@
   max-width: 160px;
 }
 
+.is-not-8rem-tall {
+  height: calc(100%-8rem) !important;
+}
+.is-not-5rem-tall {
+  height: calc(100%-5rem) !important;
+}
+
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror {
   font-family: 'Roboto Mono', monospace;
@@ -20,9 +27,10 @@
 .cm-s-responsebody {
   background-color: $neutral-100;
   color: $neutral-400;
-  height: 700px !important;
   border: 1px solid $neutral-300;
   font-size: 0.75rem;
+  margin-bottom: 0 !important;
+  height: 1000zpx !important;
 }
 .cm-s-responsebody .CodeMirror-gutters {
   border: none;

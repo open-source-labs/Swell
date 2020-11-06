@@ -49,7 +49,7 @@ describe("Business reducer", () => {
         bodyContent: "",
         bodyVariables: "",
         bodyType: "raw",
-        rawType: "Text (text/plain)",
+        rawType: "text/plain",
         JSONFormatted: true,
         bodyIsNew: false,
       },
@@ -58,6 +58,11 @@ describe("Business reducer", () => {
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
       dataPoints: [],
+      currentResponse: {
+        request: {
+          network: ''
+        }
+      },
     };
   });
 

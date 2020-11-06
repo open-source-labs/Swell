@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
-import * as actions from "../../../../src/client/actions/actions.js";
+import * as actions from "../../actions/actions.js";
 
 import connectionController from "../../controllers/reqResController";
 import RestRequestContent from "../display/RestRequestContent.jsx";
@@ -16,10 +15,6 @@ const SingleReqResContainer = (props) => {
   const newRequestFields = useSelector(store => store.business.newRequestFields); 
   const newRequestStreams = useSelector(store => store.business.newRequestStreams); 
 
-  const routerHistory = useHistory();
-  const routeChange = (path) => { 
-    routerHistory.push(path);
-  }
 
   const {
     content,
@@ -42,13 +37,13 @@ const SingleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
   } = props;
-  const network = content.request.network;  
+  const network = content.request.network;
+  const method = content.request.method;
 
-  const addHistoryToNewRequest = () => {
+  const copyToComposer = () => {
     
     let requestFieldObj = {};
     if (network === 'rest') {
-      routeChange('/composer/rest');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -61,7 +56,6 @@ const SingleReqResContainer = (props) => {
       }
     };
     if (network === 'ws') {
-      routeChange('/composer/ws');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method  || 'GET',
@@ -74,7 +68,6 @@ const SingleReqResContainer = (props) => {
       }
     };
     if (network === 'graphQL') {
-      routeChange('/composer/graphql');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -87,7 +80,6 @@ const SingleReqResContainer = (props) => {
       }
     };
     if (network === 'grpc') {
-      routeChange('/composer/grpc');
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -139,33 +131,35 @@ const SingleReqResContainer = (props) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
     dispatch(actions.setNewRequestBody(requestBodyObj));
+    
+    // for gRPC ===> NEED TO FILL OUT
+    if (content && content.gRPC) {
+      const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
+      const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
+      // construct the streams obj from passed in history content & set state in store
+      
+      const requestStreamsObj = {
+        streamsArr: streamsDeepCopy,
+        count: content.queryArr.length,
+        streamContent: contentsDeepCopy,
+        selectedPackage: content.packageName,
+        selectedRequest: content.rpc,
+        selectedService:  content.service,
+        selectedStreamingType: content.request.method,
+        initialQuery: content.initialQuery,
+        queryArr: content.queryArr,
+        protoPath: content.protoPath,
+        services: content.servicesObj,
+        protoContent: content.protoContent,
+      }
+      dispatch(actions.setNewRequestStreams(requestStreamsObj))
+    }
 
-    // // for gRPC ===> NEED TO FILL OUT
-    // if (content && content.gRPC) {
-    //   const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
-    //   const contentsDeepCopy = JSON.parse(JSON.stringify(content.streamContent));
-    //   // construct the streams obj from passed in history content & set state in store
-    //   const requestStreamsObj = {
-    //     streamsArr: streamsDeepCopy,
-    //     count: queryArr.length,
-    //     streamContent: contentsDeepCopy,
-    //     selectedPackage: content.selectedPackage,
-    //     selectedRequest: content.selectedRequest,
-    //     selectedService:  content.selectedService,
-    //     selectedStreamingType: content.selectedStreamingType,
-    //     initialQuery: content.initialQuery,
-    //     queryArr: content.queryArr,
-    //     protoPath: content.protoPath,
-    //     services: content.services,
-    //     protoContent: content.protoContent,
-    //   }
-    //   dispatch(actions.setNewRequestStreams(requestStreamsObj))
-    // }
-    // setSidebarTab('composer');
+    dispatch(actions.setSidebarActiveTab('composer'));
   }
 
   const removeReqRes = () => {
-    connectionController.closeReqRes(id);
+    connectionController.closeReqRes(content);
     reqResDelete(content);
   }
   
@@ -178,10 +172,17 @@ const SingleReqResContainer = (props) => {
           <div className='is-flex is-align-items-center ml-2'>
             {url}
           </div>
+          {/* RENDER STATUS */}
           <div className='req-status mr-1 is-flex is-align-items-center'>
             { connection === "uninitialized" && <div className='connection-uninitialized' /> }
+            { connection === "error" && <div className='connection-error' /> }
             { connection === "open" && <div className='connection-open' /> }
-            { connection === "closed" && <div className='connection-closed' /> }
+            { connection === "closed" && method != 'WS' && method !== 'SUBSCRIPTION' &&
+              <div className='connection-closed' /> 
+            }
+            { connection === "closed" && (method === 'WS' || method === 'SUBSCRIPTION') &&
+              <div className='connection-closedsocket' /> 
+            }
           </div>
         </div>
       </div>
@@ -199,7 +200,7 @@ const SingleReqResContainer = (props) => {
           {showDetails === true &&
           <div 
             className="is-clickable is-primary-link mr-3" 
-            onClick={addHistoryToNewRequest}
+            onClick={copyToComposer}
           >
             Copy to Composer
             

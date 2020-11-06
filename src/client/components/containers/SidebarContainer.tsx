@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-// import { Route, Switch, Link } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import ComposerContainer from "../composer/ComposerContainer.jsx";
 import HistoryContainer from "./HistoryContainer.jsx";
-import CollectionsContainer from "./CollectionsContainer.jsx";
 
 export const SidebarContainer = () => {
-  const [activeTab, setActiveTab] = useState('composer');
+  const dispatch = useDispatch();
+  const activeTab = useSelector(store => store.ui.sidebarActiveTab);
+  const setActiveTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
 
   return (
-    <div className='column is-one-third is-flex is-flex-direction-column is-tall '>
+    <div className='column is-one-third is-flex is-flex-direction-column is-tall ' id='composer'>
       {/* HEADER */}
       <div className="hero is-primary has-text-centered header-bar">
         <h3>Composer</h3>
@@ -36,7 +37,7 @@ export const SidebarContainer = () => {
         <ComposerContainer />
       }
         {activeTab === "history" &&
-        <HistoryContainer setSidebarTab={setActiveTab}/>
+        <HistoryContainer/>
       }
       
     </div>

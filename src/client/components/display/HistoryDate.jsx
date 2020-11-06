@@ -45,7 +45,6 @@ class HistoryDate extends Component {
           setNewRequestBody={this.props.setNewRequestBody}
           setNewRequestStreams={this.props.setNewRequestStreams}
           newRequestFields={this.props.newRequestFields}
-          setSidebarTab={this.props.setSidebarTab}
         />
       );
     });

@@ -1,4 +1,4 @@
-import protoParser from "../src/client/protoParser";
+import protoParser from "../main_process/protoParser";
 
 describe("testing protoParser", () => {
   const protoFile = `syntax = 'proto3';

@@ -25,6 +25,7 @@ export default function WSContainer({
   setComposerWarningMessage,
   warningMessage,
   reqResAdd,
+  setWorkspaceActiveTab,
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
@@ -86,6 +87,8 @@ export default function WSContainer({
       url: wsUrl,
       wsUrl,
     });
+
+    setWorkspaceActiveTab('workspace');
   };
 
   return (

@@ -1,47 +1,64 @@
 const app = require('../testApp.js');
 
 class Sidebar {
+
+  // COMPOSER PANE TAB SELECTORS
+  get tabsComposer() {
+    return app.client.$('a=Composer')
+  }
+
+  get tabsHistory() {
+    return app.client.$('a=History')
+  }
+
+  // COMPOSER => COMPOSER
+  // PROTOCOL SELECTOR
+  get selectedNetwork() {
+    return app.client.$('#selected-network')
+  }
+
   // NETWORK PROTOCOL
-  get websocket() {
-    return app.client.$('div.composer_protocol_button.ws')
-  }
+  // get websocket() {
+  //   return app.client.$('div.composer_protocol_button.ws')
+  // }
 
-  get graphQL() {
-    return app.client.$('div.composer_protocol_button.gql')
-  }
 
-  get gRPC() {
-    return app.client.$('div.composer_protocol_button.grpc')
-  }
+  // get graphQL() {
+  //   return app.client.$('div.composer_protocol_button.gql')
+  // }
+
+  // get gRPC() {
+  //   return app.client.$('div.composer_protocol_button.grpc')
+  // }
 
   // URL/METHOD INPUTS
   get url() { 
-    return app.client.$('input.composer_url_input');
+    return app.client.$('.input-is-medium');
   };
 
-  get requestMethod() { 
-    return app.client.$('select.composer_method_select.http');
-  };
+  // get requestMethod() { 
+  //   return app.client.$('select.composer_method_select.http');
+  // };
   
-  get chooseGet(){ 
-    return app.client.$('option=GET');
-  };
+  // get chooseGet(){ 
+  //   return app.client.$('option=GET');
+  // };
 
-  get choosePost() { 
-    return app.client.$('option=POST');
-  }; 
+  // get choosePost() { 
+  //   return app.client.$('option=POST');
+  // }; 
 
-  get choosePut() { 
-    return app.client.$('option=PUT');
-  }; 
+  // get choosePut() { 
+  //   return app.client.$('option=PUT');
+  // }; 
 
-  get choosePatch() { 
-    return app.client.$('option=PATCH');
-  }; 
+  // get choosePatch() { 
+  //   return app.client.$('option=PATCH');
+  // }; 
 
-  get chooseDelete() {
-    return app.client.$('option=DELETE')
-  }
+  // get chooseDelete() {
+  //   return app.client.$('option=DELETE')
+  // }
 
   // BODY INPUTS
   get activateBodyInput(){
@@ -132,33 +149,33 @@ class Sidebar {
 
   // HEADER INPUTS
 
-  get activateHeaders(){
-    return app.client.$('#headers-click'); 
-  };
+  // get activateHeaders(){
+  //   return app.client.$('#headers-click'); 
+  // };
 
   get headers(){
-    return app.client.$$('.header_container');
+    return app.client.$$('.header-row');
   }
 
-  get firstHeaderCheckbox(){
-    return app.client.$('.header_checkbox')
-  };
+  // get firstHeaderCheckbox(){
+  //   return app.client.$('.header_checkbox')
+  // };
 
   get headerKey(){
     return app.client.$('.header_key');
   };
 
-  get headerValue(){
-    return app.client.$('.header_value'); 
-  };
+  // get headerValue(){
+  //   return app.client.$('.header_value'); 
+  // };
 
-  get addHeader(){
-    return app.client.$('button=Add Header');
-  };
+  // get addHeader(){
+  //   return app.client.$('button=Add Header');
+  // };
 
   // COOKIE INPUTS
   get cookies(){
-    return app.client.$$('.cookie_container');
+    return app.client.$$('.cookie-row');
   };
 
   get activateCookies(){
