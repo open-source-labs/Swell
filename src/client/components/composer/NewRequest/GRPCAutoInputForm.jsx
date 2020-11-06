@@ -19,7 +19,9 @@ const GRPCAutoInputForm = (props) => {
     selectedStreamingType,
     selectedServiceObj,
     protoContent,
+    initialQuery
   } = props.newRequestStreams;
+
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
@@ -76,7 +78,6 @@ const GRPCAutoInputForm = (props) => {
   useEffect(() => {
     //if no selected request or service object, return out and don't update
     if (!selectedRequest || !selectedServiceObj) return;
-
     //find rpc object that matches selectedRequest name
     const rpc = selectedServiceObj.rpcs.find(
       (rpc) => rpc.name === selectedRequest
@@ -136,9 +137,9 @@ const GRPCAutoInputForm = (props) => {
   }, [selectedRequest]);
 
   useEffect(() => {
-    setServiceOption("Select Service");
-    setRequestOption("Select Request");
-  }, [protoContent]);
+    setServiceOption(selectedService || "Select Service");
+    setRequestOption(selectedRequest || "Select Request");
+  }, [streamContent]);
 
 
   //default options shown for services and request dropdowns

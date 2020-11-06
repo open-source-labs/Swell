@@ -54,7 +54,7 @@ const initialState = {
     isSSE: false,
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
-  dataPoints: [],
+  dataPoints: {},
   currentResponse: {
     request: {
       network: ''
@@ -254,24 +254,31 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.UPDATE_GRAPH: {
+      const { id } = action.payload
+      // action.payload is the latest reqRes object
+
       //dataPoints to be used by graph
-      const dataPoints =
-        //if more than 12 points, data will shift down an index
-        state.dataPoints.length < 8
-          ? [...state.dataPoints]
-          : [...state.dataPoints.slice(1)];
+      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints))
+      dataPointsCopy.current = id
+      //if more than 8 points, data will shift down an index
+      if (!dataPointsCopy[id]) {
+        dataPointsCopy[id] = []
+      } else if (dataPointsCopy[id].length > 5) {
+        dataPointsCopy[id] = dataPointsCopy[id].slice(1)
+      }
+      
       //check if new object is a closed request with timeSent and timeReceived
       if (
-        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent)
+        !dataPointsCopy[id].some((elem) => elem.timeSent === action.payload.timeSent)
       ) {
-        //generate specific rgb color for each request type to be attached to this datapoint.
-        let color;
-        if (action.payload.graphQL) color ="222, 51, 166";
-        else if (action.payload.gRPC) color = "108, 172, 193";
-        else color = "104, 67, 255"
-
-        //add dataPoint to array and return to state
-        dataPoints.push({
+        // if a color hasn't been added to this specific request id, add a new one
+        const color = 
+          (!dataPointsCopy[id][0]?.color) 
+          ? `${Math.random() * 256}, ${Math.random() * 256}, ${Math.random() * 256}`
+          : dataPointsCopy[id][0].color
+        
+        //add dataPoint to array connected to its id -and return to state
+        dataPointsCopy[id].push({
           reqRes: action.payload,
           url: action.payload.url,
           timeSent: action.payload.timeSent,
@@ -281,15 +288,20 @@ const businessReducer = (state = initialState, action) => {
         });
         return {
           ...state,
-          dataPoints,
+          dataPoints: dataPointsCopy,
         };
-      } return state;
+      } return {
+          ...state,
+          dataPoints: dataPointsCopy,
+        };
     }
 
     case types.CLEAR_GRAPH: {
+      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints))
+      dataPointsCopy[action.payload] = []
       return {
         ...state,
-        dataPoints: [],
+        dataPoints: dataPointsCopy,
       };
     }
 
