@@ -159,7 +159,7 @@ const SingleReqResContainer = (props) => {
   }
 
   const removeReqRes = () => {
-    connectionController.closeReqRes(id);
+    connectionController.closeReqRes(content);
     reqResDelete(content);
   }
   

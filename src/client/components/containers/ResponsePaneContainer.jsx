@@ -96,14 +96,15 @@ export const ResponsePaneContainer = (store) => {
         }
         {/* CLOSE RESPONSE BUTTON */}
         { ( currentResponse.request.method === 'WS' || 
-              currentResponse.request.method === 'SUBSCRIPTIONS'
+              currentResponse.request.method === 'SUBSCRIPTIONS' ||
+              currentResponse.request.isSSE
             ) && 
             connection === 'open' &&
           <div className="is-3rem-footer ml-3 mr-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
               onClick={() => { 
-                ReqResCtrl.closeReqRes(currentResponse.id);
+                ReqResCtrl.closeReqRes(currentResponse);
               }}
               type="button"
             >
@@ -113,7 +114,8 @@ export const ResponsePaneContainer = (store) => {
         }
         {/* RENDER OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
         { ( currentResponse.request.method === 'WS' || 
-              currentResponse.request.method === 'SUBSCRIPTIONS'
+              currentResponse.request.method === 'SUBSCRIPTIONS' ||
+              currentResponse.request.isSSE
             ) && 
             connection === 'closed' &&
           <div className="is-3rem-footer mx-3">

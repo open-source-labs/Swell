@@ -264,6 +264,7 @@
     "es6-promise": "^4.2.8",
     "eventsource": "^1.0.7",
     "express": "^4.17.1",
+    "express-sse": "^0.5.3",
     "google-auth-library": "^5.10.1",
     "graphql": "^14.6.0",
     "graphql-subscriptions": "^1.1.0",
