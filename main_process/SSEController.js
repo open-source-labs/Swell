@@ -60,14 +60,12 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
 
 SSEController.closeConnection = (reqResId) => {
   if (!SSEController.sseOpenConnections[reqResId]) {
-    console.log(`no current open connections associated with reqResID ${reqResId}`);
     return;
   }
 
   const sse = SSEController.sseOpenConnections[reqResId];
   sse.close();
   delete SSEController.sseOpenConnections[reqResId];
-  console.log('closing SSE connection', SSEController.sseOpenConnections);
 }
 
 module.exports = SSEController; 
