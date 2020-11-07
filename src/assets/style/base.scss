@@ -1,9 +1,9 @@
- @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Source+Sans+Pro:wght@400;600&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Source+Sans+Pro:wght@400;600&display=swap");
 
 * {
   box-sizing: border-box;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
+  overflow-x: hidden !important;
 }
 
 // BULMA ADJUSTMENTS
@@ -13,10 +13,9 @@
 }
 
 .hero h3 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-weight: 600;
 }
-
 
 input:focus {
   outline: none;
@@ -36,24 +35,24 @@ body {
 }
 
 html {
-	// background-color: #eeeeee;
+  // background-color: #eeeeee;
   // overflow: hidden;
   height: 100% !important;
 }
 
 .header_entry-form {
-	width: 100%;
+  width: 100%;
 }
 .header_entry-form input {
-	width: 100%;
+  width: 100%;
 }
 
 .full-width {
-	width: 100%;
+  width: 100%;
 }
 
 $switch-focus: 5px solid red;
 
 .add-vertical-scroll {
-  overflow-y: auto !important; 
+  overflow-y: auto !important;
 }
