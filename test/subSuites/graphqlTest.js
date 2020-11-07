@@ -1,4 +1,7 @@
 const chai = require("chai");
+const composerObj = require('../pageObjects/ComposerObj.js'); 
+const workspaceObj = require('../pageObjects/WorkspaceObj.js'); 
+const app = require('../testApp.js');
 const sideBar = require("../pageObjects/Sidebar.js");
 const reqRes = require("../pageObjects/ReqRes.js");
 const graphqlServer = require('../graphqlServer')
@@ -8,36 +11,18 @@ const expect = chai.expect;
 module.exports = () => {
   describe("GraphQL requests", () => {
 
-    const backspace = [];
-    for (let i = 0; i < 22; i += 1) {
-      backspace.push('Backspace')
-    }
-
-    const backspace2 = [];
-    for (let i = 0; i < 90; i += 1) {
-      backspace2.push('Backspace')
-    }
-
-    const clearAndAddKeys = async (backspace, keys) => {
-      try {
-        await sideBar.graphqlText.keys(backspace);
-        await sideBar.graphqlText.keys(keys);
-      } catch(err) {
-        console.error(err)
-      }
-    }
-
-    const fillGQLRequest = async (url, method, body = '', headers = [], cookies = []) => {
+    const fillGQLRequest = async (url, method, body = '', variables = '', headers = [], cookies = []) => {
       
       try {
-
-        // click and check REST
+        // click and check GRAPHQL
         await composerObj.selectedNetwork.click();
         await app.client.$('a=REST').click();
+        await composerObj.selectedNetwork.click();
+        await app.client.$('a=GRAPHQL').click();
         
-        // click and select METHOD if it isn't GET
-        if(method !== 'GET') {
-          await app.client.$('span=GET').click();
+        // click and select METHOD if it isn't QUERY
+        if(method !== 'QUERY') {
+          await app.client.$('span=QUERY').click();
           await app.client.$(`a=${method}`).click();
         }
 
@@ -58,14 +43,12 @@ module.exports = () => {
           await app.client.$('button=+ Cookie').click();
         });
 
-        // Add BODY as JSON if it isn't GET
-        if (method !== "GET") {
-          // select body type JSON
-          await app.client.$('span=text/plain').click();
-          await app.client.$('a=application/json').click();
-          // insert JSON content into body
-          await composerObj.clearRestBodyAndWriteKeys(body);
-        }
+        // select Body and type in body
+        await composerObj.clearGQLBodyAndWriteKeys(body);
+
+        // select Variables and type in variables
+        await composerObj.clickGQLVariablesAndWriteKeys(variables);
+        
       } catch(err) {
         console.error(err)
       }
@@ -80,84 +63,99 @@ module.exports = () => {
       }
     }
 
-  //   after(() => {
-  //     try {
-  //       graphqlServer.close();
-  //        console.log('graphqlServer closed')
-  //     } catch(err) {
-  //       console.error(err)
-  //     }
-  //   })
+    after(() => {
+      try {
+        graphqlServer.close();
+         console.log('graphqlServer closed')
+      } catch(err) {
+        console.error(err)
+      }
+    })
 
-  //   it("it should be able to introspect the schema", async () => {
-  //     try {
-  //       await sideBar.graphQL.click();
-  //       await sideBar.url.setValue("https://countries.trevorblades.com/");
-  //       await sideBar.schemaOpen.click();
-  //       await sideBar.introspect.click();
-  //       await new Promise((resolve) => {
-  //         setTimeout(async () => {
-  //           try {
-  //             const introspectionResult = await sideBar.introspectionText.getText();
-  //             expect(introspectionResult).to.include(`languages: [Language!]!`);
-  //             resolve();
-  //           } catch(err) {
-  //             console.error(err)
-  //           }
-  //         }, 3000)
-  //       });
-  //     } catch(err) {
-  //       console.error(err)
-  //     }
-  //   });
+    it("it should be able to introspect the schema (PUBLIC API)", async () => {
+      try {
+        // click and check GRAPHQL
+        await composerObj.selectedNetwork.click();
+        await app.client.$('a=GRAPHQL').click();
 
-  //   it("it should create queries using the schema-hinter", async () => {
-  //     try {
-  //       await reqRes.removeBtn.click();
-  //       await sideBar.graphqlText.keys(['ArrowUp', 'Tab', 'Enter', ' {', 'n', 'Enter']);
-  //       await addAndSend();
-  //       await new Promise((resolve) => {
-  //         setTimeout(async () => {
-  //           try {
-  //             const statusCode = await reqRes.statusCode.getText();
-  //             const jsonPretty = await reqRes.jsonPretty.getText();
-  //             expect(statusCode).to.equal("Status: 200");
-  //             expect(jsonPretty).to.include("Africa");
-  //             resolve();
-  //           } catch(err) {
-  //             console.error(err)
-  //           }
-  //         }, 2000);
-  //       })
-  //     } catch(err) {
-  //       console.error(err)
-  //     }
-  //   });
+        // type in url
+        await composerObj.url.setValue("https://countries.trevorblades.com/");
 
-  //   it("it should create queries using variables", async () => {
-  //     try {
-  //       await reqRes.removeBtn.click();
-  //       await clearAndAddKeys(backspace, '($code: ID!) {country(code: $code) {capital}}');
-  //       await sideBar.variableOpen.click();
-  //       await sideBar.graphqlVariable.keys('{"code": "AE"}');
-  //       await addAndSend();
-  //       await new Promise((resolve) => {
-  //         setTimeout(async () => {
-  //           try {
-  //             const statusCode = await reqRes.statusCode.getText();
-  //             const jsonPretty = await reqRes.jsonPretty.getText();
-  //             expect(statusCode).to.equal("Status: 200");
-  //             expect(jsonPretty).to.include("Abu Dhabi");
-  //             resolve();
-  //           } catch(err) {
-  //             console.error(err)
-  //           }
-  //         }, 2000);
-  //       })
-  //     } catch(err) {
-  //       console.error(err)
-  //     }
-  //   });
+        // click introspect
+        await app.client.$('button=Introspect').click();
+        
+        await new Promise((resolve) => {
+          setTimeout(async () => {
+            try {
+              const introspectionResult = await app.client.$('#gql-introspection .CodeMirror-code').getText();
+              expect(introspectionResult).to.include(`CacheControlScope`);
+              resolve();
+            } catch(err) {
+              console.error(err)
+            }
+          }, 1000)
+        });
+      } catch(err) {
+        console.error(err)
+      }
+    });
+
+    it("it should be able to create queries using variables (PUBLIC API)", async () => {
+      try {
+        const method = "QUERY";
+        const url = "https://countries.trevorblades.com/";
+        const query = 'query($code: ID!) {country(code: $code) {capital}}';
+        const variables = '{"code": "AE"}';
+
+        // type in url
+        await fillGQLRequest(url, method, query, variables );
+        await addAndSend();
+
+        await new Promise((resolve) => {
+          setTimeout(async () => {
+            try {
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              expect(events).to.include("Abu Dhabi");
+              resolve();
+            } catch(err) {
+              console.error(err)
+            }
+          }, 1000)
+        });
+      } catch(err) {
+        console.error(err)
+      }
+    });
+
+    it("it should give you the appropriate error message with incorrect queries (LOCAL API)", async () => {
+      try {
+        const method = "QUERY";
+        const url = "http://localhost:4000/graphql";
+        const query = 'query {feed {descriptions}}';
+
+        // type in url
+        await fillGQLRequest(url, method, query);
+        await addAndSend();
+
+        await new Promise((resolve) => {
+          setTimeout(async () => {
+            try {
+              const statusCode = await app.client.$('.status-tag').getText();
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              
+              expect(statusCode).to.equal("Error");
+              expect(events).to.include("GRAPHQL_VALIDATION_FAILED");
+              resolve();
+            } catch(err) {
+              console.error(err)
+            }
+          }, 1000)
+        });
+      } catch(err) {
+        console.error(err)
+      }
+    });
+
 
   //   it("it should give you the appropriate error message with incorrect queries", async () => {
   //     try {
@@ -235,7 +233,7 @@ module.exports = () => {
   //       console.error(err);
   //     };
   //   })
-  // })
+  })
 }
 
 // entering wrong query/mutation will give you the appropriate error message

@@ -40,7 +40,7 @@ const GraphQLBodyEntryForm = (props) => {
         : null 
       }
       <div className="composer-section-title">Body</div>
-      <div className="is-neutral-200-box p-3">
+      <div id="gql-body-entry" className="is-neutral-200-box p-3">
         <CodeMirror
           value={cmValue}
           options={{

@@ -29,7 +29,7 @@ const GraphQLVariableEntryForm = (props) => {
   return (
     <div>
      <div className="composer-section-title">Variables</div>
-      <div className="is-neutral-200-box p-3">
+      <div className="is-neutral-200-box p-3" id="gql-var-entry">
         <CodeMirror
         ref={cmVariables}
           value={cmValue}

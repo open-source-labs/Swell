@@ -34,6 +34,18 @@ class ComposerObj {
     return codeMirror.$("textarea")
   };
 
+  get gqlBodyCode() {
+    const codeMirror = app.client.$('#gql-body-entry');
+    codeMirror.click();
+    return codeMirror.$("textarea")
+  };
+
+  get gqlVariableCode() {
+    const codeMirror = app.client.$('#gql-var-entry');
+    codeMirror.click();
+    return codeMirror.$("textarea")
+  };
+
   get addRequestBtn() {
     return app.client.$('button=Add New Request');
   };
@@ -51,9 +63,28 @@ class ComposerObj {
       console.error(err)
     }
   }
+  
+  clearGQLBodyAndWriteKeys = async (keys, clear = true) => {
+    const backspace = [];
+    for (let i = 0; i < 30; i += 1) {
+      backspace.push('Backspace')
+    }
 
-
-
+    try {
+      if(clear) await this.gqlBodyCode.keys(backspace);
+      await this.gqlBodyCode.keys(keys);
+    } catch(err) {
+      console.error(err)
+    }
+  }
+  
+  clickGQLVariablesAndWriteKeys = async (keys) => {
+    try {
+      await this.gqlVariableCode.keys(keys);
+    } catch(err) {
+      console.error(err)
+    }
+  }
 
 }; 
 
