@@ -14,7 +14,7 @@ http.createServer((request, response) => {
   sendSSEs(response); 
   
 
-}).listen(5001, () => console.log('SSE Server listening on port 5001'));
+}).listen(5001, () => console.log('fakeSSEServer is listening on port 5001'));
 
 // this function sends messages every 3 seconds 
 const sendSSEs = (response, id = 0, timeout) => {

@@ -42,5 +42,5 @@ const dispatchStreamOrHeaders = (req, res, next) => {
 app.get('/', dispatchStreamOrHeaders, sse.init);
 
 app.listen(PORT, () => {
-  console.log(`HTTP Server listening on port: ${PORT}`);
+  console.log(`HTTP1 SSE Server listening on port: ${PORT}`);
 });
