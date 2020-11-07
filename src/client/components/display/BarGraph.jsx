@@ -58,16 +58,16 @@ const BarGraph = (props) => {
         },
       ],
       xAxes: [
-        {
-          ticks: {
-            display: true,
-          },
-        },
+        // {
+        //   ticks: {
+        //     display: true,
+        //   },
+        // },
       ],
     },
-    animation: {
-      duration: 50, //buggy animation, get rid of transition
-    },
+    // animation: {
+    //   duration: 50, //buggy animation, get rid of transition
+    // },
     maintainAspectRatio: false,
   });
 
@@ -106,15 +106,15 @@ const BarGraph = (props) => {
         ],
         xAxes: [
           {
-            scaleLabel: {
-              display: true,
-            },
+            // scaleLabel: {
+            //   display: true,
+            // },
           },
         ],
       },
-      animation: {
-        duration: 50,
-      },
+      // animation: {
+      //   duration: 50,
+      // },
       maintainAspectRatio: false, //necessary for keeping chart within container
     };
   };
@@ -122,6 +122,7 @@ const BarGraph = (props) => {
   // click handling to load response data in the response panel
   const getElementAtEvent = (element) => {
     if (!element.length) return;
+    console.log(element);
     // get the response data corresponding to the clicked element
     const index = element[0]._index;
     const reqResToSend =
@@ -177,9 +178,7 @@ const BarGraph = (props) => {
   // useEffect(updateGraph(currentResponse), [currentResponse])
 
   const chartClass = show ? "chart" : "chart-closed";
-  const clearButtonTextAddition = currentResponse.host
-    ? ` for ${currentResponse.host.slice(8)}`
-    : "";
+
   return (
     <div>
       <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
