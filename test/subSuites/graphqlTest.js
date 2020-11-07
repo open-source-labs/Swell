@@ -185,60 +185,43 @@ module.exports = () => {
       }
     });
 
+    it("it should work with subscriptions (LOCAL API)", async () => {
+      try {
+        // START SUBSCRIPTION
+        const method = "SUBSCRIPTION";
+        const url = "http://localhost:4000/graphql";
+        const query = 'subscription {newLink {id description}}';
 
+        await fillGQLRequest(url, method, query);
+        await addAndSend();
 
-  //   it("it should work with mutations", async () => {
-  //     try {
-  //       await reqRes.removeBtn.click();
-  //       await sideBar.chooseMutation.click();
-  //       await clearAndAddKeys(backspace2, 'mutation {post(url: "www.piedpiper.com" description: "Middle-out compression") {url}}');
-  //       await addAndSend();
-  //       await new Promise((resolve) => {
-  //         setTimeout(async () => {
-  //           try {
-  //             const statusCode = await reqRes.statusCode.getText();
-  //             const jsonPretty = await reqRes.jsonPretty.getText();
-  //             expect(statusCode).to.equal("Status: 200");
-  //             expect(jsonPretty).to.include("www.piedpiper.com");
-  //             resolve();
-  //           } catch(err) {
-  //             console.error(err)
-  //           }
-  //         }, 2000);
-  //       })
-  //     } catch(err) {
-  //       console.error(err)
-  //     }
-  //   })
+        // SEND MUTATION
+        const method2 = "MUTATION";
+        const url2 = "http://localhost:4000/graphql";
+        const query2 = 'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {url}}';
 
-  //   it("it should work with subscriptions", async () => {
-  //     try {
-  //       await reqRes.removeBtn.click();
-  //       await sideBar.chooseSubscription.click();
-  //       await clearAndAddKeys(backspace2, 'subscription {newLink {id description}}');
-  //       await addAndSend();
-  //       await sideBar.chooseMutation.click();
-  //       await clearAndAddKeys(backspace2, 'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {url}}');
-  //       await addAndSend();
-  //       await reqRes.mutationRemoveBtn.click();
-  //       await new Promise((resolve) => {
-  //         setTimeout(async () => {
-  //           try {
-  //             const statusCode = await reqRes.statusCode.getText();
-  //             const jsonPretty = await reqRes.jsonPretty.getText();
-  //             expect(statusCode).to.equal("Status: 200");
-  //             expect(jsonPretty).to.include("Tethics");
-  //             resolve();
-  //           } catch(err) {
-  //             console.error(err)
-  //           }
-  //         }, 3000);
-  //       })
-  //     } catch (err) {
-  //       console.error(err);
-  //     };
-  //   })
+        await fillGQLRequest(url2, method2, query2);
+        await addAndSend();
+        
+        await new Promise((resolve) => {
+          setTimeout(async () => {
+            try {
+              await app.client.$('#view-button-10').click();
+
+              const statusCode = await app.client.$('.status-tag').getText();
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              
+              expect(statusCode).to.equal("Success"); 
+              expect(events).to.include('Tethics');
+              resolve();
+            } catch(err) {
+              console.error(err)
+            }
+          }, 1000)
+        });
+      } catch(err) {
+        console.error(err)
+      }
+    });
   })
 }
-
-// entering wrong query/mutation will give you the appropriate error message

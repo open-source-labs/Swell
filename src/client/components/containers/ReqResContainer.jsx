@@ -30,6 +30,7 @@ const ReqResContainer = (props) => {
         className="reqResChild"
         content={reqRes}
         key={index}
+        index={index}
         reqResDelete={reqResDelete}
         reqResUpdate={reqResUpdate}
       />
