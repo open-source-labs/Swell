@@ -143,8 +143,8 @@ module.exports = () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client.$('#events-display .CodeMirror-code').getText();
               
-              expect(statusCode).to.equal("Error");
-              expect(events).to.include("GRAPHQL_VALIDATION_FAILED");
+              expect(statusCode).to.equal("Error"); 
+              expect(events).to.include('"message": "Cannot query field');
               resolve();
             } catch(err) {
               console.error(err)
