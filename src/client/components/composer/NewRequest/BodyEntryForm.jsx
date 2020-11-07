@@ -58,7 +58,7 @@ const BodyEntryForm = (props) => {
   
 
   return (
-    <div className = "mt-1">
+    <div className = "mt-1" >
       <div className="composer-section-title">Body</div>
       <div className='is-flex is-align-items-center is-justify-content-space-between'>
         <span className="is-flex is-align-items-center">
@@ -95,7 +95,7 @@ const BodyEntryForm = (props) => {
         </div>
         : null 
       }
-      <div className="mt-2">{bodyEntryArea()}</div>
+      <div className="mt-2"  id = "body-entry-select">{bodyEntryArea()}</div>
       
     </div>
   );

@@ -251,7 +251,7 @@
     "bulma-switch": "^2.0.0",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
-    "codemirror": "^5.56.0",
+    "codemirror": "^5.58.2",
     "codemirror-graphql": "^0.12.1",
     "concurrently": "^5.2.0",
     "date-fns": "^1.29.0",
