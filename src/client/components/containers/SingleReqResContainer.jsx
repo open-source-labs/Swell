@@ -39,6 +39,7 @@ const SingleReqResContainer = (props) => {
     },
     reqResUpdate,
     reqResDelete,
+    index,
   } = props;
   const network = content.request.network;
   const method = content.request.method;
@@ -258,10 +259,23 @@ const SingleReqResContainer = (props) => {
             Send
           </button>
         )}
+        {/* SEND BUTTON */}
+        {connection === "uninitialized" && (
+          <button
+            className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
+            id={`send-button-${index}`}
+            onClick={() => {
+              ReqResCtrl.openReqRes(content.id);
+            }}
+          >
+            Send
+          </button>
+        )}
         {/* VIEW RESPONSE BUTTON */}
         {connection !== "uninitialized" && (
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
+            id={`view-button-${index}`}
             onClick={() => {
               dispatch(actions.saveCurrentResponseData(content));
             }}
