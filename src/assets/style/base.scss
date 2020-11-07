@@ -3,7 +3,6 @@
 * {
   box-sizing: border-box;
   font-family: "Source Sans Pro", sans-serif;
-  overflow-x: hidden !important;
 }
 
 // BULMA ADJUSTMENTS
@@ -27,7 +26,7 @@ input:focus {
 
 #root {
   height: 100%;
-  // overflow-y: hidden;
+  overflow-y: hidden;
 }
 
 body {
