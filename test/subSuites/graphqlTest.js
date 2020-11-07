@@ -156,31 +156,36 @@ module.exports = () => {
       }
     });
 
+    it("it should work with mutations (LOCAL API)", async () => {
+      try {
+        const method = "MUTATION";
+        const url = "http://localhost:4000/graphql";
+        const query = 'mutation {post(url: "www.piedpiper.com" description: "Middle-out compression") {url}}';
 
-  //   it("it should give you the appropriate error message with incorrect queries", async () => {
-  //     try {
-  //       await reqRes.removeBtn.click();
-  //       await sideBar.url.setValue("http://localhost:4000/graphql");
-  //       await sideBar.graphqlVariable.keys(backspace);
-  //       await clearAndAddKeys(backspace2, 'query {feed {descriptions}}');
-  //       await addAndSend();
-  //       await new Promise((resolve) => {
-  //         setTimeout(async () => {
-  //           try {
-  //             const statusCode = await reqRes.statusCode.getText();
-  //             const jsonPretty = await reqRes.jsonPretty.getText();
-  //             expect(statusCode).to.equal("Status: 400");
-  //             expect(jsonPretty).to.include(`GRAPHQL_VALIDATION_FAILED`);
-  //             resolve();
-  //           } catch(err) {
-  //             console.error(err)
-  //           }
-  //         }, 2000);
-  //       })
-  //     } catch(err) {
-  //       console.error(err)
-  //     }
-  //   })
+        // type in url
+        await fillGQLRequest(url, method, query);
+        await addAndSend();
+
+        await new Promise((resolve) => {
+          setTimeout(async () => {
+            try {
+              const statusCode = await app.client.$('.status-tag').getText();
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              
+              expect(statusCode).to.equal("Success"); 
+              expect(events).to.include('www.piedpiper.com');
+              resolve();
+            } catch(err) {
+              console.error(err)
+            }
+          }, 1000)
+        });
+      } catch(err) {
+        console.error(err)
+      }
+    });
+
+
 
   //   it("it should work with mutations", async () => {
   //     try {
