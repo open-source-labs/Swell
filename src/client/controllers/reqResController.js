@@ -34,7 +34,7 @@ const connectionController = {
     // REST EVENTS
     api.receive("reqResUpdate", (reqResObj) => {
       if (
-        reqResObj.connection === "closed" &&
+        (reqResObj.connection === "closed" || reqResObj.connection === "error") &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0

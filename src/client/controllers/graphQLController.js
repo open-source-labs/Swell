@@ -51,7 +51,7 @@ const graphQLController = {
     store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     // have to replace http with ws to connect to the websocket
-    let wsUri = reqResObj.url.replace(/http/gi, 'ws');
+    const wsUri = reqResObj.url.replace(/http/gi, 'ws');
 
     // Map all headers to headers object
     const headers = {};
@@ -64,7 +64,7 @@ const graphQLController = {
     if (reqResObj.request.cookies.length) {
       cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
         if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
-        else return acc;
+        return acc;
       }, '');
     }
     headers.Cookie = cookies;
@@ -134,7 +134,7 @@ const graphQLController = {
 
     // reqResObj.response.events.push(errorsObj);
     reqResObj.response.events.push(JSON.parse(errorsObj));
-    
+    store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 
