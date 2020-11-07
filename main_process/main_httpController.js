@@ -21,6 +21,7 @@ const SSEController = require("./SSEController");
 // parseSSEFields(rawString)
 // cookieFormatter(setCookie(response.cookies))
 
+
 const httpController = {
   openHTTP2Connections: [],
 
@@ -41,7 +42,22 @@ const httpController = {
         );
   },
 
+  closeHTTPconnection(event, reqResObj) {
+    if (reqResObj.isHTTP2) this.closeHTTP2Connection(event, reqResObj);
+    else this.closeHTTP1Connection(event, reqResObj);
+  },
+
   // ----------------------------------------------------------------------------
+
+  closeHTTP1Connection(event, reqResObj) {
+    if (reqResObj.request.isSSE) {
+      SSEController.closeConnection(reqResObj.id)
+    }
+  },
+
+  closeHTTP2Connection(event, reqResObj) {
+    console.log('do something here');
+  },
 
   establishHTTP2Connection(event, reqResObj, connectionArray) {
     /*
@@ -207,13 +223,15 @@ const httpController = {
       id: reqResObj.id,
     };
 
+  
+
     // this is the connection array that was passed into these controller functions from reqResController.js
     connectionArray.push(openConnectionObj);
 
     let isSSE;
 
     reqStream.on("response", (headers, flags) => {
-      console.log(`main_httpController -> reqStream.on("response", (headers, flags)`);
+      // console.log(`main_httpController -> reqStream.on("response", (headers, flags)`);
       // first argumnet of callback to response listener in ClientHttp2Stream is an object containing the receieved HTTP/2 Headers Object, as well as the flags associated with those headers
       // console.log("headers: ", headers);
 
@@ -227,7 +245,25 @@ const httpController = {
       } else {
         reqResObj.connection = "closed";
         reqResObj.connectionType = "plain";
-      }
+        }
+
+  // Setting response size based on Content-length. Check if response comes with content-length
+  if (!headers["content-length"] && !headers["Content-Length"]) {
+    reqResObj.responseSize = null;
+  } else {
+    let contentLength;
+    headers["content-length"] ? contentLength = "content-length" : contentLength = "Content-Length"
+  
+    // Converting content length octets into bytes
+    const conversionFigure = 1023.89427;
+    const octetToByteConversion = headers[`${contentLength}`] / conversionFigure
+    const responseSize =  Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100
+      
+    reqResObj.responseSize = responseSize;
+  }
+
+  // Content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.  
+  
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
@@ -359,7 +395,6 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   establishHTTP1connection(event, reqResObj, connectionArray) {
-    console.log("event306", event);
     // start off by clearing existing response data, and make note of when response was created
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -379,7 +414,7 @@ const httpController = {
       id: reqResObj.id,
     };
     connectionArray.push(openConnectionObj);
-
+    
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
 
     //--------------------------------------------------------------------------------------------------------------
@@ -390,6 +425,7 @@ const httpController = {
       SSEController.createStream(reqResObj, options, event);
       // if not SSE, talk to main to fetch data and receive
     } else {
+
       this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
@@ -498,5 +534,9 @@ module.exports = () => {
   ipcMain.on("open-http", (event, reqResObj, connectionArray) => {
     // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
     httpController.openHTTPconnection(event, reqResObj, connectionArray);
+  });
+
+  ipcMain.on('close-http', (event, reqResObj) => {
+    httpController.closeHTTPconnection(event, reqResObj);
   });
 };

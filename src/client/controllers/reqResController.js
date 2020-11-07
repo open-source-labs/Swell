@@ -93,31 +93,22 @@ const connectionController = {
     store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));
   },
 
-  closeReqRes(id) {
+  closeReqRes(reqResObj) {
+    
+    if (reqResObj.protocol.includes('http')){
+      api.send('close-http', reqResObj);
+    }
+    
+    const { id } = reqResObj;
     this.setReqResConnectionToClosed(id);
+    
+    // WS is the only protocol using openConnectionArray
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-    if (foundAbortController) {
-      switch (foundAbortController.protocol) {
-        case "HTTP1": {
-          foundAbortController.abort.abort();
-          break;
-        }
-        case "HTTP2": {
-          foundAbortController.stream.close();
-          break;
-        }
-        case "WS": {
-          api.send('close-ws')
-          break;
-        }
-        default:
-          console.log("Invalid Protocol");
-      }
-      console.log("Connection aborted.");
+    if (foundAbortController && foundAbortController.protocol === 'WS') {
+        api.send('close-ws')
     }
-
     this.openConnectionArray = this.openConnectionArray.filter(
       (obj) => obj.id !== id
     );
@@ -127,7 +118,7 @@ const connectionController = {
   closeAllReqRes() {
     const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
     selectedAndCurrentTabReqResArr.forEach((reqRes) =>
-      connectionController.closeReqRes(reqRes.id)
+      connectionController.closeReqRes(reqRes)
     );
   },
 
