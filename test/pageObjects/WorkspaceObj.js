@@ -8,8 +8,6 @@ class WorkspaceObj {
   get latestRemoveRequestBtn() {
     return app.client.$('button=Remove');
   };
-  
-
 }; 
 
 module.exports = new WorkspaceObj(); 

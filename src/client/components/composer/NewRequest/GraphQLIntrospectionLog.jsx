@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import graphQLController from "../../../controllers/graphQLController";
 import TextCodeAreaReadOnly from './TextCodeAreaReadOnly';
-import { useSelector, useDispatch } from 'react-redux';
 
 
 const GraphQLIntrospectionLog = () => {
@@ -18,7 +18,7 @@ const GraphQLIntrospectionLog = () => {
         >
           Introspect
         </button>
-      <div >
+      <div  id="gql-introspection">
         {introspectionData === "Error: Please enter a valid GraphQL API URI" &&
           <div>{introspectionData}</div> 
         }
