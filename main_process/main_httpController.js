@@ -1,13 +1,8 @@
 const { ipcMain } = require("electron");
-
+const fs = require('fs');
 const fetch2 = require("node-fetch");
-//const { session } = require("electron").remote;
 const http2 = require("http2");
-
-// parsing through cookies
 const setCookie = require("set-cookie-parser");
-
-//Included Functions
 const SSEController = require("./SSEController");
 
 
@@ -101,8 +96,14 @@ const httpController = {
     else {
       console.log("no pre-existing http2 found");
       const id = Math.random() * 100000;
-      const client = http2.connect(reqResObj.host, () =>
-      console.log("connected!, reqRes.Obj.host", reqResObj.host)
+
+      const clientOptions = {}
+      if (reqResObj.host.includes('localhost')) {
+        clientOptions.ca = fs.readFileSync('test/HTTP2_cert.pem');
+      }
+
+      const client = http2.connect(reqResObj.host, clientOptions, () =>
+        console.log("connected!, reqRes.Obj.host", reqResObj.host)
       );
 
       // push HTTP2 connection to array
@@ -164,15 +165,14 @@ const httpController = {
     } else {
       reqStream.end();
     }
-
-    reqStream.setEncoding("utf8");
-
+    
     // persistent outside of listeners
     let isSSE = false;
     let data = '';
 
+    reqStream.setEncoding("utf8");
+
     reqStream.on("response", (headers, flags) => {
-      
       // SSE will have 'stream' in the 'content-type' header
       isSSE = headers["content-type"] && headers["content-type"].includes("stream")
 
@@ -200,38 +200,37 @@ const httpController = {
     
       if (!isSSE) return;   
       const chunkTimestamp = Date.now();
-      const eventArr = data.match(/[\s\S]*\n\n/g);
+      const dataEventArr = data.match(/[\s\S]*\n\n/g);
     
-      while (eventArr && eventArr.length) {
-        const event = httpController.parseSSEFields(eventArr.shift());
-        event.timeReceived = chunkTimestamp;
-
-        reqResObj.response.events.push(event);
+      while (dataEventArr && dataEventArr.length) {
+        const dataEvent = httpController.parseSSEFields(dataEventArr.shift());
+        dataEvent.timeReceived = chunkTimestamp;
+        reqResObj.response.events.push(dataEvent);
         event.sender.send("reqResUpdate", reqResObj);
         
         // recombine with \n\n to reconstruct original, minus what was already parsed.
-        data = eventArr.join("\n\n");
+        data = dataEventArr.join("\n\n");
       }
     });
     
     reqStream.on("end", () => {
       reqResObj.connection = "closed";
-      let event;
+      let dataEvent;
 
       if (isSSE) {
-        event = httpController.parseSSEFields(data);
-        event.timeReceived = Date.now();
+        dataEvent = httpController.parseSSEFields(data);
+        dataEvent.timeReceived = Date.now();
       } else if (data && 
         reqResObj.response.headers &&
         reqResObj.response.headers["content-type"] &&
         reqResObj.response.headers["content-type"].includes("application/json") 
       ) {
-        event = JSON.parse(data);
+        dataEvent = JSON.parse(data);
       } else {
-        event = data;
+        dataEvent = data;
       }
 
-      reqResObj.response.events.push(event);
+      reqResObj.response.events.push(dataEvent);
       event.sender.send("reqResUpdate", reqResObj);
     });
   },
@@ -240,13 +239,12 @@ const httpController = {
   makeFetch(args, event, reqResObj) {
     return new Promise((resolve) => {
       const { method, headers, body } = args.options;
-      console.log("args", args);
       fetch2(headers.url, { method, headers, body })
         .then((response) => {
           const headers = response.headers.raw();
+
           // check if the endpoint sends SSE
           // add status code for regular http requests in the response header
-
           if (headers["content-type"][0].includes("stream")) {
             // invoke another func that fetches to SSE and reads stream
             // params: method, headers, body
@@ -408,7 +406,14 @@ const httpController = {
 
   // added this function becuase it didn't exist and was being called above
   parseSSEFields(rawString) {
-    return rawString;
+    return rawString
+      .trim()
+      .split('\n')
+      .reduce((obj, field) => {
+        let [key, value] = field.split(':').map(str => str.trim())
+        obj[key] = value;
+        return obj;
+      }, {});
   },
 
 };
