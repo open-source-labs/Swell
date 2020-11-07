@@ -2,8 +2,6 @@ const chai = require("chai");
 const composerObj = require('../pageObjects/ComposerObj.js'); 
 const workspaceObj = require('../pageObjects/WorkspaceObj.js'); 
 const app = require('../testApp.js');
-const sideBar = require("../pageObjects/Sidebar.js");
-const reqRes = require("../pageObjects/ReqRes.js");
 const graphqlServer = require('../graphqlServer')
 
 const expect = chai.expect;
@@ -62,6 +60,10 @@ module.exports = () => {
         console.error(err);
       }
     }
+
+    before(() => {
+      app.client.$('button=Clear Workspace').click();
+    })
 
     after(() => {
       try {
@@ -206,7 +208,7 @@ module.exports = () => {
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              await app.client.$('#view-button-10').click();
+              await app.client.$('#view-button-3').click();
 
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client.$('#events-display .CodeMirror-code').getText();

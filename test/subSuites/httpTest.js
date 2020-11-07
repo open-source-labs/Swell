@@ -1,10 +1,8 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = require('../testApp.js');
-const sideBar = require("../pageObjects/Sidebar.js");
 const composerObj = require('../pageObjects/ComposerObj.js'); 
 const workspaceObj = require('../pageObjects/WorkspaceObj.js'); 
-const reqRes = require("../pageObjects/ReqRes.js");
 const httpServer = require('../httpServer');
 
 chai.use(chaiHttp);
