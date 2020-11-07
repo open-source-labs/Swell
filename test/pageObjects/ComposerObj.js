@@ -22,7 +22,7 @@ class ComposerObj {
 
   get headers(){
     return app.client.$$('.header-row');
-  }
+  };
 
   get cookies(){
     return app.client.$$('.cookie-row');
@@ -32,16 +32,20 @@ class ComposerObj {
     const codeMirror = app.client.$('#body-entry-select');
     codeMirror.click();
     return codeMirror.$("textarea")
-  }
+  };
+
+  get addRequestBtn() {
+    return app.client.$('button=Add New Request');
+  };
   
-  clearRestBodyAndWriteKeys = async (keys) => {
+  clearRestBodyAndWriteKeys = async (keys, clear = true) => {
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
       backspace.push('Backspace')
     }
 
     try {
-      await this.restBodyCode.keys(backspace);
+      if(clear) await this.restBodyCode.keys(backspace);
       await this.restBodyCode.keys(keys);
     } catch(err) {
       console.error(err)
