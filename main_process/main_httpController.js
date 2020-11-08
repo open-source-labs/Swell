@@ -34,7 +34,7 @@ const httpController = {
   },
 
   closeHTTP2Connection(event, reqResObj) {
-    // console.log('do something here');
+
   },
 
   establishHTTP2Connection(event, reqResObj) {
@@ -404,13 +404,15 @@ const httpController = {
     });
   },
 
-  // added this function becuase it didn't exist and was being called above
+  // parses SSE format into an object
+  // SSE format -> 'key1: value1\nkey2: value2\nkey3: value3\n\n 
+  // this separates fields by new lines and separates values from keys by removing the colon and the space
   parseSSEFields(rawString) {
     return rawString
-      .trim()
+      .slice(0, -2)
       .split('\n')
       .reduce((obj, field) => {
-        let [key, value] = field.split(':').map(str => str.trim())
+        let [key, value] = field.split(': ')
         obj[key] = value;
         return obj;
       }, {});
