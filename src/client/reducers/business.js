@@ -290,7 +290,7 @@ const businessReducer = (state = initialState, action) => {
           ...state,
           dataPoints: dataPointsCopy,
         };
-      } else return {
+      } return {
           ...state,
           dataPoints: dataPointsCopy,
         };

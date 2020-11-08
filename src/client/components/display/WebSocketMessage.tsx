@@ -5,7 +5,8 @@ import { WebSocketMessageProps } from "../../../types"
 const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
   source,
   timeReceived,
-  data
+  data,
+  index
 }) => {
 
   //conditional classNames and id for messages for styling depending on source
@@ -28,7 +29,7 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
 
   return (
     <div>
-      <div className={webSocketMessageClassNames}>
+      <div className={webSocketMessageClassNames} id={`ws-msg-${index}`}>
         <div className={message_background}>
           <div className="websocket_message-data"><div id={webSocketMessageIDNames}>{data}</div></div>
           <div className="websocket_message-time">{buildTime(timeReceived)}</div>

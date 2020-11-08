@@ -9,6 +9,7 @@ const SSEController = require("./SSEController");
 // using a server with self-signed cert on localhost
 const LOCALHOST_CERT_PATH = 'test/HTTP2_cert.pem';
 
+
 const httpController = {
   openHTTP2Connections: {},
   openHTTP2Streams: {},
@@ -180,7 +181,25 @@ const httpController = {
       } else {
         reqResObj.connection = "closed";
         reqResObj.connectionType = "plain";
-      }
+        }
+
+  // Setting response size based on Content-length. Check if response comes with content-length
+  if (!headers["content-length"] && !headers["Content-Length"]) {
+    reqResObj.responseSize = null;
+  } else {
+    let contentLength;
+    headers["content-length"] ? contentLength = "content-length" : contentLength = "Content-Length"
+  
+    // Converting content length octets into bytes
+    const conversionFigure = 1023.89427;
+    const octetToByteConversion = headers[`${contentLength}`] / conversionFigure
+    const responseSize =  Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100
+      
+    reqResObj.responseSize = responseSize;
+  }
+
+  // Content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.  
+  
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
@@ -300,6 +319,7 @@ const httpController = {
       SSEController.createStream(reqResObj, options, event);
       // if not SSE, talk to main to fetch data and receive
     } else {
+
       this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
           // Parse response headers now to decide if SSE or not.

@@ -4,7 +4,6 @@
 // import other tests
 const appOpensTests = require("./subSuites/appOpens");
 const reqInputTests = require("./subSuites/reqInputTests");
-const addRequestTests = require("./subSuites/addRequestTests");
 const httpTest = require("./subSuites/httpTest");
 const websocketTest = require("./subSuites/websocketTest");
 const grpcTest = require("./subSuites/grpcTest");
@@ -29,10 +28,9 @@ describe("Electron Tests", function () {
 
   describe("CRUD functionality", function () {
     reqInputTests();
-    // addRequestTests();
-    // httpTest();
-    // websocketTest();
+    httpTest();
+    graphqlTest();
+    websocketTest();
     // grpcTest();
-    // graphqlTest();
   });
 });

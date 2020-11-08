@@ -48,6 +48,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
       .map((message, index) => (
         <WebSocketMessage
           key={index}
+          index={index}
           source={message.source}
           data={message.data}
           timeReceived={message.timeReceived}

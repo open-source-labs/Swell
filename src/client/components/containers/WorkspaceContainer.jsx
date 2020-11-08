@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
 import ReqResCtrl from "../../controllers/reqResController.js";
-import SaveWorkspaceModal from './SaveWorkspaceModal'
+import SaveWorkspaceModal from "./SaveWorkspaceModal";
 import ReqResContainer from "./ReqResContainer.jsx";
 
 export default function WorkspaceContainer() {
-
   // LOCAL STATE HOOKS
   const [showModal, setShowModal] = useState(false);
 
@@ -16,7 +15,10 @@ export default function WorkspaceContainer() {
         <button
           className="button is-small is-outlined button-padding-vertical button-hover-color"
           type="button"
-          onClick={ReqResCtrl.clearAllReqRes, ReqResCtrl.clearGraph}
+          onClick={() => {
+            ReqResCtrl.clearAllReqRes();
+            ReqResCtrl.clearGraph();
+          }}
         >
           Clear Workspace
         </button>

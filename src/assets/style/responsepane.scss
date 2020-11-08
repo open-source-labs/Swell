@@ -21,7 +21,7 @@
 
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 .cm-s-responsebody {
@@ -55,13 +55,30 @@
 
 table {
   margin-bottom: 2rem;
-  max-width: 200px;
-  overflow-wrap: break-word;
+  // max-width: 200px;
+  // overflow-wrap: break-word;
+}
+
+.extended {
+  max-width: 33.3vw;
+  overflow-x: hidden !important;
 }
 
 td {
   min-width: 6rem;
   max-width: 50%;
+}
+
+.table-value {
+  max-width: 60%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cookie-container {
+  // max-width: 100px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .cookie-container thead:hover {
@@ -72,15 +89,13 @@ td {
 
 // STATUS BUTTONS
 
-
 .status-tag {
   position: absolute;
   right: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0px 12px;
-  margin-top: 2px;
+  padding: 2px 12px;
   border: 0px;
   border-radius: 2px;
   font-family: "Roboto Mono", monospace;
@@ -88,9 +103,8 @@ td {
   font-size: 0.85rem;
 }
 
-
-.is-edit{
-  height:100%;
+.is-edit {
+  height: 100%;
 }
 
 .response-time-placement {
@@ -105,7 +119,7 @@ td {
 
 .response-size-placement {
   position: absolute;
-  left: 4rem;
+  left: 5rem;
   font-family: "Roboto Mono", monospace;
   font-weight: 600;
   font-size: 1rem;

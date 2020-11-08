@@ -100,7 +100,7 @@ export default function EventsContainer({currentResponse}) {
     );
   }
 
-  return <div className="tab_content-response">{displayContents}</div>;
+  return <div className="tab_content-response" id="events-display">{displayContents}</div>;
 
 
 }
