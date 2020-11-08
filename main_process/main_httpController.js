@@ -5,9 +5,13 @@ const http2 = require("http2");
 const setCookie = require("set-cookie-parser");
 const SSEController = require("./SSEController");
 
+// Use this for HTTPS cert when in Dev or Test environment and 
+// using a server with self-signed cert on localhost
+const LOCALHOST_CERT_PATH = 'test/HTTP2_cert.pem';
 
 const httpController = {
-  openHTTP2Connections: [],
+  openHTTP2Connections: {},
+  openHTTP2Streams: {},
 
   // ----------------------------------------------------------------------------
 
@@ -21,7 +25,7 @@ const httpController = {
   },
 
   closeHTTPconnection(event, reqResObj) {
-    if (reqResObj.isHTTP2) this.closeHTTP2Connection(event, reqResObj);
+    if (reqResObj.isHTTP2) this.closeHTTP2Stream(event, reqResObj);
     else this.closeHTTP1Connection(event, reqResObj);
   },
 
@@ -33,59 +37,54 @@ const httpController = {
     }
   },
 
-  closeHTTP2Connection(event, reqResObj) {
-
+  closeHTTP2Stream(event, reqResObj) {
+    const stream = this.openHTTP2Streams[reqResObj.id];
+    if (stream) {
+      stream.close();
+      delete this.openHTTP2Streams[reqResObj.id];
+    }
   },
 
   establishHTTP2Connection(event, reqResObj) {
     /*
-      Attempt to find an existing HTTP2 connection in openHTTP2Connections Array.
+      Looks for existing HTTP2 connection in openHTTP2Connections.
       If exists, use connection to initiate request
-      If not, create connection, push to array, and then initiate request
+      If not, create connection and save it to openHTTP2Connections, and then initiate request
     */
-    // finds if an http2connection to host exist, returns blank if no host connection exists
-    const foundHTTP2Connection = httpController.openHTTP2Connections.find(
-      (connection) => connection.host === reqResObj.host
-    );
+    const { host } = reqResObj;
+    const foundHTTP2Connection = httpController.openHTTP2Connections[host];
 
+    // --------------------------------------------------
     // EXISTING HTTP2 CONNECTION IS FOUND -----
-    let interval;
-
-    //if the connection is exist, check if destroyed/closed
+    // --------------------------------------------------
     if (foundHTTP2Connection) {
       const { client } = foundHTTP2Connection;
-
-      // periodically check if the client is open or destroyed, and attach if conditions are met
-      interval = setInterval(() => {
-        // if failed, could because of protocol error. try HTTP1
-        // if destroyed, remove from the conections array and try to create a newhttp2 connection
-        // create a new connection / http1?
+      
+      // periodically check connection status
+      // if destroyed or closed, remove from the conections collectoon and try to create a newhttp2 connection
+      // if failed (could be protocol error) move to HTTP1 and delete from http2 connections collection so user can try again
+      const interval = setInterval(() => {
         if (client.destroyed || client.closed) {
           clearInterval(interval);
-          this.openHTTP2Connections = this.openHTTP2Connections.filter(
-            (connection) => connection.host !== reqResObj.host
-          );
-          this.openHTTPconnection(event, reqResObj);
+          delete httpController.openHTTP2Connections[host];
+          httpController.openHTTPconnection(event, reqResObj);
         } else if (foundHTTP2Connection.status === "failed") {
           clearInterval(interval);
+          delete httpController.openHTTP2Connections[host];
           httpController.establishHTTP1connection(event, reqResObj);
         } else if (foundHTTP2Connection.status === "connected") {
           clearInterval(interval);
-          this.attachRequestToHTTP2Client(
-            client,
-            event,
-            reqResObj,
-          );
+          httpController.attachRequestToHTTP2Client(client, event, reqResObj);
         }
       }, 50);
-      // --------------------------------------------------
-      // if hasnt changed in 10 seconds, mark as error
-      // --------------------------------------------------
+
+      // if hasnt changed in 10 seconds, destroy client and clean up memory, send as error to front-end
       setTimeout(() => {
         clearInterval(interval);
         if (foundHTTP2Connection.status === "initialized") {
+          client.destroy();
+          delete httpController.openHTTP2Connections[host];
           reqResObj.connection = "error";
-          // SEND BACK REQ RES OBJECT TO RENDERER SO IT CAN UPDATE REDUX STORE
           event.sender.send("reqResUpdate", reqResObj);
         }
       }, 10000);
@@ -95,34 +94,29 @@ const httpController = {
     // --------------------------------------------------
     else {
       console.log("no pre-existing http2 found");
-      const id = Math.random() * 100000;
 
       const clientOptions = {}
-      if (reqResObj.host.includes('localhost')) {
-        clientOptions.ca = fs.readFileSync('test/HTTP2_cert.pem');
+      // for self-signed certs on localhost in dev and test environments
+      if (host.includes('localhost')) {
+        clientOptions.ca = fs.readFileSync(LOCALHOST_CERT_PATH);
       }
 
-      const client = http2.connect(reqResObj.host, clientOptions, () =>
-        console.log("connected!, reqRes.Obj.host", reqResObj.host)
+      const client = http2.connect(host, clientOptions, () =>
+        console.log("connected!, reqRes.Obj.host", host)
       );
 
-      // push HTTP2 connection to array
+      // save HTTP2 connection to open connection collection
       const http2Connection = {
         client,
-        id,
-        host: reqResObj.host,
         status: "initialized",
       };
-      httpController.openHTTP2Connections.push(http2Connection);
+      httpController.openHTTP2Connections[host] = http2Connection;
 
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
         client.destroy();
-        // if it exists in the openHTTP2Connections array, remove it
-        httpController.openHTTP2Connections = httpController.openHTTP2Connections.filter(
-          (conection) => conection.id !== id
-        );
+        delete httpController.openHTTP2Connections[host];
 
         // try again with fetch (HTTP1);
         httpController.establishHTTP1connection(event, reqResObj);
@@ -157,6 +151,9 @@ const httpController = {
     const reqStream = client.request(formattedHeaders, {
       endStream: false,
     });
+    // save stream to collection for later access
+    this.openHTTP2Streams[reqResObj.id] = reqStream;
+
     //now close the writable side of our stream
     if (reqResObj.request.method !== "GET" &&
       reqResObj.request.method !== "HEAD"
@@ -215,8 +212,9 @@ const httpController = {
     
     reqStream.on("end", () => {
       reqResObj.connection = "closed";
-      let dataEvent;
+      delete httpController.openHTTP2Streams[reqResObj.id];
 
+      let dataEvent;
       if (isSSE) {
         dataEvent = httpController.parseSSEFields(data);
         dataEvent.timeReceived = Date.now();
@@ -229,7 +227,6 @@ const httpController = {
       } else {
         dataEvent = data;
       }
-
       reqResObj.response.events.push(dataEvent);
       event.sender.send("reqResUpdate", reqResObj);
     });
