@@ -144,7 +144,8 @@ const httpController = {
     reqResObj.request.headers.forEach((header) => {
       formattedHeaders[header.key] = header.value;
     });
-    formattedHeaders[":path"] = reqResObj.path;
+    formattedHeaders[':path'] = reqResObj.path;
+    formattedHeaders[':method'] = reqResObj.request.method;
 
     // initiate request
     // do not immediately close the *writable* side of the http2 stream

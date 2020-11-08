@@ -11,10 +11,10 @@ const server = http2.createSecureServer({
 
 server.on('error', (err) => console.error(err));
 
-server.on('stream', (stream, headers) => {
+const dispatch = (stream, headers, body = '') => {
   // respond with SSE stream if request accepts stream in headers
   if (headers.accept && headers.accept.includes('stream')) {
-    sendStreamToClient(stream);
+    sendStreamToClient(stream, body);
     return;
   }
 
@@ -23,10 +23,23 @@ server.on('stream', (stream, headers) => {
     'content-type': 'application/json; charset=utf-8',
     ':status': 200
   });
-  stream.end(JSON.stringify({data: 'hello and goodbye'}));
+  stream.end(JSON.stringify({data: 'hello and goodbye' + body}));
+}
+
+server.on('stream', (stream, headers) => {
+  // dispatch async if there's a body
+  if (headers[':method'] !== 'GET') {
+    stream.on('data', (chunk) => {
+      dispatch(stream, headers, '- ' + chunk);
+    });
+  } else {
+    // otherwise dispatch sync
+    dispatch(stream, headers);
+  }
 });
 
-const sendStreamToClient = (stream) => {
+
+const sendStreamToClient = (stream, body) => {
   const STREAM_INTERVAL = 500;
   let count = 0;
   let streamIsOpen = true;
@@ -48,10 +61,10 @@ const sendStreamToClient = (stream) => {
     }
     count += 1;
     if (count < 50) {
-      stream.write(`id: ${count}\nevent: testMessage\ndata: hello\n\n`);
+      stream.write(`id: ${count}\nevent: testMessage\ndata: hello${body}\n\n`);
       setTimeout(() => sendEvent(stream), STREAM_INTERVAL);
     } else {
-      stream.end(`id: ${count}\nevent: testMessage\ndata: goodbye\n\n`);
+      stream.end(`id: ${count}\nevent: testMessage\ndata: goodbye${body}\n\n`);
       streamIsOpen = false;
       count = 0;
     }
