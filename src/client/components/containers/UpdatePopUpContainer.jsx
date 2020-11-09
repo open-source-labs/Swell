@@ -10,6 +10,7 @@ const UpdatePopUpContainer = (props) => {
 
   useEffect(() => {
     api.receive("message", (e, text) => {
+      console.log("AUTO-UPDATER STATUS: " + e);
       if (text) setMessage(text);
     });
   }, []);
@@ -20,7 +21,7 @@ const UpdatePopUpContainer = (props) => {
   };
 
   return message ? (
-    <div className="update_popup">
+    <div id="update-modal" className="update_popup">
       <p>{message}</p>
       {message === "Update downloaded." && (
         <>
@@ -28,12 +29,12 @@ const UpdatePopUpContainer = (props) => {
             Do you want to restart and install now? <br /> (If not, will
             auto-install on restart.)
           </p>
-          <button className="update popup-btn" onClick={handleUpdateClick}>
+          <button className="button is-small" onClick={handleUpdateClick}>
             Update
           </button>
         </>
       )}
-      <button className="dismiss popup-btn" onClick={() => setMessage(null)}>
+      <button className="button is-light is-small" onClick={() => setMessage(null)}>
         Dismiss
       </button>
     </div>
