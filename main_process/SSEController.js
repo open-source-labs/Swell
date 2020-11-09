@@ -7,6 +7,13 @@ const SSEController = {};
 // keep reference to what will be our EventSource that listens for SSE's
 SSEController.sseOpenConnections = {};
 
+SSEController.returnErrorToFrontEnd = (reqResObj, event, error) => {
+  reqResObj.connection = "error";
+  reqResObj.error = error;
+  reqResObj.response.events.push(error.message);
+  event.sender.send("reqResUpdate", reqResObj);
+}
+
 SSEController.createStream = (reqResObj, options, event) => {
   // got options from httpController
   const { headers } = options;
@@ -17,19 +24,23 @@ SSEController.createStream = (reqResObj, options, event) => {
     the first request was made to account for that time difference later on. */
   const startTime = Date.now(); 
 
-  console.log('in createStream')
-
-  http.get(headers.url, (res) => {
-    reqResObj.response.headers = {...res.headers};
-    reqResObj.connection = 'open'; 
-    reqResObj.connectionType = 'SSE';
-    // this is for purpose of logic in graph.jsx, which needs the entire req/res obj to have a timeReceived
-    reqResObj.timeReceived = Date.now();
-    // invoke function that will create an EventSource
-    SSEController.readStream(reqResObj, event, Date.now() - startTime);
-    res.destroy(); 
-  }).on('error', (e) => {
-    console.error(`Got error: ${e.message}`)});;
+  try {
+    http.get(headers.url, (res) => {
+      reqResObj.response.headers = {...res.headers};
+      reqResObj.connection = 'open'; 
+      reqResObj.connectionType = 'SSE';
+      // this is for purpose of logic in graph.jsx, which needs the entire req/res obj to have a timeReceived
+      reqResObj.timeReceived = Date.now();
+      // invoke function that will create an EventSource
+      SSEController.readStream(reqResObj, event, Date.now() - startTime);
+      res.destroy(); 
+    }).on('error', (e) => {
+      console.error(`Got error: ${e.message}`)
+    });
+  } catch (error) {
+    console.log('error making initial get reuest in SSE controller\n', error.message);
+    SSEController.returnErrorToFrontEnd(reqResObj, event, error);
+  }
 };
 
 SSEController.readStream = (reqResObj, event, timeDiff) => {
@@ -50,9 +61,10 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
     reqResObj.response.events.push(newMessage);
     return event.sender.send('reqResUpdate', reqResObj);
   }; 
-  sse.onerror = (err) => {
-    console.log('there was an error in SSEController.readStream', err);
+  sse.onerror = (error) => {
+    console.log('there was an error in SSEController.readStream', error);
     sse.close();
+    SSEController.returnErrorToFrontEnd(reqResObj, event, error);
   };
 };
 
