@@ -222,7 +222,7 @@ const SingleReqResContainer = (props) => {
       {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === "rest" && (
-            <RestRequestContent request={content.request} />
+            <RestRequestContent request={content.request} isHTTP2={isHTTP2}/>
           )}
           {network === "grpc" && (
             <GRPCRequestContent
