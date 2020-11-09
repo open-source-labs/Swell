@@ -12,6 +12,10 @@ const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
 
+  const currentResponse = useSelector(
+    (store) => store.business.currentResponse
+  );
+
   const newRequestFields = useSelector(
     (store) => store.business.newRequestFields
   );
@@ -168,8 +172,21 @@ const SingleReqResContainer = (props) => {
     reqResDelete(content);
   };
 
+  const getBorderClass = () => {
+    let classes = "highlighted-response ";
+    if (currentResponse.gRPC) classes += "is-grpc-border";
+    else if (currentResponse.graphQL) classes += "is-graphQL-border";
+    else if (currentResponse.request.method === "WS") classes += "is-ws-border";
+    else classes += "is-rest-border";
+    console.log("classes", classes);
+    return classes;
+  };
+
+  const highlightClasses =
+    currentResponse.id === content.id ? getBorderClass(currentResponse) : "";
+
   return (
-    <div className="m-3">
+    <div className={`m-3 ${highlightClasses}`}>
       {/* TITLE BAR */}
       <div className="is-flex cards-titlebar">
         <div
