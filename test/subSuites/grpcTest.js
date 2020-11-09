@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const sideBar = require("../pageObjects/Sidebar.js");
 const reqRes = require("../pageObjects/ReqRes.js");
-const grpcServer = require('../grpcServer')
+const grpcServer = require('../grpcServer.js')
 
 const expect = chai.expect;
 

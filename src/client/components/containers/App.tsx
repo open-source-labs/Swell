@@ -62,7 +62,6 @@ export class App extends React.Component<any, any> {
 
   render() {
     api.receive("fromMain", (data: {}) => console.log(data));
-    api.send("toMain", "MEAT WITH SAUCE");
     return (
       <div className='is-gapless is-tall'>
         <UpdatePopUpContainer />

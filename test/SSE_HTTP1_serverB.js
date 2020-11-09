@@ -2,7 +2,7 @@ const express = require('express');
 const SSE = require('express-sse');
 
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
 const sse = new SSE(['first message']);
 
