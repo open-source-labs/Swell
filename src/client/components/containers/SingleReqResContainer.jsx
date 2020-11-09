@@ -252,17 +252,6 @@ const SingleReqResContainer = (props) => {
         {connection === "uninitialized" && (
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
-            onClick={() => {
-              ReqResCtrl.openReqRes(content.id);
-            }}
-          >
-            Send
-          </button>
-        )}
-        {/* SEND BUTTON */}
-        {connection === "uninitialized" && (
-          <button
-            className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
             onClick={() => {
               ReqResCtrl.openReqRes(content.id);
