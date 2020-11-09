@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.6.1",
+  "version": "0.7.0 BETA",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -163,6 +163,26 @@
       "name": "Alex Sanhueza",
       "email": "https://www.linkedin.com/in/alex-sanhueza/",
       "url": "https://github.com/alexsanhueza"
+    },
+    {
+      "name": "Gary Slootskiy",
+      "email": "https://www.linkedin.com/in/garyslootskiy/",
+      "url": "https://github.com/garyslootskiy"
+    },
+    {
+      "name": "Robin Yoong",
+      "email": "https://www.linkedin.com/in/robinyoong/",
+      "url": "https://github.com/robinyoong"
+    },
+    {
+      "name": "Nathaniel Adams",
+      "email": "https://www.linkedin.com/in/adamsnathaniel/",
+      "url": "https://github.com/nathanielBadams"
+    },
+    {
+      "name": "Sam Haar",
+      "email": "https://www.linkedin.com/in/samhaar/",
+      "url": "https://github.com/samhaar"
     }
   ],
   "build": {

@@ -29,6 +29,28 @@ input:focus {
   overflow-y: hidden;
 }
 
+#update-modal {
+  position: absolute;
+  margin-bottom: 0;
+  width: 100%;
+  background-color: green;
+  height: 100px;
+  margin-top: auto;
+  z-index: 100;
+  opacity: 0.8;
+}
+
+#update-modal-2 {
+  position: absolute;
+  margin-bottom: 0;
+  width: 100%;
+  background-color: red;
+  height: 100px;
+  margin-top: auto;
+  z-index: 100;
+  opacity: 0.8;
+}
+
 body {
   height: 100%;
 }

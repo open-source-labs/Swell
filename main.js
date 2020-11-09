@@ -208,7 +208,7 @@ app.on("window-all-closed", () => {
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
-  log.info(text);
+  log.info(text); 
   if (mainWindow) {
     mainWindow.webContents.send("message", text);
   }
@@ -216,7 +216,9 @@ const sendStatusToWindow = (text) => {
 
 ipcMain.on("check-for-update", () => {
   //listens to ipcRenderer in UpdatePopUpContainer.jsx
-  if (!isDev) autoUpdater.checkForUpdates();
+  if (!isDev) {
+    autoUpdater.checkForUpdates();
+  }
 });
 autoUpdater.on("checking-for-update", () => {
   sendStatusToWindow("Checking for update...");
@@ -618,7 +620,7 @@ ipcMain.on("introspect", (event, introspectionObject) => {
   if (req.cookies.length) {
     cookies = req.cookies.reduce((acc, userCookie) => {
       if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
-      else return acc;
+      return acc;
     }, '');
   }
   headers.Cookie = cookies;

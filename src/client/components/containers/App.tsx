@@ -62,15 +62,18 @@ export class App extends React.Component<any, any> {
 
   render() {
     api.receive("fromMain", (data: {}) => console.log(data));
-    api.send("toMain", "MEAT WITH SAUCE");
     return (
-      <div id='app' className='columns is-gapless is-tall'>
-        <HashRouter>
-          <SidebarContainer/>
-          <ContentsContainer/>
-          <ResponsePaneContainer/>
-          {/* <UpdatePopUpContainer /> */}
-        </HashRouter> 
+      <div className='is-gapless is-tall'>
+        <UpdatePopUpContainer />
+        
+        <div id='app' className='columns is-gapless is-tall'>
+          <HashRouter>
+            <SidebarContainer/>
+            <ContentsContainer/>
+            <ResponsePaneContainer/>
+          </HashRouter> 
+        </div>
+        
       </div>
     );
   }
