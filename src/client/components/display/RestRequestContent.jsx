@@ -2,7 +2,7 @@ import React from "react";
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import ContentReqRow from './ContentReqRow';
 
-export default function RestRequestContent({ request }) {
+export default function RestRequestContent({ request, isHTTP2 }) {
 
   // ORGANIZE PROPS
   const { 
@@ -11,15 +11,6 @@ export default function RestRequestContent({ request }) {
     body, // "body Content text"
     bodyType, // "raw", x-www-form-urlencoded
     rawType, // "Text (text/plain)"
-    // rawType Options: 
-    // Text (text/plain)
-    // text/plain
-    // application/json
-    // application/javascript
-    // application/xml
-    // text/html
-    // text/xml
-    // raw
     isSSE, // false/true
   } = request;
 
@@ -62,6 +53,14 @@ export default function RestRequestContent({ request }) {
     <div>
       {/* REQUEST DETAILS */}
       <div className="p-3">
+         {/* SSE CONFIRMATION */}
+        { isSSE &&
+          <div className="is-size-7">SSE</div>
+        }
+        {/* HTTP2 CONFIRMATION */}
+        { isHTTP2 &&
+          <div className="is-size-7 olor-is-success">HTTP2 Connection Established</div>
+        }
         {/* HEADERS */}
         {headerRows.length > 0 && 
           <div className="is-size-7">Headers</div>
@@ -97,12 +96,6 @@ export default function RestRequestContent({ request }) {
               {formRows}
             </div>
           }
-        {/* SSE CONFIRMATION */}
-        { isSSE && 
-          <div className="is-size-7"> 
-            SSE: true
-          </div>
-        }
       </div>
     </div>
   )
