@@ -18,15 +18,7 @@ export default function EventsContainer({currentResponse}) {
     
   const { events, headers } = response;
   
-  const codeMirrorOptions = {
-    mode: 'application/json',
-    lineNumbers: true,
-    tabSize: 4,
-    lineWrapping: true,
-    readOnly: true,
-  };
-
-  let displayContents;
+  let responseBody = '';
 
   // If it's a stream
   if (
@@ -40,35 +32,31 @@ export default function EventsContainer({currentResponse}) {
       events.length > 1
     )
   ) {
-    displayContents = events.map((event, idx) => (
-      <div className="json-response" key={`jsonresponsediv${idx}`}>
-        <CodeMirror
-          key={`streamResponse${idx}`}
-          id={`streamResponse${idx}`}
-          value={JSON.stringify(event, null, 4)}
-          options={{
-            ...codeMirrorOptions,
-            theme: 'neo responsebody-stream',
-          }}
-        />
-      </div>
-    ));
-  } 
-
-  // Otherwise, render a single display
+    events.forEach((event, idx) => {
+      const eventStr = JSON.stringify(event, null, 4);
+      responseBody += `-------------Stream Event ${idx + 1}-------------\n${eventStr}\n\n`;
+    });
+  }
+  // If it's a single response
   else {
-    displayContents = (
-      <CodeMirror
-        value={JSON.stringify(events[0], null, 4)}
-        options={{
-          ...codeMirrorOptions,
-          theme: 'neo responsebody',
-        }}
-      />
-    );
+    responseBody = JSON.stringify(events[0], null, 4);
   }
 
-  return <div className="tab_content-response" id="events-display">{displayContents}</div>;
+  return (
+    <div className="tab_content-response" id="events-display">
+      <CodeMirror
+        value={responseBody}
+        options={{
+          mode: 'application/json',
+          theme: 'neo responsebody',
+          lineNumbers: true,
+          tabSize: 4,
+          lineWrapping: true,
+          readOnly: true,
+        }}
+      />
+    </div>
+  );
 
 
 }
