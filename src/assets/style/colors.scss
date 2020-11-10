@@ -1,13 +1,13 @@
-$primary-100: #FFD645;
-$primary-200: #F66B61;
-$primary-300: #21D4A4;
-$primary-400: #50809B;
-$primary-500: #3734A9;
+$primary-100: #ffd645;
+$primary-200: #f66b61;
+$primary-300: #21d4a4;
+$primary-400: #50809b;
+$primary-500: #3734a9;
 
-$rest: #6843FF;
-$graphql: #DE33A6;
-$grpc: #6CACC1;
-$websockets: #F47D31;
+$rest: #6843ff;
+$graphql: #de33a6;
+$grpc: #6cacc1;
+$websockets: #f47d31;
 
 $neutral-100: #ffffff;
 $neutral-200: #f4f5f7;
@@ -27,7 +27,6 @@ $text: $neutral-500;
 // $warning: $yellow
 // $dark: $grey-darker
 
-
 // COLOR SCHEMES
 .is-primary-100 {
   color: $neutral-500 !important;
@@ -40,8 +39,8 @@ $text: $neutral-500;
 }
 
 .is-rest {
-  color: $neutral-200  !important;
-  background-color: $rest  !important;
+  color: $neutral-200 !important;
+  background-color: $rest !important;
 }
 
 .is-graphQL {
@@ -60,7 +59,7 @@ $text: $neutral-500;
 }
 
 .is-rest-color {
-  color: $rest  !important;
+  color: $rest !important;
 }
 
 .is-graphQL-color {
@@ -73,6 +72,22 @@ $text: $neutral-500;
 
 .is-ws-color {
   color: $websockets !important;
+}
+
+.is-rest-border {
+  border-color: $rest !important;
+}
+
+.is-graphQL-border {
+  border-color: $graphql !important;
+}
+
+.is-grpc-border {
+  border-color: $grpc !important;
+}
+
+.is-ws-border {
+  border-color: $websockets !important;
 }
 
 .is-neutral-300 {
@@ -100,7 +115,6 @@ $text: $neutral-500;
   color: $neutral-100;
 }
 
-
 .is-border-neutral-300 {
   border: 1px solid $neutral-300;
 }
@@ -117,6 +131,6 @@ $text: $neutral-500;
   fill: $neutral-200;
   line-height: 1;
   position: relative;
-  top: -.07em;
+  top: -0.07em;
   vertical-align: middle;
 }

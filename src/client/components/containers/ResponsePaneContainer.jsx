@@ -97,7 +97,8 @@ export const ResponsePaneContainer = (store) => {
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
           {currentResponse.id &&
             currentResponse.request?.method !== "WS" &&
-            currentResponse.request?.method !== "SUBSCRIPTION" && (
+            currentResponse.request?.method !== "SUBSCRIPTION" && 
+            currentResponse.connection === 'closed' && (
               <div className="is-3rem-footer mx-3">
                 <button
                   className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
@@ -115,7 +116,8 @@ export const ResponsePaneContainer = (store) => {
       {/* CLOSE RESPONSE BUTTON */}
       {(currentResponse.request?.method === "WS" ||
         currentResponse.request?.method === "SUBSCRIPTIONS" ||
-        currentResponse.request?.isSSE) &&
+        currentResponse.request?.isSSE ||
+        currentResponse.isHTTP2) &&
         connection === "open" && (
           <div className="is-3rem-footer ml-3 mr-3">
             <button
@@ -129,10 +131,9 @@ export const ResponsePaneContainer = (store) => {
             </button>
           </div>
         )}
-      {/* RENDER OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
+      {/* RENDER RE-OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
       {(currentResponse.request?.method === "WS" ||
-        currentResponse.request?.method === "SUBSCRIPTIONS" ||
-        currentResponse.request?.isSSE) &&
+        currentResponse.request?.method === "SUBSCRIPTIONS") &&
         connection === "closed" && (
           <div className="is-3rem-footer mx-3">
             <button
