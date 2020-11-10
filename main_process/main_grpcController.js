@@ -6,24 +6,18 @@ const protoLoader = require("@grpc/proto-loader");
 const grpcController = {};
 
 grpcController.openGrpcConnection = (event, reqResObj) => {
-  //check for connection, if not open one
-
+  
+  const { service, rpc, packageName, url, queryArr } = reqResObj;
+  
   reqResObj.connectionType = "GRPC";
   reqResObj.response.times = [];
-
-  // build out variables from reqresObj properties
-  const { service, rpc, packageName, url, queryArr } = reqResObj;
-  const services = reqResObj.servicesObj;
-  if (reqResObj.response.events === null) {
-    reqResObj.response.events = [];
-  }
-  if (reqResObj.response.headers === null) {
-    reqResObj.response.headers = {};
-  }
-
+  reqResObj.response.headers = {};
+  reqResObj.response.events = [];
+  
   // go through services object, find service where name matches our passed
   // in service, then grab the rpc list of that service, also save that service
   // let rpcList;
+  const services = reqResObj.servicesObj;
   let foundService;
   let rpcType;
   let foundRpc;
@@ -66,7 +60,6 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
   }
 
   if (rpcType === "UNARY") {
-    console.log("\n \n inside UNARY if statement");
     const query = reqResObj.queryArr[0];
     const time = {};
 
@@ -102,7 +95,6 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       });
 
   } else if (rpcType === "SERVER STREAM") {
-    console.log("SERVER STREAM inside gRPC");
     const timesArr = [];
     // Open Connection for SERVER Stream
     reqResObj.connection = "open";
@@ -112,18 +104,10 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       const time = {};
       time.timeReceived = Date.now();
       time.timeSent = reqResObj.timeSent;
-      // add server response to reqResObj and dispatch to state/store
-      if (!reqResObj.response.events[0]) {
-        reqResObj.response.events[0] = {}
-        reqResObj.response.events[0].response = [];
-        reqResObj.response.events[0].response.push(resp)
-      }
-      else {
-        reqResObj.response.events[0].response.push(resp)
-      }
       reqResObj.response.times.push(time);
       reqResObj.timeReceived = time.timeReceived; //  overwritten on each call to get the final value
-
+      
+      reqResObj.response.events.push(resp);
       event.sender.send("reqResUpdate", reqResObj);
     });
     call.on("error", () => {
@@ -145,7 +129,6 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       event.sender.send("reqResUpdate", reqResObj);
     });
   } else if (rpcType === "CLIENT STREAM") {
-    console.log("CLIENT STREAM inside gRPC");
     // create call and open client stream connection
     reqResObj.connection = "open";
     const timeSent = Date.now();
@@ -196,7 +179,6 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
 
   //else BIDIRECTIONAL
   else {
-    console.log("BIDIRECTIONAL gRPC");
     let counter = 0;
     const call = client[rpc](meta);
     call.on("data", (response) => {
