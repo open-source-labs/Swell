@@ -1,9 +1,6 @@
 import React from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
-import JSONPretty from "react-json-pretty";
-import createDOMPurify from "dompurify";
 import EmptyState from '../display/EmptyState';
-import SSERow from "../display/SSERow.jsx";
 import 'codemirror/theme/neo.css'
 
 
@@ -12,7 +9,7 @@ export default function EventsContainer({currentResponse}) {
   const { response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return (
-      <EmptyState />
+      <EmptyState connection={currentResponse.connection}/>
     );
   }
     
@@ -41,7 +38,6 @@ export default function EventsContainer({currentResponse}) {
   else {
     responseBody = JSON.stringify(events[0], null, 4);
   }
-
   return (
     <div className="tab_content-response" id="events-display">
       <CodeMirror
@@ -54,7 +50,6 @@ export default function EventsContainer({currentResponse}) {
           lineWrapping: true,
           readOnly: true,
         }}
-        editorDidMount={e => e.setSize(null, "auto")}
       />
     </div>
   );

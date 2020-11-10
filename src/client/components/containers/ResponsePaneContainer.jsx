@@ -84,9 +84,9 @@ export const ResponsePaneContainer = (store) => {
           </div>
           {/* RESPONSES CONTENT */}
           <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column remove-horizontal-scroll">
-            {activeTab === "events" && (
+            {activeTab === "events" && 
               <EventsContainer currentResponse={currentResponse} />
-            )}
+            }
             {activeTab === "headers" && (
               <HeadersContainer currentResponse={currentResponse} />
             )}
