@@ -54,6 +54,7 @@ export default function EventsContainer({currentResponse}) {
           lineWrapping: true,
           readOnly: true,
         }}
+        editorDidMount={e => e.setSize(null, "auto")}
       />
     </div>
   );
