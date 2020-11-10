@@ -13,10 +13,13 @@
 }
 
 .is-not-8rem-tall {
-  height: calc(100%-8rem) !important;
+  height: calc(100% - 8rem) !important;
 }
 .is-not-5rem-tall {
-  height: calc(100%-5rem) !important;
+  height: calc(100% - 5rem) !important;
+}
+.is-not-2-5-rem-tall {
+  height: calc(100% - 2.5rem) !important;
 }
 
 // EVENTS (CODEMIRROR STYLES)

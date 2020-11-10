@@ -53,7 +53,7 @@ export const ResponsePaneContainer = (store) => {
 
       {/* IF NOT WEBSOCKETS */}
       {currentResponse.request?.network !== "ws" && (
-        <div className="is-flex is-flex-direction-column is-tall">
+        <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
           {/* TAB SELECTOR */}
           <div className="tabs header-bar">
             <ul className="columns is-gapless">
