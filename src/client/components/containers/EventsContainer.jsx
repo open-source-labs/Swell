@@ -8,86 +8,44 @@ import 'codemirror/theme/neo.css'
 
 
 export default function EventsContainer({currentResponse}) {
-
-  if (!currentResponse.response) {
+  
+  const { response } = currentResponse;
+  if (!response || !response.events || response.events.length < 1) {
     return (
       <EmptyState />
-    )
+    );
   }
+    
+  const { events, headers } = response;
+  
+  let responseBody = '';
 
-  const { events, headers } = currentResponse.response;
-  let displayContents;
-
-  // If it's an SSE, render event rows
-  // console.log('response is : ', response, 'headers is : ', headers)
+  // If it's a stream
   if (
-    headers && 
-    headers["content-type"] &&
-    headers["content-type"] === "text/event-stream"
+    (
+      headers && 
+      headers["content-type"] &&
+      headers["content-type"].includes('stream')
+    ) ||
+    (
+      events && 
+      events.length > 1
+    )
   ) {
-    // console.log('EventsContainer1')
-    displayContents = [];
-    events.forEach((cur, idx) => {
-      displayContents.push(<SSERow key={idx} content={cur} />);
+    events.forEach((event, idx) => {
+      const eventStr = JSON.stringify(event, null, 4);
+      responseBody += `-------------Stream Event ${idx + 1}-------------\n${eventStr}\n\n`;
     });
   }
-  // if the response content-type, purify and render html
-  else if (
-    headers &&
-    headers["content-type"] &&
-    headers["content-type"].includes("text/html")
-  ) {
-    // console.log('EventsContainer2')
-
-    // console.log("headers:content-type ->", headers["content-type"]);
-    // console.log("events0 -> ", events[0]);
-    displayContents = (
-      <div
-        className="okay"
-        key="http2_html_content"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html: createDOMPurify.sanitize(events[0]),
-        }}
-      />
-    );
-  } else if (events && events.length > 1) {
-    // console.log('EventsContainer3')
-
-    if (events) {
-      let resEvents = "";
-      let eventJSON;
-      for (const event of events) {
-        eventJSON = JSON.stringify(event, null, 4);
-        resEvents = resEvents + '\n' + eventJSON;
-      }
-      displayContents = (
-        <div className="json-response" key="jsonresponsediv">
-        <CodeMirror
-          // value={JSON.stringify(resEvents, null, 4)}
-          value={resEvents}
-          options={{
-            mode: 'application/json',
-            theme: 'neo responsebody',
-            lineNumbers: true,
-            tabSize: 4,
-            lineWrapping: true,
-            readOnly: true,
-            setSize: '100%',
-          }}
-        />
-        </div>
-      ); 
-    }
+  // If it's a single response
+  else {
+    responseBody = JSON.stringify(events[0], null, 4);
   }
 
-  // Otherwise, render a single display
-  else if (events) {
-    // console.log('EventsContainer4')
-
-    displayContents = (
+  return (
+    <div className="tab_content-response" id="events-display">
       <CodeMirror
-        value={JSON.stringify(events[0], null, 4)}
+        value={responseBody}
         options={{
           mode: 'application/json',
           theme: 'neo responsebody',
@@ -97,10 +55,8 @@ export default function EventsContainer({currentResponse}) {
           readOnly: true,
         }}
       />
-    );
-  }
-
-  return <div className="tab_content-response" id="events-display">{displayContents}</div>;
+    </div>
+  );
 
 
 }
