@@ -3,17 +3,14 @@ import { connect } from "react-redux";
 
 const { api } = window;
 
-const mapDispatchToProps = (dispatch) => ({});
+const UpdatePopUpContainer = ({ message, setMessage }) => {
 
-const UpdatePopUpContainer = (props) => {
-  const [message, setMessage] = useState(null);
-
-  useEffect(() => {
+  useEffect(()=>{
     api.receive("message", (e, text) => {
       console.log("AUTO-UPDATER STATUS: " + e);
       if (text) setMessage(text);
     });
-  }, []);
+  });
 
   const handleUpdateClick = () => {
     api.send("quit-and-install");
@@ -21,24 +18,26 @@ const UpdatePopUpContainer = (props) => {
   };
 
   return message ? (
-    <div id="update-modal" className="update_popup">
-      <p>{message}</p>
+    <div id="update-modal">
+      <span>{message}</span>
       {message === "Update downloaded." && (
         <>
-          <p className="updateMessage">
-            Do you want to restart and install now? <br /> (If not, will
+          <span className="updateMessage">
+            Do you want to restart and install now? (If not, will
             auto-install on restart.)
-          </p>
-          <button className="button is-small" onClick={handleUpdateClick}>
-            Update
-          </button>
+          </span>
         </>
       )}
-      <button className="button is-light is-small" onClick={() => setMessage(null)}>
+      <button className="button is-small modal-button" onClick={() => setMessage(null)}>
         Dismiss
       </button>
+      {message === "Update downloaded." && (
+        <button className="button is-small is-full-width modal-button-update" onClick={handleUpdateClick}>
+          Update
+        </button>
+      )}
     </div>
   ) : null;
 };
 
-export default connect(null, mapDispatchToProps)(UpdatePopUpContainer);
+export default UpdatePopUpContainer;
