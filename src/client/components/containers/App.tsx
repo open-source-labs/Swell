@@ -40,7 +40,6 @@ export const App = () => {
   
   return (
     <div className='is-gapless is-tall'>
-      {/* <div id='app' className='columns is-gapless'> */}
       <div id='app' className={`columns is-gapless ${!message &&'is-tall'} ${message &&'is-tall-message'}`}>
         <HashRouter>
           <SidebarContainer/>
