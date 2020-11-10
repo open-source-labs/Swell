@@ -34,7 +34,8 @@ const connectionController = {
     // REST EVENTS
     api.receive("reqResUpdate", (reqResObj) => {
       if (
-        (reqResObj.connection === "closed" || reqResObj.connection === "error") &&
+        (reqResObj.connection === "closed" ||
+          reqResObj.connection === "error") &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
@@ -58,7 +59,7 @@ const connectionController = {
       //update the connectionArray when connection is open from ws
       api.receive("update-connectionArray", (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
-      })
+      });
     }
     //gRPC connection
     else if (reqResObj.gRPC) {
@@ -84,30 +85,30 @@ const connectionController = {
   },
 
   setReqResConnectionToClosed(id) {
-    
     const reqResArr = store.default.getState().business.reqResArray;
-    const foundReqRes = JSON.parse( JSON.stringify( reqResArr.find( (reqRes) => reqRes.id === id )));
-    console.log ('setReqResConnectionToClosed',foundReqRes.connection);
+    const foundReqRes = JSON.parse(
+      JSON.stringify(reqResArr.find((reqRes) => reqRes.id === id))
+    );
+    console.log("setReqResConnectionToClosed", foundReqRes.connection);
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
     store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));
   },
 
   closeReqRes(reqResObj) {
-    
-    if (reqResObj.protocol.includes('http')){
-      api.send('close-http', reqResObj);
+    if (reqResObj.protocol.includes("http")) {
+      api.send("close-http", reqResObj);
     }
-    
+
     const { id } = reqResObj;
     this.setReqResConnectionToClosed(id);
-    
+
     // WS is the only protocol using openConnectionArray
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-    if (foundAbortController && foundAbortController.protocol === 'WS') {
-        api.send('close-ws')
+    if (foundAbortController && foundAbortController.protocol === "WS") {
+      api.send("close-ws");
     }
     this.openConnectionArray = this.openConnectionArray.filter(
       (obj) => obj.id !== id
@@ -138,9 +139,13 @@ const connectionController = {
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-  //clears dataPoints from state
+  //clears a dataPoint from state
   clearGraph() {
     store.default.dispatch(actions.clearGraph());
+  },
+  // clears ALL data points from state
+  clearAllGraph() {
+    store.default.dispatch(actions.clearAllGraph());
   },
 };
 
