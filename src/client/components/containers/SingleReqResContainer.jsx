@@ -272,6 +272,7 @@ const SingleReqResContainer = (props) => {
             id={`send-button-${index}`}
             onClick={() => {
               ReqResCtrl.openReqRes(content.id);
+              dispatch(actions.saveCurrentResponseData(content));
             }}
           >
             Send
