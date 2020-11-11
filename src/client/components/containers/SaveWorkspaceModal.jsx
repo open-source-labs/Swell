@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import uuid from "uuid/v4";
 import collectionsController from "../../controllers/collectionsController.js";
 import SaveModalSavedWorkspaces from "../display/SaveModalSavedWorkspaces.jsx";
-import * as actions from "../../../../src/client/actions/actions.js";
+import * as actions from "../../actions/actions.js";
 
 export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
@@ -111,14 +111,6 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
               {/* SELECT EXISTING SAVED WORKSPACE TO WRITE OVER */}
               <h1 className="m-3">Select saved workspace to write over</h1>
               {workspaceComponents}
-
-
-
-
-
-
-
-
               <hr/>        
               {/* INPUT YOUR OWN NAME */}
               <h1 className="m-3">Name your saved workspace</h1>

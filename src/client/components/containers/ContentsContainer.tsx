@@ -9,6 +9,7 @@ export const ContentsContainer = () => {
   // const [activeTab, setActiveTab] = useState('workspace');
   const dispatch = useDispatch();
   const activeTab = useSelector(store => store.ui.workspaceActiveTab);
+  const currentResponse = useSelector(store => store.business.currentResponse);
   const setActiveTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
 
   const [showGraph, setShowGraph] = useState(false);
@@ -51,7 +52,7 @@ export const ContentsContainer = () => {
       </div>
 
       {/* BARGRAPH CONTENT */}
-
+      { currentResponse.id &&
         <div 
           className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
           onClick={() => setShowGraph(showGraph === false)}
@@ -63,6 +64,7 @@ export const ContentsContainer = () => {
               'View Response History'
             }
         </div>
+      }
         {showGraph &&
           <div>
           <BarGraph />

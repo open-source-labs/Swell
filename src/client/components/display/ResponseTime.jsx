@@ -1,8 +1,6 @@
 import React from 'react'
 
 function ResponseTime({ currentResponse }) {
-  // console.log('Console from Status Buttons ==> ', currentResponse)
-  // currentResponse.response.headers.status
 
   
   if (!currentResponse ||

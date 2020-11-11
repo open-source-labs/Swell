@@ -71,6 +71,9 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     client[rpc](query, meta, (err, data) => {
       if (err) {
         console.log("unary error", err);
+        reqResObj.connection = "error";
+        event.sender.send("reqResUpdate", reqResObj);
+        return;
       }
       // Close Connection and set time received for Unary
       reqResObj.timeSent = time.timeSent;
@@ -113,10 +116,12 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     call.on("error", () => {
       // for fatal error from server
       console.log("server side stream error");
+      reqResObj.connection = "error";
+      event.sender.send("reqResUpdate", reqResObj);
     });
     call.on("end", () => {
       // Close Connection for SERVER Stream
-      reqResObj.connection = "closed";
+      if(reqResObj.connection !== 'error') reqResObj.connection = "closed";
       // no need to push response to reqResObj, no event expected from on 'end'
       event.sender.send("reqResUpdate", reqResObj);
     });
@@ -136,6 +141,9 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     const call = client[rpc](meta, function (error, response) {
       if (error) {
         console.log("error in client stream", error);
+        reqResObj.connection = "error";
+        event.sender.send("reqResUpdate", reqResObj);
+        return;
       }
       //Close Connection for client Stream
       reqResObj.connection = "closed";
@@ -168,10 +176,6 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
 
       time.timeSent = timeSent;
       reqResObj.response.times.push(time);
-
-      //reqResObj.connectionType = 'plain';
-      // reqResObj.timeSent = Date.now();
-
       call.write(query);
     }
     call.end();
@@ -203,10 +207,12 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     });
     call.on("error", () => {
       console.log("server ended connection with error");
+      reqResObj.connection = "error";
+      event.sender.send("reqResUpdate", reqResObj);
     });
     call.on("end", (data) => {
       //Close Final Server Connection for BIDIRECTIONAL Stream
-      reqResObj.connection = "closed";
+      if(reqResObj.connection !== 'error') reqResObj.connection = "closed";
       // no need to push response to reqResObj, no event expected from on 'end'
       event.sender.send("reqResUpdate", reqResObj);
     });

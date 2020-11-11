@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { HashRouter } from "react-router-dom";
 import "../../../assets/style/App.scss";
 import { ContentsContainer } from "./ContentsContainer";
@@ -7,9 +7,7 @@ import historyController from "../../controllers/historyController";
 import collectionsController from "../../controllers/collectionsController";
 import UpdatePopUpContainer from "./UpdatePopUpContainer";
 import ResponsePaneContainer from "./ResponsePaneContainer";
-// import ReqResCtrl from '../../controllers/reqResController';
 
-//const { api } = window;
 declare global {
   interface Window {
     api: any;
@@ -17,14 +15,10 @@ declare global {
 }
 
 let api = window.api;
-// const EventEmitter = require('events');
-// const {dialog} = require('electron').remote
-export class App extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-  }
+export const App = () => {
+  const [message, setMessage] = useState(null);
 
-  componentDidMount() {
+  useEffect(() => {
     api.send("check-for-update");
     // This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
     // current disabled as none of us have a touch bar. If activated, follow the api.send method.
@@ -37,46 +31,21 @@ export class App extends React.Component<any, any> {
     // ipcRenderer.on('expandAll', ReqResCtrl.expandAllReqRes);
     // ipcRenderer.on('clearAll', ReqResCtrl.clearAllReqRes);
 
-    // window on error fires for any error in program, opens a dialog allowing
-    // user to continue or refresh.
-    // refresh sends to ipcMain
-    let errorCount: number = 0;
-    // window.onerror = (error, url, line) => {
-    //   // implement an error counter and a check for odd numbered errors due to
-    //   // behavior of react cross origin error in electron. This attempts to ignore
-    //   // the second error message from react that accompanies each error. Prevents
-    //   // consecutive error box popups. Also ignores HTTP Protocol errors from the
-    //   // auto switch from HTTP2 to HTTP1
-    //   errorCount++
-    //   if (errorCount % 2 !== 0 && error !== 'Uncaught Error: Protocol error' ) {
-    //     let answer = dialog.showMessageBoxSync({title: `Application Error (${errorCount})`,message: `(${errorCount}) An error has occurred, you can click Continue to keep working or click Refresh Page to refresh`, buttons: ['Refresh Page', 'Continue']})
-    //     if (answer === 0) {
-    //       ipcRenderer.send('fatalError')
-    //     }
-    //   }
-    // }
-
     historyController.getHistory();
     collectionsController.getCollections();
-  }
-
-  render() {
-    api.receive("fromMain", (data: {}) => console.log(data));
-    return (
-      <div className='is-gapless is-tall'>
-        <UpdatePopUpContainer />
-        
-        <div id='app' className='columns is-gapless is-tall'>
-          <HashRouter>
-            <SidebarContainer/>
-            <ContentsContainer/>
-            <ResponsePaneContainer/>
-          </HashRouter> 
-        </div>
-        
+    
+  });
+  
+  return (
+    <div className='is-gapless is-tall'>
+      <div id='app' className={`columns is-gapless ${!message &&'is-tall'} ${message &&'is-tall-message'}`}>
+        <HashRouter>
+          <SidebarContainer/>
+          <ContentsContainer/>
+          <ResponsePaneContainer/>
+        </HashRouter> 
       </div>
-    );
-  }
+      <UpdatePopUpContainer message={message} setMessage={setMessage}/>
+    </div>
+  );
 }
-
-//export default App;

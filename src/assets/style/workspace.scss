@@ -20,11 +20,6 @@
   cursor: pointer;
 }
 
-.is-tall {
-  height: 100% !important;
-  // min-height: 100%;
-}
-
 .highlighted-response {
   border-radius: 0px 0px 5px 5px;
   border: 2px solid lightgray;
@@ -49,13 +44,6 @@
 }
 
 .connection-uninitialized {
-  // border-radius: 30px;
-  // background-color: red;
-  // height: 12px;
-  // width: 12px;
-  // position: relative;
-  // display: inline-block;
-  // text-align: center;
 }
 
 .connection-closedsocket {

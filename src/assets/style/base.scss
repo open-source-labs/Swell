@@ -30,25 +30,41 @@ input:focus {
 }
 
 #update-modal {
-  position: absolute;
-  margin-bottom: 0;
-  width: 100%;
-  background-color: green;
-  height: 100px;
-  margin-top: auto;
-  z-index: 100;
+  position: relative;
+  width: 100%; 
+  background-color: $neutral-500;
+  color: $neutral-100;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 2.5rem !important;
+  // z-index: 100;
   opacity: 0.8;
+  margin: 0;
+  padding: 0;
+  top: 0;
 }
 
-#update-modal-2 {
-  position: absolute;
-  margin-bottom: 0;
-  width: 100%;
-  background-color: red;
-  height: 100px;
-  margin-top: auto;
-  z-index: 100;
-  opacity: 0.8;
+.modal-button {
+  min-width: 20% !important;
+  background-color: $neutral-500 !important;
+  color: $neutral-300 !important;
+}
+
+.modal-button-update {
+  min-width: 20% !important;
+  background-color: $primary-100 !important;
+  color: $neutral-500 !important;
+  border-color: $neutral-500;
+}
+
+.is-tall {
+  height: 100% !important;
+}
+
+.is-tall-message {
+  height: calc(100% - 2.5rem) !important;
+  margin-bottom: 0 !important;
 }
 
 body {
@@ -56,8 +72,6 @@ body {
 }
 
 html {
-  // background-color: #eeeeee;
-  // overflow: hidden;
   height: 100% !important;
 }
 

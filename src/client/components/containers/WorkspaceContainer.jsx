@@ -17,7 +17,7 @@ export default function WorkspaceContainer() {
           type="button"
           onClick={() => {
             ReqResCtrl.clearAllReqRes();
-            ReqResCtrl.clearGraph();
+            ReqResCtrl.clearAllGraph();
           }}
         >
           Clear Workspace
