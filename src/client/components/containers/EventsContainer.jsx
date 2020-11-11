@@ -6,7 +6,7 @@ import 'codemirror/theme/neo.css'
 
 export default function EventsContainer({currentResponse}) {
   
-  const { response } = currentResponse;
+  const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return (
       <EmptyState connection={currentResponse.connection}/>
@@ -17,21 +17,21 @@ export default function EventsContainer({currentResponse}) {
   
   let responseBody = '';
 
-  // If it's a stream
+  // If it's a stream or graphQL subscription
   if (
-    (
-      headers && 
-      headers["content-type"] &&
-      headers["content-type"].includes('stream')
-    ) ||
-    (
-      events && 
-      events.length > 1
-    )
+    (events && events.length > 1) ||
+    (headers?.["content-type"] && headers["content-type"].includes('stream')) ||
+    (currentResponse.graphQL && request.method === 'SUBSCRIPTION')
   ) {
+
+    let eventType = 'Stream';
+    if (currentResponse.graphQL && request.method === 'SUBSCRIPTION') {
+      eventType = 'Subscription'
+    }
+
     events.forEach((event, idx) => {
       const eventStr = JSON.stringify(event, null, 4);
-      responseBody += `-------------Stream Event ${idx + 1}-------------\n${eventStr}\n\n`;
+      responseBody += `-------------${eventType} Event ${idx + 1}-------------\n${eventStr}\n\n`;
     });
   }
   // If it's a single response

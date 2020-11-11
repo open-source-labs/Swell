@@ -115,7 +115,7 @@ export const ResponsePaneContainer = () => {
       )}
       {/* CLOSE RESPONSE BUTTON */}
       {(currentResponse.request?.method === "WS" ||
-        currentResponse.request?.method === "SUBSCRIPTIONS" ||
+        currentResponse.request?.method === "SUBSCRIPTION" ||
         currentResponse.request?.isSSE ||
         currentResponse.isHTTP2) &&
         connection === "open" && (
@@ -133,7 +133,7 @@ export const ResponsePaneContainer = () => {
         )}
       {/* RENDER RE-OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
       {(currentResponse.request?.method === "WS" ||
-        currentResponse.request?.method === "SUBSCRIPTIONS") &&
+        currentResponse.request?.method === "SUBSCRIPTION") &&
         (connection === "closed" || connection === "error") && (
           <div className="is-3rem-footer mx-3">
             <button
