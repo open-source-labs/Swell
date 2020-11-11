@@ -16,11 +16,15 @@ class HeaderEntryForm extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.newRequestHeaders.headersArr.length === 0) {
-      const headersDeepCopy = JSON.parse(
-        JSON.stringify(this.props.newRequestHeaders.headersArr)
-      );
-      this.addHeader(headersDeepCopy);
+    const headersDeepCopy = JSON.parse(
+      JSON.stringify(this.props.newRequestHeaders.headersArr)
+    );
+    const lastHeader = headersDeepCopy[headersDeepCopy.length - 1];
+    if (
+      lastHeader?.key !== "" &&
+      lastHeader?.key.toLowerCase() !== "content-type"
+    ) {
+      this.addHeader();
     }
     this.checkContentTypeHeaderUpdate();
   }
@@ -122,7 +126,6 @@ class HeaderEntryForm extends Component {
 
   onChangeUpdateHeader(id, field, value) {
     // console.log("all headers", this.props.newRequestHeaders.headersArr);
-    // console.log("firing on change on header with this id: ", id);
 
     const headersDeepCopy = JSON.parse(
       JSON.stringify(this.props.newRequestHeaders.headersArr)
@@ -132,8 +135,10 @@ class HeaderEntryForm extends Component {
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
       if (headersDeepCopy[i].id === id) {
         indexToBeUpdated = i;
+        break;
       }
     }
+    // if it's the content-type header, just exit
     if (indexToBeUpdated === 0) return;
 
     // update
