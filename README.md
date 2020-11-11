@@ -29,32 +29,32 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ## Supported Technologies
 * *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.  Multiple concurrent streams are allowed for each connection.
-<kbd><img src="./ReadMeGifs/Swell_API_6_Concurrent_Eevee_Requests.gif"
+<kbd><img src="./ReadMeGifs/Gifs/ConcurrentStreams.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 * *Server-Sent Events (SSE)*: Swell displays SSE events one by one as they come in.
-<kbd><img src="./ReadMeGifs/Swell_API_SSE.gif"
+<kbd><img src="./ReadMeGifs/Gifs/SSE.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
 * *WebSocket (WS)*: Swell enables connecting directly to WebSocket servers with an HTTP handshake. Developers can directly send messages to the connected WS server. Messages are displayed in chatbox format, clearly indicating outgoing and incoming messages.
-<kbd><img src="./ReadMeGifs/Swell_API_WebSockets.gif"
+<kbd><img src="./ReadMeGifs/Gifs/WebSockets.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
 * *GraphQL*: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions as well as Introspection - with and without variables.  Smart code editor allows for easy query creation.
-<kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
+<kbd><img src="./ReadMeGifs/Gifs/GraphQL.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
 * *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
-<kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
+<kbd><img src="./ReadMeGifs/Gifs/GRPCResponses.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 ## Additional Features
 * *Workspaces*: Swell allows you to save workspaces for easier testing of multiple requests.
-* *Import/Export Collections*: Swell allows you to import and export workspaces, making it easy to share collections with your team.
-<kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
+* *Import/Export Workspaces*: Swell allows you to import and export workspaces, making it easy to share collections with your team.
+<kbd><img src="./ReadMeGifs/Gifs/SavedWorkspaces.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 ## Built With
