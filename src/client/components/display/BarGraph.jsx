@@ -122,7 +122,6 @@ const BarGraph = (props) => {
   // click handling to load response data in the response panel
   const getElementAtEvent = (element) => {
     if (!element.length) return;
-    console.log(element);
     // get the response data corresponding to the clicked element
     const index = element[0]._index;
     const reqResToSend =
@@ -135,9 +134,9 @@ const BarGraph = (props) => {
     const { id, host } = currentResponse;
     setHost(host?.slice(7));
 
-    let url, urls, times, BGs, borders, reqResObjs;
+    let url; let urls; let times; let BGs; let borders; let reqResObjs;
     if (dataPoints[id]?.length) {
-      let point = dataPoints[id][0];
+      const point = dataPoints[id][0];
       // // if grpc, just return the server IP
       if (point.reqRes.gRPC) url = `${point.url}`;
       // if point.url is lengthy, just return the domain and the end of the uri string

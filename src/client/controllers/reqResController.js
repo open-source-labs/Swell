@@ -89,7 +89,6 @@ const connectionController = {
     
     const reqResArr = store.default.getState().business.reqResArray;
     const foundReqRes = JSON.parse( JSON.stringify( reqResArr.find( (reqRes) => reqRes.id === id )));
-    console.log ('setReqResConnectionToClosed',foundReqRes.connection);
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
     store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));

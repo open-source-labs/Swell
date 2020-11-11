@@ -48,7 +48,9 @@
   border: 1px solid $neutral-300;
   font-size: 0.75rem;
   margin-bottom: 0 !important;
-  height: 100% !important;
+  // height: 800px !important;
+  height: calc(100vh - 8rem) !important;
+  // height: 100% !important;
 }
 .cm-s-responsebody .CodeMirror-gutters {
   border: none;

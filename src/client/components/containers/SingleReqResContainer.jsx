@@ -178,7 +178,6 @@ const SingleReqResContainer = (props) => {
     else if (currentResponse.graphQL) classes += "is-graphQL-border";
     else if (currentResponse.request.method === "WS") classes += "is-ws-border";
     else classes += "is-rest-border";
-    // console.log("border classes", classes);
     return classes;
   };
 

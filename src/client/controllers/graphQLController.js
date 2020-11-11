@@ -101,9 +101,6 @@ const graphQLController = {
       .subscribe({
         next(subsEvent) {
           // Notify your application with the new arrived data
-          console.log('new graphQL SUBSCRIPTION event:');
-          // console.log('new graphQL SUBSCRIPTION event:', JSON.stringify(subsEvent));
-
           reqResObj.response.events.push(subsEvent.data);
           const newReqRes = JSON.parse(JSON.stringify(reqResObj));
           store.default.dispatch(actions.saveCurrentResponseData(newReqRes));

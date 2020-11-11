@@ -9,20 +9,20 @@ import ResponseTime from "../display/ResponseTime";
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
-export const ResponsePaneContainer = (store) => {
+export const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
+  
   const setActiveTab = (tabName) =>
     dispatch(actions.setResponsePaneActiveTab(tabName));
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
   );
-  const connection = useSelector(
-    (store) => store.business.currentResponse.connection
-  );
+  const { connection } = currentResponse;
 
-  console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
+  // UNCOMMENT FOR DEBUGGING
+  // console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
 
   return (
     <div
