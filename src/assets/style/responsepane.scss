@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Source+Sans+Pro:wght@400;600&display=swap");
 
 // EMPTY STATE
 .empty-state-wrapper {
@@ -38,8 +37,8 @@
 }
 
 // EVENTS (CODEMIRROR STYLES)
-.CodeMirror {
-  font-family: "Roboto Mono", monospace;
+.CodeMirror * {
+  font-family: "Lucida Console", Monaco, monospace	;
 }
 
 .cm-s-responsebody {
@@ -109,16 +108,17 @@ td {
 
 .status-tag {
   position: absolute;
+  font-size: 0.75rem;
   right: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2px 12px;
+  margin-top: 2px;
   border: 0px;
   border-radius: 2px;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Lucida Console", Monaco, monospace	;
   font-weight: 600;
-  font-size: 0.85rem;
 }
 
 .is-edit {
@@ -128,19 +128,17 @@ td {
 .response-time-placement {
   position: absolute;
   left: 1rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Lucida Console", Monaco, monospace;
   font-weight: 600;
-  font-size: 1rem;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
 .response-size-placement {
   position: absolute;
   left: 5rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Lucida Console", Monaco, monospace;
   font-weight: 600;
-  font-size: 1rem;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   margin-top: 0.25rem;
 }
