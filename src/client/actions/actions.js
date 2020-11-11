@@ -69,15 +69,18 @@ export const clearGraph = (reqRes) => ({
   payload: reqRes,
 });
 
+export const clearAllGraph = () => ({
+  type: types.CLEAR_ALL_GRAPH,
+});
+
 export const setComposerWarningMessage = (message) => ({
   type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message,
 });
 
 export const resetComposerFields = () => ({
-  type: types.RESET_COMPOSER_FIELDS
+  type: types.RESET_COMPOSER_FIELDS,
 });
-
 
 export const setNewRequestFields = (requestObj) => ({
   type: types.SET_NEW_REQUEST_FIELDS,
