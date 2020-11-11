@@ -163,7 +163,7 @@ const ComposerContainer = (props) => {
       < NetworkDropdown onProtocolSelect={onProtocolSelect} network={props.newRequestFields.network} className="header-bar"/>
 
       {/* COMPOSER CONTENT ROUTING */}
-      <div className='is-tall pt-3 pl-3 pr-3'>
+      <div className='is-not-7-5rem-tall pt-3 pl-3 pr-3'>
         {
           props.newRequestFields.network === 'rest' &&
           <RestContainer {...props} />

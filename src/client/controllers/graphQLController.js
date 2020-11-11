@@ -49,6 +49,9 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = "open";
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    
+    const currentID = store.default.getState().business.currentResponse.id;
+    if(currentID === reqResObj.id) store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
 
     // have to replace http with ws to connect to the websocket
     const wsUri = reqResObj.url.replace(/http/gi, 'ws');
