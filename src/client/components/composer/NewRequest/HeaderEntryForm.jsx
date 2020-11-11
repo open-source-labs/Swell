@@ -1,55 +1,65 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { Component } from 'react';
-import Header from './Header.jsx';
-import ContentReqRowComposer from "./ContentReqRowComposer.jsx"
+import React, { Component } from "react";
+import Header from "./Header.jsx";
+import ContentReqRowComposer from "./ContentReqRowComposer.jsx";
 
 class HeaderEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: true,
-    }
+    };
     this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
     this.deleteHeader = this.deleteHeader.bind(this);
-  } 
+  }
 
   componentDidUpdate() {
-    if (this.props.newRequestHeaders.headersArr.length === 0) {
-      const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
-      this.addHeader(headersDeepCopy);
+    const headersDeepCopy = JSON.parse(
+      JSON.stringify(this.props.newRequestHeaders.headersArr)
+    );
+    const lastHeader = headersDeepCopy[headersDeepCopy.length - 1];
+    if (
+      lastHeader?.key !== "" &&
+      lastHeader?.key.toLowerCase() !== "content-type"
+    ) {
+      this.addHeader();
     }
     this.checkContentTypeHeaderUpdate();
   }
 
   checkContentTypeHeaderUpdate() {
     let contentType;
-    
-    if (this.props.newRequestBody.bodyType === 'GRPC' || this.props.newRequestBody.bodyType === 'none') {
-      contentType = ''
-    }
 
-    else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
-      contentType = 'x-www-form-urlencoded';
-    }
-    else if (this.props.newRequestBody.bodyType === 'GQL' || this.props.newRequestBody.bodyType === 'GQLvariables') {
-      contentType = 'application/json'
-    }
-    else {
+    if (
+      this.props.newRequestBody.bodyType === "GRPC" ||
+      this.props.newRequestBody.bodyType === "none"
+    ) {
+      contentType = "";
+    } else if (this.props.newRequestBody.bodyType === "x-www-form-urlencoded") {
+      contentType = "x-www-form-urlencoded";
+    } else if (
+      this.props.newRequestBody.bodyType === "GQL" ||
+      this.props.newRequestBody.bodyType === "GQLvariables"
+    ) {
+      contentType = "application/json";
+    } else {
       contentType = this.props.newRequestBody.rawType;
     }
 
     // Attempt to update header in these conditions:
-    const foundHeader = this.props.newRequestHeaders.headersArr.find(header => /content-type$/i.test(header.key.toLowerCase()));
+    const foundHeader = this.props.newRequestHeaders.headersArr.find((header) =>
+      /content-type$/i.test(header.key.toLowerCase())
+    );
 
     // 1. if there is no contentTypeHeader, but there should be
-    if (!foundHeader && contentType !== '') {
+    if (!foundHeader && contentType !== "") {
       this.addContentTypeHeader(contentType);
       // this.updateContentTypeHeader(contentType, foundHeader);
     }
     // 2. if there is a contentTypeHeader, but there SHOULDNT be, but the user inputs anyway... just let them
-    else if (foundHeader && contentType === '') {
+    else if (foundHeader && contentType === "") {
       //keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
     // 3. if there is a contentTypeHeader, needs to update
@@ -59,14 +69,20 @@ class HeaderEntryForm extends Component {
   }
 
   addContentTypeHeader(contentType) {
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type')));
-    const contentTypeHeader = ({
-      id: this.props.newRequestHeaders.headersArr.length,
+    const headersDeepCopy = JSON.parse(
+      JSON.stringify(
+        this.props.newRequestHeaders.headersArr.filter(
+          (header) => header.key.toLowerCase() !== "content-type"
+        )
+      )
+    );
+    const contentTypeHeader = {
+      id: 0,
       active: true,
-      key: 'Content-Type',
+      key: "Content-Type",
       value: contentType,
-    });
-    headersDeepCopy.unshift(contentTypeHeader)
+    };
+    headersDeepCopy.unshift(contentTypeHeader);
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
@@ -74,11 +90,13 @@ class HeaderEntryForm extends Component {
   }
 
   updateContentTypeHeader(contentType) {
-    const filtered = this.props.newRequestHeaders.headersArr.filter(header => header.key.toLowerCase() !== 'content-type');
-    this.props.newRequestHeaders.headersArr.push({
-      id: this.props.newRequestHeaders.headersArr.length,
+    const filtered = this.props.newRequestHeaders.headersArr.filter(
+      (header) => header.key.toLowerCase() !== "content-type"
+    );
+    this.props.newRequestHeaders.headersArr.unshift({
+      id: 0,
       active: true,
-      key: 'Content-Type',
+      key: "Content-Type",
       value: contentType,
     });
 
@@ -89,12 +107,14 @@ class HeaderEntryForm extends Component {
   }
 
   addHeader() {
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+    const headersDeepCopy = JSON.parse(
+      JSON.stringify(this.props.newRequestHeaders.headersArr)
+    );
     headersDeepCopy.push({
       id: this.props.newRequestHeaders.headersArr.length,
       active: false,
-      key: '',
-      value: '',
+      key: "",
+      value: "",
     });
 
     this.props.setNewRequestHeaders({
@@ -105,34 +125,39 @@ class HeaderEntryForm extends Component {
   }
 
   onChangeUpdateHeader(id, field, value) {
+    // console.log("all headers", this.props.newRequestHeaders.headersArr);
 
-    const headersDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestHeaders.headersArr));
+    const headersDeepCopy = JSON.parse(
+      JSON.stringify(this.props.newRequestHeaders.headersArr)
+    );
     // find header to update
     let indexToBeUpdated;
     for (let i = 0; i < headersDeepCopy.length; i += 1) {
       if (headersDeepCopy[i].id === id) {
         indexToBeUpdated = i;
+        break;
       }
     }
+    // if it's the content-type header, just exit
+    if (indexToBeUpdated === 0) return;
+
     // update
     headersDeepCopy[indexToBeUpdated][field] = value;
 
     // also switch checkbox if they are typing
-    if (field === 'key' || field === 'value') {
+    if (field === "key" || field === "value") {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
-
 
     this.props.setNewRequestHeaders({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
     });
-
   }
 
   toggleShow() {
     this.setState({
-      show: !this.state.show
+      show: !this.state.show,
     });
   }
 
@@ -146,39 +171,39 @@ class HeaderEntryForm extends Component {
   }
 
   render() {
-    let headerName = 'Headers';
-    let addHeaderName = '+ Header'
+    let headerName = "Headers";
+    let addHeaderName = "+ Header";
     // let headerClass = 'composer_submit http'
     if (this.props.newRequestFields.gRPC) {
-      headerName = 'Metadata';
-      addHeaderName = '+ Metadata';
+      headerName = "Metadata";
+      addHeaderName = "+ Metadata";
     }
-    
 
-    const headersArr = this.props.newRequestHeaders.headersArr.map((header, index) => (
-      <ContentReqRowComposer
-        data={header}
-        index={index}
-        type='header-row'
-        deleteItem={this.deleteHeader}
-        changeHandler={this.onChangeUpdateHeader}
-        key={index} //key
-      />
-    ));
+    const headersArr = this.props.newRequestHeaders.headersArr.map(
+      (header, index) => (
+        <ContentReqRowComposer
+          data={header}
+          index={index}
+          type="header-row"
+          deleteItem={this.deleteHeader}
+          changeHandler={this.onChangeUpdateHeader}
+          key={index} //key
+        />
+      )
+    );
 
     return (
-      <div className="mt-2" >
-        <div className='is-flex is-justify-content-space-between is-align-content-center'>
-        <div className="composer-section-title">{headerName}</div>
-          <button 
+      <div className="mt-2">
+        <div className="is-flex is-justify-content-space-between is-align-content-center">
+          <div className="composer-section-title">{headerName}</div>
+          <button
             className="button is-small add-header-or-cookie-button"
-            onClick={() => this.addHeader()}> 
-            {addHeaderName} 
+            onClick={() => this.addHeader()}
+          >
+            {addHeaderName}
           </button>
         </div>
-        <div>
-          {headersArr}
-        </div>
+        <div>{headersArr}</div>
       </div>
     );
   }
