@@ -32,7 +32,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 <kbd><img src="./ReadMeGifs/Gifs/ConcurrentStreams.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
-* *Server-Sent Events (SSE)*: Swell displays SSE events one by one as they come in.
+* *Server-Sent Events (SSE)*: Initiated by a simple toggle box, Swell displays SSE events one by one as they come in.  Similar to HTTP2 Streams, multiple concurrent streams are allowed for each connection for SSE.
 <kbd><img src="./ReadMeGifs/Gifs/SSE.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
@@ -47,7 +47,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
-* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
+* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
 <kbd><img src="./ReadMeGifs/Gifs/GRPCResponses.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
