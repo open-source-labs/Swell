@@ -22,6 +22,21 @@
   height: calc(100% - 2.5rem) !important;
 }
 
+.response-loading {
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+
+  /* you dont need the stuff below, but its what I used to create the loading circle */
+  border: 2px solid $neutral-400;
+  border-radius: 50px;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror {
   font-family: "Roboto Mono", monospace;
@@ -33,7 +48,9 @@
   border: 1px solid $neutral-300;
   font-size: 0.75rem;
   margin-bottom: 0 !important;
-  height: 1000zpx !important;
+  // height: 800px !important;
+  height: calc(100vh - 8rem) !important;
+  // height: 100% !important;
 }
 .cm-s-responsebody .CodeMirror-gutters {
   border: none;
@@ -58,8 +75,6 @@
 
 table {
   margin-bottom: 2rem;
-  // max-width: 200px;
-  // overflow-wrap: break-word;
 }
 
 .extended {

@@ -125,25 +125,6 @@ const History = ({ newRequestFields, content, content: { request : { method,
         protoContent,
       }
       setNewRequestStreams(requestStreamsObj)
-
-      // BELOW WAS COMMENTED OUT IN v7
-      // grab the dropdown lists and set its selected value to equal what is in the history
-      // const dropdownService = document.getElementById('dropdownService').options;
-      // for (const option of dropdownService) {
-      //   if (option.text === service) {
-      //     option.selected = true;
-      //   }
-      // }
-      // const dropdownRequest = document.getElementById('dropdownRequest').options;
-      // console.log(dropdownRequest);
-      // for (const option of dropdownRequest) {
-      //   console.log(option);
-      //   if (option.text === rpc) {
-      //     option.selected = true;
-      //   }
-      // }
-      // update streaming type button displayed next to the URL
-      // document.getElementById('stream').innerText = method;
     }
     setSidebarTab('composer');
   }
@@ -170,7 +151,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
           <div className="history-url"> {urlDisplay} </div>
         </div>
         <div className='history-delete-container'>
-          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id}></div>
+          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id} />
         </div>
       </div>
     );

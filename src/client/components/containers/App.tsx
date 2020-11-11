@@ -36,8 +36,6 @@ export const App = () => {
     
   });
   
-  api.receive("fromMain", (data: {}) => console.log(data));
-  
   return (
     <div className='is-gapless is-tall'>
       <div id='app' className={`columns is-gapless ${!message &&'is-tall'} ${message &&'is-tall-message'}`}>

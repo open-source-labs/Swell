@@ -1,6 +1,5 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-// import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
@@ -43,7 +42,10 @@ const connectionController = {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-      store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      
+      // If current selected response equals reqResObj received, update current response
+      const currentID = store.default.getState().business.currentResponse.id;
+      if(currentID === reqResObj.id) store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     });
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
@@ -86,10 +88,9 @@ const connectionController = {
 
   setReqResConnectionToClosed(id) {
     const reqResArr = store.default.getState().business.reqResArray;
-    const foundReqRes = JSON.parse(
-      JSON.stringify(reqResArr.find((reqRes) => reqRes.id === id))
-    );
-    console.log("setReqResConnectionToClosed", foundReqRes.connection);
+
+    const foundReqRes = JSON.parse( JSON.stringify( reqResArr.find( (reqRes) => reqRes.id === id )));
+
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
     store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));

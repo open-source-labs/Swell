@@ -27,7 +27,15 @@ $text: $neutral-500;
 // $warning: $yellow
 // $dark: $grey-darker
 
-// COLOR SCHEMES
+// CODE MIRROR COLORS
+.cm-s-neo .cm-comment { color: $neutral-400 !important; }
+.cm-s-neo .cm-keyword, .cm-s-neo .cm-property { color: $primary-200 !important; }
+.cm-s-neo .cm-atom,.cm-s-neo .cm-number { color: $primary-100 !important; }
+.cm-s-neo .cm-node,.cm-s-neo .cm-tag { color: $primary-400 !important; }
+.cm-s-neo .cm-string { color: $primary-500 !important; }
+.cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier { color: $primary-300 !important; }
+
+// COLOR SCHEMES 
 .is-primary-100 {
   color: $neutral-500 !important;
   background-color: $primary-100 !important;

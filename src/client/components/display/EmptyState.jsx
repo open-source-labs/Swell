@@ -1,10 +1,10 @@
 import React from 'react'
 import logofaded from '../../../assets/img/swell-logo-faded.png'
 
-function EmptyState() {
+function EmptyState({ connection }) {
   return (
     <div className='empty-state-wrapper'>
-      <img className='empty-state-img' src={logofaded} alt='faded-logo'/>
+     <img className='empty-state-img' src={logofaded} alt='faded-logo'/>
     </div>
   )
 }
