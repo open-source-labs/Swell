@@ -22,7 +22,7 @@ export const ResponsePaneContainer = () => {
   const { connection } = currentResponse;
 
   // UNCOMMENT FOR DEBUGGING
-  // console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
+  console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
 
   return (
     <div
