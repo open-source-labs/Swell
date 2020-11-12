@@ -50,7 +50,7 @@ class ComposerObj {
     return app.client.$('button=Add New Request');
   };
   
-  clearRestBodyAndWriteKeys = async (keys, clear = true) => {
+  async clearRestBodyAndWriteKeys(keys, clear = true){
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
       backspace.push('Backspace')
@@ -64,7 +64,7 @@ class ComposerObj {
     }
   }
   
-  clearGQLBodyAndWriteKeys = async (keys, clear = true) => {
+  async clearGQLBodyAndWriteKeys(keys, clear = true){
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
       backspace.push('Backspace')
@@ -78,7 +78,7 @@ class ComposerObj {
     }
   }
   
-  clickGQLVariablesAndWriteKeys = async (keys) => {
+  async clickGQLVariablesAndWriteKeys(keys){
     try {
       await this.gqlVariableCode.keys(keys);
     } catch(err) {

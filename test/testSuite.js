@@ -31,6 +31,5 @@ describe("Electron Tests", function () {
     httpTest();
     graphqlTest();
     websocketTest();
-    // grpcTest();
   });
 });
