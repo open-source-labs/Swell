@@ -36,7 +36,9 @@ class HeaderEntryForm extends Component {
       method === "PUT" ||
       method === "PATCH" ||
       method === "DELETE" ||
-      method === "POST"
+      method === "POST" ||
+      this.props.newRequestBody.bodyType === "GQL" ||
+      this.props.newRequestBody.bodyType === "GQLvariables"
     );
   }
 
