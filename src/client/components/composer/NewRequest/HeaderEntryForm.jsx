@@ -29,6 +29,16 @@ class HeaderEntryForm extends Component {
     this.checkContentTypeHeaderUpdate();
   }
 
+  contentHeaderNeeded() {
+    const { method } = this.props.newRequestFields;
+    return (
+      method === "PUT" ||
+      method === "PATCH" ||
+      method === "DELETE" ||
+      method === "POST"
+    );
+  }
+
   checkContentTypeHeaderUpdate() {
     let contentType;
 
@@ -54,7 +64,7 @@ class HeaderEntryForm extends Component {
     );
 
     // 1. if there is no contentTypeHeader, but there should be
-    if (!foundHeader && contentType !== "") {
+    if (!foundHeader && contentType !== "" && this.contentHeaderNeeded()) {
       this.addContentTypeHeader(contentType);
       // this.updateContentTypeHeader(contentType, foundHeader);
     }
@@ -63,12 +73,17 @@ class HeaderEntryForm extends Component {
       //keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
     // 3. if there is a contentTypeHeader, needs to update
-    else if (foundHeader && foundHeader.value !== contentType) {
+    else if (
+      foundHeader &&
+      foundHeader.value !== contentType &&
+      this.contentHeaderNeeded()
+    ) {
       this.updateContentTypeHeader(contentType, foundHeader);
     }
   }
 
   addContentTypeHeader(contentType) {
+    if (!this.contentHeaderNeeded()) return;
     const headersDeepCopy = JSON.parse(
       JSON.stringify(
         this.props.newRequestHeaders.headersArr.filter(
