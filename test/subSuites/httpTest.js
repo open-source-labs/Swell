@@ -90,20 +90,19 @@ module.exports = () => {
     describe("httpTest Server", () => {
 
       before("CLEAR DB", (done) => {
-        chai
-          .request("http://localhost:3000")
+        chai.request("http://localhost:3000")
           .get("/clear")
-          .end((err, res) => {
-            done();
+          .end(function(err, res) {
+            done();                               // <= Call done to signal callback end
           });
       });
 
       after("CLEAR DB", (done) => {
-        chai
-          .request("http://localhost:3000")
+        chai.request("http://localhost:3000")
           .get("/clear")
-          .end((err, res) => {
-            done();
+          .send()
+          .end(function(err, res) {
+            done();                               // <= Call done to signal callback end
           });
       });
 
