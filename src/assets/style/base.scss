@@ -1,23 +1,91 @@
+
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
-html {
-	background-color: #eeeeee;
-	overflow: hidden;
+
+// BULMA ADJUSTMENTS
+.hero {
+  height: 2.5rem;
+  padding-top: 0.5rem;
 }
+
+.hero h3 {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 600;
+}
+
+input:focus {
+  outline: none;
+}
+
+.input:focus {
+  outline: none;
+}
+
+#root {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+#update-modal {
+  position: relative;
+  width: 100%; 
+  background-color: $neutral-500;
+  color: $neutral-100;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 2.5rem !important;
+  // z-index: 100;
+  opacity: 0.8;
+  margin: 0;
+  padding: 0;
+  top: 0;
+}
+
+.modal-button {
+  min-width: 20% !important;
+  background-color: $neutral-500 !important;
+  color: $neutral-300 !important;
+}
+
+.modal-button-update {
+  min-width: 20% !important;
+  background-color: $primary-100 !important;
+  color: $neutral-500 !important;
+  border-color: $neutral-500;
+}
+
+.is-tall {
+  height: 100% !important;
+}
+
+.is-tall-message {
+  height: calc(100% - 2.5rem) !important;
+  margin-bottom: 0 !important;
+}
+
 body {
-	display: flex;
-	justify-content: flex-end;
-	align-items: flex-end;
-	color: $liteblack;
-	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
-	height: 100vh;
-	margin: 0;
-	width: 100vw;
+  height: 100%;
 }
+
+html {
+  height: 100% !important;
+}
+
 .header_entry-form {
-	width: 100%;
+  width: 100%;
 }
 .header_entry-form input {
-	width: 100%;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+$switch-focus: 5px solid red;
+
+.add-vertical-scroll {
+  overflow-y: auto !important;
 }

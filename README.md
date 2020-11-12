@@ -20,55 +20,41 @@ Swell is currently available for OS X, Linux and Windows.
 ## Highlights
 Swell is a one-stop shop for sending and monitoring your API requests
 
-* Send and monitor streams over HTTP2 (including SSEs) and WebSockets
+* Send and monitor streams over HTTP2 / HTTP1 (including SSEs) and WebSockets
 * Create GraphQL queries, introspections, mutations, and subscriptions
 * Provides full streaming testing support for gRPC
-* Support for up to six concurrent connections
-* View request/response timing information in an interactive chart
-* Save requests in "collections" of multiple requests
-* Import and export "collections" for sharing
+* View response timing information and history in an interactive chart for each request
+* Save workspaces of multiple requests for later access
+* Import and export workspaces for sharing
 
 ## Supported Technologies
-* *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.
-<kbd><img src="./ReadMeGifs/Swell_API_6_Concurrent_Eevee_Requests.gif"
+* *HTTP2*: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, but will revert to HTTP1.1 for legacy servers.  Multiple concurrent streams are allowed for each connection.
+<kbd><img src="./ReadMeGifs/Gifs/ConcurrentStreams.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
-* *Server-Sent Events (SSE)*: Swell displays SSE events one by one as they come in.
-<kbd><img src="./ReadMeGifs/Swell_API_SSE.gif"
+* *Server-Sent Events (SSE)*: Initiated by a simple toggle box, Swell displays SSE events one by one as they come in.  Similar to HTTP2 streams, multiple open connection streams are allowed for SSE.
+<kbd><img src="./ReadMeGifs/Gifs/SSE.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
 * *WebSocket (WS)*: Swell enables connecting directly to WebSocket servers with an HTTP handshake. Developers can directly send messages to the connected WS server. Messages are displayed in chatbox format, clearly indicating outgoing and incoming messages.
-<kbd><img src="./ReadMeGifs/Swell_API_WebSockets.gif"
+<kbd><img src="./ReadMeGifs/Gifs/WebSockets.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
-* *GraphQL*: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions - with and without variables
-<kbd><img src="./ReadMeGifs/Swell_API_GraphQL_Query.gif"
+* *GraphQL*: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions as well as Introspection - with and without variables.  Smart code editor allows for easy query creation.
+<kbd><img src="./ReadMeGifs/Gifs/GraphQL.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 
-* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream
-<kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
-     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-     
-### **Latest Swell v.0.6.0 update**
-* *New Look*: Improved navigation and faster rendering processes
-<kbd><img src="./ReadMeGifs/ui-showcase.gif"
-     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-
-* *GraphQL*: Schema Introspection and smart code editor features
-<kbd><img src="./ReadMeGifs/introspection.gif"
-     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-     
-* *gRPC*: Front-end for the gRPC composer section has been heavily optimized and refactored. Unnecessary component re-renders, as well as extraneous Redux reducer dispatch actions have been eliminated. 
-<kbd><img src="./ReadMeGifs/Swell_API_gRPC.gif"
+* *gRPC*: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
+<kbd><img src="./ReadMeGifs/Gifs/GRPCResponses.gif"
      style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 ## Additional Features
-* *Collections*: Swell allows you to save collections for easier testing of multiple requests.
-* *Import/Export Collections*: Swell allows you to import and export collections, making it easy to share collections with your team.
-<kbd><img src="./ReadMeGifs/Swell_API_Collections.gif"
+* *Workspaces*: Swell allows you to save workspaces for easier testing of multiple requests.
+* *Import/Export Workspaces*: Swell allows you to import and export workspaces, making it easy to share collections with your team.
+<kbd><img src="./ReadMeGifs/Gifs/SavedWorkspaces.gif"
      style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 ## Built With
@@ -109,6 +95,10 @@ Swell is a one-stop shop for sending and monitoring your API requests
 * **Dan Stein** - [danst3in](https://github.com/danst3in)
 * **Amruth Uppaluri** - [amuuth](https://github.com/amuuth)
 * **Yoon Choi** - [cyoonique](https://github.com/cyoonique)
+* **Nathaniel Adams** - [nathanielBadams](https://github.com/nathanielBadams)
+* **Robin Yoong** - [robinyoong](https://github.com/robinyoong)
+* **Gary Slootskiy** - [garyslootskiy](https://github.com/garyslootskiy)
+* **Sam Haar** - [samhaar](https://github.com/samhaar)
 
 
 ## License

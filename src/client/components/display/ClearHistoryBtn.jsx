@@ -9,7 +9,6 @@ const ClearHistoryBtn = (props) => {
   useEffect(() => {
     api.receive("clear-history-response", (res) => {
       // a response of 0 from main means user has selected 'confirm'
-      console.log("response from main:", res.response);
       if (res.response === 0) {
         historyController.clearHistoryFromIndexedDb();
         props.clearHistory();
@@ -20,7 +19,13 @@ const ClearHistoryBtn = (props) => {
   const handleClick = () => {
     api.send("confirm-clear-history");
   };
-  return <button onClick={handleClick}>Clear</button>;
+  return (
+    <button 
+      className="ml-0 mt-3 mb-3 button is-small is-primary is-outlined button-padding-verticals"  
+      onClick={handleClick}
+    >
+    Clear History</button>
+  );
 };
 
 export default ClearHistoryBtn;

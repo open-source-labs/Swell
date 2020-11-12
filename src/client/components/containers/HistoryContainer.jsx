@@ -29,7 +29,7 @@ const HistoryContainer = (props) => {
     setNewRequestHeaders,
     setNewRequestCookies,
     setNewRequestBody,
-    setNewRequestStreams
+    setNewRequestStreams,
   } = props;
   
   // history is already sorted by created_at from getHistory
@@ -50,13 +50,11 @@ const HistoryContainer = (props) => {
   })
 
   return (
-    <div className="historyDate-container">
-      <h1 className="history_title">History
-        <span className="clear-history">
-          <ClearHistoryBtn clearHistory={clearHistory} />
-        </span>
-      </h1>
-      {historyDates}
+    <div className="p-3 is-flex is-flex-direction-column is-tall-not-5rem" id="history-container">
+      <div>
+        <ClearHistoryBtn clearHistory={clearHistory} />
+      </div>
+      <div className="add-vertical-scroll">{historyDates}</div>
     </div>
   )
 }

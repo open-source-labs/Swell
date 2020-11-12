@@ -7,20 +7,18 @@ const GRPCBodyEntryForm = (props) => {
   // when application first loads
   useEffect(() => {
     if (props.newRequestStreams.streamsArr.length === 0) {
-      const streamsDeepCopy = JSON.parse(
-        JSON.stringify(props.newRequestStreams.streamsArr)
-      );
-      // add fist stream body to the streamsArr (streamsDeepCopy)
-      streamsDeepCopy.push({
-        id: props.newRequestStreams.count,
-        query: "",
-      });
-      // sets the first query in the intial stream body to an empty string
+      const newStreamsArr = [
+        {
+          id: props.newRequestStreams.count,
+          query: "",
+        },
+      ];
+
       props.newRequestStreams.streamContent.push("");
       // update state in the store
       props.setNewRequestStreams({
-        streamsArr: streamsDeepCopy,
-        count: streamsDeepCopy.length,
+        streamsArr: newStreamsArr,
+        count: newStreamsArr.length,
         streamContent: props.newRequestStreams.streamContent,
       });
     }
@@ -83,9 +81,7 @@ const GRPCBodyEntryForm = (props) => {
       history={props.history}
     />
   ));
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open-grpc"
-    : "composer_bodyform_container-closed";
+
   //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
   let addStreamBtn;
   if (
@@ -93,7 +89,10 @@ const GRPCBodyEntryForm = (props) => {
     props.selectedStreamingType === "BIDIRECTIONAL"
   ) {
     addStreamBtn = (
-      <button className="add-stream-btn" onClick={addStream}>
+      <button
+        className="button is-small add-header-or-cookie-button"
+        onClick={addStream}
+      >
         Add Stream
       </button>
     );
@@ -105,23 +104,9 @@ const GRPCBodyEntryForm = (props) => {
      - if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
      */
   return (
-    <div>
-      <label className="composer_subtitle">
-        <div className="label-text" id="cookie-click">
-          Body
-        </div>
-        <div className="toggle">
-          <input
-            type="checkbox"
-            name="check"
-            className="toggle-state"
-            onClick={() => toggleShow(!show)}
-          />
-          <div className="indicator_body" />
-        </div>
-      </label>
-
-      <section className={bodyContainerClass}>{streamArr}</section>
+    <div className="mt-1">
+      <div className="composer-section-title">Body</div>
+      <section>{streamArr}</section>
       {addStreamBtn}
     </div>
   );

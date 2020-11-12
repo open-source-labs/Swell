@@ -1,20 +1,27 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import historyController from '../../controllers/historyController';
 
-const History = ({ newRequestFields, content, content: { request : { method, 
+const History = ({ newRequestFields, content, content: { request : { method, isSSE, 
   headers, cookies, bodyType, body, bodyVariables, rawType, JSONFormatted, network, 
   restUrl, wsUrl, gqlUrl, grpcUrl }, protocol, url, graphQL, gRPC, streamsArr, 
   streamContent, queryArr, packageName, rpc, service, initialQuery, protoPath, 
   servicesObj, protoContent }, setNewRequestFields, setNewRequestHeaders, setNewRequestCookies, 
   setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm }) => {
 
+  const dispatch = useDispatch();
+  const setSidebarTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
+  const setNewRequestSSE = (bool) => dispatch(actions.setNewRequestSSE(bool));
+  
   const addHistoryToNewRequest = () => {
     let requestFieldObj = {};
     if (network === 'rest') {
       requestFieldObj = {
         ...newRequestFields,
+        isSSE: isSSE || false,
         method: method || 'GET',
         protocol: protocol || 'http://',
         url,
@@ -100,6 +107,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
     setNewRequestHeaders(requestHeadersObj);
     setNewRequestCookies(requestCookiesObj);
     setNewRequestBody(requestBodyObj);
+    setNewRequestSSE(isSSE);
     // for gRPC 
     if (content && gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(streamsArr));
@@ -120,43 +128,38 @@ const History = ({ newRequestFields, content, content: { request : { method,
         protoContent,
       }
       setNewRequestStreams(requestStreamsObj)
-
-      // grab the dropdown lists and set its selected value to equal what is in the history
-      const dropdownService = document.getElementById('dropdownService').options;
-      for (const option of dropdownService) {
-        if (option.text === service) {
-          option.selected = true;
-        }
-      }
-      const dropdownRequest = document.getElementById('dropdownRequest').options;
-      for (const option of dropdownRequest) {
-        if (option.text === rpc) {
-          option.selected = true;
-        }
-      }
-      // update streaming type button displayed next to the URL
-      document.getElementById('stream').innerText = method;
     }
+    setSidebarTab('composer');
+  }
+
+  let colorClass;
+  switch (network) {
+    case 'grpc': colorClass = 'is-grpc-color'; break;
+    case 'rest': colorClass = 'is-rest-color'; break;
+    case 'graphQL': colorClass = 'is-graphQL-color'; break;
+    case 'ws': colorClass = 'is-ws-color'; break;
   }
 
   const deleteHistory = (e) => {
     deleteFromHistory(content);
     historyController.deleteHistoryFromIndexedDb(e.target.id);
   }
+  
+  const urlDisplay = url.length > 32 ? url.slice(0, 32) + '...' : url;
 
     return (
-      <div className="history-container" onClick={() => focusOnForm()} >
-        <div className="history-text-container" onClick={() => addHistoryToNewRequest()}>
-          <div className="history-method"> {method} </div>
-          <div className="history-url"> {url} </div>
+      <div className="history-container is-flex is-justify-content-space-between m-3" >
+        <div className="is-clickable is-primary-link is-flex" onClick={() => addHistoryToNewRequest()}>
+          <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
+          <div className="history-url"> {urlDisplay} </div>
         </div>
         <div className='history-delete-container'>
-          <div className="history-delete-button" onClick={(e) => deleteHistory(e)} id={content.id}>
-            X
-          </div>
+          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id} />
         </div>
       </div>
-    )
+    );
 }
+
+
 
 export default History;

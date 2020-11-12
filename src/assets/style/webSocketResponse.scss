@@ -1,0 +1,47 @@
+
+.client-background {
+  background-color: #3734A9;
+  display: inline-block;
+  padding: 4px 8px;
+  border: 0px;
+  border-radius: 8px;
+}
+
+.server-background {
+  background-color: #21D4A4;
+  display: inline-block;
+  padding: 4px 8px;
+  border: 0px;
+  border-radius: 8px;
+}
+
+.client {
+  color: #737581;
+  font-size: 0.7rem;
+  text-align: right;
+  margin-right: 0.25rem;
+  font-style: italic;
+}
+
+.server {
+  color: #737581;
+  font-size: 0.7rem;
+  margin-left: 0.25rem;
+  font-style: italic;
+}
+
+.websocket_message_container{
+  position: relative;
+}
+
+.websocket_message-client {
+  padding: 4px 8x;
+  color: #fff;
+  text-align: right;
+}
+
+.websocket_message-server {
+  color: #fff;
+  display: block;
+  position: relative;
+}

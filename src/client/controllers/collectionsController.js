@@ -6,16 +6,16 @@ import * as actions from "../actions/actions";
 
 const { api } = window;
 
-api.receive("add-collection", (...args) => {
-  console.log("received data: ", JSON.parse(args.data));
-  collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
+api.receive("add-collection", (collectionData) => {
+  // Add parsed text file to db
+  collectionsController.addCollectionToIndexedDb(JSON.parse(collectionData));
   collectionsController.getCollections();
 });
 
 const collectionsController = {
   addCollectionToIndexedDb(collection) {
     db.collections
-      .put({ ...collection })
+      .put(collection)
       .catch((err) => console.log("Error in addToCollection", err));
   },
 
@@ -23,6 +23,11 @@ const collectionsController = {
     db.collections
       .delete(id)
       .catch((err) => console.log("Error in deleteFromCollection", err));
+  },
+
+  updateCollectionInIndexedDb(collection) {
+    collectionsController.deleteCollectionFromIndexedDb(collection.id);
+    collectionsController.addCollectionToIndexedDb(collection);
   },
 
   getCollections() {
@@ -34,7 +39,7 @@ const collectionsController = {
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
       })
-      .catch((err) => console.log("Error in getCollections", err));
+      .catch((err) => console.log("Error in getCollection s", err));
   },
 
   collectionNameExists(obj) {

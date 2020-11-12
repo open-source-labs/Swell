@@ -8,7 +8,7 @@ import History from "./History.jsx";
 class HistoryDate extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    // this.state = {};
     this.focusOnForm = this.focusOnForm.bind(this);
   }
 
@@ -50,9 +50,10 @@ class HistoryDate extends Component {
     });
 
     return (
-      <div className="historyDate">
-        <h1 aria-label="queryDate">{date}</h1>
+      <div >
+        <h5 className="history-date" aria-label="queryDate">{date}</h5>
         {histArray}
+        <hr />
       </div>
     );
   }

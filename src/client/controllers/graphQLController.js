@@ -10,6 +10,7 @@ import * as actions from "../actions/actions";
 const { api } = window;
 
 const graphQLController = {
+
   openGraphQLConnection(reqResObj) {
     // initialize response data
     reqResObj.response.headers = {};
@@ -37,7 +38,7 @@ const graphQLController = {
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
-        );
+          );
         resolve(result);
       });
     });
@@ -48,14 +49,40 @@ const graphQLController = {
     reqResObj.response.events = [];
     reqResObj.connection = "open";
     store.default.dispatch(actions.reqResUpdate(reqResObj));
-
-    const wsUri = reqResObj.url;
+    
+    const currentID = store.default.getState().business.currentResponse.id;
+    if(currentID === reqResObj.id) store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
 
     // have to replace http with ws to connect to the websocket
-    const httpToWs = wsUri.replace(/http/gi, 'ws')
-    const wsClient = new SubscriptionClient(httpToWs, { reconnect: true });
+    const wsUri = reqResObj.url.replace(/http/gi, 'ws');
 
-    const wsLink = new WebSocketLink(wsClient);
+    // Map all headers to headers object
+    const headers = {};
+    reqResObj.request.headers.forEach(({ active, key, value }) => {
+      if(active) headers[key] = value;
+    })
+
+    // Reformat cookies
+    let cookies = '';
+    if (reqResObj.request.cookies.length) {
+      cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
+        if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+        return acc;
+      }, '');
+    }
+    headers.Cookie = cookies;
+    
+    const wsLink = new WebSocketLink(
+      new SubscriptionClient(
+        wsUri, 
+        { 
+          reconnect: true, 
+          timeout: 30000,
+          connectionParams: {
+            headers
+          }
+        })
+    );
 
     const apolloClient = new ApolloClient({
       link: wsLink,
@@ -77,8 +104,10 @@ const graphQLController = {
       .subscribe({
         next(subsEvent) {
           // Notify your application with the new arrived data
-          reqResObj.response.events.push(JSON.stringify(subsEvent.data));
-          store.default.dispatch(actions.reqResUpdate(reqResObj));
+          reqResObj.response.events.push(subsEvent.data);
+          const newReqRes = JSON.parse(JSON.stringify(reqResObj));
+          store.default.dispatch(actions.saveCurrentResponseData(newReqRes));
+          store.default.dispatch(actions.reqResUpdate(newReqRes));
         },
         error(err) {
           console.error(err)
@@ -90,15 +119,22 @@ const graphQLController = {
     reqResObj.connection = "closed";
     reqResObj.connectionType = "plain";
     reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(JSON.stringify(response.data));
+    
+    // reqResObj.response.events.push(JSON.stringify(response.data));
+    reqResObj.response.events.push(response.data);
+
     store.default.dispatch(actions.reqResUpdate(reqResObj));
+    store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
   handleError(errorsObj, reqResObj) {
     reqResObj.connection = "error";
     reqResObj.timeReceived = Date.now();
-    reqResObj.response.events.push(errorsObj);
+
+    // reqResObj.response.events.push(errorsObj);
+    reqResObj.response.events.push(JSON.parse(errorsObj));
+    store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     store.default.dispatch(actions.reqResUpdate(reqResObj));
   },
 
@@ -120,8 +156,13 @@ const graphQLController = {
     });
   },
 
-  introspect(url) {
-    api.send("introspect", url);
+  introspect(url, headers, cookies) {
+    const introspectionObject = {
+      url,
+      headers,
+      cookies
+    }
+    api.send("introspect", JSON.stringify(introspectionObject));
     api.receive("introspect-reply", (data) => {
       if (data !== "Error: Please enter a valid GraphQL API URI") {
         //formatted for Codemirror hint and lint

@@ -5,6 +5,7 @@ const Header = ({
   type, content, changeHandler, Key, value,
 }) => (
   <div style={styles} className={`composer_header ${type === 'header' ? 'header_container' : 'cookie_container'}`}>
+    ************** Header **************
     <input
       className={`composer_header_checkbox ${type === 'header' ? 'header_checkbox' : 'cookie_checkbox'}`}
       type="checkbox"

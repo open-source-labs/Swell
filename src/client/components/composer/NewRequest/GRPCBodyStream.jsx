@@ -1,5 +1,6 @@
 /* eslint-disable lines-between-class-members */
 import React, { useState, useEffect } from "react";
+import TextCodeAreaEditable from './TextCodeAreaEditable';
 
 const GRPCBodyStream = (props) => {
   const [showError, setError] = useState(null);
@@ -32,60 +33,37 @@ const GRPCBodyStream = (props) => {
     if (showError) setError(null);
   }, [props.newRequestStreams]);
 
-  let streamNum;
-  let streamBody;
-  let deleteStreamBtn;
   // grabs the query based on the stream id/number
   const streamContentID =
     props.newRequestStreams.streamContent[props.stream.id];
   // if none or the first stream query in the array
-  if (props.stream.id === 1) {
-    streamBody = (
-      <textarea
-        value={`${streamContentID || ""}`}
-        className="composer_textarea grpc"
-        id="grpcBodyEntryTextArea"
-        type="text"
-        placeholder="Type query"
-        rows={4}
-        onChange={(e) => props.changeHandler(props.stream.id, e.target.value)}
-      />
-    );
-  } else {
-    // for subsequent stream query
-    streamBody = (
-      <textarea
-        value={streamContentID}
-        className="composer_textarea grpc"
-        id="grpcBodyEntryTextArea"
-        type="text"
-        placeholder="Type query"
-        rows={4}
-        onChange={(e) => props.changeHandler(props.stream.id, e.target.value)}
-      />
-    );
-  }
+  const streamBody = (
+    <TextCodeAreaEditable
+      value={`${streamContentID || ""}`}
+      theme = "neo grpc"
+      mode="application/json"
+      onChange={(editor, data, value) => props.changeHandler(props.stream.id, value)}
+    />
+  );
+  
   // displays the stream number & delete btn next to the stream body for client or bidirectionbal streaming
+  let streamNum;
+  let deleteStreamBtn;
   if (
     props.selectedStreamingType === "CLIENT STREAM" ||
     props.selectedStreamingType === "BIDIRECTIONAL"
   ) {
     streamNum = (
-      <input
-        defaultValue={` Stream ${props.streamNum + 1}`}
-        className="stream-number"
-        type="text"
-        readOnly="readonly"
-      />
+      <span className='ml-1 stream-title'>
+        Stream {props.streamNum + 1}
+      </span>
     );
     deleteStreamBtn = (
       <button
-        className="delete-stream-btn"
+        className="delete"
         onClick={() => deleteStream(props.stream.id)}
         id={props.stream.id}
-      >
-        &times;
-      </button>
+      ></button>
     );
   }
 
@@ -94,8 +72,8 @@ const GRPCBodyStream = (props) => {
   return (
     <div>
       <div className="warningMessage">{showError}</div>
-      <div style={{ display: "flex" }}>
-        <div>
+      <div >
+        <div className="mt-1 is-flex is-align-items-center">
           {deleteStreamBtn}
           {streamNum}
         </div>

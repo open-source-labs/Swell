@@ -1,21 +1,20 @@
 import * as store from "../store";
 import * as actions from "../actions/actions";
-// import wsController from "./wsController.js";
 import graphQLController from "./graphQLController.js";
 
 const { api } = window;
 const connectionController = {
   openConnectionArray: [],
 
-  getReqRes_CurrentTabAndSelected() {
-    const { reqResArray } = store.default.getState().business;
+  // getReqRes_CurrentTabAndSelected() {
+  //   const { reqResArray } = store.default.getState().business;
 
-    const { currentTab } = store.default.getState().business;
+  //   const { currentTab } = store.default.getState().business;
 
-    return reqResArray.filter(
-      (reqRes) => reqRes.tab === currentTab && reqRes.checked
-    );
-  },
+  //   return reqResArray.filter(
+  //     (reqRes) => reqRes.tab === currentTab && reqRes.checked
+  //   );
+  // },
 
   //toggles checked in state for entire reqResArray
   toggleSelectAll() {
@@ -31,15 +30,22 @@ const connectionController = {
 
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
+    // REST EVENTS
     api.receive("reqResUpdate", (reqResObj) => {
       if (
-        reqResObj.connection === "closed" &&
+        (reqResObj.connection === "closed" ||
+          reqResObj.connection === "error") &&
         reqResObj.timeSent &&
-        reqResObj.timeReceived
+        reqResObj.timeReceived &&
+        reqResObj.response.events.length > 0
       ) {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
+      
+      // If current selected response equals reqResObj received, update current response
+      const currentID = store.default.getState().business.currentResponse.id;
+      if(currentID === reqResObj.id) store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     });
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
@@ -55,7 +61,7 @@ const connectionController = {
       //update the connectionArray when connection is open from ws
       api.receive("update-connectionArray", (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
-      })
+      });
     }
     //gRPC connection
     else if (reqResObj.gRPC) {
@@ -69,9 +75,9 @@ const connectionController = {
   openAllSelectedReqRes() {
     connectionController.closeAllReqRes();
 
-    const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
+    const { reqResArray } = store.default.getState().business;
 
-    selectedAndCurrentTabReqResArr.forEach((reqRes) =>
+    reqResArray.forEach((reqRes) =>
       connectionController.openReqRes(reqRes.id)
     );
   },
@@ -81,39 +87,30 @@ const connectionController = {
   },
 
   setReqResConnectionToClosed(id) {
-    console.log('inside setReqResConnection to Closed')
     const reqResArr = store.default.getState().business.reqResArray;
 
-    const foundReqRes = reqResArr.find((reqRes) => reqRes.id === id);
+    const foundReqRes = JSON.parse( JSON.stringify( reqResArr.find( (reqRes) => reqRes.id === id )));
+
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
+    store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));
   },
 
-  closeReqRes(id) {
+  closeReqRes(reqResObj) {
+    if (reqResObj.protocol.includes("http")) {
+      api.send("close-http", reqResObj);
+    }
+
+    const { id } = reqResObj;
     this.setReqResConnectionToClosed(id);
+
+    // WS is the only protocol using openConnectionArray
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-    if (foundAbortController) {
-      switch (foundAbortController.protocol) {
-        case "HTTP1": {
-          foundAbortController.abort.abort();
-          break;
-        }
-        case "HTTP2": {
-          foundAbortController.stream.close();
-          break;
-        }
-        case "WS": {
-          api.send('close-ws')
-          break;
-        }
-        default:
-          console.log("Invalid Protocol");
-      }
-      console.log("Connection aborted.");
+    if (foundAbortController && foundAbortController.protocol === "WS") {
+      api.send("close-ws");
     }
-
     this.openConnectionArray = this.openConnectionArray.filter(
       (obj) => obj.id !== id
     );
@@ -121,9 +118,9 @@ const connectionController = {
 
   /* Closes all open endpoint */
   closeAllReqRes() {
-    const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
-    selectedAndCurrentTabReqResArr.forEach((reqRes) =>
-      connectionController.closeReqRes(reqRes.id)
+    const { reqResArray } = store.default.getState().business;
+    reqResArray.forEach((reqRes) =>
+      connectionController.closeReqRes(reqRes)
     );
   },
 
@@ -143,9 +140,13 @@ const connectionController = {
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-  //clears dataPoints from state
+  //clears a dataPoint from state
   clearGraph() {
     store.default.dispatch(actions.clearGraph());
+  },
+  // clears ALL data points from state
+  clearAllGraph() {
+    store.default.dispatch(actions.clearAllGraph());
   },
 };
 

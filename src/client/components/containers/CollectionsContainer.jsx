@@ -1,28 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from "../../../../src/client/actions/actions.js";
 import Collection from "../display/Collection.jsx";
 import collectionsController from "../../controllers/collectionsController";
 
-const mapStateToProps = (store) => ({
-  collections: store.business.collections,
-});
+export default function CollectionsContainer() {
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteFromCollection: (collection) => {
-    dispatch(actions.deleteFromCollection(collection));
-  },
-  collectionToReqRes: (reqResArray) => {
-    dispatch(actions.collectionToReqRes(reqResArray));
-  },
-});
-
-const CollectionsContainer = (props) => {
-  const { 
-    collections,
-    deleteFromCollection,
-    collectionToReqRes,
-  } = props;
+  const collections = useSelector(store => store.business.collections); 
 
   const handleClick = () => {
     collectionsController.importCollection(collections);
@@ -34,29 +19,31 @@ const CollectionsContainer = (props) => {
         <Collection
           content={collection}
           key={idx}
-          deleteFromCollection={deleteFromCollection}
-          collectionToReqRes={collectionToReqRes}
+          deleteFromCollection={() => {dispatch(actions.deleteFromCollection(collection))}}
+          collectionToReqRes={(reqResArray) => {dispatch(actions.collectionToReqRes(reqResArray))}}
         />
       );
     }
   );
 
   return (
-    <div className="collections-container">
-      <h1 className="collection-heading">Collections</h1>
-      <div className="collection-import-container">
-        <button className="import-collections" onClick={handleClick}>
-          Import Collection
+    <div>
+      
+      <div className="mt-3">
+        <button
+          className="button is-small is-primary is-outlined button-padding-verticals mx-3"
+          type="button"
+          onClick={(handleClick)}
+        >
+          Import Workspace
         </button>
+
+        <hr />
       </div>
-      <div className="collections">
+      
+      <div>
         {collectionComponents}
       </div>
     </div>
   );
 }
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CollectionsContainer);

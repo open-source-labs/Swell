@@ -35,6 +35,11 @@ export const collectionAdd = (collection) => ({
   payload: collection,
 });
 
+export const collectionUpdate = (collection) => ({
+  type: types.COLLECTION_UPDATE,
+  payload: collection,
+});
+
 export const reqResClear = () => ({
   type: types.REQRES_CLEAR,
 });
@@ -54,18 +59,27 @@ export const reqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
-export const updateGraph = (reqRes) => ({
+export const updateGraph = (id) => ({
   type: types.UPDATE_GRAPH,
+  payload: id,
+});
+
+export const clearGraph = (reqRes) => ({
+  type: types.CLEAR_GRAPH,
   payload: reqRes,
 });
 
-export const clearGraph = () => ({
-  type: types.CLEAR_GRAPH,
+export const clearAllGraph = () => ({
+  type: types.CLEAR_ALL_GRAPH,
 });
 
 export const setComposerWarningMessage = (message) => ({
   type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message,
+});
+
+export const resetComposerFields = () => ({
+  type: types.RESET_COMPOSER_FIELDS,
 });
 
 export const setNewRequestFields = (requestObj) => ({
@@ -112,16 +126,30 @@ export const setIntrospectionData = (dataObj) => ({
   type: types.SET_INTROSPECTION_DATA,
   payload: dataObj,
 });
-// UI ACTIONS
-// export const showWarning = () => ({
-//   type: types.SHOW_WARNING,
-// });
 
-// export const hideWarning = () => ({
-//   type: types.HIDE_WARNING,
-// });
+export const saveCurrentResponseData = (dataObj) => ({
+  type: types.SAVE_CURRENT_RESPONSE_DATA,
+  payload: dataObj,
+});
+
+// UI ACTIONS
 
 export const setComposerDisplay = (composerDisplay) => ({
   type: types.SET_COMPOSER_DISPLAY,
   payload: composerDisplay,
+});
+
+export const setSidebarActiveTab = (tabName) => ({
+  type: types.SET_SIDEBAR_ACTIVE_TAB,
+  payload: tabName,
+});
+
+export const setWorkspaceActiveTab = (tabName) => ({
+  type: types.SET_WORKSPACE_ACTIVE_TAB,
+  payload: tabName,
+});
+
+export const setResponsePaneActiveTab = (tabName) => ({
+  type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
+  payload: tabName,
 });

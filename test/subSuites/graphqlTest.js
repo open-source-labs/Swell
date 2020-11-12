@@ -1,6 +1,7 @@
 const chai = require("chai");
-const sideBar = require("../pageObjects/Sidebar.js");
-const reqRes = require("../pageObjects/ReqRes.js");
+const composerObj = require('../pageObjects/ComposerObj.js'); 
+const workspaceObj = require('../pageObjects/WorkspaceObj.js'); 
+const app = require('../testApp.js');
 const graphqlServer = require('../graphqlServer')
 
 const expect = chai.expect;
@@ -8,33 +9,61 @@ const expect = chai.expect;
 module.exports = () => {
   describe("GraphQL requests", () => {
 
-    const backspace = [];
-    for (let i = 0; i < 22; i += 1) {
-      backspace.push('Backspace')
-    }
+    const fillGQLRequest = async (url, method, body = '', variables = '', headers = [], cookies = []) => {
+      
+      try {
+        // click and check GRAPHQL
+        await composerObj.selectedNetwork.click();
+        await app.client.$('a=REST').click();
+        await composerObj.selectedNetwork.click();
+        await app.client.$('a=GRAPHQL').click();
+        
+        // click and select METHOD if it isn't QUERY
+        if(method !== 'QUERY') {
+          await app.client.$('span=QUERY').click();
+          await app.client.$(`a=${method}`).click();
+        }
 
-    const backspace2 = [];
-    for (let i = 0; i < 90; i += 1) {
-      backspace2.push('Backspace')
-    }
+        // type in url
+        await composerObj.url.setValue(url);
+
+        // set headers
+        headers.forEach(async ({ key, value },index) => {
+          await app.client.$(`//*[@id="header-row${index}"]/input[1]`).setValue(key);
+          await app.client.$(`//*[@id="header-row${index}"]/input[2]`).setValue(value);
+          await app.client.$('button=+ Header').click();
+        });
+
+        // set cookies
+        cookies.forEach(async ({ key, value },index) => {
+          await app.client.$(`//*[@id="cookie-row${index}"]/input[1]`).setValue(key);
+          await app.client.$(`//*[@id="cookie-row${index}"]/input[2]`).setValue(value);
+          await app.client.$('button=+ Cookie').click();
+        });
+
+        // select Body and type in body
+        await composerObj.clearGQLBodyAndWriteKeys(body);
+
+        // select Variables and type in variables
+        await composerObj.clickGQLVariablesAndWriteKeys(variables);
+        
+      } catch(err) {
+        console.error(err)
+      }
+    };
 
     const addAndSend = async () => {
       try {
-        await sideBar.addRequestBtn.click();
-        await reqRes.sendBtn.click();
+        await composerObj.addRequestBtn.click();
+        await workspaceObj.latestSendRequestBtn.click();
       } catch(err) {
-        console.error(err)
+        console.error(err);
       }
     }
 
-    const clearAndAddKeys = async (backspace, keys) => {
-      try {
-        await sideBar.graphqlText.keys(backspace);
-        await sideBar.graphqlText.keys(keys);
-      } catch(err) {
-        console.error(err)
-      }
-    }
+    before(() => {
+      app.client.$('button=Clear Workspace').click();
+    })
 
     after(() => {
       try {
@@ -45,153 +74,156 @@ module.exports = () => {
       }
     })
 
-    it("it should be able to introspect the schema", async () => {
+    it("it should be able to introspect the schema (PUBLIC API)", async () => {
       try {
-        await sideBar.graphQL.click();
-        await sideBar.url.setValue("https://countries.trevorblades.com/");
-        await sideBar.schemaOpen.click();
-        await sideBar.introspect.click();
+        // click and check GRAPHQL
+        await composerObj.selectedNetwork.click();
+        await app.client.$('a=GRAPHQL').click();
+
+        // type in url
+        await composerObj.url.setValue("https://countries.trevorblades.com/");
+
+        // click introspect
+        await app.client.$('button=Introspect').click();
+        
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const introspectionResult = await sideBar.introspectionText.getText();
-              expect(introspectionResult).to.include(`languages: [Language!]!`);
+              const introspectionResult = await app.client.$('#gql-introspection .CodeMirror-code').getText();
+              expect(introspectionResult).to.include(`CacheControlScope`);
               resolve();
             } catch(err) {
               console.error(err)
             }
-          }, 3000)
+          }, 1000)
         });
       } catch(err) {
         console.error(err)
       }
     });
 
-    it("it should create queries using the schema-hinter", async () => {
+    it("it should be able to create queries using variables (PUBLIC API)", async () => {
       try {
-        await reqRes.removeBtn.click();
-        await sideBar.graphqlText.keys(['ArrowUp', 'Tab', 'Enter', ' {', 'n', 'Enter']);
+        const method = "QUERY";
+        const url = "https://countries.trevorblades.com/";
+        const query = 'query($code: ID!) {country(code: $code) {capital}}';
+        const variables = '{"code": "AE"}';
+
+        // type in url
+        await fillGQLRequest(url, method, query, variables );
         await addAndSend();
+
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const statusCode = await reqRes.statusCode.getText();
-              const jsonPretty = await reqRes.jsonPretty.getText();
-              expect(statusCode).to.equal("Status: 200");
-              expect(jsonPretty).to.include("Africa");
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              expect(events).to.include("Abu Dhabi");
               resolve();
             } catch(err) {
               console.error(err)
             }
-          }, 2000);
-        })
+          }, 1000)
+        });
       } catch(err) {
         console.error(err)
       }
     });
 
-    it("it should create queries using variables", async () => {
+    it("it should give you the appropriate error message with incorrect queries (LOCAL API)", async () => {
       try {
-        await reqRes.removeBtn.click();
-        await clearAndAddKeys(backspace, '($code: ID!) {country(code: $code) {capital}}');
-        await sideBar.variableOpen.click();
-        await sideBar.graphqlVariable.keys('{"code": "AE"}');
+        const method = "QUERY";
+        const url = "http://localhost:4000/graphql";
+        const query = 'query {feed {descriptions}}';
+
+        // type in url
+        await fillGQLRequest(url, method, query);
         await addAndSend();
+
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const statusCode = await reqRes.statusCode.getText();
-              const jsonPretty = await reqRes.jsonPretty.getText();
-              expect(statusCode).to.equal("Status: 200");
-              expect(jsonPretty).to.include("Abu Dhabi");
+              const statusCode = await app.client.$('.status-tag').getText();
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              
+              expect(statusCode).to.equal("Error"); 
+              expect(events).to.include('"message": "Cannot query field');
               resolve();
             } catch(err) {
               console.error(err)
             }
-          }, 2000);
-        })
+          }, 1000)
+        });
       } catch(err) {
         console.error(err)
       }
     });
 
-    it("it should give you the appropriate error message with incorrect queries", async () => {
+    it("it should work with mutations (LOCAL API)", async () => {
       try {
-        await reqRes.removeBtn.click();
-        await sideBar.url.setValue("http://localhost:4000/graphql");
-        await sideBar.graphqlVariable.keys(backspace);
-        await clearAndAddKeys(backspace2, 'query {feed {descriptions}}');
+        const method = "MUTATION";
+        const url = "http://localhost:4000/graphql";
+        const query = 'mutation {post(url: "www.piedpiper.com" description: "Middle-out compression") {url}}';
+
+        // type in url
+        await fillGQLRequest(url, method, query);
         await addAndSend();
+
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const statusCode = await reqRes.statusCode.getText();
-              const jsonPretty = await reqRes.jsonPretty.getText();
-              expect(statusCode).to.equal("Status: 400");
-              expect(jsonPretty).to.include(`GRAPHQL_VALIDATION_FAILED`);
+              const statusCode = await app.client.$('.status-tag').getText();
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              
+              expect(statusCode).to.equal("Success"); 
+              expect(events).to.include('www.piedpiper.com');
               resolve();
             } catch(err) {
               console.error(err)
             }
-          }, 2000);
-        })
+          }, 1000)
+        });
       } catch(err) {
         console.error(err)
       }
-    })
+    });
 
-    it("it should work with mutations", async () => {
+    it("it should work with subscriptions (LOCAL API)", async () => {
       try {
-        await reqRes.removeBtn.click();
-        await sideBar.chooseMutation.click();
-        await clearAndAddKeys(backspace2, 'mutation {post(url: "www.piedpiper.com" description: "Middle-out compression") {url}}');
+        // START SUBSCRIPTION
+        const method = "SUBSCRIPTION";
+        const url = "http://localhost:4000/graphql";
+        const query = 'subscription {newLink {id description}}';
+
+        await fillGQLRequest(url, method, query);
         await addAndSend();
+
+        // SEND MUTATION
+        const method2 = "MUTATION";
+        const url2 = "http://localhost:4000/graphql";
+        const query2 = 'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {url}}';
+
+        await fillGQLRequest(url2, method2, query2);
+        await addAndSend();
+        
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const statusCode = await reqRes.statusCode.getText();
-              const jsonPretty = await reqRes.jsonPretty.getText();
-              expect(statusCode).to.equal("Status: 200");
-              expect(jsonPretty).to.include("www.piedpiper.com");
+              await app.client.$('#view-button-3').click();
+
+              const statusCode = await app.client.$('.status-tag').getText();
+              const events = await app.client.$('#events-display .CodeMirror-code').getText();
+              
+              expect(statusCode).to.equal("Success"); 
+              expect(events).to.include('Tethics');
               resolve();
             } catch(err) {
               console.error(err)
             }
-          }, 2000);
-        })
+          }, 1000)
+        });
       } catch(err) {
         console.error(err)
       }
-    })
-
-    it("it should work with subscriptions", async () => {
-      try {
-        await reqRes.removeBtn.click();
-        await sideBar.chooseSubscription.click();
-        await clearAndAddKeys(backspace2, 'subscription {newLink {id description}}');
-        await addAndSend();
-        await sideBar.chooseMutation.click();
-        await clearAndAddKeys(backspace2, 'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {url}}');
-        await addAndSend();
-        await reqRes.mutationRemoveBtn.click();
-        await new Promise((resolve) => {
-          setTimeout(async () => {
-            try {
-              const statusCode = await reqRes.statusCode.getText();
-              const jsonPretty = await reqRes.jsonPretty.getText();
-              expect(statusCode).to.equal("Status: 200");
-              expect(jsonPretty).to.include("Tethics");
-              resolve();
-            } catch(err) {
-              console.error(err)
-            }
-          }, 3000);
-        })
-      } catch (err) {
-        console.error(err);
-      };
-    })
+    });
   })
 }
-
-// entering wrong query/mutation will give you the appropriate error message

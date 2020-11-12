@@ -1,16 +1,14 @@
 @import "colors";
-@import "sidebar";
-@import "reset";
+
+@import 'infinite';
+// @import "@fortawesome/fontawesome-free";
 @import "base";
-@import "grid";
-@import "type";
-@import "reqres";
-@import "chart";
-@import "navbar";
-@import "tabs";
 @import "sidebar";
-@import "cookieTable";
-@import "prompt";
-@import "websocket";
-@import "jsonPretty.scss";
-@import "popup.scss";
+@import "workspace";
+@import 'webSocketResponse';
+@import "responsepane";
+@import "bulma";
+@import '~bulma-switch';
+@import '~bulma-checkradio';
+
+

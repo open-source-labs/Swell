@@ -21,7 +21,6 @@ const GraphQLBodyEntryForm = (props) => {
     introspectionData,
   } = props;
 
-  const [show, setShow] = useState(true);
   const [cmValue, setValue] = useState(bodyContent);
 
   // set a new value for codemirror only if loading from history or changing query type
@@ -29,34 +28,24 @@ const GraphQLBodyEntryForm = (props) => {
     if (!bodyIsNew) setValue(bodyContent)
   }, [bodyContent])
 
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
-    : "composer_bodyform_container-closed";
+ 
 
   return (
-    <div>
-      <label
-      className='composer_subtitle' >
-        <div className="label-text" id="cookie-click">Body</div>
-        <div className="toggle">
-          <input type="checkbox" name="check" className="toggle-state" onClick={() => {
-          setShow(!show);}}/>
-          <div className="indicator_body" />
-        </div>
-      </label>
+    <div className="mt-3">
       { // conditionally render warning message
         warningMessage ? 
-          <div style={{ color: "red", marginBottom: "10px" }}>
+          <div >
             {warningMessage.body}
           </div>
         : null 
       }
-      <div className={bodyContainerClass} id="graphql-body">
+      <div className="composer-section-title">Body</div>
+      <div id="gql-body-entry" className="is-neutral-200-box p-3">
         <CodeMirror
           value={cmValue}
           options={{
             mode: "graphql",
-            theme: "twilight",
+            theme: "neo sidebar",
             scrollbarStyle: "native",
             lineNumbers: false,
             lint: true,

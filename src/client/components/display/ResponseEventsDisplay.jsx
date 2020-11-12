@@ -12,9 +12,8 @@ const ResponseEventsDisplay = (props) => {
       : "__json-pretty__";
 
   // If it's an SSE, render event rows
-  // console.log('response is : ', response, 'headers is : ', headers)
   if (
-    headers &&
+    headers && 
     headers["content-type"] &&
     headers["content-type"] === "text/event-stream"
   ) {
@@ -28,8 +27,6 @@ const ResponseEventsDisplay = (props) => {
     headers["content-type"] &&
     headers["content-type"].includes("text/html")
   ) {
-    // console.log("headers:content-type ->", headers["content-type"]);
-    // console.log("events0 -> ", events[0]);
     displayContents.push(
       <div
         className="okay"

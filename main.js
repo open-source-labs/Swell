@@ -203,17 +203,12 @@ app.on("ready", () => {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== "darwin") {
-    //darwin refers to macOS...
-    app.quit(); // If User is on mac exit the program when all windows are closed
-  }
+  app.quit();
 });
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
-  log.info(text);
+  log.info(text); 
   if (mainWindow) {
     mainWindow.webContents.send("message", text);
   }
@@ -221,7 +216,9 @@ const sendStatusToWindow = (text) => {
 
 ipcMain.on("check-for-update", () => {
   //listens to ipcRenderer in UpdatePopUpContainer.jsx
-  if (!isDev) autoUpdater.checkForUpdates();
+  if (!isDev) {
+    autoUpdater.checkForUpdates();
+  }
 });
 autoUpdater.on("checking-for-update", () => {
   sendStatusToWindow("Checking for update...");
@@ -323,13 +320,11 @@ ipcMain.on("import-collection", (event, args) => {
 
     // names is the list of existing collection names in state
     const collectionNames = args.map((obj) => obj.name);
-
     fs.readFile(filepath, "utf-8", (err, data) => {
       if (err) {
         alert("An error ocurred reading the file :", err.message);
         return;
       }
-
       // parse data, will throw error if not parsable
       let parsed;
       // parsed.name already exists
@@ -364,11 +359,8 @@ ipcMain.on("import-collection", (event, args) => {
           return;
         }
       }
-
       // send data to chromium for state update
-      // ipcMain.send("add-collection", { data });
-      // mainWindow.webContents.send('add-collection', {data});
-      event.sender.send("add-collection", { data });
+      event.sender.send("add-collection", JSON.stringify(JSON.parse(data)));
     });
   });
   //.catch( err => console.log('error in import-collection', err));
@@ -412,12 +404,12 @@ ipcMain.on("import-proto", (event) => {
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
-          console.log(
-            "finished with logic. about to send importedProto : ",
-            importedProto,
-            " and protoObj : ",
-            protoObj
-          );
+          // console.log(
+          //   "finished with logic. about to send importedProto : ",
+          //   importedProto,
+          //   " and protoObj : ",
+          //   protoObj
+          // );
           mainWindow.webContents.send("proto-info", importedProto, protoObj);
         });
       });
@@ -481,6 +473,7 @@ ipcMain.on("http1-fetch-message", (event, arg) => {
 const { onError } = require("apollo-link-error");
 const { response } = require("express");
 
+/* NEED TO INCORPORATE COOKIES AND HEADERS IN QUERIES AND MUTATIONS */
 ipcMain.on("open-gql", (event, args) => {
   const reqResObj = args.reqResObj;
 
@@ -493,7 +486,7 @@ ipcMain.on("open-gql", (event, args) => {
     });
 
   // request cookies from reqResObj to request headers
-  let cookies;
+  let cookies = '';
   if (reqResObj.request.cookies.length) {
     cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
@@ -587,11 +580,12 @@ ipcMain.on("open-gql", (event, args) => {
     const variables = reqResObj.request.bodyVariables
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
+    
     if (reqResObj.request.method === "QUERY") {
       client
-        .query({ query: body, variables })
+        .query({ query: body, variables, context: headers })
         .then((data) => {
-          event.sender.send("reply-gql", { reqResObj, data });
+          event.sender.send("reply-gql", { reqResObj, data })
         })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
@@ -599,8 +593,10 @@ ipcMain.on("open-gql", (event, args) => {
         });
     } else if (reqResObj.request.method === "MUTATION") {
       client
-        .mutate({ mutation: body, variables })
-        .then((data) => event.sender.send("reply-gql", { reqResObj, data }))
+        .mutate({ mutation: body, variables, context: headers })
+        .then((data) => {
+          event.sender.send("reply-gql", { reqResObj, data })
+        })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
           console.error("gql mutation error in main.js", err);
@@ -610,11 +606,28 @@ ipcMain.on("open-gql", (event, args) => {
     console.log("error trying gql query/mutation in main.js", err);
   }
 });
+/* NEED TO INCORPORATE COOKIES AND HEADERS IN INTROSPECTION */
+ipcMain.on("introspect", (event, introspectionObject) => {
+  const req = JSON.parse(introspectionObject);
 
-ipcMain.on("introspect", (event, url) => {
-  fetch2(url, {
+  // Reformat headers
+  const headers = {};
+  req.headers.forEach(({ active, key, value }) => {
+    if(active) headers[key] = value;
+  });
+  // Reformat cookies
+  let cookies = '';
+  if (req.cookies.length) {
+    cookies = req.cookies.reduce((acc, userCookie) => {
+      if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+      return acc;
+    }, '');
+  }
+  headers.Cookie = cookies;
+  
+  fetch2(req.url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ query: introspectionQuery }),
   })
     .then((resp) => resp.json())

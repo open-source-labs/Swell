@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { POINT_CONVERSION_UNCOMPRESSED } from "constants";
+import React, { useState, useEffect } from "react";
 import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
+import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
 // import protoParserFunc from "../../../protoParser.js";
 
 const { api } = window;
@@ -8,6 +10,7 @@ const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
+  // console.log("gRPC proto entry props new req streams --->", props.newRequestStreams)
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
@@ -93,11 +96,6 @@ const GRPCProtoEntryForm = (props) => {
     }
   };
 
-  const bodyContainerClass = show
-    ? "composer_bodyform_container-open"
-    : "composer_bodyform_container-closed";
-  const smallBtn = show ? "small-btn-open" : "small-btn-closed";
-
   const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
   /*
     pseudocode for the return section
@@ -107,43 +105,33 @@ const GRPCProtoEntryForm = (props) => {
      - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
      */
   return (
-    <div>
-      <label className="composer_subtitle">
-        <div className="label-text" id="cookie-click">
-          Proto
+    <div className="mt-1">
+      <div className="is-flex is-justify-content-space-between is-align-content-center">
+        <div className="composer-section-title">Proto</div>
+        <div>
+          <button
+            className="button is-small add-header-or-cookie-button mr-1"
+            onClick={importProtos}
+          >
+            Load Proto
+          </button>
+          <button
+            className="button is-small add-header-or-cookie-button"
+            id="save-proto"
+            onClick={submitUpdatedProto}
+          >
+            {saveChangesBtnText}
+          </button>
         </div>
-        <div className="toggle">
-          <input
-            type="checkbox"
-            name="check"
-            className="toggle-state"
-            onClick={() => toggleShow(!show)}
-          />
-          <div className="indicator" />
-        </div>
-      </label>
-      <div className="warningMessage">{protoError}</div>
-      <textarea
-        value={props.newRequestStreams.protoContent}
-        className={"composer_textarea grpc " + bodyContainerClass}
+      </div>
+
+      <div className="is-danger subtitle">{protoError}</div>
+      <TextCodeAreaEditable
         id="grpcProtoEntryTextArea"
-        type="text"
-        placeholder="Import .proto file or paste a copy"
-        rows={8}
-        onChange={(e) => updateProtoBody(e.target.value)}
+        onChange={(editor, data, value) => updateProtoBody(value)}
+        value={props.newRequestStreams.protoContent}
+        mode="application/json"
       />
-
-      <button className={"import-proto " + smallBtn} onClick={importProtos}>
-        Import Proto File
-      </button>
-      <button
-        id="save-proto"
-        className={"save-proto " + smallBtn}
-        onClick={submitUpdatedProto}
-      >
-        {saveChangesBtnText}
-      </button>
-
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}

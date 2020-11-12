@@ -1,18 +1,64 @@
 /* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import WWWField from './WWWField.jsx';
+import ContentReqRowComposer from './ContentReqRowComposer.jsx';
 
 class WWWForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       wwwFields: [],
-      fieldCount: 0,
       rawString: '',
     }
     this.updateWwwField = this.updateWwwField.bind(this);
+    this.deleteWwwField = this.deleteWwwField.bind(this)
   }
+  
+  createWWWClone() {
+    return JSON.parse(JSON.stringify(this.state.wwwFields))
+  }
+  
+  checkOldBody() {
+     //create state from the incoming string, 
+    
+      //if there is only one k/v pair...
+      if (!this.props.newRequestBody.bodyContent.includes('&')) {
+        let key = this.props.newRequestBody.bodyContent.split('=')[0];
+        let value = this.props.newRequestBody.bodyContent.split('=')[1];
+        this.setState({
+          wwwFields: [{
+            id: `id${this.state.wwwFields.length}`,
+            active: true,
+            key,
+            value,
+          }],
+          rawString: this.props.newRequestBody.bodyContent
+        }, () => {
+          this.addFieldIfNeeded();
+        })
+      }
+      //more than one k/v pair
+      else if (this.props.newRequestBody.bodyContent.includes('&')) {
+        let fields = this.props.newRequestBody.bodyContent.split('&')
+          .map(field => {
+            let key = field.split('=')[0];
+            let value = field.split('=')[1];
+            return {
+              id: `id${this.state.wwwFields.length}`,
+              active: true,
+              key,
+              value,
+            }
+          })
+          .filter(field => field.key !== '' || field.value !== '');
+
+        this.setState({
+          wwwFields: fields,
+          rawString: this.props.newRequestBody.bodyContent
+        })
+      }
+    } 
+  
 
   componentDidMount() {
     //"hi"="rocky"&"meow"="cats" in the body turns into 2 key/value pairs when switching to x-www
@@ -27,84 +73,70 @@ class WWWForm extends Component {
         ...this.props.newRequestBody,
         bodyContent: '',
       });
-
     }
     this.addFieldIfNeeded();
   }
 
+  
+
   componentDidUpdate() {
-    //create state from the incoming string, 
     if (this.props.newRequestBody.bodyContent !== this.state.rawString) {
-      //if there is only one k/v pair...
-      if (!this.props.newRequestBody.bodyContent.includes('&')) {
-        let key = this.props.newRequestBody.bodyContent.split('=')[0];
-        let value = this.props.newRequestBody.bodyContent.split('=')[1];
-
-        this.setState({
-          wwwFields: [{
-            id: Math.floor(Math.random() * 100000),
-            active: true,
-            key,
-            value,
-          }],
-          fieldCount: 1,
-          rawString: this.props.newRequestBody.bodyContent
-        }, () => {
-          this.addFieldIfNeeded();
-        })
-      }
-      //more than one k/v pair
-      else if (this.props.newRequestBody.bodyContent.includes('&')) {
-        let fields = this.props.newRequestBody.bodyContent.split('&')
-          .map(field => {
-            let key = field.split('=')[0];
-            let value = field.split('=')[1];
-            return {
-              id: Math.floor(Math.random() * 100000),
-              active: true,
-              key,
-              value,
-            }
-          })
-          .filter(field => field.key !== '' || field.value !== '');
-
-        this.setState({
-          wwwFields: fields,
-          fieldCount: fields.length - 1,
-          rawString: this.props.newRequestBody.bodyContent
-        }, () => {
-          this.addFieldIfNeeded();
-        });
-      }
+    this.checkOldBody();
     }
+    const wwwFieldsDeepCopy = this.createWWWClone();
+    if (wwwFieldsDeepCopy.length === 0 || wwwFieldsDeepCopy[wwwFieldsDeepCopy.length-1]?.key !== "") { 
+      this.addWwwField()
+    } 
   }
 
-  updateWwwField(id, changeField, value) {
-    const wwwFieldsDeepCopy = this.state.wwwFields.map((wwwField) => {
-      if (wwwField.id === id) {
-        wwwField[changeField] = value;
-        wwwField.active = true;
+  addWwwField() {
+    const wwwFieldsDeepCopy = this.createWWWClone();
+    wwwFieldsDeepCopy.push({
+      id: `id${this.state.wwwFields.length}`,
+      active: false,
+      key: '',
+      value: ''
+    })
+    this.setState({
+      wwwFields: wwwFieldsDeepCopy
+    });
+  } 
+
+  updateWwwField(id, field, value) {
+
+    const wwwFieldsDeepCopy = this.createWWWClone();
+    
+    //find www to update
+    let indexToBeUpdated;
+    for (let i = 0; i < wwwFieldsDeepCopy.length; i++) {
+      if (wwwFieldsDeepCopy[i].id === id) {
+        indexToBeUpdated = i;
+        break;
       }
-      return wwwField;
-    });
+    }
+    const target = wwwFieldsDeepCopy[indexToBeUpdated]
+    
+    //update
+    target[field] = value;
 
-    let bodyContent = wwwFieldsDeepCopy
-      .filter(wwwField => wwwField.active)
-      .map(wwwField => `${wwwField.key}=${wwwField.value}`)
-      .join('&');
-
-    this.props.setNewRequestBody({
-      ...this.props.newRequestBody,
-      bodyContent,
-    });
+    //also switch checkbox if they are typing
+    if (field === 'key' || field === 'value') {
+      target.active = true;
+      this.addWwwField();
+    }
+   
+      this.setState({
+        wwwFields: wwwFieldsDeepCopy,
+      });
+    
   }
 
   addFieldIfNeeded() {
-    if (this.shouldAddField()) {
-      const wwwFieldsDeepCopy = JSON.parse(JSON.stringify(this.state.wwwFields));
+    if (this.isWwwFieldsEmpty()) {
+      const wwwFieldsDeepCopy = this.createWWWClone();
 
       wwwFieldsDeepCopy.push({
-        id: Math.floor(Math.random() * 100000),
+        id: `id${this.state.wwwFields.length}`,
         active: false,
         key: '',
         value: '',
@@ -116,7 +148,7 @@ class WWWForm extends Component {
     }
   }
 
-  shouldAddField() {
+  isWwwFieldsEmpty() {
     if (this.state.wwwFields.length === 0) {
       return true;
     }
@@ -126,10 +158,32 @@ class WWWForm extends Component {
       .reduce((acc, cur) => acc + cur) === 0;
   }
 
+  deleteWwwField(index) {
+    const newFields = this.state.wwwFields.slice();
+    newFields.splice(index, 1);
+    if (!newFields.length) {
+      newFields.push({
+        id: `id${this.state.wwwFields.length}`,
+        active: false,
+        key: '',
+        value: '',
+      });
+    }
+    this.setState({
+      wwwFields: newFields,
+    })
+  }
+
   render() {
     let wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
       return (
-        <WWWField key={index} id={wwwField.id} active={wwwField.active} Key={wwwField.key} value={wwwField.value} updateCallback={this.updateWwwField} />
+        <ContentReqRowComposer 
+          index={index}
+          deleteItem={this.deleteWwwField}
+          data={wwwField} 
+          changeHandler={this.updateWwwField}
+          key={`crrcwwwfield${index}`}
+        />
       )
     })
 

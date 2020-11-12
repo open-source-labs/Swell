@@ -46,7 +46,7 @@ const initialState = {
     bodyContent: "",
     bodyVariables: "",
     bodyType: "raw",
-    rawType: "Text (text/plain)",
+    rawType: "text/plain",
     JSONFormatted: true,
     bodyIsNew: false,
   },
@@ -54,7 +54,12 @@ const initialState = {
     isSSE: false,
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
-  dataPoints: [],
+  dataPoints: {},
+  currentResponse: {
+    request: {
+      network: "",
+    },
+  },
 };
 
 const businessReducer = (state = initialState, action) => {
@@ -111,8 +116,39 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.RESET_COMPOSER_FIELDS: {
+      return {
+        ...state,
+        newRequestHeaders: {
+          headersArr: [],
+          count: 0,
+        },
+        newRequestCookies: {
+          cookiesArr: [],
+          count: 0,
+        },
+        newRequestBody: {
+          ...state.newRequestBody,
+          bodyContent: "",
+          bodyVariables: "",
+          bodyType: "raw",
+          rawType: "text/plain",
+          JSONFormatted: true,
+        },
+        newRequestFields: {
+          ...state.newRequestFields,
+          protocol: "",
+        },
+        newRequestSSE: {
+          isSSE: false,
+        },
+        warningMessage: {},
+      };
+    }
+
     case types.COLLECTION_TO_REQRES: {
-      const reqResArray = [...action.payload];
+      const reqResArray = JSON.parse(JSON.stringify(action.payload));
+      // console.log('IN REDUCER:', reqResArray);
       return {
         ...state,
         reqResArray,
@@ -127,10 +163,31 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.COLLECTION_UPDATE: {
+      //update collection from state
+      const collectionName = action.payload.name;
+      const newCollections = JSON.parse(JSON.stringify(state.collections));
+      newCollections.forEach((obj, i) => {
+        if (obj.name === collectionName) {
+          newCollections[i] = action.payload;
+        }
+      });
+
+      return {
+        ...state,
+        collections: newCollections,
+      };
+    }
+
     case types.REQRES_CLEAR: {
       return {
         ...state,
         reqResArray: [],
+        currentResponse: {
+          request: {
+            network: "",
+          },
+        },
       };
     }
 
@@ -203,41 +260,65 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.UPDATE_GRAPH: {
+      const { id } = action.payload;
+      // action.payload is the latest reqRes object
+
       //dataPoints to be used by graph
-      const dataPoints =
-        //if more than 12 points, data will shift down an index
-        state.dataPoints.length < 12
-          ? [...state.dataPoints]
-          : [...state.dataPoints.slice(1)];
+      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints));
+      dataPointsCopy.current = id;
+      //if more than 8 points, data will shift down an index
+      if (!dataPointsCopy[id]) {
+        dataPointsCopy[id] = [];
+      } else if (dataPointsCopy[id].length > 5) {
+        dataPointsCopy[id] = dataPointsCopy[id].slice(1);
+      }
+
       //check if new object is a closed request with timeSent and timeReceived
       if (
-        !dataPoints.some((elem) => elem.timeSent === action.payload.timeSent)
+        !dataPointsCopy[id].some(
+          (elem) => elem.timeSent === action.payload.timeSent
+        )
       ) {
-        //generate random rgb color to be assigned to this datapoint. Stored as string.
-        const color = [
-          Math.floor(Math.random() * 255),
-          Math.floor(Math.random() * 255),
-          Math.floor(Math.random() * 255),
-        ].join(", ");
-        //add dataPoint to array and return to state
-        dataPoints.push({
+        // if a color hasn't been added to this specific request id, add a new one
+        const color = !dataPointsCopy[id][0]?.color
+          ? `${Math.random() * 256}, ${Math.random() * 256}, ${
+              Math.random() * 256
+            }`
+          : dataPointsCopy[id][0].color;
+
+        //add dataPoint to array connected to its id -and return to state
+        dataPointsCopy[id].push({
+          reqRes: action.payload,
           url: action.payload.url,
           timeSent: action.payload.timeSent,
           timeReceived: action.payload.timeReceived,
           created_at: action.payload.created_at,
-          color: color,
+          color,
         });
         return {
           ...state,
-          dataPoints: dataPoints,
+          dataPoints: dataPointsCopy,
         };
-      } else return state;
+      }
+      return {
+        ...state,
+        dataPoints: dataPointsCopy,
+      };
     }
 
     case types.CLEAR_GRAPH: {
+      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints));
+      dataPointsCopy[action.payload] = [];
       return {
         ...state,
-        dataPoints: [],
+        dataPoints: dataPointsCopy,
+      };
+    }
+
+    case types.CLEAR_ALL_GRAPH: {
+      return {
+        ...state,
+        dataPoints: {},
       };
     }
 
@@ -301,6 +382,13 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         introspectionData: action.payload,
+      };
+    }
+
+    case types.SAVE_CURRENT_RESPONSE_DATA: {
+      return {
+        ...state,
+        currentResponse: action.payload,
       };
     }
 

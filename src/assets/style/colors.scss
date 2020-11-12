@@ -1,44 +1,144 @@
-$navy: #001e38;
-$green: #15b78f;
-$litegray: #fafafa;
-$yellowgrey: #808080;
-$medgray: #E6EBEC;
-$liteblack: #141414;
-$darkblack: #141414;
-$litebluegray: #D4DCEC;
-$medbluegray: #ecf1f5;
+$primary-100: #ffd645;
+$primary-200: #f66b61;
+$primary-300: #21d4a4;
+$primary-400: #50809b;
+$primary-500: #3734a9;
 
-$teal: #3DADC2;
-$lightgray: #dcdcdd;
-$mediumgray: #c5c3c6;
-$darkgraygreen: #46494c;
-$huntergreen: #4c5c68;
+$rest: #6843ff;
+$graphql: #de33a6;
+$grpc: #6cacc1;
+$websockets: #f47d31;
 
-$bordergray: #ebeff2;
+$neutral-100: #ffffff;
+$neutral-200: #f4f5f7;
+$neutral-300: #e1e1e1;
+$neutral-400: #737581;
+$neutral-500: #4a4b53;
+$neutral-600: #000000;
 
-$highlight: #8FF7A7;
-$remove: #DB5D58;
+// BULMA COLORS
+$primary: $primary-500;
+$success: $primary-300;
+$danger: $primary-200;
+$text: $neutral-500;
+// $link: $blue
+// $info: $cyan
+// $success: $green
+// $warning: $yellow
+// $dark: $grey-darker
 
-$greenzero:#ECFDF6;
+// CODE MIRROR COLORS
+.cm-s-neo .cm-comment { color: $neutral-400 !important; }
+.cm-s-neo .cm-keyword, .cm-s-neo .cm-property { color: #A626A4 !important; }
+.cm-s-neo .cm-atom,.cm-s-neo .cm-number { color:$primary-200 !important; }
+.cm-s-neo .cm-node,.cm-s-neo .cm-tag { color: #a57b25 !important; }
+.cm-s-neo .cm-string { color: $primary-500 !important; }
+.cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier { color: #06a568 !important; }
 
-$greenone: #3157C0; //rgb(21,183,143)
-$greentwo: #3157C0; //rgb(0,161,147)
-$greenthree: #3157C0; //rgb(0,116,131)
-$greenfour: #3157C0; //
-$greenfive: #3157C0;
-$greensix: #3157C0;
-$greenseven: #3157C0;
+// COLOR SCHEMES 
+.is-primary-100 {
+  color: $neutral-500 !important;
+  background-color: $primary-100 !important;
+}
 
-$blueone: #2196f3; //rgb(0,155,191)
-$bluetwo: #82b1ff; //rgb(0,137,208)
-$bluethree: #3157C0;
-$bluefour: #3157C0; //rgb(49,87,192)
+.is-primary-200 {
+  color: $neutral-500;
+  background-color: $primary-100;
+}
 
-$grayone: #E6EBEC;
-$graytwo: #C4CED4;
-$graythree: #A9B0BE;
+.is-rest {
+  color: $neutral-200 !important;
+  background-color: $rest !important;
+}
 
-$gqlpink: #3157C0;
-$gqlpinktwo: #3157C0;
+.is-graphQL {
+  color: $neutral-200 !important;
+  background-color: $graphql !important;
+}
 
-$grpcorange: #3157C0;
+.is-grpc {
+  color: $neutral-200 !important;
+  background-color: $grpc !important;
+}
+
+.is-ws {
+  color: $neutral-200 !important;
+  background-color: $websockets !important;
+}
+
+.is-rest-color {
+  color: $rest !important;
+}
+
+.is-graphQL-color {
+  color: $graphql !important;
+}
+
+.is-grpc-color {
+  color: $grpc !important;
+}
+
+.is-ws-color {
+  color: $websockets !important;
+}
+
+.is-rest-border {
+  border-color: $rest !important;
+}
+
+.is-graphQL-border {
+  border-color: $graphql !important;
+}
+
+.is-grpc-border {
+  border-color: $grpc !important;
+}
+
+.is-ws-border {
+  border-color: $websockets !important;
+}
+
+.is-neutral-300 {
+  color: $neutral-600 !important;
+  background-color: $neutral-300 !important;
+}
+
+.is-neutral-100 {
+  color: $neutral-600 !important;
+  background-color: $neutral-100 !important;
+}
+
+.is-neutral-200-box {
+  border: 1px solid $neutral-300;
+  background-color: $neutral-200;
+}
+
+.is-success {
+  background-color: $primary-300;
+  color: $neutral-100;
+}
+
+.is-danger {
+  background-color: $primary-200;
+  color: $neutral-100;
+}
+
+.is-border-neutral-300 {
+  border: 1px solid $neutral-300;
+}
+
+.is-divider-neutral-300 {
+  border-left: 1px solid $neutral-300;
+  border-right: 1px solid $neutral-300;
+}
+
+.is-awesome-icon {
+  display: inline-block;
+  stroke-width: 0;
+  stroke: $neutral-200;
+  fill: $neutral-200;
+  line-height: 1;
+  position: relative;
+  top: -0.07em;
+  vertical-align: middle;
+}

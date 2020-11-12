@@ -1,11 +1,16 @@
 {
   "name": "Swell",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test process.env.TRAVIS_LOCAL_API=true mocha --exit",
+    "server-sse": "node ./test/fakeSSEServer.js",
+    "server-gql": "node ./test/graphqlServer.js",
+    "server-grpc": "node ./test/grpcServer.js",
+    "server-http": "node ./test/httpServer.js",
+    "server-http2": "node ./test/HTTP2_server.js",
     "test-jest": "jest",
     "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --exit",
     "build": "webpack --mode=production --config ./webpack.production.js",
@@ -159,6 +164,26 @@
       "name": "Alex Sanhueza",
       "email": "https://www.linkedin.com/in/alex-sanhueza/",
       "url": "https://github.com/alexsanhueza"
+    },
+    {
+      "name": "Gary Slootskiy",
+      "email": "https://www.linkedin.com/in/garyslootskiy/",
+      "url": "https://github.com/garyslootskiy"
+    },
+    {
+      "name": "Robin Yoong",
+      "email": "https://www.linkedin.com/in/robinyoong/",
+      "url": "https://github.com/robinyoong"
+    },
+    {
+      "name": "Nathaniel Adams",
+      "email": "https://www.linkedin.com/in/adamsnathaniel/",
+      "url": "https://github.com/nathanielBadams"
+    },
+    {
+      "name": "Sam Haar",
+      "email": "https://www.linkedin.com/in/samhaar/",
+      "url": "https://github.com/samhaar"
     }
   ],
   "build": {
@@ -235,6 +260,7 @@
     "@babel/cli": "^7.10.5",
     "@babel/runtime": "^7.10.3",
     "@doyensec/electronegativity": "^1.6.0",
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "@grpc/grpc-js": "^1.1.1",
     "@grpc/proto-loader": "^0.5.4",
     "apollo-cache-inmemory": "^1.6.6",
@@ -245,9 +271,12 @@
     "apollo-link-ws": "^1.0.20",
     "apollo-server-express": "^2.17.0",
     "body-parser": "^1.19.0",
+    "bulma": "^0.9.1",
+    "bulma-checkradio": "^1.1.1",
+    "bulma-switch": "^2.0.0",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
-    "codemirror": "^5.56.0",
+    "codemirror": "^5.58.2",
     "codemirror-graphql": "^0.12.1",
     "concurrently": "^5.2.0",
     "date-fns": "^1.29.0",
@@ -260,6 +289,7 @@
     "es6-promise": "^4.2.8",
     "eventsource": "^1.0.7",
     "express": "^4.17.1",
+    "express-sse": "^0.5.3",
     "google-auth-library": "^5.10.1",
     "graphql": "^14.6.0",
     "graphql-subscriptions": "^1.1.0",
@@ -285,7 +315,8 @@
     "react-highlight": "^0.12.0",
     "react-json-pretty": "^2.2.0",
     "react-modal": "^3.11.2",
-    "react-redux": "^5.1.2",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
     "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.8",
@@ -316,6 +347,7 @@
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.6",
     "@types/set-cookie-parser": "0.0.6",
     "@types/ws": "^7.2.6",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
