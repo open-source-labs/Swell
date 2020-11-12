@@ -12,7 +12,7 @@ import ReqResCtrl from "../../controllers/reqResController";
 export const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
-  
+
   const setActiveTab = (tabName) =>
     dispatch(actions.setResponsePaneActiveTab(tabName));
 
@@ -22,7 +22,7 @@ export const ResponsePaneContainer = () => {
   const { connection } = currentResponse;
 
   // UNCOMMENT FOR DEBUGGING
-  console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
+  // console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
 
   return (
     <div
@@ -84,9 +84,9 @@ export const ResponsePaneContainer = () => {
           </div>
           {/* RESPONSES CONTENT */}
           <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column remove-horizontal-scroll">
-            {activeTab === "events" && 
+            {activeTab === "events" && (
               <EventsContainer currentResponse={currentResponse} />
-            }
+            )}
             {activeTab === "headers" && (
               <HeadersContainer currentResponse={currentResponse} />
             )}
@@ -97,7 +97,7 @@ export const ResponsePaneContainer = () => {
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
           {currentResponse.id &&
             currentResponse.request?.method !== "WS" &&
-            currentResponse.request?.method !== "SUBSCRIPTION" && 
+            currentResponse.request?.method !== "SUBSCRIPTION" &&
             (connection === "closed" || connection === "error") && (
               <div className="is-3rem-footer mx-3">
                 <button

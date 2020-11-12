@@ -134,7 +134,12 @@ const BarGraph = (props) => {
     const { id, host } = currentResponse;
     setHost(host?.slice(7));
 
-    let url; let urls; let times; let BGs; let borders; let reqResObjs;
+    let url;
+    let urls;
+    let times;
+    let BGs;
+    let borders;
+    let reqResObjs;
     if (dataPoints[id]?.length) {
       const point = dataPoints[id][0];
       // // if grpc, just return the server IP
@@ -149,7 +154,7 @@ const BarGraph = (props) => {
           ? `- ..${point.url.slice(point.url.length - 8, point.url.length)}`
           : ""
       }`;
-      // console.log('final URL', url)
+
       setChartURL(url);
 
       //extract arrays from data point properties to be used in chart data/options that take separate arrays

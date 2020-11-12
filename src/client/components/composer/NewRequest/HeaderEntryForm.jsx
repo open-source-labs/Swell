@@ -25,7 +25,6 @@ class HeaderEntryForm extends Component {
       lastHeader?.key !== "" &&
       lastHeader?.key.toLowerCase() !== "content-type"
     ) {
-      // console.log("adding header");
       this.addHeader();
     }
     this.checkContentTypeHeaderUpdate();
@@ -80,8 +79,6 @@ class HeaderEntryForm extends Component {
     //   foundHeader.value !== contentType &&
     //   this.contentHeaderNeeded()
     // ) {
-    //   console.log("here is why - updating content type");
-    //   console.log("foundHeader, contentType", foundHeader, contentType);
     //   this.updateContentTypeHeader(contentType, foundHeader);
     // }
   }
@@ -112,13 +109,6 @@ class HeaderEntryForm extends Component {
     const filtered = this.props.newRequestHeaders.headersArr.filter(
       (header) => !header.key.toLowerCase().includes("content-type")
     );
-    // console.log(filtered);
-    // this.props.newRequestHeaders.headersArr.unshift({
-    //   id: Math.random() * 1000000,
-    //   active: true,
-    //   key: "Content-Type",
-    //   value: contentType,
-    // });
 
     this.props.setNewRequestHeaders({
       headersArr: filtered,
@@ -145,8 +135,6 @@ class HeaderEntryForm extends Component {
   }
 
   onChangeUpdateHeader(id, field, value) {
-    // console.log("all headers", this.props.newRequestHeaders.headersArr);
-
     const headersDeepCopy = JSON.parse(
       JSON.stringify(this.props.newRequestHeaders.headersArr)
     );

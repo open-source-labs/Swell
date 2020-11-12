@@ -3,14 +3,16 @@ import GRPCBodyStream from "./GRPCBodyStream.jsx";
 
 const GRPCBodyEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
-  
+
   // when application first loads
   useEffect(() => {
     if (props.newRequestStreams.streamsArr.length === 0) {
-      const newStreamsArr = [{
-        id: props.newRequestStreams.count,
-        query: "",
-      }];
+      const newStreamsArr = [
+        {
+          id: props.newRequestStreams.count,
+          query: "",
+        },
+      ];
 
       props.newRequestStreams.streamContent.push("");
       // update state in the store
@@ -79,16 +81,18 @@ const GRPCBodyEntryForm = (props) => {
       history={props.history}
     />
   ));
-  
-  
-    //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
+
+  //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
   let addStreamBtn;
   if (
     props.selectedStreamingType === "CLIENT STREAM" ||
     props.selectedStreamingType === "BIDIRECTIONAL"
   ) {
     addStreamBtn = (
-      <button className="button is-small add-header-or-cookie-button" onClick={addStream}>
+      <button
+        className="button is-small add-header-or-cookie-button"
+        onClick={addStream}
+      >
         Add Stream
       </button>
     );
@@ -100,7 +104,7 @@ const GRPCBodyEntryForm = (props) => {
      - if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
      */
   return (
-    <div className = "mt-1">
+    <div className="mt-1">
       <div className="composer-section-title">Body</div>
       <section>{streamArr}</section>
       {addStreamBtn}
