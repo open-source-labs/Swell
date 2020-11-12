@@ -6,15 +6,15 @@ const { api } = window;
 const connectionController = {
   openConnectionArray: [],
 
-  getReqRes_CurrentTabAndSelected() {
-    const { reqResArray } = store.default.getState().business;
+  // getReqRes_CurrentTabAndSelected() {
+  //   const { reqResArray } = store.default.getState().business;
 
-    const { currentTab } = store.default.getState().business;
+  //   const { currentTab } = store.default.getState().business;
 
-    return reqResArray.filter(
-      (reqRes) => reqRes.tab === currentTab && reqRes.checked
-    );
-  },
+  //   return reqResArray.filter(
+  //     (reqRes) => reqRes.tab === currentTab && reqRes.checked
+  //   );
+  // },
 
   //toggles checked in state for entire reqResArray
   toggleSelectAll() {
@@ -75,9 +75,9 @@ const connectionController = {
   openAllSelectedReqRes() {
     connectionController.closeAllReqRes();
 
-    const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
+    const { reqResArray } = store.default.getState().business;
 
-    selectedAndCurrentTabReqResArr.forEach((reqRes) =>
+    reqResArray.forEach((reqRes) =>
       connectionController.openReqRes(reqRes.id)
     );
   },
@@ -118,8 +118,8 @@ const connectionController = {
 
   /* Closes all open endpoint */
   closeAllReqRes() {
-    const selectedAndCurrentTabReqResArr = connectionController.getReqRes_CurrentTabAndSelected();
-    selectedAndCurrentTabReqResArr.forEach((reqRes) =>
+    const { reqResArray } = store.default.getState().business;
+    reqResArray.forEach((reqRes) =>
       connectionController.closeReqRes(reqRes)
     );
   },
