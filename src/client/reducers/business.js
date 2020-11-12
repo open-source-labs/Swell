@@ -182,6 +182,11 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         reqResArray: [],
+        currentResponse: {
+          request: {
+            network: "",
+          },
+        },
       };
     }
 
