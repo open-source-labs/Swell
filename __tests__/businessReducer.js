@@ -57,11 +57,11 @@ describe("Business reducer", () => {
         isSSE: false,
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
-      dataPoints: [],
+      dataPoints: {},
       currentResponse: {
         request: {
-          network: ''
-        }
+          network: "",
+        },
       },
     };
   });

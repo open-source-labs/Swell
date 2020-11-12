@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import historyController from '../../controllers/historyController';
 
-const History = ({ newRequestFields, content, content: { request : { method, 
+const History = ({ newRequestFields, content, content: { request : { method, isSSE, 
   headers, cookies, bodyType, body, bodyVariables, rawType, JSONFormatted, network, 
   restUrl, wsUrl, gqlUrl, grpcUrl }, protocol, url, graphQL, gRPC, streamsArr, 
   streamContent, queryArr, packageName, rpc, service, initialQuery, protoPath, 
@@ -14,12 +14,14 @@ const History = ({ newRequestFields, content, content: { request : { method,
 
   const dispatch = useDispatch();
   const setSidebarTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
+  const setNewRequestSSE = (bool) => dispatch(actions.setNewRequestSSE(bool));
   
   const addHistoryToNewRequest = () => {
     let requestFieldObj = {};
     if (network === 'rest') {
       requestFieldObj = {
         ...newRequestFields,
+        isSSE: isSSE || false,
         method: method || 'GET',
         protocol: protocol || 'http://',
         url,
@@ -105,6 +107,7 @@ const History = ({ newRequestFields, content, content: { request : { method,
     setNewRequestHeaders(requestHeadersObj);
     setNewRequestCookies(requestCookiesObj);
     setNewRequestBody(requestBodyObj);
+    setNewRequestSSE(isSSE);
     // for gRPC 
     if (content && gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(streamsArr));

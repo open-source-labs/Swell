@@ -138,8 +138,8 @@ const SingleReqResContainer = (props) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
     dispatch(actions.setNewRequestBody(requestBodyObj));
+    dispatch(actions.setNewRequestSSE(content.request.isSSE));
 
-    // for gRPC ===> NEED TO FILL OUT
     if (content && content.gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
       const contentsDeepCopy = JSON.parse(
