@@ -116,7 +116,11 @@ const httpController = {
       client.on("error", (err) => {
         console.log("HTTP2 FAILED...trying HTTP1\n", err);
         http2Connection.status = "failed";
-        client.destroy();
+        try {
+          client.destroy();
+        } catch (error) {
+          console.log('error destroying HTTP2 client', error);
+        }
         delete httpController.openHTTP2Connections[host];
 
         // try again with fetch (HTTP1);
