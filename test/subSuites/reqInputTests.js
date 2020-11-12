@@ -60,40 +60,41 @@ module.exports = () => {
     });
   })
 
-  describe('headers inputs', async () => {
-    it('should open headers input, rendering single input at first', async () => {
-      // count header rows
-      const headers = await app.client.$$('.header-row');
-      assert.strictEqual(headers.length, 1); 
-    }); 
+  // W.I.P. .....
+  // describe('headers inputs', async () => {
+  //   it('should open headers input, rendering single input at first', async () => {
+  //     // count header rows
+  //     const headers = await app.client.$$('.header-row');
+  //     assert.strictEqual(headers.length, 1); 
+  //   }); 
 
-    it('can add new headers in request and type in keys & values', async () => {
-      // click add header
-      await app.client.$('button=+ Header').click();
+  //   it('can add new headers in request and type in keys & values', async () => {
+  //     // click add header
+  //     await app.client.$('button=+ Header').click();
       
-      // change 2nd header key / value
-      await app.client.$('//*[@id="header-row1"]/input[1]').setValue('header-key');
-      await app.client.$('//*[@id="header-row1"]/input[2]').setValue('header-value');
+  //     // change 2nd header key / value
+  //     await app.client.$('//*[@id="header-row1"]/input[1]').setValue('header-key');
+  //     await app.client.$('//*[@id="header-row1"]/input[2]').setValue('header-value');
       
-      // select 2nd header key / value
-      const headerKey = await app.client.$('//*[@id="header-row1"]/input[1]').getValue();
-      const headerValue = await app.client.$('//*[@id="header-row1"]/input[2]').getValue();
+  //     // select 2nd header key / value
+  //     const headerKey = await app.client.$('//*[@id="header-row1"]/input[1]').getValue();
+  //     const headerValue = await app.client.$('//*[@id="header-row1"]/input[2]').getValue();
       
-      assert.strictEqual(await headerKey, 'header-key');
-      assert.strictEqual(await headerValue, 'header-value');
-    });
+  //     assert.strictEqual(await headerKey, 'header-key');
+  //     assert.strictEqual(await headerValue, 'header-value');
+  //   });
 
-  });
+  // });
 
   describe('cookies inputs', async () => {
     
-    it('should open headers input, rendering single input at first', async () => {
+    it('should open cookies input, rendering single input at first', async () => {
       // count cookie rows
       const cookies = await app.client.$$('.cookie-row');
       assert.strictEqual(cookies.length, 1); 
     }); 
 
-    it('can add new headers in request and type in keys & values', async () => {
+    it('can add new cookies in request and type in keys & values', async () => {
       // click add cookie
       await app.client.$('button=+ Cookie').click();
       
