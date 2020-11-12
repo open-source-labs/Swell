@@ -10,8 +10,7 @@ const GRPCProtoEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
-  console.log("gRPC proto entry props new req streams --->", props.newRequestStreams)
-
+  // console.log("gRPC proto entry props new req streams --->", props.newRequestStreams)
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
@@ -96,8 +95,7 @@ const GRPCProtoEntryForm = (props) => {
       api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
     }
   };
-  
-  
+
   const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
   /*
     pseudocode for the return section
@@ -108,26 +106,27 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div className="mt-1">
-      <div className='is-flex is-justify-content-space-between is-align-content-center'>
+      <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>
-          <button 
+          <button
             className="button is-small add-header-or-cookie-button mr-1"
-            onClick={importProtos}> 
-            Load Proto 
+            onClick={importProtos}
+          >
+            Load Proto
           </button>
-            <button
+          <button
             className="button is-small add-header-or-cookie-button"
             id="save-proto"
             onClick={submitUpdatedProto}
-            >
+          >
             {saveChangesBtnText}
           </button>
         </div>
       </div>
-   
+
       <div className="is-danger subtitle">{protoError}</div>
-      <TextCodeAreaEditable 
+      <TextCodeAreaEditable
         id="grpcProtoEntryTextArea"
         onChange={(editor, data, value) => updateProtoBody(value)}
         value={props.newRequestStreams.protoContent}
