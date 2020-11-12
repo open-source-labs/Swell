@@ -20,9 +20,9 @@ const RawBodyTypeSelect = (props) => {
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
-    }
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
+    };
+    document.addEventListener("click", closeDropdown);
+    return () => document.removeEventListener("click", closeDropdown);
   }, []);
 
   // const removeContentTypeHeader = () => {
@@ -39,93 +39,124 @@ const RawBodyTypeSelect = (props) => {
     setNewRequestBody({
       ...newRequestBody,
       rawType: rawTypeStr,
-    })
-  }
+    });
+    const headersCopy = JSON.parse(JSON.stringify(newRequestHeaders));
+    headersCopy.headersArr[0] = {
+      id: Math.random() * 1000000,
+      active: true,
+      key: "Content-type",
+      value: rawTypeStr,
+    };
+    setNewRequestHeaders({
+      headersArr: headersCopy.headersArr,
+    });
+  };
 
   return (
-    <div ref={dropdownEl} className={`mt-1  mr-3 dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
-
+    <div
+      ref={dropdownEl}
+      className={`mt-1  mr-3 dropdown ${dropdownIsActive ? "is-active" : ""}`}
+    >
       <div className="dropdown-trigger">
-        <button className="button is-small is-primary is-outlined add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
+        <button
+          className="button is-small is-primary is-outlined add-header-or-cookie-button"
+          aria-haspopup="true"
+          aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
           <span>{newRequestBody.rawType}</span>
           <span className="icon is-small">
-          <img src={dropDownArrow}  className="is-awesome-icon" aria-hidden="true" />
+            <img
+              src={dropDownArrow}
+              className="is-awesome-icon"
+              aria-hidden="true"
+            />
           </span>
         </button>
       </div>
 
       <div className="dropdown-menu">
         <ul className="dropdown-content">
-          {newRequestBody.rawType !== 'text/plain' &&  
-            <a
-              onClick={() => {
-                setDropdownIsActive(false); 
-                setNewRawBodyType("text/plain")
-              }} 
-              className="dropdown-item" 
-            >text/plain</a>
-          }
-          {newRequestBody.rawType !== 'application/json' &&
-            <a  
-              onClick={() => {
-                setDropdownIsActive(false);
-                setNewRawBodyType('application/json'); 
-              }} 
-              className="dropdown-item" 
-            >application/json</a>
-          }
-          {newRequestBody.rawType !== 'application/javascript' && 
+          {newRequestBody.rawType !== "text/plain" && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setNewRawBodyType('application/javascript')
-              }} 
-              className="dropdown-item" 
-            >application/javascript</a>
-          }
-          {newRequestBody.rawType !== 'application/xml' && 
+                setNewRawBodyType("text/plain");
+              }}
+              className="dropdown-item"
+            >
+              text/plain
+            </a>
+          )}
+          {newRequestBody.rawType !== "application/json" && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setNewRawBodyType('application/xml')
-              }} 
-              className="dropdown-item" 
-            >application/xml</a>
-          }
-          {newRequestBody.rawType !== 'text/xml' && 
+                setNewRawBodyType("application/json");
+              }}
+              className="dropdown-item"
+            >
+              application/json
+            </a>
+          )}
+          {newRequestBody.rawType !== "application/javascript" && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setNewRawBodyType('text/xml')     
-              }} 
-              className="dropdown-item" 
-            >text/xml</a>
-          }
-          {newRequestBody.rawType !== 'text/html' && 
-            <a 
+                setNewRawBodyType("application/javascript");
+              }}
+              className="dropdown-item"
+            >
+              application/javascript
+            </a>
+          )}
+          {newRequestBody.rawType !== "application/xml" && (
+            <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setNewRawBodyType('text/html')
-              }} 
-              className="dropdown-item" 
-            >text/html</a>
-          }
+                setNewRawBodyType("application/xml");
+              }}
+              className="dropdown-item"
+            >
+              application/xml
+            </a>
+          )}
+          {newRequestBody.rawType !== "text/xml" && (
+            <a
+              onClick={() => {
+                setDropdownIsActive(false);
+                setNewRawBodyType("text/xml");
+              }}
+              className="dropdown-item"
+            >
+              text/xml
+            </a>
+          )}
+          {newRequestBody.rawType !== "text/html" && (
+            <a
+              onClick={() => {
+                setDropdownIsActive(false);
+                setNewRawBodyType("text/html");
+              }}
+              className="dropdown-item"
+            >
+              text/html
+            </a>
+          )}
         </ul>
       </div>
     </div>
-    );
-  }
-  
-  // <select
-  // onChange={(e) =>
-  //   setNewRequestBody({
-  //     ...newRequestBody,
-  //     rawType: e.target.value,
-  //   })
-  // }
-  // value={newRequestBody.rawType}
+  );
+};
+
+// <select
+// onChange={(e) =>
+//   setNewRequestBody({
+//     ...newRequestBody,
+//     rawType: e.target.value,
+//   })
+// }
+// value={newRequestBody.rawType}
 // >
 //   {/* Raw Type: */}
 //   <option value="text/plain">Text (text/plain)</option>
@@ -135,7 +166,6 @@ const RawBodyTypeSelect = (props) => {
 //   <option value="text/xml">XML (text/xml)</option>
 //   <option value="text/html">HTML (text/html)</option>
 // </select>
-
 
 RawBodyTypeSelect.propTypes = {
   newRequestBody: PropTypes.object.isRequired,
