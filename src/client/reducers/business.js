@@ -147,7 +147,8 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.COLLECTION_TO_REQRES: {
-      const reqResArray = [...action.payload];
+      const reqResArray = JSON.parse(JSON.stringify(action.payload));
+      console.log('IN REDUCER:', reqResArray);
       return {
         ...state,
         reqResArray,

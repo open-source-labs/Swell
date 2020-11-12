@@ -17,7 +17,7 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
 
 
   const saveCollection = (inputName) => {
-    const clonedArray = reqResArray.slice();
+    const clonedArray = JSON.parse(JSON.stringify(reqResArray));
     clonedArray.forEach((reqRes) => {
       //reinitialize and minimize all things
       reqRes.checked = false;

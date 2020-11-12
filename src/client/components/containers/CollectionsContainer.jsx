@@ -20,7 +20,7 @@ export default function CollectionsContainer() {
           content={collection}
           key={idx}
           deleteFromCollection={() => {dispatch(actions.deleteFromCollection(collection))}}
-          collectionToReqRes={() => {dispatch(actions.collectionToReqRes(collection.reqResArray))}}
+          collectionToReqRes={(reqResArray) => {dispatch(actions.collectionToReqRes(reqResArray))}}
         />
       );
     }
