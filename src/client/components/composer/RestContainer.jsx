@@ -203,9 +203,8 @@ export default function RestContainer({
                 handleSSEPayload(e);
               }}
               checked={isSSE}
-            ></input>
-            <label htmlFor="SSEswitch">
-            </label>
+             />
+            <label htmlFor="SSEswitch" />
         </div>
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
