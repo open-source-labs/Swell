@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import Header from "./Header.jsx";
 import ContentReqRowComposer from "./ContentReqRowComposer.jsx";
+import { matchPath } from "react-router-dom";
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class HeaderEntryForm extends Component {
       lastHeader?.key !== "" &&
       lastHeader?.key.toLowerCase() !== "content-type"
     ) {
+      // console.log("adding header");
       this.addHeader();
     }
     this.checkContentTypeHeaderUpdate();
@@ -60,7 +62,7 @@ class HeaderEntryForm extends Component {
 
     // Attempt to update header in these conditions:
     const foundHeader = this.props.newRequestHeaders.headersArr.find((header) =>
-      /content-type$/i.test(header.key.toLowerCase())
+      header.key.toLowerCase().includes("content-type")
     );
 
     // 1. if there is no contentTypeHeader, but there should be
@@ -73,13 +75,15 @@ class HeaderEntryForm extends Component {
       //keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
     // 3. if there is a contentTypeHeader, needs to update
-    else if (
-      foundHeader &&
-      foundHeader.value !== contentType &&
-      this.contentHeaderNeeded()
-    ) {
-      this.updateContentTypeHeader(contentType, foundHeader);
-    }
+    // else if (
+    //   foundHeader &&
+    //   foundHeader.value !== contentType &&
+    //   this.contentHeaderNeeded()
+    // ) {
+    //   console.log("here is why - updating content type");
+    //   console.log("foundHeader, contentType", foundHeader, contentType);
+    //   this.updateContentTypeHeader(contentType, foundHeader);
+    // }
   }
 
   addContentTypeHeader(contentType) {
@@ -92,7 +96,7 @@ class HeaderEntryForm extends Component {
       )
     );
     const contentTypeHeader = {
-      id: 0,
+      id: Math.random() * 1000000,
       active: true,
       key: "Content-Type",
       value: contentType,
@@ -104,16 +108,17 @@ class HeaderEntryForm extends Component {
     });
   }
 
-  updateContentTypeHeader(contentType) {
+  updateContentTypeHeader(contentType, foundHeader) {
     const filtered = this.props.newRequestHeaders.headersArr.filter(
-      (header) => header.key.toLowerCase() !== "content-type"
+      (header) => !header.key.toLowerCase().includes("content-type")
     );
-    this.props.newRequestHeaders.headersArr.unshift({
-      id: 0,
-      active: true,
-      key: "Content-Type",
-      value: contentType,
-    });
+    // console.log(filtered);
+    // this.props.newRequestHeaders.headersArr.unshift({
+    //   id: Math.random() * 1000000,
+    //   active: true,
+    //   key: "Content-Type",
+    //   value: contentType,
+    // });
 
     this.props.setNewRequestHeaders({
       headersArr: filtered,
@@ -126,7 +131,7 @@ class HeaderEntryForm extends Component {
       JSON.stringify(this.props.newRequestHeaders.headersArr)
     );
     headersDeepCopy.push({
-      id: this.props.newRequestHeaders.headersArr.length,
+      id: Math.random() * 1000000,
       active: false,
       key: "",
       value: "",
@@ -154,7 +159,8 @@ class HeaderEntryForm extends Component {
       }
     }
     // if it's the content-type header, just exit
-    if (indexToBeUpdated === 0) return;
+    const isFirst = indexToBeUpdated === 0;
+    // if (isFirst) return;
 
     // update
     headersDeepCopy[indexToBeUpdated][field] = value;
