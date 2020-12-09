@@ -49,15 +49,15 @@ const template = [
           if (focusedWindow) focusedWindow.reload();
         },
       },
-      // THIS ENABLES DEVELOPER TOOLS IN THE BUILT APPLICATION
-      // {
-      //   label: "Toggle Developer Tools",
-      //   accelerator:
-      //     process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I", // another keyboard shortcut that will be conditionally assigned depending on whether or not user is on macOS
-      //   click(item, focusedWindow) {
-      //     if (focusedWindow) focusedWindow.webContents.toggleDevTools();
-      //   },
-      // },
+      //THIS ENABLES DEVELOPER TOOLS IN THE BUILT APPLICATION
+      {
+        label: "Toggle Developer Tools",
+        accelerator:
+          process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I", // another keyboard shortcut that will be conditionally assigned depending on whether or not user is on macOS
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.toggleDevTools();
+        },
+      },
       {
         type: "separator",
       },

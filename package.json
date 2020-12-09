@@ -325,6 +325,7 @@
     "status-indicator": "^1.0.9",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.4.0",
+    "vm2": "^3.9.2",
     "webpack-merge": "^4.2.2",
     "websocket": "^1.0.31",
     "ws": "^6.1.2"

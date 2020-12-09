@@ -20,7 +20,8 @@ const apiObj = {
       "introspect",
       "open-ws",
       "send-ws",
-      "close-ws"
+      "close-ws",
+      "testFileSent"
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -37,7 +38,8 @@ const apiObj = {
       "reply-gql",
       "reqResUpdate",
       "introspect-reply",
-      "update-connectionArray"
+      "update-connectionArray",
+      "testResult"
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
