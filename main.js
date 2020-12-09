@@ -641,3 +641,71 @@ ipcMain.on("introspect", (event, introspectionObject) => {
       )
     );
 });
+
+// create custom sw object
+// sw will have a test method on it
+// sw.test will accept a string and a callback
+// the string should be the label for the test
+// the callback should be written using chai-style assertions
+// for each test in the callback, insert into the result array an object that
+// describes the result of that test e.g. 
+/* 
+{
+  status: 'pass' OR 'fail',
+  message: the string that the user passed in + the assertion error (if test failed)
+}
+*/
+
+// const {assert, expect} = require('chai');
+const { NodeVM } = require('vm2');
+ 
+ipcMain.on('testFileSent', (event, args) => {
+
+  const result = []
+
+  const sandbox = {
+    addOne: (e) => result.push(e)
+  }
+
+  const vm = new NodeVM({
+    sandbox,
+    require: {
+      external: true,
+    },
+  })
+
+  const prompts = args.split(/assert|expect/g).slice(1);
+
+  const promptsArray = prompts.map(ele=> (
+    `try {
+      if(${JSON.stringify(ele[0])} === '.') {
+        const res = assert${ele};
+        res.message = ''
+        addOne(res);
+      } else if (${JSON.stringify(ele[0])} === '(') {
+        const res = expect${ele};
+        addOne(res);
+      }
+    } catch(e) {
+      addOne(e)
+    }
+    `
+  ))
+
+  const testScript3 = 
+    `
+    const { assert, expect } = require('chai');
+    ${promptsArray.join('')}
+    `
+
+  try{
+    vm.run(testScript3, 'main.js'); // error should be thrown
+    console.log('RESULT', result);
+    console.log('RESULT', result[1].__flags);
+    event.sender.send("testResult", JSON.stringify('Test passed'));
+  } 
+  catch (err) {
+    console.log('caught error!: in the catch block of main process', err)
+    event.sender.send("testResult", JSON.stringify(err));
+  }
+})
