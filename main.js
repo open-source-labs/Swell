@@ -641,17 +641,3 @@ ipcMain.on("introspect", (event, introspectionObject) => {
       )
     );
 });
-
-// create custom sw object
-// sw will have a test method on it
-// sw.test will accept a string and a callback
-// the string should be the label for the test
-// the callback should be written using chai-style assertions
-// for each test in the callback, insert into the result array an object that
-// describes the result of that test e.g. 
-/* 
-{
-  status: 'pass' OR 'fail',
-  message: the string that the user passed in + the assertion error (if test failed)
-}
-*/
