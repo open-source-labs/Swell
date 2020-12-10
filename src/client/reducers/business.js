@@ -359,6 +359,16 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.SET_NEW_TEST_CONTENT: {
+      return {
+        ...state,
+        newRequestFields: {
+          ...state.newRequestFields,
+          testContent: action.payload
+        },
+      };
+    }
+
     case types.SET_NEW_REQUEST_COOKIES: {
       return {
         ...state,
