@@ -42,6 +42,7 @@ testHttpController.runTest = (testCode, reqResObj) => {
 
   try{
     vm.run(testScript, 'main.js');
+    console.log(`Results: ${testResults}`)
     return testResults;
   } 
   catch (err) {
