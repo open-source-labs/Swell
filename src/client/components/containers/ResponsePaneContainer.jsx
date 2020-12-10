@@ -80,6 +80,13 @@ export const ResponsePaneContainer = () => {
               >
                 <a onClick={() => setActiveTab("cookies")}> Cookies</a>
               </li>
+              <li
+                className={`column ${
+                  activeTab === "events" ? "is-active" : ""
+                }`}
+              >
+                <a onClick={() => setActiveTab("tests")}> Tests</a>
+              </li>
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
