@@ -364,7 +364,7 @@ const businessReducer = (state = initialState, action) => {
         ...state,
         newRequestFields: {
           ...state.newRequestFields,
-          testContent: action.payload
+          testContent: action.payload,
         },
       };
     }
