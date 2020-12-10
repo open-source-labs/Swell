@@ -82,7 +82,7 @@ export const ResponsePaneContainer = () => {
               </li>
               <li
                 className={`column ${
-                  activeTab === "events" ? "is-active" : ""
+                  activeTab === "tests" ? "is-active" : ""
                 }`}
               >
                 <a onClick={() => setActiveTab("tests")}> Tests</a>
