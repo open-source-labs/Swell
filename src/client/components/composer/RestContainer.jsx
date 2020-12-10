@@ -23,6 +23,7 @@ export default function RestContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent,
   },
   setNewRequestBody,
   newRequestBody,
@@ -85,7 +86,7 @@ export default function RestContainer({
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
-    } 
+    }
 
     let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
@@ -144,11 +145,11 @@ export default function RestContainer({
         tab: currentTab,
       };
     }
-    
+
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
-    
+
     //reset for next request
     resetComposerFields();
     setWorkspaceActiveTab('workspace');
@@ -194,11 +195,11 @@ export default function RestContainer({
 
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">
-          <span className="composer-section-title mr-3">Server Sent Events</span>  
-            <input 
+          <span className="composer-section-title mr-3">Server Sent Events</span>
+            <input
               id="SSEswitch"
-              type="checkbox" 
-              className="switch is-outlined is-warning" 
+              type="checkbox"
+              className="switch is-outlined is-warning"
               onChange={(e) => {
                 handleSSEPayload(e);
               }}
