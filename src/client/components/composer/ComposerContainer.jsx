@@ -80,6 +80,7 @@ const ComposerContainer = (props) => {
             graphQL: true,
             gRPC: false,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             //when switching to GQL clear body
@@ -103,6 +104,7 @@ const ComposerContainer = (props) => {
             graphQL: false,
             gRPC: false,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             //when switching to http clear body
@@ -123,6 +125,7 @@ const ComposerContainer = (props) => {
             graphQL: false,
             gRPC: true,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             //when switching to gRPC clear body
@@ -143,6 +146,7 @@ const ComposerContainer = (props) => {
             graphQL: false,
             gRPC: false,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             ...props.newRequestBody,
