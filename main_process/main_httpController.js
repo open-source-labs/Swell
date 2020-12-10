@@ -349,7 +349,7 @@ const httpController = {
           // update reqres object to include new event
           reqResObj = this.addSingleEvent(body, reqResObj);
           // send back reqResObj to renderer so it can update the redux store
-          testHttpController.runTest(testCode, reqResObj)
+          reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj)
           event.sender.send("reqResUpdate", reqResObj);
         })
         .catch((err) => {

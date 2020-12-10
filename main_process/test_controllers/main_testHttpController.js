@@ -6,7 +6,7 @@ testHttpController.runTest = (testCode, reqResObj) => {
   const results = [];
 
   const sandbox = {
-    addOne: (e) => result.push(e),
+    addResult: (e) => results.push(e),
   }
 
   const vm = new NodeVM({
@@ -16,21 +16,19 @@ testHttpController.runTest = (testCode, reqResObj) => {
     },
   })
 
-  const prompts = args.split(/assert|expect/g).slice(1);
+  const prompts = testCode.split(/assert|expect/g).slice(1);
 
   const promptsArray = prompts.map(ele=> (
     `try {
       if(${JSON.stringify(ele[0])} === '.') {
         const res = assert${ele};
-        res.message = '';
-        res.result = 'Pass';
-        addOne(res);
+        addResult(res);
       } else if (${JSON.stringify(ele[0])} === '(') {
         const res = expect${ele};
-        addOne(res);
+        addResult(res);
       }
     } catch(e) {
-      addOne(e)
+      addResult(e)
     }
     `
   ))
@@ -42,6 +40,7 @@ testHttpController.runTest = (testCode, reqResObj) => {
     `
 
   try{
+    console.log(testCode, reqResObj)
     vm.run(testScript, 'main.js');
     return results;
   } 
