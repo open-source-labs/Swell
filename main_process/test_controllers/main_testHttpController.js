@@ -26,6 +26,7 @@ testHttpController.runTest = (testCode, reqResObj) => {
         addResult(res);
       } else if (${JSON.stringify(ele[0])} === '(') {
         const res = expect${ele};
+        console.log(res);
         addResult(res);
       }
     } catch(e) {
@@ -42,11 +43,17 @@ testHttpController.runTest = (testCode, reqResObj) => {
 
   try{
     vm.run(testScript, 'main.js');
-    console.log(`Results: ${testResults}`)
-    return testResults;
+    console.log(reqResObj.response)
+    const testResultArray = testResults.map(result => {
+      if(result.__flags.object) return {result: 'Pass', message: result.__flags.message || 'Test passed'}
+      else return {result: 'Fail', message: result.__flags.message || 'Test failed'}
+    })
+    console.log(`Results: ${JSON.stringify(testResultArray)}`)
+    return testResultArray;
   } 
   catch (err) {
     console.log('caught error!: in the catch block of main_testHttpController.js', err)
+    return null;
   }
 };
 
