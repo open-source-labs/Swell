@@ -168,7 +168,6 @@ export default function RestContainer({
         <RestMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestBody={newRequestBody}
-          setNewTestConent={newTestContent}
           setNewTestContent={setNewTestContent}
           setNewRequestFields={setNewRequestFields}
           setNewRequestBody={setNewRequestBody}
