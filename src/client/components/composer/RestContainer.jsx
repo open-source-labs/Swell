@@ -134,6 +134,7 @@ export default function RestContainer({
           isSSE,
           network,
           restUrl,
+          testContent: testContent || "",
           wsUrl,
           gqlUrl,
           grpcUrl,
