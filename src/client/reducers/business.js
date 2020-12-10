@@ -18,6 +18,8 @@ const initialState = {
     graphQL: false,
     gRPC: false,
     network: "rest",
+    testContent: "",
+    testResults: [],
   },
   newRequestHeaders: {
     headersArr: [],
