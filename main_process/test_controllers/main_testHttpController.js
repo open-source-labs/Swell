@@ -3,7 +3,7 @@ const { NodeVM } = require('vm2');
 
 const testHttpController = {};
 
-testHttpController.runTest = (testScript, reqResObj) => {
+testHttpController.runTest = (inputScript, reqResObj) => {
   // final test result objects will be stored in this array
   const testResults = [];
   // this is the global object that will be passed into the VM
@@ -21,7 +21,7 @@ testHttpController.runTest = (testScript, reqResObj) => {
   })
   // create array of individual assertion tests. 
   // we remove the first element of the array because it is an empty string
-  const separatedScriptsArray = testScript.split(/assert|expect/g).slice(1);
+  const separatedScriptsArray = inputScript.split(/assert|expect/g).slice(1);
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map(script=> (
     `
