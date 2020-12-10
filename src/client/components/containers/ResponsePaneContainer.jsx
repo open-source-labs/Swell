@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions";
 import EventsContainer from "./EventsContainer";
 import HeadersContainer from "./HeadersContainer";
+import TestsContainer from "./TestsContainer";
 import CookiesContainer from "./CookiesContainer";
 import StatusButtons from "../display/StatusButtons";
 import ResponseTime from "../display/ResponseTime";
@@ -99,6 +100,9 @@ export const ResponsePaneContainer = () => {
             )}
             {activeTab === "cookies" && (
               <CookiesContainer currentResponse={currentResponse} />
+            )}
+            {activeTab === "tests" && (
+              <TestsContainer currentResponse={currentResponse} />
             )}
           </div>
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
