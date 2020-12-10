@@ -18,6 +18,8 @@ const initialState = {
     graphQL: false,
     gRPC: false,
     network: "rest",
+    testContent: "",
+    testResults: [],
   },
   newRequestHeaders: {
     headersArr: [],
@@ -354,6 +356,16 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestBody: action.payload,
+      };
+    }
+
+    case types.SET_NEW_TEST_CONTENT: {
+      return {
+        ...state,
+        newRequestFields: {
+          ...state.newRequestFields,
+          testContent: action.payload
+        },
       };
     }
 

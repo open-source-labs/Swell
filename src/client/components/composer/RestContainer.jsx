@@ -3,6 +3,7 @@ import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a uniq
 import historyController from "../../controllers/historyController";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
+import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
 import NewRequestButton from './NewRequest/NewRequestButton.jsx'
@@ -23,8 +24,10 @@ export default function RestContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent,
   },
   setNewRequestBody,
+  setNewTestContent,
   newRequestBody,
   newRequestBody: {
     JSONFormatted,
@@ -85,7 +88,7 @@ export default function RestContainer({
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
-    } 
+    }
 
     let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
@@ -144,11 +147,11 @@ export default function RestContainer({
         tab: currentTab,
       };
     }
-    
+
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
-    
+
     //reset for next request
     resetComposerFields();
     setWorkspaceActiveTab('workspace');
@@ -191,14 +194,18 @@ export default function RestContainer({
             setNewRequestHeaders={setNewRequestHeaders}
           />
         )}
+          <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
+          />
 
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">
-          <span className="composer-section-title mr-3">Server Sent Events</span>  
-            <input 
+          <span className="composer-section-title mr-3">Server Sent Events</span>
+            <input
               id="SSEswitch"
-              type="checkbox" 
-              className="switch is-outlined is-warning" 
+              type="checkbox"
+              className="switch is-outlined is-warning"
               onChange={(e) => {
                 handleSSEPayload(e);
               }}
