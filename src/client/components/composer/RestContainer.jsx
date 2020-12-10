@@ -3,6 +3,7 @@ import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a uniq
 import historyController from "../../controllers/historyController";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
+import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
 import NewRequestButton from './NewRequest/NewRequestButton.jsx'
@@ -26,6 +27,7 @@ export default function RestContainer({
     testContent,
   },
   setNewRequestBody,
+  setNewTestContent,
   newRequestBody,
   newRequestBody: {
     JSONFormatted,
@@ -192,6 +194,10 @@ export default function RestContainer({
             setNewRequestHeaders={setNewRequestHeaders}
           />
         )}
+          <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
+          />
 
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">
