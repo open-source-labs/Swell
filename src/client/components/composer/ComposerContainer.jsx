@@ -45,6 +45,9 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestBody: (requestBodyObj) => {
     dispatch(actions.setNewRequestBody(requestBodyObj));
   },
+  setNewTestContent: (testContent) => {
+    dispatch(actions.setNewTestContent(testContent));
+  },
   setNewRequestCookies: (requestCookiesObj) => {
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
   },
