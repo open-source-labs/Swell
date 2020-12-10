@@ -3,10 +3,11 @@ const { NodeVM } = require('vm2');
 const testHttpController = {};
 
 testHttpController.runTest = (testCode, reqResObj) => {
-  const results = [];
+
+  const testResults = [];
 
   const sandbox = {
-    addResult: (e) => results.push(e),
+    addResult: (result) => testResults.push(result),
   }
 
   const vm = new NodeVM({
@@ -40,9 +41,8 @@ testHttpController.runTest = (testCode, reqResObj) => {
     `
 
   try{
-    console.log(testCode, reqResObj)
     vm.run(testScript, 'main.js');
-    return results;
+    return testResults;
   } 
   catch (err) {
     console.log('caught error!: in the catch block of main_testHttpController.js', err)
