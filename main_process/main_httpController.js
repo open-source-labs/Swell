@@ -4,6 +4,7 @@ const fetch2 = require("node-fetch");
 const http2 = require("http2");
 const setCookie = require("set-cookie-parser");
 const SSEController = require("./SSEController");
+const testHttpController = require("./test_controllers/main_testHttpController")
 
 // Use this for HTTPS cert when in Dev or Test environment and 
 // using a server with self-signed cert on localhost
@@ -348,6 +349,7 @@ const httpController = {
           // update reqres object to include new event
           reqResObj = this.addSingleEvent(body, reqResObj);
           // send back reqResObj to renderer so it can update the redux store
+          reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj)
           event.sender.send("reqResUpdate", reqResObj);
         })
         .catch((err) => {
