@@ -62,7 +62,7 @@ export default function RestRequestContent({ request, isHTTP2 }) {
         }
         {/* HTTP2 CONFIRMATION */}
         { isHTTP2 &&
-          <div className="is-size-7 olor-is-success">HTTP2 Connection Established</div>
+          <div className="is-size-7 color-is-success">HTTP2 Connection Established</div>
         }
         {/* HEADERS */}
         {headerRows.length > 0 &&
