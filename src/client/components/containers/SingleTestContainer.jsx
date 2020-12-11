@@ -1,5 +1,5 @@
 import React from 'react'
-
+import TestResult from './TestResult'
 export default function SingleTestContainer({ currentResponse }) {
 
   const {
@@ -8,6 +8,16 @@ export default function SingleTestContainer({ currentResponse }) {
   } = currentResponse;
 
   const url = currentResponse.url;
+
+  const passFailScripts = [];
+
+  if (response.testResult !== undefined) {
+    response.testResult.forEach(ele => {
+      const test = <TestResult result={ele.result} message={ele.message} />
+      passFailScripts.push(test);
+    })
+  }
+
 
   return (
   <>
@@ -20,12 +30,7 @@ export default function SingleTestContainer({ currentResponse }) {
       </div>
     </div>
     <div className="is-neutral-200-box p-3 mx-2">
-      <div>
-        PASS
-      </div>
-      <div>
-        graph.js logic here
-      </div>
+      <div>{passFailScripts}</div>
     </div>
   </>
   )
