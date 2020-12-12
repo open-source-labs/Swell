@@ -4,16 +4,16 @@ const { NodeVM } = require('vm2');
 const testHttpController = {};
 
 testHttpController.runTest = (inputScript, reqResObj) => {
-  console.log('START OF RUNTEST FUNC')
-  const {response} = reqResObj
-  console.log(response)
+  const {request, response} = reqResObj;
+  console.log(request, response);
   // final test result objects will be stored in this array
   const testResults = [];
   // this is the global object that will be passed into the VM
   const sandbox = {
     // function to push an Assertion object into the array
     addOneResult: (result) => testResults.push(result),
-    response: response,
+    request,
+    response,
   }
   // create a new instance of a secure Node VM
   const vm = new NodeVM({
@@ -59,13 +59,13 @@ testHttpController.runTest = (inputScript, reqResObj) => {
       if (${JSON.stringify(script[0])} === '.') {
         assert${script};
         addOneResult({
-          script: 'assert'+${JSON.stringify(script)},
+          message: 'assert'+${JSON.stringify(script)},
           status: 'PASS',
         });
       } else if (${JSON.stringify(script[0])} === '(') {
         expect${script};
         addOneResult({
-          script: 'expect'+${JSON.stringify(script)},
+          message: 'expect'+${JSON.stringify(script)},
           status: 'PASS',
         });
       }
