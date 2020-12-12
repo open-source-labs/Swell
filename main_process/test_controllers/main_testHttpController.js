@@ -5,12 +5,15 @@ const testHttpController = {};
 
 testHttpController.runTest = (inputScript, reqResObj) => {
   console.log('START OF RUNTEST FUNC')
+  const {response} = reqResObj
+  console.log(response)
   // final test result objects will be stored in this array
   const testResults = [];
   // this is the global object that will be passed into the VM
   const sandbox = {
     // function to push an Assertion object into the array
     addOneResult: (result) => testResults.push(result),
+    response: response,
   }
   // create a new instance of a secure Node VM
   const vm = new NodeVM({
@@ -67,7 +70,7 @@ testHttpController.runTest = (inputScript, reqResObj) => {
         });
       }
     } catch (err) {
-      const errObj = err.toJSON();
+      const errObj = err;
 
       addOneResult({
         message: errObj.message,
