@@ -9,21 +9,28 @@ export default function SingleTestContainer({ currentResponse }) {
     response
   } = currentResponse;
 
-  let data = {
-    datasets: [{data: [10, 20], backgroundColor: ['#06a568', '#f66b61']}],
-    labels: ['Passed','Failed']
-  };
+
 
   const url = currentResponse.url;
 
   const passFailScripts = [];
 
+  let pass = 0;
+  let fail = 0;
+
   if (response.testResult !== undefined && response.testResult !== null) {
     response.testResult.forEach(ele => {
+      if (ele.status === 'PASS') pass += 1;
+      else fail += 1;
       const test = <TestResult status={ele.status} message={ele.message} />
       passFailScripts.push(test);
     })
   }
+
+  let data = {
+    datasets: [{data: [pass, fail], backgroundColor: ['#06a568', '#f66b61']}],
+    labels: ['Passed','Failed']
+  };
 
 
   return (
