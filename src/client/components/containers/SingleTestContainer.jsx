@@ -13,7 +13,7 @@ export default function SingleTestContainer({ currentResponse }) {
 
   if (response.testResult !== undefined && response.testResult !== null) {
     response.testResult.forEach(ele => {
-      const test = <TestResult status={ele.status} script={ele.message} />
+      const test = <TestResult status={ele.status} message={ele.message} />
       passFailScripts.push(test);
     })
   }

@@ -332,6 +332,7 @@ const httpController = {
           reqResObj.response.headers = heads;
           reqResObj.connection = "closed";
           reqResObj.timeReceived = Date.now();
+          reqResObj.response.status = heads[':status'];
           // send back reqResObj to renderer so it can update the redux store
           event.sender.send("reqResUpdate", reqResObj);
 
