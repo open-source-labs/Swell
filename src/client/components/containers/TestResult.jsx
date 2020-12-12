@@ -9,7 +9,7 @@ export default function TestResult({ status, message }) {
   return (
     // Need to add in relative padding.
     <div style={{padding: '8px', display: 'flex', justifyContent: 'start'}}>
-      <div style={{minWidth: '50px', height: '30px'}} className={`has-background-${testColor} cards-titlebar has-text-centered`}>{status}</div> <div className='mx-2'>{message}</div>
+      <div style={{minWidth: '50px', height: '30px', justifyItems: 'center'}} className={`has-background-${testColor} cards-titlebar has-text-centered`}>{status}</div> <div className='mx-2'>{message}</div>
     </div>
   )
 }
