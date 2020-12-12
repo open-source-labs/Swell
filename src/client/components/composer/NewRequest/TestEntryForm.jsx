@@ -5,42 +5,57 @@ import JSONTextArea from "./JSONTextArea.jsx";
 import RawBodyTypeSelect from "./RawBodyTypeSelect.jsx"
 import JSONPrettify from "./JSONPrettify.jsx"
 import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx"
+import dropDownArrow from "../../../../assets/icons/caret-down-tests.svg";
+import dropDownArrowUp from "../../../../assets/icons/caret-up-tests.svg";
 
 const TestEntryForm = (props) => {
   const {
     testContent,
     setNewTestContent
   } = props;
-  const [showDetails, setShowDetails] = useState(false);
 
-  const handleShowDetails = () => setShowDetails(!showDetails);
+  const [showTests, setShowTests] = useState(false);
+  const handleShowTests = () => setShowTests(!showTests);
 
   return (
-    <div>
-          <div
-      className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
-      onClick={() => {
-        handleShowDetails();
-      }}
-    >
-    {showDetails === true && "Hide Tests"}
-    {showDetails === false && "Enter Tests"}
-    </div>
-
-
-
-    {showDetails === true &&
-          <div className="mt-2" id="body-entry-select">
-      <TextCodeAreaEditable
-        mode={"javascript"}
-        value={testContent}
-        onChange={(editor, data, value) => {
-          setNewTestContent(value);
+    <div className='mt-3'>
+      <div
+        className="is-rest-invert cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center has-text-centered"
+        style={{height: '3rem', fontSize: '18px'}}
+        onClick={() => {
+          handleShowTests();
         }}
-      />
-    </div>
-    }
+      >
+      {showTests === true &&
+        <>
+          <span>Hide Tests</span>
+          <span className="icon is-medium is-align-self-center">
+            <img src={dropDownArrowUp} className="is-awesome-icon" aria-hidden="false" />
+          </span>
+        </>
+      }
+      {showTests === false &&
+        <>
+          <span>View Tests</span>
+          <span className="icon is-medium is-align-self-center">
+            <img src={dropDownArrow} className="is-awesome-icon" aria-hidden="false" />
+          </span>
+        </>
+      }
 
+
+      </div>
+    {showTests === true &&
+      <div id="body-entry-select">
+        <TextCodeAreaEditable
+          mode={"javascript"}
+          value={testContent}
+          onChange={(editor, data, value) => {
+            setNewTestContent(value);
+          }}
+        />
+      </div>
+    }
     </div>
 
 
