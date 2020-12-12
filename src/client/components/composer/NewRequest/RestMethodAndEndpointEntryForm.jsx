@@ -80,7 +80,7 @@ const RestMethodAndEndpointEntryForm = ({
               onClick={() => setDropdownIsActive(!dropdownIsActive)}
             >
               <span>{newRequestFields.method}</span>
-              <span className="icon is-small">
+              <span className="icon is-medium">
                 <img src={dropDownArrow} className="is-awesome-icon" aria-hidden="true" />
               </span>
             </button>

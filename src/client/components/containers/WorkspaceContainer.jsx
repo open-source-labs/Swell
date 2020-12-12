@@ -13,8 +13,8 @@ export default function WorkspaceContainer() {
       {/* NAV BAR */}
       <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <button
-          className="button is-small is-danger is-outlined button-padding-vertical button-hover-color mx-3"
-          style={{minWidth: '250px'}}
+          className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
+          style={{minWidth: '11.5rem'}}
           type="button"
           onClick={() => {
             ReqResCtrl.clearAllReqRes();
@@ -25,8 +25,8 @@ export default function WorkspaceContainer() {
         </button>
 
         <button
-          className="button is-small is-primary is-outlined button-padding-verticals mx-3"
-          style={{minWidth: '250px'}}
+          className="button is-small is-primary is-outlined button-padding-verticals mr-3"
+          style={{minWidth: '11.5rem'}}
           type="button"
           onClick={() => {
             setShowModal(true);

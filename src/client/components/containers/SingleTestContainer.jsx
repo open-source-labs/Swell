@@ -1,5 +1,6 @@
 import React from 'react'
 import TestResult from './TestResult'
+import { Doughnut } from "react-chartjs-2";
 
 export default function SingleTestContainer({ currentResponse }) {
 
@@ -7,6 +8,11 @@ export default function SingleTestContainer({ currentResponse }) {
     request,
     response
   } = currentResponse;
+
+  let data = {
+    datasets: [{data: [10, 20], backgroundColor: ['#06a568', '#f66b61']}],
+    labels: ['Passed','Failed']
+  };
 
   const url = currentResponse.url;
 
@@ -32,6 +38,7 @@ export default function SingleTestContainer({ currentResponse }) {
     </div>
     <div className="is-neutral-200-box p-3 mx-2">
       <div>{passFailScripts}</div>
+      <Doughnut data={data} />
     </div>
   </>
   )

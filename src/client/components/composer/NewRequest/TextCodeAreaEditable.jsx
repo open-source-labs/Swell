@@ -6,7 +6,7 @@ import 'codemirror/theme/neat.css';
 
 export default function TextCodeAreaEditable ({ value, mode, onChange, theme }) {
   return (
-    <div className='is-neutral-200-box p-3 mt-1'>
+    <div className='is-neutral-200-box'>
       <CodeMirror
         value={value}
         autoCursor={false}
