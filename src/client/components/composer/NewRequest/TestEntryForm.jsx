@@ -11,9 +11,26 @@ const TestEntryForm = (props) => {
     testContent,
     setNewTestContent
   } = props;
+  const [showDetails, setShowDetails] = useState(false);
+
+  const handleShowDetails = () => setShowDetails(!showDetails);
 
   return (
-    <div className="mt-2" id="body-entry-select">
+    <div>
+          <div
+      className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
+      onClick={() => {
+        handleShowDetails();
+      }}
+    >
+    {showDetails === true && "Hide Tests"}
+    {showDetails === false && "Enter Tests"}
+    </div>
+
+
+
+    {showDetails === true &&
+          <div className="mt-2" id="body-entry-select">
       <TextCodeAreaEditable
         mode={"javascript"}
         value={testContent}
@@ -22,6 +39,16 @@ const TestEntryForm = (props) => {
         }}
       />
     </div>
+    }
+
+    </div>
+
+
+
+
+
+
+
   );
 };
 
