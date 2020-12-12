@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 
-export default function TestResult({ result, message }) {
+export default function TestResult({ status, message }) {
 
   let testColor;
-  if (result === 'Pass') testColor = 'success';
+  if (status === 'PASS') testColor = 'success';
   else testColor = 'danger';
 
   return (
-    <div>
-      <span style={{width: '20px', padding: '10px'}} className={`has-background-${testColor} cards-titlebar p-1 mt-2 has-text-centered`}>{result}</span> <span className='mx-2'>{message}</span>
+    // Need to add in relative padding.
+    <div style={{padding: '8px', display: 'flex', justifyContent: 'start'}}>
+      <div style={{minWidth: '50px', height: '30px'}} className={`has-background-${testColor} cards-titlebar has-text-centered`}>{status}</div> <div className='mx-2'>{message}</div>
     </div>
   )
 }
