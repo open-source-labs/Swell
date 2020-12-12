@@ -4,6 +4,7 @@ const { NodeVM } = require('vm2');
 const testHttpController = {};
 
 testHttpController.runTest = (inputScript, reqResObj) => {
+  console.log('START OF RUNTEST FUNC')
   // final test result objects will be stored in this array
   const testResults = [];
   // this is the global object that will be passed into the VM
@@ -25,16 +26,27 @@ testHttpController.runTest = (inputScript, reqResObj) => {
   const separatedScriptsArray = inputScript.split(/^assert|^expect/gm).slice(1);
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map(script => {
+    /*
+    // Work-in-progress to determine the message from the script
     // Regular expression from stack overflow post below
     // https://stackoverflow.com/a/171499
     // this regex matches all substrings wrapped in single or double quotes
     // and supports escaped quotes as well
-    const regEx = /(["'])(?:\\.|[^\\])*?\1/g;
+    const substringsInQuotes = /(["'])(?:\\.|[^\\])*?\1/g;
     // use the regex and return all the substrings in quotes
-    const assertionArgsInQuotes = script.match(regEx);
-    // since the user's message will always be the last argument, it will be last in the array
-    const userMessage = assertionArgsInQuotes[assertionArgsInQuotes.length - 1];
-    
+    const assertionArgsInQuotes = script.match(substringsInQuotes);
+
+    // there is still a problem where if there are quotes in the arguments 
+    // and there is no user-supplied message. we incorrectly choose the last arg as the userMessage
+    let userMessage;
+    if (!assertionArgsInQuotes) {
+      userMessage = "''";
+    } else {
+      // since the user's message will always be the last argument, it will be last in the array
+      userMessage = assertionArgsInQuotes[assertionArgsInQuotes.length - 1];
+    }
+    */
+
     // contstruct and return the individual test script
     // if the assertion test does not fail, then push an object with the message and status
     // to the results array
@@ -44,13 +56,13 @@ testHttpController.runTest = (inputScript, reqResObj) => {
       if (${JSON.stringify(script[0])} === '.') {
         assert${script};
         addOneResult({
-          message: ${userMessage},
+          script: 'assert'+${JSON.stringify(script)},
           status: 'PASS',
         });
       } else if (${JSON.stringify(script[0])} === '(') {
         expect${script};
         addOneResult({
-          message: ${userMessage},
+          script: 'expect'+${JSON.stringify(script)},
           status: 'PASS',
         });
       }
@@ -72,7 +84,7 @@ testHttpController.runTest = (inputScript, reqResObj) => {
     `
     const { assert, expect } = require('chai');
     ${arrOfTestScripts.join('')}
-    `
+    `;
 
   try{
     // run the script in the VM
