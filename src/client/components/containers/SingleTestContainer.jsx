@@ -11,9 +11,9 @@ export default function SingleTestContainer({ currentResponse }) {
 
   const passFailScripts = [];
 
-  if (response.testResult !== undefined) {
+  if (response.testResult !== undefined && response.testResult !== null) {
     response.testResult.forEach(ele => {
-      const test = <TestResult result={ele.result} message={ele.message} />
+      const test = <TestResult status={ele.status} script={ele.message} />
       passFailScripts.push(test);
     })
   }
