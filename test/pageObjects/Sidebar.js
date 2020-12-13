@@ -27,9 +27,9 @@ class Sidebar {
   //   return app.client.$('div.composer_protocol_button.gql')
   // }
 
-  // get gRPC() {
-  //   return app.client.$('div.composer_protocol_button.grpc')
-  // }
+  get gRPC() {
+    return app.client.$('a=gRPC')
+  }
 
   // URL/METHOD INPUTS
   get url() { 
@@ -94,21 +94,20 @@ class Sidebar {
   // };
 
   // // gRPC
-  // get grpcBody(){
-  //   return app.client.$('textarea#grpcProtoEntryTextArea.composer_textarea.grpc.composer_bodyform_container-open');
-  // };
 
-  // get saveChanges() {
-  //   return app.client.$('button#save-proto.save-proto.small-btn-open')
-  // }
+  get saveChanges() {
+    return app.client.$('button#save-proto.save-proto.small-btn-open')
+  }
 
-  // get selectService() {
-  //   return app.client.$('select#dropdownService.dropdownService')
-  // }
+  get selectService() {
+    return app.client.$('.dropdown-item')
+  }
 
-  // get selectRequest() {
-  //   return app.client.$('select#dropdownRequest.dropdownService')
-  // }
+  get selectRequest() {
+    return app.client.$('.dropdown-content')
+  }
+
+  
 
   // // graphQL
   // get schemaOpen() {
