@@ -41,7 +41,15 @@ export default function SingleTestContainer({ currentResponse }) {
     </div>
     <div className="is-neutral-200-box p-3 mx-2">
       <div>{passFailScripts}</div>
-      <Doughnut data={data} />
+      <div className="border-top my-2">
+        <Doughnut 
+          data={data} 
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+          }}
+        />
+      </div>
     </div>
   </>
   )
