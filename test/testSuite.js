@@ -7,7 +7,9 @@ const reqInputTests = require("./subSuites/reqInputTests");
 const httpTest = require("./subSuites/httpTest");
 const websocketTest = require("./subSuites/websocketTest");
 const grpcTest = require("./subSuites/grpcTest");
-const graphqlTest = require('./subSuites/graphqlTest')
+const graphqlTest = require('./subSuites/graphqlTest');
+
+const httpTestingTest = require("./subSuites/httpTestingTest");
 
 const app = require("./testApp");
 
@@ -31,5 +33,9 @@ describe("Electron Tests", function () {
     httpTest();
     graphqlTest();
     websocketTest();
+  });
+
+  describe("Swell Testing functionality", function() {
+    httpTestingTest();
   });
 });
