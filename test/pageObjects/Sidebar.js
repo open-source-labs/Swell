@@ -103,7 +103,7 @@ class Sidebar {
     return app.client.$('button.button.is-small.is-outlined.is-primary.mr-3.add-header-or-cookie-button')
   }
 
-  get selectService() {
+  get selectServiceGreeter() {
     return app.client.$('a=Greeter')
   }
 
@@ -111,8 +111,8 @@ class Sidebar {
     return app.client.$('span=Select Request')
   }
 
-  get selectRequest() {
-    return app.client.$$('.dropdown-item')
+  get selectRequestSayHello() {
+    return app.client.$('a=SayHello')
   }
 
   get grpcProto() {

@@ -57,13 +57,12 @@ module.exports = () => {
         console.error(err)
       }
     };
-    const requestSetup = async (index) => {
+    const requestSetup = async () => {
       try {
-        console.log('inside REQ setup');
         await sideBar.openRequestDropdown.click();
-        const dropdown = await sideBar.selectRequest
-        console.log('dropdown', dropdown);
+        await sideBar.selectRequestSayHello.click();
         await sideBar.addRequestBtn.click();
+        console.log('add req button pass');
         await reqRes.sendBtn.click();
         const res = await reqRes.jsonPretty.getText();
         return res;
@@ -75,8 +74,9 @@ module.exports = () => {
       try {
         await sideBarSetup();
         await sideBar.openSelectServiceDropdown.click();
-        await sideBar.selectService.click();
-        const jsonPretty = await requestSetup(0);
+        await sideBar.selectServiceGreeter.click();
+        console.log('selectService pass')
+        const jsonPretty = await requestSetup();
         console.log('reqSetUp pass')
         await new Promise((resolve) =>
           setTimeout(async () => {
