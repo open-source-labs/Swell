@@ -100,16 +100,18 @@ module.exports = () => {
         console.error('FROM NESTED: ', err)
       }
     });
-    // it("it should work on a server stream", async () => {
-    //   try {
-    //     const jsonPretty = await requestSetup(3);
-    //     expect(jsonPretty).to.include(
-    //       `{\n    "response": [\n        {\n            "message": "You"\n        },\n        {\n            "message": "Are"\n`
-    //     );
-    //   } catch(err) {
-    //     console.error(err)
-    //   }
-    // });
+    it("it should work on a server stream", async () => {
+      try {
+        await sideBar.removeUnary.click();
+        await sideBar.selectRequestSayHelloNested.click();
+        await sideBar.selectRequestSayHellosSsFromDropDown.click();
+        const jsonPretty = await requestSetup();
+        expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
+        expect(jsonPretty).to.include("hello!!! string")
+      } catch(err) {
+        console.error(err)
+      }
+    });
     // it("it should work on a client stream", async () => {
     //   try {
     //     const jsonPretty = await requestSetup(4);

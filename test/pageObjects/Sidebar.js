@@ -131,9 +131,12 @@ class Sidebar {
     return app.client.$('a=SayHelloNested')
   }
 
-
   get selectRequestSayHelloNested() {
     return app.client.$('#SayHelloNested-button')
+  }
+
+  get selectRequestSayHellosSsFromDropDown() {
+    return app.client.$('a=SayHellosSs')
   }
 
   get grpcProto() {
