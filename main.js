@@ -46,6 +46,8 @@ const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
+//TESTING
+const testHttpController = require("./main_process/test_controllers/main_testHttpController");
 
 // require menu file
 require("./menu/mainMenu");
@@ -208,7 +210,7 @@ app.on("window-all-closed", () => {
 
 // Auto Updating Functionality
 const sendStatusToWindow = (text) => {
-  log.info(text); 
+  log.info(text);
   if (mainWindow) {
     mainWindow.webContents.send("message", text);
   }
@@ -580,11 +582,15 @@ ipcMain.on("open-gql", (event, args) => {
     const variables = reqResObj.request.bodyVariables
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
-    
+
     if (reqResObj.request.method === "QUERY") {
       client
         .query({ query: body, variables, context: headers })
         .then((data) => {
+          //handle tests
+          if (reqResObj.request.testContent) {
+            reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj);
+          }
           event.sender.send("reply-gql", { reqResObj, data })
         })
         .catch((err) => {
@@ -624,7 +630,7 @@ ipcMain.on("introspect", (event, introspectionObject) => {
     }, '');
   }
   headers.Cookie = cookies;
-  
+
   fetch2(req.url, {
     method: "POST",
     headers,
