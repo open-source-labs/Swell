@@ -96,18 +96,30 @@ class Sidebar {
   // // gRPC
 
   get saveChanges() {
-    return app.client.$('button#save-proto.save-proto.small-btn-open')
+    return app.client.$('#save-proto')
+  }
+
+  get openSelectServiceDropdown() {
+    return app.client.$('button.button.is-small.is-outlined.is-primary.mr-3.add-header-or-cookie-button')
   }
 
   get selectService() {
-    return app.client.$('.dropdown-item')
+    return app.client.$('a=Greeter')
+  }
+
+  get openRequestDropdown() {
+    return app.client.$('span=Select Request')
   }
 
   get selectRequest() {
-    return app.client.$('.dropdown-content')
+    return app.client.$$('.dropdown-item')
   }
 
-  
+  get grpcProto() {
+    const codeMirror = app.client.$('#grpcProtoEntryTextArea');
+    codeMirror.click();
+    return codeMirror.$("textarea")
+  }
 
   // // graphQL
   // get schemaOpen() {
