@@ -7,11 +7,12 @@ import ContentReqRow from './ContentReqRow';
 export default function GraphQLRequestContent({ request }) {
 
   // ORGANIZE PROPS
-  const { 
+  const {
     headers,
     cookies,
     body,
     bodyVariables,
+    testContent
   } = request;
 
   // CREATE HEADER COMPONENTS
@@ -32,12 +33,12 @@ export default function GraphQLRequestContent({ request }) {
       {/* REQUEST DETAILS */}
       <div className="p-3">
         {/* HEADERS */}
-          {headerRows.length > 0 && 
+          {headerRows.length > 0 &&
             <div className="is-size-7">Headers</div>
           }
           {headerRows}
         {/* COOKIES */}
-          {cookieRows.length > 0 && 
+          {cookieRows.length > 0 &&
             <div className="is-size-7">Cookies</div>
           }
           {cookieRows}
@@ -65,6 +66,23 @@ export default function GraphQLRequestContent({ request }) {
                 options={{
                   mode: 'application/json',
                   theme: 'neo readonly',
+                  lineNumbers: true,
+                  tabSize: 4,
+                  lineWrapping: true,
+                  readOnly: true,
+                }}
+                />
+            </div>
+          }
+          {/* TEST DATA */}
+          {testContent.length > 0 &&
+            <div>
+              <div className="is-size-7">Tests</div>
+              <CodeMirror
+                value={testContent}
+                options={{
+                  mode: 'application/json',
+                  theme: 'neat readonly',
                   lineNumbers: true,
                   tabSize: 4,
                   lineWrapping: true,
