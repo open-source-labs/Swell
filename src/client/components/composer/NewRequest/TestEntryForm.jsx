@@ -7,6 +7,7 @@ import JSONPrettify from "./JSONPrettify.jsx"
 import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx"
 import dropDownArrow from "../../../../assets/icons/caret-down-tests.svg";
 import dropDownArrowUp from "../../../../assets/icons/caret-up-tests.svg";
+import { isAbsolute, relative } from "path";
 
 const TestEntryForm = (props) => {
   const {
@@ -20,7 +21,7 @@ const TestEntryForm = (props) => {
   return (
     <div className='mt-3'>
       <div
-        className="is-rest-invert cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center has-text-centered"
+        className="is-rest-invert cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
         style={{height: '3rem', fontSize: '18px'}}
         onClick={() => {
           handleShowTests();
@@ -30,7 +31,13 @@ const TestEntryForm = (props) => {
         <>
           <span>Hide Tests</span>
           <span className="icon is-medium is-align-self-center">
-            <img src={dropDownArrowUp} className="is-awesome-icon" aria-hidden="false" />
+            <img 
+              alt=''
+              src={dropDownArrowUp} 
+              style={{position: relative, left: '15rem'}}
+              className="is-awesome-icon" 
+              aria-hidden="false" 
+            />
           </span>
         </>
       }
@@ -38,7 +45,13 @@ const TestEntryForm = (props) => {
         <>
           <span>View Tests</span>
           <span className="icon is-medium is-align-self-center">
-            <img src={dropDownArrow} className="is-awesome-icon" aria-hidden="false" />
+            <img 
+              alt=''
+              src={dropDownArrow} 
+              style={{position: relative, left: '15rem'}}
+              className="is-awesome-icon" 
+              aria-hidden="false" 
+            />
           </span>
         </>
       }
