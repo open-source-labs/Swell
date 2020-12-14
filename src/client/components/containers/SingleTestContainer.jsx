@@ -1,6 +1,6 @@
 import React from 'react'
-import TestResult from './TestResult'
 import { Doughnut } from "react-chartjs-2";
+import TestResult from './TestResult'
 
 export default function SingleTestContainer({ currentResponse }) {
   const {
@@ -8,7 +8,7 @@ export default function SingleTestContainer({ currentResponse }) {
     response
   } = currentResponse;
 
-  const url = currentResponse.url;
+  const { url } = currentResponse;
 
   const passFailScripts = [];
 
@@ -24,7 +24,7 @@ export default function SingleTestContainer({ currentResponse }) {
     });
   }
 
-  let data = {
+  const data = {
     datasets: [{data: [pass, fail], backgroundColor: ['#06a568', '#f66b61']}],
     labels: ['Passed','Failed'],
   };
