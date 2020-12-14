@@ -7,8 +7,22 @@ const protoLoader = require("@grpc/proto-loader");
 const PROTO_PATH = path.resolve(__dirname, "./hw2.proto");
 const PORT = "0.0.0.0:50051";
 
-const greetMe = (call, callback) => {
-  callback(null, { reply: `Hey ${call.request.name}!` });
+// rpc SayHello (HelloRequest) returns (HelloReply) {}
+// rpc SayHelloNested (HelloNestedRequest) returns (HelloNestedReply) {}
+// rpc SayHellosSs (HelloRequest) returns (stream HelloReply) {}
+// rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
+// rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
+
+const SayHello = (call, callback) => {
+  callback(null, { message: `Hello ${call.request.name}` });
+};
+
+const SayHelloNested = (call, callback) => {
+  callback(null, {serverMessage: [
+    { message: `Hello! ${call.request.firstPerson.name}`},
+    { message: `Hello! ${call.request.secondPerson.name}`}
+    ]
+  });
 };
 
 function main(status) {
@@ -23,16 +37,13 @@ function main(status) {
   let server;
   if (status === 'open') {
     server = new grpc.Server();
-    server.addService(pkg.helloworld.Greeter.service, { greetMe });
+    server.addService(pkg.helloworld.Greeter.service, { SayHello, SayHelloNested });
 
     server.bindAsync(PORT, grpc.ServerCredentials.createInsecure(), (port) => {
       server.start();
       console.log(`grpc server running on port ${PORT}`);
     });
-  } else if (status === 'close') {
-    server.close();
-    console.log('grpcServer closed')
-  }
+  } 
 }
 
 main("open");

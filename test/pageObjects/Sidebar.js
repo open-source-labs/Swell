@@ -36,6 +36,10 @@ class Sidebar {
     return app.client.$('.input-is-medium');
   };
 
+  get removeBtn() {
+		return app.client.$('button=Remove')
+	}
+
   // get requestMethod() { 
   //   return app.client.$('select.composer_method_select.http');
   // };
@@ -100,7 +104,7 @@ class Sidebar {
   }
 
   get openSelectServiceDropdown() {
-    return app.client.$('button.button.is-small.is-outlined.is-primary.mr-3.add-header-or-cookie-button')
+    return app.client.$('#Select-Service-button')
   }
 
   get selectServiceGreeter() {
@@ -108,11 +112,28 @@ class Sidebar {
   }
 
   get openRequestDropdown() {
-    return app.client.$('span=Select Request')
+    return app.client.$('#Select-Request-button')
+  }
+
+  get removeUnary() {
+    return app.client.$('#UNARY')
+  }
+
+  get selectRequestSayHelloFromDropDown() {
+    return app.client.$('a=SayHello')
   }
 
   get selectRequestSayHello() {
-    return app.client.$('a=SayHello')
+    return app.client.$('#SayHello-button')
+  }
+
+  get selectRequestSayHelloNestedFromDropDown() {
+    return app.client.$('a=SayHelloNested')
+  }
+
+
+  get selectRequestSayHelloNested() {
+    return app.client.$('#SayHelloNested-button')
   }
 
   get grpcProto() {
@@ -120,6 +141,10 @@ class Sidebar {
     codeMirror.click();
     return codeMirror.$("textarea")
   }
+
+  get jsonPretty() {
+		return app.client.$('#events-display')
+	}
 
   // // graphQL
   // get schemaOpen() {
@@ -211,9 +236,9 @@ class Sidebar {
   // }
 
   // // ADD REQUEST BUTTON
-  // get addRequestBtn(){
-  //   return app.client.$('button=Add New Request')
-  // }
+  get addRequestBtn(){
+    return app.client.$('button=Add New Request')
+  }
 }; 
 
 module.exports = new Sidebar(); 

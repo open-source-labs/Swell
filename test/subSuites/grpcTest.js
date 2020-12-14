@@ -13,34 +13,33 @@ module.exports = () => {
   describe("gRPC requests", () => {
 
     // beforeEach(async () => {
-    //   try {
-    //     await reqRes.removeBtn.click();
-    //   } catch(err) {
-    //     console.error(err)
+    //   const removeBtn = await sideBar.removeBtn;
+    //   if(removeBtn.value) {
+    //     try {
+    //       await sideBar.removeBtn.click();
+    //     } catch(err) {
+    //       console.error(err)
+    //     }
     //   }
     // });
 
     let proto = "";
 
     before((done) => {
-      fs.readFile(path.join(__dirname, "../hw2.proto"), "utf8", (err, data) => {
-        if (err) console.log(err);
-        proto = data;
-        done();
-      });
+      try{
+        fs.readFile(path.join(__dirname, "../hw2.proto"), "utf8", (err, data) => {
+          if (err) console.log(err);
+          proto = data;
+          done();
+        });
+      } catch (err) {
+        console.error(err);
+      }
     });
 
     before(() => {
       try {
         grpcServer('open')
-      } catch(err) {
-        console.error(err)
-      }
-    });
-
-    after(() => {
-      try {
-        grpcServer('close');
       } catch(err) {
         console.error(err)
       }
@@ -59,27 +58,25 @@ module.exports = () => {
     };
     const requestSetup = async () => {
       try {
-        await sideBar.openRequestDropdown.click();
-        await sideBar.selectRequestSayHello.click();
         await sideBar.addRequestBtn.click();
-        console.log('add req button pass');
         await reqRes.sendBtn.click();
-        const res = await reqRes.jsonPretty.getText();
+        const res = await sideBar.jsonPretty.getText();
         return res;
       } catch(err) {
         console.error('FROM requestSetup', err)
       }
     };
+
     it("it should work on a unary request", async () => {
       try {
         await sideBarSetup();
         await sideBar.openSelectServiceDropdown.click();
         await sideBar.selectServiceGreeter.click();
-        console.log('selectService pass')
+        await sideBar.openRequestDropdown.click();
+        await sideBar.selectRequestSayHelloFromDropDown.click();
         const jsonPretty = await requestSetup();
-        console.log('reqSetUp pass')
         await new Promise((resolve) =>
-          setTimeout(async () => {
+          setTimeout(() => {
             expect(jsonPretty).to.include(`"message": "Hello string"`);
             resolve();
           }, 800)
@@ -88,16 +85,21 @@ module.exports = () => {
         console.error('FROM unary', err)
       }
     });
-    // it("it should work on a nested unary request", async () => {
-    //   try {
-    //     const jsonPretty = await requestSetup(2);
-    //     expect(jsonPretty).to.include(
-    //       `{\n    "serverMessage": [\n        {\n            "message": "Hello! string"\n        },\n        {\n            "message": "Hello! string"\n        }\n    ]\n}`
-    //     );
-    //   } catch(err) {
-    //     console.error(err)
-    //   }
-    // });
+
+    it("it should work on a nested unary request", async () => {
+      try {
+        await sideBar.removeUnary.click();
+        await sideBar.selectRequestSayHello.click();
+        await sideBar.selectRequestSayHelloNestedFromDropDown.click();
+        const jsonPretty = await requestSetup();
+        expect(jsonPretty).to.include('"serverMessage":')
+        expect(jsonPretty).to.include('"message": "Hello! string"')
+        const helloStrArray = jsonPretty.match(/"message": "Hello! string"/g)
+        expect(helloStrArray).to.have.lengthOf(2);
+      } catch(err) {
+        console.error('FROM NESTED: ', err)
+      }
+    });
     // it("it should work on a server stream", async () => {
     //   try {
     //     const jsonPretty = await requestSetup(3);
