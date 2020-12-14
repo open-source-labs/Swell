@@ -1,17 +1,14 @@
 import React from 'react'
-import TestResult from './TestResult'
 import { Doughnut } from "react-chartjs-2";
+import TestResult from './TestResult'
 
 export default function SingleTestContainer({ currentResponse }) {
-
   const {
     request,
     response
   } = currentResponse;
 
-
-
-  const url = currentResponse.url;
+  const { url } = currentResponse;
 
   const passFailScripts = [];
 
@@ -24,14 +21,13 @@ export default function SingleTestContainer({ currentResponse }) {
       else fail += 1;
       const test = <TestResult status={ele.status} message={ele.message} />
       passFailScripts.push(test);
-    })
+    });
   }
 
-  let data = {
+  const data = {
     datasets: [{data: [pass, fail], backgroundColor: ['#06a568', '#f66b61']}],
-    labels: ['Passed','Failed']
+    labels: ['Passed','Failed'],
   };
-
 
   return (
   <>
