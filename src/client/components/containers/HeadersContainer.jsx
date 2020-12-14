@@ -14,7 +14,7 @@ export default function HeadersContainer({ currentResponse }) {
     ([key, value], index) => {
       return (
         <tr key={index}>
-          <td>{key}</td>
+          <td >{key}</td>
           <td className="table-value">{value}</td>
         </tr>
       );
@@ -25,7 +25,7 @@ export default function HeadersContainer({ currentResponse }) {
     <div>
       <div>
         <div className="table-container mx-3 extended">
-          <table className="table">
+          <table className="table mx-3">
             <thead className="is-size-7">
               <tr>
                 <th>Key</th>
