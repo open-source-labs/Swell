@@ -1,6 +1,5 @@
-
 .client-background {
-  background-color: #3734A9;
+  background-color: #3734a9;
   display: inline-block;
   padding: 4px 8px;
   border: 0px;
@@ -8,7 +7,7 @@
 }
 
 .server-background {
-  background-color: #21D4A4;
+  background-color: #21d4a4;
   display: inline-block;
   padding: 4px 8px;
   border: 0px;
@@ -30,8 +29,10 @@
   font-style: italic;
 }
 
-.websocket_message_container{
+.websocket_message_container {
   position: relative;
+  overflow: auto;
+  max-height: 80vh;
 }
 
 .websocket_message-client {
