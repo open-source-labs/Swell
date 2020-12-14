@@ -81,8 +81,10 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
         </div>
         {/* only show the ws messages when connection is open */}
         {connection === "open" && (
+          <div className="testtest">
           <div className="websocket_message_container m-3">
             {combinedMessagesReactArr}
+          </div>
           </div>
         )}
       </div>
