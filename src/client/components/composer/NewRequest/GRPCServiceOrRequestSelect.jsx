@@ -10,6 +10,7 @@ const GRPCServiceOrRequestSelect = (props) => {
     items,
     onClick,
     defaultTitle,
+    id,
   } = props;
 
   const [dropdownIsActive, setDropdownIsActive] = useState();
@@ -46,7 +47,7 @@ const GRPCServiceOrRequestSelect = (props) => {
     <div ref={dropdownEl} className={` dropdown ${dropdownIsActive ? 'is-active' : ''}`}>
 
       <div className="dropdown-trigger">
-        <button className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
+        <button id={id} className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button" aria-haspopup="true" aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
           <span>{value}</span>
