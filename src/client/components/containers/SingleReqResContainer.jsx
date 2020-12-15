@@ -257,7 +257,7 @@ const SingleReqResContainer = (props) => {
       <div className="is-flex">
         <button
           className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
-          id={request.method}
+          id={request.method.split(' ').join('-')}
           onClick={() => {
             removeReqRes();
             dispatch(actions.saveCurrentResponseData({}));

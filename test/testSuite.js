@@ -26,10 +26,12 @@ describe("Electron Tests", function () {
   // these are are test suites within this broader suite
   appOpensTests();
 
+  // execute differnt types of test here
   describe("CRUD functionality", function () {
     reqInputTests();
     httpTest();
     graphqlTest();
     websocketTest();
+    grpcTest();
   });
 });
