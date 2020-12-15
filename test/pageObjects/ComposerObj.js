@@ -49,6 +49,12 @@ class ComposerObj {
   get addRequestBtn() {
     return app.client.$('button=Add New Request');
   };
+
+  get testScriptCode() {
+    const codeMirror = app.client.$('#test-script-entry');
+    codeMirror.click();
+    return codeMirror.$("textarea");
+  }
   
   async clearRestBodyAndWriteKeys(keys, clear = true){
     const backspace = [];
@@ -83,6 +89,20 @@ class ComposerObj {
       await this.gqlVariableCode.keys(keys);
     } catch(err) {
       console.error(err)
+    }
+  }
+
+  async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
+    const backspace = [];
+    for (let i = 0; i < 30; i += 1) {
+      backspace.push('Backspace');
+    }
+    
+    try {
+      if(clear) await this.testScriptCode.keys(backspace);
+      await this.testScriptCode.keys(keys);
+    } catch(err) {
+      console.error(err);
     }
   }
 
