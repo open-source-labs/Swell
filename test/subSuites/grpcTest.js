@@ -3,25 +3,13 @@
 const chai = require("chai");
 const fs = require("fs");
 const path = require("path");
-const sideBar = require("../pageObjects/Sidebar.js");
-const reqRes = require("../pageObjects/ReqRes.js");
+const grpcObj = require("../pageObjects/GrpcObj.js");
 const grpcServer = require('../grpcServer.js')
 
 const expect = chai.expect;
 
 module.exports = () => {
   describe("gRPC requests", () => {
-
-    // beforeEach(async () => {
-    //   const removeBtn = await sideBar.removeBtn;
-    //   if(removeBtn.value) {
-    //     try {
-    //       await sideBar.removeBtn.click();
-    //     } catch(err) {
-    //       console.error(err)
-    //     }
-    //   }
-    // });
 
     let proto = "";
 
@@ -47,20 +35,20 @@ module.exports = () => {
 
     const sideBarSetup = async () => {
       try {
-        await sideBar.selectedNetwork.click();
-        await sideBar.gRPC.click();
-        await sideBar.url.addValue("0.0.0.0:50051");
-        await sideBar.grpcProto.addValue(proto);
-        await sideBar.saveChanges.click();
+        await grpcObj.selectedNetwork.click();
+        await grpcObj.gRPC.click();
+        await grpcObj.url.addValue("0.0.0.0:50051");
+        await grpcObj.grpcProto.addValue(proto);
+        await grpcObj.saveChanges.click();
       } catch(err) {
         console.error(err)
       }
     };
     const requestSetup = async () => {
       try {
-        await sideBar.addRequestBtn.click();
-        await reqRes.sendBtn.click();
-        const res = await sideBar.jsonPretty.getText();
+        await grpcObj.addRequestBtn.click();
+        await grpcObj.sendBtn.click();
+        const res = await grpcObj.jsonPretty.getText();
         return res;
       } catch(err) {
         console.error('FROM requestSetup', err)
@@ -70,10 +58,10 @@ module.exports = () => {
     it("it should work on a unary request", async () => {
       try {
         await sideBarSetup();
-        await sideBar.openSelectServiceDropdown.click();
-        await sideBar.selectServiceGreeter.click();
-        await sideBar.openRequestDropdown.click();
-        await sideBar.selectRequestSayHelloFromDropDown.click();
+        await grpcObj.openSelectServiceDropdown.click();
+        await grpcObj.selectServiceGreeter.click();
+        await grpcObj.openRequestDropdown.click();
+        await grpcObj.selectRequestSayHelloFromDropDown.click();
         const jsonPretty = await requestSetup();
         await new Promise((resolve) =>
           setTimeout(() => {
@@ -88,9 +76,9 @@ module.exports = () => {
 
     it("it should work on a nested unary request", async () => {
       try {
-        await sideBar.removeUnary.click();
-        await sideBar.selectRequestSayHello.click();
-        await sideBar.selectRequestSayHelloNestedFromDropDown.click();
+        await grpcObj.removeUnary.click();
+        await grpcObj.selectRequestSayHello.click();
+        await grpcObj.selectRequestSayHelloNestedFromDropDown.click();
         const jsonPretty = await requestSetup();
         expect(jsonPretty).to.include('"serverMessage":')
         expect(jsonPretty).to.include('"message": "Hello! string"')
@@ -100,11 +88,12 @@ module.exports = () => {
         console.error('FROM NESTED: ', err)
       }
     });
+
     it("it should work on a server stream", async () => {
       try {
-        await sideBar.removeUnary.click();
-        await sideBar.selectRequestSayHelloNested.click();
-        await sideBar.selectRequestSayHellosSsFromDropDown.click();
+        await grpcObj.removeUnary.click();
+        await grpcObj.selectRequestSayHelloNested.click();
+        await grpcObj.selectRequestSayHellosSsFromDropDown.click();
         const jsonPretty = await requestSetup();
         expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
         expect(jsonPretty).to.include("hello!!! string")
@@ -112,26 +101,28 @@ module.exports = () => {
         console.error(err)
       }
     });
+
     it("it should work on a client stream", async () => {
       try {
-        await sideBar.removeStream.click();
-        await sideBar.selectRequestSayHellosSs.click();
-        await sideBar.selectRequestSayHelloCSFromDropDown.click();
+        await grpcObj.removeServerStream.click();
+        await grpcObj.selectRequestSayHellosSs.click();
+        await grpcObj.selectRequestSayHelloCSFromDropDown.click();
         const jsonPretty = await requestSetup();
         expect(jsonPretty).to.include('"message": "received 1 messages"');
       } catch(err) {
         console.error(err)
       }
     });
-    // it("it should work on a bidirectional stream", async () => {
-    //   try {
-    //     const jsonPretty = await requestSetup(5);
-    //     expect(jsonPretty).to.include(
-    //       `{\n    "message": "bidi stream: string"\n}`
-    //     );
-    //   } catch(err) {
-    //     console.error(err)
-    //   }
-    // });
+    it("it should work on a bidirectional stream", async () => {
+      try {
+        await grpcObj.removeClientStream.click();
+        await grpcObj.selectRequestSayHelloCS.click();
+        await grpcObj.selectRequestBidiFromDropDown.click();
+        const jsonPretty = await requestSetup();
+        expect(jsonPretty).to.include('"message": "bidi stream: string"');
+      } catch(err) {
+        console.error(err)
+      }
+    });
   });
 };
