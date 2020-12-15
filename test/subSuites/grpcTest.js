@@ -37,7 +37,7 @@ module.exports = () => {
     const sideBarSetup = async () => {
       try {
         await grpcObj.selectedNetwork.click();
-        await grpcObj.gRPC.click();
+        await grpcObj.gRPCNetwork.click();
         await grpcObj.url.addValue("0.0.0.0:50051");
         await grpcObj.grpcProto.addValue(proto);
         await grpcObj.saveChanges.click();
