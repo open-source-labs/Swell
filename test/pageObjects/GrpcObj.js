@@ -87,18 +87,6 @@ class GrpcObj {
   get removeBtn() {
     return app.client.$('button=Remove')
   }
-  // selects remove button on request in workspace with type unary
-  get removeUnary() {
-    return app.client.$('#UNARY')
-  }
-  // selects remove button on request in workspace with type server stream
-  get removeServerStream() {
-    return app.client.$('#SERVER-STREAM')
-  }
-  // selects remove button on request in workspace with type client stream
-  get removeClientStream() {
-    return app.client.$('#CLIENT-STREAM')
-  }
 }; 
 
 module.exports = new GrpcObj(); 
