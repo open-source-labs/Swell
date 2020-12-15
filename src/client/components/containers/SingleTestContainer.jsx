@@ -46,14 +46,27 @@ export default function SingleTestContainer({ currentResponse }) {
     </div>
     <div className="is-neutral-200-box p-3 mx-2">
       <div>{passFailScripts}</div>
-      <div className="border-top my-2">
-        <Doughnut 
-          data={data} 
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-          }}
-        />
+      <div className="border-top my-2 grid-graph">
+        <div className="mt-4">
+          <Doughnut 
+            data={data} 
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              legend: {
+                display: false,
+              }
+            }}
+          />
+        </div>
+        <div className="grid-graph-mt">
+          <div className="my-8">
+            <span className="has-background-success pass-fail-button">Passed:</span> <span className="ml-2">{pass}</span>
+          </div>
+          <div className="my-4">
+            <span className="has-background-danger pass-fail-button">Failed:</span> <span className="ml-2">{fail}</span>
+          </div>
+        </div>
       </div>
     </div>
   </>

@@ -3,11 +3,15 @@ const { NodeVM } = require('vm2');
 
 const testHttpController = {};
 
-testHttpController.runTest = (inputScript, reqResObj) => {
-  const {request, response} = reqResObj;
+testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
+  let {request, response} = reqResObj;
   console.log(request, response);
   // final test result objects will be stored in this array
   const testResults = [];
+  if (gqlResponse) {
+    let data = gqlResponse.data;
+    response = {...response, data};
+  }
   // this is the global object that will be passed into the VM
   const sandbox = {
     // function to push an Assertion object into the array
@@ -39,7 +43,7 @@ testHttpController.runTest = (inputScript, reqResObj) => {
     // use the regex and return all the substrings in quotes
     const assertionArgsInQuotes = script.match(substringsInQuotes);
 
-    // there is still a problem where if there are quotes in the arguments 
+    // there is still a problem where if there are quotes in the arguments
     // and there is no user-supplied message. we incorrectly choose the last arg as the userMessage
     let userMessage;
     if (!assertionArgsInQuotes) {
@@ -83,7 +87,7 @@ testHttpController.runTest = (inputScript, reqResObj) => {
   });
   // require in the chai assertion library
   // then concatenate all the scripts to the testScript string
-  const testScript = 
+  const testScript =
     `
     const { assert, expect } = require('chai');
     ${arrOfTestScripts.join('')}
@@ -97,9 +101,9 @@ testHttpController.runTest = (inputScript, reqResObj) => {
     // deep clone the testResults array since sending functions, DOM elements, and non-cloneable
     // JS objects is not supported IPC channels past Electron 9
     return JSON.parse(JSON.stringify(testResults));
-  } 
+  }
   catch (err) {
-    console.log('caught error!: in the catch block of main_testHttpController.js', err);
+    console.log('caught error!: in the catch block of main_testGqlController.js', err);
     // return a null object in the event of an error
     return null;
   }

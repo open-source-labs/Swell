@@ -18,6 +18,23 @@
   left: 12.5vw;
 }
 
+.grid-graph {
+  display: grid;
+  grid-template-columns: 0.1fr 1.9fr;
+}
+
+.grid-graph-mt {
+  margin-top: 12vh;
+}
+
+.pass-fail-button {
+  font-weight: bold;
+  max-height: 4vh;
+  max-width: 8vh;
+  padding: 0.5vh;
+  border-radius: 4px;
+}
+
 .is-flex-basis-0 {
   flex-basis: 0;
 }
