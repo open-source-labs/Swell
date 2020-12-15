@@ -92,9 +92,18 @@ module.exports = () => {
           });
       });
 
+      afterEach("HIDE TESTS", () => {
+        return new Promise((resolve) => {
+          setTimeout(async () => {
+            await app.client.$('span=Hide Tests').click();
+            resolve();
+          }, 0);
+        });
+      });
+
       it("a simple assertion should PASS when making a GET request", async function() {
         try {
-          const url = "http://jsonplaceholder.typicode.com/posts";
+          const url = "http://localhost:3000";
           const method = "GET";
           const script = "assert.strictEqual(3, 3, 'correct types');";
           await fillRestRequest(url, method);
@@ -106,12 +115,34 @@ module.exports = () => {
               const testStatus = await app.client.$('#TestResult-0-status').getText();
               expect(testStatus).to.equal("PASS");
               resolve();
-            }, 500)
+            }, 0)
           );
         } catch (err) {
           console.error(err);
         }
       });
+
+      it("a simple assertion should FAIL when making a GET request", async function() {
+        try {
+          const url = "http://localhost:3000";
+          const method = "GET";
+          const script = "assert.strictEqual(3, '3', 'wrong types');";
+          await fillRestRequest(url, method);
+          await clearAndFillTestScriptArea(script);
+          await addAndSend();
+          await new Promise((resolve) => 
+            setTimeout(async () => {
+              await app.client.$('a=Tests').click();
+              const testStatus = await app.client.$('#TestResult-0-status').getText();
+              expect(testStatus).to.equal("FAIL");
+              resolve();
+            }, 0)
+          );
+        } catch (er) {
+          console.error(err);
+        }
+      });
+      
     });
   });
 }
