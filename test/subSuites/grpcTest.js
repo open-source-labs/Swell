@@ -25,8 +25,9 @@ module.exports = () => {
       }
     });
 
-    before(() => {
+    before(async () => {
       try {
+        await grpcObj.removeBtn.click();
         grpcServer('open')
       } catch(err) {
         console.error(err)
