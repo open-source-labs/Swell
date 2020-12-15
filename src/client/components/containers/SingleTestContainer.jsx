@@ -16,10 +16,15 @@ export default function SingleTestContainer({ currentResponse }) {
   let fail = 0;
 
   if (response.testResult !== undefined && response.testResult !== null) {
-    response.testResult.forEach(ele => {
+    response.testResult.forEach((ele, idx) => {
       if (ele.status === 'PASS') pass += 1;
       else fail += 1;
-      const test = <TestResult status={ele.status} message={ele.message} />
+      const test = <TestResult 
+        key={`TestResult-${idx}`}
+        id={`TestResult-${idx}`}
+        status={ele.status}
+        message={ele.message} />
+
       passFailScripts.push(test);
     });
   }
