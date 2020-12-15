@@ -56,9 +56,9 @@ const TestEntryForm = (props) => {
 
       </div>
     {showTests === true &&
-      <div id="body-entry-select">
+      <div id="test-script-entry">
         <TextCodeAreaEditable
-          mode={"javascript"}
+          mode="javascript"
           value={testContent}
           onChange={(editor, data, value) => {
             setNewTestContent(value);
