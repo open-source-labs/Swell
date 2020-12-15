@@ -589,7 +589,7 @@ ipcMain.on("open-gql", (event, args) => {
         .then((data) => {
           //handle tests
           if (reqResObj.request.testContent) {
-            reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj);
+            reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj, data);
           }
           event.sender.send("reply-gql", { reqResObj, data })
         })
