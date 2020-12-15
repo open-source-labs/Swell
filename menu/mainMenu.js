@@ -52,6 +52,7 @@ const template = [
       //THIS ENABLES DEVELOPER TOOLS IN THE BUILT APPLICATION
       {
         label: "Toggle Developer Tools",
+        visible: process.env.NODE_ENV === "development",
         accelerator:
           process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I", // another keyboard shortcut that will be conditionally assigned depending on whether or not user is on macOS
         click(item, focusedWindow) {
