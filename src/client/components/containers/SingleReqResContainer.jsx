@@ -60,6 +60,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        testContent: content.request.testContent,
       };
     }
     if (network === "ws") {
