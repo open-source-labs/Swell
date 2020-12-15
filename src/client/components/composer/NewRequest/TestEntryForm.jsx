@@ -19,10 +19,9 @@ const TestEntryForm = (props) => {
   const handleShowTests = () => setShowTests(!showTests);
 
   return (
-    <div className='mt-3'>
+    <div className='mt-4 mb-4'>
       <div
-        className="is-rest-invert cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
-        style={{height: '3rem', fontSize: '18px'}}
+        className="is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
         onClick={() => {
           handleShowTests();
         }}
@@ -30,11 +29,10 @@ const TestEntryForm = (props) => {
       {showTests === true &&
         <>
           <span>Hide Tests</span>
-          <span className="icon is-medium is-align-self-center">
+          <span className="icon is-medium is-align-self-center show-hide-tests-icon">
             <img 
               alt=''
               src={dropDownArrowUp} 
-              style={{position: relative, left: '15rem'}}
               className="is-awesome-icon" 
               aria-hidden="false" 
             />
@@ -44,11 +42,10 @@ const TestEntryForm = (props) => {
       {showTests === false &&
         <>
           <span>View Tests</span>
-          <span className="icon is-medium is-align-self-center">
+          <span className="icon is-medium is-align-self-center show-hide-tests-icon">
             <img 
               alt=''
-              src={dropDownArrow} 
-              style={{position: relative, left: '15rem'}}
+              src={dropDownArrow}
               className="is-awesome-icon" 
               aria-hidden="false" 
             />

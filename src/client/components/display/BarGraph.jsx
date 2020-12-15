@@ -58,11 +58,11 @@ const BarGraph = (props) => {
         },
       ],
       xAxes: [
-        // {
-        //   ticks: {
-        //     display: true,
-        //   },
-        // },
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
       ],
     },
     // animation: {
