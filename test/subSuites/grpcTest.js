@@ -112,16 +112,17 @@ module.exports = () => {
         console.error(err)
       }
     });
-    // it("it should work on a client stream", async () => {
-    //   try {
-    //     const jsonPretty = await requestSetup(4);
-    //     expect(jsonPretty).to.include(
-    //       `{\n    "message": "received 1 messages"\n}`
-    //     );
-    //   } catch(err) {
-    //     console.error(err)
-    //   }
-    // });
+    it("it should work on a client stream", async () => {
+      try {
+        await sideBar.removeStream.click();
+        await sideBar.selectRequestSayHellosSs.click();
+        await sideBar.selectRequestSayHelloCSFromDropDown.click();
+        const jsonPretty = await requestSetup();
+        expect(jsonPretty).to.include('"message": "received 1 messages"');
+      } catch(err) {
+        console.error(err)
+      }
+    });
     // it("it should work on a bidirectional stream", async () => {
     //   try {
     //     const jsonPretty = await requestSetup(5);

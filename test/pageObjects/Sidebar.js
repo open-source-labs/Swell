@@ -119,6 +119,10 @@ class Sidebar {
     return app.client.$('#UNARY')
   }
 
+  get removeStream() {
+    return app.client.$('#SERVER-STREAM')
+  }
+
   get selectRequestSayHelloFromDropDown() {
     return app.client.$('a=SayHello')
   }
@@ -135,8 +139,20 @@ class Sidebar {
     return app.client.$('#SayHelloNested-button')
   }
 
+  get selectRequestSayHellosSs() {
+    return app.client.$('#SayHellosSs-button')
+  }
+
   get selectRequestSayHellosSsFromDropDown() {
     return app.client.$('a=SayHellosSs')
+  }
+
+  get selectRequestSayHelloCSFromDropDown() {
+    return app.client.$('a=SayHelloCS')
+  }
+
+  get selectRequestSayHelloCS() {
+    return app.client.$('#SayHelloCS-button')
   }
 
   get grpcProto() {

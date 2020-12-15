@@ -48,6 +48,38 @@ const SayHellosSs = call => {
   call.end();
 };
 
+const sayHelloCs = (call, callback) => {
+  const messages = [];
+  call.on('data', data => {
+    messages.push(data);
+  })
+  call.on('end', () => {
+    callback(null, {
+      message: `received ${messages.length} messages`
+    })
+  })
+};
+  //   const messages = [];
+  
+  //   return new Promise((resolve, reject) => {
+  //     // ctx.req is the incoming readable stream
+  //     hl(ctx.req)
+  //       .map((message) => {
+  //         // currently the proto file is setup to only read streams with the key "name"
+  //         // other named keys will be pushed as an empty object
+  //         messages.push(message);
+  //         return undefined;
+  //       })
+  //       .collect()
+  //       .toCallback((err, result) => {
+  //         if (err) return reject(err);
+  //         ctx.response.res = { message: `received ${messages.length} messages` };
+  //         return resolve();
+  //       });
+  //   });
+
+
+
 function main(status) {
   const proto = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
@@ -60,7 +92,7 @@ function main(status) {
   let server;
   if (status === 'open') {
     server = new grpc.Server();
-    server.addService(pkg.helloworld.Greeter.service, { SayHello, SayHelloNested, SayHellosSs });
+    server.addService(pkg.helloworld.Greeter.service, { SayHello, SayHelloNested, SayHellosSs, sayHelloCs });
 
     server.bindAsync(PORT, grpc.ServerCredentials.createInsecure(), (port) => {
       server.start();
