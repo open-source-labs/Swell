@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions";
 import SingleReqResContainer from "./SingleReqResContainer.jsx";
+import ReqResCtrl from "../../controllers/reqResController";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -19,6 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ReqResContainer = (props) => {
   const { reqResArray, reqResDelete, reqResUpdate } = props;
+  const dispatch = useDispatch();
 
   const reqResMapped = reqResArray.map((reqRes, index) => {
     return (
@@ -35,6 +37,25 @@ const ReqResContainer = (props) => {
 
   return (
     <div>
+
+      {reqResArray.length > 0 &&
+        <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
+          <button
+            className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
+            style={{minWidth: '14vw'}}
+            type="button"
+            onClick={() => {
+              for (let i = 0; i < reqResArray.length; i++) {
+                ReqResCtrl.openReqRes(reqResArray[i].id);
+                dispatch(actions.saveCurrentResponseData(reqResArray[i]));
+              }
+            }}
+          >
+            Send Collection
+          </button>
+        </div>
+      }
+
       <div>{reqResMapped.reverse()}</div>
     </div>
   );

@@ -5,7 +5,6 @@ const testHttpController = {};
 
 testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   let {request, response} = reqResObj;
-  console.log(request, response);
   // final test result objects will be stored in this array
   const testResults = [];
   if (gqlResponse) {
