@@ -51,6 +51,15 @@ module.exports = () => {
       }
     };
 
+    const addAndSend = async () => {
+      try {
+        await composerObj.addRequestBtn.click();
+        await workspaceObj.latestSendRequestBtn.click();
+      } catch(err) {
+        console.error(err);
+      }
+    };
+
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor
@@ -58,15 +67,6 @@ module.exports = () => {
         // set the value of the code editor to be some hard coded simple assertion tests
         await composerObj.clearTestScriptAreaAndWriteKeys(script);
       } catch (err) {
-        console.error(err);
-      }
-    }
-
-    const addAndSend = async () => {
-      try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
-      } catch(err) {
         console.error(err);
       }
     };
