@@ -8,7 +8,6 @@ const { expect } = chai;
 
 module.exports = () => {
   describe("HTTP Testing Controller", function() {
-    // code below is from httpTest.js file
     const fillRestRequest = async (url, method, body = '', headers = [], cookies = []) => {
       try {
         // click and check REST
@@ -71,6 +70,11 @@ module.exports = () => {
       }
     };
 
+    afterEach("HIDE TESTS", (done) => {
+      (async () => await app.client.$('span=Hide Tests').click())();
+      done();
+    });
+    
     // ==================================================================
 
     describe("simple assertions w/ chai.assert and chai.expect", function() {
@@ -91,104 +95,114 @@ module.exports = () => {
           });
       });
 
-      afterEach("HIDE TESTS", () => {
-        return new Promise((resolve) => {
-          setTimeout(async () => {
-            await app.client.$('span=Hide Tests').click();
-            resolve();
-          }, 0);
-        });
-      });
-
       it("a simple assertion (assert) should PASS when making a GET request", async function() {
-        try {
-          const url = "http://localhost:3000/book";
-          const method = "GET";
-          const script = "assert.strictEqual(3, 3, 'correct types');";
-          await fillRestRequest(url, method);
-          await clearAndFillTestScriptArea(script);
-          await addAndSend();
-          await new Promise((resolve) => 
-            setTimeout(async () => {
-              await app.client.$('a=Tests').click();
-              const testStatus = await app.client.$('#TestResult-0-status').getText();
-              expect(testStatus).to.equal("PASS");
-              resolve();
-            }, 0)
-          );
-        } catch (err) {
-          console.error(err);
-        }
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "assert.strictEqual(3, 3, 'correct types');";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        expect(testStatus).to.equal("PASS");
       });
 
       it("a simple assertion (assert) should FAIL when making a GET request", async function() {
-        try {
-          const url = "http://localhost:3000/book";
-          const method = "GET";
-          const script = "assert.strictEqual(3, '3', 'wrong types');";
-          await fillRestRequest(url, method);
-          await clearAndFillTestScriptArea(script);
-          await addAndSend();
-          await new Promise((resolve) => 
-            setTimeout(async () => {
-              await app.client.$('a=Tests').click();
-              const testStatus = await app.client.$('#TestResult-0-status').getText();
-              expect(testStatus).to.equal("FAIL");
-              resolve();
-            }, 0)
-          );
-        } catch (er) {
-          console.error(err);
-        }
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "assert.strictEqual(3, '3', 'wrong types');";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        expect(testStatus).to.equal("FAIL");
       });
 
       it("a simple assertion (expect) should PASS when making a GET request", async function() {
-        try {
-          const url = "http://localhost:3000/book";
-          const method = "GET";
-          const script = "expect(3).to.equal(3);";
-          await fillRestRequest(url, method);
-          await clearAndFillTestScriptArea(script);
-          await addAndSend();
-          await new Promise((resolve) => 
-            setTimeout(async () => {
-              await app.client.$('a=Tests').click();
-              const testStatus = await app.client.$('#TestResult-0-status').getText();
-              expect(testStatus).to.equal("PASS");
-              resolve();
-            }, 0)
-          );
-        } catch (err) {
-          console.error(err);
-        }
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "expect(3, 'correct types').to.equal(3);";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        expect(testStatus).to.equal("PASS");
       });
 
       it("a simple assertion (expect) should FAIL when making a GET request", async function() {
-        try {
-          const url = "http://localhost:3000/book";
-          const method = "GET";
-          const script = "expect(3).to.equal('3');";
-          await fillRestRequest(url, method);
-          await clearAndFillTestScriptArea(script);
-          await addAndSend();
-          await new Promise((resolve) => 
-            setTimeout(async () => {
-              await app.client.$('a=Tests').click();
-              const testStatus = await app.client.$('#TestResult-0-status').getText();
-              expect(testStatus).to.equal("FAIL");
-              resolve();
-            }, 0)
-          );
-        } catch (err) {
-          console.error(err);
-        }
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "expect(3, 'correct types').to.equal('3');";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        expect(testStatus).to.equal("FAIL");
       });
-      
-      
     });
 
-    // describe("Assertions on response object", () => {
-      
-    // });
+    describe("Multiple assertion statements", function() {
+      it("should handle multiple different simple assert statements", async function() {
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "assert.strictEqual(3, '3', 'wrong types');\nassert.strictEqual(3, '3', 'this assert is a message');\nassert.strictEqual(3, 3, 'correct types');\nassert.strictEqual(3, 3, 'this assert is a message');";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const firstStatus = await app.client.$('#TestResult-0-status').getText();
+        const secondStatus = await app.client.$('#TestResult-1-status').getText();
+        const thirdStatus = await app.client.$('#TestResult-2-status').getText();
+        const fourthStatus = await app.client.$('#TestResult-3-status').getText();
+
+        expect(firstStatus).to.equal("FAIL");
+        expect(secondStatus).to.equal("FAIL");
+        expect(thirdStatus).to.equal("PASS");
+        expect(fourthStatus).to.equal("PASS");
+      });
+
+      it("should handle multiple different simple expect statements", async function() {
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "expect(3, 'wrong types').to.equal('3');\nexpect(3, 'this expect is a message').to.equal('3');\nexpect(3, 'correct types').to.equal(3);\nexpect(3, 'this expect is a message').to.equal(3);";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const firstStatus = await app.client.$('#TestResult-0-status').getText();
+        const secondStatus = await app.client.$('#TestResult-1-status').getText();
+        const thirdStatus = await app.client.$('#TestResult-2-status').getText();
+        const fourthStatus = await app.client.$('#TestResult-3-status').getText();
+
+        expect(firstStatus).to.equal("FAIL");
+        expect(secondStatus).to.equal("FAIL");
+        expect(thirdStatus).to.equal("PASS");
+        expect(fourthStatus).to.equal("PASS");
+      });
+    })
+
+    describe("Assertions on response object", function () {
+      it("should be able to access the response object from a GET request with chai.assert", async function() {
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "assert.isObject(response, 'response is object')";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        expect(testStatus).to.equal("PASS");
+      })
+    });
   });
-}
+};
