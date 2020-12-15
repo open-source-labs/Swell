@@ -207,6 +207,7 @@
       "main_process/main_wsController.js",
       "main_process/main_touchbar.js",
       "main_process/SSEController.js",
+      "main_process/test_controllers/main_testHttpController.js",
       "preload.js"
     ],
     "nodeVersion": "12.14.1",
