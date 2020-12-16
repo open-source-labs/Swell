@@ -41,8 +41,8 @@ const ReqResContainer = (props) => {
       {reqResArray.length > 0 &&
         <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
           <button
-            className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
-            style={{minWidth: '14vw'}}
+            className="button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color"
+            style={{minWidth: '30vw'}}
             type="button"
             onClick={() => {
               for (let i = 0; i < reqResArray.length; i++) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import EmptyState from '../display/EmptyState';
+import EventPreview from '../display/EventPreview';
 import 'codemirror/theme/neo.css'
 
 
@@ -40,6 +41,9 @@ export default function EventsContainer({currentResponse}) {
   }
   return (
     <div className="tab_content-response" id="events-display">
+      {request.method === 'GET' && (
+        <EventPreview contents={responseBody}/>
+      )}
       <CodeMirror
         value={responseBody}
         options={{

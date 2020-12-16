@@ -9,11 +9,21 @@
 }
 
 .show-hide-tests {
-  height: 4vh;
+  height: 3.5vh;
   font-size: "18rem";
 }
 
 .show-hide-tests-icon {
+  position: relative;
+  left: 12.5vw;
+}
+
+.show-hide-event {
+  height: 3.5vh;
+  font-size: "16rem";
+}
+
+.show-hide-event-icon {
   position: relative;
   left: 12.5vw;
 }
