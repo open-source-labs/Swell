@@ -38,7 +38,7 @@ module.exports = () => {
       try {
         await grpcObj.selectedNetwork.click();
         await grpcObj.gRPCNetwork.click();
-        await grpcObj.url.addValue("0.0.0.0:50051");
+        await grpcObj.url.addValue("0.0.0.0:30051");
         await grpcObj.grpcProto.addValue(proto);
         await grpcObj.saveChanges.click();
       } catch(err) {
