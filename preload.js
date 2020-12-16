@@ -45,6 +45,15 @@ const apiObj = {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
     }
   },
+  removeListener: (channel, cb) => {
+    // allowlist channels
+    const allowedChannels = [
+      "reqResUpdata",
+    ];
+    if (allowedChannels.includes(channel)) {
+      ipcRenderer.removeListener(channel, (event, ...args) => cb(...args));
+    }
+  },
 };
 
 // this is because we need to have context isolation to be false for spectron tests to run, but context bridge only runs if context isolation is true
