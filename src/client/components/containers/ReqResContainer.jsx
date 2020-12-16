@@ -35,6 +35,11 @@ const ReqResContainer = (props) => {
     );
   });
 
+  const runCollectionTest = () => {
+    ReqResCtrl.runCollectionTest(reqResArray);
+    // dispatch(actions.saveCurrentResponseData(reqResArray[i]));
+  };
+
   return (
     <div>
 
@@ -44,14 +49,7 @@ const ReqResContainer = (props) => {
             className="button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color"
             style={{minWidth: '30vw'}}
             type="button"
-            onClick={() => {
-              for (let i = 0; i < reqResArray.length; i++) {
-                setTimeout(function(){
-                  ReqResCtrl.openReqRes(reqResArray[i].id);
-                  dispatch(actions.saveCurrentResponseData(reqResArray[i]));
-                 }, 800 * i);
-              }
-            }}
+            onClick={runCollectionTest}
           >
             Send Collection
           </button>
