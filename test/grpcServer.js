@@ -4,7 +4,7 @@ const protoLoader = require("@grpc/proto-loader");
 
 // change PROTO_PATH to load a different mock proto file
 const PROTO_PATH = path.resolve(__dirname, "./hw2.proto");
-const PORT = "0.0.0.0:50051";
+const PORT = "0.0.0.0:30051";
 
 // Service method to be used on unary test
 const SayHello = (call, callback) => {
@@ -93,4 +93,4 @@ function main(status) {
   } 
 }
 
-module.exports = main
+module.exports = main;
