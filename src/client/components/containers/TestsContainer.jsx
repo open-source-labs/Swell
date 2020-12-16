@@ -4,7 +4,7 @@ import SingleTestContainer from './SingleTestContainer';
 
 export default function TestsContainer({ currentResponse }) {
   return (
-    currentResponse.response && currentResponse.response.testContent ? 
+    currentResponse.response && currentResponse.response.testResult ? 
     <SingleTestContainer currentResponse={currentResponse} /> 
     : <EmptyState />
   );
