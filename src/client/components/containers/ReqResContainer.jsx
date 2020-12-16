@@ -46,8 +46,10 @@ const ReqResContainer = (props) => {
             type="button"
             onClick={() => {
               for (let i = 0; i < reqResArray.length; i++) {
-                ReqResCtrl.openReqRes(reqResArray[i].id);
-                dispatch(actions.saveCurrentResponseData(reqResArray[i]));
+                setTimeout(function(){
+                  ReqResCtrl.openReqRes(reqResArray[i].id);
+                  dispatch(actions.saveCurrentResponseData(reqResArray[i]));
+                 }, 800);
               }
             }}
           >

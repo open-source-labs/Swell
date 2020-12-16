@@ -148,13 +148,6 @@ const connectionController = {
   clearAllGraph() {
     store.default.dispatch(actions.clearAllGraph());
   },
-  // //check to see if reqRes has a request -- might delete, miguel
-  // collectionCheck() {
-  //   console.log('cc ran!');
-  //   let { reqResArray } = store.default.getState().business;
-  //   if (reqResArray.length > 0) return false;
-  //   return true;
-  // }
 };
 
 export default connectionController;
