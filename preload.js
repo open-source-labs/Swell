@@ -45,13 +45,13 @@ const apiObj = {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
     }
   },
-  removeListener: (channel, cb) => {
+  removeAllListeners: (channel, cb) => {
     // allowlist channels
     const allowedChannels = [
-      "reqResUpdata",
+      "reqResUpdate",
     ];
     if (allowedChannels.includes(channel)) {
-      ipcRenderer.removeListener(channel, (event, ...args) => cb(...args));
+      ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
     }
   },
 };
