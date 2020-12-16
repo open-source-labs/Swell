@@ -46,7 +46,7 @@ const { introspectionQuery } = require("graphql");
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
-//TESTING
+// testing controller for HTTP requests
 const testHttpController = require("./main_process/test_controllers/main_testHttpController");
 
 // require menu file
