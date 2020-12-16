@@ -7,6 +7,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   let {request, response} = reqResObj;
   // final test result objects will be stored in this array
   const testResults = [];
+
   if (gqlResponse) {
     let data = gqlResponse.data;
     response = {...response, data};
@@ -30,6 +31,19 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   // the regex matches all 'assert' or 'expect' only at the start of a new line
   // we remove the first element of the array because it is an empty string
   const separatedScriptsArray = inputScript.split(/^assert|^expect/gm).slice(1);
+
+  const userVariablesArray = inputScript.split(/^let|^var|^const/gm).slice(1);
+  const userVariablesArrayParsed = [];
+  userVariablesArray.forEach(ele => {
+    // let sliceIdx = ele.indexOf(';');
+    let newStr = 'let';
+    for (let i = 0; i < ele.length; i++) {
+      if (ele[i] !== '"') newStr += ele[i];
+      if (ele[i] === ';') break;
+    }
+    userVariablesArrayParsed.push(newStr);
+  });
+  const variableString = userVariablesArrayParsed.join(' ');
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map(script => {
     /*
@@ -59,6 +73,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     // if the assertion test fails and throws an error, also include the expected and actual
     return `
     try {
+      ${variableString}
       if (${JSON.stringify(script[0])} === '.') {
         assert${script};
         addOneResult({
