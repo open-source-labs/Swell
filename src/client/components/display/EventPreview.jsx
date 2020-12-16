@@ -47,7 +47,7 @@ const EventPreview = ({ contents }) => {
       {showPreview === true &&
       <div
         className='is-full'
-        style={{height: '80vh'}}
+        style={{height: '100vh'}}
         
       >
         <iframe 
