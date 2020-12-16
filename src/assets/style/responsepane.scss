@@ -145,3 +145,19 @@ td {
   font-size: 0.75rem;
   margin-top: 0.25rem;
 }
+
+.overflow-event-child-container {
+  position: relative;
+  overflow-y: scroll;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+  padding-right: 17px;
+  box-sizing: content-box;
+}
+
+.overflow-event-parent-container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
