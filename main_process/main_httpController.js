@@ -312,7 +312,6 @@ const httpController = {
     reqResObj.response.events = [];
     reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
-    event.sender.send("reqResUpdate", reqResObj);
     
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
 
@@ -320,6 +319,7 @@ const httpController = {
     // Check if the URL provided is a stream
     //--------------------------------------------------------------------------------------------------------------
     if (reqResObj.request.isSSE) {
+      event.sender.send("reqResUpdate", reqResObj);
       // if so, send us over to SSEController
       SSEController.createStream(reqResObj, options, event);
       // if not SSE, talk to main to fetch data and receive
@@ -334,7 +334,6 @@ const httpController = {
           reqResObj.timeReceived = Date.now();
           reqResObj.response.status = heads[':status'];
           // send back reqResObj to renderer so it can update the redux store
-          event.sender.send("reqResUpdate", reqResObj);
 
           const theResponseHeaders = response.headers;
 
