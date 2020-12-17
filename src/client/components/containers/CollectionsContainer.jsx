@@ -7,7 +7,7 @@ import collectionsController from "../../controllers/collectionsController";
 export default function CollectionsContainer() {
   const dispatch = useDispatch();
 
-  const collections = useSelector(store => store.business.collections); 
+  const collections = useSelector(store => store.business.collections);
 
   const handleClick = () => {
     collectionsController.importCollection(collections);
@@ -28,10 +28,10 @@ export default function CollectionsContainer() {
 
   return (
     <div>
-      
-      <div className="mt-3">
+
+      <div className="mt-3 is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
         <button
-          className="button is-small is-primary is-outlined button-padding-verticals mx-3"
+          className="button is-medium is-primary is-outlined button-padding-verticals mx-3"
           type="button"
           onClick={(handleClick)}
         >
@@ -40,7 +40,7 @@ export default function CollectionsContainer() {
 
         <hr />
       </div>
-      
+
       <div>
         {collectionComponents}
       </div>

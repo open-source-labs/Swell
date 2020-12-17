@@ -20,18 +20,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const ScheduleReqResContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate, scheduleInterval, scheduledReqResArray} = props;
+const StoppedContainer = (props) => {
+  const { reqResArray, reqResDelete, reqResUpdate, runScheduledTests, scheduledReqResArray } = props;
   const dispatch = useDispatch();
-
-  useEffect(() => {
-      const interval = setInterval(() => {
-        for (let i = 0; i < reqResArray.length; i++) {
-            ReqResCtrl.openScheduledReqRes(reqResArray[i].id);
-        }
-      }, scheduleInterval*1000);
-    return () => clearInterval(interval);
-  }, []);
 
   let scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
     return (
@@ -46,7 +37,6 @@ const ScheduleReqResContainer = (props) => {
     );
   });
 
-
   return (
     <div>
        <div className='is-queue-color mx-1 py-1'>
@@ -57,4 +47,4 @@ const ScheduleReqResContainer = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduleReqResContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(StoppedContainer);

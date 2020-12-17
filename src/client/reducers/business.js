@@ -265,7 +265,6 @@ const businessReducer = (state = initialState, action) => {
     case types.SCHEDULED_REQRES_UPDATE: {
       const scheduledReqResArray = JSON.parse(JSON.stringify(state.scheduledReqResArray));
       scheduledReqResArray.push(action.payload);
-      console.log('outside lol', scheduledReqResArray.length);
       return {
         ...state,
         scheduledReqResArray,
