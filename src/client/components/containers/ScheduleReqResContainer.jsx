@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions";
 import SingleScheduleReqResContainer from "./SingleScheduleReqResContainer.jsx";
+import SingleReqResContainer from "./SingleReqResContainer.jsx";
 import ReqResCtrl from "../../controllers/reqResController";
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
+  scheduledReqResArray: store.business.scheduledReqResArray,
   currentTab: store.business.currentTab,
 });
 
@@ -19,13 +21,14 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ScheduleReqResContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate } = props;
+  const { reqResArray, reqResDelete, reqResUpdate, scheduleInterval, runScheduledTests, scheduledReqResArray } = props;
   const dispatch = useDispatch();
   const [queue, setQueue] = useState([]);
+  const [idx, setIdx] = useState(-1);
 
   let reqResMapped = reqResArray.map((reqRes, index) => {
     return (
-      <SingleScheduleReqResContainer
+      <SingleReqResContainer
         className={`reqResChild`}
         content={reqRes}
         key={index}
@@ -39,31 +42,34 @@ const ScheduleReqResContainer = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      //loop through reqResMapped
-      //essentially click the send button of each
-      let copyArr = JSON.parse(JSON.stringify(reqResArray));
-      let idk = copyArr.map((reqRes, index) => {
-        return (
-          <SingleScheduleReqResContainer
-            className={`reqResChild`}
-            content={reqRes}
-            key={index}
-            index={index}
-            reqResDelete={reqResDelete}
-            reqResUpdate={reqResUpdate}
-          />
-        );
-      });
-      setQueue(queue => [...queue, ...idk]);
-    }, 5000);
+      setIdx(idx => idx + 1);
+      for (let i = 0; i < reqResArray.length; i++) {
+        ReqResCtrl.openScheduledReqRes(reqResArray[i].id);
+        dispatch(actions.saveCurrentResponseData(content));
+      }
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
+
+  let scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
+    return (
+      <SingleScheduleReqResContainer
+        className={`reqResChild`}
+        content={reqRes}
+        key={index}
+        index={index}
+        reqResDelete={reqResDelete}
+        reqResUpdate={reqResUpdate}
+      />
+    );
+  });
+
 
   return (
     <div>
       <div>{reqResMapped}</div>
       <div> <p>Queue:</p>
-      {queue}
+      {scheduledReqResMapped}
       </div>
     </div>
   );

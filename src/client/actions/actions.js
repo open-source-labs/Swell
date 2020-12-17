@@ -59,6 +59,11 @@ export const reqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
+export const scheduledReqResUpdate = (reqRes) => ({
+  type: types.SCHEDULED_REQRES_UPDATE,
+  payload: reqRes,
+});
+
 export const updateGraph = (id) => ({
   type: types.UPDATE_GRAPH,
   payload: id,
@@ -158,3 +163,5 @@ export const setResponsePaneActiveTab = (tabName) => ({
   type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
   payload: tabName,
 });
+
+

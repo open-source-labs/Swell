@@ -49,11 +49,6 @@ const SingleScheduleReqResContainer = (props) => {
   const network = content.request.network;
   const method = content.request.method;
 
-  const removeReqRes = () => {
-    connectionController.closeReqRes(content);
-    reqResDelete(content);
-  };
-
   const getBorderClass = () => {
     let classes = "highlighted-response ";
     if (currentResponse.gRPC) classes += "is-grpc-border";
@@ -138,33 +133,7 @@ const SingleScheduleReqResContainer = (props) => {
       )}
       {/* REMOVE / SEND BUTTONS */}
       <div className="is-flex">
-        <button
-          className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
-          id={request.method.split(' ').join('-')}
-          onClick={() => {
-            removeReqRes();
-            dispatch(actions.saveCurrentResponseData({}));
-          }}
-        >
-          Remove
-        </button>
-
-
-        {!(checker) && (
-          <button
-            className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
-            id={`send-button-${index}`}
-            onClick={() => {
-              ReqResCtrl.openReqRes(content.id);
-              dispatch(actions.saveCurrentResponseData(content));
-              setChecker(checker === false);
-            }}
-          >
-            Send
-          </button>
-        )}
-        {/* VIEW RESPONSE BUTTON */}
-        {checker && (
+        {true && (
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
             id={`view-button-${index}`}
