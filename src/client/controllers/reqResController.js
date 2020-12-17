@@ -73,6 +73,54 @@ const connectionController = {
     }
   },
 
+  runCollectionTest(reqResArray) {
+    api.removeAllListeners('reqResUpdate')
+    let counter = 0;
+    api.receive("reqResUpdate", (reqResObj) => {
+      if (
+        (reqResObj.connection === "closed" ||
+          reqResObj.connection === "error") &&
+          reqResObj.timeSent &&
+          reqResObj.timeReceived &&
+          reqResObj.response.events.length > 0
+      ) {
+        store.default.dispatch(actions.updateGraph(reqResObj));
+      }
+      store.default.dispatch(actions.reqResUpdate(reqResObj));
+
+      store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      if(counter < reqResArray.length) {
+        runSingletest(reqResArray[counter])
+        counter += 1;
+      }
+    });
+    let reqResObj = reqResArray[counter]
+    function runSingletest (reqResObj) {
+      if (reqResObj.request.method === "SUBSCRIPTION")
+        graphQLController.openSubscription(reqResObj);
+      else if (reqResObj.graphQL) {
+        graphQLController.openGraphQLConnection(reqResObj);
+      } else if (/wss?:\/\//.test(reqResObj.protocol)) {
+        //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+        api.send("open-ws", reqResObj);
+  
+        //update the connectionArray when connection is open from ws
+        api.receive("update-connectionArray", (connectionArray) => {
+          this.openConnectionArray.push(...connectionArray);
+        });
+      }
+      //gRPC connection
+      else if (reqResObj.gRPC) {
+        api.send("open-grpc", reqResObj);
+        //Standard HTTP?
+      } else {
+        api.send("open-http", reqResObj);
+      }
+    }
+    runSingletest(reqResObj);
+    counter += 1;
+  },
+
   openAllSelectedReqRes() {
     connectionController.closeAllReqRes();
 
