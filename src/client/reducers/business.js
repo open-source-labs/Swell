@@ -4,6 +4,7 @@ import * as types from "../actions/actionTypes";
 const initialState = {
   currentTab: "First Tab",
   reqResArray: [],
+  scheduledReqResArray: [],
   history: [],
   collections: [],
   warningMessage: {},
@@ -261,6 +262,16 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.SCHEDULED_REQRES_UPDATE: {
+      const scheduledReqResArray = JSON.parse(JSON.stringify(state.scheduledReqResArray));
+      scheduledReqResArray.push(action.payload);
+      console.log('outside lol', scheduledReqResArray.length);
+      return {
+        ...state,
+        scheduledReqResArray,
+      };
+    }
+
     case types.UPDATE_GRAPH: {
       const { id } = action.payload;
       // action.payload is the latest reqRes object
@@ -271,7 +282,7 @@ const businessReducer = (state = initialState, action) => {
       //if more than 8 points, data will shift down an index
       if (!dataPointsCopy[id]) {
         dataPointsCopy[id] = [];
-      } else if (dataPointsCopy[id].length > 5) {
+      } else if (dataPointsCopy[id].length > 50) {
         dataPointsCopy[id] = dataPointsCopy[id].slice(1);
       }
 

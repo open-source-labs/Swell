@@ -3,6 +3,7 @@ export const REQRES_CLEAR = "REQRES_CLEAR";
 export const REQRES_ADD = "REQRES_ADD";
 export const REQRES_DELETE = "REQRES_DELETE";
 export const REQRES_UPDATE = "REQRES_UPDATE";
+export const SCHEDULED_REQRES_UPDATE = "SCHEDULED_REQRES_UPDATE";
 export const UPDATE_GRAPH = "UPDATE_GRAPH";
 
 export const CLEAR_GRAPH = "CLEAR_GRAPH";
