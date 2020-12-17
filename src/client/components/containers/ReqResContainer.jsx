@@ -37,7 +37,6 @@ const ReqResContainer = (props) => {
 
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
-    // dispatch(actions.saveCurrentResponseData(reqResArray[i]));
   };
 
   return (
