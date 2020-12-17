@@ -38,7 +38,7 @@ export default function WorkspaceContainer() {
 
       <SaveWorkspaceModal showModal={showModal} setShowModal={setShowModal} />
       {/* REQUEST CARDS */}
-      <ReqResContainer />
+      <ReqResContainer displaySchedule={true}/>
     </div>
   );
 }
