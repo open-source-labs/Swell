@@ -75,7 +75,7 @@ const connectionController = {
 
   runCollectionTest(reqResArray) {
     api.removeAllListeners('reqResUpdate')
-    let counter = 0;
+    let index = 0;
     api.receive("reqResUpdate", (reqResObj) => {
       if (
         (reqResObj.connection === "closed" ||
@@ -89,17 +89,17 @@ const connectionController = {
       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
       store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
-      if(counter < reqResArray.length) {
-        runSingletest(reqResArray[counter])
-        counter += 1;
+      if(index < reqResArray.length) {
+        runSingletest(reqResArray[index])
+        index += 1;
       }
     });
-    let reqResObj = reqResArray[counter]
+    let reqResObj = reqResArray[index]
     function runSingletest (reqResObj) {
       if (reqResObj.request.method === "SUBSCRIPTION")
         graphQLController.openSubscription(reqResObj);
       else if (reqResObj.graphQL) {
-        graphQLController.openGraphQLConnection(reqResObj);
+        graphQLController.openGraphQLConnectionAndRunCollection(reqResArray);
       } else if (/wss?:\/\//.test(reqResObj.protocol)) {
         //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
         api.send("open-ws", reqResObj);
@@ -118,7 +118,7 @@ const connectionController = {
       }
     }
     runSingletest(reqResObj);
-    counter += 1;
+    index += 1;
   },
 
   openAllSelectedReqRes() {
