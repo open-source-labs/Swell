@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReqResCtrl from "../../controllers/reqResController.js";
 import ScheduleReqResContainer from "./ScheduleReqResContainer.jsx";
+import ReqResContainer from "./ReqResContainer.jsx";
 
 export default function ScheduleContainer() {
   const [scheduleInterval, setScheduleInterval] = useState(1);
@@ -28,6 +29,7 @@ export default function ScheduleContainer() {
         >
           Stop
       </button>
+      <ReqResContainer />
       {runScheduledTests &&
         <ScheduleReqResContainer
         scheduleInterval={scheduleInterval}
