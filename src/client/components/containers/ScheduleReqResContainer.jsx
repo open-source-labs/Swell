@@ -26,28 +26,13 @@ const ScheduleReqResContainer = (props) => {
   const [queue, setQueue] = useState([]);
   const [idx, setIdx] = useState(-1);
 
-  let reqResMapped = reqResArray.map((reqRes, index) => {
-    return (
-      <SingleReqResContainer
-        className={`reqResChild`}
-        content={reqRes}
-        key={index}
-        index={index}
-        reqResDelete={reqResDelete}
-        reqResUpdate={reqResUpdate}
-      />
-    );
-  });
-  reqResMapped = reqResMapped.reverse();
-
   useEffect(() => {
     const interval = setInterval(() => {
       setIdx(idx => idx + 1);
       for (let i = 0; i < reqResArray.length; i++) {
         ReqResCtrl.openScheduledReqRes(reqResArray[i].id);
-        dispatch(actions.saveCurrentResponseData(content));
       }
-    }, 4000);
+    }, scheduleInterval*1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -67,7 +52,6 @@ const ScheduleReqResContainer = (props) => {
 
   return (
     <div>
-      <div>{reqResMapped}</div>
       <div> <p>Queue:</p>
       {scheduledReqResMapped}
       </div>

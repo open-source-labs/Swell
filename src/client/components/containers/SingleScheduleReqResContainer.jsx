@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions.js";
 
@@ -62,6 +62,9 @@ const SingleScheduleReqResContainer = (props) => {
     currentResponse.id === content.id ? getBorderClass(currentResponse) : "";
 
     //USE EFFECT
+    useEffect(() => {
+      dispatch(actions.saveCurrentResponseData(content));
+    }, []);
 
   return (
     <div className={`m-3 ${highlightClasses}`}>
