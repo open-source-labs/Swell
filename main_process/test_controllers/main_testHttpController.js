@@ -32,18 +32,53 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   // we remove the first element of the array because it is an empty string
   const separatedScriptsArray = inputScript.split(/^assert|^expect/gm).slice(1);
 
-  const userVariablesArray = inputScript.split(/^let|^var|^const/gm).slice(1);
-  const userVariablesArrayParsed = [];
-  userVariablesArray.forEach(ele => {
+  ////////////////////////////////////////////
+  // Parse for let, const, or var keywords. //
+  ////////////////////////////////////////////
+
+  const userLetsArray = inputScript.split(/^let/gm).slice(1);
+  const userLetsArrayParsed = [];
+  userLetsArray.forEach(ele => {
     // let sliceIdx = ele.indexOf(';');
-    let newStr = 'let';
+    let newStr = ' let';
     for (let i = 0; i < ele.length; i++) {
       if (ele[i] !== '"') newStr += ele[i];
       if (ele[i] === ';') break;
     }
-    userVariablesArrayParsed.push(newStr);
+    userLetsArrayParsed.push(newStr);
   });
-  const variableString = userVariablesArrayParsed.join(' ');
+  const letString = userLetsArrayParsed.join(' ');
+
+  const userVarsArray = inputScript.split(/^var/gm).slice(1);
+  const userVarsArrayParsed = [];
+  userVarsArray.forEach(ele => {
+    // let sliceIdx = ele.indexOf(';');
+    let newStr = ' var';
+    for (let i = 0; i < ele.length; i++) {
+      if (ele[i] !== '"') newStr += ele[i];
+      if (ele[i] === ';') break;
+    }
+    userVarsArrayParsed.push(newStr);
+  });
+  const varString = userVarsArrayParsed.join(' ');
+
+  const userConstArray = inputScript.split(/^const/gm).slice(1);
+  const userConstArrayParsed = [];
+  userConstArray.forEach(ele => {
+    // let sliceIdx = ele.indexOf(';');
+    let newStr = ' const';
+    for (let i = 0; i < ele.length; i++) {
+      if (ele[i] !== '"') newStr += ele[i];
+      if (ele[i] === ';') break;
+    }
+    userConstArrayParsed.push(newStr);
+  });
+  const constString = userConstArrayParsed.join(' ');
+
+  ////////////////////////////////////////////
+  ////////////////////////////////////////////
+  ////////////////////////////////////////////
+
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map(script => {
     /*
@@ -103,7 +138,9 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   const testScript =
     `
     const { assert, expect } = require('chai');
-    ${variableString}
+    ${letString}
+    ${varString}
+    ${constString}
     ${arrOfTestScripts.join('')}
     `;
 
