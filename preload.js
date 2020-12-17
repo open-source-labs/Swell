@@ -49,6 +49,7 @@ const apiObj = {
     // allowlist channels
     const allowedChannels = [
       "reqResUpdate",
+      "reply-gql",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
