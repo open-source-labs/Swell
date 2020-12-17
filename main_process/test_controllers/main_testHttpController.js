@@ -73,7 +73,6 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     // if the assertion test fails and throws an error, also include the expected and actual
     return `
     try {
-      ${variableString}
       if (${JSON.stringify(script[0])} === '.') {
         assert${script};
         addOneResult({
@@ -104,6 +103,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   const testScript =
     `
     const { assert, expect } = require('chai');
+    ${variableString}
     ${arrOfTestScripts.join('')}
     `;
 
