@@ -323,5 +323,20 @@ module.exports = () => {
         }, 500);
       });
     });
+
+    describe("Using variables", function() {
+      it("Test results do not render if JavaScript is entered but specifically not assertion tests", async function() {
+        const url = "http://localhost:3000/book";
+        const method = "GET";
+        const script = "const foo = 'bar';";
+        await fillRestRequest(url, method);
+        await clearAndFillTestScriptArea(script);
+        await addAndSend();
+
+        await app.client.$('a=Tests').click();
+        const emptyState = await app.client.$('.empty-state-wrapper');
+        expect(emptyState.selector).to.equal('.empty-state-wrapper');
+      })
+    });
   });
 };
