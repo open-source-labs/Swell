@@ -30,7 +30,7 @@
 
 .grid-graph {
   display: grid;
-  grid-template-columns: 0.1fr 1.9fr;
+  grid-template-columns: 0.1fr 0.5fr 1.8fr;
 }
 
 .grid-graph-mt {
@@ -38,11 +38,10 @@
 }
 
 .pass-fail-button {
-  font-weight: bold;
+  min-width: 8vh;
   max-height: 4vh;
   max-width: 8vh;
   padding: 0.5vh;
-  border-radius: 4px;
 }
 
 .is-flex-basis-0 {
