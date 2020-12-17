@@ -92,7 +92,7 @@ export const ResponsePaneContainer = () => {
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-          <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column remove-horizontal-scroll">
+          <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
             {activeTab === "events" && (
               <EventsContainer currentResponse={currentResponse} />
             )}

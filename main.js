@@ -601,6 +601,7 @@ ipcMain.on("open-gql", (event, args) => {
       client
         .mutate({ mutation: body, variables, context: headers })
         .then((data) => {
+          reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj, data);
           event.sender.send("reply-gql", { reqResObj, data })
         })
         .catch((err) => {
