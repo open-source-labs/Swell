@@ -4,6 +4,7 @@ import * as types from "../actions/actionTypes";
 const initialState = {
   currentTab: "First Tab",
   reqResArray: [],
+  scheduledReqResArray: [],
   history: [],
   collections: [],
   warningMessage: {},
@@ -258,6 +259,16 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         reqResArray: reqResDeepCopy,
+      };
+    }
+
+    case types.SCHEDULED_REQRES_UPDATE: {
+      const scheduledReqResArray = JSON.parse(JSON.stringify(state.scheduledReqResArray));
+      scheduledReqResArray.push(action.payload);
+      console.log('outside lol', scheduledReqResArray.length);
+      return {
+        ...state,
+        scheduledReqResArray,
       };
     }
 

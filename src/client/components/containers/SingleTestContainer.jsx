@@ -48,6 +48,7 @@ export default function SingleTestContainer({ currentResponse }) {
       <div>{passFailScripts}</div>
       <div className="border-top my-2 grid-graph">
         <div className="mt-4">
+          <span style={{fontWeight: 'bold', fontSize: '1.25rem', marginLeft: '5vw'}}>Total Tests</span>
           <Doughnut 
             data={data} 
             options={{
@@ -59,7 +60,10 @@ export default function SingleTestContainer({ currentResponse }) {
             }}
           />
         </div>
-        <div className="grid-graph-mt">
+        <div style={{fontWeight: 'bold', fontSize: '3rem', marginTop: '10vh'}}>
+          {pass + fail}
+        </div>
+        <div className="grid-graph-mt is-flex is-flex-direction-column is-justify-content-start is-align-items-start">
           <div className="my-8">
             <span className="has-background-success pass-fail-button">Passed:</span> <span className="ml-2">{pass}</span>
           </div>
