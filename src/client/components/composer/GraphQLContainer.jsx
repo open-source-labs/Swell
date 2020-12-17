@@ -248,6 +248,7 @@ export default function GraphQLContainer({
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
       <div
         className="is-flex-grow-3 add-vertical-scroll"
+        style={{overflowX: "hidden"}}
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >

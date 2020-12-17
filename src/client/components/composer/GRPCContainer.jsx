@@ -181,6 +181,7 @@ export default function GRPCContainer({
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
       <div
         className="is-flex-grow-3 add-vertical-scroll"
+        style={{overflowX: "hidden"}}
         // tabIndex={0}
       >
 
