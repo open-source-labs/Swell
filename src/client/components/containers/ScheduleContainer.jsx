@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReqResCtrl from "../../controllers/reqResController.js";
 import ScheduleReqResContainer from "./ScheduleReqResContainer.jsx";
+import StoppedContainer from "./StoppedContainer.jsx";
 import ReqResContainer from "./ReqResContainer.jsx";
 
 export default function ScheduleContainer() {
@@ -9,35 +10,42 @@ export default function ScheduleContainer() {
 
   return (
     <div>
-        <input
-          className="ml-1 input input-is-medium is-info"
-          style={{maxWidth: "15vh"}}
-          type="number"
-          min="1"
-          value={scheduleInterval}
-          onChange={(e) => {setScheduleInterval(e.target.value)}}
-        />
-      <button
-        className="button is-small is-primary is-outlined button-padding-vertical button-hover-color ml-3"
-        onClick={() => {setScheduledTests(true)}}
-        >
-          Run
-      </button>
-      <button
-        className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
-        onClick={() => {setScheduledTests(false)}}
-        >
-          Stop
-      </button>
-      <ReqResContainer />
+      <div className='is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2'>
+        <div className='is-flex is-flex-direction-row is-justify-content-center is-align-items-center mr-2'>
+          <span className='mr-2' style={{fontWeight: 'bold'}}>Frequency (Seconds):</span>
+          <input
+            className="ml-1 input input-is-medium is-info"
+            style={{maxWidth: "15vh"}}
+            type="number"
+            min="1"
+            value={scheduleInterval}
+            onChange={(e) => {setScheduleInterval(e.target.value)}}
+          />
+        </div>
+        <div className='ml-2'>
+          <button
+            className="button is-small is-primary is-outlined button-padding-vertical button-hover-color ml-3"
+            onClick={() => {setScheduledTests(true)}}
+            >
+              Run
+          </button>
+          <button
+            className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
+            onClick={() => {
+              setScheduledTests(false);
+            }}
+            >
+              Stop
+          </button>
+        </div>
+      </div>
+      <ReqResContainer displaySchedule={false}/>
       {runScheduledTests &&
         <ScheduleReqResContainer
         scheduleInterval={scheduleInterval}
-        runScheduledTests={runScheduledTests}
-        setScheduledTests={setScheduledTests}
         />
       }
-
+      {!runScheduledTests && <StoppedContainer/>}
     </div>
   );
 }

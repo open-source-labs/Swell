@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ReqResContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate } = props;
+  const { reqResArray, reqResDelete, reqResUpdate, displaySchedule} = props;
   const dispatch = useDispatch();
 
   const reqResMapped = reqResArray.map((reqRes, index) => {
@@ -41,8 +41,7 @@ const ReqResContainer = (props) => {
 
   return (
     <div>
-
-      {reqResArray.length > 0 &&
+      {reqResArray.length > 0 && displaySchedule &&
         <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
           <button
             className="button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color"
