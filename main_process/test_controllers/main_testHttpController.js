@@ -154,7 +154,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     return JSON.parse(JSON.stringify(testResults));
   }
   catch (err) {
-    console.log('caught error!: in the catch block of main_testGqlController.js', err);
+    console.log('caught error!: in the catch block of main_testController.js', err);
     // return a null object in the event of an error
     return null;
   }
