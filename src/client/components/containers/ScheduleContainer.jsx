@@ -16,7 +16,7 @@ export default function ScheduleContainer() {
           value={scheduleInterval}
           onChange={(e) => {setScheduleInterval(e.target.value)}}
         />
-      <button 
+      <button
         className="button is-small is-primary is-outlined button-padding-vertical button-hover-color ml-3"
         onClick={() => {setScheduledTests(true)}}
         >
@@ -28,11 +28,14 @@ export default function ScheduleContainer() {
         >
           Stop
       </button>
-      <ScheduleReqResContainer 
+      {runScheduledTests &&
+        <ScheduleReqResContainer
         scheduleInterval={scheduleInterval}
         runScheduledTests={runScheduledTests}
         setScheduledTests={setScheduledTests}
-      />
+        />
+      }
+
     </div>
   );
 }

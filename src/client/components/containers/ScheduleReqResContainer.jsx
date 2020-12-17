@@ -45,9 +45,8 @@ const ScheduleReqResContainer = (props) => {
       setIdx(idx => idx + 1);
       for (let i = 0; i < reqResArray.length; i++) {
         ReqResCtrl.openScheduledReqRes(reqResArray[i].id);
-        dispatch(actions.saveCurrentResponseData(content));
       }
-    }, 4000);
+    }, scheduleInterval*1000);
     return () => clearInterval(interval);
   }, []);
 
