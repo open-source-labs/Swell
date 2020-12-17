@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { HorizontalBar } from "react-chartjs-2";
+import { HorizontalBar, Line } from "react-chartjs-2";
 import * as store from "../../store";
 import * as actions from "../../actions/actions";
 
@@ -82,6 +82,8 @@ const BarGraph = (props) => {
           backgroundColor: BGsArr,
           borderColor: bordersArr,
           borderWidth: 1,
+          fill: false,
+          lineTension: 0,
           maxBarThickness: 300,
           reqRes: reqResArr,
         },
@@ -186,7 +188,7 @@ const BarGraph = (props) => {
   return (
     <div>
       <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
-        <HorizontalBar
+        <Line
           data={chartData}
           width={50}
           height={200}
