@@ -187,20 +187,6 @@ export default function RestContainer({
           newRequestBody={newRequestBody}
           setNewRequestCookies={setNewRequestCookies}
         />
-        {method !== "GET" && (
-          <BodyEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-            newRequestHeaders={newRequestHeaders}
-            setNewRequestHeaders={setNewRequestHeaders}
-          />
-        )}
-          <TestEntryForm
-          setNewTestContent={setNewTestContent}
-          testContent={testContent}
-          />
-
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">
           <span className="composer-section-title mr-3">Server Sent Events</span>
@@ -215,6 +201,19 @@ export default function RestContainer({
              />
             <label htmlFor="SSEswitch" />
         </div>
+        {method !== "GET" && (
+          <BodyEntryForm
+            warningMessage={warningMessage}
+            newRequestBody={newRequestBody}
+            setNewRequestBody={setNewRequestBody}
+            newRequestHeaders={newRequestHeaders}
+            setNewRequestHeaders={setNewRequestHeaders}
+          />
+        )}
+          <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
+          />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
