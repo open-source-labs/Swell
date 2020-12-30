@@ -123,13 +123,6 @@ module.exports = () => {
 
         const testStatus = await app.client.$("#TestResult-0-status").getText();
         expect(testStatus).to.equal("PASS");
-
-        // setTimeout(async () => {
-        //   const testStatus = await app.client
-        //     .$("#TestResult-0-status")
-        //     .getText();
-        //   expect(testStatus).to.equal("PASS");
-        // }, 500);
       });
 
       it("a simple assertion (assert) should FAIL when making a GET request", async function () {
@@ -143,13 +136,6 @@ module.exports = () => {
         await app.client.$("a=Tests").click();
         const testStatus = await app.client.$("#TestResult-0-status").getText();
         expect(testStatus).to.equal("FAIL");
-
-        // setTimeout(async () => {
-        //   const testStatus = await app.client
-        //     .$("#TestResult-0-status")
-        //     .getText();
-        //   expect(testStatus).to.equal("FAIL");
-        // }, 500);
       });
 
       it("a simple assertion (expect) should PASS when making a GET request", async function () {
@@ -163,13 +149,6 @@ module.exports = () => {
         await app.client.$("a=Tests").click();
         const testStatus = await app.client.$("#TestResult-0-status").getText();
         expect(testStatus).to.equal("PASS");
-
-        // setTimeout(async () => {
-        //   const testStatus = await app.client
-        //     .$("#TestResult-0-status")
-        //     .getText();
-        //   expect(testStatus).to.equal("PASS");
-        // }, 500);
       });
 
       it("a simple assertion (expect) should FAIL when making a GET request", async function () {
@@ -183,13 +162,6 @@ module.exports = () => {
         await app.client.$("a=Tests").click();
         const testStatus = await app.client.$("#TestResult-0-status").getText();
         expect(testStatus).to.equal("FAIL");
-
-        // setTimeout(async () => {
-        //   const testStatus = await app.client
-        //     .$("#TestResult-0-status")
-        //     .getText();
-        //   expect(testStatus).to.equal("FAIL");
-        // }, 500);
       });
     });
 
