@@ -27,25 +27,21 @@ const url = require("url");
 const fs = require("fs");
 const log = require("electron-log");
 
-// basic http cookie parser
-const cookie = require("cookie");
 // node-fetch for the fetch request
 const fetch2 = require("node-fetch");
 
-// GraphQL imports
-
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
-// testing controller for HTTP requests
-const testHttpController = require("./main_process/test_controllers/main_testHttpController");
 
 // require menu file
 require("./menu/mainMenu");
 // require http controller file
 require("./main_process/main_httpController.js")();
+// require gql controller file
+require("./main_process/main_graphqlController")();
 // require grpc controller file
 require("./main_process/main_grpcController.js")();
-// require ws controller
+// require ws controllerfile
 require("./main_process/main_wsController.js")();
 
 // configure logging
