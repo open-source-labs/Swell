@@ -204,7 +204,6 @@ const httpController = {
           headers[`${contentLength}`] / conversionFigure;
         const responseSize =
           Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100;
-
         reqResObj.responseSize = responseSize;
       }
 
