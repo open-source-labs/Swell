@@ -137,7 +137,7 @@ const graphqlController = {
             })
             .catch((err) => {
               // error is actually sent to graphQLController via "errorLink"
-              console.log("gql query error in main.js", err);
+              console.log("gql query error in main_graphqlController.js", err);
             });
         } else if (reqResObj.request.method === "MUTATION") {
           client
@@ -152,11 +152,17 @@ const graphqlController = {
             })
             .catch((err) => {
               // error is actually sent to graphQLController via "errorLink"
-              console.error("gql mutation error in main.js", err);
+              console.error(
+                "gql mutation error in main_graphqlController.js",
+                err
+              );
             });
         }
       } catch (err) {
-        console.log("error trying gql query/mutation in main.js", err);
+        console.log(
+          "error trying gql query/mutation in main_graphqlController.js",
+          err
+        );
       }
     }
   },
