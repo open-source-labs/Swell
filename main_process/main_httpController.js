@@ -1,15 +1,14 @@
 const { ipcMain } = require("electron");
-const fs = require('fs');
+const fs = require("fs");
 const fetch2 = require("node-fetch");
 const http2 = require("http2");
 const setCookie = require("set-cookie-parser");
 const SSEController = require("./SSEController");
-const testHttpController = require("./test_controllers/main_testHttpController")
+const testHttpController = require("./test_controllers/main_testHttpController");
 
-// Use this for HTTPS cert when in Dev or Test environment and 
+// Use this for HTTPS cert when in Dev or Test environment and
 // using a server with self-signed cert on localhost
-const LOCALHOST_CERT_PATH = 'test/HTTP2_cert.pem';
-
+const LOCALHOST_CERT_PATH = "test/HTTP2_cert.pem";
 
 const httpController = {
   openHTTP2Connections: {},
@@ -35,7 +34,7 @@ const httpController = {
 
   closeHTTP1Connection(event, reqResObj) {
     if (reqResObj.request.isSSE) {
-      SSEController.closeConnection(reqResObj.id)
+      SSEController.closeConnection(reqResObj.id);
     }
   },
 
@@ -61,7 +60,7 @@ const httpController = {
     // --------------------------------------------------
     if (foundHTTP2Connection) {
       const { client } = foundHTTP2Connection;
-      
+
       // periodically check connection status
       // if destroyed or closed, remove from the conections collectoon and try to create a newhttp2 connection
       // if failed (could be protocol error) move to HTTP1 and delete from http2 connections collection so user can try again
@@ -97,9 +96,9 @@ const httpController = {
     else {
       console.log("no pre-existing http2 found");
 
-      const clientOptions = {}
+      const clientOptions = {};
       // for self-signed certs on localhost in dev and test environments
-      if (host.includes('localhost')) {
+      if (host.includes("localhost")) {
         clientOptions.ca = fs.readFileSync(LOCALHOST_CERT_PATH);
       }
 
@@ -120,7 +119,7 @@ const httpController = {
         try {
           client.destroy();
         } catch (error) {
-          console.log('error destroying HTTP2 client', error);
+          console.log("error destroying HTTP2 client", error);
         }
         delete httpController.openHTTP2Connections[host];
 
@@ -150,8 +149,8 @@ const httpController = {
     reqResObj.request.headers.forEach((header) => {
       formattedHeaders[header.key] = header.value;
     });
-    formattedHeaders[':path'] = reqResObj.path;
-    formattedHeaders[':method'] = reqResObj.request.method;
+    formattedHeaders[":path"] = reqResObj.path;
+    formattedHeaders[":method"] = reqResObj.request.method;
 
     // initiate request
     // do not immediately close the *writable* side of the http2 stream
@@ -162,23 +161,25 @@ const httpController = {
     this.openHTTP2Streams[reqResObj.id] = reqStream;
 
     //now close the writable side of our stream
-    if (reqResObj.request.method !== "GET" &&
+    if (
+      reqResObj.request.method !== "GET" &&
       reqResObj.request.method !== "HEAD"
     ) {
       reqStream.end(reqResObj.request.body);
     } else {
       reqStream.end();
     }
-    
+
     // persistent outside of listeners
     let isSSE = false;
-    let data = '';
+    let data = "";
 
     reqStream.setEncoding("utf8");
 
     reqStream.on("response", (headers, flags) => {
       // SSE will have 'stream' in the 'content-type' header
-      isSSE = headers["content-type"] && headers["content-type"].includes("stream")
+      isSSE =
+        headers["content-type"] && headers["content-type"].includes("stream");
 
       if (isSSE) {
         reqResObj.connection = "open";
@@ -186,55 +187,61 @@ const httpController = {
       } else {
         reqResObj.connection = "closed";
         reqResObj.connectionType = "plain";
-        }
+      }
 
-  // Setting response size based on Content-length. Check if response comes with content-length
-  if (!headers["content-length"] && !headers["Content-Length"]) {
-    reqResObj.responseSize = null;
-  } else {
-    let contentLength;
-    headers["content-length"] ? contentLength = "content-length" : contentLength = "Content-Length"
-  
-    // Converting content length octets into bytes
-    const conversionFigure = 1023.89427;
-    const octetToByteConversion = headers[`${contentLength}`] / conversionFigure
-    const responseSize =  Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100
-      
-    reqResObj.responseSize = responseSize;
-  }
+      // Setting response size based on Content-length. Check if response comes with content-length
+      if (!headers["content-length"] && !headers["Content-Length"]) {
+        reqResObj.responseSize = null;
+      } else {
+        let contentLength;
+        headers["content-length"]
+          ? (contentLength = "content-length")
+          : (contentLength = "Content-Length");
 
-  // Content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.  
-  
+        // Converting content length octets into bytes
+        const conversionFigure = 1023.89427;
+        const octetToByteConversion =
+          headers[`${contentLength}`] / conversionFigure;
+        const responseSize =
+          Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100;
+
+        reqResObj.responseSize = responseSize;
+      }
+
+      // Content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.
+
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       reqResObj.response.headers = headers;
 
       // if cookies exists, parse the cookie(s)
-      if (headers['set-cookie']){
+      if (headers["set-cookie"]) {
         const parsedCookies = setCookie.parse(headers["set-cookie"]);
-        reqResObj.response.cookies = httpController.cookieFormatter(parsedCookies);
+        reqResObj.response.cookies = httpController.cookieFormatter(
+          parsedCookies
+        );
       }
       event.sender.send("reqResUpdate", reqResObj);
     });
 
     reqStream.on("data", (chunk) => {
       data += chunk;
-    
-      if (!isSSE) return;   
+
+      if (!isSSE) return;
       const chunkTimestamp = Date.now();
       const dataEventArr = data.match(/[\s\S]*\n\n/g);
-    
+
       while (dataEventArr && dataEventArr.length) {
         const dataEvent = httpController.parseSSEFields(dataEventArr.shift());
         dataEvent.timeReceived = chunkTimestamp;
         reqResObj.response.events.push(dataEvent);
         event.sender.send("reqResUpdate", reqResObj);
-        
+
         // recombine with \n\n to reconstruct original, minus what was already parsed.
         data = dataEventArr.join("\n\n");
       }
     });
-    
+
     reqStream.on("end", () => {
       reqResObj.connection = "closed";
       delete httpController.openHTTP2Streams[reqResObj.id];
@@ -243,10 +250,11 @@ const httpController = {
       if (isSSE) {
         dataEvent = httpController.parseSSEFields(data);
         dataEvent.timeReceived = Date.now();
-      } else if (data && 
+      } else if (
+        data &&
         reqResObj.response.headers &&
         reqResObj.response.headers["content-type"] &&
-        reqResObj.response.headers["content-type"].includes("application/json") 
+        reqResObj.response.headers["content-type"].includes("application/json")
       ) {
         dataEvent = JSON.parse(data);
       } else {
@@ -312,7 +320,7 @@ const httpController = {
     reqResObj.response.events = [];
     reqResObj.connection = "pending";
     reqResObj.timeSent = Date.now();
-    
+
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
 
     //--------------------------------------------------------------------------------------------------------------
@@ -324,7 +332,6 @@ const httpController = {
       SSEController.createStream(reqResObj, options, event);
       // if not SSE, talk to main to fetch data and receive
     } else {
-
       this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
           // Parse response headers now to decide if SSE or not.
@@ -332,7 +339,7 @@ const httpController = {
           reqResObj.response.headers = heads;
           reqResObj.connection = "closed";
           reqResObj.timeReceived = Date.now();
-          reqResObj.response.status = heads[':status'];
+          reqResObj.response.status = heads[":status"];
           // send back reqResObj to renderer so it can update the redux store
 
           const theResponseHeaders = response.headers;
@@ -350,7 +357,10 @@ const httpController = {
           reqResObj = this.addSingleEvent(body, reqResObj);
           // check if there is a test script to run
           if (reqResObj.request.testContent) {
-            reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj)
+            reqResObj.response.testResult = testHttpController.runTest(
+              reqResObj.request.testContent,
+              reqResObj
+            );
           }
           // send back reqResObj to renderer so it can update the redux store
           event.sender.send("reqResUpdate", reqResObj);
@@ -432,19 +442,18 @@ const httpController = {
   },
 
   // parses SSE format into an object
-  // SSE format -> 'key1: value1\nkey2: value2\nkey3: value3\n\n 
+  // SSE format -> 'key1: value1\nkey2: value2\nkey3: value3\n\n
   // this separates fields by new lines and separates values from keys by removing the colon and the space
   parseSSEFields(rawString) {
     return rawString
       .slice(0, -2)
-      .split('\n')
+      .split("\n")
       .reduce((obj, field) => {
-        let [key, value] = field.split(': ')
+        let [key, value] = field.split(": ");
         obj[key] = value;
         return obj;
       }, {});
   },
-
 };
 
 module.exports = () => {
@@ -454,7 +463,7 @@ module.exports = () => {
     httpController.openHTTPconnection(event, reqResObj);
   });
 
-  ipcMain.on('close-http', (event, reqResObj) => {
+  ipcMain.on("close-http", (event, reqResObj) => {
     httpController.closeHTTPconnection(event, reqResObj);
   });
 };
