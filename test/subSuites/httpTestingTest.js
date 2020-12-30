@@ -165,7 +165,7 @@ module.exports = () => {
       });
     });
 
-    xdescribe("Multiple assertion statements", function () {
+    describe("Multiple assertion statements", function () {
       it("should handle multiple different simple assert statements", async function () {
         const url = "http://localhost:3000/book";
         const method = "GET";
@@ -176,25 +176,43 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const firstStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          const secondStatus = await app.client
-            .$("#TestResult-1-status")
-            .getText();
-          const thirdStatus = await app.client
-            .$("#TestResult-2-status")
-            .getText();
-          const fourthStatus = await app.client
-            .$("#TestResult-3-status")
-            .getText();
+        const firstStatus = await app.client
+          .$("#TestResult-0-status")
+          .getText();
+        const secondStatus = await app.client
+          .$("#TestResult-1-status")
+          .getText();
+        const thirdStatus = await app.client
+          .$("#TestResult-2-status")
+          .getText();
+        const fourthStatus = await app.client
+          .$("#TestResult-3-status")
+          .getText();
 
-          expect(firstStatus).to.equal("FAIL");
-          expect(secondStatus).to.equal("FAIL");
-          expect(thirdStatus).to.equal("PASS");
-          expect(fourthStatus).to.equal("PASS");
-        }, 500);
+        expect(firstStatus).to.equal("FAIL");
+        expect(secondStatus).to.equal("FAIL");
+        expect(thirdStatus).to.equal("PASS");
+        expect(fourthStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const firstStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   const secondStatus = await app.client
+        //     .$("#TestResult-1-status")
+        //     .getText();
+        //   const thirdStatus = await app.client
+        //     .$("#TestResult-2-status")
+        //     .getText();
+        //   const fourthStatus = await app.client
+        //     .$("#TestResult-3-status")
+        //     .getText();
+
+        //   expect(firstStatus).to.equal("FAIL");
+        //   expect(secondStatus).to.equal("FAIL");
+        //   expect(thirdStatus).to.equal("PASS");
+        //   expect(fourthStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("should handle multiple different simple expect statements", async function () {
@@ -207,29 +225,47 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const firstStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          const secondStatus = await app.client
-            .$("#TestResult-1-status")
-            .getText();
-          const thirdStatus = await app.client
-            .$("#TestResult-2-status")
-            .getText();
-          const fourthStatus = await app.client
-            .$("#TestResult-3-status")
-            .getText();
+        const firstStatus = await app.client
+          .$("#TestResult-0-status")
+          .getText();
+        const secondStatus = await app.client
+          .$("#TestResult-1-status")
+          .getText();
+        const thirdStatus = await app.client
+          .$("#TestResult-2-status")
+          .getText();
+        const fourthStatus = await app.client
+          .$("#TestResult-3-status")
+          .getText();
 
-          expect(firstStatus).to.equal("FAIL");
-          expect(secondStatus).to.equal("FAIL");
-          expect(thirdStatus).to.equal("PASS");
-          expect(fourthStatus).to.equal("PASS");
-        }, 500);
+        expect(firstStatus).to.equal("FAIL");
+        expect(secondStatus).to.equal("FAIL");
+        expect(thirdStatus).to.equal("PASS");
+        expect(fourthStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const firstStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   const secondStatus = await app.client
+        //     .$("#TestResult-1-status")
+        //     .getText();
+        //   const thirdStatus = await app.client
+        //     .$("#TestResult-2-status")
+        //     .getText();
+        //   const fourthStatus = await app.client
+        //     .$("#TestResult-3-status")
+        //     .getText();
+
+        //   expect(firstStatus).to.equal("FAIL");
+        //   expect(secondStatus).to.equal("FAIL");
+        //   expect(thirdStatus).to.equal("PASS");
+        //   expect(fourthStatus).to.equal("PASS");
+        // }, 500);
       });
     });
 
-    xdescribe("Assertions on response object", function () {
+    describe("Assertions on response object", function () {
       it("chai.assert: should be able to access the response object", async function () {
         const url = "http://localhost:3000/book";
         const method = "GET";
@@ -239,12 +275,16 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.assert: should be able to access the status code from the response object", async function () {
@@ -257,12 +297,16 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.assert: should be able to access the cookies from the response object", async function () {
@@ -275,12 +319,23 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+        const testStatus = await new Promise((resolve) => {
+          setTimeout(async () => {
+            const text = await app.client.$("#TestResult-0-status").getText();
+            resolve(text);
+          }, 500);
+          // block for 500 ms since we need to wait for a response; normally test server would
+          // respond fast enough since it is localhost and not a remote server
+        });
+
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.assert: should be able to access the headers from the response object", async function () {
@@ -293,12 +348,21 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+        const testStatus = await new Promise((resolve) => {
+          setTimeout(async () => {
+            const text = await app.client.$("#TestResult-0-status").getText();
+            resolve(text);
+          }, 500);
+        });
+
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.expect: should be able to access the response object", async function () {
@@ -310,12 +374,15 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.expect: should be able to access the status code from the response object", async function () {
@@ -328,12 +395,15 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.expect: should be able to access the cookies from the response object", async function () {
@@ -346,12 +416,22 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+
+        const testStatus = await new Promise((resolve) => {
+          setTimeout(async () => {
+            const text = await app.client.$("#TestResult-0-status").getText();
+            resolve(text);
+          }, 500);
+        });
+
+        expect(testStatus).to.equal("PASS");
+
+        // setTimeout(async () => {
+        //   const testStatus = await app.client
+        //     .$("#TestResult-0-status")
+        //     .getText();
+        //   expect(testStatus).to.equal("PASS");
+        // }, 500);
       });
 
       it("chai.expect: should be able to access the headers from the response object", async function () {
@@ -364,16 +444,26 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        setTimeout(async () => {
-          const testStatus = await app.client
-            .$("#TestResult-0-status")
-            .getText();
-          expect(testStatus).to.equal("PASS");
-        }, 500);
+
+        const testStatus = await new Promise((resolve) => {
+          setTimeout(async () => {
+            const text = await app.client.$("#TestResult-0-status").getText();
+            resolve(text);
+          }, 500);
+        });
+
+        expect(testStatus).to.equal("PASS");
+
+        //   setTimeout(async () => {
+        //     const testStatus = await app.client
+        //       .$("#TestResult-0-status")
+        //       .getText();
+        //     expect(testStatus).to.equal("PASS");
+        //   }, 500);
       });
     });
 
-    xdescribe("Using variables", function () {
+    describe("Using variables", function () {
       it("Test results do not render if JavaScript is entered but specifically not assertion tests", async function () {
         const url = "http://localhost:3000/book";
         const method = "GET";
@@ -383,8 +473,8 @@ module.exports = () => {
         await addAndSend();
 
         await app.client.$("a=Tests").click();
-        const emptyState = await app.client.$(".empty-state-wrapper");
-        expect(emptyState.selector).to.equal(".empty-state-wrapper");
+        const { selector } = await app.client.$(".empty-state-wrapper");
+        expect(selector).to.equal(".empty-state-wrapper");
       });
     });
   });
