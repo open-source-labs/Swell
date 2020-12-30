@@ -32,10 +32,6 @@ const cookie = require("cookie");
 // node-fetch for the fetch request
 const fetch2 = require("node-fetch");
 
-// grpc libraries
-const grpc = require("@grpc/grpc-js");
-const protoLoader = require("@grpc/proto-loader");
-
 // GraphQL imports
 const { ApolloClient } = require("apollo-client");
 const gql = require("graphql-tag");
@@ -488,7 +484,7 @@ ipcMain.on("open-gql", (event, args) => {
     });
 
   // request cookies from reqResObj to request headers
-  let cookies = '';
+  let cookies = "";
   if (reqResObj.request.cookies.length) {
     cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
       return acc + `${userCookie.key}=${userCookie.value}; `;
@@ -589,9 +585,13 @@ ipcMain.on("open-gql", (event, args) => {
         .then((data) => {
           //handle tests
           if (reqResObj.request.testContent) {
-            reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj, data);
+            reqResObj.response.testResult = testHttpController.runTest(
+              reqResObj.request.testContent,
+              reqResObj,
+              data
+            );
           }
-          event.sender.send("reply-gql", { reqResObj, data })
+          event.sender.send("reply-gql", { reqResObj, data });
         })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
@@ -601,8 +601,12 @@ ipcMain.on("open-gql", (event, args) => {
       client
         .mutate({ mutation: body, variables, context: headers })
         .then((data) => {
-          reqResObj.response.testResult = testHttpController.runTest(reqResObj.request.testContent, reqResObj, data);
-          event.sender.send("reply-gql", { reqResObj, data })
+          reqResObj.response.testResult = testHttpController.runTest(
+            reqResObj.request.testContent,
+            reqResObj,
+            data
+          );
+          event.sender.send("reply-gql", { reqResObj, data });
         })
         .catch((err) => {
           // error is actually sent to graphQLController via "errorLink"
@@ -620,15 +624,16 @@ ipcMain.on("introspect", (event, introspectionObject) => {
   // Reformat headers
   const headers = {};
   req.headers.forEach(({ active, key, value }) => {
-    if(active) headers[key] = value;
+    if (active) headers[key] = value;
   });
   // Reformat cookies
-  let cookies = '';
+  let cookies = "";
   if (req.cookies.length) {
     cookies = req.cookies.reduce((acc, userCookie) => {
-      if(userCookie.active) return acc + `${userCookie.key}=${userCookie.value}; `;
+      if (userCookie.active)
+        return acc + `${userCookie.key}=${userCookie.value}; `;
       return acc;
-    }, '');
+    }, "");
   }
   headers.Cookie = cookies;
 
