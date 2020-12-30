@@ -85,6 +85,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        testContent: content.request.testContent,
       };
     }
     if (network === "grpc") {
@@ -239,7 +240,7 @@ const SingleReqResContainer = (props) => {
       {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === "rest" && (
-            <RestRequestContent request={content.request} isHTTP2={isHTTP2}/>
+            <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
           {network === "grpc" && (
             <GRPCRequestContent
@@ -257,7 +258,7 @@ const SingleReqResContainer = (props) => {
       <div className="is-flex">
         <button
           className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
-          id={request.method.split(' ').join('-')}
+          id={request.method.split(" ").join("-")}
           onClick={() => {
             removeReqRes();
             dispatch(actions.saveCurrentResponseData({}));
