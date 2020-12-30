@@ -6,7 +6,6 @@ const { ApolloLink } = require("apollo-link");
 const { introspectionQuery } = require("graphql");
 
 const { onError } = require("apollo-link-error");
-const { response } = require("express");
 
 /* NEED TO INCORPORATE COOKIES AND HEADERS IN QUERIES AND MUTATIONS */
 ipcMain.on("open-gql", (event, args) => {
