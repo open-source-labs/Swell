@@ -6,7 +6,6 @@ import connectionController from "../../controllers/reqResController";
 import RestRequestContent from "../display/RestRequestContent.jsx";
 import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -272,7 +271,7 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
             onClick={() => {
-              ReqResCtrl.openReqRes(content.id);
+              connectionController.openReqRes(content.id);
               dispatch(actions.saveCurrentResponseData(content));
             }}
           >
