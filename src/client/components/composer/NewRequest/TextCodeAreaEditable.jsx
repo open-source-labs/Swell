@@ -11,7 +11,7 @@ export default function TextCodeAreaEditable ({ value, mode, onChange, theme }) 
         value={value}
         autoCursor={false}
         options={{
-          mode: mode,
+          mode,
           theme: theme || 'neat',
           lineNumbers: true,
           tabSize: 4,
