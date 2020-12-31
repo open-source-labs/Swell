@@ -5,10 +5,11 @@ export default function TestResult({ id, status, message }) {
 
   return (
     <div style={{padding: '8px', display: 'flex', justifyContent: 'start'}}>
-      <div style={{minWidth: '50px', height: '30px', justifyItems: 'center'}}
+      <div 
+        style={{minWidth: '50px', height: '30px', justifyItems: 'center'}}
         className={`has-background-${testColor} cards-titlebar has-text-centered`}
         id={`${id}-status`}>
-          {status}
+        {status}
       </div> 
       <div id={`${id}-message`} className='mx-2'>
         {message}

@@ -48,7 +48,7 @@ export default function SingleTestContainer({ currentResponse }) {
       <div>{passFailScripts}</div>
       <div className="border-top my-2 grid-graph">
         <div className="mt-4">
-          <span style={{fontWeight: 'bold', fontSize: '1.25rem', marginLeft: '5vw'}}>Total Tests</span>
+          <span style={{fontWeight: 'bold', fontSize: '1.25rem', marginLeft: '5vw'}}>Results</span>
           <Doughnut 
             data={data} 
             options={{

@@ -8,6 +8,7 @@ import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import historyController from "../../controllers/historyController";
 import GRPCTypeAndEndpointEntryForm from "./NewRequest/GRPCTypeAndEndpointEntryForm";
 import NewRequestButton from './NewRequest/NewRequestButton.jsx'
+import TestEntryForm from './NewRequest/TestEntryForm'
 
 export default function GRPCContainer({
   resetComposerFields,
@@ -24,8 +25,10 @@ export default function GRPCContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent,
   },
   setNewRequestBody,
+  setNewTestContent,
   newRequestBody,
   newRequestBody: {
     JSONFormatted,
@@ -210,6 +213,10 @@ export default function GRPCContainer({
         <GRPCFormEditor
           newRequestStreams={newRequestStreams}
           setNewRequestStreams={setNewRequestStreams}
+        />
+        <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
         />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
