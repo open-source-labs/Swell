@@ -6,16 +6,6 @@ const { api } = window;
 const connectionController = {
   openConnectionArray: [],
 
-  // getReqRes_CurrentTabAndSelected() {
-  //   const { reqResArray } = store.default.getState().business;
-
-  //   const { currentTab } = store.default.getState().business;
-
-  //   return reqResArray.filter(
-  //     (reqRes) => reqRes.tab === currentTab && reqRes.checked
-  //   );
-  // },
-
   //toggles checked in state for entire reqResArray
   toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
