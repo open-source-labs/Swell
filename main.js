@@ -27,9 +27,6 @@ const url = require("url");
 const fs = require("fs");
 const log = require("electron-log");
 
-// node-fetch for the fetch request
-const fetch2 = require("node-fetch");
-
 // proto-parser func for parsing .proto files
 const protoParserFunc = require("./main_process/protoParser.js");
 
