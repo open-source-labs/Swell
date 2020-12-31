@@ -6,16 +6,6 @@ const { api } = window;
 const connectionController = {
   openConnectionArray: [],
 
-  // getReqRes_CurrentTabAndSelected() {
-  //   const { reqResArray } = store.default.getState().business;
-
-  //   const { currentTab } = store.default.getState().business;
-
-  //   return reqResArray.filter(
-  //     (reqRes) => reqRes.tab === currentTab && reqRes.checked
-  //   );
-  // },
-
   //toggles checked in state for entire reqResArray
   toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
@@ -31,7 +21,7 @@ const connectionController = {
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
     // REST EVENTS
-    api.removeAllListeners('reqResUpdate')
+    api.removeAllListeners("reqResUpdate");
     api.receive("reqResUpdate", (reqResObj) => {
       if (
         (reqResObj.connection === "closed" ||
@@ -46,7 +36,8 @@ const connectionController = {
 
       // If current selected response equals reqResObj received, update current response
       const currentID = store.default.getState().business.currentResponse.id;
-      if(currentID === reqResObj.id) store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      if (currentID === reqResObj.id)
+        store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
     });
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
@@ -76,7 +67,7 @@ const connectionController = {
   openScheduledReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
     // REST EVENTS
-    api.removeAllListeners('reqResUpdate')
+    api.removeAllListeners("reqResUpdate");
     api.receive("reqResUpdate", (reqResObj) => {
       if (
         (reqResObj.connection === "closed" ||
@@ -115,28 +106,28 @@ const connectionController = {
   },
 
   runCollectionTest(reqResArray) {
-    api.removeAllListeners('reqResUpdate')
+    api.removeAllListeners("reqResUpdate");
     let index = 0;
     api.receive("reqResUpdate", (reqResObj) => {
       if (
         (reqResObj.connection === "closed" ||
           reqResObj.connection === "error") &&
-          reqResObj.timeSent &&
-          reqResObj.timeReceived &&
-          reqResObj.response.events.length > 0
+        reqResObj.timeSent &&
+        reqResObj.timeReceived &&
+        reqResObj.response.events.length > 0
       ) {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
       store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
-      if(index < reqResArray.length) {
-        runSingletest(reqResArray[index])
+      if (index < reqResArray.length) {
+        runSingletest(reqResArray[index]);
         index += 1;
       }
     });
-    let reqResObj = reqResArray[index]
-    function runSingletest (reqResObj) {
+    const reqResObj = reqResArray[index];
+    function runSingletest(reqResObj) {
       if (reqResObj.request.method === "SUBSCRIPTION")
         graphQLController.openSubscription(reqResObj);
       else if (reqResObj.graphQL) {
@@ -167,9 +158,7 @@ const connectionController = {
 
     const { reqResArray } = store.default.getState().business;
 
-    reqResArray.forEach((reqRes) =>
-      connectionController.openReqRes(reqRes.id)
-    );
+    reqResArray.forEach((reqRes) => connectionController.openReqRes(reqRes.id));
   },
 
   getConnectionObject(id) {
@@ -179,7 +168,9 @@ const connectionController = {
   setReqResConnectionToClosed(id) {
     const reqResArr = store.default.getState().business.reqResArray;
 
-    const foundReqRes = JSON.parse( JSON.stringify( reqResArr.find( (reqRes) => reqRes.id === id )));
+    const foundReqRes = JSON.parse(
+      JSON.stringify(reqResArr.find((reqRes) => reqRes.id === id))
+    );
 
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
@@ -209,9 +200,7 @@ const connectionController = {
   /* Closes all open endpoint */
   closeAllReqRes() {
     const { reqResArray } = store.default.getState().business;
-    reqResArray.forEach((reqRes) =>
-      connectionController.closeReqRes(reqRes)
-    );
+    reqResArray.forEach((reqRes) => connectionController.closeReqRes(reqRes));
   },
 
   clearAllReqRes() {

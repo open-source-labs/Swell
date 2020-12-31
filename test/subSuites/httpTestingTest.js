@@ -85,7 +85,9 @@ module.exports = () => {
     };
 
     afterEach("HIDE TESTS", (done) => {
-      (async () => await app.client.$("span=Hide Tests").click())();
+      (async () => {
+        await app.client.$("span=Hide Tests").click();
+      })();
       done();
     });
 

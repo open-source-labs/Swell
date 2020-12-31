@@ -1,5 +1,6 @@
 const http2 = require('http2');
 const fs = require('fs');
+
 const CERT_PATH = 'test/HTTP2_cert.pem';
 const PRIV_PATH = 'test/HTTP2_private.pem';
 
