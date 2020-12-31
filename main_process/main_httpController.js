@@ -448,7 +448,7 @@ const httpController = {
       .slice(0, -2)
       .split("\n")
       .reduce((obj, field) => {
-        let [key, value] = field.split(": ");
+        const [key, value] = field.split(": ");
         obj[key] = value;
         return obj;
       }, {});

@@ -40,6 +40,8 @@ require("./main_process/main_graphqlController")();
 require("./main_process/main_grpcController.js")();
 // require ws controllerfile
 require("./main_process/main_wsController.js")();
+// require mac touchBar
+const { touchBar } = require("./main_process/main_touchbar.js");
 
 // configure logging
 autoUpdater.logger = log;
@@ -141,7 +143,7 @@ function createWindow() {
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
-  const { touchBar } = require("./main_process/main_touchbar.js");
+
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title

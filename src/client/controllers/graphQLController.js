@@ -32,7 +32,7 @@ const graphQLController = {
   openGraphQLConnectionAndRunCollection(reqResArray) {
     // initialize response data
     let index = 0;
-    let reqResObj = reqResArray[index]
+    const reqResObj = reqResArray[index]
     api.removeAllListeners("reply-gql");
     api.receive("reply-gql", (result) => {
       // needs formatting because component reads them in a particular order

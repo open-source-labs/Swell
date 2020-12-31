@@ -1,16 +1,17 @@
 // testing controller for executing user-defined assertion tests
-const { NodeVM } = require('vm2');
+const { NodeVM } = require("vm2");
 
 const testHttpController = {};
 
 testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
-  let {request, response} = reqResObj;
+  const { request } = reqResObj;
+  let { response } = reqResObj;
   // final test result objects will be stored in this array
   const testResults = [];
 
   if (gqlResponse) {
-    let data = gqlResponse.data;
-    response = {...response, data};
+    const data = gqlResponse.data;
+    response = { ...response, data };
   }
   // this is the global object that will be passed into the VM
   const sandbox = {
@@ -18,13 +19,13 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     addOneResult: (result) => testResults.push(result),
     request,
     response,
-  }
+  };
   // create a new instance of a secure Node VM
   const vm = new NodeVM({
     sandbox,
     // allow only chai to be required in
     require: {
-      external: ['chai'],
+      external: ["chai"],
     },
   });
   // create array of individual assertion tests
@@ -38,49 +39,49 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
 
   const userLetsArray = inputScript.split(/^let/gm).slice(1);
   const userLetsArrayParsed = [];
-  userLetsArray.forEach(ele => {
+  userLetsArray.forEach((ele) => {
     // let sliceIdx = ele.indexOf(';');
-    let newStr = ' let';
+    let newStr = " let";
     for (let i = 0; i < ele.length; i++) {
       if (ele[i] !== '"') newStr += ele[i];
-      if (ele[i] === ';') break;
+      if (ele[i] === ";") break;
     }
     userLetsArrayParsed.push(newStr);
   });
-  const letString = userLetsArrayParsed.join(' ');
+  const letString = userLetsArrayParsed.join(" ");
 
   const userVarsArray = inputScript.split(/^var/gm).slice(1);
   const userVarsArrayParsed = [];
-  userVarsArray.forEach(ele => {
+  userVarsArray.forEach((ele) => {
     // let sliceIdx = ele.indexOf(';');
-    let newStr = ' var';
+    let newStr = " var";
     for (let i = 0; i < ele.length; i++) {
       if (ele[i] !== '"') newStr += ele[i];
-      if (ele[i] === ';') break;
+      if (ele[i] === ";") break;
     }
     userVarsArrayParsed.push(newStr);
   });
-  const varString = userVarsArrayParsed.join(' ');
+  const varString = userVarsArrayParsed.join(" ");
 
   const userConstArray = inputScript.split(/^const/gm).slice(1);
   const userConstArrayParsed = [];
-  userConstArray.forEach(ele => {
+  userConstArray.forEach((ele) => {
     // let sliceIdx = ele.indexOf(';');
-    let newStr = ' const';
+    let newStr = " const";
     for (let i = 0; i < ele.length; i++) {
       if (ele[i] !== '"') newStr += ele[i];
-      if (ele[i] === ';') break;
+      if (ele[i] === ";") break;
     }
     userConstArrayParsed.push(newStr);
   });
-  const constString = userConstArrayParsed.join(' ');
+  const constString = userConstArrayParsed.join(" ");
 
   ////////////////////////////////////////////
   ////////////////////////////////////////////
   ////////////////////////////////////////////
 
   // create an array of test scripts that will be executed in Node VM instance
-  const arrOfTestScripts = separatedScriptsArray.map(script => {
+  const arrOfTestScripts = separatedScriptsArray.map((script) => {
     /*
     // Work-in-progress to determine the message from the script
     // Regular expression from stack overflow post below
@@ -131,30 +132,31 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
         actual: errObj.actual,
       });
     }
-    `
+    `;
   });
   // require in the chai assertion library
   // then concatenate all the scripts to the testScript string
-  const testScript =
-    `
+  const testScript = `
     const { assert, expect } = require('chai');
     ${letString}
     ${varString}
     ${constString}
-    ${arrOfTestScripts.join('')}
+    ${arrOfTestScripts.join("")}
     `;
 
-  try{
+  try {
     // run the script in the VM
     // the second argument denotes where the vm should look for the node_modules folder
     // that is, relative to the main.js file where the electron process is running
-    vm.run(testScript, 'main.js');
+    vm.run(testScript, "main.js");
     // deep clone the testResults array since sending functions, DOM elements, and non-cloneable
     // JS objects is not supported IPC channels past Electron 9
     return JSON.parse(JSON.stringify(testResults));
-  }
-  catch (err) {
-    console.log('caught error!: in the catch block of main_testController.js', err);
+  } catch (err) {
+    console.log(
+      "caught error!: in the catch block of main_testController.js",
+      err
+    );
     // return a null object in the event of an error
     return null;
   }
