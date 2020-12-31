@@ -1,6 +1,6 @@
 {
   "name": "Swell",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -184,6 +184,26 @@
       "name": "Sam Haar",
       "email": "https://www.linkedin.com/in/samhaar/",
       "url": "https://github.com/samhaar"
+    },
+    {
+      "name": "Edward Cho",
+      "email": "https://www.linkedin.com/in/edwardcho1231/",
+      "url": "https://github.com/edwardcho1231"
+    },
+    {
+      "name": "Miguel Gonzalez",
+      "email": "https://www.linkedin.com/in/miguel-gonzalez96/",
+      "url": "https://github.com/MigGonzalez"
+    },
+    {
+      "name": "Jason Liggayu",
+      "email": "https://www.linkedin.com/in/jasonliggayu/",
+      "url": "https://github.com/jasonligg"
+    },
+    {
+      "name": "Warren Tait",
+      "email": "https://www.linkedin.com/in/warrenhtait/",
+      "url": "https://github.com/whtait"
     }
   ],
   "build": {
@@ -203,6 +223,7 @@
       "main.js",
       "main_process/protoParser.js",
       "main_process/main_grpcController.js",
+      "main_process/main_graphqlController.js",
       "main_process/main_httpController.js",
       "main_process/main_wsController.js",
       "main_process/main_touchbar.js",
