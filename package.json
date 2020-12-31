@@ -184,6 +184,26 @@
       "name": "Sam Haar",
       "email": "https://www.linkedin.com/in/samhaar/",
       "url": "https://github.com/samhaar"
+    },
+    {
+      "name": "Edward Cho",
+      "email": "https://www.linkedin.com/in/edwardcho1231/",
+      "url": "https://github.com/edwardcho1231"
+    },
+    {
+      "name": "Miguel Gonzalez",
+      "email": "https://www.linkedin.com/in/miguel-gonzalez96/",
+      "url": "https://github.com/MigGonzalez"
+    },
+    {
+      "name": "Jason Liggayu",
+      "email": "https://www.linkedin.com/in/jasonliggayu/",
+      "url": "https://github.com/jasonligg"
+    },
+    {
+      "name": "Warren Tait",
+      "email": "https://www.linkedin.com/in/warrenhtait/",
+      "url": "https://github.com/whtait"
     }
   ],
   "build": {
