@@ -90,7 +90,8 @@ function main(status) {
       server.start();
       console.log(`grpc server running on port ${PORT}`);
     });
-  } 
+  }
 }
 
+main('open');
 module.exports = main;

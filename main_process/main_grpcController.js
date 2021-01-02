@@ -3,17 +3,19 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 // ======================= grpcController.openGrpcConnection
 
+const testHttpController = require("./test_controllers/main_testHttpController");
+
 const grpcController = {};
 
 grpcController.openGrpcConnection = (event, reqResObj) => {
-  
+
   const { service, rpc, packageName, url, queryArr } = reqResObj;
-  
+
   reqResObj.connectionType = "GRPC";
   reqResObj.response.times = [];
   reqResObj.response.headers = {};
   reqResObj.response.events = [];
-  
+
   // go through services object, find service where name matches our passed
   // in service, then grab the rpc list of that service, also save that service
   // let rpcList;
@@ -94,6 +96,14 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         metadata.forEach((value, key) => {
           reqResObj.response.headers[key] = value[0];
         });
+        //check to see if there is a test script to run
+        if (reqResObj.request.testContent) {
+          reqResObj.response.testResult = testHttpController.runTest(
+            reqResObj.request.testContent,
+            reqResObj,
+            data
+          );
+        }
         event.sender.send("reqResUpdate", reqResObj);
       });
 
@@ -109,7 +119,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       time.timeSent = reqResObj.timeSent;
       reqResObj.response.times.push(time);
       reqResObj.timeReceived = time.timeReceived; //  overwritten on each call to get the final value
-      
+
       reqResObj.response.events.push(resp);
       event.sender.send("reqResUpdate", reqResObj);
     });
