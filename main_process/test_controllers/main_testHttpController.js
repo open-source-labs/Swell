@@ -39,11 +39,9 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
 
   const paramRegex = /(const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*)/gm
   const paramArray = inputScript.match(paramRegex)
-  console.log(paramArray);
 
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map((script) => {
-    console.log('SCRIPT ----------------', script)
     /*
     // Work-in-progress to determine the message from the script
     // Regular expression from stack overflow post below
@@ -103,8 +101,6 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     ${paramArray.join(';')}
     ${arrOfTestScripts.join("")}
     `;
-
-    console.log('TEST SCRIPT -------------', testScript)
 
   try {
     // run the script in the VM
