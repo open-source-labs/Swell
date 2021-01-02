@@ -29,13 +29,13 @@ describe("Electron Tests", function () {
   appOpensTests();
 
   // execute differnt types of test here
-  // describe("CRUD functionality", function () {
-  //   reqInputTests();
-  //   httpTest();
-  //   graphqlTest();
-  //   websocketTest();
-  //   grpcTest();
-  // });
+  describe("CRUD functionality", function () {
+    reqInputTests();
+    httpTest();
+    graphqlTest();
+    websocketTest();
+    grpcTest();
+  });
 
   describe("Swell Testing functionality", function () {
     httpTestingTest();
