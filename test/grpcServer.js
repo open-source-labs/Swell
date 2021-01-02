@@ -93,5 +93,4 @@ function main(status) {
   }
 }
 
-main('open');
 module.exports = main;
