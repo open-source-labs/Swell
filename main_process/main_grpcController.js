@@ -3,17 +3,19 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 // ======================= grpcController.openGrpcConnection
 
+const testHttpController = require("./test_controllers/main_testHttpController");
+
 const grpcController = {};
 
 grpcController.openGrpcConnection = (event, reqResObj) => {
-  
+
   const { service, rpc, packageName, url, queryArr } = reqResObj;
-  
+
   reqResObj.connectionType = "GRPC";
   reqResObj.response.times = [];
   reqResObj.response.headers = {};
   reqResObj.response.events = [];
-  
+
   // go through services object, find service where name matches our passed
   // in service, then grab the rpc list of that service, also save that service
   // let rpcList;
@@ -84,6 +86,14 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       reqResObj.connection = "closed";
       reqResObj.response.events.push(data);
       reqResObj.response.times.push(time);
+      //check to see if there is a test script to run
+      if (reqResObj.request.testContent) {
+        reqResObj.response.testResult = testHttpController.runTest(
+          reqResObj.request.testContent,
+          reqResObj,
+          data
+        );
+      }
       // send stuff back for store
       event.sender.send("reqResUpdate", reqResObj);
     }) // metadata from server
@@ -109,8 +119,15 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       time.timeSent = reqResObj.timeSent;
       reqResObj.response.times.push(time);
       reqResObj.timeReceived = time.timeReceived; //  overwritten on each call to get the final value
-      
       reqResObj.response.events.push(resp);
+      //check to see if there is a test script to run
+      if (reqResObj.request.testContent) {
+        reqResObj.response.testResult = testHttpController.runTest(
+          reqResObj.request.testContent,
+          reqResObj,
+          resp
+        );
+      }
       event.sender.send("reqResUpdate", reqResObj);
     });
     call.on("error", () => {
@@ -153,6 +170,14 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         reqResObj.timeReceived = time.timeReceived;
       });
       reqResObj.response.events.push(response);
+      //check to see if there is a test script to run
+      if (reqResObj.request.testContent) {
+        reqResObj.response.testResult = testHttpController.runTest(
+          reqResObj.request.testContent,
+          reqResObj,
+          response
+        );
+      }
       // update state
       event.sender.send("reqResUpdate", reqResObj);
     }).on("metadata", (data) => {
@@ -194,6 +219,14 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       reqResObj.timeReceived = curTimeObj.timeReceived;
       reqResObj.response.events.push(response);
       reqResObj.response.times.push(curTimeObj);
+      //check to see if there is a test script to run
+      if (reqResObj.request.testContent) {
+        reqResObj.response.testResult = testHttpController.runTest(
+          reqResObj.request.testContent,
+          reqResObj,
+          response
+        );
+      }
       // update redux store
       event.sender.send("reqResUpdate", reqResObj);
     }); // metadata from server
