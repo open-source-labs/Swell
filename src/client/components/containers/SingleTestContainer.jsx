@@ -46,9 +46,12 @@ export default function SingleTestContainer({ currentResponse }) {
     </div>
     <div className="is-neutral-200-box p-3 mx-2">
       <div>{passFailScripts}</div>
-      <div className="border-top my-2 grid-graph">
+      <div className="mt-2">
+        <center className="test-results mb-2">Summary</center>
+      </div>
+      <div className="border-top mb-2 grid-graph">
+        {/* Test Results Graph */}
         <div className="mt-4">
-          <span style={{fontWeight: 'bold', fontSize: '1.25rem', marginLeft: '5vw'}}>Results</span>
           <Doughnut 
             data={data} 
             options={{
@@ -60,15 +63,17 @@ export default function SingleTestContainer({ currentResponse }) {
             }}
           />
         </div>
-        <div style={{fontWeight: 'bold', fontSize: '3rem', marginTop: '10vh'}}>
+        {/* Test Results Count */}
+        <div className='pass-fail-total'>
           {pass + fail}
         </div>
-        <div className="grid-graph-mt is-flex is-flex-direction-column is-justify-content-start is-align-items-start">
-          <div className="my-8">
+        {/* Test Results Pass + Fail */}
+        <div className="is-flex align-self-end">
+          <div>
             <span className="has-background-success pass-fail-button">Passed:</span> <span className="ml-2">{pass}</span>
           </div>
-          <div className="my-4">
-            <span className="has-background-danger pass-fail-button">Failed:</span> <span className="ml-2">{fail}</span>
+          <div className="ml-5">
+            <span className="has-background-danger pass-fail-button">Failed: </span> <span className="ml-2">{fail}</span>
           </div>
         </div>
       </div>
