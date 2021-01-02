@@ -37,8 +37,48 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   // Parse for let, const, or var keywords. //
   ////////////////////////////////////////////
 
-  const paramRegex = /(const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*)/gm
-  const paramArray = inputScript.match(paramRegex)
+  const userLetsArray = inputScript.split(/^let/gm).slice(1);
+  const userLetsArrayParsed = [];
+  userLetsArray.forEach((ele) => {
+    // let sliceIdx = ele.indexOf(';');
+    let newStr = " let";
+    for (let i = 0; i < ele.length; i++) {
+      if (ele[i] !== '"') newStr += ele[i];
+      if (ele[i] === ";") break;
+    }
+    userLetsArrayParsed.push(newStr);
+  });
+  const letString = userLetsArrayParsed.join(" ");
+
+  const userVarsArray = inputScript.split(/^var/gm).slice(1);
+  const userVarsArrayParsed = [];
+  userVarsArray.forEach((ele) => {
+    // let sliceIdx = ele.indexOf(';');
+    let newStr = " var";
+    for (let i = 0; i < ele.length; i++) {
+      if (ele[i] !== '"') newStr += ele[i];
+      if (ele[i] === ";") break;
+    }
+    userVarsArrayParsed.push(newStr);
+  });
+  const varString = userVarsArrayParsed.join(" ");
+
+  const userConstArray = inputScript.split(/^const/gm).slice(1);
+  const userConstArrayParsed = [];
+  userConstArray.forEach((ele) => {
+    // let sliceIdx = ele.indexOf(';');
+    let newStr = " const";
+    for (let i = 0; i < ele.length; i++) {
+      if (ele[i] !== '"') newStr += ele[i];
+      if (ele[i] === ";") break;
+    }
+    userConstArrayParsed.push(newStr);
+  });
+  const constString = userConstArrayParsed.join(" ");
+
+  ////////////////////////////////////////////
+  ////////////////////////////////////////////
+  ////////////////////////////////////////////
 
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map((script) => {
@@ -98,7 +138,9 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   // then concatenate all the scripts to the testScript string
   const testScript = `
     const { assert, expect } = require('chai');
-    ${paramArray.join(';')}
+    ${letString}
+    ${varString}
+    ${constString}
     ${arrOfTestScripts.join("")}
     `;
 
