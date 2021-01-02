@@ -4,8 +4,6 @@ import dropDownArrowUp from "../../../assets/icons/caret-up-tests.svg";
 
 const EventPreview = ({ contents }) => {
 
-  const contentUnString = JSON.parse(contents);
-
   const [showPreview, setShowPreview] = useState(false);
   const handleShowPreview = () => setShowPreview(!showPreview);
 
@@ -51,10 +49,11 @@ const EventPreview = ({ contents }) => {
         
       >
         <iframe 
-        srcDoc={contentUnString}
+        srcDoc={JSON.parse(contents)}
         title='output'
         width='100%'
         height='100%'
+
         />
       </div>
       }
