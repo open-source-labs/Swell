@@ -92,7 +92,7 @@ module.exports = () => {
         // Select the results of the first test, and check to see its status.
         const testStatus = await app.client.$("#TestResult-0-status").getText();
         // Check status.
-        expect(testStatus).to.equal("PASS");
+        expect(testStatus).to.equal("FAIL");
       } catch (err) {
         console.error(err);
       }
