@@ -2,7 +2,8 @@ const chai = require("chai");
 const fs = require("fs");
 const path = require("path");
 const grpcObj = require("../pageObjects/GrpcObj.js");
-const grpcServer = require('../grpcServer.js')
+const grpcServer = require('../grpcServer.js');
+
 
 const expect = chai.expect;
 

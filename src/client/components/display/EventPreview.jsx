@@ -19,11 +19,11 @@ const EventPreview = ({ contents }) => {
         <>
           <span>Hide Preview</span>
           <span className="icon is-medium is-align-self-center show-hide-event-icon">
-            <img 
+            <img
               alt=''
-              src={dropDownArrowUp} 
-              className="is-awesome-icon" 
-              aria-hidden="false" 
+              src={dropDownArrowUp}
+              className="is-awesome-icon"
+              aria-hidden="false"
             />
           </span>
         </>
@@ -32,11 +32,11 @@ const EventPreview = ({ contents }) => {
         <>
           <span>View Preview</span>
           <span className="icon is-medium is-align-self-center show-hide-event-icon">
-            <img 
+            <img
               alt=''
               src={dropDownArrow}
-              className="is-awesome-icon" 
-              aria-hidden="false" 
+              className="is-awesome-icon"
+              aria-hidden="false"
             />
           </span>
         </>
@@ -46,14 +46,13 @@ const EventPreview = ({ contents }) => {
       <div
         className='is-full'
         style={{height: '100vh'}}
-        
+
       >
         <iframe 
         srcDoc={JSON.parse(contents)}
         title='output'
         width='100%'
         height='100%'
-
         />
       </div>
       }
