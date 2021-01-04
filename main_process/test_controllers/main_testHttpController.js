@@ -31,7 +31,8 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   // create array of individual assertion tests
   // the regex matches all 'assert' or 'expect' only at the start of a new line
   // we remove the first element of the array because it is an empty string
-  const separatedScriptsArray = inputScript.split(/^assert|^expect/gm).slice(1);
+  const testRegex = /(expect|assert).*\(.*\)[\w\.]*/gm;
+  const separatedScriptsArray = inputScript.match(testRegex);
 
   ////////////////////////////////////////////
   // Parse for let, const, or var keywords. //
@@ -70,19 +71,11 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     // if the assertion test fails and throws an error, also include the expected and actual
     return `
     try {
-      if (${JSON.stringify(script[0])} === '.') {
-        assert${script};
+        ${script}
         addOneResult({
-          message: 'assert'+${JSON.stringify(script)},
+          message: ${JSON.stringify(script)},
           status: 'PASS',
         });
-      } else if (${JSON.stringify(script[0])} === '(') {
-        expect${script};
-        addOneResult({
-          message: 'expect'+${JSON.stringify(script)},
-          status: 'PASS',
-        });
-      }
     } catch (err) {
       const errObj = err;
 
@@ -103,6 +96,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     ${arrOfTestScripts.join("")}
     `;
   try {
+    console.log(testScript);
     // run the script in the VM
     // the second argument denotes where the vm should look for the node_modules folder
     // that is, relative to the main.js file where the electron process is running
