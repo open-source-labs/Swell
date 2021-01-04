@@ -12,7 +12,7 @@ class GrpcObj {
   }
 
   // selects url box
-  get url() { 
+  get url() {
     return app.client.$('.input-is-medium');
   }
 ;
@@ -28,17 +28,17 @@ class GrpcObj {
     return app.client.$('#save-proto')
   }
 
-  // selects button for selecting service 
+  // selects button for selecting service
   get openSelectServiceDropdown() {
     return app.client.$('#Select-Service-button')
   }
 
-  // selects button for selecting greeter service 
+  // selects button for selecting greeter service
   get selectServiceGreeter() {
     return app.client.$('a=Greeter')
   }
 
-  // selects button for selecting request 
+  // selects button for selecting request
   get openRequestDropdown() {
     return app.client.$('#Select-Request-button')
   }
@@ -107,6 +107,27 @@ class GrpcObj {
   get removeBtn() {
     return app.client.$('button=Remove')
   }
-}; 
 
-module.exports = new GrpcObj(); 
+  get testScriptCode() {
+    const codeMirror = app.client.$('#test-script-entry');
+    codeMirror.click();
+    return codeMirror.$("textarea");
+  }
+
+  async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
+    const backspace = [];
+    for (let i = 0; i < 30; i += 1) {
+      backspace.push('Backspace');
+    }
+
+    try {
+      if(clear) await this.testScriptCode.keys(backspace);
+      await this.testScriptCode.keys(keys);
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+};
+
+module.exports = new GrpcObj();
