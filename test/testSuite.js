@@ -31,15 +31,15 @@ describe("Electron Tests", function () {
 
   // execute differnt types of test here
   describe("CRUD functionality", function () {
-    //reqInputTests();
-    //httpTest();
-    // graphqlTest();
-    //websocketTest();
-    // grpcTest();
+    reqInputTests();
+    httpTest();
+    graphqlTest();
+    websocketTest();
+    grpcTest();
   });
 
   describe("Swell Testing functionality", function () {
-    //httpTestingTest();
+    httpTestingTest();
     grpcTestingTest();
   });
 });
