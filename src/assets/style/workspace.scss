@@ -31,10 +31,23 @@
 .grid-graph {
   display: grid;
   grid-template-columns: 0.1fr 0.5fr 1.8fr;
+  align-content: center;
 }
 
-.grid-graph-mt {
-  margin-top: 12vh;
+.pass-fail-total {
+  font-weight: bold;
+  font-size: 3rem;
+  align-self: center;
+  justify-self: start;
+}
+
+.align-self-end {
+  align-self: end;
+}
+
+.test-results {
+  font-weight: 600;
+  font-size: 1.4rem;
 }
 
 .pass-fail-button {
