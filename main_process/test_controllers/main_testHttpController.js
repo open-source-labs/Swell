@@ -69,7 +69,6 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   });
   // require in the chai assertion library
   // then concatenate all the scripts to the testScript string
-  console.log(arrOfTestScripts.join(" "));
   const testScript = `
     const { assert, expect } = require('chai');
     ${arrOfTestScripts.join(" ")}
@@ -79,7 +78,6 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     // the second argument denotes where the vm should look for the node_modules folder
     // that is, relative to the main.js file where the electron process is running
     vm.run(testScript, "main.js");
-    console.log(testScript);
     // deep clone the testResults array since sending functions, DOM elements, and non-cloneable
     // JS objects is not supported IPC channels past Electron 9
     return JSON.parse(JSON.stringify(testResults));
