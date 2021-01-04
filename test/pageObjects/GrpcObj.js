@@ -115,8 +115,10 @@ class GrpcObj {
   }
 
   async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
+    // It would be better to select the length of the previous test.
+    // const pastTest = app.client.$('#test-script-entry').getText();
     const backspace = [];
-    for (let i = 0; i < 30; i += 1) {
+    for (let i = 0; i < 100; i += 1) {
       backspace.push('Backspace');
     }
 

@@ -73,6 +73,8 @@ module.exports = () => {
         await app.client.$("span=View Tests").click();
         // set the value of the code editor to be some hard coded simple assertion tests
         await grpcObj.clearTestScriptAreaAndWriteKeys(script);
+        // Close the tests view pane.
+        await app.client.$("span=Hide Tests").click();
       } catch (err) {
         console.error(err);
       }
@@ -92,12 +94,69 @@ module.exports = () => {
         // Select the results of the first test, and check to see its status.
         const testStatus = await app.client.$("#TestResult-0-status").getText();
         // Check status.
-        expect(testStatus).to.equal("FAIL");
+        expect(testStatus).to.equal("PASS");
+        await grpcObj.removeBtn.click();
       } catch (err) {
         console.error(err);
       }
     });
 
+    it("Testing functionality for expects should pass.", async () => {
+      try {
+        const script = "expect([1, 2]).to.be.an('array').that.does.not.include(3);";
+        await clearAndFillTestScriptArea(script);
+        await addReqAndSend();
+        await app.client.$("a=Tests").click();
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+        await grpcObj.removeBtn.click();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    it("Should access headers properties within the response object.", async () => {
+      try {
+        // Dot notation does not work with hyphenated names.
+        const script = "assert.strictEqual(response.headers['content-type'], 'application/grpc+proto');";
+        await clearAndFillTestScriptArea(script);
+        await addReqAndSend();
+        await app.client.$("a=Tests").click();
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+        await grpcObj.removeBtn.click();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    it("Should access events properties within the response object.", async () => {
+      try {
+        const script = `assert.strictEqual(response.events[0].message, "Hello String");`;
+        await clearAndFillTestScriptArea(script);
+        await addReqAndSend();
+        await app.client.$("a=Tests").click();
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+        await grpcObj.removeBtn.click();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    it("Should handle multiple variable declarations and newlines.", async () => {
+      try {
+        const script = `const grpcTestVariable = "Hello String"; \nassert.strictEqual(response.events[0].message, grpcTestVariable)`;
+        await clearAndFillTestScriptArea(script);
+        await addReqAndSend();
+        await app.client.$("a=Tests").click();
+        const testStatus = await app.client.$("#TestResult-0-status").getText();
+        expect(testStatus).to.equal("PASS");
+        await grpcObj.removeBtn.click();
+      } catch (err) {
+        console.error(err);
+      }
+    });
 
   });
 };
