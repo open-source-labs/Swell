@@ -114,20 +114,9 @@ class GrpcObj {
     return codeMirror.$("textarea");
   }
 
-  async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
-    const backspace = [];
-    for (let i = 0; i < 30; i += 1) {
-      backspace.push('Backspace');
-    }
-
-    try {
-      if(clear) await this.testScriptCode.keys(backspace);
-      await this.testScriptCode.keys(keys);
-    } catch(err) {
-      console.error(err);
-    }
+  get clearWorkspace() {
+    return app.client.$('button=Clear Workspace');
   }
-
 };
 
 module.exports = new GrpcObj();
