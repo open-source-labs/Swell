@@ -146,7 +146,7 @@ module.exports = () => {
 
     it("Should handle multiple variable declarations and newlines.", async () => {
       try {
-        const script = `const grpcTestVariable = "Hello String"; \n assert.strictEqual(response.events[0].message, grpcTestVariable)`;
+        const script = `const grpcTestVariable = "Hello String"; \nassert.strictEqual(response.events[0].message, grpcTestVariable)`;
         await clearAndFillTestScriptArea(script);
         await addReqAndSend();
         await app.client.$("a=Tests").click();
