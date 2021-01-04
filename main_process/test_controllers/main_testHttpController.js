@@ -28,43 +28,18 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
       external: ["chai"],
     },
   });
-  // create array of individual assertion tests
-  // the regex matches all 'assert' or 'expect' only at the start of a new line
-  // we remove the first element of the array because it is an empty string
-  const testRegex = /(expect|assert).*\(.*\)[\w\.]*/gm;
+  // the regex matches all 'assert' or 'expect' on seperate lines
+  const testRegex = /(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*/gm;
   const separatedScriptsArray = inputScript.match(testRegex);
 
-  ////////////////////////////////////////////
-  // Parse for let, const, or var keywords. //
-  ////////////////////////////////////////////
+  // Parse for let, const, or var keywords
 
   const paramRegex = /(const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*)/gm
   const paramArray = inputScript.match(paramRegex) ?? [];
 
-  ////////////////////////////////////////////
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map((script) => {
-    /*
-    // Work-in-progress to determine the message from the script
-    // Regular expression from stack overflow post below
-    // https://stackoverflow.com/a/171499
-    // this regex matches all substrings wrapped in single or double quotes
-    // and supports escaped quotes as well
-    const substringsInQuotes = /(["'])(?:\\.|[^\\])*?\1/g;
-    // use the regex and return all the substrings in quotes
-    const assertionArgsInQuotes = script.match(substringsInQuotes);
-
-    // there is still a problem where if there are quotes in the arguments
-    // and there is no user-supplied message. we incorrectly choose the last arg as the userMessage
-    let userMessage;
-    if (!assertionArgsInQuotes) {
-      userMessage = "''";
-    } else {
-      // since the user's message will always be the last argument, it will be last in the array
-      userMessage = assertionArgsInQuotes[assertionArgsInQuotes.length - 1];
-    }
-    */
-
+   
     // contstruct and return the individual test script
     // if the assertion test does not fail, then push an object with the message and status
     // to the results array
@@ -89,6 +64,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     `;
   });
   // require in the chai assertion library
+  // insert variables into testscript
   // then concatenate all the scripts to the testScript string
   const testScript = `
     const { assert, expect } = require('chai');
@@ -96,7 +72,6 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     ${arrOfTestScripts.join("")}
     `;
   try {
-    console.log(testScript);
     // run the script in the VM
     // the second argument denotes where the vm should look for the node_modules folder
     // that is, relative to the main.js file where the electron process is running
