@@ -29,13 +29,13 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     },
   });
   // the regex matches all 'assert' or 'expect' on seperate lines
-  const testRegex = /(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*/gm;
+  const testRegex = /(((const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*))|(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*)/gm;
   const separatedScriptsArray = inputScript.match(testRegex);
 
   // Parse for let, const, or var keywords
 
-  const paramRegex = /(const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*)/gm
-  const paramArray = inputScript.match(paramRegex) ?? [];
+  // const paramRegex = /(const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*)/gm
+  // const paramArray = inputScript.match(paramRegex) ?? [];
 
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map((script) => {
@@ -44,13 +44,20 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
     // if the assertion test does not fail, then push an object with the message and status
     // to the results array
     // if the assertion test fails and throws an error, also include the expected and actual
+    let temp = '';
+    if(/^let|^const|^var/.test(script)) {
+      temp = script;
+    }
     return `
+    ${temp}
     try {
         ${script}
-        addOneResult({
-          message: ${JSON.stringify(script)},
-          status: 'PASS',
-        });
+        if(!/^let|^const|^var/.test(${JSON.stringify(script)})){
+          addOneResult({
+            message: ${JSON.stringify(script)},
+            status: 'PASS',
+          });
+        }
     } catch (err) {
       const errObj = err;
 
@@ -68,10 +75,10 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   // then concatenate all the scripts to the testScript string
   const testScript = `
     const { assert, expect } = require('chai');
-    ${paramArray.join(';')}
-    ${arrOfTestScripts.join("")}
+    ${arrOfTestScripts.join(" ")}
     `;
   try {
+    console.log(testScript);
     // run the script in the VM
     // the second argument denotes where the vm should look for the node_modules folder
     // that is, relative to the main.js file where the electron process is running
