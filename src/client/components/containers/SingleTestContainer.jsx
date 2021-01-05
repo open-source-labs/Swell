@@ -63,17 +63,21 @@ export default function SingleTestContainer({ currentResponse }) {
             }}
           />
         </div>
-        {/* Test Results Count */}
-        <div className='pass-fail-total'>
-          {pass + fail}
-        </div>
         {/* Test Results Pass + Fail */}
-        <div className="is-flex align-self-end">
-          <div>
-            <span className="has-background-success pass-fail-button">Passed:</span> <span className="ml-2">{pass}</span>
+        <div className="is-flex is-flex-direction-column">
+          <div className='pass-fail-total mt-5'>
+            Total: <span className='pass-fail-total-number'>{pass + fail}</span>
           </div>
-          <div className="ml-5">
-            <span className="has-background-danger pass-fail-button">Failed: </span> <span className="ml-2">{fail}</span>
+          <div className='pass-fail-percentage mb-3'>
+            Percentage: <span className='pass-fail-total-number'>{Math.floor((pass / (pass + fail)) * 100)}%</span>
+          </div>
+          <div className='is-flex align-self-end'>
+            <div>
+              <span className="has-background-success pass-fail-button">Passed:</span> <span className="ml-2">{pass}</span>
+            </div>
+            <div className="ml-5">
+              <span className="has-background-danger pass-fail-button">Failed: </span> <span className="ml-2">{fail}</span>
+            </div>
           </div>
         </div>
       </div>
