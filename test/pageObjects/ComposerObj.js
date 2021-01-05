@@ -16,15 +16,15 @@ class ComposerObj {
     return app.client.$('#selected-network')
   }
 
-  get url() { 
+  get url() {
     return app.client.$('.input-is-medium');
   };
 
-  get headers(){
+  get headers() {
     return app.client.$$('.header-row');
   };
 
-  get cookies(){
+  get cookies() {
     return app.client.$$('.cookie-row');
   };
 
@@ -55,57 +55,57 @@ class ComposerObj {
     codeMirror.click();
     return codeMirror.$("textarea");
   }
-  
-  async clearRestBodyAndWriteKeys(keys, clear = true){
+
+  async clearRestBodyAndWriteKeys(keys, clear = true) {
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
       backspace.push('Backspace')
     }
 
     try {
-      if(clear) await this.restBodyCode.keys(backspace);
+      if (clear) await this.restBodyCode.keys(backspace);
       await this.restBodyCode.keys(keys);
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
   }
-  
-  async clearGQLBodyAndWriteKeys(keys, clear = true){
+
+  async clearGQLBodyAndWriteKeys(keys, clear = true) {
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
       backspace.push('Backspace')
     }
 
     try {
-      if(clear) await this.gqlBodyCode.keys(backspace);
+      if (clear) await this.gqlBodyCode.keys(backspace);
       await this.gqlBodyCode.keys(keys);
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
   }
-  
-  async clickGQLVariablesAndWriteKeys(keys){
+
+  async clickGQLVariablesAndWriteKeys(keys) {
     try {
       await this.gqlVariableCode.keys(keys);
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
   }
 
   async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
     const backspace = [];
-    for (let i = 0; i < 30; i += 1) {
+    for (let i = 0; i < 100; i += 1) {
       backspace.push('Backspace');
     }
-    
+
     try {
-      if(clear) await this.testScriptCode.keys(backspace);
+      if (clear) await this.testScriptCode.keys(backspace);
       await this.testScriptCode.keys(keys);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
   }
 
-}; 
+};
 
-module.exports = new ComposerObj(); 
+module.exports = new ComposerObj();

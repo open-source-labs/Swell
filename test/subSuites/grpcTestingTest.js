@@ -15,7 +15,7 @@ module.exports = () => {
 
     // These functions run before any of the "it" tests.
     before((done) => {
-      try{
+      try {
         // Read the data on the hw2.proto file.
         fs.readFile(path.join(__dirname, "../hw2.proto"), "utf8", (err, data) => {
           if (err) console.log(err);
@@ -37,7 +37,7 @@ module.exports = () => {
         // Set up the composer with some boilerplate.
         await composerSetup();
         await grpcObj.openSelectServiceDropdown.click();
-      } catch(err) {
+      } catch (err) {
         console.error(err)
       }
     });
@@ -49,7 +49,7 @@ module.exports = () => {
         await grpcObj.url.addValue("0.0.0.0:30051");
         await grpcObj.grpcProto.addValue(proto);
         await grpcObj.saveChanges.click();
-      } catch(err) {
+      } catch (err) {
         console.error(err)
       }
     };
@@ -60,13 +60,12 @@ module.exports = () => {
         await grpcObj.addRequestBtn.click();
         // Sends the request.
         await grpcObj.sendBtn.click();
-      } catch(err) {
+      } catch (err) {
         console.error(err)
       }
     };
 
     // Bring in the Clear & Fill Test Script Area for improved code readability.
-
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor

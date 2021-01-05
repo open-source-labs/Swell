@@ -10,6 +10,7 @@ const grpcTest = require("./subSuites/grpcTest");
 const graphqlTest = require("./subSuites/graphqlTest");
 
 const httpTestingTest = require("./subSuites/httpTestingTest");
+const graphqlTestingTest = require("./subSuites/graphqlTestingTest");
 const grpcTestingTest = require("./subSuites/grpcTestingTest");
 
 const app = require("./testApp");
@@ -40,6 +41,7 @@ describe("Electron Tests", function () {
 
   describe("Swell Testing functionality", function () {
     // httpTestingTest();
-    grpcTestingTest();
+    graphqlTestingTest();
+    // grpcTestingTest();
   });
 });
