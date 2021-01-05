@@ -114,6 +114,10 @@ class GrpcObj {
     return codeMirror.$("textarea");
   }
 
+  get clearWorkspace() {
+    return app.client.$('button=Clear Workspace');
+  }
+
   async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
     // It would be better to select the length of the previous test.
     // const pastTest = app.client.$('#test-script-entry').getText();
@@ -129,7 +133,6 @@ class GrpcObj {
       console.error(err);
     }
   }
-
 };
 
 module.exports = new GrpcObj();

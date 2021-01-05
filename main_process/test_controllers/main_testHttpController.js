@@ -30,7 +30,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   });
   // the regex matches all 'assert' or 'expect' on seperate lines
   // it will also match all variables
-  const testRegex = /(((const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\s*\w*))|(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*)/gm;
+  const testRegex = /(((const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\w*[^\s\;]*))|(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*)/gm;
   const separatedScriptsArray = inputScript.match(testRegex) ?? [];
 
   // create an array of test scripts that will be executed in Node VM instance
