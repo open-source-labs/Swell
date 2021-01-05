@@ -38,6 +38,7 @@ const ScheduleReqResContainer = (props) => {
       <SingleScheduleReqResContainer
         className={`reqResChild`}
         content={reqRes}
+        date={reqRes.response.headers.date[0]}
         key={index}
         index={index}
         reqResDelete={reqResDelete}

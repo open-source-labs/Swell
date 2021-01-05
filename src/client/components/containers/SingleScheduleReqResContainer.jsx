@@ -45,6 +45,7 @@ const SingleScheduleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
     index,
+    date
   } = props;
   const network = content.request.network;
   const method = content.request.method;
@@ -104,8 +105,7 @@ const SingleScheduleReqResContainer = (props) => {
             setShowDetails(showDetails = false);
           }}
         >
-          {showDetails === true && "Hide Request Details"}
-          {showDetails === false && "View Request Details"}
+          {date}
           {showDetails === true && (
             <div
               className="is-clickable is-primary-link mr-3"
