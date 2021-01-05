@@ -55,16 +55,19 @@ Swell is a one-stop shop for sending and monitoring your API requests
 ## Additional Features
 
 - _Scripting in Swell_: Swell allows you to write assertion tests to aid in the test-driven development cycle of backend API services.
-  <kbd><img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif"/></kbd>
+  <kbd><img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif" 
+       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
 - _Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team.
   <kbd><img src="./ReadMeGifs/Gifs/SavedWorkspaces.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Preview_: You can now view a rendered preview of certain API responses (HTML)
 - _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one, instead each request will fire off in the order of staging.
-  <kbd><img src="./ReadMeGifs/Gifs/CollectionTest.gif"/></kbd>
+  <kbd><img src="./ReadMeGifs/Gifs/CollectionTest.gif"
+       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Schedule Tests_: You can also automate sending requests to occur on a periodic basis.
-  <kbd><img src="./ReadMeGifs/Gifs/ScheduleTest.gif"/></kbd>
+  <kbd><img src="./ReadMeGifs/Gifs/ScheduleTest.gif"
+       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 ## Built With
 
