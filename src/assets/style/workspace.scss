@@ -30,14 +30,43 @@
 
 .grid-graph {
   display: grid;
-  grid-template-columns: 0.1fr 0.5fr 1.8fr;
+  grid-template-columns: 1fr 1fr;
   align-content: center;
 }
 
 .pass-fail-total {
   font-weight: bold;
-  font-size: 3rem;
-  align-self: center;
+  font-size: 2rem;
+  align-self: start;
+  justify-self: start;
+}
+
+.rotate {
+  animation: rotation 10s infinite linear;
+  overflow: hidden;
+}
+
+.no-overflow {
+  overflow: hidden;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.pass-fail-total-number {
+  font-weight: normal;
+}
+
+.pass-fail-percentage {
+  font-weight: bold;
+  font-size: 1.2rem;
+  align-self: start;
   justify-self: start;
 }
 
@@ -55,6 +84,7 @@
   max-height: 4vh;
   max-width: 8vh;
   padding: 0.5vh;
+  font-weight: 600;
 }
 
 .is-flex-basis-0 {

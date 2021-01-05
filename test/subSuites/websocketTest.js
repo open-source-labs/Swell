@@ -21,6 +21,10 @@ module.exports = () => {
       }
     }
 
+    after(() => {
+      app.client.$('button=Clear Workspace').click();
+    })
+
     it("it should send and receive messages to public echo test", async () => {
       try {
         // select web sockets

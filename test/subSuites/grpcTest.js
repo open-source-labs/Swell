@@ -26,7 +26,6 @@ module.exports = () => {
 
     before(async () => {
       try {
-        await grpcObj.removeBtn.click();
         grpcServer('open')
         await composerSetup();
         await grpcObj.openSelectServiceDropdown.click();
@@ -34,6 +33,14 @@ module.exports = () => {
         console.error(err)
       }
     });
+
+    after(async () => {
+      try {
+        await grpcObj.clearWorkspace.click();
+      } catch (err) {
+        console.log(err);
+      }
+    })
 
     const composerSetup = async () => {
       try {
