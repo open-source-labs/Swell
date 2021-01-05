@@ -41,7 +41,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 - _WebSocket (WS)_: Swell enables connecting directly to WebSocket servers with an HTTP handshake. Developers can directly send messages to the connected WS server. Messages are displayed in chatbox format, clearly indicating outgoing and incoming messages.
-  <kbd><img src="./ReadMeGifs/Gifs/WebSockets.gif"
+  <kbd><img src="./ReadMeGifs/Gifs/WS.gif"
        style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 - _GraphQL_: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions as well as Introspection - with and without variables. Smart code editor allows for easy query creation.
