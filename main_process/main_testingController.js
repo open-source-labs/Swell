@@ -1,17 +1,22 @@
-// testing controller for executing user-defined assertion tests
 const { NodeVM } = require("vm2");
+const chai = require("chai");
 
 const testHttpController = {};
 
-testHttpController.runTest = (inputScript, reqResObj, protocolData, isGraphQL=false) => {
+testHttpController.runTest = (
+  inputScript,
+  reqResObj,
+  protocolData,
+  isGraphQL = false
+) => {
   const { request } = reqResObj;
   let { response } = reqResObj;
   // final test result objects will be stored in this array
   const testResults = [];
 
   if (isGraphQL) {
-    let data = protocolData.data;
-    let events = data;
+    const data = protocolData.data;
+    const events = data;
     response = { ...response, events };
   }
   // this is the global object that will be passed into the VM
@@ -20,13 +25,14 @@ testHttpController.runTest = (inputScript, reqResObj, protocolData, isGraphQL=fa
     addOneResult: (result) => testResults.push(result),
     request,
     response,
+    chai,
   };
   // create a new instance of a secure Node VM
   const vm = new NodeVM({
     sandbox,
-    // allow only chai to be required in
+    // specify external libraries to be required in (dev mode only)
     require: {
-      external: ["chai"],
+      external: [],
     },
   });
   // the regex matches all 'assert' or 'expect' on seperate lines
@@ -71,7 +77,7 @@ testHttpController.runTest = (inputScript, reqResObj, protocolData, isGraphQL=fa
   // require in the chai assertion library
   // then concatenate all the scripts to the testScript string
   const testScript = `
-    const { assert, expect } = require('chai');
+    const { assert, expect } = chai;
     ${arrOfTestScripts.join(" ")}
     `;
   try {
