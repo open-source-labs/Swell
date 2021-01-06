@@ -8,6 +8,8 @@ export default function GRPCRequestContent({ request, rpc, service, servicesObj 
   const { 
     headers, // refers to meta-data in a GRPC request
     body, // "body Content text"
+    rawType,
+    testContent
   } = request;
 
   // CREATE META-DATA COMPONENTS
@@ -43,6 +45,22 @@ export default function GRPCRequestContent({ request, rpc, service, servicesObj 
               }}
               />
           </div>
+          {testContent.length > 0 &&
+            <div>
+              <div className="is-size-7">Tests</div>
+              <CodeMirror
+                value={testContent}
+                options={{
+                  mode: rawType,
+                  theme: 'neat readonly',
+                  lineNumbers: true,
+                  tabSize: 4,
+                  lineWrapping: true,
+                  readOnly: true,
+                }}
+                />
+            </div>
+          }
       </div>
     </div>
   )
