@@ -3,14 +3,14 @@ const { NodeVM } = require("vm2");
 
 const testHttpController = {};
 
-testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
+testHttpController.runTest = (inputScript, reqResObj, protocolData, isGraphQL=false) => {
   const { request } = reqResObj;
   let { response } = reqResObj;
   // final test result objects will be stored in this array
   const testResults = [];
 
-  if (gqlResponse) {
-    let data = gqlResponse.data;
+  if (isGraphQL) {
+    let data = protocolData.data;
     let events = data;
     response = { ...response, events };
   }

@@ -36,7 +36,7 @@ describe("Electron Tests", function () {
     httpTest();
     graphqlTest();
     websocketTest();
-    grpcTest();
+     grpcTest();
   });
 
   describe("Swell Testing functionality", function () {
