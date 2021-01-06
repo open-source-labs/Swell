@@ -30,19 +30,19 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   });
   // the regex matches all 'assert' or 'expect' on seperate lines
   // it will also match all variables
+  // eslint-disable-next-line no-useless-escape
   const testRegex = /(((const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\w*[^\s\;]*))|(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*)/gm;
   const separatedScriptsArray = inputScript.match(testRegex) ?? [];
 
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map((script) => {
-   
     // contstruct and return the individual test script
     // if the assertion test does not fail, then push an object with the message and status
     // to the results array
     // if the assertion test fails and throws an error, also include the expected and actual
     // create a variable to conditionally declare in the right scope of the test script
-    let variables = '';
-    if(/^let|^const|^var/.test(script)) {
+    let variables = "";
+    if (/^let|^const|^var/.test(script)) {
       variables = script;
     }
     return `

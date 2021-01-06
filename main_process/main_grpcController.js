@@ -3,12 +3,11 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 // ======================= grpcController.openGrpcConnection
 
-const testHttpController = require("./test_controllers/main_testHttpController");
+const testingController = require("./main_testingController");
 
 const grpcController = {};
 
 grpcController.openGrpcConnection = (event, reqResObj) => {
-
   const { service, rpc, packageName, url, queryArr } = reqResObj;
 
   reqResObj.connectionType = "GRPC";
@@ -88,7 +87,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       reqResObj.response.times.push(time);
       //check to see if there is a test script to run
       if (reqResObj.request.testContent) {
-        reqResObj.response.testResult = testHttpController.runTest(
+        reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
           reqResObj,
           data
@@ -106,7 +105,6 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         });
         event.sender.send("reqResUpdate", reqResObj);
       });
-
   } else if (rpcType === "SERVER STREAM") {
     const timesArr = [];
     // Open Connection for SERVER Stream
@@ -122,7 +120,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       reqResObj.response.events.push(resp);
       //check to see if there is a test script to run
       if (reqResObj.request.testContent) {
-        reqResObj.response.testResult = testHttpController.runTest(
+        reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
           reqResObj,
           resp
@@ -138,7 +136,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     });
     call.on("end", () => {
       // Close Connection for SERVER Stream
-      if(reqResObj.connection !== 'error') reqResObj.connection = "closed";
+      if (reqResObj.connection !== "error") reqResObj.connection = "closed";
       // no need to push response to reqResObj, no event expected from on 'end'
       event.sender.send("reqResUpdate", reqResObj);
     });
@@ -172,7 +170,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       reqResObj.response.events.push(response);
       //check to see if there is a test script to run
       if (reqResObj.request.testContent) {
-        reqResObj.response.testResult = testHttpController.runTest(
+        reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
           reqResObj,
           response
@@ -221,7 +219,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       reqResObj.response.times.push(curTimeObj);
       //check to see if there is a test script to run
       if (reqResObj.request.testContent) {
-        reqResObj.response.testResult = testHttpController.runTest(
+        reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
           reqResObj,
           response
@@ -245,7 +243,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     });
     call.on("end", (data) => {
       //Close Final Server Connection for BIDIRECTIONAL Stream
-      if(reqResObj.connection !== 'error') reqResObj.connection = "closed";
+      if (reqResObj.connection !== "error") reqResObj.connection = "closed";
       // no need to push response to reqResObj, no event expected from on 'end'
       event.sender.send("reqResUpdate", reqResObj);
     });
