@@ -30,6 +30,7 @@ const StoppedContainer = (props) => {
         className={`reqResChild`}
         content={reqRes}
         key={index}
+        date={reqRes.response.headers.date[0]}
         index={index}
         reqResDelete={reqResDelete}
         reqResUpdate={reqResUpdate}

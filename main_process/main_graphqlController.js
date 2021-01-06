@@ -9,7 +9,7 @@ const fetch2 = require("node-fetch");
 const cookie = require("cookie");
 const { ipcMain } = require("electron");
 
-const testHttpController = require("./test_controllers/main_testHttpController");
+const testingController = require("./main_testingController");
 
 const graphqlController = {
   /* NEED TO INCORPORATE COOKIES AND HEADERS IN QUERIES AND MUTATIONS */
@@ -127,7 +127,7 @@ const graphqlController = {
             .then((data) => {
               //handle tests
               if (reqResObj.request.testContent) {
-                reqResObj.response.testResult = testHttpController.runTest(
+                reqResObj.response.testResult = testingController.runTest(
                   reqResObj.request.testContent,
                   reqResObj,
                   data
@@ -143,7 +143,7 @@ const graphqlController = {
           client
             .mutate({ mutation: body, variables, context: headers })
             .then((data) => {
-              reqResObj.response.testResult = testHttpController.runTest(
+              reqResObj.response.testResult = testingController.runTest(
                 reqResObj.request.testContent,
                 reqResObj,
                 data

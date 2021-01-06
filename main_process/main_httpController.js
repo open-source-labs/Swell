@@ -4,7 +4,7 @@ const fetch2 = require("node-fetch");
 const http2 = require("http2");
 const setCookie = require("set-cookie-parser");
 const SSEController = require("./SSEController");
-const testHttpController = require("./test_controllers/main_testHttpController");
+const testingController = require("./main_testingController");
 
 // Use this for HTTPS cert when in Dev or Test environment and
 // using a server with self-signed cert on localhost
@@ -356,7 +356,7 @@ const httpController = {
           reqResObj = this.addSingleEvent(body, reqResObj);
           // check if there is a test script to run
           if (reqResObj.request.testContent) {
-            reqResObj.response.testResult = testHttpController.runTest(
+            reqResObj.response.testResult = testingController.runTest(
               reqResObj.request.testContent,
               reqResObj
             );
