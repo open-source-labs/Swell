@@ -28,19 +28,20 @@ module.exports = () => {
       // }
     });
 
-    before(async () => {
-      try {
-        // Clear the workspace.
-        // await grpcObj.removeBtn.click();
-        // Invoke the "main" function (to instantiate a server) from grpcServer.js
-        // grpcServer("open");
-        // Set up the composer with some boilerplate.
-        // await composerSetup();
-        // await grpcObj.openSelectServiceDropdown.click();
-      } catch (err) {
-        console.error(err);
-      }
-    });
+    //comment back in if testing grpcTestingTest on its own
+    // before(async () => {
+    //   try {
+    //     // Clear the workspace.
+    //     // await grpcObj.removeBtn.click();
+    //     // Invoke the "main" function (to instantiate a server) from grpcServer.js
+    //     // grpcServer("open");
+    //     // Set up the composer with some boilerplate.
+    //     // await composerSetup();
+    //     // await grpcObj.openSelectServiceDropdown.click();
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // });
 
     const composerSetup = async () => {
       try {

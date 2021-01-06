@@ -6,12 +6,14 @@ const testHttpController = {};
 testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
   const { request } = reqResObj;
   let { response } = reqResObj;
+  let url = 'hi';
   // final test result objects will be stored in this array
   const testResults = [];
 
   if (gqlResponse) {
-    const data = gqlResponse.data;
-    response = { ...response, data };
+    let data = gqlResponse.data;
+    let events = data;
+    response = { ...response, events };
   }
   // this is the global object that will be passed into the VM
   const sandbox = {
@@ -35,7 +37,7 @@ testHttpController.runTest = (inputScript, reqResObj, gqlResponse) => {
 
   // create an array of test scripts that will be executed in Node VM instance
   const arrOfTestScripts = separatedScriptsArray.map((script) => {
-   
+
     // contstruct and return the individual test script
     // if the assertion test does not fail, then push an object with the message and status
     // to the results array

@@ -91,59 +91,59 @@ module.exports = () => {
       }
     })
 
-    it("it should be able to introspect the schema (PUBLIC API)", async () => {
-      try {
-        // click and check GRAPHQL
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=GRAPHQL').click();
+    // it("it should be able to introspect the schema (PUBLIC API)", async () => {
+    //   try {
+    //     // click and check GRAPHQL
+    //     await composerObj.selectedNetwork.click();
+    //     await app.client.$('a=GRAPHQL').click();
 
-        // type in url
-        await composerObj.url.setValue("https://countries.trevorblades.com/");
+    //     // type in url
+    //     await composerObj.url.setValue("https://countries.trevorblades.com/");
 
-        // click introspect
-        await app.client.$('button=Introspect').click();
+    //     // click introspect
+    //     await app.client.$('button=Introspect').click();
 
-        await new Promise((resolve) => {
-          setTimeout(async () => {
-            try {
-              const introspectionResult = await app.client.$('#gql-introspection .CodeMirror-code').getText();
-              expect(introspectionResult).to.include(`CacheControlScope`);
-              resolve();
-            } catch (err) {
-              console.error(err)
-            }
-          }, 1000)
-        });
-      } catch (err) {
-        console.error(err)
-      }
-    });
+    //     await new Promise((resolve) => {
+    //       setTimeout(async () => {
+    //         try {
+    //           const introspectionResult = await app.client.$('#gql-introspection .CodeMirror-code').getText();
+    //           expect(introspectionResult).to.include(`CacheControlScope`);
+    //           resolve();
+    //         } catch (err) {
+    //           console.error(err)
+    //         }
+    //       }, 1000)
+    //     });
+    //   } catch (err) {
+    //     console.error(err)
+    //   }
+    // });
 
     it("it should be able to create queries using variables (PUBLIC API)", async () => {
-      try {
         const method = "QUERY";
         const url = "https://countries.trevorblades.com/";
         const query = 'query($code: ID!) {country(code: $code) {capital}}';
         const variables = '{"code": "AE"}';
+        const script = "assert.strictEqual(3, 3, 'Expect correct types.');";
 
         // type in url
         await fillGQLRequest(url, method, query, variables);
+        await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await new Promise((resolve) => {
+        // Select the Tests column inside of Responses pane.
+        await app.client.$("a=Tests").click();
+
+        const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
-            try {
-              const events = await app.client.$('#events-display .CodeMirror-code').getText();
-              expect(events).to.include("Abu Dhabi");
-              resolve();
-            } catch (err) {
-              console.error(err)
-            }
-          }, 1000)
+            const text = await app.client.$("#TestResult-0-status").getText();
+            resolve(text);
+          }, 500);
+          // block for 500 ms since we need to wait for a response; normally test server would
+          // respond fast enough since it is localhost and not a remote server
         });
-      } catch (err) {
-        console.error(err)
-      }
+        expect(testStatus).to.equal("PASS");
+
     });
 
   })
