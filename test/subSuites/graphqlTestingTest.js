@@ -64,7 +64,6 @@ module.exports = () => {
       }
     }
 
-    // This will
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor
@@ -90,34 +89,6 @@ module.exports = () => {
         console.error(err)
       }
     })
-
-    // it("it should be able to introspect the schema (PUBLIC API)", async () => {
-    //   try {
-    //     // click and check GRAPHQL
-    //     await composerObj.selectedNetwork.click();
-    //     await app.client.$('a=GRAPHQL').click();
-
-    //     // type in url
-    //     await composerObj.url.setValue("https://countries.trevorblades.com/");
-
-    //     // click introspect
-    //     await app.client.$('button=Introspect').click();
-
-    //     await new Promise((resolve) => {
-    //       setTimeout(async () => {
-    //         try {
-    //           const introspectionResult = await app.client.$('#gql-introspection .CodeMirror-code').getText();
-    //           expect(introspectionResult).to.include(`CacheControlScope`);
-    //           resolve();
-    //         } catch (err) {
-    //           console.error(err)
-    //         }
-    //       }, 1000)
-    //     });
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    // });
 
     it("it should be able to resolve a simple passing test", async () => {
         const method = "QUERY";
@@ -177,7 +148,7 @@ module.exports = () => {
     const query = 'query($code: ID!) {country(code: $code) {capital}}';
     const variables = '{"code": "AE"}';
     const script =
-        "expect(response.headers, 'headers exists on reponse object').to.exist;";
+        "expect(response.headers, 'headers exists on response object').to.exist;";
 
     // type in url
     await fillGQLRequest(url, method, query, variables);
