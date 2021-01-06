@@ -119,7 +119,7 @@ module.exports = () => {
     //   }
     // });
 
-    it("it should be able to create queries using variables (PUBLIC API)", async () => {
+    it("it should be able to resolve a simple passing test", async () => {
         const method = "QUERY";
         const url = "https://countries.trevorblades.com/";
         const query = 'query($code: ID!) {country(code: $code) {capital}}';
@@ -143,8 +143,60 @@ module.exports = () => {
           // respond fast enough since it is localhost and not a remote server
         });
         expect(testStatus).to.equal("PASS");
-
     });
+
+    it("it should be able to resolve a simple failing test", async () => {
+      const method = "QUERY";
+      const url = "https://countries.trevorblades.com/";
+      const query = 'query($code: ID!) {country(code: $code) {capital}}';
+      const variables = '{"code": "AE"}';
+      const script = "assert.strictEqual(3, 2, 'Expect failing test.');";
+
+      // type in url
+      await fillGQLRequest(url, method, query, variables);
+      await clearAndFillTestScriptArea(script);
+      await addAndSend();
+
+      // Select the Tests column inside of Responses pane.
+      await app.client.$("a=Tests").click();
+
+      const testStatus = await new Promise((resolve) => {
+        setTimeout(async () => {
+          const text = await app.client.$("#TestResult-0-status").getText();
+          resolve(text);
+        }, 500);
+        // block for 500 ms since we need to wait for a response; normally test server would
+        // respond fast enough since it is localhost and not a remote server
+      });
+      expect(testStatus).to.equal("FAIL");
+  });
+
+  it("it should be run test on response data", async () => {
+    const method = "QUERY";
+    const url = "https://countries.trevorblades.com/";
+    const query = 'query($code: ID!) {country(code: $code) {capital}}';
+    const variables = '{"code": "AE"}';
+    const script =
+        "expect(response.headers, 'headers exists on reponse object').to.exist;";
+
+    // type in url
+    await fillGQLRequest(url, method, query, variables);
+    await clearAndFillTestScriptArea(script);
+    await addAndSend();
+
+    // Select the Tests column inside of Responses pane.
+    await app.client.$("a=Tests").click();
+
+    const testStatus = await new Promise((resolve) => {
+      setTimeout(async () => {
+        const text = await app.client.$("#TestResult-0-status").getText();
+        resolve(text);
+      }, 500);
+      // block for 500 ms since we need to wait for a response; normally test server would
+      // respond fast enough since it is localhost and not a remote server
+    });
+    expect(testStatus).to.equal("PASS");
+  });
 
   })
 }
