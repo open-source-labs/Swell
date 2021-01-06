@@ -18,10 +18,16 @@ const mapDispatchToProps = (dispatch) => ({
   reqResUpdate: (reqRes) => {
     dispatch(actions.reqResUpdate(reqRes));
   },
+  scheduledReqResDelete: () => {
+    dispatch(actions.scheduledReqResDelete());
+  },
+  clearAllGraph: () => {
+    dispatch(actions.clearAllGraph());
+  },
 });
 
 const StoppedContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate, runScheduledTests, scheduledReqResArray } = props;
+  const { reqResArray, reqResDelete, reqResUpdate, runScheduledTests, scheduledReqResArray, scheduledReqResDelete, clearAllGraph } = props;
   const dispatch = useDispatch();
 
   let scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
@@ -41,7 +47,18 @@ const StoppedContainer = (props) => {
   return (
     <div>
        <div className='is-queue-color mx-1 py-1'>
-        <center style={{fontWeight: 'bold', textDecoration: 'underline'}}>Queue</center>
+        <left style={{fontWeight: 'bold'}}>Queue</left>
+        <right className='prettify-select'>
+        <button
+            className="button is-small is-danger is-outlined button-hover-color ml-3"
+            onClick={() => {
+              scheduledReqResDelete();
+              clearAllGraph();
+            }}
+            >
+              Clear
+          </button>
+        </right>
         {scheduledReqResMapped.reverse()}
       </div>
     </div>
