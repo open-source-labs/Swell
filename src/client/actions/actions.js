@@ -64,6 +64,10 @@ export const scheduledReqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
+export const scheduledReqResDelete = () => ({
+  type: types.SCHEDULED_REQRES_DELETE,
+});
+
 export const updateGraph = (id) => ({
   type: types.UPDATE_GRAPH,
   payload: id,
