@@ -271,6 +271,14 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.SCHEDULED_REQRES_DELETE: {
+      const scheduledReqResArray = [];
+      return {
+        ...state,
+        scheduledReqResArray,
+      };
+    }
+
     case types.UPDATE_GRAPH: {
       const { id } = action.payload;
       // action.payload is the latest reqRes object
