@@ -76,10 +76,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - Redux
 - Apollo Client
 - Websockets
-- IndexedDB
-- Chart.js
+- gRPC-js
 - VM2
+- Chart.js
 - Bulma
+- IndexedDB
 - Chai
 - Mocha
 
