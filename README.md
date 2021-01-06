@@ -59,9 +59,9 @@ Swell is a one-stop shop for sending and monitoring your API requests
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
 - _Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team.
-  <kbd><img src="./ReadMeGifs/Gifs/SavedWorkspaces.gif"
-       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Preview_: You can now view a rendered preview of certain API responses (HTML)
+  <kbd><img src="./ReadMeGifs/Gifs/AdditionalFeatures.gif"
+       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one, instead each request will fire off in the order of staging.
   <kbd><img src="./ReadMeGifs/Gifs/CollectionTest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
