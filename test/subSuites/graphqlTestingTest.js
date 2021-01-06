@@ -135,7 +135,7 @@ module.exports = () => {
         setTimeout(async () => {
           const text = await app.client.$("#TestResult-0-status").getText();
           resolve(text);
-        }, 500);
+        }, 1000);
         // block for 500 ms since we need to wait for a response; normally test server would
         // respond fast enough since it is localhost and not a remote server
       });
