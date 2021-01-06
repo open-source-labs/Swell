@@ -34,6 +34,15 @@
   align-content: center;
 }
 
+.queue {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.queue-clear {
+  width: 30vw;
+}
+
 .pass-fail-total {
   font-weight: bold;
   font-size: 2rem;

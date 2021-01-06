@@ -46,11 +46,11 @@ const StoppedContainer = (props) => {
 
   return (
     <div>
-       <div className='is-queue-color mx-1 py-1'>
-        <left style={{fontWeight: 'bold'}}>Queue</left>
-        <right className='prettify-select'>
-        <button
-            className="button is-small is-danger is-outlined button-hover-color ml-3"
+       <div className='is-queue-color mx-1 py-1 is-flex is-flex-direction-column'>
+        <center className='queue'>Queue</center>
+        <div className='prettify-select is-align-self-center mt-3 mb-3'>
+          <button
+            className="button is-small is-danger is-outlined button-hover-color queue-clear"
             onClick={() => {
               scheduledReqResDelete();
               clearAllGraph();
@@ -58,7 +58,7 @@ const StoppedContainer = (props) => {
             >
               Clear
           </button>
-        </right>
+        </div>
         {scheduledReqResMapped.reverse()}
       </div>
     </div>
