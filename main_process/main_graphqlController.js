@@ -130,7 +130,8 @@ const graphqlController = {
                 reqResObj.response.testResult = testingController.runTest(
                   reqResObj.request.testContent,
                   reqResObj,
-                  data
+                  data,
+                  true
                 );
               }
               event.sender.send("reply-gql", { reqResObj, data });
