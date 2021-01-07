@@ -50,8 +50,8 @@ const ScheduleReqResContainer = (props) => {
 
   return (
     <div>
-       <div className='is-queue-color mx-1 py-1'>
-        <center style={{fontWeight: 'bold', textDecoration: 'underline'}}>Queue</center>
+       <div className='no-styling mx-1 py-1 is-flex is-flex-direction-column'>
+        <center className='queue'>Scheduled Requests</center>
         {scheduledReqResMapped.reverse()}
       </div>
     </div>

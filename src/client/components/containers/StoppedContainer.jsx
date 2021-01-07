@@ -45,9 +45,9 @@ const StoppedContainer = (props) => {
   });
 
   return (
-    <div>
-       <div className='is-queue-color mx-1 py-1 is-flex is-flex-direction-column'>
-        <center className='queue'>Queue</center>
+    <>
+       <div className='no-styling mx-1 py-1 is-flex is-flex-direction-column'>
+        <center className='queue'>Scheduled Requests</center>
         <div className='prettify-select is-align-self-center mt-3 mb-3'>
           <button
             className="button is-small is-danger is-outlined button-hover-color queue-clear"
@@ -61,7 +61,7 @@ const StoppedContainer = (props) => {
         </div>
         {scheduledReqResMapped.reverse()}
       </div>
-    </div>
+    </>
   );
 };
 

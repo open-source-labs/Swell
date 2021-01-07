@@ -39,7 +39,11 @@ export default function ScheduleContainer() {
           </button>
         </div>
       </div>
-      <ReqResContainer displaySchedule={false}/>
+      <div className='m-1'>
+        <ReqResContainer 
+          displaySchedule={false}
+        />
+      </div>
       {runScheduledTests &&
         <ScheduleReqResContainer
         scheduleInterval={scheduleInterval}
