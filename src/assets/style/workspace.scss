@@ -34,6 +34,15 @@
   align-content: center;
 }
 
+.queue {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.queue-clear {
+  width: 30vw;
+}
+
 .pass-fail-total {
   font-weight: bold;
   font-size: 2rem;
@@ -212,6 +221,11 @@
 .cm-s-readonly .CodeMirror-linenumber {
   border: none;
   color: $neutral-300;
+}
+
+.no-styling {
+  padding: 0;
+  margin: 0;
 }
 
 // BARGRAPH
