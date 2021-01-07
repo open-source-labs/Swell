@@ -9,11 +9,11 @@ const PROTO_PATH = path.resolve(__dirname, "./protos/hw2.proto");
 const pd = protoLoader.loadSync(PROTO_PATH);
 const loaded = grpc.loadPackageDefinition(pd);
 // store package from proto file
-const hello_proto = loaded.helloworld;
+const helloProto = loaded.helloworld;
 
 function main() {
   // start client and create credentials
-  const client = new hello_proto.Greeter(
+  const client = new helloProto.Greeter(
     "localhost:50051",
     grpc.credentials.createInsecure()
   );

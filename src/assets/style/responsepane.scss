@@ -1,4 +1,3 @@
-
 // EMPTY STATE
 .empty-state-wrapper {
   height: 80%;
@@ -41,7 +40,7 @@
 
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror * {
-  font-family: "Lucida Console", Monaco, monospace	;
+  font-family: "Lucida Console", Monaco, monospace;
 }
 
 .cm-s-responsebody {
@@ -85,14 +84,15 @@ table {
 }
 
 td {
-  min-width: 6rem;
+  min-width: 9rem;
   max-width: 50%;
 }
 
 .table-value {
-  max-width: 60%;
+  max-width: 60% !important;
   display: flex;
   flex-wrap: wrap;
+  word-wrap: break-word;
 }
 
 .cookie-container {
@@ -120,7 +120,7 @@ td {
   margin-top: 2px;
   border: 0px;
   border-radius: 2px;
-  font-family: "Lucida Console", Monaco, monospace	;
+  font-family: "Lucida Console", Monaco, monospace;
   font-weight: 600;
 }
 
@@ -144,4 +144,20 @@ td {
   font-weight: 600;
   font-size: 0.75rem;
   margin-top: 0.25rem;
+}
+
+.overflow-event-child-container {
+  position: relative;
+  overflow-y: scroll;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+  padding-right: 17px;
+  box-sizing: content-box;
+}
+
+.overflow-event-parent-container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }

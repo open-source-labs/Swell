@@ -163,13 +163,15 @@ const GRPCAutoInputForm = (props) => {
     <div>
       <div className="composer-section-title">Stream</div>
       <span>
-        <GRPCServiceOrRequestSelect 
+        <GRPCServiceOrRequestSelect
+          id={`${serviceOption.split(' ').join('-')}-button`}
           value={serviceOption}
           onClick={setService}
           items={servicesList}
         />
         { serviceOption !== "Select Service" && 
           <GRPCServiceOrRequestSelect 
+            id={`${requestOption.split(' ').join('-')}-button`}
             value={requestOption}
             onClick={setRequest}
             items={rpcsList}

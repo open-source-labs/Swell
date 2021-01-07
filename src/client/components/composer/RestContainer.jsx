@@ -3,6 +3,7 @@ import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a uniq
 import historyController from "../../controllers/historyController";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
 import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
+import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
 import NewRequestButton from './NewRequest/NewRequestButton.jsx'
@@ -23,8 +24,10 @@ export default function RestContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent,
   },
   setNewRequestBody,
+  setNewTestContent,
   newRequestBody,
   newRequestBody: {
     JSONFormatted,
@@ -85,7 +88,7 @@ export default function RestContainer({
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
-    } 
+    }
 
     let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
@@ -131,6 +134,7 @@ export default function RestContainer({
           isSSE,
           network,
           restUrl,
+          testContent: testContent || "",
           wsUrl,
           gqlUrl,
           grpcUrl,
@@ -144,11 +148,11 @@ export default function RestContainer({
         tab: currentTab,
       };
     }
-    
+
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
-    
+
     //reset for next request
     resetComposerFields();
     setWorkspaceActiveTab('workspace');
@@ -160,10 +164,11 @@ export default function RestContainer({
 
   return (
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
-      <div className="is-flex-grow-3 add-vertical-scroll">
+      <div className="is-flex-grow-3 add-vertical-scroll" style={{overflowX: "hidden"}}>
         <RestMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestBody={newRequestBody}
+          setNewTestContent={setNewTestContent}
           setNewRequestFields={setNewRequestFields}
           setNewRequestBody={setNewRequestBody}
           warningMessage={warningMessage}
@@ -182,6 +187,20 @@ export default function RestContainer({
           newRequestBody={newRequestBody}
           setNewRequestCookies={setNewRequestCookies}
         />
+        {/* SSE TOGGLE SWITCH */}
+        <div className="field mt-2">
+          <span className="composer-section-title mr-3">Server Sent Events</span>
+            <input
+              id="SSEswitch"
+              type="checkbox"
+              className="switch is-outlined is-warning"
+              onChange={(e) => {
+                handleSSEPayload(e);
+              }}
+              checked={isSSE}
+             />
+            <label htmlFor="SSEswitch" />
+        </div>
         {method !== "GET" && (
           <BodyEntryForm
             warningMessage={warningMessage}
@@ -191,21 +210,10 @@ export default function RestContainer({
             setNewRequestHeaders={setNewRequestHeaders}
           />
         )}
-
-        {/* SSE TOGGLE SWITCH */}
-        <div className="field mt-2">
-          <span className="composer-section-title mr-3">Server Sent Events</span>  
-            <input 
-              id="SSEswitch"
-              type="checkbox" 
-              className="switch is-outlined is-warning" 
-              onChange={(e) => {
-                handleSSEPayload(e);
-              }}
-              checked={isSSE}
-             />
-            <label htmlFor="SSEswitch" />
-        </div>
+          <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
+          />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />

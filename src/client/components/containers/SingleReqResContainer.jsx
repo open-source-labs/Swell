@@ -6,7 +6,6 @@ import connectionController from "../../controllers/reqResController";
 import RestRequestContent from "../display/RestRequestContent.jsx";
 import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -60,6 +59,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        testContent: content.request.testContent,
       };
     }
     if (network === "ws") {
@@ -84,6 +84,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        testContent: content.request.testContent,
       };
     }
     if (network === "grpc") {
@@ -96,6 +97,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        testContent: content.request.testContent,
       };
     }
     let headerDeeperCopy;
@@ -238,7 +240,7 @@ const SingleReqResContainer = (props) => {
       {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === "rest" && (
-            <RestRequestContent request={content.request} isHTTP2={isHTTP2}/>
+            <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
           {network === "grpc" && (
             <GRPCRequestContent
@@ -256,7 +258,7 @@ const SingleReqResContainer = (props) => {
       <div className="is-flex">
         <button
           className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
-          id={request.method}
+          id={request.method.split(" ").join("-")}
           onClick={() => {
             removeReqRes();
             dispatch(actions.saveCurrentResponseData({}));
@@ -270,7 +272,7 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
             onClick={() => {
-              ReqResCtrl.openReqRes(content.id);
+              connectionController.openReqRes(content.id);
               dispatch(actions.saveCurrentResponseData(content));
             }}
           >

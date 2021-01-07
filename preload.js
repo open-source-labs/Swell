@@ -20,7 +20,7 @@ const apiObj = {
       "introspect",
       "open-ws",
       "send-ws",
-      "close-ws"
+      "close-ws",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -37,10 +37,17 @@ const apiObj = {
       "reply-gql",
       "reqResUpdate",
       "introspect-reply",
-      "update-connectionArray"
+      "update-connectionArray",
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
+    }
+  },
+  removeAllListeners: (channel, cb) => {
+    // allowlist channels
+    const allowedChannels = ["reqResUpdate", "reply-gql"];
+    if (allowedChannels.includes(channel)) {
+      ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
     }
   },
 };

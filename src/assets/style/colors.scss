@@ -35,7 +35,7 @@ $text: $neutral-500;
 .cm-s-neo .cm-string { color: $primary-500 !important; }
 .cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier { color: #06a568 !important; }
 
-// COLOR SCHEMES 
+// COLOR SCHEMES
 .is-primary-100 {
   color: $neutral-500 !important;
   background-color: $primary-100 !important;
@@ -49,6 +49,11 @@ $text: $neutral-500;
 .is-rest {
   color: $neutral-200 !important;
   background-color: $rest !important;
+}
+
+.is-rest-invert {
+  color: $rest !important;
+  background-color: $neutral-200 !important;
 }
 
 .is-graphQL {
@@ -141,4 +146,9 @@ $text: $neutral-500;
   position: relative;
   top: -0.07em;
   vertical-align: middle;
+}
+
+.is-queue-color {
+  background: $neutral-200;
+  padding-left: 1em;
 }

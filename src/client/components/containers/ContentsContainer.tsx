@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import BarGraph from "../display/BarGraph"
 import WorkspaceContainer from "./WorkspaceContainer.jsx";
+import ScheduleContainer from "./ScheduleContainer.jsx";
 import CollectionsContainer from "./CollectionsContainer";
 
 export const ContentsContainer = () => {
@@ -25,35 +26,47 @@ export const ContentsContainer = () => {
       <div className="tabs header-bar">
         <ul className='columns is-gapless'>
           <li className={`column ${activeTab === 'workspace' ? 'is-active' : '' }`}>
-            <a 
+            <a
               onClick={() => setActiveTab('workspace')}
             >Requests
             </a>
           </li>
           <li className={`column ${activeTab === 'saved-workspace' ? 'is-active' : '' }`}>
-            <a 
+            <a
               onClick={() => setActiveTab('saved-workspace')}
             >Saved Workspace
             </a>
           </li>
+          <li className={`column ${activeTab === 'schedule' ? 'is-active' : '' }`}>
+            <a
+              onClick={() => setActiveTab('schedule')}
+            >Schedule
+            </a>
+          </li>
         </ul>
       </div>
+      {/* <input style={{height: '100px'}} id="testInput" type="text"></input> */}
+
       {/* WORKSPACE CONTENT */}
       <div className="is-flex-grow-3 add-vertical-scroll">
 
-        {activeTab === 'workspace' && 
+        {activeTab === 'workspace' &&
           <WorkspaceContainer />
         }
 
-        {activeTab === 'saved-workspace' && 
+        {activeTab === 'saved-workspace' &&
           <CollectionsContainer />
+        }
+
+        {activeTab === 'schedule' &&
+          <ScheduleContainer />
         }
 
       </div>
 
       {/* BARGRAPH CONTENT */}
       { currentResponse.id &&
-        <div 
+        <div
           className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
           onClick={() => setShowGraph(showGraph === false)}
           >

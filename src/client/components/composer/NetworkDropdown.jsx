@@ -41,8 +41,8 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
         </div>
       </div>
 
-      <div className="dropdown-menu">
-        <div className="dropdown-content">
+      <div className="dropdown-menu full-width is-fullwidth">
+        <div className="dropdown-content full-width is-fullwidth has-text-centered">
           <a  
             onClick={() => {
               setDropdownIsActive(false);

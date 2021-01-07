@@ -4,6 +4,7 @@ import * as types from "../actions/actionTypes";
 const initialState = {
   currentTab: "First Tab",
   reqResArray: [],
+  scheduledReqResArray: [],
   history: [],
   collections: [],
   warningMessage: {},
@@ -18,6 +19,8 @@ const initialState = {
     graphQL: false,
     gRPC: false,
     network: "rest",
+    testContent: "",
+    testResults: [],
   },
   newRequestHeaders: {
     headersArr: [],
@@ -259,6 +262,23 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
+    case types.SCHEDULED_REQRES_UPDATE: {
+      const scheduledReqResArray = JSON.parse(JSON.stringify(state.scheduledReqResArray));
+      scheduledReqResArray.push(action.payload);
+      return {
+        ...state,
+        scheduledReqResArray,
+      };
+    }
+
+    case types.SCHEDULED_REQRES_DELETE: {
+      const scheduledReqResArray = [];
+      return {
+        ...state,
+        scheduledReqResArray,
+      };
+    }
+
     case types.UPDATE_GRAPH: {
       const { id } = action.payload;
       // action.payload is the latest reqRes object
@@ -269,7 +289,7 @@ const businessReducer = (state = initialState, action) => {
       //if more than 8 points, data will shift down an index
       if (!dataPointsCopy[id]) {
         dataPointsCopy[id] = [];
-      } else if (dataPointsCopy[id].length > 5) {
+      } else if (dataPointsCopy[id].length > 49) {
         dataPointsCopy[id] = dataPointsCopy[id].slice(1);
       }
 
@@ -354,6 +374,16 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestBody: action.payload,
+      };
+    }
+
+    case types.SET_NEW_TEST_CONTENT: {
+      return {
+        ...state,
+        newRequestFields: {
+          ...state.newRequestFields,
+          testContent: action.payload,
+        },
       };
     }
 

@@ -1,42 +1,27 @@
 const path = require("path");
-const fs = require("fs");
-const hl = require("highland");
-const Mali = require("mali");
-// Mali needs the old grpc as a peer dependency so that should be installed as well
 const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
 
-// consider replacing highland with normal node code for converting array to streams
+// change PROTO_PATH to load a different mock proto file
+const PROTO_PATH = path.resolve(__dirname, "./hw2.proto");
+const PORT = "0.0.0.0:30051";
 
-const PROTO_PATH = path.join(__dirname, "./hw2.proto");
-const HOSTPORT = "0.0.0.0:50051";
+// Service method to be used on unary test
+const SayHello = (call, callback) => {
+  callback(null, { message: `Hello ${call.request.name}` });
+};
 
-// Unary stream
-// ctx = watch execution context
-async function sayHello(ctx) {
-  // ctx contains both req and res objects
-  // sets key-value pair inside ctx.response.metadata as a replacement for headers
-  ctx.set("UNARY", "true");
-  ctx.res = { message: "Hello " + ctx.req.name };
-}
-// nested Unary stream
-async function sayHelloNested(ctx) {
-  ctx.set("UNARY", "true");
-  // nested unary response call
-  const firstPerson = ctx.req.firstPerson.name;
-  const secondPerson = ctx.req.secondPerson.name;
-  ctx.res = {
-    serverMessage: [
-      { message: "Hello! " + firstPerson },
-      { message: "Hello! " + secondPerson },
-    ],
-  };
-}
-// Server-Side Stream
-// used highland library to manage asynchronous data
-async function sayHellosSs(ctx) {
-  ctx.set("Server-side-stream", "true");
-  // In case of UNARY and RESPONSE_STREAM calls it is simply the gRPC call's request
+// Service method to be used on nested unary test
+const SayHelloNested = (call, callback) => {
+  callback(null, {serverMessage: [
+    { message: `Hello! ${call.request.firstPerson.name}`},
+    { message: `Hello! ${call.request.secondPerson.name}`}
+    ]
+  });
+};
 
+// Service method to be used on server streaming test
+const SayHellosSs = call => {
   const dataStream = [
     {
       message: "You",
@@ -51,76 +36,61 @@ async function sayHellosSs(ctx) {
       message: "Champ",
     },
   ];
+  const reqMessage = { message: "hello!!! " + call.request.name}
+  const updatedStream = [...dataStream, reqMessage];
+  updatedStream.forEach(data => {
+    call.write(data)
+  })
+  call.end();
+};
 
-  const reqMessages = { message: "hello!!! " + ctx.req.name };
-  // combine template with reqMessage
-  const updatedStream = [...dataStream, reqMessages];
-  const makeStreamData = await hl(updatedStream);
-  ctx.res = makeStreamData;
-  // ends server stream
-  ctx.res.end();
-}
-
-// Client-Side stream
-async function sayHelloCs(ctx) {
-  // create new metadata
-  ctx.set("client-side-stream", "true");
-
+// Service method to be used on client streaming test
+const sayHelloCs = (call, callback) => {
   const messages = [];
+  call.on('data', data => {
+    messages.push(data);
+  })
+  call.on('end', () => {
+    callback(null, {
+      message: `received ${messages.length} messages`
+    })
+  })
+};
 
-  return new Promise((resolve, reject) => {
-    // ctx.req is the incoming readable stream
-    hl(ctx.req)
-      .map((message) => {
-        // currently the proto file is setup to only read streams with the key "name"
-        // other named keys will be pushed as an empty object
-        messages.push(message);
-        return undefined;
-      })
-      .collect()
-      .toCallback((err, result) => {
-        if (err) return reject(err);
-        ctx.response.res = { message: `received ${messages.length} messages` };
-        return resolve();
-      });
-  });
-}
+// Service method to be used on bidirectional streaming test
+const sayHelloBidi = (call, callback) => {
+  call.on('data', data => {
+    call.write({ message: "bidi stream: " + data.name });
+  })
+  call.on('end', () => {
+    call.end();
+  })
+};
 
-// Bi-Di stream
-function sayHelloBidi(ctx) {
-  // create new metadata
-  ctx.set("bidi-stream", "true");
-  // The execution context provides scripts and templates with access to the watch metadata
-  let counter = 0;
-  ctx.req.on("data", (data) => {
-    counter++;
-    ctx.res.write({ message: "bidi stream: " + data.name });
-  });
-
-  // calls end to client before closing server
-  ctx.req.on("end", () => {
-    // console.log(`done sayHelloBidi counter ${counter}`);
-    // ends server stream
-    ctx.res.end();
-  });
-}
-
-/**
- * Starts an RPC server that receives requests for the Greeter service at the
- * sample server port
- */
+// function for starting a gRPC test server
 function main(status) {
-  const app = new Mali(PROTO_PATH, "Greeter");
+  // load proto file
+  const proto = protoLoader.loadSync(PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true
+  });
+  const pkg = grpc.loadPackageDefinition(proto);
   if (status === 'open') {
-    app.use({ sayHello, sayHelloNested, sayHellosSs, sayHelloCs, sayHelloBidi });
-    app.start(HOSTPORT);
-    console.log(`GRPC Greeter service running @ ${HOSTPORT}`);
-  } else if (status === 'close') {
-    app.close();
-    console.log('grpcServer closed')
+    // create new instance of grpc server
+    const server = new grpc.Server();
+
+    // add service and methods to the server
+    server.addService(pkg.helloworld.Greeter.service, { SayHello, SayHelloNested, SayHellosSs, sayHelloCs, sayHelloBidi });
+
+    // bind specific port to the server and start the server
+    server.bindAsync(PORT, grpc.ServerCredentials.createInsecure(), (port) => {
+      server.start();
+      console.log(`grpc server running on port ${PORT}`);
+    });
   }
 }
 
-main("open");
-
-module.exports = main
+module.exports = main;

@@ -59,6 +59,15 @@ export const reqResUpdate = (reqRes) => ({
   payload: reqRes,
 });
 
+export const scheduledReqResUpdate = (reqRes) => ({
+  type: types.SCHEDULED_REQRES_UPDATE,
+  payload: reqRes,
+});
+
+export const scheduledReqResDelete = () => ({
+  type: types.SCHEDULED_REQRES_DELETE,
+});
+
 export const updateGraph = (id) => ({
   type: types.UPDATE_GRAPH,
   payload: id,
@@ -101,6 +110,11 @@ export const setNewRequestBody = (body) => ({
   type: types.SET_NEW_REQUEST_BODY,
   payload: body,
 });
+
+export const setNewTestContent = (content) => ({
+  type: types.SET_NEW_TEST_CONTENT,
+  payload: content,
+})
 
 export const setNewRequestCookies = (cookies) => ({
   type: types.SET_NEW_REQUEST_COOKIES,
@@ -153,3 +167,5 @@ export const setResponsePaneActiveTab = (tabName) => ({
   type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
   payload: tabName,
 });
+
+

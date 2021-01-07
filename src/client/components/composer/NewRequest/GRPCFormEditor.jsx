@@ -123,12 +123,14 @@ const GRPCProtoEntryForm = (props) => {
       </div>
    
       <div className="is-danger subtitle">{protoError}</div>
-      <TextCodeAreaEditable 
-        id="grpcProtoEntryTextArea"
-        onChange={(editor, data, value) => updateProtoBody(value)}
-        value={props.newRequestStreams.protoContent}
-        mode="application/json"
-      />
+      <div id="grpcProtoEntryTextArea">
+        <TextCodeAreaEditable 
+          id="grpcProtoEntryTextArea"
+          onChange={(editor, data, value) => updateProtoBody(value)}
+          value={props.newRequestStreams.protoContent}
+          mode="application/json"
+        />
+      </div>
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
         setNewRequestStreams={props.setNewRequestStreams}

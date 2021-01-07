@@ -9,7 +9,8 @@ import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm.jsx";
 import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm.jsx";
 import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog.jsx";
-import NewRequestButton from './NewRequest/NewRequestButton.jsx'
+import NewRequestButton from './NewRequest/NewRequestButton.jsx';
+import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
 
 export default function GraphQLContainer({
   resetComposerFields,
@@ -26,7 +27,9 @@ export default function GraphQLContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent,
   },
+  setNewTestContent,
   setNewRequestBody,
   newRequestBody,
   newRequestBody: {
@@ -105,7 +108,7 @@ export default function GraphQLContainer({
       setComposerWarningMessage(warnings);
       return;
     }
-     
+
     let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
@@ -150,6 +153,7 @@ export default function GraphQLContainer({
           isSSE,
           network,
           restUrl,
+          testContent: testContent || "",
           wsUrl,
           gqlUrl,
           grpcUrl,
@@ -202,6 +206,7 @@ export default function GraphQLContainer({
         rawType,
         network,
         restUrl,
+        testContent: testContent || "",
         wsUrl,
         gqlUrl,
         grpcUrl,
@@ -214,7 +219,7 @@ export default function GraphQLContainer({
       minimized: false,
       tab: currentTab,
     };
-  
+
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
@@ -222,9 +227,9 @@ export default function GraphQLContainer({
 
     //reset for next request
     resetComposerFields();
-    
+
     // GRAPHQL REQUESTS
-    
+
     setNewRequestBody({
       ...newRequestBody,
       bodyType: "GQL",
@@ -235,7 +240,7 @@ export default function GraphQLContainer({
       url: gqlUrl,
       gqlUrl,
     });
-  
+
     setWorkspaceActiveTab('workspace');
   };
 
@@ -243,10 +248,11 @@ export default function GraphQLContainer({
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
       <div
         className="is-flex-grow-3 add-vertical-scroll"
+        style={{overflowX: "hidden"}}
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >
-        
+
         <GraphQLMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
@@ -259,6 +265,7 @@ export default function GraphQLContainer({
           setNewRequestBody={setNewRequestBody}
           warningMessage={warningMessage}
           setComposerWarningMessage={setComposerWarningMessage}
+          setNewTestContent={setNewTestContent}
         />
         <HeaderEntryForm
           newRequestHeaders={newRequestHeaders}
@@ -282,6 +289,10 @@ export default function GraphQLContainer({
         <GraphQLVariableEntryForm
           newRequestBody={newRequestBody}
           setNewRequestBody={setNewRequestBody}
+        />
+        <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
         />
         <GraphQLIntrospectionLog />
       </div>
