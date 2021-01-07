@@ -8,6 +8,7 @@ import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import historyController from "../../controllers/historyController";
 import GRPCTypeAndEndpointEntryForm from "./NewRequest/GRPCTypeAndEndpointEntryForm";
 import NewRequestButton from './NewRequest/NewRequestButton.jsx'
+import TestEntryForm from './NewRequest/TestEntryForm'
 
 export default function GRPCContainer({
   resetComposerFields,
@@ -24,8 +25,10 @@ export default function GRPCContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent,
   },
   setNewRequestBody,
+  setNewTestContent,
   newRequestBody,
   newRequestBody: {
     JSONFormatted,
@@ -77,16 +80,16 @@ export default function GRPCContainer({
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
-    } 
+    }
       let reqRes;
       const protocol = ""
-      
+
         // saves all stream body queries to history & reqres request body
         let streamQueries = "";
         for (let i = 0; i < streamContent.length; i++) {
           // queries MUST be in format, do NOT edit template literal unless necessary
           streamQueries += `${streamContent[i]}
-          
+
 `;
         }
         // define array to hold client query strings
@@ -127,6 +130,7 @@ export default function GRPCContainer({
             restUrl,
             wsUrl,
             gqlUrl,
+            testContent: testContent || '',
             grpcUrl,
           },
           response: {
@@ -150,14 +154,14 @@ export default function GRPCContainer({
           protoPath,
           protoContent,
         };
-      
+
       // add request to history
       historyController.addHistoryToIndexedDb(reqRes);
       reqResAdd(reqRes);
 
       //reset for next request
       resetComposerFields();
-    
+
       // GRPC REQUESTS
       setNewRequestBody({
         ...newRequestBody,
@@ -181,6 +185,7 @@ export default function GRPCContainer({
     <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
       <div
         className="is-flex-grow-3 add-vertical-scroll"
+        style={{overflowX: "hidden"}}
         // tabIndex={0}
       >
 
@@ -209,6 +214,10 @@ export default function GRPCContainer({
         <GRPCFormEditor
           newRequestStreams={newRequestStreams}
           setNewRequestStreams={setNewRequestStreams}
+        />
+        <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
         />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">

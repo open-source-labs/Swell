@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions";
 import EventsContainer from "./EventsContainer";
 import HeadersContainer from "./HeadersContainer";
+import TestsContainer from "./TestsContainer";
 import CookiesContainer from "./CookiesContainer";
 import StatusButtons from "../display/StatusButtons";
 import ResponseTime from "../display/ResponseTime";
@@ -10,6 +11,7 @@ import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
 export const ResponsePaneContainer = () => {
+
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
 
@@ -80,10 +82,17 @@ export const ResponsePaneContainer = () => {
               >
                 <a onClick={() => setActiveTab("cookies")}> Cookies</a>
               </li>
+              <li
+                className={`column ${
+                  activeTab === "tests" ? "is-active" : ""
+                }`}
+              >
+                <a onClick={() => setActiveTab("tests")}> Tests</a>
+              </li>
             </ul>
           </div>
           {/* RESPONSES CONTENT */}
-          <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column remove-horizontal-scroll">
+          <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
             {activeTab === "events" && (
               <EventsContainer currentResponse={currentResponse} />
             )}
@@ -92,6 +101,9 @@ export const ResponsePaneContainer = () => {
             )}
             {activeTab === "cookies" && (
               <CookiesContainer currentResponse={currentResponse} />
+            )}
+            {activeTab === "tests" && (
+              <TestsContainer currentResponse={currentResponse} />
             )}
           </div>
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}

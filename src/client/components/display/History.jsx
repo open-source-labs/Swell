@@ -29,6 +29,7 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         graphQL: graphQL || false,
         gRPC: gRPC || false,
         network,
+        testContent: content.request.testContent,
       }
     };
     if (network === 'ws') {

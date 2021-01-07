@@ -1,80 +1,57 @@
-const mongoose = require('mongoose');
-const db = require('./dbModel');
+// const mongoose = require('mongoose');
+let db = [];
 
-mongoose.set('useFindAndModify', false);
+// mongoose.set('useFindAndModify', false);
 
 const bookController = {};
 
 bookController.clearDB = (req, res, next) => {
-	db.BookStore.deleteMany({}, (err) => {
-		if (err) next(err);
-		next()
-	});
+	db = [];
+	return next()
 }
 
 bookController.getAll = (req, res, next) => {
-	db.BookStore.find({}, (err, books) => {
-    if (err) {
-      next(err);
-    }
-    res.locals.books = books;
-    // console.log(books);
-    next();
-  })
+	res.locals.books = db;
+	return next();
 }
 
 bookController.addBook = (req, res, next) => {
 	const { title, author, pages } = req.body;
-	db.BookStore.create({ title, author, pages }, (err, books) => {
-    if (err) {
-      next(err);
-    }
-    res.locals.books = books;
-    next();
-	})
+	const book = {title, author, pages};
+	db.push(book);
+	res.locals.books = db;
+	return next();
 }
 
 bookController.updateEntireBook = (req, res, next) => {
 	const { title } = req.params;
 	const { author, pages } = req.body;
-	db.BookStore.replaceOne({ title }, { title, author, pages }, (err, books) => {
-    if (err) {
-      next(err);
-		}
-		if (books.n === 1) {
-			db.BookStore.findOne({title}, (err, books) => {
-				if (err) {
-					next(err);
-				}
-
-				res.locals.books = books;
-				next();
-			})
-		}
-	})
+	const book = db.filter(book => book.title === title);
+	book[0].title = title;
+	book[0].author = author;
+	book[0].pages = pages;
+	db = [...db, ...book];
+	res.locals.books = db;
+	return next();
 }
 
 bookController.patchBook = (req, res, next) => {
 	const { title } = req.params;
 	const { author } = req.body;
-	db.BookStore.findOneAndUpdate({ title }, { title, author }, {new: true}, (err, books) => {
-    if (err) {
-      next(err);
-    }
-		res.locals.books = books;
-    next();
-	})
+	const book = db.filter(book => book.title === title);
+	book[0].title = title;
+	book[0].author = author;
+	db = [...db, ...book];
+	res.locals.books = db;
+	return next();
 }
 
 bookController.deleteBook = (req, res, next) => {
 	const { title } = req.params;
-	db.BookStore.findOneAndDelete({ title }, (err, books) => {
-    if (err) {
-      next(err);
-    }
-		res.locals.books = books;
-    next();
-	})
+	const book = db.filter(book => book.title === title)[0];
+	db = db.filter(book => book.title !== title);
+	res.locals.books = book;
+  return next();
 }
 
 module.exports = bookController;

@@ -1,14 +1,14 @@
 language: node_js
 node_js:
-- 10.16.2
+  - 10.16.2
 addons:
   apt:
     packages:
-    - xvfb
+      - xvfb
 before_install:
-- export DISPLAY=':99.0'
-- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 cache: npm
 env:
   global:
-    secure: LsdBvNbrRfEqUcwF0XW6pLzvAVlC8MFvLj1PpaGX2wrcWuDwLbfPl/KDfZBKoj4/abtM71NcjCRK5zUpeMVVG3o4vIQMxxEw+4SGyxpeo39SdE7NX+WC7sVoVfBkI+bWcjieQL26pgzFDFXZ0hkfhzrealRUvMsjmD7kvkv+mvWbmoQZC4A3MR3McPyj7++1mO9pC/l1sDQlJHxk6nrOA0S3fTdt85arbt1ThAsbDR4WZqvfhQ5Sd95VYyIVI35iWyUxx0Cgy3qTZH183LIu+w3Hgm/mSF9jAS1bXjHlDjeaAS5b3MerduTQztA9E0+mAoN9L5L2XDOdhSX1i1GM83DMKXM5kTnmIjqLecNCTreD/PuoThAm/52F6mDQ+0KIJNNFBLzV4KIJLokV/Y4M0pdoSmVSEpnGFYivQcb7U1+oXB84fT4NnA5nqv/65k7Wv8L7G0VNtJ03z1v8jbENMj+CFN3FQLKG7FgEEEMnNy//YNwPaF1REOiLJ02t02sy3XJHFl6crt6dWtXRxlhUDlMYmPaUNqmFsX/18bsPbuKp/1VID8wodpb88zLgRHwp+CudiZm2LLAgMhFY9/aDOYeGCwreRtN/S+jlxMHCD/U86U/N2l4joqvERIYDvY7UQVNy9AeyCFdqrzwGkgcWjnFA+BPKdIi2TEP5CtOEr2g=
+    - secure: fI10dGRbWPDSZB7CLFbzUqAz6YxYGgXeL2Vls9oESfu6TXtPJ+VQgBnmFqBS5JMeDGaZ1ua4Sx3YqjN3c3mnnA8160plSZ/ULEj7tK09MtW/NPHPzDcIk0wmNPbI2pcc031lcwQLfHhTsjgC1JJII3hZpYYSI0Gf5CbgDQwzRgS2qEAl9LqlQDxfZJUI9hW8GzLhWwDBC+fX5GiSDtu7cK49G0lqGcb78LqVzALsXeC11UuFIDP2neum1gSaYZgnE+83whb5Cf1agsgdeqLxholt0VbxtQS4lt4yyNB3DcM5amktK3vrV7wOAeOfUQ1vQ6vpOsbbbc9uJHLpDV667Pj+gw+N2Em1An5XvLggtGB76W2aXJaerdE42TkrN4JwolHdFPaMC5wuFd1juSfYIV9jlgkleY7kSR6jlBNamfP6VwKtMYjuJHE5FunNKFeGLt/3ygvJlRWCVc89TrFTS4vQL2157ZtOAOPlzvI+4vBAZzGtJkzIml/5/UTouZCbHh+ebEl/EPiqHDWQMNOWo//MMADBd/gQpbNbkdBPB8Z6wl03qmW1VYFROSGG5AkZC+o86aLCgaBFTD2a3ndLlOzzpUiLHtS92JnIu3iGzRZcz/sQkjBPY99C/OZoDaUmYOfmhFlL8VRF5AJ77PAaLDRRguLeZXtU/H1XPQ5Nmyo=

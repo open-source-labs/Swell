@@ -1,17 +1,20 @@
 import React from "react";
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import ContentReqRow from './ContentReqRow';
+import 'codemirror/theme/neat.css';
+
 
 export default function RestRequestContent({ request, isHTTP2 }) {
 
   // ORGANIZE PROPS
-  const { 
+  const {
     headers, // [{id: 0, active: true, key: 'key', value: 'value'}]
     cookies, // [{id: 0, active: true, key: 'key', value: 'value'}]
     body, // "body Content text"
     bodyType, // "raw", x-www-form-urlencoded
     rawType, // "Text (text/plain)"
-    isSSE, // false/true
+    isSSE,
+    testContent // false/true
   } = request;
 
   // CREATE HEADER COMPONENTS
@@ -44,7 +47,7 @@ export default function RestRequestContent({ request, isHTTP2 }) {
     const parsedFormBody = parseQueryString(body);
     formRows = parsedFormBody.map((item, index) => <ContentReqRow data={item} key={`h${index}`}/>);
   }
-  
+
   // PRETTY-PRINT BODY IF JSON
   // const bodyText = body;
   const bodyText = (rawType === 'application/json') ? ( JSON.stringify( JSON.parse(body), null, 4 ) ) : ( body );
@@ -59,15 +62,15 @@ export default function RestRequestContent({ request, isHTTP2 }) {
         }
         {/* HTTP2 CONFIRMATION */}
         { isHTTP2 &&
-          <div className="is-size-7 olor-is-success">HTTP2 Connection Established</div>
+          <div className="is-size-7 color-is-success">HTTP2 Connection Established</div>
         }
         {/* HEADERS */}
-        {headerRows.length > 0 && 
+        {headerRows.length > 0 &&
           <div className="is-size-7">Headers</div>
         }
         {headerRows}
         {/* COOKIES */}
-        {cookieRows.length > 0 && 
+        {cookieRows.length > 0 &&
           <div className="is-size-7">Cookies</div>
         }
         {cookieRows}
@@ -96,6 +99,24 @@ export default function RestRequestContent({ request, isHTTP2 }) {
               {formRows}
             </div>
           }
+        {/* TEST DATA */}
+        {testContent.length > 0 &&
+            <div>
+              <div className="is-size-7">Tests</div>
+              <CodeMirror
+                value={testContent}
+                options={{
+                  mode: rawType,
+                  theme: 'neat readonly',
+                  lineNumbers: true,
+                  tabSize: 4,
+                  lineWrapping: true,
+                  readOnly: true,
+                }}
+                />
+            </div>
+          }
+
       </div>
     </div>
   )

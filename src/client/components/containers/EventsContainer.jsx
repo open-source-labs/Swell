@@ -1,6 +1,7 @@
 import React from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import EmptyState from '../display/EmptyState';
+import EventPreview from '../display/EventPreview';
 import 'codemirror/theme/neo.css'
 
 
@@ -39,18 +40,27 @@ export default function EventsContainer({currentResponse}) {
     responseBody = JSON.stringify(events[0], null, 4);
   }
   return (
-    <div className="tab_content-response" id="events-display">
-      <CodeMirror
-        value={responseBody}
-        options={{
-          mode: 'application/json',
-          theme: 'neo responsebody',
-          lineNumbers: true,
-          tabSize: 4,
-          lineWrapping: true,
-          readOnly: true,
-        }}
-      />
+    <div className="tab_content-response overflow-event-parent-container" id="events-display">
+      {request.method === 'GET' && (
+        <EventPreview 
+          className='overflow-event-child-container'
+          contents={responseBody}
+        />
+      )}
+      <div className='overflow-event-parent-container'>
+        <CodeMirror
+          className='overflow-event-child-container'
+          value={responseBody}
+          options={{
+            mode: 'application/json',
+            theme: 'neo responsebody',
+            lineNumbers: true,
+            tabSize: 4,
+            lineWrapping: true,
+            readOnly: true,
+          }}
+        />
+      </div>
     </div>
   );
 

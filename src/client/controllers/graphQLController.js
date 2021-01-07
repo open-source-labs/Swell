@@ -18,7 +18,7 @@ const graphQLController = {
     reqResObj.response.cookies = [];
     reqResObj.connection = "open";
     reqResObj.timeSent = Date.now();
-    store.default.dispatch(actions.reqResUpdate(reqResObj));
+    // store.default.dispatch(actions.reqResUpdate(reqResObj));
     //send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
@@ -29,10 +29,51 @@ const graphQLController = {
       .catch((err) => console.log("error in sendGqlToMain", err));
   },
 
+  openGraphQLConnectionAndRunCollection(reqResArray) {
+    // initialize response data
+    let index = 0;
+    const reqResObj = reqResArray[index]
+    api.removeAllListeners("reply-gql");
+    api.receive("reply-gql", (result) => {
+      // needs formatting because component reads them in a particular order
+      result.reqResObj.response.cookies = this.cookieFormatter(
+        result.reqResObj.response.cookies
+      );
+
+      if (result.error) {
+        this.handleError(result.error, result.reqResObj);
+      }
+      else {
+        result.reqResObj.response.events.push(result.data);
+
+        result.reqResObj.connection = "closed";
+        result.reqResObj.connectionType = "plain"; 
+        result.reqResObj.timeReceived = Date.now();  
+
+        store.default.dispatch(actions.reqResUpdate(result.reqResObj));
+        store.default.dispatch(actions.saveCurrentResponseData(result.reqResObj));
+        store.default.dispatch(actions.updateGraph(result.reqResObj));
+        index += 1;
+        if (reqResArray.length > index) runSingleGraphQLRequest(reqResArray[index])
+      }
+    });
+    
+    const runSingleGraphQLRequest = (reqResObj) => {
+      reqResObj.response.headers = {};
+      reqResObj.response.events = [];
+      reqResObj.response.cookies = [];
+      reqResObj.connection = "open";
+      reqResObj.timeSent = Date.now();
+      api.send("open-gql", {reqResObj});
+    }
+    runSingleGraphQLRequest(reqResArray[index]);
+  },
+
   // handles graphQL queries and mutations
   sendGqlToMain(args) {
     return new Promise((resolve) => {
       //send object to the context bridge
+      api.removeAllListeners("reply-gql");
       api.send("open-gql", args);
       api.receive("reply-gql", (result) => {
         // needs formatting because component reads them in a particular order

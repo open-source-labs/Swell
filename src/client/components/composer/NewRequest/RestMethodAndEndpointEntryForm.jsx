@@ -11,11 +11,12 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestFields,
   setNewRequestBody,
   newRequestBody,
+  setNewTestContent,
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
 
-  
+
   useEffect(() => {
     const closeDropdown = (event) => {
       if (!dropdownEl.current.contains(event.target)) {
@@ -25,7 +26,7 @@ const RestMethodAndEndpointEntryForm = ({
     document.addEventListener('click', closeDropdown);
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
-  
+
   const warningCheck = () => {
     if (warningMessage.uri) {
       const newWarningMessage = { ...warningMessage };
@@ -42,14 +43,16 @@ const RestMethodAndEndpointEntryForm = ({
       bodyType: "raw",
       bodyContent: "",
     });
-    
+
     //always set new method
     setNewRequestFields({
       ...newRequestFields,
       method: newMethodStr,
       protocol: '',
     });
-  } 
+
+    setNewTestContent("");
+  }
 
 
   const urlChangeHandler = (e, network) => {
@@ -59,48 +62,48 @@ const RestMethodAndEndpointEntryForm = ({
       ...newRequestFields,
       restUrl: url,
       url,
-    }); 
+    });
   };
-  
+
 
 
   return (
     <div>
       {/* ************** RestMethodAndEndpointEntryForm ************** */}
-        <div 
-          ref={dropdownEl} 
+        <div
+          ref={dropdownEl}
           className={` is-flex is-justify-content-center dropdown ${dropdownIsActive ? 'is-active' : ''}`}
         >
-    
+
           <div className="dropdown-trigger">
             <button className="is-rest button" aria-haspopup="true" aria-controls="dropdown-menu"
               onClick={() => setDropdownIsActive(!dropdownIsActive)}
             >
               <span>{newRequestFields.method}</span>
-              <span className="icon is-small">
+              <span className="icon is-medium">
                 <img src={dropDownArrow} className="is-awesome-icon" aria-hidden="true" />
               </span>
             </button>
           </div>
-  
+
           <div className="dropdown-menu" id="dropdown-menu">
             <ul className="dropdown-content">
               {newRequestFields.method !== 'GET' &&
-                (<a 
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("GET");
-                  }} 
-                  className="dropdown-item" 
+                  }}
+                  className="dropdown-item"
                 >GET</a>)
               }
               {newRequestFields.method !== 'POST' &&
                 (<a
                   onClick={() => {
                     setDropdownIsActive(false);
-                    methodChangeHandler("POST"); 
-                  }} 
-                  className="dropdown-item" 
+                    methodChangeHandler("POST");
+                  }}
+                  className="dropdown-item"
                 >POST</a>)
               }
               {newRequestFields.method !== 'PUT' &&
@@ -108,32 +111,32 @@ const RestMethodAndEndpointEntryForm = ({
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("PUT");
-                  }} 
-                  className="dropdown-item" 
+                  }}
+                  className="dropdown-item"
                 >PUT</a>)
               }
               {newRequestFields.method !== 'PATCH' &&
-                (<a 
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("PATCH")
-                  }} 
-                  className="dropdown-item" 
+                  }}
+                  className="dropdown-item"
                 >PATCH</a>)
               }
               {newRequestFields.method !== 'DELETE' &&
-                (<a  
+                (<a
                   onClick={() => {
                     setDropdownIsActive(false);
                     methodChangeHandler("DELETE")
-                  }} 
-                  className="dropdown-item" 
+                  }}
+                  className="dropdown-item"
                 >DELETE</a>)
               }
             </ul>
           </div>
-  
-      
+
+
         <input
           className="ml-1 input input-is-medium is-info"
           type="text"

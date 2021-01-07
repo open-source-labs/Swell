@@ -45,6 +45,9 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestBody: (requestBodyObj) => {
     dispatch(actions.setNewRequestBody(requestBodyObj));
   },
+  setNewTestContent: (testContent) => {
+    dispatch(actions.setNewTestContent(testContent));
+  },
   setNewRequestCookies: (requestCookiesObj) => {
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
   },
@@ -80,6 +83,7 @@ const ComposerContainer = (props) => {
             graphQL: true,
             gRPC: false,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             //when switching to GQL clear body
@@ -103,6 +107,7 @@ const ComposerContainer = (props) => {
             graphQL: false,
             gRPC: false,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             //when switching to http clear body
@@ -123,6 +128,7 @@ const ComposerContainer = (props) => {
             graphQL: false,
             gRPC: true,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             //when switching to gRPC clear body
@@ -143,6 +149,7 @@ const ComposerContainer = (props) => {
             graphQL: false,
             gRPC: false,
             network,
+            testContent: "",
           });
           props.setNewRequestBody({
             ...props.newRequestBody,

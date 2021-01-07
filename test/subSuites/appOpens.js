@@ -10,16 +10,16 @@ module.exports = () => {
     describe("Browser Window Tests", () => {
       it("window is visible", async () => {
         const isVisible = await app.browserWindow.isVisible();
-        return assert.equal(isVisible, true);
+        return assert.strictEqual(isVisible, true);
       });
       it("browser window title is 'Swell'", async () => {
         const titleWithBrowser = await app.browserWindow.getTitle();
-        return assert.equal(titleWithBrowser, "Swell");
+        return assert.strictEqual(titleWithBrowser, "Swell");
       });
   
       it("Confirm browser window count is 1", async () => {
         const windowCount = await app.client.getWindowCount();
-        return assert.equal(1, windowCount);
+        return assert.strictEqual(1, windowCount);
       });
       it("take a snapshot of app", async () => {
         const imageBuffer = await app.browserWindow.capturePage();
@@ -31,28 +31,28 @@ module.exports = () => {
         const titleWithClient = await app.client
           .waitUntilWindowLoaded()
           .getTitle(); // the dom set inside dist/index.html which is set inside webpack htmlPlugin
-        return assert.equal(titleWithClient, "Swell");
+        return assert.strictEqual(titleWithClient, "Swell");
       });
   
       it("devTool should NOT open since we are in production mode", async () => {
         const isOpen = await app.browserWindow.isDevToolsOpened();
-        return assert.equal(isOpen, false);
+        return assert.strictEqual(isOpen, false);
       });
       it("Composer panel exists", async () => {
         await app.client.waitUntilWindowLoaded();
         // $ is basically querySelector
         const composer = await app.client.$("#composer");
-        return assert.notEqual(composer.value, null);
+        return assert.notStrictEqual(composer.value, null);
       });
       it("Workspace exists", async () => {
         await app.client.waitUntilWindowLoaded();
         const workspace = await app.client.$("#workspace");
-        return assert.notEqual(workspace.value, null);
+        return assert.notStrictEqual(workspace.value, null);
       });
       it("Responses panel exists", async () => {
         await app.client.waitUntilWindowLoaded();
         const responses = await app.client.$("#responses");
-        return assert.notEqual(responses.value, null);
+        return assert.notStrictEqual(responses.value, null);
       });
     });
   }); 

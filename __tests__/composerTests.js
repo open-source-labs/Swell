@@ -6,8 +6,7 @@ import ProtocolSelect from "../src/client/components/composer/NewRequest/Protoco
 configure({ adapter: new Adapter() });
 
 describe("GraphQL Composer", () => {
-  let state;
-  state = {
+  const state = {
     currentTab: "First Tab",
     reqResArray: [],
     history: [],

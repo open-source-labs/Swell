@@ -7,7 +7,11 @@ const reqInputTests = require("./subSuites/reqInputTests");
 const httpTest = require("./subSuites/httpTest");
 const websocketTest = require("./subSuites/websocketTest");
 const grpcTest = require("./subSuites/grpcTest");
-const graphqlTest = require('./subSuites/graphqlTest')
+const graphqlTest = require("./subSuites/graphqlTest");
+
+const httpTestingTest = require("./subSuites/httpTestingTest");
+const graphqlTestingTest = require("./subSuites/graphqlTestingTest");
+const grpcTestingTest = require("./subSuites/grpcTestingTest");
 
 const app = require("./testApp");
 
@@ -26,10 +30,18 @@ describe("Electron Tests", function () {
   // these are are test suites within this broader suite
   appOpensTests();
 
+  // execute differnt types of test here
   describe("CRUD functionality", function () {
     reqInputTests();
     httpTest();
     graphqlTest();
     websocketTest();
+     grpcTest();
+  });
+
+  describe("Swell Testing functionality", function () {
+    httpTestingTest();
+    grpcTestingTest();
+    graphqlTestingTest();
   });
 });
