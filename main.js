@@ -101,7 +101,7 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: process.env.NODE_ENV !== "test",
+      contextIsolation: process.env.NODE_ENV !== "test", //true if in dev mode
       // enableRemoteModule: false,
       sandbox: process.env.NODE_ENV !== "test",
       webSecurity: true,
