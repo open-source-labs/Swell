@@ -151,6 +151,7 @@ function createWindow() {
 
   // Don't show until we are ready and loaded
   mainWindow.once("ready-to-show", () => {
+    console.log("showwwww");
     mainWindow.show();
     // Open the DevTools automatically if developing
     if (isDev && process.env.NODE_ENV !== "test") {
@@ -160,6 +161,7 @@ function createWindow() {
 
   // Emitted when the window is closed.
   mainWindow.on("closed", () => {
+    console.log("window cloooosed");
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
