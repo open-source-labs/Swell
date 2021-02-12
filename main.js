@@ -205,6 +205,7 @@ const sendStatusToWindow = (text) => {
 
 ipcMain.on("check-for-update", () => {
   //listens to ipcRenderer in UpdatePopUpContainer.jsx
+  console.log("check for update");
   if (!isDev) {
     autoUpdater.checkForUpdates();
   }

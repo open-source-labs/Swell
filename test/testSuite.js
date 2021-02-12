@@ -17,6 +17,7 @@ const app = require("./testApp");
 
 describe("Electron Tests", function () {
   this.timeout(60000);
+  //before and after here are to test if the app can be opened and closed
   before(function () {
     return app.start();
   });
@@ -27,7 +28,7 @@ describe("Electron Tests", function () {
     }
   });
 
-  // these are are test suites within this broader suite
+  // these are test suites within this broader suite
   appOpensTests();
 
   // execute differnt types of test here
@@ -36,7 +37,7 @@ describe("Electron Tests", function () {
     httpTest();
     graphqlTest();
     websocketTest();
-     grpcTest();
+    grpcTest();
   });
 
   describe("Swell Testing functionality", function () {
