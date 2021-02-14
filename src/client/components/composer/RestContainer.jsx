@@ -1,4 +1,6 @@
-import React from 'react'
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
+import React from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import historyController from "../../controllers/historyController";
 import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
@@ -6,8 +8,7 @@ import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
 import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
 import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
 import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
-import NewRequestButton from './NewRequest/NewRequestButton.jsx'
-
+import NewRequestButton from "./NewRequest/NewRequestButton.jsx";
 
 export default function RestContainer({
   resetComposerFields,
@@ -92,16 +93,22 @@ export default function RestContainer({
 
     let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+    //console.log("protocol==>", protocol); //http://
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
+      URIWithoutProtocol;
+      //console.log("URIWithoutProtocol==>", URIWithoutProtocol); //swapi.dev/api/people/1/
       const host = protocol + URIWithoutProtocol.split("/")[0];
+      // console.log("host==>", host); //http://swapi.dev
       let path = `/${URIWithoutProtocol.split("/")
         .splice(1)
         .join("/")
         .replace(/\/{2,}/g, "/")}`;
+      //console.log("path==>", path); ///api/people/1/
       if (path.charAt(path.length - 1) === "/" && path.length > 1) {
         path = path.substring(0, path.length - 1);
+        //console.log("path////", path); ///api/people/1
       }
       path = path.replace(/https?:\//g, "http://");
       reqRes = {
@@ -121,12 +128,8 @@ export default function RestContainer({
         protoPath,
         request: {
           method,
-          headers: headersArr.filter(
-            (header) => header.active && !!header.key
-          ),
-          cookies: cookiesArr.filter(
-            (cookie) => cookie.active && !!cookie.key
-          ),
+          headers: headersArr.filter((header) => header.active && !!header.key),
+          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
           body: bodyContent || "",
           bodyType,
           bodyVariables: bodyVariables || "",
@@ -147,6 +150,7 @@ export default function RestContainer({
         minimized: false,
         tab: currentTab,
       };
+      console.log("reqRes--->", reqRes);
     }
 
     // add request to history
@@ -155,7 +159,7 @@ export default function RestContainer({
 
     //reset for next request
     resetComposerFields();
-    setWorkspaceActiveTab('workspace');
+    setWorkspaceActiveTab("workspace");
   };
 
   const handleSSEPayload = (e) => {
@@ -163,8 +167,11 @@ export default function RestContainer({
   };
 
   return (
-    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
-      <div className="is-flex-grow-3 add-vertical-scroll" style={{overflowX: "hidden"}}>
+    <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: "hidden" }}
+      >
         <RestMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestBody={newRequestBody}
@@ -189,17 +196,19 @@ export default function RestContainer({
         />
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">
-          <span className="composer-section-title mr-3">Server Sent Events</span>
-            <input
-              id="SSEswitch"
-              type="checkbox"
-              className="switch is-outlined is-warning"
-              onChange={(e) => {
-                handleSSEPayload(e);
-              }}
-              checked={isSSE}
-             />
-            <label htmlFor="SSEswitch" />
+          <span className="composer-section-title mr-3">
+            Server Sent Events
+          </span>
+          <input
+            id="SSEswitch"
+            type="checkbox"
+            className="switch is-outlined is-warning"
+            onChange={(e) => {
+              handleSSEPayload(e);
+            }}
+            checked={isSSE}
+          />
+          <label htmlFor="SSEswitch" />
         </div>
         {method !== "GET" && (
           <BodyEntryForm
@@ -210,10 +219,10 @@ export default function RestContainer({
             setNewRequestHeaders={setNewRequestHeaders}
           />
         )}
-          <TestEntryForm
+        <TestEntryForm
           setNewTestContent={setNewTestContent}
           testContent={testContent}
-          />
+        />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />

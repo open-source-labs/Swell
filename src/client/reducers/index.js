@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 // import all reducers here
-import businessReducer from './business';
-import uiReducer from './ui';
+import businessReducer from "./business";
+import uiReducer from "./ui";
 
 // combine reducers
 const reducers = combineReducers({

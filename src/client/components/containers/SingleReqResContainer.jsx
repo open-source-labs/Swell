@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions.js";
@@ -8,6 +10,7 @@ import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
 
 const SingleReqResContainer = (props) => {
+  console.log("singleRequestContainer props==>", props);
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
 
@@ -205,7 +208,7 @@ const SingleReqResContainer = (props) => {
             {connection === "error" && <div className="connection-error" />}
             {connection === "open" && <div className="connection-open" />}
             {connection === "closed" &&
-              method != "WS" &&
+              method !== "WS" &&
               method !== "SUBSCRIPTION" && (
                 <div className="connection-closed" />
               )}

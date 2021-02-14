@@ -14,6 +14,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // npm libraries
 // debugger
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+require("react-devtools-electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,

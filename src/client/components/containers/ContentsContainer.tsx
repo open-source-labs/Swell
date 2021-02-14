@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
@@ -11,6 +14,7 @@ export const ContentsContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector(store => store.ui.workspaceActiveTab);
   const currentResponse = useSelector(store => store.business.currentResponse);
+  //console.log('currentRes==>',currentResponse)
   const setActiveTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
 
   const [showGraph, setShowGraph] = useState(false);
