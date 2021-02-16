@@ -51,12 +51,27 @@ module.exports = () => {
       // click and select POST
       await app.client.$("span=GET").click();
       await app.client.$("a=POST").click();
-      assert.notEqual(await app.client.$("span=POST"), null);
+      assert.notStrictEqual(await app.client.$("span=POST"), null);
 
       // click and select PUT
       await app.client.$("span=POST").click();
       await app.client.$("a=PUT").click();
-      return assert.notEqual(await app.client.$("span=PUT"), null);
+      assert.notStrictEqual(await app.client.$("span=PUT"), null);
+
+      //click and select GET
+      await app.client.$("span=PUT").click();
+      await app.client.$("a=GET").click();
+      assert.notStrictEqual(await app.client.$("span=PUT"), null);
+
+      //click and select PATCH
+      await app.client.$("span=GET").click();
+      await app.client.$("a=PATCH").click();
+      assert.notStrictEqual(await app.client.$("span=GET"), null);
+
+      //click and select DELETE
+      await app.client.$("span=PATCH").click();
+      await app.client.$("a=DELETE").click();
+      assert.notStrictEqual(await app.client.$("span=PATCH"), null);
     });
 
     it("can type url into url input", async () => {
