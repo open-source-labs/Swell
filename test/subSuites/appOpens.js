@@ -10,6 +10,7 @@ module.exports = () => {
         const isVisible = await app.browserWindow.isVisible();
         return assert.strictEqual(isVisible, true);
       });
+
       it("browser window title is 'Swell'", async () => {
         const titleWithBrowser = await app.browserWindow.getTitle();
         return assert.strictEqual(titleWithBrowser, "Swell");
@@ -17,9 +18,10 @@ module.exports = () => {
 
       it("Confirm browser window count is 1", async () => {
         const windowCount = await app.client.getWindowCount();
-
+        console.log("windowCount==>", windowCount);
         return assert.strictEqual(1, windowCount);
       });
+
       it("take a snapshot of app", async () => {
         const imageBuffer = await app.browserWindow.capturePage();
         fs.writeFileSync(path.resolve(__dirname, "snapshot.png"), imageBuffer);
