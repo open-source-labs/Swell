@@ -17,6 +17,7 @@ module.exports = () => {
 
       it("Confirm browser window count is 1", async () => {
         const windowCount = await app.client.getWindowCount();
+
         return assert.strictEqual(1, windowCount);
       });
       it("take a snapshot of app", async () => {
