@@ -24,7 +24,7 @@ const SingleReqResContainer = (props) => {
   const newRequestStreams = useSelector(
     (store) => store.business.newRequestStreams
   );
-
+  //content is reqRes drilled down from ReqResContainer. reqRes was created in WSContainer/RestContainer...
   const {
     content,
     content: {
@@ -276,7 +276,12 @@ const SingleReqResContainer = (props) => {
             id={`send-button-${index}`}
             onClick={() => {
               connectionController.openReqRes(content.id);
-              dispatch(actions.saveCurrentResponseData(content));
+              dispatch(
+                actions.saveCurrentResponseData(
+                  content,
+                  "singleReqResContainercomponentSendHandler"
+                )
+              ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
             }}
           >
             Send

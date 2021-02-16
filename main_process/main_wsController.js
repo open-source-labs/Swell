@@ -16,6 +16,7 @@ const wsController = {
     event.sender.send("reqResUpdate", reqResObj);
 
     //create socket
+    //check websocket npm package doc
     let socket;
     try {
       socket = new WebSocketClient();
@@ -26,7 +27,9 @@ const wsController = {
     }
 
     //when it connects, update connectionArray
+    //connection here means a single connection being established
     socket.on("connect", (connection) => {
+      console.log("websocket client connected");
       this.wsConnect = connection;
       reqResObj.connection = "open";
       const openConnectionObj = {
@@ -35,8 +38,10 @@ const wsController = {
         id: reqResObj.id,
       };
       connectionArray.push(openConnectionObj);
+      console.log("connectionArr=>", connectionArray);
       event.sender.send("update-connectionArray", connectionArray);
       event.sender.send("reqResUpdate", reqResObj);
+      //connection.on
       this.wsConnect.on("close", () => {
         console.log("closed WS");
       });
@@ -56,11 +61,13 @@ const wsController = {
   },
 
   closeWs(event) {
+    //connection.close
     this.wsConnect.close();
   },
 
   sendWebSocketMessage(event, reqResObj, inputMessage) {
     //send message to ws server
+    //connection.send
     this.wsConnect.send(inputMessage);
 
     //push sent message to reqResObj message array as a request message
@@ -74,6 +81,7 @@ const wsController = {
 
     //listener for return message from ws server
     //push into message array under responses
+    //connection.on
     this.wsConnect.on("message", (e) => {
       reqResObj.response.messages.push({
         data: e.utf8Data,
@@ -94,6 +102,8 @@ module.exports = () => {
   });
   //listener for sending messages to server
   ipcMain.on("send-ws", (event, reqResObj, inputMessage) => {
+    //console.log("send-ws event===>", event);
+    //console.log("send-ws reqResObj===>", reqResObj);
     wsController.sendWebSocketMessage(event, reqResObj, inputMessage);
   });
   //listerner to close socket connection

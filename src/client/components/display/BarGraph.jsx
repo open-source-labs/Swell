@@ -14,7 +14,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   saveCurrentResponseData: (reqRes) => {
-    dispatch(actions.saveCurrentResponseData(reqRes));
+    dispatch(actions.saveCurrentResponseData(reqRes, "bargraph"));
   },
   updateGraph: (reqRes) => {
     dispatch(actions.updateGraph(reqRes));

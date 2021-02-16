@@ -143,9 +143,10 @@ export const setIntrospectionData = (dataObj) => ({
   payload: dataObj,
 });
 
-export const saveCurrentResponseData = (dataObj) => ({
+export const saveCurrentResponseData = (dataObj, callingFunc) => ({
   type: types.SAVE_CURRENT_RESPONSE_DATA,
   payload: dataObj,
+  callingFunc,
 });
 
 // UI ACTIONS
