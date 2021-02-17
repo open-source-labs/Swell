@@ -19,9 +19,11 @@ const wsController = {
     //check websocket npm package doc
     let socket;
     try {
+      console.log("creating socket");
       socket = new WebSocketClient();
     } catch (err) {
       reqResObj.connection = "error";
+      console.log("websocket creation errror==>", err);
       event.sender.send("reqResUpdate", reqResObj);
       return;
     }
@@ -38,7 +40,7 @@ const wsController = {
         id: reqResObj.id,
       };
       connectionArray.push(openConnectionObj);
-      console.log("connectionArr=>", connectionArray);
+      //console.log("connectionArr=>", connectionArray);
       event.sender.send("update-connectionArray", connectionArray);
       event.sender.send("reqResUpdate", reqResObj);
       //connection.on
@@ -96,8 +98,6 @@ module.exports = () => {
   // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
   // listener to open wsconnection
   ipcMain.on("open-ws", (event, reqResObj, connectionArray) => {
-    //console.log("event.sender==>", typeof event.sender);
-    //console.log("event.sender==>", event.sender.webContents);
     wsController.openWSconnection(event, reqResObj, connectionArray);
   });
   //listener for sending messages to server

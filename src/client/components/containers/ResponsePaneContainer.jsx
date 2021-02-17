@@ -11,7 +11,6 @@ import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
 export const ResponsePaneContainer = () => {
-
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
 
@@ -83,9 +82,7 @@ export const ResponsePaneContainer = () => {
                 <a onClick={() => setActiveTab("cookies")}> Cookies</a>
               </li>
               <li
-                className={`column ${
-                  activeTab === "tests" ? "is-active" : ""
-                }`}
+                className={`column ${activeTab === "tests" ? "is-active" : ""}`}
               >
                 <a onClick={() => setActiveTab("tests")}> Tests</a>
               </li>
