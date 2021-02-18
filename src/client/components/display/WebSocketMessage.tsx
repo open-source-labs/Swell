@@ -32,7 +32,11 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
     <div>
       <div className={webSocketMessageClassNames} id={`ws-msg-${index}`}>
         <div className={message_background}>
-          <div className="websocket_message-data"><div id={webSocketMessageIDNames}>{data}</div></div>
+          <div className="websocket_message-data">
+            
+            {data.includes('blob')?  <img src={data} alt='img' id={webSocketMessageIDNames}/>: <div id={webSocketMessageIDNames}>{data}</div>}
+           
+          </div>
           <div className="websocket_message-time">{buildTime(timeReceived)}</div>
         </div>
       </div>

@@ -89,6 +89,7 @@ const wsController = {
         data: e.utf8Data,
         timeReceived: Date.now(),
       });
+
       //update store
       event.sender.send("reqResUpdate", reqResObj);
     });
