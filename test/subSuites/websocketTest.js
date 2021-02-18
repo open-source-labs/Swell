@@ -21,15 +21,6 @@ module.exports = () => {
       }
     };
 
-    // const openAndReopen = async () => {
-    //   try {
-    //     await composerObj.closeConnectonBtn.click();
-    //     await composerObj.reopenConnectionBtn.click();
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // };
-
     after(() => {
       app.client.$("button=Clear Workspace").click();
     });
@@ -81,6 +72,15 @@ module.exports = () => {
             }
           }, 1000)
         );
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    it("it should be able to close and re-open connection", async () => {
+      try {
+        await composerObj.closeConnectonBtn.click();
+        await composerObj.reopenConnectionBtn.click();
       } catch (err) {
         console.error(err);
       }

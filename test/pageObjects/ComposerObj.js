@@ -49,7 +49,7 @@ class ComposerObj {
     return app.client.$("button=Add New Request");
   }
 
-  // get closeConnectonBtn() {
+  // get closeConnectionBtn() {
   //   return app.client.$("button=Close Connection");
   // }
 

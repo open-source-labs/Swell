@@ -66,6 +66,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
         <div className="is-flex is-align-items-center">
           <input
             className="ml-1 mr-1 input is-small"
+            
             value={inputMessage}
             onKeyPress={handleKeyPress}
             placeholder="Message"
@@ -77,6 +78,13 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
             type="button"
           >
             Send Message
+          </button>
+          <button
+            className="button is-primary is-outlined is-small"
+            onClick={sendToWSController}
+            type="button"
+          >
+            Send image
           </button>
         </div>
         {/* only show the ws messages when connection is open */}
