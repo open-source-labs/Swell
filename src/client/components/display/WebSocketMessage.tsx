@@ -9,6 +9,7 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
   data,
   index
 }) => {
+  console.log('data===>', typeof data)
 
   //conditional classNames and id for messages for styling depending on source
   const webSocketMessageClassNames = source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
@@ -34,7 +35,8 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
         <div className={message_background}>
           <div className="websocket_message-data">
             
-            {data.includes('blob')?  <img src={data} alt='img' id={webSocketMessageIDNames}/>: <div id={webSocketMessageIDNames}>{data}</div>}
+             
+            <div id={webSocketMessageIDNames}><pre>{JSON.stringify(data)}</pre></div>
            
           </div>
           <div className="websocket_message-time">{buildTime(timeReceived)}</div>

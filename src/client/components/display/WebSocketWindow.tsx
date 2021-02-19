@@ -24,15 +24,24 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
     setInputMessage('');
   }
 
-  const  onFileChange = (event:any)=>{
+  const onFileChange = async (event:any)=>{
     
     const file = event.target.files[0]
     console.log('file===>',file)
-    //const blob =  new Blob([file])
-    //console.log('blob==>',blob)
-    const imageSrc = URL.createObjectURL(file)
-  
-    updateOutgoingMessage(imageSrc) //file is 
+    //const imageSrc = URL.createObjectURL(file)
+
+    const arrBuff = (file:any) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+    
+    const data = await arrBuff(file);
+    console.log(data)
+    
+ 
+    updateOutgoingMessage(data) //file is 
   }
 
   //when you press enter send the message, send message to socket
@@ -45,11 +54,13 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const combinedMessagesReactArr = outgoingMessages
       .map((message) => {
         message.source = "client";
+        
         return message;
       })
       .concat(
         incomingMessages.map((message) => {
           message.source = "server";
+          
           return message;
         })
       )

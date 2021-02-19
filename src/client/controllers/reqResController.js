@@ -25,6 +25,7 @@ const connectionController = {
     //remove all previou listeners for 'reqresupdate' before starting to listen for 'reqresupdate' again
     api.removeAllListeners("reqResUpdate");
     api.receive("reqResUpdate", (reqResObj) => {
+      console.log("reqResObjinreqresupdate===>", reqResObj);
       if (
         (reqResObj.connection === "closed" ||
           reqResObj.connection === "error") &&

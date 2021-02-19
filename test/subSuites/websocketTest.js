@@ -77,6 +77,10 @@ module.exports = () => {
       }
     });
 
+    // it("it should send and receive images to public echo test", async()=>{
+
+    //});
+
     it("it should be able to close and re-open connection", async () => {
       try {
         await composerObj.closeConnectonBtn.click();

@@ -70,9 +70,14 @@ const wsController = {
   sendWebSocketMessage(event, reqResObj, inputMessage) {
     //send message to ws server
     //connection.send
+
+    //inputMessage = inputMessage.slice(0, 30);
+    // const buffer = Buffer.from(inputMessage, "utf8");
+    console.log("inputMessage==>", inputMessage);
     this.wsConnect.send(inputMessage);
 
     //push sent message to reqResObj message array as a request message
+
     reqResObj.request.messages.push({
       data: inputMessage,
       timeReceived: Date.now(),
@@ -85,6 +90,8 @@ const wsController = {
     //push into message array under responses
     //connection.on
     this.wsConnect.on("message", (e) => {
+      console.log("e===>", e);
+
       reqResObj.response.messages.push({
         data: e.utf8Data,
         timeReceived: Date.now(),
