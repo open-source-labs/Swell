@@ -1,5 +1,6 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
+console.log("in preload");
 const apiObj = {
   send: (channel, ...data) => {
     // allowlist channels SENDING to Main
@@ -60,5 +61,6 @@ if (process.env.NODE_ENV === "test") {
   window.electronRequire = require;
   window.api = apiObj;
 } else {
+  console.log("made it to the contextBridge////// ");
   contextBridge.exposeInMainWorld("api", apiObj);
 }

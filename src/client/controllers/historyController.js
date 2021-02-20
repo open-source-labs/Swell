@@ -25,6 +25,7 @@ const historyController = {
     db.table("history")
       .toArray()
       .then((history) => {
+        console.log("history---->", history);
         const historyGroupsObj = history.reduce((groups, hist) => {
           const date = format(hist.created_at, "MM/DD/YYYY");
           if (!groups[date]) {
@@ -33,6 +34,7 @@ const historyController = {
           groups[date].push(hist);
           return groups;
         }, {});
+        console.log("historyGroupsObj==>", historyGroupsObj);
         const historyGroupsArr = Object.keys(historyGroupsObj)
           .sort((a, b) => parse(b) - parse(a))
           .map((date) => {

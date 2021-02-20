@@ -19,10 +19,13 @@ const connectionController = {
   },
 
   openReqRes(id) {
+    //console.log("i am hereeeeeeee");
     // listens for reqResUpdate event from main process telling it to update reqResobj
     // REST EVENTS
+    //remove all previou listeners for 'reqresupdate' before starting to listen for 'reqresupdate' again
     api.removeAllListeners("reqResUpdate");
     api.receive("reqResUpdate", (reqResObj) => {
+      console.log("reqResObjinreqresupdate===>", reqResObj);
       if (
         (reqResObj.connection === "closed" ||
           reqResObj.connection === "error") &&
@@ -33,21 +36,29 @@ const connectionController = {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-
+      //console.log("before updating curREs");
       // If current selected response equals reqResObj received, update current response
       const currentID = store.default.getState().business.currentResponse.id;
-      if (currentID === reqResObj.id)
-        store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      //console.log("curIDDD===>", currentID);
+      if (currentID === reqResObj.id) {
+        console.log("updating curRes");
+        store.default.dispatch(
+          actions.saveCurrentResponseData(reqResObj, "currentID===reqresObj.id")
+        );
+      }
     });
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
+    console.log("reqResArr===>", reqResArr);
     const reqResObj = reqResArr.find((el) => el.id === id);
+    console.log("reqResObj===>", reqResObj);
     if (reqResObj.request.method === "SUBSCRIPTION")
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol)) {
       //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      //console.log("i am here to open ws");
       api.send("open-ws", reqResObj, this.openConnectionArray);
 
       //update the connectionArray when connection is open from ws
@@ -120,13 +131,16 @@ const connectionController = {
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-      store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      store.default.dispatch(
+        actions.saveCurrentResponseData(reqResObj, "api.receive reqresupdate")
+      );
       if (index < reqResArray.length) {
         runSingletest(reqResArray[index]);
         index += 1;
       }
     });
     const reqResObj = reqResArray[index];
+
     function runSingletest(reqResObj) {
       if (reqResObj.request.method === "SUBSCRIPTION")
         graphQLController.openSubscription(reqResObj);
@@ -174,7 +188,12 @@ const connectionController = {
 
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
-    store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));
+    store.default.dispatch(
+      actions.saveCurrentResponseData(
+        foundReqRes,
+        "foundreqres.connection closed"
+      )
+    );
   },
 
   closeReqRes(reqResObj) {

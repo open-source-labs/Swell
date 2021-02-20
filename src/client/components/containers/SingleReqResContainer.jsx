@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions.js";
@@ -8,6 +10,7 @@ import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
 
 const SingleReqResContainer = (props) => {
+  console.log("singleRequestContainer props==>", props);
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
 
@@ -21,7 +24,7 @@ const SingleReqResContainer = (props) => {
   const newRequestStreams = useSelector(
     (store) => store.business.newRequestStreams
   );
-
+  //content is reqRes drilled down from ReqResContainer. reqRes was created in WSContainer/RestContainer...
   const {
     content,
     content: {
@@ -205,7 +208,7 @@ const SingleReqResContainer = (props) => {
             {connection === "error" && <div className="connection-error" />}
             {connection === "open" && <div className="connection-open" />}
             {connection === "closed" &&
-              method != "WS" &&
+              method !== "WS" &&
               method !== "SUBSCRIPTION" && (
                 <div className="connection-closed" />
               )}
@@ -273,7 +276,12 @@ const SingleReqResContainer = (props) => {
             id={`send-button-${index}`}
             onClick={() => {
               connectionController.openReqRes(content.id);
-              dispatch(actions.saveCurrentResponseData(content));
+              dispatch(
+                actions.saveCurrentResponseData(
+                  content,
+                  "singleReqResContainercomponentSendHandler"
+                )
+              ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
             }}
           >
             Send

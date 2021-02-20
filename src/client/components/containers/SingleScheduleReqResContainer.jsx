@@ -45,7 +45,7 @@ const SingleScheduleReqResContainer = (props) => {
     reqResUpdate,
     reqResDelete,
     index,
-    date
+    date,
   } = props;
   const network = content.request.network;
   const method = content.request.method;
@@ -62,10 +62,15 @@ const SingleScheduleReqResContainer = (props) => {
   const highlightClasses =
     currentResponse.id === content.id ? getBorderClass(currentResponse) : "";
 
-    //USE EFFECT
-    useEffect(() => {
-      dispatch(actions.saveCurrentResponseData(content));
-    }, []);
+  //USE EFFECT
+  useEffect(() => {
+    dispatch(
+      actions.saveCurrentResponseData(
+        content,
+        "SingleScheduleReqResContainerComponent"
+      )
+    );
+  }, []);
 
   return (
     <div className={`m-3 ${highlightClasses}`}>
@@ -102,7 +107,7 @@ const SingleScheduleReqResContainer = (props) => {
         <div
           className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
           onClick={() => {
-            setShowDetails(showDetails = false);
+            setShowDetails((showDetails = false));
           }}
         >
           {date}
@@ -120,7 +125,7 @@ const SingleScheduleReqResContainer = (props) => {
       {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === "rest" && (
-            <RestRequestContent request={content.request} isHTTP2={isHTTP2}/>
+            <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
           {network === "grpc" && (
             <GRPCRequestContent

@@ -13,7 +13,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const [inputMessage, setInputMessage] = useState('');
 
   //updates the outgoing message when it changes
-  const updateOutgoingMessage = (value: string) => {
+  const updateOutgoingMessage = (value: any) => {
     setInputMessage(value);
   }
   
@@ -21,7 +21,28 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const sendToWSController = () =>  {
     api.send("send-ws", content, inputMessage);
     //reset inputbox
-    setInputMessage('');
+    // setInputMessage('');
+  }
+
+  const onFileChange = async (event:any)=>{
+    
+    const file = event.target.files[0]
+    console.log('file===>',file)
+    //const imageSrc = URL.createObjectURL(file)
+
+    const dataURL = (file:any) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+    
+     const data:any = await dataURL(file);
+    // const buffer = Buffer.from(data, "utf8");
+    // console.log(buffer)
+    
+ 
+    updateOutgoingMessage(data) //file is 
   }
 
   //when you press enter send the message, send message to socket
@@ -34,18 +55,22 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const combinedMessagesReactArr = outgoingMessages
       .map((message) => {
         message.source = "client";
+        
         return message;
       })
       .concat(
         incomingMessages.map((message) => {
           message.source = "server";
+          
           return message;
         })
       )
       //sorts by time
       .sort((a, b) => a.timeReceived - b.timeReceived)
       //then maps the combined array to a WebSocket Component
+      //conditionally rendering messages or images
       .map((message, index) => (
+        
         <WebSocketMessage
           key={index}
           index={index}
@@ -66,6 +91,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
         <div className="is-flex is-align-items-center">
           <input
             className="ml-1 mr-1 input is-small"
+            
             value={inputMessage}
             onKeyPress={handleKeyPress}
             placeholder="Message"
@@ -77,6 +103,22 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
             type="button"
           >
             Send Message
+          </button>
+          <input
+            className="ml-1 mr-1 input is-small"
+            type='file'
+            //value={inputMessage}
+            onKeyPress={handleKeyPress}
+            //placeholder="Message"
+            onChange={onFileChange}
+            // onChange={(e) => updateOutgoingMessage(e.target.value)}
+          />
+          <button
+            className="button is-primary is-outlined is-small"
+            onClick={sendToWSController}
+            type="button"
+          >
+            Send image
           </button>
         </div>
         {/* only show the ws messages when connection is open */}

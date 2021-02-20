@@ -14,6 +14,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // npm libraries
 // debugger
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+//require("react-devtools-electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -101,7 +102,7 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: process.env.NODE_ENV !== "test",
+      contextIsolation: process.env.NODE_ENV !== "test", //true if in dev mode
       // enableRemoteModule: false,
       sandbox: process.env.NODE_ENV !== "test",
       webSecurity: true,
@@ -151,6 +152,7 @@ function createWindow() {
 
   // Don't show until we are ready and loaded
   mainWindow.once("ready-to-show", () => {
+    console.log("showwwww");
     mainWindow.show();
     // Open the DevTools automatically if developing
     if (isDev && process.env.NODE_ENV !== "test") {
@@ -160,6 +162,7 @@ function createWindow() {
 
   // Emitted when the window is closed.
   mainWindow.on("closed", () => {
+    console.log("window cloooosed");
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -203,6 +206,7 @@ const sendStatusToWindow = (text) => {
 
 ipcMain.on("check-for-update", () => {
   //listens to ipcRenderer in UpdatePopUpContainer.jsx
+  console.log("check for update");
   if (!isDev) {
     autoUpdater.checkForUpdates();
   }

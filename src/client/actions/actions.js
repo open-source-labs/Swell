@@ -1,6 +1,8 @@
 import * as types from "./actionTypes";
 
 // BUSINESS LOGIC ACTIONS
+
+//action creators
 export const getHistory = (history) => ({
   type: types.GET_HISTORY,
   payload: history,
@@ -114,7 +116,7 @@ export const setNewRequestBody = (body) => ({
 export const setNewTestContent = (content) => ({
   type: types.SET_NEW_TEST_CONTENT,
   payload: content,
-})
+});
 
 export const setNewRequestCookies = (cookies) => ({
   type: types.SET_NEW_REQUEST_COOKIES,
@@ -141,9 +143,10 @@ export const setIntrospectionData = (dataObj) => ({
   payload: dataObj,
 });
 
-export const saveCurrentResponseData = (dataObj) => ({
+export const saveCurrentResponseData = (dataObj, callingFunc) => ({
   type: types.SAVE_CURRENT_RESPONSE_DATA,
   payload: dataObj,
+  callingFunc,
 });
 
 // UI ACTIONS
@@ -167,5 +170,3 @@ export const setResponsePaneActiveTab = (tabName) => ({
   type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
   payload: tabName,
 });
-
-

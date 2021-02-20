@@ -240,6 +240,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_UPDATE: {
+      //console.log("reqresIDDD", action.payload.id);
       const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
@@ -263,7 +264,9 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SCHEDULED_REQRES_UPDATE: {
-      const scheduledReqResArray = JSON.parse(JSON.stringify(state.scheduledReqResArray));
+      const scheduledReqResArray = JSON.parse(
+        JSON.stringify(state.scheduledReqResArray)
+      );
       scheduledReqResArray.push(action.payload);
       return {
         ...state,
@@ -416,6 +419,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SAVE_CURRENT_RESPONSE_DATA: {
+      console.log("callingFunc", action.callingFunc);
       return {
         ...state,
         currentResponse: action.payload,
