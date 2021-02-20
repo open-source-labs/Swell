@@ -71,23 +71,25 @@ const wsController = {
     //send message to ws server
     //connection.send
 
-    inputMessage = inputMessage.slice(0, 30);
-    const buffer = Buffer.from(inputMessage, "utf8");
-    // const buffer = Buffer.from(inputMessage.toString(), "utf8");
-    // console.log(
-    //   "inputMessage buffer==>",
-    //   Buffer.from(inputMessage.toString(), "utf8")
-    // );
-    console.log("input==>", buffer);
+    //check datatype
+    console.log("input message pre-send", inputMessage);
 
-    this.wsConnect.send(buffer);
-
-    //push sent message to reqResObj message array as a request message
-
-    reqResObj.request.messages.push({
-      data: buffer,
-      timeReceived: Date.now(),
-    });
+    if (inputMessage.includes("data:image/")) {
+      const buffer = Buffer.from(inputMessage, "utf8");
+      console.log("sending as buffer");
+      this.wsConnect.sendBytes(buffer);
+      reqResObj.request.messages.push({
+        data: buffer,
+        timeReceived: Date.now(),
+      });
+    } else {
+      this.wsConnect.send(inputMessage);
+      console.log("sending as string");
+      reqResObj.request.messages.push({
+        data: inputMessage,
+        timeReceived: Date.now(),
+      });
+    }
 
     //update store
     event.sender.send("reqResUpdate", reqResObj);
@@ -96,12 +98,15 @@ const wsController = {
     //push into message array under responses
     //connection.on
     this.wsConnect.on("message", (e) => {
-      console.log("e===>", e);
-      console.log(e.binaryData);
-      reqResObj.response.messages.push({
-        data: e.binaryData,
-        timeReceived: Date.now(),
-      });
+      e.binaryData
+        ? reqResObj.response.messages.push({
+            data: e.binaryData,
+            timeReceived: Date.now(),
+          })
+        : reqResObj.response.messages.push({
+            data: e.utf8Data,
+            timeReceived: Date.now(),
+          });
 
       //update store
       event.sender.send("reqResUpdate", reqResObj);

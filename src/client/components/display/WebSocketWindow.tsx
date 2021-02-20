@@ -21,7 +21,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const sendToWSController = () =>  {
     api.send("send-ws", content, inputMessage);
     //reset inputbox
-    setInputMessage('');
+    // setInputMessage('');
   }
 
   const onFileChange = async (event:any)=>{
