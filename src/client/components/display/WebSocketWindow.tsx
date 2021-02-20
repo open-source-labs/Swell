@@ -30,15 +30,16 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
     console.log('file===>',file)
     //const imageSrc = URL.createObjectURL(file)
 
-    const arrBuff = (file:any) => new Promise((resolve, reject) => {
+    const dataURL = (file:any) => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
 });
     
-    const data = await arrBuff(file);
-    console.log(data)
+     const data:any = await dataURL(file);
+    // const buffer = Buffer.from(data, "utf8");
+    // console.log(buffer)
     
  
     updateOutgoingMessage(data) //file is 

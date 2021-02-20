@@ -71,15 +71,21 @@ const wsController = {
     //send message to ws server
     //connection.send
 
-    //inputMessage = inputMessage.slice(0, 30);
-    // const buffer = Buffer.from(inputMessage, "utf8");
-    console.log("inputMessage==>", inputMessage);
-    this.wsConnect.send(inputMessage);
+    inputMessage = inputMessage.slice(0, 30);
+    const buffer = Buffer.from(inputMessage, "utf8");
+    // const buffer = Buffer.from(inputMessage.toString(), "utf8");
+    // console.log(
+    //   "inputMessage buffer==>",
+    //   Buffer.from(inputMessage.toString(), "utf8")
+    // );
+    console.log("input==>", buffer);
+
+    this.wsConnect.send(buffer);
 
     //push sent message to reqResObj message array as a request message
 
     reqResObj.request.messages.push({
-      data: inputMessage,
+      data: buffer,
       timeReceived: Date.now(),
     });
 
@@ -91,9 +97,9 @@ const wsController = {
     //connection.on
     this.wsConnect.on("message", (e) => {
       console.log("e===>", e);
-
+      console.log(e.binaryData);
       reqResObj.response.messages.push({
-        data: e.utf8Data,
+        data: e.binaryData,
         timeReceived: Date.now(),
       });
 
