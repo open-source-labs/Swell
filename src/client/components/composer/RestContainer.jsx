@@ -150,7 +150,6 @@ export default function RestContainer({
         minimized: false,
         tab: currentTab,
       };
-      console.log("reqRes--->", reqRes);
     }
 
     // add request to history
