@@ -49,13 +49,13 @@ class ComposerObj {
     return app.client.$("button=Add New Request");
   }
 
-  // get closeConnectionBtn() {
-  //   return app.client.$("button=Close Connection");
-  // }
+  get closeConnectionBtn() {
+    return app.client.$("button=Close Connection");
+  }
 
-  // get reopenConnectionBtn() {
-  //   return app.client.$("button=Re-Open Connection");
-  // }
+  get reopenConnectionBtn() {
+    return app.client.$("button=Re-Open Connection");
+  }
 
   get testScriptCode() {
     const codeMirror = app.client.$("#test-script-entry");
