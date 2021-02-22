@@ -10,7 +10,7 @@ import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
 import dropDownArrow from "../../../../assets/icons/caret-down-tests.svg";
 import dropDownArrowUp from "../../../../assets/icons/caret-up-tests.svg";
 import { isAbsolute, relative } from "path";
-import RestTestSnippets from "./TestSnippets/RestTestSnippets";
+import RestTestSnippetsContainer from "./TestSnippets/RestTestSnippetsContainer";
 
 const TestEntryForm = (props) => {
   const { testContent, setNewTestContent } = props;
@@ -20,12 +20,14 @@ const TestEntryForm = (props) => {
 
   return (
     <div className="mt-4 mb-4">
-      <RestTestSnippets />
+      <RestTestSnippetsContainer
+        testContent={testContent}
+        setNewTestContent={setNewTestContent}
+        setShowTests={setShowTests}
+      />
       <div
         className="is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
-        onClick={() => {
-          handleShowTests();
-        }}
+        onClick={handleShowTests}
       >
         {showTests === true && (
           <>
