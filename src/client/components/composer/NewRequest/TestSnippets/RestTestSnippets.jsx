@@ -8,12 +8,29 @@ export default function RestTestSnippets(props) {
   const snippets = {
     "Status code: Code is 200":
       "assert.strictEqual(response.status, 200, 'response is 200')",
+
+    "Access the cookies from the response object":
+      "assert.exists(response.cookies, 'cookies exists on response object')",
   };
 
-  const handleClick = () => {
+  const handleClickOne = () => {
     setShowTests(true);
     setNewTestContent(snippets["Status code: Code is 200"]);
   };
 
-  return <span onClick={handleClick}>Status code: Code is 200</span>;
+  const handleClickTwo = () => {
+    setShowTests(true);
+    setNewTestContent(snippets["Access the cookies from the response object"]);
+  };
+
+  return (
+    <div>
+      <span onClick={handleClickOne}>Status code: Code is 200</span>;
+      <br />
+      <span onClick={handleClickTwo}>
+        Access the cookies from the response object
+      </span>
+      ;
+    </div>
+  );
 }
