@@ -32,6 +32,7 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
 console.log('Data=>>>> ',data)
 console.log('type of data', typeof data)
 
+
   return (
     <div>
       <div className={webSocketMessageClassNames} id={`ws-msg-${index}`}>
@@ -42,6 +43,7 @@ console.log('type of data', typeof data)
           
           typeof data==='object'?
             
+          //decode buffer to dataURI
            <img src={new TextDecoder("utf-8").decode(data)} alt="img"/> :
           
             <div id={webSocketMessageIDNames}>{data}</div> 

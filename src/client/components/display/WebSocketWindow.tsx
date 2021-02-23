@@ -11,6 +11,7 @@ const { api } = window;
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
 
   const [inputMessage, setInputMessage] = useState('');
+  const [showWarning, setShowWarning] =useState(false)
 
   //updates the outgoing message when it changes
   const updateOutgoingMessage = (value: any) => {
@@ -28,6 +29,13 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
     
     const file = event.target.files[0]
     console.log('file===>',file)
+    console.log('size==>', file.size)
+    file.size>100000 ?
+      setShowWarning(true):
+      setShowWarning(false)
+    
+
+    
     //const imageSrc = URL.createObjectURL(file)
 
     const dataURL = (file:any) => new Promise((resolve, reject) => {
@@ -38,6 +46,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
 });
     
      const data:any = await dataURL(file);
+     
     // const buffer = Buffer.from(data, "utf8");
     // console.log(buffer)
     
@@ -120,6 +129,11 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
           >
             Send image
           </button>
+
+           
+          {showWarning? 
+          <p >file size is large, may cause errors</p>: null}
+
         </div>
         {/* only show the ws messages when connection is open */}
         {connection === "open" && (

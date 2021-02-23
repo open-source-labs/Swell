@@ -77,17 +77,65 @@ module.exports = () => {
       }
     });
 
-    // it("it should send and receive images to public echo test", async()=>{
-
-    //});
-
-    it("it should be able to close and re-open connection", async () => {
+    it("it should send and receive images to public echo test", async () => {
       try {
-        await composerObj.closeConnectonBtn.click();
-        await composerObj.reopenConnectionBtn.click();
+        // select web sockets
+        // await composerObj.selectedNetwork.click();
+        // await app.client.$("a=WEB SOCKETS").click();
+
+        // type in url
+        // await composerObj.url.setValue("wss://echo.websocket.org");
+
+        //await addAndSend();
+
+        await new Promise(async (resolve) => {
+          try {
+            //instead of this, we need to click "select file", and choose a file
+            await app.client
+              .$$("#responses input")[1]
+              .click()
+              .keys("testing websocket protocol");
+
+            await app.client.$("button=Send Message").click();
+
+            await new Promise((resolve) =>
+              setTimeout(async () => {
+                try {
+                  const messageClient = await app.client
+                    .$("#ws-msg-0")
+                    .getText();
+                  const messageServer = await app.client
+                    .$("#ws-msg-1")
+                    .getText();
+                  expect(messageClient).to.include(
+                    "testing websocket protocol"
+                  );
+                  expect(messageServer).to.include(
+                    "testing websocket protocol"
+                  );
+                  resolve();
+                } catch (err) {
+                  console.error(err);
+                }
+              }, 300)
+            );
+            resolve();
+          } catch (err) {
+            console.error(err);
+          }
+        });
       } catch (err) {
         console.error(err);
       }
     });
+
+    // it("it should be able to close and re-open connection", async () => {
+    //   try {
+    //     await composerObj.closeConnectonBtn.click();
+    //     await composerObj.reopenConnectionBtn.click();
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // });
   });
 };
