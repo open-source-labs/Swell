@@ -10,6 +10,8 @@ import ResponseTime from "../display/ResponseTime";
 import WebSocketWindow from "../display/WebSocketWindow";
 import ReqResCtrl from "../../controllers/reqResController";
 
+/// MAKE SURE YOU UPDATE THE INTERNAL COMMENTS BEFORE SENDING IT TO GITHUB
+
 export const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
@@ -41,23 +43,19 @@ export const ResponsePaneContainer = () => {
         <h3>Responses</h3>
         <StatusButtons currentResponse={currentResponse} />
       </div>
-      {/* IF WEBSOCKETS */}
-      {currentResponse.request?.network === "ws" && (
-        <WebSocketWindow
-          key={0}
-          outgoingMessages={currentResponse.request.messages}
-          incomingMessages={currentResponse.response.messages}
-          content={currentResponse}
-          connection={currentResponse.connection}
-        />
-      )}
-
-      {/* IF NOT WEBSOCKETS */}
-      {currentResponse.request?.network !== "ws" && (
         <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
           {/* TAB SELECTOR */}
           <div className="tabs header-bar">
             <ul className="columns is-gapless">
+            {currentResponse.request?.network === "ws" ? 
+              <li
+              className={`column ${
+                activeTab === "wsWindow" ? "is-active" : ""
+              }`}
+              >
+                <a onClick={() => setActiveTab("wsWindow")}>Send Data</a>
+              </li>
+              :
               <li
                 className={`column ${
                   activeTab === "events" ? "is-active" : ""
@@ -65,6 +63,10 @@ export const ResponsePaneContainer = () => {
               >
                 <a onClick={() => setActiveTab("events")}> Events</a>
               </li>
+              }
+              {/* IF NOT WEBSOCKETS */}
+              {currentResponse.request?.network !== "ws" && (
+                <>
               <li
                 className={`column ${
                   activeTab === "headers" ? "is-active" : ""
@@ -74,6 +76,7 @@ export const ResponsePaneContainer = () => {
                   {currentResponse.gRPC === true ? "Metadata" : "Headers"}
                 </a>
               </li>
+              
               <li
                 className={`column ${
                   activeTab === "cookies" ? "is-active" : ""
@@ -81,6 +84,8 @@ export const ResponsePaneContainer = () => {
               >
                 <a onClick={() => setActiveTab("cookies")}> Cookies</a>
               </li>
+              </>
+              )}
               <li
                 className={`column ${activeTab === "tests" ? "is-active" : ""}`}
               >
@@ -102,6 +107,17 @@ export const ResponsePaneContainer = () => {
             {activeTab === "tests" && (
               <TestsContainer currentResponse={currentResponse} />
             )}
+            {/* currentResponse.request?.network === "ws" */}
+            {activeTab === 'wsWindow' && (
+              <WebSocketWindow
+                key={0}
+                outgoingMessages={currentResponse.request.messages}
+                incomingMessages={currentResponse.response.messages}
+                content={currentResponse}
+                connection={currentResponse.connection}
+              />
+            )}
+            
           </div>
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
           {currentResponse.id &&
@@ -121,8 +137,9 @@ export const ResponsePaneContainer = () => {
               </div>
             )}
         </div>
-      )}
+    
       {/* CLOSE RESPONSE BUTTON */}
+
       {(currentResponse.request?.method === "WS" ||
         currentResponse.request?.method === "SUBSCRIPTION" ||
         currentResponse.request?.isSSE ||

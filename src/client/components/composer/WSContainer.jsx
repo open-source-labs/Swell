@@ -2,9 +2,11 @@ import React from 'react'
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import historyController from "../../controllers/historyController";
 import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
-import NewRequestButton from './NewRequest/NewRequestButton.jsx'
+import NewRequestButton from './NewRequest/NewRequestButton.jsx';
+import WSTestEntryForm from "./NewRequest/WSTestEntryForm.jsx";
 
 export default function WSContainer({
+  setNewTestContent,
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -19,6 +21,7 @@ export default function WSContainer({
     gqlUrl,
     grpcUrl,
     network,
+    testContent
   },
   setNewRequestSSE,
   currentTab,
@@ -101,6 +104,11 @@ export default function WSContainer({
           setComposerWarningMessage={setComposerWarningMessage}
         />
       </div>
+
+      <WSTestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
+        />
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
       </div>
