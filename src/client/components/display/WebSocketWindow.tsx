@@ -27,8 +27,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const onFileChange = async (event:any)=>{
     
     const file = event.target.files[0]
-    console.log('file===>',file)
-    console.log('size==>', file.size)
     file.size>100000 ?
       setShowWarning(true):
       setShowWarning(false)

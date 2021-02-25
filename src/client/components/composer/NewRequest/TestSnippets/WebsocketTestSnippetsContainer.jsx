@@ -5,9 +5,9 @@ import dropDownArrow from "../../../../../assets/icons/caret-down-tests.svg";
 
 import dropDownArrowUp from "../../../../../assets/icons/caret-up-tests.svg";
 
-import RestTestSnippets from "./RestTestSnippets";
+import WebsocketTestSnippets from "./WebsocketTestSnippets";
 
-export default function RestTestSnippetsContainer(props) {
+export default function WebsocketTestSnippetsContainer(props) {
   const { setShowTests, testContent, setNewTestContent } = props;
   const [showSnippets, setShowSnippets] = useState(false);
 
@@ -51,7 +51,7 @@ export default function RestTestSnippetsContainer(props) {
 
       {showSnippets === true && (
         <div id="test-snippets">
-          <RestTestSnippets
+          <WebsocketTestSnippets
             testContent={testContent}
             setNewTestContent={setNewTestContent}
             setShowTests={setShowTests}
