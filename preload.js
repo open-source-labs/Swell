@@ -22,6 +22,7 @@ const apiObj = {
       "open-ws",
       "send-ws",
       "close-ws",
+      "exportChatLog"
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);

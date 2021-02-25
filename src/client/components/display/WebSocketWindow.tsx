@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import WebSocketMessage from "./WebSocketMessage";
 import { WebSocketWindowProps } from "../../../types"
 import * as actions from "../../../../src/client/actions/actions.js";
-
 const { api } = window;
 
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
@@ -93,6 +92,25 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
       display: connection === "open" ? "block" : "none",
     };
 
+
+    //exports the chatLog- sends it to the backend
+    const exportChatLog = (event:any) => {
+      api.send("exportChatLog", outgoingMessages, incomingMessages
+      
+      
+      // outgoingMessages.map((message) => {message.source = "client";return message;})
+      // .concat(incomingMessages.map((message) => {message.source = "server";return message;}))
+      // .sort((a, b) => a.timeReceived - b.timeReceived)
+      // .map((message, index) => (
+      //     {key:index,
+      //     index:index,
+      //     source:message.source,
+      //     data:message.data,
+      //     timeReceived:message.timeReceived}
+      // ))
+      );
+    }
+
     return (
       <div style={{}} className="websocket_container is-tall is-flex is-flex-direction-column m-3">
         <div className="is-flex is-align-items-center">
@@ -141,6 +159,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
             </div>
           </div>
         )}
+      <button className="button is-primary is-outlined is-small" onClick={exportChatLog} type="button">Export Log</button>
       </div>
     );
 }
