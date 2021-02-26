@@ -108,7 +108,7 @@ export const ResponsePaneContainer = () => {
               <TestsContainer currentResponse={currentResponse} />
             )}
             {/* currentResponse.request?.network === "ws" */}
-            {activeTab === 'wsWindow' && (
+            {activeTab === "wsWindow" && currentResponse.request && (
               <WebSocketWindow
                 key={0}
                 outgoingMessages={currentResponse.request.messages}
