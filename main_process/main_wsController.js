@@ -39,7 +39,7 @@ const wsController = {
       console.log("Reqresssss====>", reqResObj);
       this.wsConnect = connection;
       reqResObj.connection = "open";
-      testingController.runTest(reqResObj.request.testContent, reqResObj);
+      // testingController.runTest(reqResObj.request.testContent, reqResObj);
       const openConnectionObj = {
         connection,
         protocol: "WS",
@@ -60,7 +60,7 @@ const wsController = {
       console.log("WS Connect Error: " + error.toString());
       reqResObj.connection = "error";
       reqResObj.timeReceived = Date.now();
-      // reqResObj.response.events.push(JSON.stringify(errorsObj));
+      // reqResObj.response.events.push(JSON.stringify(errorsObj)); need to move
       event.sender.send("reqResUpdate", reqResObj);
     });
 
