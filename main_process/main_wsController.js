@@ -82,6 +82,7 @@ const wsController = {
 
     if (inputMessage.includes("data:image/")) {
       const buffer = Buffer.from(inputMessage, "utf8");
+      console.log("buffer==>", buffer);
       console.log("sending as buffer");
       this.wsConnect.sendBytes(buffer);
       reqResObj.request.messages.push({
