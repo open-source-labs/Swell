@@ -1,23 +1,7 @@
-// const express = require("express");
+const WebSocketServer = require("websocket").server;
+const http = require("http");
 
-// const app = express();
-// const http = require("http").Server(app);
-// const io = require("socket.io")(http);
-
-// io.on("connection", (socket) => {
-//   console.log("a user connected");
-// });
-
-// const PORT = 5000;
-
-// app.listen(PORT, () => {
-//   console.log("Websocket Server Listening On ", PORT);
-// });
-
-var WebSocketServer = require("websocket").server;
-var http = require("http");
-
-var server = http.createServer(function (request, response) {
+const server = http.createServer(function (request, response) {
   console.log(new Date() + " Received request for " + request.url);
   response.writeHead(404);
   response.end();
