@@ -3,6 +3,7 @@ const chai = require("chai");
 const app = require("../testApp.js");
 const composerObj = require("../pageObjects/ComposerObj.js");
 const workspaceObj = require("../pageObjects/WorkspaceObj.js");
+const websocketServer = require("../websocketServer");
 
 const expect = chai.expect;
 
@@ -32,7 +33,7 @@ module.exports = () => {
         await app.client.$("a=WEB SOCKETS").click();
 
         // type in url
-        await composerObj.url.setValue("wss://echo.websocket.org");
+        await composerObj.url.setValue("ws://localhost:5000/");
 
         await addAndSend();
 
