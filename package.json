@@ -11,6 +11,7 @@
     "server-grpc": "node ./test/grpcServer.js",
     "server-http": "node ./test/httpServer.js",
     "server-http2": "node ./test/HTTP2_server.js",
+    "server-websocket": "node ./test/websocketServer.js",
     "test-jest": "jest",
     "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --exit",
     "build": "webpack --mode=production --config ./webpack.production.js",

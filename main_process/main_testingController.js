@@ -11,6 +11,7 @@ testHttpController.runTest = (
 ) => {
   const { request } = reqResObj;
   let { response } = reqResObj;
+  console.log("res======>", response);
   // final test result objects will be stored in this array
   const testResults = [];
 

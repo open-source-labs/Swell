@@ -1,9 +1,10 @@
 const { ipcMain } = require("electron");
-const { dialog } = require('electron')
+const { dialog } = require("electron");
 // const store = require('./src/client/store.js')
 const WebSocketClient = require("websocket").client;
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs");
+const path = require("path");
+const testingController = require("./main_testingController");
 
 const wsController = {
   wsConnect: null,
@@ -35,8 +36,10 @@ const wsController = {
     //connection here means a single connection being established
     socket.on("connect", (connection) => {
       console.log("websocket client connected");
+      console.log("Reqresssss====>", reqResObj);
       this.wsConnect = connection;
       reqResObj.connection = "open";
+      // testingController.runTest(reqResObj.request.testContent, reqResObj);
       const openConnectionObj = {
         connection,
         protocol: "WS",
@@ -57,7 +60,7 @@ const wsController = {
       console.log("WS Connect Error: " + error.toString());
       reqResObj.connection = "error";
       reqResObj.timeReceived = Date.now();
-      // reqResObj.response.events.push(JSON.stringify(errorsObj));
+      // reqResObj.response.events.push(JSON.stringify(errorsObj)); need to move
       event.sender.send("reqResUpdate", reqResObj);
     });
 
@@ -79,6 +82,7 @@ const wsController = {
 
     if (inputMessage.includes("data:image/")) {
       const buffer = Buffer.from(inputMessage, "utf8");
+      console.log("buffer==>", buffer);
       console.log("sending as buffer");
       this.wsConnect.sendBytes(buffer);
       reqResObj.request.messages.push({
@@ -133,22 +137,36 @@ module.exports = () => {
     wsController.closeWs(event);
   });
   ipcMain.on("exportChatLog", (event, outgoingMessages, incomingMessages) => {
-
     //making sure the messages are in order
-    let result = outgoingMessages.map((message) => {message.source = "client";return message;
-      }).concat(incomingMessages.map((message) => {message.source = "server"; return message;})
-      ).sort((a, b) => a.timeReceived - b.timeReceived).map((message, index) => ({index:index, source:message.source, data:message.data, timeReceived:message.timeReceived}));
-    
+    let result = outgoingMessages
+      .map((message) => {
+        message.source = "client";
+        return message;
+      })
+      .concat(
+        incomingMessages.map((message) => {
+          message.source = "server";
+          return message;
+        })
+      )
+      .sort((a, b) => a.timeReceived - b.timeReceived)
+      .map((message, index) => ({
+        index: index,
+        source: message.source,
+        data: message.data,
+        timeReceived: message.timeReceived,
+      }));
+
     const data = new Uint8Array(Buffer.from(JSON.stringify(result)));
 
     //showSaveDialog is the windowexplorer that appears
-    dialog.showSaveDialog({defaultPath: "websocketLog.txt"})
-    .then(file_path =>{  
-    fs.writeFile(file_path.filePath, data, (err) => {
-      if (err) throw err;
-    console.log("File saved to: ", file_path.filePath );
-     });
-   })
+    dialog
+      .showSaveDialog({ defaultPath: "websocketLog.txt" })
+      .then((file_path) => {
+        fs.writeFile(file_path.filePath, data, (err) => {
+          if (err) throw err;
+          console.log("File saved to: ", file_path.filePath);
+        });
+      });
   });
 };
-

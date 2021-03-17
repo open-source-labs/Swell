@@ -10,7 +10,7 @@ const { api } = window;
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
 
   const [inputMessage, setInputMessage] = useState('');
-  const [showWarning, setShowWarning] =useState(false)
+  //const [showWarning, setShowWarning] =useState(false)
 
   //updates the outgoing message when it changes
   const updateOutgoingMessage = (value: any) => {
@@ -27,9 +27,9 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   const onFileChange = async (event:any)=>{
     
     const file = event.target.files[0]
-    file.size>100000 ?
-      setShowWarning(true):
-      setShowWarning(false)
+    // file.size>100000 ?
+    //   setShowWarning(true):
+    //   setShowWarning(false)
     
 
     
@@ -147,8 +147,8 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
           </button>
 
            
-          {showWarning? 
-          <p >file size is large, may cause errors</p>: null}
+          {/* {showWarning? 
+          <p >file size is large, may cause errors</p>: null} */}
 
         </div>
         {/* only show the ws messages when connection is open */}
