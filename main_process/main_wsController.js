@@ -38,7 +38,7 @@ const wsController = {
       console.log("websocket client connected");
       console.log("Reqresssss====>", reqResObj);
       this.wsConnect = connection;
-      reqResObj.connection = "open";
+      reqResObj.response.connection = "open";
       // testingController.runTest(reqResObj.request.testContent, reqResObj);
       const openConnectionObj = {
         connection,
@@ -115,6 +115,13 @@ const wsController = {
             timeReceived: Date.now(),
           });
 
+      console.log("reqrezzTestContent=>>>>", reqResObj);
+      //!!!!note to catsnake team, the reqResObj.request.testContent is undefined
+      reqResObj.response.testResult = testingController.runTest(
+        reqResObj.request.testContent,
+        reqResObj
+      );
+      console.log("the test result", reqResObj.response.testResult);
       //update store
       event.sender.send("reqResUpdate", reqResObj);
     });
