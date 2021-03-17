@@ -38,6 +38,7 @@ const wsController = {
       console.log("websocket client connected");
       console.log("Reqresssss====>", reqResObj);
       this.wsConnect = connection;
+      reqResObj.connection = "open";
       reqResObj.response.connection = "open";
       // testingController.runTest(reqResObj.request.testContent, reqResObj);
       const openConnectionObj = {
