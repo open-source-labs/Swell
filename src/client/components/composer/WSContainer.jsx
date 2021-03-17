@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
 import historyController from "../../controllers/historyController";
-import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
-import NewRequestButton from './NewRequest/NewRequestButton.jsx';
+import WSEndpointEntryForm from "./NewRequest/WSEndpointEntryForm";
+import NewRequestButton from "./NewRequest/NewRequestButton.jsx";
 import WSTestEntryForm from "./NewRequest/WSTestEntryForm.jsx";
 
 export default function WSContainer({
@@ -21,7 +21,7 @@ export default function WSContainer({
     gqlUrl,
     grpcUrl,
     network,
-    testContent
+    testContent,
   },
   setNewRequestSSE,
   currentTab,
@@ -35,8 +35,10 @@ export default function WSContainer({
     //Error conditions...
     // if url is only http/https/ws/wss://
     // OR if url doesn't contain http/https/ws/wss
-    if ((/https?:\/\/$|wss?:\/\/$/.test(url)) 
-      || (!/(https?:\/\/)|(wss?:\/\/)/.test(url))) {
+    if (
+      /https?:\/\/$|wss?:\/\/$/.test(url) ||
+      !/(https?:\/\/)|(wss?:\/\/)/.test(url)
+    ) {
       validationMessage.uri = "Enter a valid URI";
     }
     return validationMessage;
@@ -47,10 +49,10 @@ export default function WSContainer({
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
-    } 
+    }
 
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-  
+
     const reqRes = {
       id: uuid(),
       created_at: new Date(),
@@ -69,6 +71,7 @@ export default function WSContainer({
         wsUrl,
         gqlUrl,
         grpcUrl,
+        testContent,
       },
       response: {
         messages: [],
@@ -76,7 +79,7 @@ export default function WSContainer({
       checked: false,
       tab: currentTab,
     };
-      
+
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
@@ -91,12 +94,15 @@ export default function WSContainer({
       wsUrl,
     });
 
-    setWorkspaceActiveTab('workspace');
+    setWorkspaceActiveTab("workspace");
   };
 
   return (
-    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
-      <div className="is-flex-grow-3 add-vertical-scroll" style={{overflowX: "hidden"}}>
+    <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: "hidden" }}
+      >
         <WSEndpointEntryForm
           newRequestFields={newRequestFields}
           setNewRequestFields={setNewRequestFields}
@@ -106,12 +112,12 @@ export default function WSContainer({
       </div>
 
       <WSTestEntryForm
-          setNewTestContent={setNewTestContent}
-          testContent={testContent}
-        />
+        setNewTestContent={setNewTestContent}
+        testContent={testContent}
+      />
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
       </div>
     </div>
-  )
+  );
 }
