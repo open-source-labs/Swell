@@ -9,8 +9,8 @@ export default function WebsocketTestSnippets(props) {
     "Status code: Code is 200":
       "assert.strictEqual(response.status, 200, 'response is 200')",
 
-    "Konrad is chilling in Staten" : "Nate's in Queens", 
-    "EchoTest" : "some random test"
+    "Konrad is chilling in Staten": "Nate's in Queens",
+    EchoTest: "some random test",
   };
 
   const handleClickOne = () => {
@@ -28,8 +28,6 @@ export default function WebsocketTestSnippets(props) {
     setNewTestContent("Echo Test");
   };
 
-  
-
   return (
     <div>
       <span onClick={handleClickOne}>Status code: Code is 200</span>;
@@ -38,10 +36,7 @@ export default function WebsocketTestSnippets(props) {
         {snippets["Konrad is chilling in Staten"]}
       </span>
       <br />
-      <span onClick={handleClickThree}>
-        Echo Test
-      </span>
-      
+      <span onClick={handleClickThree}>Echo Test</span>
     </div>
   );
 }
