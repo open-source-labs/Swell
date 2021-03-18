@@ -275,6 +275,14 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
             onClick={() => {
+              //check the request type
+              //if it's http, dispatch setactivetab to "event" for reqresponsepane
+              //otherwise do nothing
+              console.log("connection type==>", connectionType);
+              if (connectionType !== "WebSocket") {
+                dispatch(actions.setResponsePaneActiveTab("events"));
+              }
+
               connectionController.openReqRes(content.id);
               dispatch(
                 actions.saveCurrentResponseData(
