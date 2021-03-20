@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import PropTypes, { string } from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
+import { DropzoneArea } from 'material-ui-dropzone';
 import WebSocketMessage from "./WebSocketMessage";
 import { WebSocketWindowProps } from "../../../types"
-import * as actions from "../../../../src/client/actions/actions.js";
+import ImageDropzone from '../../components/display/ImageDropzone'
+// import * as actions from "../../../../src/client/actions/actions.js";
 const { api } = window;
 
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
@@ -24,25 +26,20 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
     // setInputMessage('');
   }
 
-  const onFileChange = async (event:any)=>{
-    
-    const file = event.target.files[0]
-    // file.size>100000 ?
-    //   setShowWarning(true):
-    //   setShowWarning(false)
-    
-
+  const handleFileChange = async (file:any)=>{
+    console.log('file==>', file)
+    const img = file[0]
     
     //const imageSrc = URL.createObjectURL(file)
 
     const dataURL = (file:any) => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(img);
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
 });
     
-     const data:any = await dataURL(file);
+     const data:any = await dataURL(img);
      
     // const buffer = Buffer.from(data, "utf8");
     // console.log(buffer)
@@ -114,9 +111,9 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
     return (
       <div style={{}} className="websocket_container is-tall is-flex is-flex-direction-column m-3">
         <div className="is-flex is-align-items-center">
+         
           <input
             className="ml-1 mr-1 input is-small"
-            
             value={inputMessage}
             onKeyPress={handleKeyPress}
             placeholder="Message"
@@ -129,15 +126,16 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
           >
             Send Message
           </button>
-          <input
+         
+         </div>
+          {/* <input
             className="ml-1 mr-1 input is-small"
             type='file'
-            //value={inputMessage}
             onKeyPress={handleKeyPress}
-            //placeholder="Message"
             onChange={onFileChange}
-            // onChange={(e) => updateOutgoingMessage(e.target.value)}
-          />
+          /> */}
+        <div className="is-flex is-align-items-center">
+          <ImageDropzone onFileChange={handleFileChange}/>
           <button
             className="button is-primary is-outlined is-small"
             onClick={sendToWSController}
@@ -146,11 +144,13 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
             Send image
           </button>
 
+        </div>
+          
            
           {/* {showWarning? 
           <p >file size is large, may cause errors</p>: null} */}
 
-        </div>
+        
         {/* only show the ws messages when connection is open */}
         {connection === "open" && (
           <div className="overflow-parent-container">
