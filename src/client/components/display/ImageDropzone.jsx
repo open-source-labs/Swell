@@ -1,9 +1,8 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import TextCodeAreaEditable from "../composer/NewRequest/TextCodeAreaEditable";
 
 export default function ImageDropzone({ onFileChange }) {
-  console.log("onfilechange==>", onFileChange);
+  //   console.log("dropzoneprops==>", on);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   console.log("accepted files=>", acceptedFiles);
@@ -19,10 +18,10 @@ export default function ImageDropzone({ onFileChange }) {
         <input
           className="ml-1 mr-1 input is-small"
           placeholder={`Drag 'n' drop your image here, or click to select a file`}
+          onFileChange={onFileChange(acceptedFiles)}
         />
       </div>
       <aside>
-        {/* <h4>Files</h4> */}
         <ul>{files}</ul>
       </aside>
     </section>
