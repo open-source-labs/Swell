@@ -2,7 +2,8 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 
 export default function ImageDropzone({ onFileChange }) {
-  //   console.log("dropzoneprops==>", on);
+  console.log("dropzoneprops==>", onFileChange);
+  // console.log("outgoing=>", outgoingMsg);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   console.log("accepted files=>", acceptedFiles);

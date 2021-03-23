@@ -12,23 +12,37 @@ const { api } = window;
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
 
   const [inputMessage, setInputMessage] = useState('');
-  //const [showWarning, setShowWarning] =useState(false)
+  const [inputImg, setInputImg] = useState('')
+ 
 
   //updates the outgoing message when it changes
   const updateOutgoingMessage = (value: any) => {
-    setInputMessage(value);
+   if (value.includes('data:image/')) setInputImg (value);
+   else setInputMessage(value);
   }
-  
+
   //sends to WScontroller in main.js to send the message to server
   const sendToWSController = () =>  {
-    api.send("send-ws", content, inputMessage);
+     if (inputMessage) {
+       api.send("send-ws", content, inputMessage);
+       setInputMessage('')
+       setInputImg("")
+     }
+     if (inputImg) {
+      api.send("send-ws", content, inputImg);
+      setInputImg("")
+      setInputMessage('')
+     }
+   
     //reset inputbox
-    // setInputMessage('');
+    
   }
 
   const handleFileChange = async (file:any)=>{
     console.log('file==>', file)
     const img = file[0]
+    console.log('image-->',img)
+   
     
     //const imageSrc = URL.createObjectURL(file)
 
@@ -95,16 +109,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
       api.send("exportChatLog", outgoingMessages, incomingMessages
       
       
-      // outgoingMessages.map((message) => {message.source = "client";return message;})
-      // .concat(incomingMessages.map((message) => {message.source = "server";return message;}))
-      // .sort((a, b) => a.timeReceived - b.timeReceived)
-      // .map((message, index) => (
-      //     {key:index,
-      //     index:index,
-      //     source:message.source,
-      //     data:message.data,
-      //     timeReceived:message.timeReceived}
-      // ))
       );
     }
 
@@ -146,9 +150,6 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
 
         </div>
           
-           
-          {/* {showWarning? 
-          <p >file size is large, may cause errors</p>: null} */}
 
         
         {/* only show the ws messages when connection is open */}
