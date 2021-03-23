@@ -39,9 +39,9 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
   }
 
   const handleFileChange = async (file:any)=>{
-    console.log('file==>', file)
+    // console.log('file==>', file)
     const img = file[0]
-    console.log('image-->',img)
+    // console.log('image-->',img)
    
     
     //const imageSrc = URL.createObjectURL(file)
