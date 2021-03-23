@@ -116,7 +116,7 @@ const wsController = {
             timeReceived: Date.now(),
           });
 
-      console.log("reqrezzTestContent=>>>>", reqResObj);
+      // console.log("reqrezzTestContent=>>>>", reqResObj);
 
       if (reqResObj.request.testContent) {
         reqResObj.response.testResult = testingController.runTest(
