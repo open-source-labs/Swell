@@ -32,27 +32,27 @@ const TestEntryForm = (props) => {
         {showTests === true && (
           <>
             <span>Hide Tests</span>
-            <span className="icon is-medium is-align-self-center show-hide-tests-icon">
+            {/* <span className="icon is-medium is-align-self-center show-hide-tests-icon">
               <img
                 alt=""
                 src={dropDownArrowUp}
                 className="is-awesome-icon"
                 aria-hidden="false"
               />
-            </span>
+            </span> */}
           </>
         )}
         {showTests === false && (
           <>
             <span>View Tests</span>
-            <span className="icon is-medium is-align-self-center show-hide-tests-icon">
+            {/* <span className="icon is-medium is-align-self-center show-hide-tests-icon">
               <img
                 alt=""
                 src={dropDownArrow}
                 className="is-awesome-icon"
                 aria-hidden="false"
               />
-            </span>
+            </span> */}
           </>
         )}
       </div>
