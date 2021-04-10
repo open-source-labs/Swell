@@ -53,7 +53,9 @@ export const ResponsePaneContainer = () => {
                   activeTab === "wsWindow" ? "is-active" : ""
                 }`}
               >
-                <a onClick={() => setActiveTab("wsWindow")}>Send Data</a>
+                <a id="wsSendData" onClick={() => setActiveTab("wsWindow")}>
+                  Send Data
+                </a>
               </li>
             ) : (
               <li

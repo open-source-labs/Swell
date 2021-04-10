@@ -1,4 +1,5 @@
 const chai = require("chai");
+const path = require("path");
 //for this the previous group used Chai instead of 'assert'from node
 const app = require("../testApp.js");
 const composerObj = require("../pageObjects/ComposerObj.js");
@@ -22,11 +23,11 @@ module.exports = () => {
       }
     };
 
-    after(() => {
-      app.client.$("button=Clear Workspace").click();
-    });
+    // after(() => {
+    //   app.client.$("button=Clear Workspace").click();
+    // });
 
-    it("it should send and receive messages to public echo test", async () => {
+    it("it should send and receive messages to the mock server", async () => {
       try {
         // select web sockets
         await composerObj.selectedNetwork.click();
@@ -35,13 +36,17 @@ module.exports = () => {
         // type in url
         await composerObj.url.setValue("ws://localhost:5000/");
 
+        //
+
         await addAndSend();
 
         await new Promise((resolve) =>
           setTimeout(async () => {
             try {
               await app.client
-                .$("#responses input")
+                .$("#wsSendData")
+                .click()
+                .$("#wsMsgInput")
                 .click()
                 .keys("testing websocket protocol");
               await app.client.$("button=Send Message").click();
@@ -80,24 +85,24 @@ module.exports = () => {
 
     it("it should send and receive images to public echo test", async () => {
       try {
-        // select web sockets
-        // await composerObj.selectedNetwork.click();
-        // await app.client.$("a=WEB SOCKETS").click();
-
-        // type in url
-        // await composerObj.url.setValue("wss://echo.websocket.org");
-
-        //await addAndSend();
-
         await new Promise(async (resolve) => {
           try {
             //instead of this, we need to click "select file", and choose a file
-            await app.client
-              .$$("#responses input")[1]
-              .click()
-              .keys("testing websocket protocol");
+            const toUpload = path.join(
+              __dirname,
+              "..",
+              "..",
+              "build",
+              "icons",
+              "png",
+              "128x128.png"
+            );
 
-            await app.client.$("button=Send Message").click();
+            console.log("toUpload=>", toUpload);
+            // /var/folders/wt/p4tb3xz50csfvrfj897gy4ww0000gn/T/.org.chromium.Chromium.kSmkVs/uploadyVlAPI/128x128.png
+            await app.client.chooseFile("#wsFileInput", toUpload);
+            // const val = app.client.getValue("#upload-test");
+            await app.client.$("#wsSendImgBtn").click();
 
             await new Promise((resolve) =>
               setTimeout(async () => {

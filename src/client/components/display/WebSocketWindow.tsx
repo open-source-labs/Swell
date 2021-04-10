@@ -11,40 +11,42 @@ const { api } = window;
 
 const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMessages, incomingMessages, connection }) => {
 
-  const [inputMessage, setInputMessage] = useState('');
-  const [inputImg, setInputImg] = useState('')
+  // const [inputMessage, setInputMessage] = useState('');
+  // const [inputImg, setInputImg] = useState('')
  
+  const [inputMsgImg, setinputMsgImg] =useState({inputMsg: '', inputImg:''})
 
   //updates the outgoing message when it changes
-  const updateOutgoingMessage = (value: any) => {
-   if (value.includes('data:image/')) setInputImg (value);
-   else setInputMessage(value);
+  const updateOutgoingMessage = async (value: any) => {
+    console.log('updating msg')
+   if (value.includes('data:image/')) {
+    await setinputMsgImg ({...inputMsgImg,inputImg: value });
+   
+   } 
+   else {
+    setinputMsgImg({...inputMsgImg,inputMsg: value });
+   } 
   }
 
   //sends to WScontroller in main.js to send the message to server
   const sendToWSController = () =>  {
-     if (inputMessage) {
-       api.send("send-ws", content, inputMessage);
-       setInputMessage('')
-       setInputImg("")
+     if (inputMsgImg.inputMsg) {
+       api.send("send-ws", content, inputMsgImg.inputMsg);
+      setinputMsgImg({inputMsg: '', inputImg:''})
      }
-     if (inputImg) {
-      api.send("send-ws", content, inputImg);
-      setInputImg("")
-      setInputMessage('')
+       
+     else if (inputMsgImg.inputImg) {
+       console.log('rerendering')
+       api.send("send-ws", content, inputMsgImg.inputImg);
+      setinputMsgImg({inputMsg: '', inputImg:''})
      }
-   
     //reset inputbox
     
   }
 
   const handleFileChange = async (file:any)=>{
-    // console.log('file==>', file)
+  
     const img = file[0]
-    // console.log('image-->',img)
-   
-    
-    //const imageSrc = URL.createObjectURL(file)
 
     const dataURL = (file:any) => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -54,12 +56,12 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
 });
     
      const data:any = await dataURL(img);
-     
-    // const buffer = Buffer.from(data, "utf8");
-    // console.log(buffer)
+    console.log('data======>',data)
+  if (inputMsgImg.inputImg !== data) {
+    // console.log('checkingggggg')
+    updateOutgoingMessage(data)
+  }
     
- 
-    updateOutgoingMessage(data) //file is 
   }
 
   //when you press enter send the message, send message to socket
@@ -118,19 +120,21 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
          
           <input
             className="ml-1 mr-1 input is-small"
-            value={inputMessage}
+            id='wsMsgInput'
+            value={inputMsgImg.inputMsg}
             onKeyPress={handleKeyPress}
             placeholder="Message"
             onChange={(e) => updateOutgoingMessage(e.target.value)}
           />
           <button
             className="button is-primary is-outlined is-small"
+            id = 'wsSendMsgBtn'
             onClick={sendToWSController}
             type="button"
           >
             Send Message
           </button>
-         
+      
          </div>
           {/* <input
             className="ml-1 mr-1 input is-small"
@@ -142,6 +146,7 @@ const WebSocketWindow :React.SFC<WebSocketWindowProps> = ({ content, outgoingMes
           <ImageDropzone onFileChange={handleFileChange}/>
           <button
             className="button is-primary is-outlined is-small"
+            id = 'wsSendImgBtn'
             onClick={sendToWSController}
             type="button"
           >
