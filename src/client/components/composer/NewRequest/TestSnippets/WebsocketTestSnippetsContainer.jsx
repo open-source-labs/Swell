@@ -23,28 +23,12 @@ export default function WebsocketTestSnippetsContainer(props) {
         {showSnippets === true && (
           <>
             <span>Test Snippets</span>
-            <span className="icon is-medium is-align-self-center show-hide-tests-icon">
-              <img
-                alt=""
-                src={dropDownArrowUp}
-                className="is-awesome-icon"
-                aria-hidden="false"
-              />
-            </span>
           </>
         )}
 
         {showSnippets === false && (
           <>
             <span>Test Snippets</span>
-            <span className="icon is-medium is-align-self-center show-hide-tests-icon">
-              <img
-                alt=""
-                src={dropDownArrow}
-                className="is-awesome-icon"
-                aria-hidden="false"
-              />
-            </span>
           </>
         )}
       </div>

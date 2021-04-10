@@ -15,9 +15,10 @@ export default function ImageDropzone({ onFileChange }) {
   return (
     <section className="container">
       <div {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()} />
+        <input id="wsFileInput" {...getInputProps()} />
         <input
           className="ml-1 mr-1 input is-small"
+          id="wsDragNdrop"
           placeholder={`Drag 'n' drop your image here, or click to select a file`}
           onFileChange={onFileChange(acceptedFiles)}
         />
