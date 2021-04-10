@@ -23,9 +23,9 @@ module.exports = () => {
       }
     };
 
-    // after(() => {
-    //   app.client.$("button=Clear Workspace").click();
-    // });
+    after(() => {
+      app.client.$("button=Clear Workspace").click();
+    });
 
     it("it should send and receive messages to the mock server", async () => {
       try {
