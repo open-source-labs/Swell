@@ -98,7 +98,6 @@ module.exports = () => {
               "128x128.png"
             );
 
-            console.log("toUpload=>", toUpload);
             // /var/folders/wt/p4tb3xz50csfvrfj897gy4ww0000gn/T/.org.chromium.Chromium.kSmkVs/uploadyVlAPI/128x128.png
             await app.client.chooseFile("#wsFileInput", toUpload);
             // const val = app.client.getValue("#upload-test");

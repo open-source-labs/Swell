@@ -4,7 +4,6 @@ import { UnControlled as CodeMirror } from "react-codemirror2";
 import "codemirror/theme/neat.css";
 
 export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
-  console.log("value=>", value, "mode=>", mode, "theme=>", theme);
   return (
     <div className="is-neutral-200-box">
       <CodeMirror

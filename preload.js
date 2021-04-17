@@ -1,6 +1,5 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
-console.log("in preload");
 const apiObj = {
   send: (channel, ...data) => {
     // allowlist channels SENDING to Main
@@ -58,10 +57,8 @@ const apiObj = {
 // basically we are assigning certain node functionality (require, ipcRenderer) to the window object in an UN-isolated context only for testing
 // security is reduced for testing, but remains sturdy otherwise
 if (process.env.NODE_ENV === "test") {
-  console.log("made it into here");
   window.electronRequire = require;
   window.api = apiObj;
 } else {
-  console.log("made it to the contextBridge////// ");
   contextBridge.exposeInMainWorld("api", apiObj);
 }

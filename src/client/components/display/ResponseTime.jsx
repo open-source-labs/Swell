@@ -35,12 +35,9 @@ function ResponseTime({ currentResponse }) {
   ) {
     const leng = currentResponse.request.messages.length;
     const requestTime = currentResponse.request.messages[leng - 1].timeReceived;
-    console.log("requestTime==?", requestTime);
 
     const responseTime =
       currentResponse.response.messages[leng - 1].timeReceived;
-
-    console.log("in websocket responsetime==>", responseTime);
 
     const lagTime = responseTime - requestTime;
     return <div className="response-time-placement">{`${lagTime}ms`}</div>;

@@ -93,22 +93,17 @@ export default function RestContainer({
 
     let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-    //console.log("protocol==>", protocol); //http://
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
       URIWithoutProtocol;
-      //console.log("URIWithoutProtocol==>", URIWithoutProtocol); //swapi.dev/api/people/1/
       const host = protocol + URIWithoutProtocol.split("/")[0];
-      // console.log("host==>", host); //http://swapi.dev
       let path = `/${URIWithoutProtocol.split("/")
         .splice(1)
         .join("/")
         .replace(/\/{2,}/g, "/")}`;
-      //console.log("path==>", path); ///api/people/1/
       if (path.charAt(path.length - 1) === "/" && path.length > 1) {
         path = path.substring(0, path.length - 1);
-        //console.log("path////", path); ///api/people/1
       }
       path = path.replace(/https?:\//g, "http://");
       reqRes = {

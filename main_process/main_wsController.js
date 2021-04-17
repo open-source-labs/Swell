@@ -23,11 +23,9 @@ const wsController = {
     //check websocket npm package doc
     let socket;
     try {
-      console.log("creating socket");
       socket = new WebSocketClient();
     } catch (err) {
       reqResObj.connection = "error";
-      console.log("websocket creation errror==>", err);
       event.sender.send("reqResUpdate", reqResObj);
       return;
     }
@@ -36,7 +34,6 @@ const wsController = {
     //connection here means a single connection being established
     socket.on("connect", (connection) => {
       console.log("websocket client connected");
-      console.log("Reqresssss====>", reqResObj);
       this.wsConnect = connection;
       reqResObj.connection = "open";
       reqResObj.response.connection = "open";
@@ -47,7 +44,6 @@ const wsController = {
         id: reqResObj.id,
       };
       connectionArray.push(openConnectionObj);
-      //console.log("connectionArr=>", connectionArray);
       event.sender.send("update-connectionArray", connectionArray);
       event.sender.send("reqResUpdate", reqResObj);
       //connection.on
@@ -79,11 +75,9 @@ const wsController = {
     //connection.send
 
     //check datatype
-    console.log("input message pre-send", inputMessage);
 
     if (inputMessage.includes("data:image/")) {
       const buffer = Buffer.from(inputMessage, "utf8");
-      console.log("buffer==>", buffer);
       console.log("sending as buffer");
       this.wsConnect.sendBytes(buffer);
       reqResObj.request.messages.push({
@@ -116,8 +110,6 @@ const wsController = {
             timeReceived: Date.now(),
           });
 
-      // console.log("reqrezzTestContent=>>>>", reqResObj);
-
       if (reqResObj.request.testContent) {
         reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
@@ -139,8 +131,6 @@ module.exports = () => {
   });
   //listener for sending messages to server
   ipcMain.on("send-ws", (event, reqResObj, inputMessage) => {
-    //console.log("send-ws event===>", event);
-    //console.log("send-ws reqResObj===>", reqResObj);
     wsController.sendWebSocketMessage(event, reqResObj, inputMessage);
   });
   //listerner to close socket connection

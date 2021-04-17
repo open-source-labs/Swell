@@ -18,7 +18,6 @@ module.exports = () => {
 
       it("Confirm browser window count is 1", async () => {
         const windowCount = await app.client.getWindowCount();
-        // console.log("windowCount==>", windowCount);
         return assert.strictEqual(1, windowCount);
       });
 

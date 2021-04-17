@@ -25,7 +25,6 @@ const historyController = {
     db.table("history")
       .toArray()
       .then((history) => {
-        console.log("history---->", history);
         const historyGroupsObj = history.reduce((groups, hist) => {
           const date = format(hist.created_at, "MM/DD/YYYY");
           if (!groups[date]) {

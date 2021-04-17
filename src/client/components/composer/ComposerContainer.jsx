@@ -10,7 +10,6 @@ import GRPCContainer from "./GRPCContainer.jsx";
 import WSContainer from "./WSContainer.jsx";
 
 const mapStateToProps = (store) => {
-  console.log("store==>", store); //store is the current state in reducers
   return {
     reqResArray: store.business.reqResArray,
     composerDisplay: store.ui.composerDisplay,
@@ -66,15 +65,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
-  console.log("props==>", props);
   const onProtocolSelect = (network) => {
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
-      console.log("warningMSG==>", warningMessage);
       delete warningMessage.uri;
       props.setComposerWarningMessage({ ...warningMessage });
     }
-    //console.log("no warning message");
     props.setComposerWarningMessage({});
     switch (network) {
       case "graphQL": {

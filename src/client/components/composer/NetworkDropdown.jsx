@@ -8,7 +8,6 @@ import dropDownArrow from "../../../assets/icons/caret-down.svg";
 export default function NetworkDropdown({ onProtocolSelect, network }) {
   const [dropdownIsActive, setDropdownIsActive] = useState();
   const dropdownEl = useRef();
-  //console.log("dropdown-->", dropdownEl.current);
 
   useEffect(() => {
     const closeDropdown = (event) => {

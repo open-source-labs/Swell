@@ -34,7 +34,6 @@ wsServer.on("request", function (request) {
     );
     return;
   }
-  //console.log("request==>", request);
   const connection = request.accept(null, request.origin);
 
   console.log(new Date() + " Connection accepted.");
