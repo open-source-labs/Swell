@@ -29,9 +29,6 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
     return `${h}:${m}:${s}`
   }
 
-console.log('Data=>>>> ',data)
-console.log('type of data', typeof data)
-
 
   return (
     <div>

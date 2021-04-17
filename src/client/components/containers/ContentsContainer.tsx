@@ -14,7 +14,6 @@ export const ContentsContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector(store => store.ui.workspaceActiveTab);
   const currentResponse = useSelector(store => store.business.currentResponse);
-  //console.log('currentRes==>',currentResponse)
   const setActiveTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
 
   const [showGraph, setShowGraph] = useState(false);

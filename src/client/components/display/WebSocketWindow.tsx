@@ -15,8 +15,6 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
   incomingMessages,
   connection,
 }) => {
-  // const [inputMessage, setInputMessage] = useState('');
-  // const [inputImg, setInputImg] = useState('')
 
   const [inputMsgImg, setinputMsgImg] = useState({
     inputMsg: "",
@@ -58,9 +56,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       });
 
     const data: any = await dataURL(img);
-    console.log("data======>", data);
     if (inputMsgImg.inputImg !== data) {
-      // console.log('checkingggggg')
       updateOutgoingMessage(data);
     }
   };
@@ -133,12 +129,6 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
           Send Message
         </button>
       </div>
-      {/* <input
-            className="ml-1 mr-1 input is-small"
-            type='file'
-            onKeyPress={handleKeyPress}
-            onChange={onFileChange}
-          /> */}
       <div className="is-flex is-align-items-center">
         <ImageDropzone onFileChange={handleFileChange} />
         <button

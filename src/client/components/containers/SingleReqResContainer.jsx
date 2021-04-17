@@ -10,7 +10,6 @@ import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
 import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
 
 const SingleReqResContainer = (props) => {
-  console.log("singleRequestContainer props==>", props);
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
 
@@ -278,7 +277,6 @@ const SingleReqResContainer = (props) => {
               //check the request type
               //if it's http, dispatch setactivetab to "event" for reqresponsepane
               //otherwise do nothing
-              console.log("connection type==>", connectionType);
               if (connectionType !== "WebSocket") {
                 dispatch(actions.setResponsePaneActiveTab("events"));
               }

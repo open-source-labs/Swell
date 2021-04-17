@@ -150,7 +150,6 @@ module.exports = () => {
       await app.client.$("span=DELETE").click();
       await app.client.$("a=GET").click();
       bodyInputVisible = await app.client.$("#body-entry-select");
-      // console.log("bodyInputVisible===>", bodyInputVisible);
       assert.strictEqual(bodyInputVisible.state, "failure");
     });
 
