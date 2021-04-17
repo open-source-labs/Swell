@@ -128,7 +128,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
         >
           Send Message
         </button>
-      </div>
+      </div> 
       <div className="is-flex is-align-items-center">
         <ImageDropzone onFileChange={handleFileChange} />
         <button
