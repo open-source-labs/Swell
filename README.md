@@ -120,6 +120,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Miguel Gonzalez** - [MigGonzalez](https://github.com/MigGonzalez)
 - **Jason Liggayu** - [jasonligg](https://github.com/jasonligg)
 - **Warren Tait** - [whtait](https://github.com/whtait)
+- **Nathan Fleming** - [njfleming](https://github.com/njfleming)
+- **Konrad Kopko** - [konradkop](https://github.com/konradkop)
+- **Andrea Li** - [Andrea-gli](https://github.com/Andrea-gli)
+- **Paul Ramirez** - [pauleramirez](https://github.com/pauleramirez)
+- **TJ Wetmore** - [TWetmore](https://github.com/TWetmore)
 
 ## License
 
