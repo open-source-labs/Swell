@@ -4,7 +4,6 @@ const CspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
-const webpack = require("webpack");
 
 module.exports = {
   target: "web",
@@ -90,9 +89,5 @@ module.exports = {
       openAnalyzer: false,
       analyzerMode: "static",
     }),
-    new webpack.ContextReplacementPlugin(
-      /graphql-language-service-interface[\/\\]dist/,
-      /\.js$/
-    ),
   ],
 };

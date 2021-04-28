@@ -6,9 +6,9 @@ import "codemirror/theme/twilight.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/show-hint.css";
-import "codemirror-graphql/hint";
-import "codemirror-graphql/lint";
-import "codemirror-graphql/mode";
+// import "codemirror-graphql/hint";
+// import "codemirror-graphql/lint";
+// import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
 
 const GraphQLBodyEntryForm = (props) => {
@@ -25,19 +25,14 @@ const GraphQLBodyEntryForm = (props) => {
 
   // set a new value for codemirror only if loading from history or changing query type
   useEffect(() => {
-    if (!bodyIsNew) setValue(bodyContent)
-  }, [bodyContent])
-
- 
+    if (!bodyIsNew) setValue(bodyContent);
+  }, [bodyContent]);
 
   return (
     <div className="mt-3">
-      { // conditionally render warning message
-        warningMessage ? 
-          <div >
-            {warningMessage.body}
-          </div>
-        : null 
+      {
+        // conditionally render warning message
+        warningMessage ? <div>{warningMessage.body}</div> : null
       }
       <div className="composer-section-title">Body</div>
       <div id="gql-body-entry" className="is-neutral-200-box p-3">
@@ -55,12 +50,14 @@ const GraphQLBodyEntryForm = (props) => {
             indentUnit: 2,
             tabSize: 2,
           }}
-          editorDidMount={editor => { editor.setSize('100%', 150) }}
+          editorDidMount={(editor) => {
+            editor.setSize("100%", 150);
+          }}
           onBeforeChange={(editor, data, value) => {
             const optionObj = {
               schema: introspectionData.clientSchema,
               completeSingle: false,
-            }
+            };
             setValue(value);
             editor.setOption("lint", optionObj);
             editor.setOption("hintOptions", optionObj);
