@@ -6,9 +6,9 @@ import "codemirror/theme/twilight.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/show-hint.css";
-// import "codemirror-graphql/hint";
-// import "codemirror-graphql/lint";
-// import "codemirror-graphql/mode";
+import "codemirror-graphql/hint";
+import "codemirror-graphql/lint";
+import "codemirror-graphql/mode";
 import "codemirror/addon/lint/lint.css";
 
 const GraphQLBodyEntryForm = (props) => {
