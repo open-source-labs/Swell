@@ -34,15 +34,15 @@ describe("Electron Tests", function () {
   // execute differnt types of test here
   describe("CRUD functionality", function () {
     reqInputTests();
-    httpTest();
+    // httpTest(); //Comment out because no Mongo URI for test server
     graphqlTest();
     websocketTest();
     grpcTest();
   });
 
-  describe("Swell Testing functionality", function () {
-    httpTestingTest();
-    grpcTestingTest();
-    graphqlTestingTest();
-  });
+  // describe("Swell Testing functionality", function () {
+  //   httpTestingTest();
+  //   grpcTestingTest();
+  //   graphqlTestingTest();
+  // });
 });
