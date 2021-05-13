@@ -146,16 +146,7 @@ module.exports = () => {
   });
 
   describe("request body inputs", () => {
-    it("no body input for GET requests", async () => {
-      await app.client.$("span=DELETE").click();
-      await app.client.$("a=GET").click();
-      bodyInputVisible = await app.client.$("#body-entry-select");
-      assert.strictEqual(bodyInputVisible.state, "failure");
-    });
-
     it("body input appears for all other requests", async () => {
-      await app.client.$("span=GET").click();
-      await app.client.$("a=POST").click();
       bodyInputVisible = await app.client.$("#body-entry-select").isExisting();
       assert.strictEqual(bodyInputVisible, true);
     });
