@@ -10,9 +10,9 @@ import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
 import dropDownArrow from "../../../../assets/icons/caret-down-tests.svg";
 import dropDownArrowUp from "../../../../assets/icons/caret-up-tests.svg";
 import { isAbsolute, relative } from "path";
-import RestTestSnippetsContainer from "./TestSnippets/RestTestSnippetsContainer";
+import WebsocketTestSnippetsContainer from "./TestSnippets/WebsocketTestSnippetsContainer";
 
-const TestEntryForm = (props) => {
+const WSTestEntryForm = (props) => {
   const { testContent, setNewTestContent } = props;
 
   const [showTests, setShowTests] = useState(false);
@@ -20,7 +20,7 @@ const TestEntryForm = (props) => {
 
   return (
     <div className="mt-4 mb-4">
-      <RestTestSnippetsContainer
+      <WebsocketTestSnippetsContainer
         testContent={testContent}
         setNewTestContent={setNewTestContent}
         setShowTests={setShowTests}
@@ -55,4 +55,4 @@ const TestEntryForm = (props) => {
   );
 };
 
-export default TestEntryForm;
+export default WSTestEntryForm;

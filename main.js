@@ -14,6 +14,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // npm libraries
 // debugger
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+//require("react-devtools-electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -101,7 +102,7 @@ function createWindow() {
     // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: process.env.NODE_ENV !== "test",
+      contextIsolation: process.env.NODE_ENV !== "test", //true if in dev mode
       // enableRemoteModule: false,
       sandbox: process.env.NODE_ENV !== "test",
       webSecurity: true,
@@ -203,6 +204,7 @@ const sendStatusToWindow = (text) => {
 
 ipcMain.on("check-for-update", () => {
   //listens to ipcRenderer in UpdatePopUpContainer.jsx
+  console.log("check for update");
   if (!isDev) {
     autoUpdater.checkForUpdates();
   }
@@ -350,7 +352,6 @@ ipcMain.on("import-collection", (event, args) => {
       event.sender.send("add-collection", JSON.stringify(JSON.parse(data)));
     });
   });
-  //.catch( err => console.log('error in import-collection', err));
 });
 
 // ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============

@@ -33,6 +33,7 @@ const historyController = {
           groups[date].push(hist);
           return groups;
         }, {});
+        console.log("historyGroupsObj==>", historyGroupsObj);
         const historyGroupsArr = Object.keys(historyGroupsObj)
           .sort((a, b) => parse(b) - parse(a))
           .map((date) => {

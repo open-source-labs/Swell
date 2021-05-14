@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { WebSocketMessageProps } from "../../../types"
@@ -8,6 +9,7 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
   data,
   index
 }) => {
+  
 
   //conditional classNames and id for messages for styling depending on source
   const webSocketMessageClassNames = source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
@@ -27,11 +29,24 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
     return `${h}:${m}:${s}`
   }
 
+
   return (
     <div>
       <div className={webSocketMessageClassNames} id={`ws-msg-${index}`}>
         <div className={message_background}>
-          <div className="websocket_message-data"><div id={webSocketMessageIDNames}>{data}</div></div>
+          <div className="websocket_message-data">
+            
+          {
+          
+          typeof data==='object'?
+            
+          //decode buffer to dataURI
+           <img src={new TextDecoder("utf-8").decode(data)} alt="img"/> :
+          
+            <div id={webSocketMessageIDNames}>{data}</div> 
+          }
+           
+          </div>
           <div className="websocket_message-time">{buildTime(timeReceived)}</div>
         </div>
       </div>

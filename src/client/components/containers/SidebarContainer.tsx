@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
@@ -7,7 +10,7 @@ import HistoryContainer from "./HistoryContainer.jsx";
 export const SidebarContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector(store => store.ui.sidebarActiveTab);
-  const setActiveTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
+  const setActiveTab = (tabName: string) => dispatch(actions.setSidebarActiveTab(tabName));
 
   return (
     <div className='column is-one-third is-flex is-flex-direction-column is-tall ' id='composer'>

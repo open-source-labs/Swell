@@ -21,6 +21,7 @@ const connectionController = {
   openReqRes(id) {
     // listens for reqResUpdate event from main process telling it to update reqResobj
     // REST EVENTS
+    //remove all previou listeners for 'reqresupdate' before starting to listen for 'reqresupdate' again
     api.removeAllListeners("reqResUpdate");
     api.receive("reqResUpdate", (reqResObj) => {
       if (
@@ -33,11 +34,13 @@ const connectionController = {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
-
       // If current selected response equals reqResObj received, update current response
       const currentID = store.default.getState().business.currentResponse.id;
-      if (currentID === reqResObj.id)
-        store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      if (currentID === reqResObj.id) {
+        store.default.dispatch(
+          actions.saveCurrentResponseData(reqResObj, "currentID===reqresObj.id")
+        );
+      }
     });
     //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
@@ -120,13 +123,16 @@ const connectionController = {
       }
       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
-      store.default.dispatch(actions.saveCurrentResponseData(reqResObj));
+      store.default.dispatch(
+        actions.saveCurrentResponseData(reqResObj, "api.receive reqresupdate")
+      );
       if (index < reqResArray.length) {
         runSingletest(reqResArray[index]);
         index += 1;
       }
     });
     const reqResObj = reqResArray[index];
+
     function runSingletest(reqResObj) {
       if (reqResObj.request.method === "SUBSCRIPTION")
         graphQLController.openSubscription(reqResObj);
@@ -174,7 +180,12 @@ const connectionController = {
 
     foundReqRes.connection = "closed";
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
-    store.default.dispatch(actions.saveCurrentResponseData(foundReqRes));
+    store.default.dispatch(
+      actions.saveCurrentResponseData(
+        foundReqRes,
+        "foundreqres.connection closed"
+      )
+    );
   },
 
   closeReqRes(reqResObj) {

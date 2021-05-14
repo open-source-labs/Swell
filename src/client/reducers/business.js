@@ -151,7 +151,6 @@ const businessReducer = (state = initialState, action) => {
 
     case types.COLLECTION_TO_REQRES: {
       const reqResArray = JSON.parse(JSON.stringify(action.payload));
-      // console.log('IN REDUCER:', reqResArray);
       return {
         ...state,
         reqResArray,
@@ -263,7 +262,9 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.SCHEDULED_REQRES_UPDATE: {
-      const scheduledReqResArray = JSON.parse(JSON.stringify(state.scheduledReqResArray));
+      const scheduledReqResArray = JSON.parse(
+        JSON.stringify(state.scheduledReqResArray)
+      );
       scheduledReqResArray.push(action.payload);
       return {
         ...state,

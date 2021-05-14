@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions.js";
@@ -21,7 +23,7 @@ const SingleReqResContainer = (props) => {
   const newRequestStreams = useSelector(
     (store) => store.business.newRequestStreams
   );
-
+  //content is reqRes drilled down from ReqResContainer. reqRes was created in WSContainer/RestContainer...
   const {
     content,
     content: {
@@ -205,7 +207,7 @@ const SingleReqResContainer = (props) => {
             {connection === "error" && <div className="connection-error" />}
             {connection === "open" && <div className="connection-open" />}
             {connection === "closed" &&
-              method != "WS" &&
+              method !== "WS" &&
               method !== "SUBSCRIPTION" && (
                 <div className="connection-closed" />
               )}
@@ -272,8 +274,20 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
             onClick={() => {
+              //check the request type
+              //if it's http, dispatch setactivetab to "event" for reqresponsepane
+              //otherwise do nothing
+              if (connectionType !== "WebSocket") {
+                dispatch(actions.setResponsePaneActiveTab("events"));
+              }
+
               connectionController.openReqRes(content.id);
-              dispatch(actions.saveCurrentResponseData(content));
+              dispatch(
+                actions.saveCurrentResponseData(
+                  content,
+                  "singleReqResContainercomponentSendHandler"
+                )
+              ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
             }}
           >
             Send

@@ -1,26 +1,26 @@
-const assert = require("assert");
+const assert = require("assert"); //node's own assertion module
 const path = require("path");
 const fs = require("fs");
-const app = require('../testApp');
-
+const app = require("../testApp");
 
 module.exports = () => {
-
-  describe('App opens and renders a page', () => {
+  describe("App opens and renders a page", () => {
     describe("Browser Window Tests", () => {
       it("window is visible", async () => {
         const isVisible = await app.browserWindow.isVisible();
         return assert.strictEqual(isVisible, true);
       });
+
       it("browser window title is 'Swell'", async () => {
         const titleWithBrowser = await app.browserWindow.getTitle();
         return assert.strictEqual(titleWithBrowser, "Swell");
       });
-  
+
       it("Confirm browser window count is 1", async () => {
         const windowCount = await app.client.getWindowCount();
         return assert.strictEqual(1, windowCount);
       });
+
       it("take a snapshot of app", async () => {
         const imageBuffer = await app.browserWindow.capturePage();
         fs.writeFileSync(path.resolve(__dirname, "snapshot.png"), imageBuffer);
@@ -33,7 +33,7 @@ module.exports = () => {
           .getTitle(); // the dom set inside dist/index.html which is set inside webpack htmlPlugin
         return assert.strictEqual(titleWithClient, "Swell");
       });
-  
+
       it("devTool should NOT open since we are in production mode", async () => {
         const isOpen = await app.browserWindow.isDevToolsOpened();
         return assert.strictEqual(isOpen, false);
@@ -55,5 +55,5 @@ module.exports = () => {
         return assert.notStrictEqual(responses.value, null);
       });
     });
-  }); 
-}
+  });
+};

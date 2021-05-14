@@ -2,8 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 module.exports = {
   target: "web",
@@ -42,7 +42,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: [path.resolve(__dirname, "src"), path.resolve(__dirname, "node_modules")],
+        include: [
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "node_modules"),
+        ],
         use: [MiniCssExtractPlugin.loader, "css-loader"],
         resolve: {
           extensions: [".css"],
@@ -84,7 +87,7 @@ module.exports = {
     // set to true to display bundle breakdown
     new BundleAnalyzerPlugin({
       openAnalyzer: false,
-      analyzerMode: 'static'
+      analyzerMode: "static",
     }),
   ],
 };
