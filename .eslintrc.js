@@ -4,6 +4,7 @@ module.exports = {
     jest: true,
     node: true,
   },
+  root: true,
   extends: [
     "airbnb",
     "prettier",

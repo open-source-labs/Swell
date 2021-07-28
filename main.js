@@ -82,7 +82,7 @@ isDev
 if (process.platform === "win32") {
   // if user is on windows...
   app.commandLine.appendSwitch("high-dpi-support", "true");
-  app.commandLine.appendSwitch("force-device-scale-factor", "1");
+  // app.commandLine.appendSwitch("force-device-scale-factor", "1");
 }
 
 /***********************************************
