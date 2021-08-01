@@ -8,6 +8,7 @@ import RestContainer from "./RestContainer.jsx";
 import GraphQLContainer from "./GraphQLContainer.jsx";
 import GRPCContainer from "./GRPCContainer.jsx";
 import WSContainer from "./WSContainer.jsx";
+import WebRTCContainer from "./WebRTCContainer";
 
 const mapStateToProps = (store) => {
   return {
@@ -66,6 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ComposerContainer = (props) => {
   const onProtocolSelect = (network) => {
+    console.log(network)
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
       delete warningMessage.uri;
@@ -149,6 +151,29 @@ const ComposerContainer = (props) => {
           method: "",
           graphQL: false,
           gRPC: false,
+          WebRTC: false,
+          network,
+          testContent: "",
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: "none",
+          bodyContent: "",
+        });
+        break;
+      }
+      // TODO:  adjust for webrtc
+      case "WebRTC": {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: "",
+          // ????
+          url: props.newRequestFields.webRTCInitiator,
+          method: "INITIATOR",
+          graphQL: false,
+          gRPC: false,
+          ws: false,
           network,
           testContent: "",
         });
@@ -185,6 +210,10 @@ const ComposerContainer = (props) => {
         {props.newRequestFields.network === "ws" && <WSContainer {...props} />}
         {props.newRequestFields.network === "grpc" && (
           <GRPCContainer {...props} />
+        )}
+        {props.newRequestFields.network === "WebRTC" && (
+          <WebRTCContainer {...props} />
+        
         )}
       </div>
     </div>
