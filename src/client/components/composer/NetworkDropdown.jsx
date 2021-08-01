@@ -11,7 +11,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
 
   useEffect(() => {
     const closeDropdown = (event) => {
-      //console.log("event.target===>", event.target);
+ 
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
@@ -27,17 +27,20 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
     case "rest":
       networkTitle = "REST";
       break;
-    case "graphQL":
-      networkTitle = "GRAPHQL";
-      break;
-    case "grpc":
-      networkTitle = "gRPC";
-      break;
-    case "ws":
-      networkTitle = "WEB SOCKETS";
-      break;
-  }
-
+      case "graphQL":
+        networkTitle = "GRAPHQL";
+        break;
+        case "grpc":
+          networkTitle = "gRPC";
+          break;
+          case "ws":
+            networkTitle = "WEB SOCKETS";
+            break;
+          case "WebRTC":
+            networkTitle = "WebRTC";
+            break;
+            }
+            
   return (
     <div
       ref={dropdownEl}
@@ -103,6 +106,15 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
             className="dropdown-item"
           >
             WEB SOCKETS
+          </a>
+          <a
+            onClick={() => {
+              setDropdownIsActive(false);
+              onProtocolSelect("WebRTC");
+            }}
+            className="dropdown-item"
+          >
+            WebRTC
           </a>
         </div>
       </div>
