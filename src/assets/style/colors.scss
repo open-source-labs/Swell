@@ -8,6 +8,7 @@ $rest: #6843ff;
 $graphql: #de33a6;
 $grpc: #6cacc1;
 $websockets: #f47d31;
+$webrtc:#4285f4;
 
 $neutral-100: #ffffff;
 $neutral-200: #f4f5f7;
@@ -64,6 +65,11 @@ $text: $neutral-500;
 .is-grpc {
   color: $neutral-200 !important;
   background-color: $grpc !important;
+}
+
+.is-webrtc {
+  color: $neutral-200 !important;
+  background-color: $webrtc !important;
 }
 
 .is-ws {
