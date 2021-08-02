@@ -1,9 +1,9 @@
-import React from "react";
-import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import historyController from "../../controllers/historyController";
-import WSEndpointEntryForm from "./NewRequest/WSEndpointEntryForm";
-import NewRequestButton from "./NewRequest/NewRequestButton.jsx";
-import WSTestEntryForm from "./NewRequest/WSTestEntryForm.jsx";
+import React from 'react';
+import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import historyController from '../../controllers/historyController';
+import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
+import NewRequestButton from './NewRequest/NewRequestButton.jsx';
+import WSTestEntryForm from './NewRequest/WSTestEntryForm.jsx';
 
 export default function WSContainer({
   setNewTestContent,
@@ -17,6 +17,7 @@ export default function WSContainer({
     protocol,
     graphQL,
     restUrl,
+    webrtc,
     wsUrl,
     gqlUrl,
     grpcUrl,
@@ -39,7 +40,7 @@ export default function WSContainer({
       /https?:\/\/$|wss?:\/\/$/.test(url) ||
       !/(https?:\/\/)|(wss?:\/\/)/.test(url)
     ) {
-      validationMessage.uri = "Enter a valid URI";
+      validationMessage.uri = 'Enter a valid URI';
     }
     return validationMessage;
   };
@@ -58,13 +59,14 @@ export default function WSContainer({
       created_at: new Date(),
       protocol: url.match(/wss?:\/\//)[0],
       url,
+      webrtc,
       timeSent: null,
       timeReceived: null,
-      connection: "uninitialized",
-      connectionType: "WebSocket",
+      connection: 'uninitialized',
+      connectionType: 'WebSocket',
       checkSelected: false,
       request: {
-        method: "WS",
+        method: 'WS',
         messages: [],
         network,
         restUrl,
@@ -89,19 +91,19 @@ export default function WSContainer({
 
     setNewRequestFields({
       ...newRequestFields,
-      protocol: "ws://",
+      protocol: 'ws://',
       url: wsUrl,
       wsUrl,
     });
 
-    setWorkspaceActiveTab("workspace");
+    setWorkspaceActiveTab('workspace');
   };
 
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
         className="is-flex-grow-3 add-vertical-scroll"
-        style={{ overflowX: "hidden" }}
+        style={{ overflowX: 'hidden' }}
       >
         <WSEndpointEntryForm
           newRequestFields={newRequestFields}
