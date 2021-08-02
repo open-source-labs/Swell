@@ -1,14 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 // import { Route, Switch, Link } from 'react-router-dom';
-import * as actions from "../../actions/actions";
+import * as actions from '../../actions/actions';
 
-import NetworkDropdown from "./NetworkDropdown";
-import RestContainer from "./RestContainer.jsx";
-import GraphQLContainer from "./GraphQLContainer.jsx";
-import GRPCContainer from "./GRPCContainer.jsx";
-import WSContainer from "./WSContainer.jsx";
-import WebRTCContainer from "./WebRTCContainer";
+import NetworkDropdown from './NetworkDropdown';
+import RestContainer from './RestContainer.jsx';
+import GraphQLContainer from './GraphQLContainer.jsx';
+import GRPCContainer from './GRPCContainer.jsx';
+import WSContainer from './WSContainer.jsx';
+import WebRTCContainer from './WebRTCContainer';
 
 const mapStateToProps = (store) => {
   return {
@@ -67,7 +67,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ComposerContainer = (props) => {
   const onProtocolSelect = (network) => {
-    console.log(network)
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
       delete warningMessage.uri;
@@ -75,112 +74,108 @@ const ComposerContainer = (props) => {
     }
     props.setComposerWarningMessage({});
     switch (network) {
-      case "graphQL": {
+      case 'graphQL': {
         props.resetComposerFields();
-        //if graphql
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: "",
+          protocol: '',
           url: props.newRequestFields.gqlUrl,
-          method: "QUERY",
+          method: 'QUERY',
           graphQL: true,
           gRPC: false,
+          webrtc: false,
           network,
-          testContent: "",
+          testContent: '',
         });
         props.setNewRequestBody({
-          //when switching to GQL clear body
           ...props.newRequestBody,
-          bodyType: "GQL",
+          bodyType: 'GQL',
           bodyContent: `query {
 
 }`,
-          bodyVariables: "",
+          bodyVariables: '',
         });
         break;
       }
-      case "rest": {
+      case 'rest': {
         props.resetComposerFields();
-        //if http/s
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: "",
+          protocol: '',
           url: props.newRequestFields.restUrl,
-          method: "GET",
+          method: 'GET',
           graphQL: false,
+          webrtc: false,
           gRPC: false,
           network,
-          testContent: "",
+          testContent: '',
         });
         props.setNewRequestBody({
-          //when switching to http clear body
           ...props.newRequestBody,
-          bodyType: "none",
+          bodyType: 'none',
           bodyContent: ``,
         });
         break;
       }
-      case "grpc": {
+      case 'grpc': {
         props.resetComposerFields();
-        //if gRPC
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: "",
+          protocol: '',
           url: props.newRequestFields.grpcUrl,
-          method: "",
+          method: '',
           graphQL: false,
           gRPC: true,
+          webrtc: false,
           network,
-          testContent: "",
+          testContent: '',
         });
         props.setNewRequestBody({
-          //when switching to gRPC clear body
           ...props.newRequestBody,
-          bodyType: "GRPC",
+          bodyType: 'GRPC',
           bodyContent: ``,
         });
         break;
       }
-      case "ws": {
+      case 'ws': {
         props.resetComposerFields();
-        //if ws
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: "",
+          protocol: '',
           url: props.newRequestFields.wsUrl,
-          method: "",
+          method: '',
           graphQL: false,
           gRPC: false,
-          WebRTC: false,
+          webrtc: false,
           network,
-          testContent: "",
+          testContent: '',
         });
         props.setNewRequestBody({
           ...props.newRequestBody,
-          bodyType: "none",
-          bodyContent: "",
+          bodyType: 'none',
+          bodyContent: '',
         });
         break;
       }
       // TODO:  adjust for webrtc
-      case "WebRTC": {
+      case 'webrtc': {
         props.resetComposerFields();
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: "",
+          protocol: '',
           // ????
           url: props.newRequestFields.webRTCInitiator,
-          method: "INITIATOR",
+          method: 'INITIATOR',
           graphQL: false,
           gRPC: false,
           ws: false,
           network,
-          testContent: "",
+          testContent: '',
         });
         props.setNewRequestBody({
           ...props.newRequestBody,
-          bodyType: "none",
-          bodyContent: "",
+          bodyType: 'none',
+          bodyContent: '',
         });
         break;
       }
@@ -201,19 +196,18 @@ const ComposerContainer = (props) => {
 
       {/* COMPOSER CONTENT ROUTING */}
       <div className="is-not-7-5rem-tall pt-3 pl-3 pr-3">
-        {props.newRequestFields.network === "rest" && (
+        {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
         )}
-        {props.newRequestFields.network === "graphQL" && (
+        {props.newRequestFields.network === 'graphQL' && (
           <GraphQLContainer {...props} />
         )}
-        {props.newRequestFields.network === "ws" && <WSContainer {...props} />}
-        {props.newRequestFields.network === "grpc" && (
+        {props.newRequestFields.network === 'ws' && <WSContainer {...props} />}
+        {props.newRequestFields.network === 'grpc' && (
           <GRPCContainer {...props} />
         )}
-        {props.newRequestFields.network === "WebRTC" && (
+        {props.newRequestFields.network === 'webrtc' && (
           <WebRTCContainer {...props} />
-        
         )}
       </div>
     </div>
