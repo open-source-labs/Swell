@@ -1,14 +1,14 @@
-import React from 'react'
-import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import GRPCFormEditor from "./NewRequest/GRPCFormEditor.jsx";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
-import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
-import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
-import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
-import historyController from "../../controllers/historyController";
-import GRPCTypeAndEndpointEntryForm from "./NewRequest/GRPCTypeAndEndpointEntryForm";
-import NewRequestButton from './NewRequest/NewRequestButton.jsx'
-import TestEntryForm from './NewRequest/TestEntryForm'
+import React from 'react';
+import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import GRPCFormEditor from './NewRequest/GRPCFormEditor.jsx';
+import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
+import BodyEntryForm from './NewRequest/BodyEntryForm.jsx';
+import FieldEntryForm from './NewRequest/FieldEntryForm.jsx';
+import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
+import historyController from '../../controllers/historyController';
+import GRPCTypeAndEndpointEntryForm from './NewRequest/GRPCTypeAndEndpointEntryForm';
+import NewRequestButton from './NewRequest/NewRequestButton.jsx';
+import TestEntryForm from './NewRequest/TestEntryForm';
 
 export default function GRPCContainer({
   resetComposerFields,
@@ -18,6 +18,7 @@ export default function GRPCContainer({
     gRPC,
     url,
     method,
+    webrtc,
     protocol,
     graphQL,
     restUrl,
@@ -70,8 +71,8 @@ export default function GRPCContainer({
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions...
-      if (newRequestFields.grpcUrl) return true;
-      else validationMessage.uri = "Enter a valid URI";
+    if (newRequestFields.grpcUrl) return true;
+    else validationMessage.uri = 'Enter a valid URI';
     return validationMessage;
   };
 
@@ -81,114 +82,112 @@ export default function GRPCContainer({
       setComposerWarningMessage(warnings);
       return;
     }
-      let reqRes;
-      const protocol = ""
+    let reqRes;
+    const protocol = '';
 
-        // saves all stream body queries to history & reqres request body
-        let streamQueries = "";
-        for (let i = 0; i < streamContent.length; i++) {
-          // queries MUST be in format, do NOT edit template literal unless necessary
-          streamQueries += `${streamContent[i]}
+    // saves all stream body queries to history & reqres request body
+    let streamQueries = '';
+    for (let i = 0; i < streamContent.length; i++) {
+      // queries MUST be in format, do NOT edit template literal unless necessary
+      streamQueries += `${streamContent[i]}
 
 `;
-        }
-        // define array to hold client query strings
-        const queryArrStr = streamContent;
-        const queryArr = [];
-        // scrub client query strings to remove line breaks
-        // convert strings to objects and push to array
-        for (let i = 0; i < queryArrStr.length; i += 1) {
-          let query = queryArrStr[i];
-          const regexVar = /\r?\n|\r|↵/g;
-          query = query.replace(regexVar, "");
-          queryArr.push(JSON.parse(query));
-        }
-        // grabbing streaming type to set method in reqRes.request.method
-        const grpcStream = document.getElementById("stream").innerText;
-        // create reqres obj to be passed to controller for further actions/tasks
-        reqRes = {
-          id: uuid(),
-          created_at: new Date(),
-          protocol: "",
-          url,
-          graphQL,
-          gRPC,
-          timeSent: null,
-          timeReceived: null,
-          connection: "uninitialized",
-          connectionType: null,
-          checkSelected: false,
-          request: {
-            method: grpcStream,
-            headers: headersArr.filter(
-              (header) => header.active && !!header.key
-            ),
-            body: streamQueries,
-            bodyType,
-            rawType,
-            network,
-            restUrl,
-            wsUrl,
-            gqlUrl,
-            testContent: testContent || '',
-            grpcUrl,
-          },
-          response: {
-            cookies: [],
-            headers: {},
-            stream: null,
-            events: [],
-          },
-          checked: false,
-          minimized: false,
-          tab: currentTab,
-          service: selectedService,
-          rpc: selectedRequest,
-          packageName: selectedPackage,
-          streamingType,
-          queryArr,
-          initialQuery,
-          streamsArr,
-          streamContent,
-          servicesObj: services,
-          protoPath,
-          protoContent,
-        };
-
-      // add request to history
-      historyController.addHistoryToIndexedDb(reqRes);
-      reqResAdd(reqRes);
-
-      //reset for next request
-      resetComposerFields();
-
-      // GRPC REQUESTS
-      setNewRequestBody({
-        ...newRequestBody,
-        bodyType: "GRPC",
-        rawType: "",
-      });
-      setNewRequestFields({
-        ...newRequestFields,
-        url: grpcUrl,
+    }
+    // define array to hold client query strings
+    const queryArrStr = streamContent;
+    const queryArr = [];
+    // scrub client query strings to remove line breaks
+    // convert strings to objects and push to array
+    for (let i = 0; i < queryArrStr.length; i += 1) {
+      let query = queryArrStr[i];
+      const regexVar = /\r?\n|\r|↵/g;
+      query = query.replace(regexVar, '');
+      queryArr.push(JSON.parse(query));
+    }
+    // grabbing streaming type to set method in reqRes.request.method
+    const grpcStream = document.getElementById('stream').innerText;
+    // create reqres obj to be passed to controller for further actions/tasks
+    reqRes = {
+      id: uuid(),
+      created_at: new Date(),
+      protocol: '',
+      url,
+      graphQL,
+      gRPC,
+      webrtc,
+      timeSent: null,
+      timeReceived: null,
+      connection: 'uninitialized',
+      connectionType: null,
+      checkSelected: false,
+      request: {
+        method: grpcStream,
+        headers: headersArr.filter((header) => header.active && !!header.key),
+        body: streamQueries,
+        bodyType,
+        rawType,
+        network,
+        restUrl,
+        wsUrl,
+        gqlUrl,
+        testContent: testContent || '',
         grpcUrl,
-      });
+      },
+      response: {
+        cookies: [],
+        headers: {},
+        stream: null,
+        events: [],
+      },
+      checked: false,
+      minimized: false,
+      tab: currentTab,
+      service: selectedService,
+      rpc: selectedRequest,
+      packageName: selectedPackage,
+      streamingType,
+      queryArr,
+      initialQuery,
+      streamsArr,
+      streamContent,
+      servicesObj: services,
+      protoPath,
+      protoContent,
+    };
 
-      setWorkspaceActiveTab('workspace');
+    // add request to history
+    historyController.addHistoryToIndexedDb(reqRes);
+    reqResAdd(reqRes);
+
+    //reset for next request
+    resetComposerFields();
+
+    // GRPC REQUESTS
+    setNewRequestBody({
+      ...newRequestBody,
+      bodyType: 'GRPC',
+      rawType: '',
+    });
+    setNewRequestFields({
+      ...newRequestFields,
+      url: grpcUrl,
+      grpcUrl,
+    });
+
+    setWorkspaceActiveTab('workspace');
   };
 
   const HeaderEntryFormStyle = {
     //trying to change style to conditional created strange duplication effect when continuously changing protocol
-    display: !/wss?:\/\//.test(protocol) ? "block" : "none",
+    display: !/wss?:\/\//.test(protocol) ? 'block' : 'none',
   };
   return (
-    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+    <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
         className="is-flex-grow-3 add-vertical-scroll"
-        style={{overflowX: "hidden"}}
+        style={{ overflowX: 'hidden' }}
         // tabIndex={0}
       >
-
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
@@ -224,5 +223,5 @@ export default function GRPCContainer({
         <NewRequestButton onClick={addNewRequest} />
       </div>
     </div>
-  )
+  );
 }
