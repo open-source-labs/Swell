@@ -1,11 +1,10 @@
-import React from 'react'
-import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import gql from "graphql-tag";
-import historyController from "../../controllers/historyController";
-import WebRTCSessionEntryForm from './NewRequest/WebRTCSessionEntryForm.jsx'
-import WebRTCServerEntryForm from "./NewRequest/WebRTCServerEntryForm.jsx";
+import React from 'react';
+import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import historyController from '../../controllers/historyController';
+import WebRTCSessionEntryForm from './NewRequest/WebRTCSessionEntryForm.jsx';
+import WebRTCServerEntryForm from './NewRequest/WebRTCServerEntryForm.jsx';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
-import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
+import TestEntryForm from './NewRequest/TestEntryForm.jsx';
 
 export default function WebRTCContainer({
   resetComposerFields,
@@ -67,12 +66,11 @@ export default function WebRTCContainer({
   const requestValidationCheck = () => {
     const validationMessage = {};
 
-    if (!JSONFormatted && rawType === "application/json") {
-      validationMessage.json = "Please fix JSON body formatting errors";
+    if (!JSONFormatted && rawType === 'application/json') {
+      validationMessage.json = 'Please fix JSON body formatting errors';
     }
-    if (method === "INITIATOR") {
-
-      console.log('tbd initiator validation')
+    if (method === 'INITIATOR') {
+      console.log('tbd initiator validation');
       // need to add validation check for gql variables
     }
     return validationMessage;
@@ -85,10 +83,10 @@ export default function WebRTCContainer({
       return;
     }
 
-const  reqRes = {
+    const reqRes = {
       id: uuid(),
       created_at: new Date(),
-      protocol: "ws://",
+      protocol: 'ws://',
       host: '',
       path: '',
       url: '',
@@ -96,24 +94,20 @@ const  reqRes = {
       gRPC,
       timeSent: null,
       timeReceived: null,
-      connection: "uninitialized",
+      connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
       request: {
         method,
-        headers: headersArr.filter(
-          (header) => header.active && !!header.key
-        ),
-        cookies: cookiesArr.filter(
-          (cookie) => cookie.active && !!cookie.key
-        ),
-        body: bodyContent || "",
+        headers: headersArr.filter((header) => header.active && !!header.key),
+        cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+        body: bodyContent || '',
         bodyType,
-        bodyVariables: bodyVariables || "",
+        bodyVariables: bodyVariables || '',
         rawType,
         network,
         restUrl,
-        testContent: testContent || "",
+        testContent: testContent || '',
         wsUrl,
         gqlUrl,
         grpcUrl,
@@ -127,22 +121,17 @@ const  reqRes = {
       tab: currentTab,
     };
 
-
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
 
-    console.log(reqRes);
-
     //reset for next request
     resetComposerFields();
 
-    // GRAPHQL REQUESTS
-
     setNewRequestBody({
       ...newRequestBody,
-      bodyType: "GQL",
-      rawType: "",
+      bodyType: 'GQL',
+      rawType: '',
     });
     setNewRequestFields({
       ...newRequestFields,
@@ -153,17 +142,12 @@ const  reqRes = {
     setWorkspaceActiveTab('workspace');
   };
 
-
-
   return (
-    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+    <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
         className="is-flex-grow-3 add-vertical-scroll"
-        style={{overflowX: "hidden"}}
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-        // tabIndex={0}
+        style={{ overflowX: 'hidden' }}
       >
-
         <WebRTCSessionEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
@@ -179,7 +163,6 @@ const  reqRes = {
           setNewTestContent={setNewTestContent}
         />
 
-
         <WebRTCServerEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
@@ -191,11 +174,10 @@ const  reqRes = {
           setNewTestContent={setNewTestContent}
           testContent={testContent}
         />
-  
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
       </div>
     </div>
-  )
+  );
 }
