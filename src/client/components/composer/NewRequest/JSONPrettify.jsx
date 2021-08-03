@@ -1,7 +1,6 @@
 import React from 'react';
 
 function JSONPrettify({ setNewRequestBody, newRequestBody }) {
-
   const prettyPrintJSON = () => {
     const prettyString = JSON.stringify(
       JSON.parse(newRequestBody.bodyContent),
@@ -12,17 +11,16 @@ function JSONPrettify({ setNewRequestBody, newRequestBody }) {
       ...newRequestBody,
       bodyContent: prettyString,
     });
-  }
+  };
 
   return (
-    <button 
-      className = "button is-small is-white prettify-select "
+    <button
+      className="button is-small is-white prettify-select "
       onClick={prettyPrintJSON}
     >
       Prettify
     </button>
   );
-
 }
 
 export default JSONPrettify;

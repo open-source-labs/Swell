@@ -5,40 +5,48 @@ import collectionsController from '../../controllers/collectionsController';
 
 const Collection = (props) => {
   const dispatch = useDispatch();
-  const setWorkspaceTab = (tabName) => dispatch(actions.setWorkspaceActiveTab(tabName));
+  const setWorkspaceTab = (tabName) =>
+    dispatch(actions.setWorkspaceActiveTab(tabName));
 
   const addCollectionToReqResContainer = () => {
     props.collectionToReqRes(props.content.reqResArray);
     setWorkspaceTab('workspace');
-  }
-  
+  };
+
   const deleteCollection = (e) => {
     props.deleteFromCollection(props.content); //a function we need to make in the container
     collectionsController.deleteCollectionFromIndexedDb(e.target.id);
-  }
-  
+  };
+
   return (
     <div>
-
       <div className="is-flex is-justify-content-space-between m-5">
-        <div 
+        <div
           className="is-clickable is-primary-link is-align-items-center is-flex"
-          onClick={(addCollectionToReqResContainer)}
+          onClick={addCollectionToReqResContainer}
         >
           {props.content.name}
         </div>
         <div className="is-flex is-justify-content-space-between is-align-items-center">
-          <div className="is-clickable is-primary-link m-3" onClick={() => collectionsController.exportCollection(props.content.id)}>
+          <div
+            className="is-clickable is-primary-link m-3"
+            onClick={() =>
+              collectionsController.exportCollection(props.content.id)
+            }
+          >
             Export
           </div>
-          <div className="is-clickable flex-grow-1 delete m-3" onClick={deleteCollection} id={props.content.id}>
-          </div>
+          <div
+            className="is-clickable flex-grow-1 delete m-3"
+            onClick={deleteCollection}
+            id={props.content.id}
+          ></div>
         </div>
       </div>
 
-      <hr/>        
+      <hr />
     </div>
   );
-}
+};
 
 export default Collection;

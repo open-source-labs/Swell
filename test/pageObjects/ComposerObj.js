@@ -1,72 +1,72 @@
-const app = require("../testApp.js");
+const app = require('../testApp.js');
 
 class ComposerObj {
   get tabsComposer() {
-    return app.client.$("a=Composer");
+    return app.client.$('a=Composer');
   }
 
   get tabsHistory() {
-    return app.client.$("a=History");
+    return app.client.$('a=History');
   }
 
   // COMPOSER => COMPOSER
   // PROTOCOL SELECTOR
   get selectedNetwork() {
-    return app.client.$("#selected-network");
+    return app.client.$('#selected-network');
   }
 
   get url() {
-    return app.client.$(".input-is-medium");
+    return app.client.$('.input-is-medium');
   }
 
   get headers() {
-    return app.client.$$(".header-row");
+    return app.client.$$('.header-row');
   }
 
   get cookies() {
-    return app.client.$$(".cookie-row");
+    return app.client.$$('.cookie-row');
   }
 
   get restBodyCode() {
-    const codeMirror = app.client.$("#body-entry-select");
+    const codeMirror = app.client.$('#body-entry-select');
     codeMirror.click();
-    return codeMirror.$("textarea");
+    return codeMirror.$('textarea');
   }
 
   get gqlBodyCode() {
-    const codeMirror = app.client.$("#gql-body-entry");
+    const codeMirror = app.client.$('#gql-body-entry');
     codeMirror.click();
-    return codeMirror.$("textarea");
+    return codeMirror.$('textarea');
   }
 
   get gqlVariableCode() {
-    const codeMirror = app.client.$("#gql-var-entry");
+    const codeMirror = app.client.$('#gql-var-entry');
     codeMirror.click();
-    return codeMirror.$("textarea");
+    return codeMirror.$('textarea');
   }
 
   get addRequestBtn() {
-    return app.client.$("button=Add New Request");
+    return app.client.$('button=Add New Request');
   }
 
   get closeConnectionBtn() {
-    return app.client.$("button=Close Connection");
+    return app.client.$('button=Close Connection');
   }
 
   get reopenConnectionBtn() {
-    return app.client.$("button=Re-Open Connection");
+    return app.client.$('button=Re-Open Connection');
   }
 
   get testScriptCode() {
-    const codeMirror = app.client.$("#test-script-entry");
+    const codeMirror = app.client.$('#test-script-entry');
     codeMirror.click();
-    return codeMirror.$("textarea");
+    return codeMirror.$('textarea');
   }
 
   async clearRestBodyAndWriteKeys(keys, clear = true) {
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
-      backspace.push("Backspace");
+      backspace.push('Backspace');
     }
 
     try {
@@ -80,7 +80,7 @@ class ComposerObj {
   async clearGQLBodyAndWriteKeys(keys, clear = true) {
     const backspace = [];
     for (let i = 0; i < 30; i += 1) {
-      backspace.push("Backspace");
+      backspace.push('Backspace');
     }
 
     try {
@@ -102,7 +102,7 @@ class ComposerObj {
   async clearTestScriptAreaAndWriteKeys(keys, clear = true) {
     const backspace = [];
     for (let i = 0; i < 100; i += 1) {
-      backspace.push("Backspace");
+      backspace.push('Backspace');
     }
 
     try {

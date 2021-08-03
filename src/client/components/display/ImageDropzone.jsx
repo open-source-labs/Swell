@@ -1,5 +1,5 @@
-import React from "react";
-import { useDropzone } from "react-dropzone";
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
 
 export default function ImageDropzone({ onFileChange }) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -10,7 +10,7 @@ export default function ImageDropzone({ onFileChange }) {
 
   return (
     <section className="container">
-      <div {...getRootProps({ className: "dropzone" })}>
+      <div {...getRootProps({ className: 'dropzone' })}>
         <input id="wsFileInput" {...getInputProps()} />
         <input
           className="ml-1 mr-1 input is-small"

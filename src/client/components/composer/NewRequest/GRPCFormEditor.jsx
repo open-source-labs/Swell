@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import GRPCAutoInputForm from "./GRPCAutoInputForm.jsx";
-import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
+import React, { useState } from 'react';
+import GRPCAutoInputForm from './GRPCAutoInputForm.jsx';
+import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 // import protoParserFunc from "../../../protoParser.js";
 
 const { api } = window;
@@ -14,7 +14,7 @@ const GRPCProtoEntryForm = (props) => {
   const importProtos = () => {
     // clear all stream bodies except first one upon clicking on import proto file
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
-    let streamContent = [""];
+    let streamContent = [''];
     // reset streaming type next to the URL & reset Select Service dropdown to default option
     // reset selected package name, service, request, streaming type & protoContent
     if (props.newRequestStreams.protoContent !== null) {
@@ -25,14 +25,14 @@ const GRPCProtoEntryForm = (props) => {
         selectedRequest: null,
         selectedStreamingType: null,
         services: [],
-        protoContent: "",
+        protoContent: '',
         streamsArr,
         streamContent,
         count: 1,
       });
     }
     //listens for imported proto content from main process
-    api.receive("proto-info", (readProto, parsedProto) => {
+    api.receive('proto-info', (readProto, parsedProto) => {
       saveChanges(true);
       props.setNewRequestStreams({
         ...props.newRequestStreams,
@@ -42,7 +42,7 @@ const GRPCProtoEntryForm = (props) => {
       });
     });
 
-    api.send("import-proto");
+    api.send('import-proto');
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
@@ -60,10 +60,10 @@ const GRPCProtoEntryForm = (props) => {
     //only update if changes aren't saved
     if (!changesSaved) {
       // parse new updated proto file and save to store
-      api.receive("protoParserFunc-return", (data) => {
+      api.receive('protoParserFunc-return', (data) => {
         if (data.error) {
           showError(
-            ".proto parsing error: Please enter or import valid .proto"
+            '.proto parsing error: Please enter or import valid .proto'
           );
           saveChanges(false);
         } else {
@@ -73,7 +73,7 @@ const GRPCProtoEntryForm = (props) => {
         const services = data.serviceArr ? data.serviceArr : null;
         const protoPath = data.protoPath ? data.protoPath : null;
         const streamsArr = [props.newRequestStreams.streamsArr[0]];
-        const streamContent = [""];
+        const streamContent = [''];
 
         props.setNewRequestStreams({
           ...props.newRequestStreams,
@@ -90,11 +90,11 @@ const GRPCProtoEntryForm = (props) => {
         });
       });
 
-      api.send("protoParserFunc-request", props.newRequestStreams.protoContent);
+      api.send('protoParserFunc-request', props.newRequestStreams.protoContent);
     }
   };
 
-  const saveChangesBtnText = changesSaved ? "Changes Saved" : "Save Changes";
+  const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
   /*
     pseudocode for the return section
      - first div renders the arrow button along with the title "Proto"
@@ -104,27 +104,28 @@ const GRPCProtoEntryForm = (props) => {
      */
   return (
     <div className="mt-1">
-      <div className='is-flex is-justify-content-space-between is-align-content-center'>
+      <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>
-          <button 
+          <button
             className="button is-small add-header-or-cookie-button mr-1"
-            onClick={importProtos}> 
-            Load Proto 
+            onClick={importProtos}
+          >
+            Load Proto
           </button>
-            <button
+          <button
             className="button is-small add-header-or-cookie-button"
             id="save-proto"
             onClick={submitUpdatedProto}
-            >
+          >
             {saveChangesBtnText}
           </button>
         </div>
       </div>
-   
+
       <div className="is-danger subtitle">{protoError}</div>
       <div id="grpcProtoEntryTextArea">
-        <TextCodeAreaEditable 
+        <TextCodeAreaEditable
           id="grpcProtoEntryTextArea"
           onChange={(editor, data, value) => updateProtoBody(value)}
           value={props.newRequestStreams.protoContent}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class Tab extends Component {
   constructor(props) {
@@ -17,8 +17,8 @@ class Tab extends Component {
         onClick={this.tabClickHandler}
         className={
           this.props.tabName === this.props.openTab
-            ? "tab-list-item-active"
-            : "tab-list-item"
+            ? 'tab-list-item-active'
+            : 'tab-list-item'
         }
         key={this.props.tabName}
       >

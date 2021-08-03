@@ -2,27 +2,25 @@
 // ****** use "npm run test-mocha" to run these tests ******
 
 // import other tests
-const appOpensTests = require("./subSuites/appOpens");
-const reqInputTests = require("./subSuites/reqInputTests");
-const httpTest = require("./subSuites/httpTest");
-const websocketTest = require("./subSuites/websocketTest");
-const grpcTest = require("./subSuites/grpcTest");
-const graphqlTest = require("./subSuites/graphqlTest");
+const appOpensTests = require('./subSuites/appOpens');
+const reqInputTests = require('./subSuites/reqInputTests');
+const httpTest = require('./subSuites/httpTest');
+const websocketTest = require('./subSuites/websocketTest');
+const grpcTest = require('./subSuites/grpcTest');
+const graphqlTest = require('./subSuites/graphqlTest');
 
-const httpTestingTest = require("./subSuites/httpTestingTest");
-const graphqlTestingTest = require("./subSuites/graphqlTestingTest");
-const grpcTestingTest = require("./subSuites/grpcTestingTest");
+const httpTestingTest = require('./subSuites/httpTestingTest');
+const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
+const grpcTestingTest = require('./subSuites/grpcTestingTest');
 
-const app = require("./testApp");
+const app = require('./testApp');
 
-describe("Electron Tests", function () {
+describe('Electron Tests', function () {
   this.timeout(60000);
-  //before and after here are to test if the app can be opened and closed
-  before(function () {
-    return app.start();
-  });
+  // before and after here are to test if the app can be opened and closed
+  before(() => app.start());
 
-  after(function () {
+  after(() => {
     if (app && app.isRunning()) {
       return app.stop();
     }
@@ -32,7 +30,7 @@ describe("Electron Tests", function () {
   appOpensTests();
 
   // execute differnt types of test here
-  describe("CRUD functionality", function () {
+  describe('CRUD functionality', () => {
     reqInputTests();
     // httpTest(); //Comment out because no Mongo URI for test server
     graphqlTest();

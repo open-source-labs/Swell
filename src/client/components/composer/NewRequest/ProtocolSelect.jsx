@@ -12,12 +12,17 @@ class ProtocolSelect extends Component {
     const HTTPSStyleClasses = classNames({
       composer_protocol_button: true,
       http: true,
-      'composer_protocol_button-selected_http': (this.props.currentProtocol === '' || /https?:\/\//.test(this.props.currentProtocol)) && !this.props.graphQL && !this.props.gRPC,
+      'composer_protocol_button-selected_http':
+        (this.props.currentProtocol === '' ||
+          /https?:\/\//.test(this.props.currentProtocol)) &&
+        !this.props.graphQL &&
+        !this.props.gRPC,
     });
     const WSStyleClasses = classNames({
       composer_protocol_button: true,
       ws: true,
-      'composer_protocol_button-selected_ws': /wss?:\/\//.test(this.props.currentProtocol) && !this.props.graphQL,
+      'composer_protocol_button-selected_ws':
+        /wss?:\/\//.test(this.props.currentProtocol) && !this.props.graphQL,
     });
     const GQLStyleClasses = classNames({
       composer_protocol_button: true,
@@ -37,7 +42,12 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={HTTPSStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'http://' } }, 'protocol', 'rest')
+          onMouseDown={() =>
+            this.props.onChangeHandler(
+              { target: { value: 'http://' } },
+              'protocol',
+              'rest'
+            )
           }
         >
           REST
@@ -47,7 +57,13 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={WSStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: 'ws://' } }, 'protocol', 'ws')}
+          onMouseDown={() =>
+            this.props.onChangeHandler(
+              { target: { value: 'ws://' } },
+              'protocol',
+              'ws'
+            )
+          }
         >
           WS
         </div>
@@ -56,7 +72,12 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GQLStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', 'graphQL')
+          onMouseDown={() =>
+            this.props.onChangeHandler(
+              { target: { value: '' } },
+              'protocol',
+              'graphQL'
+            )
           }
         >
           GRAPHQL
@@ -66,7 +87,12 @@ class ProtocolSelect extends Component {
           role="button"
           tabIndex={0}
           className={GRPCStyleClasses}
-          onMouseDown={() => this.props.onChangeHandler({ target: { value: '' } }, 'protocol', 'grpc')
+          onMouseDown={() =>
+            this.props.onChangeHandler(
+              { target: { value: '' } },
+              'protocol',
+              'grpc'
+            )
           }
         >
           GRPC

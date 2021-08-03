@@ -5,11 +5,9 @@ import { CookieProps } from "../../../types";
 const CookieTable = ({ cookies }: CookieProps) => {
   let cookieRowArray: Array<Object>;
   if (Array.isArray(cookies)) {
-    cookieRowArray = cookies.map((cookie, i) => {
-      return (
+    cookieRowArray = cookies.map((cookie, i) => (
         <CookieTableRow className="cookieTableRow" cookies={cookie} key={i} />
-      );
-    });
+      ));
   }
   return(
     <div className="cookieTable">

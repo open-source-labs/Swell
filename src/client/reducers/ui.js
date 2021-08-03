@@ -1,4 +1,4 @@
-import * as types from "../actions/actionTypes";
+import * as types from '../actions/actionTypes';
 
 const initialState = {
   composerDisplay: 'Request',
@@ -16,20 +16,20 @@ const uiReducer = (state = initialState, action) => {
       };
     }
 
-    case types.SET_SIDEBAR_ACTIVE_TAB : {
+    case types.SET_SIDEBAR_ACTIVE_TAB: {
       return {
         ...state,
         sidebarActiveTab: action.payload,
       };
     }
-    case types.SET_WORKSPACE_ACTIVE_TAB : {
+    case types.SET_WORKSPACE_ACTIVE_TAB: {
       return {
         ...state,
         workspaceActiveTab: action.payload,
       };
     }
 
-    case types.SET_RESPONSE_PANE_ACTIVE_TAB : {
+    case types.SET_RESPONSE_PANE_ACTIVE_TAB: {
       return {
         ...state,
         responsePaneActiveTab: action.payload,

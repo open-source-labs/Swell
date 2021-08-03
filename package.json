@@ -1,5 +1,5 @@
 {
-  "name": "Swell",
+  "name": "swell",
   "version": "0.10.0",
   "description": "Swell",
   "main": "main.js",
@@ -14,6 +14,9 @@
     "server-websocket": "node ./test/websocketServer.js",
     "test-jest": "jest",
     "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --exit",
+    "format": "prettier --write \"**/*.+(js|jsx| tsx| json|css|md)\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix . ",
     "build": "webpack --mode=production --config ./webpack.production.js",
     "dev": "webpack-dev-server --mode=development --config ./webpack.development.js",
     "prod": "webpack --mode=production --config ./webpack.production.js && electron --noDevServer .",
@@ -25,188 +28,6 @@
     "gh-publish": "electron-builder build -mwl -p always",
     "check-types": "tsc"
   },
-  "author": {
-    "name": "Swell",
-    "email": "swell@getswell.io",
-    "url": "http://www.getswell.io"
-  },
-  "contributors": [
-    {
-      "name": "Kyle Combs",
-      "email": "combskyle@gmail.com",
-      "url": "https://github.com/texpatnyc"
-    },
-    {
-      "name": "Jason Ou",
-      "email": "jasonou122894@gmail.com",
-      "url": "https://github.com/jasonou1994"
-    },
-    {
-      "name": "Anthony Terruso",
-      "email": "aterruso@gmail.com",
-      "url": "https://github.com/discrete-projects"
-    },
-    {
-      "name": "Brandon Marrero",
-      "email": "brandon6190@outlook.com",
-      "url": "https://github.com/brandon6190"
-    },
-    {
-      "name": "Abby Chao",
-      "email": "abigail.chao@gmail.com",
-      "url": "https://github.com/abbychao"
-    },
-    {
-      "name": "Kwadwo Asamoah",
-      "email": "addoasa94@gmail.com",
-      "url": "https://github.com/addoasa"
-    },
-    {
-      "name": "Kajol Thapa",
-      "email": "kajol.thapa.dev@gmail.com",
-      "url": "https://github.com/KajolThapa"
-    },
-    {
-      "name": "Amanda Flink",
-      "email": "avflinkette@gmail.com",
-      "url": "https://github.com/aflinky"
-    },
-    {
-      "name": "Anthony Toreson",
-      "email": "anthony.toreson@gmail.com",
-      "url": "https://github.com/atoreson"
-    },
-    {
-      "name": "Billy Tran",
-      "email": "billy.tran61@gmail.com",
-      "url": "https://github.com/btctrl"
-    },
-    {
-      "name": "Paul Rhee",
-      "email": "youjun27@gmail.com",
-      "url": "https://github.com/prheee"
-    },
-    {
-      "name": "Sam Parsons",
-      "email": "samparsons269@gmail.com",
-      "url": "https://github.com/sam-parsons"
-    },
-    {
-      "name": "Dan Stein",
-      "email": "50937807+danst3in@users.noreply.github.com",
-      "url": "https://github.com/danst3in"
-    },
-    {
-      "name": "Evan Grobar",
-      "email": "egrobar@gmail.com",
-      "url": "https://github.com/egrobar"
-    },
-    {
-      "name": "Nancy Dao",
-      "email": "nancyddao@gmail.com",
-      "url": "https://github.com/nancyddao"
-    },
-    {
-      "name": "Yoon Choi",
-      "email": "choi.yoon333@gmail.com",
-      "url": "https://github.com/cyoonique"
-    },
-    {
-      "name": "Amruth Uppaluri",
-      "email": "amruth@uppaluri.org",
-      "url": "https://github.com/amuuth"
-    },
-    {
-      "name": "Hideaki Aomori",
-      "email": "https://www.linkedin.com/in/hideaki-aomori",
-      "url": "http://github.com/h15200"
-    },
-    {
-      "name": "Matt Gin",
-      "email": "mgin1013@gmail.com",
-      "url": "https://github.com/ChunsonHoag"
-    },
-    {
-      "name": "Nick Healy",
-      "email": "nickrhealy@gmail.com",
-      "url": "http://github.com/nickhealy"
-    },
-    {
-      "name": "Grace Spletzer",
-      "email": "gracespletzer05@gmail.com",
-      "url": "https://github.com/gspletzer"
-    },
-    {
-      "name": "Stephanie Wood",
-      "email": "wood.steph@gmail.com",
-      "url": "https://github.com/StephWood"
-    },
-    {
-      "name": "Wyatt Bell",
-      "email": "www.linkedin.com/in/wyatt-bell1",
-      "url": "https://github.com/wcbell51"
-    },
-    {
-      "name": "Grace Kim",
-      "email": "https://www.linkedin.com/in/gracekiim/",
-      "url": "https://github.com/gracekiim"
-    },
-    {
-      "name": "John Madrigal",
-      "email": "www.linkedin.com/in/john-r-madrigal",
-      "url": "https://github.com/johnmadrigal "
-    },
-    {
-      "name": "Michael Miller",
-      "email": "https://www.linkedin.com/in/migueljmiller/",
-      "url": "https://github.com/mjmiguel"
-    },
-    {
-      "name": "Alex Sanhueza",
-      "email": "https://www.linkedin.com/in/alex-sanhueza/",
-      "url": "https://github.com/alexsanhueza"
-    },
-    {
-      "name": "Gary Slootskiy",
-      "email": "https://www.linkedin.com/in/garyslootskiy/",
-      "url": "https://github.com/garyslootskiy"
-    },
-    {
-      "name": "Robin Yoong",
-      "email": "https://www.linkedin.com/in/robinyoong/",
-      "url": "https://github.com/robinyoong"
-    },
-    {
-      "name": "Nathaniel Adams",
-      "email": "https://www.linkedin.com/in/adamsnathaniel/",
-      "url": "https://github.com/nathanielBadams"
-    },
-    {
-      "name": "Sam Haar",
-      "email": "https://www.linkedin.com/in/samhaar/",
-      "url": "https://github.com/samhaar"
-    },
-    {
-      "name": "Edward Cho",
-      "email": "https://www.linkedin.com/in/edwardcho1231/",
-      "url": "https://github.com/edwardcho1231"
-    },
-    {
-      "name": "Miguel Gonzalez",
-      "email": "https://www.linkedin.com/in/miguel-gonzalez96/",
-      "url": "https://github.com/MigGonzalez"
-    },
-    {
-      "name": "Jason Liggayu",
-      "email": "https://www.linkedin.com/in/jasonliggayu/",
-      "url": "https://github.com/jasonligg"
-    },
-    {
-      "name": "Warren Tait",
-      "email": "https://www.linkedin.com/in/warrenhtait/",
-      "url": "https://github.com/whtait"
-    }
-  ],
   "build": {
     "npmRebuild": false,
     "productName": "Swell",
@@ -400,15 +221,16 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.5.0",
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^6.11.0",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.0.0",
-    "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-jest": "^23.17.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.0",
-    "eslint-plugin-react-hooks": "^4.0.4",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "fake-indexeddb": "^3.0.2",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^4.3.0",
@@ -421,6 +243,7 @@
     "postcss-nested": "^4.2.1",
     "postcss-pxtorem": "^4.0.1",
     "prettier": "^2.0.5",
+    "prettier-eslint": "^13.0.0",
     "react-devtools-electron": "^4.7.0",
     "react-test-renderer": "^16.13.1",
     "sass-loader": "^7.3.1",
@@ -435,5 +258,187 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-node-externals": "^1.7.2"
-  }
+  },
+  "author": {
+    "name": "Swell",
+    "email": "swell@getswell.io",
+    "url": "http://www.getswell.io"
+  },
+  "contributors": [
+    {
+      "name": "Kyle Combs",
+      "email": "combskyle@gmail.com",
+      "url": "https://github.com/texpatnyc"
+    },
+    {
+      "name": "Jason Ou",
+      "email": "jasonou122894@gmail.com",
+      "url": "https://github.com/jasonou1994"
+    },
+    {
+      "name": "Anthony Terruso",
+      "email": "aterruso@gmail.com",
+      "url": "https://github.com/discrete-projects"
+    },
+    {
+      "name": "Brandon Marrero",
+      "email": "brandon6190@outlook.com",
+      "url": "https://github.com/brandon6190"
+    },
+    {
+      "name": "Abby Chao",
+      "email": "abigail.chao@gmail.com",
+      "url": "https://github.com/abbychao"
+    },
+    {
+      "name": "Kwadwo Asamoah",
+      "email": "addoasa94@gmail.com",
+      "url": "https://github.com/addoasa"
+    },
+    {
+      "name": "Kajol Thapa",
+      "email": "kajol.thapa.dev@gmail.com",
+      "url": "https://github.com/KajolThapa"
+    },
+    {
+      "name": "Amanda Flink",
+      "email": "avflinkette@gmail.com",
+      "url": "https://github.com/aflinky"
+    },
+    {
+      "name": "Anthony Toreson",
+      "email": "anthony.toreson@gmail.com",
+      "url": "https://github.com/atoreson"
+    },
+    {
+      "name": "Billy Tran",
+      "email": "billy.tran61@gmail.com",
+      "url": "https://github.com/btctrl"
+    },
+    {
+      "name": "Paul Rhee",
+      "email": "youjun27@gmail.com",
+      "url": "https://github.com/prheee"
+    },
+    {
+      "name": "Sam Parsons",
+      "email": "samparsons269@gmail.com",
+      "url": "https://github.com/sam-parsons"
+    },
+    {
+      "name": "Dan Stein",
+      "email": "50937807+danst3in@users.noreply.github.com",
+      "url": "https://github.com/danst3in"
+    },
+    {
+      "name": "Evan Grobar",
+      "email": "egrobar@gmail.com",
+      "url": "https://github.com/egrobar"
+    },
+    {
+      "name": "Nancy Dao",
+      "email": "nancyddao@gmail.com",
+      "url": "https://github.com/nancyddao"
+    },
+    {
+      "name": "Yoon Choi",
+      "email": "choi.yoon333@gmail.com",
+      "url": "https://github.com/cyoonique"
+    },
+    {
+      "name": "Amruth Uppaluri",
+      "email": "amruth@uppaluri.org",
+      "url": "https://github.com/amuuth"
+    },
+    {
+      "name": "Hideaki Aomori",
+      "email": "https://www.linkedin.com/in/hideaki-aomori",
+      "url": "http://github.com/h15200"
+    },
+    {
+      "name": "Matt Gin",
+      "email": "mgin1013@gmail.com",
+      "url": "https://github.com/ChunsonHoag"
+    },
+    {
+      "name": "Nick Healy",
+      "email": "nickrhealy@gmail.com",
+      "url": "http://github.com/nickhealy"
+    },
+    {
+      "name": "Grace Spletzer",
+      "email": "gracespletzer05@gmail.com",
+      "url": "https://github.com/gspletzer"
+    },
+    {
+      "name": "Stephanie Wood",
+      "email": "wood.steph@gmail.com",
+      "url": "https://github.com/StephWood"
+    },
+    {
+      "name": "Wyatt Bell",
+      "email": "www.linkedin.com/in/wyatt-bell1",
+      "url": "https://github.com/wcbell51"
+    },
+    {
+      "name": "Grace Kim",
+      "email": "https://www.linkedin.com/in/gracekiim/",
+      "url": "https://github.com/gracekiim"
+    },
+    {
+      "name": "John Madrigal",
+      "email": "www.linkedin.com/in/john-r-madrigal",
+      "url": "https://github.com/johnmadrigal "
+    },
+    {
+      "name": "Michael Miller",
+      "email": "https://www.linkedin.com/in/migueljmiller/",
+      "url": "https://github.com/mjmiguel"
+    },
+    {
+      "name": "Alex Sanhueza",
+      "email": "https://www.linkedin.com/in/alex-sanhueza/",
+      "url": "https://github.com/alexsanhueza"
+    },
+    {
+      "name": "Gary Slootskiy",
+      "email": "https://www.linkedin.com/in/garyslootskiy/",
+      "url": "https://github.com/garyslootskiy"
+    },
+    {
+      "name": "Robin Yoong",
+      "email": "https://www.linkedin.com/in/robinyoong/",
+      "url": "https://github.com/robinyoong"
+    },
+    {
+      "name": "Nathaniel Adams",
+      "email": "https://www.linkedin.com/in/adamsnathaniel/",
+      "url": "https://github.com/nathanielBadams"
+    },
+    {
+      "name": "Sam Haar",
+      "email": "https://www.linkedin.com/in/samhaar/",
+      "url": "https://github.com/samhaar"
+    },
+    {
+      "name": "Edward Cho",
+      "email": "https://www.linkedin.com/in/edwardcho1231/",
+      "url": "https://github.com/edwardcho1231"
+    },
+    {
+      "name": "Miguel Gonzalez",
+      "email": "https://www.linkedin.com/in/miguel-gonzalez96/",
+      "url": "https://github.com/MigGonzalez"
+    },
+    {
+      "name": "Jason Liggayu",
+      "email": "https://www.linkedin.com/in/jasonliggayu/",
+      "url": "https://github.com/jasonligg"
+    },
+    {
+      "name": "Warren Tait",
+      "email": "https://www.linkedin.com/in/warrenhtait/",
+      "url": "https://github.com/whtait"
+    }
+  ]
 }

@@ -1,5 +1,5 @@
-const { NodeVM } = require("vm2");
-const chai = require("chai");
+const { NodeVM } = require('vm2');
+const chai = require('chai');
 
 const testHttpController = {};
 
@@ -15,7 +15,7 @@ testHttpController.runTest = (
   const testResults = [];
 
   if (isGraphQL) {
-    const data = protocolData.data;
+    const { data } = protocolData;
     const events = data;
     response = { ...response, events };
   }
@@ -38,7 +38,8 @@ testHttpController.runTest = (
   // the regex matches all 'assert' or 'expect' on seperate lines
   // it will also match all variables
   // eslint-disable-next-line no-useless-escape
-  const testRegex = /(((const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\w*[^\s\;]*))|(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*)/gm;
+  const testRegex =
+    /(((const|let|var)\s+\w*\s*=\s*(\'[^\']*\'|\"[^\"]*\"|\w*[^\s\;]*))|(expect|assert)[^;\n]*\([^;\n]*\)[\w\.]*)/gm;
   const separatedScriptsArray = inputScript.match(testRegex) ?? [];
 
   // create an array of test scripts that will be executed in Node VM instance
@@ -48,12 +49,12 @@ testHttpController.runTest = (
     // to the results array
     // if the assertion test fails and throws an error, also include the expected and actual
     // create a variable to conditionally declare in the right scope of the test script
-    let variables = "";
+    let variables = '';
     if (/^let|^const|^var/.test(script)) {
       variables = script;
     }
 
-    //assert.strictEqual(response.status, 200, 'response is 200')
+    // assert.strictEqual(response.status, 200, 'response is 200')
     return `
     ${variables}
     try {
@@ -80,19 +81,19 @@ testHttpController.runTest = (
   // then concatenate all the scripts to the testScript string
   const testScript = `
     const { assert, expect } = chai;
-    ${arrOfTestScripts.join(" ")}
+    ${arrOfTestScripts.join(' ')}
     `;
   try {
     // run the script in the VM
     // the second argument denotes where the vm should look for the node_modules folder
     // that is, relative to the main.js file where the electron process is running
-    vm.run(testScript, "main.js");
+    vm.run(testScript, 'main.js');
     // deep clone the testResults array since sending functions, DOM elements, and non-cloneable
     // JS objects is not supported IPC channels past Electron 9
     return JSON.parse(JSON.stringify(testResults));
   } catch (err) {
     console.log(
-      "caught error!: in the catch block of main_testController.js",
+      'caught error!: in the catch block of main_testController.js',
       err
     );
     // return a null object in the event of an error

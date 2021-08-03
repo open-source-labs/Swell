@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
-import dropDownArrow from "../../../../assets/icons/caret-down-white.svg";
+import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import dropDownArrow from '../../../../assets/icons/caret-down-white.svg';
 
-const classNames = require("classnames");
+const classNames = require('classnames');
 
 const BodyTypeSelect = (props) => {
   const {
@@ -21,13 +21,13 @@ const BodyTypeSelect = (props) => {
         setDropdownIsActive(false);
       }
     };
-    document.addEventListener("click", closeDropdown);
-    return () => document.removeEventListener("click", closeDropdown);
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
   const removeContentTypeHeader = () => {
     const filtered = newRequestHeaders.headersArr.filter(
-      (header) => header.key.toLowerCase() !== "content-type"
+      (header) => header.key.toLowerCase() !== 'content-type'
     );
     setNewRequestHeaders({
       headersArr: filtered,
@@ -47,7 +47,7 @@ const BodyTypeSelect = (props) => {
     headersCopy.headersArr[0] = {
       id: Math.random() * 1000000,
       active: true,
-      key: "Content-type",
+      key: 'Content-type',
       value: newBodyType,
     };
     setNewRequestHeaders({
@@ -58,7 +58,7 @@ const BodyTypeSelect = (props) => {
   return (
     <div
       ref={dropdownEl}
-      className={`mt-1 mb- dropdown ${dropdownIsActive ? "is-active" : ""}`}
+      className={`mt-1 mb- dropdown ${dropdownIsActive ? 'is-active' : ''}`}
     >
       <div className="dropdown-trigger">
         <button
@@ -80,35 +80,35 @@ const BodyTypeSelect = (props) => {
 
       <div className="dropdown-menu">
         <ul className="dropdown-content">
-          {newRequestBody.bodyType !== "raw" && (
+          {newRequestBody.bodyType !== 'raw' && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setNewBodyType("raw");
-                setContentTypeHeader("text/plain");
+                setNewBodyType('raw');
+                setContentTypeHeader('text/plain');
               }}
               className="dropdown-item"
             >
               raw
             </a>
           )}
-          {newRequestBody.bodyType !== "x-www-form-urlencoded" && (
+          {newRequestBody.bodyType !== 'x-www-form-urlencoded' && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setContentTypeHeader("x-www-form-urlencoded");
-                setNewBodyType("x-www-form-urlencoded");
+                setContentTypeHeader('x-www-form-urlencoded');
+                setNewBodyType('x-www-form-urlencoded');
               }}
               className="dropdown-item"
             >
               x-www-form-urlencoded
             </a>
           )}
-          {newRequestBody.bodyType !== "none" && (
+          {newRequestBody.bodyType !== 'none' && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
-                setNewBodyType("none");
+                setNewBodyType('none');
                 removeContentTypeHeader();
               }}
               className="dropdown-item"

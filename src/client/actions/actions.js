@@ -1,8 +1,8 @@
-import * as types from "./actionTypes";
+import * as types from './actionTypes';
 
 // BUSINESS LOGIC ACTIONS
 
-//action creators
+// action creators
 export const getHistory = (history) => ({
   type: types.GET_HISTORY,
   payload: history,

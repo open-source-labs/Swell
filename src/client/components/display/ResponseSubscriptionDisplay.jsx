@@ -6,15 +6,16 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 
-
 const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
   let { bodyVariables } = content.request;
-  if (bodyVariables === '') bodyVariables = null
-  const uri = /wss?:\/\//.test(content.protocol) ? content.url : content.url.replace(content.protocol, 'ws://');
+  if (bodyVariables === '') bodyVariables = null;
+  const uri = /wss?:\/\//.test(content.protocol)
+    ? content.url
+    : content.url.replace(content.protocol, 'ws://');
 
   const link = new WebSocketLink({
     uri,
-    options: { reconnect: true }
+    options: { reconnect: true },
   });
 
   const client = new ApolloClient({
@@ -23,12 +24,19 @@ const ResponseSubscriptionDisplay = ({ content, reqResUpdate }) => {
   });
 
   return (
-      <div className="tab_content-response">
-        <div className="json-response" key="jsonresponsediv">
-  {content.response.events.reduce((array, subEvent, index) => array.concat([<JSONPretty data={subEvent} space="4" key={`subs${index}`} />, <hr key={`hr${index}`} />]), [])}
-        </div>
+    <div className="tab_content-response">
+      <div className="json-response" key="jsonresponsediv">
+        {content.response.events.reduce(
+          (array, subEvent, index) =>
+            array.concat([
+              <JSONPretty data={subEvent} space="4" key={`subs${index}`} />,
+              <hr key={`hr${index}`} />,
+            ]),
+          []
+        )}
       </div>
+    </div>
   );
-}
+};
 
 export default ResponseSubscriptionDisplay;

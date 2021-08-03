@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from "react";
-import dropDownArrow from "../../../../../assets/icons/caret-down-tests.svg";
+import React, { useState } from 'react';
+import dropDownArrow from '../../../../../assets/icons/caret-down-tests.svg';
 
-import dropDownArrowUp from "../../../../../assets/icons/caret-up-tests.svg";
+import dropDownArrowUp from '../../../../../assets/icons/caret-up-tests.svg';
 
-import WebsocketTestSnippets from "./WebsocketTestSnippets";
+import WebsocketTestSnippets from './WebsocketTestSnippets';
 
 export default function WebsocketTestSnippetsContainer(props) {
   const { setShowTests, testContent, setNewTestContent } = props;

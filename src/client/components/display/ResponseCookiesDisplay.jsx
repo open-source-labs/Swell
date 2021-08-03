@@ -17,7 +17,11 @@ class ResponseCookiesDisplay extends Component {
 
     responsesCache.forEach((cur, idx) => {
       if (!this.props.responseContent.cookies) {
-        displayContents.push(<p className="reqResContent" key={`reqResRESContent${idx}`} >No Response Cookies</p>)
+        displayContents.push(
+          <p className="reqResContent" key={`reqResRESContent${idx}`}>
+            No Response Cookies
+          </p>
+        );
         return;
       }
       displayContents.push(
@@ -25,7 +29,7 @@ class ResponseCookiesDisplay extends Component {
           className="cookieTable"
           cookies={this.props.responseContent.cookies}
           key="{cookieTable}"
-        />,
+        />
       );
     });
 

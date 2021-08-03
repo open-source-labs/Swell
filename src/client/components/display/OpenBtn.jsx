@@ -1,5 +1,5 @@
-import React from "react";
-import ReqResCtrl from "../../controllers/reqResController";
+import React from 'react';
+import ReqResCtrl from '../../controllers/reqResController';
 
 const OpenBtn = ({ stylesObj, content }) => {
   return (
@@ -13,6 +13,6 @@ const OpenBtn = ({ stylesObj, content }) => {
       Send
     </button>
   );
-}
+};
 
 export default OpenBtn;
