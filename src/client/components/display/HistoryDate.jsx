@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import parse from "date-fns/parse";
-import isYesterday from "date-fns/is_yesterday";
-import isToday from "date-fns/is_today";
-import format from "date-fns/format";
-import History from "./History.jsx";
+import React, { Component } from 'react';
+import parse from 'date-fns/parse';
+import isYesterday from 'date-fns/is_yesterday';
+import isToday from 'date-fns/is_today';
+import format from 'date-fns/format';
+import History from './History.jsx';
 
 class HistoryDate extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class HistoryDate extends Component {
   }
 
   focusOnForm(event) {
-    const composerUrlField = document.querySelector(".composer_url_input");
+    const composerUrlField = document.querySelector('.composer_url_input');
     composerUrlField.focus();
   }
 
@@ -24,12 +24,12 @@ class HistoryDate extends Component {
     let date = parse(current.date);
 
     if (isToday(date)) {
-      date = "Today";
+      date = 'Today';
     } // If the date matches todays date render the word "Today"
     else if (isYesterday(date)) {
-      date = "Yesterday";
+      date = 'Yesterday';
     } else {
-      date = format(date, "ddd, MMM D, YYYY");
+      date = format(date, 'ddd, MMM D, YYYY');
     }
 
     const histArray = current.history.map((history, i) => {
@@ -50,8 +50,10 @@ class HistoryDate extends Component {
     });
 
     return (
-      <div >
-        <h5 className="history-date" aria-label="queryDate">{date}</h5>
+      <div>
+        <h5 className="history-date" aria-label="queryDate">
+          {date}
+        </h5>
         {histArray}
         <hr />
       </div>

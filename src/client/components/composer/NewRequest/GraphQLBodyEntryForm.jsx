@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/addon/edit/matchbrackets";
-import "codemirror/addon/edit/closebrackets";
-import "codemirror/theme/twilight.css";
-import "codemirror/lib/codemirror.css";
-import "codemirror/addon/hint/show-hint";
-import "codemirror/addon/hint/show-hint.css";
-import "codemirror-graphql/hint";
-import "codemirror-graphql/lint";
-import "codemirror-graphql/mode";
-import "codemirror/addon/lint/lint.css";
+import React, { useState, useEffect } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/edit/closebrackets';
+import 'codemirror/theme/twilight.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/hint/show-hint';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror-graphql/hint';
+import 'codemirror-graphql/lint';
+import 'codemirror-graphql/mode';
+import 'codemirror/addon/lint/lint.css';
 
 const GraphQLBodyEntryForm = (props) => {
   const {
@@ -39,9 +39,9 @@ const GraphQLBodyEntryForm = (props) => {
         <CodeMirror
           value={cmValue}
           options={{
-            mode: "graphql",
-            theme: "neo sidebar",
-            scrollbarStyle: "native",
+            mode: 'graphql',
+            theme: 'neo sidebar',
+            scrollbarStyle: 'native',
             lineNumbers: false,
             lint: true,
             hintOptions: true,
@@ -51,7 +51,7 @@ const GraphQLBodyEntryForm = (props) => {
             tabSize: 2,
           }}
           editorDidMount={(editor) => {
-            editor.setSize("100%", 150);
+            editor.setSize('100%', 150);
           }}
           onBeforeChange={(editor, data, value) => {
             const optionObj = {
@@ -59,8 +59,8 @@ const GraphQLBodyEntryForm = (props) => {
               completeSingle: false,
             };
             setValue(value);
-            editor.setOption("lint", optionObj);
-            editor.setOption("hintOptions", optionObj);
+            editor.setOption('lint', optionObj);
+            editor.setOption('hintOptions', optionObj);
           }}
           onChange={(editor, data, value) => {
             editor.showHint();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export default function CookieContainer({ cookie }) {
   const [showCookie, setShowCookie] = useState(false);
@@ -31,7 +31,7 @@ export default function CookieContainer({ cookie }) {
     >
       <thead>
         <tr className="is-size-7">
-          <th style={{ width: "96px" }}>Key</th>
+          <th style={{ width: '96px' }}>Key</th>
           <th className="table-value">Value</th>
         </tr>
       </thead>

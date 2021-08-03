@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import * as actions from "../../actions/actions";
-import SingleScheduleReqResContainer from "./SingleScheduleReqResContainer.jsx";
-import SingleReqResContainer from "./SingleReqResContainer.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
+import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
+import SingleReqResContainer from './SingleReqResContainer.jsx';
+import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -21,15 +21,21 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ScheduleReqResContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate, scheduleInterval, scheduledReqResArray} = props;
+  const {
+    reqResArray,
+    reqResDelete,
+    reqResUpdate,
+    scheduleInterval,
+    scheduledReqResArray,
+  } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
-      const interval = setInterval(() => {
-        for (let i = 0; i < reqResArray.length; i++) {
-            ReqResCtrl.openScheduledReqRes(reqResArray[i].id);
-        }
-      }, scheduleInterval*1000);
+    const interval = setInterval(() => {
+      for (let i = 0; i < reqResArray.length; i++) {
+        ReqResCtrl.openScheduledReqRes(reqResArray[i].id);
+      }
+    }, scheduleInterval * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -47,15 +53,17 @@ const ScheduleReqResContainer = (props) => {
     );
   });
 
-
   return (
     <div>
-       <div className='no-styling mx-1 py-1 is-flex is-flex-direction-column'>
-        <center className='queue'>Scheduled Requests</center>
+      <div className="no-styling mx-1 py-1 is-flex is-flex-direction-column">
+        <center className="queue">Scheduled Requests</center>
         {scheduledReqResMapped.reverse()}
       </div>
     </div>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduleReqResContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ScheduleReqResContainer);

@@ -1,7 +1,7 @@
-import { POINT_CONVERSION_UNCOMPRESSED } from "constants";
-import React, { useState, useEffect, useRef } from "react";
-import { UnControlled as CodeMirror } from "react-codemirror2";
-import "codemirror/theme/neat.css";
+import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
+import React, { useState, useEffect, useRef } from 'react';
+import { UnControlled as CodeMirror } from 'react-codemirror2';
+import 'codemirror/theme/neat.css';
 
 export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
   return (
@@ -11,7 +11,7 @@ export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
         autoCursor={false}
         options={{
           mode,
-          theme: theme || "neat",
+          theme: theme || 'neat',
           lineNumbers: true,
           tabSize: 4,
           lineWrapping: true,

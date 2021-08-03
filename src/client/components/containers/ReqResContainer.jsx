@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { connect, useDispatch } from "react-redux";
-import * as actions from "../../actions/actions";
-import SingleReqResContainer from "./SingleReqResContainer.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
+import React, { useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
+import SingleReqResContainer from './SingleReqResContainer.jsx';
+import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -45,7 +45,7 @@ const ReqResContainer = (props) => {
         <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
           <button
             className="button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color"
-            style={{ minWidth: "30vw" }}
+            style={{ minWidth: '30vw' }}
             type="button"
             onClick={runCollectionTest}
           >

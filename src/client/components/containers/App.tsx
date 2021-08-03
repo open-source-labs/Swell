@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-let api = window.api;
+const {api} = window;
 export const App = () => {
   const [message, setMessage] = useState(null);
 

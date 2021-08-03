@@ -11,14 +11,14 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
 }) => {
   
 
-  //conditional classNames and id for messages for styling depending on source
+  // conditional classNames and id for messages for styling depending on source
   const webSocketMessageClassNames = source === 'server' ? 'websocket_message websocket_message-server' : 'websocket_message websocket_message-client'
   const webSocketMessageIDNames =  source === 'server' ? 'id_websocket_message-server' : 'id_websocket_message-client'
 
   const message_background = source === 'server' ? 'server-background' : 'client-background'
   const message_sender = source === 'server' ? 'server' : 'client'
   
-  //timestamp for messages
+  // timestamp for messages
   const buildTime = (time:number):string  => {
     const hours = new Date(time).getHours();
     const h = hours >= 10 ? `${hours}` : `0${JSON.stringify(hours)}`
@@ -40,7 +40,7 @@ const WebSocketMessage:React.SFC<WebSocketMessageProps> = ({
           
           typeof data==='object'?
             
-          //decode buffer to dataURI
+          // decode buffer to dataURI
            <img src={new TextDecoder("utf-8").decode(data)} alt="img"/> :
           
             <div id={webSocketMessageIDNames}>{data}</div> 

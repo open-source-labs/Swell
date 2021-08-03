@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import {UnControlled as CodeMirror} from 'react-codemirror2';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx'
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { UnControlled as CodeMirror } from 'react-codemirror2';
+import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 
 export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
-
   useEffect(() => {
-    if (newRequestBody.bodyContent === "") {
+    if (newRequestBody.bodyContent === '') {
       setNewRequestBody({
         ...newRequestBody,
         bodyContent: '{\n  \n}',
@@ -29,12 +28,12 @@ export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
         });
       }
     }
-  });  
-  
+  });
+
   return (
-    <TextCodeAreaEditable 
+    <TextCodeAreaEditable
       mode={newRequestBody.rawType}
-      onChange = {(editor, data, value) => {
+      onChange={(editor, data, value) => {
         setNewRequestBody({
           ...newRequestBody,
           bodyContent: value,

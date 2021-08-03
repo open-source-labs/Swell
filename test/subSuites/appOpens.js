@@ -1,57 +1,57 @@
-const assert = require("assert"); //node's own assertion module
-const path = require("path");
-const fs = require("fs");
-const app = require("../testApp");
+const assert = require('assert'); // node's own assertion module
+const path = require('path');
+const fs = require('fs');
+const app = require('../testApp');
 
 module.exports = () => {
-  describe("App opens and renders a page", () => {
-    describe("Browser Window Tests", () => {
-      it("window is visible", async () => {
+  describe('App opens and renders a page', () => {
+    describe('Browser Window Tests', () => {
+      it('window is visible', async () => {
         const isVisible = await app.browserWindow.isVisible();
         return assert.strictEqual(isVisible, true);
       });
 
       it("browser window title is 'Swell'", async () => {
         const titleWithBrowser = await app.browserWindow.getTitle();
-        return assert.strictEqual(titleWithBrowser, "Swell");
+        return assert.strictEqual(titleWithBrowser, 'Swell');
       });
 
-      it("Confirm browser window count is 1", async () => {
+      it('Confirm browser window count is 1', async () => {
         const windowCount = await app.client.getWindowCount();
         return assert.strictEqual(1, windowCount);
       });
 
-      it("take a snapshot of app", async () => {
+      it('take a snapshot of app', async () => {
         const imageBuffer = await app.browserWindow.capturePage();
-        fs.writeFileSync(path.resolve(__dirname, "snapshot.png"), imageBuffer);
+        fs.writeFileSync(path.resolve(__dirname, 'snapshot.png'), imageBuffer);
       });
     });
-    describe("DOM Tests", () => {
+    describe('DOM Tests', () => {
       it("html file title is 'Swell'", async () => {
         const titleWithClient = await app.client
           .waitUntilWindowLoaded()
           .getTitle(); // the dom set inside dist/index.html which is set inside webpack htmlPlugin
-        return assert.strictEqual(titleWithClient, "Swell");
+        return assert.strictEqual(titleWithClient, 'Swell');
       });
 
-      it("devTool should NOT open since we are in production mode", async () => {
+      it('devTool should NOT open since we are in production mode', async () => {
         const isOpen = await app.browserWindow.isDevToolsOpened();
         return assert.strictEqual(isOpen, false);
       });
-      it("Composer panel exists", async () => {
+      it('Composer panel exists', async () => {
         await app.client.waitUntilWindowLoaded();
         // $ is basically querySelector
-        const composer = await app.client.$("#composer");
+        const composer = await app.client.$('#composer');
         return assert.notStrictEqual(composer.value, null);
       });
-      it("Workspace exists", async () => {
+      it('Workspace exists', async () => {
         await app.client.waitUntilWindowLoaded();
-        const workspace = await app.client.$("#workspace");
+        const workspace = await app.client.$('#workspace');
         return assert.notStrictEqual(workspace.value, null);
       });
-      it("Responses panel exists", async () => {
+      it('Responses panel exists', async () => {
         await app.client.waitUntilWindowLoaded();
-        const responses = await app.client.$("#responses");
+        const responses = await app.client.$('#responses');
         return assert.notStrictEqual(responses.value, null);
       });
     });

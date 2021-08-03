@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import * as actions from "../../actions/actions";
-import SingleScheduleReqResContainer from "./SingleScheduleReqResContainer.jsx";
-import SingleReqResContainer from "./SingleReqResContainer.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
+import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
+import SingleReqResContainer from './SingleReqResContainer.jsx';
+import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -27,7 +27,15 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const StoppedContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate, runScheduledTests, scheduledReqResArray, scheduledReqResDelete, clearAllGraph } = props;
+  const {
+    reqResArray,
+    reqResDelete,
+    reqResUpdate,
+    runScheduledTests,
+    scheduledReqResArray,
+    scheduledReqResDelete,
+    clearAllGraph,
+  } = props;
   const dispatch = useDispatch();
 
   let scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
@@ -46,17 +54,17 @@ const StoppedContainer = (props) => {
 
   return (
     <>
-       <div className='no-styling mx-1 py-1 is-flex is-flex-direction-column'>
-        <center className='queue'>Scheduled Requests</center>
-        <div className='prettify-select is-align-self-center mt-3 mb-3'>
+      <div className="no-styling mx-1 py-1 is-flex is-flex-direction-column">
+        <center className="queue">Scheduled Requests</center>
+        <div className="prettify-select is-align-self-center mt-3 mb-3">
           <button
             className="button is-small is-danger is-outlined button-hover-color queue-clear"
             onClick={() => {
               scheduledReqResDelete();
               clearAllGraph();
             }}
-            >
-              Clear
+          >
+            Clear
           </button>
         </div>
         {scheduledReqResMapped.reverse()}

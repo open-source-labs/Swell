@@ -1,88 +1,88 @@
-const assert = require("assert");
-const composerObj = require("../pageObjects/ComposerObj.js");
-const app = require("../testApp.js");
+const assert = require('assert');
+const composerObj = require('../pageObjects/ComposerObj.js');
+const app = require('../testApp.js');
 
 module.exports = () => {
-  describe("URL/request method inputs", () => {
-    it("can switch tabs in the composer pane", async () => {
+  describe('URL/request method inputs', () => {
+    it('can switch tabs in the composer pane', async () => {
       // click and check history
       await composerObj.tabsHistory.click();
-      const historySelected = await app.client.$(".is-active").getText();
-      assert.strictEqual(historySelected, "History");
+      const historySelected = await app.client.$('.is-active').getText();
+      assert.strictEqual(historySelected, 'History');
 
       // click and check composer
       await composerObj.tabsComposer.click();
-      const composerSelected = await app.client.$(".is-active").getText();
-      return assert.strictEqual(composerSelected, "Composer");
+      const composerSelected = await app.client.$('.is-active').getText();
+      return assert.strictEqual(composerSelected, 'Composer');
     });
 
-    it("can select a request type", async () => {
+    it('can select a request type', async () => {
       // click and check graphQL
       await composerObj.selectedNetwork.click();
-      await app.client.$("a=GRAPHQL").click();
+      await app.client.$('a=GRAPHQL').click();
       assert.strictEqual(
         await composerObj.selectedNetwork.getText(),
-        "GRAPHQL"
+        'GRAPHQL'
       );
 
       // click and check WS
       await composerObj.selectedNetwork.click();
-      await app.client.$("a=WEB SOCKETS").click();
+      await app.client.$('a=WEB SOCKETS').click();
       assert.strictEqual(
         await composerObj.selectedNetwork.getText(),
-        "WEB SOCKETS"
+        'WEB SOCKETS'
       );
 
       // click and check gRPC
       await composerObj.selectedNetwork.click();
-      await app.client.$("a=gRPC").click();
-      assert.strictEqual(await composerObj.selectedNetwork.getText(), "gRPC");
+      await app.client.$('a=gRPC').click();
+      assert.strictEqual(await composerObj.selectedNetwork.getText(), 'gRPC');
 
       // click and check REST
       await composerObj.selectedNetwork.click();
-      await app.client.$("a=REST").click();
+      await app.client.$('a=REST').click();
       return assert.strictEqual(
         await composerObj.selectedNetwork.getText(),
-        "REST"
+        'REST'
       );
     });
 
-    it("can select a REST method", async () => {
+    it('can select a REST method', async () => {
       // click and select POST
-      await app.client.$("span=GET").click();
-      await app.client.$("a=POST").click();
-      assert.notStrictEqual(await app.client.$("span=POST"), null);
+      await app.client.$('span=GET').click();
+      await app.client.$('a=POST').click();
+      assert.notStrictEqual(await app.client.$('span=POST'), null);
 
       // click and select PUT
-      await app.client.$("span=POST").click();
-      await app.client.$("a=PUT").click();
-      assert.notStrictEqual(await app.client.$("span=PUT"), null);
+      await app.client.$('span=POST').click();
+      await app.client.$('a=PUT').click();
+      assert.notStrictEqual(await app.client.$('span=PUT'), null);
 
-      //click and select GET
-      await app.client.$("span=PUT").click();
-      await app.client.$("a=GET").click();
-      assert.notStrictEqual(await app.client.$("span=PUT"), null);
+      // click and select GET
+      await app.client.$('span=PUT').click();
+      await app.client.$('a=GET').click();
+      assert.notStrictEqual(await app.client.$('span=PUT'), null);
 
-      //click and select PATCH
-      await app.client.$("span=GET").click();
-      await app.client.$("a=PATCH").click();
-      assert.notStrictEqual(await app.client.$("span=GET"), null);
+      // click and select PATCH
+      await app.client.$('span=GET').click();
+      await app.client.$('a=PATCH').click();
+      assert.notStrictEqual(await app.client.$('span=GET'), null);
 
-      //click and select DELETE
-      await app.client.$("span=PATCH").click();
-      await app.client.$("a=DELETE").click();
-      assert.notStrictEqual(await app.client.$("span=PATCH"), null);
+      // click and select DELETE
+      await app.client.$('span=PATCH').click();
+      await app.client.$('a=DELETE').click();
+      assert.notStrictEqual(await app.client.$('span=PATCH'), null);
     });
 
-    it("can type url into url input", async () => {
+    it('can type url into url input', async () => {
       await composerObj.url.setValue(
-        "http://jsonplaceholder.typicode.com/posts/1"
+        'http://jsonplaceholder.typicode.com/posts/1'
       );
       const input = await composerObj.url.getValue();
 
       return assert.strictEqual(
         input,
-        "http://jsonplaceholder.typicode.com/posts/1"
+        'http://jsonplaceholder.typicode.com/posts/1'
       );
     });
   });
@@ -113,24 +113,24 @@ module.exports = () => {
 
   // });
 
-  describe("cookies inputs", async () => {
-    it("should open cookies input, rendering single input at first", async () => {
+  describe('cookies inputs', async () => {
+    it('should open cookies input, rendering single input at first', async () => {
       // count cookie rows
-      const cookies = await app.client.$$(".cookie-row");
+      const cookies = await app.client.$$('.cookie-row');
       assert.strictEqual(cookies.length, 1);
     });
 
-    it("can add new cookies in request and type in keys & values", async () => {
+    it('can add new cookies in request and type in keys & values', async () => {
       // click add cookie
-      await app.client.$("button=+ Cookie").click();
+      await app.client.$('button=+ Cookie').click();
 
       // change 2nd cookie key / value
       await app.client
         .$('//*[@id="cookie-row1"]/input[1]')
-        .setValue("cookie-key");
+        .setValue('cookie-key');
       await app.client
         .$('//*[@id="cookie-row1"]/input[2]')
-        .setValue("cookie-value");
+        .setValue('cookie-value');
 
       // select 2nd cookie key / value
       const cookieKey = await app.client
@@ -140,22 +140,22 @@ module.exports = () => {
         .$('//*[@id="cookie-row1"]/input[2]')
         .getValue();
 
-      assert.strictEqual(await cookieKey, "cookie-key");
-      assert.strictEqual(await cookieValue, "cookie-value");
+      assert.strictEqual(await cookieKey, 'cookie-key');
+      assert.strictEqual(await cookieValue, 'cookie-value');
     });
   });
 
-  describe("request body inputs", () => {
-    it("body input appears for all other requests", async () => {
-      bodyInputVisible = await app.client.$("#body-entry-select").isExisting();
+  describe('request body inputs', () => {
+    it('body input appears for all other requests', async () => {
+      bodyInputVisible = await app.client.$('#body-entry-select').isExisting();
       assert.strictEqual(bodyInputVisible, true);
     });
 
-    it("can type plain text into body", async () => {
-      const input = "Team Swell is the best!";
+    it('can type plain text into body', async () => {
+      const input = 'Team Swell is the best!';
       await composerObj.clearRestBodyAndWriteKeys(input);
       assert.strictEqual(
-        await app.client.$("#body-entry-select .CodeMirror-line").getText(),
+        await app.client.$('#body-entry-select .CodeMirror-line').getText(),
         input
       );
     });

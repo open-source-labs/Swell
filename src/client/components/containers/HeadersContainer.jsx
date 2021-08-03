@@ -1,5 +1,5 @@
-import React from "react";
-import EmptyState from "../display/EmptyState";
+import React from 'react';
+import EmptyState from '../display/EmptyState';
 
 export default function HeadersContainer({ currentResponse }) {
   if (
@@ -14,7 +14,7 @@ export default function HeadersContainer({ currentResponse }) {
     ([key, value], index) => {
       return (
         <tr key={index}>
-          <td >{key}</td>
+          <td>{key}</td>
           <td className="table-value">{value}</td>
         </tr>
       );

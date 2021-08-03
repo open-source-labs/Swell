@@ -1,4 +1,4 @@
- import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class SSERow extends Component {
   constructor(props) {
@@ -9,12 +9,12 @@ class SSERow extends Component {
 
   handleClick(e) {
     const expandable = e.target
-      .closest(".response_sse")
-      .getElementsByClassName("data-inner")
+      .closest('.response_sse')
+      .getElementsByClassName('data-inner')
       .item(0);
     const expandBtn = e.target;
-    expandBtn.classList.toggle("expand-active");
-    expandable.classList.toggle("expanded");
+    expandBtn.classList.toggle('expand-active');
+    expandable.classList.toggle('expanded');
   }
 
   render() {

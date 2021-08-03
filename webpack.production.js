@@ -1,13 +1,13 @@
-const path = require("path");
-const merge = require("webpack-merge");
-const base = require("./webpack.config");
+const path = require('path');
+const merge = require('webpack-merge');
+const base = require('./webpack.config');
 
 module.exports = merge(base, {
-  mode: "production",
+  mode: 'production',
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
-    publicPath: "./",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: './',
   },
-  devtool: "nosources-source-map",
+  devtool: 'nosources-source-map',
 });

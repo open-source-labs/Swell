@@ -1,16 +1,22 @@
-import React from 'react'
+import React from 'react';
 
-export default function SaveModalSavedWorkspaces({ name, inputID, updateCollection }) {
+export default function SaveModalSavedWorkspaces({
+  name,
+  inputID,
+  updateCollection,
+}) {
   return (
     <div>
       <div className="is-flex is-justify-content-space-between m-3">
-        <div 
+        <div
           className="is-clickable is-primary-link is-align-items-center is-flex"
-          onClick={() => {updateCollection(name, inputID); }}
+          onClick={() => {
+            updateCollection(name, inputID);
+          }}
         >
           {name}
         </div>
       </div>
     </div>
-  )
+  );
 }

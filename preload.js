@@ -1,27 +1,27 @@
-const { ipcRenderer, contextBridge } = require("electron");
+const { ipcRenderer, contextBridge } = require('electron');
 
 const apiObj = {
   send: (channel, ...data) => {
     // allowlist channels SENDING to Main
     const allowedChannels = [
-      "check-for-update",
-      "confirm-clear-history",
-      "export-collection",
-      "fatalError",
-      "import-collection",
-      "import-proto",
-      "open-http",
-      "close-http",
-      "open-gql",
-      "open-grpc",
-      "protoParserFunc-request",
-      "quit-and-install",
-      "uncaughtException",
-      "introspect",
-      "open-ws",
-      "send-ws",
-      "close-ws",
-      "exportChatLog"
+      'check-for-update',
+      'confirm-clear-history',
+      'export-collection',
+      'fatalError',
+      'import-collection',
+      'import-proto',
+      'open-http',
+      'close-http',
+      'open-gql',
+      'open-grpc',
+      'protoParserFunc-request',
+      'quit-and-install',
+      'uncaughtException',
+      'introspect',
+      'open-ws',
+      'send-ws',
+      'close-ws',
+      'exportChatLog',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -30,15 +30,15 @@ const apiObj = {
   receive: (channel, cb) => {
     // allowlist channels
     const allowedChannels = [
-      "add-collection",
-      "clear-history-response",
-      "message",
-      "proto-info",
-      "protoParserFunc-return",
-      "reply-gql",
-      "reqResUpdate",
-      "introspect-reply",
-      "update-connectionArray",
+      'add-collection',
+      'clear-history-response',
+      'message',
+      'proto-info',
+      'protoParserFunc-return',
+      'reply-gql',
+      'reqResUpdate',
+      'introspect-reply',
+      'update-connectionArray',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
@@ -46,7 +46,7 @@ const apiObj = {
   },
   removeAllListeners: (channel, cb) => {
     // allowlist channels
-    const allowedChannels = ["reqResUpdate", "reply-gql"];
+    const allowedChannels = ['reqResUpdate', 'reply-gql'];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
     }
@@ -56,9 +56,9 @@ const apiObj = {
 // this is because we need to have context isolation to be false for spectron tests to run, but context bridge only runs if context isolation is true
 // basically we are assigning certain node functionality (require, ipcRenderer) to the window object in an UN-isolated context only for testing
 // security is reduced for testing, but remains sturdy otherwise
-if (process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENV === 'test') {
   window.electronRequire = require;
   window.api = apiObj;
 } else {
-  contextBridge.exposeInMainWorld("api", apiObj);
+  contextBridge.exposeInMainWorld('api', apiObj);
 }

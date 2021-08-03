@@ -1,6 +1,6 @@
-import React from "react";
-import CookieContainer from "./CookieContainer";
-import EmptyState from "../display/EmptyState";
+import React from 'react';
+import CookieContainer from './CookieContainer';
+import EmptyState from '../display/EmptyState';
 
 export default function CookiesContainer({ currentResponse }) {
   if (

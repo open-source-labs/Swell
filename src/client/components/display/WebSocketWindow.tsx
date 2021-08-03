@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { DropzoneArea } from "material-ui-dropzone";
 import WebSocketMessage from "./WebSocketMessage";
 import { WebSocketWindowProps } from "../../../types";
-import ImageDropzone from "../../components/display/ImageDropzone";
+import ImageDropzone from "./ImageDropzone";
 // import * as actions from "../../../../src/client/actions/actions.js";
 const { api } = window;
 
@@ -21,7 +21,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
     inputImg: "",
   });
 
-  //updates the outgoing message when it changes
+  // updates the outgoing message when it changes
   const updateOutgoingMessage = async (value: any) => {
     console.log("updating msg");
     if (value.includes("data:image/")) {
@@ -31,7 +31,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
     }
   };
 
-  //sends to WScontroller in main.js to send the message to server
+  // sends to WScontroller in main.js to send the message to server
   const sendToWSController = () => {
     if (inputMsgImg.inputMsg) {
       api.send("send-ws", content, inputMsgImg.inputMsg);
@@ -41,7 +41,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       api.send("send-ws", content, inputMsgImg.inputImg);
       setinputMsgImg({ inputMsg: "", inputImg: "" });
     }
-    //reset inputbox
+    // reset inputbox
   };
 
   const handleFileChange = async (file: any) => {
@@ -61,13 +61,13 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
     }
   };
 
-  //when you press enter send the message, send message to socket
+  // when you press enter send the message, send message to socket
   const handleKeyPress = (event: { key: string }) => {
     if (event.key === "Enter") {
       sendToWSController();
     }
   };
-  //maps the messages to view in chronological order and by whom - self/server
+  // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
     .map((message) => {
       message.source = "client";
@@ -81,10 +81,10 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
         return message;
       })
     )
-    //sorts by time
+    // sorts by time
     .sort((a, b) => a.timeReceived - b.timeReceived)
-    //then maps the combined array to a WebSocket Component
-    //conditionally rendering messages or images
+    // then maps the combined array to a WebSocket Component
+    // conditionally rendering messages or images
     .map((message, index) => (
       <WebSocketMessage
         key={index}
@@ -95,13 +95,13 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       />
     ));
 
-  //sets the message style depending on if the connection is open
-  //hides when connection is not open
+  // sets the message style depending on if the connection is open
+  // hides when connection is not open
   const messageInputStyles = {
     display: connection === "open" ? "block" : "none",
   };
 
-  //exports the chatLog- sends it to the backend
+  // exports the chatLog- sends it to the backend
   const exportChatLog = (event: any) => {
     api.send("exportChatLog", outgoingMessages, incomingMessages);
   };

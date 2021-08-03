@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import GRPCBodyEntryForm from "./GRPCBodyEntryForm.jsx";
-import GRPCServiceOrRequestSelect from "./GRPCServiceOrRequestSelect.jsx"
+import React, { useState, useEffect } from 'react';
+import GRPCBodyEntryForm from './GRPCBodyEntryForm.jsx';
+import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect.jsx';
 
 const GRPCAutoInputForm = (props) => {
   //component state for toggling show/hide
   const [show, toggleShow] = useState(true);
   //component state for service and request dropdown
-  const [serviceOption, setServiceOption] = useState("Select Service");
-  const [requestOption, setRequestOption] = useState("Select Request");
+  const [serviceOption, setServiceOption] = useState('Select Service');
+  const [requestOption, setRequestOption] = useState('Select Request');
 
   const {
     selectedService,
@@ -19,20 +19,21 @@ const GRPCAutoInputForm = (props) => {
     selectedStreamingType,
     selectedServiceObj,
     protoContent,
-    initialQuery
+    initialQuery,
   } = props.newRequestStreams;
-
 
   // event handler for changes made to the Select Services dropdown list
   const setService = (e) => {
     setServiceOption(e.target.textContent);
     const serviceName =
-      e.target.textContent !== "Select Service" ? e.target.textContent : null;
-    const serviceObj = services.find((ser) => ser.name === e.target.textContent);
+      e.target.textContent !== 'Select Service' ? e.target.textContent : null;
+    const serviceObj = services.find(
+      (ser) => ser.name === e.target.textContent
+    );
     // clears all stream query bodies except the first one
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
-    let streamContent = [""];
-    setRequestOption("Select Request");
+    let streamContent = [''];
+    setRequestOption('Select Request');
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.setNewRequestStreams({
       ...props.newRequestStreams,
@@ -56,8 +57,8 @@ const GRPCAutoInputForm = (props) => {
 
     let requestName = e.target.textContent;
     //clear stream bodies and set request to null if none selected
-    if (e.target.textContent === "Select Request") {
-      newStreamContent[0] = "";
+    if (e.target.textContent === 'Select Request') {
+      newStreamContent[0] = '';
       requestName = null;
     }
 
@@ -119,7 +120,7 @@ const GRPCAutoInputForm = (props) => {
 
     // push JSON formatted query in streamContent arr
     const queryJSON = JSON.stringify(results, null, 4);
-    if (streamsArrCopy[0] !== "") {
+    if (streamsArrCopy[0] !== '') {
       streamsArrCopy[0].query = queryJSON;
     }
     // remove initial empty string then push new query to stream content arr
@@ -137,10 +138,9 @@ const GRPCAutoInputForm = (props) => {
   }, [selectedRequest]);
 
   useEffect(() => {
-    setServiceOption(selectedService || "Select Service");
-    setRequestOption(selectedRequest || "Select Request");
+    setServiceOption(selectedService || 'Select Service');
+    setRequestOption(selectedRequest || 'Select Request');
   }, [streamContent]);
-
 
   //default options shown for services and request dropdowns
   const servicesList = [];
@@ -149,7 +149,7 @@ const GRPCAutoInputForm = (props) => {
   // autopopulates the service dropdown list
   if (services) {
     services.forEach((ser, i) => {
-      servicesList.push(ser.name)
+      servicesList.push(ser.name);
     });
   }
   // autopopulates the request dropdown list
@@ -169,14 +169,14 @@ const GRPCAutoInputForm = (props) => {
           onClick={setService}
           items={servicesList}
         />
-        { serviceOption !== "Select Service" && 
-          <GRPCServiceOrRequestSelect 
+        {serviceOption !== 'Select Service' && (
+          <GRPCServiceOrRequestSelect
             id={`${requestOption.split(' ').join('-')}-button`}
             value={requestOption}
             onClick={setRequest}
             items={rpcsList}
           />
-        }
+        )}
       </span>
       <GRPCBodyEntryForm
         newRequestStreams={props.newRequestStreams}

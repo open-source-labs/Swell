@@ -1,21 +1,21 @@
-import React from "react";
-import JSONPretty from "react-json-pretty";
-import createDOMPurify from "dompurify";
-import SSERow from "./SSERow.jsx";
+import React from 'react';
+import JSONPretty from 'react-json-pretty';
+import createDOMPurify from 'dompurify';
+import SSERow from './SSERow.jsx';
 
 const ResponseEventsDisplay = (props) => {
   const { events, headers } = props.content.response;
   const displayContents = [];
   const className =
-    props.content.connection === "error"
-      ? "__json-pretty__error"
-      : "__json-pretty__";
+    props.content.connection === 'error'
+      ? '__json-pretty__error'
+      : '__json-pretty__';
 
   // If it's an SSE, render event rows
   if (
-    headers && 
-    headers["content-type"] &&
-    headers["content-type"] === "text/event-stream"
+    headers &&
+    headers['content-type'] &&
+    headers['content-type'] === 'text/event-stream'
   ) {
     events.forEach((cur, idx) => {
       displayContents.push(<SSERow key={idx} content={cur} />);
@@ -24,8 +24,8 @@ const ResponseEventsDisplay = (props) => {
   // if the response content-type, purify and render html
   else if (
     headers &&
-    headers["content-type"] &&
-    headers["content-type"].includes("text/html")
+    headers['content-type'] &&
+    headers['content-type'].includes('text/html')
   ) {
     displayContents.push(
       <div
@@ -39,7 +39,7 @@ const ResponseEventsDisplay = (props) => {
     );
   } else if (events && events.length > 1) {
     if (events) {
-      let resEvents = "";
+      let resEvents = '';
       let eventJSON;
       for (const event of events) {
         eventJSON = JSON.stringify(event, null, 4);

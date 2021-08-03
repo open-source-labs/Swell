@@ -160,7 +160,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.COLLECTION_ADD: {
-      //add to collection to array in state
+      // add to collection to array in state
       return {
         ...state,
         collections: [action.payload, ...state.collections],
@@ -168,7 +168,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.COLLECTION_UPDATE: {
-      //update collection from state
+      // update collection from state
       const collectionName = action.payload.name;
       const newCollections = JSON.parse(JSON.stringify(state.collections));
       newCollections.forEach((obj, i) => {
@@ -201,14 +201,14 @@ const businessReducer = (state = initialState, action) => {
       const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       let updated = false;
-      //if there is history for added date, add query to beginning of history
+      // if there is history for added date, add query to beginning of history
       newHistory.forEach((obj) => {
         if (obj.date === addDate) {
           obj.history.unshift(action.payload);
           updated = true;
         }
       });
-      //if there is not history at added date, create new history with new query
+      // if there is not history at added date, create new history with new query
       if (!updated) {
         newHistory.unshift({
           date: addDate,
@@ -254,7 +254,7 @@ const businessReducer = (state = initialState, action) => {
           indexToBeUpdated,
           1,
           JSON.parse(JSON.stringify(action.payload))
-        ); //FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
+        ); // FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
       }
 
       return {
@@ -286,17 +286,17 @@ const businessReducer = (state = initialState, action) => {
       const { id } = action.payload;
       // action.payload is the latest reqRes object
 
-      //dataPoints to be used by graph
+      // dataPoints to be used by graph
       const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints));
       dataPointsCopy.current = id;
-      //if more than 8 points, data will shift down an index
+      // if more than 8 points, data will shift down an index
       if (!dataPointsCopy[id]) {
         dataPointsCopy[id] = [];
       } else if (dataPointsCopy[id].length > 49) {
         dataPointsCopy[id] = dataPointsCopy[id].slice(1);
       }
 
-      //check if new object is a closed request with timeSent and timeReceived
+      // check if new object is a closed request with timeSent and timeReceived
       if (
         !dataPointsCopy[id].some(
           (elem) => elem.timeSent === action.payload.timeSent
@@ -309,7 +309,7 @@ const businessReducer = (state = initialState, action) => {
             }`
           : dataPointsCopy[id][0].color;
 
-        //add dataPoint to array connected to its id -and return to state
+        // add dataPoint to array connected to its id -and return to state
         dataPointsCopy[id].push({
           reqRes: action.payload,
           url: action.payload.url,
