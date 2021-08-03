@@ -5,17 +5,55 @@ import { useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import historyController from '../../controllers/historyController';
 
-const History = ({ newRequestFields, content, content: { request : { method, isSSE, 
-  headers, cookies, bodyType, body, bodyVariables, rawType, JSONFormatted, network, 
-  restUrl, wsUrl, gqlUrl, grpcUrl }, protocol, url, graphQL, gRPC, streamsArr, 
-  streamContent, queryArr, packageName, rpc, service, initialQuery, protoPath, 
-  servicesObj, protoContent }, setNewRequestFields, setNewRequestHeaders, setNewRequestCookies, 
-  setNewRequestBody, setNewRequestStreams, deleteFromHistory, focusOnForm }) => {
-
+const History = ({
+  newRequestFields,
+  content,
+  content: {
+    request: {
+      method,
+      isSSE,
+      headers,
+      cookies,
+      bodyType,
+      body,
+      bodyVariables,
+      rawType,
+      JSONFormatted,
+      network,
+      restUrl,
+      wsUrl,
+      gqlUrl,
+      grpcUrl,
+    },
+    protocol,
+    url,
+    graphQL,
+    gRPC,
+    webrtc,
+    streamsArr,
+    streamContent,
+    queryArr,
+    packageName,
+    rpc,
+    service,
+    initialQuery,
+    protoPath,
+    servicesObj,
+    protoContent,
+  },
+  setNewRequestFields,
+  setNewRequestHeaders,
+  setNewRequestCookies,
+  setNewRequestBody,
+  setNewRequestStreams,
+  deleteFromHistory,
+  focusOnForm,
+}) => {
   const dispatch = useDispatch();
-  const setSidebarTab = (tabName) => dispatch(actions.setSidebarActiveTab(tabName));
+  const setSidebarTab = (tabName) =>
+    dispatch(actions.setSidebarActiveTab(tabName));
   const setNewRequestSSE = (bool) => dispatch(actions.setNewRequestSSE(bool));
-  
+
   const addHistoryToNewRequest = () => {
     let requestFieldObj = {};
     if (network === 'rest') {
@@ -28,10 +66,11 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         restUrl,
         graphQL: graphQL || false,
         gRPC: gRPC || false,
+        webrtc: webrtc || false,
         network,
         testContent: content.request.testContent,
-      }
-    };
+      };
+    }
     if (network === 'ws') {
       requestFieldObj = {
         ...newRequestFields,
@@ -41,9 +80,10 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         wsUrl,
         graphQL: graphQL || false,
         gRPC: gRPC || false,
+        webrtc: webrtc || false,
         network,
-      }
-    };
+      };
+    }
     if (network === 'graphQL') {
       requestFieldObj = {
         ...newRequestFields,
@@ -53,9 +93,23 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         gqlUrl,
         graphQL: graphQL || false,
         gRPC: gRPC || false,
+        webrtc: webrtc || false,
         network,
-      }
-    };
+      };
+    }
+    if (network === 'webrtc') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: method || 'GET',
+        protocol: protocol || 'http://',
+        url,
+        grpcUrl,
+        graphQL: graphQL || false,
+        gRPC: gRPC || false,
+        webrtc: webrtc || false,
+        network,
+      };
+    }
     if (network === 'grpc') {
       requestFieldObj = {
         ...newRequestFields,
@@ -66,8 +120,8 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         graphQL: graphQL || false,
         gRPC: gRPC || false,
         network,
-      }
-    };
+      };
+    }
     let headerDeeperCopy;
     if (headers) {
       headerDeeperCopy = JSON.parse(JSON.stringify(headers));
@@ -76,7 +130,7 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         active: false,
         key: '',
         value: '',
-      })
+      });
     }
     let cookieDeeperCopy;
     if (cookies && !/ws/.test(protocol)) {
@@ -86,16 +140,16 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         active: false,
         key: '',
         value: '',
-      })
+      });
     }
     const requestHeadersObj = {
       headersArr: headerDeeperCopy || [],
       count: headerDeeperCopy ? headerDeeperCopy.length : 1,
-    }
+    };
     const requestCookiesObj = {
       cookiesArr: cookieDeeperCopy || [],
       count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
-    }
+    };
     const requestBodyObj = {
       bodyType: bodyType || 'raw',
       bodyContent: body || '',
@@ -103,13 +157,13 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
       rawType: rawType || 'Text (text/plain)',
       JSONFormatted: JSONFormatted || true,
       bodyIsNew: false,
-    }
+    };
     setNewRequestFields(requestFieldObj);
     setNewRequestHeaders(requestHeadersObj);
     setNewRequestCookies(requestCookiesObj);
     setNewRequestBody(requestBodyObj);
     setNewRequestSSE(isSSE);
-    // for gRPC 
+    // for gRPC
     if (content && gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(streamsArr));
       const contentsDeepCopy = JSON.parse(JSON.stringify(streamContent));
@@ -120,47 +174,63 @@ const History = ({ newRequestFields, content, content: { request : { method, isS
         streamContent: contentsDeepCopy,
         selectedPackage: packageName,
         selectedRequest: rpc,
-        selectedService:  service,
+        selectedService: service,
         selectedStreamingType: method,
         initialQuery,
         queryArr,
         protoPath,
         services: servicesObj,
         protoContent,
-      }
-      setNewRequestStreams(requestStreamsObj)
+      };
+      setNewRequestStreams(requestStreamsObj);
     }
     setSidebarTab('composer');
-  }
+  };
 
   let colorClass;
   switch (network) {
-    case 'grpc': colorClass = 'is-grpc-color'; break;
-    case 'rest': colorClass = 'is-rest-color'; break;
-    case 'graphQL': colorClass = 'is-graphQL-color'; break;
-    case 'ws': colorClass = 'is-ws-color'; break;
+    case 'grpc':
+      colorClass = 'is-grpc-color';
+      break;
+    case 'rest':
+      colorClass = 'is-rest-color';
+      break;
+    case 'graphQL':
+      colorClass = 'is-graphQL-color';
+      break;
+    case 'ws':
+      colorClass = 'is-ws-color';
+      break;
+    case 'webrtc':
+      colorClass = 'is-webrtc-color';
+      break;
   }
 
   const deleteHistory = (e) => {
     deleteFromHistory(content);
     historyController.deleteHistoryFromIndexedDb(e.target.id);
-  }
-  
+  };
+
   const urlDisplay = url.length > 32 ? url.slice(0, 32) + '...' : url;
 
-    return (
-      <div className="history-container is-flex is-justify-content-space-between m-3" >
-        <div className="is-clickable is-primary-link is-flex" onClick={() => addHistoryToNewRequest()}>
-          <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
-          <div className="history-url"> {urlDisplay} </div>
-        </div>
-        <div className='history-delete-container'>
-          <div className="history-delete-button delete" onClick={(e) => deleteHistory(e)} id={content.id} />
-        </div>
+  return (
+    <div className="history-container is-flex is-justify-content-space-between m-3">
+      <div
+        className="is-clickable is-primary-link is-flex"
+        onClick={() => addHistoryToNewRequest()}
+      >
+        <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
+        <div className="history-url"> {urlDisplay ? urlDisplay : ''} </div>
       </div>
-    );
-}
-
-
+      <div className="history-delete-container">
+        <div
+          className="history-delete-button delete"
+          onClick={(e) => deleteHistory(e)}
+          id={content.id}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default History;

@@ -1,25 +1,27 @@
-import format from "date-fns/format";
-import * as types from "../actions/actionTypes";
+import format from 'date-fns/format';
+import * as types from '../actions/actionTypes';
 
 const initialState = {
-  currentTab: "First Tab",
+  currentTab: 'First Tab',
   reqResArray: [],
   scheduledReqResArray: [],
   history: [],
   collections: [],
   warningMessage: {},
   newRequestFields: {
-    protocol: "",
-    restUrl: "http://",
-    wsUrl: "ws://",
-    gqlUrl: "https://",
-    grpcUrl: "",
-    url: "http://",
-    method: "GET",
+    protocol: '',
+    restUrl: 'http://',
+    wsUrl: 'ws://',
+    gqlUrl: 'https://',
+    grpcUrl: '',
+    webrtc: false,
+    url: 'http://',
+    method: 'GET',
     graphQL: false,
     gRPC: false,
-    network: "rest",
-    testContent: "",
+    ws: false,
+    network: 'rest',
+    testContent: '',
     testResults: [],
   },
   newRequestHeaders: {
@@ -39,17 +41,17 @@ const initialState = {
     queryArr: null,
     protoPath: null,
     services: null,
-    protoContent: "",
+    protoContent: '',
   },
   newRequestCookies: {
     cookiesArr: [],
     count: 0,
   },
   newRequestBody: {
-    bodyContent: "",
-    bodyVariables: "",
-    bodyType: "raw",
-    rawType: "text/plain",
+    bodyContent: '',
+    bodyVariables: '',
+    bodyType: 'raw',
+    rawType: 'text/plain',
     JSONFormatted: true,
     bodyIsNew: false,
   },
@@ -60,7 +62,7 @@ const initialState = {
   dataPoints: {},
   currentResponse: {
     request: {
-      network: "",
+      network: '',
     },
   },
 };
@@ -76,7 +78,7 @@ const businessReducer = (state = initialState, action) => {
 
     case types.DELETE_HISTORY: {
       const deleteId = action.payload.id;
-      const deleteDate = format(action.payload.created_at, "MM/DD/YYYY");
+      const deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       newHistory.forEach((obj, i) => {
         if (obj.date === deleteDate)
@@ -132,15 +134,15 @@ const businessReducer = (state = initialState, action) => {
         },
         newRequestBody: {
           ...state.newRequestBody,
-          bodyContent: "",
-          bodyVariables: "",
-          bodyType: "raw",
-          rawType: "text/plain",
+          bodyContent: '',
+          bodyVariables: '',
+          bodyType: 'raw',
+          rawType: 'text/plain',
           JSONFormatted: true,
         },
         newRequestFields: {
           ...state.newRequestFields,
-          protocol: "",
+          protocol: '',
         },
         newRequestSSE: {
           isSSE: false,
@@ -187,7 +189,7 @@ const businessReducer = (state = initialState, action) => {
         reqResArray: [],
         currentResponse: {
           request: {
-            network: "",
+            network: '',
           },
         },
       };
@@ -196,7 +198,7 @@ const businessReducer = (state = initialState, action) => {
     case types.REQRES_ADD: {
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
-      const addDate = format(action.payload.created_at, "MM/DD/YYYY");
+      const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       //if there is history for added date, add query to beginning of history
