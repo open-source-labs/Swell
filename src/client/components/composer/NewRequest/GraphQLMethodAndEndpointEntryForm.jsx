@@ -4,8 +4,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
-// import ProtocolSelect from "./ProtocolSelect.jsx";
-
 const GraphQLMethodAndEndpointEntryForm = ({
   warningMessage,
   setComposerWarningMessage,

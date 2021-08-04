@@ -1,6 +1,7 @@
-/* eslint-disable */
-
-import React, { useState, useRef, Component, useEffect } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 // import ProtocolSelect from "./ProtocolSelect.jsx";
 
@@ -65,7 +66,6 @@ const RestMethodAndEndpointEntryForm = ({
 
   return (
     <div>
-      {/* ************** RestMethodAndEndpointEntryForm ************** */}
       <div
         ref={dropdownEl}
         className={` is-flex is-justify-content-center dropdown ${
@@ -85,6 +85,7 @@ const RestMethodAndEndpointEntryForm = ({
                 src={dropDownArrow}
                 className="is-awesome-icon"
                 aria-hidden="true"
+                alt="dropdown arrow"
               />
             </span>
           </button>
