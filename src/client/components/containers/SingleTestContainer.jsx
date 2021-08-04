@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import React from 'react';
 import TestResult from './TestResult';
 import VerticalProgress from '../display/testResultsAnimated';
 

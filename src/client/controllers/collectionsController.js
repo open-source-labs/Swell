@@ -1,4 +1,3 @@
-// import { ipcRenderer } from "electron";
 import uuid from 'uuid/v4';
 import db from '../db';
 import * as store from '../store';

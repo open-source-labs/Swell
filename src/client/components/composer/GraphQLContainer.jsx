@@ -1,9 +1,8 @@
 import React from 'react';
-import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import uuid from 'uuid/v4';
 import gql from 'graphql-tag';
 import historyController from '../../controllers/historyController';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
-import FieldEntryForm from './NewRequest/FieldEntryForm.jsx';
 import GraphQLMethodAndEndpointEntryForm from './NewRequest/GraphQLMethodAndEndpointEntryForm.jsx';
 import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
 import GraphQLBodyEntryForm from './NewRequest/GraphQLBodyEntryForm.jsx';
@@ -12,7 +11,7 @@ import GraphQLIntrospectionLog from './NewRequest/GraphQLIntrospectionLog.jsx';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import TestEntryForm from './NewRequest/TestEntryForm.jsx';
 
-export default function GraphQLContainer({
+function GraphQLContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -294,3 +293,5 @@ export default function GraphQLContainer({
     </div>
   );
 }
+
+export default GraphQLContainer;

@@ -4,12 +4,11 @@ import EmptyState from '../display/EmptyState';
 import EventPreview from '../display/EventPreview';
 import 'codemirror/theme/neo.css';
 
-export default function EventsContainer({ currentResponse }) {
+function EventsContainer({ currentResponse }) {
   const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;
   }
-
   const { events, headers } = response;
 
   let responseBody = '';
@@ -64,3 +63,5 @@ export default function EventsContainer({ currentResponse }) {
     </div>
   );
 }
+
+export default EventsContainer;

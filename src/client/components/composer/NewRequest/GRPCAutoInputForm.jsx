@@ -1,3 +1,5 @@
+/* eslint-disable  */
+// Note: Do not enable eslint for this file because it will change the useEffect dependencies and break the tests.
 import React, { useState, useEffect } from 'react';
 import GRPCBodyEntryForm from './GRPCBodyEntryForm.jsx';
 import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect.jsx';

@@ -2,7 +2,7 @@ const { ipcRenderer, contextBridge } = require('electron');
 
 const apiObj = {
   send: (channel, ...data) => {
-    // allowlist channels SENDING to Main
+    // allow list channels SENDING to Main
     const allowedChannels = [
       'check-for-update',
       'confirm-clear-history',
@@ -28,7 +28,7 @@ const apiObj = {
     }
   },
   receive: (channel, cb) => {
-    // allowlist channels
+    // allow list channels
     const allowedChannels = [
       'add-collection',
       'clear-history-response',
@@ -45,7 +45,7 @@ const apiObj = {
     }
   },
   removeAllListeners: (channel, cb) => {
-    // allowlist channels
+    // allow list channels
     const allowedChannels = ['reqResUpdate', 'reply-gql'];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));

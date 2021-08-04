@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import WWWForm from './WWWForm.jsx';
 import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
@@ -7,7 +7,6 @@ import JSONPrettify from './JSONPrettify.jsx';
 import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 
 const BodyEntryForm = (props) => {
-  // const [show, toggleShow] = useState(true);
   const {
     newRequestBody,
     setNewRequestBody,

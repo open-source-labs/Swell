@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../../../src/client/actions/actions.js';
+import * as actions from '../../actions/actions.js';
 import Collection from '../display/Collection.jsx';
 import collectionsController from '../../controllers/collectionsController';
 
-export default function CollectionsContainer() {
+function CollectionsContainer() {
   const dispatch = useDispatch();
 
   const collections = useSelector((store) => store.business.collections);
@@ -46,3 +46,5 @@ export default function CollectionsContainer() {
     </div>
   );
 }
+
+export default CollectionsContainer;

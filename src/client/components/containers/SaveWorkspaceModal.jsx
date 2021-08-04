@@ -1,3 +1,6 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from 'uuid/v4';
@@ -5,7 +8,7 @@ import collectionsController from '../../controllers/collectionsController.js';
 import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces.jsx';
 import * as actions from '../../actions/actions.js';
 
-export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
+function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');
@@ -119,7 +122,6 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
                   input={input}
                   type="text"
                   onChange={(e) => setInput(e.target.value)}
-                  autoFocus
                   className="input"
                 />
               </div>
@@ -152,3 +154,5 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     </div>
   );
 }
+
+export default SaveWorkspaceModal;

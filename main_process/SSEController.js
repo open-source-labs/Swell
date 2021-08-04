@@ -1,5 +1,5 @@
 const http = require('http');
-// native browser api that we are bringing in to work in a node environmnet
+// native browser api that we are bringing in to work in a node environment
 const EventSource = require('eventsource');
 
 const SSEController = {};
@@ -41,7 +41,7 @@ SSEController.createStream = (reqResObj, options, event) => {
       });
   } catch (error) {
     console.log(
-      'error making initial get reuest in SSE controller\n',
+      'error making initial get request in SSE controller\n',
       error.message
     );
     SSEController.returnErrorToFrontEnd(reqResObj, event, error);

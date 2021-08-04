@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { HorizontalBar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import * as store from '../../store';
 import * as actions from '../../actions/actions';
 
@@ -30,7 +31,7 @@ const BarGraph = (props) => {
   const [chartURL, setChartURL] = useState('');
   const [host, setHost] = useState(null);
 
-  //state for showing graph, depending on whether there are datapoints or not.
+  //state for showing graph, depending on whether there are data points or not.
   //must default to true, because graph will not render if initial container's display is 'none'
   const [show, toggleShow] = useState(true);
   //Default state for chart data
@@ -144,7 +145,7 @@ const BarGraph = (props) => {
     let reqResObjs;
     if (dataPoints[id]?.length) {
       const point = dataPoints[id][0];
-      // // if grpc, just return the server IP
+      // if grpc, just return the server IP
       if (point.reqRes.gRPC) url = `${point.url}`;
       // if point.url is lengthy, just return the domain and the end of the uri string
       const domain = point.url
@@ -179,7 +180,7 @@ const BarGraph = (props) => {
     //conditionally update options based on length of dataPoints array
 
     updateOptions(optionsUpdater(dataPoints[id]));
-  }, [dataPoints, currentResponse, chartURL]);
+  }, [dataPoints, currentResponse, chartURL, optionsUpdater]);
 
   // useEffect(updateGraph(currentResponse), [currentResponse])
 

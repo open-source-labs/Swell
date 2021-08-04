@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
-import Header from './Header.jsx';
 import ContentReqRowComposer from './ContentReqRowComposer.jsx';
-import { matchPath } from 'react-router-dom';
 
 class HeaderEntryForm extends Component {
   constructor(props) {

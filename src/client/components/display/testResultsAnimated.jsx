@@ -4,12 +4,12 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { Spring, config } from 'react-spring/renderprops';
 
 const VerticalProgress = (props) => {
-  let { total, pass } = props;
-  let passed = Math.floor((pass / total) * 100);
-  let passedFract = (pass / total).toFixed(2);
+  const { total, pass } = props;
+  const passed = Math.floor((pass / total) * 100);
+  const passedFract = (pass / total).toFixed(2);
 
-  let useMeasure = () => {
-    let mounted = true;
+  const useMeasure = () => {
+    const mounted = true;
     const ref = useRef();
     const [bounds, set] = useState({ left: 0, top: 0, width: 0, height: 0 });
     const [ro] = useState(
@@ -17,7 +17,7 @@ const VerticalProgress = (props) => {
     );
     useEffect(() => {
       ro.observe(ref.current), ro.disconnect;
-    }, []);
+    }, [ro]);
     return [{ ref }, bounds];
   };
 
@@ -29,8 +29,9 @@ const VerticalProgress = (props) => {
   });
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <div {...bind} className="animatedmain">
-      <animated.div className="animatedfill" style={springProps}></animated.div>
+      <animated.div className="animatedfill" style={springProps} />
       <animated.div className="animatedcontent">
         <Spring
           from={{ number: 0 }}

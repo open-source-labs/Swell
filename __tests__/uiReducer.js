@@ -1,12 +1,15 @@
 import uiReducer from '../src/client/reducers/ui';
 import { SET_COMPOSER_DISPLAY } from '../src/client/actions/actionTypes';
 
-xdescribe('UI Reducer', () => {
+describe('UI Reducer', () => {
   let state;
 
   beforeEach(() => {
     state = {
       composerDisplay: 'Request',
+      sidebarActiveTab: 'composer',
+      workspaceActiveTab: 'workspace',
+      responsePaneActiveTab: 'events',
     };
   });
 

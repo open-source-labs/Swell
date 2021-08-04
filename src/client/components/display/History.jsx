@@ -1,6 +1,7 @@
+/* eslint-disable default-case */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { Component } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import historyController from '../../controllers/historyController';
@@ -220,7 +221,7 @@ const History = ({
         onClick={() => addHistoryToNewRequest()}
       >
         <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
-        <div className="history-url"> {urlDisplay ? urlDisplay : ''} </div>
+        <div className="history-url"> {urlDisplay || ''} </div>
       </div>
       <div className="history-delete-container">
         <div
