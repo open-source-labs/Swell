@@ -52,6 +52,7 @@ const SingleReqResContainer = (props) => {
 
   const copyToComposer = () => {
     let requestFieldObj = {};
+
     if (network === 'rest') {
       requestFieldObj = {
         ...newRequestFields,
@@ -66,6 +67,7 @@ const SingleReqResContainer = (props) => {
         testContent: content.request.testContent,
       };
     }
+
     if (network === 'ws') {
       requestFieldObj = {
         ...newRequestFields,
@@ -78,6 +80,7 @@ const SingleReqResContainer = (props) => {
         network,
       };
     }
+
     if (network === 'webrtc') {
       requestFieldObj = {
         ...newRequestFields,
@@ -90,6 +93,7 @@ const SingleReqResContainer = (props) => {
         network,
       };
     }
+
     if (network === 'graphQL') {
       requestFieldObj = {
         ...newRequestFields,
@@ -103,6 +107,7 @@ const SingleReqResContainer = (props) => {
         testContent: content.request.testContent,
       };
     }
+
     if (network === 'grpc') {
       requestFieldObj = {
         ...newRequestFields,
@@ -116,7 +121,9 @@ const SingleReqResContainer = (props) => {
         testContent: content.request.testContent,
       };
     }
+
     let headerDeeperCopy;
+
     if (content.request.headers) {
       headerDeeperCopy = JSON.parse(JSON.stringify(content.request.headers));
       headerDeeperCopy.push({
@@ -126,7 +133,9 @@ const SingleReqResContainer = (props) => {
         value: '',
       });
     }
+
     let cookieDeeperCopy;
+
     if (content.request.cookies && !/ws/.test(protocol)) {
       cookieDeeperCopy = JSON.parse(JSON.stringify(content.request.cookies));
       cookieDeeperCopy.push({
@@ -136,14 +145,17 @@ const SingleReqResContainer = (props) => {
         value: '',
       });
     }
+
     const requestHeadersObj = {
       headersArr: headerDeeperCopy || [],
       count: headerDeeperCopy ? headerDeeperCopy.length : 1,
     };
+
     const requestCookiesObj = {
       cookiesArr: cookieDeeperCopy || [],
       count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
     };
+
     const requestBodyObj = {
       bodyType: content.request.bodyType || 'raw',
       bodyContent: content.request.body || '',
@@ -152,6 +164,7 @@ const SingleReqResContainer = (props) => {
       JSONFormatted: true,
       bodyIsNew: false,
     };
+
     dispatch(actions.setNewRequestFields(requestFieldObj));
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
@@ -179,6 +192,7 @@ const SingleReqResContainer = (props) => {
         services: content.servicesObj,
         protoContent: content.protoContent,
       };
+
       dispatch(actions.setNewRequestStreams(requestStreamsObj));
     }
 
