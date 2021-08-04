@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dropDownArrow from '../../../../assets/icons/caret-down-white.svg';
 
-const classNames = require('classnames');
-
 const BodyTypeSelect = (props) => {
   const {
     setNewRequestBody,
@@ -73,6 +71,7 @@ const BodyTypeSelect = (props) => {
               src={dropDownArrow}
               className="is-awesome-icon"
               aria-hidden="true"
+              alt="Dropdown arrow"
             />
           </span>
         </button>

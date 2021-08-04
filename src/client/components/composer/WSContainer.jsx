@@ -52,8 +52,6 @@ function WSContainer({
       return;
     }
 
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-
     const reqRes = {
       id: uuid(),
       created_at: new Date(),
