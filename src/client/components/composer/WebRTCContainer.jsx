@@ -1,12 +1,12 @@
 import React from 'react';
-import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import uuid from 'uuid/v4';
 import historyController from '../../controllers/historyController';
 import WebRTCSessionEntryForm from './NewRequest/WebRTCSessionEntryForm.jsx';
 import WebRTCServerEntryForm from './NewRequest/WebRTCServerEntryForm.jsx';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import TestEntryForm from './NewRequest/TestEntryForm.jsx';
 
-export default function WebRTCContainer({
+function WebRTCContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -71,7 +71,6 @@ export default function WebRTCContainer({
     }
     if (method === 'INITIATOR') {
       console.log('tbd initiator validation');
-      // need to add validation check for gql variables
     }
     return validationMessage;
   };
@@ -181,3 +180,5 @@ export default function WebRTCContainer({
     </div>
   );
 }
+
+export default WebRTCContainer;

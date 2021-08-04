@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -23,8 +24,8 @@ class WWWForm extends Component {
 
     //if there is only one k/v pair...
     if (!this.props.newRequestBody.bodyContent.includes('&')) {
-      let key = this.props.newRequestBody.bodyContent.split('=')[0];
-      let value = this.props.newRequestBody.bodyContent.split('=')[1];
+      const key = this.props.newRequestBody.bodyContent.split('=')[0];
+      const value = this.props.newRequestBody.bodyContent.split('=')[1];
       this.setState(
         {
           wwwFields: [
@@ -44,11 +45,11 @@ class WWWForm extends Component {
     }
     //more than one k/v pair
     else if (this.props.newRequestBody.bodyContent.includes('&')) {
-      let fields = this.props.newRequestBody.bodyContent
+      const fields = this.props.newRequestBody.bodyContent
         .split('&')
         .map((field) => {
-          let key = field.split('=')[0];
-          let value = field.split('=')[1];
+          const key = field.split('=')[0];
+          const value = field.split('=')[1];
           return {
             id: `id${this.state.wwwFields.length}`,
             active: true,
@@ -67,7 +68,7 @@ class WWWForm extends Component {
 
   componentDidMount() {
     //"hi"="rocky"&"meow"="cats" in the body turns into 2 key/value pairs when switching to x-www
-    let matches = this.props.newRequestBody.bodyContent.match(
+    const matches = this.props.newRequestBody.bodyContent.match(
       /(([^(&|\n)]+=[^(&|\n)]+)&?)+/g
     );
     if (matches) {
@@ -185,7 +186,7 @@ class WWWForm extends Component {
   }
 
   render() {
-    let wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
+    const wwwFieldsReactArr = this.state.wwwFields.map((wwwField, index) => {
       return (
         <ContentReqRowComposer
           index={index}
@@ -198,9 +199,7 @@ class WWWForm extends Component {
     });
 
     return (
-      <div className={'composer_headers_container-open'}>
-        {wwwFieldsReactArr}
-      </div>
+      <div className="composer_headers_container-open">{wwwFieldsReactArr}</div>
     );
   }
 }

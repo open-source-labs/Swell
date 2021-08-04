@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
-import SingleReqResContainer from './SingleReqResContainer.jsx';
-import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
@@ -38,10 +36,10 @@ const StoppedContainer = (props) => {
   } = props;
   const dispatch = useDispatch();
 
-  let scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
+  const scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
     return (
       <SingleScheduleReqResContainer
-        className={`reqResChild`}
+        className="reqResChild"
         content={reqRes}
         key={index}
         date={reqRes.response.headers.date[0]}

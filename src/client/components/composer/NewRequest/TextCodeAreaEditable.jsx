@@ -1,5 +1,5 @@
 import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/theme/neat.css';
 

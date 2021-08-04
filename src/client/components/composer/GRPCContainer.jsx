@@ -1,16 +1,13 @@
 import React from 'react';
-import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import uuid from 'uuid/v4';
 import GRPCFormEditor from './NewRequest/GRPCFormEditor.jsx';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
-import BodyEntryForm from './NewRequest/BodyEntryForm.jsx';
-import FieldEntryForm from './NewRequest/FieldEntryForm.jsx';
-import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
 import historyController from '../../controllers/historyController';
 import GRPCTypeAndEndpointEntryForm from './NewRequest/GRPCTypeAndEndpointEntryForm';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import TestEntryForm from './NewRequest/TestEntryForm';
 
-export default function GRPCContainer({
+function GRPCContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -72,7 +69,7 @@ export default function GRPCContainer({
     const validationMessage = {};
     //Error conditions...
     if (newRequestFields.grpcUrl) return true;
-    else validationMessage.uri = 'Enter a valid URI';
+    validationMessage.uri = 'Enter a valid URI';
     return validationMessage;
   };
 
@@ -82,16 +79,12 @@ export default function GRPCContainer({
       setComposerWarningMessage(warnings);
       return;
     }
-    let reqRes;
-    const protocol = '';
 
     // saves all stream body queries to history & reqres request body
     let streamQueries = '';
     for (let i = 0; i < streamContent.length; i++) {
       // queries MUST be in format, do NOT edit template literal unless necessary
-      streamQueries += `${streamContent[i]}
-
-`;
+      streamQueries += `${streamContent[i]}`;
     }
     // define array to hold client query strings
     const queryArrStr = streamContent;
@@ -107,7 +100,7 @@ export default function GRPCContainer({
     // grabbing streaming type to set method in reqRes.request.method
     const grpcStream = document.getElementById('stream').innerText;
     // create reqres obj to be passed to controller for further actions/tasks
-    reqRes = {
+    const reqRes = {
       id: uuid(),
       created_at: new Date(),
       protocol: '',
@@ -186,7 +179,6 @@ export default function GRPCContainer({
       <div
         className="is-flex-grow-3 add-vertical-scroll"
         style={{ overflowX: 'hidden' }}
-        // tabIndex={0}
       >
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
@@ -225,3 +217,5 @@ export default function GRPCContainer({
     </div>
   );
 }
+
+export default GRPCContainer;

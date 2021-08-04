@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
@@ -10,9 +13,7 @@ import ResponseTime from '../display/ResponseTime';
 import WebSocketWindow from '../display/WebSocketWindow';
 import ReqResCtrl from '../../controllers/reqResController';
 
-/// MAKE SURE YOU UPDATE THE INTERNAL COMMENTS BEFORE SENDING IT TO GITHUB
-
-export const ResponsePaneContainer = () => {
+const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
 

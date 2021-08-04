@@ -63,7 +63,8 @@ const httpController = {
       const { client } = foundHTTP2Connection;
 
       // periodically check connection status
-      // if destroyed or closed, remove from the conections collectoon and try to create a newhttp2 connection
+      // if destroyed or closed, remove from the connections collection and try to create a new http2 connection
+
       // if failed (could be protocol error) move to HTTP1 and delete from http2 connections collection so user can try again
       const interval = setInterval(() => {
         if (client.destroyed || client.closed) {
@@ -80,7 +81,7 @@ const httpController = {
         }
       }, 50);
 
-      // if hasnt changed in 10 seconds, destroy client and clean up memory, send as error to front-end
+      // if hasn't changed in 10 seconds, destroy client and clean up memory, send as error to front-end
       setTimeout(() => {
         clearInterval(interval);
         if (foundHTTP2Connection.status === 'initialized') {
@@ -263,6 +264,7 @@ const httpController = {
       event.sender.send('reqResUpdate', reqResObj);
     });
   },
+
   // ----------------------------------------------------------------------------
 
   makeFetch(args, event, reqResObj) {
@@ -331,9 +333,9 @@ const httpController = {
 
     const options = this.parseFetchOptionsFromReqRes(reqResObj);
 
-    //--------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------
     // Check if the URL provided is a stream
-    //--------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------
     if (reqResObj.request.isSSE) {
       event.sender.send('reqResUpdate', reqResObj);
       // if so, send us over to SSEController

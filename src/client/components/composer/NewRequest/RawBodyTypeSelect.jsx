@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
-
-const classNames = require('classnames');
 
 const RawBodyTypeSelect = (props) => {
   const {
@@ -70,6 +71,7 @@ const RawBodyTypeSelect = (props) => {
               src={dropDownArrow}
               className="is-awesome-icon"
               aria-hidden="true"
+              alt="dropdown arrow"
             />
           </span>
         </button>
@@ -148,24 +150,6 @@ const RawBodyTypeSelect = (props) => {
     </div>
   );
 };
-
-// <select
-// onChange={(e) =>
-//   setNewRequestBody({
-//     ...newRequestBody,
-//     rawType: e.target.value,
-//   })
-// }
-// value={newRequestBody.rawType}
-// >
-//   {/* Raw Type: */}
-//   <option value="text/plain">Text (text/plain)</option>
-//   <option value="application/json">JSON (application/json)</option>
-//   <option value="application/javascript">Javascript (application/javascript)</option>
-//   <option value="application/xml">XML (application/xml)</option>
-//   <option value="text/xml">XML (text/xml)</option>
-//   <option value="text/html">HTML (text/html)</option>
-// </select>
 
 RawBodyTypeSelect.propTypes = {
   newRequestBody: PropTypes.object.isRequired,

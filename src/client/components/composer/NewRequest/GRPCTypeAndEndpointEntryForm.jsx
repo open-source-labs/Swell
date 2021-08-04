@@ -1,5 +1,5 @@
 /* eslint-disable default-case */
-import React, { useRef } from 'react';
+import React from 'react';
 
 const GRPCTypeAndEndpointEntryForm = ({
   warningMessage,

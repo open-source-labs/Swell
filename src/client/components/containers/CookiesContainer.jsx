@@ -2,7 +2,7 @@ import React from 'react';
 import CookieContainer from './CookieContainer';
 import EmptyState from '../display/EmptyState';
 
-export default function CookiesContainer({ currentResponse }) {
+function CookiesContainer({ currentResponse }) {
   if (
     !currentResponse.response ||
     !currentResponse.response.cookies ||
@@ -25,3 +25,5 @@ export default function CookiesContainer({ currentResponse }) {
 
   return <div className="mx-3">{responseCookies}</div>;
 }
+
+export default CookiesContainer;

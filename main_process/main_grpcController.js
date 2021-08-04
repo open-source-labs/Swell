@@ -1,7 +1,6 @@
 const { ipcMain } = require('electron');
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
-// ======================= grpcController.openGrpcConnection
 
 const testingController = require('./main_testingController');
 

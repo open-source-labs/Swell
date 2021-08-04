@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ContentReqRow({ data }) {
+function ContentReqRow({ data }) {
   return (
     <div className="is-flex">
       <input
@@ -20,3 +20,5 @@ export default function ContentReqRow({ data }) {
     </div>
   );
 }
+
+export default ContentReqRow;
