@@ -1,6 +1,7 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController.js';
+import webrtcController from './webrtcController.js';
 
 const { api } = window;
 const connectionController = {
@@ -56,6 +57,13 @@ const connectionController = {
       api.receive('update-connectionArray', (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
       });
+      // Todo: WEBRTC
+    } else if (reqResObj.webrtc) {
+      console.log('webrtc req res controller');
+      webrtcController.openWebrtcConnection(
+        reqResObj,
+        this.openConnectionArray
+      );
     }
     // gRPC connection
     else if (reqResObj.gRPC) {
