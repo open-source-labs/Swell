@@ -1,8 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { connect } from 'react-redux';
-// import { Route, Switch, Link } from 'react-router-dom';
 import * as actions from '../../actions/actions';
-
 import NetworkDropdown from './NetworkDropdown';
 import RestContainer from './RestContainer.jsx';
 import GraphQLContainer from './GraphQLContainer.jsx';
@@ -187,7 +186,6 @@ const ComposerContainer = (props) => {
     <div className="composerContents is-flex is-flex-direction-column is-tall">
       {/* DROPDOWN PROTOCOL SELECTOR */}
 
-      {/* BULMA TAB */}
       <NetworkDropdown
         onProtocolSelect={onProtocolSelect}
         network={props.newRequestFields.network}

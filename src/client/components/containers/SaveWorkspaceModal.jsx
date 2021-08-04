@@ -1,3 +1,6 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from 'uuid/v4';
@@ -119,7 +122,6 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
                   input={input}
                   type="text"
                   onChange={(e) => setInput(e.target.value)}
-                  autoFocus
                   className="input"
                 />
               </div>

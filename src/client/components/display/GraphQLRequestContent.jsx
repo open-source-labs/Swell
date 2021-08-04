@@ -3,7 +3,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import ContentReqRow from './ContentReqRow';
 
-export default function GraphQLRequestContent({ request }) {
+function GraphQLRequestContent({ request }) {
   // ORGANIZE PROPS
   const { headers, cookies, body, bodyVariables, testContent } = request;
 
@@ -19,10 +19,9 @@ export default function GraphQLRequestContent({ request }) {
 
   // PRETTY-PRINT JSON IN BODY
   const bodyText = body;
-  // const bodyText = ( JSON.stringify( JSON.parse(body), null, 4 ) );
+
   // PRETTY-PRINT JSON IN VARIABLES
   const bodyVarText = bodyVariables;
-  // const bodyVarText = ( JSON.stringify( JSON.parse(bodyVariables), null, 4 ) );
 
   return (
     <div>
@@ -87,3 +86,5 @@ export default function GraphQLRequestContent({ request }) {
     </div>
   );
 }
+
+export default GraphQLRequestContent;

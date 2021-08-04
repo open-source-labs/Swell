@@ -1,11 +1,11 @@
+/* eslint-disable default-case */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../assets/icons/caret-down.svg';
-// import { Link } from 'react-router-dom';
 
-export default function NetworkDropdown({ onProtocolSelect, network }) {
+function NetworkDropdown({ onProtocolSelect, network }) {
   const [dropdownIsActive, setDropdownIsActive] = useState();
   const dropdownEl = useRef();
 
@@ -14,14 +14,13 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
-      // The Node.contains() method returns a Boolean value indicating whether a node is a descendant of a given node, i.e. the node itself, one of its direct children (childNodes), one of the children's direct children, and so on.
     };
     document.addEventListener('click', closeDropdown);
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
   let networkTitle = '';
-  // eslint-disable-next-line default-case
+
   switch (network) {
     case 'rest':
       networkTitle = 'REST';
@@ -120,3 +119,5 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
     </div>
   );
 }
+
+export default NetworkDropdown;

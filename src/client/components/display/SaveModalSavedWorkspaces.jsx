@@ -1,10 +1,8 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
-export default function SaveModalSavedWorkspaces({
-  name,
-  inputID,
-  updateCollection,
-}) {
+function SaveModalSavedWorkspaces({ name, inputID, updateCollection }) {
   return (
     <div>
       <div className="is-flex is-justify-content-space-between m-3">
@@ -20,3 +18,5 @@ export default function SaveModalSavedWorkspaces({
     </div>
   );
 }
+
+export default SaveModalSavedWorkspaces;

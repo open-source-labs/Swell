@@ -7,6 +7,7 @@ describe('Business reducer', () => {
     state = {
       currentTab: 'First Tab',
       reqResArray: [],
+      scheduledReqResArray: [],
       history: [],
       collections: [],
       warningMessage: {},
@@ -16,11 +17,15 @@ describe('Business reducer', () => {
         wsUrl: 'ws://',
         gqlUrl: 'https://',
         grpcUrl: '',
+        webrtc: false,
         url: 'http://',
         method: 'GET',
         graphQL: false,
         gRPC: false,
+        ws: false,
         network: 'rest',
+        testContent: '',
+        testResults: [],
       },
       newRequestHeaders: {
         headersArr: [],

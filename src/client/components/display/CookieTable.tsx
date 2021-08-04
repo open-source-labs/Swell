@@ -1,15 +1,18 @@
-import React from "react";
-import CookieTableRow from "./CookieTableRow";
-import { CookieProps } from "../../../types";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import React from 'react';
+import CookieTableRow from './CookieTableRow';
+import { CookieProps } from '../../../types';
 
 const CookieTable = ({ cookies }: CookieProps) => {
   let cookieRowArray: Array<Object>;
   if (Array.isArray(cookies)) {
     cookieRowArray = cookies.map((cookie, i) => (
-        <CookieTableRow className="cookieTableRow" cookies={cookie} key={i} />
-      ));
+      <CookieTableRow className="cookieTableRow" cookies={cookie} key={i} />
+    ));
   }
-  return(
+  return (
     <div className="cookieTable">
       <div className="cookieTableHeaders grid-9">
         <div className="cookieTableHeaderCell">Name</div>
@@ -24,7 +27,7 @@ const CookieTable = ({ cookies }: CookieProps) => {
       </div>
       {cookieRowArray}
     </div>
-  )
-}
+  );
+};
 
 export default CookieTable;

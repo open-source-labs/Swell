@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 import Tab from './Tab.jsx';
 
@@ -47,10 +48,10 @@ class RequestTabs extends Component {
   }
 
   render() {
-    let body = 'Request Body';
-    let cookies = 'Request Cookies';
+    const body = 'Request Body';
+    const cookies = 'Request Cookies';
     let headers = 'Request Headers';
-    let variables = 'Request Variables';
+    const variables = 'Request Variables';
     let tabContentShown;
 
     if (this.props.requestContent.bodyType === 'GRPC') {
@@ -73,7 +74,7 @@ class RequestTabs extends Component {
     // }
 
     if (this.state.openTab === 'Request Body') {
-      tabContentShown = !!this.props.requestContent.body ? (
+      tabContentShown = this.props.requestContent.body ? (
         <pre>
           <p
             className="reqResContent info"
@@ -91,7 +92,7 @@ class RequestTabs extends Component {
         </p>
       );
     } else if (this.state.openTab === 'Request Variables') {
-      tabContentShown = !!this.props.requestContent.bodyVariables ? (
+      tabContentShown = this.props.requestContent.bodyVariables ? (
         <pre>
           <p
             className="reqResContent info"
@@ -116,9 +117,9 @@ class RequestTabs extends Component {
       ) {
         this.props.requestContent.headers.forEach((cur, idx) => {
           tabContentShown.push(
-            <div className={'grid-2'} key={idx}>
-              <span className={'tertiary-title title_offset'}>{cur.key}</span>
-              <span className={'tertiary-title title_offset'}>{cur.value}</span>
+            <div className="grid-2" key={idx}>
+              <span className="tertiary-title title_offset">{cur.key}</span>
+              <span className="tertiary-title title_offset">{cur.value}</span>
             </div>
           );
         });
@@ -140,9 +141,9 @@ class RequestTabs extends Component {
       ) {
         this.props.requestContent.cookies.forEach((cur, idx) => {
           tabContentShown.push(
-            <div className={'grid-2'} key={idx}>
-              <span className={'tertiary-title title_offset'}>{cur.key}</span>
-              <span className={'tertiary-title title_offset'}>{cur.value}</span>
+            <div className="grid-2" key={idx}>
+              <span className="tertiary-title title_offset">{cur.key}</span>
+              <span className="tertiary-title title_offset">{cur.value}</span>
             </div>
           );
         });
@@ -159,8 +160,8 @@ class RequestTabs extends Component {
     }
 
     return (
-      <div className={'request_tabs_container'}>
-        <ul className={'tab_list'}>
+      <div className="request_tabs_container">
+        <ul className="tab_list">
           <Tab
             onTabSelected={this.handleTabSelect}
             tabName={body}
@@ -193,7 +194,7 @@ class RequestTabs extends Component {
             />
           )}
         </ul>
-        <div className={'tab_content'}>{tabContentShown}</div>
+        <div className="tab_content">{tabContentShown}</div>
       </div>
     );
   }

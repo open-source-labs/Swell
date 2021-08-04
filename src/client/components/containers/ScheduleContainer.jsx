@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReqResCtrl from '../../controllers/reqResController.js';
 import ScheduleReqResContainer from './ScheduleReqResContainer.jsx';
 import StoppedContainer from './StoppedContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';

@@ -294,7 +294,7 @@ const SingleReqResContainer = (props) => {
             id={`send-button-${index}`}
             onClick={() => {
               //check the request type
-              //if it's http, dispatch setactivetab to "event" for reqresponsepane
+              //if it's http, dispatch set active tab to "event" for reqresponsepane
               //otherwise do nothing
               if (connectionType !== 'WebSocket') {
                 dispatch(actions.setResponsePaneActiveTab('events'));

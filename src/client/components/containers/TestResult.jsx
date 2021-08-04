@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TestResult({ id, status, message }) {
+function TestResult({ id, status, message }) {
   const testColor = status === 'PASS' ? 'success' : 'danger';
 
   return (
@@ -18,3 +18,5 @@ export default function TestResult({ id, status, message }) {
     </div>
   );
 }
+
+export default TestResult;

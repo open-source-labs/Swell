@@ -1,11 +1,11 @@
 import React from 'react';
-import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import uuid from 'uuid/v4';
 import historyController from '../../controllers/historyController';
 import WSEndpointEntryForm from './NewRequest/WSEndpointEntryForm';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import WSTestEntryForm from './NewRequest/WSTestEntryForm.jsx';
 
-export default function WSContainer({
+function WSContainer({
   setNewTestContent,
   resetComposerFields,
   setNewRequestFields,
@@ -123,3 +123,5 @@ export default function WSContainer({
     </div>
   );
 }
+
+export default WSContainer;

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
@@ -40,7 +42,7 @@ const Collection = (props) => {
             className="is-clickable flex-grow-1 delete m-3"
             onClick={deleteCollection}
             id={props.content.id}
-          ></div>
+          />
         </div>
       </div>
 

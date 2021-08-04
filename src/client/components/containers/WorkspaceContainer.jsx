@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-
 import ReqResCtrl from '../../controllers/reqResController.js';
-import SaveWorkspaceModal from './SaveWorkspaceModal';
 import ReqResContainer from './ReqResContainer.jsx';
+import SaveWorkspaceModal from './SaveWorkspaceModal';
 
-export default function WorkspaceContainer() {
-  // LOCAL STATE HOOKS
+function WorkspaceContainer() {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -38,7 +36,9 @@ export default function WorkspaceContainer() {
 
       <SaveWorkspaceModal showModal={showModal} setShowModal={setShowModal} />
       {/* REQUEST CARDS */}
-      <ReqResContainer displaySchedule={true} />
+      <ReqResContainer displaySchedule />
     </div>
   );
 }
+
+export default WorkspaceContainer;

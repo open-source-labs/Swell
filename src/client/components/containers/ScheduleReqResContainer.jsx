@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
-import SingleReqResContainer from './SingleReqResContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
@@ -37,12 +36,12 @@ const ScheduleReqResContainer = (props) => {
       }
     }, scheduleInterval * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [reqResArray, scheduleInterval]);
 
-  let scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
+  const scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
     return (
       <SingleScheduleReqResContainer
-        className={`reqResChild`}
+        className="reqResChild"
         content={reqRes}
         date={reqRes.response.headers.date[0]}
         key={index}

@@ -1,7 +1,7 @@
 import React from 'react';
 import EmptyState from '../display/EmptyState';
 
-export default function HeadersContainer({ currentResponse }) {
+function HeadersContainer({ currentResponse }) {
   if (
     !currentResponse.response ||
     !currentResponse.response.headers ||
@@ -39,3 +39,5 @@ export default function HeadersContainer({ currentResponse }) {
     </div>
   );
 }
+
+export default HeadersContainer;

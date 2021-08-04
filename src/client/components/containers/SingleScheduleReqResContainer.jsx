@@ -1,12 +1,11 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions.js';
-
-import connectionController from '../../controllers/reqResController';
 import RestRequestContent from '../display/RestRequestContent.jsx';
 import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
 import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
-import ReqResCtrl from '../../controllers/reqResController';
 
 const SingleScheduleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -70,7 +69,7 @@ const SingleScheduleReqResContainer = (props) => {
         'SingleScheduleReqResContainerComponent'
       )
     );
-  }, []);
+  }, [content, dispatch]);
 
   return (
     <div className={`m-3 ${highlightClasses}`}>

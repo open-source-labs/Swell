@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { HashRouter } from "react-router-dom";
-import "../../../assets/style/App.scss";
-import { ContentsContainer } from "./ContentsContainer";
-import { SidebarContainer } from "./SidebarContainer";
-import historyController from "../../controllers/historyController";
-import collectionsController from "../../controllers/collectionsController";
-import UpdatePopUpContainer from "./UpdatePopUpContainer";
-import ResponsePaneContainer from "./ResponsePaneContainer";
+import React, { useState, useEffect } from 'react';
+import { HashRouter } from 'react-router-dom';
+import ContentsContainer from './ContentsContainer';
+import SidebarContainer from './SidebarContainer';
+import historyController from '../../controllers/historyController';
+import collectionsController from '../../controllers/collectionsController';
+import UpdatePopUpContainer from './UpdatePopUpContainer';
+import ResponsePaneContainer from './ResponsePaneContainer';
+import '../../../assets/style/App.scss';
 
 declare global {
   interface Window {
@@ -14,12 +14,12 @@ declare global {
   }
 }
 
-const {api} = window;
-export const App = () => {
+const { api } = window;
+const App = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    api.send("check-for-update");
+    api.send('check-for-update');
     // This file will listen on all of these channels(selectAll, deselectAll, etc) for any communication from the main.js file(aka the main process)
     // current disabled as none of us have a touch bar. If activated, follow the api.send method.
 
@@ -33,19 +33,25 @@ export const App = () => {
 
     historyController.getHistory();
     collectionsController.getCollections();
-    
   });
-  
+
   return (
-    <div className='is-gapless is-tall'>
-      <div id='app' className={`columns is-gapless ${!message &&'is-tall'} ${message &&'is-tall-message'}`}>
+    <div className="is-gapless is-tall">
+      <div
+        id="app"
+        className={`columns is-gapless ${!message && 'is-tall'} ${
+          message && 'is-tall-message'
+        }`}
+      >
         <HashRouter>
-          <SidebarContainer/>
-          <ContentsContainer/>
-          <ResponsePaneContainer/>
-        </HashRouter> 
+          <SidebarContainer />
+          <ContentsContainer />
+          <ResponsePaneContainer />
+        </HashRouter>
       </div>
-      <UpdatePopUpContainer message={message} setMessage={setMessage}/>
+      <UpdatePopUpContainer message={message} setMessage={setMessage} />
     </div>
   );
-}
+};
+
+export default App;

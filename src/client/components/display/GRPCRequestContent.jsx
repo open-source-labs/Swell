@@ -1,14 +1,8 @@
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-
 import ContentReqRow from './ContentReqRow';
 
-export default function GRPCRequestContent({
-  request,
-  rpc,
-  service,
-  servicesObj,
-}) {
+function GRPCRequestContent({ request, rpc, service, servicesObj }) {
   const {
     headers, // refers to meta-data in a GRPC request
     body, // "body Content text"
@@ -81,3 +75,5 @@ export default function GRPCRequestContent({
     </div>
   );
 }
+
+export default GRPCRequestContent;

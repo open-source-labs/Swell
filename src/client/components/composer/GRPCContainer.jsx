@@ -1,16 +1,13 @@
 import React from 'react';
-import uuid from 'uuid/v4'; // (Universally Unique Identifier)--generates a unique ID
+import uuid from 'uuid/v4';
 import GRPCFormEditor from './NewRequest/GRPCFormEditor.jsx';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
-import BodyEntryForm from './NewRequest/BodyEntryForm.jsx';
-import FieldEntryForm from './NewRequest/FieldEntryForm.jsx';
-import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
 import historyController from '../../controllers/historyController';
 import GRPCTypeAndEndpointEntryForm from './NewRequest/GRPCTypeAndEndpointEntryForm';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import TestEntryForm from './NewRequest/TestEntryForm';
 
-export default function GRPCContainer({
+function GRPCContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -72,7 +69,7 @@ export default function GRPCContainer({
     const validationMessage = {};
     //Error conditions...
     if (newRequestFields.grpcUrl) return true;
-    else validationMessage.uri = 'Enter a valid URI';
+    validationMessage.uri = 'Enter a valid URI';
     return validationMessage;
   };
 
@@ -186,7 +183,6 @@ export default function GRPCContainer({
       <div
         className="is-flex-grow-3 add-vertical-scroll"
         style={{ overflowX: 'hidden' }}
-        // tabIndex={0}
       >
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
@@ -225,3 +221,5 @@ export default function GRPCContainer({
     </div>
   );
 }
+
+export default GRPCContainer;

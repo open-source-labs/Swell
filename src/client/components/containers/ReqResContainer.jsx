@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SingleReqResContainer from './SingleReqResContainer.jsx';
