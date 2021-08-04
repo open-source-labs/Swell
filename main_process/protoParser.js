@@ -8,10 +8,13 @@ const path = require('path');
 async function protoParserFunc(protoBodyData) {
   // define storage for .proto parsed content
   const protoStorage = {};
+
   // store the original .proto content in the storage before parsing
   protoStorage.protoMaster = protoBodyData;
+
   // make unique protoID for file we are saving
   let protoID = Math.floor(Math.random() * 10000);
+
   // if file path for that ID already exists, increment the ID
   try {
     if (!fs.existsSync(path.join(process.resourcesPath, '/protos/'))) {

@@ -8,7 +8,7 @@ import collectionsController from '../../controllers/collectionsController.js';
 import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces.jsx';
 import * as actions from '../../actions/actions.js';
 
-export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
+function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');
@@ -154,3 +154,5 @@ export default function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     </div>
   );
 }
+
+export default SaveWorkspaceModal;

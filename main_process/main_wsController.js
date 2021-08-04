@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 const { ipcMain } = require('electron');
 const { dialog } = require('electron');
-// const store = require('./src/client/store.js')
+
 const WebSocketClient = require('websocket').client;
 const fs = require('fs');
 const path = require('path');
@@ -37,7 +38,7 @@ const wsController = {
       this.wsConnect = connection;
       reqResObj.connection = 'open';
       reqResObj.response.connection = 'open';
-      // testingController.runTest(reqResObj.request.testContent, reqResObj);
+
       const openConnectionObj = {
         connection,
         protocol: 'WS',
@@ -46,6 +47,7 @@ const wsController = {
       connectionArray.push(openConnectionObj);
       event.sender.send('update-connectionArray', connectionArray);
       event.sender.send('reqResUpdate', reqResObj);
+
       // connection.on
       this.wsConnect.on('close', () => {
         console.log('closed WS');
@@ -65,17 +67,13 @@ const wsController = {
     socket.connect(reqResObj.url);
   },
 
+  // close connection
   closeWs(event) {
-    // connection.close
     this.wsConnect.close();
   },
 
   sendWebSocketMessage(event, reqResObj, inputMessage) {
-    // send message to ws server
-    // connection.send
-
     // check datatype
-
     if (inputMessage.includes('data:image/')) {
       const buffer = Buffer.from(inputMessage, 'utf8');
       console.log('sending as buffer');
@@ -124,19 +122,23 @@ const wsController = {
   },
 };
 module.exports = () => {
-  // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
+  // pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
+
   // listener to open wsconnection
   ipcMain.on('open-ws', (event, reqResObj, connectionArray) => {
     wsController.openWSconnection(event, reqResObj, connectionArray);
   });
+
   // listener for sending messages to server
   ipcMain.on('send-ws', (event, reqResObj, inputMessage) => {
     wsController.sendWebSocketMessage(event, reqResObj, inputMessage);
   });
-  // listerner to close socket connection
+
+  // listener to close socket connection
   ipcMain.on('close-ws', (event) => {
     wsController.closeWs(event);
   });
+
   ipcMain.on('exportChatLog', (event, outgoingMessages, incomingMessages) => {
     // making sure the messages are in order
     const result = outgoingMessages
@@ -160,7 +162,7 @@ module.exports = () => {
 
     const data = new Uint8Array(Buffer.from(JSON.stringify(result)));
 
-    // showSaveDialog is the windowexplorer that appears
+    // showSaveDialog is the window explorer that appears
     dialog
       .showSaveDialog({ defaultPath: 'websocketLog.txt' })
       .then((file_path) => {

@@ -18,10 +18,9 @@ const connectionController = {
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
 
+  // listens for reqResUpdate event from main process telling it to update reqResObj REST EVENTS
   openReqRes(id) {
-    // listens for reqResUpdate event from main process telling it to update reqResobj
-    // REST EVENTS
-    // remove all previou listeners for 'reqresupdate' before starting to listen for 'reqresupdate' again
+    // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
     api.receive('reqResUpdate', (reqResObj) => {
       if (
@@ -42,7 +41,7 @@ const connectionController = {
         );
       }
     });
-    // Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
+    // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === 'SUBSCRIPTION')
@@ -68,7 +67,7 @@ const connectionController = {
   },
 
   openScheduledReqRes(id) {
-    // listens for reqResUpdate event from main process telling it to update reqResobj
+    // listens for reqResUpdate event from main process telling it to update reqResObj
     // REST EVENTS
     api.removeAllListeners('reqResUpdate');
     api.receive('reqResUpdate', (reqResObj) => {
@@ -83,7 +82,7 @@ const connectionController = {
       }
       store.default.dispatch(actions.scheduledReqResUpdate(reqResObj));
     });
-    // Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
+    // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
     if (reqResObj.request.method === 'SUBSCRIPTION')

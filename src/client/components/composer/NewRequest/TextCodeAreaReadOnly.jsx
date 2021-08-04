@@ -7,7 +7,7 @@ export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
       <CodeMirror
         value={value}
         options={{
-          mode: mode,
+          mode,
           theme: theme || 'neo sidebar',
           lineNumbers: true,
           tabSize: 4,

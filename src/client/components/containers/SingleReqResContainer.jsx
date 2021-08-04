@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions.js';
-
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from '../display/RestRequestContent.jsx';
 import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
@@ -21,6 +20,7 @@ const SingleReqResContainer = (props) => {
   const newRequestFields = useSelector(
     (store) => store.business.newRequestFields
   );
+
   const newRequestStreams = useSelector(
     (store) => store.business.newRequestStreams
   );

@@ -79,16 +79,12 @@ function GRPCContainer({
       setComposerWarningMessage(warnings);
       return;
     }
-    let reqRes;
-    const protocol = '';
 
     // saves all stream body queries to history & reqres request body
     let streamQueries = '';
     for (let i = 0; i < streamContent.length; i++) {
       // queries MUST be in format, do NOT edit template literal unless necessary
-      streamQueries += `${streamContent[i]}
-
-`;
+      streamQueries += `${streamContent[i]}`;
     }
     // define array to hold client query strings
     const queryArrStr = streamContent;
@@ -104,7 +100,7 @@ function GRPCContainer({
     // grabbing streaming type to set method in reqRes.request.method
     const grpcStream = document.getElementById('stream').innerText;
     // create reqres obj to be passed to controller for further actions/tasks
-    reqRes = {
+    const reqRes = {
       id: uuid(),
       created_at: new Date(),
       protocol: '',

@@ -54,7 +54,6 @@ testHttpController.runTest = (
       variables = script;
     }
 
-    // assert.strictEqual(response.status, 200, 'response is 200')
     return `
     ${variables}
     try {

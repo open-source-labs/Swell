@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import PropTypes, { string } from 'prop-types';
@@ -21,10 +24,10 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
   });
 
   // updates the outgoing message when it changes
-  const updateOutgoingMessage = async (value: any) => {
+  const updateOutgoingMessage = (value: any) => {
     console.log('updating msg');
     if (value.includes('data:image/')) {
-      await setinputMsgImg({ ...inputMsgImg, inputImg: value });
+      setinputMsgImg({ ...inputMsgImg, inputImg: value });
     } else {
       setinputMsgImg({ ...inputMsgImg, inputMsg: value });
     }

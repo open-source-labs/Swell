@@ -162,7 +162,6 @@ const ComposerContainer = (props) => {
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
-          // ????
           url: props.newRequestFields.webRTCInitiator,
           method: 'INITIATOR',
           graphQL: false,
@@ -185,7 +184,6 @@ const ComposerContainer = (props) => {
   return (
     <div className="composerContents is-flex is-flex-direction-column is-tall">
       {/* DROPDOWN PROTOCOL SELECTOR */}
-
       <NetworkDropdown
         onProtocolSelect={onProtocolSelect}
         network={props.newRequestFields.network}

@@ -3,7 +3,7 @@ import ScheduleReqResContainer from './ScheduleReqResContainer.jsx';
 import StoppedContainer from './StoppedContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
 
-export default function ScheduleContainer() {
+function ScheduleContainer() {
   const [scheduleInterval, setScheduleInterval] = useState(1);
   const [runScheduledTests, setScheduledTests] = useState(false);
 
@@ -54,3 +54,5 @@ export default function ScheduleContainer() {
     </div>
   );
 }
+
+export default ScheduleContainer;
