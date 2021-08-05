@@ -58,6 +58,10 @@ const initialState = {
   newRequestSSE: {
     isSSE: false,
   },
+  webrtcData: {
+    localSdp: '',
+    remoteSdp: '',
+  },
   introspectionData: { schemaSDL: null, clientSchema: null },
   dataPoints: {},
   currentResponse: {
