@@ -167,6 +167,7 @@ const ComposerContainer = (props) => {
           graphQL: false,
           gRPC: false,
           ws: false,
+          webrtc: true,
           network,
           testContent: '',
         });
