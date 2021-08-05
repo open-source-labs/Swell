@@ -36,9 +36,17 @@ iceConfiguration.iceServers.push(
   }
 );
 
+const pcInitiator = new RTCPeerConnection(iceConfiguration);
+const pcReceiver = new RTCPeerConnection(iceConfiguration);
+
+pcInitiator.onicecandidate = (event) => displayLocalSDP(event);
+
+let pc;
+
 const webrtcController = {
   openWebrtcConnection(reqResObj, connectionArray) {
     console.log(`webrtcController.openWebrtcConnection`);
+
     // set reqResObj for webrtc
     reqResObj.response.messages = [];
     reqResObj.request.messages = [];
@@ -46,47 +54,34 @@ const webrtcController = {
     reqResObj.closeCode = 0;
     reqResObj.timeSent = Date.now();
 
-    // create peer connections as instances of RTCPeerConnection
-    const pcInitiator = new RTCPeerConnection(iceConfiguration);
-    const pcReceiver = new RTCPeerConnection(iceConfiguration);
-
-    // store.default.dispatch(actions.reqResUpdate(reqResObj));
-    console.log(`connection array`, connectionArray);
-    console.log(`reqResObj`, reqResObj);
-
+    reqResObj.connection = 'connected';
     console.log(pcInitiator);
-
-    pcInitiator.onicecandidate = (event) => displayLocalSDP(event);
-    pcReceiver.onicecandidate = (event) => displayLocalSDP(event);
-
-    // log and display Local SDP (ICE candidates)
-    function displayLocalSDP(event) {
-      console.log(`displayLocalSDP: incoming event:`);
-      console.log(event);
-
-      if (
-        event &&
-        event.target &&
-        event.target.iceGatheringState === 'complete'
-      ) {
-        console.log(
-          'done gathering candidates - got iceGatheringState complete'
+  },
+  setLocalSDP(content) {
+    console.log('setLocalSDP');
+    console.log('[setLocalSDP] pcInitiator config:');
+    console.log(JSON.stringify(pcInitiator.getConfiguration()));
+    console.log(content.webrtcData);
+    pcInitiator
+      .createOffer()
+      .then((offer) => {
+        pcInitiator.setLocalDescription(offer);
+      })
+      .then((a) => {
+        console.log('[setLocalSDP] offer set successfully!');
+        content.webrtcData.localSdp = JSON.stringify(
+          pcInitiator.localDescription
         );
-      } else if (event && event.candidate == null) {
-        console.log('done gathering candidates - got null candidate');
-      } else {
         console.log(
-          event.target.iceGatheringState,
-          event,
-          event.target.localDescription
+          '[setLocalSDP] webrtcData.localSdp: (stringified)\n',
+          JSON.stringify(content.webrtcData.localSdp)
         );
-        console.log('corresponding SDP for above ICE candidate in JSON:');
-        console.log(JSON.stringify(event.target.localDescription));
-        // display the newly created SDP in the Local SDP textarea on the DOM
-        const localSDP = JSON.stringify(event.target.localDescription);
-        localSdpDisplay.textContent = localSDP; // DOM element
-      }
-    }
+        store.default.dispatch(actions.saveCurrentResponseData(content));
+        // store.default.dispatch(actions.reqResUpdate(newReqRes));
+      });
+  },
+  displayLocalSDP(event) {
+    console.log('new ICE candidate:\n', event.target.localDescription);
   },
 };
 

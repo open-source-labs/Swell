@@ -72,7 +72,7 @@ function WebRTCContainer({
       validationMessage.json = 'Please fix JSON body formatting errors';
     }
     if (method === 'INITIATOR') {
-      console.log('tbd initiator validation');
+      // console.log('tbd initiator validation');
     }
     return validationMessage;
   };

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions.js';
 import connectionController from '../../controllers/reqResController';
@@ -42,6 +42,7 @@ const SingleReqResContainer = (props) => {
       timeSent,
       rpc,
       service,
+      webrtcData,
     },
     reqResUpdate,
     reqResDelete,
@@ -50,7 +51,11 @@ const SingleReqResContainer = (props) => {
   const network = content.request.network;
   const method = content.request.method;
 
-  console.log(props);
+  useEffect(() => {
+    if (content.request.network === 'webrtc') {
+      setShowDetails(true);
+    }
+  }, [content.request.network]);
 
   const copyToComposer = () => {
     let requestFieldObj = {};
@@ -93,6 +98,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        webrtcData: content.webrtcData,
       };
     }
 
@@ -159,6 +165,7 @@ const SingleReqResContainer = (props) => {
     };
 
     const requestBodyObj = {
+      webrtcData: content.webrtcData,
       bodyType: content.request.bodyType || 'raw',
       bodyContent: content.request.body || '',
       bodyVariables: content.request.bodyVariables || '',
@@ -286,9 +293,7 @@ const SingleReqResContainer = (props) => {
           {network === 'graphQL' && (
             <GraphQLRequestContent request={content.request} />
           )}
-          {network === 'webrtc' && (
-            <WebRTCRequestContent request={content.request} />
-          )}
+          {network === 'webrtc' && <WebRTCRequestContent content={content} />}
         </div>
       )}
       {/* REMOVE / SEND BUTTONS */}
@@ -315,7 +320,6 @@ const SingleReqResContainer = (props) => {
               if (connectionType !== 'WebSocket') {
                 dispatch(actions.setResponsePaneActiveTab('events'));
               }
-
               connectionController.openReqRes(content.id);
               dispatch(
                 actions.saveCurrentResponseData(
