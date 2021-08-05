@@ -60,10 +60,10 @@ const connectionController = {
       // Todo: WEBRTC
     } else if (reqResObj.webrtc) {
       console.log('webrtc req res controller');
-      webrtcController.openWebrtcConnection(
-        reqResObj,
-        this.openConnectionArray
-      );
+      // webrtcController.openWebrtcConnection(
+      //   reqResObj,
+      //   this.openConnectionArray
+      // );
     }
     // gRPC connection
     else if (reqResObj.gRPC) {
