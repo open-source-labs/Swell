@@ -22,6 +22,7 @@ const mapStateToProps = (store) => {
     currentTab: store.business.currentTab,
     warningMessage: store.business.warningMessage,
     introspectionData: store.business.introspectionData,
+    webrtcData: store.business.webrtcData,
   };
 };
 
