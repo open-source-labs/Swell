@@ -86,7 +86,7 @@ const webrtcController = {
         const localSDP = JSON.stringify(event.target.localDescription);
         localSdpDisplay.textContent = localSDP; // DOM element
       }
-    } // end of displayLocalSDP()
+    }
   },
 };
 

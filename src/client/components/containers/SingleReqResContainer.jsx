@@ -50,6 +50,8 @@ const SingleReqResContainer = (props) => {
   const network = content.request.network;
   const method = content.request.method;
 
+  console.log(props);
+
   const copyToComposer = () => {
     let requestFieldObj = {};
 

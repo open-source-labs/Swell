@@ -35,6 +35,7 @@ function WebRTCContainer({
     bodyType,
   },
   setNewRequestHeaders,
+  webrtcData,
   newRequestHeaders,
   newRequestHeaders: { headersArr },
   setNewRequestCookies,
@@ -98,6 +99,7 @@ function WebRTCContainer({
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
+      webrtcData,
       request: {
         method,
         headers: headersArr.filter((header) => header.active && !!header.key),
