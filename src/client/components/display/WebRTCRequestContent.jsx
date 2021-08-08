@@ -1,70 +1,73 @@
 import React from 'react';
+import { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import Peer from '../../controllers/webrtcPeerController'
 
-//you can specify a STUN server here
+
+// Clearly this should be wired into actual Redux store
+// if we start really wiring up webrtc functionality
+// localSdp = '';
+
+
+// //you can specify a STUN server here
 const iceConfiguration = {};
-iceConfiguration.iceServers = [];
-//turn server
-iceConfiguration.iceServers.push({
-  // new coturn STUN/TURN
-  urls: 'turn:104.153.154.109',
-  username: 'teamswell',
-  credential: 'cohortla44',
-  credentialType: 'password',
-});
-//stun  server
-iceConfiguration.iceServers.push(
+iceConfiguration.iceServers = [
   {
-    urls: 'stun:stun1.l.google.com:19302',
+    // new coturn STUN/TURN
+    urls: 'turn:104.153.154.109',
+    username: 'teamswell',
+    credential: 'cohortla44',
+    credentialType: 'password',
   },
   {
     urls: 'stun:104.153.154.109',
-  }
-);
-// create local connection as instance of RTCPeerConnection
-const localConnection = new RTCPeerConnection(iceConfiguration);
+  },
+  {
+    urls: 'stun:stun1.l.google.com:19302',
+  },
+];
 
-// listen for ICE candiates.  Each time a candidate is added to the list, re-log the whole SDP
-let localSdp = '';
-localConnection.onicecandidate = (event) => {
-  if (event && event.target && event.target.iceGatheringState === 'complete') {
-    console.log('done gathering candidates - got iceGatheringState complete');
-  } else if (event && event.candidate == null) {
-    console.log('done gathering candidates - got null candidate');
-  } else {
-    console.log(
-      event.target.iceGatheringState,
-      event,
-      localConnection.localDescription
-    );
-    console.log('corresponding SDP for above ICE candidate in JSON:');
-    // console.log(JSON.stringify(localConnection.localDescription));
-    localSdp = JSON.stringify(localConnection.localDescription);
-    console.log(localSdp);
-  }
-};
-// on our local connection, create a data channel and pass it the name "chatRoom1"
-const dataChannel = localConnection.createDataChannel('chatRoom1');
-// when the channel is openned ...
-dataChannel.onopen = (event) => console.log('Connection opened!');
-// when the channel is closed ...
-dataChannel.onclose = (event) =>
-  console.log('Connection closed! Goodbye (^-^)');
-// when message received...
-dataChannel.onmessage = (event) => console.log('PeerB: ' + event.data);
-localConnection
-  .createOffer()
-  .then((offer) => localConnection.setLocalDescription(offer))
-  .then((a) => console.log('offer set successfully!'));
+
 
 export default function WebRTCRequestContent({ content }) {
+  // Clearly this should be wired into actual Redux store
+  // if we start really wiring up webrtc functionality
+  const [localSdp, setLocalSdp] = React.useState('');
   const [remoteSdp, setRemoteSdp] = React.useState('');
+  
   console.log(`content`, content);
   console.log(`request`, content.request);
   console.log(`webrtc data`, content.webrtcData);
   const { body } = content.request;
 
   console.log(remoteSdp);
+
+  function createLocalSDP(config){
+    // add pcInitiator to global properties and instantiate a new Peer
+    let configuration = {};
+    // ***** Having trouble with JSON object coversion from "body"
+    // ***** when added to configuration and passed into Peer,
+    // ***** we get ERROR: Failed to construct 'RTCPeerConnection': cannot convert to dictionary.
+    // ***** so skipping this for the commmit
+    //
+    // if (config) {
+    //   console.log('server info from UI:');
+    //   console.log(config);
+    //   configuration.iceServers = [...config];
+    //   console.log('configuration set via UI:');
+    //   console.log(configuration);
+    // } else {
+    //   configuration = iceConfiguration;
+    // }
+    configuration = iceConfiguration;
+    globalThis.pcInitiator = new Peer(configuration);
+    pcInitiator.role = pcInitiator._roles.INITIATOR;
+    pcInitiator.initDataChannelAndEvents();
+    console.log('[WebRTCRequestContent][createLocalSdp] pcInitiator.createLocalSdp()');
+    // createLocalSdp now returns the localDescription once the offer is gereated and set
+    // so assign that to localSDP
+    return pcInitiator.createLocalSdp();
+  }
 
   function setRemoteSDP(data) {
     // console.log(e);
@@ -100,7 +103,7 @@ export default function WebRTCRequestContent({ content }) {
               className="column is-flex is-flex-direction-column"
             >
               <CodeMirror
-                value={localSdp || 'No SDP yet'}
+                value={localSdp || 'No SDP yet'} // this is not updated when the value in local state changes.  Should prob be added to Redux store, anyway.
                 options={{
                   mode: 'application/json',
                   theme: 'neo readonly',
@@ -110,7 +113,12 @@ export default function WebRTCRequestContent({ content }) {
                   readOnly: true,
                 }}
               />
-              <button className="button is-webrtc">Set Local SDP</button>
+              <button 
+                className="button is-webrtc"
+                onClick={() => setLocalSdp( createLocalSDP( body))}
+              >
+                Create Local SDP
+              </button>
             </div>
           </div>
         </div>
