@@ -5,7 +5,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
-const WebRTCServerEntryForm = ({
+const WebRTCSessionEntryForm = ({
   warningMessage,
   setComposerWarningMessage,
   setNewRequestFields,
@@ -39,7 +39,7 @@ const WebRTCServerEntryForm = ({
     const url = e.target.value;
     setNewRequestFields({
       ...newRequestFields,
-      gqlUrl: url,
+      wsUrl: url,
       url,
     });
   };
@@ -120,7 +120,7 @@ const WebRTCServerEntryForm = ({
           className="ml-1 input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
-          value={newRequestFields.gqlUrl}
+          value={newRequestFields.wsUrl}
           onChange={(e) => {
             urlChangeHandler(e);
           }}
@@ -134,4 +134,4 @@ const WebRTCServerEntryForm = ({
   );
 };
 
-export default WebRTCServerEntryForm;
+export default WebRTCSessionEntryForm;
