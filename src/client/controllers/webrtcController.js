@@ -1,145 +1,321 @@
-/* eslint-disable camelcase */
-import * as store from '../store';
-import * as actions from '../actions/actions';
+// /* eslint-disable react-hooks/exhaustive-deps */
+// import React, { Fragment, useState, useEffect, useRef } from 'react';
+// // import {
+// //   Header,
+// //   Icon,
+// //   Input,
+// //   Grid,
+// //   Segment,
+// //   Button,
+// //   Loader
+// // } from "semantic-ui-react";
+// // import SweetAlert from "react-bootstrap-sweetalert";
+// // import { format } from "date-fns";
+// // import "./App.css";
+// // import UsersList from "./UsersList";
+// // import MessageBox from "./MessageBox";
 
-const { api } = window;
+// // Use for remote connections
+// const configuration = {
+//   iceServers: [{ url: 'stun:stun.1.google.com:19302' }],
+// };
 
-function doWebrtcShit(){
+// // Use for local connections
+// // const configuration = null;
 
-  // get-browser-rtc
-  //
-  function getBrowserRTC () {
-    if (typeof globalThis === 'undefined') return null
-    const wrtc = {
-      RTCPeerConnection: globalThis.RTCPeerConnection || globalThis.mozRTCPeerConnection ||
-        globalThis.webkitRTCPeerConnection,
-      RTCSessionDescription: globalThis.RTCSessionDescription ||
-        globalThis.mozRTCSessionDescription || globalThis.webkitRTCSessionDescription,
-      RTCIceCandidate: globalThis.RTCIceCandidate || globalThis.mozRTCIceCandidate ||
-        globalThis.webkitRTCIceCandidate
-    }
-    if (!wrtc.RTCPeerConnection) return null
-    return wrtc
-  }
+// const Chat = () => {
+//   const [connection, setconnection] = useState(null);
+//   const [channel, setChannel] = useState(null);
+//   const [socketOpen, setSocketOpen] = useState(false);
+//   const [socketMessages, setSocketMessages] = useState([]);
+//   const [name, setName] = useState('');
+//   const [loggingIn, setLoggingIn] = useState(false);
+//   const [users, setUsers] = useState([]);
+//   const [connectedTo, setConnectedTo] = useState('');
+//   const [connecting, setConnecting] = useState(false);
+//   const connectedRef = useRef();
+//   const webSocket = useRef(null);
+//   const [message, setMessage] = useState('');
+//   const messagesRef = useRef({});
+//   const [messages, setMessages] = useState({});
 
-  const wrtc = getBrowserRTC();
+//   const updateConnection = (conn) => {
+//     setconnection(conn);
+//   };
+//   const updateChannel = (chn) => {
+//     setChannel(chn);
+//   };
 
-  console.log('webrtcController: wrtc')
-  console.log(wrtc);
+//   useEffect(() => {
+//     webSocket.current = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+//     webSocket.current.onmessage = (message) => {
+//       const data = JSON.parse(message.data);
+//       setSocketMessages((prev) => [...prev, data]);
+//     };
+//     webSocket.current.onclose = () => {
+//       webSocket.current.close();
+//     };
+//     return () => webSocket.current.close();
+//   }, []);
 
-  // define roles
-  const roles = {
-    pending: 'PENDING',
-    initiator: 'INITIATOR',
-    receiver: 'RECEIVER',
-  };
+//   useEffect(() => {
+//     const data = socketMessages.pop();
+//     if (data) {
+//       switch (data.type) {
+//         case 'connect':
+//           setSocketOpen(true);
+//           break;
+//         case 'login':
+//           onLogin(data);
+//           break;
+//         case 'updateUsers':
+//           updateUsersList(data);
+//           break;
+//         case 'removeUser':
+//           removeUser(data);
+//           break;
+//         case 'offer':
+//           onOffer(data);
+//           break;
+//         case 'answer':
+//           onAnswer(data);
+//           break;
+//         case 'candidate':
+//           onCandidate(data);
+//           break;
+//         default:
+//           break;
+//       }
+//     }
+//   }, [onAnswer, onCandidate, onLogin, onOffer, socketMessages]);
 
-  // set my role
-  const myRole = roles.pending;
+//   const send = (data) => {
+//     webSocket.current.send(JSON.stringify(data));
+//   };
 
-  // decalre localSDP -- this will go into state in a 'real' implementation
-  let localSdp;
+//   const handleLogin = () => {
+//     setLoggingIn(true);
+//     send({
+//       type: 'login',
+//       name,
+//     });
+//   };
 
+//   const updateUsersList = ({ user }) => {
+//     setUsers((prev) => [...prev, user]);
+//   };
 
-  // Server configuration
-  const iceConfiguration = {};
-  iceConfiguration.iceServers = [
-    {
-      urls: 'turn:104.153.154.109',
-      username: 'teamswell',
-      credential: 'cohortla44',
-      credentialType: 'password',
-    },
-    {
-      urls: 'stun:stun1.l.google.com:19302',
-    },
-    {
-      urls: 'stun:104.153.154.109',
-    },
-  ];
+//   const removeUser = ({ user }) => {
+//     setUsers((prev) => prev.filter((u) => u.userName !== user.userName));
+//   };
 
-  const pcInitiator = new wrtc.RTCPeerConnection(iceConfiguration);
-  const pcReceiver = new wrtc.RTCPeerConnection(iceConfiguration);
+//   const handleDataChannelMessageReceived = ({ data }) => {
+//     const message = JSON.parse(data);
+//     const { name: user } = message;
+//     const messages = messagesRef.current;
+//     let userMessages = messages[user];
+//     if (userMessages) {
+//       userMessages = [...userMessages, message];
+//       const newMessages = { ...messages, [user]: userMessages };
+//       messagesRef.current = newMessages;
+//       setMessages(newMessages);
+//     } else {
+//       const newMessages = { ...messages, [user]: [message] };
+//       messagesRef.current = newMessages;
+//       setMessages(newMessages);
+//     }
+//   };
 
-  // listen for ICE candiates.  Each time a candidate is added to the list, re-log the whole SDP
-  pcInitiator.onicecandidate = event => { 
-      if (event && event.target && event.target.iceGatheringState === 'complete') {
-          console.log('done gathering candidates - got iceGatheringState complete');
-      } else if (event && event.candidate == null) {
-          console.log('done gathering candidates - got null candidate');
-      } else {
-          console.log(event.target.iceGatheringState, event, localConnection.localDescription);
-          console.log("corresponding SDP for above ICE candidate in JSON:");
-          console.log(JSON.stringify(localConnection.localDescription));
-      }
-  }
+//   const onLogin = ({ success, message, users: loggedIn }) => {
+//     setLoggingIn(false);
+//     if (success) {
+//       console.log('object');
+//       setIsLoggedIn(true);
+//       setUsers(loggedIn);
+//       const localConnection = new RTCPeerConnection(configuration);
+//       //when the browser finds an ice candidate we send it to another peer
+//       localConnection.onicecandidate = ({ candidate }) => {
+//         const connectedTo = connectedRef.current;
 
-  //pcReceiver.onicecandidate = event => displayLocalSDP(event);
+//         if (candidate && !!connectedTo) {
+//           send({
+//             name: connectedTo,
+//             type: 'candidate',
+//             candidate,
+//           });
+//         }
+//       };
+//       localConnection.ondatachannel = (event) => {
+//         console.log('Data channel is created!');
+//         const receiveChannel = event.channel;
+//         receiveChannel.onopen = () => {
+//           console.log('Data channel is open and ready to be used.');
+//         };
+//         receiveChannel.onmessage = handleDataChannelMessageReceived;
+//         updateChannel(receiveChannel);
+//       };
+//       updateConnection(localConnection);
+//     } else {
+//       setAlert(
+//         <SweetAlert
+//           warning
+//           confirmBtnBsStyle="danger"
+//           title="Failed"
+//           onConfirm={closeAlert}
+//           onCancel={closeAlert}
+//         >
+//           {message}
+//         </SweetAlert>
+//       );
+//     }
+//   };
 
-  // listen for signaling status state changes
-  pcInitiator.onsignalingstatechange = event => console.log('onsignalingstatechange\n',event);
-  // pcReceiver.onsignalingstatechange = event => updateSignalingStateDisplay(event);
+//   //when somebody wants to message us
+//   const onOffer = ({ offer, name }) => {
+//     setConnectedTo(name);
+//     connectedRef.current = name;
 
-  // listen for ice connection state changes
-  pcInitiator.iceconnectionstatechange = event => console.log('iceconnectionstatechange\n',event);
-  // pcReceiver.iceconnectionstatechange = event => {
-  //   console.log('*** iceconnectionstatechange');
-  //   updateIceTimelineDisplay(event);
-  // }
+//     connection
+//       .setRemoteDescription(new RTCSessionDescription(offer))
+//       .then(() => connection.createAnswer())
+//       .then((answer) => connection.setLocalDescription(answer))
+//       .then(() =>
+//         send({ type: 'answer', answer: connection.localDescription, name })
+//       )
+//       .catch((e) => {
+//         console.log({ e });
+//       });
+//   };
 
-  // listen for connection state changes
-  pcInitiator.onconnectionstatechange = event => console.log('onconnectionstatechange\n',event);
-  //pcReceiver.onconnectionstatechange = event => updateConnectionTimelineDisplay(event);
+//   //when another user answers to our offer
+//   const onAnswer = ({ answer }) => {
+//     connection.setRemoteDescription(new RTCSessionDescription(answer));
+//   };
 
+//   //when we got ice candidate from another user
+//   const onCandidate = ({ candidate }) => {
+//     connection.addIceCandidate(new RTCIceCandidate(candidate));
+//   };
 
-  function setLocalSDP(content){
-    console.log('setLocalSDP');
-    console.log('[setLocalSDP] pcInitiator config:');
-    console.log(JSON.stringify(pcInitiator.getConfiguration()));
-    //console.log(content.webrtcData);
-    pcInitiator
-      .createOffer()
-      .then((offer) => {
-        pcInitiator.setLocalDescription(offer);
-      })
-      .then((a) => {
-        console.log('[setLocalSDP] offer set successfully!');
-        localSdp = JSON.stringify(
-          pcInitiator.localDescription
-        );
-        console.log(
-          '[setLocalSDP] localSdp: (stringified)\n',
-          JSON.stringify(localSdp)
-        );
-        // store.default.dispatch(actions.saveCurrentResponseData(content));
-        // store.default.dispatch(actions.reqResUpdate(newReqRes));
-      });
-    pcInitiator.onicecandidate = (event) => console.log(event);
-  }
+//   //when a user clicks the send message button
+//   const sendMsg = () => {
+//     const time = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+//     const text = { time, message, name };
+//     const messages = messagesRef.current;
+//     const connectedTo = connectedRef.current;
+//     let userMessages = messages[connectedTo];
+//     if (messages[connectedTo]) {
+//       userMessages = [...userMessages, text];
+//       const newMessages = { ...messages, [connectedTo]: userMessages };
+//       messagesRef.current = newMessages;
+//       setMessages(newMessages);
+//     } else {
+//       userMessages = { ...messages, [connectedTo]: [text] };
+//       messagesRef.current = userMessages;
+//       setMessages(userMessages);
+//     }
+//     channel.send(JSON.stringify(text));
+//     setMessage('');
+//   };
 
-} // end of doWebrtcShit()
+//   const handleConnection = (name) => {
+//     const dataChannelOptions = {
+//       reliable: true,
+//     };
 
-const webrtcController = {
-  openWebrtcConnection(reqResObj, connectionArray) {
-    console.log(`webrtcController.openWebrtcConnection`);
+//     const dataChannel = connection.createDataChannel('messenger');
 
-    // set reqResObj for webrtc
-    reqResObj.response.messages = [];
-    reqResObj.request.messages = [];
-    reqResObj.connection = 'pending';
-    reqResObj.closeCode = 0;
-    reqResObj.timeSent = Date.now();
+//     dataChannel.onerror = (error) => {
+//       console.log(error);
+//     };
 
-    reqResObj.connection = 'connected';
-    //console.log(pcInitiator);
-    
-    doWebrtcShit();
-  },
+//     dataChannel.onmessage = handleDataChannelMessageReceived;
+//     updateChannel(dataChannel);
 
+//     connection
+//       .createOffer()
+//       .then((offer) => connection.setLocalDescription(offer))
+//       .then(() =>
+//         send({ type: 'offer', offer: connection.localDescription, name })
+//       )
+//       .catch((e) => console.log({ e }));
+//   };
 
-  displayLocalSDP(event) {
-    // console.log('new ICE candidate:\n', event.target.localDescription);
-  },
-};
+//   const toggleConnection = (userName) => {
+//     if (connectedRef.current === userName) {
+//       setConnecting(true);
+//       setConnectedTo('');
+//       connectedRef.current = '';
+//       setConnecting(false);
+//     } else {
+//       setConnecting(true);
+//       setConnectedTo(userName);
+//       connectedRef.current = userName;
+//       handleConnection(userName);
+//       setConnecting(false);
+//     }
+//   };
+//   return (
+//     <div className="App">
+//       {alert}
+//       <Header as="h2" icon>
+//         <Icon name="users" />
+//         Simple WebRTC Chap App
+//       </Header>
+//       {(socketOpen && (
+//         <>
+//           <Grid centered columns={4}>
+//             <Grid.Column>
+//               {(!isLoggedIn && (
+//                 <Input
+//                   fluid
+//                   disabled={loggingIn}
+//                   type="text"
+//                   onChange={(e) => setName(e.target.value)}
+//                   placeholder="Username..."
+//                   action
+//                 >
+//                   <input />
+//                   <Button
+//                     color="teal"
+//                     disabled={!name || loggingIn}
+//                     onClick={handleLogin}
+//                   >
+//                     <Icon name="sign-in" />
+//                     Login
+//                   </Button>
+//                 </Input>
+//               )) || (
+//                 <Segment raised textAlign="center" color="olive">
+//                   Logged In as: {name}
+//                 </Segment>
+//               )}
+//             </Grid.Column>
+//           </Grid>
+//           <Grid>
+//             <UsersList
+//               users={users}
+//               toggleConnection={toggleConnection}
+//               connectedTo={connectedTo}
+//               connection={connecting}
+//             />
+//             <MessageBox
+//               messages={messages}
+//               connectedTo={connectedTo}
+//               message={message}
+//               setMessage={setMessage}
+//               sendMsg={sendMsg}
+//               name={name}
+//             />
+//           </Grid>
+//         </>
+//       )) || (
+//         <Loader size="massive" active inline="centered">
+//           Loading
+//         </Loader>
+//       )}
+//     </div>
+//   );
+// };
 
-export default webrtcController;
+// export default Chat;
