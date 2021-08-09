@@ -102,22 +102,21 @@ function WebRTCContainer({
       webrtcData,
       request: {
         method,
-        headers: headersArr.filter((header) => header.active && !!header.key),
-        cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+        webrtcData,
+        messages: [],
         body: bodyContent || '',
         bodyType,
         bodyVariables: bodyVariables || '',
         rawType,
         network,
         restUrl,
-        testContent: testContent || '',
         wsUrl,
         gqlUrl,
         grpcUrl,
       },
       response: {
-        headers: null,
-        events: null,
+        webrtcData,
+        messages: [],
       },
       checked: false,
       minimized: false,
@@ -133,13 +132,13 @@ function WebRTCContainer({
 
     setNewRequestBody({
       ...newRequestBody,
-      bodyType: 'GQL',
+      bodyType: 'stun-ice',
       rawType: '',
     });
     setNewRequestFields({
       ...newRequestFields,
-      url: gqlUrl,
-      gqlUrl,
+      url: wsUrl,
+      wsUrl,
     });
 
     setWorkspaceActiveTab('workspace');
@@ -170,7 +169,6 @@ function WebRTCContainer({
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
           setNewRequestBody={setNewRequestBody}
-          introspectionData={introspectionData}
         />
 
         <TestEntryForm
