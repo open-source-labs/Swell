@@ -29,10 +29,7 @@ const WebRTServerEntryForm = (props) => {
 
   return (
     <div className="mt-3">
-      {
-        // conditionally render warning message
-        warningMessage ? <div>{warningMessage.body}</div> : null
-      }
+      {warningMessage ? <div>{warningMessage.body}</div> : null}
       <div className="composer-section-title">TURN or STUN Servers</div>
       <div id="gql-body-entry" className="is-neutral-200-box p-3">
         <CodeMirror

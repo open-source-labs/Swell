@@ -1,7 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
@@ -10,8 +9,6 @@ const WebRTCSessionEntryForm = ({
   setComposerWarningMessage,
   setNewRequestFields,
   newRequestFields,
-  setNewRequestBody,
-  newRequestBody,
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
@@ -39,22 +36,14 @@ const WebRTCSessionEntryForm = ({
     const url = e.target.value;
     setNewRequestFields({
       ...newRequestFields,
-      wsUrl: url,
+      webrtcUrl: url,
       url,
     });
   };
 
   const methodChangeHandler = (value) => {
     warningCheck();
-
     let newBody;
-
-    if (value === 'INITIATOR') {
-      console.log('initiator');
-    } else if (value === 'RECEIVER') {
-      console.log('receiver');
-    }
-
     setNewRequestFields({
       ...newRequestFields,
       method: value,
@@ -84,6 +73,7 @@ const WebRTCSessionEntryForm = ({
                 src={dropDownArrow}
                 className="is-awesome-icon"
                 aria-hidden="true"
+                alt="dropdown"
               />
             </span>
           </button>
@@ -120,7 +110,7 @@ const WebRTCSessionEntryForm = ({
           className="ml-1 input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
-          value={newRequestFields.wsUrl}
+          value={newRequestFields.webrtcUrl}
           onChange={(e) => {
             urlChangeHandler(e);
           }}
