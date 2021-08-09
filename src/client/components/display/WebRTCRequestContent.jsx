@@ -1,27 +1,39 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { use } from 'chai';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
+import * as actions from '../../actions/actions.js';
 
 const jBeautify = require('js-beautify').js;
 
 export default function WebRTCRequestContent({ content }) {
-  console.log('content', content);
   const { body } = content.request;
   const { iceConfiguration } = content.request.body;
-  const [connection, setconnection] = useState(null);
-  const [channel, setChannel] = useState(null);
-  const [localSdp, setLocalSdp] = React.useState('');
-  const [remoteSdp, setRemoteSdp] = React.useState('');
+  const [localSdp, setLocalSdp] = useState('');
+  const [remoteSdp, setRemoteSdp] = useState('');
   const [pcInitiator, setPcInitiator] = useState(null);
+  const dispatch = useDispatch();
+
+  const newRequestFields = useSelector(
+    (store) => store.business.newRequestFields
+  );
+  const currentResponse = useSelector(
+    (store) => store.business.currentResponse
+  );
 
   useEffect(() => {
-    console.log(pcInitiator);
     if (pcInitiator) {
       setLocalSdp(pcInitiator.connection.localDescription.sdp);
+      // const requestFieldObj = {
+      //   ...content,
+      //   webrtcData: {
+      //     localSdp,
+      //   },
+      // };
+      // dispatch(actions.setNewRequestFields(requestFieldObj));
+      // dispatch(actions.saveCurrentResponseData(requestFieldObj));
     }
-  }, [pcInitiator]);
+  }, [pcInitiator, localSdp, content]);
 
   function createLocalSDP() {
     const pc = new Peer(iceConfiguration);
