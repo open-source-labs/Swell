@@ -17,10 +17,8 @@ function WebRTCContainer({
     protocol,
     graphQL,
     restUrl,
-    wsUrl,
     webrtc,
-    gqlUrl,
-    grpcUrl,
+    webrtcUrl,
     network,
     testContent,
   },
@@ -37,28 +35,10 @@ function WebRTCContainer({
   setNewRequestHeaders,
   webrtcData,
   newRequestHeaders,
-  newRequestHeaders: { headersArr },
   setNewRequestCookies,
-  newRequestCookies,
-  newRequestCookies: { cookiesArr },
   setNewRequestStreams,
   newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
-  setNewRequestSSE,
-  newRequestSSE: { isSSE },
   currentTab,
-  introspectionData,
   setComposerWarningMessage,
   setComposerDisplay,
   warningMessage,
@@ -67,13 +47,18 @@ function WebRTCContainer({
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
-
+    //if url is only http/https/ws/wss://
+    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
+      validationMessage.uri = 'Enter a valid URI';
+    }
+    //if url doesn't have http/https/ws/wss://
+    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
+      validationMessage.uri = 'Enter a valid URI';
+    }
     if (!JSONFormatted && rawType === 'application/json') {
       validationMessage.json = 'Please fix JSON body formatting errors';
     }
-    if (method === 'INITIATOR') {
-      // console.log('tbd initiator validation');
-    }
+
     return validationMessage;
   };
 
@@ -84,16 +69,18 @@ function WebRTCContainer({
       return;
     }
 
+    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+
     const reqRes = {
       id: uuid(),
       created_at: new Date(),
-      protocol: '',
+      protocol,
       host: '',
       path: '',
-      url: '',
       graphQL,
       gRPC,
       webrtc,
+      url,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
@@ -103,6 +90,7 @@ function WebRTCContainer({
       request: {
         method,
         webrtcData,
+        url,
         messages: [],
         body: bodyContent || '',
         bodyType,
@@ -110,9 +98,7 @@ function WebRTCContainer({
         rawType,
         network,
         restUrl,
-        wsUrl,
-        gqlUrl,
-        grpcUrl,
+        webrtcUrl,
       },
       response: {
         webrtcData,
@@ -137,8 +123,8 @@ function WebRTCContainer({
     });
     setNewRequestFields({
       ...newRequestFields,
-      url: wsUrl,
-      wsUrl,
+      url: webrtcUrl,
+      webrtcUrl,
     });
 
     setWorkspaceActiveTab('workspace');
