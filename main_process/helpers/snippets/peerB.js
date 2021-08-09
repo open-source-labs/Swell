@@ -1,5 +1,3 @@
-
-
 // This code originate from [WebRTC Crash Course (Hussein Nasser)](https://www.youtube.com/watch?v=FExZvpVvYxA)
 
 //received from signalling
@@ -9,70 +7,76 @@
 const iceConfiguration = {};
 iceConfiguration.iceServers = [];
 //turn server
-iceConfiguration.iceServers.push(
-  {
-    // new coturn STUN/TURN
-    urls: 'turn:104.153.154.109', 
-    username: 'teamswell',
-    credential: 'cohortla44',
-    credentialType: 'password' 
-  },
-);
+iceConfiguration.iceServers.push({
+  // new coturn STUN/TURN
+  urls: 'turn:104.153.154.109',
+  username: 'teamswell',
+  credential: 'cohortla44',
+  credentialType: 'password',
+});
 //stun  server
 iceConfiguration.iceServers.push(
   // {
-  //   urls: 'stun:stun1.l.google.com:19302' 
+  //   urls: 'stun:stun1.l.google.com:19302'
   // },
   {
     // new coturn STUN/TURN
-    urls: 'stun:104.153.154.109', 
-  },
-); 
+    urls: 'stun:104.153.154.109',
+  }
+);
 
 // instanciate a new peer connection - remote connection (rc)
 const remoteConnection = new RTCPeerConnection(iceConfiguration);
 
 // listen for ICE candiates.  Each time a candidate is added to the list, re-log the whole SDP
-remoteConnection.onicecandidate = event => {
+remoteConnection.onicecandidate = (event) => {
   if (event && event.target && event.target.iceGatheringState === 'complete') {
     console.log('done gathering candidates - got iceGatheringState complete');
-} else if (event && event.candidate == null) {
+  } else if (event && event.candidate == null) {
     console.log('done gathering candidates - got null candidate');
-} else {
-    console.log(event.target.iceGatheringState, event, remoteConnection.localDescription);
-    console.log("corresponding SDP for above ICE candidate in JSON:");
+  } else {
+    console.log(
+      event.target.iceGatheringState,
+      event,
+      remoteConnection.localDescription
+    );
+    console.log('corresponding SDP for above ICE candidate in JSON:');
     console.log(JSON.stringify(remoteConnection.localDescription));
-}
+  }
 };
 
-remoteConnection.ondatachannel = event => {
+remoteConnection.ondatachannel = (event) => {
   // create new property on rc object and assign it to be the incoming data channel (*** is this the name that was passed in by the local client? ***)
   const incommingChannel = event.channel;
   remoteConnection.dataChannel = incommingChannel;
   // when the channel is openned ...
   //remoteConnection.dataChannel.onopen = event => console.log("Connection opened!");
-  remoteConnection.dataChannel.onopen = event => console.log("Connection opened!");
+  remoteConnection.dataChannel.onopen = (event) =>
+    console.log('Connection opened!');
   // when the channel is closed ...
   //remoteConnection.dataChannel.onclose = event => console.log("Connection closed! Goodbye (^-^)");
-  remoteConnection.dataChannel.onclose = event => console.log("Connection closed! Goodbye (^-^)");
+  remoteConnection.dataChannel.onclose = (event) =>
+    console.log('Connection closed! Goodbye (^-^)');
   // when message received...
   //remoteConnection.dataChannel.onmessage = event => console.log("PeerA: " + event.data);
-  remoteConnection.dataChannel.onmessage = event => console.log("PeerA: " + event.data);
+  remoteConnection.dataChannel.onmessage = (event) =>
+    console.log('PeerA: ' + event.data);
   // assign the channel
-  
-}
+};
 
 // set remote description to be client-A's offer
-remoteConnection.setRemoteDescription(offer).then( a => console.log("offer set!"));
-
-
+remoteConnection
+  .setRemoteDescription(offer)
+  .then((a) => console.log('offer set!'));
 
 // set answer -- this should cause the connection to open
-remoteConnection.createAnswer().then( answer => remoteConnection.setLocalDescription(answer) ).then( a => {
-  console.log("answer created!");
-  //console.log(JSON.stringify(remoteConnection.localDescription));
-});  //*** does "a" need to be "answer" ??
-
+remoteConnection
+  .createAnswer()
+  .then((answer) => remoteConnection.setLocalDescription(answer))
+  .then((a) => {
+    console.log('answer created!');
+    //console.log(JSON.stringify(remoteConnection.localDescription));
+  }); //*** does "a" need to be "answer" ??
 
 console.log('ICE gathering state: ', remoteConnection.iceGatheringState);
 

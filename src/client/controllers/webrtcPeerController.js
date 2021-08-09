@@ -1,4 +1,17 @@
+/* eslint-disable camelcase */
+
+/**
+ * exports Peer class for use in WebRTC implementations
+ *
+ * @file   webrtcPeerController.js
+ * @author Ted Craig
+ * @since  1.0.0
+ */
+
 export default class Peer {
+  //  ┌──────────────────────────────┐
+  //  │         CONSTRUCTOR          │
+  //  └──────────────────────────────┘
   constructor(initConfig) {
     this.initConfig = initConfig;
     this._roles = {
@@ -10,6 +23,10 @@ export default class Peer {
     this._createPeer(initConfig);
     this._initICECandidateEvents();
   }
+
+  //  ┌──────────────────────────────┐
+  //  │       GET BROWSER RTC        │
+  //  └──────────────────────────────┘
 
   getBrowserRTC() {
     if (typeof globalThis === 'undefined') return null;
@@ -31,12 +48,25 @@ export default class Peer {
     return wrtc;
   }
 
+  //  ┌──────────────────────────────┐
+  //  │       _ CREATE PEER          │
+  //  └──────────────────────────────┘
   _createPeer(config) {
-    const wrtc = this.getBrowserRTC();
-    this.connection = new wrtc.RTCPeerConnection(config);
+    // grab RTCPeerConnection from globalThis
+    console.log('[webrtcPeerController][Peer][_createPeer] getBrowserRTC():');
+    console.log(this.getBrowserRTC());
+    const Wrtc = this.getBrowserRTC();
+
+    // instanciate a new peer connection with config and return
+    this.connection = new Wrtc.RTCPeerConnection(config);
   }
 
+  //  ┌──────────────────────────────┐
+  //  │ _ INIT ICE CANDIDATE EVENTS  │
+  //  └──────────────────────────────┘
   _initICECandidateEvents() {
+    // setup ice candidate event handler
+    // listen for ICE candiates.  Each time a candidate is added to the list, re-log the whole SDP
     this.connection.onicecandidate = (event) => {
       if (
         event &&
@@ -60,6 +90,9 @@ export default class Peer {
     };
   }
 
+  //  ┌──────────────────────────────┐
+  //  │ INIT DATA CHANNEL AND EVENTS │
+  //  └──────────────────────────────┘
   initDataChannelAndEvents() {
     // check for role before continuing
     if (this.role === this._roles.PENDING) {
@@ -68,19 +101,22 @@ export default class Peer {
       // on our local connection, create a data channel and pass it the name "chatRoom1"
       const dataChannel = this.connection.createDataChannel('chatRoom1');
 
+      // when the channel is openned ...
       dataChannel.onopen = (event) => console.log('Connection opened!');
 
+      // when the channel is closed ...
       dataChannel.onclose = (event) =>
         console.log('Connection closed! Goodbye (^-^)');
 
+      // when message received...
       dataChannel.onmessage = (event) =>
         console.log('Received Msg: ' + event.data);
     } else if (this.role === this._roles.RECEIVER) {
       this.connection.ondatachannel = (event) => {
         // create new property on rc object and assign it to be the incoming data channel (*** is this the name that was passed in by the local client? ***)
-        const incomingChannel = event.channel;
-        this.connection.dataChannel = incomingChannel;
-        // when the channel is opened ...
+        const incommingChannel = event.channel;
+        this.connection.dataChannel = incommingChannel;
+        // when the channel is openned ...
         //remoteConnection.dataChannel.onopen = event => console.log("Connection opened!");
         this.connection.dataChannel.onopen = (event) =>
           console.log('Connection opened!');
@@ -96,18 +132,23 @@ export default class Peer {
     }
   }
 
+  //  ┌──────────────────────────────┐
+  //  │       CREATE LOCAL SDP       │
+  //  └──────────────────────────────┘
   createLocalSdp() {
     if (this.role === this._roles.PENDING) this.role = this._roles.INITIATOR;
+
     if (this.role === this._roles.INITIATOR) {
       this.connection
         .createOffer()
         .then((offer) => this.connection.setLocalDescription(offer))
         .then((a) => {
           console.log('offer set successfully!');
+          // return the offer/localDescription
           return this.connection.localDescription;
         })
         .catch(
-          `[webrtcPeerController][createLocalSdp] ERROR while attempting to set offer`
+          `[webrtcPeerControler][createLocalSdp] ERROR while attempting to set offer`
         );
     }
   }
