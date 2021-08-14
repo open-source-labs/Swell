@@ -40,20 +40,7 @@ const reqResObjOAI = {
   ]
 }
 
-servers = ['http://api.twitter.com']
 
-{
-  'id': 13,
-  enabled: true, // user toggles state
-  tags: ["Users"],
-  method: "post",
-  headers: [],
-  urls: ['http://api.twitter.com/2/users/13/blocking',
-  'http://api.twitter.com/2/users/240/blocking',
-  'http://api.twitter.com/2/users/24/blocking?required=false&TZ=utc%159'],
-  body: userInput.body// JSON, user text input
-  ,summary, description, operationId,
-}
 
 
 let id = 0;

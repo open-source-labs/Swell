@@ -13,18 +13,17 @@ const reqsByTag = {};
 tags.forEach(tag => reqsByTag.tag = []);
 
 const userInput = {
-  requestIds: [],
   serversGlobal: [],
   serversOverride: {
-    // id: [],
+    // id: [], // from workspace
   },
-  parameters: {
-    // id: [{
-    //   type,
-    //   key,
-    //   value,
-    // }]
-  },
+  // parameters: {
+  //   // id: [{
+  //   //   type,
+  //   //   key,
+  //   //   value,
+  //   // }]
+  // },
   body: {
     // id: [mediaType, requestBody],
   }

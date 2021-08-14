@@ -37,6 +37,9 @@ function NetworkDropdown({ onProtocolSelect, network }) {
     case 'webrtc':
       networkTitle = 'WebRTC';
       break;
+    case 'openapi':
+      networkTitle = 'OpenAPI';
+      break;
   }
 
   return (
@@ -113,6 +116,15 @@ function NetworkDropdown({ onProtocolSelect, network }) {
             className="dropdown-item"
           >
             WebRTC
+          </a>
+          <a
+            onClick={() => {
+              setDropdownIsActive(false);
+              onProtocolSelect('openapi');
+            }}
+            className="dropdown-item"
+          >
+            OpenAPI
           </a>
         </div>
       </div>

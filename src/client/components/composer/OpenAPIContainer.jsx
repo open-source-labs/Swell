@@ -1,13 +1,12 @@
 import React from 'react';
 import uuid from 'uuid/v4';
-import GRPCProtoEntryForm from './NewRequest/GRPCProtoEntryForm.jsx';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
 import historyController from '../../controllers/historyController';
-import GRPCTypeAndEndpointEntryForm from './NewRequest/GRPCTypeAndEndpointEntryForm';
+import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
-import TestEntryForm from './NewRequest/TestEntryForm';
+import OpenAPIDocumentEntryForm from './NewRequest/OpenAPIDocumentEntryForm.jsx';
 
-function GRPCContainer({
+function OpenAPIContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -67,9 +66,8 @@ function GRPCContainer({
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
-    //Error conditions...
-    if (newRequestFields.grpcUrl) return true;
-    validationMessage.uri = 'Enter a valid URI';
+    //Error conditions removing the need for url for now
+
     return validationMessage;
   };
 
@@ -180,7 +178,7 @@ function GRPCContainer({
         className="is-flex-grow-3 add-vertical-scroll"
         style={{ overflowX: 'hidden' }}
       >
-        <GRPCTypeAndEndpointEntryForm
+        <OpenAPIEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
@@ -193,6 +191,15 @@ function GRPCContainer({
           warningMessage={warningMessage}
           setComposerWarningMessage={setComposerWarningMessage}
         />
+        <OpenAPIDocumentEntryForm
+          newRequestFields={newRequestFields}
+          setNewRequestFields={setNewRequestFields}
+          newRequestStreams={newRequestStreams}
+          setNewRequestStreams={setNewRequestStreams}
+          newRequestHeaders={newRequestHeaders}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestCookies={setNewRequestCookies}
+        />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={newRequestHeaders}
@@ -202,14 +209,6 @@ function GRPCContainer({
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestStreams={setNewRequestStreams}
         />
-        <GRPCProtoEntryForm
-          newRequestStreams={newRequestStreams}
-          setNewRequestStreams={setNewRequestStreams}
-        />
-        <TestEntryForm
-          setNewTestContent={setNewTestContent}
-          testContent={testContent}
-        />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
@@ -218,4 +217,27 @@ function GRPCContainer({
   );
 }
 
-export default GRPCContainer;
+export default OpenAPIContainer;
+
+// servers = ['http://api.twitter.com'];
+
+// serversOverride: {
+//   // id: [],
+// },
+
+// {
+//   id: 13,
+//   enabled: true, // user toggles state
+//   tags: ['Users'],
+//   method: 'post',
+//   headers: [],
+//   urls: [
+//     'http://api.twitter.com/2/users/13/blocking',
+//     'http://api.twitter.com/2/users/240/blocking',
+//     'http://api.twitter.com/2/users/24/blocking?required=false&TZ=utc%159',
+//   ],
+//   body: '', // JSON, user text input
+//   summary,
+//   description,
+//   operationId,
+// };

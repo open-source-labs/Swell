@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import NetworkDropdown from './NetworkDropdown';
 import RestContainer from './RestContainer.jsx';
+import OpenAPIContainer from './OpenAPIContainer.jsx';
 import GraphQLContainer from './GraphQLContainer.jsx';
 import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
@@ -116,6 +117,28 @@ const ComposerContainer = (props) => {
         });
         break;
       }
+      // TODO:  adjust for OpenApi
+      case 'openapi': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.webRTCInitiator,
+
+          method: 'openapi',
+          graphQL: false,
+          gRPC: false,
+          ws: false,
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'none',
+          bodyContent: '',
+        });
+        break;
+      }
       case 'grpc': {
         props.resetComposerFields();
         props.setNewRequestFields({
@@ -177,6 +200,7 @@ const ComposerContainer = (props) => {
         });
         break;
       }
+
       default:
     }
   };
@@ -194,6 +218,9 @@ const ComposerContainer = (props) => {
       <div className="is-not-7-5rem-tall pt-3 pl-3 pr-3">
         {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'openapi' && (
+          <OpenAPIContainer {...props} />
         )}
         {props.newRequestFields.network === 'graphQL' && (
           <GraphQLContainer {...props} />
