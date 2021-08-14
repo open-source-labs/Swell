@@ -123,7 +123,7 @@ function WebRTCContainer({
     });
     setNewRequestFields({
       ...newRequestFields,
-      url: webrtcUrl,
+      url,
       webrtcUrl,
     });
 

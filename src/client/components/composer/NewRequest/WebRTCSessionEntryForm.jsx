@@ -110,7 +110,7 @@ const WebRTCSessionEntryForm = ({
           className="ml-1 input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
-          value={newRequestFields.webrtcUrl}
+          value={newRequestFields.url}
           onChange={(e) => {
             urlChangeHandler(e);
           }}

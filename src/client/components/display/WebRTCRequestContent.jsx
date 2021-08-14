@@ -3,6 +3,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
 import * as actions from '../../actions/actions.js';
+import { invite, handleSendButton } from '../../controllers/webrtcController';
 
 const jBeautify = require('js-beautify').js;
 
@@ -22,7 +23,7 @@ export default function WebRTCRequestContent({ content }) {
   );
 
   useEffect(() => {
-    if (pcInitiator) {
+    if (pcInitiator?.connection?.localDescription) {
       setLocalSdp(pcInitiator.connection.localDescription.sdp);
       // const requestFieldObj = {
       //   ...content,
@@ -41,6 +42,11 @@ export default function WebRTCRequestContent({ content }) {
     pc.initDataChannelAndEvents();
     pc.createLocalSdp();
     setPcInitiator(pc);
+  }
+
+  function handleClick(e) {
+    invite(e, iceConfiguration);
+    // handleSendButton();
   }
 
   return (
@@ -111,10 +117,20 @@ export default function WebRTCRequestContent({ content }) {
                 }}
               />
               <button
-                onClick={() => setRemoteSDP(remoteSdp)}
+                // onClick={() => setRemoteSDP(remoteSdp)}
+                onClick={(e) => {
+                  handleClick(e);
+                }}
                 className="button is-webrtc"
               >
-                Set Remote SDP
+                Invite
+              </button>
+              <button
+                // onClick={() => setRemoteSDP(remoteSdp)}
+                onClick={handleSendButton}
+                className="button is-webrtc"
+              >
+                Send message
               </button>
             </div>
           </div>
