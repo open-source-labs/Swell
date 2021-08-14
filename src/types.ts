@@ -1,10 +1,8 @@
-import { string } from "prop-types"
-
 export interface initialState {
   currentTab: string;
-  reqResArray: object[];
-  history: object[];
-  collections: object[];
+  reqResArray: Record<string, unknown>[];
+  history: Record<string, unknown>[];
+  collections: Record<string, unknown>[];
   warningMessage: string;
   newRequestFields: NewRequestFields;
   newRequestHeaders: NewRequestHeaders;
@@ -23,27 +21,27 @@ export interface NewRequestFields {
 }
 
 export interface NewRequestHeaders {
-  headersArr: object[];
+  headersArr: Record<string, unknown>[];
   count: number;
 }
 
 export interface NewRequestStreams {
-  streamsArr: object[];
+  streamsArr: Record<string, unknown>[];
   count: number;
-  streamContent: object[];
+  streamContent: Record<string, unknown>[];
   selectedPackage: string | null;
   selectedRequest: string | null;
   selectedService: string | null;
   selectedStreamingType: string | null;
-  initialQuery: any | null;
-  queryArr: object[] | null;
-  protoPath: any | null;
-  services: object | null;
+  initialQuery: unknown | null;
+  queryArr: Record<string, unknown>[] | null;
+  protoPath: unknown | null;
+  services: Record<string, unknown> | null;
   protoContent: string;
 }
 
 export interface NewRequestCookies {
-  cookiesArr: object[];
+  cookiesArr: Record<string, unknown>[];
   count: number;
 }
 
@@ -65,7 +63,7 @@ export interface Message {
   data: string;
 }
 export interface WebSocketWindowProps {
-  content: object[];
+  content: Record<string, unknown>[];
   outgoingMessages: Array<Message>;
   incomingMessages: Array<Message>;
   connection: string;
