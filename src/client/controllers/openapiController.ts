@@ -39,18 +39,20 @@ const parseOpenapiDocument = (input: string): Record<string, unknown> => {
         enabled: true,
         reqTags: tags,
         summary, description, operationId,
-        servers: serverUrls,
+        reqServers: [],
         method, 
         endpoint, 
         headers: [],
         parameters,
-        body: '',
+        body: new Map(),
         urls: [],
+        params: [],
+        queries: [],
       }
       reqResArray.push({ request });
     });
   });  
-  return { info, tags, reqResArray };
+  return { info, tags, serverUrls, reqResArray };
 };
 
 export default parseOpenapiDocument;
