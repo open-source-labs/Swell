@@ -19,7 +19,7 @@ const mapStateToProps = (store) => {
     newRequestHeaders: store.business.newRequestHeaders,
     newRequestStreams: store.business.newRequestStreams,
     newRequestBody: store.business.newRequestBody,
-    newRequestOpenAPI: store.business.newRequestOpenAPI,
+    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
     newRequestCookies: store.business.newRequestCookies,
     newRequestSSE: store.business.newRequestSSE,
     currentTab: store.business.currentTab,
@@ -59,8 +59,8 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
   },
-  setNewRequestOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
-    dispatch(actions.setNewRequestOpenAPI({ openapiMetadata, openapiReqArray }));
+  setNewRequestsOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
+    dispatch(actions.setNewRequestsOpenAPI({ openapiMetadata, openapiReqArray }));
   },
   resetComposerFields: () => {
     dispatch(actions.resetComposerFields());

@@ -67,22 +67,27 @@ const initialState = {
   newRequestSSE: {
     isSSE: false,
   },
+  newOpenAPIRequestArray: {
+    
+  },
   newRequestOpenAPI: {
-    id: 0,
-    enabled: true,
-    reqTags: [],
-    summary: '', 
-    description: '', 
-    operationId: '',
-    reqServers: [],
-    method: '', 
-    endpoint: '', 
-    headers: [],
-    parameters: [],
-    body: new Map(),
-    urls: [],
-    params: [],
-    queries: [],
+    request: {
+      id: 0,
+      enabled: true,
+      reqTags: [],
+      summary: '', 
+      description: '', 
+      operationId: '',
+      reqServers: [],
+      method: '', 
+      endpoint: '', 
+      headers: [],
+      parameters: [],
+      body: new Map(),
+      urls: [],
+      params: [],
+      queries: [],
+    }
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
   dataPoints: {},
@@ -452,6 +457,13 @@ const businessReducer = (state = initialState, action) => {
     }
 
     // OPENAPI
+
+    case types.SET_NEW_REQUESTS_OPENAPI: {
+      return {
+      ...state,
+      newRequestsOpenAPI: { ...action.payload },
+      }
+    }
 
     case types.SET_OPENAPI_SERVERS_GLOBAL: {
       const openapiMetadata = { ...state.openapiMetadata };

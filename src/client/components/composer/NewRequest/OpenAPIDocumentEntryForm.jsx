@@ -9,7 +9,7 @@ const OpenAPIDocumentEntryForm = (props) => {
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
 
-  console.log(props.newRequestFields);
+  console.log(props.newRequestsOpenAPI);
 
   
   const importDocument = () => {
@@ -28,33 +28,14 @@ const OpenAPIDocumentEntryForm = (props) => {
     // }
     
 
-    props.setNewRequestFields({
-      ...props.newRequestFields,
+    props.setNewRequestsOpenAPI({
+      ...props.newRequestsOpenAPI,
       // this should be the un-parsed document eventually
       // openapiContent: parsedDocument,
       // version: parsedDocument.openapi,
       // info: parsedDocument.info,
       // serversGlobal: parsedDocument.servers,
       // tags: parsedDocument.tags,
-      reqResArray: [
-        {
-          id: 13,
-          enabled: true, // user toggles state
-          tags: ['Users'],
-          method: 'post',
-          headers: [],
-          urls: [
-            'http://api.twitter.com/2/users/13/blocking',
-            'http://api.twitter.com/2/users/240/blocking',
-            'http://api.twitter.com/2/users/24/blocking?required=false&TZ=utc%159',
-          ],
-          body: '', // JSON, user text input
-          summary: 'Block User by User ID',
-          description:
-            'Causes the user (in the path) to block the target user. The user (in the path) must match the user context authorizing the request',
-          operationId: 'usersIdBlock',
-        },
-      ],
     });
 
     //listens for imported openapi document from main process
@@ -62,8 +43,7 @@ const OpenAPIDocumentEntryForm = (props) => {
       console.log('received openapi-info',  parsedDocument);
       const { openapiMetadata, openapiReqArray } = parsedDocument;
       saveChanges(true);
-       props.setNewRequestOpenAPI({
-         ...props.newRequestOpenAPI,
+       props.setNewRequestsOpenAPI({
           openapiMetadata,
           openapiReqArray,
        });

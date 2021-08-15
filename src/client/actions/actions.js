@@ -173,9 +173,9 @@ export const setResponsePaneActiveTab = (tabName) => ({
 
 // OPENAPI ACTIONS
 
-export const setNewRequestOpenAPI = (openapiMetadata, openapiReqArray) => ({
-  type: types.SET_NEW_REQUEST_OPENAPI,
-  payload: { ...args },
+export const setNewRequestsOpenAPI = (openapiMetadata, openapiReqArray) => ({
+  type: types.SET_NEW_REQUESTS_OPENAPI,
+  payload: { openapiMetadata, openapiReqArray },
 });
 export const enableAllOpenAPI = () => ({
   type: types.ENABLE_ALL_OPENAPI,

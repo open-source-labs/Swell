@@ -2,13 +2,15 @@ import React from 'react';
 import uuid from 'uuid/v4';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
 import historyController from '../../controllers/historyController';
-import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
+import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './NewRequest/OpenAPIDocumentEntryForm.jsx';
 
 function OpenAPIContainer({
   resetComposerFields,
-  setNewRequestOpenAPI,
+  setNewRequestsOpenAPI,
+  newRequestsOpenAPI,
+  setNewRequestFields,
   newRequestFields,
   newRequestFields: {
     gRPC,
@@ -147,7 +149,7 @@ function OpenAPIContainer({
       protoContent,
     };
 
-    console.log(openapiMetadata, openapiReqArray);
+    console.log(newRequestsOpenAPI.openapiMetadata, newRequestsOpenAPI.openapiReqArray);
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
@@ -201,6 +203,8 @@ function OpenAPIContainer({
           newRequestHeaders={newRequestHeaders}
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestCookies={setNewRequestCookies}
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
         />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
