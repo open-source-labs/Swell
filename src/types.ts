@@ -1,9 +1,11 @@
 export interface initialState {
   currentTab: string;
   reqResArray: Record<string, unknown>[];
+  scheduledReqResArray: Record<string, unknown>[];  
   history: Record<string, unknown>[];
   collections: Record<string, unknown>[];
-  warningMessage: string;
+  openapiMetadata?: Record<string, unknown>;
+  warningMessage: Record<string, string>;
   newRequestFields: NewRequestFields;
   newRequestHeaders: NewRequestHeaders;
   newRequestStreams: NewRequestStreams;
@@ -14,10 +16,19 @@ export interface initialState {
 
 export interface NewRequestFields {
   protocol: string;
-  url: string;
-  method: string;
   graphQL: boolean;
   gRPC: boolean;
+  ws: boolean;
+  webrtc: boolean;
+  restUrl?: string;
+  wsUrl?: string;
+  gqlUrl?: string;
+  grpcUrl?: string;
+  url?: string;
+  method?: string;
+  network?: string;
+  testContent: string;
+  testResults: string[];
 }
 
 export interface NewRequestHeaders {
@@ -51,6 +62,7 @@ export interface NewRequestBody {
   bodyType: string;
   rawType: string;
   JSONFormatted: boolean;
+  bodyIsNew: boolean;
 };
 
 export interface NewRequestSSE {
