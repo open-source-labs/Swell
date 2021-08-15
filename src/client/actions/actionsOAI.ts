@@ -39,19 +39,18 @@ export const setOAIServers = (requestId: number, serverIds: number[]): action =>
   type: types.SET_OAI_SERVERS,
   payload: {id: requestId, serverIds},
 });
-export const setOAIParameter = (requestId: number, type: string, key: string, value: string): action => ({
-  type: types.SET_NEW_OAI_PARAMETER,
-  payload: {id: requestId, type, key, value},
-});
 export const addOAIParameter = (requestId: number): action => ({
   type: types.ADD_NEW_OAI_PARAMETER,
   payload: requestId,
 });
-export const setOAIRequestBody = (requestId: number, requestBody: string): action => ({
-  type: types.SET_NEW_OAI_REQUEST_BODY,
-  payload: {id: requestId, requestBody},
+export const setOAIParameter = (requestId: number, type: string, key: string, value: string): action => ({
+  type: types.SET_NEW_OAI_PARAMETER,
+  payload: {id: requestId, type, key, value},
 });
-export const sendOAIRequests = (reqResArray: Record<string, unknown>[]): action => ({
+export const setOAIRequestBody = (requestId: number, mediaType: string, requestBody: unknown): action => ({
+  type: types.SET_NEW_OAI_REQUEST_BODY,
+  payload: {id: requestId, mediaType, requestBody},
+});
+export const sendOAIRequests = (): action => ({
   type: types.SEND_OAI_REQUESTS,
-  payload: reqResArray,
 });
