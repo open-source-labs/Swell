@@ -16,7 +16,10 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|js)x?$/,
-        include: [path.resolve(__dirname, 'src')],
+        include: [
+          path.resolve(__dirname, 'src'), 
+          path.resolve(__dirname, 'main_process')
+        ],
         use: {
           loader: 'babel-loader',
           options: {

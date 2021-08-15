@@ -1,19 +1,22 @@
+import * as interfaces from '../../types'
 import * as types from '../actions/actionTypes';
+import { action } from '../actions/actionsOAI';
 import parseOpenapiDocument from '../controllers/openapiController';
 
-const initialState = {
+const initialState: interfaces.initialState = {
   // ...state,
   currentTab: 'First Tab',
   reqResArray: [],
   scheduledReqResArray: [],
   history: [],
   collections: [],
-  warningMessage: {},
-  metadataOAI: {
+  openapiMetadata: {
     info: {},
     tags: [],
     serverUrls: [],
   },
+  openapiReqArray: [],
+  warningMessage: {},
   newRequestFields: {
     protocol: 'openAPI',
     graphQL: false,
@@ -42,6 +45,9 @@ const initialState = {
     JSONFormatted: true,
     bodyIsNew: false,
   },
+  newRequestSSE: {
+    isSSE: false,
+  },
 };
 
 // {
@@ -57,8 +63,12 @@ const initialState = {
 //   ,summary, description, operationId,
 // }
 
+
 // var info, tags, reqTags, reqResArray, reqResObj, urls, method, headers, body,
 const openapiReducer = (state = initialState, action) => {
+// var info, tags, reqTags, reqResArray, reqResObj, urls, method, headers, body, 
+const openapiReducer = (state = initialState, action: action): Record<string, unknown> => {
+
   switch (action.type) {
     case types.IMPORT_OAI_DOCUMENT: {
       const { info, tags, serverUrls, reqResArray } = parseOpenapiDocument(
@@ -67,21 +77,29 @@ const openapiReducer = (state = initialState, action) => {
       return {
         ...state,
         metadataOAI: { info, tags, serverUrls },
+        openapiMetadata: {info, tags, serverUrls},
+
         reqResArray,
       };
     }
     case types.SET_OAI_SERVERS_GLOBAL: {
+
       const metadataOAI = { ...state.metadataOAI };
       metadataOAI.serverUrls = [...state.metadataOAI.serverUrls].filter(
         (_, i) => action.payload.includes(i)
       );
+
+      const openapiMetadata = { ...state.openapiMetadata };
+      openapiMetadata.serverUrls = [ ...state.openapiMetadata.serverUrls as string[] ].filter((_, i) => action.payload.includes(i));
+
       return {
         ...state,
-        metadataOAI,
+        openapiMetadata,
       };
     }
     case types.SET_OAI_SERVERS: {
       const { id, serverIds } = action.payload;
+
       const request = [...state.reqResArray]
         .filter(({ request }) => request.id === id)
         .pop() as Record<string, unknown>;
@@ -89,6 +107,7 @@ const openapiReducer = (state = initialState, action) => {
         serverIds.includes(i)
       );
       const reqResArray = [...state.reqResArray].push({ request });
+
       return {
         ...state,
         reqResArray,
@@ -96,13 +115,14 @@ const openapiReducer = (state = initialState, action) => {
     }
     case types.SET_NEW_OAI_PARAMETER: {
       const { id, type, key, value } = action.payload;
+
       const request = [...state.reqResArray]
         .filter(({ request }) => request.id === id)
         .pop() as Record<string, unknown>;
       const urls = [...(request.reqServers as string[])].map(
         (url) => (url += request.endpoint)
       );
-      switch (type) {
+
         case 'path': {
           urls.map((url) => url.replace(`{${key}}`, value));
           request.urls = urls;
@@ -124,16 +144,33 @@ const openapiReducer = (state = initialState, action) => {
             reqResArray,
           };
         }
+
         default: {
           return state;
+
+        // case 'header': {
+        //   if (['Content-Type', 'Authorization', 'Accepts'].includes(param.name)) break;
+        //   const headers = userInput.parameters[id].filter(({ type }) => type === 'header');
+        //   request.headers = {};
+        //   headers.forEach((header) => )
+        // }
+        // case 'cookie': {
+          
+        // }
+        default: {
+          return { ...state };
+
         }
       }
     }
     case types.SET_NEW_OAI_REQUEST_BODY: {
       const { id, mediaType, requestBody } = action.payload;
+
       const request = [...state.reqResArray]
         .filter(({ request }) => request.id === id)
         .pop() as Record<string, unknown>;
+
+      const request = [ ...state.reqResArray ].filter(({ request }) => request.id === id).pop();
       const { method } = request as Record<string, string>;
       if (
         !['get', 'delete', 'head'].includes(method) &&
@@ -157,6 +194,10 @@ const openapiReducer = (state = initialState, action) => {
     }
     default: {
       return state;
+    }
+
+    default: {
+      return { ...state };
     }
   }
 };

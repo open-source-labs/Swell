@@ -23,6 +23,7 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
-  "include": ["./src/", "main_process/protoParser.js"],
-  "exclude": ["node_modules", "dist", "build", "coverage", "mocks"]
+  "include": ["./src/", "./main_process/"],
+  "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
+  "typeRoots": ["./node_modules/@types"]
 }

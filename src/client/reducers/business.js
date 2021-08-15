@@ -1,5 +1,6 @@
 import format from 'date-fns/format';
 import * as types from '../actions/actionTypes';
+// import * as interfaces from '../../types';
 
 const initialState = {
   currentTab: 'First Tab',
@@ -14,14 +15,13 @@ const initialState = {
     wsUrl: 'ws://',
     gqlUrl: 'https://',
     grpcUrl: '',
-    openapiUrl: '',
-    webrtc: false,
     url: 'http://',
     method: 'GET',
     graphQL: false,
     gRPC: false,
     ws: false,
     openapi: false,
+    webrtc: false,
     network: 'rest',
     testContent: '',
     testResults: [],

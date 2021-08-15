@@ -1,6 +1,6 @@
 import * as types from './actionTypes';
 
-interface action {
+export interface action {
   type: string,
   payload?: unknown,
 }
