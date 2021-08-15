@@ -21,6 +21,7 @@ const initialState = {
     graphQL: false,
     gRPC: false,
     ws: false,
+    openapi: false,
     network: 'rest',
     testContent: '',
     testResults: [],
