@@ -10,6 +10,8 @@ const OpenAPIDocumentEntryForm = (props) => {
   const [changesSaved, saveChanges] = useState(false);
 
   console.log(props.newRequestFields);
+
+  
   const importDocument = () => {
     // clear all stream bodies except first one upon clicking on import proto file
 
@@ -55,17 +57,18 @@ const OpenAPIDocumentEntryForm = (props) => {
     });
 
     //listens for imported proto content from main process
-    // api.receive('proto-info', (readProto, parsedProto) => {
-    //   saveChanges(true);
-    //   props.setNewRequestStreams({
-    //     ...props.newRequestStreams,
-    //     protoContent: readProto,
-    //     services: parsedProto.serviceArr,
-    //     protoPath: parsedProto.protoPath,
-    //   });
-    // });
+    api.receive('openapi-info', (readDocument, parsedDocument) => {
+      console.log('received openapi-info',  parsedDocument);
+      saveChanges(true);
+       props.setNewRequestFields({
+         ...props.newRequestFields,
+        //  protContent: readProto,
+        //  services: parsedProto.serviceArr,
+        //  protoPath: parsedProto.protoPath,
+       });
+    });
 
-    // api.send('import-proto');
+    api.send('import-openapi');
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy

@@ -7,10 +7,10 @@ export interface initialState {
   openapiMetadata?: Record<string, unknown>;
   warningMessage: Record<string, string>;
   newRequestFields: NewRequestFields;
-  newRequestHeaders: NewRequestHeaders;
-  newRequestStreams: NewRequestStreams;
-  newRequestCookies: NewRequestCookies;
-  newRequestBody: NewRequestBody;
+  newRequestHeaders?: NewRequestHeaders;
+  newRequestStreams?: NewRequestStreams;
+  newRequestCookies?: NewRequestCookies;
+  newRequestBody?: NewRequestBody;
   newRequestSSE: NewRequestSSE;
 }
 
@@ -19,6 +19,7 @@ export interface NewRequestFields {
   graphQL: boolean;
   gRPC: boolean;
   ws: boolean;
+  openapi: boolean;
   webrtc: boolean;
   restUrl?: string;
   wsUrl?: string;
