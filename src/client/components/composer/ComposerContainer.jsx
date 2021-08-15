@@ -124,8 +124,8 @@ const ComposerContainer = (props) => {
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.webRTCInitiator,
-
           method: 'openapi',
+          openapi: true,
           graphQL: false,
           gRPC: false,
           ws: false,
@@ -148,6 +148,7 @@ const ComposerContainer = (props) => {
           method: '',
           graphQL: false,
           gRPC: true,
+
           webrtc: false,
           network,
           testContent: '',
