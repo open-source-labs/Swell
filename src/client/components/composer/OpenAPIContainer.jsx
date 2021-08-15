@@ -41,10 +41,7 @@ function OpenAPIContainer({
   newRequestCookies,
   newRequestCookies: { cookiesArr },
 
-  setNewRequestSSE,
-  newRequestSSE: { isSSE },
   currentTab,
-  introspectionData,
   setComposerWarningMessage,
   setComposerDisplay,
   warningMessage,

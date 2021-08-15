@@ -33,6 +33,7 @@ const OpenAPIDocumentEntryForm = (props) => {
       info: parsedDocument.info,
       serversGlobal: parsedDocument.servers,
       tags: parsedDocument.tags,
+
       reqResArray: [
         {
           id: 13,

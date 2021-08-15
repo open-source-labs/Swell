@@ -66,6 +66,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
+  console.log(props.reqResArray);
   const onProtocolSelect = (network) => {
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
@@ -148,7 +149,6 @@ const ComposerContainer = (props) => {
           method: '',
           graphQL: false,
           gRPC: true,
-
           webrtc: false,
           network,
           testContent: '',
