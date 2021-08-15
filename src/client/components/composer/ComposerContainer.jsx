@@ -10,6 +10,7 @@ import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
 import WebRTCContainer from './WebRTCContainer';
 
+
 const mapStateToProps = (store) => {
   return {
     reqResArray: store.business.reqResArray,
@@ -18,6 +19,7 @@ const mapStateToProps = (store) => {
     newRequestHeaders: store.business.newRequestHeaders,
     newRequestStreams: store.business.newRequestStreams,
     newRequestBody: store.business.newRequestBody,
+    newRequestOpenAPI: store.business.newRequestOpenAPI,
     newRequestCookies: store.business.newRequestCookies,
     newRequestSSE: store.business.newRequestSSE,
     currentTab: store.business.currentTab,
@@ -56,6 +58,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
+  },
+  setNewRequestOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
+    dispatch(actions.setNewRequestOpenAPI({ openapiMetadata, openapiReqArray }));
   },
   resetComposerFields: () => {
     dispatch(actions.resetComposerFields());
@@ -124,7 +129,7 @@ const ComposerContainer = (props) => {
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.webRTCInitiator,
-
+          openapiContent: props.newRequestFields.openapiContent,
           method: 'openapi',
           graphQL: false,
           gRPC: false,
@@ -132,6 +137,7 @@ const ComposerContainer = (props) => {
           network,
           testContent: '',
         });
+      
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'none',

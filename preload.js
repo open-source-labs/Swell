@@ -10,6 +10,7 @@ const apiObj = {
       'fatalError',
       'import-collection',
       'import-proto',
+      'import-openapi',
       'open-http',
       'close-http',
       'open-gql',

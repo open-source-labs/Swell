@@ -30,6 +30,8 @@ const log = require('electron-log');
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
+// openapi parser func for parsing openAPI documents in JSON or YAML format
+const openapiParserFunc = require('./main_process/openapiParser.js');
 
 // require menu file
 require('./menu/mainMenu');
@@ -417,5 +419,55 @@ ipcMain.on('protoParserFunc-request', (event, data) => {
     .catch((err) => {
       console.log('error in protoParserFunc-request:, ', err);
       mainWindow.webContents.send('protoParserFunc-return', { error: err });
+    });
+});
+
+//======= Loading and parsing an OpenAPI Document with openapiParserFunc =======
+
+// import-openapi
+ipcMain.on('import-openapi', (event) => {
+  let importedDocument;
+  dialog
+    .showOpenDialog({
+      buttonLabel: 'Import OpenApi File',
+      properties: ['openFile', 'multiSelections'],
+      // filters: [{ name: 'Documents', extensions: ['.json', '.yml'] }],
+    })
+    .then((filePaths) => {
+      if (!filePaths) return undefined;
+      // read uploaded proto file & save protoContent in the store
+      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+        // handle read error
+        if (err) {
+          return console.log('import-openapi error reading file : ', err);
+        }
+        importedDocument = file;
+        const documentObj = openapiParserFunc(importedDocument);
+        // openapiParserFunc(importedDocument).then((documentObj) => {
+          // console.log(
+          //   "finished with logic. about to send importedDocument : ",
+          //   importedDocument,
+          //   " and documentObj : ",
+          //   documentObj
+          // );
+          mainWindow.webContents.send('openapi-info', importedDocument, documentObj);
+        // });
+      });
+    })
+    .catch((err) => {
+      console.log('error in import-openapi', err);
+    });
+});
+
+// openapiParserFunc-request. Just runs the function and returns the value back to OpenAPIDocumentEntryForm
+
+ipcMain.on('openapiParserFunc-request', (event, data) => {
+  openapiParserFunc(data)
+    .then((result) => {
+      mainWindow.webContents.send('openapiParserFunc-return', result);
+    })
+    .catch((err) => {
+      console.log('error in openapiParserFunc-request:, ', err);
+      mainWindow.webContents.send('openapiParserFunc-return', { error: err });
     });
 });

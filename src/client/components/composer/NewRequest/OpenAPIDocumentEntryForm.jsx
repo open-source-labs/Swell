@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
-import parsedDocument from '../../../docs/twitter-example.json';
+
 
 const { api } = window;
 
@@ -14,7 +14,7 @@ const OpenAPIDocumentEntryForm = (props) => {
   
   const importDocument = () => {
     // clear all stream bodies except first one upon clicking on import proto file
-
+    console.log('importing document');
     // reset streaming type next to the URL & reset Select Service dropdown to default option
     // reset selected package name, service, request, streaming type & protoContent
     // if (props.newRequestStreams.protoContent !== null) {
@@ -26,15 +26,16 @@ const OpenAPIDocumentEntryForm = (props) => {
     //     count: 1,
     //   });
     // }
+    
 
     props.setNewRequestFields({
       ...props.newRequestFields,
       // this should be the un-parsed document eventually
-      openapiContent: parsedDocument,
-      version: parsedDocument.openapi,
-      info: parsedDocument.info,
-      serversGlobal: parsedDocument.servers,
-      tags: parsedDocument.tags,
+      // openapiContent: parsedDocument,
+      // version: parsedDocument.openapi,
+      // info: parsedDocument.info,
+      // serversGlobal: parsedDocument.servers,
+      // tags: parsedDocument.tags,
       reqResArray: [
         {
           id: 13,
@@ -56,18 +57,17 @@ const OpenAPIDocumentEntryForm = (props) => {
       ],
     });
 
-    //listens for imported proto content from main process
+    //listens for imported openapi document from main process
     api.receive('openapi-info', (readDocument, parsedDocument) => {
       console.log('received openapi-info',  parsedDocument);
+      const { openapiMetadata, openapiReqArray } = parsedDocument;
       saveChanges(true);
-       props.setNewRequestFields({
-         ...props.newRequestFields,
-        //  protContent: readProto,
-        //  services: parsedProto.serviceArr,
-        //  protoPath: parsedProto.protoPath,
+       props.setNewRequestOpenAPI({
+         ...props.newRequestOpenAPI,
+          openapiMetadata,
+          openapiReqArray,
        });
     });
-
     api.send('import-openapi');
   };
 
@@ -86,37 +86,28 @@ const OpenAPIDocumentEntryForm = (props) => {
   //   //only update if changes aren't saved
   //   if (!changesSaved) {
   //     // parse new updated proto file and save to store
-  //     api.receive('protoParserFunc-return', (data) => {
+  //     api.receive('openApiParserFunc-return', (data) => {
   //       if (data.error) {
   //         showError(
-  //           '.proto parsing error: Please enter or import valid .proto'
+  //           '.openapi document parsing error: Please enter or import valid .proto'
   //         );
   //         saveChanges(false);
   //       } else {
   //         showError(null);
   //         saveChanges(true);
   //       }
-  //       const services = data.serviceArr ? data.serviceArr : null;
-  //       const protoPath = data.protoPath ? data.protoPath : null;
-  //       const streamsArr = [props.newRequestStreams.streamsArr[0]];
-  //       const streamContent = [''];
+  //       // const services = data.serviceArr ? data.serviceArr : null;
+  //       // const protoPath = data.protoPath ? data.protoPath : null;
+  //       // const streamsArr = [props.newRequestStreams.streamsArr[0]];
+  //       // const streamContent = [''];
 
   //       props.setNewRequestStreams({
   //         ...props.newRequestStreams,
-  //         selectedPackage: null,
-  //         selectedService: null,
-  //         selectedRequest: null,
-  //         selectedStreamingType: null,
-  //         selectedServiceObj: null,
-  //         services,
-  //         protoPath,
-  //         streamsArr,
-  //         streamContent,
-  //         count: 1,
+       
   //       });
   //     });
 
-  //     api.send('protoParserFunc-request', props.newRequestStreams.protoContent);
+  //     api.send('openApiParserFunc-request', props.newRequestStreams.openapiContent);
   //   }
   // };
 
@@ -142,7 +133,7 @@ const OpenAPIDocumentEntryForm = (props) => {
           </button>
           <button
             className="button is-small add-header-or-cookie-button"
-            id="save-proto"
+            id="save-openapi"
             // onClick={submitUpdatedDocument}
           >
             {saveChangesBtnText}
@@ -151,9 +142,9 @@ const OpenAPIDocumentEntryForm = (props) => {
       </div>
 
       <div className="is-danger subtitle">{protoError}</div>
-      <div id="grpcProtoEntryTextArea">
+      <div id="openapiEntryTextArea">
         <TextCodeAreaEditable
-          id="grpcProtoEntryTextArea"
+          id="openapiEntryTextArea"
           // onChange={(editor, data, value) => updateDocumentBody(value)}
           value={JSON.stringify(props.newRequestFields.openapiContent)}
           mode="application/javascript"

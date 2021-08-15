@@ -8,13 +8,14 @@ import OpenAPIDocumentEntryForm from './NewRequest/OpenAPIDocumentEntryForm.jsx'
 
 function OpenAPIContainer({
   resetComposerFields,
-  setNewRequestFields,
+  setNewRequestOpenAPI,
   newRequestFields,
   newRequestFields: {
     gRPC,
     url,
     method,
     webrtc,
+    openapi,
     protocol,
     graphQL,
     restUrl,
@@ -146,6 +147,7 @@ function OpenAPIContainer({
       protoContent,
     };
 
+    console.log(openapiMetadata, openapiReqArray);
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);

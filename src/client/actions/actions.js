@@ -170,3 +170,56 @@ export const setResponsePaneActiveTab = (tabName) => ({
   type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
   payload: tabName,
 });
+
+// OPENAPI ACTIONS
+
+export const setNewRequestOpenAPI = (openapiMetadata, openapiReqArray) => ({
+  type: types.SET_NEW_REQUEST_OPENAPI,
+  payload: { ...args },
+});
+export const enableAllOpenAPI = () => ({
+  type: types.ENABLE_ALL_OPENAPI,
+});
+export const disableAllOpenAPI = () => ({
+  type: types.DISABLE_ALL_OPENAPI,
+});
+export const enableAllTagOpenAPI = (tag) => ({
+  type: types.ENABLE_ALL_TAG_OPENAPI,
+  payload: tag,
+});
+export const disableAllTagOpenAPI = (tag) => ({
+  type: types.DISABLE_ALL_TAG_OPENAPI,
+  payload: tag,
+});
+export const enableOpenAPIRequest = (requestId) => ({
+  type: types.ENABLE_REQUEST_OPENAPI,
+  payload: requestId,
+});
+export const disableOpenAPIRequest = (requestId) => ({
+  type: types.DISABLE_REQUEST_OPENAPI,
+  payload: requestId,
+});
+export const setOpenAPIServersGlobal = (serverIds) => ({
+  type: types.SET_OPENAPI_SERVERS_GLOBAL,
+  payload: serverIds,
+});
+export const setOpenAPIServers = (requestId, serverIds) => ({
+  type: types.SET_OPENAPI_SERVERS,
+  payload: {id: requestId, serverIds},
+});
+export const addOpenAPIParameter = (requestId) => ({
+  type: types.ADD_NEW_OPENAPI_PARAMETER,
+  payload: requestId,
+});
+export const setOpenAPIParameter = (requestId, type, key, value) => ({
+  type: types.SET_NEW_OPENAPI_PARAMETER,
+  payload: {id: requestId, type, key, value},
+});
+export const setOpenAPIRequestBody = (requestId, mediaType, requestBody) => ({
+  type: types.SET_NEW_OPENAPI_REQUEST_BODY,
+  payload: {id: requestId, mediaType, requestBody},
+});
+export const sendOpenAPIRequests = () => ({
+  type: types.SEND_OPENAPI_REQUESTS,
+});
+
