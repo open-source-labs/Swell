@@ -40,20 +40,7 @@ function OpenAPIContainer({
   setNewRequestCookies,
   newRequestCookies,
   newRequestCookies: { cookiesArr },
-  setNewRequestStreams,
-  newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
+
   setNewRequestSSE,
   newRequestSSE: { isSSE },
   currentTab,
@@ -72,29 +59,15 @@ function OpenAPIContainer({
   };
 
   const addNewRequest = () => {
+    console.log(newRequestFields);
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
     }
 
-    // saves all stream body queries to history & reqres request body
-    let streamQueries = '';
-    for (let i = 0; i < streamContent.length; i++) {
-      // queries MUST be in format, do NOT edit template literal unless necessary
-      streamQueries += `${streamContent[i]}`;
-    }
-    // define array to hold client query strings
-    const queryArrStr = streamContent;
-    const queryArr = [];
-    // scrub client query strings to remove line breaks
-    // convert strings to objects and push to array
-    for (let i = 0; i < queryArrStr.length; i += 1) {
-      let query = queryArrStr[i];
-      const regexVar = /\r?\n|\r|↵/g;
-      query = query.replace(regexVar, '');
-      queryArr.push(JSON.parse(query));
-    }
+    const reqResArr = [];
+
     // grabbing streaming type to set method in reqRes.request.method
     const grpcStream = document.getElementById('stream').innerText;
     // create reqres obj to be passed to controller for further actions/tasks
@@ -114,7 +87,7 @@ function OpenAPIContainer({
       request: {
         method: grpcStream,
         headers: headersArr.filter((header) => header.active && !!header.key),
-        body: streamQueries,
+        body: '',
         bodyType,
         rawType,
         network,
@@ -133,17 +106,14 @@ function OpenAPIContainer({
       checked: false,
       minimized: false,
       tab: currentTab,
-      service: selectedService,
-      rpc: selectedRequest,
-      packageName: selectedPackage,
-      streamingType,
-      queryArr,
-      initialQuery,
-      streamsArr,
-      streamContent,
-      servicesObj: services,
-      protoPath,
-      protoContent,
+
+      // queryArr,
+      // initialQuery,
+      // streamsArr,
+      // streamContent,
+      // servicesObj: services,
+      // protoPath,
+      // protoContent,
     };
 
     // add request to history
@@ -181,11 +151,9 @@ function OpenAPIContainer({
         <OpenAPIEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
           setNewRequestFields={setNewRequestFields}
           setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
           setNewRequestCookies={setNewRequestCookies}
           setNewRequestBody={setNewRequestBody}
           warningMessage={warningMessage}
@@ -194,8 +162,6 @@ function OpenAPIContainer({
         <OpenAPIDocumentEntryForm
           newRequestFields={newRequestFields}
           setNewRequestFields={setNewRequestFields}
-          newRequestStreams={newRequestStreams}
-          setNewRequestStreams={setNewRequestStreams}
           newRequestHeaders={newRequestHeaders}
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestCookies={setNewRequestCookies}
@@ -203,11 +169,9 @@ function OpenAPIContainer({
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
           newRequestFields={newRequestFields}
           setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
         />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
