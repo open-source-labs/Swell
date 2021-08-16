@@ -18,6 +18,7 @@ const mapStateToProps = (store) => {
     newRequestHeaders: store.business.newRequestHeaders,
     newRequestStreams: store.business.newRequestStreams,
     newRequestBody: store.business.newRequestBody,
+    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
     newRequestCookies: store.business.newRequestCookies,
     newRequestSSE: store.business.newRequestSSE,
     currentTab: store.business.currentTab,
@@ -56,6 +57,11 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
+  },
+  setNewRequestsOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
+    dispatch(
+      actions.setNewRequestsOpenAPI({ openapiMetadata, openapiReqArray })
+    );
   },
   resetComposerFields: () => {
     dispatch(actions.resetComposerFields());
@@ -125,6 +131,7 @@ const ComposerContainer = (props) => {
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.webRTCInitiator,
+          openapiContent: props.newRequestFields.openapiContent,
           method: 'openapi',
           openapi: true,
           graphQL: false,
@@ -133,6 +140,7 @@ const ComposerContainer = (props) => {
           network,
           testContent: '',
         });
+
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'none',

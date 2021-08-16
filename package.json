@@ -44,6 +44,7 @@
       "package.json",
       "main.js",
       "main_process/protoParser.js",
+      "main_process/openapiParser.js",
       "main_process/main_grpcController.js",
       "main_process/main_graphqlController.js",
       "main_process/main_httpController.js",

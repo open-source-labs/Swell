@@ -4,8 +4,10 @@ export interface initialState {
   scheduledReqResArray: Record<string, unknown>[];  
   history: Record<string, unknown>[];
   collections: Record<string, unknown>[];
-  openapiMetadata?: Record<string, unknown>;
   warningMessage: Record<string, string>;
+  // openapiMetadata?: Record<string, unknown>;
+  // openapiReqArray?: Record<string, unknown>[];
+  newRequestOpenAPI: Record<string, unknown>;
   newRequestFields: NewRequestFields;
   newRequestHeaders?: NewRequestHeaders;
   newRequestStreams?: NewRequestStreams;
@@ -14,12 +16,34 @@ export interface initialState {
   newRequestSSE: NewRequestSSE;
 }
 
+export interface newRequestOpenAPI {
+  openapiMetadata: Record<string, unknown>;
+  openapiReqArray: Record<string, unknown>[];
+}
+
+export interface NewRequestObjOpenAPI {
+  id: number;
+  enabled: boolean;
+  reqTags: string;
+  summary?: string;
+  description?: string;
+  operationId?: string;
+  reqServers: string[];
+  method: string;
+  endpoint: string;
+  headers?: Record<string, unknown>;
+  parameters?: Record<string, unknown>[];
+  body?: Map<string, unknown>;
+  urls: string[];
+  params?: Record<string, unknown>[];
+  queries?: Record<string, unknown>[];
+}
+
 export interface NewRequestFields {
   protocol: string;
   graphQL: boolean;
   gRPC: boolean;
   ws: boolean;
-  openapi: boolean;
   webrtc: boolean;
   restUrl?: string;
   wsUrl?: string;
