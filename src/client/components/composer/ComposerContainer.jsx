@@ -127,10 +127,10 @@ const ComposerContainer = (props) => {
         props.resetComposerFields();
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: '',
-          url: props.newRequestFields.webRTCInitiator,
+          protocol: 'openapi',
+          url: 
           openapiContent: props.newRequestFields.openapiContent,
-          method: 'openapi',
+          method: 'get',
           graphQL: false,
           gRPC: false,
           ws: false,

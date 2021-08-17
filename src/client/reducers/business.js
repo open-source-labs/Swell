@@ -6,15 +6,17 @@ const initialState = {
   currentTab: 'First Tab',
   reqResArray: [],
   scheduledReqResArray: [],
-  openapiMetadata: {
-    info: {},
-    tags: [],
-    serverUrls: [],
-  },
-  openapiReqArray: [],
   history: [],
   collections: [],
   warningMessage: {},
+  newRequestOpenAPI: {
+    openapiMetadata: {
+      info: {},
+      tags: [],
+      serverUrls: [],
+    },
+    openapiReqArray: [],
+  },
   newRequestFields: {
     protocol: '',
     restUrl: 'http://',
@@ -75,18 +77,16 @@ const initialState = {
       id: 0,
       enabled: true,
       reqTags: [],
+      reqServers: [],
       summary: '', 
       description: '', 
       operationId: '',
-      reqServers: [],
       method: '', 
       endpoint: '', 
-      headers: [],
+      headers: {},
       parameters: [],
       body: new Map(),
       urls: [],
-      params: [],
-      queries: [],
     }
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
@@ -533,15 +533,17 @@ const businessReducer = (state = initialState, action) => {
             openapiReqArray,
           }
         }
-        // case 'header': {
-        //   if (['Content-Type', 'Authorization', 'Accepts'].includes(param.name)) break;
-        //   const headers = userInput.parameters[id].filter(({ type }) => type === 'header');
-        //   request.headers = {};
-        //   headers.forEach((header) => )
-        // }
-        // case 'cookie': {
+        case 'header': {
+          if (['Content-Type', 'Authorization', 'Accepts'].includes(param.name)) break;
+          const headers = userInput.parameters[id].filter(({ type }) => type === 'header');
+          request.headers = {
+            
+          };
+          headers.forEach((header) => )
+        }
+        case 'cookie': {
           
-        // }
+        }
         default: {
           return { ...state };
         }

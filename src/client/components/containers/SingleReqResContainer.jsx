@@ -8,6 +8,7 @@ import RestRequestContent from '../display/RestRequestContent.jsx';
 import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
 import WebRTCRequestContent from '../display/WebRTCRequestContent.jsx';
 import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
+import OpenAPIRequestContent from '../display/OpenAPIRequestContent.jsx';
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);

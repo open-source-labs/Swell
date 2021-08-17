@@ -1,13 +1,15 @@
+export type Protocols = 'rest' | 'http' | 'ws' | 'webrtc' | 'graphQL' | 'grpc' | 'openapi';
+export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
+export type Methods = 'GET'|'PUT'|'PATCH'|'DELETE'|'OPTIONS'|'HEAD'|'TRACE'|'QUERY'|'SUBSCRIPTION'|'INTROSPECTION'|'INITIATOR'|'RECIPIENT';
+
 export interface initialState {
   currentTab: string;
-  reqResArray: Record<string, unknown>[];
-  scheduledReqResArray: Record<string, unknown>[];  
+  reqResArray: NewRequestResponseObject[];
+  scheduledReqResArray: NewRequestResponseObject[];  
   history: Record<string, unknown>[];
   collections: Record<string, unknown>[];
   warningMessage: Record<string, string>;
-  // openapiMetadata?: Record<string, unknown>;
-  // openapiReqArray?: Record<string, unknown>[];
-  newRequestOpenAPI: Record<string, unknown>;
+  newRequestOpenAPI: NewRequestOpenAPI;
   newRequestFields: NewRequestFields;
   newRequestHeaders?: NewRequestHeaders;
   newRequestStreams?: NewRequestStreams;
@@ -16,31 +18,46 @@ export interface initialState {
   newRequestSSE: NewRequestSSE;
 }
 
-export interface newRequestOpenAPI {
+export interface NewRequestOpenAPI {
   openapiMetadata: Record<string, unknown>;
-  openapiReqArray: Record<string, unknown>[];
+  openapiReqArray: NewRequestOpenAPIObject[];
 }
 
-export interface NewRequestObjOpenAPI {
+export interface NewRequestOpenAPIObject {
   id: number;
   enabled: boolean;
-  reqTags: string;
   summary?: string;
   description?: string;
   operationId?: string;
+  reqTags: string;
   reqServers: string[];
-  method: string;
+  method: Methods;
   endpoint: string;
-  headers?: Record<string, unknown>;
+  headers?: NewRequestHeaders;
   parameters?: Record<string, unknown>[];
-  body?: Map<string, unknown>;
   urls: string[];
-  params?: Record<string, unknown>[];
-  queries?: Record<string, unknown>[];
+  body?: Map<string, unknown>;
+  params?: Record<string, unknown>;
+  queries?: Record<string, unknown>;
 }
-
+export interface NewRequestResponseObject {
+  id: number;
+  graphQL: boolean;
+  closeCode: number;
+  protocol: Protocols;
+  request: NewRequestFields;
+  response: Record<string, unknown>;
+  connection: ConnectionStatus;
+  connectionType: string;
+  isHTTP2: boolean;
+  url: string;
+  timeReceived: Date;
+  timeSent: Date;
+  rpc: string;
+  service: string;
+}
 export interface NewRequestFields {
-  protocol: string;
+  protocol: Protocols;
   graphQL: boolean;
   gRPC: boolean;
   ws: boolean;
@@ -49,9 +66,10 @@ export interface NewRequestFields {
   wsUrl?: string;
   gqlUrl?: string;
   grpcUrl?: string;
+  webrtcUrl?: string;
   url?: string;
   method?: string;
-  network?: string;
+  network: string;
   testContent: string;
   testResults: string[];
 }
