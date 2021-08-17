@@ -23,6 +23,7 @@ const initialState = {
     wsUrl: 'ws://',
     gqlUrl: 'https://',
     grpcUrl: '',
+    webrtcUrl: '',
     url: 'http://',
     method: 'GET',
     graphQL: false,
