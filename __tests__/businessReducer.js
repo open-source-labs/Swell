@@ -16,6 +16,7 @@ describe('Business reducer', () => {
         restUrl: 'http://',
         wsUrl: 'ws://',
         gqlUrl: 'https://',
+        webrtcUrl: '',
         grpcUrl: '',
         webrtc: false,
         url: 'http://',
