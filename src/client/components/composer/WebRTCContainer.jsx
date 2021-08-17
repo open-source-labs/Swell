@@ -25,13 +25,7 @@ function WebRTCContainer({
   setNewTestContent,
   setNewRequestBody,
   newRequestBody,
-  newRequestBody: {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  },
+  newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
   setNewRequestHeaders,
   webrtcData,
   newRequestHeaders,
@@ -45,32 +39,7 @@ function WebRTCContainer({
   reqResAdd,
   setWorkspaceActiveTab,
 }) {
-  const requestValidationCheck = () => {
-    const validationMessage = {};
-    //if url is only http/https/ws/wss://
-    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
-      validationMessage.uri = 'Enter a valid URI';
-    }
-    //if url doesn't have http/https/ws/wss://
-    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
-      validationMessage.uri = 'Enter a valid URI';
-    }
-    if (!JSONFormatted && rawType === 'application/json') {
-      validationMessage.json = 'Please fix JSON body formatting errors';
-    }
-
-    return validationMessage;
-  };
-
   const addNewRequest = () => {
-    const warnings = requestValidationCheck();
-    if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
-      return;
-    }
-
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-
     const reqRes = {
       id: uuid(),
       created_at: new Date(),
