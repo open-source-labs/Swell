@@ -442,16 +442,20 @@ ipcMain.on('import-openapi', (event) => {
           return console.log('import-openapi error reading file : ', err);
         }
         importedDocument = file;
-        const documentObj = openapiParserFunc(importedDocument);
-        // openapiParserFunc(importedDocument).then((documentObj) => {
-          // console.log(
-          //   "finished with logic. about to send importedDocument : ",
-          //   importedDocument,
-          //   " and documentObj : ",
-          //   documentObj
-          // );
-          mainWindow.webContents.send('openapi-info', importedDocument, documentObj);
-        // });
+        // const documentObj = openapiParserFunc(importedDocument);
+        openapiParserFunc(importedDocument).then((documentObj) => {
+          console.log(
+            'finished with logic. about to send importedDocument : ',
+            importedDocument,
+            ' and documentObj : ',
+            documentObj
+          );
+          mainWindow.webContents.send(
+            'openapi-info',
+            importedDocument,
+            documentObj
+          );
+        });
       });
     })
     .catch((err) => {
