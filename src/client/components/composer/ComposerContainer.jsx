@@ -73,7 +73,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ComposerContainer = (props) => {
-  console.log(props.reqResArray);
   const onProtocolSelect = (network) => {
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
@@ -132,7 +131,7 @@ const ComposerContainer = (props) => {
           ...props.newRequestFields,
           protocol: 'openapi',
           // url: props.newRequestFields.openapiUrl,
-          openapiContent: props.newRequestFields.openapiContent,
+
           openapi: true,
           method: 'get',
           graphQL: false,
