@@ -53,87 +53,82 @@ function OpenAPIContainer({
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
-    //Error conditions removing the need for url for now
+    //!Error conditions removing the need for url for now
 
     return validationMessage;
   };
 
   const addNewRequest = () => {
     console.log(newRequestFields);
+
+    console.log(
+      newRequestsOpenAPI.openapiMetadata,
+      newRequestsOpenAPI.openapiReqArray
+    );
+
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
     }
 
-    const reqResArr = [];
+    newRequestsOpenAPI.openapiMetadata.openapiReqArray.forEach((req) => {
+      const reqRes = {
+        id: uuid(),
+        created_at: new Date(),
+        host: 'https://api.twitter.com',
+        protocol: 'https://',
+        url: `https://api.twitter.com${req.endpoint}`,
+        graphQL,
+        gRPC,
+        webrtc,
+        timeSent: null,
+        timeReceived: null,
+        connection: 'uninitialized',
+        connectionType: null,
+        checkSelected: false,
+        request: {
+          method: req.method,
+          headers: headersArr.filter((header) => header.active && !!header.key),
+          body: req.body,
+          bodyType,
+          rawType,
+          network,
+          restUrl,
+          wsUrl,
+          gqlUrl,
+          testContent: testContent || '',
+          grpcUrl,
+        },
+        response: {
+          cookies: [],
+          headers: {},
+          stream: null,
+          events: [],
+        },
+        checked: false,
+        minimized: false,
+        tab: currentTab,
+      };
 
-    // grabbing streaming type to set method in reqRes.request.method
-    const grpcStream = document.getElementById('stream').innerText;
-    // create reqres obj to be passed to controller for further actions/tasks
-    const reqRes = {
-      id: uuid(),
-      created_at: new Date(),
-      protocol: '',
-      url,
-      graphQL,
-      gRPC,
-      webrtc,
-      timeSent: null,
-      timeReceived: null,
-      connection: 'uninitialized',
-      connectionType: null,
-      checkSelected: false,
-      request: {
-        method: grpcStream,
-        headers: headersArr.filter((header) => header.active && !!header.key),
-        body: '',
-        bodyType,
-        rawType,
-        network,
+      // add request to history
+      historyController.addHistoryToIndexedDb(reqRes);
+      reqResAdd(reqRes);
+
+      //reset for next request
+      resetComposerFields();
+
+      // GRPC REQUESTS
+      setNewRequestBody({
+        ...newRequestBody,
+        bodyType: 'GRPC',
+        rawType: '',
+      });
+      setNewRequestFields({
+        ...newRequestFields,
+        url: `https://api.twitter.com${req.endpoint}`,
         restUrl,
-        wsUrl,
-        gqlUrl,
-        testContent: testContent || '',
-        grpcUrl,
-      },
-      response: {
-        cookies: [],
-        headers: {},
-        stream: null,
-        events: [],
-      },
-      checked: false,
-      minimized: false,
-      tab: currentTab,
-
-      // queryArr,
-      // initialQuery,
-      // streamsArr,
-      // streamContent,
-      // servicesObj: services,
-      // protoPath,
-      // protoContent,
-    };
-
-    console.log(newRequestsOpenAPI.openapiMetadata, newRequestsOpenAPI.openapiReqArray);
-    // add request to history
-    historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
-
-    //reset for next request
-    resetComposerFields();
-
-    // GRPC REQUESTS
-    setNewRequestBody({
-      ...newRequestBody,
-      bodyType: 'GRPC',
-      rawType: '',
-    });
-    setNewRequestFields({
-      ...newRequestFields,
-      url: grpcUrl,
-      grpcUrl,
+      });
     });
 
     setWorkspaceActiveTab('workspace');
