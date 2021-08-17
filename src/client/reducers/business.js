@@ -460,9 +460,10 @@ const businessReducer = (state = initialState, action) => {
     // OPENAPI
 
     case types.SET_NEW_REQUESTS_OPENAPI: {
+      const { openapiMetadata, openapiReqArray } = action.payload;
+      
       return {
       ...state,
-      newRequestsOpenAPI: { ...action.payload },
       }
     }
 
@@ -538,13 +539,14 @@ const businessReducer = (state = initialState, action) => {
           if (['Content-Type', 'Authorization', 'Accepts'].includes(param.name)) break;
           const headers = userInput.parameters[id].filter(({ type }) => type === 'header');
           request.headers = {
+            param.name,
             
           };
           headers.forEach((header) => )
         }
-        case 'cookie': {
+        // case 'cookie': {
           
-        }
+        // }
         default: {
           return { ...state };
         }
@@ -567,12 +569,40 @@ const businessReducer = (state = initialState, action) => {
       }
     }
 
-    // case types.SEND_OPENAPI_REQUESTS: {
-    //   const openapiReqArray = [ ...state.openapiReqArray ].filter(({ request }) => request.enabled);
-    //   return {
-
-    //   }
-    // }
+    /**
+    case types.QUEUE_OPENAPI_REQUESTS: {
+      const openapiReqQueue = [ ...state.openapiReqArray ].filter(({ request }) => request.enabled);
+      const requests = openapiReqQueue.map(({ request }, i) => request.map{
+        ...request
+        method,
+        protocol,
+        url,
+        network: 'rest',
+        testContent: false,
+      });
+      const reqResObj = {
+        headers: {
+          id: ,
+          active: ,
+          key: '',
+          value: '',
+        },
+        cookies: {
+          
+        },
+        body: request.body.get(),
+        bodyType: raw ,
+        rawType = ,
+        isSSE: false,
+        testContent: false,
+      }
+      return {
+        ...state,
+        
+        
+      }
+    }
+    */
 
     default:
       return state;

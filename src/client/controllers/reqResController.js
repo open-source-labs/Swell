@@ -119,7 +119,7 @@ const connectionController = {
           reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
-        reqResObj.respcodonse.events.length > 0
+        reqResObj.response.events.length > 0
       ) {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }

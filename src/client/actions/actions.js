@@ -207,10 +207,6 @@ export const setOpenAPIServers = (requestId, serverIds) => ({
   type: types.SET_OPENAPI_SERVERS,
   payload: {id: requestId, serverIds},
 });
-export const addOpenAPIParameter = (requestId) => ({
-  type: types.ADD_NEW_OPENAPI_PARAMETER,
-  payload: requestId,
-});
 export const setOpenAPIParameter = (requestId, type, key, value) => ({
   type: types.SET_NEW_OPENAPI_PARAMETER,
   payload: {id: requestId, type, key, value},
@@ -219,7 +215,7 @@ export const setOpenAPIRequestBody = (requestId, mediaType, requestBody) => ({
   type: types.SET_NEW_OPENAPI_REQUEST_BODY,
   payload: {id: requestId, mediaType, requestBody},
 });
-export const sendOpenAPIRequests = () => ({
-  type: types.SEND_OPENAPI_REQUESTS,
+export const queueOpenAPIRequests = () => ({
+  type: types.QUEUE_OPENAPI_REQUESTS,
 });
 

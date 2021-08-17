@@ -128,14 +128,14 @@ const ComposerContainer = (props) => {
         props.resetComposerFields();
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: 'openapi',
-          url: 
+          protocol: '',
+          url: '',
           openapiContent: props.newRequestFields.openapiContent,
-          method: 'get',
+          method: 'GET',
           graphQL: false,
           gRPC: false,
           ws: false,
-          network,
+          network: 'openapi',
           testContent: '',
         });
       

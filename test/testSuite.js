@@ -16,7 +16,7 @@ const grpcTestingTest = require('./subSuites/grpcTestingTest');
 const app = require('./testApp');
 
 describe('Electron Tests', function () {
-  this.timeout(60000);
+  this.timeout(200000);
   // before and after here are to test if the app can be opened and closed
   before(() => app.start());
 

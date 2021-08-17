@@ -35,7 +35,7 @@ function OpenAPIRequestContent({ request,  }) {
           <input
             className="input"
             type="text"
-            value={`Request: ${rpc}`}
+            value={`Request: ${openapi}`}
             className="is-justify-content-center is-flex-grow-1 p-1"
             readOnly
           />
@@ -76,4 +76,4 @@ function OpenAPIRequestContent({ request,  }) {
   );
 }
 
-export default GRPCRequestContent;
+export default OpenAPIRequestContent;
