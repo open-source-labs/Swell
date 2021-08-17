@@ -1,5 +1,5 @@
 import uiReducer from '../src/client/reducers/ui';
-import { SET_COMPOSER_DISPLAY } from '../src/client/actions/actionTypes';
+// import { SET_COMPOSER_DISPLAY } from '../src/client/actions/actionTypes';
 
 describe('UI Reducer', () => {
   let state;
@@ -23,14 +23,14 @@ describe('UI Reducer', () => {
   });
 
   describe('should handle SET_COMPOSER_DISPLAY', () => {
+    const action = {
+      type: 'SET_COMPOSER_DISPLAY',
+      payload: 'warning',
+    };
+
     it('should update the composerDisplay', () => {
-      const action = {
-        type: SET_COMPOSER_DISPLAY,
-        payload: 'Warning',
-      };
-      expect(uiReducer(undefined, action)).toEqual({
-        composerDisplay: 'Warning',
-      });
+      const { composerDisplay } = uiReducer(state, action);
+      expect(composerDisplay).toEqual(action.payload);
     });
   });
 });
