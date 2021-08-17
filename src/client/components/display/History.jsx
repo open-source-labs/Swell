@@ -214,7 +214,7 @@ const History = ({
     historyController.deleteHistoryFromIndexedDb(e.target.id);
   };
 
-  const urlDisplay = url.length > 32 ? url.slice(0, 32) + '...' : url;
+  const urlDisplay = url && url.length > 32 ? url.slice(0, 32) + '...' : url;
 
   return (
     <div className="history-container is-flex is-justify-content-space-between m-3">
@@ -223,7 +223,7 @@ const History = ({
         onClick={() => addHistoryToNewRequest()}
       >
         <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
-        <div className="history-url"> {urlDisplay || ''} </div>
+        <div className="history-url"> {urlDisplay || '-'} </div>
       </div>
       <div className="history-delete-container">
         <div
