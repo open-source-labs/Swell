@@ -157,14 +157,13 @@ const ComposerContainer = (props) => {
         });
         break;
       }
-      // TODO:  adjust for webrtc
       case 'webrtc': {
         props.resetComposerFields();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
-          url: props.newRequestFields.webRTCInitiator,
-          method: 'INITIATOR',
+          url: props.newRequestFields.webrtcUrl,
+          method: 'WebRTC',
           graphQL: false,
           gRPC: false,
           ws: false,
