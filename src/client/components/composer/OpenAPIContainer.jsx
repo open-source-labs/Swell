@@ -185,26 +185,3 @@ function OpenAPIContainer({
 }
 
 export default OpenAPIContainer;
-
-// servers = ['http://api.twitter.com'];
-
-// serversOverride: {
-//   // id: [],
-// },
-
-// {
-//   id: 13,
-//   enabled: true, // user toggles state
-//   tags: ['Users'],
-//   method: 'post',
-//   headers: [],
-//   urls: [
-//     'http://api.twitter.com/2/users/13/blocking',
-//     'http://api.twitter.com/2/users/240/blocking',
-//     'http://api.twitter.com/2/users/24/blocking?required=false&TZ=utc%159',
-//   ],
-//   body: '', // JSON, user text input
-//   summary,
-//   description,
-//   operationId,
-// };

@@ -11,11 +11,7 @@ function WSContainer({
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
-    gRPC,
     url,
-    method,
-    protocol,
-    graphQL,
     restUrl,
     webrtc,
     wsUrl,

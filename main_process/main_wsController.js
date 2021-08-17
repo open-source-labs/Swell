@@ -1,10 +1,8 @@
 /* eslint-disable camelcase */
 const { ipcMain } = require('electron');
 const { dialog } = require('electron');
-
 const WebSocketClient = require('websocket').client;
 const fs = require('fs');
-const path = require('path');
 const testingController = require('./main_testingController');
 
 const wsController = {

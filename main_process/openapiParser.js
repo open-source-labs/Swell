@@ -32,15 +32,16 @@ const openapiParserFunc = input => {
         enabled: true,
         reqTags: tags,
         summary, description, operationId,
+        method: method.toUpperCase(), 
         reqServers: [],
-        method, 
-        endpoint, 
-        headers: [],
+        endpoint,
         parameters,
         body: new Map(),
+        headers: {},
+        cookies: {},
+        params: {},
+        queries: {},
         urls: [],
-        params: [],
-        queries: [],
       }
       openapiReqArray.push(request);
     });

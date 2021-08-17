@@ -24,6 +24,7 @@ const mapStateToProps = (store) => {
     currentTab: store.business.currentTab,
     warningMessage: store.business.warningMessage,
     introspectionData: store.business.introspectionData,
+    webrtcData: store.business.webrtcData,
   };
 };
 
@@ -129,11 +130,11 @@ const ComposerContainer = (props) => {
         props.resetComposerFields();
         props.setNewRequestFields({
           ...props.newRequestFields,
-          protocol: '',
-          url: props.newRequestFields.webRTCInitiator,
+          protocol: 'openapi',
+          // url: props.newRequestFields.openapiUrl,
           openapiContent: props.newRequestFields.openapiContent,
-          method: 'openapi',
           openapi: true,
+          method: 'get',
           graphQL: false,
           gRPC: false,
           ws: false,
@@ -188,24 +189,41 @@ const ComposerContainer = (props) => {
         });
         break;
       }
-      // TODO:  adjust for webrtc
       case 'webrtc': {
         props.resetComposerFields();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
-          url: props.newRequestFields.webRTCInitiator,
-          method: 'INITIATOR',
+          url: props.newRequestFields.webrtcUrl,
+          method: 'WebRTC',
           graphQL: false,
           gRPC: false,
           ws: false,
+          webrtc: true,
           network,
           testContent: '',
         });
         props.setNewRequestBody({
           ...props.newRequestBody,
-          bodyType: 'none',
-          bodyContent: '',
+          bodyType: 'stun-ice',
+          bodyContent: {
+            iceConfiguration: {
+              iceServers: [
+                {
+                  urls: 'turn:104.153.154.109',
+                  username: 'teamswell',
+                  credential: 'cohortla44',
+                  credentialType: 'password',
+                },
+                {
+                  urls: 'stun:104.153.154.109',
+                },
+                {
+                  urls: 'stun:stun1.l.google.com:19302',
+                },
+              ],
+            },
+          },
         });
         break;
       }

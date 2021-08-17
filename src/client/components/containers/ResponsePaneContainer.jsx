@@ -142,9 +142,7 @@ const ResponsePaneContainer = () => {
             </div>
           )}
       </div>
-
       {/* CLOSE RESPONSE BUTTON */}
-
       {(currentResponse.request?.method === 'WS' ||
         currentResponse.request?.method === 'SUBSCRIPTION' ||
         currentResponse.request?.isSSE ||

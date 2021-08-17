@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions.js';
 import connectionController from '../../controllers/reqResController';
@@ -8,6 +8,7 @@ import RestRequestContent from '../display/RestRequestContent.jsx';
 import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
 import WebRTCRequestContent from '../display/WebRTCRequestContent.jsx';
 import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
+import OpenAPIRequestContent from '../display/OpenAPIRequestContent.jsx';
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -21,34 +22,21 @@ const SingleReqResContainer = (props) => {
     (store) => store.business.newRequestFields
   );
 
-  const newRequestStreams = useSelector(
-    (store) => store.business.newRequestStreams
-  );
-
   const {
     content,
-    content: {
-      id,
-      graphQL,
-      closeCode,
-      protocol,
-      request,
-      response,
-      connection,
-      connectionType,
-      isHTTP2,
-      url,
-      timeReceived,
-      timeSent,
-      rpc,
-      service,
-    },
-    reqResUpdate,
+    content: { protocol, request, connection, connectionType, isHTTP2, url },
+
     reqResDelete,
     index,
   } = props;
   const network = content.request.network;
   const method = content.request.method;
+
+  useEffect(() => {
+    if (content.request.network === 'webrtc') {
+      setShowDetails(true);
+    }
+  }, [content.request.network]);
 
   const copyToComposer = () => {
     let requestFieldObj = {};
@@ -91,6 +79,7 @@ const SingleReqResContainer = (props) => {
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        webrtcData: content.webrtcData,
       };
     }
 
@@ -157,6 +146,7 @@ const SingleReqResContainer = (props) => {
     };
 
     const requestBodyObj = {
+      webrtcData: content.webrtcData,
       bodyType: content.request.bodyType || 'raw',
       bodyContent: content.request.body || '',
       bodyVariables: content.request.bodyVariables || '',
@@ -209,8 +199,7 @@ const SingleReqResContainer = (props) => {
     if (currentResponse.gRPC) classes += 'is-grpc-border';
     else if (currentResponse.graphQL) classes += 'is-graphQL-border';
     else if (currentResponse.request.method === 'WS') classes += 'is-ws-border';
-    else if (currentResponse.request.method === 'webrtc')
-      classes += 'is-webrtc-border';
+    else if (currentResponse.webrtc) classes += 'is-webrtc-border';
     else classes += 'is-rest-border';
     return classes;
   };
@@ -284,9 +273,7 @@ const SingleReqResContainer = (props) => {
           {network === 'graphQL' && (
             <GraphQLRequestContent request={content.request} />
           )}
-          {network === 'webrtc' && (
-            <WebRTCRequestContent request={content.request} />
-          )}
+          {network === 'webrtc' && <WebRTCRequestContent content={content} />}
         </div>
       )}
       {/* REMOVE / SEND BUTTONS */}
@@ -306,6 +293,7 @@ const SingleReqResContainer = (props) => {
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
+            disabled={network === 'webrtc'}
             onClick={() => {
               //check the request type
               //if it's http, dispatch set active tab to "event" for reqresponsepane
@@ -313,7 +301,6 @@ const SingleReqResContainer = (props) => {
               if (connectionType !== 'WebSocket') {
                 dispatch(actions.setResponsePaneActiveTab('events'));
               }
-
               connectionController.openReqRes(content.id);
               dispatch(
                 actions.saveCurrentResponseData(
