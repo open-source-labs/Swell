@@ -53,8 +53,8 @@ export default class Peer {
   //  └──────────────────────────────┘
   _createPeer(config) {
     // grab RTCPeerConnection from globalThis
-    console.log('[webrtcPeerController][Peer][_createPeer] getBrowserRTC():');
-    console.log(this.getBrowserRTC());
+    // console.log('[webrtcPeerController][Peer][_createPeer] getBrowserRTC():');
+    // console.log(this.getBrowserRTC());
     const Wrtc = this.getBrowserRTC();
 
     // instanciate a new peer connection with config and return
@@ -67,27 +67,27 @@ export default class Peer {
   _initICECandidateEvents() {
     // setup ice candidate event handler
     // listen for ICE candiates.  Each time a candidate is added to the list, re-log the whole SDP
-    this.connection.onicecandidate = (event) => {
-      if (
-        event &&
-        event.target &&
-        event.target.iceGatheringState === 'complete'
-      ) {
-        console.log(
-          'done gathering candidates - got iceGatheringState complete'
-        );
-      } else if (event && event.candidate == null) {
-        console.log('done gathering candidates - got null candidate');
-      } else {
-        console.log(
-          event.target.iceGatheringState,
-          event,
-          this.connection.localDescription
-        );
-        console.log('corresponding SDP for above ICE candidate in JSON:');
-        console.log(JSON.stringify(this.connection.localDescription));
-      }
-    };
+    // this.connection.onicecandidate = (event) => {
+    //   if (
+    //     event &&
+    //     event.target &&
+    //     event.target.iceGatheringState === 'complete'
+    //   ) {
+    //     console.log(
+    //       'done gathering candidates - got iceGatheringState complete'
+    //     );
+    //   } else if (event && event.candidate == null) {
+    //     console.log('done gathering candidates - got null candidate');
+    //   } else {
+    //     console.log(
+    //       event.target.iceGatheringState,
+    //       event,
+    //       this.connection.localDescription
+    //     );
+    //     // console.log('corresponding SDP for above ICE candidate in JSON:');
+    //     // console.log(JSON.stringify(this.connection.localDescription));
+    //   }
+    // };
   }
 
   //  ┌──────────────────────────────┐
