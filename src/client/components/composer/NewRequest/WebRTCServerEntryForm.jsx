@@ -13,10 +13,12 @@ import 'codemirror/addon/lint/lint.css';
 
 const jBeautify = require('js-beautify').js;
 
-const WebRTServerEntryForm = (props) => {
+const WebRTCServerEntryForm = (props) => {
   const {
+    newRequestBody,
     newRequestBody: { bodyContent },
     newRequestBody: { bodyIsNew },
+    setNewRequestBody,
     warningMessage,
   } = props;
 
@@ -24,16 +26,19 @@ const WebRTServerEntryForm = (props) => {
 
   // set a new value for codemirror only if loading from history or changing query type
   useEffect(() => {
-    if (!bodyIsNew) setValue(bodyContent.iceConfiguration.iceServers);
+    if (!bodyIsNew)
+      setValue(
+        jBeautify(JSON.stringify(bodyContent.iceConfiguration.iceServers))
+      );
   }, [bodyContent, bodyIsNew]);
 
   return (
     <div className="mt-3">
       {warningMessage ? <div>{warningMessage.body}</div> : null}
       <div className="composer-section-title">TURN or STUN Servers</div>
-      <div id="gql-body-entry" className="is-neutral-200-box p-3">
+      <div className="is-neutral-200-box p-3">
         <CodeMirror
-          value={jBeautify(JSON.stringify(cmValue))}
+          value={cmValue}
           options={{
             mode: 'javascript',
             theme: 'neo sidebar',
@@ -46,7 +51,7 @@ const WebRTServerEntryForm = (props) => {
             indentUnit: 1,
             tabSize: 1,
           }}
-          editorDidMount={(editor) => {
+          editorDidMount={(editor, data, value) => {
             editor.setSize('100%', '100%');
           }}
         />
@@ -55,4 +60,4 @@ const WebRTServerEntryForm = (props) => {
   );
 };
 
-export default WebRTServerEntryForm;
+export default WebRTCServerEntryForm;
