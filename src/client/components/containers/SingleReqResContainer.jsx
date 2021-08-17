@@ -21,30 +21,10 @@ const SingleReqResContainer = (props) => {
     (store) => store.business.newRequestFields
   );
 
-  const newRequestStreams = useSelector(
-    (store) => store.business.newRequestStreams
-  );
-
   const {
     content,
-    content: {
-      id,
-      graphQL,
-      closeCode,
-      protocol,
-      request,
-      response,
-      connection,
-      connectionType,
-      isHTTP2,
-      url,
-      timeReceived,
-      timeSent,
-      rpc,
-      service,
-      webrtcData,
-    },
-    reqResUpdate,
+    content: { protocol, request, connection, connectionType, isHTTP2, url },
+
     reqResDelete,
     index,
   } = props;
@@ -218,8 +198,7 @@ const SingleReqResContainer = (props) => {
     if (currentResponse.gRPC) classes += 'is-grpc-border';
     else if (currentResponse.graphQL) classes += 'is-graphQL-border';
     else if (currentResponse.request.method === 'WS') classes += 'is-ws-border';
-    else if (currentResponse.request.method === 'webrtc')
-      classes += 'is-webrtc-border';
+    else if (currentResponse.webrtc) classes += 'is-webrtc-border';
     else classes += 'is-rest-border';
     return classes;
   };
@@ -313,6 +292,7 @@ const SingleReqResContainer = (props) => {
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
             id={`send-button-${index}`}
+            disabled={network === 'webrtc'}
             onClick={() => {
               //check the request type
               //if it's http, dispatch set active tab to "event" for reqresponsepane
