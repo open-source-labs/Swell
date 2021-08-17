@@ -2,7 +2,7 @@ import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import ContentReqRow from './ContentReqRow';
 
-function OpenAPIRequestContent({ request,  }) {
+function OpenAPIRequestContent({ request }) {
   const {
     headers, // refers to meta-data in a GRPC request
     body, // "body Content text"
@@ -76,4 +76,4 @@ function OpenAPIRequestContent({ request,  }) {
   );
 }
 
-export default GRPCRequestContent;
+export default OpenAPIRequestContent;

@@ -25,42 +25,6 @@ const OpenAPIDocumentEntryForm = (props) => {
     //   });
     // }
 
-    props.setNewRequestsOpenAPI({
-      ...props.newRequestsOpenAPI,
-      // this should be the un-parsed document eventually
-      openapiContent: parsedDocument,
-      version: parsedDocument.openapi,
-      info: parsedDocument.info,
-      serversGlobal: parsedDocument.servers,
-      tags: parsedDocument.tags,
-
-      reqResArray: [
-        {
-          id: 13,
-          enabled: true, // user toggles state
-          tags: ['Users'],
-          method: 'post',
-          headers: [],
-          urls: [
-            'http://api.twitter.com/2/users/13/blocking',
-            'http://api.twitter.com/2/users/240/blocking',
-            'http://api.twitter.com/2/users/24/blocking?required=false&TZ=utc%159',
-          ],
-          body: '', // JSON, user text input
-          summary: 'Block User by User ID',
-          description:
-            'Causes the user (in the path) to block the target user. The user (in the path) must match the user context authorizing the request',
-          operationId: 'usersIdBlock',
-        },
-      ],
-
-      // openapiContent: parsedDocument,
-      // version: parsedDocument.openapi,
-      // info: parsedDocument.info,
-      // serversGlobal: parsedDocument.servers,
-      // tags: parsedDocument.tags,
-    });
-
     //listens for imported openapi document from main process
     api.receive('openapi-info', (readDocument, parsedDocument) => {
       console.log('received openapi-info', parsedDocument);
@@ -69,6 +33,11 @@ const OpenAPIDocumentEntryForm = (props) => {
       props.setNewRequestsOpenAPI({
         openapiMetadata,
         openapiReqArray,
+        //   openapiContent: parsedDocument,
+        //   version: parsedDocument.openapi,
+        //   info: parsedDocument.info,
+        //   serversGlobal: parsedDocument.servers,
+        //   tags: parsedDocument.tags,
       });
     });
     api.send('import-openapi');
@@ -115,13 +84,6 @@ const OpenAPIDocumentEntryForm = (props) => {
   // };
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
-  /*
-    pseudocode for the return section
-     - first div renders the arrow button along with the title "Proto"
-     - textarea has a default value which changes when a proto file is imported or pasted in
-     - the 2 buttons allow you to import a proto file or save any changes made to the textarea in the state of the store
-     - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
-     */
 
   return (
     <div className="mt-1">
