@@ -5,6 +5,7 @@ import historyController from '../../controllers/historyController';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './NewRequest/OpenAPIDocumentEntryForm.jsx';
+import OpenAPIMetaData from './NewRequest/OpenAPIMetadata.jsx';
 
 function OpenAPIContainer({
   resetComposerFields,
@@ -60,19 +61,14 @@ function OpenAPIContainer({
 
   const addNewRequest = () => {
     console.log(newRequestFields);
-
-    console.log(
-      newRequestsOpenAPI.openapiMetadata,
-      newRequestsOpenAPI.openapiReqArray
-    );
-
+    console.log(newRequestsOpenAPI.openapiReqArray);
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);
       return;
     }
 
-    newRequestsOpenAPI.openapiMetadata.openapiReqArray.forEach((req) => {
+    newRequestsOpenAPI.openapiReqArray.forEach((req) => {
       const reqRes = {
         id: uuid(),
         created_at: new Date(),
@@ -151,10 +147,13 @@ function OpenAPIContainer({
           setNewRequestFields={setNewRequestFields}
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestCookies={setNewRequestCookies}
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
           setNewRequestBody={setNewRequestBody}
           warningMessage={warningMessage}
           setComposerWarningMessage={setComposerWarningMessage}
         />
+
         <OpenAPIDocumentEntryForm
           newRequestFields={newRequestFields}
           setNewRequestFields={setNewRequestFields}
@@ -164,12 +163,15 @@ function OpenAPIContainer({
           newRequestsOpenAPI={newRequestsOpenAPI}
           setNewRequestsOpenAPI={setNewRequestsOpenAPI}
         />
+        <OpenAPIMetaData newRequestsOpenAPI={newRequestsOpenAPI} />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={newRequestHeaders}
           newRequestBody={newRequestBody}
           newRequestFields={newRequestFields}
           setNewRequestHeaders={setNewRequestHeaders}
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
         />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
