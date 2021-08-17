@@ -11,31 +11,32 @@ import 'codemirror-graphql/lint';
 import 'codemirror-graphql/mode';
 import 'codemirror/addon/lint/lint.css';
 
-const WebRTServerEntryForm = (props) => {
+const jBeautify = require('js-beautify').js;
+
+const WebRTCServerEntryForm = (props) => {
   const {
     newRequestBody,
     newRequestBody: { bodyContent },
     newRequestBody: { bodyIsNew },
     setNewRequestBody,
     warningMessage,
-    introspectionData,
   } = props;
 
-  const [cmValue, setValue] = useState(bodyContent);
+  const [cmValue, setValue] = useState('');
 
   // set a new value for codemirror only if loading from history or changing query type
   useEffect(() => {
-    if (!bodyIsNew) setValue(bodyContent);
-  }, [bodyContent]);
+    if (!bodyIsNew)
+      setValue(
+        jBeautify(JSON.stringify(bodyContent.iceConfiguration.iceServers))
+      );
+  }, [bodyContent, bodyIsNew]);
 
   return (
     <div className="mt-3">
-      {
-        // conditionally render warning message
-        warningMessage ? <div>{warningMessage.body}</div> : null
-      }
+      {warningMessage ? <div>{warningMessage.body}</div> : null}
       <div className="composer-section-title">TURN or STUN Servers</div>
-      <div id="gql-body-entry" className="is-neutral-200-box p-3">
+      <div className="is-neutral-200-box p-3">
         <CodeMirror
           value={cmValue}
           options={{
@@ -47,28 +48,11 @@ const WebRTServerEntryForm = (props) => {
             hintOptions: true,
             matchBrackets: true,
             autoCloseBrackets: true,
-            indentUnit: 2,
-            tabSize: 2,
+            indentUnit: 1,
+            tabSize: 1,
           }}
-          editorDidMount={(editor) => {
-            editor.setSize('100%', 150);
-          }}
-          onBeforeChange={(editor, data, value) => {
-            const optionObj = {
-              schema: introspectionData.clientSchema,
-              completeSingle: false,
-            };
-            setValue(value);
-            editor.setOption('lint', optionObj);
-            editor.setOption('hintOptions', optionObj);
-          }}
-          onChange={(editor, data, value) => {
-            editor.showHint();
-            setNewRequestBody({
-              ...newRequestBody,
-              bodyContent: value,
-              bodyIsNew: true,
-            });
+          editorDidMount={(editor, data, value) => {
+            editor.setSize('100%', '100%');
           }}
         />
       </div>
@@ -76,4 +60,4 @@ const WebRTServerEntryForm = (props) => {
   );
 };
 
-export default WebRTServerEntryForm;
+export default WebRTCServerEntryForm;
