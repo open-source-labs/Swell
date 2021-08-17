@@ -48,7 +48,7 @@ const connectionController = {
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
+    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
 
@@ -56,6 +56,9 @@ const connectionController = {
       api.receive('update-connectionArray', (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
       });
+      // Todo: WEBRTC
+    } else if (reqResObj.webrtc) {
+      console.log(reqResObj);
     }
     // gRPC connection
     else if (reqResObj.gRPC) {

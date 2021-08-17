@@ -14,6 +14,7 @@ const initialState = {
     wsUrl: 'ws://',
     gqlUrl: 'https://',
     grpcUrl: '',
+    webrtcUrl: '',
     webrtc: false,
     url: 'http://',
     method: 'GET',

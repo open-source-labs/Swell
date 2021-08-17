@@ -1,6 +1,6 @@
 import ReqResCtrl from '../src/client/controllers/reqResController';
 
-describe('REST API Requests', () => {
+xdescribe('REST API Requests', () => {
   let state;
   beforeEach(() => {
     state = {
