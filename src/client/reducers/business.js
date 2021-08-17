@@ -14,6 +14,7 @@ const initialState = {
     wsUrl: 'ws://',
     gqlUrl: 'https://',
     grpcUrl: '',
+    webrtcUrl: '',
     webrtc: false,
     url: 'http://',
     method: 'GET',
@@ -57,10 +58,6 @@ const initialState = {
   },
   newRequestSSE: {
     isSSE: false,
-  },
-  webrtcData: {
-    localSdp: '',
-    remoteSdp: '',
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
   dataPoints: {},
