@@ -58,7 +58,6 @@ function GRPCContainer({
   setNewRequestSSE,
   newRequestSSE: { isSSE },
   currentTab,
-  introspectionData,
   setComposerWarningMessage,
   setComposerDisplay,
   warningMessage,

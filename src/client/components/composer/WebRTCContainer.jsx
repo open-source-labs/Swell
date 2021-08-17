@@ -17,103 +17,61 @@ function WebRTCContainer({
     protocol,
     graphQL,
     restUrl,
-    wsUrl,
-    gqlUrl,
-    grpcUrl,
+    webrtc,
+    webrtcUrl,
     network,
     testContent,
   },
   setNewTestContent,
   setNewRequestBody,
   newRequestBody,
-  newRequestBody: {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  },
+  newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
   setNewRequestHeaders,
+  webrtcData,
   newRequestHeaders,
-  newRequestHeaders: { headersArr },
   setNewRequestCookies,
-  newRequestCookies,
-  newRequestCookies: { cookiesArr },
   setNewRequestStreams,
   newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
-  setNewRequestSSE,
-  newRequestSSE: { isSSE },
   currentTab,
-  introspectionData,
   setComposerWarningMessage,
   setComposerDisplay,
   warningMessage,
   reqResAdd,
   setWorkspaceActiveTab,
 }) {
-  const requestValidationCheck = () => {
-    const validationMessage = {};
-
-    if (!JSONFormatted && rawType === 'application/json') {
-      validationMessage.json = 'Please fix JSON body formatting errors';
-    }
-    if (method === 'INITIATOR') {
-      console.log('tbd initiator validation');
-    }
-    return validationMessage;
-  };
-
   const addNewRequest = () => {
-    const warnings = requestValidationCheck();
-    if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
-      return;
-    }
-
     const reqRes = {
       id: uuid(),
       created_at: new Date(),
-      protocol: 'ws://',
+      protocol,
       host: '',
       path: '',
-      url: '',
       graphQL,
       gRPC,
+      webrtc,
+      url,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
+      webrtcData,
       request: {
         method,
-        headers: headersArr.filter((header) => header.active && !!header.key),
-        cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+        webrtcData,
+        url,
+        messages: [],
         body: bodyContent || '',
         bodyType,
         bodyVariables: bodyVariables || '',
         rawType,
         network,
         restUrl,
-        testContent: testContent || '',
-        wsUrl,
-        gqlUrl,
-        grpcUrl,
+        webrtcUrl,
       },
       response: {
-        headers: null,
-        events: null,
+        webrtcData,
+        messages: [],
       },
       checked: false,
       minimized: false,
@@ -129,13 +87,13 @@ function WebRTCContainer({
 
     setNewRequestBody({
       ...newRequestBody,
-      bodyType: 'GQL',
+      bodyType: 'stun-ice',
       rawType: '',
     });
     setNewRequestFields({
       ...newRequestFields,
-      url: gqlUrl,
-      gqlUrl,
+      url,
+      webrtcUrl,
     });
 
     setWorkspaceActiveTab('workspace');
@@ -166,7 +124,6 @@ function WebRTCContainer({
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
           setNewRequestBody={setNewRequestBody}
-          introspectionData={introspectionData}
         />
 
         <TestEntryForm
