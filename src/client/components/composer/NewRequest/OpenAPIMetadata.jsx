@@ -3,7 +3,7 @@
 import React from 'react';
 
 function OpenAPIMetaData({ newRequestsOpenAPI }) {
-  console.log(newRequestsOpenAPI);
+  // console.log(newRequestsOpenAPI);
 
   return (
     <div className="mt-2 mb-2">
