@@ -460,10 +460,9 @@ const businessReducer = (state = initialState, action) => {
     // OPENAPI
 
     case types.SET_NEW_REQUESTS_OPENAPI: {
-      const { openapiMetadata, openapiReqArray } = action.payload;
-      
       return {
       ...state,
+      NewRequestOpenAPI: { openapiMetadata, openapiReqArray } = action.payload,
       }
     }
 
@@ -472,7 +471,7 @@ const businessReducer = (state = initialState, action) => {
       openapiMetadata.serverUrls = [ ...state.openapiMetadata.serverUrls ].filter((_, i) => action.payload.includes(i));
       return {
         ...state,
-        openapiMetadata,
+        NewRequestOpenAPI: openapiMetadata,
       };
     }
 
@@ -483,7 +482,7 @@ const businessReducer = (state = initialState, action) => {
       const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
       return {
         ...state,
-        openapiReqArray,
+        NewRequestOpenAPI: openapiReqArray,
       };
     }
 
@@ -494,7 +493,7 @@ const businessReducer = (state = initialState, action) => {
       const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
       return {
         ...state,
-        openapiReqArray,
+        NewRequestOpenAPI: openapiReqArray,
       };
     }
 
@@ -505,48 +504,53 @@ const businessReducer = (state = initialState, action) => {
       const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
       return {
         ...state,
-        openapiReqArray,
+        NewRequestOpenAPI: openapiReqArray,
       };
     }
 
     case types.SET_NEW_OPENAPI_PARAMETER: {
-      const { id, type, key, value } = action.payload;
+      const { id, location, name, value } = action.payload;
       const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
       const urls = [ ...request.reqServers ].map((url) => url += request.endpoint);
-      switch (type) {
+      switch (location) {
         case 'path': {
-          urls.map((url) => url.replace(`{${key}}`, value));
+          if ()
+          else urls.map((url) => url.replace(`{${name}}`, value));
           request.urls = urls;
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
-            openapiReqArray,
+            NewRequestOpenAPI: openapiReqArray,
           }
         }
         case 'query': {
           urls.map((url) => {
             if (url.slice(-1) !== '?') url += '?';
-            url += `${key}=${value}&`
+            url += `${name}=${value}&`
           });
           request.urls = urls;
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
-            openapiReqArray,
+            NewRequestOpenAPI: openapiReqArray,
           }
         }
         case 'header': {
-          if (['Content-Type', 'Authorization', 'Accepts'].includes(param.name)) break;
-          const headers = userInput.parameters[id].filter(({ type }) => type === 'header');
-          request.headers = {
-            param.name,
-            
-          };
-          headers.forEach((header) => )
+          if (['Content-Type', 'Authorization', 'Accepts'].includes(key)) break;
+          request.headers = userInput.parameters[id].filter(({ type }) => type === 'header');
+          const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
+          return {
+            ...state,
+            NewRequestOpenAPI: openapiReqArray,
+          }
         }
-        // case 'cookie': {
-          
-        // }
+        case 'cookie': {
+          request.cookies = userInput.parameters[id].filter(({ type }) => type === 'cookie');
+          const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
+          return {
+            ...state,
+            NewRequestOpenAPI: openapiReqArray,
+        }
         default: {
           return { ...state };
         }
@@ -558,42 +562,39 @@ const businessReducer = (state = initialState, action) => {
       const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
       const { method } = request;
       if (!['get', 'delete', 'head'].includes(method) && requestBody !== undefined) {
-        const body = new Map(mediaType);
-        body.set(mediaType, requestBody);
-        request.body = body;
+        request.body = requestBody;
+        request.rawType = mediaType
       }
       const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
       return {
         ...state,
-        openapiReqArray,
+        NewRequestOpenAPI: openapiReqArray,
       }
     }
 
-    /**
     case types.QUEUE_OPENAPI_REQUESTS: {
       const openapiReqQueue = [ ...state.openapiReqArray ].filter(({ request }) => request.enabled);
       const requests = openapiReqQueue.map(({ request }, i) => request.map{
         ...request
         method,
-        protocol,
-        url,
+          headers: [{
+            id: ,
+            active: ,
+            key: '',
+            value: '',
+          }],
+        cookies: '',
+        body,
+        bodyType: raw ,
+        rawType,
         network: 'rest',
         testContent: false,
       });
       const reqResObj = {
-        headers: {
-          id: ,
-          active: ,
-          key: '',
-          value: '',
-        },
-        cookies: {
-          
-        },
-        body: request.body.get(),
-        bodyType: raw ,
-        rawType = ,
+        protocol: 'http://' || 'https://',
+        url,
         isSSE: false,
+        isHTTP2: false,
         testContent: false,
       }
       return {
@@ -602,7 +603,6 @@ const businessReducer = (state = initialState, action) => {
         
       }
     }
-    */
 
     default:
       return state;
