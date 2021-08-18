@@ -21,8 +21,7 @@ const OpenAPIDocumentEntryForm = (props) => {
 
   return (
     <div className="mt-3">
-      <div className="is-flex is-justify-content-space-between is-align-content-center">
-        <div className="composer-section-title">Document</div>
+      <div className="is-flex is-justify-content-flex-end is-align-content-center">
         <button
           className="button is-small add-header-or-cookie-button mr-1"
           onClick={importDocument}
@@ -30,7 +29,7 @@ const OpenAPIDocumentEntryForm = (props) => {
           Load Document
         </button>
       </div>
-      <hr />
+
       <div className="is-danger subtitle">{protoError}</div>
       {/* <div id="openapiEntryTextArea">
         <TextCodeAreaEditable
