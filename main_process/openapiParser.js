@@ -56,7 +56,7 @@ const openapiParserFunc = (input) => {
     });
   });
   const openapiMetadata = { info, tags, serverUrls };
-  return [openapiMetadata];
+  return { openapiMetadata, openapiReqArray };
 };
 
 module.exports = openapiParserFunc;
