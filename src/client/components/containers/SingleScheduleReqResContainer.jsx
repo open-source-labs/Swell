@@ -9,40 +9,15 @@ import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
 
 const SingleScheduleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
-  const [checker, setChecker] = useState(false);
   const dispatch = useDispatch();
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
   );
 
-  const newRequestFields = useSelector(
-    (store) => store.business.newRequestFields
-  );
-  const newRequestStreams = useSelector(
-    (store) => store.business.newRequestStreams
-  );
-
   const {
     content,
-    content: {
-      id,
-      graphQL,
-      closeCode,
-      protocol,
-      request,
-      response,
-      connection,
-      connectionType,
-      isHTTP2,
-      url,
-      timeReceived,
-      timeSent,
-      rpc,
-      service,
-    },
-    reqResUpdate,
-    reqResDelete,
+    content: { request, connection, isHTTP2, url },
     index,
     date,
   } = props;
@@ -61,7 +36,6 @@ const SingleScheduleReqResContainer = (props) => {
   const highlightClasses =
     currentResponse.id === content.id ? getBorderClass(currentResponse) : '';
 
-  //USE EFFECT
   useEffect(() => {
     dispatch(
       actions.saveCurrentResponseData(

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -13,7 +14,6 @@ import ScheduleContainer from './ScheduleContainer.jsx';
 import CollectionsContainer from './CollectionsContainer';
 
 const ContentsContainer = () => {
-  // const [activeTab, setActiveTab] = useState('workspace');
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.workspaceActiveTab);
   const currentResponse = useSelector(
@@ -58,7 +58,6 @@ const ContentsContainer = () => {
           </li>
         </ul>
       </div>
-      {/* <input style={{height: '100px'}} id="testInput" type="text"></input> */}
 
       {/* WORKSPACE CONTENT */}
       <div className="is-flex-grow-3 add-vertical-scroll">

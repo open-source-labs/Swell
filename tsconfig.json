@@ -23,7 +23,7 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
-  "include": ["./src/**/*.ts", "./main_process/*.ts"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./main_process/*.ts"],
   "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
   "typeRoots": ["./node_modules/@types"]
 }

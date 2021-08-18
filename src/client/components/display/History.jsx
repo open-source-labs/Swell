@@ -8,6 +8,7 @@ import historyController from '../../controllers/historyController';
 
 const History = ({
   newRequestFields,
+  newRequestsOpenAPI,
   content,
   content: {
     request: {
@@ -49,7 +50,6 @@ const History = ({
   setNewRequestBody,
   setNewRequestStreams,
   deleteFromHistory,
-  focusOnForm,
 }) => {
   const dispatch = useDispatch();
   const setSidebarTab = (tabName) =>
@@ -71,6 +71,21 @@ const History = ({
         webrtc: webrtc || false,
         network,
         testContent: content.request.testContent,
+      };
+    }
+    if (network === 'openapi') {
+      requestFieldObj = {
+        ...newRequestFields,
+        ...newRequestsOpenAPI,
+        isSSE: isSSE || false,
+        method: method || 'GET',
+        protocol: protocol || 'http://',
+        url,
+        restUrl,
+        graphQL: graphQL || false,
+        gRPC: gRPC || false,
+        webrtc: webrtc || false,
+        network,
       };
     }
     if (network === 'ws') {
@@ -203,6 +218,9 @@ const History = ({
       break;
     case 'ws':
       colorClass = 'is-ws-color';
+      break;
+    case 'openapi':
+      colorClass = 'is-openapi-color';
       break;
     case 'webrtc':
       colorClass = 'is-webrtc-color';

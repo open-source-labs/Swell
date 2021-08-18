@@ -11,17 +11,14 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 
-// npm libraries
-// debugger
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-// require("react-devtools-electron");
+
+const { autoUpdater } = require('electron-updater');
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } = require('electron-devtools-installer');
-// Import Auto-Updater- Swell will update itself
-const { autoUpdater } = require('electron-updater');
 
 const path = require('path');
 const url = require('url');
@@ -30,6 +27,7 @@ const log = require('electron-log');
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
+
 // openapi parser func for parsing openAPI documents in JSON or YAML format
 const openapiParserFunc = require('./main_process/openapiParser.js');
 
@@ -41,7 +39,7 @@ require('./main_process/main_httpController.js')();
 require('./main_process/main_graphqlController')();
 // require grpc controller file
 require('./main_process/main_grpcController.js')();
-// require ws controllerfile
+// require ws controller file
 require('./main_process/main_wsController.js')();
 // require mac touchBar
 const { touchBar } = require('./main_process/main_touchbar.js');
@@ -101,11 +99,9 @@ function createWindow() {
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
     title: 'Swell',
-    // allowRunningInsecureContent: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: process.env.NODE_ENV !== 'test', // true if in dev mode
-      // enableRemoteModule: false,
       sandbox: process.env.NODE_ENV !== 'test',
       webSecurity: true,
       preload: path.resolve(__dirname, 'preload.js'),
@@ -125,7 +121,7 @@ function createWindow() {
       slashes: true,
     });
 
-    // If we are in developer mode Add React & Redux DevTools to Electon App
+    // If we are in developer mode Add React & Redux DevTools to Electron App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
@@ -146,7 +142,6 @@ function createWindow() {
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
-
   mainWindow.setTouchBar(touchBar);
 
   // prevent webpack-dev-server from setting new title
@@ -184,7 +179,6 @@ function createWindow() {
 
 // if in prod mode, checkForUpdates after the window is created
 app.on('ready', () => {
-  // createLoadingScreen();
   createWindow();
   if (!isDev) {
     autoUpdater.checkForUpdates();
@@ -373,9 +367,6 @@ ipcMain.on('confirm-clear-history', (event) => {
 });
 
 // ================= GRPCProtoEntryForm Calls that uses protoParserFunc =======
-
-// import-proto
-
 ipcMain.on('import-proto', (event) => {
   let importedProto;
   dialog
@@ -409,8 +400,8 @@ ipcMain.on('import-proto', (event) => {
     });
 });
 
-// protoParserFunc-request. Just runs the function and returns the value back to GRPCProtoEntryForm
-
+// protoParserFunc-request
+// Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', (event, data) => {
   protoParserFunc(data)
     .then((result) => {
@@ -422,20 +413,17 @@ ipcMain.on('protoParserFunc-request', (event, data) => {
     });
 });
 
-//======= Loading and parsing an OpenAPI Document with openapiParserFunc =======
-
-// import-openapi
+// ====== Loading and parsing an OpenAPI Document with openapiParserFunc ======
 ipcMain.on('import-openapi', (event) => {
   let importedDocument;
   dialog
     .showOpenDialog({
       buttonLabel: 'Import OpenApi File',
       properties: ['openFile', 'multiSelections'],
-      // filters: [{ name: 'Documents', extensions: ['.json', '.yml'] }],
     })
     .then((filePaths) => {
       if (!filePaths) return undefined;
-      // read uploaded proto file & save protoContent in the store
+      // read uploaded document & save in the redux store
       fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
         // handle read error
         if (err) {
@@ -443,19 +431,11 @@ ipcMain.on('import-openapi', (event) => {
         }
         importedDocument = file;
         const documentObj = openapiParserFunc(importedDocument);
-        // openapiParserFunc(importedDocument).then((documentObj) => {
-        // console.log(
-        //   "finished with logic. about to send importedDocument : ",
-        //   importedDocument,
-        //   " and documentObj : ",
-        //   documentObj
-        // );
         mainWindow.webContents.send(
           'openapi-info',
           importedDocument,
           documentObj
         );
-        // });
       });
     })
     .catch((err) => {
@@ -463,8 +443,8 @@ ipcMain.on('import-openapi', (event) => {
     });
 });
 
-// openapiParserFunc-request. Just runs the function and returns the value back to OpenAPIDocumentEntryForm
-
+// openapiParserFunc-request.
+// Runs the function and returns the value back to OpenAPIDocumentEntryForm
 ipcMain.on('openapiParserFunc-request', (event, data) => {
   openapiParserFunc(data)
     .then((result) => {

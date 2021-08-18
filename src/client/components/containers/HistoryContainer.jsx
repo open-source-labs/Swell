@@ -47,7 +47,6 @@ const HistoryContainer = (props) => {
   } = props;
 
   // history is already sorted by created_at from getHistory
-  // 1) map through history state and create date component. 2) pass props to new component
   const historyDates = history.map((date, i) => {
     return (
       <HistoryDate

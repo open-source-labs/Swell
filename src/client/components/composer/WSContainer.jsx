@@ -20,7 +20,6 @@ function WSContainer({
     network,
     testContent,
   },
-  setNewRequestSSE,
   currentTab,
   setComposerWarningMessage,
   warningMessage,

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
@@ -27,7 +27,6 @@ const ScheduleReqResContainer = (props) => {
     scheduleInterval,
     scheduledReqResArray,
   } = props;
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const interval = setInterval(() => {

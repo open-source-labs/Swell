@@ -15,16 +15,14 @@ const jBeautify = require('js-beautify').js;
 
 const WebRTCServerEntryForm = (props) => {
   const {
-    newRequestBody,
     newRequestBody: { bodyContent },
     newRequestBody: { bodyIsNew },
-    setNewRequestBody,
+
     warningMessage,
   } = props;
 
   const [cmValue, setValue] = useState('');
 
-  // set a new value for codemirror only if loading from history or changing query type
   useEffect(() => {
     if (!bodyIsNew)
       setValue(

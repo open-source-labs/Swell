@@ -1,18 +1,6 @@
 import React from 'react';
 
 function ResponseTime({ currentResponse }) {
-  // if (
-  //   !currentResponse ||
-  //   !currentResponse.timeReceived ||
-  //   !currentResponse.timeSent
-  // ) {
-  //   return null;
-  // }
-  // const responseTime = currentResponse.timeReceived - currentResponse.timeSent;
-
-  // return <div className="response-time-placement">{`${responseTime}ms`}</div>;
-
-  //rest api
   if (
     currentResponse &&
     currentResponse.timeReceived &&

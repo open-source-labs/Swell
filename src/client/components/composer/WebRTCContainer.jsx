@@ -34,7 +34,6 @@ function WebRTCContainer({
   newRequestStreams,
   currentTab,
   setComposerWarningMessage,
-  setComposerDisplay,
   warningMessage,
   reqResAdd,
   setWorkspaceActiveTab,

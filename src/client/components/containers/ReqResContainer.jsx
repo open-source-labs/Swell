@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SingleReqResContainer from './SingleReqResContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
@@ -20,7 +20,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ReqResContainer = (props) => {
   const { reqResArray, reqResDelete, reqResUpdate, displaySchedule } = props;
-  const dispatch = useDispatch();
 
   const reqResMapped = reqResArray.map((reqRes, index) => {
     return (

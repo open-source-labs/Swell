@@ -166,8 +166,8 @@ const SingleReqResContainer = (props) => {
       const contentsDeepCopy = JSON.parse(
         JSON.stringify(content.streamContent)
       );
-      // construct the streams obj from passed in history content & set state in store
 
+      // construct the streams obj from passed in history content & set state in store
       const requestStreamsObj = {
         streamsArr: streamsDeepCopy,
         count: content.queryArr.length,
@@ -247,7 +247,7 @@ const SingleReqResContainer = (props) => {
         >
           {showDetails === true && 'Hide Request Details'}
           {showDetails === false && 'View Request Details'}
-          {showDetails === true && (
+          {network !== 'openapi' && showDetails === true && (
             <div
               className="is-clickable is-primary-link mr-3"
               onClick={copyToComposer}
@@ -263,7 +263,7 @@ const SingleReqResContainer = (props) => {
           {network === 'rest' && (
             <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
-          {network === 'rest' && (
+          {network === 'openapi' && (
             <OpenAPIRequestContent
               request={content.request}
               isHTTP2={isHTTP2}
@@ -302,7 +302,7 @@ const SingleReqResContainer = (props) => {
             disabled={network === 'webrtc'}
             onClick={() => {
               //check the request type
-              //if it's http, dispatch set active tab to "event" for reqresponsepane
+              //if it's http, dispatch set active tab to "event" for reqResResponse
               //otherwise do nothing
               if (connectionType !== 'WebSocket') {
                 dispatch(actions.setResponsePaneActiveTab('events'));

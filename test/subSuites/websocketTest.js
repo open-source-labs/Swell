@@ -1,10 +1,9 @@
+/* eslint-disable no-async-promise-executor */
 const chai = require('chai');
 const path = require('path');
-// for this the previous group used Chai instead of 'assert'from node
 const app = require('../testApp.js');
 const composerObj = require('../pageObjects/ComposerObj.js');
 const workspaceObj = require('../pageObjects/WorkspaceObj.js');
-const websocketServer = require('../websocketServer');
 
 const { expect } = chai;
 
@@ -98,7 +97,6 @@ module.exports = () => {
               '128x128.png'
             );
 
-            // /var/folders/wt/p4tb3xz50csfvrfj897gy4ww0000gn/T/.org.chromium.Chromium.kSmkVs/uploadyVlAPI/128x128.png
             await app.client.chooseFile('#wsFileInput', toUpload);
             // const val = app.client.getValue("#upload-test");
             await app.client.$('#wsSendImgBtn').click();
@@ -133,14 +131,5 @@ module.exports = () => {
         console.error(err);
       }
     });
-
-    // it("it should be able to close and re-open connection", async () => {
-    //   try {
-    //     await composerObj.closeConnectonBtn.click();
-    //     await composerObj.reopenConnectionBtn.click();
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // });
   });
 };

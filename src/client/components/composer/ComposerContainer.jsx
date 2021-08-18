@@ -9,7 +9,6 @@ import GraphQLContainer from './GraphQLContainer.jsx';
 import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
 import WebRTCContainer from './WebRTCContainer';
-import openapiParserFunc from '../../../../main_process/openapiParser';
 
 const mapStateToProps = (store) => {
   return {
@@ -123,7 +122,6 @@ const ComposerContainer = (props) => {
         });
         break;
       }
-      // TODO:  adjust for OpenApi
       case 'openapi': {
         props.resetComposerFields();
         props.setNewRequestFields({
@@ -137,7 +135,6 @@ const ComposerContainer = (props) => {
           network: 'openapi',
           testContent: '',
         });
-
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'none',

@@ -11,9 +11,7 @@ const openapiParserFunc = (input) => {
     doc = YAML.parse(input);
     console.error(SyntaxError);
   }
-  const {
-    info, servers, tags, paths, components
-  } = doc
+  const { info, servers, tags, paths, components } = doc;
   info.openapi = doc.openapi;
   const serverUrls = [...servers.map((server) => server.url)];
   let id = 0;
@@ -29,7 +27,7 @@ const openapiParserFunc = (input) => {
         tags,
         parameters, // security
       } = operationObj;
-        
+
       const request = {
         id,
         // enabled: true,
