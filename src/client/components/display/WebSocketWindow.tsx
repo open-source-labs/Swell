@@ -109,10 +109,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
   };
 
   return (
-    <div
-      style={{}}
-      className="websocket_container is-tall is-flex is-flex-direction-column m-3"
-    >
+    <div className="websocket_container is-tall is-flex is-flex-direction-column p-3">
       <div className="is-flex is-align-items-center">
         <input
           className="ml-1 mr-1 input is-small"
@@ -146,11 +143,10 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       {/* only show the ws messages when connection is open */}
       {connection === 'open' && (
         <>
-          <div className="overflow-parent-container">
-            <div className="websocket_message_container m-3">
-              {combinedMessagesReactArr}
-            </div>
+          <div className="websocket_message_container m-3">
+            {combinedMessagesReactArr}
           </div>
+
           <button
             className="button is-primary is-outlined is-small"
             onClick={exportChatLog}
