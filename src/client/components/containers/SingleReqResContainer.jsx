@@ -238,26 +238,25 @@ const SingleReqResContainer = (props) => {
         </div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
-      {network !== 'ws' ||
-        (network !== 'openapi' && (
-          <div
-            className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
-            onClick={() => {
-              setShowDetails(showDetails === false);
-            }}
-          >
-            {showDetails === true && 'Hide Request Details'}
-            {showDetails === false && 'View Request Details'}
-            {showDetails === true && (
-              <div
-                className="is-clickable is-primary-link mr-3"
-                onClick={copyToComposer}
-              >
-                Copy to Composer
-              </div>
-            )}
-          </div>
-        ))}
+      {network !== 'ws' && (
+        <div
+          className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
+          onClick={() => {
+            setShowDetails(showDetails === false);
+          }}
+        >
+          {showDetails === true && 'Hide Request Details'}
+          {showDetails === false && 'View Request Details'}
+          {network !== 'openapi' && showDetails === true && (
+            <div
+              className="is-clickable is-primary-link mr-3"
+              onClick={copyToComposer}
+            >
+              Copy to Composer
+            </div>
+          )}
+        </div>
+      )}
       {/* REQUEST ELEMENTS */}
       {showDetails === true && (
         <div className="is-neutral-200-box">
