@@ -177,28 +177,6 @@ export const setNewRequestsOpenAPI = ({ openapiMetadata, openapiReqArray }) => (
   type: types.SET_NEW_REQUESTS_OPENAPI,
   payload: { openapiMetadata, openapiReqArray },
 });
-// export const enableAllOpenAPI = () => ({
-//   type: types.ENABLE_ALL_OPENAPI,
-// });
-// export const disableAllOpenAPI = () => ({
-//   type: types.DISABLE_ALL_OPENAPI,
-// });
-// export const enableAllTagOpenAPI = (tag) => ({
-//   type: types.ENABLE_ALL_TAG_OPENAPI,
-//   payload: tag,
-// });
-// export const disableAllTagOpenAPI = (tag) => ({
-//   type: types.DISABLE_ALL_TAG_OPENAPI,
-//   payload: tag,
-// });
-// export const enableOpenAPIRequest = (requestId) => ({
-//   type: types.ENABLE_REQUEST_OPENAPI,
-//   payload: requestId,
-// });
-// export const disableOpenAPIRequest = (requestId) => ({
-//   type: types.DISABLE_REQUEST_OPENAPI,
-//   payload: requestId,
-// });
 export const setOpenAPIServersGlobal = (serverIds) => ({
   type: types.SET_OPENAPI_SERVERS_GLOBAL,
   payload: serverIds,

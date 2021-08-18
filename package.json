@@ -238,7 +238,6 @@
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^24.9.0",
-    "jy-transform": "^2.0.1",
     "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^9.0.3",
     "postcss-cssnext": "^3.1.0",

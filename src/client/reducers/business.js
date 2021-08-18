@@ -483,28 +483,6 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
-    // case types.ENABLE_REQUEST_OPENAPI: {
-    //   const id = action.payload;
-    //   const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
-    //   request.enabled = true;
-    //   const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
-    //   return {
-    //     ...state,
-    //     newRequestsOpenAPI: openapiReqArray,
-    //   };
-    // }
-
-    // case types.DISABLE_REQUEST_OPENAPI: {
-    //   const id = action.payload;
-    //   const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
-    //   request.enabled = false;
-    //   const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
-    //   return {
-    //     ...state,
-    //     newRequestsOpenAPI: openapiReqArray,
-    //   };
-    // }
-
     case types.SET_NEW_OPENAPI_PARAMETER: {
       const { id, location, name, value } = action.payload;
       const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
@@ -566,36 +544,6 @@ const businessReducer = (state = initialState, action) => {
       return {
         ...state,
         newRequestsOpenAPI: openapiReqArray,
-      }
-    }
-
-    case types.QUEUE_OPENAPI_REQUESTS: {
-      const openapiReqQueue = [ ...state.openapiReqArray ].filter(({ request }) => request.enabled);
-      // const requests = openapiReqQueue.map(({ request }, i) => request.map{
-      //   ...request,
-      //     method,
-      //     headers: [{
-      //       // id: ,
-      //       // active: ,
-      //       key: '',
-      //       value: '',
-      //     }],
-      //   cookies: '',
-      //   body,
-      //   bodyType: raw ,
-      //   rawType,
-      //   network: 'rest',
-      //   testContent: false,
-      // });
-      // const reqResObj = {
-      //   protocol: 'http://' || 'https://',
-      //   url,
-      //   isSSE: false,
-      //   isHTTP2: false,
-      //   testContent: false,
-      // }
-      return {
-        ...state,
       }
     }
 
