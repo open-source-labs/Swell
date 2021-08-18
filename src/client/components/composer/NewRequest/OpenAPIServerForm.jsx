@@ -9,7 +9,7 @@ export default function OpenAPIServerForm({
     const serversDeepCopy = JSON.parse(
       JSON.stringify(newRequestsOpenAPI.openapiMetadata.serverUrls)
     );
-    // find header to update
+    // find server to update
     let indexToBeUpdated;
     for (let i = 0; i < serversDeepCopy.length; i += 1) {
       if (serversDeepCopy[i].id === id) {
@@ -44,7 +44,6 @@ export default function OpenAPIServerForm({
           data={contentTypeServer}
           index={index}
           type="header-row"
-          // deleteItem={this.deleteHeader}
           changeHandler={onChangeUpdateHeader}
           key={index}
         />

@@ -6,6 +6,9 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   target: 'web',
+  node: {
+    fs: 'empty',
+  },
   entry: ['./src/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -16,9 +19,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|js)x?$/,
-        include: [
-          path.resolve(__dirname, 'src'), 
-        ],
+        include: [path.resolve(__dirname, 'src')],
         use: {
           loader: 'babel-loader',
           options: {
