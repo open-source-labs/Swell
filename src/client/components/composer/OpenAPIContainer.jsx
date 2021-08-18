@@ -5,7 +5,7 @@ import historyController from '../../controllers/historyController';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './NewRequest/OpenAPIDocumentEntryForm.jsx';
-import OpenAPIMetaData from './NewRequest/OpenAPIMetadata.jsx';
+import OpenAPIMetadata from './NewRequest/OpenAPIMetadata.jsx';
 import OpenAPIServerForm from './NewRequest/OpenAPIServerForm.jsx';
 
 function OpenAPIContainer({
@@ -43,9 +43,6 @@ function OpenAPIContainer({
   newRequestHeaders,
   newRequestHeaders: { headersArr },
   setNewRequestCookies,
-  newRequestCookies,
-  newRequestCookies: { cookiesArr },
-
   currentTab,
   setComposerWarningMessage,
   setComposerDisplay,
@@ -73,9 +70,9 @@ function OpenAPIContainer({
       const reqRes = {
         id: uuid(),
         created_at: new Date(),
-        host: 'https://api.twitter.com',
+        host: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}`,
         protocol: 'https://',
-        url: `https://api.twitter.com${req.endpoint}`,
+        url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         graphQL,
         gRPC,
         webrtc,
@@ -115,15 +112,14 @@ function OpenAPIContainer({
       //reset for next request
       resetComposerFields();
 
-      // GRPC REQUESTS
       setNewRequestBody({
         ...newRequestBody,
-        bodyType: 'GRPC',
+        bodyType: '',
         rawType: '',
       });
       setNewRequestFields({
         ...newRequestFields,
-        url: `https://api.twitter.com${req.endpoint}`,
+        url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         restUrl,
       });
     });
@@ -131,10 +127,6 @@ function OpenAPIContainer({
     setWorkspaceActiveTab('workspace');
   };
 
-  const HeaderEntryFormStyle = {
-    //trying to change style to conditional created strange duplication effect when continuously changing protocol
-    display: !/wss?:\/\//.test(protocol) ? 'block' : 'none',
-  };
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
@@ -164,20 +156,11 @@ function OpenAPIContainer({
           newRequestsOpenAPI={newRequestsOpenAPI}
           setNewRequestsOpenAPI={setNewRequestsOpenAPI}
         />
-        <OpenAPIMetaData newRequestsOpenAPI={newRequestsOpenAPI} />
+        <OpenAPIMetadata newRequestsOpenAPI={newRequestsOpenAPI} />
         <OpenAPIServerForm
           newRequestsOpenAPI={newRequestsOpenAPI}
           setNewRequestsOpenAPI={setNewRequestsOpenAPI}
         />
-        {/* <HeaderEntryForm
-          stylesObj={HeaderEntryFormStyle}
-          newRequestHeaders={newRequestHeaders}
-          newRequestBody={newRequestBody}
-          newRequestFields={newRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          newRequestsOpenAPI={newRequestsOpenAPI}
-          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
-        /> */}
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />

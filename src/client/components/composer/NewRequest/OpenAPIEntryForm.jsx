@@ -40,7 +40,7 @@ const OpenAPIEntryForm = ({
       <input
         className="ml-1 input input-is-medium is-info"
         type="text"
-        placeholder="What goes here?"
+        placeholder="primary server loads here..."
         value={primaryServer}
       />
       {warningMessage.uri && (

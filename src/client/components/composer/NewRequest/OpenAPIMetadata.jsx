@@ -1,10 +1,6 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/jsx-no-duplicate-props */
 import React from 'react';
 
 function OpenAPIMetaData({ newRequestsOpenAPI }) {
-  // console.log(newRequestsOpenAPI);
-
   return (
     <div className="mt-2 mb-2">
       <div className="is-flex is-justify-content-space-between is-align-content-center mb-4">

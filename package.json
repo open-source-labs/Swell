@@ -206,7 +206,6 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/set-cookie-parser": "0.0.6",
     "@types/ws": "^7.2.6",
-    "@types/yamljs": "^0.2.31",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.6.0",
     "babel-eslint": "^10.1.0",
@@ -444,6 +443,26 @@
       "name": "Warren Tait",
       "email": "https://www.linkedin.com/in/warrenhtait/",
       "url": "https://github.com/whtait"
+    },
+    {
+      "name": "Ted Craig",
+      "email": "https://www.linkedin.com/in/mr-ted-craig/",
+      "url": "https://github.com/tedcraig"
+    },
+    {
+      "name": "Colin Gibson",
+      "email": "https://www.linkedin.com/in/colin--gibson/",
+      "url": "https://github.com/cgefx"
+    },
+    {
+      "name": "John Jongsun Suh",
+      "email": "https://www.linkedin.com/in/john-jongsun-suh/",
+      "url": "https://github.com/MajorLift"
+    },
+    {
+      "name": "Anthony Wong",
+      "email": "https://www.linkedin.com/in/aw-anthony/",
+      "url": "https://github.com/awong428"
     }
   ]
 }
