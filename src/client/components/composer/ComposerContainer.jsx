@@ -203,15 +203,6 @@ const ComposerContainer = (props) => {
             iceConfiguration: {
               iceServers: [
                 {
-                  urls: 'turn:104.153.154.109',
-                  username: 'teamswell',
-                  credential: 'cohortla44',
-                  credentialType: 'password',
-                },
-                {
-                  urls: 'stun:104.153.154.109',
-                },
-                {
                   urls: 'stun:stun1.l.google.com:19302',
                 },
               ],
