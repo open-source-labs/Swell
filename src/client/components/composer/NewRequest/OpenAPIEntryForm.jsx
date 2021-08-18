@@ -5,7 +5,9 @@ const OpenAPIEntryForm = ({
   warningMessage,
   setComposerWarningMessage,
   setNewRequestFields,
+  setNewRequestsOpenAPI,
   newRequestFields,
+  newRequestsOpenAPI,
 }) => {
   const warningCheck = () => {
     if (warningMessage.uri) {
@@ -15,18 +17,18 @@ const OpenAPIEntryForm = ({
     }
   };
 
-  const urlChangeHandler = (e) => {
-    warningCheck();
-    const url = e.target.value;
-    setNewRequestFields({
-      ...newRequestFields,
-      openapiUrl: url,
-      url,
-    });
-  };
+  const primaryServer = newRequestsOpenAPI?.openapiMetadata?.serverUrls[0];
 
-  // TO DO
-  // change this to be initial state instead
+  // const urlChangeHandler = (e) => {
+  //   warningCheck();
+  //   const url = e.target.value;
+  //   setNewRequestsOpenAPI({
+  //     ...newRequestsOpenAPI,
+  //     openapiUrl: newRequestsOpenAPI.openapiMetadata.serverUrls[0],
+  //     url,
+  //   });
+  // };
+
   const openAPILabel = 'OpenAPI';
 
   return (
@@ -39,10 +41,7 @@ const OpenAPIEntryForm = ({
         className="ml-1 input input-is-medium is-info"
         type="text"
         placeholder="What goes here?"
-        value={newRequestFields.openapiUrl}
-        onChange={(e) => {
-          urlChangeHandler(e);
-        }}
+        value={primaryServer}
       />
       {warningMessage.uri && (
         <div className="warningMessage">{warningMessage.uri}</div>

@@ -263,6 +263,12 @@ const SingleReqResContainer = (props) => {
           {network === 'rest' && (
             <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
+          {network === 'rest' && (
+            <OpenAPIRequestContent
+              request={content.request}
+              isHTTP2={isHTTP2}
+            />
+          )}
           {network === 'grpc' && (
             <GRPCRequestContent
               request={content.request}

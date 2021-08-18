@@ -444,13 +444,17 @@ ipcMain.on('import-openapi', (event) => {
         importedDocument = file;
         const documentObj = openapiParserFunc(importedDocument);
         // openapiParserFunc(importedDocument).then((documentObj) => {
-          // console.log(
-          //   "finished with logic. about to send importedDocument : ",
-          //   importedDocument,
-          //   " and documentObj : ",
-          //   documentObj
-          // );
-          mainWindow.webContents.send('openapi-info', importedDocument, documentObj);
+        // console.log(
+        //   "finished with logic. about to send importedDocument : ",
+        //   importedDocument,
+        //   " and documentObj : ",
+        //   documentObj
+        // );
+        mainWindow.webContents.send(
+          'openapi-info',
+          importedDocument,
+          documentObj
+        );
         // });
       });
     })

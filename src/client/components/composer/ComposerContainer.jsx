@@ -10,7 +10,6 @@ import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
 import WebRTCContainer from './WebRTCContainer';
 
-
 const mapStateToProps = (store) => {
   return {
     reqResArray: store.business.reqResArray,
@@ -61,7 +60,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actions.setNewRequestSSE(requestSSEBool));
   },
   setNewRequestsOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
-    dispatch(actions.setNewRequestsOpenAPI({ openapiMetadata, openapiReqArray }));
+    dispatch(
+      actions.setNewRequestsOpenAPI({ openapiMetadata, openapiReqArray })
+    );
   },
   resetComposerFields: () => {
     dispatch(actions.resetComposerFields());
@@ -138,7 +139,7 @@ const ComposerContainer = (props) => {
           network: 'openapi',
           testContent: '',
         });
-      
+
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'none',
