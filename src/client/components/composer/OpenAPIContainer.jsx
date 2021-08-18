@@ -6,6 +6,7 @@ import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './NewRequest/OpenAPIDocumentEntryForm.jsx';
 import OpenAPIMetaData from './NewRequest/OpenAPIMetadata.jsx';
+import OpenAPIServerForm from './NewRequest/OpenAPIServerForm.jsx';
 
 function OpenAPIContainer({
   resetComposerFields,
@@ -164,7 +165,11 @@ function OpenAPIContainer({
           setNewRequestsOpenAPI={setNewRequestsOpenAPI}
         />
         <OpenAPIMetaData newRequestsOpenAPI={newRequestsOpenAPI} />
-        <HeaderEntryForm
+        <OpenAPIServerForm
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
+        />
+        {/* <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={newRequestHeaders}
           newRequestBody={newRequestBody}
@@ -172,7 +177,7 @@ function OpenAPIContainer({
           setNewRequestHeaders={setNewRequestHeaders}
           newRequestsOpenAPI={newRequestsOpenAPI}
           setNewRequestsOpenAPI={setNewRequestsOpenAPI}
-        />
+        /> */}
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <NewRequestButton onClick={addNewRequest} />
