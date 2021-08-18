@@ -3,9 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
-import PropTypes, { string } from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { DropzoneArea } from 'material-ui-dropzone';
+import PropTypes from 'prop-types';
 import WebSocketMessage from './WebSocketMessage';
 import { WebSocketWindowProps } from '../../../types';
 import ImageDropzone from './ImageDropzone';

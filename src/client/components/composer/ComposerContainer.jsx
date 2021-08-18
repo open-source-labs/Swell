@@ -9,7 +9,6 @@ import GraphQLContainer from './GraphQLContainer.jsx';
 import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
 import WebRTCContainer from './WebRTCContainer';
-import openapiParserFunc from '../../../../main_process/openapiParser';
 
 const mapStateToProps = (store) => {
   return {

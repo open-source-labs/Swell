@@ -1,6 +1,5 @@
 import React from 'react';
 import uuid from 'uuid/v4';
-import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
 import historyController from '../../controllers/historyController';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';
@@ -16,11 +15,7 @@ function OpenAPIContainer({
   newRequestFields,
   newRequestFields: {
     gRPC,
-    url,
-    method,
     webrtc,
-    openapi,
-    protocol,
     graphQL,
     restUrl,
     wsUrl,
@@ -30,36 +25,25 @@ function OpenAPIContainer({
     testContent,
   },
   setNewRequestBody,
-  setNewTestContent,
   newRequestBody,
-  newRequestBody: {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  },
+  newRequestBody: { rawType, bodyType },
   setNewRequestHeaders,
   newRequestHeaders,
   newRequestHeaders: { headersArr },
   setNewRequestCookies,
   currentTab,
   setComposerWarningMessage,
-  setComposerDisplay,
   warningMessage,
   reqResAdd,
   setWorkspaceActiveTab,
 }) {
   const requestValidationCheck = () => {
     const validationMessage = {};
-    //!Error conditions removing the need for url for now
-
+    //Error conditions removing the need for url for now
     return validationMessage;
   };
 
   const addNewRequest = () => {
-    console.log(newRequestFields);
-    console.log(newRequestsOpenAPI.openapiReqArray);
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setComposerWarningMessage(warnings);

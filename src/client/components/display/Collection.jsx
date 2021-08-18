@@ -16,7 +16,7 @@ const Collection = (props) => {
   };
 
   const deleteCollection = (e) => {
-    props.deleteFromCollection(props.content); //a function we need to make in the container
+    props.deleteFromCollection(props.content);
     collectionsController.deleteCollectionFromIndexedDb(e.target.id);
   };
 

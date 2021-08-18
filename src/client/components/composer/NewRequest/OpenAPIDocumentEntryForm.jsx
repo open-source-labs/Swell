@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 
 const { api } = window;
 
 const OpenAPIDocumentEntryForm = (props) => {
-  const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
 
   const importDocument = () => {
     console.log('importing document');
-
     //listens for imported openapi document from main process
     api.receive('openapi-info', (readDocument, parsedDocument) => {
-      console.log('received openapi-info', parsedDocument);
+      console.log('received openapi-info');
 
       props.setNewRequestsOpenAPI(parsedDocument);
     });
@@ -29,15 +26,6 @@ const OpenAPIDocumentEntryForm = (props) => {
           Load Document
         </button>
       </div>
-
-      <div className="is-danger subtitle">{protoError}</div>
-      {/* <div id="openapiEntryTextArea">
-        <TextCodeAreaEditable
-          id="openapiEntryTextArea"
-          value={JSON.stringify(props.newRequestsOpenAPI)}
-          mode="application/javascript"
-        />
-      </div> */}
     </div>
   );
 };

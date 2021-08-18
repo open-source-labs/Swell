@@ -56,9 +56,6 @@ const connectionController = {
       api.receive('update-connectionArray', (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
       });
-      // Todo: WEBRTC
-    } else if (reqResObj.webrtc) {
-      console.log(reqResObj);
     }
     // gRPC connection
     else if (reqResObj.gRPC) {

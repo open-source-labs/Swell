@@ -10,7 +10,7 @@
 
 export default class Peer {
   //  ┌──────────────────────────────┐
-  //  │         CONSTRUCTOR          │
+  //  │        CONSTRUCTOR       │
   //  └──────────────────────────────┘
   constructor(initConfig) {
     this.initConfig = initConfig;

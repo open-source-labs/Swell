@@ -166,8 +166,8 @@ const SingleReqResContainer = (props) => {
       const contentsDeepCopy = JSON.parse(
         JSON.stringify(content.streamContent)
       );
-      // construct the streams obj from passed in history content & set state in store
 
+      // construct the streams obj from passed in history content & set state in store
       const requestStreamsObj = {
         streamsArr: streamsDeepCopy,
         count: content.queryArr.length,
@@ -238,32 +238,33 @@ const SingleReqResContainer = (props) => {
         </div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
-      {network !== 'ws' && (
-        <div
-          className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
-          onClick={() => {
-            setShowDetails(showDetails === false);
-          }}
-        >
-          {showDetails === true && 'Hide Request Details'}
-          {showDetails === false && 'View Request Details'}
-          {showDetails === true && (
-            <div
-              className="is-clickable is-primary-link mr-3"
-              onClick={copyToComposer}
-            >
-              Copy to Composer
-            </div>
-          )}
-        </div>
-      )}
+      {network !== 'ws' ||
+        (network !== 'openapi' && (
+          <div
+            className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
+            onClick={() => {
+              setShowDetails(showDetails === false);
+            }}
+          >
+            {showDetails === true && 'Hide Request Details'}
+            {showDetails === false && 'View Request Details'}
+            {showDetails === true && (
+              <div
+                className="is-clickable is-primary-link mr-3"
+                onClick={copyToComposer}
+              >
+                Copy to Composer
+              </div>
+            )}
+          </div>
+        ))}
       {/* REQUEST ELEMENTS */}
       {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === 'rest' && (
             <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
-          {network === 'rest' && (
+          {network === 'openapi' && (
             <OpenAPIRequestContent
               request={content.request}
               isHTTP2={isHTTP2}
@@ -302,7 +303,7 @@ const SingleReqResContainer = (props) => {
             disabled={network === 'webrtc'}
             onClick={() => {
               //check the request type
-              //if it's http, dispatch set active tab to "event" for reqresponsepane
+              //if it's http, dispatch set active tab to "event" for reqResResponse
               //otherwise do nothing
               if (connectionType !== 'WebSocket') {
                 dispatch(actions.setResponsePaneActiveTab('events'));
