@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const { NodeVM } = require('vm2');
 const chai = require('chai');
 
@@ -35,7 +36,7 @@ testHttpController.runTest = (
       external: [],
     },
   });
-  // the regex matches all 'assert' or 'expect' on seperate lines
+  // the regex matches all 'assert' or 'expect' on separate lines
   // it will also match all variables
   // eslint-disable-next-line no-useless-escape
   const testRegex =

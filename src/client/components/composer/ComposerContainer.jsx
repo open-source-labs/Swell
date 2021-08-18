@@ -122,7 +122,6 @@ const ComposerContainer = (props) => {
         });
         break;
       }
-      // TODO:  adjust for OpenApi
       case 'openapi': {
         props.resetComposerFields();
         props.setNewRequestFields({
@@ -136,7 +135,6 @@ const ComposerContainer = (props) => {
           network: 'openapi',
           testContent: '',
         });
-
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'none',
