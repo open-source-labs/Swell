@@ -31,7 +31,7 @@ export default function OpenAPIServerForm({
     });
   };
 
-  const serversArr = newRequestsOpenAPI?.openapiMetadata?.serverUrls.map(
+  const serversArr = newRequestsOpenAPI?.openapiMetadata?.serverUrls?.map(
     (server, index) => {
       const contentTypeServer = {
         id: Math.random() * 1000000,

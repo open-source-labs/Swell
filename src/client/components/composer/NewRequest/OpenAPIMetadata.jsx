@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React from 'react';
 
-function OpenAPIMetaData({ newRequestsOpenAPI }) {
+function OpenAPIMetaData(newRequestsOpenAPI) {
   // console.log(newRequestsOpenAPI);
 
   return (

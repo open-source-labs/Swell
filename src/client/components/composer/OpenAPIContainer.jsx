@@ -73,9 +73,9 @@ function OpenAPIContainer({
       const reqRes = {
         id: uuid(),
         created_at: new Date(),
-        host: 'https://api.twitter.com',
+        host: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}`,  
         protocol: 'https://',
-        url: `https://api.twitter.com${req.endpoint}`,
+        url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         graphQL,
         gRPC,
         webrtc,
@@ -123,7 +123,7 @@ function OpenAPIContainer({
       });
       setNewRequestFields({
         ...newRequestFields,
-        url: `https://api.twitter.com${req.endpoint}`,
+        url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         restUrl,
       });
     });

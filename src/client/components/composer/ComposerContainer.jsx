@@ -9,6 +9,7 @@ import GraphQLContainer from './GraphQLContainer.jsx';
 import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
 import WebRTCContainer from './WebRTCContainer';
+import openapiParserFunc from '../../../../main_process/openapiParser';
 
 const mapStateToProps = (store) => {
   return {
@@ -59,10 +60,8 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
   },
-  setNewRequestsOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
-    dispatch(
-      actions.setNewRequestsOpenAPI({ openapiMetadata, openapiReqArray })
-    );
+  setNewRequestsOpenAPI: (parsedDocument) => {
+    dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
   },
   resetComposerFields: () => {
     dispatch(actions.resetComposerFields());
@@ -131,7 +130,6 @@ const ComposerContainer = (props) => {
           ...props.newRequestFields,
           protocol: '',
           url: '',
-          openapiContent: props.newRequestFields.openapiContent,
           method: 'GET',
           graphQL: false,
           gRPC: false,
