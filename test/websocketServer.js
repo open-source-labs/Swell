@@ -1,5 +1,5 @@
 const WebSocketServer = require('websocket').server;
-const http = require('http');
+const http = require('npm-http-server');
 
 const server = http.createServer((request, response) => {
   console.log(`${new Date()} Received request for ${request.url}`);

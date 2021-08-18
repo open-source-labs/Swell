@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import NetworkDropdown from './NetworkDropdown';
 import RestContainer from './RestContainer.jsx';
+import OpenAPIContainer from './OpenAPIContainer.jsx';
 import GraphQLContainer from './GraphQLContainer.jsx';
 import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
@@ -17,6 +18,7 @@ const mapStateToProps = (store) => {
     newRequestHeaders: store.business.newRequestHeaders,
     newRequestStreams: store.business.newRequestStreams,
     newRequestBody: store.business.newRequestBody,
+    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
     newRequestCookies: store.business.newRequestCookies,
     newRequestSSE: store.business.newRequestSSE,
     currentTab: store.business.currentTab,
@@ -56,6 +58,11 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
+  },
+  setNewRequestsOpenAPI: ({ openapiMetadata, openapiReqArray }) => {
+    dispatch(
+      actions.setNewRequestsOpenAPI({ openapiMetadata, openapiReqArray })
+    );
   },
   resetComposerFields: () => {
     dispatch(actions.resetComposerFields());
@@ -114,6 +121,30 @@ const ComposerContainer = (props) => {
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: ``,
+        });
+        break;
+      }
+      // TODO:  adjust for OpenApi
+      case 'openapi': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: 'openapi',
+          // url: props.newRequestFields.openapiUrl,
+
+          openapi: true,
+          method: 'get',
+          graphQL: false,
+          gRPC: false,
+          ws: false,
+          network,
+          testContent: '',
+        });
+
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'none',
+          bodyContent: '',
         });
         break;
       }
@@ -195,6 +226,7 @@ const ComposerContainer = (props) => {
         });
         break;
       }
+
       default:
     }
   };
@@ -212,6 +244,9 @@ const ComposerContainer = (props) => {
       <div className="is-not-7-5rem-tall pt-3 pl-3 pr-3">
         {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'openapi' && (
+          <OpenAPIContainer {...props} />
         )}
         {props.newRequestFields.network === 'graphQL' && (
           <GraphQLContainer {...props} />

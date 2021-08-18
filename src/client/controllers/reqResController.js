@@ -64,6 +64,9 @@ const connectionController = {
     else if (reqResObj.gRPC) {
       api.send('open-grpc', reqResObj);
       // Standard HTTP?
+    } else if (reqResObj.openapi) {
+      console.log('got an open api request to fill');
+      console.log(reqResObj);
     } else {
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
@@ -119,7 +122,7 @@ const connectionController = {
           reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
-        reqResObj.response.events.length > 0
+        reqResObj.respcodonse.events.length > 0
       ) {
         store.default.dispatch(actions.updateGraph(reqResObj));
       }

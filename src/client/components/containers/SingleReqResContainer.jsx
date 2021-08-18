@@ -8,6 +8,7 @@ import RestRequestContent from '../display/RestRequestContent.jsx';
 import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
 import WebRTCRequestContent from '../display/WebRTCRequestContent.jsx';
 import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
+import OpenAPIRequestContent from '../display/OpenAPIRequestContent.jsx';
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -261,6 +262,12 @@ const SingleReqResContainer = (props) => {
         <div className="is-neutral-200-box">
           {network === 'rest' && (
             <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
+          )}
+          {network === 'rest' && (
+            <OpenAPIRequestContent
+              request={content.request}
+              isHTTP2={isHTTP2}
+            />
           )}
           {network === 'grpc' && (
             <GRPCRequestContent
