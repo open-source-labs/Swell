@@ -1,6 +1,6 @@
 import React from 'react';
 import uuid from 'uuid/v4';
-import GRPCFormEditor from './NewRequest/GRPCFormEditor.jsx';
+import GRPCProtoEntryForm from './NewRequest/GRPCProtoEntryForm.jsx';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
 import historyController from '../../controllers/historyController';
 import GRPCTypeAndEndpointEntryForm from './NewRequest/GRPCTypeAndEndpointEntryForm';
@@ -201,7 +201,7 @@ function GRPCContainer({
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestStreams={setNewRequestStreams}
         />
-        <GRPCFormEditor
+        <GRPCProtoEntryForm
           newRequestStreams={newRequestStreams}
           setNewRequestStreams={setNewRequestStreams}
         />
