@@ -173,7 +173,10 @@ export const setResponsePaneActiveTab = (tabName) => ({
 
 // OPENAPI ACTIONS
 
-export const setNewRequestsOpenAPI = ({ openapiMetadata, openapiReqArray }) => ({
+export const setNewRequestsOpenAPI = ({
+  openapiMetadata,
+  openapiReqArray,
+}) => ({
   type: types.SET_NEW_REQUESTS_OPENAPI,
   payload: { openapiMetadata, openapiReqArray },
 });
@@ -183,17 +186,16 @@ export const setOpenAPIServersGlobal = (serverIds) => ({
 });
 export const setOpenAPIServers = (requestId, serverIds) => ({
   type: types.SET_NEW_OPENAPI_SERVERS,
-  payload: {id: requestId, serverIds},
+  payload: { id: requestId, serverIds },
 });
 export const setOpenAPIParameter = (requestId, location, name, value) => ({
   type: types.SET_NEW_OPENAPI_PARAMETER,
-  payload: {id: requestId, location, name, value},
+  payload: { id: requestId, location, name, value },
 });
 export const setOpenAPIRequestBody = (requestId, mediaType, requestBody) => ({
   type: types.SET_NEW_OPENAPI_REQUEST_BODY,
-  payload: {id: requestId, mediaType, requestBody},
+  payload: { id: requestId, mediaType, requestBody },
 });
 export const queueOpenAPIRequests = () => ({
   type: types.QUEUE_OPENAPI_REQUESTS,
 });
-
