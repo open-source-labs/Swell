@@ -1,4 +1,4 @@
-const YAML = require('js-yaml');
+const YAML = require('yamljs');
 
 // TODO: Validation, Callbacks
 const openapiParserFunc = (input) => {
@@ -17,8 +17,6 @@ const openapiParserFunc = (input) => {
   info.openapi = doc.openapi;
   const serverUrls = [...servers.map((server) => server.url)];
   let id = 0;
-
-  
 
   const openapiReqArray = [];
   Object.entries(paths).forEach(([endpoint, pathObj]) => {

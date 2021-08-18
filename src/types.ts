@@ -1,7 +1,7 @@
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webrtc' | 'graphQL' | 'grpc' | 'openapi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
-export type Methods = 'GET'|'PUT'|'PATCH'|'DELETE'|'OPTIONS'|'HEAD'|'TRACE'|'QUERY'|'SUBSCRIPTION'|'INTROSPECTION'|'INITIATOR'|'RECIPIENT';
+export type Methods = 'GET'|'PUT'|'PATCH'|'DELETE'|'OPTIONS'|'HEAD'|'TRACE'|'QUERY'|'SUBSCRIPTION'|'INTROSPECTION'|'INITIATOR'|'RECEIVER';
 
 export interface initialState {
   currentTab: string;

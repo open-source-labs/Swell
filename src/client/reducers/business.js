@@ -9,7 +9,7 @@ const initialState = {
   history: [],
   collections: [],
   warningMessage: {},
-  newRequestOpenAPI: {
+  newRequestsOpenAPI: {
     openapiMetadata: {
       info: {},
       tags: [],
@@ -70,10 +70,7 @@ const initialState = {
   newRequestSSE: {
     isSSE: false,
   },
-  newOpenAPIRequestArray: {
-    
-  },
-  newRequestOpenAPI: {
+  newRequestOpenAPIObject: {
     request: {
       id: 0,
       enabled: true,
@@ -462,7 +459,7 @@ const businessReducer = (state = initialState, action) => {
     case types.SET_NEW_REQUESTS_OPENAPI: {
       return {
       ...state,
-      NewRequestOpenAPI: { openapiMetadata, openapiReqArray } = action.payload,
+      newRequestsOpenAPI: { ...action.payload },
       }
     }
 
@@ -471,7 +468,7 @@ const businessReducer = (state = initialState, action) => {
       openapiMetadata.serverUrls = [ ...state.openapiMetadata.serverUrls ].filter((_, i) => action.payload.includes(i));
       return {
         ...state,
-        NewRequestOpenAPI: openapiMetadata,
+        newRequestsOpenAPI: openapiMetadata,
       };
     }
 
@@ -482,7 +479,7 @@ const businessReducer = (state = initialState, action) => {
       const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
       return {
         ...state,
-        NewRequestOpenAPI: openapiReqArray,
+        newRequestsOpenAPI: openapiReqArray,
       };
     }
 
@@ -493,7 +490,7 @@ const businessReducer = (state = initialState, action) => {
     //   const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
     //   return {
     //     ...state,
-    //     NewRequestOpenAPI: openapiReqArray,
+    //     newRequestsOpenAPI: openapiReqArray,
     //   };
     // }
 
@@ -504,7 +501,7 @@ const businessReducer = (state = initialState, action) => {
     //   const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
     //   return {
     //     ...state,
-    //     NewRequestOpenAPI: openapiReqArray,
+    //     newRequestsOpenAPI: openapiReqArray,
     //   };
     // }
 
@@ -519,7 +516,7 @@ const businessReducer = (state = initialState, action) => {
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
-            NewRequestOpenAPI: openapiReqArray,
+            newRequestsOpenAPI: openapiReqArray,
           }
         }
         case 'query': {
@@ -531,7 +528,7 @@ const businessReducer = (state = initialState, action) => {
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
-            NewRequestOpenAPI: openapiReqArray,
+            newRequestsOpenAPI: openapiReqArray,
           }
         }
         case 'header': {
@@ -540,7 +537,7 @@ const businessReducer = (state = initialState, action) => {
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
-            NewRequestOpenAPI: openapiReqArray,
+            newRequestsOpenAPI: openapiReqArray,
           }
         }
         case 'cookie': {
@@ -548,7 +545,7 @@ const businessReducer = (state = initialState, action) => {
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
-            NewRequestOpenAPI: openapiReqArray,
+            newRequestsOpenAPI: openapiReqArray,
           }
         }
         default: {
@@ -568,7 +565,7 @@ const businessReducer = (state = initialState, action) => {
       const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
       return {
         ...state,
-        NewRequestOpenAPI: openapiReqArray,
+        newRequestsOpenAPI: openapiReqArray,
       }
     }
 
@@ -599,8 +596,6 @@ const businessReducer = (state = initialState, action) => {
       // }
       return {
         ...state,
-        
-        
       }
     }
 
