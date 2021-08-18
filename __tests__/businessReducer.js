@@ -2,7 +2,6 @@ import reducer from '../src/client/reducers/business';
 
 describe('Business reducer', () => {
   let state;
-
   beforeEach(() => {
     state = {
       currentTab: 'First Tab',
@@ -11,22 +10,32 @@ describe('Business reducer', () => {
       history: [],
       collections: [],
       warningMessage: {},
+      newRequestsOpenAPI: {
+        openapiMetadata: {
+          info: {},
+          tags: [],
+          serverUrls: [],
+        },
+        openapiReqArray: [],
+      },
       newRequestFields: {
         protocol: '',
         restUrl: 'http://',
         wsUrl: 'ws://',
         gqlUrl: 'https://',
-        webrtcUrl: '',
         grpcUrl: '',
-        webrtc: false,
+        webrtcUrl: '',
         url: 'http://',
         method: 'GET',
         graphQL: false,
         gRPC: false,
         ws: false,
+        openapi: false,
+        webrtc: false,
         network: 'rest',
         testContent: '',
         testResults: [],
+        openapiReqObj: {},
       },
       newRequestHeaders: {
         headersArr: [],
@@ -61,6 +70,23 @@ describe('Business reducer', () => {
       },
       newRequestSSE: {
         isSSE: false,
+      },
+      newRequestOpenAPIObject: {
+        request: {
+          id: 0,
+          enabled: true,
+          reqTags: [],
+          reqServers: [],
+          summary: '',
+          description: '',
+          operationId: '',
+          method: '',
+          endpoint: '',
+          headers: {},
+          parameters: [],
+          body: new Map(),
+          urls: [],
+        },
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
       dataPoints: {},
