@@ -475,7 +475,7 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
-    case types.SET_OPENAPI_SERVERS: {
+    case types.SET_NEW_OPENAPI_SERVERS: {
       const { id, serverIds } = action.payload;
       const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
       request.reqServers = [ ...state.openapiMetadata.serverUrls ].filter((_, i) => serverIds.includes(i));
@@ -486,27 +486,27 @@ const businessReducer = (state = initialState, action) => {
       };
     }
 
-    case types.ENABLE_REQUEST_OPENAPI: {
-      const id = action.payload;
-      const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
-      request.enabled = true;
-      const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
-      return {
-        ...state,
-        NewRequestOpenAPI: openapiReqArray,
-      };
-    }
+    // case types.ENABLE_REQUEST_OPENAPI: {
+    //   const id = action.payload;
+    //   const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
+    //   request.enabled = true;
+    //   const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
+    //   return {
+    //     ...state,
+    //     NewRequestOpenAPI: openapiReqArray,
+    //   };
+    // }
 
-    case types.DISABLE_REQUEST_OPENAPI: {
-      const id = action.payload;
-      const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
-      request.enabled = false;
-      const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
-      return {
-        ...state,
-        NewRequestOpenAPI: openapiReqArray,
-      };
-    }
+    // case types.DISABLE_REQUEST_OPENAPI: {
+    //   const id = action.payload;
+    //   const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
+    //   request.enabled = false;
+    //   const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
+    //   return {
+    //     ...state,
+    //     NewRequestOpenAPI: openapiReqArray,
+    //   };
+    // }
 
     case types.SET_NEW_OPENAPI_PARAMETER: {
       const { id, location, name, value } = action.payload;
@@ -514,8 +514,7 @@ const businessReducer = (state = initialState, action) => {
       const urls = [ ...request.reqServers ].map((url) => url += request.endpoint);
       switch (location) {
         case 'path': {
-          if ()
-          else urls.map((url) => url.replace(`{${name}}`, value));
+          urls.map((url) => url.replace(`{${name}}`, value));
           request.urls = urls;
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
@@ -537,7 +536,7 @@ const businessReducer = (state = initialState, action) => {
         }
         case 'header': {
           if (['Content-Type', 'Authorization', 'Accepts'].includes(key)) break;
-          request.headers = userInput.parameters[id].filter(({ type }) => type === 'header');
+          request.headers.push({name: value});
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
@@ -545,18 +544,19 @@ const businessReducer = (state = initialState, action) => {
           }
         }
         case 'cookie': {
-          request.cookies = userInput.parameters[id].filter(({ type }) => type === 'cookie');
+          request.cookies = value;
           const openapiReqArray = [ ...state.openapiReqArray ].push({ request });
           return {
             ...state,
             NewRequestOpenAPI: openapiReqArray,
+          }
         }
         default: {
-          return { ...state };
+          return state;
         }
       }
+      break;
     }
-
     case types.SET_NEW_OPENAPI_REQUEST_BODY: {
       const { id, mediaType, requestBody } = action.payload;
       const request = [ ...state.openapiReqArray ].filter(({ request }) => request.id === id).pop();
@@ -574,29 +574,29 @@ const businessReducer = (state = initialState, action) => {
 
     case types.QUEUE_OPENAPI_REQUESTS: {
       const openapiReqQueue = [ ...state.openapiReqArray ].filter(({ request }) => request.enabled);
-      const requests = openapiReqQueue.map(({ request }, i) => request.map{
-        ...request
-        method,
-          headers: [{
-            id: ,
-            active: ,
-            key: '',
-            value: '',
-          }],
-        cookies: '',
-        body,
-        bodyType: raw ,
-        rawType,
-        network: 'rest',
-        testContent: false,
-      });
-      const reqResObj = {
-        protocol: 'http://' || 'https://',
-        url,
-        isSSE: false,
-        isHTTP2: false,
-        testContent: false,
-      }
+      // const requests = openapiReqQueue.map(({ request }, i) => request.map{
+      //   ...request,
+      //     method,
+      //     headers: [{
+      //       // id: ,
+      //       // active: ,
+      //       key: '',
+      //       value: '',
+      //     }],
+      //   cookies: '',
+      //   body,
+      //   bodyType: raw ,
+      //   rawType,
+      //   network: 'rest',
+      //   testContent: false,
+      // });
+      // const reqResObj = {
+      //   protocol: 'http://' || 'https://',
+      //   url,
+      //   isSSE: false,
+      //   isHTTP2: false,
+      //   testContent: false,
+      // }
       return {
         ...state,
         
