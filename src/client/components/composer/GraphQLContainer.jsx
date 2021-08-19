@@ -1,26 +1,25 @@
-import React from 'react'
-import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import gql from "graphql-tag";
-import historyController from "../../controllers/historyController";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm.jsx";
-import FieldEntryForm from "./NewRequest/FieldEntryForm.jsx";
-import GraphQLMethodAndEndpointEntryForm from './NewRequest/GraphQLMethodAndEndpointEntryForm.jsx'
-import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
-import GraphQLBodyEntryForm from "./NewRequest/GraphQLBodyEntryForm.jsx";
-import GraphQLVariableEntryForm from "./NewRequest/GraphQLVariableEntryForm.jsx";
-import GraphQLIntrospectionLog from "./NewRequest/GraphQLIntrospectionLog.jsx";
+import React from 'react';
+import uuid from 'uuid/v4';
+import gql from 'graphql-tag';
+import historyController from '../../controllers/historyController';
+import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
+import GraphQLMethodAndEndpointEntryForm from './NewRequest/GraphQLMethodAndEndpointEntryForm.jsx';
+import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
+import GraphQLBodyEntryForm from './NewRequest/GraphQLBodyEntryForm.jsx';
+import GraphQLVariableEntryForm from './NewRequest/GraphQLVariableEntryForm.jsx';
+import GraphQLIntrospectionLog from './NewRequest/GraphQLIntrospectionLog.jsx';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
-import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
+import TestEntryForm from './NewRequest/TestEntryForm.jsx';
 
-export default function GraphQLContainer({
+function GraphQLContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
   newRequestFields: {
     gRPC,
+    webrtc,
     url,
     method,
-    protocol,
     graphQL,
     restUrl,
     wsUrl,
@@ -47,24 +46,11 @@ export default function GraphQLContainer({
   newRequestCookies: { cookiesArr },
   setNewRequestStreams,
   newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
-  setNewRequestSSE,
+  newRequestStreams: { protoPath },
   newRequestSSE: { isSSE },
   currentTab,
   introspectionData,
   setComposerWarningMessage,
-  setComposerDisplay,
   warningMessage,
   reqResAdd,
   setWorkspaceActiveTab,
@@ -74,18 +60,18 @@ export default function GraphQLContainer({
     //Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
+      validationMessage.uri = 'Enter a valid URI';
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
+      validationMessage.uri = 'Enter a valid URI';
     }
-    if (!JSONFormatted && rawType === "application/json") {
-      validationMessage.json = "Please fix JSON body formatting errors";
+    if (!JSONFormatted && rawType === 'application/json') {
+      validationMessage.json = 'Please fix JSON body formatting errors';
     }
-    if (method === "QUERY") {
+    if (method === 'QUERY') {
       if (url && !bodyContent) {
-        validationMessage.body = "GraphQL Body is Missing";
+        validationMessage.body = 'GraphQL Body is Missing';
       }
       if (url && bodyContent) {
         try {
@@ -93,7 +79,7 @@ export default function GraphQLContainer({
             ${bodyContent}
           `;
         } catch (e) {
-          console.log("error in gql-tag for client", e);
+          console.log('error in gql-tag for client', e);
           validationMessage.body = `Invalid graphQL body: \n ${e.message}`;
         }
       }
@@ -114,15 +100,15 @@ export default function GraphQLContainer({
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      const host = protocol + URIWithoutProtocol.split("/")[0];
-      let path = `/${URIWithoutProtocol.split("/")
+      const host = protocol + URIWithoutProtocol.split('/')[0];
+      let path = `/${URIWithoutProtocol.split('/')
         .splice(1)
-        .join("/")
-        .replace(/\/{2,}/g, "/")}`;
-      if (path.charAt(path.length - 1) === "/" && path.length > 1) {
+        .join('/')
+        .replace(/\/{2,}/g, '/')}`;
+      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
         path = path.substring(0, path.length - 1);
       }
-      path = path.replace(/https?:\//g, "http://");
+      path = path.replace(/https?:\//g, 'http://');
       reqRes = {
         id: uuid(),
         created_at: new Date(),
@@ -132,28 +118,25 @@ export default function GraphQLContainer({
         url,
         graphQL,
         gRPC,
+        webrtc,
         timeSent: null,
         timeReceived: null,
-        connection: "uninitialized",
+        connection: 'uninitialized',
         connectionType: null,
         checkSelected: false,
         protoPath,
         request: {
           method,
-          headers: headersArr.filter(
-            (header) => header.active && !!header.key
-          ),
-          cookies: cookiesArr.filter(
-            (cookie) => cookie.active && !!cookie.key
-          ),
-          body: bodyContent || "",
+          headers: headersArr.filter((header) => header.active && !!header.key),
+          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+          body: bodyContent || '',
           bodyType,
-          bodyVariables: bodyVariables || "",
+          bodyVariables: bodyVariables || '',
           rawType,
           isSSE,
           network,
           restUrl,
-          testContent: testContent || "",
+          testContent: testContent || '',
           wsUrl,
           gqlUrl,
           grpcUrl,
@@ -169,19 +152,19 @@ export default function GraphQLContainer({
     }
     // GraphQL Subscriptions
     const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-    const host = protocol + URIWithoutProtocol.split("/")[0];
-    let path = `/${URIWithoutProtocol.split("/")
+    const host = protocol + URIWithoutProtocol.split('/')[0];
+    let path = `/${URIWithoutProtocol.split('/')
       .splice(1)
-      .join("/")
-      .replace(/\/{2,}/g, "/")}`;
-    if (path.charAt(path.length - 1) === "/" && path.length > 1) {
+      .join('/')
+      .replace(/\/{2,}/g, '/')}`;
+    if (path.charAt(path.length - 1) === '/' && path.length > 1) {
       path = path.substring(0, path.length - 1);
     }
-    path = path.replace(/wss?:\//g, "ws://");
+    path = path.replace(/wss?:\//g, 'ws://');
     reqRes = {
       id: uuid(),
       created_at: new Date(),
-      protocol: "ws://",
+      protocol: 'ws://',
       host,
       path,
       url,
@@ -189,24 +172,20 @@ export default function GraphQLContainer({
       gRPC,
       timeSent: null,
       timeReceived: null,
-      connection: "uninitialized",
+      connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
       request: {
         method,
-        headers: headersArr.filter(
-          (header) => header.active && !!header.key
-        ),
-        cookies: cookiesArr.filter(
-          (cookie) => cookie.active && !!cookie.key
-        ),
-        body: bodyContent || "",
+        headers: headersArr.filter((header) => header.active && !!header.key),
+        cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+        body: bodyContent || '',
         bodyType,
-        bodyVariables: bodyVariables || "",
+        bodyVariables: bodyVariables || '',
         rawType,
         network,
         restUrl,
-        testContent: testContent || "",
+        testContent: testContent || '',
         wsUrl,
         gqlUrl,
         grpcUrl,
@@ -220,7 +199,6 @@ export default function GraphQLContainer({
       tab: currentTab,
     };
 
-
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResAdd(reqRes);
@@ -232,8 +210,8 @@ export default function GraphQLContainer({
 
     setNewRequestBody({
       ...newRequestBody,
-      bodyType: "GQL",
-      rawType: "",
+      bodyType: 'GQL',
+      rawType: '',
     });
     setNewRequestFields({
       ...newRequestFields,
@@ -245,14 +223,13 @@ export default function GraphQLContainer({
   };
 
   return (
-    <div className='is-flex is-flex-direction-column is-justify-content-space-between is-tall'>
+    <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
         className="is-flex-grow-3 add-vertical-scroll"
-        style={{overflowX: "hidden"}}
+        style={{ overflowX: 'hidden' }}
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >
-
         <GraphQLMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
@@ -300,5 +277,7 @@ export default function GraphQLContainer({
         <NewRequestButton onClick={addNewRequest} />
       </div>
     </div>
-  )
+  );
 }
+
+export default GraphQLContainer;

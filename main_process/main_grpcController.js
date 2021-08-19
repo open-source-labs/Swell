@@ -1,16 +1,15 @@
-const { ipcMain } = require("electron");
-const grpc = require("@grpc/grpc-js");
-const protoLoader = require("@grpc/proto-loader");
-// ======================= grpcController.openGrpcConnection
+const { ipcMain } = require('electron');
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
 
-const testingController = require("./main_testingController");
+const testingController = require('./main_testingController');
 
 const grpcController = {};
 
 grpcController.openGrpcConnection = (event, reqResObj) => {
   const { service, rpc, packageName, url, queryArr } = reqResObj;
 
-  reqResObj.connectionType = "GRPC";
+  reqResObj.connectionType = 'GRPC';
   reqResObj.response.times = [];
   reqResObj.response.headers = {};
   reqResObj.response.events = [];
@@ -60,20 +59,20 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     meta.add(currentHeader.key, currentHeader.value);
   }
 
-  if (rpcType === "UNARY") {
+  if (rpcType === 'UNARY') {
     const query = reqResObj.queryArr[0];
     const time = {};
 
     // Open Connection and set time sent for Unary
-    reqResObj.connection = "open";
+    reqResObj.connection = 'open';
 
     time.timeSent = Date.now();
     // make Unary call
     client[rpc](query, meta, (err, data) => {
       if (err) {
-        console.log("unary error", err);
-        reqResObj.connection = "error";
-        event.sender.send("reqResUpdate", reqResObj);
+        console.log('unary error', err);
+        reqResObj.connection = 'error';
+        event.sender.send('reqResUpdate', reqResObj);
         return;
       }
       // Close Connection and set time received for Unary
@@ -82,10 +81,10 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       time.timeReceived = Date.now();
       reqResObj.timeReceived = time.timeReceived;
 
-      reqResObj.connection = "closed";
+      reqResObj.connection = 'closed';
       reqResObj.response.events.push(data);
       reqResObj.response.times.push(time);
-      //check to see if there is a test script to run
+      // check to see if there is a test script to run
       if (reqResObj.request.testContent) {
         reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
@@ -94,31 +93,31 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         );
       }
       // send stuff back for store
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     }) // metadata from server
-      .on("metadata", (data) => {
+      .on('metadata', (data) => {
         // metadata is a Map, not an object
         const metadata = data.internalRepr;
         // set metadata Map as headers
         metadata.forEach((value, key) => {
           reqResObj.response.headers[key] = value[0];
         });
-        event.sender.send("reqResUpdate", reqResObj);
+        event.sender.send('reqResUpdate', reqResObj);
       });
-  } else if (rpcType === "SERVER STREAM") {
+  } else if (rpcType === 'SERVER STREAM') {
     const timesArr = [];
     // Open Connection for SERVER Stream
-    reqResObj.connection = "open";
+    reqResObj.connection = 'open';
     reqResObj.timeSent = Date.now();
     const call = client[rpc](reqResObj.queryArr[0], meta);
-    call.on("data", (resp) => {
+    call.on('data', (resp) => {
       const time = {};
       time.timeReceived = Date.now();
       time.timeSent = reqResObj.timeSent;
       reqResObj.response.times.push(time);
       reqResObj.timeReceived = time.timeReceived; //  overwritten on each call to get the final value
       reqResObj.response.events.push(resp);
-      //check to see if there is a test script to run
+      // check to see if there is a test script to run
       if (reqResObj.request.testContent) {
         reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
@@ -126,49 +125,49 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
           resp
         );
       }
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     });
-    call.on("error", () => {
+    call.on('error', () => {
       // for fatal error from server
-      console.log("server side stream error");
-      reqResObj.connection = "error";
-      event.sender.send("reqResUpdate", reqResObj);
+      console.log('server side stream error');
+      reqResObj.connection = 'error';
+      event.sender.send('reqResUpdate', reqResObj);
     });
-    call.on("end", () => {
+    call.on('end', () => {
       // Close Connection for SERVER Stream
-      if (reqResObj.connection !== "error") reqResObj.connection = "closed";
+      if (reqResObj.connection !== 'error') reqResObj.connection = 'closed';
       // no need to push response to reqResObj, no event expected from on 'end'
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     });
-    call.on("metadata", (data) => {
+    call.on('metadata', (data) => {
       const metadata = data.internalRepr;
       // set metadata Map as headers
       metadata.forEach((value, key) => {
         reqResObj.response.headers[key] = value[0];
       });
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     });
-  } else if (rpcType === "CLIENT STREAM") {
+  } else if (rpcType === 'CLIENT STREAM') {
     // create call and open client stream connection
-    reqResObj.connection = "open";
+    reqResObj.connection = 'open';
     const timeSent = Date.now();
     reqResObj.timeSent = timeSent;
-    const call = client[rpc](meta, function (error, response) {
+    const call = client[rpc](meta, (error, response) => {
       if (error) {
-        console.log("error in client stream", error);
-        reqResObj.connection = "error";
-        event.sender.send("reqResUpdate", reqResObj);
+        console.log('error in client stream', error);
+        reqResObj.connection = 'error';
+        event.sender.send('reqResUpdate', reqResObj);
         return;
       }
-      //Close Connection for client Stream
-      reqResObj.connection = "closed";
+      // Close Connection for client Stream
+      reqResObj.connection = 'closed';
       const curTime = Date.now();
       reqResObj.response.times.forEach((time) => {
         time.timeReceived = curTime;
         reqResObj.timeReceived = time.timeReceived;
       });
       reqResObj.response.events.push(response);
-      //check to see if there is a test script to run
+      // check to see if there is a test script to run
       if (reqResObj.request.testContent) {
         reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
@@ -177,15 +176,15 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         );
       }
       // update state
-      event.sender.send("reqResUpdate", reqResObj);
-    }).on("metadata", (data) => {
+      event.sender.send('reqResUpdate', reqResObj);
+    }).on('metadata', (data) => {
       // metadata is a Map, not an object
       const metadata = data.internalRepr;
 
       metadata.forEach((value, key) => {
         reqResObj.response.headers[key] = value[0];
       });
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     });
 
     for (let i = 0; i < queryArr.length; i++) {
@@ -195,7 +194,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
       // request without overwrite
       const time = {};
 
-      reqResObj.connection = "pending";
+      reqResObj.connection = 'pending';
 
       time.timeSent = timeSent;
       reqResObj.response.times.push(time);
@@ -204,20 +203,20 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     call.end();
   }
 
-  //else BIDIRECTIONAL
+  // else BIDIRECTIONAL
   else {
     let counter = 0;
     const call = client[rpc](meta);
-    call.on("data", (response) => {
+    call.on('data', (response) => {
       const curTimeObj = reqResObj.response.times[counter];
       counter++;
-      //Close Individual Server Response for BIDIRECTIONAL Stream
-      reqResObj.connection = "pending";
+      // Close Individual Server Response for BIDIRECTIONAL Stream
+      reqResObj.connection = 'pending';
       curTimeObj.timeReceived = Date.now();
       reqResObj.timeReceived = curTimeObj.timeReceived;
       reqResObj.response.events.push(response);
       reqResObj.response.times.push(curTimeObj);
-      //check to see if there is a test script to run
+      // check to see if there is a test script to run
       if (reqResObj.request.testContent) {
         reqResObj.response.testResult = testingController.runTest(
           reqResObj.request.testContent,
@@ -226,36 +225,36 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
         );
       }
       // update redux store
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     }); // metadata from server
-    call.on("metadata", (data) => {
+    call.on('metadata', (data) => {
       const metadata = data.internalRepr;
 
       metadata.forEach((value, key) => {
         reqResObj.response.headers[key] = value[0];
       });
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     });
-    call.on("error", () => {
-      console.log("server ended connection with error");
-      reqResObj.connection = "error";
-      event.sender.send("reqResUpdate", reqResObj);
+    call.on('error', () => {
+      console.log('server ended connection with error');
+      reqResObj.connection = 'error';
+      event.sender.send('reqResUpdate', reqResObj);
     });
-    call.on("end", (data) => {
-      //Close Final Server Connection for BIDIRECTIONAL Stream
-      if (reqResObj.connection !== "error") reqResObj.connection = "closed";
+    call.on('end', (data) => {
+      // Close Final Server Connection for BIDIRECTIONAL Stream
+      if (reqResObj.connection !== 'error') reqResObj.connection = 'closed';
       // no need to push response to reqResObj, no event expected from on 'end'
-      event.sender.send("reqResUpdate", reqResObj);
+      event.sender.send('reqResUpdate', reqResObj);
     });
 
     for (let i = 0; i < queryArr.length; i++) {
       const time = {};
       const query = queryArr[i];
-      //Open Connection for BIDIRECTIONAL Stream
+      // Open Connection for BIDIRECTIONAL Stream
       if (i === 0) {
-        reqResObj.connection = "open";
+        reqResObj.connection = 'open';
       } else {
-        reqResObj.connection = "pending";
+        reqResObj.connection = 'pending';
       }
       time.timeSent = Date.now();
       reqResObj.timeSent = time.timeSent;
@@ -264,12 +263,12 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     }
     call.end();
   }
-  event.sender.send("reqResUpdate", reqResObj);
+  event.sender.send('reqResUpdate', reqResObj);
 };
 
 module.exports = () => {
   // creating our event listeners for IPC events
-  ipcMain.on("open-grpc", (event, reqResObj) => {
+  ipcMain.on('open-grpc', (event, reqResObj) => {
     // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
     grpcController.openGrpcConnection(event, reqResObj);
   });

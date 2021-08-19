@@ -1,5 +1,5 @@
 /* eslint-disable lines-between-class-members */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import TextCodeAreaEditable from './TextCodeAreaEditable';
 
 const GRPCBodyStream = (props) => {
@@ -8,7 +8,7 @@ const GRPCBodyStream = (props) => {
   // eslint-disable-next-line lines-between-class-members
   const deleteStream = (id) => {
     if (props.newRequestStreams.streamsArr.length === 1) {
-      setError("Error: Must have at least one stream body");
+      setError('Error: Must have at least one stream body');
       return;
     }
     const streamsArr = [...props.newRequestStreams.streamsArr];
@@ -39,24 +39,24 @@ const GRPCBodyStream = (props) => {
   // if none or the first stream query in the array
   const streamBody = (
     <TextCodeAreaEditable
-      value={`${streamContentID || ""}`}
-      theme = "neo grpc"
+      value={`${streamContentID || ''}`}
+      theme="neo grpc"
       mode="application/json"
-      onChange={(editor, data, value) => props.changeHandler(props.stream.id, value)}
+      onChange={(editor, data, value) =>
+        props.changeHandler(props.stream.id, value)
+      }
     />
   );
-  
+
   // displays the stream number & delete btn next to the stream body for client or bidirectionbal streaming
   let streamNum;
   let deleteStreamBtn;
   if (
-    props.selectedStreamingType === "CLIENT STREAM" ||
-    props.selectedStreamingType === "BIDIRECTIONAL"
+    props.selectedStreamingType === 'CLIENT STREAM' ||
+    props.selectedStreamingType === 'BIDIRECTIONAL'
   ) {
     streamNum = (
-      <span className='ml-1 stream-title'>
-        Stream {props.streamNum + 1}
-      </span>
+      <span className="ml-1 stream-title">Stream {props.streamNum + 1}</span>
     );
     deleteStreamBtn = (
       <button
@@ -72,7 +72,7 @@ const GRPCBodyStream = (props) => {
   return (
     <div>
       <div className="warningMessage">{showError}</div>
-      <div >
+      <div>
         <div className="mt-1 is-flex is-align-items-center">
           {deleteStreamBtn}
           {streamNum}

@@ -1,8 +1,8 @@
-import * as types from "./actionTypes";
+import * as types from './actionTypes';
 
 // BUSINESS LOGIC ACTIONS
 
-//action creators
+// action creators
 export const getHistory = (history) => ({
   type: types.GET_HISTORY,
   payload: history,
@@ -169,4 +169,33 @@ export const setWorkspaceActiveTab = (tabName) => ({
 export const setResponsePaneActiveTab = (tabName) => ({
   type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
   payload: tabName,
+});
+
+// OPENAPI ACTIONS
+
+export const setNewRequestsOpenAPI = ({
+  openapiMetadata,
+  openapiReqArray,
+}) => ({
+  type: types.SET_NEW_REQUESTS_OPENAPI,
+  payload: { openapiMetadata, openapiReqArray },
+});
+export const setOpenAPIServersGlobal = (serverIds) => ({
+  type: types.SET_OPENAPI_SERVERS_GLOBAL,
+  payload: serverIds,
+});
+export const setOpenAPIServers = (requestId, serverIds) => ({
+  type: types.SET_NEW_OPENAPI_SERVERS,
+  payload: { id: requestId, serverIds },
+});
+export const setOpenAPIParameter = (requestId, location, name, value) => ({
+  type: types.SET_NEW_OPENAPI_PARAMETER,
+  payload: { id: requestId, location, name, value },
+});
+export const setOpenAPIRequestBody = (requestId, mediaType, requestBody) => ({
+  type: types.SET_NEW_OPENAPI_REQUEST_BODY,
+  payload: { id: requestId, mediaType, requestBody },
+});
+export const queueOpenAPIRequests = () => ({
+  type: types.QUEUE_OPENAPI_REQUESTS,
 });

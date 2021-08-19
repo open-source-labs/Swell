@@ -1,40 +1,44 @@
+/* eslint-disable default-case */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, useRef, useEffect } from "react";
-import dropDownArrow from "../../../assets/icons/caret-down.svg";
-// import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import dropDownArrow from '../../../assets/icons/caret-down.svg';
 
-export default function NetworkDropdown({ onProtocolSelect, network }) {
+function NetworkDropdown({ onProtocolSelect, network }) {
   const [dropdownIsActive, setDropdownIsActive] = useState();
   const dropdownEl = useRef();
 
   useEffect(() => {
     const closeDropdown = (event) => {
-      //console.log("event.target===>", event.target);
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
-      // The Node.contains() method returns a Boolean value indicating whether a node is a descendant of a given node, i.e. the node itself, one of its direct children (childNodes), one of the children's direct children, and so on.
     };
-    document.addEventListener("click", closeDropdown);
-    return () => document.removeEventListener("click", closeDropdown);
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  let networkTitle = "";
-  // eslint-disable-next-line default-case
+  let networkTitle = '';
+
   switch (network) {
-    case "rest":
-      networkTitle = "REST";
+    case 'rest':
+      networkTitle = 'REST';
       break;
-    case "graphQL":
-      networkTitle = "GRAPHQL";
+    case 'graphQL':
+      networkTitle = 'GRAPHQL';
       break;
-    case "grpc":
-      networkTitle = "gRPC";
+    case 'grpc':
+      networkTitle = 'gRPC';
       break;
-    case "ws":
-      networkTitle = "WEB SOCKETS";
+    case 'ws':
+      networkTitle = 'WEB SOCKETS';
+      break;
+    case 'webrtc':
+      networkTitle = 'WebRTC';
+      break;
+    case 'openapi':
+      networkTitle = 'OpenAPI';
       break;
   }
 
@@ -42,7 +46,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
     <div
       ref={dropdownEl}
       className={`dropdown full-width is-fullwidth ${
-        dropdownIsActive ? "is-active" : ""
+        dropdownIsActive ? 'is-active' : ''
       }`}
     >
       <div className="dropdown-trigger full-width is-fullwidth">
@@ -71,7 +75,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
           <a
             onClick={() => {
               setDropdownIsActive(false);
-              onProtocolSelect("rest");
+              onProtocolSelect('rest');
             }}
             className="dropdown-item"
           >
@@ -80,7 +84,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
           <a
             onClick={() => {
               setDropdownIsActive(false);
-              onProtocolSelect("graphQL");
+              onProtocolSelect('graphQL');
             }}
             className="dropdown-item"
           >
@@ -89,7 +93,7 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
           <a
             onClick={() => {
               setDropdownIsActive(false);
-              onProtocolSelect("grpc");
+              onProtocolSelect('grpc');
             }}
             className="dropdown-item"
           >
@@ -98,14 +102,34 @@ export default function NetworkDropdown({ onProtocolSelect, network }) {
           <a
             onClick={() => {
               setDropdownIsActive(false);
-              onProtocolSelect("ws");
+              onProtocolSelect('ws');
             }}
             className="dropdown-item"
           >
             WEB SOCKETS
+          </a>
+          <a
+            onClick={() => {
+              setDropdownIsActive(false);
+              onProtocolSelect('webrtc');
+            }}
+            className="dropdown-item"
+          >
+            WebRTC
+          </a>
+          <a
+            onClick={() => {
+              setDropdownIsActive(false);
+              onProtocolSelect('openapi');
+            }}
+            className="dropdown-item"
+          >
+            OpenAPI
           </a>
         </div>
       </div>
     </div>
   );
 }
+
+export default NetworkDropdown;

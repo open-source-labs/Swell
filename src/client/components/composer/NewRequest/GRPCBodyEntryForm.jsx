@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import GRPCBodyStream from "./GRPCBodyStream.jsx";
+import React, { useState, useEffect } from 'react';
+import GRPCBodyStream from './GRPCBodyStream.jsx';
 
 const GRPCBodyEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
@@ -10,11 +10,11 @@ const GRPCBodyEntryForm = (props) => {
       const newStreamsArr = [
         {
           id: props.newRequestStreams.count,
-          query: "",
+          query: '',
         },
       ];
 
-      props.newRequestStreams.streamContent.push("");
+      props.newRequestStreams.streamContent.push('');
       // update state in the store
       props.setNewRequestStreams({
         streamsArr: newStreamsArr,
@@ -85,8 +85,8 @@ const GRPCBodyEntryForm = (props) => {
   //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
   let addStreamBtn;
   if (
-    props.selectedStreamingType === "CLIENT STREAM" ||
-    props.selectedStreamingType === "BIDIRECTIONAL"
+    props.selectedStreamingType === 'CLIENT STREAM' ||
+    props.selectedStreamingType === 'BIDIRECTIONAL'
   ) {
     addStreamBtn = (
       <button

@@ -1,49 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../actions/actions.js";
-
-import connectionController from "../../controllers/reqResController";
-import RestRequestContent from "../display/RestRequestContent.jsx";
-import GraphQLRequestContent from "../display/GraphQLRequestContent.jsx";
-import GRPCRequestContent from "../display/GRPCRequestContent.jsx";
-import ReqResCtrl from "../../controllers/reqResController";
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions.js';
+import RestRequestContent from '../display/RestRequestContent.jsx';
+import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
+import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
 
 const SingleScheduleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
-  const [checker, setChecker] = useState(false);
   const dispatch = useDispatch();
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
   );
 
-  const newRequestFields = useSelector(
-    (store) => store.business.newRequestFields
-  );
-  const newRequestStreams = useSelector(
-    (store) => store.business.newRequestStreams
-  );
-
   const {
     content,
-    content: {
-      id,
-      graphQL,
-      closeCode,
-      protocol,
-      request,
-      response,
-      connection,
-      connectionType,
-      isHTTP2,
-      url,
-      timeReceived,
-      timeSent,
-      rpc,
-      service,
-    },
-    reqResUpdate,
-    reqResDelete,
+    content: { request, connection, isHTTP2, url },
     index,
     date,
   } = props;
@@ -51,26 +25,25 @@ const SingleScheduleReqResContainer = (props) => {
   const method = content.request.method;
 
   const getBorderClass = () => {
-    let classes = "highlighted-response ";
-    if (currentResponse.gRPC) classes += "is-grpc-border";
-    else if (currentResponse.graphQL) classes += "is-graphQL-border";
-    else if (currentResponse.request.method === "WS") classes += "is-ws-border";
-    else classes += "is-rest-border";
+    let classes = 'highlighted-response ';
+    if (currentResponse.gRPC) classes += 'is-grpc-border';
+    else if (currentResponse.graphQL) classes += 'is-graphQL-border';
+    else if (currentResponse.request.method === 'WS') classes += 'is-ws-border';
+    else classes += 'is-rest-border';
     return classes;
   };
 
   const highlightClasses =
-    currentResponse.id === content.id ? getBorderClass(currentResponse) : "";
+    currentResponse.id === content.id ? getBorderClass(currentResponse) : '';
 
-  //USE EFFECT
   useEffect(() => {
     dispatch(
       actions.saveCurrentResponseData(
         content,
-        "SingleScheduleReqResContainerComponent"
+        'SingleScheduleReqResContainerComponent'
       )
     );
-  }, []);
+  }, [content, dispatch]);
 
   return (
     <div className={`m-3 ${highlightClasses}`}>
@@ -85,25 +58,25 @@ const SingleScheduleReqResContainer = (props) => {
           <div className="is-flex is-align-items-center ml-2">{url}</div>
           {/* RENDER STATUS */}
           <div className="req-status mr-1 is-flex is-align-items-center">
-            {connection === "uninitialized" && (
+            {connection === 'uninitialized' && (
               <div className="connection-uninitialized" />
             )}
-            {connection === "error" && <div className="connection-error" />}
-            {connection === "open" && <div className="connection-open" />}
-            {connection === "closed" &&
-              method != "WS" &&
-              method !== "SUBSCRIPTION" && (
+            {connection === 'error' && <div className="connection-error" />}
+            {connection === 'open' && <div className="connection-open" />}
+            {connection === 'closed' &&
+              method != 'WS' &&
+              method !== 'SUBSCRIPTION' && (
                 <div className="connection-closed" />
               )}
-            {connection === "closed" &&
-              (method === "WS" || method === "SUBSCRIPTION") && (
+            {connection === 'closed' &&
+              (method === 'WS' || method === 'SUBSCRIPTION') && (
                 <div className="connection-closedsocket" />
               )}
           </div>
         </div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
-      {network !== "ws" && (
+      {network !== 'ws' && (
         <div
           className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
           onClick={() => {
@@ -124,17 +97,17 @@ const SingleScheduleReqResContainer = (props) => {
       {/* REQUEST ELEMENTS */}
       {showDetails === true && (
         <div className="is-neutral-200-box">
-          {network === "rest" && (
+          {network === 'rest' && (
             <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
           )}
-          {network === "grpc" && (
+          {network === 'grpc' && (
             <GRPCRequestContent
               request={content.request}
               rpc={content.rpc}
               service={content.service}
             />
           )}
-          {network === "graphQL" && (
+          {network === 'graphQL' && (
             <GraphQLRequestContent request={content.request} />
           )}
         </div>

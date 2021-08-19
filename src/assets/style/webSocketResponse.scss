@@ -36,6 +36,7 @@
   width: 100%;
   height: 100%;
   padding-right: 17px;
+
   box-sizing: content-box;
 }
 
@@ -49,6 +50,7 @@
   padding: 4px 8x;
   color: #fff;
   text-align: right;
+  margin-right: 8px;
 }
 
 .websocket_message-server {
@@ -62,12 +64,11 @@
   align-self: flex-end;
 }
 
-
 .animatedmain {
   position: relative;
   width: 200px;
   height: 50px;
-  background: #F66B61;
+  background: #f66b61;
   border-radius: 5px;
   border: 2px solid white;
   overflow: hidden;
@@ -79,7 +80,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #21D4A4;
+  background: #21d4a4;
 }
 
 .animatedcontent {
@@ -92,6 +93,6 @@
   align-items: center;
   justify-content: center;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
-    'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }

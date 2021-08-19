@@ -1,11 +1,11 @@
-const path = require("path");
-const grpc = require("@grpc/grpc-js");
-const protoLoader = require("@grpc/proto-loader");
+const path = require('path');
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
 
 // change PROTO_PATH to load a different mock proto file
 
-const PROTO_PATH = path.resolve(__dirname, "./hw2.proto");
-const PORT = "0.0.0.0:30051";
+const PROTO_PATH = path.resolve(__dirname, './hw2.proto');
+const PORT = '0.0.0.0:30051';
 // console.log("not working");
 // Service method to be used on unary test
 const SayHello = (call, callback) => {
@@ -26,19 +26,19 @@ const SayHelloNested = (call, callback) => {
 const SayHellosSs = (call) => {
   const dataStream = [
     {
-      message: "You",
+      message: 'You',
     },
     {
-      message: "Are",
+      message: 'Are',
     },
     {
-      message: "doing IT",
+      message: 'doing IT',
     },
     {
-      message: "Champ",
+      message: 'Champ',
     },
   ];
-  const reqMessage = { message: "hello!!! " + call.request.name };
+  const reqMessage = { message: `hello!!! ${call.request.name}` };
   const updatedStream = [...dataStream, reqMessage];
   updatedStream.forEach((data) => {
     call.write(data);
@@ -49,10 +49,10 @@ const SayHellosSs = (call) => {
 // Service method to be used on client streaming test
 const sayHelloCs = (call, callback) => {
   const messages = [];
-  call.on("data", (data) => {
+  call.on('data', (data) => {
     messages.push(data);
   });
-  call.on("end", () => {
+  call.on('end', () => {
     callback(null, {
       message: `received ${messages.length} messages`,
     });
@@ -61,10 +61,10 @@ const sayHelloCs = (call, callback) => {
 
 // Service method to be used on bidirectional streaming test
 const sayHelloBidi = (call, callback) => {
-  call.on("data", (data) => {
-    call.write({ message: "bidi stream: " + data.name });
+  call.on('data', (data) => {
+    call.write({ message: `bidi stream: ${data.name}` });
   });
-  call.on("end", () => {
+  call.on('end', () => {
     call.end();
   });
 };
@@ -80,7 +80,7 @@ function main(status) {
     oneofs: true,
   });
   const pkg = grpc.loadPackageDefinition(proto);
-  if (status === "open") {
+  if (status === 'open') {
     // create new instance of grpc server
     const server = new grpc.Server();
 

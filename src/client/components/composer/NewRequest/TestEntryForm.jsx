@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from "react";
-import WWWForm from "./WWWForm.jsx";
-import BodyTypeSelect from "./BodyTypeSelect.jsx";
-import JSONTextArea from "./JSONTextArea.jsx";
-import RawBodyTypeSelect from "./RawBodyTypeSelect.jsx";
-import JSONPrettify from "./JSONPrettify.jsx";
-import TextCodeAreaEditable from "./TextCodeAreaEditable.jsx";
-import dropDownArrow from "../../../../assets/icons/caret-down-tests.svg";
-import dropDownArrowUp from "../../../../assets/icons/caret-up-tests.svg";
-import { isAbsolute, relative } from "path";
-import RestTestSnippetsContainer from "./TestSnippets/RestTestSnippetsContainer";
+import React, { useState } from 'react';
+import WWWForm from './WWWForm.jsx';
+import BodyTypeSelect from './BodyTypeSelect.jsx';
+import JSONTextArea from './JSONTextArea.jsx';
+import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
+import JSONPrettify from './JSONPrettify.jsx';
+import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
+import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
+import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
+import { isAbsolute, relative } from 'path';
+import RestTestSnippetsContainer from './TestSnippets/RestTestSnippetsContainer';
 
 const TestEntryForm = (props) => {
   const { testContent, setNewTestContent } = props;

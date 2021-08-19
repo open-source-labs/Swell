@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/addon/edit/matchbrackets";
-import "codemirror/addon/edit/closebrackets";
-import "codemirror/theme/twilight.css";
-import "codemirror/lib/codemirror.css";
-import "codemirror/addon/display/autorefresh"
-import "codemirror/addon/display/placeholder"
-import "codemirror/mode/javascript/javascript"
+import React, { useState, useEffect, useRef } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/edit/closebrackets';
+import 'codemirror/theme/twilight.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/display/autorefresh';
+import 'codemirror/addon/display/placeholder';
+import 'codemirror/mode/javascript/javascript';
 
 const GraphQLVariableEntryForm = (props) => {
   const {
@@ -28,13 +28,13 @@ const GraphQLVariableEntryForm = (props) => {
 
   return (
     <div>
-     <div className="composer-section-title">Variables</div>
+      <div className="composer-section-title">Variables</div>
       <div className="is-neutral-200-box p-3" id="gql-var-entry">
         <CodeMirror
-        ref={cmVariables}
+          ref={cmVariables}
           value={cmValue}
           options={{
-            mode: { name: "javascript", json: true },
+            mode: { name: 'javascript', json: true },
             theme: 'neo sidebar',
             scrollbarStyle: 'native',
             lineNumbers: false,
@@ -43,9 +43,11 @@ const GraphQLVariableEntryForm = (props) => {
             indentUnit: 2,
             tabSize: 2,
             autoRefresh: true,
-            placeholder: 'Variables must be JSON format'
+            placeholder: 'Variables must be JSON format',
           }}
-          editorDidMount={editor => { editor.setSize('100%', 100) }}
+          editorDidMount={(editor) => {
+            editor.setSize('100%', 100);
+          }}
           onBeforeChange={(editor, data, value) => {
             setValue(value);
           }}

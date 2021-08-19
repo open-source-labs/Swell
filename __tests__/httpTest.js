@@ -1,26 +1,25 @@
-import ReqResCtrl from "../src/client/controllers/reqResController";
-
+import ReqResCtrl from '../src/client/controllers/reqResController';
 
 xdescribe('REST API Requests', () => {
-  
+  let state;
   beforeEach(() => {
     state = {
-      currentTab: "First Tab",
+      currentTab: 'First Tab',
       reqResArray: [],
       history: [],
       collections: [],
       warningMessage: {},
       newRequestFields: {
-        protocol: "",
-        restUrl: "http://",
-        wsUrl: "ws://",
-        gqlUrl: "https://",
-        grpcUrl: "",
-        url: "http://",
-        method: "GET",
+        protocol: '',
+        restUrl: 'http://',
+        wsUrl: 'ws://',
+        gqlUrl: 'https://',
+        grpcUrl: '',
+        url: 'http://',
+        method: 'GET',
         graphQL: false,
         gRPC: false,
-        network: "rest",
+        network: 'rest',
       },
       newRequestHeaders: {
         headersArr: [],
@@ -39,17 +38,17 @@ xdescribe('REST API Requests', () => {
         queryArr: null,
         protoPath: null,
         services: null,
-        protoContent: "",
+        protoContent: '',
       },
       newRequestCookies: {
         cookiesArr: [],
         count: 0,
       },
       newRequestBody: {
-        bodyContent: "",
-        bodyVariables: "",
-        bodyType: "raw",
-        rawType: "text/plain",
+        bodyContent: '',
+        bodyVariables: '',
+        bodyType: 'raw',
+        rawType: 'text/plain',
         JSONFormatted: true,
         bodyIsNew: false,
       },
@@ -60,12 +59,12 @@ xdescribe('REST API Requests', () => {
       dataPoints: [],
       currentResponse: {
         request: {
-          network: ''
-        }
+          network: '',
+        },
       },
     };
   });
-  
+
   describe('public API', () => {
     it('it should GET information from a public API', () => {
       // define request
@@ -86,7 +85,7 @@ xdescribe('REST API Requests', () => {
         protoPath: null,
         request: {
           method: 'GET',
-          headers: [ [Object] ],
+          headers: [[Object]],
           cookies: [],
           body: '',
           bodyType: 'raw',
@@ -97,17 +96,17 @@ xdescribe('REST API Requests', () => {
           restUrl: 'http://jsonplaceholder.typicode.com/posts',
           wsUrl: 'ws://',
           gqlUrl: 'https://',
-          grpcUrl: ''
+          grpcUrl: '',
         },
         response: { headers: null, events: null },
         checked: false,
         minimized: false,
-        tab: 'First Tab'
-      }
+        tab: 'First Tab',
+      };
 
       ReqResCtrl.openReqRes(request);
       const response = state.reqResArray[0];
-      expect(response.toEqual("hello"));
+      expect(response.toEqual('hello'));
     });
-  })
-})
+  });
+});

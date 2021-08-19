@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-param-reassign */
-import React, { useState } from "react";
-import PropTypes, { string } from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
-import { DropzoneArea } from "material-ui-dropzone";
-import WebSocketMessage from "./WebSocketMessage";
-import { WebSocketWindowProps } from "../../../types";
-import ImageDropzone from "../../components/display/ImageDropzone";
-// import * as actions from "../../../../src/client/actions/actions.js";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import WebSocketMessage from './WebSocketMessage';
+import { WebSocketWindowProps } from '../../../types';
+import ImageDropzone from './ImageDropzone';
+
 const { api } = window;
 
 const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
@@ -15,33 +17,32 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
   incomingMessages,
   connection,
 }) => {
-
   const [inputMsgImg, setinputMsgImg] = useState({
-    inputMsg: "",
-    inputImg: "",
+    inputMsg: '',
+    inputImg: '',
   });
 
-  //updates the outgoing message when it changes
-  const updateOutgoingMessage = async (value: any) => {
-    console.log("updating msg");
-    if (value.includes("data:image/")) {
-      await setinputMsgImg({ ...inputMsgImg, inputImg: value });
+  // updates the outgoing message when it changes
+  const updateOutgoingMessage = (value: any) => {
+    console.log('updating msg');
+    if (value.includes('data:image/')) {
+      setinputMsgImg({ ...inputMsgImg, inputImg: value });
     } else {
       setinputMsgImg({ ...inputMsgImg, inputMsg: value });
     }
   };
 
-  //sends to WScontroller in main.js to send the message to server
+  // sends to WScontroller in main.js to send the message to server
   const sendToWSController = () => {
     if (inputMsgImg.inputMsg) {
-      api.send("send-ws", content, inputMsgImg.inputMsg);
-      setinputMsgImg({ inputMsg: "", inputImg: "" });
+      api.send('send-ws', content, inputMsgImg.inputMsg);
+      setinputMsgImg({ inputMsg: '', inputImg: '' });
     } else if (inputMsgImg.inputImg) {
-      console.log("rerendering");
-      api.send("send-ws", content, inputMsgImg.inputImg);
-      setinputMsgImg({ inputMsg: "", inputImg: "" });
+      console.log('rerendering');
+      api.send('send-ws', content, inputMsgImg.inputImg);
+      setinputMsgImg({ inputMsg: '', inputImg: '' });
     }
-    //reset inputbox
+    // reset inputbox
   };
 
   const handleFileChange = async (file: any) => {
@@ -61,30 +62,30 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
     }
   };
 
-  //when you press enter send the message, send message to socket
+  // when you press enter send the message, send message to socket
   const handleKeyPress = (event: { key: string }) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       sendToWSController();
     }
   };
-  //maps the messages to view in chronological order and by whom - self/server
+  // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
     .map((message) => {
-      message.source = "client";
+      message.source = 'client';
 
       return message;
     })
     .concat(
       incomingMessages.map((message) => {
-        message.source = "server";
+        message.source = 'server';
 
         return message;
       })
     )
-    //sorts by time
+    // sorts by time
     .sort((a, b) => a.timeReceived - b.timeReceived)
-    //then maps the combined array to a WebSocket Component
-    //conditionally rendering messages or images
+    // then maps the combined array to a WebSocket Component
+    // conditionally rendering messages or images
     .map((message, index) => (
       <WebSocketMessage
         key={index}
@@ -95,22 +96,19 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       />
     ));
 
-  //sets the message style depending on if the connection is open
-  //hides when connection is not open
+  // sets the message style depending on if the connection is open
+  // hides when connection is not open
   const messageInputStyles = {
-    display: connection === "open" ? "block" : "none",
+    display: connection === 'open' ? 'block' : 'none',
   };
 
-  //exports the chatLog- sends it to the backend
+  // exports the chatLog- sends it to the backend
   const exportChatLog = (event: any) => {
-    api.send("exportChatLog", outgoingMessages, incomingMessages);
+    api.send('exportChatLog', outgoingMessages, incomingMessages);
   };
 
   return (
-    <div
-      style={{}}
-      className="websocket_container is-tall is-flex is-flex-direction-column m-3"
-    >
+    <div className="websocket_container is-tall is-flex is-flex-direction-column p-3">
       <div className="is-flex is-align-items-center">
         <input
           className="ml-1 mr-1 input is-small"
@@ -128,7 +126,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
         >
           Send Message
         </button>
-      </div> 
+      </div>
       <div className="is-flex is-align-items-center">
         <ImageDropzone onFileChange={handleFileChange} />
         <button
@@ -142,13 +140,12 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       </div>
 
       {/* only show the ws messages when connection is open */}
-      {connection === "open" && (
+      {connection === 'open' && (
         <>
-          <div className="overflow-parent-container">
-            <div className="websocket_message_container m-3">
-              {combinedMessagesReactArr}
-            </div>
+          <div className="websocket_message_container m-3">
+            {combinedMessagesReactArr}
           </div>
+
           <button
             className="button is-primary is-outlined is-small"
             onClick={exportChatLog}
