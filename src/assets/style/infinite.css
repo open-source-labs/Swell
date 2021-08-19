@@ -7,9 +7,17 @@
     }
 */
 @-webkit-keyframes pulsate {
-    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
-    50% {opacity: 1.0;}
-    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+  0% {
+    -webkit-transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
 }
 
 /* Make the element's opacity pulse*/
@@ -21,9 +29,15 @@
     }
 */
 @-webkit-keyframes opacityPulse {
-    0% {opacity: 0.0;}
-    50% {opacity: 1.0;}
-    100% {opacity: 0.0;}
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Make the element's background pulse. I call this alertPulse because it is red. You can call it something more generic. */
@@ -35,11 +49,19 @@
     }
 */
 @-webkit-keyframes alertPulse {
-    0% {background-color: #9A2727; opacity: 1;}
-    50% {opacity: red; opacity: 0.75; }
-    100% {opacity: #9A2727; opacity: 1;}
+  0% {
+    background-color: #9a2727;
+    opacity: 1;
+  }
+  50% {
+    opacity: red;
+    opacity: 0.75;
+  }
+  100% {
+    opacity: #9a2727;
+    opacity: 1;
+  }
 }
-
 
 /* Make the element rotate infinitely. */
 /* 

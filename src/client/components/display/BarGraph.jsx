@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { HorizontalBar, Line } from "react-chartjs-2";
-import * as store from "../../store";
-import * as actions from "../../actions/actions";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Line } from 'react-chartjs-2';
+import * as store from '../../store';
+import * as actions from '../../actions/actions';
 
 //necessary for graph styling due to CSP
 Chart.platform.disableCSSInjection = true;
@@ -14,7 +15,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   saveCurrentResponseData: (reqRes) => {
-    dispatch(actions.saveCurrentResponseData(reqRes, "bargraph"));
+    dispatch(actions.saveCurrentResponseData(reqRes, 'bargraph'));
   },
   updateGraph: (reqRes) => {
     dispatch(actions.updateGraph(reqRes));
@@ -27,10 +28,10 @@ const mapDispatchToProps = (dispatch) => ({
 const BarGraph = (props) => {
   const { dataPoints, currentResponse } = props;
 
-  const [chartURL, setChartURL] = useState("");
+  const [chartURL, setChartURL] = useState('');
   const [host, setHost] = useState(null);
 
-  //state for showing graph, depending on whether there are datapoints or not.
+  //state for showing graph, depending on whether there are data points or not.
   //must default to true, because graph will not render if initial container's display is 'none'
   const [show, toggleShow] = useState(true);
   //Default state for chart data
@@ -77,7 +78,7 @@ const BarGraph = (props) => {
       labels: labelArr,
       datasets: [
         {
-          label: "Response Time",
+          label: 'Response Time',
           data: timesArr,
           backgroundColor: BGsArr,
           borderColor: bordersArr,
@@ -144,17 +145,17 @@ const BarGraph = (props) => {
     let reqResObjs;
     if (dataPoints[id]?.length) {
       const point = dataPoints[id][0];
-      // // if grpc, just return the server IP
+      // if grpc, just return the server IP
       if (point.reqRes.gRPC) url = `${point.url}`;
       // if point.url is lengthy, just return the domain and the end of the uri string
       const domain = point.url
-        .replace("http://", "")
-        .replace("https://", "")
+        .replace('http://', '')
+        .replace('https://', '')
         .split(/[/?#]/)[0];
       url = `${domain} ${
         point.url.length > domain.length + 8
           ? `- ..${point.url.slice(point.url.length - 8, point.url.length)}`
-          : ""
+          : ''
       }`;
 
       setChartURL(url);
@@ -164,8 +165,8 @@ const BarGraph = (props) => {
       times = dataPoints[id].map(
         (point) => point.timeReceived - point.timeSent
       );
-      BGs = dataPoints[id].map((point) => "rgba(" + point.color + ", 0.2)");
-      borders = dataPoints[id].map((point) => "rgba(" + point.color + ", 1)");
+      BGs = dataPoints[id].map((point) => 'rgba(' + point.color + ', 0.2)');
+      borders = dataPoints[id].map((point) => 'rgba(' + point.color + ', 1)');
       reqResObjs = dataPoints[id].map((point) => point.reqRes);
       //show graph upon receiving data points
       toggleShow(true);
@@ -179,11 +180,11 @@ const BarGraph = (props) => {
     //conditionally update options based on length of dataPoints array
 
     updateOptions(optionsUpdater(dataPoints[id]));
-  }, [dataPoints, currentResponse, chartURL]);
+  }, [dataPoints, currentResponse, chartURL, optionsUpdater]);
 
   // useEffect(updateGraph(currentResponse), [currentResponse])
 
-  const chartClass = show ? "chart" : "chart-closed";
+  const chartClass = show ? 'chart' : 'chart-closed';
 
   return (
     <div>
@@ -201,13 +202,13 @@ const BarGraph = (props) => {
           className="button is-small add-header-or-cookie-button clear-chart-button mb-3"
           onClick={() => {
             props.clearGraph(currentResponse.id);
-            setChartURL("");
+            setChartURL('');
           }}
         >
           Clear Response History
           {host && (
             <span>
-              {" "}
+              {' '}
               - <b>{host}</b>
             </span>
           )}

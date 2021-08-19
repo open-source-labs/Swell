@@ -1,4 +1,4 @@
-//Commented full file because no MONGO_URI available for testing server
+// Commented full file because no MONGO_URI available for testing server
 
 // const mongoose = require("mongoose");
 // const path = require("path");

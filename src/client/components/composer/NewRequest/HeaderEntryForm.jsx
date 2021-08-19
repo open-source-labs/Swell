@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { Component } from "react";
-import Header from "./Header.jsx";
-import ContentReqRowComposer from "./ContentReqRowComposer.jsx";
-import { matchPath } from "react-router-dom";
+import React, { Component } from 'react';
+import ContentReqRowComposer from './ContentReqRowComposer.jsx';
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -22,8 +20,8 @@ class HeaderEntryForm extends Component {
     );
     const lastHeader = headersDeepCopy[headersDeepCopy.length - 1];
     if (
-      lastHeader?.key !== "" &&
-      lastHeader?.key.toLowerCase() !== "content-type"
+      lastHeader?.key !== '' &&
+      lastHeader?.key.toLowerCase() !== 'content-type'
     ) {
       this.addHeader();
     }
@@ -33,12 +31,12 @@ class HeaderEntryForm extends Component {
   contentHeaderNeeded() {
     const { method } = this.props.newRequestFields;
     return (
-      method === "PUT" ||
-      method === "PATCH" ||
-      method === "DELETE" ||
-      method === "POST" ||
-      this.props.newRequestBody.bodyType === "GQL" ||
-      this.props.newRequestBody.bodyType === "GQLvariables"
+      method === 'PUT' ||
+      method === 'PATCH' ||
+      method === 'DELETE' ||
+      method === 'POST' ||
+      this.props.newRequestBody.bodyType === 'GQL' ||
+      this.props.newRequestBody.bodyType === 'GQLvariables'
     );
   }
 
@@ -46,33 +44,33 @@ class HeaderEntryForm extends Component {
     let contentType;
 
     if (
-      this.props.newRequestBody.bodyType === "GRPC" ||
-      this.props.newRequestBody.bodyType === "none"
+      this.props.newRequestBody.bodyType === 'GRPC' ||
+      this.props.newRequestBody.bodyType === 'none'
     ) {
-      contentType = "";
-    } else if (this.props.newRequestBody.bodyType === "x-www-form-urlencoded") {
-      contentType = "x-www-form-urlencoded";
+      contentType = '';
+    } else if (this.props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
+      contentType = 'x-www-form-urlencoded';
     } else if (
-      this.props.newRequestBody.bodyType === "GQL" ||
-      this.props.newRequestBody.bodyType === "GQLvariables"
+      this.props.newRequestBody.bodyType === 'GQL' ||
+      this.props.newRequestBody.bodyType === 'GQLvariables'
     ) {
-      contentType = "application/json";
+      contentType = 'application/json';
     } else {
       contentType = this.props.newRequestBody.rawType;
     }
 
     // Attempt to update header in these conditions:
     const foundHeader = this.props.newRequestHeaders.headersArr.find((header) =>
-      header.key.toLowerCase().includes("content-type")
+      header.key.toLowerCase().includes('content-type')
     );
 
     // 1. if there is no contentTypeHeader, but there should be
-    if (!foundHeader && contentType !== "" && this.contentHeaderNeeded()) {
+    if (!foundHeader && contentType !== '' && this.contentHeaderNeeded()) {
       this.addContentTypeHeader(contentType);
       // this.updateContentTypeHeader(contentType, foundHeader);
     }
     // 2. if there is a contentTypeHeader, but there SHOULDNT be, but the user inputs anyway... just let them
-    else if (foundHeader && contentType === "") {
+    else if (foundHeader && contentType === '') {
       //keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
     // 3. if there is a contentTypeHeader, needs to update
@@ -90,14 +88,14 @@ class HeaderEntryForm extends Component {
     const headersDeepCopy = JSON.parse(
       JSON.stringify(
         this.props.newRequestHeaders.headersArr.filter(
-          (header) => header.key.toLowerCase() !== "content-type"
+          (header) => header.key.toLowerCase() !== 'content-type'
         )
       )
     );
     const contentTypeHeader = {
       id: Math.random() * 1000000,
       active: true,
-      key: "Content-Type",
+      key: 'Content-Type',
       value: contentType,
     };
     headersDeepCopy.unshift(contentTypeHeader);
@@ -109,7 +107,7 @@ class HeaderEntryForm extends Component {
 
   updateContentTypeHeader(contentType, foundHeader) {
     const filtered = this.props.newRequestHeaders.headersArr.filter(
-      (header) => !header.key.toLowerCase().includes("content-type")
+      (header) => !header.key.toLowerCase().includes('content-type')
     );
 
     this.props.setNewRequestHeaders({
@@ -125,8 +123,8 @@ class HeaderEntryForm extends Component {
     headersDeepCopy.push({
       id: Math.random() * 1000000,
       active: false,
-      key: "",
-      value: "",
+      key: '',
+      value: '',
     });
 
     this.props.setNewRequestHeaders({
@@ -156,7 +154,7 @@ class HeaderEntryForm extends Component {
     headersDeepCopy[indexToBeUpdated][field] = value;
 
     // also switch checkbox if they are typing
-    if (field === "key" || field === "value") {
+    if (field === 'key' || field === 'value') {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
 
@@ -182,12 +180,12 @@ class HeaderEntryForm extends Component {
   }
 
   render() {
-    let headerName = "Headers";
-    let addHeaderName = "+ Header";
+    let headerName = 'Headers';
+    let addHeaderName = '+ Header';
     // let headerClass = 'composer_submit http'
     if (this.props.newRequestFields.gRPC) {
-      headerName = "Metadata";
-      addHeaderName = "+ Metadata";
+      headerName = 'Metadata';
+      addHeaderName = '+ Metadata';
     }
 
     const headersArr = this.props.newRequestHeaders.headersArr.map(

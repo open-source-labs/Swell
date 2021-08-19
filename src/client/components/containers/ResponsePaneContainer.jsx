@@ -1,18 +1,19 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../actions/actions";
-import EventsContainer from "./EventsContainer";
-import HeadersContainer from "./HeadersContainer";
-import TestsContainer from "./TestsContainer";
-import CookiesContainer from "./CookiesContainer";
-import StatusButtons from "../display/StatusButtons";
-import ResponseTime from "../display/ResponseTime";
-import WebSocketWindow from "../display/WebSocketWindow";
-import ReqResCtrl from "../../controllers/reqResController";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
+import EventsContainer from './EventsContainer';
+import HeadersContainer from './HeadersContainer';
+import TestsContainer from './TestsContainer';
+import CookiesContainer from './CookiesContainer';
+import StatusButtons from '../display/StatusButtons';
+import ResponseTime from '../display/ResponseTime';
+import WebSocketWindow from '../display/WebSocketWindow';
+import ReqResCtrl from '../../controllers/reqResController';
 
-/// MAKE SURE YOU UPDATE THE INTERNAL COMMENTS BEFORE SENDING IT TO GITHUB
-
-export const ResponsePaneContainer = () => {
+const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
 
@@ -25,7 +26,7 @@ export const ResponsePaneContainer = () => {
   const { connection } = currentResponse;
 
   // UNCOMMENT FOR DEBUGGING
-  console.log("currentResponse on ResponsePaneContainer --> ", currentResponse);
+  console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
 
   return (
     <div
@@ -47,70 +48,70 @@ export const ResponsePaneContainer = () => {
         {/* TAB SELECTOR */}
         <div className="tabs header-bar">
           <ul className="columns is-gapless">
-            {currentResponse.request?.network === "ws" ? (
+            {currentResponse.request?.network === 'ws' ? (
               <li
                 className={`column ${
-                  activeTab === "wsWindow" ? "is-active" : ""
+                  activeTab === 'wsWindow' ? 'is-active' : ''
                 }`}
               >
-                <a id="wsSendData" onClick={() => setActiveTab("wsWindow")}>
+                <a id="wsSendData" onClick={() => setActiveTab('wsWindow')}>
                   Send Data
                 </a>
               </li>
             ) : (
               <li
                 className={`column ${
-                  activeTab === "events" ? "is-active" : ""
+                  activeTab === 'events' ? 'is-active' : ''
                 }`}
               >
-                <a onClick={() => setActiveTab("events")}> Events</a>
+                <a onClick={() => setActiveTab('events')}> Events</a>
               </li>
             )}
             {/* IF NOT WEBSOCKETS */}
-            {currentResponse.request?.network !== "ws" && (
+            {currentResponse.request?.network !== 'ws' && (
               <>
                 <li
                   className={`column ${
-                    activeTab === "headers" ? "is-active" : ""
+                    activeTab === 'headers' ? 'is-active' : ''
                   }`}
                 >
-                  <a onClick={() => setActiveTab("headers")}>
-                    {currentResponse.gRPC === true ? "Metadata" : "Headers"}
+                  <a onClick={() => setActiveTab('headers')}>
+                    {currentResponse.gRPC === true ? 'Metadata' : 'Headers'}
                   </a>
                 </li>
 
                 <li
                   className={`column ${
-                    activeTab === "cookies" ? "is-active" : ""
+                    activeTab === 'cookies' ? 'is-active' : ''
                   }`}
                 >
-                  <a onClick={() => setActiveTab("cookies")}> Cookies</a>
+                  <a onClick={() => setActiveTab('cookies')}> Cookies</a>
                 </li>
               </>
             )}
             <li
-              className={`column ${activeTab === "tests" ? "is-active" : ""}`}
+              className={`column ${activeTab === 'tests' ? 'is-active' : ''}`}
             >
-              <a onClick={() => setActiveTab("tests")}> Tests</a>
+              <a onClick={() => setActiveTab('tests')}> Tests</a>
             </li>
           </ul>
         </div>
         {/* RESPONSES CONTENT */}
         <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
-          {activeTab === "events" && (
+          {activeTab === 'events' && (
             <EventsContainer currentResponse={currentResponse} />
           )}
-          {activeTab === "headers" && (
+          {activeTab === 'headers' && (
             <HeadersContainer currentResponse={currentResponse} />
           )}
-          {activeTab === "cookies" && (
+          {activeTab === 'cookies' && (
             <CookiesContainer currentResponse={currentResponse} />
           )}
-          {activeTab === "tests" && (
+          {activeTab === 'tests' && (
             <TestsContainer currentResponse={currentResponse} />
           )}
           {/* currentResponse.request?.network === "ws" */}
-          {activeTab === "wsWindow" &&
+          {activeTab === 'wsWindow' &&
             currentResponse.request &&
             currentResponse.response &&
             currentResponse.request && (
@@ -125,9 +126,9 @@ export const ResponsePaneContainer = () => {
         </div>
         {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
         {currentResponse.id &&
-          currentResponse.request?.method !== "WS" &&
-          currentResponse.request?.method !== "SUBSCRIPTION" &&
-          (connection === "closed" || connection === "error") && (
+          currentResponse.request?.method !== 'WS' &&
+          currentResponse.request?.method !== 'SUBSCRIPTION' &&
+          (connection === 'closed' || connection === 'error') && (
             <div className="is-3rem-footer mx-3">
               <button
                 className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
@@ -141,14 +142,12 @@ export const ResponsePaneContainer = () => {
             </div>
           )}
       </div>
-
       {/* CLOSE RESPONSE BUTTON */}
-
-      {(currentResponse.request?.method === "WS" ||
-        currentResponse.request?.method === "SUBSCRIPTION" ||
+      {(currentResponse.request?.method === 'WS' ||
+        currentResponse.request?.method === 'SUBSCRIPTION' ||
         currentResponse.request?.isSSE ||
         currentResponse.isHTTP2) &&
-        connection === "open" && (
+        connection === 'open' && (
           <div className="is-3rem-footer ml-3 mr-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
@@ -162,9 +161,9 @@ export const ResponsePaneContainer = () => {
           </div>
         )}
       {/* RENDER RE-OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
-      {(currentResponse.request?.method === "WS" ||
-        currentResponse.request?.method === "SUBSCRIPTION") &&
-        (connection === "closed" || connection === "error") && (
+      {(currentResponse.request?.method === 'WS' ||
+        currentResponse.request?.method === 'SUBSCRIPTION') &&
+        (connection === 'closed' || connection === 'error') && (
           <div className="is-3rem-footer mx-3">
             <button
               className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"

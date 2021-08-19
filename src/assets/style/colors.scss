@@ -8,6 +8,8 @@ $rest: #6843ff;
 $graphql: #de33a6;
 $grpc: #6cacc1;
 $websockets: #f47d31;
+$webrtc: #4285f4;
+$openapi: #94c73d;
 
 $neutral-100: #ffffff;
 $neutral-200: #f4f5f7;
@@ -28,12 +30,28 @@ $text: $neutral-500;
 // $dark: $grey-darker
 
 // CODE MIRROR COLORS
-.cm-s-neo .cm-comment { color: $neutral-400 !important; }
-.cm-s-neo .cm-keyword, .cm-s-neo .cm-property { color: #A626A4 !important; }
-.cm-s-neo .cm-atom,.cm-s-neo .cm-number { color:$primary-200 !important; }
-.cm-s-neo .cm-node,.cm-s-neo .cm-tag { color: #a57b25 !important; }
-.cm-s-neo .cm-string { color: $primary-500 !important; }
-.cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier { color: #06a568 !important; }
+.cm-s-neo .cm-comment {
+  color: $neutral-400 !important;
+}
+.cm-s-neo .cm-keyword,
+.cm-s-neo .cm-property {
+  color: #a626a4 !important;
+}
+.cm-s-neo .cm-atom,
+.cm-s-neo .cm-number {
+  color: $primary-200 !important;
+}
+.cm-s-neo .cm-node,
+.cm-s-neo .cm-tag {
+  color: #a57b25 !important;
+}
+.cm-s-neo .cm-string {
+  color: $primary-500 !important;
+}
+.cm-s-neo .cm-variable,
+.cm-s-neo .cm-qualifier {
+  color: #06a568 !important;
+}
 
 // COLOR SCHEMES
 .is-primary-100 {
@@ -66,6 +84,16 @@ $text: $neutral-500;
   background-color: $grpc !important;
 }
 
+.is-webrtc {
+  color: $neutral-200 !important;
+  background-color: $webrtc !important;
+}
+
+.is-openapi {
+  color: $neutral-200 !important;
+  background-color: $openapi !important;
+}
+
 .is-ws {
   color: $neutral-200 !important;
   background-color: $websockets !important;
@@ -83,8 +111,15 @@ $text: $neutral-500;
   color: $grpc !important;
 }
 
+.is-openapi-color {
+  color: $openapi !important;
+}
+
 .is-ws-color {
   color: $websockets !important;
+}
+.is-webrtc-color {
+  color: $webrtc !important;
 }
 
 .is-rest-border {
@@ -95,12 +130,20 @@ $text: $neutral-500;
   border-color: $graphql !important;
 }
 
+.is-openapi-border {
+  border-color: $openapi !important;
+}
+
 .is-grpc-border {
   border-color: $grpc !important;
 }
 
 .is-ws-border {
   border-color: $websockets !important;
+}
+
+.is-webrtc-border {
+  border-color: $webrtc !important;
 }
 
 .is-neutral-300 {

@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 const express = require('express');
-const { ApolloServer } = require('apollo-server-express')
+const { ApolloServer } = require('apollo-server-express');
 const { execute, subscribe } = require('graphql');
 const { makeExecutableSchema } = require('graphql-tools');
 const { createServer } = require('http');
@@ -36,44 +36,47 @@ const typeDefs = `
 	}
 `;
 
-const links = [{
-  id: 'link-0',
-  url: 'www.getswell.io',
-  description: 'One-stop-shop for testing API endpoints'
-}]
+const links = [
+  {
+    id: 'link-0',
+    url: 'www.getswell.io',
+    description: 'One-stop-shop for testing API endpoints',
+  },
+];
 
-let idCount = links.length
+let idCount = links.length;
 
 const resolvers = {
-	Query: {
+  Query: {
     feed: () => links,
-	},
-	Mutation: {
+  },
+  Mutation: {
     post: (parent, args) => {
-       const link = {
+      const link = {
         id: `link-${idCount++}`,
         description: args.description,
         url: args.url,
-      }
-			links.push(link);
-			pubsub.publish("NEW_LINK", {newLink: link})
-      return link
+      };
+      links.push(link);
+      pubsub.publish('NEW_LINK', { newLink: link });
+      return link;
     },
-	},
-	Subscription: {
-    newLink: {  // create a subscription resolver function
+  },
+  Subscription: {
+    newLink: {
+      // create a subscription resolver function
       subscribe: () => {
-				console.log('subscribed')
-				return pubsub.asyncIterator("NEW_LINK") 
-			} // subscribe to changes in a topic
-    }
-	},
-	Link: {
+        console.log('subscribed');
+        return pubsub.asyncIterator('NEW_LINK');
+      }, // subscribe to changes in a topic
+    },
+  },
+  Link: {
     id: (parent) => parent.id,
     description: (parent) => parent.description,
-		url: (parent) => parent.url,
-	},
-}
+    url: (parent) => parent.url,
+  },
+};
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
@@ -84,15 +87,18 @@ const apolloServer = new ApolloServer({ schema });
 apolloServer.applyMiddleware({ app });
 
 const graphqlApp = ws.listen(PORT, () => {
-	console.log(`GraphQL Server is now running on http://localhost:${PORT}`);
-	new SubscriptionServer({
-    execute,
-    subscribe,
-	  schema,
-  }, {
-    server: ws,
-    path: '/graphql',
-  });
+  console.log(`GraphQL Server is now running on http://localhost:${PORT}`);
+  new SubscriptionServer(
+    {
+      execute,
+      subscribe,
+      schema,
+    },
+    {
+      server: ws,
+      path: '/graphql',
+    }
+  );
 });
 
 module.exports = graphqlApp;

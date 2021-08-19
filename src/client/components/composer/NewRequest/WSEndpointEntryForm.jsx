@@ -1,5 +1,4 @@
-/* eslint-disable default-case */
-import React from "react";
+import React from 'react';
 
 const WSEndpointEntryForm = ({
   warningMessage,
@@ -7,14 +6,13 @@ const WSEndpointEntryForm = ({
   setNewRequestFields,
   newRequestFields,
 }) => {
-  
   const warningCheck = () => {
     if (warningMessage.uri) {
       const warningMessage = { ...warningMessage };
       delete warningMessage.uri;
       setComposerWarningMessage({ ...warningMessage });
     }
-  }
+  };
 
   const urlChangeHandler = (e) => {
     warningCheck();
@@ -24,10 +22,10 @@ const WSEndpointEntryForm = ({
       wsUrl: url,
       url,
     });
-  }
+  };
 
   return (
-    <div className={`is-flex is-justify-content-center`}>
+    <div className="is-flex is-justify-content-center">
       <div id="webSocketButton" className="button is-ws">
         <span>WS</span>
       </div>
@@ -41,7 +39,7 @@ const WSEndpointEntryForm = ({
         }}
       />
       {warningMessage.uri && (
-      <div className="warningMessage">{warningMessage.uri}</div>
+        <div className="warningMessage">{warningMessage.uri}</div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable default-case */
-import React, { useRef } from "react";
+import React from 'react';
 
 const GRPCTypeAndEndpointEntryForm = ({
   warningMessage,
@@ -8,14 +8,13 @@ const GRPCTypeAndEndpointEntryForm = ({
   newRequestFields,
   newRequestStreams,
 }) => {
-
   const warningCheck = () => {
     if (warningMessage.uri) {
       const warningMessage = { ...warningMessage };
       delete warningMessage.uri;
       setComposerWarningMessage({ ...warningMessage });
     }
-  }
+  };
 
   const urlChangeHandler = (e) => {
     warningCheck();
@@ -25,16 +24,16 @@ const GRPCTypeAndEndpointEntryForm = ({
       grpcUrl: url,
       url,
     });
-  }
+  };
 
   // TO DO
   // change this to be initial state instead
-  const grpcStreamLabel = newRequestStreams.selectedStreamingType || "STREAM";
+  const grpcStreamLabel = newRequestStreams.selectedStreamingType || 'STREAM';
 
   return (
     <div className={`ml-2 mr-2 is-flex is-justify-content-center `}>
       {/* button id is now stream for vanilla JS selector, this should change */}
-      <button id="stream" className="button is-grpc" >
+      <button id="stream" className="button is-grpc">
         <span>{grpcStreamLabel}</span>
       </button>
       <input
@@ -47,7 +46,7 @@ const GRPCTypeAndEndpointEntryForm = ({
         }}
       />
       {warningMessage.uri && (
-      <div className="warningMessage">{warningMessage.uri}</div>
+        <div className="warningMessage">{warningMessage.uri}</div>
       )}
     </div>
   );

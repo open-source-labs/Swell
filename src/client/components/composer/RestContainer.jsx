@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
-import React from "react";
-import uuid from "uuid/v4"; // (Universally Unique Identifier)--generates a unique ID
-import historyController from "../../controllers/historyController";
-import HeaderEntryForm from "./NewRequest/HeaderEntryForm";
-import BodyEntryForm from "./NewRequest/BodyEntryForm.jsx";
-import TestEntryForm from "./NewRequest/TestEntryForm.jsx";
-import CookieEntryForm from "./NewRequest/CookieEntryForm.jsx";
-import RestMethodAndEndpointEntryForm from "./NewRequest/RestMethodAndEndpointEntryForm.jsx";
-import NewRequestButton from "./NewRequest/NewRequestButton.jsx";
+import React from 'react';
+import uuid from 'uuid/v4';
+import historyController from '../../controllers/historyController';
+import HeaderEntryForm from './NewRequest/HeaderEntryForm';
+import BodyEntryForm from './NewRequest/BodyEntryForm.jsx';
+import TestEntryForm from './NewRequest/TestEntryForm.jsx';
+import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
+import RestMethodAndEndpointEntryForm from './NewRequest/RestMethodAndEndpointEntryForm.jsx';
+import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 
-export default function RestContainer({
+function RestContainer({
   resetComposerFields,
   setNewRequestFields,
   newRequestFields,
@@ -18,10 +18,10 @@ export default function RestContainer({
     gRPC,
     url,
     method,
-    protocol,
     graphQL,
     restUrl,
     wsUrl,
+    webrtc,
     gqlUrl,
     grpcUrl,
     network,
@@ -45,18 +45,7 @@ export default function RestContainer({
   newRequestCookies: { cookiesArr },
   setNewRequestStreams,
   newRequestStreams,
-  newRequestStreams: {
-    selectedService,
-    selectedRequest,
-    selectedPackage,
-    streamingType,
-    initialQuery,
-    streamsArr,
-    streamContent,
-    services,
-    protoPath,
-    protoContent,
-  },
+  newRequestStreams: { protoPath },
   setNewRequestSSE,
   newRequestSSE: { isSSE },
   currentTab,
@@ -72,14 +61,14 @@ export default function RestContainer({
     //Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
+      validationMessage.uri = 'Enter a valid URI';
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = "Enter a valid URI";
+      validationMessage.uri = 'Enter a valid URI';
     }
-    if (!JSONFormatted && rawType === "application/json") {
-      validationMessage.json = "Please fix JSON body formatting errors";
+    if (!JSONFormatted && rawType === 'application/json') {
+      validationMessage.json = 'Please fix JSON body formatting errors';
     }
     return validationMessage;
   };
@@ -97,15 +86,15 @@ export default function RestContainer({
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
       URIWithoutProtocol;
-      const host = protocol + URIWithoutProtocol.split("/")[0];
-      let path = `/${URIWithoutProtocol.split("/")
+      const host = protocol + URIWithoutProtocol.split('/')[0];
+      let path = `/${URIWithoutProtocol.split('/')
         .splice(1)
-        .join("/")
-        .replace(/\/{2,}/g, "/")}`;
-      if (path.charAt(path.length - 1) === "/" && path.length > 1) {
+        .join('/')
+        .replace(/\/{2,}/g, '/')}`;
+      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
         path = path.substring(0, path.length - 1);
       }
-      path = path.replace(/https?:\//g, "http://");
+      path = path.replace(/https?:\//g, 'http://');
       reqRes = {
         id: uuid(),
         created_at: new Date(),
@@ -113,11 +102,12 @@ export default function RestContainer({
         host,
         path,
         url,
+        webrtc,
         graphQL,
         gRPC,
         timeSent: null,
         timeReceived: null,
-        connection: "uninitialized",
+        connection: 'uninitialized',
         connectionType: null,
         checkSelected: false,
         protoPath,
@@ -125,14 +115,14 @@ export default function RestContainer({
           method,
           headers: headersArr.filter((header) => header.active && !!header.key),
           cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
-          body: bodyContent || "",
+          body: bodyContent || '',
           bodyType,
-          bodyVariables: bodyVariables || "",
+          bodyVariables: bodyVariables || '',
           rawType,
           isSSE,
           network,
           restUrl,
-          testContent: testContent || "",
+          testContent: testContent || '',
           wsUrl,
           gqlUrl,
           grpcUrl,
@@ -153,7 +143,7 @@ export default function RestContainer({
 
     //reset for next request
     resetComposerFields();
-    setWorkspaceActiveTab("workspace");
+    setWorkspaceActiveTab('workspace');
   };
 
   const handleSSEPayload = (e) => {
@@ -164,7 +154,7 @@ export default function RestContainer({
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
         className="is-flex-grow-3 add-vertical-scroll"
-        style={{ overflowX: "hidden" }}
+        style={{ overflowX: 'hidden' }}
       >
         <RestMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
@@ -204,7 +194,7 @@ export default function RestContainer({
           />
           <label htmlFor="SSEswitch" />
         </div>
-        {method !== "GET" && (
+        {method !== 'GET' && (
           <BodyEntryForm
             warningMessage={warningMessage}
             newRequestBody={newRequestBody}
@@ -224,3 +214,5 @@ export default function RestContainer({
     </div>
   );
 }
+
+export default RestContainer;

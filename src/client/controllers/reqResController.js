@@ -1,12 +1,12 @@
-import * as store from "../store";
-import * as actions from "../actions/actions";
-import graphQLController from "./graphQLController.js";
+import * as store from '../store';
+import * as actions from '../actions/actions';
+import graphQLController from './graphQLController.js';
 
 const { api } = window;
 const connectionController = {
   openConnectionArray: [],
 
-  //toggles checked in state for entire reqResArray
+  // toggles checked in state for entire reqResArray
   toggleSelectAll() {
     const { reqResArray } = store.default.getState().business;
 
@@ -18,15 +18,14 @@ const connectionController = {
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
 
+  // listens for reqResUpdate event from main process telling it to update reqResObj REST EVENTS
   openReqRes(id) {
-    // listens for reqResUpdate event from main process telling it to update reqResobj
-    // REST EVENTS
-    //remove all previou listeners for 'reqresupdate' before starting to listen for 'reqresupdate' again
-    api.removeAllListeners("reqResUpdate");
-    api.receive("reqResUpdate", (reqResObj) => {
+    // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
+    api.removeAllListeners('reqResUpdate');
+    api.receive('reqResUpdate', (reqResObj) => {
       if (
-        (reqResObj.connection === "closed" ||
-          reqResObj.connection === "error") &&
+        (reqResObj.connection === 'closed' ||
+          reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
@@ -38,43 +37,46 @@ const connectionController = {
       const currentID = store.default.getState().business.currentResponse.id;
       if (currentID === reqResObj.id) {
         store.default.dispatch(
-          actions.saveCurrentResponseData(reqResObj, "currentID===reqresObj.id")
+          actions.saveCurrentResponseData(reqResObj, 'currentID===reqresObj.id')
         );
       }
     });
-    //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
+    // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
-    if (reqResObj.request.method === "SUBSCRIPTION")
+    if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
-      //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
-      api.send("open-ws", reqResObj, this.openConnectionArray);
+    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
+      // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      api.send('open-ws', reqResObj, this.openConnectionArray);
 
-      //update the connectionArray when connection is open from ws
-      api.receive("update-connectionArray", (connectionArray) => {
+      // update the connectionArray when connection is open from ws
+      api.receive('update-connectionArray', (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
       });
     }
-    //gRPC connection
+    // gRPC connection
     else if (reqResObj.gRPC) {
-      api.send("open-grpc", reqResObj);
-      //Standard HTTP?
+      api.send('open-grpc', reqResObj);
+      // Standard HTTP?
+    } else if (reqResObj.openapi) {
+      console.log('got an open api request to fill');
+      console.log(reqResObj);
     } else {
-      api.send("open-http", reqResObj, this.openConnectionArray);
+      api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },
 
   openScheduledReqRes(id) {
-    // listens for reqResUpdate event from main process telling it to update reqResobj
+    // listens for reqResUpdate event from main process telling it to update reqResObj
     // REST EVENTS
-    api.removeAllListeners("reqResUpdate");
-    api.receive("reqResUpdate", (reqResObj) => {
+    api.removeAllListeners('reqResUpdate');
+    api.receive('reqResUpdate', (reqResObj) => {
       if (
-        (reqResObj.connection === "closed" ||
-          reqResObj.connection === "error") &&
+        (reqResObj.connection === 'closed' ||
+          reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
@@ -83,38 +85,38 @@ const connectionController = {
       }
       store.default.dispatch(actions.scheduledReqResUpdate(reqResObj));
     });
-    //Since only obj ID is passed in, next two lines get the current array of reqest objects and finds the one with matching ID
+    // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
     const reqResArr = store.default.getState().business.reqResArray;
     const reqResObj = reqResArr.find((el) => el.id === id);
-    if (reqResObj.request.method === "SUBSCRIPTION")
+    if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol)) {
-      //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
-      api.send("open-ws", reqResObj, this.openConnectionArray);
+      // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      api.send('open-ws', reqResObj, this.openConnectionArray);
 
-      //update the connectionArray when connection is open from ws
-      api.receive("update-connectionArray", (connectionArray) => {
+      // update the connectionArray when connection is open from ws
+      api.receive('update-connectionArray', (connectionArray) => {
         this.openConnectionArray.push(...connectionArray);
       });
     }
-    //gRPC connection
+    // gRPC connection
     else if (reqResObj.gRPC) {
-      api.send("open-grpc", reqResObj);
-      //Standard HTTP?
+      api.send('open-grpc', reqResObj);
+      // Standard HTTP?
     } else {
-      api.send("open-http", reqResObj, this.openConnectionArray);
+      api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },
 
   runCollectionTest(reqResArray) {
-    api.removeAllListeners("reqResUpdate");
+    api.removeAllListeners('reqResUpdate');
     let index = 0;
-    api.receive("reqResUpdate", (reqResObj) => {
+    api.receive('reqResUpdate', (reqResObj) => {
       if (
-        (reqResObj.connection === "closed" ||
-          reqResObj.connection === "error") &&
+        (reqResObj.connection === 'closed' ||
+          reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
@@ -124,7 +126,7 @@ const connectionController = {
       store.default.dispatch(actions.reqResUpdate(reqResObj));
 
       store.default.dispatch(
-        actions.saveCurrentResponseData(reqResObj, "api.receive reqresupdate")
+        actions.saveCurrentResponseData(reqResObj, 'api.receive reqresupdate')
       );
       if (index < reqResArray.length) {
         runSingletest(reqResArray[index]);
@@ -134,25 +136,25 @@ const connectionController = {
     const reqResObj = reqResArray[index];
 
     function runSingletest(reqResObj) {
-      if (reqResObj.request.method === "SUBSCRIPTION")
+      if (reqResObj.request.method === 'SUBSCRIPTION')
         graphQLController.openSubscription(reqResObj);
       else if (reqResObj.graphQL) {
         graphQLController.openGraphQLConnectionAndRunCollection(reqResArray);
       } else if (/wss?:\/\//.test(reqResObj.protocol)) {
-        //create context bridge to wsController in node process to open connection, send the reqResObj and connection array
-        api.send("open-ws", reqResObj);
+        // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+        api.send('open-ws', reqResObj);
 
-        //update the connectionArray when connection is open from ws
-        api.receive("update-connectionArray", (connectionArray) => {
+        // update the connectionArray when connection is open from ws
+        api.receive('update-connectionArray', (connectionArray) => {
           this.openConnectionArray.push(...connectionArray);
         });
       }
-      //gRPC connection
+      // gRPC connection
       else if (reqResObj.gRPC) {
-        api.send("open-grpc", reqResObj);
-        //Standard HTTP?
+        api.send('open-grpc', reqResObj);
+        // Standard HTTP?
       } else {
-        api.send("open-http", reqResObj);
+        api.send('open-http', reqResObj);
       }
     }
     runSingletest(reqResObj);
@@ -178,19 +180,19 @@ const connectionController = {
       JSON.stringify(reqResArr.find((reqRes) => reqRes.id === id))
     );
 
-    foundReqRes.connection = "closed";
+    foundReqRes.connection = 'closed';
     store.default.dispatch(actions.reqResUpdate(foundReqRes));
     store.default.dispatch(
       actions.saveCurrentResponseData(
         foundReqRes,
-        "foundreqres.connection closed"
+        'foundreqres.connection closed'
       )
     );
   },
 
   closeReqRes(reqResObj) {
-    if (reqResObj.protocol.includes("http")) {
-      api.send("close-http", reqResObj);
+    if (reqResObj.protocol.includes('http')) {
+      api.send('close-http', reqResObj);
     }
 
     const { id } = reqResObj;
@@ -200,8 +202,8 @@ const connectionController = {
     const foundAbortController = this.openConnectionArray.find(
       (obj) => obj.id === id
     );
-    if (foundAbortController && foundAbortController.protocol === "WS") {
-      api.send("close-ws");
+    if (foundAbortController && foundAbortController.protocol === 'WS') {
+      api.send('close-ws');
     }
     this.openConnectionArray = this.openConnectionArray.filter(
       (obj) => obj.id !== id
@@ -219,7 +221,7 @@ const connectionController = {
     store.default.dispatch(actions.reqResClear());
   },
 
-  //toggles minimized in ReqRes array in state
+  // toggles minimized in ReqRes array in state
   toggleMinimizeAll() {
     const { reqResArray } = store.default.getState().business;
 
@@ -230,7 +232,7 @@ const connectionController = {
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-  //clears a dataPoint from state
+  // clears a dataPoint from state
   clearGraph() {
     store.default.dispatch(actions.clearGraph());
   },
