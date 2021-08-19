@@ -1,13 +1,13 @@
 # Build folder and files #
 ##########################
-builds/
+build/
 release/
 
 # Development folders and files #
 #################################
 .tmp/
 dist/
-node_modules/
+node_modules
 *.compiled.*
 package-lock.json
 coverage/
