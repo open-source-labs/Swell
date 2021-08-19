@@ -1,22 +1,32 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
+/* eslint-disable react/jsx-props-no-spreading */
+import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/actions';
+import NetworkDropdown from './NetworkDropdown';
+import RestContainer from './RestContainer.jsx';
+import OpenAPIContainer from './OpenAPIContainer.jsx';
+import GraphQLContainer from './GraphQLContainer.jsx';
+import GRPCContainer from './GRPCContainer.jsx';
+import WSContainer from './WSContainer.jsx';
+import WebRTCContainer from './WebRTCContainer';
 
-import ComposerNewRequest from "./NewRequest/ComposerNewRequest.jsx";
-import ComposerWarning from "./Warning/ComposerWarning.jsx";
-
-const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  composerDisplay: store.ui.composerDisplay,
-  newRequestFields: store.business.newRequestFields,
-  newRequestHeaders: store.business.newRequestHeaders,
-  newRequestStreams: store.business.newRequestStreams,
-  newRequestBody: store.business.newRequestBody,
-  newRequestCookies: store.business.newRequestCookies,
-  newRequestSSE: store.business.newRequestSSE,
-  currentTab: store.business.currentTab,
-  warningMessage: store.business.warningMessage,
-});
+const mapStateToProps = (store) => {
+  return {
+    reqResArray: store.business.reqResArray,
+    composerDisplay: store.ui.composerDisplay,
+    newRequestFields: store.business.newRequestFields,
+    newRequestHeaders: store.business.newRequestHeaders,
+    newRequestStreams: store.business.newRequestStreams,
+    newRequestBody: store.business.newRequestBody,
+    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
+    newRequestCookies: store.business.newRequestCookies,
+    newRequestSSE: store.business.newRequestSSE,
+    currentTab: store.business.currentTab,
+    warningMessage: store.business.warningMessage,
+    introspectionData: store.business.introspectionData,
+    webrtcData: store.business.webrtcData,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   reqResAdd: (reqRes) => {
@@ -40,62 +50,202 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestBody: (requestBodyObj) => {
     dispatch(actions.setNewRequestBody(requestBodyObj));
   },
+  setNewTestContent: (testContent) => {
+    dispatch(actions.setNewTestContent(testContent));
+  },
   setNewRequestCookies: (requestCookiesObj) => {
     dispatch(actions.setNewRequestCookies(requestCookiesObj));
   },
   setNewRequestSSE: (requestSSEBool) => {
     dispatch(actions.setNewRequestSSE(requestSSEBool));
   },
+  setNewRequestsOpenAPI: (parsedDocument) => {
+    dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
+  },
+  resetComposerFields: () => {
+    dispatch(actions.resetComposerFields());
+  },
+  setWorkspaceActiveTab: (tabName) => {
+    dispatch(actions.setWorkspaceActiveTab(tabName));
+  },
 });
 
-class ComposerContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    let composerContents;
-    switch (
-      this.props.composerDisplay // conditional rendering of components based on the value of composerDisplay in redux store
-    ) {
-      case "Request": {
-        composerContents = (
-          <ComposerNewRequest
-            composerDisplay={this.props.composerDisplay}
-            newRequestFields={this.props.newRequestFields}
-            newRequestHeaders={this.props.newRequestHeaders}
-            newRequestStreams={this.props.newRequestStreams}
-            newRequestCookies={this.props.newRequestCookies}
-            newRequestBody={this.props.newRequestBody}
-            newRequestSSE={this.props.newRequestSSE}
-            currentTab={this.props.currentTab}
-            reqResAdd={this.props.reqResAdd}
-            setComposerWarningMessage={this.props.setComposerWarningMessage}
-            setComposerDisplay={this.props.setComposerDisplay}
-            setNewRequestFields={this.props.setNewRequestFields}
-            setNewRequestHeaders={this.props.setNewRequestHeaders}
-            setNewRequestStreams={this.props.setNewRequestStreams}
-            setNewRequestCookies={this.props.setNewRequestCookies}
-            setNewRequestBody={this.props.setNewRequestBody}
-            setNewRequestSSE={this.props.setNewRequestSSE}
-          />
-        );
-        break;
-      }
-      case "Warning": {
-        composerContents = (
-          <ComposerWarning
-            warningMessage={this.props.warningMessage}
-            setComposerDisplay={this.props.setComposerDisplay}
-          />
-        );
-        break;
-      }
-      default:
-        console.log("Incorrect Model Display setting");
+const ComposerContainer = (props) => {
+  const onProtocolSelect = (network) => {
+    if (props.warningMessage.uri) {
+      const warningMessage = { ...props.warningMessage };
+      delete warningMessage.uri;
+      props.setComposerWarningMessage({ ...warningMessage });
     }
-    return <div className="composerContents">{composerContents}</div>;
-  }
-}
+    props.setComposerWarningMessage({});
+    switch (network) {
+      case 'graphQL': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.gqlUrl,
+          method: 'QUERY',
+          graphQL: true,
+          gRPC: false,
+          webrtc: false,
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'GQL',
+          bodyContent: `query {
+
+}`,
+          bodyVariables: '',
+        });
+        break;
+      }
+      case 'rest': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.restUrl,
+          method: 'GET',
+          graphQL: false,
+          webrtc: false,
+          gRPC: false,
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'none',
+          bodyContent: ``,
+        });
+        break;
+      }
+      case 'openapi': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: '',
+          method: 'GET',
+          graphQL: false,
+          gRPC: false,
+          ws: false,
+          network: 'openapi',
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'none',
+          bodyContent: '',
+        });
+        break;
+      }
+      case 'grpc': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.grpcUrl,
+          method: '',
+          graphQL: false,
+          gRPC: true,
+          webrtc: false,
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'GRPC',
+          bodyContent: ``,
+        });
+        break;
+      }
+      case 'ws': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.wsUrl,
+          method: '',
+          graphQL: false,
+          gRPC: false,
+          webrtc: false,
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'none',
+          bodyContent: '',
+        });
+        break;
+      }
+      case 'webrtc': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.webrtcUrl,
+          method: 'WebRTC',
+          graphQL: false,
+          gRPC: false,
+          ws: false,
+          webrtc: true,
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'stun-ice',
+          bodyContent: {
+            iceConfiguration: {
+              iceServers: [
+                {
+                  urls: 'stun:stun1.l.google.com:19302',
+                },
+              ],
+            },
+          },
+        });
+        break;
+      }
+
+      default:
+    }
+  };
+
+  return (
+    <div className="composerContents is-flex is-flex-direction-column is-tall">
+      {/* DROPDOWN PROTOCOL SELECTOR */}
+      <NetworkDropdown
+        onProtocolSelect={onProtocolSelect}
+        network={props.newRequestFields.network}
+        className="header-bar"
+      />
+
+      {/* COMPOSER CONTENT ROUTING */}
+      <div className="is-not-7-5rem-tall pt-3 pl-3 pr-3">
+        {props.newRequestFields.network === 'rest' && (
+          <RestContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'openapi' && (
+          <OpenAPIContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'graphQL' && (
+          <GraphQLContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'ws' && <WSContainer {...props} />}
+        {props.newRequestFields.network === 'grpc' && (
+          <GRPCContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'webrtc' && (
+          <WebRTCContainer {...props} />
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComposerContainer);

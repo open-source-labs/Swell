@@ -1,38 +1,37 @@
-import React, { Component } from "react";
-import History from "./History.jsx";
-import parse from "date-fns/parse";
-import isYesterday from "date-fns/is_yesterday";
-import isToday from "date-fns/is_today";
-import format from "date-fns/format";
+import React, { Component } from 'react';
+import parse from 'date-fns/parse';
+import isYesterday from 'date-fns/is_yesterday';
+import isToday from 'date-fns/is_today';
+import format from 'date-fns/format';
+import History from './History.jsx';
 
 class HistoryDate extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
     this.focusOnForm = this.focusOnForm.bind(this);
   }
 
   focusOnForm(event) {
-    let composerUrlField = document.querySelector(".composer_url_input");
+    const composerUrlField = document.querySelector('.composer_url_input');
     composerUrlField.focus();
   }
 
   render() {
-    let current = this.props.history.find(
+    const current = this.props.history.find(
       (a) => a.date === this.props.content.date
     );
     let date = parse(current.date);
 
     if (isToday(date)) {
-      date = "Today";
+      date = 'Today';
     } // If the date matches todays date render the word "Today"
     else if (isYesterday(date)) {
-      date = "Yesterday";
+      date = 'Yesterday';
     } else {
-      date = format(date, "ddd, MMM D, YYYY");
+      date = format(date, 'ddd, MMM D, YYYY');
     }
 
-    let histArray = current.history.map((history, i) => {
+    const histArray = current.history.map((history, i) => {
       return (
         <History
           content={history}
@@ -44,14 +43,18 @@ class HistoryDate extends Component {
           setNewRequestCookies={this.props.setNewRequestCookies}
           setNewRequestBody={this.props.setNewRequestBody}
           setNewRequestStreams={this.props.setNewRequestStreams}
+          newRequestFields={this.props.newRequestFields}
         />
       );
     });
 
     return (
-      <div className="historyDate">
-        <h1 aria-label="queryDate">{date}</h1>
+      <div>
+        <h5 className="history-date" aria-label="queryDate">
+          {date}
+        </h5>
         {histArray}
+        <hr />
       </div>
     );
   }

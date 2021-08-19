@@ -1,0 +1,163 @@
+// EMPTY STATE
+.empty-state-wrapper {
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-state-img {
+  max-width: 160px;
+}
+
+.is-not-8rem-tall {
+  height: calc(100vh - 8rem) !important;
+}
+.is-not-7-5rem-tall {
+  height: calc(100vh - 7.5rem) !important;
+}
+.is-not-5rem-tall {
+  height: calc(100% - 5rem) !important;
+}
+.is-not-2-5-rem-tall {
+  height: calc(100% - 2.5rem) !important;
+}
+
+.response-loading {
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+
+  /* you dont need the stuff below, but its what I used to create the loading circle */
+  border: 2px solid $neutral-400;
+  border-radius: 50px;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+// EVENTS (CODEMIRROR STYLES)
+.CodeMirror * {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.cm-s-responsebody {
+  background-color: $neutral-100;
+  color: $neutral-400;
+  border: 1px solid $neutral-300;
+  font-size: 0.75rem;
+  margin-bottom: 0 !important;
+  // height: 800px !important;
+  height: calc(100vh - 8rem) !important;
+  // height: 100% !important;
+}
+.cm-s-responsebody .CodeMirror-gutters {
+  border: none;
+  color: $neutral-300;
+}
+.cm-s-responsebody .CodeMirror-linenumber {
+  border: none;
+  color: $neutral-300;
+}
+
+// HEADERS & COOKIES
+
+.scrollable-containers {
+  overflow-y: scroll;
+}
+
+.header-bar {
+  position: relative;
+  height: 2.5em !important;
+  min-height: 2.5em !important;
+}
+
+table {
+  margin-bottom: 2rem;
+}
+
+.extended {
+  max-width: 33.3vw;
+  overflow-x: hidden !important;
+}
+
+td {
+  min-width: 9rem;
+  max-width: 50%;
+}
+
+.table-value {
+  max-width: 60% !important;
+  display: flex;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+}
+
+.cookie-container {
+  // max-width: 100px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cookie-container thead:hover {
+  cursor: pointer;
+  background-color: $primary-100;
+  transition: 0.3s;
+}
+
+// STATUS BUTTONS
+
+.status-tag {
+  position: absolute;
+  font-size: 0.75rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 12px;
+  margin-top: 2px;
+  border: 0px;
+  border-radius: 2px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: 600;
+}
+
+.is-edit {
+  height: 100%;
+}
+
+.response-time-placement {
+  position: absolute;
+  left: 1rem;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.response-size-placement {
+  position: absolute;
+  left: 5rem;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.overflow-event-child-container {
+  position: relative;
+  overflow-y: scroll;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+  padding-right: 17px;
+  box-sizing: content-box;
+}
+
+.overflow-event-parent-container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}

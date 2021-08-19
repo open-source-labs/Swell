@@ -1,254 +1,338 @@
-import React, { Component } from "react";
-import connectionController from "../../controllers/reqResController";
-import OpenBtn from "../display/OpenBtn.jsx";
-import CloseBtn from "../display/CloseBtn.jsx";
-import RequestTabs from "../display/RequestTabs.jsx";
-import ResponseContainer from "./ResponseContainer.jsx";
-import WebSocketWindow from "../display/WebSocketWindow.jsx";
-import dropDownArrow from "../../../assets/icons/arrow_drop_down_white_192x192.png";
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions.js';
+import connectionController from '../../controllers/reqResController';
+import RestRequestContent from '../display/RestRequestContent.jsx';
+import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
+import WebRTCRequestContent from '../display/WebRTCRequestContent.jsx';
+import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
+import OpenAPIRequestContent from '../display/OpenAPIRequestContent.jsx';
 
-class SingleReqResContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.removeReqRes = this.removeReqRes.bind(this);
-    this.onCheckHandler = this.onCheckHandler.bind(this);
-    this.minimize = this.minimize.bind(this);
-  }
+const SingleReqResContainer = (props) => {
+  const [showDetails, setShowDetails] = useState(false);
+  const dispatch = useDispatch();
 
-  onCheckHandler() {
-    this.props.content.checked = !this.props.content.checked;
-    this.props.reqResUpdate(this.props.content);
-  }
+  const currentResponse = useSelector(
+    (store) => store.business.currentResponse
+  );
 
-  removeReqRes() {
-    connectionController.closeReqRes(this.props.content.id);
-    this.props.reqResDelete(this.props.content);
-  }
+  const newRequestFields = useSelector(
+    (store) => store.business.newRequestFields
+  );
 
-  minimize() {
-    this.props.content.minimized = !this.props.content.minimized;
-    this.props.reqResUpdate(this.props.content);
-  }
+  const {
+    content,
+    content: { protocol, request, connection, connectionType, isHTTP2, url },
 
-  renderStatusCode() {
-    if (this.props.content.graphQL) {
-      // graphql
-      const statusCode = !this.props.content.response.events
-        ? ""
-        : this.props.content.response.events &&
-          this.props.content.response.events.length
-        ? JSON.parse(this.props.content.response.events[0]).statusCode
-        : "";
-      return !this.props.content.response.events
-        ? ""
-        : this.props.content.response.events &&
-          this.props.content.response.events.length &&
-          statusCode
-        ? "Status: " + statusCode
-        : "Status: 200";
-    } else if (/wss?:\/\//.test(this.props.content.protocol)) {
-      // ws - close codes
-      return this.props.content.closeCode
-        ? `Close Code: ${this.props.content.closeCode}`
-        : "";
-    } else {
-      // http
-      return this.props.content.response.headers &&
-        this.props.content.response.headers[":status"]
-        ? "Status: " + this.props.content.response.headers[":status"]
-        : "";
+    reqResDelete,
+    index,
+  } = props;
+  const network = content.request.network;
+  const method = content.request.method;
+
+  useEffect(() => {
+    if (content.request.network === 'webrtc') {
+      setShowDetails(true);
     }
-  }
+  }, [content.request.network]);
 
-  render() {
-    const contentBody = [];
+  const copyToComposer = () => {
+    let requestFieldObj = {};
 
-    if (
-      /wss?:\/\//.test(this.props.content.protocol) &&
-      !this.props.content.graphQL
-    ) {
-      contentBody.push(
-        <WebSocketWindow
-          key={0}
-          outgoingMessages={this.props.content.request.messages}
-          incomingMessages={this.props.content.response.messages}
-          id={this.props.content.id}
-          connection={this.props.content.connection}
-        />
+    if (network === 'rest') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        restUrl: content.request.restUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        webrtc: content.webrtc || false,
+        network,
+        testContent: content.request.testContent,
+      };
+    }
+
+    if (network === 'ws') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        wsUrl: content.request.wsUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+      };
+    }
+
+    if (network === 'webrtc') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        wsUrl: content.request.wsUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+        webrtcData: content.webrtcData,
+      };
+    }
+
+    if (network === 'graphQL') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        gqlUrl: content.request.gqlUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+        testContent: content.request.testContent,
+      };
+    }
+
+    if (network === 'grpc') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        grpcUrl: content.request.grpcUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+        testContent: content.request.testContent,
+      };
+    }
+
+    let headerDeeperCopy;
+
+    if (content.request.headers) {
+      headerDeeperCopy = JSON.parse(JSON.stringify(content.request.headers));
+      headerDeeperCopy.push({
+        id: content.request.headers.length + 1,
+        active: false,
+        key: '',
+        value: '',
+      });
+    }
+
+    let cookieDeeperCopy;
+
+    if (content.request.cookies && !/ws/.test(protocol)) {
+      cookieDeeperCopy = JSON.parse(JSON.stringify(content.request.cookies));
+      cookieDeeperCopy.push({
+        id: content.request.cookies.length + 1,
+        active: false,
+        key: '',
+        value: '',
+      });
+    }
+
+    const requestHeadersObj = {
+      headersArr: headerDeeperCopy || [],
+      count: headerDeeperCopy ? headerDeeperCopy.length : 1,
+    };
+
+    const requestCookiesObj = {
+      cookiesArr: cookieDeeperCopy || [],
+      count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
+    };
+
+    const requestBodyObj = {
+      webrtcData: content.webrtcData,
+      bodyType: content.request.bodyType || 'raw',
+      bodyContent: content.request.body || '',
+      bodyVariables: content.request.bodyVariables || '',
+      rawType: content.request.rawType || 'Text (text/plain)',
+      JSONFormatted: true,
+      bodyIsNew: false,
+    };
+
+    dispatch(actions.setNewRequestFields(requestFieldObj));
+    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+    dispatch(actions.setNewRequestBody(requestBodyObj));
+    dispatch(actions.setNewRequestSSE(content.request.isSSE));
+
+    if (content && content.gRPC) {
+      const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
+      const contentsDeepCopy = JSON.parse(
+        JSON.stringify(content.streamContent)
       );
-    } else {
-      contentBody.push(
-        <RequestTabs requestContent={this.props.content.request} key={0} />
-      );
-      if (this.props.content.connection !== "uninitialized") {
-        contentBody.push(
-          <ResponseContainer
-            content={this.props.content}
-            connectionType={this.props.content.connectionType}
-            reqResUpdate={this.props.reqResUpdate}
-            key={1}
-          />
-        );
-      }
+
+      // construct the streams obj from passed in history content & set state in store
+      const requestStreamsObj = {
+        streamsArr: streamsDeepCopy,
+        count: content.queryArr.length,
+        streamContent: contentsDeepCopy,
+        selectedPackage: content.packageName,
+        selectedRequest: content.rpc,
+        selectedService: content.service,
+        selectedStreamingType: content.request.method,
+        initialQuery: content.initialQuery,
+        queryArr: content.queryArr,
+        protoPath: content.protoPath,
+        services: content.servicesObj,
+        protoContent: content.protoContent,
+      };
+
+      dispatch(actions.setNewRequestStreams(requestStreamsObj));
     }
 
-    const openButtonStyles = {
-      display:
-        this.props.content.connection === "uninitialized" ||
-        this.props.content.connection === "closed" ||
-        this.props.content.connection === "error"
-          ? "block"
-          : "none",
-    };
+    dispatch(actions.setSidebarActiveTab('composer'));
+  };
 
-    const closeButtonStyles = {
-      display:
-        this.props.content.connection === "pending" ||
-        this.props.content.connection === "open"
-          ? "block"
-          : "none",
-    };
+  const removeReqRes = () => {
+    connectionController.closeReqRes(content);
+    reqResDelete(content);
+  };
 
-    const errorStyles = {
-      display: this.props.content.connection === "error" ? "block" : "none",
-      color: "red",
-    };
+  const getBorderClass = () => {
+    let classes = 'highlighted-response ';
+    if (currentResponse.gRPC) classes += 'is-grpc-border';
+    else if (currentResponse.graphQL) classes += 'is-graphQL-border';
+    else if (currentResponse.request.method === 'WS') classes += 'is-ws-border';
+    else if (currentResponse.webrtc) classes += 'is-webrtc-border';
+    else classes += 'is-rest-border';
+    return classes;
+  };
 
-    const http2Display = {
-      display: this.props.content.isHTTP2 ? "block" : "none",
-    };
+  const highlightClasses =
+    currentResponse.id === content.id ? getBorderClass(currentResponse) : '';
 
-    let statusLight;
-
-    switch (this.props.content.connection) {
-      case "uninitialized":
-        statusLight = <status-indicator />;
-        break;
-      case "pending":
-        statusLight = <status-indicator intermediary pulse />;
-        break;
-      case "open":
-        statusLight = <status-indicator positive pulse />;
-        break;
-      case "closed":
-        statusLight = <status-indicator negative />;
-        break;
-      case "error":
-        statusLight = <status-indicator negative />;
-        break;
-      default:
-        console.log("not a valid connection for content object");
-    }
-    // TODO: remove later
-    const arrowClass = !this.props.content.minimized
-      ? "composer_subtitle_arrow-open"
-      : "composer_subtitle_arrow-closed";
-    return (
-      <div>
-        <div className="resreq_wrap" id={this.props.content.id}>
-          <div className="title-row">
-            <span
-              className="primary-title highlighter title_reverse-offset"
-              onClick={this.minimize}
-            >
-              <span>
-                <img className={arrowClass} src={dropDownArrow}></img>
-              </span>
-              <pre>
-                <p> </p>
-              </pre>
-              {this.props.content.request.method}
-            </span>
-            <span className="primary-title ">{this.props.content.url}</span>
+  return (
+    <div className={`m-3 ${highlightClasses}`}>
+      {/* TITLE BAR */}
+      <div className="is-flex cards-titlebar">
+        <div
+          className={`is-flex-grow-1 is-${network} is-flex-basis-0 is-flex is-justify-content-center is-align-items-center has-text-weight-medium`}
+        >
+          {request.method}
+        </div>
+        <div className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between">
+          <div className="is-flex is-align-items-center ml-2">{url}</div>
+          {/* RENDER STATUS */}
+          <div className="req-status mr-1 is-flex is-align-items-center">
+            {connection === 'uninitialized' && (
+              <div className="connection-uninitialized" />
+            )}
+            {connection === 'error' && <div className="connection-error" />}
+            {connection === 'open' && <div className="connection-open" />}
+            {connection === 'closed' &&
+              method !== 'WS' &&
+              method !== 'SUBSCRIPTION' && (
+                <div className="connection-closed" />
+              )}
+            {connection === 'closed' &&
+              (method === 'WS' || method === 'SUBSCRIPTION') && (
+                <div className="connection-closedsocket" />
+              )}
           </div>
-          {
-            //----------------------------------------
-            //Contitionally minimize the current reqRescontainer
-            //----------------------------------------
-            !this.props.content.minimized && (
-              <>
-                <div className="grid-7">
-                  <div>
-                    <input
-                      id={this.props.content.id}
-                      checked={this.props.content.checked}
-                      className="reqres_select-radio"
-                      name="resreq-select"
-                      type="checkbox"
-                      onChange={this.onCheckHandler}
-                    />
-                  </div>
-
-                  <div className="btn-sm">
-                    <OpenBtn
-                      stylesObj={openButtonStyles}
-                      content={this.props.content}
-                      connectionStatus={this.props.content.connection}
-                      reqResUpdate={this.props.reqResUpdate}
-                    />
-                    <CloseBtn
-                      stylesObj={closeButtonStyles}
-                      content={this.props.content}
-                      connectionStatus={this.props.content.connection}
-                    />
-                  </div>
-
-                  <div className="btn-sm">
-                    <button
-                      type="button"
-                      className="btn resreq_remove"
-                      onClick={this.removeReqRes}
-                    >
-                      Remove
-                    </button>
-                  </div>
-
-                  <div>{statusLight}</div>
-
-                  <span className="tertiary-title">
-                    {this.props.content.connectionType}
-                  </span>
-
-                  {this.props.content.request.method === "SUBSCRIPTION" ||
-                  /wss?:\/\//.test(this.props.content.protocol) ||
-                  this.props.content.connectionType === "SSE" ? (
-                    <></>
-                  ) : (
-                    <span
-                      className="tertiary-title roundtrip"
-                      title="The amount of time it takes to recieve response"
-                    >
-                      Roundtrip:{" "}
-                      {this.props.content.connection === "open" ||
-                      this.props.content.connection === "pending" ||
-                      this.props.content.timeReceived === null
-                        ? 0
-                        : this.props.content.timeReceived -
-                          this.props.content.timeSent}{" "}
-                      ms
-                    </span>
-                  )}
-
-                  <div className="tertiary-title">
-                    {this.renderStatusCode()}
-                  </div>
-                </div>
-                <div style={http2Display} className={"httptwo"}>
-                  HTTP2 connection: Requests with the same host will share a
-                  single HTTP2 connection.
-                </div>
-
-                <div style={errorStyles} className="networkerror">
-                  There was a network error in connecting to endpoint.
-                </div>
-                {contentBody}
-              </>
-            )
-          }
         </div>
       </div>
-    );
-  }
-}
-
+      {/* VIEW REQUEST DETAILS / MINIMIZE */}
+      {network !== 'ws' && (
+        <div
+          className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
+          onClick={() => {
+            setShowDetails(showDetails === false);
+          }}
+        >
+          {showDetails === true && 'Hide Request Details'}
+          {showDetails === false && 'View Request Details'}
+          {network !== 'openapi' && showDetails === true && (
+            <div
+              className="is-clickable is-primary-link mr-3"
+              onClick={copyToComposer}
+            >
+              Copy to Composer
+            </div>
+          )}
+        </div>
+      )}
+      {/* REQUEST ELEMENTS */}
+      {showDetails === true && (
+        <div className="is-neutral-200-box">
+          {network === 'rest' && (
+            <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
+          )}
+          {network === 'openapi' && (
+            <OpenAPIRequestContent
+              request={content.request}
+              isHTTP2={isHTTP2}
+            />
+          )}
+          {network === 'grpc' && (
+            <GRPCRequestContent
+              request={content.request}
+              rpc={content.rpc}
+              service={content.service}
+            />
+          )}
+          {network === 'graphQL' && (
+            <GraphQLRequestContent request={content.request} />
+          )}
+          {network === 'webrtc' && <WebRTCRequestContent content={content} />}
+        </div>
+      )}
+      {/* REMOVE / SEND BUTTONS */}
+      <div className="is-flex">
+        <button
+          className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
+          id={request.method.split(' ').join('-')}
+          onClick={() => {
+            removeReqRes();
+            dispatch(actions.saveCurrentResponseData({}));
+          }}
+        >
+          Remove
+        </button>
+        {/* SEND BUTTON */}
+        {connection === 'uninitialized' && (
+          <button
+            className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
+            id={`send-button-${index}`}
+            disabled={network === 'webrtc'}
+            onClick={() => {
+              //check the request type
+              //if it's http, dispatch set active tab to "event" for reqResResponse
+              //otherwise do nothing
+              if (connectionType !== 'WebSocket') {
+                dispatch(actions.setResponsePaneActiveTab('events'));
+              }
+              connectionController.openReqRes(content.id);
+              dispatch(
+                actions.saveCurrentResponseData(
+                  content,
+                  'singleReqResContainercomponentSendHandler'
+                )
+              ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
+            }}
+          >
+            Send
+          </button>
+        )}
+        {/* VIEW RESPONSE BUTTON */}
+        {connection !== 'uninitialized' && (
+          <button
+            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
+            id={`view-button-${index}`}
+            onClick={() => {
+              dispatch(actions.saveCurrentResponseData(content));
+            }}
+          >
+            View Response
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
 export default SingleReqResContainer;

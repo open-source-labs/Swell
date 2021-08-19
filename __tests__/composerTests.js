@@ -1,21 +1,21 @@
-import React from "react";
-import { configure, shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import ProtocolSelect from "../src/client/components/composer/NewRequest/ProtocolSelect.jsx";
+/* eslint-disable react/jsx-props-no-spreading */
+import React from 'react';
+import { configure, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import ProtocolSelect from '../src/client/components/composer/NewRequest/ProtocolSelect.jsx';
 
 configure({ adapter: new Adapter() });
 
-describe("GraphQL Composer", () => {
-  let state;
-  state = {
-    currentTab: "First Tab",
+describe('GraphQL Composer', () => {
+  const state = {
+    currentTab: 'First Tab',
     reqResArray: [],
     history: [],
-    warningMessage: "",
+    warningMessage: '',
     newRequestFields: {
-      method: "GET",
-      protocol: "",
-      url: "",
+      method: 'GET',
+      protocol: '',
+      url: '',
       graphQL: false,
     },
     newRequestHeaders: {
@@ -27,18 +27,18 @@ describe("GraphQL Composer", () => {
       count: 0,
     },
     newRequestBody: {
-      bodyContent: "",
-      bodyType: "raw",
-      rawType: "Text (text/plain)",
+      bodyContent: '',
+      bodyType: 'raw',
+      rawType: 'Text (text/plain)',
       JSONFormatted: true,
-      bodyVariables: "",
+      bodyVariables: '',
     },
   };
-  describe("Setting GQL fields, headers, and body", () => {
-    describe("ProtocolSelect", () => {
+  describe('Setting GQL fields, headers, and body', () => {
+    describe('ProtocolSelect', () => {
       let wrapper;
       const props = {
-        currentProtocol: "",
+        currentProtocol: '',
         onChangeHandler: jest.fn(),
         graphQL: false,
       };
@@ -47,8 +47,8 @@ describe("GraphQL Composer", () => {
         wrapper = shallow(<ProtocolSelect {...props} />);
       });
 
-      it("Renders a <div>", () => {
-        expect(wrapper.type()).toEqual("div");
+      it('Renders a <div>', () => {
+        expect(wrapper.type()).toEqual('div');
       });
     });
   });

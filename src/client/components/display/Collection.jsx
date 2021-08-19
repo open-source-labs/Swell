@@ -1,43 +1,54 @@
-import React, { Component } from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions';
 import collectionsController from '../../controllers/collectionsController';
-import Trashcan from '../../../assets/img/Trashcan.png'
 
-class Collection extends Component {
-  constructor(props) {
-    super(props);
-    // this.state = {};
-    this.deleteCollection = this.deleteCollection.bind(this);
-    this.addCollectionToReqResContainer = this.addCollectionToReqResContainer.bind(this);
-  }
+const Collection = (props) => {
+  const dispatch = useDispatch();
+  const setWorkspaceTab = (tabName) =>
+    dispatch(actions.setWorkspaceActiveTab(tabName));
 
-  addCollectionToReqResContainer() {
-    this.props.collectionToReqRes(this.props.content.reqResArray)
-  }
+  const addCollectionToReqResContainer = () => {
+    props.collectionToReqRes(props.content.reqResArray);
+    setWorkspaceTab('workspace');
+  };
 
-  deleteCollection(e) {
-    this.props.deleteFromCollection(this.props.content); //a function we need to make in the container
+  const deleteCollection = (e) => {
+    props.deleteFromCollection(props.content);
     collectionsController.deleteCollectionFromIndexedDb(e.target.id);
-  }
+  };
 
-  render() {
-    return (
-      <div className={'collection-container'}>
-        <div className={'collection-text-container'} onClick={this.addCollectionToReqResContainer}>
-          <div className={'collection-name'}> {this.props.content.name}</div>
+  return (
+    <div>
+      <div className="is-flex is-justify-content-space-between m-5">
+        <div
+          className="is-clickable is-primary-link is-align-items-center is-flex"
+          onClick={addCollectionToReqResContainer}
+        >
+          {props.content.name}
         </div>
-        <div className="collection-export-container">
-          <button onClick={() => collectionsController.exportCollection(this.props.content.id)}>Export</button>
-        </div>
-        <div className='collection-delete-container'>
-          <div className='collection-delete-fade'>
+        <div className="is-flex is-justify-content-space-between is-align-items-center">
+          <div
+            className="is-clickable is-primary-link m-3"
+            onClick={() =>
+              collectionsController.exportCollection(props.content.id)
+            }
+          >
+            Export
           </div>
-          <div className={'collection-delete-button'} onClick={this.deleteCollection}>
-            <img className='collection-delete-image' src={Trashcan} id={this.props.content.id} ></img>
-          </div>
+          <div
+            className="is-clickable flex-grow-1 delete m-3"
+            onClick={deleteCollection}
+            id={props.content.id}
+          />
         </div>
       </div>
-    )
-  }
-}
+
+      <hr />
+    </div>
+  );
+};
 
 export default Collection;

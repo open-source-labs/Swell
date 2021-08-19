@@ -1,39 +1,43 @@
 import React, { Component } from 'react';
-import Header from './Header.jsx';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import ContentReqRowComposer from './ContentReqRowComposer.jsx';
 
 class CookieEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
-    }
+    };
     this.onChangeUpdateCookie = this.onChangeUpdateCookie.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
+    this.deleteCookie = this.deleteCookie.bind(this);
   }
 
   componentDidMount() {
-    const cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
-    if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") this.addCookie(cookiesDeepCopy);
+    const cookiesDeepCopy = this.createDeepCookieCopy();
+    if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '')
+      this.addCookie(cookiesDeepCopy);
   }
 
   componentDidUpdate() {
-    const cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
-    if (this.props.newRequestCookies.cookiesArr.length == 0) {
+    const cookiesDeepCopy = this.createDeepCookieCopy();
+    if (cookiesDeepCopy.length == 0) {
       this.addCookie([]);
-    }
-    else if (cookiesDeepCopy[cookiesDeepCopy.length-1] && cookiesDeepCopy[cookiesDeepCopy.length-1].key !== "") {
+    } else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
       this.addCookie(cookiesDeepCopy);
     }
   }
 
+  createDeepCookieCopy() {
+    return JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+  }
+
   addCookie(cookiesDeepCopy) {
     cookiesDeepCopy.push({
-      id: this.props.newRequestCookies.count,
+      id: `cookie${this.props.newRequestCookies.count}`,
       active: false,
       key: '',
-      value: ''
-    })
+      value: '',
+    });
 
     this.props.setNewRequestCookies({
       cookiesArr: cookiesDeepCopy,
@@ -43,10 +47,10 @@ class CookieEntryForm extends Component {
   }
 
   onChangeUpdateCookie(id, field, value) {
-    let cookiesDeepCopy = JSON.parse(JSON.stringify(this.props.newRequestCookies.cookiesArr));
+    const cookiesDeepCopy = this.createDeepCookieCopy();
 
     //find cookie to update
-    let indexToBeUpdated = undefined;
+    let indexToBeUpdated;
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
       if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
@@ -61,51 +65,55 @@ class CookieEntryForm extends Component {
       cookiesDeepCopy[indexToBeUpdated].active = true;
     }
 
-    //determine if new cookie needs to be added
-    let emptyCookiesCount = cookiesDeepCopy.map(cookie => {
-      return (!cookie.key && !cookie.value) ? 1 : 0
-    }).reduce((acc, cur) => {
-      return acc + cur;
+    this.props.setNewRequestCookies({
+      cookiesArr: cookiesDeepCopy,
+      count: cookiesDeepCopy.length,
     });
-
-    //depending on if cookies is empty, update store, or first add a new cookie
-    if (emptyCookiesCount === 0) {
-      this.addCookie(cookiesDeepCopy);
-    }
-    else {
-      this.props.setNewRequestCookies({
-        cookiesArr: cookiesDeepCopy,
-        count: cookiesDeepCopy.length,
-      });
-    }
   }
+
+  deleteCookie = (index) => {
+    const newCookies = this.createDeepCookieCopy();
+    newCookies.splice(index, 1);
+    this.props.setNewRequestCookies({
+      cookiesArr: newCookies,
+      count: newCookies.length,
+    });
+  };
 
   toggleShow() {
     this.setState({
-      show: !this.state.show
+      show: !this.state.show,
     });
   }
 
   render() {
-    let cookiesArr = this.props.newRequestCookies.cookiesArr.map((cookie, index) => {
-      return (<Header content={cookie} changeHandler={this.onChangeUpdateCookie} key={index} Key={cookie.key} value={cookie.value}></Header>)
-    });
-
-    const arrowClass = this.state.show ? 'composer_subtitle_arrow-open' : 'composer_subtitle_arrow-closed';
-    const cookiesContainerClass = this.state.show ? 'composer_headers_container-open' : 'composer_headers_container-closed'
+    const cookiesArr = this.props.newRequestCookies.cookiesArr.map(
+      (cookie, index) => (
+        <ContentReqRowComposer
+          deleteItem={this.deleteCookie}
+          data={cookie}
+          type="cookie-row"
+          index={index}
+          changeHandler={this.onChangeUpdateCookie}
+          key={index}
+        />
+      )
+    );
 
     return (
-      <div>
-        <div className='composer_subtitle' onClick={this.toggleShow} style={this.props.stylesObj}>
-          <img className={arrowClass} style={{ 'marginTop': '-6px' }} src={dropDownArrow}>
-          </img>
-          Cookies
+      <div className="mt-2">
+        <div className="is-flex is-justify-content-space-between is-align-content-center">
+          <div className="composer-section-title">Cookies</div>
+          <button
+            className="button is-small add-header-or-cookie-button"
+            onClick={() => this.addCookie(this.createDeepCookieCopy())}
+          >
+            + Cookie
+          </button>
         </div>
-        <div className={cookiesContainerClass}>
-          {cookiesArr}
-        </div>
+        <div>{cookiesArr}</div>
       </div>
-    )
+    );
   }
 }
 

@@ -1,62 +1,50 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
-import Collection from "../display/Collection.jsx";
-import collectionsController from "../../controllers/collectionsController";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../actions/actions.js';
+import Collection from '../display/Collection.jsx';
+import collectionsController from '../../controllers/collectionsController';
 
-const mapStateToProps = (store) => ({
-  collections: store.business.collections,
-});
+function CollectionsContainer() {
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteFromCollection: (collection) => {
-    dispatch(actions.deleteFromCollection(collection));
-  },
-  collectionToReqRes: (reqResArray) => {
-    dispatch(actions.collectionToReqRes(reqResArray));
-  },
-});
+  const collections = useSelector((store) => store.business.collections);
 
-class CollectionsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  const handleClick = () => {
+    collectionsController.importCollection(collections);
+  };
 
-  handleClick() {
-    // console.log("props ->", this.props.collections);
-    collectionsController.importCollection(this.props.collections);
-  }
-
-  render() {
-    const collectionComponents = this.props.collections.map(
-      (collection, idx) => {
-        return (
-          <Collection
-            content={collection}
-            key={idx}
-            deleteFromCollection={this.props.deleteFromCollection}
-            collectionToReqRes={this.props.collectionToReqRes}
-          />
-        );
-      }
-    );
-
+  const collectionComponents = collections.map((collection, idx) => {
     return (
-      <div className="collections-container">
-        <h1>Collections</h1>
-        <div className="collection-import-container">
-          <button className="import-collections" onClick={this.handleClick}>
-            Import Collection
-          </button>
-        </div>
-        {collectionComponents}
-      </div>
+      <Collection
+        content={collection}
+        key={idx}
+        deleteFromCollection={() => {
+          dispatch(actions.deleteFromCollection(collection));
+        }}
+        collectionToReqRes={(reqResArray) => {
+          dispatch(actions.collectionToReqRes(reqResArray));
+        }}
+      />
     );
-  }
+  });
+
+  return (
+    <div>
+      <div className="mt-3 is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+        <button
+          className="button is-medium is-primary is-outlined button-padding-verticals mx-3"
+          type="button"
+          onClick={handleClick}
+        >
+          Import Workspace
+        </button>
+
+        <hr />
+      </div>
+
+      <div>{collectionComponents}</div>
+    </div>
+  );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CollectionsContainer);
+export default CollectionsContainer;

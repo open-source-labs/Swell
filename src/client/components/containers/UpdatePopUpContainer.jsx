@@ -1,63 +1,47 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from 'react';
+
 const { api } = window;
 
-const mapDispatchToProps = (dispatch) => ({});
-
-class UpdatePopUpContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-      message: "",
-    };
-    this.toggleShow = this.toggleShow.bind(this);
-    this.handleUpdateClick = this.handleUpdateClick.bind(this);
-  }
-
-  componentDidMount() {
-    api.receive("message", (e, text) => {
-      this.setState({ show: true, message: text });
+const UpdatePopUpContainer = ({ message, setMessage }) => {
+  useEffect(() => {
+    api.receive('message', (e, text) => {
+      console.log('AUTO-UPDATER STATUS: ' + e);
+      if (text) setMessage(text);
     });
-  }
+  });
 
-  toggleShow() {
-    this.setState({
-      show: !this.state.show,
-    });
-  }
+  const handleUpdateClick = () => {
+    api.send('quit-and-install');
+    setMessage(null);
+  };
 
-  handleUpdateClick() {
-    this.toggleShow();
-    api.send("quit-and-install");
-  }
-
-  render() {
-    return this.state.show ? (
-      <div className="update_popup">
-        <p>{this.state.message}</p>
-        {this.state.message === "Update downloaded." && (
-          <>
-            <p className="updateMessage">
-              Do you want to restart and install now? <br /> (If not, will
-              auto-install on restart.)
-            </p>
-            <button
-              className="update popup-btn"
-              onClick={this.handleUpdateClick}
-            >
-              Update
-            </button>
-          </>
-        )}
-        <button className="dismiss popup-btn" onClick={this.toggleShow}>
-          Dismiss
+  return message ? (
+    <div id="update-modal">
+      <span>{message}</span>
+      {message === 'Update downloaded.' && (
+        <>
+          <span className="updateMessage">
+            Do you want to restart and install now? (If not, will auto-install
+            on restart.)
+          </span>
+        </>
+      )}
+      <button
+        className="button is-small modal-button"
+        onClick={() => setMessage(null)}
+      >
+        Dismiss
+      </button>
+      {message === 'Update downloaded.' && (
+        <button
+          className="button is-small is-full-width modal-button-update"
+          onClick={handleUpdateClick}
+        >
+          Update
         </button>
-      </div>
-    ) : (
-      <></>
-    );
-  }
-}
+      )}
+    </div>
+  ) : null;
+};
 
-export default connect(null, mapDispatchToProps)(UpdatePopUpContainer);
+export default UpdatePopUpContainer;
