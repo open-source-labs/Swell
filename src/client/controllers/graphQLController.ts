@@ -4,13 +4,16 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema } from 'graphql';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message
 import * as store from '../store';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
 
+// @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
 
 const graphQLController = {
-  openGraphQLConnection(reqResObj) {
+  openGraphQLConnection(reqResObj: any) {
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -21,19 +24,22 @@ const graphQLController = {
     // send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
+        // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
         if (response.error)
+          // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
           this.handleError(response.reqResObj.error, response.reqResObj);
+        // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log('error in sendGqlToMain', err));
   },
 
-  openGraphQLConnectionAndRunCollection(reqResArray) {
+  openGraphQLConnectionAndRunCollection(reqResArray: any) {
     // initialize response data
     let index = 0;
     const reqResObj = reqResArray[index];
     api.removeAllListeners('reply-gql');
-    api.receive('reply-gql', (result) => {
+    api.receive('reply-gql', (result: any) => {
       // needs formatting because component reads them in a particular order
       result.reqResObj.response.cookies = this.cookieFormatter(
         result.reqResObj.response.cookies
@@ -59,7 +65,7 @@ const graphQLController = {
       }
     });
 
-    const runSingleGraphQLRequest = (reqResObj) => {
+    const runSingleGraphQLRequest = (reqResObj: any) => {
       reqResObj.response.headers = {};
       reqResObj.response.events = [];
       reqResObj.response.cookies = [];
@@ -71,12 +77,12 @@ const graphQLController = {
   },
 
   // handles graphQL queries and mutations
-  sendGqlToMain(args) {
+  sendGqlToMain(args: any) {
     return new Promise((resolve) => {
       // send object to the context bridge
       api.removeAllListeners('reply-gql');
       api.send('open-gql', args);
-      api.receive('reply-gql', (result) => {
+      api.receive('reply-gql', (result: any) => {
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
@@ -86,7 +92,7 @@ const graphQLController = {
     });
   },
 
-  openSubscription(reqResObj) {
+  openSubscription(reqResObj: any) {
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
@@ -101,19 +107,25 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers = {};
-    reqResObj.request.headers.forEach(({ active, key, value }) => {
+    reqResObj.request.headers.forEach(({
+      active,
+      key,
+      value
+    }: any) => {
+      // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if (active) headers[key] = value;
     });
 
     // Reformat cookies
     let cookies = '';
     if (reqResObj.request.cookies.length) {
-      cookies = reqResObj.request.cookies.reduce((acc, userCookie) => {
+      cookies = reqResObj.request.cookies.reduce((acc: any, userCookie: any) => {
         if (userCookie.active)
           return `${acc}${userCookie.key}=${userCookie.value}; `;
         return acc;
       }, '');
     }
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'Cookie' does not exist on type '{}'.
     headers.Cookie = cookies;
 
     const wsLink = new WebSocketLink(
@@ -157,7 +169,7 @@ const graphQLController = {
       });
   },
 
-  handleResponse(response, reqResObj) {
+  handleResponse(response: any, reqResObj: any) {
     reqResObj.connection = 'closed';
     reqResObj.connectionType = 'plain';
     reqResObj.timeReceived = Date.now();
@@ -169,7 +181,7 @@ const graphQLController = {
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
-  handleError(errorsObj, reqResObj) {
+  handleError(errorsObj: any, reqResObj: any) {
     reqResObj.connection = 'error';
     reqResObj.timeReceived = Date.now();
 
@@ -179,8 +191,8 @@ const graphQLController = {
   },
 
   // objects that travel over IPC API have their properties alphabetized...
-  cookieFormatter(cookieArray) {
-    return cookieArray.map((eachCookie) => {
+  cookieFormatter(cookieArray: any) {
+    return cookieArray.map((eachCookie: any) => {
       const cookieFormat = {
         name: eachCookie.name,
         value: eachCookie.value,
@@ -196,14 +208,14 @@ const graphQLController = {
     });
   },
 
-  introspect(url, headers, cookies) {
+  introspect(url: any, headers: any, cookies: any) {
     const introspectionObject = {
       url,
       headers,
       cookies,
     };
     api.send('introspect', JSON.stringify(introspectionObject));
-    api.receive('introspect-reply', (data) => {
+    api.receive('introspect-reply', (data: any) => {
       if (data !== 'Error: Please enter a valid GraphQL API URI') {
         // formatted for Codemirror hint and lint
         const clientSchema = buildClientSchema(data);

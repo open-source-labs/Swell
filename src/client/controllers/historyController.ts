@@ -1,31 +1,34 @@
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message
 import * as store from '../store';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../d... Remove this comment to see the full error message
 import db from '../db';
 
 const historyController = {
-  addHistoryToIndexedDb(reqRes) {
+  addHistoryToIndexedDb(reqRes: any) {
     db.history
       .put(reqRes)
-      .catch((err) => console.log('Error in addToHistory', err));
+      .catch((err: any) => console.log('Error in addToHistory', err));
   },
 
-  deleteHistoryFromIndexedDb(id) {
+  deleteHistoryFromIndexedDb(id: any) {
     db.history
       .delete(id)
-      .catch((err) => console.log('Error in deleteFromHistory', err));
+      .catch((err: any) => console.log('Error in deleteFromHistory', err));
   },
 
   clearHistoryFromIndexedDb() {
-    db.history.clear().catch((err) => console.log(err));
+    db.history.clear().catch((err: any) => console.log(err));
   },
 
   getHistory() {
     db.table('history')
       .toArray()
-      .then((history) => {
-        const historyGroupsObj = history.reduce((groups, hist) => {
+      .then((history: any) => {
+        const historyGroupsObj = history.reduce((groups: any, hist: any) => {
           const date = format(hist.created_at, 'MM/DD/YYYY');
           if (!groups[date]) {
             groups[date] = [];
@@ -35,16 +38,17 @@ const historyController = {
         }, {});
         console.log('historyGroupsObj==>', historyGroupsObj);
         const historyGroupsArr = Object.keys(historyGroupsObj)
+          // @ts-expect-error ts-migrate(2362) FIXME: The left-hand side of an arithmetic operation must... Remove this comment to see the full error message
           .sort((a, b) => parse(b) - parse(a))
           .map((date) => ({
             date,
             history: historyGroupsObj[date].sort(
-              (a, b) => b.created_at - a.created_at
+              (a: any, b: any) => b.created_at - a.created_at
             ),
           }));
         store.default.dispatch(actions.getHistory(historyGroupsArr));
       })
-      .catch((err) => console.log('Error in getHistory', err));
+      .catch((err: any) => console.log('Error in getHistory', err));
   },
 };
 
