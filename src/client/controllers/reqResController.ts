@@ -1,6 +1,6 @@
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message;
 import * as store from '../store';
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message;
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController';
 
@@ -243,11 +243,11 @@ const connectionController = {
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
   // clears a dataPoint from state
-  clearGraph() {
+  clearGraph(): void {
     store.default.dispatch(actions.clearGraph());
   },
   // clears ALL data points from state
-  clearAllGraph() {
+  clearAllGraph(): void {
     store.default.dispatch(actions.clearAllGraph());
   },
 };
