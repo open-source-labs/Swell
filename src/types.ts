@@ -47,7 +47,7 @@ export interface NewRequestResponseObject {
   closeCode: number;
   protocol: Protocol;
   request: NewRequestFields;
-  response: Record<string, unknown>;
+  response: Record<string, string[]>;
   connection: ConnectionStatus;
   connectionType: string;
   isHTTP2: boolean;
@@ -56,6 +56,9 @@ export interface NewRequestResponseObject {
   timeSent: Date;
   rpc: string;
   service: string;
+  checked: boolean;
+  webrtc: boolean;
+  minimized: boolean;
 }
 export interface NewRequestFields {
   protocol: Protocol;
