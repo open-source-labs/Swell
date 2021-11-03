@@ -7,13 +7,13 @@ import { NewRequestResponseObject } from '../../types';
 
 
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
-const { api } = window;
+const { api }: { api: Record<string, unknown> } = window; // this is maybe not the best way to type this -Prince
 const connectionController = {
-  openConnectionArray: [] as any,
+  openConnectionArray: [] as any[],
   
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
-    const { reqResArray }: {reqResArray: NewRequestResponseObject[]} = store.default.getState().business;
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
     
     if (reqResArray.every((obj: NewRequestResponseObject): boolean => obj.checked === true)) {
       reqResArray.forEach((obj: NewRequestResponseObject): boolean => obj.checked = false);
@@ -26,7 +26,7 @@ const connectionController = {
   openReqRes(id: number): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
-
+    
     api.receive('reqResUpdate', (reqResObj: NewRequestResponseObject) => {
       if (
         (reqResObj.connection === 'closed' ||
@@ -42,13 +42,17 @@ const connectionController = {
       const currentID = store.default.getState().business.currentResponse.id;
       if (currentID === reqResObj.id) {
         store.default.dispatch(
-          actions.saveCurrentResponseData(reqResObj, 'currentID===reqresObj.id')
+          actions.saveCurrentResponseData(reqResObj, 'currentID===reqResObj.id')
         );
       }
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr = store.default.getState().business.reqResArray;
-    const reqResObj = reqResArr.find((el: any) => el.id === id);
+    const reqResArr: NewRequestResponseObject[] = store.default.getState().business.reqResArray;
+    const reqResObj: NewRequestResponseObject = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
+
+    console.log('this is the reqResArr!!!!!!!', reqResArr);
+    console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
+
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
@@ -118,7 +122,7 @@ const connectionController = {
   },
 
 
-  runCollectionTest(reqResArray: any) {
+  runCollectionTest(reqResArray: NewRequestResponseObject[]): void {
     api.removeAllListeners('reqResUpdate');
     let index = 0;
     api.receive('reqResUpdate', (reqResObj: any) => {
@@ -169,20 +173,20 @@ const connectionController = {
     index += 1;
   },
 
-  openAllSelectedReqRes() {
+  openAllSelectedReqRes(): void {
     connectionController.closeAllReqRes();
 
-    const { reqResArray } = store.default.getState().business;
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
 
-    reqResArray.forEach((reqRes: any) => connectionController.openReqRes(reqRes.id));
+    reqResArray.forEach((reqRes: NewRequestResponseObject) => connectionController.openReqRes(reqRes.id));
   },
 
-  getConnectionObject(id: any) {
+  getConnectionObject(id: number): any {
     // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
     return this.openConnectionArray.find((obj) => (obj.id = id));
   },
 
-  setReqResConnectionToClosed(id: any) {
+  setReqResConnectionToClosed(id: number): void {
     const reqResArr = store.default.getState().business.reqResArray;
 
     const foundReqRes = JSON.parse(
@@ -199,7 +203,7 @@ const connectionController = {
     );
   },
 
-  closeReqRes(reqResObj: any) {
+  closeReqRes(reqResObj: NewRequestResponseObject): void {
     if (reqResObj.protocol.includes('http')) {
       api.send('close-http', reqResObj);
     }
@@ -223,9 +227,9 @@ const connectionController = {
   },
 
   /* Closes all open endpoint */
-  closeAllReqRes() {
-    const { reqResArray } = store.default.getState().business;
-    reqResArray.forEach((reqRes: any) => connectionController.closeReqRes(reqRes));
+  closeAllReqRes(): void {
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
+    reqResArray.forEach((reqRes: NewRequestResponseObject) => connectionController.closeReqRes(reqRes));
   },
 
   clearAllReqRes() {
@@ -235,12 +239,12 @@ const connectionController = {
 
   // toggles minimized in ReqRes array in state
   toggleMinimizeAll() {
-    const { reqResArray } = store.default.getState().business;
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
 
-    if (reqResArray.every((obj: any) => obj.minimized === true)) {
-      reqResArray.forEach((obj: any) => obj.minimized = false);
+    if (reqResArray.every((obj: NewRequestResponseObject) => obj.minimized === true)) {
+      reqResArray.forEach((obj: NewRequestResponseObject) => obj.minimized = false);
     } else {
-      reqResArray.forEach((obj: any) => obj.minimized = true);
+      reqResArray.forEach((obj: NewRequestResponseObject) => obj.minimized = true);
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },

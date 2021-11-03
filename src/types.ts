@@ -57,6 +57,8 @@ export interface NewRequestResponseObject {
   rpc: string;
   service: string;
   checked: boolean;
+  webRtc: boolean;
+  minimized: boolean;
 }
 export interface NewRequestFields {
   protocol: Protocol;
