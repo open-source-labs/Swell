@@ -19,7 +19,7 @@ module.exports = {
     },
     'import/resolver': {
       typescript: {
-        "alwaysTryTypes": true, //->new
+        // "alwaysTryTypes": true, //->new
       },
       'babel-module': {
         root: ['.'],
@@ -77,7 +77,7 @@ module.exports = {
     'guard-for-in': 0,
     'import/extensions': 0,
     'import/no-extraneous-dependencies': 0,
-    'import/no-unresolved': error, // <-- was 0 
+    'import/no-unresolved': 0, // <-- was 0 
     'import/prefer-default-export': 0,
     'max-len': 0,
     'no-alert': 0,
@@ -140,8 +140,8 @@ module.exports = {
         },
         'import/resolver': {
           typescript: {
-            alwaysTryTypes: true, //<--- just added this
-            // project: './tsconfig.json',
+            // alwaysTryTypes: true, //<--- just added this
+            project: './tsconfig.json',
           },
         },
       },

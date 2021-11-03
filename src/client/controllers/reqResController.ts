@@ -8,24 +8,25 @@ import graphQLController from './graphQLController';
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
 const connectionController = {
-  openConnectionArray: [],
-
+  openConnectionArray: [] as any,
+  
   // toggles checked in state for entire reqResArray
-  toggleSelectAll() {
+  toggleSelectAll(): void {
     const { reqResArray } = store.default.getState().business;
-
-    if (reqResArray.every((obj: any) => obj.checked === true)) {
-      reqResArray.forEach((obj: any) => obj.checked = false);
+    
+    if (reqResArray.every((obj: any): boolean => obj.checked === true)) {
+      reqResArray.forEach((obj: any): void => obj.checked = false);
     } else {
-      reqResArray.forEach((obj: any) => obj.checked = true);
+      reqResArray.forEach((obj: any): void => obj.checked = true);
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
-
   // listens for reqResUpdate event from main process telling it to update reqResObj REST EVENTS
-  openReqRes(id: any) {
+  openReqRes(id: number): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
+    console.log('Hey it is working!!!!!!');
+
     api.receive('reqResUpdate', (reqResObj: any) => {
       if (
         (reqResObj.connection === 'closed' ||
@@ -74,7 +75,7 @@ const connectionController = {
     }
   },
 
-  openScheduledReqRes(id: any) {
+  openScheduledReqRes(id: string | number): void {
     // listens for reqResUpdate event from main process telling it to update reqResObj
     // REST EVENTS
     api.removeAllListeners('reqResUpdate');
@@ -115,6 +116,7 @@ const connectionController = {
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },
+
 
   runCollectionTest(reqResArray: any) {
     api.removeAllListeners('reqResUpdate');
@@ -251,5 +253,7 @@ const connectionController = {
     store.default.dispatch(actions.clearAllGraph());
   },
 };
+
+console.log('This is connectionController:', connectionController)
 
 export default connectionController;
