@@ -128,6 +128,7 @@ export interface WebSocketMessageProps {
   source: string;
   data: string;
   timeReceived: number;
+  index: number;
 }
 export interface CookieProps {
   cookies: {
