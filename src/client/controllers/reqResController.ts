@@ -4,6 +4,7 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController';
 
+
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
 const connectionController = {
