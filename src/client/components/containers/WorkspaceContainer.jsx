@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReqResCtrl from '../../controllers/reqResController.js';
+import ReqResCtrl from '../../controllers/reqResController';
 import ReqResContainer from './ReqResContainer.jsx';
 import SaveWorkspaceModal from './SaveWorkspaceModal';
 

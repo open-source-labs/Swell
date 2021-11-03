@@ -2,7 +2,7 @@
 import * as store from '../store';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
-import graphQLController from './graphQLController.js';
+import graphQLController from './graphQLController';
 
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;

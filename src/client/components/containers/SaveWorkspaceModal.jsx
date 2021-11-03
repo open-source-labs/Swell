@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from 'uuid/v4';
-import collectionsController from '../../controllers/collectionsController.js';
-import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces.jsx';
-import * as actions from '../../actions/actions.js';
+import collectionsController from '../../controllers/collectionsController';
+import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces';
+import * as actions from '../../actions/actions';
 
 function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();

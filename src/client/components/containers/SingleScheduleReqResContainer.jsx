@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions.js';
-import RestRequestContent from '../display/RestRequestContent.jsx';
-import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
-import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
+import RestRequestContent from '../display/RestRequestContent';
+import GraphQLRequestContent from '../display/GraphQLRequestContent';
+import GRPCRequestContent from '../display/GRPCRequestContent';
 
 const SingleScheduleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -64,7 +64,7 @@ const SingleScheduleReqResContainer = (props) => {
             {connection === 'error' && <div className="connection-error" />}
             {connection === 'open' && <div className="connection-open" />}
             {connection === 'closed' &&
-              method != 'WS' &&
+              method !== 'WS' &&
               method !== 'SUBSCRIPTION' && (
                 <div className="connection-closed" />
               )}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
-import HistoryDate from '../display/HistoryDate.jsx';
-import ClearHistoryBtn from '../display/ClearHistoryBtn.jsx';
+import HistoryDate from '../display/HistoryDate';
+import ClearHistoryBtn from '../display/ClearHistoryBtn';
 
 const mapStateToProps = (store) => ({
   history: store.business.history,
