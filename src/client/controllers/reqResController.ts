@@ -3,6 +3,7 @@ import * as store from '../store';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message;
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController';
+import { NewRequestResponseObject } from '../../types';
 
 
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
@@ -12,12 +13,12 @@ const connectionController = {
   
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
-    const { reqResArray } = store.default.getState().business;
+    const { reqResArray }: {reqResArray: NewRequestResponseObject[]} = store.default.getState().business;
     
-    if (reqResArray.every((obj: any): boolean => obj.checked === true)) {
-      reqResArray.forEach((obj: any): void => obj.checked = false);
+    if (reqResArray.every((obj: NewRequestResponseObject): boolean => obj.checked === true)) {
+      reqResArray.forEach((obj: NewRequestResponseObject): boolean => obj.checked = false);
     } else {
-      reqResArray.forEach((obj: any): void => obj.checked = true);
+      reqResArray.forEach((obj: NewRequestResponseObject): boolean => obj.checked = true);
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
@@ -25,9 +26,8 @@ const connectionController = {
   openReqRes(id: number): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
-    console.log('Hey it is working!!!!!!');
 
-    api.receive('reqResUpdate', (reqResObj: any) => {
+    api.receive('reqResUpdate', (reqResObj: NewRequestResponseObject) => {
       if (
         (reqResObj.connection === 'closed' ||
           reqResObj.connection === 'error') &&
@@ -253,7 +253,5 @@ const connectionController = {
     store.default.dispatch(actions.clearAllGraph());
   },
 };
-
-console.log('This is connectionController:', connectionController)
 
 export default connectionController;
