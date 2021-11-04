@@ -6,10 +6,10 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../d... Remove this comment to see the full error message
 import db from '../db';
-import { NewRequestResponseObject } from '../../types';
+import { NewRequestResponseObject, HistoryTab } from '../../types';
 
 const historyController = {
-  addHistoryToIndexedDb(reqRes: NewRequestResponseObject) {
+  addHistoryToIndexedDb(reqRes: NewRequestResponseObject): void {
     db.history
       .put(reqRes)
       .catch((err: string) => console.log('Error in addToHistory', err));

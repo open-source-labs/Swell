@@ -122,22 +122,37 @@ export interface Message {
   timeReceived: number;
   data: string;
 }
+
 export interface WebSocketWindowProps {
   content: Record<string, unknown>[];
   outgoingMessages: Array<Message>;
   incomingMessages: Array<Message>;
   connection: string;
 }
+
 export interface WebSocketMessageProps {
   source: string;
   data: string;
   timeReceived: number;
   index: number;
 }
+
 export interface CookieProps {
   cookies: {
     expirationDate: string;
   }
   detail?: string;
   className?: string;
+}
+
+export interface HistoryTab {
+  history: Record<number, unknown>[];
+  collections : Record<string, unknown>[];
+}
+
+export interface CollectionsArray {
+  createdAt: string;
+  id: string;
+  name: string;
+  reqResArray: NewRequestResponseObject[];
 }

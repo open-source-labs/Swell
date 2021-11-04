@@ -6,6 +6,7 @@ import db from '../db';
 import * as store from '../store';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
+import { CollectionsArray } from '../../types';
 
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
@@ -37,13 +38,14 @@ const collectionsController = {
   getCollections() {
     db.table('collections')
       .toArray()
-      .then((collections: any) => {
+      .then((collections: CollectionsArray[] ) => {
         const collectionsArr = collections.sort(
           (a: any, b: any) => b.created_at - a.created_at
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
+        console.log('collections', collectionsArr);
       })
-      .catch((err: any) => console.log('Error in getCollection s', err));
+      .catch((err: string) => console.log('Error in getCollection s', err));
   },
 
   collectionNameExists(obj: any) {
@@ -53,7 +55,7 @@ const collectionsController = {
       db.collections
         .where('name')
         .equalsIgnoreCase(name)
-        .first((foundCollection: any) => !!foundCollection)
+        .first((foundCollection: boolean) => !!foundCollection)
         .then((found: any) => resolve(found))
         .catch((error: any) => {
           console.error(error.stack || error);
@@ -70,7 +72,7 @@ const collectionsController = {
         // change name and id of collection to satisfy uniqueness requirements of db
         foundCollection.name += ' import';
         foundCollection.id = uuid();
-
+        
         api.send('export-collection', { collection: foundCollection });
       })
       .catch((error: any) => {
