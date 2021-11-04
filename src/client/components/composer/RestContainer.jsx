@@ -80,12 +80,12 @@ function RestContainer({
       return;
     }
 
-    let reqRes;
+    let reqRes; 
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      URIWithoutProtocol;
+      URIWithoutProtocol; // deleteable ???
       const host = protocol + URIWithoutProtocol.split('/')[0];
       let path = `/${URIWithoutProtocol.split('/')
         .splice(1)
@@ -95,7 +95,7 @@ function RestContainer({
         path = path.substring(0, path.length - 1);
       }
       path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
+      reqRes = { 
         id: uuid(),
         created_at: new Date(),
         protocol: url.match(/https?:\/\//)[0],
