@@ -104,6 +104,7 @@ const RestMethodAndEndpointEntryForm = ({
                 GET
               </a>
             )}
+
             {newRequestFields.method !== 'POST' && (
               <a
                 onClick={() => {
