@@ -26,4 +26,7 @@ module.exports = merge(base, {
         .on('error', (spawnError) => console.error(spawnError));
     },
   },
-});
+}
+
+
+);

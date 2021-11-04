@@ -65,6 +65,7 @@ const RestMethodAndEndpointEntryForm = ({
   };
 
   return (
+    
     <div>
       <div
         ref={dropdownEl}
