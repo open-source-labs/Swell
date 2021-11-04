@@ -6,10 +6,42 @@ const base = require('./webpack.config');
 module.exports = merge(base, {
   mode: 'development',
   devtool: 'source-map',
+  // proxy: {
+  //   // '/': {
+  //   //   target: 'http://localhost:3000',
+  //   //   secure: false,
+  //   //   changeOrigin: false,
+  //   // },
+  //   // '/test': {
+  //   //   target: 'http://localhost:3000',
+  //   // },
+  //   // '/server/**': {
+  //   //   target: 'http://localhost:3000/',
+  //   //   secure: false,
+  //   // },
+  // },
   devServer: {
     host: 'localhost',
+    // client: {
+    //   webSocketTransport: require.resolve('./src/server/server.js'),
+    // },
     port: '8080',
     hot: true,
+    // static: {
+    //   path: path.resolve(__dirname, 'dist'),
+    //   publicPath: '/',
+    // },
+    // webSocketServer: require.resolve('./src/server/server.js'),
+
+    proxy: {
+      '/test': {
+        target: 'http://localhost:3000',
+      },
+      '/server/**': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
+    },
     compress: true,
     contentBase: path.resolve(__dirname, 'dist'),
     watchContentBase: true,
@@ -26,7 +58,4 @@ module.exports = merge(base, {
         .on('error', (spawnError) => console.error(spawnError));
     },
   },
-}
-
-
-);
+});

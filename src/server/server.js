@@ -2,9 +2,12 @@ const path = require('path');
 const express = require('express');
 
 const app = express();
-
+// const app = express(),
+//   DIST_DIR = __dirname,
+//   HTML_FILE = path.join(DIST_DIR, 'index.html');
 const port = 3000;
-// app.use(express.static(path.resolve(__dirname, '../css')));
+// const port = process.env.PORT || 8080;
+app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -17,8 +20,10 @@ app.get('/test', (req, res) => {
   return res.status(200).json("Hi! I am a test!");
 });
 
-app.get('/', (req, res)=>{
-  res.status(200).sendFile(path.join(__dirname,'../index-csp.html'))
+app.get('*', (req, res) => {
+  console.log('helooooo');
+  // res.status(200).sendFile(path.join(__dirname, '../index.js'));
+  // res.status(200).sendFile(path.join(__dirname,'../../index-csp.html'))
 });
 
 // //inital error handler, needs work
