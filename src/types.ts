@@ -1,5 +1,5 @@
 export type Protocol = 'http://' | 'ws://';
-export type Network = 'rest' | 'ws' | 'webrtc' | 'graphQL' | 'grpc' | 'openapi';
+export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
 export type Methods = 'GET'|'PUT'|'PATCH'|'DELETE'|'OPTIONS'|'HEAD'|'TRACE'|'QUERY'|'SUBSCRIPTION'|'INTROSPECTION'|'INITIATOR'|'RECEIVER';
 
@@ -20,8 +20,8 @@ export interface initialState {
 }
 
 export interface NewRequestOpenAPI {
-  openapiMetadata: Record<string, unknown>;
-  openapiReqArray: NewRequestOpenAPIObject[];
+  openApiMetadata: Record<string, unknown>;
+  openApiReqArray: NewRequestOpenAPIObject[];
 }
 
 export interface NewRequestOpenAPIObject {
@@ -57,7 +57,7 @@ export interface NewRequestResponseObject {
   rpc: string;
   service: string;
   checked: boolean;
-  webrtc: boolean;
+  webRtc: boolean;
   minimized: boolean;
   gRPC: boolean;
 }
@@ -66,12 +66,12 @@ export interface NewRequestFields {
   graphQL: boolean;
   gRPC: boolean;
   ws: boolean;
-  webrtc: boolean;
+  webRtc: boolean;
   restUrl?: string;
   wsUrl?: string;
   gqlUrl?: string;
-  grpcUrl?: string;
-  webrtcUrl?: string;
+  gRpcUrl?: string;
+  webRtcUrl?: string;
   url?: string;
   method?: string;
   network: Network;

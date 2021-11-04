@@ -42,7 +42,7 @@ const connectionController = {
       const currentID = store.default.getState().business.currentResponse.id;
       if (currentID === reqResObj.id) {
         store.default.dispatch(
-          actions.saveCurrentResponseData(reqResObj, 'currentID===reqresObj.id')
+          actions.saveCurrentResponseData(reqResObj, 'currentID===reqResObj.id')
         );
       }
     });
@@ -263,7 +263,5 @@ const connectionController = {
     store.default.dispatch(actions.clearAllGraph());
   },
 };
-
-console.log('This is connectionController:', connectionController)
 
 export default connectionController;
