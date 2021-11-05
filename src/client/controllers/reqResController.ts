@@ -57,7 +57,7 @@ const connectionController = {
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
+    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webRtc) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
 

@@ -40,7 +40,7 @@ const collectionsController = {
       .toArray()
       .then((collections: CollectionsArray[] ) => {
         const collectionsArr = collections.sort(
-          (a: any, b: any) => b.created_at - a.created_at
+          (a: any, b: any) => b.createdAt - a.createdAt
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
         console.log('collections', collectionsArr);

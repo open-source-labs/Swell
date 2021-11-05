@@ -34,7 +34,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     const collectionObj = {
       name: inputName,
       id: uuid(),
-      created_at: new Date(),
+      createdAt: new Date(),
       reqResArray: clonedArray,
     };
     collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
@@ -59,7 +59,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     const collectionObj = {
       name: inputName,
       id: inputID,
-      created_at: new Date(),
+      createdAt: new Date(),
       reqResArray: clonedArray,
     };
     collectionsController.updateCollectionInIndexedDb(collectionObj); //add to IndexedDB

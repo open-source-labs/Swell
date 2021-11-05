@@ -60,6 +60,7 @@ export interface NewRequestResponseObject {
   webRtc: boolean;
   minimized: boolean;
   gRPC: boolean;
+  createdAt?: Date;
 }
 export interface NewRequestFields {
   protocol: Protocol;
