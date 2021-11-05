@@ -18,29 +18,29 @@ api.receive('add-collection', (collectionData: any) => {
 });
 
 const collectionsController = {
-  addCollectionToIndexedDb(collection: any) {
-    db.collections
+  addCollectionToIndexedDb(collection: CollectionsArray): void {
+    db.table('collections')
       .put(collection)
-      .catch((err: any) => console.log('Error in addToCollection', err));
+      .catch((err: string) => console.log('Error in addToCollection', err));
   },
 
-  deleteCollectionFromIndexedDb(id: any) {
-    db.collections
+  deleteCollectionFromIndexedDb(id: string): void {
+    db.table('collections')
       .delete(id)
-      .catch((err: any) => console.log('Error in deleteFromCollection', err));
+      .catch((err: string) => console.log('Error in deleteFromCollection', err));
   },
 
-  updateCollectionInIndexedDb(collection: any) {
+  updateCollectionInIndexedDb(collection: CollectionsArray): void {
     collectionsController.deleteCollectionFromIndexedDb(collection.id);
     collectionsController.addCollectionToIndexedDb(collection);
   },
 
-  getCollections() {
+  getCollections(): void {
     db.table('collections')
       .toArray()
       .then((collections: CollectionsArray[] ) => {
         const collectionsArr = collections.sort(
-          (a: any, b: any) => b.createdAt - a.createdAt
+          (a: CollectionsArray, b: CollectionsArray) => b.createdAt.valueOf() - a.createdAt.valueOf()
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
         console.log('collections', collectionsArr);
@@ -48,41 +48,41 @@ const collectionsController = {
       .catch((err: string) => console.log('Error in getCollection s', err));
   },
 
-  collectionNameExists(obj: any) {
+  collectionNameExists(obj: CollectionsArray): Promise<boolean> {
     const { name } = obj;
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
-      db.collections
+      db.table('collections')
         .where('name')
         .equalsIgnoreCase(name)
         .first((foundCollection: boolean) => !!foundCollection)
-        .then((found: any) => resolve(found))
-        .catch((error: any) => {
+        .then((found: boolean) => resolve(found))
+        .catch((error: Record<string, undefined>) => {
           console.error(error.stack || error);
           reject(error);
         });
     });
   },
 
-  exportCollection(id: any) {
-    db.collections
+  exportCollection(id: string): void {
+    db.table('collections')
       .where('id')
       .equals(id)
-      .first((foundCollection: any) => {
+      .first((foundCollection: CollectionsArray) => {
         // change name and id of collection to satisfy uniqueness requirements of db
         foundCollection.name += ' import';
         foundCollection.id = uuid();
         
         api.send('export-collection', { collection: foundCollection });
       })
-      .catch((error: any) => {
+      .catch((error: Record<string, undefined>) => {
         console.error(error.stack || error);
         // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'reject'.
         reject(error);
       });
   },
 
-  importCollection(collection: any) {
+  importCollection(collection: CollectionsArray): Promise<void> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
       api.receive('add-collection', (...args: any[]) => {

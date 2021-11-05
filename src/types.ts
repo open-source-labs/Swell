@@ -60,7 +60,7 @@ export interface NewRequestResponseObject {
   webRtc: boolean;
   minimized: boolean;
   gRPC: boolean;
-  createdAt?: Date;
+  createdAt: Date;
 }
 export interface NewRequestFields {
   protocol: Protocol;
@@ -152,8 +152,9 @@ export interface HistoryTab {
 }
 
 export interface CollectionsArray {
-  createdAt: string;
+  createdAt: Date;
   id: string;
   name: string;
+  data?: Record<string, unknown>[];
   reqResArray: NewRequestResponseObject[];
 }
