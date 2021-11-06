@@ -39,6 +39,9 @@ const collectionsController = {
     db.table('collections')
       .toArray()
       .then((collections: CollectionsArray[] ) => {
+        collections.forEach((collection: CollectionsArray) => {
+          collection.createdAt = new Date(collection.createdAt);
+        });
         const collectionsArr = collections.sort(
           (a: CollectionsArray, b: CollectionsArray) => b.createdAt.valueOf() - a.createdAt.valueOf()
         );
