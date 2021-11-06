@@ -275,7 +275,7 @@ const ComposerContainer = (props) => {
           <WebRTCContainer {...props} />
         )}
         {props.newRequestFields.network === 'webhook' && (
-          <WebhoContainer {...props} />
+          <WebhoContainer props = {props} />
         )}
       </div>
     </div>

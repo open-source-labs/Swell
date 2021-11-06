@@ -135,6 +135,7 @@ function RestContainer({
         minimized: false,
         tab: currentTab,
       };
+      console.log(reqRes);
     }
 
     // add request to history
