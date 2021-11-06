@@ -9,7 +9,7 @@ import * as actions from '../actions/actions';
 import { CollectionsArray } from '../../types';
 
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
-const { api } = window; //this
+const { api } = window;
 
 api.receive('add-collection', (collectionData: any) => {
   // Add parsed text file to db
@@ -87,16 +87,14 @@ const collectionsController = {
       });
   },
 
-  importCollection(collection: CollectionsArray): Promise<void> {
+  importCollection(collection: CollectionsArray): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
       api.receive('add-collection', (...args: CollectionsArray[]) => {
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
-        // console.log('received data: ', JSON.parse(args.data));
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
         collectionsController.addCollectionToIndexedDb(JSON.parse(JSON.stringify(args.data)));
         collectionsController.getCollections();
-        // @ts-expect-error ts-migrate(2794) FIXME: Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
+      
         resolve('okie dokie');
       });
     });

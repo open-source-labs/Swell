@@ -8,12 +8,12 @@ import { buildClientSchema, printSchema } from 'graphql';
 import * as store from '../store';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
-
+import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData } from '../../types';
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
 
 const graphQLController = {
-  openGraphQLConnection(reqResObj: any) {
+  openGraphQLConnection(reqResObj: NewRequestResponseObject): void {
     // initialize response data
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
@@ -34,12 +34,13 @@ const graphQLController = {
       .catch((err) => console.log('error in sendGqlToMain', err));
   },
 
-  openGraphQLConnectionAndRunCollection(reqResArray: any) {
+  openGraphQLConnectionAndRunCollection(reqResArray: NewRequestResponseObject[]): void {
     // initialize response data
     let index = 0;
-    const reqResObj = reqResArray[index];
+    const reqResObj = reqResArray[index]; //-> this seems erroneous -Prince
     api.removeAllListeners('reply-gql');
-    api.receive('reply-gql', (result: any) => {
+    api.receive('reply-gql', (result: GraphQLResponseObject) => {
+      console.log('result: ', result);
       // needs formatting because component reads them in a particular order
       result.reqResObj.response.cookies = this.cookieFormatter(
         result.reqResObj.response.cookies
@@ -65,7 +66,7 @@ const graphQLController = {
       }
     });
 
-    const runSingleGraphQLRequest = (reqResObj: any) => {
+    const runSingleGraphQLRequest = (reqResObj: NewRequestResponseObject) => {
       reqResObj.response.headers = {};
       reqResObj.response.events = [];
       reqResObj.response.cookies = [];
@@ -77,12 +78,12 @@ const graphQLController = {
   },
 
   // handles graphQL queries and mutations
-  sendGqlToMain(args: any) {
+  sendGqlToMain(args: NewRequestResponseObject): Promise<GraphQLResponseObject> {
     return new Promise((resolve) => {
       // send object to the context bridge
       api.removeAllListeners('reply-gql');
       api.send('open-gql', args);
-      api.receive('reply-gql', (result: any) => {
+      api.receive('reply-gql', (result: GraphQLResponseObject) => {
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
@@ -92,7 +93,7 @@ const graphQLController = {
     });
   },
 
-  openSubscription(reqResObj: any) {
+  openSubscription(reqResObj: NewRequestResponseObject): void {
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'open';

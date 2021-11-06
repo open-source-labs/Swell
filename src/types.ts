@@ -47,13 +47,13 @@ export interface NewRequestResponseObject {
   closeCode: number;
   protocol: Protocol;
   request: NewRequestFields;
-  response: Record<string, string[]>;
+  response: RequestResponseObjectResponseObject; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
   connection: ConnectionStatus;
   connectionType: string;
   isHTTP2: boolean;
   url: string;
   timeReceived: Date;
-  timeSent: Date;
+  timeSent: number;
   rpc: string;
   service: string;
   checked: boolean;
@@ -78,6 +78,7 @@ export interface NewRequestFields {
   network: Network;
   testContent: string;
   testResults: string[];
+  // headers: NewRequestHeaders; //-> Might need this -Prince
 }
 
 export interface NewRequestHeaders {
@@ -157,4 +158,27 @@ export interface CollectionsArray {
   name: string;
   data?: Record<string, unknown>[];
   reqResArray: NewRequestResponseObject[];
+}
+
+export interface GraphQLResponseObject {
+  data: GraphQLResponseObjectData; //| Record<string, Record<string, unknown[]>>[];
+  reqResObj: NewRequestResponseObject;
+  error?: string;
+}
+
+export interface GraphQLResponseObjectData {
+  data: Record<string, Record<string, unknown[]>>[];
+  loading: boolean;
+  networkStatus: number;
+  stale: boolean;
+}
+
+export interface RequestResponseObjectResponseObject { // this is likely not a comprehensive list of all properties
+  cookies: string[];
+  headers: Record<string, unknown>;
+  events: string[]; // is this the correct type?
+  tab: string;
+  timeSent: number;
+  timeReceived: number;
+  url: string;
 }
