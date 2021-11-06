@@ -9,7 +9,7 @@ import * as actions from '../actions/actions';
 import { CollectionsArray } from '../../types';
 
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
-const { api } = window;
+const { api } = window; //this
 
 api.receive('add-collection', (collectionData: any) => {
   // Add parsed text file to db
@@ -74,7 +74,9 @@ const collectionsController = {
       .first((foundCollection: CollectionsArray) => {
         // change name and id of collection to satisfy uniqueness requirements of db
         foundCollection.name += ' import';
+        console.log('foundCollection.id', foundCollection.id);
         foundCollection.id = uuid();
+        console.log('foundCollection.id', foundCollection.id);
         
         api.send('export-collection', { collection: foundCollection });
       })
@@ -88,17 +90,18 @@ const collectionsController = {
   importCollection(collection: CollectionsArray): Promise<void> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
-      api.receive('add-collection', (...args: any[]) => {
+      api.receive('add-collection', (...args: CollectionsArray[]) => {
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
-        console.log('received data: ', JSON.parse(args.data));
+        // console.log('received data: ', JSON.parse(args.data));
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
-        collectionsController.addCollectionToIndexedDb(JSON.parse(args.data));
+        collectionsController.addCollectionToIndexedDb(JSON.parse(JSON.stringify(args.data)));
         collectionsController.getCollections();
         // @ts-expect-error ts-migrate(2794) FIXME: Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
-        resolve();
+        resolve('okie dokie');
       });
     });
   },
 };
 
 export default collectionsController;
+
