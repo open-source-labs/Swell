@@ -1,23 +1,85 @@
-// import { coerceInputValue } from 'graphql';
+
 import React from 'react';
 import uuid from 'uuid/v4';
+
+
+// import { w3cwebsocket as W3CWebSocket } from 'websocket';
+// const client = new W3CWebSocket('ws://127.0.0.1:8000');
 
 // import io from 'socket.io-client';
 // let socket = io(`http://localhost:3000`);
 // import { Socket } from 'net';
 // import historyController from '../../controllers/historyController';
 
+// const socket = new WebSocket('ws//localhost:3000');
+
+
+// class WebhoContainer extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//     };
+//   }
+
 
 const WebhookContainer = (props) => {
   // const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:');
   // const echoSocketUrl = socketProtocol + '//' + window.location.hostname + '/echo/';
   // const socket = new WebSocket(echoSocketUrl);
-  // const socket = new WebSocket('ws//localhost:3000');
-  const testing = () => {
-    console.log("testing");
-    return "blah";
-    // console.log("testing socket", socket);
-  }
+  
+
+  // componentDidMount() {
+  //   // console.log('WE GOT HEREE!!!');
+  //   // client.onopen = () => {
+  //   //   console.log('WebSocket Client Connected');
+  //   // };
+  //   // client.onmessage = (message) => {
+  //   //   const dataFromServer = JSON.parse(message.data);
+  //   //   console.log('got reply! ', dataFromServer);
+  //   //   if (dataFromServer.type === "message") {
+  //   //     this.setState((state) =>
+  //   //     ({
+  //   //       messages: [...state.messages,
+  //   //       {
+  //   //         msg: dataFromServer.msg,
+  //   //         user: dataFromServer.user
+  //   //       }]
+  //   //     })
+  //   //     );
+  //   //   }
+  //   // };
+  // }
+  
+  //   socket.addEventListener('open', (event) => {
+  //   socket.send('Hello Server!');
+  // });
+
+  // const testing = () => {
+  //   console.log("testing");
+
+  //   client.onopen = () => {
+  //     console.log('WebSocket Client Connected');
+  //   };
+  //   client.onmessage = (message) => {
+  //     const dataFromServer = JSON.parse(message.data);
+  //     console.log('got reply! ', dataFromServer);
+  //     if (dataFromServer.type === "message") {
+  //       console.log("message");
+  //       // this.setState((state) =>
+  //       // ({
+  //       //   messages: [...state.messages,
+  //       //   {
+  //       //     msg: dataFromServer.msg,
+  //       //     user: dataFromServer.user
+  //       //   }]
+  //       // })
+  //       // );
+  //     }
+  //   };
+
+  //   return "blah";
+  //   // console.log("testing socket", socket);
+  // }
   
   // socket.addEventListener('open', function (event) {
   //   console.log('THE CLIENT IS CONNETED TO THE SERVER???');
@@ -62,10 +124,10 @@ const WebhookContainer = (props) => {
       <button className="button is-wh" onClick={() => startServerButton()}>
         Start/Close Server
       </button>
-      <button className="button is-wh" onClick={() => console.log('lol')}>
+      <button className="button is-wh" onClick={() => testing()}>
         TESTING
       </button>
-      <div> </div>
+      {/* <div> { bob } </div> */}
       {/* <script>
           {const socket = WebSocket('ws://localhost:3000');
           socket.addEventListener('open', function(event){

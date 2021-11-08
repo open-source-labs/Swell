@@ -35,9 +35,6 @@ module.exports = merge(base, {
     // webSocketServer: require.resolve('./src/server/server.js'),
 
     proxy: {
-      '/test': {
-        target: 'http://localhost:3000',
-      },
       '/webhookServer': {
         target: 'http://localhost:3000',
       },

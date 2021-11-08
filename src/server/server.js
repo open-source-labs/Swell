@@ -5,12 +5,12 @@ const ngrok = require('ngrok');
 const app = express();
 const port = 3000;
 
-// const server = require('http').createServer(app);
-// const WebSocket = require('ws');
 
-// const wss = new WebSocket.Server({ server }, console.log("dis ther server", { server }));
+const WebSocket = require('ws');
+const server = require('http').createServer(app);
+const wss = new WebSocket.Server({ server }, console.log("dis ther server"));
 
-// wss.on
+
 // wss.on('connection', function connection(ws) {
 //   console.log('A new client Connected!');
 //   ws.send('Welcome New Client!');
