@@ -1,14 +1,14 @@
-import ApolloClient from 'apollo-client';
+import ApolloClient, { OperationVariables } from 'apollo-client';
 import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import { buildClientSchema, printSchema } from 'graphql';
+import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message
 import * as store from '../store';
 // @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
-import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData } from '../../types';
+import { NewRequestResponseObject, GraphQLResponseObject, CookieObject, NewRequestHeaders, NewRequestCookies } from '../../types';
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
 
@@ -50,6 +50,7 @@ const graphQLController = {
         this.handleError(result.error, result.reqResObj);
       } else {
         result.reqResObj.response.events.push(result.data);
+        console.log('result.data: ', result.data);
 
         result.reqResObj.connection = 'closed';
         result.reqResObj.connectionType = 'plain';
@@ -107,27 +108,26 @@ const graphQLController = {
     const wsUri = reqResObj.url.replace(/http/gi, 'ws');
 
     // Map all headers to headers object
-    const headers = {};
+    const headers: Record<string, string> = {};
     reqResObj.request.headers.forEach(({
       active,
       key,
       value
-    }: any) => {
-      // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+    }: NewRequestHeaders) => {
+    
       if (active) headers[key] = value;
     });
 
     // Reformat cookies
-    let cookies = '';
+    let cookiesStr = '';
     if (reqResObj.request.cookies.length) {
-      cookies = reqResObj.request.cookies.reduce((acc: any, userCookie: any) => {
+      cookiesStr = reqResObj.request.cookies.reduce((acc: string, userCookie: NewRequestCookies) => {
         if (userCookie.active)
           return `${acc}${userCookie.key}=${userCookie.value}; `;
         return acc;
       }, '');
     }
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'Cookie' does not exist on type '{}'.
-    headers.Cookie = cookies;
+    headers.Cookie = cookiesStr;
 
     const wsLink = new WebSocketLink(
       new SubscriptionClient(wsUri, {
@@ -147,7 +147,8 @@ const graphQLController = {
     const query = gql`
       ${reqResObj.request.body}
     `;
-    const variables = reqResObj.request.bodyVariables
+
+    const variables: OperationVariables = reqResObj.request.bodyVariables
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
 
@@ -160,7 +161,7 @@ const graphQLController = {
         next(subsEvent) {
           // Notify your application with the new arrived data
           reqResObj.response.events.push(subsEvent.data);
-          const newReqRes = JSON.parse(JSON.stringify(reqResObj));
+          const newReqRes: NewRequestResponseObject = JSON.parse(JSON.stringify(reqResObj));
           store.default.dispatch(actions.saveCurrentResponseData(newReqRes));
           store.default.dispatch(actions.reqResUpdate(newReqRes));
         },
@@ -170,7 +171,7 @@ const graphQLController = {
       });
   },
 
-  handleResponse(response: any, reqResObj: any) {
+  handleResponse(response: GraphQLResponseObject, reqResObj: NewRequestResponseObject): void {
     reqResObj.connection = 'closed';
     reqResObj.connectionType = 'plain';
     reqResObj.timeReceived = Date.now();
@@ -182,7 +183,7 @@ const graphQLController = {
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
-  handleError(errorsObj: any, reqResObj: any) {
+  handleError(errorsObj: string, reqResObj: NewRequestResponseObject): void {
     reqResObj.connection = 'error';
     reqResObj.timeReceived = Date.now();
 
@@ -192,31 +193,33 @@ const graphQLController = {
   },
 
   // objects that travel over IPC API have their properties alphabetized...
-  cookieFormatter(cookieArray: any) {
-    return cookieArray.map((eachCookie: any) => {
+  cookieFormatter(cookieArray: CookieObject[]): CookieObject[] {
+    return cookieArray.map((eachCookie: CookieObject) => {
       const cookieFormat = {
         name: eachCookie.name,
         value: eachCookie.value,
         domain: eachCookie.domain,
-        hostOnly: eachCookie.hostonly ? eachCookie.hostonly : false,
+        hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
         path: eachCookie.path,
         secure: eachCookie.secure ? eachCookie.secure : false,
-        httpOnly: eachCookie.httponly ? eachCookie.httponly : false,
+        httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
         session: eachCookie.session ? eachCookie.session : false,
-        expirationDate: eachCookie.expires ? eachCookie.expires : '',
+        expires: eachCookie.expires ? eachCookie.expires : '',
       };
+      console.log('cookieFormat: ', cookieFormat);
       return cookieFormat;
     });
   },
 
-  introspect(url: any, headers: any, cookies: any) {
+  introspect(url: string, headers: NewRequestHeaders[], cookies: NewRequestCookies[]): void {
     const introspectionObject = {
       url,
       headers,
       cookies,
     };
+    console.log('url: ', url, 'headers: ', headers, 'cookies: ', cookies);
     api.send('introspect', JSON.stringify(introspectionObject));
-    api.receive('introspect-reply', (data: any) => {
+    api.receive('introspect-reply', (data: IntrospectionQuery) => {
       if (data !== 'Error: Please enter a valid GraphQL API URI') {
         // formatted for Codemirror hint and lint
         const clientSchema = buildClientSchema(data);

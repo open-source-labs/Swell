@@ -52,7 +52,7 @@ export interface NewRequestResponseObject {
   connectionType: string;
   isHTTP2: boolean;
   url: string;
-  timeReceived: Date;
+  timeReceived: Date | number;
   timeSent: number;
   rpc: string;
   service: string;
@@ -78,12 +78,20 @@ export interface NewRequestFields {
   network: Network;
   testContent: string;
   testResults: string[];
-  // headers: NewRequestHeaders; //-> Might need this -Prince
+  headers: NewRequestHeaders[]; //-> Might need this -Prince
+  cookies: NewRequestCookies[];
+  body: string;
+  bodyType: string;
+  bodyVariables: string;
 }
 
 export interface NewRequestHeaders {
-  headersArr: Record<string, unknown>[];
-  count: number;
+  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
+  count?: number; //-> Might not need this -Prince
+  active: boolean;
+  key: string;
+  value: string;
+  id: number;
 }
 
 export interface NewRequestStreams {
@@ -102,11 +110,15 @@ export interface NewRequestStreams {
 }
 
 export interface NewRequestCookies {
-  cookiesArr: Record<string, unknown>[];
-  count: number;
+  // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
+  // count: number; //-> Pretty sure this is not needed -Prince
+  active: boolean;
+  key: string;
+  value: string;
+  id: string;
 }
 
-export interface NewRequestBody {
+export interface NewRequestBody { //-> wrong. all wrong. -Prince
   bodyContent: string;
   bodyVariables: string;
   bodyType: string;
@@ -160,6 +172,9 @@ export interface CollectionsArray {
   reqResArray: NewRequestResponseObject[];
 }
 
+
+// GraphQL Controller Interfaces
+
 export interface GraphQLResponseObject {
   data: GraphQLResponseObjectData; //| Record<string, Record<string, unknown[]>>[];
   reqResObj: NewRequestResponseObject;
@@ -167,18 +182,30 @@ export interface GraphQLResponseObject {
 }
 
 export interface GraphQLResponseObjectData {
-  data: Record<string, Record<string, unknown[]>>[];
+  data: Record<string, unknown>[];
   loading: boolean;
   networkStatus: number;
   stale: boolean;
 }
 
 export interface RequestResponseObjectResponseObject { // this is likely not a comprehensive list of all properties
-  cookies: string[];
+  cookies: CookieObject[];
   headers: Record<string, unknown>;
-  events: string[]; // is this the correct type?
+  events: GraphQLResponseObjectData[]; // is this the correct type?
   tab: string;
   timeSent: number;
   timeReceived: number;
   url: string;
+}
+
+export interface CookieObject {
+  name: string;
+  value: string;
+  domain: string;
+  hostOnly: boolean;
+  path: string;
+  secure: boolean;
+  httpOnly: boolean;
+  session: boolean;
+  expires: string | number;
 }
