@@ -8,7 +8,7 @@ import * as store from '../store';
 import * as actions from '../actions/actions';
 import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
 
-const { api }: { api: WindowAPIObject } = window as WindowExt;
+const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 
 const graphQLController = {
   openGraphQLConnection(reqResObj: NewRequestResponseObject): void {

@@ -4,7 +4,7 @@ import graphQLController from './graphQLController';
 import { NewRequestResponseObject, WindowAPIObject, WindowExt } from '../../types';
 
 
-const { api }: { api: WindowAPIObject} = window as WindowExt; 
+const { api }: { api: WindowAPIObject} = window as unknown as WindowExt; 
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
   
