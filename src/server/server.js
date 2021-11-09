@@ -2,51 +2,41 @@ const path = require('path');
 const express = require('express');
 const ngrok = require('ngrok');
 
-const app = express();
 const port = 3000;
+const app = express();
+
+//websocket stuff
+// const ws = require('ws');
+const server = require('http').createServer(app); 
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*'
+  }
+});
 
 
-const WebSocket = require('ws');
-const server = require('http').createServer(app);
-const wss = new WebSocket.Server({ server }, console.log("dis ther server"));
+io.on('connection', (client)=>{
+  console.log('established websocket connection');
 
-
-// wss.on('connection', function connection(ws) {
-//   console.log('A new client Connected!');
-//   ws.send('Welcome New Client!');
-
-//   ws.on('message', function incoming(message) {
-//     console.log('received: %s', message);
-
-//     wss.clients.forEach(function each(client) {
-//       if (client !== ws && client.readyState === WebSocket.OPEN) {
-//         client.send(message);
-//       }
-//     });
-//   });
-// });
+  client.on('message', (message) => {
+    console.log('message received: ', message);
+    //   ngrok
+    // .connect({
+    //   proto: 'http',
+    //   addr: '3000',
+    // })
+    // .then((url) => {
+    //   console.log(`ngrok tunnel opened at: ${url}/webhook`);
+    //   return res.status(200).json(url);
+    // });
+  });
+});
 
 app.get('/', (req, res) => res.send('Hello World!'));
-// const app = express(),
-//   DIST_DIR = __dirname,
-//   HTML_FILE = path.join(DIST_DIR, 'index.html');
 
-// const port = process.env.PORT || 8080;
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// app.get('/styles.css', (req, res) => {
-//   res.status(200).sendFile(path.join(__dirname, '../src/styles.css'));
-// });
-
-
-// server.on('connection', (socket) => {
-//   socket.on('message', (message) => {
-//     socket.send(`we are sending a message to the client! ${message}`);
-//   });
-// });
-
 
 app.post('/webhookServer', (req, res) => {
   console.log('Server Is On!');
@@ -100,6 +90,5 @@ app.use((err, req, res, next) => {
 
 // need to make this work somehow
 
-
-module.exports = app.listen(port, () => console.log(`Listening on port ${port}`));
-
+// module.exports = app.listen(port, () => console.log(`Listening on port ${port}`));
+module.exports = server.listen(port, () => console.log(`Listening on port ${port}`));
