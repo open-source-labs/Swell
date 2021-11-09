@@ -2,6 +2,7 @@ export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
 export type Methods = 'GET'|'PUT'|'PATCH'|'DELETE'|'OPTIONS'|'HEAD'|'TRACE'|'QUERY'|'SUBSCRIPTION'|'INTROSPECTION'|'INITIATOR'|'RECEIVER';
+type data = {[key: string]: string;}
 
 export interface initialState {
   currentTab: string;
@@ -61,6 +62,8 @@ export interface NewRequestResponseObject {
   minimized: boolean;
   gRPC: boolean;
   createdAt: Date;
+  error: string;
+  openapi: boolean;
 }
 export interface NewRequestFields {
   protocol: Protocol;
@@ -172,17 +175,15 @@ export interface CollectionsArray {
   reqResArray: NewRequestResponseObject[];
 }
 
-
 // GraphQL Controller Interfaces
 
 export interface GraphQLResponseObject {
-  data: GraphQLResponseObjectData; //| Record<string, Record<string, unknown[]>>[];
   reqResObj: NewRequestResponseObject;
+  data: data; //| Record<string, Record<string, unknown[]>>[];
   error?: string;
 }
-
 export interface GraphQLResponseObjectData {
-  data: Record<string, unknown>[];
+  data: data;
   loading: boolean;
   networkStatus: number;
   stale: boolean;
@@ -191,7 +192,7 @@ export interface GraphQLResponseObjectData {
 export interface RequestResponseObjectResponseObject { // this is likely not a comprehensive list of all properties
   cookies: CookieObject[];
   headers: Record<string, unknown>;
-  events: GraphQLResponseObjectData[]; // is this the correct type?
+  events: Record<string, unknown>[]; // is this the correct type?
   tab: string;
   timeSent: number;
   timeReceived: number;
@@ -216,4 +217,15 @@ export interface WRTC {
   RTCPeerConnection: RTCPeerConnection | webkitRTCPeerConnection | mozRTCPeerConnection;
   RTCSessionDescription: RTCSessionDescription | webkitRTCSessionDescription | mozRTCSessionDescription;
   RTCIceCandidate: RTCIceCandidate | webkitRTCIceCandidate | mozRTCIceCandidate;
+}
+
+export interface WindowExt extends globalThis.Window {
+  api: WindowAPIObject;
+}
+
+export interface WindowAPIObject {
+  removeAllListeners: (event: string) => void;
+  receive: (event: string, callback: (data: any) => void) => void;
+  send: (event: string, data: any) => void;
+
 }

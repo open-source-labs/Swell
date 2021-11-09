@@ -6,10 +6,9 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { NewRequestResponseObject, GraphQLResponseObject, CookieObject, NewRequestHeaders, NewRequestCookies } from '../../types';
+import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
 
-// @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
-const { api } = window;
+const { api }: { api: WindowAPIObject } = window as WindowExt;
 
 const graphQLController = {
   openGraphQLConnection(reqResObj: NewRequestResponseObject): void {
@@ -23,11 +22,8 @@ const graphQLController = {
     // send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
-        // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
         if (response.error)
-          // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
           this.handleError(response.reqResObj.error, response.reqResObj);
-        // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log('error in sendGqlToMain', err));
@@ -39,7 +35,6 @@ const graphQLController = {
     const reqResObj = reqResArray[index]; //-> this seems erroneous -Prince
     api.removeAllListeners('reply-gql');
     api.receive('reply-gql', (result: GraphQLResponseObject) => {
-      console.log('result: ', result);
       // needs formatting because component reads them in a particular order
       result.reqResObj.response.cookies = this.cookieFormatter(
         result.reqResObj.response.cookies
@@ -49,7 +44,6 @@ const graphQLController = {
         this.handleError(result.error, result.reqResObj);
       } else {
         result.reqResObj.response.events.push(result.data);
-        console.log('result.data: ', result.data);
 
         result.reqResObj.connection = 'closed';
         result.reqResObj.connectionType = 'plain';
@@ -78,7 +72,7 @@ const graphQLController = {
   },
 
   // handles graphQL queries and mutations
-  sendGqlToMain(args: NewRequestResponseObject): Promise<GraphQLResponseObject> {
+  sendGqlToMain(args: Record<string, NewRequestResponseObject>): Promise<GraphQLResponseObject> {
     return new Promise((resolve) => {
       // send object to the context bridge
       api.removeAllListeners('reply-gql');
@@ -205,7 +199,6 @@ const graphQLController = {
         session: eachCookie.session ? eachCookie.session : false,
         expires: eachCookie.expires ? eachCookie.expires : '',
       };
-      console.log('cookieFormat: ', cookieFormat);
       return cookieFormat;
     });
   },
@@ -216,7 +209,6 @@ const graphQLController = {
       headers,
       cookies,
     };
-    console.log('url: ', url, 'headers: ', headers, 'cookies: ', cookies);
     api.send('introspect', JSON.stringify(introspectionObject));
     api.receive('introspect-reply', (data: IntrospectionQuery) => {
       if (data !== 'Error: Please enter a valid GraphQL API URI') {

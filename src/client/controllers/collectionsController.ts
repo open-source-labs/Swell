@@ -1,11 +1,10 @@
-import { v4 as uuid } from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import db from '../db';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { CollectionsArray } from '../../types';
+import { CollectionsArray, WindowAPIObject, WindowExt } from '../../types';
 
-// @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
-const { api } = window;
+const { api }: { api: WindowAPIObject } = window as WindowExt;
 
 api.receive('add-collection', (collectionData: any) => {
   // Add parsed text file to db
@@ -70,16 +69,13 @@ const collectionsController = {
       .first((foundCollection: CollectionsArray) => {
         // change name and id of collection to satisfy uniqueness requirements of db
         foundCollection.name += ' import';
-        console.log('foundCollection.id', foundCollection.id);
         foundCollection.id = uuid();
-        console.log('foundCollection.id', foundCollection.id);
         
         api.send('export-collection', { collection: foundCollection });
       })
       .catch((error: Record<string, undefined>) => {
         console.error(error.stack || error);
-        // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'reject'.
-        reject(error);
+        throw(error);
       });
   },
 

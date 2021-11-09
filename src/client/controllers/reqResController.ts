@@ -1,13 +1,12 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController';
-import { NewRequestResponseObject } from '../../types';
+import { NewRequestResponseObject, WindowAPIObject, WindowExt } from '../../types';
 
 
-// @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
-const { api }: { api: Record<string, unknown> } = window; // this is maybe not the best way to type this -Prince
+const { api }: { api: WindowAPIObject} = window as WindowExt; 
 const connectionController = {
-  openConnectionArray: [] as string | number | undefined[],
+  openConnectionArray: [] as string | number[],
   
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
