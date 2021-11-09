@@ -1,3 +1,4 @@
+import { WRTC } from '../../types';
 /**
  * exports Peer class for use in WebRTC implementations
  *
@@ -8,56 +9,56 @@
 
 export default class Peer {
   //  ┌──────────────────────────────┐
-  //  │        CONSTRUCTOR              │
+  //  │        CONSTRUCTOR           │
   //  └──────────────────────────────┘
-  constructor(initConfig: any) {
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'initConfig' does not exist on type 'Peer... Remove this comment to see the full error message
+  initConfig: RTCConfiguration;
+
+  _roles: Record<string, string>;
+
+  role: string;
+  
+  constructor(initConfig: RTCConfiguration) {
     this.initConfig = initConfig;
-    // @ts-expect-error ts-migrate(2339) FIXME: Property '_roles' does not exist on type 'Peer'.
     this._roles = {
       INITIATOR: 'INITIATOR',
       PENDING: 'PENDING',
       RECEIVER: 'RECEIVER',
     };
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-    this.role = this._roles.PENDING;
+    this.role = 'PENDING';
     this._createPeer(initConfig);
     this._initICECandidateEvents();
+    // this.connection = connection;
   }
 
   //  ┌──────────────────────────────┐
-  //  │      GET BROWSER RTC            │
+  //  │       GET BROWSER RTC        │
   //  └──────────────────────────────┘
 
-  getBrowserRTC() {
+  getBrowserRTC(): null | Record<number, WRTC> { //-> we are pretty sure that this is not the correct type, but it works, so...
     if (typeof globalThis === 'undefined') return null;
     const wrtc = {
       RTCPeerConnection:
         globalThis.RTCPeerConnection ||
-        // @ts-expect-error ts-migrate(7017) FIXME: Element implicitly has an 'any' type because type ... Remove this comment to see the full error message
         globalThis.mozRTCPeerConnection ||
         globalThis.webkitRTCPeerConnection,
       RTCSessionDescription:
         globalThis.RTCSessionDescription ||
-        // @ts-expect-error ts-migrate(7017) FIXME: Element implicitly has an 'any' type because type ... Remove this comment to see the full error message
         globalThis.mozRTCSessionDescription ||
-        // @ts-expect-error ts-migrate(7017) FIXME: Element implicitly has an 'any' type because type ... Remove this comment to see the full error message
         globalThis.webkitRTCSessionDescription,
       RTCIceCandidate:
         globalThis.RTCIceCandidate ||
-        // @ts-expect-error ts-migrate(7017) FIXME: Element implicitly has an 'any' type because type ... Remove this comment to see the full error message
         globalThis.mozRTCIceCandidate ||
-        // @ts-expect-error ts-migrate(7017) FIXME: Element implicitly has an 'any' type because type ... Remove this comment to see the full error message
         globalThis.webkitRTCIceCandidate,
     };
     if (!wrtc.RTCPeerConnection) return null;
+    // console.log(wrtc);
     return wrtc;
   }
 
   //  ┌──────────────────────────────┐
-  //  │          _ CREATE PEER          │
+  //  │       _ CREATE PEER          │
   //  └──────────────────────────────┘
-  _createPeer(config: any) {
+  _createPeer(config: RTCConfiguration): void {
     // grab RTCPeerConnection from globalThis
     // console.log('[webrtcPeerController][Peer][_createPeer] getBrowserRTC():');
     // console.log(this.getBrowserRTC());
@@ -69,9 +70,9 @@ export default class Peer {
   }
 
   //  ┌──────────────────────────────┐
-  //  │    _ INIT ICE CANDIDATE EVENTS  │
+  //  │ _ INIT ICE CANDIDATE EVENTS  │
   //  └──────────────────────────────┘
-  _initICECandidateEvents() {
+  _initICECandidateEvents(): void {
     // setup ice candidate event handler
     // listen for ICE candidates.  Each time a candidate is added to the list, re-log the whole SDP
     // this.connection.onicecandidate = (event) => {
@@ -98,9 +99,9 @@ export default class Peer {
   }
 
   //  ┌──────────────────────────────┐
-  //  │   INIT DATA CHANNEL AND EVENTS  │
+  //  │ INIT DATA CHANNEL AND EVENTS │
   //  └──────────────────────────────┘
-  initDataChannelAndEvents() {
+  initDataChannelAndEvents(): void {
     // check for role before continuing
     // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
     if (this.role === this._roles.PENDING) {
@@ -145,7 +146,7 @@ export default class Peer {
   }
 
   //  ┌──────────────────────────────┐
-  //  │        CREATE LOCAL SDP         │
+  //  │       CREATE LOCAL SDP       │
   //  └──────────────────────────────┘
   createLocalSdp() {
     // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.

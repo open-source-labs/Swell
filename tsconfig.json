@@ -9,7 +9,7 @@
     "target": "ESNext", // specify ECMAScript target version
     "allowJs": true, // allow a partial TypeScript and JavaScript codebase
     "noEmit": true, // don't emit; allow Babel to transform files
-
+    
     /* Strict Type-Checking Options */
     "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
     "strict": true /* Enable all strict type-checking options. */,

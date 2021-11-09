@@ -209,3 +209,11 @@ export interface CookieObject {
   session: boolean;
   expires: string | number;
 }
+
+// WebRTC Controller Interfaces
+
+export interface WRTC {
+  RTCPeerConnection: RTCPeerConnection | webkitRTCPeerConnection | mozRTCPeerConnection;
+  RTCSessionDescription: RTCSessionDescription | webkitRTCSessionDescription | mozRTCSessionDescription;
+  RTCIceCandidate: RTCIceCandidate | webkitRTCIceCandidate | mozRTCIceCandidate;
+}

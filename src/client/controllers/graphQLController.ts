@@ -4,11 +4,10 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message
 import * as store from '../store';
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message
 import * as actions from '../actions/actions';
 import { NewRequestResponseObject, GraphQLResponseObject, CookieObject, NewRequestHeaders, NewRequestCookies } from '../../types';
+
 // @ts-expect-error ts-migrate(2339) FIXME: Property 'api' does not exist on type 'Window & ty... Remove this comment to see the full error message
 const { api } = window;
 

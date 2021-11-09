@@ -1,6 +1,4 @@
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../s... Remove this comment to see the full error message;
 import * as store from '../store';
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module '../a... Remove this comment to see the full error message;
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController';
 import { NewRequestResponseObject } from '../../types';
