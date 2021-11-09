@@ -6,7 +6,7 @@ import { NewRequestResponseObject, WindowAPIObject, WindowExt } from '../../type
 
 const { api }: { api: WindowAPIObject} = window as WindowExt; 
 const connectionController = {
-  openConnectionArray: [] as string | number[],
+  openConnectionArray: [] as number[] | number[],
   
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
@@ -47,7 +47,7 @@ const connectionController = {
     const reqResArr: NewRequestResponseObject[] = store.default.getState().business.reqResArray;
     const reqResObj: NewRequestResponseObject = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
 
-    console.log('this is the reqResArr!!!!!!!', reqResArr);
+    // console.log('this is the reqResArr!!!!!!!', reqResArr);
     console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
 
     if (reqResObj.request.method === 'SUBSCRIPTION')
@@ -146,7 +146,7 @@ const connectionController = {
     });
     const reqResObj = reqResArray[index];
 
-    function runSingletest(this: any, reqResObj: NewRequestResponseObject) {
+    function runSingletest(reqResObj: NewRequestResponseObject) {
       if (reqResObj.request.method === 'SUBSCRIPTION')
         graphQLController.openSubscription(reqResObj);
       else if (reqResObj.graphQL) {
@@ -154,10 +154,9 @@ const connectionController = {
       } else if (/wss?:\/\//.test(reqResObj.protocol)) {
         // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
         api.send('open-ws', reqResObj);
-
         // update the connectionArray when connection is open from ws
-        api.receive('update-connectionArray', (connectionArray: any) => {
-          this.openConnectionArray.push(...connectionArray);
+        api.receive('update-connectionArray', (connectionArray: number[]) => { // is this the correct type???
+          connectionController.openConnectionArray.push(...connectionArray);
         });
       }
       // gRPC connection

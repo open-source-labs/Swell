@@ -41,7 +41,6 @@ const collectionsController = {
           (a: CollectionsArray, b: CollectionsArray) => b.createdAt.valueOf() - a.createdAt.valueOf()
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
-        console.log('collections', collectionsArr);
       })
       .catch((err: string) => console.log('Error in getCollection s', err));
   },
