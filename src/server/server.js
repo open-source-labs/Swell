@@ -6,7 +6,6 @@ const port = 3000;
 const app = express();
 
 //websocket stuff
-// const ws = require('ws');
 const server = require('http').createServer(app); 
 const io = require('socket.io')(server, {
   cors: {
@@ -14,23 +13,17 @@ const io = require('socket.io')(server, {
   }
 });
 
+// if u want to use routers, set socket io then google the rest
+// app.set('socketio', io);
 
-io.on('connection', (client)=>{
-  console.log('established websocket connection');
 
-  client.on('message', (message) => {
-    console.log('message received: ', message);
-    //   ngrok
-    // .connect({
-    //   proto: 'http',
-    //   addr: '3000',
-    // })
-    // .then((url) => {
-    //   console.log(`ngrok tunnel opened at: ${url}/webhook`);
-    //   return res.status(200).json(url);
-    // });
-  });
-});
+// io.on('connection', (client)=>{
+//   console.log('established websocket connection');
+
+  // client.on('message', (message) => {
+  //   console.log('message received: ', message);
+  // });
+// });
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -61,7 +54,8 @@ app.delete('/webhookServer', (req, res) => {
 // listening for stuff
 app.post('/webhook', (req, res)=> {
   console.log(req.body);
-  return res.status(200).json('WE DID IT!?');
+  io.emit('response', req.body);
+  return res.status(200).json(req.body);
 })
 
 app.get('*', (req, res) => {
@@ -83,12 +77,8 @@ app.use((err, req, res, next) => {
     message: { err: 'An error occurred' },
   };
   const errObj = {...defaultErr, ...err}
-  // const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-// need to make this work somehow
-
-// module.exports = app.listen(port, () => console.log(`Listening on port ${port}`));
 module.exports = server.listen(port, () => console.log(`Listening on port ${port}`));
