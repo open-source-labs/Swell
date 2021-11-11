@@ -27,15 +27,18 @@ const ResponsePaneContainer = () => {
 
   // UNCOMMENT FOR DEBUGGING
   console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
-  const testing = () => {
-    console.log('testing', currentResponse);
-  }
+
+
+  //VVVV get rid of this button
+  // const testing = () => {
+  //   console.log('testing', currentResponse);
+  // }
   return (
     <div
       className="column is-one-third is-flex is-flex-direction-column is-tall"
       id="responses"
     >
-      <button onClick={() => testing()}>></button>
+      {/* <button onClick={() => testing()}>></button> */}
       {/* HEADER */}
       <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
         <ResponseTime currentResponse={currentResponse} />
