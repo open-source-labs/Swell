@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions.js';
-import Collection from '../display/Collection.jsx';
+import * as actions from '../../actions/actions';
+import Collection from '../display/Collection';
 import collectionsController from '../../controllers/collectionsController';
 
 function CollectionsContainer() {

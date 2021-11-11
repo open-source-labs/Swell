@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
-import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
+import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({

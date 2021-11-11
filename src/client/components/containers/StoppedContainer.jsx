@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
-import SingleScheduleReqResContainer from './SingleScheduleReqResContainer.jsx';
+import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,

@@ -41,7 +41,7 @@ function WebRTCContainer({
   const addNewRequest = () => {
     const reqRes = {
       id: uuid(),
-      created_at: new Date(),
+      createdAt: new Date(),
       protocol,
       host: '',
       path: '',
