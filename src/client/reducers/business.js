@@ -106,7 +106,7 @@ const businessReducer = (state = initialState, action) => {
 
     case types.DELETE_HISTORY: {
       const deleteId = action.payload.id;
-      const deleteDate = format(action.payload.created_at, 'MM/DD/YYYY');
+      const deleteDate = format(action.payload.createdAt, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       newHistory.forEach((obj, i) => {
         if (obj.date === deleteDate)
@@ -226,7 +226,7 @@ const businessReducer = (state = initialState, action) => {
     case types.REQRES_ADD: {
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
-      const addDate = format(action.payload.created_at, 'MM/DD/YYYY');
+      const addDate = format(action.payload.createdAt, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       // if there is history for added date, add query to beginning of history
@@ -343,7 +343,7 @@ const businessReducer = (state = initialState, action) => {
           url: action.payload.url,
           timeSent: action.payload.timeSent,
           timeReceived: action.payload.timeReceived,
-          created_at: action.payload.created_at,
+          createdAt: action.payload.createdAt,
           color,
         });
         return {

@@ -8,8 +8,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
-import ComposerContainer from '../composer/ComposerContainer.jsx';
-import HistoryContainer from './HistoryContainer.jsx';
+import ComposerContainer from '../composer/ComposerContainer';
+import HistoryContainer from './HistoryContainer';
 
 const SidebarContainer = () => {
   const dispatch = useDispatch();

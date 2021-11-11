@@ -91,7 +91,7 @@ function GRPCContainer({
     // create reqres obj to be passed to controller for further actions/tasks
     const reqRes = {
       id: uuid(),
-      created_at: new Date(),
+      createdAt: new Date(),
       protocol: '',
       url,
       graphQL,

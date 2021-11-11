@@ -14,12 +14,12 @@ Dexie.dependencies.IDBKeyRange = require('fake-indexeddb/lib/FDBKeyRange');
 const db = new Dexie('test');
 
 db.version(2).stores({
-  history: 'id, created_at',
-  collections: 'id, created_at, &name',
+  history: 'id, createdAt',
+  collections: 'id, createdAt, &name',
 });
 
 db.version(1).stores({
-  history: 'id, created_at',
+  history: 'id, createdAt',
 });
 
 // now we have db.history and db.collections
@@ -45,7 +45,7 @@ describe('db test', () => {
 
     it('will not add history without an id', async () => {
       await db.history
-        .put({ created_at: Date.now() })
+        .put({ createdAt: Date.now() })
         .catch((err) => expect(err.name).toEqual('DataError'));
       const count = await db.history.count();
       expect(count).toEqual(0);
