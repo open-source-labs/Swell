@@ -9,6 +9,7 @@ import GraphQLContainer from './GraphQLContainer.jsx';
 import GRPCContainer from './GRPCContainer.jsx';
 import WSContainer from './WSContainer.jsx';
 import WebRTCContainer from './WebRTCContainer';
+import WebhoContainer from './WebhoContainer';
 
 const mapStateToProps = (store) => {
   return {
@@ -89,6 +90,7 @@ const ComposerContainer = (props) => {
           graphQL: true,
           gRPC: false,
           webrtc: false,
+          webhook: false,
           network,
           testContent: '',
         });
@@ -112,6 +114,7 @@ const ComposerContainer = (props) => {
           graphQL: false,
           webrtc: false,
           gRPC: false,
+          webhook: false,
           network,
           testContent: '',
         });
@@ -132,6 +135,7 @@ const ComposerContainer = (props) => {
           graphQL: false,
           gRPC: false,
           ws: false,
+          webhook: false,
           network: 'openapi',
           testContent: '',
         });
@@ -152,6 +156,7 @@ const ComposerContainer = (props) => {
           graphQL: false,
           gRPC: true,
           webrtc: false,
+          webhook: false,
           network,
           testContent: '',
         });
@@ -172,6 +177,7 @@ const ComposerContainer = (props) => {
           graphQL: false,
           gRPC: false,
           webrtc: false,
+          webhook: false,
           network,
           testContent: '',
         });
@@ -193,6 +199,7 @@ const ComposerContainer = (props) => {
           gRPC: false,
           ws: false,
           webrtc: true,
+          webhook: false,
           network,
           testContent: '',
         });
@@ -211,7 +218,31 @@ const ComposerContainer = (props) => {
         });
         break;
       }
-
+      case 'webhook': {
+        props.resetComposerFields();
+        props.setNewRequestFields({
+          ...props.newRequestFields,
+          protocol: '',
+          //??? might need to fix url vvv if we want to pass our url api from the state
+          url: '',
+          method: 'Webhook',
+          graphQL: false,
+          gRPC: false,
+          ws: false,
+          webrtc: false,
+          webhook: true,
+          // vvv wat dis, don't think we neeed
+          network,
+          testContent: '',
+        });
+        props.setNewRequestBody({
+          ...props.newRequestBody,
+          bodyType: 'none',
+          // vvv need to update this and figure out what we are going to do with it
+          bodyContent: `We will put our URL here maybe?`,
+        });
+        break;
+      }
       default:
     }
   };
@@ -242,6 +273,9 @@ const ComposerContainer = (props) => {
         )}
         {props.newRequestFields.network === 'webrtc' && (
           <WebRTCContainer {...props} />
+        )}
+        {props.newRequestFields.network === 'webhook' && (
+          <WebhoContainer {...props} />
         )}
       </div>
     </div>

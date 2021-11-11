@@ -10,8 +10,9 @@ $grpc: #6cacc1;
 $websockets: #f47d31;
 $webrtc: #4285f4;
 $openapi: #94c73d;
+$webhook: rgb(185, 52, 52);
 
-$neutral-100: #ffffff;
+$neutral-100: #5e5e5e;
 $neutral-200: #f4f5f7;
 $neutral-300: #e1e1e1;
 $neutral-400: #737581;
@@ -97,6 +98,16 @@ $text: $neutral-500;
 .is-ws {
   color: $neutral-200 !important;
   background-color: $websockets !important;
+}
+
+.is-wh{
+  color: $neutral-200 !important;
+  background-color: $webhook !important;
+}
+
+.is-wh-on{
+  color: $neutral-200 !important;
+  background-color: #037448 !important;
 }
 
 .is-rest-color {
