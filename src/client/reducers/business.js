@@ -270,9 +270,7 @@ const businessReducer = (state = initialState, action) => {
     }
 
     case types.REQRES_UPDATE: {
-      
       const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
-      console.log('hellooo', reqResDeepCopy);
       let indexToBeUpdated;
       reqResDeepCopy.forEach((reqRes, index) => {
         if (reqRes.id === action.payload.id) indexToBeUpdated = index;

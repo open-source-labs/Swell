@@ -104,7 +104,12 @@ $text: $neutral-500;
   color: $neutral-200 !important;
   background-color: $webhook !important;
 }
- 
+
+.is-wh-on{
+  color: $neutral-200 !important;
+  background-color: #037448 !important;
+}
+
 .is-rest-color {
   color: $rest !important;
 }
