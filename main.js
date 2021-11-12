@@ -329,7 +329,7 @@ ipcMain.on('import-collection', (event, args) => {
           !parsed.id ||
           !parsed.name ||
           !parsed.reqResArray ||
-          !parsed.created_at
+          !parsed.createdAt
         ) {
           options.message = 'Invalid File';
           options.detail = 'Please try again.';
