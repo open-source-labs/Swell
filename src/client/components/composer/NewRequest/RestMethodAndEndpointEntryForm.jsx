@@ -65,6 +65,7 @@ const RestMethodAndEndpointEntryForm = ({
   };
 
   return (
+    
     <div>
       <div
         ref={dropdownEl}
@@ -104,6 +105,7 @@ const RestMethodAndEndpointEntryForm = ({
                 GET
               </a>
             )}
+
             {newRequestFields.method !== 'POST' && (
               <a
                 onClick={() => {

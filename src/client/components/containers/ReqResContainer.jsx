@@ -38,6 +38,7 @@ const ReqResContainer = (props) => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
 
+  
   return (
     <div>
       {reqResArray.length > 0 && displaySchedule && (

@@ -81,7 +81,6 @@ function WSContainer({
 
     //reset for next request
     resetComposerFields();
-
     setNewRequestFields({
       ...newRequestFields,
       protocol: 'ws://',

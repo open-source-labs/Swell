@@ -30,6 +30,7 @@ const initialState = {
     ws: false,
     openapi: false,
     webrtc: false,
+    webhook: false,
     network: 'rest',
     testContent: '',
     testResults: [],

@@ -21,9 +21,10 @@ const SingleReqResContainer = (props) => {
   const newRequestFields = useSelector(
     (store) => store.business.newRequestFields
   );
-
+  // const testingBlah = { request: { this: "asdfadsf" } };
   const {
     content,
+    //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
 
     reqResDelete,
@@ -194,6 +195,7 @@ const SingleReqResContainer = (props) => {
     reqResDelete(content);
   };
 
+// changes the color of boarder depending on the response?
   const getBorderClass = () => {
     let classes = 'highlighted-response ';
     if (currentResponse.gRPC) classes += 'is-grpc-border';
@@ -325,7 +327,9 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
             id={`view-button-${index}`}
             onClick={() => {
+              console.log('WE PRESSED THE BUTTON', content);
               dispatch(actions.saveCurrentResponseData(content));
+              // dispatch(actions.saveCurrentResponseData(testingBlah));
             }}
           >
             View Response
