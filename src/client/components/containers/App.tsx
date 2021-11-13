@@ -18,7 +18,7 @@ const App = () => {
     api.send('check-for-update');
     historyController.getHistory();
     collectionsController.getCollections();
-  });
+  }, []); // added the empty array in attempt to fix the issue of the app rerendering when the bargraph is clicked -Prince
 
   return (
     <div className="is-gapless is-tall">
