@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from 'uuid/v4';
-import collectionsController from '../../controllers/collectionsController.js';
-import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces.jsx';
-import * as actions from '../../actions/actions.js';
+import collectionsController from '../../controllers/collectionsController';
+import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces';
+import * as actions from '../../actions/actions';
 
 function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     const collectionObj = {
       name: inputName,
       id: uuid(),
-      created_at: new Date(),
+      createdAt: new Date(),
       reqResArray: clonedArray,
     };
     collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
@@ -59,7 +59,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     const collectionObj = {
       name: inputName,
       id: inputID,
-      created_at: new Date(),
+      createdAt: new Date(),
       reqResArray: clonedArray,
     };
     collectionsController.updateCollectionInIndexedDb(collectionObj); //add to IndexedDB

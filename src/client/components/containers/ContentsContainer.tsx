@@ -9,8 +9,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import BarGraph from '../display/BarGraph';
-import WorkspaceContainer from './WorkspaceContainer.jsx';
-import ScheduleContainer from './ScheduleContainer.jsx';
+import WorkspaceContainer from './WorkspaceContainer';
+import ScheduleContainer from './ScheduleContainer';
 import CollectionsContainer from './CollectionsContainer';
 
 const ContentsContainer = () => {

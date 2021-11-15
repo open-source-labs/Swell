@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
-import SingleReqResContainer from './SingleReqResContainer.jsx';
+import SingleReqResContainer from './SingleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
@@ -38,6 +38,7 @@ const ReqResContainer = (props) => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
 
+  
   return (
     <div>
       {reqResArray.length > 0 && displaySchedule && (

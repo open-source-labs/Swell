@@ -17,7 +17,7 @@ function ScheduleContainer() {
           <input
             className="ml-1 input input-is-medium is-info"
             style={{ maxWidth: '15vh' }}
-            type="number"
+            type="number" 
             min="1"
             value={scheduleInterval}
             onChange={(e) => {
