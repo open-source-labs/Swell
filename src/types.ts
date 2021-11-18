@@ -226,6 +226,6 @@ export interface WindowExt extends globalThis.Window {
 export interface WindowAPIObject {
   removeAllListeners: (event: string) => void;
   receive: (event: string, callback: (data: any) => void) => void;
-  send: (event: string, data: any) => void;
+  send: (event: string, data?: any, some?: any) => void;
 
 }

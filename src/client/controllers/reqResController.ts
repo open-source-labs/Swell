@@ -95,7 +95,7 @@ const connectionController = {
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
     const reqResArr: NewRequestResponseObject[] = store.default.getState().business.reqResArray;
-    const reqResObj = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
+    const reqResObj: NewRequestResponseObject = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
