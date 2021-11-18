@@ -17,6 +17,10 @@ const SidebarContainer = () => {
 
   const setActiveTab = (tabName: string) =>
     dispatch(actions.setSidebarActiveTab(tabName));
+    
+  const handleDarkMode = (e) => {
+    dispatch(actions.toggleDarkMode(e));
+  };
 
   return (
     <div
@@ -24,7 +28,17 @@ const SidebarContainer = () => {
       id="composer"
     >
       {/* HEADER */}
-      <div className="hero is-primary has-text-centered header-bar">
+      <div className="hero is-flex is-flex-direction-row is-primary has-text-centered header-bar">
+        {/* dark mode toggle goes here : https://www.w3schools.com/howto/howto_css_switch.asp */}
+        <span className="composer-section-title mr-3">Toggle Dark Mode</span><input
+            id="SSEswitch"
+            type="checkbox"
+            className="switch is-outlined is-warning"
+            onChange={(e) => {
+              handleDarkMode(e.target.checked);
+            }}
+            checked={true}
+          />
         <h3>Composer</h3>
       </div>
       {/* TAB SELECTOR */}

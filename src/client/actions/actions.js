@@ -171,6 +171,11 @@ export const setResponsePaneActiveTab = (tabName) => ({
   payload: tabName,
 });
 
+export const toggleDarkMode = (isDark) => ({
+  type: types.TOGGLE_DARK_MODE,
+  payload: isDark,
+})
+
 // OPENAPI ACTIONS
 
 export const setNewRequestsOpenAPI = ({

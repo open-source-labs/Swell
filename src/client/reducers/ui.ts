@@ -5,6 +5,7 @@ const initialState = {
   sidebarActiveTab: 'composer',
   workspaceActiveTab: 'workspace',
   responsePaneActiveTab: 'events',
+  isDark: false,
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -33,6 +34,13 @@ const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         responsePaneActiveTab: action.payload,
+      };
+    }
+
+    case types.TOGGLE_DARK_MODE: {
+      return {
+        ...state,
+        isDark: action.payload,
       };
     }
 
