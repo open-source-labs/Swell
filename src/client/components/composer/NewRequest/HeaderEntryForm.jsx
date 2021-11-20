@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
+import { useSelector } from 'react-redux';
 import ContentReqRowComposer from './ContentReqRowComposer';
+
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -178,7 +180,7 @@ class HeaderEntryForm extends Component {
       count: newHeadersArr.length,
     });
   }
-
+  
   render() {
     let headerName = 'Headers';
     let addHeaderName = '+ Header';
@@ -206,7 +208,7 @@ class HeaderEntryForm extends Component {
         <div className="is-flex is-justify-content-space-between is-align-content-center">
           <div className="composer-section-title">{headerName}</div>
           <button
-            className="is-dark-mode button is-small add-header-or-cookie-button"
+            className={`${true ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
             onClick={() => this.addHeader()}
           >
             {addHeaderName}

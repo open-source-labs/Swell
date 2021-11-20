@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import * as actions from '../../actions/actions';
 import NetworkDropdown from './NetworkDropdown';
 import RestContainer from './RestContainer.jsx';
@@ -247,6 +247,8 @@ const ComposerContainer = (props) => {
     }
   };
 
+  const isDark = useSelector((store) => store.ui.isDark);
+  
   return (
     <div className="is-flex is-flex-direction-column is-tall">
       {/* DROPDOWN PROTOCOL SELECTOR */}
@@ -257,7 +259,7 @@ const ComposerContainer = (props) => {
       />
 
       {/* COMPOSER CONTENT ROUTING */}
-      <div className="is-dark-mode is-not-7-5rem-tall pt-3 pl-3 pr-3">
+      <div className={`${isDark ? 'is-dark-400' : ''} is-not-7-5rem-tall pt-3 pl-3 pr-3`}>
         {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
         )}

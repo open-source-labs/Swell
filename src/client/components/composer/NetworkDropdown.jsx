@@ -3,11 +3,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../assets/icons/caret-down.svg';
 
 function NetworkDropdown({ onProtocolSelect, network }) {
   const [dropdownIsActive, setDropdownIsActive] = useState();
   const dropdownEl = useRef();
+
+  const isDark = useSelector((store) => store.ui.isDark);
 
   useEffect(() => {
     const closeDropdown = (event) => {
@@ -47,13 +50,13 @@ function NetworkDropdown({ onProtocolSelect, network }) {
   return (
     <div
       ref={dropdownEl}
-      className={`is-dark-mode dropdown full-width is-fullwidth ${
+      className={`dropdown full-width is-fullwidth ${
         dropdownIsActive ? 'is-active' : ''
       }`}
     >
       <div className="dropdown-trigger full-width is-fullwidth">
         <div
-          className=" button is-dark-mode protocol-select-button is-fullwidth columns is-gapless"
+          className={`button ${isDark ? 'is-dark-400' : ''} protocol-select-button is-fullwidth columns is-gapless`}
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -73,7 +76,7 @@ function NetworkDropdown({ onProtocolSelect, network }) {
       </div>
 
       <div className="dropdown-menu full-width is-fullwidth">
-        <div className="dropdown-content is-dark-mode full-width is-fullwidth has-text-centered">
+        <div className={`dropdown-content ${isDark ? 'is-dark-300' : ''} full-width is-fullwidth has-text-centered`}>
           <a
             onClick={() => {
               setDropdownIsActive(false);

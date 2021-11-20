@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useSelector } from 'react-redux';
 import ContentReqRowComposer from './ContentReqRowComposer';
 
 class CookieEntryForm extends Component {
@@ -105,7 +106,7 @@ class CookieEntryForm extends Component {
         <div className="is-flex is-justify-content-space-between is-align-content-center">
           <div className="composer-section-title">Cookies</div>
           <button
-            className="is-dark-mode button is-small add-header-or-cookie-button"
+            className={`${true? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
             onClick={() => this.addCookie(this.createDeepCookieCopy())}
           >
             + Cookie

@@ -33,7 +33,7 @@
 // grpc
 .protocol-select-button {
   border: none !important;
-  border-bottom: 1px solid $neutral-300 !important;
+  border-bottom: 1px solid $neutral-300 !important; // this is the dividing line underneath the protocol dropdown -Prince
 }
 
 .stream-title {

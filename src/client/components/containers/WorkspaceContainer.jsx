@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import ReqResCtrl from '../../controllers/reqResController';
 import ReqResContainer from './ReqResContainer.jsx';
 import SaveWorkspaceModal from './SaveWorkspaceModal';
 
-function WorkspaceContainer() {
+function WorkspaceContainer(props) {
   const [showModal, setShowModal] = useState(false);
 
+
   return (
-    <div className="is-dark-mode">
+    <div>
       {/* NAV BAR */}
       <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <button

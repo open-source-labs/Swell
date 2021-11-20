@@ -55,11 +55,6 @@ $text: $neutral-500;
   color: #06a568 !important;
 }
 
-// COLOR SCHEMES
-.is-darkmode {
-  background-color: $neutral-400 !important
-}
-
 .is-primary-100 {
   color: $neutral-500 !important;
   background-color: $primary-100 !important;
@@ -173,7 +168,7 @@ $text: $neutral-500;
 }
 
 .is-neutral-200-box {
-  border: 1px solid $neutral-300;
+  border: 1px solid black;
   background-color: $neutral-200;
 }
 
@@ -191,7 +186,7 @@ $text: $neutral-500;
   border: 1px solid $neutral-300;
 }
 
-.is-divider-neutral-300 {
+.is-divider-neutral-300 { // this is the divider between the tabs -Prince
   border-left: 1px solid $neutral-300;
   border-right: 1px solid $neutral-300;
 }

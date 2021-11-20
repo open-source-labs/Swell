@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import ScheduleReqResContainer from './ScheduleReqResContainer.jsx';
 import StoppedContainer from './StoppedContainer.jsx';
 import ReqResContainer from './ReqResContainer.jsx';
@@ -6,6 +7,7 @@ import ReqResContainer from './ReqResContainer.jsx';
 function ScheduleContainer() {
   const [scheduleInterval, setScheduleInterval] = useState(1);
   const [runScheduledTests, setScheduledTests] = useState(false);
+  const isDark = useSelector(state => state.isDark);
 
   return (
     <div>
@@ -15,7 +17,7 @@ function ScheduleContainer() {
             Frequency (Seconds):
           </span>
           <input
-            className="is-dark-mode ml-1 input input-is-medium is-info"
+            className={`${isDark ? 'is-dark-200': ''} ml-1 input input-is-medium is-info`}
             style={{ maxWidth: '15vh' }}
             type="number" 
             min="1"

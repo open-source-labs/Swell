@@ -19,6 +19,8 @@ const ContentsContainer = () => {
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
   );
+  const isDark = useSelector((store) => store.ui.isDark);
+  
   const setActiveTab = (tabName) =>
     dispatch(actions.setWorkspaceActiveTab(tabName));
 
@@ -26,7 +28,7 @@ const ContentsContainer = () => {
 
   return (
     <div
-      className="is-dark-mode column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300"
+      className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300`}
       id="workspace"
     >
       {/* HEADER */}
@@ -36,7 +38,7 @@ const ContentsContainer = () => {
 
       {/* TAB SELECTOR */}
       <div className="tabs header-bar">
-        <ul className="columns is-gapless">
+        <ul className="columns is-gapless suck-it-bitch">
           <li
             className={`column ${activeTab === 'workspace' ? 'is-active' : ''}`}
           >

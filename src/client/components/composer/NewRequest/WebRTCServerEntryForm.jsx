@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
@@ -23,6 +24,8 @@ const WebRTCServerEntryForm = (props) => {
 
   const [cmValue, setValue] = useState('');
 
+  const isDark = useSelector((state) => state.ui.isDark);
+
   useEffect(() => {
     if (!bodyIsNew)
       setValue(
@@ -34,7 +37,7 @@ const WebRTCServerEntryForm = (props) => {
     <div className="mt-3">
       {warningMessage ? <div>{warningMessage.body}</div> : null}
       <div className="composer-section-title">TURN or STUN Servers</div>
-      <div className="is-neutral-200-box p-3">
+      <div className={`is-neutral-200-box p-3 ${isDark ? 'is-dark-400' : ''}`}>
         <CodeMirror
           value={cmValue}
           options={{

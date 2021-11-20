@@ -1,7 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
 import EmptyState from '../display/EmptyState';
 
 function HeadersContainer({ currentResponse }) {
+
+  const isDark = useSelector(state => state.isDark);
+
   if (
     !currentResponse.response ||
     !currentResponse.response.headers ||

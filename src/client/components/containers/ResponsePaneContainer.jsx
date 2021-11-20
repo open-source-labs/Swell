@@ -16,6 +16,7 @@ import ReqResCtrl from '../../controllers/reqResController';
 const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
+  const isDark = useSelector((store) => store.ui.isDark);
 
   const setActiveTab = (tabName) =>
     dispatch(actions.setResponsePaneActiveTab(tabName));
@@ -35,7 +36,7 @@ const ResponsePaneContainer = () => {
   // }
   return (
     <div
-      className="is-dark-mode column is-one-third is-flex is-flex-direction-column is-tall"
+      className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
       id="responses"
     >
       {/* <button onClick={() => testing()}>></button> */}
@@ -53,7 +54,7 @@ const ResponsePaneContainer = () => {
       <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
         {/* TAB SELECTOR */}
         <div className="tabs header-bar">
-          <ul className="columns is-gapless">
+          <ul className={`columns is-gapless ${isDark ? 'suck-it-bitch' : ''}`}>
             {currentResponse.request?.network === 'ws' ? (
               <li
                 className={`column ${

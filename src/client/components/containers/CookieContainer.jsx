@@ -2,9 +2,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function CookieContainer({ cookie }) {
   const [showCookie, setShowCookie] = useState(false);
+  const isDark = useSelector(state => state.isDark);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
     if (!key || !value) return;

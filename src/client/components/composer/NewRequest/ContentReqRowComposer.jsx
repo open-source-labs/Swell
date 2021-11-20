@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 export default function ContentReqRowComposer({
   data,
@@ -10,9 +11,11 @@ export default function ContentReqRowComposer({
   deleteItem,
   type,
 }) {
+  const isDark = useSelector((store) => store.ui.isDark);
+
   return (
     <div className={`is-flex mt-1 ${type}`} id={`${type}${index}`}>
-      <div className="include-data-checkbox is-dark-mode ">
+      <div className={`include-data-checkbox ${isDark ? 'is-dark-200' : ''}`}>
         <input
           type="checkbox"
           id={data.id}
@@ -28,7 +31,7 @@ export default function ContentReqRowComposer({
         className="input "
         type="text"
         value={data.key}
-        className="is-dark-mode is-justify-content-center p-1 key"
+        className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 key`}
       />
       <input
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
@@ -36,7 +39,7 @@ export default function ContentReqRowComposer({
         className="input"
         type="text"
         value={data.value}
-        className="is-dark-mode is-justify-content-center is-flex-grow-4 p-1 value"
+        className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center is-flex-grow-4 p-1 value`}
       />
       <div className="is-flex is-justify-content-center is-align-items-center ml-1">
         <div className="delete m-auto" onClick={() => deleteItem(index)} />
