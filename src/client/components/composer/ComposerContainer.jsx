@@ -248,7 +248,7 @@ const ComposerContainer = (props) => {
   };
 
   return (
-    <div className="composerContents is-flex is-flex-direction-column is-tall">
+    <div className="is-flex is-flex-direction-column is-tall">
       {/* DROPDOWN PROTOCOL SELECTOR */}
       <NetworkDropdown
         onProtocolSelect={onProtocolSelect}
@@ -257,7 +257,7 @@ const ComposerContainer = (props) => {
       />
 
       {/* COMPOSER CONTENT ROUTING */}
-      <div className="is-not-7-5rem-tall pt-3 pl-3 pr-3">
+      <div className="is-dark-mode is-not-7-5rem-tall pt-3 pl-3 pr-3">
         {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
         )}

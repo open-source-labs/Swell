@@ -11,7 +11,7 @@ const EventPreview = ({ contents }) => {
   return (
     <div>
       <div
-        className="is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
+        className="is-dark-mode is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
         onClick={() => {
           handleShowPreview();
         }}
@@ -50,6 +50,7 @@ const EventPreview = ({ contents }) => {
             title="output"
             width="100%"
             height="100%"
+            className="is-dark-mode"
           />
         </div>
       )}

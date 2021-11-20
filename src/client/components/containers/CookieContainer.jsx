@@ -28,7 +28,7 @@ export default function CookieContainer({ cookie }) {
 
   return (
     <table
-      className="cookie-container table"
+      className="cookie-container table is-dark-mode"
       onClick={() => {
         setShowCookie(showCookie === false);
       }}

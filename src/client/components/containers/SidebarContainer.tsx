@@ -5,7 +5,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import ComposerContainer from '../composer/ComposerContainer';
@@ -39,15 +39,15 @@ const SidebarContainer = (props) => {
 
   return (
     <div
-      className="column is-one-third is-flex is-flex-direction-column is-tall "
+      className="column is-dark-mode is-one-third is-flex is-flex-direction-column is-tall "
       id="composer"
     >
 
       {/* HEADER */}
-      <div className="hero is-flex is-flex-direction-row is-primary has-text-centered header-bar">
+      <div className="hero is-primary has-text-centered header-bar">
         {/* dark mode toggle goes here : https://www.w3schools.com/howto/howto_css_switch.asp */}
         <input
-            id="darkmodeSwitch"
+            id="darkModeSwitch"
             type="checkbox" 
             className="switch is-outlined is-warning"
             onChange={(e) => {
@@ -55,7 +55,8 @@ const SidebarContainer = (props) => {
             }}
             checked={isDark}
         />
-          <label htmlFor="darkmodeSwitch"/>
+          <label htmlFor="darkModeSwitch"/>
+          
         <h3>Composer</h3>
       </div>
       {/* TAB SELECTOR */}

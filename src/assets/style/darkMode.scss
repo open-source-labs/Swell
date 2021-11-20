@@ -1,0 +1,31 @@
+.is-dark-mode {
+    background-color: grey !important;
+    color: white;
+    //scrollbar-color: grey !important;
+}
+
+.arrow-drop-down {
+  color: white !important;
+}
+
+// composercontainer:260
+// historycontainer:69
+// networkdropdown:76, background color of the dropdown when dropped down (does not seem to change the text color)
+// networkdropdown:56, background color of the drowndown before dropped down (changes text color but not the carrot)
+// workspacecontainer:10, just the buttons
+// entryform: 29, changes view test background and text color
+// ContentsContainer:29
+// test snippets folder/resttestsnippets: 20
+// sidebarContainer: 42, changes background color of "composer" and "history" div
+// EventPreview:14, 53
+// ResponsePaneContainer:38
+// CookieEntryForm: 108
+// HeadersContainer: 28
+// HeaderEntryForm: 209
+//contentsContainer: 74, changed view response history 
+// ReqResContainer:47
+// CookieContainer: 31
+// RestMethodAndEndPointEntryForm: 157
+// ScheduleContainer: 18
+// Responsepane.scss: 44
+// ContentReqRowComposer:15, 31, 39

@@ -15,7 +15,7 @@ function ScheduleContainer() {
             Frequency (Seconds):
           </span>
           <input
-            className="ml-1 input input-is-medium is-info"
+            className="is-dark-mode ml-1 input input-is-medium is-info"
             style={{ maxWidth: '15vh' }}
             type="number" 
             min="1"

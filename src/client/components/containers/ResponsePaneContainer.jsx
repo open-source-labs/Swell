@@ -35,7 +35,7 @@ const ResponsePaneContainer = () => {
   // }
   return (
     <div
-      className="column is-one-third is-flex is-flex-direction-column is-tall"
+      className="is-dark-mode column is-one-third is-flex is-flex-direction-column is-tall"
       id="responses"
     >
       {/* <button onClick={() => testing()}>></button> */}

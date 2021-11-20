@@ -84,7 +84,7 @@ const RestMethodAndEndpointEntryForm = ({
             <span className="icon is-medium">
               <img
                 src={dropDownArrow}
-                className="is-awesome-icon"
+                className="arrow-drop-down is-awesome-icon"
                 aria-hidden="true"
                 alt="dropdown arrow"
               />
@@ -154,7 +154,7 @@ const RestMethodAndEndpointEntryForm = ({
         </div>
 
         <input
-          className="ml-1 input input-is-medium is-info"
+          className="is-dark-mode ml-1 input input-is-medium is-info"
           type="text"
           placeholder="Enter endpoint"
           value={newRequestFields.restUrl}

@@ -25,7 +25,7 @@ function HeadersContainer({ currentResponse }) {
     <div>
       <div>
         <div className="table-container mx-3 extended">
-          <table className="table mx-3">
+          <table className="is-dark-mode table mx-3">
             <thead className="is-size-7">
               <tr>
                 <th>Key</th>

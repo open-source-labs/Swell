@@ -66,7 +66,7 @@ const HistoryContainer = (props) => {
 
   return (
     <div
-      className="p-3 is-flex is-flex-direction-column is-tall-not-5rem"
+      className="p-3 is-flex is-flex-direction-column is-tall-not-5rem is-dark-mode"
       id="history-container"
     >
       <div>

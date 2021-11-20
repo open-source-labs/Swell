@@ -47,13 +47,13 @@ function NetworkDropdown({ onProtocolSelect, network }) {
   return (
     <div
       ref={dropdownEl}
-      className={`dropdown full-width is-fullwidth ${
+      className={`is-dark-mode dropdown full-width is-fullwidth ${
         dropdownIsActive ? 'is-active' : ''
       }`}
     >
       <div className="dropdown-trigger full-width is-fullwidth">
         <div
-          className="button protocol-select-button is-fullwidth columns is-gapless"
+          className=" button is-dark-mode protocol-select-button is-fullwidth columns is-gapless"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -61,7 +61,7 @@ function NetworkDropdown({ onProtocolSelect, network }) {
           <span className="column" id="selected-network">
             {networkTitle}
           </span>
-          <span className="column">
+          <span className="column ">
             <img
               src={dropDownArrow}
               alt="dropdownArrow"
@@ -73,7 +73,7 @@ function NetworkDropdown({ onProtocolSelect, network }) {
       </div>
 
       <div className="dropdown-menu full-width is-fullwidth">
-        <div className="dropdown-content full-width is-fullwidth has-text-centered">
+        <div className="dropdown-content is-dark-mode full-width is-fullwidth has-text-centered">
           <a
             onClick={() => {
               setDropdownIsActive(false);

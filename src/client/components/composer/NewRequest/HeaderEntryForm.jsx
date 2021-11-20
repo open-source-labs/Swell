@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
-import ContentReqRowComposer from './ContentReqRowComposer.jsx';
+import ContentReqRowComposer from './ContentReqRowComposer';
 
 class HeaderEntryForm extends Component {
   constructor(props) {
@@ -206,7 +206,7 @@ class HeaderEntryForm extends Component {
         <div className="is-flex is-justify-content-space-between is-align-content-center">
           <div className="composer-section-title">{headerName}</div>
           <button
-            className="button is-small add-header-or-cookie-button"
+            className="is-dark-mode button is-small add-header-or-cookie-button"
             onClick={() => this.addHeader()}
           >
             {addHeaderName}

@@ -26,7 +26,7 @@ const TestEntryForm = (props) => {
         setShowTests={setShowTests}
       />
       <div
-        className="is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
+        className="is-dark-mode is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
         onClick={handleShowTests}
       >
         {showTests === true && (

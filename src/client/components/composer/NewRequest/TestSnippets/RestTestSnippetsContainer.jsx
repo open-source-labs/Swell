@@ -17,7 +17,7 @@ export default function RestTestSnippetsContainer(props) {
   return (
     <div>
       <div
-        className="is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
+        className="is-dark-mode is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
         onClick={handleShowSnippets}
       >
         {showSnippets === true && (

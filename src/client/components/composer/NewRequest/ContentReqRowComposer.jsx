@@ -12,7 +12,7 @@ export default function ContentReqRowComposer({
 }) {
   return (
     <div className={`is-flex mt-1 ${type}`} id={`${type}${index}`}>
-      <div className="include-data-checkbox">
+      <div className="include-data-checkbox is-dark-mode ">
         <input
           type="checkbox"
           id={data.id}
@@ -25,10 +25,10 @@ export default function ContentReqRowComposer({
       <input
         onChange={(e) => changeHandler(data.id, 'key', e.target.value)}
         placeholder="Key"
-        className="input"
+        className="input "
         type="text"
         value={data.key}
-        className="is-justify-content-center p-1 key"
+        className="is-dark-mode is-justify-content-center p-1 key"
       />
       <input
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
@@ -36,7 +36,7 @@ export default function ContentReqRowComposer({
         className="input"
         type="text"
         value={data.value}
-        className="is-justify-content-center is-flex-grow-4 p-1 value"
+        className="is-dark-mode is-justify-content-center is-flex-grow-4 p-1 value"
       />
       <div className="is-flex is-justify-content-center is-align-items-center ml-1">
         <div className="delete m-auto" onClick={() => deleteItem(index)} />

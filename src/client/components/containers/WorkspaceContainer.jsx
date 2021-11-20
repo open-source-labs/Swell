@@ -7,7 +7,7 @@ function WorkspaceContainer() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div>
+    <div className="is-dark-mode">
       {/* NAV BAR */}
       <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <button
@@ -34,7 +34,7 @@ function WorkspaceContainer() {
         </button>
       </div>
 
-      <SaveWorkspaceModal showModal={showModal} setShowModal={setShowModal} />
+      <SaveWorkspaceModal showModal={showModal} setShowModal={setShowModal}/>
       {/* REQUEST CARDS */}
       <ReqResContainer displaySchedule />
     </div>

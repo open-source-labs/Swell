@@ -26,7 +26,7 @@ const ContentsContainer = () => {
 
   return (
     <div
-      className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300"
+      className="is-dark-mode column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300"
       id="workspace"
     >
       {/* HEADER */}
@@ -71,7 +71,7 @@ const ContentsContainer = () => {
       {/* BARGRAPH CONTENT */}
       {currentResponse.id && (
         <div
-          className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
+          className="is-flex is-dark-mode is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
           onClick={() => setShowGraph(showGraph === false)}
         >
           {showGraph && 'Hide Response History'}
