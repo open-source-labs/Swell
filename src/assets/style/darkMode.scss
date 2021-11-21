@@ -4,6 +4,7 @@ $neutral-300: #575757;
 $neutral-400: #383838;
 $neutral-500: #434343;
 $neutral-600: #000000;
+$text: #94959e;
 
 .is-dark-mode {
     background-color: $neutral-500 !important;
@@ -38,6 +39,15 @@ $neutral-600: #000000;
 .is-dark-100 {
     background-color: $neutral-100 !important;
     color: white;
+}
+
+.dark-protocol-text {
+    color: $text !important;
+}
+
+.dark-divider { // this is the divider underneath tabs -Prince
+    border-left: 1px solid $neutral-300;
+    border-right: 1px solid $neutral-300;
 }
 
 // composercontainer:260 x

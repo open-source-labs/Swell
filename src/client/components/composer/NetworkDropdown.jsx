@@ -61,7 +61,7 @@ function NetworkDropdown({ onProtocolSelect, network }) {
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
-          <span className="column" id="selected-network">
+          <span className={`${isDark ? 'dark-protocol-text' : ''} column`} id="selected-network">
             {networkTitle}
           </span>
           <span className="column ">

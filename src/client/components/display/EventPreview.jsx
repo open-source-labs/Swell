@@ -8,12 +8,12 @@ import dropDownArrowUp from '../../../assets/icons/caret-up-tests.svg';
 const EventPreview = ({ contents }) => {
   const [showPreview, setShowPreview] = useState(false);
   const handleShowPreview = () => setShowPreview(!showPreview);
-  const isDark = useSelector(state => state.theme.isDark);
+  const isDark = useSelector(state => state.ui.isDark);
   
   return (
     <div>
       <div
-        className="is-dark-mode is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center"
+        className={`${isDark ? 'is-dark-mode' : ''} is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
         onClick={() => {
           handleShowPreview();
         }}

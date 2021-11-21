@@ -28,7 +28,7 @@ const ContentsContainer = () => {
 
   return (
     <div
-      className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300`}
+      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-one-third is-flex is-flex-direction-column is-tall`}
       id="workspace"
     >
       {/* HEADER */}
@@ -38,7 +38,7 @@ const ContentsContainer = () => {
 
       {/* TAB SELECTOR */}
       <div className="tabs header-bar">
-        <ul className="columns is-gapless suck-it-bitch">
+        <ul className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}>
           <li
             className={`column ${activeTab === 'workspace' ? 'is-active' : ''}`}
           >

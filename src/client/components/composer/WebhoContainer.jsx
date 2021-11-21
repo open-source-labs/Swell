@@ -1,4 +1,5 @@
 import React, { useState , useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import uuid from 'uuid/v4';
 
@@ -67,6 +68,7 @@ const WebhookContainer = ({
     // alert('Copied the text: ' + whUrl);
   };
   // document.getElementById(id);
+
 
   
   useEffect(() => {
@@ -190,6 +192,8 @@ via: "1.1 varnish (Varnish/6.3), 1.1 varnish (Varnish/6.3)",
     }
   };
 
+  const isDark = useSelector(state => state.ui.isDark);
+
   // when redux happens
   // <div className={`banner ${active ? "active" : ""}`}>{children}</div>
   return (
@@ -204,7 +208,7 @@ via: "1.1 varnish (Varnish/6.3), 1.1 varnish (Varnish/6.3)",
 
       <div className='is-flex is-flex-direction-column justify-content-center'>
         <input
-          className="ml-1 input input-is-medium is-info"
+          className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
           type="text"
           value={whUrl}
         /> 

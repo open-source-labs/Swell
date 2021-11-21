@@ -59,7 +59,7 @@ const ResponsePaneContainer = () => {
       <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
         {/* TAB SELECTOR */}
         <div className="tabs header-bar">
-          <ul className={`columns is-gapless ${isDark ? 'suck-it-bitch' : ''}`}>
+          <ul className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}>
             {currentResponse.request?.network === 'ws' ? (
               <li
                 className={`column ${
