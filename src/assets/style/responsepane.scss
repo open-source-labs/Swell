@@ -41,11 +41,15 @@
 // EVENTS (CODEMIRROR STYLES)
 .CodeMirror * {
   font-family: "Lucida Console", Monaco, monospace;
-  background-color: grey;
+  // background-color: grey;
+}
+
+.cm-s-neo.CodeMirror {
+  background-color: transparent !important;
 }
 
 .cm-s-responsebody {
-  background-color: $neutral-100;
+  // background-color: $neutral-100;
   color: $neutral-400;
   border: 1px solid $neutral-300;
   font-size: 0.75rem;
@@ -84,9 +88,10 @@ table {
   overflow-x: hidden !important;
 }
 
-td {
+th, td {
   min-width: 9rem;
   max-width: 50%;
+  border-bottom: 2px solid;
 }
 
 .table-value {

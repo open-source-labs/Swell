@@ -33,22 +33,22 @@ const SidebarContainer = (props) => {
     >
 
       {/* HEADER */}
-      <div className="hero is-primary has-text-centered header-bar">
+      <div className="hero is-flex-direction-row is-primary has-text-centered header-bar">
         {/* dark mode toggle goes here : https://www.w3schools.com/howto/howto_css_switch.asp */}
         <input
             id="darkModeSwitch"
             type="checkbox" 
-            className="switch is-outlined is-warning"
+            className="switch mb-2 is-outlined is-warning"
             onChange={(e) => {
               handleDarkMode(e);
             }}
             checked={isDark}
         />
           <label htmlFor="darkModeSwitch"/>
-          
-        <h3>Composer</h3>
+        <h3 className='has-text-justified align-self-center'>Composer</h3>
+        <a>V1.10</a>
       </div>
-      {/* TAB SELECTOR */}
+      TAB SELECTOR
       <div className="tabs mb-0  header-bar">
         <ul className={`columns is-gapless ${isDark ? 'is-dark-400' : ''}`}>
           <li

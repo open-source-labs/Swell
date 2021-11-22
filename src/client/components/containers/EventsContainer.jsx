@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from '../display/EmptyState';
 import EventPreview from '../display/EventPreview';
@@ -7,7 +8,7 @@ import 'codemirror/theme/neo.css';
 function EventsContainer({ currentResponse }) {
   const { request, response } = currentResponse;
     // console.log('this is the request', request);
-    console.log('this is the response', response);
+    // console.log('this is the response', response);
   if (!response || !response.events || response.events.length < 1) {
 
     return <EmptyState connection={currentResponse.connection} />;
@@ -39,6 +40,9 @@ function EventsContainer({ currentResponse }) {
   else {
     responseBody = JSON.stringify(events[0], null, 4);
   }
+
+  const isDark = useSelector(state => state.ui.isDark);
+
   return (
     <div
       className="tab_content-response overflow-event-parent-container"
@@ -46,11 +50,11 @@ function EventsContainer({ currentResponse }) {
     >
       {request.method === 'GET' && (
         <EventPreview
-          className="overflow-event-child-container"
+          className={`${isDark ? 'is-dark-200' : ''} overflow-event-child-container`}
           contents={responseBody}
         />
       )}
-      <div className="overflow-event-parent-container">
+      <div className={`${isDark ? 'is-dark-200' : ''} overflow-event-parent-container`}>
         {/* {responseBody} */}
         <CodeMirror
           className="overflow-event-child-container"

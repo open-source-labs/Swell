@@ -21,7 +21,7 @@ const ContentsContainer = () => {
   );
   const isDark = useSelector((store) => store.ui.isDark);
   
-  const setActiveTab = (tabName) =>
+  const setActiveTab = (tabName: string) =>
     dispatch(actions.setWorkspaceActiveTab(tabName));
 
   const [showGraph, setShowGraph] = useState(false);
@@ -73,7 +73,7 @@ const ContentsContainer = () => {
       {/* BARGRAPH CONTENT */}
       {currentResponse.id && (
         <div
-          className="is-flex is-dark-mode is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
+          className={`is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable`}
           onClick={() => setShowGraph(showGraph === false)}
         >
           {showGraph && 'Hide Response History'}

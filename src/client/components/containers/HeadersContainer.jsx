@@ -5,7 +5,7 @@ import EmptyState from '../display/EmptyState';
 
 function HeadersContainer({ currentResponse }) {
 
-  const isDark = useSelector(state => state.isDark);
+  const isDark = useSelector(state => state.ui.isDark);
 
   if (
     !currentResponse.response ||
@@ -30,7 +30,7 @@ function HeadersContainer({ currentResponse }) {
     <div>
       <div>
         <div className="table-container mx-3 extended">
-          <table className="is-dark-mode table mx-3">
+          <table className={`${isDark ? 'is-dark-200' : ''} table mx-3`}>
             <thead className="is-size-7">
               <tr>
                 <th>Key</th>

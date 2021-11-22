@@ -6,14 +6,14 @@ import SaveWorkspaceModal from './SaveWorkspaceModal';
 
 function WorkspaceContainer(props) {
   const [showModal, setShowModal] = useState(false);
-
+  const isDark = useSelector((store) => store.ui.isDark);
 
   return (
     <div>
       {/* NAV BAR */}
       <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <button
-          className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
+          className={`button is-small is-danger ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
           style={{ minWidth: '14vw' }}
           type="button"
           onClick={() => {
@@ -25,7 +25,7 @@ function WorkspaceContainer(props) {
         </button>
 
         <button
-          className="button is-small is-primary is-outlined button-padding-verticals mr-3"
+          className={`button is-small is-primary ${isDark ? '' : 'is-outlined'} button-padding-verticals mr-3`}
           style={{ minWidth: '14vw' }}
           type="button"
           onClick={() => {

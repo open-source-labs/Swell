@@ -7,7 +7,7 @@ import ReqResContainer from './ReqResContainer.jsx';
 function ScheduleContainer() {
   const [scheduleInterval, setScheduleInterval] = useState(1);
   const [runScheduledTests, setScheduledTests] = useState(false);
-  const isDark = useSelector(state => state.isDark);
+  const isDark = useSelector(state => state.ui.isDark);
 
   return (
     <div>
@@ -29,7 +29,7 @@ function ScheduleContainer() {
         </div>
         <div className="ml-2">
           <button
-            className="button is-small is-primary is-outlined button-padding-vertical button-hover-color ml-3"
+            className={`button is-small is-primary ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
             onClick={() => {
               setScheduledTests(true);
             }}
@@ -37,7 +37,7 @@ function ScheduleContainer() {
             Run
           </button>
           <button
-            className="button is-small is-danger is-outlined button-padding-vertical button-hover-color ml-3"
+            className={`button is-small is-danger ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
             onClick={() => {
               setScheduledTests(false);
             }}

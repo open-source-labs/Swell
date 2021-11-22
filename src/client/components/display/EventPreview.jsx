@@ -13,7 +13,7 @@ const EventPreview = ({ contents }) => {
   return (
     <div>
       <div
-        className={`${isDark ? 'is-dark-mode' : ''} is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
+        className={`${isDark ? 'is-dark-500' : ''} is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
         onClick={() => {
           handleShowPreview();
         }}
@@ -46,13 +46,12 @@ const EventPreview = ({ contents }) => {
         )}
       </div>
       {showPreview === true && (
-        <div className="is-full" style={{ height: '100vh' }}>
+        <div style={{ height: '100vh' }} className={`${isDark ? 'is-dark-500' : ''} is-full`}>
           <iframe
             srcDoc={JSON.parse(contents)}
             title="output"
             width="100%"
             height="100%"
-            className="is-dark-mode"
           />
         </div>
       )}

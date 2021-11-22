@@ -1,7 +1,9 @@
 import React, { useState , useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { io } from 'socket.io-client';
 import uuid from 'uuid/v4';
+import { io } from 'socket.io-client';
+import clipboard from '../../../assets/icons/clipboard-icon.svg';
+
 
 const socket = io('http://localhost:3000');
 
@@ -53,6 +55,7 @@ const WebhookContainer = ({
   
   const [whUrl, updateURL] = useState('');
   const [serverStatus, updateServerStatus] = useState(false);
+  const isDark = useSelector(state => state.ui.isDark);
 
   const copyClick = () => {
     console.log('copying');
@@ -162,8 +165,11 @@ const isDark = useSelector(state => state.ui.isDark);
           >
             {serverStatus ? 'Stop Server' : 'Start Server'}
           </button>
+        </div>
+        <div>
           <input
-            className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
+            className={`${isDark ? 'dark-address-input' : ''} mr-1 input input-is-medium is-info`}
+            icon={clipboard}
             type="text"
             value={whUrl}
           />
