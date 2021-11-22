@@ -21,7 +21,7 @@ const SingleReqResContainer = (props) => {
   const newRequestFields = useSelector(
     (store) => store.business.newRequestFields
   );
-  // const testingBlah = { request: { this: "asdfadsf" } };
+
   const {
     content,
     //change content for webhook
@@ -329,7 +329,6 @@ const SingleReqResContainer = (props) => {
             onClick={() => {
               console.log('WE PRESSED THE BUTTON', content);
               dispatch(actions.saveCurrentResponseData(content));
-              // dispatch(actions.saveCurrentResponseData(testingBlah));
             }}
           >
             View Response

@@ -28,7 +28,7 @@ export default function ContentReqRowComposer({
       <input
         onChange={(e) => changeHandler(data.id, 'key', e.target.value)}
         placeholder="Key"
-        className="input "
+        className="input"
         type="text"
         value={data.key}
         className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 key`}

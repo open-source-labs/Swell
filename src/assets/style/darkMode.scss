@@ -44,7 +44,10 @@ $text: #94959e;
 .dark-protocol-text {
     color: $text !important;
 }
-
+.dark-address-input {
+    background-color: $neutral-300 !important;
+    color: white !important;
+}
 .dark-divider { // this is the divider underneath tabs -Prince
     border-left: 1px solid $neutral-300;
     border-right: 1px solid $neutral-300;

@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import uuid from 'uuid/v4';
 import historyController from '../../controllers/historyController';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm';
@@ -151,6 +152,8 @@ function RestContainer({
     setNewRequestSSE(e.target.checked);
   };
 
+  const isDark = useSelector((state) => state.ui.isDark);
+
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div
@@ -173,11 +176,13 @@ function RestContainer({
           newRequestFields={newRequestFields}
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestStreams={setNewRequestStreams}
+          isDark={isDark}
         />
         <CookieEntryForm
           newRequestCookies={newRequestCookies}
           newRequestBody={newRequestBody}
           setNewRequestCookies={setNewRequestCookies}
+          isDark={isDark}
         />
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">

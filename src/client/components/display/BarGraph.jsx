@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import * as store from '../../store';
 import * as actions from '../../actions/actions';
@@ -183,10 +183,11 @@ const BarGraph = (props) => {
   }, [dataPoints, currentResponse, chartURL]);
 
   const chartClass = show ? 'chart' : 'chart-closed';
+  const isDark = useSelector((state) => state.ui.isDark);
 
   return (
     <div>
-      <div id="chartContainer" className={`border-top pt-1 ${chartClass}`}>
+      <div id="chartContainer" className={`border-top pt-1 ${chartClass} ${isDark ? 'is-dark-100' : ''}`}>
         <Line
           data={chartData}
           width={50}
@@ -197,7 +198,7 @@ const BarGraph = (props) => {
       </div>
       <div className="is-flex is-justify-content-center">
         <button
-          className="button is-small add-header-or-cookie-button clear-chart-button mb-3"
+          className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button clear-chart-button mb-3`}
           onClick={() => {
             props.clearGraph(currentResponse.id);
             setChartURL('');

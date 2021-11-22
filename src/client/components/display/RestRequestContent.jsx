@@ -61,7 +61,6 @@ export default function RestRequestContent({ request, isHTTP2 }) {
   return (
     <div>
       {/* REQUEST DETAILS */}
-      <div>testing area2</div>
       <div className="p-3">
         {/* SSE CONFIRMATION */}
         {isSSE && <div className="is-size-7">SSE</div>}
