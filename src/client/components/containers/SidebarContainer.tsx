@@ -48,7 +48,6 @@ const SidebarContainer = (props) => {
         <h3 className='has-text-justified align-self-center'>Composer</h3>
         <a>V1.10</a>
       </div>
-      TAB SELECTOR
       <div className="tabs mb-0  header-bar">
         <ul className={`columns is-gapless ${isDark ? 'is-dark-400' : ''}`}>
           <li

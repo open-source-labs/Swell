@@ -151,8 +151,6 @@ const WebhookContainer = ({
     }
   };
 
-const isDark = useSelector(state => state.ui.isDark);
-
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
       <div className="is-3rem-flex is-flex-direction-column justify-content-center">

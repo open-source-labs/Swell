@@ -78,7 +78,7 @@ const RestMethodAndEndpointEntryForm = ({
       >
         <div className="dropdown-trigger">
           <button
-            className="is-rest button"
+            className="is-rest button no-border-please"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}

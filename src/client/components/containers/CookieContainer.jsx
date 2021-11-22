@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 export default function CookieContainer({ cookie }) {
   const [showCookie, setShowCookie] = useState(false);
-  const isDark = useSelector(state => state.isDark);
+  const isDark = useSelector(state => state.ui.isDark);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
     if (!key || !value) return;
@@ -30,7 +30,7 @@ export default function CookieContainer({ cookie }) {
 
   return (
     <table
-      className="cookie-container table is-dark-mode"
+      className={`cookie-container table ${isDark ? 'is-dark-200' : ''}`}
       onClick={() => {
         setShowCookie(showCookie === false);
       }}
