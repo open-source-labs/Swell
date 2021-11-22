@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import { useSelector } from 'react-redux';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/twilight.css';
@@ -26,10 +27,12 @@ const GraphQLVariableEntryForm = (props) => {
     if (!bodyIsNew) setValue(bodyVariables);
   }, [bodyVariables]);
 
+  const isDark = useSelector((store) => store.ui.isDark);
+
   return (
     <div>
       <div className="composer-section-title">Variables</div>
-      <div className="is-neutral-200-box p-3" id="gql-var-entry">
+      <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`} id="gql-var-entry">
         <CodeMirror
           ref={cmVariables}
           value={cmValue}

@@ -1,7 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
 import EmptyState from '../display/EmptyState';
 
 function HeadersContainer({ currentResponse }) {
+
+  const isDark = useSelector(state => state.ui.isDark);
+
   if (
     !currentResponse.response ||
     !currentResponse.response.headers ||
@@ -25,7 +30,7 @@ function HeadersContainer({ currentResponse }) {
     <div>
       <div>
         <div className="table-container mx-3 extended">
-          <table className="table mx-3">
+          <table className={`${isDark ? 'is-dark-200' : ''} table mx-3`}>
             <thead className="is-size-7">
               <tr>
                 <th>Key</th>

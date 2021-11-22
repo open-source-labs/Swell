@@ -14,11 +14,12 @@ const GraphQLIntrospectionLog = () => {
     (store) => store.business.introspectionData
   );
   const url = useSelector((store) => store.business.newRequestFields.url);
+  const isDark = useSelector((store) => store.ui.isDark);
 
   return (
     <div>
       <button
-        className="button is-small add-header-or-cookie-button"
+        className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
         onClick={() => graphQLController.introspect(url, headers, cookies)}
       >
         Introspect

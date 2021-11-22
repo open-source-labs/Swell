@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import uuid from 'uuid/v4';
 import historyController from '../../controllers/historyController';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm';
@@ -80,12 +81,12 @@ function RestContainer({
       return;
     }
 
-    let reqRes;
+    let reqRes; 
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      URIWithoutProtocol;
+      URIWithoutProtocol; // deleteable ???
       const host = protocol + URIWithoutProtocol.split('/')[0];
       let path = `/${URIWithoutProtocol.split('/')
         .splice(1)
@@ -95,9 +96,9 @@ function RestContainer({
         path = path.substring(0, path.length - 1);
       }
       path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
+      reqRes = { 
         id: uuid(),
-        created_at: new Date(),
+        createdAt: new Date(),
         protocol: url.match(/https?:\/\//)[0],
         host,
         path,
@@ -135,6 +136,7 @@ function RestContainer({
         minimized: false,
         tab: currentTab,
       };
+      console.log(reqRes);
     }
 
     // add request to history
@@ -149,6 +151,8 @@ function RestContainer({
   const handleSSEPayload = (e) => {
     setNewRequestSSE(e.target.checked);
   };
+
+  const isDark = useSelector((state) => state.ui.isDark);
 
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
@@ -172,11 +176,13 @@ function RestContainer({
           newRequestFields={newRequestFields}
           setNewRequestHeaders={setNewRequestHeaders}
           setNewRequestStreams={setNewRequestStreams}
+          isDark={isDark}
         />
         <CookieEntryForm
           newRequestCookies={newRequestCookies}
           newRequestBody={newRequestBody}
           setNewRequestCookies={setNewRequestCookies}
+          isDark={isDark}
         />
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">

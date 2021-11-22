@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import historyController from '../../controllers/historyController';
 
 // utilizing API we created in preload.js for node-free IPC communication
@@ -16,12 +17,14 @@ const ClearHistoryBtn = (props) => {
     });
   }, []);
 
+  const isDark = useSelector(state => state.ui.isDark);
+
   const handleClick = () => {
     api.send('confirm-clear-history');
   };
   return (
     <button
-      className="ml-0 mt-3 mb-3 button is-small is-primary is-outlined button-padding-verticals"
+      className={`ml-0 mt-3 mb-3 button is-small is-primary ${isDark ? '' : 'is-outlined'} button-padding-verticals`}
       onClick={handleClick}
     >
       Clear History

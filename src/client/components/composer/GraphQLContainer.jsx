@@ -111,7 +111,7 @@ function GraphQLContainer({
       path = path.replace(/https?:\//g, 'http://');
       reqRes = {
         id: uuid(),
-        created_at: new Date(),
+        createdAt: new Date(),
         protocol: url.match(/https?:\/\//)[0],
         host,
         path,
@@ -163,7 +163,7 @@ function GraphQLContainer({
     path = path.replace(/wss?:\//g, 'ws://');
     reqRes = {
       id: uuid(),
-      created_at: new Date(),
+      createdAt: new Date(),
       protocol: 'ws://',
       host,
       path,

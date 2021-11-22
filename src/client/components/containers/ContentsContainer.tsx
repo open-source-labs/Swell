@@ -9,8 +9,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import BarGraph from '../display/BarGraph';
-import WorkspaceContainer from './WorkspaceContainer.jsx';
-import ScheduleContainer from './ScheduleContainer.jsx';
+import WorkspaceContainer from './WorkspaceContainer';
+import ScheduleContainer from './ScheduleContainer';
 import CollectionsContainer from './CollectionsContainer';
 
 const ContentsContainer = () => {
@@ -19,14 +19,16 @@ const ContentsContainer = () => {
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
   );
-  const setActiveTab = (tabName) =>
+  const isDark = useSelector((store) => store.ui.isDark);
+  
+  const setActiveTab = (tabName: string) =>
     dispatch(actions.setWorkspaceActiveTab(tabName));
 
   const [showGraph, setShowGraph] = useState(false);
 
   return (
     <div
-      className="column is-one-third is-flex is-flex-direction-column is-tall is-divider-neutral-300"
+      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-one-third is-flex is-flex-direction-column is-tall`}
       id="workspace"
     >
       {/* HEADER */}
@@ -36,7 +38,7 @@ const ContentsContainer = () => {
 
       {/* TAB SELECTOR */}
       <div className="tabs header-bar">
-        <ul className="columns is-gapless">
+        <ul className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}>
           <li
             className={`column ${activeTab === 'workspace' ? 'is-active' : ''}`}
           >
@@ -71,7 +73,7 @@ const ContentsContainer = () => {
       {/* BARGRAPH CONTENT */}
       {currentResponse.id && (
         <div
-          className="is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable is-border-neutral-300"
+          className={`is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable`}
           onClick={() => setShowGraph(showGraph === false)}
         >
           {showGraph && 'Hide Response History'}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import ContentReqRowComposer from './ContentReqRowComposer';
 
 export default function OpenAPIServerForm({
@@ -51,11 +52,13 @@ export default function OpenAPIServerForm({
     }
   );
 
+  const isDark = useSelector(state => state.ui.isDark);
+
   return (
     <div className="mt-2">
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Servers</div>
-        <button className="button is-small add-header-or-cookie-button">
+        <button className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button`}>
           + Server
         </button>
       </div>

@@ -53,7 +53,7 @@ function OpenAPIContainer({
     newRequestsOpenAPI.openapiReqArray.forEach((req) => {
       const reqRes = {
         id: uuid(),
-        created_at: new Date(),
+        createdAt: new Date(),
         host: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}`,
         protocol: 'https://',
         url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,

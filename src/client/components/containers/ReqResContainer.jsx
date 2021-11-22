@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import * as actions from '../../actions/actions';
-import SingleReqResContainer from './SingleReqResContainer.jsx';
+import SingleReqResContainer from './SingleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 
 const mapStateToProps = (store) => ({
@@ -37,13 +37,14 @@ const ReqResContainer = (props) => {
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
-
+  const isDark = useSelector((store) => store.ui.isDark);
+  
   return (
     <div>
       {reqResArray.length > 0 && displaySchedule && (
         <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
           <button
-            className="button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color"
+            className={`${isDark ? 'is-dark-200' : ''} button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color`}
             style={{ minWidth: '30vw' }}
             type="button"
             onClick={runCollectionTest}
