@@ -29,7 +29,7 @@ const WSEndpointEntryForm = ({
 
   return (
     <div className="is-flex is-justify-content-center">
-      <div id="webSocketButton" className="button is-ws">
+      <div id="webSocketButton" className="no-border-please button is-ws">
         <span>WS</span>
       </div>
       <input

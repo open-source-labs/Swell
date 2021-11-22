@@ -13,8 +13,8 @@ const OpenAPIEntryForm = ({
   const isDark = useSelector(state => state.ui.isDark);
 
   return (
-    <div className={`ml-2 mr-2 is-flex is-justify-content-center `}>
-      <button className="button is-openapi">
+    <div className='ml-2 mr-2 is-flex is-justify-content-center'>
+      <button className="no-border-please button is-openapi">
         <span>{openAPILabel}</span>
       </button>
       <input

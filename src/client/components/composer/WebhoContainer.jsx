@@ -2,7 +2,6 @@ import React, { useState , useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import uuid from 'uuid/v4';
 import { io } from 'socket.io-client';
-import clipboard from '../../../assets/icons/clipboard-icon.svg';
 
 
 const socket = io('http://localhost:3000');
@@ -152,36 +151,29 @@ const WebhookContainer = ({
   };
 
   return (
-    <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
-      <div className="is-3rem-flex is-flex-direction-column justify-content-center">
-        <div>
-          <button
-            className={`button ${
-              serverStatus ? 'is-wh' : 'is-wh-on'
-            }  add-request-button is-vertical-align-center`}
-            onClick={() => startServerButton()}
-          >
-            {serverStatus ? 'Stop Server' : 'Start Server'}
-          </button>
-        </div>
-        <div>
-          <input
-            className={`${isDark ? 'dark-address-input' : ''} mr-1 input input-is-medium is-info`}
-            icon={clipboard}
-            type="text"
-            value={whUrl}
-          />
-        </div>
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <button
-            className="button is-primary-100 is-3rem-footer is-clickable is-fullwidth is-margin-top-auto"
-            onClick={() => copyClick()}
-          >
-            Copy URL
-          </button>
-        </div>
-      </div>
-    </div>
+    <div className='mr-2 is-flex is-justify-content-center'>
+    <button
+           className={`button ${
+             serverStatus ? 'is-wh' : 'is-wh-on'
+           }  add-request-button is-vertical-align-center no-border-please`}
+           onClick={() => startServerButton()}
+         >
+           <span>{serverStatus ? 'Stop Server' : 'Start Server'}</span>
+         </button>
+         <input
+           className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
+           type="text"
+           value={whUrl}
+         />
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+         <button
+           className="button is-primary-100 is-3rem-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
+           onClick={() => copyClick()}
+         >
+           Copy URL
+         </button>
+       </div>
+   </div>
   );
 };
 
