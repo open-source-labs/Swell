@@ -1,10 +1,8 @@
 import React, { useState , useEffect } from 'react';
-import { io } from 'socket.io-client';
 import uuid from 'uuid/v4';
+import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:3000');
-
-// socket.on('response', (event) => console.log(event))
 
 const WebhookContainer = ({
   resetComposerFields,
@@ -52,28 +50,21 @@ const WebhookContainer = ({
   setWorkspaceActiveTab,
 }) => {
   
-  // socket.onmessage = (message) => console.log(message);
-  // socket.on('connect', () => {
-  //   console.log('open sesame');
-  //   // socket.send('omg');
-  // })
-
   const [whUrl, updateURL] = useState('');
   const [serverStatus, updateServerStatus] = useState(false);
 
   const copyClick = () => {
     console.log('copying');
     navigator.clipboard.writeText(whUrl);
-    // alert('Copied the text: ' + whUrl);
   };
-  // document.getElementById(id);
-
   
   useEffect(() => {
     socket.on('response', (event) => {
-      console.log("this is the event in webho", event);
-      // console.log(newRequestFields, "line 74 in webho container");
-      const protocol = 'blargh';
+      console.log("this is the event in webho", event.headers);
+      const protocol = 'I do not know what this is for?';
+      console.log('this is event.headers', event.headers["user-agent"]);
+      // url = event.headers;
+      url = event.headers['user-agent'];
       const reqRes = {
         id: uuid(),
         created_at: new Date(),
@@ -93,67 +84,33 @@ const WebhookContainer = ({
         request: {
           method,
           url,
-          event
+          event,
           // messages: [],
           // body: bodyContent || '',
           // bodyType,
           // bodyVariables: bodyVariables || '',
           // rawType,
-          // network,
+          network
           // restUrl,
           // webrtcUrl,
         },
         response: {
-          events: [event],
-          headers: {
-            status: 200,
-"accept-ranges": "bytes",
-"access-control-allow-origin": "*",
-"age": "0",
-"alt-svc": "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400, h3-28=\":443\"; ma=86400, h3-27=\":443\"; ma=86400",
-"cache-control": "no-cache, private",
-"cf-cache-status": "DYNAMIC",
-"cf-ray": "6ac55515dce6360a-LAX",
-"content-length": "98",
-"content-type": "application/json",
-date: "Thu, 11 Nov 2021 06:06:03 GMT",
-"expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
-nel: "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
-"report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=oMIGdwzcB2tmKYbzD21nGNwCUZpPDBhcYbDeq8UVAhRyid%2F4nllC6Et9TM0hBq6AsErp%2B8%2F6k7WqvhRPgEpdPw9biihWynK5rqLwpedI%2FVjUJHr9w85WNfnqoKFV1w%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
-server: "cloudflare",
-vary: "",
-via: "1.1 varnish (Varnish/6.3), 1.1 varnish (Varnish/6.3)",
-"x-cache": "MISS",
-"x-cache-hits": "0",
-"x - powered - by": "PHP/7.3.17"}
+          events: [event.body],
+          headers: event.headers,
         },
         checked: false,
         minimized: false,
         tab: currentTab,
       };
-
+            console.log('line 125 in webho', reqRes);
       reqResAdd(reqRes);
-
-      // VVVVV don't know why we need these but this was in the other containters VVVVVV
-      // setNewRequestBody({
-      //   ...newRequestBody,
-      //   bodyType: 'webhook',
-      //   rawType: '',
-      // });
-      // setNewRequestFields({
-      //   ...newRequestFields,
-      //   url: webhook,
-      //   webhook
-      // });
-      // setWorkspaceActiveTab('workspace');
-
-      console.log(event, "line 125 in webho");
     });
   }, []);
 
   const startServerButton = () => {
     if (!serverStatus) {
       updateServerStatus(true);
+      
       // turn on ngrok connection/URL
       // request server.js to generate and return a webhook URL
       fetch('/webhookServer', {
@@ -190,30 +147,31 @@ via: "1.1 varnish (Varnish/6.3), 1.1 varnish (Varnish/6.3)",
     }
   };
 
-  // when redux happens
-  // <div className={`banner ${active ? "active" : ""}`}>{children}</div>
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
-    {/* <div className="is-3rem-footer is-fullwidth is-primary-100 add-request-button is-vertical-align-center"> */}
-      
-      <button
-        className={`button ${serverStatus ? 'is-wh' : 'is-wh-on'}  add-request-button is-vertical-align-center`}
-        onClick={() => startServerButton()}>
-        {serverStatus ? 'Stop Server' : 'Start Server'}
-      </button>
-
-      <div className='is-flex is-flex-direction-column justify-content-center'>
-        <input
-          className="ml-1 input input-is-medium is-info"
-          type="text"
-          value={whUrl}
-        /> 
-      
+      <div className="is-3rem-flex is-flex-direction-column justify-content-center">
+        <div>
+          <button
+            className={`button ${
+              serverStatus ? 'is-wh' : 'is-wh-on'
+            }  add-request-button is-vertical-align-center`}
+            onClick={() => startServerButton()}
+          >
+            {serverStatus ? 'Stop Server' : 'Start Server'}
+          </button>
+          <input
+            className="ml-1 input input-is-medium is-info"
+            type="text"
+            value={whUrl}
+          />
+        </div>
         <div className="is-3rem-footer is-clickable is-margin-top-auto">
           <button
-          className= "button is-primary-100 is-3rem-footer is-clickable is-fullwidth is-margin-top-auto"
-          onClick={() => copyClick()}
-          >Copy URL</button>
+            className="button is-primary-100 is-3rem-footer is-clickable is-fullwidth is-margin-top-auto"
+            onClick={() => copyClick()}
+          >
+            Copy URL
+          </button>
         </div>
       </div>
     </div>

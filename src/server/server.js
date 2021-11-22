@@ -52,14 +52,16 @@ app.delete('/webhookServer', (req, res) => {
 });
 
 // listening for stuff
-app.post('/webhook', (req, res)=> {
-  console.log(req.body);
-  io.emit('response', req.body);
+app.post('/webhook', (req, res) => {
+  // console.log("this is the req", req.headers);
+  // console.log(req.body);
+  const data = {headers: req.headers, body: req.body}
+  io.emit('response', data);
   return res.status(200).json(req.body);
 })
 
 app.get('*', (req, res) => {
-  console.log('helooooo');
+  console.log('hellooooo');
   // res.status(200).sendFile(path.join(__dirname, '../index.js'));
   // res.status(200).sendFile(path.join(__dirname,'../../index-csp.html'))
 });
