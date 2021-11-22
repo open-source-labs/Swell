@@ -5,9 +5,10 @@ const initialState = {
   sidebarActiveTab: 'composer',
   workspaceActiveTab: 'workspace',
   responsePaneActiveTab: 'events',
+  isDark: false,
 };
 
-const uiReducer = (state = initialState, action) => {
+const uiReducer = (state = initialState, action: { type: string; payload: string | boolean; }): Record<string, unknown> => {
   switch (action.type) {
     case types.SET_COMPOSER_DISPLAY: {
       return {
@@ -33,6 +34,13 @@ const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         responsePaneActiveTab: action.payload,
+      };
+    }
+
+    case types.TOGGLE_DARK_MODE: {
+      return {
+        ...state,
+        isDark: action.payload,
       };
     }
 

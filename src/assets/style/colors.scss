@@ -1,8 +1,8 @@
 $primary-100: #ffd645;
 $primary-200: #f66b61;
 $primary-300: #21d4a4;
-$primary-400: #50809b;
-$primary-500: #3734a9;
+$primary-400: #50809b; // this is not currently used
+$primary-500: #3834a9;
 
 $rest: #6843ff;
 $graphql: #de33a6;
@@ -11,6 +11,7 @@ $websockets: #f47d31;
 $webrtc: #4285f4;
 $openapi: #94c73d;
 $webhook: rgb(185, 52, 52);
+$webhookOn: #037448;
 
 $neutral-100: #5e5e5e;
 $neutral-200: #f4f5f7;
@@ -23,7 +24,7 @@ $neutral-600: #000000;
 $primary: $primary-500;
 $success: $primary-300;
 $danger: $primary-200;
-$text: $neutral-500;
+$text: $neutral-400;
 // $link: $blue
 // $info: $cyan
 // $success: $green
@@ -54,7 +55,6 @@ $text: $neutral-500;
   color: #06a568 !important;
 }
 
-// COLOR SCHEMES
 .is-primary-100 {
   color: $neutral-500 !important;
   background-color: $primary-100 !important;
@@ -111,7 +111,7 @@ $text: $neutral-500;
 
 .is-wh-on{
   color: $neutral-200 !important;
-  background-color: #037448 !important;
+  background-color: $webhookOn !important;
 }
 
 .is-rest-color {
@@ -172,7 +172,7 @@ $text: $neutral-500;
 }
 
 .is-neutral-200-box {
-  border: 1px solid $neutral-300;
+  border: 1px solid black;
   background-color: $neutral-200;
 }
 
@@ -190,7 +190,7 @@ $text: $neutral-500;
   border: 1px solid $neutral-300;
 }
 
-.is-divider-neutral-300 {
+.is-divider-neutral-300 { // this is the divider between the tabs -Prince
   border-left: 1px solid $neutral-300;
   border-right: 1px solid $neutral-300;
 }

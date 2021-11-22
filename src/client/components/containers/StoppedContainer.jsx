@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../actions/actions';
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 
@@ -50,13 +50,15 @@ const StoppedContainer = (props) => {
     );
   });
 
+  const isDark = useSelector((state) => state.ui.isDark);
+
   return (
     <>
       <div className="no-styling mx-1 py-1 is-flex is-flex-direction-column">
         <center className="queue">Scheduled Requests</center>
         <div className="prettify-select is-align-self-center mt-3 mb-3">
           <button
-            className="button is-small is-danger is-outlined button-hover-color queue-clear"
+            className={`button is-small is-danger ${isDark ? '' : 'is-outlined' } button-hover-color queue-clear`}
             onClick={() => {
               scheduledReqResDelete();
               clearAllGraph();

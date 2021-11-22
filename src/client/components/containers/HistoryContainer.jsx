@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import * as actions from '../../actions/actions';
 import HistoryDate from '../display/HistoryDate';
 import ClearHistoryBtn from '../display/ClearHistoryBtn';
@@ -46,6 +46,8 @@ const HistoryContainer = (props) => {
     setNewRequestStreams,
   } = props;
 
+  const isDark = useSelector((store) => store.ui.isDark);
+
   // history is already sorted by created_at from getHistory
   const historyDates = history.map((date, i) => {
     return (
@@ -66,7 +68,7 @@ const HistoryContainer = (props) => {
 
   return (
     <div
-      className="p-3 is-flex is-flex-direction-column is-tall-not-5rem"
+      className={`p-3 is-flex is-flex-direction-column is-tall-not-5rem ${isDark ? 'is-dark-400' : ''}`}
       id="history-container"
     >
       <div>

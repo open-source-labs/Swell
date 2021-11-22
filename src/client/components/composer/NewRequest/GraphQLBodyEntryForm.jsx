@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import { useSelector } from 'react-redux';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/twilight.css';
@@ -28,6 +29,8 @@ const GraphQLBodyEntryForm = (props) => {
     if (!bodyIsNew) setValue(bodyContent);
   }, [bodyContent]);
 
+  const isDark = useSelector((store) => store.ui.isDark);
+
   return (
     <div className="mt-3">
       {
@@ -35,7 +38,7 @@ const GraphQLBodyEntryForm = (props) => {
         warningMessage ? <div>{warningMessage.body}</div> : null
       }
       <div className="composer-section-title">Body</div>
-      <div id="gql-body-entry" className="is-neutral-200-box p-3">
+      <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}>
         <CodeMirror
           value={cmValue}
           options={{

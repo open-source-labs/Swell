@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const WSEndpointEntryForm = ({
   warningMessage,
@@ -24,13 +25,15 @@ const WSEndpointEntryForm = ({
     });
   };
 
+  const isDark = useSelector((store) => store.ui.isDark);
+
   return (
     <div className="is-flex is-justify-content-center">
       <div id="webSocketButton" className="button is-ws">
         <span>WS</span>
       </div>
       <input
-        className="ml-1 input input-is-medium is-info"
+        className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
         type="text"
         placeholder="Enter endpoint"
         value={newRequestFields.wsUrl}

@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 // import ProtocolSelect from "./ProtocolSelect.jsx";
 
@@ -14,9 +15,10 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBody,
   setNewTestContent,
 }) => {
+  const isDark = useSelector(state => state.ui.isDark);
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
-
+  
   useEffect(() => {
     const closeDropdown = (event) => {
       if (!dropdownEl.current.contains(event.target)) {
@@ -26,6 +28,7 @@ const RestMethodAndEndpointEntryForm = ({
     document.addEventListener('click', closeDropdown);
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
+  
 
   const warningCheck = () => {
     if (warningMessage.uri) {
@@ -34,7 +37,7 @@ const RestMethodAndEndpointEntryForm = ({
       setComposerWarningMessage({ ...newWarningMessage });
     }
   };
-
+  
   const methodChangeHandler = (newMethodStr) => {
     warningCheck();
     //if one of 5 http methods (get, post, put, patch, delete)
@@ -43,17 +46,17 @@ const RestMethodAndEndpointEntryForm = ({
       bodyType: 'raw',
       bodyContent: '',
     });
-
+    
     //always set new method
     setNewRequestFields({
       ...newRequestFields,
       method: newMethodStr,
       protocol: '',
     });
-
+    
     setNewTestContent('');
   };
-
+  
   const urlChangeHandler = (e, network) => {
     warningCheck();
     const url = e.target.value;
@@ -63,7 +66,7 @@ const RestMethodAndEndpointEntryForm = ({
       url,
     });
   };
-
+  
   return (
     
     <div>
@@ -75,7 +78,7 @@ const RestMethodAndEndpointEntryForm = ({
       >
         <div className="dropdown-trigger">
           <button
-            className="is-rest button"
+            className="is-rest button no-border-please"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -84,7 +87,7 @@ const RestMethodAndEndpointEntryForm = ({
             <span className="icon is-medium">
               <img
                 src={dropDownArrow}
-                className="is-awesome-icon"
+                className="arrow-drop-down is-awesome-icon"
                 aria-hidden="true"
                 alt="dropdown arrow"
               />
@@ -154,7 +157,7 @@ const RestMethodAndEndpointEntryForm = ({
         </div>
 
         <input
-          className="ml-1 input input-is-medium is-info"
+          className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
           type="text"
           placeholder="Enter endpoint"
           value={newRequestFields.restUrl}

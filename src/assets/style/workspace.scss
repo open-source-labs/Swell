@@ -115,8 +115,8 @@
 }
 
 .is-graph-footer {
-  background-color: $neutral-200;
-  color: $primary-500;
+  background-color: $neutral-100;
+  color: $primary-500 !important;
   min-height: 3rem;
   height: 3rem;
   margin-top: auto;
@@ -181,7 +181,7 @@
 
 .is-primary-link {
   &:hover {
-    color: $primary-500;
+    color: $primary-500 !important;
   }
 }
 

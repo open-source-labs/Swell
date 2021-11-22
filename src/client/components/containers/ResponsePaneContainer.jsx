@@ -16,6 +16,7 @@ import ReqResCtrl from '../../controllers/reqResController';
 const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
+  const isDark = useSelector((store) => store.ui.isDark);
 
   const setActiveTab = (tabName) =>
     dispatch(actions.setResponsePaneActiveTab(tabName));
@@ -30,15 +31,20 @@ const ResponsePaneContainer = () => {
 
 
   //VVVV get rid of this button
-  // const testing = () => {
-  //   console.log('testing', currentResponse);
-  // }
+  const testing = () => {
+    console.log('testing', currentResponse);
+  }
+
   return (
     <div
-      className="column is-one-third is-flex is-flex-direction-column is-tall"
+      className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
       id="responses"
     >
+
+      
       {/* <button onClick={() => testing()}>></button> */}
+
+
       {/* HEADER */}
       <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
         <ResponseTime currentResponse={currentResponse} />
@@ -53,7 +59,7 @@ const ResponsePaneContainer = () => {
       <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
         {/* TAB SELECTOR */}
         <div className="tabs header-bar">
-          <ul className="columns is-gapless">
+          <ul className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}>
             {currentResponse.request?.network === 'ws' ? (
               <li
                 className={`column ${

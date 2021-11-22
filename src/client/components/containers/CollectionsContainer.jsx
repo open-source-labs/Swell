@@ -8,6 +8,7 @@ function CollectionsContainer() {
   const dispatch = useDispatch();
 
   const collections = useSelector((store) => store.business.collections);
+  const isDark = useSelector(state => state.ui.isDark);
 
   const handleClick = () => {
     collectionsController.importCollection(collections);
@@ -32,7 +33,7 @@ function CollectionsContainer() {
     <div>
       <div className="mt-3 is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
         <button
-          className="button is-medium is-primary is-outlined button-padding-verticals mx-3"
+          className={`button is-medium is-primary ${isDark ? '' : 'is-outlined'} button-padding-verticals mx-3`}
           type="button"
           onClick={handleClick}
         >

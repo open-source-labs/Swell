@@ -1,5 +1,8 @@
 
 // COMPOSER TAB
+// * {
+//   background-color: gray;
+// }
 
 .include-data-checkbox {
   background: #FFFFFF;
@@ -17,8 +20,8 @@
 }
 
 .add-header-or-cookie-button {
-  color: $primary;
-  border-color: $primary;
+  color: $primary !important;
+  border-color: $primary !important;
   min-width: 80px;
 }
 
@@ -30,7 +33,7 @@
 // grpc
 .protocol-select-button {
   border: none !important;
-  border-bottom: 1px solid $neutral-300 !important;
+  border-bottom: 1px solid $neutral-300 !important; // this is the dividing line underneath the protocol dropdown -Prince
 }
 
 .stream-title {
@@ -156,4 +159,8 @@
 
 .tabs {
   margin-bottom: 0 !important;
+}
+
+.no-border-please {
+  border: none !important;
 }
