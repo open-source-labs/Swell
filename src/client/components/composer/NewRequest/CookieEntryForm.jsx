@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ContentReqRowComposer from './ContentReqRowComposer.jsx';
+import ContentReqRowComposer from './ContentReqRowComposer';
 
 class CookieEntryForm extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class CookieEntryForm extends Component {
 
   componentDidUpdate() {
     const cookiesDeepCopy = this.createDeepCookieCopy();
-    if (cookiesDeepCopy.length == 0) {
+    if (cookiesDeepCopy.length === 0) {
       this.addCookie([]);
     } else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
       this.addCookie(cookiesDeepCopy);
@@ -105,7 +105,7 @@ class CookieEntryForm extends Component {
         <div className="is-flex is-justify-content-space-between is-align-content-center">
           <div className="composer-section-title">Cookies</div>
           <button
-            className="button is-small add-header-or-cookie-button"
+            className={`${this.props.isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
             onClick={() => this.addCookie(this.createDeepCookieCopy())}
           >
             + Cookie

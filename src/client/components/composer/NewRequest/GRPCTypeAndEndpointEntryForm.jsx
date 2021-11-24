@@ -1,5 +1,6 @@
 /* eslint-disable default-case */
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const GRPCTypeAndEndpointEntryForm = ({
   warningMessage,
@@ -30,14 +31,16 @@ const GRPCTypeAndEndpointEntryForm = ({
   // change this to be initial state instead
   const grpcStreamLabel = newRequestStreams.selectedStreamingType || 'STREAM';
 
+  const isDark = useSelector((state) => state.ui.isDark);
+
   return (
     <div className={`ml-2 mr-2 is-flex is-justify-content-center `}>
       {/* button id is now stream for vanilla JS selector, this should change */}
-      <button id="stream" className="button is-grpc">
+      <button id="stream" className="no-border-please button is-grpc">
         <span>{grpcStreamLabel}</span>
       </button>
       <input
-        className="ml-1 input input-is-medium is-info"
+        className={`${isDark ? 'is-dark-300' : '' } ml-1 input input-is-medium is-info`}
         type="text"
         placeholder="Enter endpoint"
         value={newRequestFields.grpcUrl}

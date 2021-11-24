@@ -49,7 +49,7 @@ function WSContainer({
 
     const reqRes = {
       id: uuid(),
-      created_at: new Date(),
+      createdAt: new Date(),
       protocol: url.match(/wss?:\/\//)[0],
       url,
       webrtc,
@@ -81,7 +81,6 @@ function WSContainer({
 
     //reset for next request
     resetComposerFields();
-
     setNewRequestFields({
       ...newRequestFields,
       protocol: 'ws://',

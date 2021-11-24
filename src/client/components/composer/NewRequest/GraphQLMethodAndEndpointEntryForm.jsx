@@ -2,7 +2,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+
 
 const GraphQLMethodAndEndpointEntryForm = ({
   warningMessage,
@@ -97,6 +99,8 @@ const GraphQLMethodAndEndpointEntryForm = ({
     });
   };
 
+  const isDark = useSelector((store) => store.ui.isDark);
+
   return (
     <div>
       <div
@@ -107,7 +111,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
       >
         <div className="dropdown-trigger">
           <button
-            className="button is-graphQL"
+            className="no-border-please button is-graphQL"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -163,7 +167,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
         </div>
 
         <input
-          className="ml-1 input input-is-medium is-info"
+          className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
           type="text"
           placeholder="Enter endpoint"
           value={newRequestFields.gqlUrl}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useSelector } from 'react-redux';
 const { api } = window;
 
 const OpenAPIDocumentEntryForm = (props) => {
@@ -16,11 +16,13 @@ const OpenAPIDocumentEntryForm = (props) => {
     api.send('import-openapi');
   };
 
+  const isDark = useSelector((state) => state.ui.isDark);
+
   return (
     <div className="mt-3">
       <div className="is-flex is-justify-content-flex-end is-align-content-center">
         <button
-          className="button is-small add-header-or-cookie-button mr-1"
+          className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button mr-1`}
           onClick={importDocument}
         >
           Load Document

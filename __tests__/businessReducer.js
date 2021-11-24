@@ -118,11 +118,11 @@ describe('Business reducer', () => {
         history: [
           {
             id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e',
-            created_at: '2019-02-15T21:40:44.132Z',
+            createdAt: '2019-02-15T21:40:44.132Z',
           },
           {
             id: 'c8d73eec-e383-4735-943a-20deab42ecff',
-            created_at: '2019-02-15T20:52:35.990Z',
+            createdAt: '2019-02-15T20:52:35.990Z',
           },
         ],
       },
@@ -131,11 +131,11 @@ describe('Business reducer', () => {
         history: [
           {
             id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-            created_at: '2019-02-15T00:40:56.360Z',
+            createdAt: '2019-02-15T00:40:56.360Z',
           },
           {
             id: '577eab93-e707-4dc0-af45-7adcc78807fa',
-            created_at: '2019-02-15T00:16:56.133Z',
+            createdAt: '2019-02-15T00:16:56.133Z',
           },
         ],
       },
@@ -160,7 +160,7 @@ describe('Business reducer', () => {
         history: [
           {
             id: 'c8d73eec-e383-4735-943a-20deab42ecff',
-            created_at: '2019-02-15T20:52:35.990Z',
+            createdAt: '2019-02-15T20:52:35.990Z',
           },
         ],
       },
@@ -169,11 +169,11 @@ describe('Business reducer', () => {
         history: [
           {
             id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-            created_at: '2019-02-15T00:40:56.360Z',
+            createdAt: '2019-02-15T00:40:56.360Z',
           },
           {
             id: '577eab93-e707-4dc0-af45-7adcc78807fa',
-            created_at: '2019-02-15T00:16:56.133Z',
+            createdAt: '2019-02-15T00:16:56.133Z',
           },
         ],
       },
@@ -188,7 +188,7 @@ describe('Business reducer', () => {
         type: 'DELETE_HISTORY',
         payload: {
           id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-          created_at: '2019-02-15T00:40:56.360Z',
+          createdAt: '2019-02-15T00:40:56.360Z',
         },
       };
 
@@ -205,7 +205,7 @@ describe('Business reducer', () => {
         type: 'DELETE_HISTORY',
         payload: {
           id: 'c8d73eec-e383-4735-943a-20deab42ecff',
-          created_at: '2019-02-15T20:52:35.990Z',
+          createdAt: '2019-02-15T20:52:35.990Z',
         },
       };
       const initialHistory = state.history;
@@ -234,7 +234,7 @@ describe('Business reducer', () => {
   describe('REQRES_ADD', () => {
     const fakeReqRes1 = {
       id: 'd79d8f1a-f53c-41a1-a7e3-514f9f5cf24e',
-      created_at: '2019-02-15T21:40:44.132Z',
+      createdAt: '2019-02-15T21:40:44.132Z',
       protocol: 'http://',
       request: { method: 'POST', body: 'I am a request body' },
       response: {},
@@ -242,7 +242,7 @@ describe('Business reducer', () => {
 
     const fakeReqRes2 = {
       id: 'c8d73eec-e383-4735-943a-20deab42ecff',
-      created_at: '2019-02-16T20:52:35.990Z',
+      createdAt: '2019-02-16T20:52:35.990Z',
       protocol: 'http://',
       request: { method: 'POST', body: 'I am a newer request body' },
       response: {},
@@ -281,15 +281,15 @@ describe('Business reducer', () => {
     const fakeReqResArray = [
       {
         id: 'c8d73eec-e383-4735-943a-20deab42ecff',
-        created_at: '2019-02-15T20:52:35.990Z',
+        createdAt: '2019-02-15T20:52:35.990Z',
       },
       {
         id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-        created_at: '2019-02-15T00:40:56.360Z',
+        createdAt: '2019-02-15T00:40:56.360Z',
       },
       {
         id: '577eab93-e707-4dc0-af45-7adcc78807fa',
-        created_at: '2019-02-15T00:16:56.133Z',
+        createdAt: '2019-02-15T00:16:56.133Z',
       },
     ];
 
@@ -313,15 +313,15 @@ describe('Business reducer', () => {
     const fakeReqResArray = [
       {
         id: 'c8d73eec-e383-4735-943a-20deab42ecff',
-        created_at: '2019-02-15T20:52:35.990Z',
+        createdAt: '2019-02-15T20:52:35.990Z',
       },
       {
         id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-        created_at: '2019-02-15T00:40:56.360Z',
+        createdAt: '2019-02-15T00:40:56.360Z',
       },
       {
         id: '577eab93-e707-4dc0-af45-7adcc78807fa',
-        created_at: '2019-02-15T00:16:56.133Z',
+        createdAt: '2019-02-15T00:16:56.133Z',
       },
     ];
 
@@ -329,7 +329,7 @@ describe('Business reducer', () => {
       type: 'REQRES_UPDATE',
       payload: {
         id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-        created_at: '2018-02-15T00:40:56.360Z',
+        createdAt: '2018-02-15T00:40:56.360Z',
         newKey: 'this is a new value',
       },
     };

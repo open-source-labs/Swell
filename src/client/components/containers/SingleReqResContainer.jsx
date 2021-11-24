@@ -2,13 +2,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions.js';
+import * as actions from '../../actions/actions';
 import connectionController from '../../controllers/reqResController';
-import RestRequestContent from '../display/RestRequestContent.jsx';
-import GraphQLRequestContent from '../display/GraphQLRequestContent.jsx';
-import WebRTCRequestContent from '../display/WebRTCRequestContent.jsx';
-import GRPCRequestContent from '../display/GRPCRequestContent.jsx';
-import OpenAPIRequestContent from '../display/OpenAPIRequestContent.jsx';
+import RestRequestContent from '../display/RestRequestContent';
+import GraphQLRequestContent from '../display/GraphQLRequestContent';
+import WebRTCRequestContent from '../display/WebRTCRequestContent';
+import GRPCRequestContent from '../display/GRPCRequestContent';
+import OpenAPIRequestContent from '../display/OpenAPIRequestContent';
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -24,6 +24,7 @@ const SingleReqResContainer = (props) => {
 
   const {
     content,
+    //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
 
     reqResDelete,
@@ -194,6 +195,7 @@ const SingleReqResContainer = (props) => {
     reqResDelete(content);
   };
 
+// changes the color of boarder depending on the response?
   const getBorderClass = () => {
     let classes = 'highlighted-response ';
     if (currentResponse.gRPC) classes += 'is-grpc-border';
@@ -325,6 +327,7 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
             id={`view-button-${index}`}
             onClick={() => {
+              console.log('WE PRESSED THE BUTTON', content);
               dispatch(actions.saveCurrentResponseData(content));
             }}
           >

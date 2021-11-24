@@ -70,7 +70,7 @@ xdescribe('REST API Requests', () => {
       // define request
       const request = {
         id: 'testID',
-        // created_at: 2020-11-04T19:33:55.829Z,
+        // createdAt: 2020-11-04T19:33:55.829Z,
         protocol: 'http://',
         host: 'http://jsonplaceholder.typicode.com',
         path: '/posts',

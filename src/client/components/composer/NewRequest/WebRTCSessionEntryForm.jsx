@@ -3,7 +3,7 @@ import React from 'react';
 const WebRTCSessionEntryForm = ({ warningMessage }) => {
   return (
     <div className="is-flex is-justify-content-center">
-      <div id="webRTButton" className="button is-webrtc">
+      <div id="webRTButton" className="no-border-please button is-webrtc">
         <span>SDP</span>
       </div>
       <input

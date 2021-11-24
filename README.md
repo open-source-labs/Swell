@@ -71,6 +71,9 @@ Swell is a one-stop shop for sending and monitoring your API requests
     ]
     ```
 
+- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook. 
+  <kbd><img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
 ## Additional Features
 
 - _Scripting in Swell_: Swell allows you to write assertion tests to aid in the test-driven development cycle of backend API services.
@@ -86,6 +89,9 @@ Swell is a one-stop shop for sending and monitoring your API requests
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Schedule Tests_: You can also automate sending requests to occur on a periodic basis.
   <kbd><img src="./ReadMeGifs/Gifs/ScheduleTest.gif"
+       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
+- _Dark Mode_: Swell allows you to toggle between light and dark mode when viewing the application.  
+  <kbd><img src="./ReadMeGifs/Gifs/DarkMode.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 ## Built With
@@ -148,6 +154,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Ted Craig** - [tedcraig](https://github.com/tedcraig)
 - **Anthony Wong** - [awong428](https://github.com/awong428)
 - **John Jongsun Suh** - [MajorLift](https://github.com/MajorLift)
+- **Christopher Pan** - [ChristopherJPan](https://github.com/ChristopherJPan)
+- **Adrian Uesugui** - [auesugui](https://github.com/auesugui)
+- **Jennifer Wu** - [jsh-wu](https://github.com/jsh-wu)
+- **Jacob Viesselman** - [JacobViesselman](https://github.com/JacobViesselman)
+- **Michael Prince** - [MichaelGPrince](https://github.com/MichaelGPrince)
 
 ## License
 

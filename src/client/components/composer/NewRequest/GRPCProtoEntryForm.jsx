@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm.jsx';
 import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 // import protoParserFunc from "../../../protoParser.js";
@@ -93,6 +94,8 @@ const GRPCProtoEntryForm = (props) => {
       api.send('protoParserFunc-request', props.newRequestStreams.protoContent);
     }
   };
+  
+  const isDark = useSelector((state) => state.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
   /*
@@ -108,13 +111,13 @@ const GRPCProtoEntryForm = (props) => {
         <div className="composer-section-title">Proto</div>
         <div>
           <button
-            className="button is-small add-header-or-cookie-button mr-1"
+            className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button mr-1`}
             onClick={importProtos}
           >
             Load Proto
           </button>
           <button
-            className="button is-small add-header-or-cookie-button"
+            className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button`}
             id="save-proto"
             onClick={submitUpdatedProto}
           >

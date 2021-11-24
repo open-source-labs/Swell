@@ -1,8 +1,8 @@
 // Allow self-signing HTTPS over TLS
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // Allow self-signing HTTPS over TLS
 // Disabling Node's rejection of invalid/unauthorized certificates
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // from stack overflow: https://stackoverflow.com/a/35633993/11606641
 // Your fix is insecure and shouldn't really be done at all, but is often done in development (it should never be done in production).
 // The proper solution should be to put the self-signed certificate in your trusted root store OR to get a proper certificate signed by an existing Certificate Authority (which is already trusted by your server).
@@ -329,7 +329,7 @@ ipcMain.on('import-collection', (event, args) => {
           !parsed.id ||
           !parsed.name ||
           !parsed.reqResArray ||
-          !parsed.created_at
+          !parsed.createdAt
         ) {
           options.message = 'Invalid File';
           options.detail = 'Please try again.';
