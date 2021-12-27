@@ -159,6 +159,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Jennifer Wu** - [jsh-wu](https://github.com/jsh-wu)
 - **Jacob Viesselman** - [JacobViesselman](https://github.com/JacobViesselman)
 - **Michael Prince** - [MichaelGPrince](https://github.com/MichaelGPrince)
+- **Genevieve Annable** - [gigifeeds](https://github.com/gigifeeds)
+- **Jay Wall** - [hanswand](https://github.com/hanswand)
+- **Sam Pyo** - [samhpyo](https://github.com/samhpyo)
+- **Drew Pomatti** - [thedrewery](https://github.com/thedrewery)
+- **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)	
 
 ## License
 
