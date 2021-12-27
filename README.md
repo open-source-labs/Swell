@@ -163,7 +163,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Jay Wall** - [hanswand](https://github.com/hanswand)
 - **Sam Pyo** - [samhpyo](https://github.com/samhpyo)
 - **Drew Pomatti** - [thedrewery](https://github.com/thedrewery)
-- **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)
+- **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)	
 
 ## License
 
