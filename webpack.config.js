@@ -9,7 +9,7 @@ module.exports = {
   node: {
     fs: 'empty',
   },
-  entry: ['./src/index.js'],
+  entry: [path.resolve(__dirname, './src/index.js')],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -20,18 +20,20 @@ module.exports = {
       {
         test: /\.(ts|js)x?$/,
         include: [path.resolve(__dirname, 'src')],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-              '@babel/typescript',
-            ],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/typescript',
+              ],
+            },
           },
-        },
+        ],
         resolve: {
-          extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
         },
       },
       {
@@ -59,7 +61,7 @@ module.exports = {
       },
     ],
   },
-  
+
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
