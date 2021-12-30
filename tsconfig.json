@@ -26,7 +26,7 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
   // "include": ["./src/**/*.ts", "./src/**/*.tsx", "./main_process/*.ts", "src/assets/**/*.ts"],
-  "include": ["src/client/reducers"],
+  "include": ["src/client/actions"],
   "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
   "typeRoots": ["./node_modules/@types"]
 }
