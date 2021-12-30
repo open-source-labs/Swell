@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector, connect } from 'react-redux';
+import { Chart } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import * as store from '../../store';
 import * as actions from '../../actions/actions';
 
 //necessary for graph styling due to CSP
-Chart.platform.disableCSSInjection = true;
+if (Chart.platform) Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
   dataPoints: store.business.dataPoints,
@@ -187,7 +188,12 @@ const BarGraph = (props) => {
 
   return (
     <div>
-      <div id="chartContainer" className={`border-top pt-1 ${chartClass} ${isDark ? 'is-dark-100' : ''}`}>
+      <div
+        id="chartContainer"
+        className={`border-top pt-1 ${chartClass} ${
+          isDark ? 'is-dark-100' : ''
+        }`}
+      >
         <Line
           data={chartData}
           width={50}
@@ -198,7 +204,9 @@ const BarGraph = (props) => {
       </div>
       <div className="is-flex is-justify-content-center">
         <button
-          className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button clear-chart-button mb-3`}
+          className={`${
+            isDark ? 'is-dark-200' : ''
+          } button is-small add-header-or-cookie-button clear-chart-button mb-3`}
           onClick={() => {
             props.clearGraph(currentResponse.id);
             setChartURL('');

@@ -1,5 +1,5 @@
 import React from 'react';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import historyController from '../../controllers/historyController';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import OpenAPIEntryForm from './NewRequest/OpenAPIEntryForm';

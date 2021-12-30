@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
-import * as actions from '../../actions/actions.js';
+import * as actions from '../../actions/actions';
 
-const jBeautify = require('js-beautify').js;
+import jBeautify from 'js-beautify';
 
 export default function WebRTCRequestContent({ content }) {
   const { body } = content.request;

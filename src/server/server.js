@@ -1,13 +1,13 @@
-const path = require('path');
-const express = require('express');
-const ngrok = require('ngrok');
+import path from 'path';
+import express from 'express';
+import ngrok from 'ngrok';
 
 const port = 3000;
 const app = express();
 
 //websocket stuff
-const server = require('http').createServer(app); 
-const io = require('socket.io')(server, {
+import server from 'http'.createServer(app);
+import io from 'socket.io'(server, {
   cors: {
     origin: '*'
   }

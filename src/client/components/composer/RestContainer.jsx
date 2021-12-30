@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
 import { useSelector } from 'react-redux';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import historyController from '../../controllers/historyController';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm';
 import BodyEntryForm from './NewRequest/BodyEntryForm.jsx';
@@ -81,7 +81,7 @@ function RestContainer({
       return;
     }
 
-    let reqRes; 
+    let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
@@ -96,7 +96,7 @@ function RestContainer({
         path = path.substring(0, path.length - 1);
       }
       path = path.replace(/https?:\//g, 'http://');
-      reqRes = { 
+      reqRes = {
         id: uuid(),
         createdAt: new Date(),
         protocol: url.match(/https?:\/\//)[0],

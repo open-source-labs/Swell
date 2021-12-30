@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import parse from 'date-fns/parse';
-import isYesterday from 'date-fns/is_yesterday';
-import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
+import { isYesterday, isToday } from 'date-fns';
 import History from './History.jsx';
 
 class HistoryDate extends Component {

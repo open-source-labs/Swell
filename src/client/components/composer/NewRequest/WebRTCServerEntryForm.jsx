@@ -12,7 +12,7 @@ import 'codemirror-graphql/lint';
 import 'codemirror-graphql/mode';
 import 'codemirror/addon/lint/lint.css';
 
-const jBeautify = require('js-beautify').js;
+import jBeautify from 'js-beautify';
 
 const WebRTCServerEntryForm = (props) => {
   const {

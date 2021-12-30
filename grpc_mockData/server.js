@@ -1,9 +1,9 @@
-const path = require('path');
-const fs = require('fs');
-const hl = require('highland');
-const Mali = require('mali');
+import path from 'path';
+import fs from 'fs';
+import hl from 'highland';
+import Mali from 'mali';
 // Mali needs the old grpc as a peer dependency so that should be installed as well
-const grpc = require('@grpc/grpc-js');
+import grpc from '@grpc/grpc-js';
 
 // consider replacing highland with normal node code for converting array to streams
 

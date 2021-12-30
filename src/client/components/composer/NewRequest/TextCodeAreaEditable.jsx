@@ -1,4 +1,4 @@
-import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
+// import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/theme/neat.css';

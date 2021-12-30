@@ -1,6 +1,6 @@
-const path = require('path');
-const protoLoader = require('@grpc/proto-loader');
-const grpc = require('@grpc/grpc-js');
+import path from 'path';
+import protoLoader from '@grpc/proto-loader';
+import grpc from '@grpc/grpc-js';
 
 // store proto path
 const PROTO_PATH = path.resolve(__dirname, './protos/hw2.proto');

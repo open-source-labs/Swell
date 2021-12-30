@@ -1,8 +1,8 @@
 // an example of making a test server without Mali and pure @grpc
 
-const path = require('path');
-const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
+import path from 'path';
+import grpc from '@grpc/grpc-js';
+import protoLoader from '@grpc/proto-loader';
 
 // change PROTO_PATH to load a different mock proto file
 const PROTO_PATH = path.resolve(__dirname, 'protos/helloworld.proto');

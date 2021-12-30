@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const classNames = require('classnames');
+import classNames from 'classnames';
 
 class ProtocolSelect extends Component {
   constructor(props) {

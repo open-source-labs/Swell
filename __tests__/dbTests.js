@@ -5,7 +5,7 @@
 // const collectionsController = require("../src/client/controllers/collectionsController");
 // const historyController = require("../src/client/controllers/historyController");
 
-const Dexie = require('dexie');
+import Dexie from 'dexie';
 
 // https://stackoverflow.com/questions/47934383/indexeddb-testing-with-jest-enzyme-referenceerror-indexeddb-is-not-defined
 Dexie.dependencies.indexedDB = require('fake-indexeddb');

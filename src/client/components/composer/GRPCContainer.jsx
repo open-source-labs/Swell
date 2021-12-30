@@ -1,5 +1,5 @@
 import React from 'react';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import GRPCProtoEntryForm from './NewRequest/GRPCProtoEntryForm.jsx';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm.jsx';
 import historyController from '../../controllers/historyController';

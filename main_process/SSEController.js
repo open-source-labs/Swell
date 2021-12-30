@@ -18,9 +18,9 @@ SSEController.createStream = (reqResObj, options, event) => {
   // got options from httpController
   const { headers } = options;
 
-  /* because EventSource cannot access headers, we are making a regular get request to SSE server to get its headers, 
-    and then passing those headers into function where we will be connecting our EventSource, there will a time delay 
-    between the time the user opens the request and the server sends back its first response. We keep reference to the time 
+  /* because EventSource cannot access headers, we are making a regular get request to SSE server to get its headers,
+    and then passing those headers into function where we will be connecting our EventSource, there will a time delay
+    between the time the user opens the request and the server sends back its first response. We keep reference to the time
     the first request was made to account for that time difference later on. */
   const startTime = Date.now();
 
