@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
-import * as actions from '../../actions/actions.js';
+import * as actions from '../../actions/actions.ts';
 
 const jBeautify = require('js-beautify').js;
 
