@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions.js';
+import * as actions from '../../actions/actions.ts';
 import RestRequestContent from '../display/RestRequestContent';
 import GraphQLRequestContent from '../display/GraphQLRequestContent';
 import GRPCRequestContent from '../display/GRPCRequestContent';
