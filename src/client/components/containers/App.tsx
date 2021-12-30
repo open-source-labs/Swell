@@ -12,7 +12,7 @@ import '../../../assets/style/App.scss';
 
 const { api } = window as unknown as WindowExt;
 
-const App = () => { //what type is being returned?
+const App: React.FC = () => { // jWallNote: ade
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -25,8 +25,7 @@ const App = () => { //what type is being returned?
     <div className="is-gapless is-tall">
       <div
         id="app"
-        className={`columns is-gapless ${!message && 'is-tall'} ${
-          message && 'is-tall-message'
+        className={`columns is-gapless ${!message ? 'is-tall' : 'is-tall-message'} 
         }`}
       >
         <HashRouter>
