@@ -19,7 +19,9 @@ const GraphQLIntrospectionLog = () => {
   return (
     <div>
       <button
-        className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } button is-small add-header-or-cookie-button`}
         onClick={() => graphQLController.introspect(url, headers, cookies)}
       >
         Introspect

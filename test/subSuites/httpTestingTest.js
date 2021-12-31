@@ -17,17 +17,17 @@ module.exports = () => {
     ) => {
       try {
         // click and check REST
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=REST').click();
+        await (await composerObj.selectedNetwork).click();
+        await (await app.client.$('a=REST')).click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
-          await app.client.$('span=GET').click();
-          await app.client.$(`a=${method}`).click();
+          await (await app.client.$('span=GET')).click();
+          await (await app.client.$(`a=${method}`)).click();
         }
 
         // type in url
-        await composerObj.url.setValue(url);
+        await (await composerObj.url).setValue(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
@@ -37,7 +37,7 @@ module.exports = () => {
           await app.client
             .$(`//*[@id="header-row${index}"]/input[2]`)
             .setValue(value);
-          await app.client.$('button=+ Header').click();
+          await (await app.client.$('button=+ Header')).click();
         });
 
         // set cookies
@@ -48,14 +48,14 @@ module.exports = () => {
           await app.client
             .$(`//*[@id="cookie-row${index}"]/input[2]`)
             .setValue(value);
-          await app.client.$('button=+ Cookie').click();
+          await (await app.client.$('button=+ Cookie')).click();
         });
 
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          await app.client.$('span=text/plain').click();
-          await app.client.$('a=application/json').click();
+          await (await app.client.$('span=text/plain')).click();
+          await (await app.client.$('a=application/json')).click();
           // insert JSON content into body
           await composerObj.clearRestBodyAndWriteKeys(body);
         }
@@ -66,8 +66,8 @@ module.exports = () => {
 
     const addAndSend = async () => {
       try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
+        await (await composerObj.addRequestBtn).click();
+        await (await workspaceObj.latestSendRequestBtn).click();
       } catch (err) {
         console.error(err);
       }
@@ -76,7 +76,7 @@ module.exports = () => {
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor
-        await app.client.$('span=View Tests').click();
+        await (await app.client.$('span=View Tests')).click();
         // set the value of the code editor to be some hard coded simple assertion tests
         await composerObj.clearTestScriptAreaAndWriteKeys(script);
       } catch (err) {
@@ -86,7 +86,7 @@ module.exports = () => {
 
     afterEach('HIDE TESTS', (done) => {
       (async () => {
-        await app.client.$('span=Hide Tests').click();
+        await (await app.client.$('span=Hide Tests')).click();
       })();
       done();
     });
@@ -121,7 +121,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
 
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('PASS');
@@ -135,7 +135,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('FAIL');
       });
@@ -148,7 +148,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('PASS');
       });
@@ -161,7 +161,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('FAIL');
       });
@@ -177,7 +177,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const firstStatus = await app.client
           .$('#TestResult-0-status')
           .getText();
@@ -206,7 +206,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const firstStatus = await app.client
           .$('#TestResult-0-status')
           .getText();
@@ -236,7 +236,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
 
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('PASS');
@@ -251,7 +251,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
 
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('PASS');
@@ -266,7 +266,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await app.client.$('#TestResult-0-status').getText();
@@ -288,7 +288,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await app.client.$('#TestResult-0-status').getText();
@@ -307,7 +307,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('PASS');
       });
@@ -321,7 +321,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const testStatus = await app.client.$('#TestResult-0-status').getText();
         expect(testStatus).to.equal('PASS');
       });
@@ -335,7 +335,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -356,7 +356,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -378,7 +378,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend();
 
-        await app.client.$('a=Tests').click();
+        await (await app.client.$('a=Tests')).click();
         const { selector } = await app.client.$('.empty-state-wrapper');
         expect(selector).to.equal('.empty-state-wrapper');
       });

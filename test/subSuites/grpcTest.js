@@ -30,7 +30,7 @@ module.exports = () => {
       try {
         grpcServer('open');
         await composerSetup();
-        await grpcObj.openSelectServiceDropdown.click();
+        await (await grpcObj.openSelectServiceDropdown).click();
       } catch (err) {
         console.error(err);
       }
@@ -38,7 +38,7 @@ module.exports = () => {
 
     after(async () => {
       try {
-        await grpcObj.clearWorkspace.click();
+        await (await grpcObj.clearWorkspace).click();
       } catch (err) {
         console.log(err);
       }
@@ -46,20 +46,20 @@ module.exports = () => {
 
     const composerSetup = async () => {
       try {
-        await grpcObj.selectedNetwork.click();
-        await grpcObj.gRPCNetwork.click();
-        await grpcObj.url.addValue('0.0.0.0:30051');
-        await grpcObj.grpcProto.addValue(proto);
-        await grpcObj.saveChanges.click();
+        await (await grpcObj.selectedNetwork).click();
+        await (await grpcObj.gRPCNetwork).click();
+        await (await grpcObj.url).addValue('0.0.0.0:30051');
+        await (await grpcObj.grpcProto).addValue(proto);
+        await (await grpcObj.saveChanges).click();
       } catch (err) {
         console.error(err);
       }
     };
     const addReqAndSend = async () => {
       try {
-        await grpcObj.addRequestBtn.click();
-        await grpcObj.sendBtn.click();
-        const res = await grpcObj.jsonPretty.getText();
+        await (await grpcObj.addRequestBtn).click();
+        await (await grpcObj.sendBtn).click();
+        const res = await (await grpcObj.jsonPretty).getText();
         return res;
       } catch (err) {
         console.error(err);
@@ -68,9 +68,9 @@ module.exports = () => {
 
     it('it should work on a unary request', async () => {
       try {
-        await grpcObj.selectServiceGreeter.click();
-        await grpcObj.openRequestDropdown.click();
-        await grpcObj.selectRequestSayHelloFromDropDown.click();
+        await (await grpcObj.selectServiceGreeter).click();
+        await (await grpcObj.openRequestDropdown).click();
+        await (await grpcObj.selectRequestSayHelloFromDropDown).click();
         const jsonPretty = await addReqAndSend();
         await new Promise((resolve) =>
           setTimeout(() => {
@@ -85,8 +85,8 @@ module.exports = () => {
 
     it('it should work on a nested unary request', async () => {
       try {
-        await grpcObj.selectRequestSayHello.click();
-        await grpcObj.selectRequestSayHelloNestedFromDropDown.click();
+        await (await grpcObj.selectRequestSayHello).click();
+        await (await grpcObj.selectRequestSayHelloNestedFromDropDown).click();
         const jsonPretty = await addReqAndSend();
         expect(jsonPretty).to.include('"serverMessage":');
         expect(jsonPretty).to.include('"message": "Hello! string"');
@@ -99,8 +99,8 @@ module.exports = () => {
 
     it('it should work on a server stream', async () => {
       try {
-        await grpcObj.selectRequestSayHelloNested.click();
-        await grpcObj.selectRequestSayHellosSsFromDropDown.click();
+        await (await grpcObj.selectRequestSayHelloNested).click();
+        await (await grpcObj.selectRequestSayHellosSsFromDropDown).click();
         const jsonPretty = await addReqAndSend();
         expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
         expect(jsonPretty).to.include('hello!!! string');
@@ -111,8 +111,8 @@ module.exports = () => {
 
     it('it should work on a client stream', async () => {
       try {
-        await grpcObj.selectRequestSayHellosSs.click();
-        await grpcObj.selectRequestSayHelloCSFromDropDown.click();
+        await (await grpcObj.selectRequestSayHellosSs).click();
+        await (await grpcObj.selectRequestSayHelloCSFromDropDown).click();
         const jsonPretty = await addReqAndSend();
         expect(jsonPretty).to.include('"message": "received 1 messages"');
       } catch (err) {
@@ -121,8 +121,8 @@ module.exports = () => {
     });
     it('it should work on a bidirectional stream', async () => {
       try {
-        await grpcObj.selectRequestSayHelloCS.click();
-        await grpcObj.selectRequestBidiFromDropDown.click();
+        await (await grpcObj.selectRequestSayHelloCS).click();
+        await (await grpcObj.selectRequestBidiFromDropDown).click();
         const jsonPretty = await addReqAndSend();
         expect(jsonPretty).to.include('"message": "bidi stream: string"');
       } catch (err) {

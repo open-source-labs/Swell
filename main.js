@@ -101,6 +101,7 @@ function createWindow() {
     title: 'Swell',
     webPreferences: {
       nodeIntegration: false,
+      enableRemoteModule: true, // required for mocha tests to run since electron v10
       contextIsolation: process.env.NODE_ENV !== 'test', // true if in dev mode
       sandbox: process.env.NODE_ENV !== 'test',
       webSecurity: true,

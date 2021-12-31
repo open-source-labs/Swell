@@ -19,19 +19,19 @@ module.exports = () => {
     ) => {
       try {
         // click and check GRAPHQL
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=REST').click();
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=GRAPHQL').click();
+        await (await composerObj.selectedNetwork).click();
+        await (await app.client.$('a=REST')).click();
+        await (await composerObj.selectedNetwork).click();
+        await (await app.client.$('a=GRAPHQL')).click();
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {
-          await app.client.$('span=QUERY').click();
-          await app.client.$(`a=${method}`).click();
+          await (await app.client.$('span=QUERY')).click();
+          await (await app.client.$(`a=${method}`)).click();
         }
 
         // type in url
-        await composerObj.url.setValue(url);
+        await (await composerObj.url).setValue(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
@@ -41,7 +41,7 @@ module.exports = () => {
           await app.client
             .$(`//*[@id="header-row${index}"]/input[2]`)
             .setValue(value);
-          await app.client.$('button=+ Header').click();
+          await (await app.client.$('button=+ Header')).click();
         });
 
         // set cookies
@@ -52,14 +52,14 @@ module.exports = () => {
           await app.client
             .$(`//*[@id="cookie-row${index}"]/input[2]`)
             .setValue(value);
-          await app.client.$('button=+ Cookie').click();
+          await (await app.client.$('button=+ Cookie')).click();
         });
 
         // select Body and type in body
         await composerObj.clearGQLBodyAndWriteKeys(body);
 
         // select Variables and type in variables
-        await composerObj.clickGQLVariablesAndWriteKeys(variables);
+        await (await composerObj).clickGQLVariablesAndWriteKeys(variables);
       } catch (err) {
         console.error(err);
       }
@@ -68,8 +68,8 @@ module.exports = () => {
     // This will add and send the most recent request in the workspace.
     const addAndSend = async () => {
       try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
+        await (await composerObj.addRequestBtn).click();
+        await (await workspaceObj.latestSendRequestBtn).click();
       } catch (err) {
         console.error(err);
       }
@@ -78,18 +78,18 @@ module.exports = () => {
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor
-        await app.client.$('span=View Tests').click();
+        await (await app.client.$('span=View Tests')).click();
         // set the value of the code editor to be some hard coded simple assertion tests
         await composerObj.clearTestScriptAreaAndWriteKeys(script);
         // Close the tests view pane.
-        await app.client.$('span=Hide Tests').click();
+        await (await app.client.$('span=Hide Tests')).click();
       } catch (err) {
         console.error(err);
       }
     };
 
     before(() => {
-      app.client.$('button=Clear Workspace').click();
+      app.client.$('button=Clear Workspace').then((e) => e.click());
     });
 
     after(() => {
@@ -114,7 +114,7 @@ module.exports = () => {
       await addAndSend();
 
       // Select the Tests column inside of Responses pane.
-      await app.client.$('a=Tests').click();
+      await (await app.client.$('a=Tests')).click();
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {
@@ -140,7 +140,7 @@ module.exports = () => {
       await addAndSend();
 
       // Select the Tests column inside of Responses pane.
-      await app.client.$('a=Tests').click();
+      await (await app.client.$('a=Tests')).click();
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {
@@ -167,7 +167,7 @@ module.exports = () => {
       await addAndSend();
 
       // Select the Tests column inside of Responses pane.
-      await app.client.$('a=Tests').click();
+      await (await app.client.$('a=Tests')).click();
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {

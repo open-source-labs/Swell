@@ -18,9 +18,10 @@ class GrpcObj {
 
   // selects codemirror text field for loading protofile
   get grpcProto() {
-    const codeMirror = app.client.$('#grpcProtoEntryTextArea');
-    codeMirror.click();
-    return codeMirror.$('textarea');
+    return app.client.$('#grpcProtoEntryTextArea').then((e) => {
+      e.click();
+      return e.$('textarea');
+    });
   }
 
   // selects button for saving proto file
@@ -113,9 +114,10 @@ class GrpcObj {
   }
 
   get testScriptCode() {
-    const codeMirror = app.client.$('#test-script-entry');
-    codeMirror.click();
-    return codeMirror.$('textarea');
+    return app.client.$('#test-script-entry').then((e) => {
+      e.click();
+      return e.$('textarea');
+    });
   }
 
   get clearWorkspace() {

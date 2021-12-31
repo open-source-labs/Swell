@@ -19,17 +19,17 @@ module.exports = () => {
     ) => {
       try {
         // click and check REST
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=REST').click();
+        await (await composerObj.selectedNetwork).click();
+        await (await app.client.$('a=REST')).click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
-          await app.client.$('span=GET').click();
-          await app.client.$(`a=${method}`).click();
+          await (await app.client.$('span=GET')).click();
+          await (await app.client.$(`a=${method}`)).click();
         }
 
         // type in url
-        await composerObj.url.setValue(url);
+        await (await composerObj.url).setValue(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
@@ -39,7 +39,7 @@ module.exports = () => {
           await app.client
             .$(`//*[@id="header-row${index}"]/input[2]`)
             .setValue(value);
-          await app.client.$('button=+ Header').click();
+          await (await app.client.$('button=+ Header')).click();
         });
 
         // set cookies
@@ -50,14 +50,14 @@ module.exports = () => {
           await app.client
             .$(`//*[@id="cookie-row${index}"]/input[2]`)
             .setValue(value);
-          await app.client.$('button=+ Cookie').click();
+          await (await app.client.$('button=+ Cookie')).click();
         });
 
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          await app.client.$('span=text/plain').click();
-          await app.client.$('a=application/json').click();
+          await (await app.client.$('span=text/plain')).click();
+          await (await app.client.$('a=application/json')).click();
           // insert JSON content into body
           await composerObj.clearRestBodyAndWriteKeys(body);
         }
@@ -68,8 +68,8 @@ module.exports = () => {
 
     const addAndSend = async () => {
       try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
+        await (await composerObj.addRequestBtn).click();
+        await (await workspaceObj.latestSendRequestBtn).click();
       } catch (err) {
         console.error(err);
       }
@@ -87,7 +87,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events.slice(1, 100)).to.include('userId');
@@ -131,7 +131,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('[]');
@@ -155,7 +155,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('JK Rowling');
@@ -178,7 +178,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Ron Weasley');
@@ -201,7 +201,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Hermoine Granger');
@@ -224,7 +224,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Hermoine Granger');
@@ -244,7 +244,7 @@ module.exports = () => {
             setTimeout(async () => {
               const statusCode = await app.client.$('.status-tag').getText();
               const events = await app.client
-                .$('#events-display .CodeMirror-code')
+                .$('#events-display')
                 .getText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('[]');

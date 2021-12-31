@@ -7,14 +7,13 @@ import 'codemirror/theme/neo.css';
 
 function EventsContainer({ currentResponse }) {
   const { request, response } = currentResponse;
-    // console.log('this is the request', request);
-    // console.log('this is the response', response);
+  // console.log('this is the request', request);
+  // console.log('this is the response', response);
   if (!response || !response.events || response.events.length < 1) {
-
     return <EmptyState connection={currentResponse.connection} />;
   }
   const { events, headers } = response;
-  console.log("this is the events", events);
+  console.log('this is the events', events);
   // console.log("this is the headers", headers);
   let responseBody = '';
 
@@ -41,7 +40,7 @@ function EventsContainer({ currentResponse }) {
     responseBody = JSON.stringify(events[0], null, 4);
   }
 
-  const isDark = useSelector(state => state.ui.isDark);
+  const isDark = useSelector((state) => state.ui.isDark);
 
   return (
     <div
@@ -50,11 +49,17 @@ function EventsContainer({ currentResponse }) {
     >
       {request.method === 'GET' && (
         <EventPreview
-          className={`${isDark ? 'is-dark-200' : ''} overflow-event-child-container`}
+          className={`${
+            isDark ? 'is-dark-200' : ''
+          } overflow-event-child-container`}
           contents={responseBody}
         />
       )}
-      <div className={`${isDark ? 'is-dark-200' : ''} overflow-event-parent-container`}>
+      <div
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } overflow-event-parent-container`}
+      >
         {/* {responseBody} */}
         <CodeMirror
           className="overflow-event-child-container"

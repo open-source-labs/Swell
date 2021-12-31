@@ -56,12 +56,17 @@ function NetworkDropdown({ onProtocolSelect, network }) {
     >
       <div className="dropdown-trigger full-width is-fullwidth">
         <div
-          className={`button ${isDark ? 'is-dark-400' : ''} protocol-select-button is-fullwidth columns is-gapless`}
+          className={`button ${
+            isDark ? 'is-dark-400' : ''
+          } protocol-select-button is-fullwidth columns is-gapless`}
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
         >
-          <span className={`${isDark ? 'dark-protocol-text' : ''} column`} id="selected-network">
+          <span
+            className={`${isDark ? 'dark-protocol-text' : ''} column`}
+            id="selected-network"
+          >
             {networkTitle}
           </span>
           <span className="column ">
@@ -76,7 +81,11 @@ function NetworkDropdown({ onProtocolSelect, network }) {
       </div>
 
       <div className="dropdown-menu full-width is-fullwidth">
-        <div className={`dropdown-content ${isDark ? 'is-dark-300' : ''} full-width is-fullwidth has-text-centered`}>
+        <div
+          className={`dropdown-content ${
+            isDark ? 'is-dark-300' : ''
+          } full-width is-fullwidth has-text-centered`}
+        >
           <a
             onClick={() => {
               setDropdownIsActive(false);
@@ -138,7 +147,7 @@ function NetworkDropdown({ onProtocolSelect, network }) {
             }}
             className="dropdown-item"
           >
-            WebHook
+            Webhook
           </a>
         </div>
       </div>

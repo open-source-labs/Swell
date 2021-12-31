@@ -1,21 +1,33 @@
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import graphQLController from './graphQLController';
-import { NewRequestResponseObject, WindowAPIObject, WindowExt } from '../../types';
+import {
+  NewRequestResponseObject,
+  WindowAPIObject,
+  WindowExt,
+} from '../../types';
 
-
-const { api }: { api: WindowAPIObject} = window as unknown as WindowExt; 
+const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
-  
+
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
-    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
-    
-    if (reqResArray.every((obj: NewRequestResponseObject): boolean => obj.checked === true)) {
-      reqResArray.forEach((obj: NewRequestResponseObject): boolean => obj.checked = false);
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } =
+      store.default.getState().business;
+
+    if (
+      reqResArray.every(
+        (obj: NewRequestResponseObject): boolean => obj.checked === true
+      )
+    ) {
+      reqResArray.forEach(
+        (obj: NewRequestResponseObject): boolean => (obj.checked = false)
+      );
     } else {
-      reqResArray.forEach((obj: NewRequestResponseObject): boolean => obj.checked = true);
+      reqResArray.forEach(
+        (obj: NewRequestResponseObject): boolean => (obj.checked = true)
+      );
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },
@@ -23,7 +35,7 @@ const connectionController = {
   openReqRes(id: number): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
-    
+
     api.receive('reqResUpdate', (reqResObj: NewRequestResponseObject) => {
       if (
         (reqResObj.connection === 'closed' ||
@@ -44,11 +56,14 @@ const connectionController = {
       }
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr: NewRequestResponseObject[] = store.default.getState().business.reqResArray;
-    const reqResObj: NewRequestResponseObject = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
+    const reqResArr: NewRequestResponseObject[] =
+      store.default.getState().business.reqResArray;
+    const reqResObj: NewRequestResponseObject = reqResArr.find(
+      (el: NewRequestResponseObject) => el.id === id
+    );
+    console.log('reqResArray: ', reqResArr);
 
-    // console.log('this is the reqResArr!!!!!!!', reqResArr);
-    console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
+    console.log('Open connection array: ', this.openConnectionArray);
 
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
@@ -58,12 +73,11 @@ const connectionController = {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
 
-      // pretty sure this is not needed anymore... -Prince
       // update the connectionArray when connection is open from ws
-      // api.receive('update-connectionArray', (connectionArray: any) => {
-      //   // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
-      //   this.openConnectionArray.push(...connectionArray);
-      // });
+      api.receive('update-connectionArray', (connectionArray: any) => {
+        // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
+        this.openConnectionArray.push(...connectionArray);
+      });
     }
     // gRPC connection
     else if (reqResObj.gRPC) {
@@ -94,8 +108,11 @@ const connectionController = {
       store.default.dispatch(actions.scheduledReqResUpdate(reqResObj));
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr: NewRequestResponseObject[] = store.default.getState().business.reqResArray;
-    const reqResObj: NewRequestResponseObject = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
+    const reqResArr: NewRequestResponseObject[] =
+      store.default.getState().business.reqResArray;
+    const reqResObj: NewRequestResponseObject = reqResArr.find(
+      (el: NewRequestResponseObject) => el.id === id
+    );
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
@@ -104,12 +121,11 @@ const connectionController = {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
 
-      // pretty sure that this is not needed... -Prince
       // update the connectionArray when connection is open from ws
-      // api.receive('update-connectionArray', (connectionArray: any) => {
-      //   // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
-      //   this.openConnectionArray.push(...connectionArray);
-      // });
+      api.receive('update-connectionArray', (connectionArray: any) => {
+        // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
+        this.openConnectionArray.push(...connectionArray);
+      });
     }
     // gRPC connection
     else if (reqResObj.gRPC) {
@@ -119,7 +135,6 @@ const connectionController = {
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },
-
 
   runCollectionTest(reqResArray: NewRequestResponseObject[]): void {
     api.removeAllListeners('reqResUpdate');
@@ -155,7 +170,8 @@ const connectionController = {
         // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
         api.send('open-ws', reqResObj);
         // update the connectionArray when connection is open from ws
-        api.receive('update-connectionArray', (connectionArray: number[]) => { // is this the correct type???
+        api.receive('update-connectionArray', (connectionArray: number[]) => {
+          // is this the correct type???
           connectionController.openConnectionArray.push(...connectionArray);
         });
       }
@@ -174,23 +190,27 @@ const connectionController = {
   openAllSelectedReqRes(): void {
     connectionController.closeAllReqRes();
 
-    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } =
+      store.default.getState().business;
 
-    reqResArray.forEach((reqRes: NewRequestResponseObject) => connectionController.openReqRes(reqRes.id));
+    reqResArray.forEach((reqRes: NewRequestResponseObject) =>
+      connectionController.openReqRes(reqRes.id)
+    );
   },
 
-  // We are pretty sure that this is not used anymore... -Prince
-  // getConnectionObject(id: number): any {
-  //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
-  //   console.log('getConnectionObject has been invoked');
-  //   return this.openConnectionArray.find((obj) => (obj.id = id));
-  // },
+  getConnectionObject(id: number): any {
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
+    console.log('getConnectionObject has been invoked');
+    return this.openConnectionArray.find((obj) => (obj.id = id));
+  },
 
   setReqResConnectionToClosed(id: number): void {
     const reqResArr = store.default.getState().business.reqResArray;
 
     const foundReqRes: NewRequestResponseObject = JSON.parse(
-      JSON.stringify(reqResArr.find((reqRes: NewRequestResponseObject) => reqRes.id === id))
+      JSON.stringify(
+        reqResArr.find((reqRes: NewRequestResponseObject) => reqRes.id === id)
+      )
     );
 
     foundReqRes.connection = 'closed';
@@ -211,27 +231,28 @@ const connectionController = {
     const { id } = reqResObj;
     this.setReqResConnectionToClosed(id);
 
-    // We are pretty sure that this code block is never executed... -Prince
-    // // WS is the only protocol using openConnectionArray
-    // const foundAbortController = this.openConnectionArray.find(
-    //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
-    //   (obj) => obj.id === id
-    // );
-    // // @ts-expect-error ts-migrate(2339) FIXME: Property 'protocol' does not exist on type 'never'... Remove this comment to see the full error message
-    // if (foundAbortController && foundAbortController.protocol === 'WS') {
-    //   console.log('you dummy, you thought you didnt need this');
-    //   api.send('close-ws');
-    // }
-    // this.openConnectionArray = this.openConnectionArray.filter(
-    //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
-    //   (obj) => obj.id !== id
-    // );
+    // WS is the only protocol using openConnectionArray
+    const foundAbortController = this.openConnectionArray.find(
+      // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
+      (obj) => obj.id === id
+    );
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'protocol' does not exist on type 'never'... Remove this comment to see the full error message
+    if (foundAbortController && foundAbortController.protocol === 'WS') {
+      api.send('close-ws');
+    }
+    this.openConnectionArray = this.openConnectionArray.filter(
+      // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
+      (obj) => obj.id !== id
+    );
   },
 
   /* Closes all open endpoint */
   closeAllReqRes(): void {
-    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
-    reqResArray.forEach((reqRes: NewRequestResponseObject) => connectionController.closeReqRes(reqRes));
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } =
+      store.default.getState().business;
+    reqResArray.forEach((reqRes: NewRequestResponseObject) =>
+      connectionController.closeReqRes(reqRes)
+    );
   },
 
   clearAllReqRes(): void {
@@ -241,12 +262,21 @@ const connectionController = {
 
   // toggles minimized in ReqRes array in state
   toggleMinimizeAll(): void {
-    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } = store.default.getState().business;
+    const { reqResArray }: { reqResArray: NewRequestResponseObject[] } =
+      store.default.getState().business;
 
-    if (reqResArray.every((obj: NewRequestResponseObject) => obj.minimized === true)) {
-      reqResArray.forEach((obj: NewRequestResponseObject) => obj.minimized = false);
+    if (
+      reqResArray.every(
+        (obj: NewRequestResponseObject) => obj.minimized === true
+      )
+    ) {
+      reqResArray.forEach(
+        (obj: NewRequestResponseObject) => (obj.minimized = false)
+      );
     } else {
-      reqResArray.forEach((obj: NewRequestResponseObject) => obj.minimized = true);
+      reqResArray.forEach(
+        (obj: NewRequestResponseObject) => (obj.minimized = true)
+      );
     }
     store.default.dispatch(actions.setChecksAndMinis(reqResArray));
   },

@@ -6,8 +6,8 @@ const server = http.createServer((request, response) => {
   response.writeHead(404);
   response.end();
 });
-server.listen(5000, () => {
-  console.log(`${new Date()} Server is listening on port 5000`);
+server.listen(5050, () => {
+  console.log(`${new Date()} Server is listening on port 5050`);
 });
 
 wsServer = new WebSocketServer({

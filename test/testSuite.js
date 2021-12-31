@@ -38,7 +38,7 @@ describe('Electron Tests', function () {
     grpcTest();
   });
 
-  // describe("Swell Testing functionality", function () {
+  // describe('Swell Testing functionality', function () {
   //   httpTestingTest();
   //   grpcTestingTest();
   //   graphqlTestingTest();

@@ -28,21 +28,24 @@ class ComposerObj {
   }
 
   get restBodyCode() {
-    const codeMirror = app.client.$('#body-entry-select');
-    codeMirror.click();
-    return codeMirror.$('textarea');
+    return app.client.$('#body-entry-select').then((e) => {
+      e.click();
+      return e.$('textarea');
+    });
   }
 
   get gqlBodyCode() {
-    const codeMirror = app.client.$('#gql-body-entry');
-    codeMirror.click();
-    return codeMirror.$('textarea');
+    return app.client.$('#gql-body-entry').then((e) => {
+      e.click();
+      return e.$('textarea');
+    });
   }
 
   get gqlVariableCode() {
-    const codeMirror = app.client.$('#gql-var-entry');
-    codeMirror.click();
-    return codeMirror.$('textarea');
+    return app.client.$('#gql-var-entry').then((e) => {
+      e.click();
+      return e.$('textarea');
+    });
   }
 
   get addRequestBtn() {
@@ -58,9 +61,10 @@ class ComposerObj {
   }
 
   get testScriptCode() {
-    const codeMirror = app.client.$('#test-script-entry');
-    codeMirror.click();
-    return codeMirror.$('textarea');
+    return app.client.$('#test-script-entry').then((e) => {
+      e.click();
+      return e.$('textarea');
+    });
   }
 
   async clearRestBodyAndWriteKeys(keys, clear = true) {
@@ -70,8 +74,8 @@ class ComposerObj {
     }
 
     try {
-      if (clear) await this.restBodyCode.keys(backspace);
-      await this.restBodyCode.keys(keys);
+      if (clear) await (await this.restBodyCode).keys(backspace);
+      await (await this.restBodyCode).keys(keys);
     } catch (err) {
       console.error(err);
     }
@@ -84,8 +88,8 @@ class ComposerObj {
     }
 
     try {
-      if (clear) await this.gqlBodyCode.keys(backspace);
-      await this.gqlBodyCode.keys(keys);
+      if (clear) await (await this.gqlBodyCode).keys(backspace);
+      await (await this.gqlBodyCode).keys(keys);
     } catch (err) {
       console.error(err);
     }
@@ -93,7 +97,7 @@ class ComposerObj {
 
   async clickGQLVariablesAndWriteKeys(keys) {
     try {
-      await this.gqlVariableCode.keys(keys);
+      await (await this.gqlVariableCode).keys(keys);
     } catch (err) {
       console.error(err);
     }

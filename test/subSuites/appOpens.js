@@ -28,9 +28,8 @@ module.exports = () => {
     });
     describe('DOM Tests', () => {
       it("html file title is 'Swell'", async () => {
-        const titleWithClient = await app.client
-          .waitUntilWindowLoaded()
-          .getTitle(); // the dom set inside dist/index.html which is set inside webpack htmlPlugin
+        await app.client.waitUntilWindowLoaded();
+        const titleWithClient = await app.client.getTitle();
         return assert.strictEqual(titleWithClient, 'Swell');
       });
 
