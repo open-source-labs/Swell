@@ -39,7 +39,8 @@ export default function ContentReqRowComposer({
         className="input"
         type="text"
         value={data.value}
-        className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center is-flex-grow-4 p-1 value`}
+        className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 value`} 
+        // Removed is-flex-grow-4
       />
       <div className="is-flex is-justify-content-center is-align-items-center ml-1">
         <div className="delete m-auto" onClick={() => deleteItem(index)} />

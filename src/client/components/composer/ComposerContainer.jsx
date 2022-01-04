@@ -260,7 +260,9 @@ const ComposerContainer = (props) => {
 
 {/* is-not-7-5rem-tall pt-3 pl-3 pr-3 this was below */}
       {/* COMPOSER CONTENT ROUTING */}
-      <div className={`${isDark ? 'is-dark-400' : ''} `}>
+      <div className={`${isDark ? 'is-dark-400' : ''} add-vertical-scroll`}
+            style={{maxHeight: '40vh'}}>
+        
         {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
         )}
