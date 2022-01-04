@@ -14,7 +14,7 @@ function WorkspaceContainer(props) {
       <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <button
           className={`button is-small is-danger ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
-          style={{ minWidth: '14vw' }}
+          style={{ minWidth: '4vw' }}
           type="button"
           onClick={() => {
             ReqResCtrl.clearAllReqRes();
@@ -26,7 +26,7 @@ function WorkspaceContainer(props) {
 
         <button
           className={`button is-small is-primary ${isDark ? '' : 'is-outlined'} button-padding-verticals mr-3`}
-          style={{ minWidth: '14vw' }}
+          style={{ minWidth: '4vw' }}
           type="button"
           onClick={() => {
             setShowModal(true);

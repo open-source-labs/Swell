@@ -28,7 +28,8 @@ const SidebarContainer = (props) => {
 
   return (
     <div
-      className={`column is-one-third is-flex is-flex-direction-column is-tall ${isDark ? 'is-dark-400' : ''}`}
+      className={`is-child ${isDark ? 'is-dark-400 add-vertical-scroll' : ''}`} // gigi playing with css
+      // className={`column is-one-third is-flex is-flex-direction-column is-tall ${isDark ? 'is-dark-400' : ''}`}
       id="composer"
     >
 
