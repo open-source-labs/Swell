@@ -28,7 +28,8 @@ const ContentsContainer = () => {
 
   return (
     <div
-      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-one-third is-flex is-flex-direction-column is-tall`}
+    // className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-tall is-one-third is-flex is-flex-direction-column`}  // gigi playing with css
+      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-3 is-tall`}
       id="workspace"
     >
       {/* HEADER */}
