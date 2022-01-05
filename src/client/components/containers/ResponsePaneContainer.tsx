@@ -37,8 +37,9 @@ const ResponsePaneContainer = () => {
 
   return (
     <div
-      className={`${isDark ? 'is-dark-400' : ''} is-child`} // gigi playing with css
+      className={`${isDark ? 'is-dark-400' : 'is-divider-neutral-300'} box is-child`} // gigi playing with css
       // className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
+      style={{ height: '50vh', margin: "10px"}}
       id="responses"
     >
 

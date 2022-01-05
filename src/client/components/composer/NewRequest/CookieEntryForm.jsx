@@ -87,6 +87,7 @@ class CookieEntryForm extends Component {
   }
 
   render() {
+    let addCookieName = '+';
     const cookiesArr = this.props.newRequestCookies.cookiesArr.map(
       (cookie, index) => (
         <ContentReqRowComposer
@@ -101,14 +102,16 @@ class CookieEntryForm extends Component {
     );
 
     return (
-      <div className="mt-2">
-        <div className="is-flex is-justify-content-space-between is-align-content-center">
+      <div className="mt-2"
+      style={{margin: '10px'}}>
+        <div className="is-flex is-align-content-center">
           <div className="composer-section-title">Cookies</div>
           <button
-            className={`${this.props.isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
+            className={`${this.props.isDark ? 'is-dark-200' : ''} button add-header-or-cookie-button`}
             onClick={() => this.addCookie(this.createDeepCookieCopy())}
+            style={{height: '5px', width: '5px'}}
           >
-            + Cookie
+            {addCookieName}
           </button>
         </div>
         <div>{cookiesArr}</div>
@@ -118,3 +121,5 @@ class CookieEntryForm extends Component {
 }
 
 export default CookieEntryForm;
+
+// is-justify-content-space-between was removed from + cookie button
