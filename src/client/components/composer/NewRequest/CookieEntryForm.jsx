@@ -87,7 +87,7 @@ class CookieEntryForm extends Component {
   }
 
   render() {
-    let addCookieName = '+';
+    const addCookieName = '+';
     const cookiesArr = this.props.newRequestCookies.cookiesArr.map(
       (cookie, index) => (
         <ContentReqRowComposer
@@ -107,9 +107,9 @@ class CookieEntryForm extends Component {
         <div className="is-flex is-align-content-center">
           <div className="composer-section-title">Cookies</div>
           <button
-            className={`${this.props.isDark ? 'is-dark-200' : ''} button add-header-or-cookie-button`}
+            className={`${this.props.isDark ? 'is-dark-200' : ''} button add-header-gRPC-cookie-button`}
             onClick={() => this.addCookie(this.createDeepCookieCopy())}
-            style={{height: '5px', width: '5px'}}
+            style={{height: '2px', width: '2px'}}
           >
             {addCookieName}
           </button>

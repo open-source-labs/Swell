@@ -34,7 +34,7 @@ const ContentsContainer = () => {
       style={{margin: "10px"}}
     >
       {/* HEADER */}
-      <div className="hero is-primary has-text-centered header-bar">
+      <div className="hero is-primary has-text-centered">
         <h3>Workspace</h3>
       </div>
 

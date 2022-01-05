@@ -48,7 +48,7 @@ const ResponsePaneContainer = () => {
 
 
       {/* HEADER */}
-      <div className="hero is-primary header-bar is-flex is-flex-direction-row is-justify-content-center">
+      <div className="hero is-primary is-flex is-flex-direction-row is-justify-content-center">
         <ResponseTime currentResponse={currentResponse} />
         {currentResponse.responseSize && (
           <div className="response-size-placement">

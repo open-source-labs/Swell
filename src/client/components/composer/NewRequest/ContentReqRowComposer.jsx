@@ -30,6 +30,7 @@ export default function ContentReqRowComposer({
         placeholder="Key"
         className="input"
         type="text"
+        style={{marginLeft: '3px'}}
         value={data.key}
         className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 key`}
       />
@@ -38,6 +39,7 @@ export default function ContentReqRowComposer({
         placeholder="Value"
         className="input"
         type="text"
+        style={{marginLeft: '3px'}}
         value={data.value}
         className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 value`} 
         // Removed is-flex-grow-4

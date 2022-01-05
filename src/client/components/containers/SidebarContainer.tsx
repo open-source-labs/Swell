@@ -35,12 +35,12 @@ const SidebarContainer = (props) => {
     >
 
       {/* HEADER */}
-      <div className="hero is-flex-direction-row is-primary has-text-centered header-bar">
+      <div className="hero is-flex-direction-row is-primary has-text-centered">
         {/* dark mode toggle goes here : https://www.w3schools.com/howto/howto_css_switch.asp */}
         <input
             id="darkModeSwitch"
             type="checkbox" 
-            className="switch m-2 is-outlined is-warning"
+          className="switch mr-2 is-outlined is-warning"
             onChange={(e) => {
               handleDarkMode(e);
             }}

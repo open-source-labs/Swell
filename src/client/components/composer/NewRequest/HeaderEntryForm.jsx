@@ -186,7 +186,7 @@ class HeaderEntryForm extends Component {
     // let headerClass = 'composer_submit http'
     if (this.props.newRequestFields.gRPC) {
       headerName = 'Metadata';
-      addHeaderName = '+ Metadata';
+      addHeaderName = '+';
     }
 
     const headersArr = this.props.newRequestHeaders.headersArr.map(
@@ -208,7 +208,7 @@ class HeaderEntryForm extends Component {
         <div className="is-flex is-align-content-center">
           <div className="composer-section-title">{headerName}</div>
           <button
-            className={`${this.props.isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
+            className={`${this.props.isDark ? 'is-dark-200' : ''} button is-small add-header-gRPC-cookie-button`}
             style={{height: '5px', width: '5px'}}
             onClick={() => this.addHeader()}
           >

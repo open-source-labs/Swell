@@ -12,11 +12,22 @@
   border-radius: 2px;
   max-width: 26px;
   max-height: 26px;
+  padding-left: 2px;
 }
 
 .switch:focus {
   border: none;
   outline: none;
+}
+
+.add-header-gRPC-cookie-button {
+   color: $primary !important;
+  border-color: $primary !important;
+  width: 3px !important;
+  height: 3px !important;
+  margin-left: 2px !important;
+  margin-right: 2px !important;
+
 }
 
 .add-header-or-cookie-button {

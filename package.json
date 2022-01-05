@@ -156,7 +156,7 @@
     "ngrok": "^4.2.2",
     "node-fetch": "^2.6.0",
     "node-pre-gyp": "^0.6.39",
-    "node-sass": "^4.14.1",
+    "node-sass": "npm:sass@^1.45.2",
     "nodemon": "^1.19.4",
     "npm": "^8.3.0",
     "npm-http-server": "^4.3.0",
