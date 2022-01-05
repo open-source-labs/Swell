@@ -151,7 +151,8 @@ const WebhookContainer = ({
   };
 
   return (
-    <div className='mr-2 is-flex is-justify-content-center'>
+    <div className='mr-2 is-flex is-justify-content-center'
+    style={{padding: '10px'}}>
     <button
            className={`button ${
              serverStatus ? 'is-wh' : 'is-wh-on'

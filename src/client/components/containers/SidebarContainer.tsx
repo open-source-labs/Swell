@@ -28,9 +28,9 @@ const SidebarContainer = (props) => {
 
   return (
     <div
-      className={`is-child ${isDark ? 'is-dark-400 add-vertical-scroll' : ''}`} // gigi playing with css
+      className={`box is-child ${isDark ? 'is-dark-400 add-vertical-scroll' : 'is-divider-neutral-300'}`} // gigi playing with css
       // className={`column is-one-third is-flex is-flex-direction-column is-tall ${isDark ? 'is-dark-400' : ''}`}
-      style={{ height: '50vh' }}
+      style={{ height: '50vh', margin: "10px"}}
       id="composer"
     >
 
@@ -40,14 +40,14 @@ const SidebarContainer = (props) => {
         <input
             id="darkModeSwitch"
             type="checkbox" 
-            className="switch mb-2 is-outlined is-warning"
+            className="switch m-2 is-outlined is-warning"
             onChange={(e) => {
               handleDarkMode(e);
             }}
             checked={isDark}
         />
           <label htmlFor="darkModeSwitch"/>
-        <h3 className='has-text-justified align-self-center'>Composer</h3>
+        <h3 className='has-text-justified align-self-center has-text-weight-bold'>Composer</h3>
         <a>v1.0 </a>
       </div>
       <div className="tabs mb-0  header-bar">
