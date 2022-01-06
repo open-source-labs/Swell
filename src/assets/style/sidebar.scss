@@ -67,6 +67,17 @@
 
 .input {
   outline: none !important;
+
+}
+
+.key {
+  border: 1px solid $neutral-200 !important;
+  border-radius: 4px;
+}
+
+.value {
+  border: 1px solid $neutral-200 !important;
+  border-radius: 4px;
 }
 
 // HISTORY TAB
