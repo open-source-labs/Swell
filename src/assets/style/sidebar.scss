@@ -12,7 +12,7 @@
   border-radius: 2px;
   max-width: 26px;
   max-height: 26px;
-  padding-left: 2px;
+  margin-left: 2px !important;
 }
 
 .switch:focus {
@@ -27,7 +27,8 @@
   height: 3px !important;
   margin-left: 2px !important;
   margin-right: 2px !important;
-
+  font-size: 16px !important;
+  border-radius: 2px !important;
 }
 
 .add-header-or-cookie-button {
