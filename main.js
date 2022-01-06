@@ -1,8 +1,28 @@
+// https://github.com/electron/electron/issues/10257
+// Code fix to support NODE_EXTRA_CA_CERTS env. There is currently no other fixes to the NODE_TLS_REJECT_UNAUTHORIZED at the moment.
+
+(function(){
+	if(!process.env.NODE_EXTRA_CA_CERTS) return;
+	try{
+		const extraca = require("fs").readFileSync(process.env.NODE_EXTRA_CA_CERTS);
+	}catch(e){
+		return;
+	} 
+	
+	const NativeSecureContext = process.binding('crypto').SecureContext;
+	const oldaddRootCerts = NativeSecureContext.prototype.addRootCerts;
+	NativeSecureContext.prototype.addRootCerts = function(){
+		const ret = oldaddRootCerts.apply(this, ...args);
+		this.addCACert(extraca);
+		return ret;
+	};
+})();
+
 // Allow self-signing HTTPS over TLS
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 // Allow self-signing HTTPS over TLS
 // Disabling Node's rejection of invalid/unauthorized certificates
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // from stack overflow: https://stackoverflow.com/a/35633993/11606641
 // Your fix is insecure and shouldn't really be done at all, but is often done in development (it should never be done in production).
 // The proper solution should be to put the self-signed certificate in your trusted root store OR to get a proper certificate signed by an existing Certificate Authority (which is already trusted by your server).
@@ -115,9 +135,12 @@ function createWindow() {
   if (isDev) {
     // if we are in dev mode load up 'http://localhost:8080/index.html'
     indexPath = url.format({
-      protocol: 'http:',
-      host: 'localhost:8080',
-      pathname: 'index.html',
+      // protocol: 'http:',
+      // host: 'localhost:8080',
+      // pathname: 'index.html',
+      // slashes: true,
+      protocol: 'file:',
+      pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
     });
 

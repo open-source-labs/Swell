@@ -118,6 +118,7 @@ const WebhookContainer = ({
       // request server.js to generate and return a webhook URL
       fetch('http://localhost:3000/webhookServer', {
         method: 'POST',
+        // mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
