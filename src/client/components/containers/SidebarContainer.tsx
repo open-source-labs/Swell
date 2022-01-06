@@ -41,6 +41,7 @@ const SidebarContainer = (props) => {
             id="darkModeSwitch"
             type="checkbox" 
           className="switch mr-2 is-outlined is-warning"
+          style={{marginLeft: '2px !important'}}
             onChange={(e) => {
               handleDarkMode(e);
             }}
