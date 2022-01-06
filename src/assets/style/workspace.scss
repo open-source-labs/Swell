@@ -4,8 +4,10 @@
 }
 
 .cards-dropdown {
-  border: 1px solid $neutral-300;
+  border: 1px solid $neutral-200;
   height: 24px;
+  border-radius: 4px;
+  margin-bottom: 5px;
 }
 
 .show-hide-tests {

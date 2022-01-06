@@ -28,11 +28,13 @@ const ContentsContainer = () => {
 
   return (
     <div
-      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-one-third is-flex is-flex-direction-column is-tall`}
+    // className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-tall is-one-third is-flex is-flex-direction-column`}  // gigi playing with css
+      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} box is-3 is-tall`}
       id="workspace"
+      style={{margin: "10px"}}
     >
       {/* HEADER */}
-      <div className="hero is-primary has-text-centered header-bar">
+      <div className="hero is-primary has-text-centered">
         <h3>Workspace</h3>
       </div>
 

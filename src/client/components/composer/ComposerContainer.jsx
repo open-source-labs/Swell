@@ -250,7 +250,7 @@ const ComposerContainer = (props) => {
   const isDark = useSelector((store) => store.ui.isDark);
   
   return (
-    <div className="is-flex is-flex-direction-column is-tall">
+    <div className="is-flex is-flex-direction-column">
       {/* DROPDOWN PROTOCOL SELECTOR */}
       <NetworkDropdown
         onProtocolSelect={onProtocolSelect}
@@ -258,8 +258,11 @@ const ComposerContainer = (props) => {
         className="header-bar"
       />
 
+{/* is-not-7-5rem-tall pt-3 pl-3 pr-3 this was below */}
       {/* COMPOSER CONTENT ROUTING */}
-      <div className={`${isDark ? 'is-dark-400' : ''} is-not-7-5rem-tall pt-3 pl-3 pr-3`}>
+      <div className={`${isDark ? 'is-dark-400' : ''} add-vertical-scroll`}
+        style={{maxHeight: '30vh'}}>
+        
         {props.newRequestFields.network === 'rest' && (
           <RestContainer {...props} />
         )}

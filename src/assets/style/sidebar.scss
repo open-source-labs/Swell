@@ -12,6 +12,7 @@
   border-radius: 2px;
   max-width: 26px;
   max-height: 26px;
+  padding-left: 2px;
 }
 
 .switch:focus {
@@ -19,10 +20,20 @@
   outline: none;
 }
 
+.add-header-gRPC-cookie-button {
+   color: $primary !important;
+  border-color: $primary !important;
+  width: 3px !important;
+  height: 3px !important;
+  margin-left: 2px !important;
+  margin-right: 2px !important;
+
+}
+
 .add-header-or-cookie-button {
   color: $primary !important;
   border-color: $primary !important;
-  min-width: 80px;
+  min-width: 5px;
 }
 
 .prettify-select {
@@ -91,7 +102,7 @@
   & :global(.react-codemirror2) {
          overflow: auto; /* you can use hidden here as well */
     }
- }
+}
 
 .cm-s-responsebody .CodeMirror-wrap {
   height: 1000px !important;
