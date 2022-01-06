@@ -31,7 +31,7 @@ const ContentsContainer = () => {
     // className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-tall is-one-third is-flex is-flex-direction-column`}  // gigi playing with css
       className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} box is-3 is-tall`}
       id="workspace"
-      style={{margin: "10px"}}
+      style={{margin: "10px", maxHeight: "98vh"}}
     >
       {/* HEADER */}
       <div className="hero is-primary has-text-centered">

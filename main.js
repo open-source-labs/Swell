@@ -135,13 +135,13 @@ function createWindow() {
   if (isDev) {
     // if we are in dev mode load up 'http://localhost:8080/index.html'
     indexPath = url.format({
-      // protocol: 'http:',
-      // host: 'localhost:8080',
-      // pathname: 'index.html',
-      // slashes: true,
-      protocol: 'file:',
-      pathname: path.join(__dirname, 'dist', 'index.html'),
+      protocol: 'http:',
+      host: 'localhost:8080',
+      pathname: 'index.html',
       slashes: true,
+      // protocol: 'file:',
+      // pathname: path.join(__dirname, 'dist', 'index.html'),
+      // slashes: true,
     });
 
     // If we are in developer mode Add React & Redux DevTools to Electron App
