@@ -139,9 +139,6 @@ function createWindow() {
       host: 'localhost:8080',
       pathname: 'index.html',
       slashes: true,
-      // protocol: 'file:',
-      // pathname: path.join(__dirname, 'dist', 'index.html'),
-      // slashes: true,
     });
 
     // If we are in developer mode Add React & Redux DevTools to Electron App
