@@ -77,7 +77,6 @@ export const scheduledReqResDelete = (): {type: string} => ({
   type: types.SCHEDULED_REQRES_DELETE,
 });
 
-
 export const updateGraph = (id: number): {type: string, payload: number} => ({
   type: types.UPDATE_GRAPH,
   payload: id
@@ -106,26 +105,27 @@ export const setNewRequestFields = (requestObj: Record<string, unknown>): {type:
   payload: requestObj
 });
 
-export const setNewRequestHeaders = (headers: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
+// GIGI START HERE
+// gigi - because of line 164 in History.jsx
+export const setNewRequestHeaders = (headers: string[]): {type: string, payload: string[]} => ({
   type: types.SET_NEW_REQUEST_HEADERS,
   payload: headers
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setNewRequestStreams = (streams: $TSFixMe) => ({
+// gigi - SingleReqResContainer line 172 & History.jsx 189
+export const setNewRequestStreams = (streams: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_REQUEST_STREAMS,
   payload: streams
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setNewRequestBody = (body: $TSFixMe) => ({
+// gigi - history line 171 & singlereqrescontainer line 149
+export const setNewRequestBody = (body: string): {type: string, payload: string} => ({
   type: types.SET_NEW_REQUEST_BODY,
   payload: body
 });
 
-
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setNewTestContent = (content: $TSFixMe) => ({
+// gigi - because of line 84 in types.ts //testContent in bussiness.ts
+export const setNewTestContent = (content: string): {type: string, payload: string} => ({
   type: types.SET_NEW_TEST_CONTENT,
   payload: content
 });
@@ -159,7 +159,7 @@ export const setIntrospectionData = (dataObj: Record<string, unknown>): {type: s
   payload: dataObj
 });
 
-//Kurtis Start
+// GIGI STOP HERE
 // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'dataObj' implicitly has an 'any' type.
 export const saveCurrentResponseData = (dataObj: Record<string, unknown>, callingFunc) => ({
   type: types.SAVE_CURRENT_RESPONSE_DATA,
