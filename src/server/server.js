@@ -5,6 +5,8 @@ const ngrok = require('ngrok');
 const port = 3000;
 const app = express();
 
+const cors = require('cors');
+
 //websocket stuff
 const server = require('http').createServer(app); 
 const io = require('socket.io')(server, {
@@ -30,6 +32,8 @@ app.get('/', (req, res) => res.send('Hello World!'));
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(cors({origin: 'http://localhost:8080'}))
 
 app.post('/webhookServer', (req, res) => {
   console.log('Server Is On!');
