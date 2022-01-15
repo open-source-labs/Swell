@@ -1,6 +1,7 @@
 import { string } from 'prop-types';
 import { NewRequestResponseObject } from '../../types';
 import * as types from './actionTypes';
+import * as interfaces from '../../types';
 
 // BUSINESS LOGIC ACTIONS
 
@@ -159,36 +160,35 @@ export const setIntrospectionData = (dataObj: Record<string, unknown>): {type: s
   payload: dataObj
 });
 
-// GIGI STOP HERE
-// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'dataObj' implicitly has an 'any' type.
-export const saveCurrentResponseData = (dataObj: Record<string, unknown>, callingFunc) => ({
+// There is a second parameter (of varying type: string or object) that is sometimes passed to this function
+export const saveCurrentResponseData = (dataObj: Record<string, unknown>, secondParam: string | Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SAVE_CURRENT_RESPONSE_DATA,
   payload: dataObj,
-  callingFunc
 });
 
-// UI ACTIONS
+// UI ACTIONS ** 
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setComposerDisplay = (composerDisplay: $TSFixMe) => ({
-  type: types.SET_COMPOSER_DISPLAY,
-  payload: composerDisplay
-});
+//check to make sure this didn't mess with any functionality
+// // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
+// export const setComposerDisplay = (composerDisplay: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
+//   type: types.SET_COMPOSER_DISPLAY,
+//   payload: composerDisplay
+// });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setSidebarActiveTab = (tabName: $TSFixMe) => ({
+
+export const setSidebarActiveTab = (tabName: string): {type: string, payload: string} => ({
   type: types.SET_SIDEBAR_ACTIVE_TAB,
   payload: tabName
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setWorkspaceActiveTab = (tabName: $TSFixMe) => ({
+
+export const setWorkspaceActiveTab = (tabName: string): {type: string, payload: string} => ({
   type: types.SET_WORKSPACE_ACTIVE_TAB,
   payload: tabName
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setResponsePaneActiveTab = (tabName: $TSFixMe) => ({
+
+export const setResponsePaneActiveTab = (tabName: string): {type: string, payload: string} => ({
   type: types.SET_RESPONSE_PANE_ACTIVE_TAB,
   payload: tabName
 });
