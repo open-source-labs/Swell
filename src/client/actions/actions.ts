@@ -83,36 +83,30 @@ export const updateGraph = (id: number): {type: string, payload: number} => ({
   payload: id
 });
 
-//Sam Start
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const clearGraph = (reqRes: $TSFixMe) => ({
+export const clearGraph = (reqRes: Record<string, number>): {type: string, payload: Record<string, number>} => ({
   type: types.CLEAR_GRAPH,
   payload: reqRes
 });
 
-export const clearAllGraph = () => ({
+export const clearAllGraph = (): {type: string} => ({
   type: types.CLEAR_ALL_GRAPH,
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setComposerWarningMessage = (message: $TSFixMe) => ({
+export const setComposerWarningMessage = (message: Record<string, string>): {type: string, payload: Record<string, string>} => ({
   type: types.SET_COMPOSER_WARNING_MESSAGE,
   payload: message
 });
 
-export const resetComposerFields = () => ({
+export const resetComposerFields = (): {type: string} => ({
   type: types.RESET_COMPOSER_FIELDS,
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setNewRequestFields = (requestObj: $TSFixMe) => ({
+export const setNewRequestFields = (requestObj: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_REQUEST_FIELDS,
   payload: requestObj
 });
 
-//Gigi Start
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setNewRequestHeaders = (headers: $TSFixMe) => ({
+export const setNewRequestHeaders = (headers: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_REQUEST_HEADERS,
   payload: headers
 });
