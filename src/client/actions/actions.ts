@@ -1,4 +1,5 @@
 import { string } from 'prop-types';
+import { NewRequestResponseObject } from '../../types';
 import * as types from './actionTypes';
 
 // BUSINESS LOGIC ACTIONS
@@ -10,14 +11,14 @@ export const getHistory = (history: string[]): {type: string, payload: string[]}
   payload: history
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
 
 export const deleteFromHistory = (reqRes: string): {type: string, payload: string} => ({
   type: types.DELETE_HISTORY,
   payload: reqRes
 });
 
-export const clearHistory = () => ({
+// DPNOTE empty arg, but needs correct return type syntax
+export const clearHistory = (): {type: string} => ({
   type: types.CLEAR_HISTORY,
 });
 
@@ -27,68 +28,63 @@ export const getCollections = (collections: string[]): {type: string, payload: s
   payload: collections
 });
 
-
 export const deleteFromCollection = (collection: string): {type: string, payload: string} => ({
   type: types.DELETE_COLLECTION,
   payload: collection
 });
 
 // SPNOTE line 9 types.ts reqResArray: NewRequestResponseObject[];
-export const collectionToReqRes = (reqResArray: $TSFixMe) => ({
+export const collectionToReqRes = (reqResArray: NewRequestResponseObject[]): {type: string, payload: NewRequestResponseObject[]}  => ({
   type: types.COLLECTION_TO_REQRES,
   payload: reqResArray
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const collectionAdd = (collection: $TSFixMe) => ({
+export const collectionAdd = (collection: string): {type: string, payload: string} => ({
   type: types.COLLECTION_ADD,
   payload: collection
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const collectionUpdate = (collection: $TSFixMe) => ({
+export const collectionUpdate = (collection: string): {type: string, payload: string} => ({
   type: types.COLLECTION_UPDATE,
   payload: collection
 });
 
-export const reqResClear = () => ({
+export const reqResClear = (): {type: string} => ({
   type: types.REQRES_CLEAR,
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const reqResAdd = (reqRes: $TSFixMe) => ({
+export const reqResAdd = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
   type: types.REQRES_ADD,
   payload: reqRes
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const reqResDelete = (reqRes: $TSFixMe) => ({
+export const reqResDelete = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
   type: types.REQRES_DELETE,
   payload: reqRes
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const reqResUpdate = (reqRes: $TSFixMe) => ({
+export const reqResUpdate = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
   type: types.REQRES_UPDATE,
   payload: reqRes
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const scheduledReqResUpdate = (reqRes: NewRequestResponseObject): {type: string, payload: boolean} => ({
+//reqRes payload type initially assigned to a boolean
+export const scheduledReqResUpdate = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
   type: types.SCHEDULED_REQRES_UPDATE,
   payload: reqRes
 });
 
-export const scheduledReqResDelete = () => ({
+export const scheduledReqResDelete = (): {type: string} => ({
   type: types.SCHEDULED_REQRES_DELETE,
 });
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const updateGraph = (id: $TSFixMe) => ({
+
+export const updateGraph = (id: number): {type: string, payload: number} => ({
   type: types.UPDATE_GRAPH,
   payload: id
 });
 
+//Sam Start
 // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
 export const clearGraph = (reqRes: $TSFixMe) => ({
   type: types.CLEAR_GRAPH,
@@ -115,6 +111,7 @@ export const setNewRequestFields = (requestObj: $TSFixMe) => ({
   payload: requestObj
 });
 
+//Gigi Start
 // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
 export const setNewRequestHeaders = (headers: $TSFixMe) => ({
   type: types.SET_NEW_REQUEST_HEADERS,
@@ -133,12 +130,14 @@ export const setNewRequestBody = (body: $TSFixMe) => ({
   payload: body
 });
 
+
 // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
 export const setNewTestContent = (content: $TSFixMe) => ({
   type: types.SET_NEW_TEST_CONTENT,
   payload: content
 });
-// jNote - jay start
+
+
 export const setNewRequestCookies = (cookies: string[]): {type: string, payload: string[]} => ({
   type: types.SET_NEW_REQUEST_COOKIES,
   payload: cookies // jNote - no breakage, but cookies don't seem to work correctly
@@ -167,6 +166,7 @@ export const setIntrospectionData = (dataObj: Record<string, unknown>): {type: s
   payload: dataObj
 });
 
+//Kurtis Start
 // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'dataObj' implicitly has an 'any' type.
 export const saveCurrentResponseData = (dataObj: Record<string, unknown>, callingFunc) => ({
   type: types.SAVE_CURRENT_RESPONSE_DATA,
@@ -207,7 +207,7 @@ export const toggleDarkMode = (isDark: boolean): {type: string, payload: boolean
 })
 
 // OPENAPI ACTIONS
-
+//Jay Start
 export const setNewRequestsOpenAPI = ({
   openapiMetadata,
   openapiReqArray
