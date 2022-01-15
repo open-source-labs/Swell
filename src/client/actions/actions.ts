@@ -17,7 +17,6 @@ export const deleteFromHistory = (reqRes: string): {type: string, payload: strin
   payload: reqRes
 });
 
-// DPNOTE empty arg, but needs correct return type syntax
 export const clearHistory = (): {type: string} => ({
   type: types.CLEAR_HISTORY,
 });
