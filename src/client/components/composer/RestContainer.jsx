@@ -81,7 +81,7 @@ function RestContainer({
       return;
     }
 
-    let reqRes; 
+    let reqRes;
     const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
@@ -96,7 +96,7 @@ function RestContainer({
         path = path.substring(0, path.length - 1);
       }
       path = path.replace(/https?:\//g, 'http://');
-      reqRes = { 
+      reqRes = {
         id: uuid(),
         createdAt: new Date(),
         protocol: url.match(/https?:\/\//)[0],
@@ -169,21 +169,29 @@ function RestContainer({
           warningMessage={warningMessage}
           setComposerWarningMessage={setComposerWarningMessage}
         />
-        <HeaderEntryForm
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
-          newRequestFields={newRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
-          isDark={isDark}
-        />
-        <CookieEntryForm
-          newRequestCookies={newRequestCookies}
-          newRequestBody={newRequestBody}
-          setNewRequestCookies={setNewRequestCookies}
-          isDark={isDark}
-        />
+        <span className="inputs">
+          <div>
+            <HeaderEntryForm
+              newRequestHeaders={newRequestHeaders}
+              newRequestStreams={newRequestStreams}
+              newRequestBody={newRequestBody}
+              newRequestFields={newRequestFields}
+              setNewRequestHeaders={setNewRequestHeaders}
+              setNewRequestStreams={setNewRequestStreams}
+              isDark={isDark}
+            />
+            <CookieEntryForm
+              newRequestCookies={newRequestCookies}
+              newRequestBody={newRequestBody}
+              setNewRequestCookies={setNewRequestCookies}
+              isDark={isDark}
+            />
+          </div>
+          <div className="is-3rem-footer is-clickable restReqBtns">
+            <NewRequestButton onClick={addNewRequest} />
+            <NewRequestButton onClick={addNewRequest} />
+          </div>
+        </span>
         {/* SSE TOGGLE SWITCH */}
         <div className="field mt-2">
           <span className="composer-section-title mr-3">
@@ -214,9 +222,9 @@ function RestContainer({
           testContent={testContent}
         />
       </div>
-      <div className="is-3rem-footer is-clickable">
+      {/* <div className="is-3rem-footer is-clickable">
         <NewRequestButton onClick={addNewRequest} />
-      </div>
+      </div> */}
     </div>
   );
 }
