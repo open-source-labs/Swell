@@ -77,7 +77,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 ## Additional Features
 
 - _Scripting in Swell_: Swell allows you to write assertion tests to aid in the test-driven development cycle of backend API services.
-  <kbd><img src="./ReadMeGifs/Gifs/Tester.gif"
+  <kbd><img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
 - _Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team.
