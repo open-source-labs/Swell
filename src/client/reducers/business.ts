@@ -1,7 +1,104 @@
 import { format } from 'date-fns';
 import * as types from '../actions/actionTypes';
 
-const initialState = {
+// jNote - build interface for state
+interface StateInterface {
+  currentTab: string,
+  reqResArray: [],
+  scheduledReqResArray: [],
+  history: [],
+  collections: [],
+  warningMessage: Record<string, unknown>,
+  newRequestsOpenAPI: {
+    openapiMetadata: {
+      info: Record<string, unknown>,
+      tags: [],
+      serverUrls: [],
+    },
+    openapiReqArray: [],
+  },
+  newRequestFields: {
+    protocol: string,
+    restUrl: string,
+    wsUrl: string,
+    gqlUrl: string,
+    grpcUrl: string,
+    webrtcUrl: string,
+    url: string,
+    method: string,
+    graphQL: boolean,
+    gRPC: boolean,
+    ws: boolean,
+    openapi: boolean,
+    webrtc: boolean,
+    webhook: boolean,
+    network: string,
+    testContent: string,
+    testResults: [],
+    openapiReqObj: Record<string, unknown>,
+  },
+  newRequestHeaders: {
+    headersArr: [],
+    count: number,
+  },
+  newRequestStreams: {
+    streamsArr: [],
+    count: number,
+    streamContent: [],
+    selectedPackage: null,
+    selectedRequest: null,
+    selectedService: null,
+    selectedServiceObj: null,
+    selectedStreamingType: null,
+    initialQuery: null,
+    queryArr: null,
+    protoPath: null,
+    services: null,
+    protoContent: string,
+  },
+  newRequestCookies: {
+    cookiesArr: [],
+    count: number,
+  },
+  newRequestBody: {
+    bodyContent: string,
+    bodyVariables: string,
+    bodyType: string,
+    rawType: string,
+    JSONFormatted: boolean,
+    bodyIsNew: boolean,
+  },
+  newRequestSSE: {
+    isSSE: boolean,
+  },
+  newRequestOpenAPIObject: {
+    request: {
+      id: number,
+      enabled: boolean,
+      reqTags: [],
+      reqServers: [],
+      summary: string,
+      description: string,
+      operationId: string,
+      method: string,
+      endpoint: string,
+      headers: Record<string, unknown>,
+      parameters: [],
+      body: Record<string, unknown>, // problem, was 'new Map()'
+      urls: [],
+    },
+  },
+  introspectionData: { schemaSDL: null, clientSchema: null },
+  dataPoints: Record<string, unknown>,
+  currentResponse: {
+    request: {
+      network: string,
+    },
+  },
+};
+
+// jNote - need to tie it to state interface
+const initialState: StateInterface = {
   currentTab: 'First Tab',
   reqResArray: [],
   scheduledReqResArray: [],
@@ -83,7 +180,7 @@ const initialState = {
       endpoint: '',
       headers: {},
       parameters: [],
-      body: new Map(),
+      body: new Map(), // jNote - not sure how to match the type with the constructor function here
       urls: [],
     },
   },
@@ -96,8 +193,7 @@ const initialState = {
   },
 };
 
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-const businessReducer = (state = initialState, action: $TSFixMe) => {
+const businessReducer = (state = initialState, action: Record<string, unknown>): Record<string, unknown> => {
   switch (action.type) {
     case types.GET_HISTORY: {
       return {
@@ -107,8 +203,8 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
     }
 
     case types.DELETE_HISTORY: {
-      const deleteId = action.payload.id;
-      const deleteDate = format(action.payload.createdAt, 'MM/DD/YYYY');
+      const deleteId: number = action.payload.id;
+      const deleteDate: Date = format(action.payload.createdAt, 'MM/DD/YYYY');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newHistory.forEach((obj: $TSFixMe, i: $TSFixMe) => {
@@ -140,10 +236,10 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
     }
 
     case types.DELETE_COLLECTION: {
-      const deleteId = action.payload.id;
-      const newCollections = JSON.parse(JSON.stringify(state.collections));
+      const deleteId: Record<string, unknown> = action.payload.id;
+      const newCollections: string[] = JSON.parse(JSON.stringify(state.collections));
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-      newCollections.forEach((obj: $TSFixMe, i: $TSFixMe) => {
+      newCollections.forEach((obj: Record<string, unknown>, i: $TSFixMe) => {
         if (obj.id === deleteId) {
           newCollections.splice(i, 1);
         }
@@ -203,7 +299,7 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
     case types.COLLECTION_UPDATE: {
       // update collection from state
       const collectionName = action.payload.name;
-      const newCollections = JSON.parse(JSON.stringify(state.collections));
+      const newCollections: string[] = JSON.parse(JSON.stringify(state.collections));
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newCollections.forEach((obj: $TSFixMe, i: $TSFixMe) => {
         if (obj.name === collectionName) {
@@ -233,7 +329,7 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
       const addDate = format(action.payload.createdAt, 'MM/DD/YYYY');
-      const newHistory = JSON.parse(JSON.stringify(state.history));
+      const newHistory: string[] = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       // if there is history for added date, add query to beginning of history
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
@@ -250,6 +346,7 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
           history: [action.payload],
         });
       }
+    
       return {
         ...state,
         reqResArray,
@@ -553,7 +650,7 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
         case 'cookie': {
           request.cookies = value;
           // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-          const openapiReqArray = [...state.openapiReqArray].push({ request });
+          const openapiReqArray: [Record<string, unknown>] = [...state.openapiReqArray].push({ request });
           return {
             ...state,
             newRequestsOpenAPI: openapiReqArray,
@@ -568,7 +665,7 @@ const businessReducer = (state = initialState, action: $TSFixMe) => {
     case types.SET_NEW_OPENAPI_REQUEST_BODY: {
       const { id, mediaType, requestBody } = action.payload;
       // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-      const request = [...state.openapiReqArray]
+      const request: Record<string, unknown> = [...state.openapiReqArray]
         .filter(({ request }) => request.id === id)
         .pop();
       const { method } = request;

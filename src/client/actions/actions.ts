@@ -225,10 +225,10 @@ export const setOpenAPIParameter = (requestId, location, name, value) => ({
   payload: { id: requestId, location, name, value }
 });
 // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'requestId' implicitly has an 'any' type... Remove this comment to see the full error message
-export const setOpenAPIRequestBody = (requestId, mediaType, requestBody) => ({
+export const setOpenAPIRequestBody = (requestId, mediaType, requestBody: Record<string, unknown>): {type: string, payload: Record<string, unknown>}  => ({
   type: types.SET_NEW_OPENAPI_REQUEST_BODY,
   payload: { id: requestId, mediaType, requestBody }
 });
-export const queueOpenAPIRequests = () => ({
-  type: types.QUEUE_OPENAPI_REQUESTS,
+export const queueOpenAPIRequests = (): Record<string, unknown> => ({
+  type: types.QUEUE_OPENAPI_REQUESTS
 });
