@@ -193,7 +193,6 @@ export const setResponsePaneActiveTab = (tabName: string): {type: string, payloa
   payload: tabName
 });
 
-// jNote: 1st $TSFixMe
 export const toggleDarkMode = (isDark: boolean): {type: string, payload: boolean} => ({
   type: types.TOGGLE_DARK_MODE,
   payload: isDark
