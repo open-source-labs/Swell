@@ -145,7 +145,6 @@ function RestContainer(props) {
         minimized: false,
         tab: currentTab,
       };
-      console.log(reqRes);
     }
 
     // add request to history
@@ -229,7 +228,6 @@ function RestContainer(props) {
         minimized: false,
         tab: currentTab,
       };
-      console.log(reqRes);
     }
 
     // add request to history

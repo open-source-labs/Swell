@@ -166,7 +166,7 @@ const WebhookContainer = ({
            className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
            type="text"
            value={whUrl}
-           readOnly={true} //solved react error dev console
+           readOnly //solved react error dev console
          />
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
          <button
