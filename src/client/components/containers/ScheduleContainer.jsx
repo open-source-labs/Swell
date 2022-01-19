@@ -12,15 +12,16 @@ function ScheduleContainer() {
   return (
     <div>
       <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mr-2">
+        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
           <span className="mr-2" style={{ fontWeight: 'bold' }}>
-            Frequency (Seconds):
+            <p>Frequency</p>
+            <p>(Seconds):</p>
           </span>
           <input
             className={`${isDark ? 'is-dark-200': ''} ml-1 input input-is-medium is-info`}
-            style={{ maxWidth: '15vh' }}
+            style={{ width: '65px' }}
             type="number" 
-            min="1"
+            // min="1"
             value={scheduleInterval}
             onChange={(e) => {
               setScheduleInterval(e.target.value);

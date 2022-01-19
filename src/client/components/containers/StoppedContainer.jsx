@@ -58,7 +58,8 @@ const StoppedContainer = (props) => {
         <center className="queue">Scheduled Requests</center>
         <div className="prettify-select is-align-self-center mt-3 mb-3">
           <button
-            className={`button is-small is-danger ${isDark ? '' : 'is-outlined' } button-hover-color queue-clear`}
+            className={`button is-small is-danger ${isDark ? '' : 'is-outlined' } button-hover-color`}
+            style={{width: '190px'}}
             onClick={() => {
               scheduledReqResDelete();
               clearAllGraph();
