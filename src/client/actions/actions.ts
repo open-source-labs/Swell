@@ -224,7 +224,6 @@ export const setOpenAPIParameter = (requestId: number | string, location: string
   payload: { id: requestId, location, name, value }
 });
 
-
 export const setOpenAPIRequestBody = (requestId: number | string, mediaType: string, requestBody: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_OPENAPI_REQUEST_BODY,
   payload: { id: requestId, mediaType, requestBody }
