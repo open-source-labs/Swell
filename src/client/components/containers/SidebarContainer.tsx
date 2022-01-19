@@ -28,14 +28,14 @@ const SidebarContainer = (props) => {
 
   return (
     <div
-      className={`box is-child ${isDark ? 'is-dark-400 add-vertical-scroll' : 'is-divider-neutral-300'}`} // gigi playing with css
+      className={`box is-child ${isDark ? 'is-dark-400' : 'is-divider-neutral-300 '}`} // gigi playing with css
       // className={`column is-one-third is-flex is-flex-direction-column is-tall ${isDark ? 'is-dark-400' : ''}`}
       style={{ height: '50vh', margin: "10px"}}
       id="composer"
     >
 
       {/* HEADER */}
-      <div className="hero is-flex-direction-row is-primary has-text-centered">
+      <div className="hero is-flex-direction-row is-primary has-text-centered composer">
         {/* dark mode toggle goes here : https://www.w3schools.com/howto/howto_css_switch.asp */}
         <input
             id="darkModeSwitch"

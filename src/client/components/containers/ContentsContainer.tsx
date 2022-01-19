@@ -29,7 +29,7 @@ const ContentsContainer = () => {
   return (
     <div
     // className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-tall is-one-third is-flex is-flex-direction-column`}  // gigi playing with css
-      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} box is-3 is-tall`}
+      className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} box is-3 is-tall add-vertical-scroll`}
       id="workspace"
       style={{margin: "10px", maxHeight: "98vh"}}
     >
