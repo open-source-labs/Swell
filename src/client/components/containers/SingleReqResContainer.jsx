@@ -309,6 +309,7 @@ const SingleReqResContainer = (props) => {
               if (connectionType !== 'WebSocket') {
                 dispatch(actions.setResponsePaneActiveTab('events'));
               }
+              // console.log(content)
               connectionController.openReqRes(content.id);
               dispatch(
                 actions.saveCurrentResponseData(

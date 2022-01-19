@@ -7,7 +7,7 @@ const NewRequestButton = ({ onClick }) => (
     type="button"
     style={{margin: '10px'}}
   >
-    Add New Request
+    Add to Workspace
   </button>
 );
 

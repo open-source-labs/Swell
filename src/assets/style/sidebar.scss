@@ -4,6 +4,11 @@
 //   background-color: gray;
 // }
 
+.composer {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .include-data-checkbox {
   background: #FFFFFF;
   /* neutral-300 */
@@ -190,11 +195,12 @@
 
 .inputs {
   display: flex;
-  align-items: start;
   justify-content: space-between;
 }
 
 .restReqBtns {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  // justify-content: start;
 }
