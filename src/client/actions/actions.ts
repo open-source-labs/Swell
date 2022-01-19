@@ -193,42 +193,42 @@ export const setResponsePaneActiveTab = (tabName: string): {type: string, payloa
   payload: tabName
 });
 
-// jNote: 1st $TSFixMe
 export const toggleDarkMode = (isDark: boolean): {type: string, payload: boolean} => ({
   type: types.TOGGLE_DARK_MODE,
   payload: isDark
 })
 
-// OPENAPI ACTIONS
-//Jay Start`
 export const setNewRequestsOpenAPI = ({
   openapiMetadata,
   openapiReqArray
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-}: $TSFixMe) => ({
+}: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_REQUESTS_OPENAPI,
   payload: { openapiMetadata, openapiReqArray },
 });
-// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-export const setOpenAPIServersGlobal = (serverIds: $TSFixMe) => ({
+
+
+export const setOpenAPIServersGlobal = (serverIds: []): {type: string, payload: []} => ({
   type: types.SET_OPENAPI_SERVERS_GLOBAL,
   payload: serverIds
 });
-// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'requestId' implicitly has an 'any' type... Remove this comment to see the full error message
-export const setOpenAPIServers = (requestId, serverIds) => ({
+
+
+export const setOpenAPIServers = (requestId: number | string, serverIds: []): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_OPENAPI_SERVERS,
   payload: { id: requestId, serverIds }
 });
-// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'requestId' implicitly has an 'any' type... Remove this comment to see the full error message
-export const setOpenAPIParameter = (requestId, location, name, value) => ({
+
+
+export const setOpenAPIParameter = (requestId: number | string, location: string, name: string, value: number | string): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_OPENAPI_PARAMETER,
   payload: { id: requestId, location, name, value }
 });
-// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'requestId' implicitly has an 'any' type... Remove this comment to see the full error message
-export const setOpenAPIRequestBody = (requestId, mediaType, requestBody) => ({
+
+export const setOpenAPIRequestBody = (requestId: number | string, mediaType: string, requestBody: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
   type: types.SET_NEW_OPENAPI_REQUEST_BODY,
   payload: { id: requestId, mediaType, requestBody }
 });
-export const queueOpenAPIRequests = () => ({
+
+export const queueOpenAPIRequests = (): {type: string} => ({
   type: types.QUEUE_OPENAPI_REQUESTS,
 });
