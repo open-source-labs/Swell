@@ -268,17 +268,17 @@ const httpController = {
   // ----------------------------------------------------------------------------
 
   makeFetch(args, event, reqResObj) {
-    console.log('args===>', args);
-    console.log('event===>', event);
-    console.log('reqRESSSSOBJ===>', reqResObj);
+    //console.log('args===>', args);
+    //console.log('event===>', event);
+    //console.log('reqRESSSSOBJ===>', reqResObj);
     return new Promise((resolve) => {
       const { method, headers, body } = args.options;
 
       fetch2(headers.url, { method, headers, body })
         .then((response) => {
-          console.log('responsefromendpoint====>', response);
+          //console.log('responsefromendpoint====>', response);
           const headers = response.headers.raw();
-          console.log('headersfromfetch==>', headers);
+          //console.log('headersfromfetch==>', headers);
           // check if the endpoint sends SSE
           // add status-==== code for regular http requests in the response header
           if (headers['content-type'][0].includes('stream')) {
@@ -292,16 +292,16 @@ const httpController = {
           headers[':status'] = response.status;
 
           const receivedCookie = headers['set-cookie'];
-          console.log('receivedCookie===>', receivedCookie);
+          //console.log('receivedCookie===>', receivedCookie);
           headers.cookies = receivedCookie;
-          console.log('newheaders==>', headers);
+          //console.log('newheaders==>', headers);
           const contents = /json/.test(response.headers.get('content-type'))
             ? response.json()
             : response.text();
 
           contents
             .then((body) => {
-              console.log('bodyyyy====>', body);
+              //console.log('bodyyyy====>', body);
 
               resolve({
                 headers,
@@ -344,7 +344,7 @@ const httpController = {
     } else {
       this.makeFetch({ options }, event, reqResObj)
         .then((response) => {
-          console.log('makefetchResponse===>', response);
+          //console.log('makefetchResponse===>', response);
           // Parse response headers now to decide if SSE or not.
           const heads = response.headers;
           reqResObj.response.headers = heads;
@@ -366,7 +366,7 @@ const httpController = {
           }
           // update reqres object to include new event
           reqResObj = this.addSingleEvent(body, reqResObj);
-          console.log('latest REQRESOBJ=>', reqResObj);
+          //console.log('latest REQRESOBJ=>', reqResObj);
           // check if there is a test script to run
           if (reqResObj.request.testContent) {
             reqResObj.response.testResult = testingController.runTest(
@@ -389,7 +389,7 @@ const httpController = {
 
   parseFetchOptionsFromReqRes(reqResObject) {
     const { headers, body, cookies } = reqResObject.request;
-    console.log('reqresOBJJJ=>', reqResObject);
+    //console.log('reqresOBJJJ=>', reqResObject);
 
     let { method } = reqResObject.request;
 
