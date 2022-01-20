@@ -76,6 +76,9 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ## Additional Features
 
+- _Send Request Directly to Endpoint_: You are able to immedeately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
+  <kbd><img src="./ReadMeGifs/Gifs/DirectSendRequest.gif"
+       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Scripting in Swell_: Swell allows you to write assertion tests to aid in the test-driven development cycle of backend API services.
   <kbd><img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
@@ -159,6 +162,11 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Jennifer Wu** - [jsh-wu](https://github.com/jsh-wu)
 - **Jacob Viesselman** - [JacobViesselman](https://github.com/JacobViesselman)
 - **Michael Prince** - [MichaelGPrince](https://github.com/MichaelGPrince)
+- **Genevieve Annable** - [gigifeeds](https://github.com/gigifeeds)
+- **Jay Wall** - [hanswand](https://github.com/hanswand)
+- **Sam Pyo** - [samhpyo](https://github.com/samhpyo)
+- **Drew Pomatti** - [thedrewery](https://github.com/thedrewery)
+- **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)	
 
 ## License
 

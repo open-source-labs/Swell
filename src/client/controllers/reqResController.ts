@@ -4,6 +4,7 @@ import graphQLController from './graphQLController';
 import { NewRequestResponseObject, WindowAPIObject, WindowExt } from '../../types';
 
 
+
 const { api }: { api: WindowAPIObject} = window as unknown as WindowExt; 
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
@@ -48,7 +49,7 @@ const connectionController = {
     const reqResObj: NewRequestResponseObject = reqResArr.find((el: NewRequestResponseObject) => el.id === id);
 
     // console.log('this is the reqResArr!!!!!!!', reqResArr);
-    console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
+    //console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
 
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
@@ -71,7 +72,7 @@ const connectionController = {
       // Standard HTTP?
     } else if (reqResObj.openapi) {
       console.log('got an open api request to fill');
-      console.log(reqResObj);
+      //console.log(reqResObj);
     } else {
       api.send('open-http', reqResObj, this.openConnectionArray);
     }

@@ -28,7 +28,8 @@ const WSEndpointEntryForm = ({
   const isDark = useSelector((store) => store.ui.isDark);
 
   return (
-    <div className="is-flex is-justify-content-center">
+    <div className="is-flex is-justify-content-center"
+    style={{padding: '10px'}}>
       <div id="webSocketButton" className="no-border-please button is-ws">
         <span>WS</span>
       </div>

@@ -1,17 +1,17 @@
 $primary-100: #ffd645;
 $primary-200: #f66b61;
 $primary-300: #21d4a4;
-$primary-400: #50809b; // this is not currently used
-$primary-500: #3834a9;
+$primary-400: #9b5088; // this is not currently used
+$primary-500: #50809b;
 
-$rest: #6843ff;
-$graphql: #de33a6;
-$grpc: #6cacc1;
-$websockets: #f47d31;
-$webrtc: #4285f4;
-$openapi: #94c73d;
-$webhook: rgb(185, 52, 52);
-$webhookOn: #037448;
+$rest: #ff9e43;
+$graphql: #ff9e43;
+$grpc: #ff9e43;
+$websockets: #ff9e43;
+$webrtc: #ff9e43;
+$openapi: #ff9e43;
+$webhook: #ff9e43;
+$webhookOn: #ff9e43;
 
 $neutral-100: #5e5e5e;
 $neutral-200: #f4f5f7;
@@ -19,6 +19,7 @@ $neutral-300: #e1e1e1;
 $neutral-400: #737581;
 $neutral-500: #4a4b53;
 $neutral-600: #000000;
+$neutral-700: #f3f3f3; // gigi added to set background of 3 main containers
 
 // BULMA COLORS
 $primary: $primary-500;
@@ -193,6 +194,7 @@ $text: $neutral-400;
 .is-divider-neutral-300 { // this is the divider between the tabs -Prince
   border-left: 1px solid $neutral-300;
   border-right: 1px solid $neutral-300;
+  background-color: $neutral-700;
 }
 
 .is-awesome-icon {

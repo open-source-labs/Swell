@@ -2,11 +2,12 @@ import React from 'react';
 
 const NewRequestButton = ({ onClick }) => (
   <button
-    className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button is-vertical-align-center"
+    className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
     onClick={onClick}
     type="button"
+    style={{margin: '10px'}}
   >
-    Add New Request
+    Add to Workspace
   </button>
 );
 

@@ -1,6 +1,6 @@
 {
   "name": "swell",
-  "version": "1.0.0",
+  "version": "1.10.1",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -139,6 +139,7 @@
     "eventsource": "^1.0.7",
     "express": "^4.17.1",
     "express-sse": "^0.5.3",
+    "fs": "0.0.1-security",
     "google-auth-library": "^5.10.1",
     "graphql": "^14.6.0",
     "graphql-language-service-interface": "2.8.2",
@@ -148,6 +149,7 @@
     "graphql-tools": "^6.1.0",
     "highland": "^2.13.5",
     "identity-obj-proxy": "^3.0.0",
+    "install": "^0.13.0",
     "js-beautify": "^1.14.0",
     "mali": "^0.21.0",
     "material-ui-dropzone": "^3.5.0",
@@ -155,8 +157,9 @@
     "ngrok": "^4.2.2",
     "node-fetch": "^2.6.0",
     "node-pre-gyp": "^0.6.39",
-    "node-sass": "^4.14.1",
+    "node-sass": "npm:sass@^1.45.2",
     "nodemon": "^1.19.4",
+    "npm": "^8.3.0",
     "npm-http-server": "^4.3.0",
     "path": "^0.12.7",
     "prop-types": "^15.6.2",
@@ -202,7 +205,7 @@
     "@testing-library/react": "^10.4.3",
     "@types/cookie": "^0.4.0",
     "@types/jest": "^26.0.4",
-    "@types/node": "^14.0.20",
+    "@types/node": "^14.18.3",
     "@types/node-fetch": "^2.5.7",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
@@ -210,7 +213,6 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/set-cookie-parser": "0.0.6",
     "@types/uuid": "^8.3.1",
-    "@types/webrtc": "^0.0.19",
     "@types/ws": "^7.2.6",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.10.1",
@@ -494,6 +496,31 @@
       "name": "Adrian Uesugui",
       "email": "https://www.linkedin.com/in/auesugui/",
       "url": "https://github.com/auesugui"
+    },
+    {
+      "name": "Genevieve Annable",
+      "email": "https://www.linkedin.com/in/genevieveannable/",
+      "url": "https://github.com/gigifeeds"
+    },
+    {
+      "name": "Drew Pomatti",
+      "email": "https://www.linkedin.com/in/drewpomatti/",
+      "url": "https://github.com/thedrewery"
+    },
+    {
+      "name": "Sam Pyo",
+      "email": "https://www.linkedin.com/in/samhpyo/",
+      "url": "https://github.com/samhpyo"
+    },
+    {
+      "name": "Jay Wall",
+      "email": "https://www.linkedin.com/in/walljay/",
+      "url": "https://github.com/hanswand"
+    },
+    {
+      "name": "Kurtis Waterbury",
+      "email": "https://www.linkedin.com/in/kurtiswaterbury/",
+      "url": "https://github.com/kurto8"
     }
   ]
 }

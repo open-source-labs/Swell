@@ -1,18 +1,20 @@
 
 * {
   box-sizing: border-box;
+  font-size: 12px;
   // background-color: lightgray;
+  // background-color: aquamarine;
 }
 
 // BULMA ADJUSTMENTS
 .hero {
-  height: 2.5rem;
-  padding-top: 0.5rem;
+  height: 2.5rem; // nothing happened when changed
+  padding-top: 0.5rem; // makes purple banner change height
 }
 
 .hero h3 {
   font-family: "Source Sans Pro", sans-serif;
-  font-weight: 600;
+  font-weight: 600; // font boldness in banner (composer, workspace responses)
 }
 
 input:focus {

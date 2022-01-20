@@ -118,6 +118,7 @@ const WebhookContainer = ({
       // request server.js to generate and return a webhook URL
       fetch('http://localhost:3000/webhookServer', {
         method: 'POST',
+        // mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -151,7 +152,8 @@ const WebhookContainer = ({
   };
 
   return (
-    <div className='mr-2 is-flex is-justify-content-center'>
+    <div className='mr-2 is-flex is-justify-content-center'
+    style={{padding: '10px'}}>
     <button
            className={`button ${
              serverStatus ? 'is-wh' : 'is-wh-on'
@@ -164,6 +166,7 @@ const WebhookContainer = ({
            className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
            type="text"
            value={whUrl}
+           readOnly //solved react error dev console
          />
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
          <button
