@@ -1,6 +1,6 @@
 import React, { useState , useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { io } from 'socket.io-client';
 
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import parse from 'date-fns/parse';
-import isYesterday from 'date-fns/is_yesterday';
-import isToday from 'date-fns/is_today';
+// import isYesterday from 'date-fns/is_yesterday';
+import { isYesterday, isToday } from 'date-fns';
 import format from 'date-fns/format';
 import History from './History.jsx';
 
@@ -28,7 +28,7 @@ class HistoryDate extends Component {
     else if (isYesterday(date)) {
       date = 'Yesterday';
     } else {
-      date = format(date, 'ddd, MMM D, YYYY');
+      date = format(date, 'ddd, MMM d, yyyy');
     }
 
     const histArray = current.history.map((history, i) => {

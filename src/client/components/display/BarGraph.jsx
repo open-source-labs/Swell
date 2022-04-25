@@ -6,7 +6,7 @@ import * as store from '../../store';
 import * as actions from '../../actions/actions';
 
 //necessary for graph styling due to CSP
-Chart.platform.disableCSSInjection = true;
+//Chart.platform.disableCSSInjection = true;
 
 const mapStateToProps = (store) => ({
   dataPoints: store.business.dataPoints,
