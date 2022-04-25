@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import collectionsController from '../../controllers/collectionsController';
 import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces';
 import * as actions from '../../actions/actions';

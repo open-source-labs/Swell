@@ -27,7 +27,7 @@ const historyController = {
     // .then((history: any) => {console.log('history', history); return history;})
       .then((history: NewRequestResponseObject[]) => {
         const historyGroupsObj = history.reduce((groups: Record<string, NewRequestResponseObject[]>, hist: NewRequestResponseObject) => {
-          const date = format(hist.createdAt, 'MM/DD/YYYY');
+          const date = format(hist.createdAt, 'MM/dd/yyyy');
           if (!groups[date]) {
             groups[date] = [];
           }

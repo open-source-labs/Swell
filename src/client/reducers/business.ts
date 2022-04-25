@@ -204,7 +204,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
 
     case types.DELETE_HISTORY: {
       const deleteId: number = action.payload.id;
-      const deleteDate: Date = format(action.payload.createdAt, 'MM/DD/YYYY');
+      const deleteDate: Date = format(action.payload.createdAt, 'MM/dd/yyyy');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newHistory.forEach((obj: $TSFixMe, i: $TSFixMe) => {
@@ -328,7 +328,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
     case types.REQRES_ADD: {
       const reqResArray = JSON.parse(JSON.stringify(state.reqResArray));
       reqResArray.push(action.payload);
-      const addDate = format(action.payload.createdAt, 'MM/DD/YYYY');
+      const addDate = format(action.payload.createdAt, 'MM/dd/yyyy');
       const newHistory: string[] = JSON.parse(JSON.stringify(state.history));
       let updated = false;
       // if there is history for added date, add query to beginning of history

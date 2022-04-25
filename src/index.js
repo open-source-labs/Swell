@@ -1,5 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './client/components/containers/App';
 import store from './client/store';
@@ -16,10 +17,19 @@ const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
 
-render(
-  // wrap the App in the Provider and pass in the store
+const container = document.getElementById('root');
+const rt = createRoot(container);
+rt.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
-);
+  // document.getElementById('root')
+)
+
+// render(
+//   // wrap the App in the Provider and pass in the store
+//   <Provider store={store}>
+//     <App />
+//   </Provider>,
+//   document.getElementById('root')
+// );

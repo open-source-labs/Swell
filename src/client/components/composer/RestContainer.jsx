@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import * as actions from '../../actions/actions';
 import historyController from '../../controllers/historyController';
 import connectionController from '../../controllers/reqResController';

@@ -10,7 +10,7 @@ import JSONPrettify from './JSONPrettify.jsx';
 import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
 import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
-import { isAbsolute, relative } from 'path';
+// import { isAbsolute, relative } from 'path';
 import RestTestSnippetsContainer from './TestSnippets/RestTestSnippetsContainer';
 
 const TestEntryForm = (props) => {
