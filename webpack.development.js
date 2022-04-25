@@ -7,7 +7,7 @@ module.exports = merge.merge(base, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
-    host: 'localhost',
+    host: '127.0.0.1',
 
     port: '8080',
     hot: true,
