@@ -9,6 +9,7 @@ import collectionsController from '../../controllers/collectionsController';
 import UpdatePopUpContainer from './UpdatePopUpContainer';
 import { WindowExt } from '../../../types'
 import '../../../assets/style/App.scss';
+import NavBarContainer from './NavBarContainer';
 
 
 const { api } = window as unknown as WindowExt;
@@ -24,7 +25,9 @@ const App = () => { //what type is being returned?
 
   return (
     // deleted is-tall below
-    <div className=" is-gapless is-tall">
+    <div className="is-gapless is-tall">
+      {/* Render the navigation bar container */}
+      <NavBarContainer />
       <div
         id="app"
         className={`columns is-gapless ${!message && 'is-tall'} ${

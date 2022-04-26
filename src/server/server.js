@@ -29,6 +29,11 @@ const io = require('socket.io')(server, {
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
+app.get('/login', (req, res) => {
+  console.log('checking login button')
+  return res.send('logging in...')
+})
+
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
