@@ -1,11 +1,8 @@
-const { ApolloClient } = require('apollo-client');
+const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@apollo/client');
 const gql = require('graphql-tag');
-const { InMemoryCache } = require('apollo-cache-inmemory');
-const { createHttpLink } = require('apollo-link-http');
-const { ApolloLink } = require('apollo-link');
 const { introspectionQuery } = require('graphql');
-const { onError } = require('apollo-link-error');
-const fetch2 = require('node-fetch');
+const { onError } = require("@apollo/client/link/error");
+const axios = require('axios');
 const cookie = require('cookie');
 const { ipcMain } = require('electron');
 
@@ -82,7 +79,7 @@ const graphqlController = {
       uri: reqResObj.url,
       headers,
       credentials: 'include',
-      fetch: fetch2,
+      fetch: axios,
     });
 
     const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -187,12 +184,12 @@ const graphqlController = {
     }
     headers.Cookie = cookies;
 
-    fetch2(req.url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ query: introspectionQuery }),
+    axios({
+      method: 'post',
+      url: req.url,
+      headers: headers,
+      data: JSON.stringify({ query: introspectionQuery }),
     })
-      .then((resp) => resp.json())
       .then((data) => event.sender.send('introspect-reply', data.data))
       .catch((err) =>
         event.sender.send(
