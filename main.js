@@ -76,6 +76,7 @@ let mainWindow;
  *********************** */
 // default to production mode
 let isDev = false;
+
 // if running webpack-server, change to development mode
 // console.log(process.argv);
 if (process.argv.includes('--dev')) {

@@ -18,8 +18,8 @@ module.exports = merge(base, {
       '/webhook': {
         target: 'http://localhost:3000',
       },
-      '/server/**': {
-        target: 'http://localhost:3000/',
+      '/': {
+        target: 'http://localhost:3000/api',
         secure: false,
       },
     },
