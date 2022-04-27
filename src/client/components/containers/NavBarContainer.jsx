@@ -1,8 +1,16 @@
-import React from "react";
+import React from 'react';
+import axios from 'axios';
 
 const NavBarContainer = (props) => {
-  const signInViaGitHub = () => {
-    console.log('signing in...')
+  const signInViaGitHub = async () => {
+    try {
+      console.log('signing in...')
+      await axios('/login');
+      return null;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
 
   return(

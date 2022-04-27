@@ -117,6 +117,7 @@
     "apollo-link-http": "^1.5.17",
     "apollo-link-ws": "^1.0.20",
     "apollo-server-express": "^3.6.7",
+    "axios": "^0.27.1",
     "body-parser": "^1.20.0",
     "bulma": "^0.9.3",
     "bulma-checkradio": "^2.1.3",
