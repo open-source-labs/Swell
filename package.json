@@ -19,7 +19,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix . ",
     "build": "concurrently --success first \"webpack --mode=production --config ./webpack.production.js\" \"nodemon ./src/server/server.js\"",
-    "dev": "concurrently --success first \"webpack-dev-server --mode=development  --config ./webpack.development.js\" \"nodemon ./src/server/server.js\"",
+    "dev": "concurrently --success first \"webpack-dev-server --mode=development --config ./webpack.development.js\" \"npx electron --dev .\" \"nodemon ./src/server/server.js\"",
     "prod": "concurrently --success first \"webpack --mode=production --config ./webpack.production.js && electron --noDevServer .\" \"nodemon ./src/server/server.js\"",
     "package-mac": "npm run build && electron-builder build --x64 --mac",
     "package-all": "npm run build && electron-builder build -mwl",
