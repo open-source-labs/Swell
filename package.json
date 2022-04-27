@@ -153,7 +153,6 @@
     "node-sass": "^7.0.0",
     "nodemon": "^2.0.15",
     "npm": "^8.7.0",
-    "npm-http-server": "^4.3.0",
     "path": "^0.12.7",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
