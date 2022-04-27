@@ -2,7 +2,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { execute, subscribe } = require('graphql');
-const { makeExecutableSchema } = require('graphql-tools');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { createServer } = require('http');
 const { SubscriptionServer } = require('subscriptions-transport-ws');
 const { PubSub } = require('graphql-subscriptions');
@@ -84,7 +84,10 @@ app.use('/graphql', bodyParser.json());
 
 const apolloServer = new ApolloServer({ schema });
 
-apolloServer.applyMiddleware({ app });
+apolloServer.start().then(res=>{
+  apolloServer.applyMiddleware({ app });
+})
+
 
 const graphqlApp = ws.listen(PORT, () => {
   console.log(`GraphQL Server is now running on http://localhost:${PORT}`);

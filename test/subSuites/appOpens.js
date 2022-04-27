@@ -1,14 +1,21 @@
 const assert = require('assert'); // node's own assertion module
 const path = require('path');
 const fs = require('fs');
-const app = require('../testApp');
+// const app = require('../testApp');
 
-module.exports = () => {
+module.exports = (electronApp) => {
   describe('App opens and renders a page', () => {
     describe('Browser Window Tests', () => {
       it('window is visible', async () => {
-        const isVisible = await app.browserWindow.isVisible();
-        return assert.strictEqual(isVisible, true);
+        console.log(electronApp)
+        const appPath = await electronApp.evaluate(async ({ app }) => {
+          // This runs in the main Electron process, parameter here is always
+          // the result of the require('electron') in the main app script.
+          return app.getAppPath();
+        });
+        console.log(`PATH`, appPath);
+        // const isVisible = await app.browserWindow.isVisible();
+        // return assert.strictEqual(isVisible, true);
       });
 
       it("browser window title is 'Swell'", async () => {
