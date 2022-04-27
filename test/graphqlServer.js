@@ -82,12 +82,15 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 app.use('/graphql', bodyParser.json());
 
-const apolloServer = new ApolloServer({ schema });
+let apolloServer = new ApolloServer({ schema });
 
 apolloServer.start().then(res=>{
   apolloServer.applyMiddleware({ app });
 })
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 
 const graphqlApp = ws.listen(PORT, () => {
   console.log(`GraphQL Server is now running on http://localhost:${PORT}`);

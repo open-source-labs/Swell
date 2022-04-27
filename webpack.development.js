@@ -1,9 +1,9 @@
 const path = require('path');
-const merge = require('webpack-merge');
+const merge = require('webpack-merge').merge;
 const { spawn } = require('child_process');
 const base = require('./webpack.config');
 
-module.exports = merge.merge(base, {
+module.exports = merge(base, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
@@ -18,8 +18,8 @@ module.exports = merge.merge(base, {
       '/webhook': {
         target: 'http://localhost:3000',
       },
-      '/server/**': {
-        target: 'http://localhost:3000/',
+      '/': {
+        target: 'http://localhost:3000/api',
         secure: false,
       },
     },
