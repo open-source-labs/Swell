@@ -1,7 +1,6 @@
-import ApolloClient, { OperationVariables } from 'apollo-client';
+import { ApolloClient, OperationVariables, InMemoryCache } from '@apollo/client';
 import gql from 'graphql-tag';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { WebSocketLink } from 'apollo-link-ws';
+import { WebSocketLink } from "@apollo/client/link/ws";
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 import * as store from '../store';

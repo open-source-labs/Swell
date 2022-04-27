@@ -1,0 +1,25 @@
+    "react-codemirror2": "^7.2.1",
+
+    node-sass should be switched out for sass
+
+    what do we do about prop-types?
+
+potential package removals
+dompurify
+es6-promise
+google-auth-library
+identity-obj-proxy
+node-pre-gyp
+react-json-pretty
+react-syntax-highlighter-virtualized-renderer
+rpmbuild
+status-indicator
+@types/node-fetch
+@types/react-router-dom
+babili-webpack-plugins
+devtron
+file-loader
+all postcss?
+react-test-renderer
+spectron
+ts-loader

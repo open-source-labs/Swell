@@ -1,5 +1,4 @@
 import React, { useState, useEffect, JSXElementConstructor } from 'react';
-import { HashRouter } from 'react-router-dom';
 import ContentsContainer from './ContentsContainer';
 import SidebarContainer from './SidebarContainer';
 import ResponsePaneContainer from './ResponsePaneContainer';
