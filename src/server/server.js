@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
+
 app.use(cookieParser());
 // app.use(function(req, res, next) {
 //   res.set("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
