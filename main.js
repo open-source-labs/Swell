@@ -31,7 +31,7 @@
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
 const { autoUpdater } = require('electron-updater');
 const {
@@ -50,6 +50,8 @@ const protoParserFunc = require('./main_process/protoParser.js');
 
 // openapi parser func for parsing openAPI documents in JSON or YAML format
 const openapiParserFunc = require('./main_process/openapiParser.js');
+
+// require('dotenv').config();
 
 // require menu file
 require('./menu/mainMenu');
@@ -89,16 +91,14 @@ if (process.argv.includes('--dev')) {
 
 isDev
   ? console.log(`
-
-=========================
-  Launching in DEV mode
-=========================
+    =========================
+      Launching in DEV mode
+    =========================
   `)
   : console.log(`
-
-================================
-  Launching in PRODUCTION mode
-================================
+    ================================
+      Launching in PRODUCTION mode
+    ================================
   `);
 
 if (process.platform === 'win32') {
@@ -219,6 +219,11 @@ const sendStatusToWindow = (text) => {
     mainWindow.webContents.send('message', text);
   }
 };
+
+ipcMain.on('login-via-github', async () => {
+  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` // ${process.env.GITHUB_CLIENT_ID};
+  await shell.openExternal(url, { activate: true });
+})
 
 ipcMain.on('check-for-update', () => {
   // listens to ipcRenderer in UpdatePopUpContainer.jsx

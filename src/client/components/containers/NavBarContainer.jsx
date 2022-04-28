@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+// import path, {dirname} from 'path';
+// const __dirname = dirname(fileURLToPath(import.meta.url));
+// import { ipcRenderer } from 'electron';
 
 const NavBarContainer = (props) => {
   const signInViaGitHub = () => {
-    window.location = 'http://localhost:3000/api/login';
+    //ipcRenderer.invoke('')
+    // window.location = 'http://localhost:3000/api/login';
+    window.api.send('login-via-github');
   }
 
   return(

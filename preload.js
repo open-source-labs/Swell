@@ -4,6 +4,7 @@ const apiObj = {
   send: (channel, ...data) => {
     // allow list channels SENDING to Main
     const allowedChannels = [
+      'login-via-github',
       'check-for-update',
       'confirm-clear-history',
       'export-collection',
@@ -35,14 +36,14 @@ const apiObj = {
     const allowedChannels = [
       'add-collection',
       'clear-history-response',
+      'introspect-reply',
       'message',
       'openapi-info',
+      'openapiParserFunc-return',
       'proto-info',
       'protoParserFunc-return',
-      'openapiParserFunc-return',
       'reply-gql',
       'reqResUpdate',
-      'introspect-reply',
       'update-connectionArray',
     ];
     if (allowedChannels.includes(channel)) {
