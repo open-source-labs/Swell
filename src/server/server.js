@@ -1,11 +1,27 @@
 const path = require('path');
 const express = require('express');
 const ngrok = require('ngrok');
+require('dotenv').config();
 
 const port = 3000;
 const app = express();
-
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
+app.use(express.static(path.resolve(__dirname, '../../build')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors({ origin: '*' }));
+
+app.use(cookieParser());
+// app.use(function(req, res, next) {
+//   res.set("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
+//   res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+// require controllers
+const authController = require('./controllers/authController');
 
 // TODO: why did previous groups decide to use socket.io?
 // https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
@@ -71,8 +87,16 @@ app.post('/webhook', (req, res) => {
 
 app.get('/api/login', (req, res) => {
   console.log('clicked the login button');
-  return res.sendStatus(200);
+  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
+  return res.redirect(url);
 })
+
+app.get('/signup/github/callback', authController.getToken, (req, res) => {
+  console.log('clicked the login button');
+  return res.sendStatus(200);
+  // const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
+  // return res.status(301).redirect(url);
+});
 
 app.get('*', (req, res) => {
   console.log('hellooooo');

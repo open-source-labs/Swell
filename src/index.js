@@ -12,10 +12,19 @@ import store from './client/store';
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template,
 // we should create our own root node in the body element before rendering into it
-const root = document.createElement('div');
 
+const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
+
+const head = document.querySelector('head');
+
+// https://content-security-policy.com/
+// add CSP
+const meta = document.createElement('meta');
+meta.httpEquiv = 'Content-Security-Policy';
+meta.content = "default-src 'self' http://localhost:3000 ws://localhost:3000; img-src 'self' data:; child-src 'none';";
+head.appendChild(meta);
 
 const container = document.getElementById('root');
 const rt = createRoot(container);
@@ -24,3 +33,16 @@ rt.render(
     <App />
   </Provider>,
 )
+
+// const root = document.createElement('div');
+
+// root.id = 'root';
+// document.body.appendChild(root);
+
+// const container = document.getElementById('root');
+// const rt = createRoot(container);
+// rt.render(
+//   <Provider store={store}>
+//     <App />
+//   </Provider>,
+// )
