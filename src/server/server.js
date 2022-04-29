@@ -86,7 +86,7 @@ app.post('/webhook', (req, res) => {
   return res.status(200).json(req.body);
 })
 
-app.get('/api/login', (req, res) => {
+app.get('/login', (req, res) => {
   console.log('clicked the login button');
   const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
   return res.redirect(url);
