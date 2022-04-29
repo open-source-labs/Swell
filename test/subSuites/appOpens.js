@@ -7,15 +7,12 @@ module.exports = (electronApp) => {
   describe('App opens and renders a page', () => {
     describe('Browser Window Tests', () => {
       it('window is visible', async () => {
-        console.log(electronApp)
-        const appPath = await electronApp.evaluate(async ({ app }) => {
-          // This runs in the main Electron process, parameter here is always
-          // the result of the require('electron') in the main app script.
-          return app.getAppPath();
-        });
-        console.log(`PATH`, appPath);
-        // const isVisible = await app.browserWindow.isVisible();
-        // return assert.strictEqual(isVisible, true);
+        // const window = await electronApp.firstWindow();
+        // console.log(window)
+        // // // Print the title.
+        // // console.log(window.title);
+        const isVisible = await electronApp.firstWindow.isVisible();
+        return assert.strictEqual(isVisible, true);
       });
 
       it("browser window title is 'Swell'", async () => {
