@@ -1,13 +1,17 @@
 const assert = require('assert'); // node's own assertion module
 const path = require('path');
 const fs = require('fs');
-const app = require('../testApp');
+// const app = require('../testApp');
 
-module.exports = () => {
+module.exports = (electronApp) => {
   describe('App opens and renders a page', () => {
     describe('Browser Window Tests', () => {
       it('window is visible', async () => {
-        const isVisible = await app.browserWindow.isVisible();
+        // const window = await electronApp.firstWindow();
+        // console.log(window)
+        // // // Print the title.
+        // // console.log(window.title);
+        const isVisible = await electronApp.firstWindow.isVisible();
         return assert.strictEqual(isVisible, true);
       });
 
