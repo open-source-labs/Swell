@@ -8,7 +8,8 @@ import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 // import { createClient } from 'graphql-ws';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
+import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, 
+  CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 
