@@ -4,7 +4,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { execute, subscribe } = require('graphql');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { createServer } = require('http');
-const { SubscriptionServer } = require('subscriptions-transport-ws');
+const { SubscriptionServer } = require('subscriptions-transport-ws');  // we need to enable graphql-ws in this file
 const { PubSub } = require('graphql-subscriptions');
 const bodyParser = require('body-parser');
 
