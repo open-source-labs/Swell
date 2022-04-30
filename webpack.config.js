@@ -4,6 +4,7 @@ const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
+
 module.exports = {
   target: 'web',
   resolve: {
@@ -76,7 +77,7 @@ module.exports = {
       // if using template, add <title>Swell</title> and delete line 59.
       // template: path.resolve(__dirname, "index-csp.html"),
       filename: 'index.html',
-      title: 'Swell',
+      title: require('./package.json').name,
       cspPlugin: {
         enabled: true,
         policy: {

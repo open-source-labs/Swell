@@ -85,6 +85,7 @@ if (process.argv.includes('--dev')) {
   isDev = true;
 }
 
+
 /** ***********************
  ******* MODE DISPLAY ****
  ************************ */
@@ -120,7 +121,6 @@ function createWindow() {
     minHeight: 700,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
-    title: 'Swell',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: process.env.NODE_ENV !== 'test', // true if in dev mode
@@ -143,6 +143,9 @@ function createWindow() {
       slashes: true,
     });
 
+    // Dev mode title
+    mainWindow.setTitle("Swell (devMode)")
+
     // If we are in developer mode Add React & Redux DevTools to Electron App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -158,6 +161,7 @@ function createWindow() {
       pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
     });
+
   }
 
   // our new app window will load content depending on the boolean value of the dev variable
@@ -165,7 +169,6 @@ function createWindow() {
 
   // give our new window the earlier created touchbar
   mainWindow.setTouchBar(touchBar);
-
   // prevent webpack-dev-server from setting new title
   mainWindow.on('page-title-updated', (e) => e.preventDefault());
 
