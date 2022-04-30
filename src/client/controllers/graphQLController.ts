@@ -3,9 +3,13 @@ import gql from 'graphql-tag';
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
+// moving to graphql-ws
+// import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+// import { createClient } from 'graphql-ws';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
+import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, 
+  CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 
@@ -120,6 +124,17 @@ const graphQLController = {
       }, '');
     }
     headers.Cookie = cookiesStr;
+
+    // moving to graphql-ws
+
+    // const wsLink = new GraphQLWsLink(createClient({
+    //   url: wsUri,
+    //   connectionParams: {
+    //     headers,
+    //     timeout: 30000,  
+    //     reconnect: true,   
+    //   },
+    // }));
 
     const wsLink = new WebSocketLink(
       new SubscriptionClient(wsUri, {
