@@ -1,7 +1,3 @@
-const assert = require('assert');
-const composerObj = require('../pageObjects/ComposerObj.js');
-const app = require('../testApp.js');
-
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
