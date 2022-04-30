@@ -34,8 +34,8 @@ module.exports = {
   // ===========================================
   // Set up ESLint for .js / .jsx files
   // ===========================================
-  // .js / .jsx uses babel-eslint
-  parser: 'babel-eslint',
+  // .js / .jsx uses @babel/eslint-parser
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
