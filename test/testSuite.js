@@ -26,8 +26,8 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 let electronApp, page;
 
-describe('Electron UI Rendering', () => {
-  
+describe('Electron UI Rendering', function () {
+  this.timeout(10000);
   // Launch electron app via Playwright
   before(async () => {
     electronApp = await electron.launch({ args: ['main.js'] });
@@ -99,10 +99,12 @@ describe('Electron UI Rendering', () => {
   // appOpensTests(); *** COMPLETE ***
 
   // // execute differnt types of test here
-  describe('CRUD functionality', () => {
-    reqInputTests();})
+  describe('CRUD functionality', function () {
+    this.timeout(10000);
+
+    reqInputTests();
   //   // httpTest(); //Comment out because no Mongo URI for test server
-  //   graphqlTest();
+    graphqlTest();})
   //   websocketTest();
   //   grpcTest();
   // });
