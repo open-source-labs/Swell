@@ -1,6 +1,6 @@
 module.exports = {
   verbose: true,
-  runner: '@jest-runner/electron',
+  runner: '@jest-runner/electron', // deprecated? 
   testEnvironment: '@jest-runner/electron/environment',
   moduleNameMapper: {
     // "collectCoverage": true,
