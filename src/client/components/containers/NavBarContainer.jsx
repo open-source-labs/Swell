@@ -5,9 +5,7 @@ import axios from 'axios';
 // import { ipcRenderer } from 'electron';
 
 const NavBarContainer = (props) => {
-  const signInViaGitHub = () => {
-    //ipcRenderer.invoke('')
-    // window.location = 'http://localhost:3000/api/login';
+  const signInViaGitHub = async () => {
     window.api.send('login-via-github');
   }
 
