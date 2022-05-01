@@ -1,83 +1,33 @@
-const chai = require('chai');
 const composerObj = require('../pageObjects/ComposerObj.js');
 const workspaceObj = require('../pageObjects/WorkspaceObj.js');
 const app = require('../testApp.js');
 const graphqlServer = require('../graphqlServer');
 
-const { expect } = chai;
+
+const {_electron: electron} = require('playwright');
+const chai = require('chai')
+const expect = chai.expect
+const path = require('path');
+const fs = require('fs-extra');
+
+let electronApp, page, num;
 
 module.exports = () => {
-  describe('GraphQL requests', () => {
-    const fillGQLRequest = async (
-      url,
-      method,
-      body = '',
-      variables = '',
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        // click and check GRAPHQL
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=REST').click();
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=GRAPHQL').click();
 
-        // click and select METHOD if it isn't QUERY
-        if (method !== 'QUERY') {
-          await app.client.$('span=QUERY').click();
-          await app.client.$(`a=${method}`).click();
-        }
+  const setupFxn = function() {
+    before(async () => {
+      electronApp = await electron.launch({ args: ['main.js'] });
+      page = electronApp.windows()[0]; // In case there is more than one window
+      await page.waitForLoadState(`domcontentloaded`);
 
-        // type in url
-        await composerObj.url.setValue(url);
-
-        // set headers
-        headers.forEach(async ({ key, value }, index) => {
-          await app.client
-            .$(`//*[@id="header-row${index}"]/input[1]`)
-            .setValue(key);
-          await app.client
-            .$(`//*[@id="header-row${index}"]/input[2]`)
-            .setValue(value);
-          await app.client.$('button=+ Header').click();
-        });
-
-        // set cookies
-        cookies.forEach(async ({ key, value }, index) => {
-          await app.client
-            .$(`//*[@id="cookie-row${index}"]/input[1]`)
-            .setValue(key);
-          await app.client
-            .$(`//*[@id="cookie-row${index}"]/input[2]`)
-            .setValue(value);
-          await app.client.$('button=+ Cookie').click();
-        });
-
-        // select Body and type in body
-        await composerObj.clearGQLBodyAndWriteKeys(body);
-
-        // select Variables and type in variables
-        await composerObj.clickGQLVariablesAndWriteKeys(variables);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const addAndSend = async () => {
-      try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    before(() => {
-      app.client.$('button=Clear Workspace').click();
+      await page.locator('button >> text=Clear Workspace').click();
+      num=0
     });
+    
+    // close Electron app when complete
+    after(async () => {
+      await electronApp.close();
 
-    after(() => {
       try {
         graphqlServer.close();
         console.log('graphqlServer closed');
@@ -86,25 +36,108 @@ module.exports = () => {
       }
     });
 
+    afterEach(async function() {
+      if (this.currentTest.state === 'failed') {
+        console.log(`Screenshotting failed test window`)
+        const imageBuffer = await page.screenshot();
+        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+      }
+    });
+  }
+
+  setupFxn();
+
+  describe('GraphQL requests', () => {
+    
+    const fillGQLRequest = async (
+      url,
+      method,
+      query = '',
+      variables = '',
+      headers = [],
+      cookies = []
+    ) => {
+      try {
+        // click and check GRAPHQL
+        await page.locator('#selected-network').click();
+        await page.locator('a >> text=GRAPHQL').click();
+
+        // click and select METHOD if it isn't QUERY
+        if (method !== 'QUERY') {
+          await page.locator('#composer >> button.is-graphQL').click();
+          await page.locator(`a >> text=${method}`).click();
+        }
+
+        // type in url
+        await page.locator('.input-is-medium').fill(url);
+
+        // set headers
+        headers.forEach(async ({ key, value }, index) => {
+          await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
+          await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
+          await page.locator('button:near(:text("Headers"), 5)').click();
+        });
+
+        // set cookies
+        cookies.forEach(async ({ key, value }, index) => {
+          await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
+          await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
+          await page.locator('button:near(:text("Cookies"), 5)').click();
+        });
+
+        // select Body, clear it, and type in query
+        const codeMirror = await page.locator('#gql-body-entry');
+        await codeMirror.click();
+        const gqlBodyCode = await codeMirror.locator('textarea');
+
+        try {
+          for (let i = 0; i < 100; i += 1) {
+            await gqlBodyCode.press('Backspace');
+          }
+          await gqlBodyCode.fill(query);
+        } catch (err) {
+          console.error(err);
+        }
+
+        // select Variables and type in variables
+        const codeMirror2 = await page.locator('#gql-var-entry');
+        await codeMirror2.click();
+        await codeMirror2.locator('textarea').fill(variables);
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const addAndSend = async (num) => {
+      try {
+        await page.locator('button >> text=Add to Workspace').click();
+        await page.locator(`#send-button-${num}`).click();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+
+
     it('it should be able to introspect the schema (PUBLIC API)', async () => {
       try {
         // click and check GRAPHQL
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=GRAPHQL').click();
+        await page.locator('#selected-network').click();
+        await page.locator('a >> text=GRAPHQL').click();
 
         // type in url
-        await composerObj.url.setValue('https://countries.trevorblades.com/');
+        await page.locator('.input-is-medium').fill('https://countries.trevorblades.com/');
 
         // click introspect
-        await app.client.$('button=Introspect').click();
+        await page.locator('button >> text=Introspect').click();
 
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const introspectionResult = await app.client
-                .$('#gql-introspection .CodeMirror-code')
-                .getText();
-              expect(introspectionResult).to.include(`CacheControlScope`);
+              const introspectionResult = await page.locator('#gql-introspection >> .CodeMirror-code')
+              expect(await introspectionResult.count()).to.equal(1)
+              expect(await introspectionResult.innerText()).to.include(`CacheControlScope`);
               resolve();
             } catch (err) {
               console.error(err);
@@ -114,7 +147,7 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    });
+    }).timeout(5000);
 
     it('it should be able to create queries using variables (PUBLIC API)', async () => {
       try {
@@ -125,15 +158,14 @@ module.exports = () => {
 
         // type in url
         await fillGQLRequest(url, method, query, variables);
-        await addAndSend();
+        await addAndSend(num++);
 
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const events = await app.client
-                .$('#events-display .CodeMirror-code')
-                .getText();
-              expect(events).to.include('Abu Dhabi');
+              const events = await page.locator('#events-display >> .CodeMirror-code')
+              expect(await events.count()).to.equal(1)
+              expect(await events.innerText()).to.include('Abu Dhabi');
               resolve();
             } catch (err) {
               console.error(err);
@@ -143,7 +175,7 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    });
+    }).timeout(5000);
 
     it('it should give you the appropriate error message with incorrect queries (LOCAL API)', async () => {
       try {
@@ -153,18 +185,18 @@ module.exports = () => {
 
         // type in url
         await fillGQLRequest(url, method, query);
-        await addAndSend();
+        await addAndSend(num++);
 
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const statusCode = await app.client.$('.status-tag').getText();
-              const events = await app.client
-                .$('#events-display .CodeMirror-code')
-                .getText();
+              const statusCode = await page.locator('.status-tag').innerText();
+              
+              const events = await page.locator('#events-display >> .CodeMirror-code')
+              expect(await events.count()).to.equal(1)
 
               expect(statusCode).to.equal('Error');
-              expect(events).to.include('"message": "Cannot query field');
+              expect(await events.innerText()).to.include('"message": "Cannot query field');
               resolve();
             } catch (err) {
               console.error(err);
@@ -174,7 +206,7 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    });
+    }).timeout(5000);
 
     it('it should work with mutations (LOCAL API)', async () => {
       try {
@@ -185,18 +217,18 @@ module.exports = () => {
 
         // type in url
         await fillGQLRequest(url, method, query);
-        await addAndSend();
+        await addAndSend(num++);
 
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const statusCode = await app.client.$('.status-tag').getText();
-              const events = await app.client
-                .$('#events-display .CodeMirror-code')
-                .getText();
+              const statusCode = await page.locator('.status-tag').innerText();
+
+              const events = await page.locator('#events-display >> .CodeMirror-code')
+              expect(await events.count()).to.equal(1)
 
               expect(statusCode).to.equal('Success');
-              expect(events).to.include('www.piedpiper.com');
+              expect(await events.innerText()).to.include('www.piedpiper.com');
               resolve();
             } catch (err) {
               console.error(err);
@@ -206,7 +238,7 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    });
+    }).timeout(5000);
 
     it('it should work with subscriptions (LOCAL API)', async () => {
       try {
@@ -216,7 +248,7 @@ module.exports = () => {
         const query = 'subscription {newLink {id description}}';
 
         await fillGQLRequest(url, method, query);
-        await addAndSend();
+        await addAndSend(num++);
 
         // SEND MUTATION
         const method2 = 'MUTATION';
@@ -225,20 +257,19 @@ module.exports = () => {
           'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {url}}';
 
         await fillGQLRequest(url2, method2, query2);
-        await addAndSend();
+        await addAndSend(num++);
 
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              await app.client.$('#view-button-3').click();
+              await page.locator(`#view-button-${num-2}`).click();
 
-              const statusCode = await app.client.$('.status-tag').getText();
-              const events = await app.client
-                .$('#events-display .CodeMirror-code')
-                .getText();
+              const statusCode = await page.locator('.status-tag').innerText();
+              const events = await page.locator('#events-display >> .CodeMirror-code')
+              expect(await events.count()).to.equal(1)
 
               expect(statusCode).to.equal('Success');
-              expect(events).to.include('Tethics');
+              expect(await events.innerText()).to.include('Tethics');
               resolve();
             } catch (err) {
               console.error(err);
@@ -248,6 +279,8 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    });
+    }).timeout(5000);
   });
-};
+
+}
+  
