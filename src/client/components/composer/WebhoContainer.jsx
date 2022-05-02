@@ -116,7 +116,7 @@ const WebhookContainer = ({
       
       // turn on ngrok connection/URL
       // request server.js to generate and return a webhook URL
-      fetch('http://localhost:3000/webhookServer', {
+      fetch('/webhookServer', {
         method: 'POST',
         // mode: 'no-cors',
         headers: {
@@ -136,7 +136,7 @@ const WebhookContainer = ({
     } else if (serverStatus) {
       // request server to kill webhook url instance
       updateServerStatus(false);
-      fetch('http://localhost:3000/webhookServer', {
+      fetch('/webhookServer', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

@@ -88,8 +88,8 @@ app.post('/webhook', (req, res) => {
 
 app.get('/api/login', (req, res) => {
   console.log('clicked the login button');
-  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
-  return res.redirect(url);
+  const url = `https://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
+  return res.sendStatus(200);
 })
 
 app.get('/signup/github/callback', authController.getToken, (req, res) => {
@@ -97,12 +97,6 @@ app.get('/signup/github/callback', authController.getToken, (req, res) => {
   return res.sendStatus(200);
   // const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
   // return res.status(301).redirect(url);
-});
-
-app.get('*', (req, res) => {
-  console.log('hellooooo');
-  // res.status(200).sendFile(path.join(__dirname, '../index.js'));
-  // res.status(200).sendFile(path.join(__dirname,'../../index-csp.html'))
 });
 
 // //inital error handler, needs work
