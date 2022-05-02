@@ -98,20 +98,20 @@ describe('Electron UI Rendering', function () {
   // these are test suites within this broader suite
   // appOpensTests(); *** COMPLETE ***
 
-  // // execute differnt types of test here
+  // // execute different types of test here
   describe('CRUD functionality', function () {
     this.timeout(10000);
 
     reqInputTests();
   //   // httpTest(); //Comment out because no Mongo URI for test server
-    graphqlTest();})
-  //   websocketTest();
-  //   grpcTest();
-  // });
+    graphqlTest();
+    websocketTest();
+    grpcTest();
+  });
 
-  // describe("Swell Testing functionality", function () {
-  //   httpTestingTest();
-  //   grpcTestingTest();
-  //   graphqlTestingTest();
-  // });
+  describe("Swell Testing functionality", function () {
+    httpTestingTest();
+    // grpcTestingTest();
+    // graphqlTestingTest();
+  });
 

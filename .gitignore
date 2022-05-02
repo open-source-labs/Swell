@@ -13,6 +13,8 @@ package-lock.json
 coverage/
 .vscode
 src/client/docs/
+test/failedTests
+.nyc_output
 
 # Folder config file #
 ######################
