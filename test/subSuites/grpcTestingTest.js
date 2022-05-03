@@ -97,7 +97,7 @@ module.exports = () => {
       }
     };
 
-    const addAndSend = async (num) => {
+    const addReqAndSend = async (num) => {
       try {
         await page.locator('button >> text=Add to Workspace').click();
         await page.locator(`#send-button-${num}`).click();
@@ -135,7 +135,7 @@ module.exports = () => {
 
     it('Basic testing functionality should work.', async () => {
       await page.locator('#SayHelloBidi-button').click();
-      await page.locator('a=SayHello').click();
+      await page.locator('a >> text=SayHello').click();
       // Write the script, and add it to the tests inside of composer.
       const script = "assert.strictEqual(3, 3, 'Expect correct types.');";
       await clearAndFillTestScriptArea(script);
@@ -149,47 +149,47 @@ module.exports = () => {
       await page.locator('button >> text=Remove').click();
     });
 
-    xit('Testing functionality for expects should pass.', async () => {
+    it('Testing functionality for expects should pass.', async () => {
       const script =
         "expect([1, 2]).to.be.an('array').that.does.not.include(3);";
       await clearAndFillTestScriptArea(script);
-      await addReqAndSend();
-      await app.client.$('a=Tests').click();
-      const testStatus = await app.client.$('#TestResult-0-status').getText();
+      await addReqAndSend(num);
+      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
-      await grpcObj.removeBtn.click();
+      await page.locator('button >> text=Remove').click();
     });
 
-    xit('Should access headers properties within the response object.', async () => {
+    it('Should access headers properties within the response object.', async () => {
       // Dot notation does not work with hyphenated names.
       const script =
         "assert.strictEqual(response.headers['content-type'], 'application/grpc+proto');";
       await clearAndFillTestScriptArea(script);
-      await addReqAndSend();
-      await app.client.$('a=Tests').click();
-      const testStatus = await app.client.$('#TestResult-0-status').getText();
+      await addReqAndSend(num);
+      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
-      await grpcObj.removeBtn.click();
+      await page.locator('button >> text=Remove').click();
     });
 
-    xit('Should access events properties within the response object.', async () => {
+    it('Should access events properties within the response object.', async () => {
       const script = `assert.strictEqual(response.events[0].message, "Hello string");`;
       await clearAndFillTestScriptArea(script);
-      await addReqAndSend();
-      await app.client.$('a=Tests').click();
-      const testStatus = await app.client.$('#TestResult-0-status').getText();
+      await addReqAndSend(num);
+      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
-      await grpcObj.removeBtn.click();
+      await page.locator('button >> text=Remove').click();
     });
 
-    xit('Should handle multiple variable declarations and newlines.', async () => {
+    it('Should handle multiple variable declarations and newlines.', async () => {
       const script = `const grpcTestVariable = "Hello string"; \nassert.strictEqual(response.events[0].message, grpcTestVariable)`;
       await clearAndFillTestScriptArea(script);
-      await addReqAndSend();
-      await app.client.$('a=Tests').click();
-      const testStatus = await app.client.$('#TestResult-0-status').getText();
+      await addReqAndSend(num);
+      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
-      await grpcObj.removeBtn.click();
+      await page.locator('button >> text=Remove').click();
     });
   });
 };

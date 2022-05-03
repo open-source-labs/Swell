@@ -24,8 +24,8 @@ module.exports = () => {
       await electronApp.close();
 
       try {
-        graphqlServer.close();
-        console.log('graphqlServer closed');
+        // graphqlServer.close();
+        // console.log('graphqlServer closed');
       } catch (err) {
         console.error(err);
       }
