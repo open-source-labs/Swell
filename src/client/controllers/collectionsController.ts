@@ -67,7 +67,7 @@ const collectionsController = {
       .equals(id)
       .first((foundCollection: CollectionsArray) => {
         // change name and id of collection to satisfy uniqueness requirements of db
-        foundCollection.name += ' import';
+        foundCollection.name += ' export';
         foundCollection.id = uuid();
         
         api.send('export-collection', { collection: foundCollection });
@@ -88,6 +88,20 @@ const collectionsController = {
       
         resolve('okie dokie');
       });
+    });
+  },
+
+  importFromGithub(collection: CollectionsArray, workspaces: CollectionsArray): Promise<string> {
+    return new Promise((resolve) => {
+      console.log('collections controller', collection, workspaces)
+      api.send('import-from-github', [collection, workspaces]);
+      // api.receive('add-collection', (...args: CollectionsArray[]) => {
+      //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
+      //   collectionsController.addCollectionToIndexedDb(JSON.parse(JSON.stringify(args.data)));
+      //   collectionsController.getCollections();
+      
+      resolve('okie dokie');
+      // });
     });
   },
 };

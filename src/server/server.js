@@ -86,32 +86,35 @@ app.post('/webhook', (req, res) => {
   return res.status(200).json(req.body);
 })
 
-app.get('/api/login', (req, res) => {
-  console.log('clicked the login button');
-  const url = `https://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
-  return res.sendStatus(200);
-})
-
 app.get('/signup/github/callback', authController.getToken, (req, res) => {
   console.log('clicked the login button');
-  return res.sendStatus(200);
+  res.cookie('auth', res.locals.access_token);
+  console.log('callback cookies', req.cookies)
+  // return res.status(200).json(res.locals.swellFile);
+  // return res.status(200).send(res.locals.access_token);
+  return res.status(200).redirect('http://localhost:8080');
   // const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
   // return res.status(301).redirect(url);
 });
+
+app.get('/api/import', authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
+  console.log('swell file:', res.locals.swellFile);
+  return res.status(200).send(res.locals.swellFile);
+})
 
 // //inital error handler, needs work
 app.use('*', (req,res) => {
   res.status(404).send('Not Found');
 });
 
-//Global Handler, needs work
+// Global Handler, needs work
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
     message: { err: 'An error occurred' },
   };
-  const errObj = {...defaultErr, ...err}
+  const errorObj = {...defaultErr, ...err}
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });

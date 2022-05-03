@@ -10,6 +10,7 @@ const apiObj = {
       'export-collection',
       'fatalError',
       'import-collection',
+      'import-from-github',
       'import-proto',
       'import-openapi',
       'open-http',
@@ -23,6 +24,7 @@ const apiObj = {
       'introspect',
       'open-ws',
       'send-ws',
+      'set-cookie',
       'close-ws',
       'open-openapi',
       'exportChatLog',
@@ -36,6 +38,7 @@ const apiObj = {
     const allowedChannels = [
       'add-collection',
       'clear-history-response',
+      'export-from-github',
       'introspect-reply',
       'message',
       'openapi-info',
@@ -44,6 +47,7 @@ const apiObj = {
       'protoParserFunc-return',
       'reply-gql',
       'reqResUpdate',
+      'set-cookie',
       'update-connectionArray',
     ];
     if (allowedChannels.includes(channel)) {
