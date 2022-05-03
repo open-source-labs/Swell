@@ -26,7 +26,7 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 let electronApp, page;
 
-describe('Electron UI Rendering', function () {
+xdescribe('Electron UI Rendering', function () {
   this.timeout(10000);
   // Launch electron app via Playwright
   before(async () => {
@@ -51,7 +51,7 @@ describe('Electron UI Rendering', function () {
   // -------------------------- All tests go below -----------------------------
 
 
-  describe('Window rendering', () => {
+  xdescribe('Window rendering', () => {
 
     it('Electron app should launch', async () => {
       expect(electronApp).to.be.ok
@@ -68,7 +68,7 @@ describe('Electron UI Rendering', function () {
   });
 
 
-  describe('DOM analysis', () => {
+  xdescribe('DOM analysis', () => {
     before(async () => {
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
@@ -99,7 +99,7 @@ describe('Electron UI Rendering', function () {
   // appOpensTests(); *** COMPLETE ***
 
   // // execute different types of test here
-  describe('CRUD functionality', function () {
+  xdescribe('CRUD functionality', function () {
     this.timeout(10000);
 
     reqInputTests();
@@ -110,8 +110,8 @@ describe('Electron UI Rendering', function () {
   });
 
   describe("Swell Testing functionality", function () {
-    httpTestingTest();
-    // grpcTestingTest();
+    //httpTestingTest();
+    grpcTestingTest();
     // graphqlTestingTest();
   });
 

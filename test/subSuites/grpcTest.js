@@ -47,7 +47,7 @@ module.exports = () => {
           'utf8',
           (err, data) => {
             if (err) console.log(err);
-            proto = data;
+            proto = data; //TODO: confirm this works?
             done();
           }
         );
