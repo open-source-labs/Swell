@@ -8,5 +8,9 @@ module.exports = {
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/styleMocks.js',
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/__mocks__/fileMock.js',
   },
+  collectCoverage: true,
+  coverageDirectory: "jest-coverage",
+  coverageReporters: ["json", "text"],
   resolver: null,
 };
+

@@ -24,7 +24,7 @@ describe('Electron UI Rendering', function () {
   appOpensTests();
 }).timeout(10000);
 
-xdescribe('CRUD functionality', function () {
+describe('CRUD functionality', function () {
   reqInputTests();
   // httpTest(); //Comment out because no Mongo URI for test server
   graphqlTest();
@@ -32,7 +32,7 @@ xdescribe('CRUD functionality', function () {
   grpcTest();
 }).timeout(10000);
 
-xdescribe("Swell Testing functionality", function () {
+describe("Swell Testing functionality", function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();

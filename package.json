@@ -5,7 +5,8 @@
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
-    "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test process.env.TRAVIS_LOCAL_API=true nyc mocha --exit",
+    "report": "istanbul report --dir total-coverage html",
+    "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test process.env.TRAVIS_LOCAL_API=true nyc --report-dir mocha-coverage --reporter json --reporter text mocha --exit",
     "server-sse": "node ./test/fakeSSEServer.js",
     "server-gql": "node ./test/graphqlServer.js",
     "server-grpc": "node ./test/grpcServer.js",
@@ -28,14 +29,6 @@
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
     "check-types": "tsc"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coverageDirectory": "jest-coverage",
-    "coverageReporters": ["json"]
-  },
-  "nyc": {
-    "report-dir": "mocha-coverage"
   },
   "build": {
     "npmRebuild": false,
@@ -150,6 +143,7 @@
     "graphql-tag": "^2.12.6",
     "graphql-ws": "^5.8.1",
     "highland": "^2.13.5",
+    "istanbul": "^0.4.5",
     "js-beautify": "^1.14.3",
     "mali": "^0.46.1",
     "mongoose": "^6.3.1",

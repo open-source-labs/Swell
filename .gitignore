@@ -15,6 +15,9 @@ coverage/
 src/client/docs/
 test/failedTests
 .nyc_output
+jest-coverage
+mocha-coverage
+total-coverage
 
 # Folder config file #
 ######################
