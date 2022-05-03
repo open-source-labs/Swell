@@ -1,4 +1,5 @@
 import React from 'react';
+import jsCookie from 'js-cookie';
 import axios from 'axios';
 // import path, {dirname} from 'path';
 // const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -6,7 +7,21 @@ import axios from 'axios';
 
 const NavBarContainer = (props) => {
   const signInViaGitHub = async () => {
-    window.api.send('login-via-github');
+    const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
+    window.location = url;
+    console.log(getCookie());
+    // window.api.send('set-cookie');
+  }
+
+  const getCookie = async () => {
+    const self = this;
+    console.log('hello');
+    self.window.webContents.session.cookies.get({ }, (error, cookies) => {
+      if (error) throw error;
+      self.cookies = cookies;
+      // console.log('cookies', cookies)
+      return cookies;
+    });
   }
 
   return(

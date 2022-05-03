@@ -226,6 +226,7 @@ const sendStatusToWindow = (text) => {
 ipcMain.on('login-via-github', async () => {
   const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` // ${process.env.GITHUB_CLIENT_ID};
   await shell.openExternal(url, { activate: true });
+  
 })
 
 ipcMain.on('check-for-update', () => {
@@ -282,6 +283,98 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// ============ IMPORT / EXPORT FROM GITHUB ===============
+
+// ipcMain.on('export-collection', (event, args) => {
+//   const content = JSON.stringify(args.collection);
+//   dialog.showSaveDialog(null).then((resp) => {
+//     if (resp.filePath === undefined) {
+//       console.log("You didn't save the file");
+//       return;
+//     }
+
+//     // fileName is a string that contains the path and filename created in the save file dialog.
+//     fs.writeFile(resp.filePath, content, (err) => {
+//       if (err) {
+//         console.log('An error ocurred creating the file ', err.message);
+//       }
+//     });
+//   });
+// });
+
+ipcMain.on('import-from-github', (event, args) => {
+    // const fileNames = // from res.locals.swellFile
+    // if (ext && ext !== '.txt') {
+    //   options.message = 'Invalid File Type';
+    //   options.detail = 'Please use a .txt file';
+    //   dialog.showMessageBox(null, options);
+    //   return;
+    // }
+    console.log('main.js collections', args);
+    //console.log('main.js workspaces', args.workspaces);
+    // names is the list of existing collection names in state
+    const options = {
+      type: 'error',
+      buttons: ['Okay'],
+      defaultId: 2,
+      title: 'Error',
+      message: '',
+      detail: '',
+    };
+
+    const collectionNames = args.map((obj) => obj.name);
+    const fromLocal = args[0];
+    const fromGithub = args[1];
+    const importFromGithub = (data) => {
+      // if (err) {
+      //   alert('An error ocurred reading the file :', err.message);
+      //   return;
+      // }
+      // parse data, will throw error if not parsable
+      let parsed = data[0];
+      // parsed.name already exists
+
+      // TODO: reimplement test to handle .swell files in incorrect formats
+      // try {
+      //   parsed = JSON.parse(data);
+      // } catch {
+      //   options.message = 'Invalid File Structure';
+      //   options.detail = 'Please use a JSON object';
+      //   dialog.showMessageBox(null, options);
+      //   return;
+      // }
+      if (parsed) {
+        // validate parsed data type and properties
+        if (
+          typeof parsed !== 'object' ||
+          !parsed.id ||
+          !parsed.name ||
+          !parsed.reqResArray ||
+          !parsed.createdAt
+        ) {
+          options.message = 'Invalid File';
+          options.detail = 'Please try again.';
+          dialog.showMessageBox(null, options);
+          return;
+        }
+        // duplicate collection exists already
+        if (collectionNames.includes(parsed.name)) {
+          options.message = 'That collection already exists in the app';
+          options.detail = 'Please rename file to something else';
+          dialog.showMessageBox(null, options);
+          return;
+        }
+      }
+      // send data to chromium for state update
+      event.sender.send('add-collection', JSON.stringify(parsed));
+    };
+
+    importFromGithub(fromGithub);
+
+});
+
+// ============ IMPORT / EXPORT FROM FILES ===============
 
 // export collection ipc now promise-based
 ipcMain.on('export-collection', (event, args) => {

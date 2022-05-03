@@ -142,6 +142,7 @@
     "graphql-ws": "^5.8.1",
     "highland": "^2.13.5",
     "js-beautify": "^1.14.3",
+    "js-cookie": "^3.0.1",
     "mali": "^0.46.1",
     "mongoose": "^6.3.1",
     "ngrok": "^4.3.1",
