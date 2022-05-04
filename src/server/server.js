@@ -89,7 +89,7 @@ app.post('/webhook', (req, res) => {
 app.get('/signup/github/callback', authController.getToken, (req, res) => {
   console.log('clicked the login button');
   res.cookie('auth', res.locals.access_token);
-  console.log('callback cookies', req.cookies)
+  console.log('callback cookies', req.cookies);
   // return res.status(200).json(res.locals.swellFile);
   // return res.status(200).send(res.locals.access_token);
   return res.status(200).redirect('http://localhost:8080');
@@ -98,7 +98,7 @@ app.get('/signup/github/callback', authController.getToken, (req, res) => {
 });
 
 app.get('/api/import', authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
-  console.log('swell file:', res.locals.swellFile);
+  // console.log('swell file:', res.locals.swellFile);
   return res.status(200).send(res.locals.swellFile);
 })
 

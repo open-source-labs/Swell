@@ -169,14 +169,19 @@ export interface HistoryTab {
   collections : Record<string, unknown>[];
 }
 
-export interface CollectionsArray {
+export interface Workspace {
   createdAt: Date;
+  modifiedAt: Date;
   id: string;
   name: string;
+  members?: string[];
   data?: Record<string, unknown>[];
   reqResArray: NewRequestResponseObject[];
 }
 
+export interface Workspaces {
+  data: Workspace[];
+ }
 // GraphQL Controller Interfaces
 
 export interface GraphQLResponseObject {

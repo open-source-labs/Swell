@@ -2,21 +2,29 @@ import { v4 as uuid } from 'uuid';
 import db from '../db';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { CollectionsArray, WindowAPIObject, WindowExt } from '../../types';
+import { Workspace, Workspaces, WindowAPIObject, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 
 api.receive('add-collection', (collectionData: any) => {
   // Add parsed text file to db
-  collectionsController.addCollectionToIndexedDb(JSON.parse(collectionData));
+  collectionsController.addCollectionToIndexedDb(collectionData);
   collectionsController.getCollections();
 });
 
 const collectionsController = {
-  addCollectionToIndexedDb(collection: CollectionsArray): void {
-    db.table('collections')
-      .put(collection)
+  addCollectionToIndexedDb(collection: Workspace[]): void {
+    // if (Array.isArray(collection) === false) collection = [collection];
+    console.log('addCollection type', typeof collection)
+    console.log('addCollection', collection)
+    for (let workspace of collection) {
+       let workspaceJSON= JSON.stringify(workspace);
+      console.log('stringified workspace', workspaceJSON)
+      db.table('collections')
+      .put(workspaceJSON)
       .catch((err: string) => console.log('Error in addToCollection', err));
+    }
+
   },
 
   deleteCollectionFromIndexedDb(id: string): void {
@@ -25,27 +33,27 @@ const collectionsController = {
       .catch((err: string) => console.log('Error in deleteFromCollection', err));
   },
 
-  updateCollectionInIndexedDb(collection: CollectionsArray): void {
+  updateCollectionInIndexedDb(collection: Workspace): void {
     collectionsController.deleteCollectionFromIndexedDb(collection.id);
-    collectionsController.addCollectionToIndexedDb(collection);
+    collectionsController.addCollectionToIndexedDb([collection]);
   },
 
   getCollections(): void {
     db.table('collections')
       .toArray()
-      .then((collections: CollectionsArray[] ) => {
-        collections.forEach((collection: CollectionsArray) => {
+      .then((collections: Workspace[] ) => {
+        collections.forEach((collection: Workspace) => {
           collection.createdAt = new Date(collection.createdAt);
         });
         const collectionsArr = collections.sort(
-          (a: CollectionsArray, b: CollectionsArray) => b.createdAt.valueOf() - a.createdAt.valueOf()
+          (a: Workspace, b: Workspace) => b.createdAt.valueOf() - a.createdAt.valueOf()
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
       })
       .catch((err: string) => console.log('Error in getCollection s', err));
   },
 
-  collectionNameExists(obj: CollectionsArray): Promise<boolean> {
+  collectionNameExists(obj: Workspace): Promise<boolean> {
     const { name } = obj;
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
@@ -65,7 +73,7 @@ const collectionsController = {
     db.table('collections')
       .where('id')
       .equals(id)
-      .first((foundCollection: CollectionsArray) => {
+      .first((foundCollection: Workspace) => {
         // change name and id of collection to satisfy uniqueness requirements of db
         foundCollection.name += ' export';
         foundCollection.id = uuid();
@@ -78,10 +86,11 @@ const collectionsController = {
       });
   },
 
-  importCollection(collection: CollectionsArray): Promise<string> {
+  importCollection(collection: Workspace): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
-      api.receive('add-collection', (...args: CollectionsArray[]) => {
+      api.receive('add-collection', (...args: Workspace[]) => {
+        console.log('importCollection', args)
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
         collectionsController.addCollectionToIndexedDb(JSON.parse(JSON.stringify(args.data)));
         collectionsController.getCollections();
@@ -91,17 +100,28 @@ const collectionsController = {
     });
   },
 
-  importFromGithub(collection: CollectionsArray, workspaces: CollectionsArray): Promise<string> {
+  // export interface Workspace {
+  //   createdAt: Date;
+  //   modifiedAt: Date;
+  //   id: string;
+  //   name: string;
+  //   members?: string[];
+  //   data?: Record<string, unknown>[];
+  //   reqResArray: NewRequestResponseObject[];
+  // }
+  
+  importFromGithub(joinedWorkspaces: Workspace[]): Promise<string> {
     return new Promise((resolve) => {
-      console.log('collections controller', collection, workspaces)
-      api.send('import-from-github', [collection, workspaces]);
-      // api.receive('add-collection', (...args: CollectionsArray[]) => {
-      //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
-      //   collectionsController.addCollectionToIndexedDb(JSON.parse(JSON.stringify(args.data)));
-      //   collectionsController.getCollections();
+      api.send('import-from-github', joinedWorkspaces);
+      console.log('got here');
+      api.receive('add-collection', (...args: Workspace[]) => {
+        console.log('add-collection', args)
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
+        // collectionsController.addCollectionToIndexedDb(args.data);
+        // collectionsController.getCollections();
       
-      resolve('okie dokie');
-      // });
+        resolve('okie dokie');
+      });
     });
   },
 };
