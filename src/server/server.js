@@ -86,15 +86,11 @@ app.post('/webhook', (req, res) => {
   return res.status(200).json(req.body);
 })
 
-app.get('/signup/github/callback', authController.getToken, (req, res) => {
-  console.log('clicked the login button');
+
+app.get('/signup/github/callback', authController.getToken, authController.getUserInfo, (req, res) => {
   res.cookie('auth', res.locals.access_token);
-  console.log('callback cookies', req.cookies)
-  // return res.status(200).json(res.locals.swellFile);
-  // return res.status(200).send(res.locals.access_token);
+  res.cookie('username', res.locals.userInfo.login);
   return res.status(200).redirect('http://localhost:8080');
-  // const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
-  // return res.status(301).redirect(url);
 });
 
 app.get('/api/import', authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
