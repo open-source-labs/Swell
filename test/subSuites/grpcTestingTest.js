@@ -1,8 +1,4 @@
-const grpcObj = require('../pageObjects/GrpcObj.js');
 const grpcServer = require('../grpcServer.js');
-const app = require('../testApp.js');
-
-
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect

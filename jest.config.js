@@ -9,7 +9,7 @@ module.exports = {
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/__mocks__/fileMock.js',
   },
   collectCoverage: true,
-  coverageDirectory: "jest-coverage",
+  coverageDirectory: "./test/coverage/jest-coverage",
   coverageReporters: ["json", "text"],
   resolver: null,
 };

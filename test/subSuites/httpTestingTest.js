@@ -1,14 +1,10 @@
-const chaiHttp = require('chai-http');
-const app = require('../testApp.js');
-const composerObj = require('../pageObjects/ComposerObj');
-const workspaceObj = require('../pageObjects/WorkspaceObj');
-
-
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path');
 const fs = require('fs-extra');
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
 
 let electronApp, page, num=0;
 

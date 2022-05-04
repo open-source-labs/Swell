@@ -1,12 +1,10 @@
-const assert = require('assert'); // node's own assertion module
 const fs = require('fs-extra');
-const app = require('../testApp');
 const {_electron: electron} = require('playwright');
 const pwTest = require('@playwright/test');
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path');
-// const app = require('../testApp');
+
 let electronApp, page;
 
 module.exports = () => {

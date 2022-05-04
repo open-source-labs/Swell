@@ -1,18 +1,18 @@
-// Integration test for electron for spectron
+// End-to-end testing on the electron app using Playwright
 // ****** use "npm run test-mocha" or "npm run test" to run these tests ******
 
-// Import tests
+// Import various tests
 const appOpensTests = require('./subSuites/appOpens');
 const reqInputTests = require('./subSuites/reqInputTests');
 const httpTest = require('./subSuites/httpTest');
 const websocketTest = require('./subSuites/websocketTest');
 const grpcTest = require('./subSuites/grpcTest');
 const graphqlTest = require('./subSuites/graphqlTest');
-
 const httpTestingTest = require('./subSuites/httpTestingTest');
 const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
 
+// Package requirements
 const path = require('path');
 const fs = require('fs-extra');
 
@@ -20,13 +20,14 @@ const fs = require('fs-extra');
 fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 
+// Testing suite 
 describe('Electron UI Rendering', function () {
   appOpensTests();
 }).timeout(10000);
 
 describe('CRUD functionality', function () {
   reqInputTests();
-  // httpTest(); //Comment out because no Mongo URI for test server
+  httpTest(); //Comment out because no Mongo URI for test server
   graphqlTest();
   websocketTest();
   grpcTest();

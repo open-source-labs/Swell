@@ -1,9 +1,4 @@
-const composerObj = require('../pageObjects/ComposerObj.js');
-const workspaceObj = require('../pageObjects/WorkspaceObj.js');
-const app = require('../testApp.js');
 const graphqlServer = require('../graphqlServer');
-
-
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
