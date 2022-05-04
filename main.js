@@ -305,10 +305,10 @@ app.on('activate', () => {
 
 ipcMain.on('import-from-github', async (event, args) => {
   async function popOverwrite(workspace) {
-    // TODO: add in mod date
+    // TODO: add in mod date, is Yes No ordering correct on popup?
     const options = {
       type: 'question',
-      buttons: ['Yes', 'No'],
+      buttons: ['No', 'Yes'],
       defaultId: 0,
       title: 'Question',
       message: `The workspace ${workspace.name} already exists in Swell`,
@@ -326,19 +326,14 @@ ipcMain.on('import-from-github', async (event, args) => {
   for(let workspace of args) {
     if (ids[workspace.id]) {
       const result = await popOverwrite(workspace);
-      // if user wants to overwrite, take the array index from ids and overwrite
-      console.log('popup data', data);
-      if (true) {
+      if (result.response === 1) {
         newWorkspaces[ids[workspace.id]] = workspace;
-        // since the uuids are the same, ids object does not need to be updated
         continue;
       }
     }
-    // if it doesn't exist, return workspace
     ids[workspace.id] = index;
     index++;
     newWorkspaces.push(workspace)
-    console.log('newWorkspaces', newWorkspaces)
 
   };
   // send full array of workspaces to chromium for state update

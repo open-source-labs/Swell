@@ -14,14 +14,10 @@ api.receive('add-collection', (collectionData: any) => {
 
 const collectionsController = {
   addCollectionToIndexedDb(collection: Workspace[]): void {
-    // if (Array.isArray(collection) === false) collection = [collection];
-    console.log('addCollection type', typeof collection)
-    console.log('addCollection', collection)
+    // this method needs to recieve an array of workspaces 
     for (let workspace of collection) {
-       let workspaceJSON= JSON.stringify(workspace);
-      console.log('stringified workspace', workspaceJSON)
       db.table('collections')
-      .put(workspaceJSON)
+      .put(workspace)
       .catch((err: string) => console.log('Error in addToCollection', err));
     }
 
@@ -89,12 +85,10 @@ const collectionsController = {
   importCollection(collection: Workspace): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
-      api.receive('add-collection', (...args: Workspace[]) => {
-        console.log('importCollection', args)
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
-        collectionsController.addCollectionToIndexedDb(JSON.parse(JSON.stringify(args.data)));
+      api.receive('add-collection', (workspaces: Workspace[]) => {
+        // console.log('importCollection', workspaces)
+        collectionsController.addCollectionToIndexedDb(workspaces);
         collectionsController.getCollections();
-      
         resolve('okie dokie');
       });
     });
@@ -113,13 +107,10 @@ const collectionsController = {
   importFromGithub(joinedWorkspaces: Workspace[]): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-from-github', joinedWorkspaces);
-      console.log('got here');
-      api.receive('add-collection', (...args: Workspace[]) => {
-        console.log('add-collection', args)
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'data' does not exist on type 'any[]'.
-        // collectionsController.addCollectionToIndexedDb(args.data);
-        // collectionsController.getCollections();
-      
+      api.receive('add-collection', (workspaces: Workspace[]) => {
+        // console.log('importFromGithub', workspaces)
+        collectionsController.addCollectionToIndexedDb(workspaces);
+        collectionsController.getCollections();
         resolve('okie dokie');
       });
     });
