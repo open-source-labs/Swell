@@ -10,11 +10,12 @@ const NavBarContainer = (props) => {
   const signInViaGitHub = async () => {
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
-    const userData = await axios.get('/api/getUserData', {
+    const userData = await axios.get('api/getUserData', {
       headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
     })
     console.log('userdata', userData)
     // console.log(getCookie());
+    return userData
   }
 
   const getCookie = async () => {

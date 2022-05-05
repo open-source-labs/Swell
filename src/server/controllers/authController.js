@@ -27,7 +27,7 @@ authController.getToken = async (req, res, next) => {
 
 authController.getProfile = async (req, res, next) => {
   const url = 'https://api.github.com/user';
-  //console.log('cookies', req.cookies)
+  console.log('cookies auth', req.cookies.auth)
   //console.log('cookies auth', req.cookies.auth)
   try {
     const profileInfo = await axios.get(url, {

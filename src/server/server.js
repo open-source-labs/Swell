@@ -25,24 +25,24 @@ const authController = require('./controllers/authController');
 const server = require('http').createServer(app); 
 
 // https://www.npmjs.com/package/socket.io
-// const io = require('socket.io')(server, {
-//   cors: {
-//     origin: '*'
-//   }
-// });
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*'
+  }
+});
 
 // if u want to use routers, set socket io then google the rest
 // https://stackoverflow.com/questions/47249009/nodejs-socket-io-in-a-router-page
-// app.set('socketio', io);
+app.set('socketio', io);
 
 
-// io.on('connection', (client)=>{
-//   console.log('established websocket connection');
+io.on('connection', (client)=>{
+  console.log('established websocket connection');
 
-//   // client.on('message', (message) => {
-//   //   console.log('message received: ', message);
-//   // });
-// });
+  // client.on('message', (message) => {
+  //   console.log('message received: ', message);
+  // });
+});
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -78,18 +78,17 @@ app.post('/webhook', (req, res) => {
   return res.status(200).json(req.body);
 })
 
+// put authController.getToken back in later
 app.get('/signup/github/callback', authController.getToken, (req, res) => {
   console.log('clicked the login button');
-  res.cookie('auth', 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);
-  // res.cookie('auth', res.locals.access_token);
+  //res.cookie('auth', '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');
+  res.cookie('auth', res.locals.access_token);
   console.log('callback cookies', req.cookies);
   return res.status(200).redirect('http://localhost:8080');
 });
 
 app.get('/api/getUserData', authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
-  // res.locals.github.repos
-  // res.locals.github.profile
-  // res.locals.github.swellUrls
+  console.log(res.locals.github)
   return res.status(200).send(res.locals.github);
 })
 
