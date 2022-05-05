@@ -1,6 +1,8 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Button } from '@mui/material';
+
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
 
 const LoginContainer = (props) => {
   const { session, setSession } = props;
@@ -22,25 +24,46 @@ const LoginContainer = (props) => {
     console.log(endSessionLog);
   }
 
+  console.log(session);
+
   return(
-    <div
-      className="
-        is-flex
-        is-flex-direction-row
-        is-justify-content-space-around
-        is-align-items-center
-        mt-3"
-      id="login"
-    >
+    <div>
       {session.isActiveSession
         ? 
         <div>
-          <button onClick={handleSignOut}>Sign Out</button>
+          <Avatar alt={session.username} src={session.avatar}/>
+          <Button variant="contained" color="secondary" onClick={handleSignOut}>Sign Out</Button>
         </div>
-        : <Button variant="contained" onClick={signInViaGitHub}>Sign In via Github</Button>
+        : <Button variant="contained" color="secondary" onClick={signInViaGitHub}>Sign In via Github</Button>
       }
     </div>
   );
 }
+
+
+
+{/* <AppBar position="static">
+<Container maxWidth="xl">
+  <Toolbar disableGutters>
+    <Typography
+      variant="h6"
+      noWrap
+      component="div"
+      sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+    >
+      LOGO
+    </Typography>
+
+    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleOpenNavMenu}
+        color="inherit"
+      > */}
+
+
 
 export default LoginContainer;

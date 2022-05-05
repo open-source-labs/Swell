@@ -161,6 +161,7 @@
     "react-codemirror2": "^7.2.1",
     "react-dom": "^18.0.0",
     "react-dropzone": "^12.1.0",
+    "react-github-btn": "^1.2.2",
     "react-redux": "^8.0.1",
     "react-spring": "^9.4.4",
     "redux": "^4.2.0",

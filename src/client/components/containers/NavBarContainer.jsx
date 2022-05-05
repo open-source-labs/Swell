@@ -4,6 +4,13 @@ import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
+import GitHubButton from 'react-github-btn'
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+
 const NavBarContainer = (props) => {
   const [session, setSession] = useState(
     {
@@ -41,22 +48,15 @@ const NavBarContainer = (props) => {
   }, []);
 
   return(
-    <div 
-      className="
-        is-flex
-        is-flex-direction-row
-        is-justify-content-space-around
-        is-align-items-center
-        mt-3"
-      id="navbar"
-    >
-      <LoginContainer session={session} setSession={setSession}/>      
-      Swell
-      <button>
-        Star This Repository
-      </button>
-    </div>
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <LoginContainer session={session} setSession={setSession}/>
+          <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
-} 
+  } 
 
 export default NavBarContainer;
