@@ -1,6 +1,8 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -63,13 +65,22 @@ const LoginContainer = (props) => {
     }}>
       {session.isActiveSession
         ? 
-        <Box>
+        <Box sx={{ 
+          flexGrow: 0,
+          display: { xs: 'none', md: 'flex' },
+          alignItems: 'center',
+        }}>
+          <MoreVertRoundedIcon fontSize='small' onClick={handleSignOut}/>
           <StyledBadge
+            sx={{
+              m: 1,
+            }}
             overlap="circular"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
             variant="dot">
-            <Avatar alt={session.username} onClick={handleSignOut} src={session.avatar}/> 
+            <Avatar alt={session.username} src={session.avatar}/> 
           </StyledBadge>
+          <Button variant="contained">Invite +</Button>
         </Box>
         : 
         <Box>

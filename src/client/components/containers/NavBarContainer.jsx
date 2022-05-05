@@ -3,14 +3,13 @@ import LoginContainer from './LoginContainer';
 import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+// import swellLogo from '../../../assets/icons/64x64.png';
 
 import GitHubButton from 'react-github-btn'
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
 const NavBarContainer = (props) => {
@@ -50,7 +49,7 @@ const NavBarContainer = (props) => {
     }
   }, []);
 
-  const pages = ['HTTP2', 'GRAPHQL', 'GRPC', 'WEB SOCKETS', 'WEBRTC', 'OPENAI', 'WEBHOOKS'];
+  const pages = ['HTTP2', 'GRAPHQL', 'GRPC', 'WEB SOCKETS', 'WEBRTC', 'OPENAPI', 'WEBHOOKS'];
 
   return(
     <AppBar position="static">
@@ -67,6 +66,7 @@ const NavBarContainer = (props) => {
               <Button
                 key={page}
                 variant="contained"
+                color="secondary"
                 sx={{
                   m: 1
                 }}
@@ -79,6 +79,7 @@ const NavBarContainer = (props) => {
             flexGrow: 0,
             display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
+            m: 1,
           }}>
             <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
             {/* TODO: add Swell icon next to "Star this Repo" button */}
