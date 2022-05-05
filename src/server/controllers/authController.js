@@ -62,7 +62,7 @@ authController.getProfile = async (req, res, next) => {
       },
     });
     res.locals.github = {};
-    res.locals.github.profile = profileInfo.data;
+    res.locals.github.profile = response.data;
     return next();
   } catch (err) {
     return next({
