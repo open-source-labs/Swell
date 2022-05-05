@@ -71,17 +71,14 @@ app.delete('/webhookServer', (req, res) => {
   return res.status(200).json('the server has been deleted');
 });
 
-// listening for stuff
 app.post('/webhook', (req, res) => {
   const data = {headers: req.headers, body: req.body}
   io.emit('response', data);
   return res.status(200).json(req.body);
 })
 
-// put authController.getToken back in later
 app.get('/signup/github/callback', authController.getToken, (req, res) => {
   console.log('clicked the login button');
-  //res.cookie('auth', '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');
   res.cookie('auth', res.locals.access_token);
   console.log('callback cookies', req.cookies);
   return res.status(200).redirect('http://localhost:8080');
@@ -93,7 +90,6 @@ app.get('/api/getUserData', authController.getProfile, authController.getRepos, 
 })
 
 app.get('/api/import', (req, res) => {
-  // console.log('swell file:', res.locals.swellFile);
   return res.status(200).send(res.locals.swellFile);
 })
 

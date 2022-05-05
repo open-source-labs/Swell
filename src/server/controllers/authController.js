@@ -62,7 +62,6 @@ authController.getRepos = async (req, res, next) => {
       },
     });
     res.locals.github.repos = response.data.items;
-    //console.log('repos\n', res.locals.github.repos)
     return next();
   } catch (err) {
     return next({
@@ -86,18 +85,7 @@ authController.getSwellFile = async (req, res, next) => {
         accept: 'application/vnd.github.v3+json',
       } 
     });
-    res.locals.github.swellUrls = response.data.items;
-    //console.log('swellurls\n', res.locals.github.swellUrls)
-    // response = await axios(res.locals.swellUrl, {
-    //   method: 'GET',
-    //   headers: {
-    //     authorization: `token ${req.cookies.auth}`,
-    //     accept: 'application/vnd.github.v3+json',
-    //   },
-    // });
-
-    // const buff = new Buffer.from(response.data.content, 'base64');
-    // res.locals.swellFile = JSON.parse(buff)
+    res.locals.github.files = response.data.items;
     return next();
   } catch (err) {
     return next({
