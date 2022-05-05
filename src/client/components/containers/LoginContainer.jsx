@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import { Button } from '@mui/material';
 
 const LoginContainer = (props) => {
   const { session, setSession } = props;
@@ -46,10 +47,9 @@ const LoginContainer = (props) => {
       {session.isActiveSession
         ? 
         <div>
-          <img style={{ maxHeight: '20px' }} src={session.avatar}/>
           <button onClick={handleSignOut}>Sign Out</button>
         </div>
-        : <button onClick={signInViaGitHub}>Sign In via Github</button>
+        : <Button variant="contained" onClick={signInViaGitHub}>Sign In via Github</Button>
       }
     </div>
   );

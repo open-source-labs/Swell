@@ -43,11 +43,11 @@ const NavBarContainer = (props) => {
         mt-3"
       id="navbar"
     >
+      <LoginContainer session={session} setSession={setSession}/>      
       Swell
       <button>
         Star This Repository
       </button>
-      <LoginContainer session={session} setSession={setSession}/>      
     </div>
   );
 } 
