@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoginContainer from './LoginContainer';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const NavBarContainer = (props) => {
   const [session, setSession] = useState(
@@ -8,9 +10,27 @@ const NavBarContainer = (props) => {
       avatar: null,
       teams: [],
       currentTeam: null,
+      test: 0,
       isActiveSession: false,
     }
-  )
+  );
+
+  useEffect(() => {
+    const checkAuth = async (token) => {
+      const response = await axios.get('https://api.github.com/user', {
+        headers: { Authorization: `token ${token}`},
+      });
+      if (response.headers['x-oauth-scopes'] === 'repo') {
+        setSession((session) => ({ ...session, username: response.data.login, isActiveSession: true}));
+        console.log(`-------ACTIVE SESSION-------- \n user: ${response.data.login} \n token: ${token}`);
+      }
+    }
+    const { auth } = Cookies.get();
+    if (auth) {
+      
+      checkAuth(auth);
+    }
+  }, []);
 
   return(
     <div 

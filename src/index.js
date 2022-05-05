@@ -24,7 +24,7 @@ const head = document.querySelector('head');
 const meta = document.createElement('meta');
 meta.httpEquiv = 'Content-Security-Policy';
 meta.content = `
-  default-src 'self' http://localhost:3000 ws://localhost:3000 https://github.com;
+  default-src 'self' http://localhost:3000 ws://localhost:3000 https://api.github.com;
   img-src 'self' data:;
   child-src 'none';`;
 head.appendChild(meta);

@@ -1,9 +1,9 @@
 import React from 'react';
 
 const LoginContainer = (props) => {
+  const { session } = props;
+
   const signInViaGitHub = async (event) => {
-    console.log('session:', props.session);
-    console.log('setSession:', props.setSession);
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
     // console.log(getCookie());
@@ -19,6 +19,17 @@ const LoginContainer = (props) => {
   //     return cookies;
   //   });
   // }
+  console.log(session);
+  console.log(session.isActiveSession);
+
+  let button;
+  if (session.isActiveSession) {
+    console.log('testing if this is being hit');
+    button = <button>Sign Out</button>
+  }
+  else {
+    button = <button onClick={signInViaGitHub}>Sign In via Github</button>
+  }
 
   return(
     <div 
@@ -30,9 +41,7 @@ const LoginContainer = (props) => {
         mt-3"
       id="login"
     >
-      <button onClick={signInViaGitHub}>
-        Sign In via GitHub
-      </button>
+      {button}
     </div>
   );
 }
