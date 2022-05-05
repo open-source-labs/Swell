@@ -193,7 +193,7 @@ const initialState: StateInterface = {
   },
 };
 
-const businessReducer = (state = initialState, action: Record<string, unknown>): Record<string, unknown> => {
+const businessReducer = (state = initialState, action: Record<string, unknown>): StateInterface => {
   switch (action.type) {
     case types.GET_HISTORY: {
       return {
@@ -204,7 +204,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
 
     case types.DELETE_HISTORY: {
       const deleteId: number = action.payload.id;
-      const deleteDate: Date = format(action.payload.createdAt, 'MM/dd/yyyy');
+      const deleteDate: string = format(action.payload.createdAt, 'MM/dd/yyyy');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newHistory.forEach((obj: $TSFixMe, i: $TSFixMe) => {
@@ -250,7 +250,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
       };
     }
 
-    case types.RESET_COMPOSER_FIELDS: {
+    case types.RESET_COMPOSER_FIELDS: { 
       return {
         ...state,
         newRequestHeaders: {
@@ -269,7 +269,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
           rawType: 'text/plain',
           JSONFormatted: true,
         },
-        newRequestFields: {
+        newRequestFields: { // should this clear every field or just protocol?
           ...state.newRequestFields,
           protocol: '',
         },

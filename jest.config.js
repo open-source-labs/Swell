@@ -10,7 +10,7 @@ module.exports = {
   },
   collectCoverage: true,
   coverageDirectory: "./test/coverage/jest-coverage",
-  coverageReporters: ["json", "text"],
+  coverageReporters: ["json", "text", "html"],
   resolver: null,
 };
 

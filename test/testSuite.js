@@ -11,6 +11,7 @@ const graphqlTest = require('./subSuites/graphqlTest');
 const httpTestingTest = require('./subSuites/httpTestingTest');
 const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
+const webRTCTest = require('./subSuites/webRTCTest');
 
 // Package requirements
 const path = require('path');
@@ -26,11 +27,12 @@ describe('Electron UI Rendering', function () {
 }).timeout(10000);
 
 describe('CRUD functionality', function () {
-  reqInputTests();
+  reqInputTests(); 
   httpTest(); //Comment out because no Mongo URI for test server
   graphqlTest();
   websocketTest();
   grpcTest();
+  webRTCTest();
 }).timeout(10000);
 
 describe("Swell Testing functionality", function () {
