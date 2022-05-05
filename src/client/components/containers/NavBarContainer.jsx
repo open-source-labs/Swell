@@ -11,19 +11,20 @@ const NavBarContainer = (props) => {
       avatar: null,
       teams: [],
       currentTeam: null,
-      test: 0,
       isActiveSession: false,
     }
   );
-
   useEffect(() => {
     const checkAuth = async (token) => {
       const response = await axios.get('https://api.github.com/user', {
         headers: { Authorization: `token ${token}`},
       });
       if (response.headers['x-oauth-scopes'] === 'repo') {
-        setSession((session) => ({ ...session, username: response.data.login, isActiveSession: true}));
-        console.log(`-------ACTIVE SESSION-------- \n user: ${response.data.login} \n token: ${token}`);
+        setSession((session) => ({ ...session,
+          avatar: response.data.avatar_url,
+          username: response.data.login,
+          isActiveSession: true}));
+        console.log(`-------ACTIVE SESSION--------\nuser: ${response.data.login}\ntoken: ${token}`);
         // get user data here and send to db
         const userData = await axios.get('api/getUserData', {
           headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
@@ -49,11 +50,11 @@ const NavBarContainer = (props) => {
         mt-3"
       id="navbar"
     >
+      <LoginContainer session={session} setSession={setSession}/>      
       Swell
       <button>
         Star This Repository
       </button>
-      <LoginContainer session={session} setSession={setSession}/>      
     </div>
   );
 } 

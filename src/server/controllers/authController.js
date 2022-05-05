@@ -1,9 +1,13 @@
 const axios = require('axios');
+const { access } = require('fs');
 const fs = require('node:fs/promises');
 const { buffer } = require('stream/consumers');
 
 const authController = {};
 
+/**
+ * Middleware for the /signup/github/callback route
+ */
 authController.getToken = async (req, res, next) => {
   const requestToken = req.query.code;
   const url = `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_SECRET_ID}&code=${requestToken}&scope=repo`;
@@ -11,7 +15,6 @@ authController.getToken = async (req, res, next) => {
     const response = await axios.post(url, {
       headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
     });
-    // console.log('access token', response);
     // TODO: make this less hacky :)
     const token = response.data.split('=')[1].split('&')[0];
     res.locals.access_token = token;
@@ -25,12 +28,35 @@ authController.getToken = async (req, res, next) => {
   }
 };
 
+authController.getUserInfo = async (req, res, next) => {
+  const { access_token } = res.locals;
+  const url = 'https://api.github.com/user';
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        authorization: `token ${access_token}`,
+      },
+    });
+    res.locals.userInfo = response.data;
+    return next();
+  } catch (err) {
+    return next({
+      log: `Error in authController.getProfile Err: ${err.message}`,
+      status: 500,
+      message: { err: 'An error occurred' },
+    });
+  }
+}
+
+/**
+ * Middleware for the /api/import route
+ */
 authController.getProfile = async (req, res, next) => {
   const url = 'https://api.github.com/user';
   console.log('cookies auth', req.cookies.auth)
   //console.log('cookies auth', req.cookies.auth)
   try {
-    const profileInfo = await axios.get(url, {
+    const response = await axios.get(url, {
       headers: {
         authorization: `token ${req.cookies.auth}`,
       },

@@ -1,38 +1,29 @@
 import React from 'react';
+import Cookies from 'js-cookie';
+import { Button } from '@mui/material';
 
 const LoginContainer = (props) => {
-  const { session } = props;
+  const { session, setSession } = props;
 
-  const signInViaGitHub = async (event) => {
-    // the client_id should not be permanently hard coded?
+  const signInViaGitHub = async () => {
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
-    // getCookie()
   }
 
-  // const getCookie = async () => {
-  //   const self = this;
-  //   console.log('hello');
-  //   self.window.webContents.session.cookies.get({ }, (error, cookies) => {
-  //     if (error) throw error;
-  //     self.cookies = cookies;
-  //     // console.log('cookies', cookies)
-  //     return cookies;
-  //   });
-  // }
-  console.log(session);
-  console.log(session.isActiveSession);
-
-  let button;
-  if (session.isActiveSession) {
-    button = <button>Sign Out</button>
-  }
-  else {
-    button = <button onClick={signInViaGitHub}>Sign In via Github</button>
+  const handleSignOut = () => {
+    const endSessionLog = `--------ENDING SESSION--------\nuser: ${session.username}\ntoken: ${Cookies.get('auth')}\nSESSION ENDED`;
+    setSession({
+      username: null,
+      avatar: null,
+      teams: [],
+      currentTeam: null,
+      isActiveSession: false,
+    });
+    console.log(endSessionLog);
   }
 
   return(
-    <div 
+    <div
       className="
         is-flex
         is-flex-direction-row
@@ -41,7 +32,13 @@ const LoginContainer = (props) => {
         mt-3"
       id="login"
     >
-      {button}
+      {session.isActiveSession
+        ? 
+        <div>
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+        : <Button variant="contained" onClick={signInViaGitHub}>Sign In via Github</Button>
+      }
     </div>
   );
 }

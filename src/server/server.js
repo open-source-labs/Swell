@@ -77,8 +77,8 @@ app.post('/webhook', (req, res) => {
   return res.status(200).json(req.body);
 })
 
-app.get('/signup/github/callback', authController.getToken, (req, res) => {
-  console.log('clicked the login button');
+
+app.get('/signup/github/callback', authController.getToken, authController.getUserInfo, (req, res) => {
   res.cookie('auth', res.locals.access_token);
   console.log('callback cookies', req.cookies);
   return res.status(200).redirect('http://localhost:8080');
