@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const LoginContainer = (props) => {
   const { session, setSession } = props;
 
-  const signInViaGitHub = async (event) => {
+  const signInViaGitHub = async () => {
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
     // console.log(getCookie());
@@ -33,14 +33,6 @@ const LoginContainer = (props) => {
   //   });
   // }
 
-  let button;
-  if (session.isActiveSession) {
-    button = <button onClick={handleSignOut}>Sign Out</button>
-  }
-  else {
-    button = <button onClick={signInViaGitHub}>Sign In via Github</button>
-  }
-
   return(
     <div 
       className="
@@ -51,7 +43,14 @@ const LoginContainer = (props) => {
         mt-3"
       id="login"
     >
-      {button}
+      {session.isActiveSession
+        ? 
+        <div>
+          <img style={{ maxHeight: '20px' }} src={session.avatar}/>
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+        : <button onClick={signInViaGitHub}>Sign In via Github</button>
+      }
     </div>
   );
 }
