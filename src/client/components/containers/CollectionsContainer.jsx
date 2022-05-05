@@ -8,22 +8,22 @@ import axios from 'axios';
 function CollectionsContainer() {
   const dispatch = useDispatch();
 
-  const collections = useSelector((store) => store.business.collections);
+  const localWorkspaces = useSelector((store) => store.business.collections);
   const isDark = useSelector(state => state.ui.isDark);
 
   const handleClick = () => {
-    collectionsController.importCollection(collections);
+    collectionsController.importCollection(localWorkspaces);
   };
 
   const handleImportFromGithub = async () => {
     const response = await axios('/api/import');
-    const workspaces = response.data;
+    const githubWorkspaces = response.data;
     console.log('swellfile response', response.data);
-    collectionsController.importFromGithub(collections, workspaces);
+    collectionsController.importFromGithub([...localWorkspaces, ...githubWorkspaces]);
     // window.api.send('import-from-github', collections, workspaces);
   }
 
-  const collectionComponents = collections.map((collection, idx) => {
+  const collectionComponents = localWorkspaces.map((collection, idx) => {
     return (
       <Collection
         content={collection}

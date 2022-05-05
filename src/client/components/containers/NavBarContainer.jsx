@@ -1,6 +1,7 @@
 import React from 'react';
 import jsCookie from 'js-cookie';
 import axios from 'axios';
+import githubController from '../../controllers/githubController';
 // import path, {dirname} from 'path';
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 // import { ipcRenderer } from 'electron';
@@ -9,8 +10,11 @@ const NavBarContainer = (props) => {
   const signInViaGitHub = async () => {
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
-    console.log(getCookie());
-    // window.api.send('set-cookie');
+    const userData = await axios.get('/api/getUserData', {
+      headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
+    })
+    console.log('userdata', userData)
+    // console.log(getCookie());
   }
 
   const getCookie = async () => {

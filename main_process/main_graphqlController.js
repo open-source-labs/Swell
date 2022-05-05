@@ -1,6 +1,6 @@
 const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@apollo/client');
 const gql = require('graphql-tag');
-const { introspectionQuery } = require('graphql');
+const { IntrospectionQuery } = require('graphql');
 const { onError } = require("@apollo/client/link/error");
 const axios = require('axios');
 const cookie = require('cookie');
@@ -188,7 +188,7 @@ const graphqlController = {
       method: 'post',
       url: req.url,
       headers: headers,
-      data: JSON.stringify({ query: introspectionQuery }),
+      data: JSON.stringify({ query: IntrospectionQuery }),
     })
       .then((data) => event.sender.send('introspect-reply', data.data))
       .catch((err) =>

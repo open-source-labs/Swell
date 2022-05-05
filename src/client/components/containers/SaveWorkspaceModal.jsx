@@ -37,7 +37,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
       createdAt: new Date(),
       reqResArray: clonedArray,
     };
-    collectionsController.addCollectionToIndexedDb(collectionObj); //add to IndexedDB
+    collectionsController.addCollectionToIndexedDb([collectionObj]); //add to IndexedDB
     dispatch(actions.collectionAdd(collectionObj));
     setShowModal(false);
     setCollectionNameErrorStyles(false);
@@ -136,14 +136,12 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
                   onClick={() => {
                     setShowModal(false);
                     setCollectionNameErrorStyles(false);
-                  }}
-                >
+                  }}>
                   Cancel
                 </button>
                 <button
                   className="button is-small is-fullwidth m-3 "
-                  onClick={saveName}
-                >
+                  onClick={saveName}>
                   Save
                 </button>
               </div>
