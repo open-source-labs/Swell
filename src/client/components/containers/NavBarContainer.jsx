@@ -1,15 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import LoginContainer from './LoginContainer';
+import githubController from '../../controllers/githubController';
+import Cookies from 'js-cookie';
 import axios from 'axios';
-// import path, {dirname} from 'path';
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-// import { ipcRenderer } from 'electron';
 
 const NavBarContainer = (props) => {
-  const signInViaGitHub = () => {
-    //ipcRenderer.invoke('')
-    // window.location = 'http://localhost:3000/api/login';
-    window.api.send('login-via-github');
-  }
+  const [session, setSession] = useState(
+    {
+      username: null,
+      avatar: null,
+      teams: [],
+      currentTeam: null,
+      isActiveSession: false,
+    }
+  );
+  useEffect(() => {
+    const checkAuth = async (token) => {
+      const response = await axios.get('https://api.github.com/user', {
+        headers: { Authorization: `token ${token}`},
+      });
+      if (response.headers['x-oauth-scopes'] === 'repo') {
+        setSession((session) => ({ ...session,
+          avatar: response.data.avatar_url,
+          username: response.data.login,
+          isActiveSession: true}));
+        console.log(`-------ACTIVE SESSION--------\nuser: ${response.data.login}\ntoken: ${token}`);
+        // get user data here and send to db
+        const userData = await axios.get('api/getUserData', {
+          headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
+        })
+        console.log('userdata', userData)
+        githubController.saveUserDataToDB(userData.data)
+      }
+    }
+
+    const { auth } = Cookies.get();
+    if (auth) {
+      checkAuth(auth);
+    }
+  }, []);
 
   return(
     <div 
@@ -21,12 +50,10 @@ const NavBarContainer = (props) => {
         mt-3"
       id="navbar"
     >
+      <LoginContainer session={session} setSession={setSession}/>      
       Swell
       <button>
         Star This Repository
-      </button>
-      <button onClick={signInViaGitHub}>
-        Sign In via GitHub
       </button>
     </div>
   );

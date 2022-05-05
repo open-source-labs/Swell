@@ -69,6 +69,8 @@ protos/
 
 # testing #
 test/subSuites/*.png
+test/failedTests/*
+.nyc_output
 
 
 # db #

@@ -15,11 +15,6 @@ app.use(cors({ origin: '*' }));
 
 
 app.use(cookieParser());
-// app.use(function(req, res, next) {
-//   res.set("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
-//   res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 // require controllers
 const authController = require('./controllers/authController');
@@ -41,13 +36,13 @@ const io = require('socket.io')(server, {
 app.set('socketio', io);
 
 
-// io.on('connection', (client)=>{
-//   console.log('established websocket connection');
+io.on('connection', (client)=>{
+  console.log('established websocket connection');
 
-//   // client.on('message', (message) => {
-//   //   console.log('message received: ', message);
-//   // });
-// });
+  // client.on('message', (message) => {
+  //   console.log('message received: ', message);
+  // });
+});
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -68,7 +63,6 @@ app.post('/webhookServer', (req, res) => {
       console.log(`ngrok tunnel opened at: ${url}/webhook`);
       return res.status(200).json(url);
     });
-  // return res.status(200).json('Hi! I am a test!');
 });
 
 app.delete('/webhookServer', (req, res) => {
@@ -77,47 +71,41 @@ app.delete('/webhookServer', (req, res) => {
   return res.status(200).json('the server has been deleted');
 });
 
-// listening for stuff
 app.post('/webhook', (req, res) => {
-  // console.log("this is the req", req.headers);
-  // console.log(req.body);
   const data = {headers: req.headers, body: req.body}
   io.emit('response', data);
   return res.status(200).json(req.body);
 })
 
-app.get('/api/login', (req, res) => {
-  console.log('clicked the login button');
-  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
-  return res.redirect(url);
+
+app.get('/signup/github/callback', authController.getToken, authController.getUserInfo, (req, res) => {
+  res.cookie('auth', res.locals.access_token);
+  console.log('callback cookies', req.cookies);
+  return res.status(200).redirect('http://localhost:8080');
+});
+
+app.get('/api/getUserData', authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
+  console.log(res.locals.github)
+  return res.status(200).send(res.locals.github);
 })
 
-app.get('/signup/github/callback', authController.getToken, (req, res) => {
-  console.log('clicked the login button');
-  return res.sendStatus(200);
-  // const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=${process.env.GITHUB_CLIENT_ID}`;
-  // return res.status(301).redirect(url);
-});
-
-app.get('*', (req, res) => {
-  console.log('hellooooo');
-  // res.status(200).sendFile(path.join(__dirname, '../index.js'));
-  // res.status(200).sendFile(path.join(__dirname,'../../index-csp.html'))
-});
+app.get('/api/import', (req, res) => {
+  return res.status(200).send(res.locals.swellFile);
+})
 
 // //inital error handler, needs work
 app.use('*', (req,res) => {
   res.status(404).send('Not Found');
 });
 
-//Global Handler, needs work
+// Global Handler, needs work
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
     message: { err: 'An error occurred' },
   };
-  const errObj = {...defaultErr, ...err}
+  const errorObj = {...defaultErr, ...err}
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });

@@ -226,6 +226,7 @@ const sendStatusToWindow = (text) => {
 ipcMain.on('login-via-github', async () => {
   const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` // ${process.env.GITHUB_CLIENT_ID};
   await shell.openExternal(url, { activate: true });
+  
 })
 
 ipcMain.on('check-for-update', () => {
@@ -282,6 +283,64 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// ============ IMPORT / EXPORT FROM GITHUB ===============
+
+// ipcMain.on('export-collection', (event, args) => {
+//   const content = JSON.stringify(args.collection);
+//   dialog.showSaveDialog(null).then((resp) => {
+//     if (resp.filePath === undefined) {
+//       console.log("You didn't save the file");
+//       return;
+//     }
+
+//     // fileName is a string that contains the path and filename created in the save file dialog.
+//     fs.writeFile(resp.filePath, content, (err) => {
+//       if (err) {
+//         console.log('An error ocurred creating the file ', err.message);
+//       }
+//     });
+//   });
+// });
+
+ipcMain.on('import-from-github', async (event, args) => {
+  async function popOverwrite(workspace) {
+    // TODO: add in mod date, is Yes No ordering correct on popup?
+    const options = {
+      type: 'question',
+      buttons: ['No', 'Yes'],
+      defaultId: 0,
+      title: 'Question',
+      message: `The workspace ${workspace.name} already exists in Swell`,
+      detail: 'Do you want to overwrite?',
+    };
+    return await dialog.showMessageBox(null, options);
+  }
+
+  console.log('main.js import-from-github args', args);
+
+  // requiring typescript type Workspace makes sanitation uncessesary 
+  const ids = {};
+  let index = 0;
+  const newWorkspaces = []
+  for(let workspace of args) {
+    if (ids[workspace.id]) {
+      const result = await popOverwrite(workspace);
+      if (result.response === 1) {
+        newWorkspaces[ids[workspace.id]] = workspace;
+        continue;
+      }
+    }
+    ids[workspace.id] = index;
+    index++;
+    newWorkspaces.push(workspace)
+
+  };
+  // send full array of workspaces to chromium for state update
+  event.sender.send('add-collection', newWorkspaces);
+});
+
+// ============ IMPORT / EXPORT FROM FILES ===============
 
 // export collection ipc now promise-based
 ipcMain.on('export-collection', (event, args) => {
@@ -375,7 +434,7 @@ ipcMain.on('import-collection', (event, args) => {
         }
       }
       // send data to chromium for state update
-      event.sender.send('add-collection', JSON.stringify(JSON.parse(data)));
+      event.sender.send('add-collection', [JSON.parse(data)]);
     });
   });
 });

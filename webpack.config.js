@@ -4,21 +4,20 @@ const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-
 module.exports = {
   target: 'web',
   resolve: {
     fallback: {
-      "fs": false,
-      "tls": false,
-      "net": false,
-      "path": false,
-      "zlib": false,
-      "http": false,
-      "https": false,
-      "stream": false,
-      "crypto": false,
-    }
+      fs: false,
+      tls: false,
+      net: false,
+      path: false,
+      zlib: false,
+      http: false,
+      https: false,
+      stream: false,
+      crypto: false,
+    },
   },
   entry: ['./src/index.js'],
   output: {
@@ -70,7 +69,7 @@ module.exports = {
       },
     ],
   },
-  
+
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
@@ -78,21 +77,22 @@ module.exports = {
       // template: path.resolve(__dirname, "index-csp.html"),
       filename: 'index.html',
       title: require('./package.json').name,
+      // TODO: update CSP with nonce inline styling. Refactor code to be more secure (do not use 'unsafe-inline')
       cspPlugin: {
         enabled: true,
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
           'script-src': ["'self'"],
-          'style-src': ["'self'"],
+          'style-src': "'self' 'unsafe-inline'",
         },
         hashEnabled: {
           'script-src': true,
-          'style-src': true,
+          'style-src': false,
         },
         nonceEnabled: {
           'script-src': true,
-          'style-src': true,
+          'style-src': false,
         },
       },
     }),
