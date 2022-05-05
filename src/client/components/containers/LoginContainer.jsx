@@ -8,7 +8,6 @@ const LoginContainer = (props) => {
   const signInViaGitHub = async () => {
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
-    // console.log(getCookie());
   }
 
   const handleSignOut = () => {
@@ -23,19 +22,8 @@ const LoginContainer = (props) => {
     console.log(endSessionLog);
   }
 
-  // const getCookie = async () => {
-  //   const self = this;
-  //   console.log('hello');
-  //   self.window.webContents.session.cookies.get({ }, (error, cookies) => {
-  //     if (error) throw error;
-  //     self.cookies = cookies;
-  //     // console.log('cookies', cookies)
-  //     return cookies;
-  //   });
-  // }
-
   return(
-    <div 
+    <div
       className="
         is-flex
         is-flex-direction-row

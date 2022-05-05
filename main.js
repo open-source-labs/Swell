@@ -303,75 +303,41 @@ app.on('activate', () => {
 //   });
 // });
 
-ipcMain.on('import-from-github', (event, args) => {
-    // const fileNames = // from res.locals.swellFile
-    // if (ext && ext !== '.txt') {
-    //   options.message = 'Invalid File Type';
-    //   options.detail = 'Please use a .txt file';
-    //   dialog.showMessageBox(null, options);
-    //   return;
-    // }
-    console.log('main.js collections', args);
-    //console.log('main.js workspaces', args.workspaces);
-    // names is the list of existing collection names in state
+ipcMain.on('import-from-github', async (event, args) => {
+  async function popOverwrite(workspace) {
+    // TODO: add in mod date, is Yes No ordering correct on popup?
     const options = {
-      type: 'error',
-      buttons: ['Okay'],
-      defaultId: 2,
-      title: 'Error',
-      message: '',
-      detail: '',
+      type: 'question',
+      buttons: ['No', 'Yes'],
+      defaultId: 0,
+      title: 'Question',
+      message: `The workspace ${workspace.name} already exists in Swell`,
+      detail: 'Do you want to overwrite?',
     };
+    return await dialog.showMessageBox(null, options);
+  }
 
-    const collectionNames = args.map((obj) => obj.name);
-    const fromLocal = args[0];
-    const fromGithub = args[1];
-    const importFromGithub = (data) => {
-      // if (err) {
-      //   alert('An error ocurred reading the file :', err.message);
-      //   return;
-      // }
-      // parse data, will throw error if not parsable
-      let parsed = data[0];
-      // parsed.name already exists
+  console.log('main.js import-from-github args', args);
 
-      // TODO: reimplement test to handle .swell files in incorrect formats
-      // try {
-      //   parsed = JSON.parse(data);
-      // } catch {
-      //   options.message = 'Invalid File Structure';
-      //   options.detail = 'Please use a JSON object';
-      //   dialog.showMessageBox(null, options);
-      //   return;
-      // }
-      if (parsed) {
-        // validate parsed data type and properties
-        if (
-          typeof parsed !== 'object' ||
-          !parsed.id ||
-          !parsed.name ||
-          !parsed.reqResArray ||
-          !parsed.createdAt
-        ) {
-          options.message = 'Invalid File';
-          options.detail = 'Please try again.';
-          dialog.showMessageBox(null, options);
-          return;
-        }
-        // duplicate collection exists already
-        if (collectionNames.includes(parsed.name)) {
-          options.message = 'That collection already exists in the app';
-          options.detail = 'Please rename file to something else';
-          dialog.showMessageBox(null, options);
-          return;
-        }
+  // requiring typescript type Workspace makes sanitation uncessesary 
+  const ids = {};
+  let index = 0;
+  const newWorkspaces = []
+  for(let workspace of args) {
+    if (ids[workspace.id]) {
+      const result = await popOverwrite(workspace);
+      if (result.response === 1) {
+        newWorkspaces[ids[workspace.id]] = workspace;
+        continue;
       }
-      // send data to chromium for state update
-      event.sender.send('add-collection', JSON.stringify(parsed));
-    };
+    }
+    ids[workspace.id] = index;
+    index++;
+    newWorkspaces.push(workspace)
 
-    importFromGithub(fromGithub);
-
+  };
+  // send full array of workspaces to chromium for state update
+  event.sender.send('add-collection', newWorkspaces);
 });
 
 // ============ IMPORT / EXPORT FROM FILES ===============
@@ -468,7 +434,7 @@ ipcMain.on('import-collection', (event, args) => {
         }
       }
       // send data to chromium for state update
-      event.sender.send('add-collection', JSON.stringify(JSON.parse(data)));
+      event.sender.send('add-collection', [JSON.parse(data)]);
     });
   });
 });

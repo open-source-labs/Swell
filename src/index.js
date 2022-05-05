@@ -37,16 +37,3 @@ rt.render(
     <App />
   </Provider>
 );
-
-// const root = document.createElement('div');
-
-// root.id = 'root';
-// document.body.appendChild(root);
-
-// const container = document.getElementById('root');
-// const rt = createRoot(container);
-// rt.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-// )

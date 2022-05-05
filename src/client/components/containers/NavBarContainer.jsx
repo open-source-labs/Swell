@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoginContainer from './LoginContainer';
+import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -13,7 +14,6 @@ const NavBarContainer = (props) => {
       isActiveSession: false,
     }
   );
-
   useEffect(() => {
     const checkAuth = async (token) => {
       const response = await axios.get('https://api.github.com/user', {
@@ -25,8 +25,15 @@ const NavBarContainer = (props) => {
           username: response.data.login,
           isActiveSession: true}));
         console.log(`-------ACTIVE SESSION--------\nuser: ${response.data.login}\ntoken: ${token}`);
+        // get user data here and send to db
+        const userData = await axios.get('api/getUserData', {
+          headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
+        })
+        console.log('userdata', userData)
+        githubController.saveUserDataToDB(userData.data)
       }
     }
+
     const { auth } = Cookies.get();
     if (auth) {
       checkAuth(auth);
