@@ -1,4 +1,5 @@
 const axios = require('axios');
+const fs = require('node:fs/promises');
 const { buffer } = require('stream/consumers');
 
 const authController = {};
@@ -25,20 +26,17 @@ authController.getToken = async (req, res, next) => {
 };
 
 authController.getProfile = async (req, res, next) => {
-  // console.log('cookies from getProfile', req.cookies)
   const url = 'https://api.github.com/user';
-  console.log('cookies', req.cookies)
-  console.log('cookies auth', req.cookies.auth)
+  //console.log('cookies', req.cookies)
+  //console.log('cookies auth', req.cookies.auth)
   try {
     const profileInfo = await axios.get(url, {
       headers: {
-        // authorization: `token ${res.locals.access_token}`,
         authorization: `token ${req.cookies.auth}`,
       },
     });
-    // const profileInfo = await profileInfoJSON.json();
-    res.locals.profile = profileInfo.data;
-    // console.log('res.locals in getProfile', res.locals.profile);
+    res.locals.github = {};
+    res.locals.github.profile = profileInfo.data;
     return next();
   } catch (err) {
     return next({
@@ -50,29 +48,21 @@ authController.getProfile = async (req, res, next) => {
 };
 
 authController.getRepos = async (req, res, next) => {
+  // get all repos with profile username
   try {
-    //console.log('is auth available?', req.cookies.auth_token);
-    const username = res.locals.profile.login;
-    //console.log('res.locals in getLanguages', res.locals);
-    // adding page=n to query will give page n as a result
-    // mirror:false, per_page=100
+    const username = res.locals.github.profile.login;
     const q = `user:${username}`;
     const query = encodeURIComponent(q);
     const url = `https://api.github.com/search/repositories?q=${query}`;
-    // console.log('url', url);
     const response = await axios(url, {
       method: 'GET',
       headers: {
-        // authorization: `token ${res.locals.access_token}`,
         authorization: `token ${req.cookies.auth}`,
         accept: 'application/vnd.github.v3+json',
       },
     });
-    //console.log('getLang response', response);
-    //console.log('getRepos after await .json()', response);
-    //console.log(response.data.items);
-    res.locals.repos = response.data.items;
-
+    res.locals.github.repos = response.data.items;
+    //console.log('repos\n', res.locals.github.repos)
     return next();
   } catch (err) {
     return next({
@@ -84,41 +74,30 @@ authController.getRepos = async (req, res, next) => {
 };
 
 authController.getSwellFile = async (req, res, next) => {
+  // get all .swell files
   try {
-    const username = res.locals.profile.login;
-    //console.log('res.locals in getLanguages', res.locals);
-    // adding page=n to query will give page n as a result
-    // mirror:false, per_page=100
-    // const q = `repository_id=${res.locals.repos[0].id}`;
-    const q = `filename:.swell+repo:swell-guy/unit-9-express`;
-    const query = encodeURIComponent(q);
-    // const q = `.swell+in:path+repo:swell-guy/unit-9-express`;
-    let url = `https://api.github.com/search/code?q=${query}`;
-    //console.log('url', url);
-    let response = await axios(url, {
+    const username = res.locals.github.profile.login;
+    const q = `user:${username}+filename:swell`;
+    let url = `https://api.github.com/search/code?q=`;
+    let response = await axios(url + q, {
       method: 'GET',
       headers: {
-        // authorization: `token ${res.locals.access_token}`,
         authorization: `token ${req.cookies.auth}`,
         accept: 'application/vnd.github.v3+json',
-      },
+      } 
     });
-    //console.log('getLang response', response);
-    //console.log('getRepos after await .json()', response);
-    //console.log(response.data.items);
-    res.locals.swellUrl = response.data.items[0].url;
-    // now get .swell file contents
-    response = await axios(res.locals.swellUrl, {
-      method: 'GET',
-      headers: {
-        // authorization: `token ${res.locals.access_token}`,
-        authorization: `token ${req.cookies.auth}`,
-        accept: 'application/vnd.github.v3+json',
-      },
-    });
+    res.locals.github.swellUrls = response.data.items;
+    //console.log('swellurls\n', res.locals.github.swellUrls)
+    // response = await axios(res.locals.swellUrl, {
+    //   method: 'GET',
+    //   headers: {
+    //     authorization: `token ${req.cookies.auth}`,
+    //     accept: 'application/vnd.github.v3+json',
+    //   },
+    // });
 
-    const buff = new Buffer.from(response.data.content, 'base64');
-    res.locals.swellFile = JSON.parse(buff)
+    // const buff = new Buffer.from(response.data.content, 'base64');
+    // res.locals.swellFile = JSON.parse(buff)
     return next();
   } catch (err) {
     return next({

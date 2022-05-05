@@ -2,13 +2,13 @@ import { v4 as uuid } from 'uuid';
 import db from '../db';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { Workspace, Workspaces, WindowAPIObject, WindowExt } from '../../types';
+import { Workspace, WindowAPIObject, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 
 api.receive('add-collection', (collectionData: any) => {
   // Add parsed text file to db
-  collectionsController.addCollectionToIndexedDb(collectionData);
+  collectionsController.addCollectionToIndexedDb([collectionData]);
   collectionsController.getCollections();
 });
 
@@ -54,6 +54,7 @@ const collectionsController = {
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
       db.table('collections')
+      db.table('repo')
         .where('name')
         .equalsIgnoreCase(name)
         .first((foundCollection: boolean) => !!foundCollection)
@@ -66,11 +67,12 @@ const collectionsController = {
   },
 
   exportCollection(id: string): void {
+    console.log('exportCollection', id)
     db.table('collections')
       .where('id')
       .equals(id)
       .first((foundCollection: Workspace) => {
-        // change name and id of collection to satisfy uniqueness requirements of db
+        // TODO: we change uuid on export but is this what we want??
         foundCollection.name += ' export';
         foundCollection.id = uuid();
         
