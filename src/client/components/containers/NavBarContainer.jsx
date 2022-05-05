@@ -1,32 +1,43 @@
-import React from 'react';
-import jsCookie from 'js-cookie';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import LoginContainer from './LoginContainer';
 import githubController from '../../controllers/githubController';
-// import path, {dirname} from 'path';
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-// import { ipcRenderer } from 'electron';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const NavBarContainer = (props) => {
-  const signInViaGitHub = async () => {
-    const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
-    window.location = url;
-    const userData = await axios.get('/api/getUserData', {
-      headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
-    })
-    console.log('userdata', userData)
-    // console.log(getCookie());
-  }
+  const [session, setSession] = useState(
+    {
+      username: null,
+      avatar: null,
+      teams: [],
+      currentTeam: null,
+      test: 0,
+      isActiveSession: false,
+    }
+  );
 
-  const getCookie = async () => {
-    const self = this;
-    console.log('hello');
-    self.window.webContents.session.cookies.get({ }, (error, cookies) => {
-      if (error) throw error;
-      self.cookies = cookies;
-      // console.log('cookies', cookies)
-      return cookies;
-    });
-  }
+  useEffect(() => {
+    const checkAuth = async (token) => {
+      const response = await axios.get('https://api.github.com/user', {
+        headers: { Authorization: `token ${token}`},
+      });
+      if (response.headers['x-oauth-scopes'] === 'repo') {
+        setSession((session) => ({ ...session, username: response.data.login, isActiveSession: true}));
+        console.log(`-------ACTIVE SESSION-------- \n user: ${response.data.login} \n token: ${token}`);
+        // get user data here and send to db
+        const userData = await axios.get('api/getUserData', {
+          headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
+        })
+        console.log('userdata', userData)
+        githubController.saveUserDataToDB(userData.data)
+      }
+    }
+
+    const { auth } = Cookies.get();
+    if (auth) {
+      checkAuth(auth);
+    }
+  }, []);
 
   return(
     <div 
@@ -42,9 +53,7 @@ const NavBarContainer = (props) => {
       <button>
         Star This Repository
       </button>
-      <button onClick={signInViaGitHub}>
-        Sign In via GitHub
-      </button>
+      <LoginContainer session={session} setSession={setSession}/>      
     </div>
   );
 } 
