@@ -10,7 +10,6 @@ const NavBarContainer = (props) => {
       avatar: null,
       teams: [],
       currentTeam: null,
-      test: 0,
       isActiveSession: false,
     }
   );
@@ -21,13 +20,15 @@ const NavBarContainer = (props) => {
         headers: { Authorization: `token ${token}`},
       });
       if (response.headers['x-oauth-scopes'] === 'repo') {
-        setSession((session) => ({ ...session, username: response.data.login, isActiveSession: true}));
-        console.log(`-------ACTIVE SESSION-------- \n user: ${response.data.login} \n token: ${token}`);
+        setSession((session) => ({ ...session,
+          avatar: response.data.avatar_url,
+          username: response.data.login,
+          isActiveSession: true}));
+        console.log(`-------ACTIVE SESSION--------\nuser: ${response.data.login}\ntoken: ${token}`);
       }
     }
     const { auth } = Cookies.get();
     if (auth) {
-      
       checkAuth(auth);
     }
   }, []);

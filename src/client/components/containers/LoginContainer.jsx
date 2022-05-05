@@ -1,12 +1,25 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 const LoginContainer = (props) => {
-  const { session } = props;
+  const { session, setSession } = props;
 
   const signInViaGitHub = async (event) => {
     const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
     window.location = url;
     // console.log(getCookie());
+  }
+
+  const handleSignOut = () => {
+    const endSessionLog = `--------ENDING SESSION--------\nuser: ${session.username}\ntoken: ${Cookies.get('auth')}\nSESSION ENDED`;
+    setSession({
+      username: null,
+      avatar: null,
+      teams: [],
+      currentTeam: null,
+      isActiveSession: false,
+    });
+    console.log(endSessionLog);
   }
 
   // const getCookie = async () => {
@@ -19,13 +32,10 @@ const LoginContainer = (props) => {
   //     return cookies;
   //   });
   // }
-  console.log(session);
-  console.log(session.isActiveSession);
 
   let button;
   if (session.isActiveSession) {
-    console.log('testing if this is being hit');
-    button = <button>Sign Out</button>
+    button = <button onClick={handleSignOut}>Sign Out</button>
   }
   else {
     button = <button onClick={signInViaGitHub}>Sign In via Github</button>
