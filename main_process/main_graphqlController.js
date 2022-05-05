@@ -1,10 +1,6 @@
 const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@apollo/client');
 const gql = require('graphql-tag');
-<<<<<<< HEAD
 const { getIntrospectionQuery } = require('graphql');
-=======
-const { IntrospectionQuery } = require('graphql');
->>>>>>> dev
 const { onError } = require("@apollo/client/link/error");
 const axios = require('axios');
 const cookie = require('cookie');

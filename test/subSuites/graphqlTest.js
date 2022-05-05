@@ -173,7 +173,7 @@ module.exports = () => {
       }
     }).timeout(5000);
 
-    xit('it should give you the appropriate error message with incorrect queries (LOCAL API)', async () => {
+    it('it should give you the appropriate error message with incorrect queries (LOCAL API)', async () => {
       try {
         const method = 'QUERY';
         const url = 'http://localhost:4000/graphql';
@@ -204,7 +204,7 @@ module.exports = () => {
       }
     }).timeout(5000);
 
-    xit('it should work with mutations (LOCAL API)', async () => {
+    it('it should work with mutations (LOCAL API)', async () => {
       try {
         const method = 'MUTATION';
         const url = 'http://localhost:4000/graphql';
@@ -236,7 +236,7 @@ module.exports = () => {
       }
     }).timeout(5000);
 
-    xit('it should work with subscriptions (LOCAL API)', async () => {
+    it('it should work with subscriptions (LOCAL API)', async () => {
       try {
         // START SUBSCRIPTION
         const method = 'SUBSCRIPTION';
