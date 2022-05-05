@@ -28,7 +28,8 @@
     "package-linux": "npm run build && electron-builder build --linux",
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
-    "check-types": "tsc"
+    "check-types": "tsc",
+    "postinstall": "patch-package"
   },
   "build": {
     "npmRebuild": false,
@@ -158,6 +159,7 @@
     "nodemon": "^2.0.15",
     "npm": "^8.7.0",
     "nyc": "^15.1.0",
+    "patch-package": "^6.4.7",
     "path": "^0.12.7",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
