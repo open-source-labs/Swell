@@ -47,6 +47,49 @@ module.exports = () => {
       expect(composerSelected).to.equal('Composer');
     });
 
+    it('can switch tabs in the workspace pane', async () => {
+      
+      // Click saved workspace, confirm column is active
+      await page.locator('a >> text=Saved Workspace').click();
+      const savedSelected = await page.locator('div#workspace >> .is-active').innerText();
+      expect(savedSelected).to.equal('Saved Workspace');
+
+      // Click schedule, confirm column is active
+      await page.locator('a >> text=Schedule').click();
+      const scheduleSelected = await page.locator('div#workspace >> .is-active').innerText();
+      expect(scheduleSelected).to.equal('Schedule');
+
+      // Click requests, confirm column is active
+      await page.locator('a >> text=Requests').click();
+      const requestsSelected = await page.locator('div#workspace >> .is-active').innerText();
+      expect(requestsSelected).to.equal('Requests');
+      
+    });
+
+    it('can switch tabs in the responses pane', async () => {
+      
+      // Click headers, confirm column is active
+      await page.locator('a >> text=Headers').click();
+      const headersSelected = await page.locator('div#responses >> .is-active').innerText();
+      expect(headersSelected).to.equal('Headers');
+
+      // Click cookies, confirm column is active
+      await page.locator('a >> text=Cookies').click();
+      const cookiesSelected = await page.locator('div#responses >> .is-active').innerText();
+      expect(cookiesSelected).to.equal('Cookies');
+
+      // Click tests, confirm column is active
+      await page.locator('a >> text=Tests').click();
+      const testsSelected = await page.locator('div#responses >> .is-active').innerText();
+      expect(testsSelected).to.equal('Tests');
+
+      // Click events, confirm column is active
+      await page.locator('a >> text=Events').click();
+      const eventsSelected = await page.locator('div#responses >> .is-active').innerText();
+      expect(eventsSelected).to.equal('Events');
+      
+    });
+
 
     it('can select a request type', async () => {
       // possibly remove the first clicks based on button vs dropdown menu

@@ -1,62 +1,72 @@
-const assert = require('assert'); // node's own assertion module
+const fs = require('fs-extra');
+const {_electron: electron} = require('playwright');
+const pwTest = require('@playwright/test');
+const chai = require('chai')
+const expect = chai.expect
 const path = require('path');
-const fs = require('fs');
-// const app = require('../testApp');
 
-module.exports = (electronApp) => {
+let electronApp, page;
+
+module.exports = () => {
+
   describe('App opens and renders a page', () => {
-    describe('Browser Window Tests', () => {
-      it('window is visible', async () => {
-        // const window = await electronApp.firstWindow();
-        // console.log(window)
-        // // // Print the title.
-        // // console.log(window.title);
-        const isVisible = await electronApp.firstWindow.isVisible();
-        return assert.strictEqual(isVisible, true);
-      });
 
-      it("browser window title is 'Swell'", async () => {
-        const titleWithBrowser = await app.browserWindow.getTitle();
-        return assert.strictEqual(titleWithBrowser, 'Swell');
-      });
-
-      it('Confirm browser window count is 1', async () => {
-        const windowCount = await app.client.getWindowCount();
-        return assert.strictEqual(1, windowCount);
-      });
-
-      it('take a snapshot of app', async () => {
-        const imageBuffer = await app.browserWindow.capturePage();
-        fs.writeFileSync(path.resolve(__dirname, 'snapshot.png'), imageBuffer);
-      });
+    before(async () => {
+      electronApp = await electron.launch({ args: ['main.js'] });
     });
-    describe('DOM Tests', () => {
-      it("html file title is 'Swell'", async () => {
-        const titleWithClient = await app.client
-          .waitUntilWindowLoaded()
-          .getTitle(); // the dom set inside dist/index.html which is set inside webpack htmlPlugin
-        return assert.strictEqual(titleWithClient, 'Swell');
-      });
+    
+    // close Electron app when complete
+    after(async () => {
+      await electronApp.close();
+    });
+  
+    // If the test fails, take a screenshot of the app and save it into the "failedTests" directory under the test title
+    afterEach(async function() {
+      if (this.currentTest.state === 'failed') {
+        console.log(`Screenshotting failed test window`)
+        const window = await electronApp.firstWindow();
+        const imageBuffer = await window.screenshot();
+        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+      }
+    });
 
-      it('devTool should NOT open since we are in production mode', async () => {
-        const isOpen = await app.browserWindow.isDevToolsOpened();
-        return assert.strictEqual(isOpen, false);
+    describe('Window rendering', () => {
+
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok
+      })
+  
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        pwTest.expect(window).toBeVisible();
+      })
+  
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });    
+    });
+  
+  
+    describe('DOM analysis', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
       });
-      it('Composer panel exists', async () => {
-        await app.client.waitUntilWindowLoaded();
-        // $ is basically querySelector
-        const composer = await app.client.$('#composer');
-        return assert.notStrictEqual(composer.value, null);
+  
+      it('Page title should be "Swell"', async () => {
+        expect(await page.title()).to.equal('Swell');
+      })
+      
+      it('Page should contain a composer div', async () => {
+        expect(await page.locator('div#composer').count()).to.equal(1)
       });
-      it('Workspace exists', async () => {
-        await app.client.waitUntilWindowLoaded();
-        const workspace = await app.client.$('#workspace');
-        return assert.notStrictEqual(workspace.value, null);
+  
+      it('Page should contain a workspace div', async () => {
+        expect(await page.locator('div#workspace').count()).to.equal(1)
       });
-      it('Responses panel exists', async () => {
-        await app.client.waitUntilWindowLoaded();
-        const responses = await app.client.$('#responses');
-        return assert.notStrictEqual(responses.value, null);
+  
+      it('Page should contain a responses div', async () => {
+        expect(await page.locator('div#responses').count()).to.equal(1)
       });
     });
   });
