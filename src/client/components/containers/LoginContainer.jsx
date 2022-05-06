@@ -1,6 +1,41 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Button } from '@mui/material';
+
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: 'ripple 2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2)',
+      opacity: 0,
+    },
+  },
+}));
 
 const LoginContainer = (props) => {
   const { session, setSession } = props;
@@ -22,25 +57,64 @@ const LoginContainer = (props) => {
     console.log(endSessionLog);
   }
 
+  console.log(session);
+
   return(
-    <div
-      className="
-        is-flex
-        is-flex-direction-row
-        is-justify-content-space-around
-        is-align-items-center
-        mt-3"
-      id="login"
-    >
+    <Box sx={{
+      width: '15%',
+    }}>
       {session.isActiveSession
         ? 
-        <div>
-          <button onClick={handleSignOut}>Sign Out</button>
-        </div>
-        : <Button variant="contained" onClick={signInViaGitHub}>Sign In via Github</Button>
+        <Box sx={{ 
+          flexGrow: 0,
+          display: { xs: 'none', md: 'flex' },
+          alignItems: 'center',
+        }}>
+          <MoreVertRoundedIcon fontSize='small' onClick={handleSignOut}/>
+          <StyledBadge
+            sx={{
+              m: 1,
+            }}
+            overlap="circular"
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            variant="dot">
+            <Avatar alt={session.username} src={session.avatar}/> 
+          </StyledBadge>
+          <Button variant="contained">Invite +</Button>
+        </Box>
+        : 
+        <Box>
+          <Button variant="contained" color="secondary" onClick={signInViaGitHub}>Sign In Via Github</Button>
+        </Box>
       }
-    </div>
+    </Box>
   );
 }
+
+
+
+{/* <AppBar position="static">
+<Container maxWidth="xl">
+  <Toolbar disableGutters>
+    <Typography
+      variant="h6"
+      noWrap
+      component="div"
+      sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+    >
+      LOGO
+    </Typography>
+
+    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleOpenNavMenu}
+        color="inherit"
+      > */}
+
+
 
 export default LoginContainer;
