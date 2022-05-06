@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import LoginContainer from './LoginContainer';
 import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
@@ -49,7 +50,15 @@ const NavBarContainer = (props) => {
     }
   }, []);
 
-  const pages = ['HTTP2', 'GRAPHQL', 'GRPC', 'WEB SOCKETS', 'WEBRTC', 'OPENAPI', 'WEBHOOKS'];
+  const pages = [
+    { name: 'HTTP2', route: '/' },
+    { name: 'GRAPHQL', route: '/graphql' },
+    { name: 'GRPC', route: '/grpc' },
+    { name: 'WEB SOCKET', route: '/websocket' },
+    { name: 'WEBRTC', route: '/webrtc' },
+    { name: 'OPENAPI', route: '/openapi' },
+    { name: 'WEBHOOK', route: '/webhook' },
+  ]
 
   return(
     <AppBar position="static">
@@ -63,16 +72,17 @@ const NavBarContainer = (props) => {
               alignItems: 'center',
             }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                variant="contained"
-                color="secondary"
-                sx={{
-                  m: 1
-                }}
-              >
-                {page}
-              </Button>
+              <Link to={page.route}>
+                <Button
+                  key={page.name}
+                  variant="contained"
+                  color="secondary"
+                  sx={{
+                    m: 1
+                  }}>
+                  {page.name}
+                </Button>
+              </Link>
             ))}
           </Box>
           <Box sx={{ 
