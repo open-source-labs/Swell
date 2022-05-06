@@ -14,20 +14,17 @@ import NavBarContainer from './NavBarContainer';
 
 const { api } = window as unknown as WindowExt;
 
-const App = () => { //what type is being returned?
+const App = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
     api.send('check-for-update');
     historyController.getHistory();
     collectionsController.getCollections();
-  }, []); // added the empty array in attempt to fix the issue of the app rerendering when the bargraph is clicked -Prince
+  }, []);
 
   return (
-    // deleted is-tall below
     <div className="is-gapless is-tall">
-      {/* Render the navigation bar container */}
-      {/* TODO: Implement React Router framework here */}
       <HashRouter>
         <NavBarContainer /> 
         <Routes>
