@@ -11,6 +11,8 @@ import { WindowExt } from '../../../types'
 import '../../../assets/style/App.scss';
 import NavBarContainer from './NavBarContainer';
 
+import Box from '@mui/material/Box';
+
 
 const { api } = window as unknown as WindowExt;
 
@@ -24,7 +26,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="is-gapless is-tall">
+    <Box className='is-tall'>
       <HashRouter>
         <NavBarContainer /> 
         <Routes>
@@ -57,21 +59,21 @@ const App = () => {
             element={<p>placeholder for WEBHOOK page</p>}
           />
         </Routes>
-      </HashRouter>
-
-      <div
-        id="app"
-        className={`columns is-gapless ${!message && 'is-tall'} ${
-          message && 'is-tall-message'
-        }`}>
+        <Box
+          id="app"
+          className={`columns is-gapless ${!message && 'is-tall'} ${
+            message && 'is-tall-message'
+          }`}>
+          <ContentsContainer />
           <ContentsContainer />
           <div className="tile is-vertical add-vertical-scroll">
             <SidebarContainer />
             <ResponsePaneContainer />
           </div>
-      </div>
-      <UpdatePopUpContainer message={message} setMessage={setMessage} />
-  </div>
+        </Box>
+        <UpdatePopUpContainer message={message} setMessage={setMessage} />
+      </HashRouter>
+  </Box>
   );
 };
 

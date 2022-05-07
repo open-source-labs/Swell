@@ -6,6 +6,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './client/components/containers/App';
 import store from './client/store';
 
+import { CssBaseline } from '@mui/material';
+
 //DO NOT HESITATE TO REACH OUT TO FORMER TEAMS BEFORE TAKING THIS ON AS A PROJECT
 //There is a lot of room for improvements and we have ideas that we didn't have time to implement
 //Adrian U, Jacob V, and Michael P would be glad to help. Chris and Jen can hardly contain their excitement.
@@ -17,7 +19,7 @@ import store from './client/store';
 // MUI theme
 const theme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: {
       main: '#393939',
     },
@@ -27,15 +29,9 @@ const theme = createTheme({
   },
 });
 
-{/* <ThemeProvider theme={outerTheme}>
-  <Checkbox defaultChecked />
-  <ThemeProvider theme={innerTheme}>
-    <Checkbox defaultChecked />
-  </ThemeProvider>
-</ThemeProvider> */}
-
 // https://content-security-policy.com/
 // add CSP
+// TODO: do this in the webpack config file
 const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
@@ -54,6 +50,7 @@ const container = document.getElementById('root');
 const rt = createRoot(container);
 rt.render(
   <ThemeProvider theme={theme}>
+    <CssBaseline />
     <Provider store={store}>
       <App />
     </Provider>
