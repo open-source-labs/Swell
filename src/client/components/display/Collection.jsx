@@ -33,10 +33,19 @@ const Collection = (props) => {
           <div
             className="is-clickable is-primary-link m-3"
             onClick={() =>
-              collectionsController.exportCollection(props.content.id)
+              collectionsController.exportToFile(props.content.id)
             }
           >
-            Export
+            Export To File
+          </div>
+          <div
+            className="is-clickable is-primary-link m-3"
+            onClick={() => {
+                collectionsController.exportToGithub(props.content.id)  
+              }
+            }
+          >
+            Export To Github
           </div>
           <div
             className="is-clickable flex-grow-1 delete m-3"

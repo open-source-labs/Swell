@@ -1,15 +1,48 @@
 import Dexie, { Table } from 'dexie';
 
+interface History {
+  id: string;
+  createdAt: string;
+}
+
+interface Collections {
+  id: string;
+  createdAt: string;
+  name: string;
+}
+
+interface Profile {
+  node_id: string;
+  id: string;
+  login: string;
+}
+
+interface Repos {
+  node_id: string;
+  id: string;
+}
+
+interface Files {
+  sha: string;
+}
+
+interface Auth {
+  session: string;
+  auth: string;
+}
+
 class SwellDB extends Dexie {
-  history: Table<Record<string, unknown>, string> | undefined;
+  history: Table<History, string>;
   
-  collections: Table<Record<string, unknown>, string> | undefined;
+  collections: Table<Collections, string>;
 
-  profile: Table<Record<string, unknown>> | undefined;
+  profile: Table<Profile, string>;
 
-  repos: Table<Record<string, unknown>> | undefined;
+  repos: Table<Repos, string>;
 
-  files: Table<Record<string, unknown>> | undefined;
+  files: Table<Files, string>;
+
+  auth: Table<Auth, string>
   
   constructor() {
     super('SwellDB');
@@ -24,9 +57,10 @@ class SwellDB extends Dexie {
     this.version(4).stores({
       history: 'id, createdAt',
       collections: 'id, createdAt, &name',
-      profile: 'id',
-      repos: 'id',
-      files: 'sha'
+      profile: 'node_id, &id, login',
+      repos: 'node_id, &id, name, full_name, created_at, updated_at',
+      files: 'sha',
+      auth: 'session'
     });
     this.version(3).stores({
       history: 'id, createdAt',
