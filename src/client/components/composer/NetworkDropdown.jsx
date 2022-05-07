@@ -44,7 +44,7 @@ function NetworkDropdown({ onProtocolSelect, network }) {
       networkTitle = 'OpenAPI';
       break;
     case 'webhook':
-      networkTitle = 'Webhook';
+      networkTitle = 'WebHook';
   }
 
   return (

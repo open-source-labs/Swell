@@ -1,13 +1,43 @@
-const chai = require('chai');
+const {_electron: electron} = require('playwright');
+const chai = require('chai')
+const expect = chai.expect
+const path = require('path');
+const fs = require('fs-extra');
 const chaiHttp = require('chai-http');
-const app = require('../testApp.js');
-const composerObj = require('../pageObjects/ComposerObj');
-const workspaceObj = require('../pageObjects/WorkspaceObj');
+chai.use(chaiHttp);
 
-const { expect } = chai;
+let electronApp, page, num=0;
 
 module.exports = () => {
+
+  const setupFxn = function() {
+    beforeEach(async () => {
+      electronApp = await electron.launch({ args: ['main.js'] });
+      page = electronApp.windows()[0]; // In case there is more than one window
+      await page.waitForLoadState(`domcontentloaded`);
+    });
+    
+    // close Electron app when complete
+    // after(async () => {
+    //   await electronApp.close();
+    // });
+
+    afterEach(async function() {
+      if (this.currentTest.state === 'failed') {
+        console.log(`Screenshotting failed test window`)
+        const imageBuffer = await page.screenshot();
+        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+      }
+      await electronApp.close();
+
+      // await page.locator('span >> text=Hide Tests').click();
+
+    });
+  }
+
   describe('HTTP Testing Controller', () => {
+    setupFxn();
+
     const fillRestRequest = async (
       url,
       method,
@@ -17,57 +47,60 @@ module.exports = () => {
     ) => {
       try {
         // click and check REST
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=REST').click();
+        await page.locator('#selected-network').click();
+        await page.locator('a >> text=REST').click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
-          await app.client.$('span=GET').click();
-          await app.client.$(`a=${method}`).click();
+          await page.locator('#composer >> button.is-rest').click();
+          await page.locator(`a >> text=${method}`).click();
         }
 
         // type in url
-        await composerObj.url.setValue(url);
+        await page.locator('.input-is-medium').fill(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
-          await app.client
-            .$(`//*[@id="header-row${index}"]/input[1]`)
-            .setValue(key);
-          await app.client
-            .$(`//*[@id="header-row${index}"]/input[2]`)
-            .setValue(value);
-          await app.client.$('button=+ Header').click();
+          await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
+          await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
+          await page.locator('button:near(:text("Headers"), 5)').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
-          await app.client
-            .$(`//*[@id="cookie-row${index}"]/input[1]`)
-            .setValue(key);
-          await app.client
-            .$(`//*[@id="cookie-row${index}"]/input[2]`)
-            .setValue(value);
-          await app.client.$('button=+ Cookie').click();
+          await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
+          await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
+          await page.locator('button:near(:text("Cookies"), 5)').click();
         });
 
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          await app.client.$('span=text/plain').click();
-          await app.client.$('a=application/json').click();
+          await page.locator('span >> text=text/plain').click();
+          await page.locator('a >> text=application/json').click();
           // insert JSON content into body
-          await composerObj.clearRestBodyAndWriteKeys(body);
+          const codeMirror = await page.locator('#body-entry-select');
+          await codeMirror.click();
+          const restBody = await codeMirror.locator('textarea');
+
+          try {
+            for (let i = 0; i < 100; i += 1) {
+              await restBody.press('Backspace');
+            }
+            await restBody.fill(body);
+          } catch (err) {
+            console.error(err);
+          }
         }
       } catch (err) {
         console.error(err);
       }
     };
 
-    const addAndSend = async () => {
+    const addAndSend = async (num) => {
       try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
+        await page.locator('button >> text=Add to Workspace').click();
+        await page.locator(`#send-button-${num}`).click();
       } catch (err) {
         console.error(err);
       }
@@ -76,20 +109,25 @@ module.exports = () => {
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor
-        await app.client.$('span=View Tests').click();
+        await page.locator('span >> text=View Tests').click();
         // set the value of the code editor to be some hard coded simple assertion tests
-        await composerObj.clearTestScriptAreaAndWriteKeys(script);
+
+        const codeMirror2 = await page.locator('#test-script-entry');
+        await codeMirror2.click();
+        const scriptBody = await codeMirror2.locator('textarea');
+
+        try {
+          for (let i = 0; i < 100; i += 1) {
+            await scriptBody.press('Backspace');
+          }
+          await scriptBody.fill(script);
+        } catch (err) {
+          console.error(err);
+        }
       } catch (err) {
         console.error(err);
       }
     };
-
-    afterEach('HIDE TESTS', (done) => {
-      (async () => {
-        await app.client.$('span=Hide Tests').click();
-      })();
-      done();
-    });
 
     // ==================================================================
 
@@ -119,11 +157,11 @@ module.exports = () => {
         const script = "assert.strictEqual(3, 3, 'correct types');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
 
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -133,10 +171,10 @@ module.exports = () => {
         const script = "assert.strictEqual(3, '3', 'wrong types');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('FAIL');
       });
 
@@ -146,10 +184,10 @@ module.exports = () => {
         const script = "expect(3, 'correct types').to.equal(3);";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -159,10 +197,10 @@ module.exports = () => {
         const script = "expect(3, 'correct types').to.equal('3');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('FAIL');
       });
     });
@@ -175,21 +213,13 @@ module.exports = () => {
           "assert.strictEqual(3, '3', 'wrong types');\nassert.strictEqual(3, '3', 'this assert is a message');\nassert.strictEqual(3, 3, 'correct types');\nassert.strictEqual(3, 3, 'this assert is a message');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const firstStatus = await app.client
-          .$('#TestResult-0-status')
-          .getText();
-        const secondStatus = await app.client
-          .$('#TestResult-1-status')
-          .getText();
-        const thirdStatus = await app.client
-          .$('#TestResult-2-status')
-          .getText();
-        const fourthStatus = await app.client
-          .$('#TestResult-3-status')
-          .getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const firstStatus = await page.locator('#TestResult-0-status').innerText();
+        const secondStatus = await page.locator('#TestResult-1-status').innerText();
+        const thirdStatus = await await page.locator('#TestResult-2-status').innerText();
+        const fourthStatus = await await page.locator('#TestResult-3-status').innerText();
 
         expect(firstStatus).to.equal('FAIL');
         expect(secondStatus).to.equal('FAIL');
@@ -204,21 +234,13 @@ module.exports = () => {
           "expect(3, 'wrong types').to.equal('3');\nexpect(3, 'this expect is a message').to.equal('3');\nexpect(3, 'correct types').to.equal(3);\nexpect(3, 'this expect is a message').to.equal(3);";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const firstStatus = await app.client
-          .$('#TestResult-0-status')
-          .getText();
-        const secondStatus = await app.client
-          .$('#TestResult-1-status')
-          .getText();
-        const thirdStatus = await app.client
-          .$('#TestResult-2-status')
-          .getText();
-        const fourthStatus = await app.client
-          .$('#TestResult-3-status')
-          .getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const firstStatus = await page.locator('#TestResult-0-status').innerText();
+        const secondStatus = await page.locator('#TestResult-1-status').innerText();
+        const thirdStatus = await await page.locator('#TestResult-2-status').innerText();
+        const fourthStatus = await await page.locator('#TestResult-3-status').innerText();
 
         expect(firstStatus).to.equal('FAIL');
         expect(secondStatus).to.equal('FAIL');
@@ -234,11 +256,10 @@ module.exports = () => {
         const script = "assert.exists(response, 'response is object');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -249,11 +270,10 @@ module.exports = () => {
           "assert.strictEqual(response.status, 200, 'response is 200');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -264,12 +284,12 @@ module.exports = () => {
           "assert.exists(response.cookies, 'cookies exists on response object');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
-            const text = await app.client.$('#TestResult-0-status').getText();
+            const text = await page.locator('#TestResult-0-status').innerText();
             resolve(text);
           }, 500);
           // block for 500 ms since we need to wait for a response; normally test server would
@@ -286,12 +306,12 @@ module.exports = () => {
           "assert.exists(response.headers, 'headers exists on response object');";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
-            const text = await app.client.$('#TestResult-0-status').getText();
+            const text = await page.locator('#TestResult-0-status').innerText();
             resolve(text);
           }, 500);
         });
@@ -305,10 +325,10 @@ module.exports = () => {
         const script = "expect(response, 'response exists').to.exist;";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -319,10 +339,10 @@ module.exports = () => {
           "expect(response.status, 'response is 200').to.equal(200);";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const testStatus = await app.client.$('#TestResult-0-status').getText();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -333,13 +353,13 @@ module.exports = () => {
           "expect(response.cookies, 'cookies exists on response object').to.exist;";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
-            const text = await app.client.$('#TestResult-0-status').getText();
+            const text = await page.locator('#TestResult-0-status').innerText();
             resolve(text);
           }, 500);
         });
@@ -354,13 +374,13 @@ module.exports = () => {
           "expect(response.headers, 'headers exists on reponse object').to.exist;";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
-            const text = await app.client.$('#TestResult-0-status').getText();
+            const text = await page.locator('#TestResult-0-status').innerText();
             resolve(text);
           }, 500);
         });
@@ -376,10 +396,10 @@ module.exports = () => {
         const script = "const foo = 'bar';";
         await fillRestRequest(url, method);
         await clearAndFillTestScriptArea(script);
-        await addAndSend();
+        await addAndSend(num);
 
-        await app.client.$('a=Tests').click();
-        const { selector } = await app.client.$('.empty-state-wrapper');
+        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        const { selector } = await page.locator('.empty-state-wrapper');
         expect(selector).to.equal('.empty-state-wrapper');
       });
     });

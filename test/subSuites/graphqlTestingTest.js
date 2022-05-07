@@ -1,13 +1,49 @@
-const chai = require('chai');
-const composerObj = require('../pageObjects/ComposerObj.js');
-const workspaceObj = require('../pageObjects/WorkspaceObj.js');
-const app = require('../testApp.js');
 const graphqlServer = require('../graphqlServer');
+const {_electron: electron} = require('playwright');
+const chai = require('chai')
+const expect = chai.expect
+const path = require('path');
+const fs = require('fs');
 
-const { expect } = chai;
+let electronApp, page, num=0;
 
 module.exports = () => {
+
+  const setupFxn = function() {
+    before(async () => {
+      electronApp = await electron.launch({ args: ['main.js'] });
+      page = electronApp.windows()[0]; // In case there is more than one window
+      await page.waitForLoadState(`domcontentloaded`);
+
+      await page.locator('button >> text=Clear Workspace').click();
+
+    });
+    
+    // close Electron app when complete
+    after(async () => {
+      await electronApp.close();
+
+      try {
+        graphqlServer.close();
+        console.log('graphqlServer closed');
+      } catch (err) {
+        console.error(err);
+      }
+
+    });
+
+    afterEach(async function() {
+      if (this.currentTest.state === 'failed') {
+        console.log(`Screenshotting failed test window`)
+        const imageBuffer = await page.screenshot();
+        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+      }
+    });
+  }
+
   describe('GraphQL Testing Controller', () => {
+    setupFxn();
+
     // This will fill out the composer with a GraphQL request when invoked.
     const fillGQLRequest = async (
       url,
@@ -18,88 +54,95 @@ module.exports = () => {
       cookies = []
     ) => {
       try {
-        // click and check GRAPHQL
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=REST').click();
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=GRAPHQL').click();
+        // click and check 
+        await page.locator('#selected-network').click();
+        await page.locator('a >> text=GRAPHQL').click();
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {
-          await app.client.$('span=QUERY').click();
-          await app.client.$(`a=${method}`).click();
+          await page.locator('#composer >> button.is-graphQL').click();
+          await page.locator(`a >> text=${method}`).click();
         }
 
         // type in url
-        await composerObj.url.setValue(url);
+        await page.locator('.input-is-medium').fill(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
-          await app.client
-            .$(`//*[@id="header-row${index}"]/input[1]`)
-            .setValue(key);
-          await app.client
-            .$(`//*[@id="header-row${index}"]/input[2]`)
-            .setValue(value);
-          await app.client.$('button=+ Header').click();
+          await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
+          await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
+          await page.locator('button:near(:text("Headers"), 5)').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
-          await app.client
-            .$(`//*[@id="cookie-row${index}"]/input[1]`)
-            .setValue(key);
-          await app.client
-            .$(`//*[@id="cookie-row${index}"]/input[2]`)
-            .setValue(value);
-          await app.client.$('button=+ Cookie').click();
+          await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
+          await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
+          await page.locator('button:near(:text("Cookies"), 5)').click();
         });
 
-        // select Body and type in body
-        await composerObj.clearGQLBodyAndWriteKeys(body);
+
+        // select Body, clear it, and type in query
+        const codeMirror = await page.locator('#gql-body-entry');
+        await codeMirror.click();
+        const gqlBodyCode = await codeMirror.locator('textarea');
+
+        try {
+          for (let i = 0; i < 100; i += 1) {
+            await gqlBodyCode.press('Backspace');
+          }
+          await gqlBodyCode.fill(body);
+        } catch (err) {
+          console.error(err);
+        }
 
         // select Variables and type in variables
-        await composerObj.clickGQLVariablesAndWriteKeys(variables);
+        const codeMirror2 = await page.locator('#gql-var-entry');
+        await codeMirror2.click();
+        await codeMirror2.locator('textarea').fill(variables);
+
       } catch (err) {
         console.error(err);
       }
     };
 
     // This will add and send the most recent request in the workspace.
-    const addAndSend = async () => {
+    const addAndSend = async (num) => {
       try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
+        await page.locator('button >> text=Add to Workspace').click();
+        await page.locator(`#send-button-${num}`).click();
       } catch (err) {
         console.error(err);
       }
     };
 
+    // Bring in the Clear & Fill Test Script Area for improved code readability.
     const clearAndFillTestScriptArea = async (script) => {
       try {
         // click the view tests button to reveal the test code editor
-        await app.client.$('span=View Tests').click();
+        await page.locator('span >> text=View Tests').click();
         // set the value of the code editor to be some hard coded simple assertion tests
-        await composerObj.clearTestScriptAreaAndWriteKeys(script);
+
+        const codeMirror2 = await page.locator('#test-script-entry');
+        await codeMirror2.click();
+        const scriptBody = await codeMirror2.locator('textarea');
+
+        try {
+          for (let i = 0; i < 100; i += 1) {
+            await scriptBody.press('Backspace');
+          }
+          await scriptBody.fill(script);
+        } catch (err) {
+          console.error(err);
+        }
+
         // Close the tests view pane.
-        await app.client.$('span=Hide Tests').click();
+        await page.locator('span >> text=Hide Tests').click();
       } catch (err) {
         console.error(err);
       }
     };
 
-    before(() => {
-      app.client.$('button=Clear Workspace').click();
-    });
-
-    after(() => {
-      try {
-        graphqlServer.close();
-        console.log('graphqlServer closed');
-      } catch (err) {
-        console.error(err);
-      }
-    });
 
     it('it should be able to resolve a simple passing test', async () => {
       const method = 'QUERY';
@@ -111,14 +154,14 @@ module.exports = () => {
       // type in url
       await fillGQLRequest(url, method, query, variables);
       await clearAndFillTestScriptArea(script);
-      await addAndSend();
+      await addAndSend(num++);
 
       // Select the Tests column inside of Responses pane.
-      await app.client.$('a=Tests').click();
+      await page.locator('a >> text=Tests').click();
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {
-          const text = await app.client.$('#TestResult-0-status').getText();
+          const text = await page.locator('#TestResult-0-status').innerText();
           resolve(text);
         }, 500);
         // block for 500 ms since we need to wait for a response; normally test server would
@@ -137,14 +180,14 @@ module.exports = () => {
       // type in url
       await fillGQLRequest(url, method, query, variables);
       await clearAndFillTestScriptArea(script);
-      await addAndSend();
+      await addAndSend(num++);
 
       // Select the Tests column inside of Responses pane.
-      await app.client.$('a=Tests').click();
+      await page.locator('a >> text=Tests').click(); 
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {
-          const text = await app.client.$('#TestResult-0-status').getText();
+          const text = await page.locator('#TestResult-0-status').innerText();
           resolve(text);
         }, 1000);
         // block for 500 ms since we need to wait for a response; normally test server would
@@ -164,14 +207,14 @@ module.exports = () => {
       // type in url
       await fillGQLRequest(url, method, query, variables);
       await clearAndFillTestScriptArea(script);
-      await addAndSend();
+      await addAndSend(num++);
 
       // Select the Tests column inside of Responses pane.
-      await app.client.$('a=Tests').click();
+      await page.locator('a >> text=Tests').click();
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {
-          const text = await app.client.$('#TestResult-0-status').getText();
+          const text = await page.locator('#TestResult-0-status').innerText();
           resolve(text);
         }, 500);
         // block for 500 ms since we need to wait for a response; normally test server would

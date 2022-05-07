@@ -1,6 +1,6 @@
 const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@apollo/client');
 const gql = require('graphql-tag');
-const { IntrospectionQuery } = require('graphql');
+const { getIntrospectionQuery } = require('graphql');
 const { onError } = require("@apollo/client/link/error");
 const axios = require('axios');
 const cookie = require('cookie');
@@ -89,7 +89,7 @@ const graphqlController = {
       }
       try {
         // check if there are any errors in the graphQLErrors array
-        if (graphQLErrors.length !== 0) {
+        if (graphQLErrors) {
           graphQLErrors.forEach((currError) => {
             reqResObj.error = JSON.stringify(currError);
             event.sender.send('reply-gql', { error: currError, reqResObj });
@@ -122,6 +122,7 @@ const graphqlController = {
         client
           .query({ query: body, variables, context: headers })
           .then((data) => {
+            console.log(`hi`)
             // handle tests
             if (reqResObj.request.testContent) {
               reqResObj.response.testResult = testingController.runTest(
@@ -184,14 +185,18 @@ const graphqlController = {
     }
     headers.Cookie = cookies;
 
+    // console.log(req)
+    // console.log(getIntrospectionQuery())
     axios({
       method: 'post',
       url: req.url,
       headers: headers,
-      data: JSON.stringify({ query: IntrospectionQuery }),
+      data: {query: getIntrospectionQuery()},
     })
-      .then((data) => event.sender.send('introspect-reply', data.data))
-      .catch((err) =>
+      .then((data) => {
+        event.sender.send('introspect-reply', data.data.data)
+      })
+      .catch((err) => 
         event.sender.send(
           'introspect-reply',
           'Error: Please enter a valid GraphQL API URI'

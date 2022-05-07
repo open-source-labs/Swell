@@ -32,6 +32,7 @@ describe('Business reducer', () => {
         ws: false,
         openapi: false,
         webrtc: false,
+        webhook: false,
         network: 'rest',
         testContent: '',
         testResults: [],
@@ -84,7 +85,7 @@ describe('Business reducer', () => {
           endpoint: '',
           headers: {},
           parameters: [],
-          body: new Map(),
+          body: new Map(), // jNote - not sure how to match the type with the constructor function here
           urls: [],
         },
       },
@@ -92,14 +93,14 @@ describe('Business reducer', () => {
       dataPoints: {},
       currentResponse: {
         request: {
-          network: '',
+        network: '',
         },
       },
     };
   });
 
   describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
+    it('should return a default state when given an undefined action', () => {
       expect(reducer(undefined, { type: undefined })).toEqual(state);
     });
   });
@@ -146,7 +147,7 @@ describe('Business reducer', () => {
       payload: fakeHistory,
     };
 
-    it('should update history in state', () => {
+    it('should replace history in state', () => {
       const { reqResArray, history } = reducer(state, action);
       expect(reqResArray).toEqual([]);
       expect(history).toEqual(fakeHistory);
@@ -169,11 +170,11 @@ describe('Business reducer', () => {
         history: [
           {
             id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-            createdAt: '2019-02-15T00:40:56.360Z',
+            createdAt: new Date('2019-02-15T00:40:56.360Z'),
           },
           {
             id: '577eab93-e707-4dc0-af45-7adcc78807fa',
-            createdAt: '2019-02-15T00:16:56.133Z',
+            createdAt: new Date('2019-02-15T00:16:56.133Z'),
           },
         ],
       },
@@ -188,7 +189,7 @@ describe('Business reducer', () => {
         type: 'DELETE_HISTORY',
         payload: {
           id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
-          createdAt: '2019-02-15T00:40:56.360Z',
+          createdAt: new Date('2019-02-15T00:40:56.360Z'),
         },
       };
 
@@ -214,6 +215,288 @@ describe('Business reducer', () => {
       expect(initialHistory.length).toBe(2);
       expect(history.length).toBe(1);
     });
+  });
+
+  describe('CLEAR_HISTORY', () => {
+    const fakeHistory = [
+      {
+        date: '02/15/2019',
+        history: [
+          {
+            id: 'c8d73eec-e383-4735-943a-20deab42ecff',
+            createdAt: '2019-02-15T20:52:35.990Z',
+          },
+        ],
+      },
+      {
+        date: '02/14/2019',
+        history: [
+          {
+            id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
+            createdAt: new Date('2019-02-15T00:40:56.360Z'),
+          },
+          {
+            id: '577eab93-e707-4dc0-af45-7adcc78807fa',
+            createdAt: new Date('2019-02-15T00:16:56.133Z'),
+          },
+        ],
+      },
+    ];
+
+    beforeEach(() => {
+      state.history = fakeHistory;
+    });
+
+    it('should clear history', ()=>{
+      const action = {type: 'CLEAR_HISTORY'}
+      const { history } = reducer(state, action)
+      console.log(history)
+      expect(history).toEqual([])
+    });
+
+  });
+
+  describe('GET_COLLECTIONS', () => {
+    const fakeCollections = [
+      {
+        id: 'collection1',
+        collection1: `test`
+      },
+      {
+        id: 'collection2',
+        collection2: 'another test'
+      },
+      {
+        id: 'collection3',
+        collection3: 'a third test'
+      },
+      {
+        id: 'collection4',
+        collection4: 'the last test'
+      },
+    ];
+
+    const action = {
+      type: 'GET_COLLECTIONS',
+      payload: fakeCollections,
+    };
+
+    it('should replace collections in state', () => {
+      const { reqResArray, collections } = reducer(state, action);
+      expect(reqResArray).toEqual([]);
+      expect(collections).toEqual(fakeCollections);
+    });
+  });
+
+  describe('DELETE_COLLECTION', () => {
+    const fakeCollections = [
+      {
+        id: 'collection1',
+        collection1: `test`
+      },
+      {
+        id: 'collection2',
+        collection2: 'another test'
+      },
+      {
+        id: 'collection3',
+        collection3: 'a third test'
+      },
+      {
+        id: 'collection4',
+        collection4: 'the last test'
+      },
+    ];
+    beforeEach(() => {
+      state.collections = fakeCollections;
+    });
+
+    const action = {
+      type: 'DELETE_COLLECTION',
+      payload: {id: 'collection3'},
+    };
+
+    it('should delete a specific collection', () => {
+      const {collections} = reducer(state, action);
+      expect(collections.length).toEqual(3);
+      expect(collections[2]).toEqual(fakeCollections[3])
+    });
+  });
+
+  describe('RESET_COMPOSER_FIELDS', () => {
+    const fakeRequestHeaders = {
+      headersArr: [`fake`,`request`,`headers`],
+      count: 3
+    }
+    const fakeRequestCookies = {
+      headersArr: [`fake`,`request`,`cookies`],
+      count: 3
+    }
+    const fakeRequestBody = {
+      bodyIsNew: false,
+      bodyContent: 'BIG HOWDY',
+      bodyVariables: 'ANOTHER BIG HOWDY',
+      bodyType: 'fit but still eats bread',
+      rawType: 'text/jokes',
+      JSONFormatted: false,
+    }
+    const fakeRequestFields = {
+      protocol: 'ghost',
+      restUrl: 'http://',
+      wsUrl: 'ws://',
+      gqlUrl: 'https://',
+      grpcUrl: '',
+      webrtcUrl: '',
+      url: 'http://',
+      method: 'GET',
+      graphQL: false,
+      gRPC: false,
+      ws: false,
+      openapi: false,
+      webrtc: false,
+      webhook: false,
+      network: 'rest',
+      testContent: '',
+      testResults: [],
+      openapiReqObj: {},
+    }
+    const fakeRequestSSE = {
+      isSSE: true
+    }
+    const fakeWarningMessage = {
+      err: `you can't do this to me`
+    }
+
+
+    beforeEach(() => {
+      state.newRequestHeaders = fakeRequestHeaders;
+      state.newRequestCookies = fakeRequestCookies;
+      state.newRequestBody = fakeRequestBody;
+      state.newRequestFields = fakeRequestFields;
+      state.newRequestSSE = fakeRequestSSE;
+      state.warningMessage = fakeWarningMessage;
+    });
+
+    const action = {
+      type: 'RESET_COMPOSER_FIELDS',
+      payload: 'it shouldnt matter',
+    };
+
+    it('should reset the composer fields to default', () => {
+      const {newRequestHeaders, newRequestCookies, newRequestBody, newRequestFields, newRequestSSE, warningMessage} = reducer(state, action);
+      expect(newRequestHeaders).toEqual({
+        headersArr: [],
+        count: 0,
+      });
+      expect(newRequestCookies).toEqual({
+        cookiesArr: [],
+        count: 0,
+      });
+      expect(newRequestBody).toEqual({
+        bodyContent: '',
+        bodyVariables: '',
+        bodyType: 'raw',
+        rawType: 'text/plain',
+        JSONFormatted: true,
+        bodyIsNew: false,
+      });
+      expect(newRequestFields).toEqual({
+        protocol: '',
+        restUrl: 'http://',
+        wsUrl: 'ws://',
+        gqlUrl: 'https://',
+        grpcUrl: '',
+        webrtcUrl: '',
+        url: 'http://',
+        method: 'GET',
+        graphQL: false,
+        gRPC: false,
+        ws: false,
+        openapi: false,
+        webrtc: false,
+        webhook: false,
+        network: 'rest',
+        testContent: '',
+        testResults: [],
+        openapiReqObj: {},
+      });
+      expect(newRequestSSE).toEqual({
+        isSSE: false,
+      });
+      expect(warningMessage).toEqual({});
+    });
+  });
+
+  describe('COLLECTION_TO_REQRES', () => {
+    const action = {
+      type: 'COLLECTION_TO_REQRES',
+      payload: {
+        collection1: [`hi`],
+        collection2: [`bye`],
+        collection3: [`howdy`],
+      }
+    };
+
+    it('should convert collections to request/responses', () => {
+      const {reqResArray} = reducer(state,action);
+      expect(reqResArray).toEqual(action.payload);
+    });
+    
+    it('should copy collection, not point request/responses to collections', () => {
+      const {reqResArray} = reducer(state,action);
+      expect(reqResArray).not.toBe(action.payload);
+    });
+  });
+
+  describe('COLLECTION_ADD', () => {
+    const action = {
+      type: 'COLLECTION_ADD',
+      payload: {newCollection: [`hi`]}
+    };
+
+    it('should add a collection to collections', () => {
+      const {collections} = reducer(state,action);
+      expect(collections).toEqual([action.payload]);
+    });
+    
+  });
+
+  describe('COLLECTION_UPDATE', () => {
+    const fakeCollections = [
+      {
+        name: 'collection1',
+        collection1: `test`
+      },
+      {
+        name: 'collection2',
+        collection2: 'another test'
+      },
+      {
+        name: 'collection3',
+        collection3: 'a third test'
+      },
+      {
+        name: 'collection4',
+        collection4: 'the last test'
+      },
+    ];
+
+    const action = {
+      type: 'COLLECTION_UPDATE',
+      payload: {
+        name: 'collection3',
+        collection3: 'this should be updated'
+      }
+    };
+    beforeEach(() => {
+      state.collections = fakeCollections;
+    });
+
+    it('should update a collection by name', () => {
+      const {collections} = reducer(state,action);
+      expect(collections[2]).toEqual(action.payload);
+    });
+    
   });
 
   describe('REQRES_CLEAR', () => {
