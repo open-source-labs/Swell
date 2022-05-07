@@ -84,7 +84,7 @@ app.get('/signup/github/callback', authController.getToken, authController.getUs
   return res.status(200).redirect('http://localhost:8080');
 });
 
-app.get('/api/getUserData', authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
+app.get('/api/getUserData', authController.checkForCookie, authController.getProfile, authController.getRepos, authController.getSwellFile, (req, res) => {
   console.log(res.locals.github)
   return res.status(200).send(res.locals.github);
 })

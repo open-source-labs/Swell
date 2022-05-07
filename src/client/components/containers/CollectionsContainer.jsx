@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import Collection from '../display/Collection';
 import collectionsController from '../../controllers/collectionsController';
+import githubController from '../../controllers/githubController';
 import axios from 'axios';
 
 function CollectionsContainer() {
@@ -11,16 +12,9 @@ function CollectionsContainer() {
   const localWorkspaces = useSelector((store) => store.business.collections);
   const isDark = useSelector(state => state.ui.isDark);
 
-  const handleClick = () => {
-    collectionsController.importCollection(localWorkspaces);
-  };
-
   const handleImportFromGithub = async () => {
-    const response = await axios('/api/import');
-    const githubWorkspaces = response.data;
-    console.log('swellfile response', response.data);
+    const githubWorkspaces = await githubController.importFromRepo();
     collectionsController.importFromGithub([...localWorkspaces, ...githubWorkspaces]);
-    // window.api.send('import-from-github', collections, workspaces);
   }
 
   const collectionComponents = localWorkspaces.map((collection, idx) => {
@@ -44,7 +38,7 @@ function CollectionsContainer() {
         <button
           className={`button is-medium is-primary ${isDark ? '' : 'is-outlined'} button-padding-verticals mx-3`}
           type="button"
-          onClick={handleClick}
+          onClick={() => collectionsController.importCollection(localWorkspaces)}
         >
           Import from Files
         </button>

@@ -324,6 +324,7 @@ ipcMain.on('import-from-github', async (event, args) => {
   let index = 0;
   const newWorkspaces = []
   for(let workspace of args) {
+    // console.log('main.js workspace\n', workspace)
     if (ids[workspace.id]) {
       const result = await popOverwrite(workspace);
       if (result.response === 1) {

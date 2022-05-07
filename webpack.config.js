@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -8,6 +9,7 @@ module.exports = {
   target: 'web',
   resolve: {
     fallback: {
+      buffer: require.resolve('buffer'),
       fs: false,
       tls: false,
       net: false,
@@ -102,6 +104,23 @@ module.exports = {
     new BundleAnalyzerPlugin({
       openAnalyzer: false,
       analyzerMode: 'static',
+    }),
+    new webpack.ProvidePlugin({
+      process: "node:buffer",
+      Buffer: ["buffer", "Buffer"],
+    }),
+    new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
+        const mod = resource.request.replace(/^node:/, "");
+        switch (mod) {
+            case "buffer":
+                resource.request = "buffer";
+                break;
+            case "stream":
+                resource.request = "readable-stream";
+                break;
+            default:
+                throw new Error(`Not found ${mod}`);
+        }
     }),
   ],
 };
