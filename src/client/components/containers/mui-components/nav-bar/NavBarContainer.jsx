@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LoginContainer from './LoginContainer';
-import githubController from '../../controllers/githubController';
+import githubController from '../../../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 // import swellLogo from '../../../assets/icons/64x64.png';
@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { Stack, Divider } from '@mui/material';
 
 const NavBarContainer = (props) => {
   const [session, setSession] = useState(
@@ -61,7 +62,7 @@ const NavBarContainer = (props) => {
   ]
 
   return(
-    <AppBar position="static">
+    <AppBar sx={{ position: 'static' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <LoginContainer session={session} setSession={setSession}/>
@@ -76,7 +77,7 @@ const NavBarContainer = (props) => {
                 <Button
                   key={page.name}
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   sx={{
                     m: 1
                   }}>

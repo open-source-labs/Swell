@@ -80,11 +80,11 @@ const LoginContainer = (props) => {
             variant="dot">
             <Avatar alt={session.username} src={session.avatar}/> 
           </StyledBadge>
-          <Button variant="contained">Invite +</Button>
+          <Button variant="outlined">Invite +</Button>
         </Box>
         : 
         <Box>
-          <Button variant="contained" color="secondary" onClick={signInViaGitHub}>Sign In Via Github</Button>
+          <Button variant="outlined" onClick={signInViaGitHub}>Sign In</Button>
         </Box>
       }
     </Box>

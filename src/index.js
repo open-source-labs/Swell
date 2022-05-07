@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { orange } from '@mui/material/colors';
+import { deepOrange, grey } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './client/components/containers/App';
 import store from './client/store';
@@ -21,10 +21,10 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#393939',
+      main: '#1976d2',
     },
     secondary: {
-      main: '#2196f3',
+      main: '#009688',
     },
   },
 });
