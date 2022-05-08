@@ -20,11 +20,11 @@ const style = {
   p: 1
 };
 
-export default function SaveWorkspaceModal({ open, handleClose }) {
+export default function ExportWorkspaceModal({ open, handleClose }) {
   return (
     <Modal
-      aria-labelledby="save-workspace-modal"
-      aria-describedby="save-current-workspace"
+      aria-labelledby="export-workspace-modal"
+      aria-describedby="export-current-workspace"
       open={open}
       onClose={handleClose}
       closeAfterTransition
@@ -35,11 +35,11 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography id="save-workspace-modal-title" variant="h6" component="h2">
-            Save As
+          <Typography id="export-workspace-modal-title" variant="h6" component="h2">
+            Export To
           </Typography>
-          <Typography id="save-workspace-modal-description" sx={{ mt: 1 }}>
-            Put the original app's save workspace functionality here. Maybe there can be two options: save, and save+commit.
+          <Typography id="export-workspace-modal-description" sx={{ mt: 1 }}>
+            Export to file system, or export to GitHub.
           </Typography>
         </Box>
       </Fade>

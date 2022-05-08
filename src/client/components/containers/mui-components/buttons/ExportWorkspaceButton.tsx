@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from '@mui/material';
-import { SaveRounded } from "@mui/icons-material";
-import SaveWorkspaceModal from "../modals/SaveWorkspaceModal";
+import { IosShareRounded } from "@mui/icons-material";
+import ExportWorkspaceModal from "../modals/ExportWorkspaceModal";
 
-export default function SaveWorkspaceButton(props) {
+export default function ExportWorkspaceButton() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -14,9 +14,9 @@ export default function SaveWorkspaceButton(props) {
         variant="text"
         sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
         onClick={handleOpen}>
-        <SaveRounded fontSize="small"/>
+        <IosShareRounded fontSize="small"/>
       </Button>
-      <SaveWorkspaceModal open={open} handleClose={handleClose}/>
+      <ExportWorkspaceModal open={open} handleClose={handleClose}/>
     </div>
   )
 }

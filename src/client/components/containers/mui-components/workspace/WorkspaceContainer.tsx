@@ -3,7 +3,7 @@ import React from "react";
 // Local components
 import CurrentWorskpaceDisplay from "./CurrentWorkspaceDisplay";
 import CollectionTree from './CollectionTree';
-import SaveWorkspaceButton from "./SaveWorkspaceButton";
+import SaveWorkspaceButton from "../buttons/SaveWorkspaceButton";
 
 // MUI components and SVG icons
 import { Box, Button, Typography, SelectChangeEvent } from '@mui/material';
