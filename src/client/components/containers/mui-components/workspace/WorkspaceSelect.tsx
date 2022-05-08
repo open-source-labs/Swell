@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Select, SelectChangeEvent, MenuItem, FormControl, FormHelperText } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-const WorkspaceSelect = (props) => {
+export default function WorkspaceSelect(props) {
   const [workspace, setWorkspace] = React.useState('home-workspace');
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
@@ -13,7 +13,7 @@ const WorkspaceSelect = (props) => {
   const collections = useSelector((store: any) => store.business.collections);
   const menuItems = [];
   for (let workspace of collections) {
-    menuItems.push(<MenuItem value={workspace.id}>{workspace.name}</MenuItem>)
+    menuItems.push(<MenuItem key={workspace.id} value={workspace.id}>{workspace.name}</MenuItem>)
   }
 
   return (
@@ -37,5 +37,3 @@ const WorkspaceSelect = (props) => {
     </Box>
   )
 }
-
-export default WorkspaceSelect;

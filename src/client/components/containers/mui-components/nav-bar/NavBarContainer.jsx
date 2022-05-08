@@ -66,14 +66,19 @@ const NavBarContainer = (props) => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <LoginContainer session={session} setSession={setSession}/>
-          <Box sx={{ 
+          <Box 
+            key="page-selector"
+            sx={{ 
               flexGrow: 1,
               display: { xs: 'none', md: 'flex' },
               justifyContent: 'center',
               alignItems: 'center',
             }}>
             {pages.map((page) => (
-              <Link to={page.route}>
+              <Link 
+                key={page.name}
+                to={page.route}
+                >
                 <Button
                   key={page.name}
                   variant="contained"
@@ -86,12 +91,14 @@ const NavBarContainer = (props) => {
               </Link>
             ))}
           </Box>
-          <Box sx={{ 
-            flexGrow: 0,
-            display: { xs: 'none', md: 'flex' },
-            alignItems: 'center',
-            m: 1,
-          }}>
+          <Box 
+            key="swell-info"
+            sx={{ 
+              flexGrow: 0,
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              m: 1
+            }}>
             <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
             {/* TODO: add Swell icon next to "Star this Repo" button */}
           </Box>
