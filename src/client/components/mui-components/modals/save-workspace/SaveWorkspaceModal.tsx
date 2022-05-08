@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
@@ -34,6 +34,7 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
       }}
     >
       <Fade in={open}>
+
         <Box sx={style}>
           <Typography id="save-workspace-modal-title" variant="h6" component="h2">
             Save As
@@ -42,6 +43,7 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
             Put the original app's save workspace functionality here. Maybe there can be two options: save, and save+commit.
           </Typography>
         </Box>
+        
       </Fade>
     </Modal>
   );

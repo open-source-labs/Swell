@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from '@mui/material';
 import { IosShareRounded } from "@mui/icons-material";
-import ExportWorkspaceModal from "../modals/ExportWorkspaceModal";
+import ExportWorkspaceModal from "../modals/export-workspace/ExportWorkspaceModal";
 
 export default function ExportWorkspaceButton() {
   const [open, setOpen] = React.useState(false);

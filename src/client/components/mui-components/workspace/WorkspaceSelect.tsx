@@ -1,8 +1,14 @@
 import React from "react";
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
+import ImportWorkspaceModal from "../modals/import-workspace/ImportWorkspaceModal"
 import { Box, Select, MenuItem, FormControl, FormHelperText } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 export default function WorkspaceSelect({ workspace, handleWorkspaceChange }) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   // TODO: change store explicit any to a more defined type
   const collections = useSelector((store: any) => store.business.collections);
   const menuItems = [];
@@ -23,11 +29,11 @@ export default function WorkspaceSelect({ workspace, handleWorkspaceChange }) {
         >
           <MenuItem value="home-workspace">Home</MenuItem>
           {menuItems}
-          {/* TODO: Link this last menu item to a popup for importing a new workspace */}
-          <MenuItem value=""><em>Import a new Workspace</em></MenuItem>
+          <MenuItem value="" onClick={handleOpen}><FileDownloadRoundedIcon /></MenuItem>
         </Select>
         <FormHelperText>Current Workspace</FormHelperText>
       </FormControl>
+      <ImportWorkspaceModal open={open} handleClose={handleClose}/>
     </Box>
   )
 }

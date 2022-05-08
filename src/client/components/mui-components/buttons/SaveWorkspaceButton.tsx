@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from '@mui/material';
 import { SaveRounded } from "@mui/icons-material";
-import SaveWorkspaceModal from "../modals/SaveWorkspaceModal";
+import SaveWorkspaceModal from "../modals/save-workspace/SaveWorkspaceModal";
 
 export default function SaveWorkspaceButton() {
   const [open, setOpen] = React.useState(false);

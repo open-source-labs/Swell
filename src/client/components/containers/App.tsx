@@ -9,8 +9,8 @@ import collectionsController from '../../controllers/collectionsController';
 import UpdatePopUpContainer from './UpdatePopUpContainer';
 import { WindowExt } from '../../../types'
 import '../../../assets/style/App.scss';
-import NavBarContainer from './mui-components/nav-bar/NavBarContainer';
-import WorkspaceContainer from './mui-components/workspace/WorkspaceContainer';
+import NavBarContainer from '../mui-components/nav-bar/NavBarContainer';
+import WorkspaceContainer from '../mui-components/workspace/WorkspaceContainer';
 
 import Box from '@mui/material/Box';
 

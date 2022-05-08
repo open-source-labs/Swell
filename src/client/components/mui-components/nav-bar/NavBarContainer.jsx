@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LoginContainer from './LoginContainer';
-import githubController from '../../../../controllers/githubController';
+import githubController from '../../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 // import swellLogo from '../../../assets/icons/64x64.png';
