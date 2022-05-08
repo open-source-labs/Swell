@@ -1,14 +1,8 @@
 import React from "react";
-import { Box, Select, SelectChangeEvent, MenuItem, FormControl, FormHelperText } from '@mui/material';
+import { Box, Select, MenuItem, FormControl, FormHelperText } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-export default function WorkspaceSelect(props) {
-  const [workspace, setWorkspace] = React.useState('home-workspace');
-
-  const handleWorkspaceChange = (event: SelectChangeEvent) => {
-    setWorkspace(event.target.value as string);
-  }
-
+export default function WorkspaceSelect({ workspace, handleWorkspaceChange }) {
   // TODO: change store explicit any to a more defined type
   const collections = useSelector((store: any) => store.business.collections);
   const menuItems = [];
@@ -17,7 +11,7 @@ export default function WorkspaceSelect(props) {
   }
 
   return (
-    <Box>
+    <Box sx={{mr: 1, flexGrow: 1}}>
       <FormControl 
         fullWidth
         variant="standard">

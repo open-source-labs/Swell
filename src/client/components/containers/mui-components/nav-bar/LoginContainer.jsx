@@ -57,8 +57,6 @@ const LoginContainer = (props) => {
     console.log(endSessionLog);
   }
 
-  console.log(session);
-
   return(
     <Box sx={{
       width: '15%',

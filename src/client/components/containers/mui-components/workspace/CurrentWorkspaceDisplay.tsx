@@ -1,13 +1,18 @@
 import React from "react";
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { IosShareRounded } from "@mui/icons-material";
 import WorkspaceSelect from './WorkspaceSelect';
+import SaveWorkspaceButton from "./SaveWorkspaceButton";
 
 export default function CurrentWorkspaceDisplay(props) {
-  console.log('Current Workspace:', props.workspace);
   return (
-    <Box sx={{ mr: 1, flexGrow: 1, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
       {/* The below select menu should contain all saved workspaces in the Swell app. */}
-      <WorkspaceSelect />
+      <WorkspaceSelect {...props} />
+      <SaveWorkspaceButton />
+      <Button variant="text" sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}>
+        <IosShareRounded fontSize="small"/>
+      </Button>
     </Box>
   )
 }
