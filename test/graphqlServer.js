@@ -4,7 +4,12 @@ const { ApolloServer } = require('apollo-server-express');
 const { execute, subscribe } = require('graphql');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { createServer } = require('http');
-const { SubscriptionServer } = require('subscriptions-transport-ws');  // we need to enable graphql-ws in this file
+// TODO: Migrate this file and graphQLController.ts to use graphql-ws
+// instead of deprecated subscription-transport-ws package
+// https://www.apollographql.com/docs/apollo-server/data/subscriptions/
+// import { WebSocketServer } from 'ws';
+// import { useServer } from 'graphql-ws/lib/use/ws';
+const { SubscriptionServer } = require('subscriptions-transport-ws');
 const { PubSub } = require('graphql-subscriptions');
 const bodyParser = require('body-parser');
 

@@ -32,17 +32,17 @@ interface Auth {
 }
 
 class SwellDB extends Dexie {
-  history: Table<History, string>;
+  history!: Table<History, string>;
   
-  collections: Table<Collections, string>;
+  collections!: Table<Collections, string>;
 
-  profile: Table<Profile, string>;
+  profile!: Table<Profile, string>;
 
-  repos: Table<Repos, string>;
+  repos!: Table<Repos, string>;
 
-  files: Table<Files, string>;
+  files!: Table<Files, string>;
 
-  auth: Table<Auth, string>
+  auth!: Table<Auth, string>
   
   constructor() {
     super('SwellDB');

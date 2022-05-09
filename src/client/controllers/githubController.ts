@@ -13,6 +13,7 @@ const githubController = {
   async importFromRepo(): Promise<string> {
     // setup authorization
     const token = await db.auth.toArray();
+    console.log(await db.files.toArray())
     const octokit = new Octokit({
       auth: token[0].auth,
     })

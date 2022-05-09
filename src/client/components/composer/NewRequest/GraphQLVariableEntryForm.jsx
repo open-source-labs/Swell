@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+// TODO: refactor to remove react-codemirror2
+// import CodeMirror from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
