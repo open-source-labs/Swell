@@ -118,6 +118,7 @@
     "@grpc/proto-loader": "^0.6.9",
     "@jest-runner/electron": "^3.0.1",
     "@mui/icons-material": "^5.6.2",
+    "@mui/lab": "^5.0.0-alpha.80",
     "@mui/material": "^5.6.4",
     "@redux-devtools/extension": "^3.2.2",
     "@reduxjs/toolkit": "^1.8.1",

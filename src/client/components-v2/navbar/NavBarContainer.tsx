@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import LoginContainer from './LoginContainer';
+import LoginStatus from './LoginStatus';
 import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-// import swellLogo from '../../../assets/icons/64x64.png';
 
 import GitHubButton from 'react-github-btn'
 import AppBar from '@mui/material/AppBar';
@@ -12,8 +11,9 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { Stack, Divider } from '@mui/material';
 
-const NavBarContainer = (props) => {
+export default function NavBarContainer(props) {
   const [session, setSession] = useState(
     {
       username: null,
@@ -58,22 +58,27 @@ const NavBarContainer = (props) => {
   ]
 
   return(
-    <AppBar position="static">
+    <AppBar sx={{ position: 'static' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <LoginContainer session={session} setSession={setSession}/>
-          <Box sx={{ 
+          <LoginStatus session={session} setSession={setSession}/>
+          <Box 
+            key="page-selector"
+            sx={{ 
               flexGrow: 1,
               display: { xs: 'none', md: 'flex' },
               justifyContent: 'center',
               alignItems: 'center',
             }}>
             {pages.map((page) => (
-              <Link to={page.route}>
+              <Link 
+                key={page.name}
+                to={page.route}
+                >
                 <Button
                   key={page.name}
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   sx={{
                     m: 1
                   }}>
@@ -82,19 +87,20 @@ const NavBarContainer = (props) => {
               </Link>
             ))}
           </Box>
-          <Box sx={{ 
-            flexGrow: 0,
-            display: { xs: 'none', md: 'flex' },
-            alignItems: 'center',
-            m: 1,
-          }}>
+          <Box 
+            key="swell-info"
+            sx={{ 
+              flexGrow: 0,
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              m: 1
+            }}>
+            {/* TODO: this GitHub button comes from a component library. Should build your own or find one that supports TS types. */ }
+            {/* @ts-ignore:next-line */}
             <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
-            {/* TODO: add Swell icon next to "Star this Repo" button */}
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
-  } 
-
-export default NavBarContainer;
+  }
