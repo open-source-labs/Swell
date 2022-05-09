@@ -186,12 +186,14 @@ const graphqlController = {
     headers.Cookie = cookies;
 
     fetch(req.url, {
-      method: 'POST',
+      method: 'post',
       headers: headers,
-      body: JSON.stringify({query: getIntrospectionQuery()}),
+      body: JSON.stringify({ query: getIntrospectionQuery() }),
     })
       .then((resp) => resp.json())
-      .then((data) => event.sender.send('introspect-reply', data.data))
+      .then((data) => {
+        event.sender.send('introspect-reply', data.data)
+      })
       .catch((err) => 
         event.sender.send(
           'introspect-reply',
