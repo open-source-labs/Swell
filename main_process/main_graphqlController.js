@@ -2,7 +2,7 @@ const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@ap
 const gql = require('graphql-tag');
 const { getIntrospectionQuery } = require('graphql');
 const { onError } = require("@apollo/client/link/error");
-const axios = require('axios');
+const fetch = require('cross-fetch');
 const cookie = require('cookie');
 const { ipcMain } = require('electron');
 
@@ -79,7 +79,7 @@ const graphqlController = {
       uri: reqResObj.url,
       headers,
       credentials: 'include',
-      fetch: axios,
+      fetch: fetch,
     });
 
     const errorLink = onError(({ graphQLErrors, networkError }) => {
