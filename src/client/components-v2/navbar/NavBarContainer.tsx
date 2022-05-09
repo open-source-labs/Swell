@@ -4,7 +4,6 @@ import LoginContainer from './LoginContainer';
 import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-// import swellLogo from '../../../assets/icons/64x64.png';
 
 import GitHubButton from 'react-github-btn'
 import AppBar from '@mui/material/AppBar';
@@ -99,8 +98,9 @@ const NavBarContainer = (props) => {
               alignItems: 'center',
               m: 1
             }}>
+            {/* TODO: this GitHub button comes from a component library. Should build your own or find one that supports TS types. */ }
+            {/* @ts-ignore:next-line */}
             <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
-            {/* TODO: add Swell icon next to "Star this Repo" button */}
           </Box>
         </Toolbar>
       </Container>
