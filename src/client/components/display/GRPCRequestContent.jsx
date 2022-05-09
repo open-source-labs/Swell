@@ -1,5 +1,6 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+// import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
 
 function GRPCRequestContent({ request, rpc, service, servicesObj }) {

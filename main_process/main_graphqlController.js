@@ -185,21 +185,17 @@ const graphqlController = {
     }
     headers.Cookie = cookies;
 
-    // console.log(req)
-    // console.log(getIntrospectionQuery())
-    axios({
-      method: 'post',
-      url: req.url,
+    fetch(req.url, {
+      method: 'POST',
       headers: headers,
-      data: {query: getIntrospectionQuery()},
+      body: JSON.stringify({query: getIntrospectionQuery()}),
     })
-      .then((data) => {
-        event.sender.send('introspect-reply', data.data.data)
-      })
+      .then((resp) => resp.json())
+      .then((data) => event.sender.send('introspect-reply', data.data))
       .catch((err) => 
         event.sender.send(
           'introspect-reply',
-          'Error: Please enter a valid GraphQL API URI'
+          `Error: ${err}`,
         )
       );
   },

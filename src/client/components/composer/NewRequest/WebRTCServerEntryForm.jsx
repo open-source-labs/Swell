@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+// TODO: refactor to remove react-codemirror2
+// import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/twilight.css';
