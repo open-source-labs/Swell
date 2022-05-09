@@ -1,16 +1,16 @@
 import React, { useState, useEffect, JSXElementConstructor } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import ContentsContainer from './ContentsContainer';
-import SidebarContainer from './SidebarContainer';
-import ResponsePaneContainer from './ResponsePaneContainer';
-import RightSideContainer from './RightSideContainer';
-import historyController from '../../controllers/historyController';
-import collectionsController from '../../controllers/collectionsController';
-import UpdatePopUpContainer from './UpdatePopUpContainer';
-import { WindowExt } from '../../../types'
-import '../../../assets/style/App.scss';
-import NavBarContainer from '../mui-components/nav-bar/NavBarContainer';
-import WorkspaceContainer from '../mui-components/workspace/WorkspaceContainer';
+import ContentsContainer from '../components/containers/ContentsContainer';
+import SidebarContainer from '../components/containers/SidebarContainer';
+import ResponsePaneContainer from '../components/containers/ResponsePaneContainer';
+import RightSideContainer from '../components/containers/RightSideContainer';
+import historyController from '../controllers/historyController';
+import collectionsController from '../controllers/collectionsController';
+import UpdatePopUpContainer from '../components/containers/UpdatePopUpContainer';
+import { WindowExt } from '../../types'
+import '../../assets/style/App.scss';
+import NavBarContainer from './navbar/NavBarContainer';
+import WorkspaceContainer from './workspace/WorkspaceContainer';
 
 import Box from '@mui/material/Box';
 

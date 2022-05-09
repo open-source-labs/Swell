@@ -6,6 +6,7 @@ import { Workspace, WindowAPIObject, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
 
+{/* TODO: standardize collection data, remove explicit any */}
 api.receive('add-collection', (collectionData: any) => {
   // Add parsed text file to db
   collectionsController.addCollectionToIndexedDb([collectionData]);

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
-import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -20,11 +19,11 @@ const style = {
   p: 1
 };
 
-export default function ExportWorkspaceModal({ open, handleClose }) {
+export default function InviteToWorkspaceModal({ open, handleClose }) {
   return (
     <Modal
-      aria-labelledby="export-workspace-modal"
-      aria-describedby="export-current-workspace"
+      aria-labelledby="invite-to-workspace-modal"
+      aria-describedby="invite-to-current-workspace"
       open={open}
       onClose={handleClose}
       closeAfterTransition
@@ -35,11 +34,11 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography id="export-workspace-modal-title" variant="h6" component="h2">
-            Import From
+          <Typography id="invite-to-workspace-modal-title" variant="h6" component="h2">
+            Invite someone to your current workspace!
           </Typography>
-          <Typography id="export-workspace-modal-description" sx={{ mt: 1 }}>
-            Import file system, or import from GitHub.
+          <Typography id="invite-to-workspace-modal-description" sx={{ mt: 1 }}>
+            Still in development.
           </Typography>
         </Box>
       </Fade>

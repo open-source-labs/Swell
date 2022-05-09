@@ -1,8 +1,9 @@
 import React from "react";
 import { Box } from '@mui/material';
 import WorkspaceSelect from './WorkspaceSelect';
-import SaveWorkspaceButton from "../buttons/SaveWorkspaceButton";
-import ExportWorkspaceButton from "../buttons/ExportWorkspaceButton";
+import SaveWorkspaceButton from "./buttons/SaveWorkspaceButton";
+import ExportWorkspaceButton from "./buttons/ExportWorkspaceButton";
+import InviteToWorkspaceButton from "./buttons/InviteToWorkspaceButton";
 
 export default function CurrentWorkspaceDisplay(props) {
   return (
@@ -11,6 +12,7 @@ export default function CurrentWorkspaceDisplay(props) {
       <WorkspaceSelect {...props} />
       <SaveWorkspaceButton />
       <ExportWorkspaceButton />
+      <InviteToWorkspaceButton />
     </Box>
   )
 }

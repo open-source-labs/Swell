@@ -1,10 +1,21 @@
 import React from "react";
+
+import RequestTreeItem from "./RequestTreeItem";
+
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
+import WorkspaceContainer from "./WorkspaceContainer";
 
-export default function CollectionTree(props) {
+export default function CollectionTree({ currentWorkspace }) {
+
+  const { reqResArray } = currentWorkspace;
+  const requestTreeItems = []
+  for (let request of reqResArray) {
+    requestTreeItems.push(<RequestTreeItem key={request.id} request={request}/>)
+  }
+
   return (
     <TreeView
       aria-label="collection navigator"
@@ -12,14 +23,8 @@ export default function CollectionTree(props) {
       defaultExpandIcon={<ChevronRightIcon />}
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
-      <TreeItem nodeId="1" label="Applications">
-        <TreeItem nodeId="2" label="Calendar" />
-      </TreeItem>
-      <TreeItem nodeId="5" label="Documents">
-        <TreeItem nodeId="10" label="OSS" />
-        <TreeItem nodeId="6" label="MUI">
-          <TreeItem nodeId="8" label="index.js" />
-        </TreeItem>
+      <TreeItem nodeId={currentWorkspace.id} label={currentWorkspace.name}>
+        {requestTreeItems}
       </TreeItem>
     </TreeView>
   );
