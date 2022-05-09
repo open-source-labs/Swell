@@ -683,7 +683,6 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
         newRequestsOpenAPI: openapiReqArray,
       };
     }
-
     default:
       return state;
   }

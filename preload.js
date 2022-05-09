@@ -36,7 +36,7 @@ const apiObj = {
   receive: (channel, cb) => {
     // allow list channels
     const allowedChannels = [
-      'add-collection',
+      'add-collections',
       'clear-history-response',
       'export-from-github',
       'introspect-reply',
