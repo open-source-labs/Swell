@@ -1,4 +1,6 @@
 import { WRTC } from '../../types';
+//TODO: This protocol is not working at all. Needs work on every level.
+
 /**
  * exports Peer class for use in WebRTC implementations
  *
@@ -16,7 +18,7 @@ export default class Peer {
   _roles: Record<string, string>;
 
   role: string;
-  
+
   constructor(initConfig: RTCConfiguration) {
     this.initConfig = initConfig;
     this._roles = {
@@ -34,7 +36,8 @@ export default class Peer {
   //  │       GET BROWSER RTC        │
   //  └──────────────────────────────┘
 
-  getBrowserRTC(): null | Record<number, WRTC> { //-> we are pretty sure that this is not the correct type, but it works, so...
+  getBrowserRTC(): null | Record<number, WRTC> {
+    //-> we are pretty sure that this is not the correct type, but it works, so...
     if (typeof globalThis === 'undefined') return null;
     const wrtc = {
       RTCPeerConnection:
@@ -107,7 +110,7 @@ export default class Peer {
     if (this.role === this._roles.PENDING) {
       // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
       console.log(`peer role is ${this.role}. Skipping channel init.`);
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
+      // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
     } else if (this.role === this._roles.INITIATOR) {
       // on our local connection, create a data channel and pass it the name "chatRoom1"
       // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
@@ -117,11 +120,13 @@ export default class Peer {
       dataChannel.onopen = (event: any) => console.log('Connection opened!');
 
       // when the channel is closed ...
-      dataChannel.onclose = (event: any) => console.log('Connection closed! Goodbye (^-^)');
+      dataChannel.onclose = (event: any) =>
+        console.log('Connection closed! Goodbye (^-^)');
 
       // when message received...
-      dataChannel.onmessage = (event: any) => console.log('Received Msg: ' + event.data);
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
+      dataChannel.onmessage = (event: any) =>
+        console.log('Received Msg: ' + event.data);
+      // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
     } else if (this.role === this._roles.RECEIVER) {
       // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
       this.connection.ondatachannel = (event: any) => {
@@ -132,15 +137,18 @@ export default class Peer {
         // when the channel is opened ...
         //remoteConnection.dataChannel.onopen = event => console.log("Connection opened!");
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel.onopen = (event: any) => console.log('Connection opened!');
+        this.connection.dataChannel.onopen = (event: any) =>
+          console.log('Connection opened!');
         // when the channel is closed ...
         //remoteConnection.dataChannel.onclose = event => console.log("Connection closed! Goodbye (^-^)");
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel.onclose = (event: any) => console.log('Connection closed! Goodbye (^-^)');
+        this.connection.dataChannel.onclose = (event: any) =>
+          console.log('Connection closed! Goodbye (^-^)');
         // when message received...
         //remoteConnection.dataChannel.onmessage = event => console.log("PeerA: " + event.data);
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel.onmessage = (event: any) => console.log('Received Msg' + event.data);
+        this.connection.dataChannel.onmessage = (event: any) =>
+          console.log('Received Msg' + event.data);
       };
     }
   }
@@ -171,3 +179,4 @@ export default class Peer {
     }
   }
 }
+

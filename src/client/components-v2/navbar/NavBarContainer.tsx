@@ -36,11 +36,8 @@ export default function NavBarContainer(props) {
           isActiveSession: true}));
         console.log(`-------ACTIVE SESSION--------\nuser: ${response.data.login}\ntoken: ${token}`);
         // get user data here and send to db
-        const userData = await axios.get('api/getUserData', {
-          headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
-        })
-        console.log('userdata', userData)
-        githubController.saveUserDataToDB(userData.data)
+        const userData = await githubController.getUserData(token);
+        githubController.saveUserDataToDB(userData, token)
       }
     }
 

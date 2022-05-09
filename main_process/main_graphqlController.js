@@ -2,7 +2,7 @@ const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@ap
 const gql = require('graphql-tag');
 const { getIntrospectionQuery } = require('graphql');
 const { onError } = require("@apollo/client/link/error");
-const axios = require('axios');
+const fetch = require('cross-fetch');
 const cookie = require('cookie');
 const { ipcMain } = require('electron');
 
@@ -79,7 +79,7 @@ const graphqlController = {
       uri: reqResObj.url,
       headers,
       credentials: 'include',
-      fetch: axios,
+      fetch: fetch,
     });
 
     const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -185,21 +185,19 @@ const graphqlController = {
     }
     headers.Cookie = cookies;
 
-    // console.log(req)
-    // console.log(getIntrospectionQuery())
-    axios({
+    fetch(req.url, {
       method: 'post',
-      url: req.url,
       headers: headers,
-      data: {query: getIntrospectionQuery()},
+      body: JSON.stringify({ query: getIntrospectionQuery() }),
     })
+      .then((resp) => resp.json())
       .then((data) => {
-        event.sender.send('introspect-reply', data.data.data)
+        event.sender.send('introspect-reply', data.data)
       })
       .catch((err) => 
         event.sender.send(
           'introspect-reply',
-          'Error: Please enter a valid GraphQL API URI'
+          `Error: ${err}`,
         )
       );
   },

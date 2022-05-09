@@ -1,8 +1,20 @@
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
-export type Methods = 'GET'|'PUT'|'PATCH'|'DELETE'|'OPTIONS'|'HEAD'|'TRACE'|'QUERY'|'SUBSCRIPTION'|'INTROSPECTION'|'INITIATOR'|'RECEIVER';
-type data = {[key: string]: string;}
+export type Methods =
+  | 'GET'
+  | 'PUT'
+  | 'PATCH'
+  | 'DELETE'
+  | 'OPTIONS'
+  | 'HEAD'
+  | 'TRACE'
+  | 'QUERY'
+  | 'SUBSCRIPTION'
+  | 'INTROSPECTION'
+  | 'INITIATOR'
+  | 'RECEIVER';
+type data = { [key: string]: string };
 
 export interface CookieObject {
   name: string;
@@ -19,7 +31,7 @@ export interface CookieObject {
 export interface CookieProps {
   cookies: {
     expirationDate: string;
-  }
+  };
   detail?: string;
   className?: string;
 }
@@ -47,7 +59,7 @@ export interface GraphQLResponseObjectData {
 // export interface initialState {
 //   currentTab: string;
 //   reqResArray: NewRequestResponseObject[];
-//   scheduledReqResArray: NewRequestResponseObject[];  
+//   scheduledReqResArray: NewRequestResponseObject[];
 //   history: Record<string, unknown>[];
 //   collections: Record<string, unknown>[];
 //   warningMessage: Record<string, string>;
@@ -62,7 +74,7 @@ export interface GraphQLResponseObjectData {
 
 export interface HistoryTab {
   history: Record<number, unknown>[];
-  collections : Record<string, unknown>[];
+  collections: Record<string, unknown>[];
 }
 
 export interface Message {
@@ -71,14 +83,15 @@ export interface Message {
   data: string;
 }
 
-export interface NewRequestBody { //-> wrong. all wrong. -Prince
+export interface NewRequestBody {
+  //-> wrong. all wrong. -Prince
   bodyContent: string;
   bodyVariables: string;
   bodyType: string;
   rawType: string;
   JSONFormatted: boolean;
   bodyIsNew: boolean;
-};
+}
 
 export interface NewRequestCookies {
   // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
@@ -170,7 +183,7 @@ export interface NewRequestResponseObject {
 
 export interface NewRequestSSE {
   isSSE: boolean;
-};
+}
 
 export interface NewRequestStreams {
   streamsArr: Record<string, unknown>[];
@@ -187,7 +200,8 @@ export interface NewRequestStreams {
   protoContent: string;
 }
 
-export interface RequestResponseObjectResponseObject { // this is likely not a comprehensive list of all properties
+export interface RequestResponseObjectResponseObject {
+  // this is likely not a comprehensive list of all properties
   cookies: CookieObject[];
   headers: Record<string, unknown>;
   events: Record<string, unknown>[]; // is this the correct type?
@@ -232,7 +246,14 @@ export interface Workspace {
 }
 
 export interface WRTC {
-  RTCPeerConnection: RTCPeerConnection | webkitRTCPeerConnection | mozRTCPeerConnection;
-  RTCSessionDescription: RTCSessionDescription | webkitRTCSessionDescription | mozRTCSessionDescription;
+  RTCPeerConnection:
+    | RTCPeerConnection
+    | webkitRTCPeerConnection
+    | mozRTCPeerConnection;
+  RTCSessionDescription:
+    | RTCSessionDescription
+    | webkitRTCSessionDescription
+    | mozRTCSessionDescription;
   RTCIceCandidate: RTCIceCandidate | webkitRTCIceCandidate | mozRTCIceCandidate;
 }
+

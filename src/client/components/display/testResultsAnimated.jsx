@@ -24,7 +24,7 @@ const VerticalProgress = (props) => {
   const [bind, { width }] = useMeasure();
   const adjWidth = width * passedFract;
   const springProps = useSpring({
-    width: adjWidth,
+    // width: adjWidth // not sure what this was doing but it doesn't exist in react-spring anymore
     config: { duration: 1000 },
   });
 

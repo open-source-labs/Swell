@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
+// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from '../display/EmptyState';
 import EventPreview from '../display/EventPreview';
 import 'codemirror/theme/neo.css';
@@ -14,7 +15,7 @@ function EventsContainer({ currentResponse }) {
     return <EmptyState connection={currentResponse.connection} />;
   }
   const { events, headers } = response;
-  console.log("this is the events", events);
+  // console.log("this is the events", events);
   // console.log("this is the headers", headers);
   let responseBody = '';
 

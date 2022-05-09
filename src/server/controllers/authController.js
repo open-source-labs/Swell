@@ -5,6 +5,22 @@ const { buffer } = require('stream/consumers');
 
 const authController = {};
 
+authController.checkForCookie = async (req, res, next) => {
+  try{
+    if (!req.cookies.auth){
+      console.log('no auth', req.cookies)
+      // res.cookie()
+    }
+    return next()
+  } catch (err) {
+    return next({
+      log: `Error in authController.checkForCookie Err: ${err.message}`,
+      status: 500,
+      message: { err: 'An error occurred' },
+    });
+  }
+}
+
 /**
  * Middleware for the /signup/github/callback route
  */

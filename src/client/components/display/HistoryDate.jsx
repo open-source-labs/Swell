@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import parse from 'date-fns/parse';
-// import isYesterday from 'date-fns/is_yesterday';
-import { isYesterday, isToday } from 'date-fns';
-import format from 'date-fns/format';
+import { isYesterday, isToday, parse, format } from 'date-fns';
 import History from './History.jsx';
 
 class HistoryDate extends Component {
@@ -20,15 +17,14 @@ class HistoryDate extends Component {
     const current = this.props.history.find(
       (a) => a.date === this.props.content.date
     );
-    let date = parse(current.date);
-
+    let date = parse(current.date, 'MM/dd/yyyy', new Date())
     if (isToday(date)) {
       date = 'Today';
     } // If the date matches todays date render the word "Today"
     else if (isYesterday(date)) {
       date = 'Yesterday';
     } else {
-      date = format(date, 'ddd, MMM d, yyyy');
+      date = format(date, 'MMM d, yyyy');
     }
 
     const histArray = current.history.map((history, i) => {
