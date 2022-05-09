@@ -27,9 +27,17 @@ const App = () => {
   }, []);
 
   return (
-    <Box className='is-tall'>
+    <div id="app" className="is-tall">
       <HashRouter>
         <NavBarContainer /> 
+        <Box sx={{ height: '100%', display: 'flex' }}> 
+          <WorkspaceContainer />
+          <ContentsContainer />
+          <div className="tile is-vertical add-vertical-scroll">
+            <SidebarContainer />
+            <ResponsePaneContainer />
+        </div>
+        </Box>
         <Routes>
           <Route
             path="/"
@@ -60,21 +68,9 @@ const App = () => {
             element={<p></p>}
           />
         </Routes>
-        <Box
-          id="app"
-          className={`columns is-gapless ${!message && 'is-tall'} ${
-            message && 'is-tall-message'
-          }`}>
-          <WorkspaceContainer />
-          <ContentsContainer />
-          <div className="tile is-vertical add-vertical-scroll">
-            <SidebarContainer />
-            <ResponsePaneContainer />
-          </div>
-        </Box>
         <UpdatePopUpContainer message={message} setMessage={setMessage} />
       </HashRouter>
-  </Box>
+    </div>
   );
 };
 

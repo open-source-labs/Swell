@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import LoginContainer from './LoginContainer';
+import LoginStatus from './LoginStatus';
 import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Stack, Divider } from '@mui/material';
 
-const NavBarContainer = (props) => {
+export default function NavBarContainer(props) {
   const [session, setSession] = useState(
     {
       username: null,
@@ -64,7 +64,7 @@ const NavBarContainer = (props) => {
     <AppBar sx={{ position: 'static' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <LoginContainer session={session} setSession={setSession}/>
+          <LoginStatus session={session} setSession={setSession}/>
           <Box 
             key="page-selector"
             sx={{ 
@@ -106,6 +106,4 @@ const NavBarContainer = (props) => {
       </Container>
     </AppBar>
   );
-  } 
-
-export default NavBarContainer;
+  }
