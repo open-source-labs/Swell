@@ -31,14 +31,14 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
         reqRes.response = { headers: null, events: null };
       else reqRes.response = { messages: [] };
     });
-    const collectionObj = {
+    const collection = {
       name: inputName,
       id: uuid(),
       createdAt: new Date(),
       reqResArray: clonedArray,
     };
-    collectionsController.addCollectionToIndexedDb([collectionObj]); //add to IndexedDB
-    dispatch(actions.collectionAdd(collectionObj));
+    collectionsController.addCollectionToIndexedDb([collection]); //add to IndexedDB
+    dispatch(actions.collectionAdd(collection));
     setShowModal(false);
     setCollectionNameErrorStyles(false);
   };

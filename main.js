@@ -304,14 +304,14 @@ app.on('activate', () => {
 // });
 
 ipcMain.on('import-from-github', async (event, args) => {
-  async function popOverwrite(workspace) {
+  async function popOverwrite(collection) {
     // TODO: add in mod date, is Yes No ordering correct on popup?
     const options = {
       type: 'question',
       buttons: ['No', 'Yes'],
       defaultId: 0,
       title: 'Question',
-      message: `The workspace ${workspace.name} already exists in Swell`,
+      message: `The collection ${collection.name} already exists in Swell`,
       detail: 'Do you want to overwrite?',
     };
     return await dialog.showMessageBox(null, options);
@@ -322,23 +322,23 @@ ipcMain.on('import-from-github', async (event, args) => {
   // requiring typescript type Workspace makes sanitation uncessesary 
   const ids = {};
   let index = 0;
-  const newWorkspaces = []
-  for(let workspace of args) {
+  const newCollectionArr = []
+  for(let collection of args) {
     // console.log('main.js workspace\n', workspace)
-    if (ids[workspace.id]) {
-      const result = await popOverwrite(workspace);
+    if (ids[collection.id]) {
+      const result = await popOverwrite(collection);
       if (result.response === 1) {
-        newWorkspaces[ids[workspace.id]] = workspace;
+        newCollectionArr[ids[collection.id]] = collection;
         continue;
       }
     }
-    ids[workspace.id] = index;
+    ids[collection.id] = index;
     index++;
-    newWorkspaces.push(workspace)
+    newCollectionArr.push(collection)
 
   };
   // send full array of workspaces to chromium for state update
-  event.sender.send('add-collection', newWorkspaces);
+  event.sender.send('add-collections', newCollectionArr);
 });
 
 // ============ IMPORT / EXPORT FROM FILES ===============
@@ -435,7 +435,7 @@ ipcMain.on('import-collection', (event, args) => {
         }
       }
       // send data to chromium for state update
-      event.sender.send('add-collection', [JSON.parse(data)]);
+      event.sender.send('add-collections', [JSON.parse(data)]);
     });
   });
 });

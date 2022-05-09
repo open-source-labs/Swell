@@ -2,13 +2,13 @@ import { v4 as uuid } from 'uuid';
 import db from '../db';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { GithubData, WindowAPIObject, WindowExt } from '../../types';
+import { GithubData, WindowAPI, WindowExt } from '../../types';
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import Cookies from 'js-cookie';
 import { profile } from 'console';
 
-const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
+const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
 const githubController = {
   async importFromRepo(): Promise<string> {
@@ -54,18 +54,18 @@ const githubController = {
     db.table('auth')
       .put({ session: '1', auth: auth })
       .catch((err: string) =>
-        console.log('Error in saveUserDataToDB auth', err)
+        console.log('Error in saveUserDataToDB/auth', err)
       );
     db.table('profile')
       .put(data.profile)
       .catch((err: string) =>
-        console.log('Error in saveUserDataToDB profile', err)
+        console.log('Error in saveUserDataToDB/profile', err)
       );
     for (let repo of data.repos) {
       db.table('repos')
         .put(repo)
         .catch((err: string) =>
-          console.log('Error in saveUserDataToDB repos', err)
+          console.log('Error in saveUserDataToDB/repos', err)
         );
     }
     db.table('files').clear();
@@ -73,7 +73,7 @@ const githubController = {
       db.table('files')
         .put(file)
         .catch((err: string) =>
-          console.log('Error in saveUserDataToDB files', err)
+          console.log('Error in saveUserDataToDB/files', err)
         );
     }
     console.log('db updated');
