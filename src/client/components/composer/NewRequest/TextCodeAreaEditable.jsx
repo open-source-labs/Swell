@@ -1,6 +1,6 @@
 //import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/theme/neat.css';
 
 export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
@@ -8,10 +8,10 @@ export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
     <div className="is-neutral-200-box">
       <CodeMirror
         value={value}
-        autoCursor={false}
+        autocursor="false"
         options={{
           mode,
-          theme: theme || 'neat',
+          theme: 'isotope',
           lineNumbers: true,
           tabSize: 4,
           lineWrapping: true,
@@ -19,6 +19,7 @@ export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
           readOnly: false,
         }}
         onChange={onChange}
+        height="200px"
       />
     </div>
   );

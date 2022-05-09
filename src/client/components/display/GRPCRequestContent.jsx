@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
 
 function GRPCRequestContent({ request, rpc, service, servicesObj }) {
@@ -53,6 +53,7 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
               lineWrapping: true,
               readOnly: true,
             }}
+            height="200px"
           />
         </div>
         {testContent.length > 0 && (
@@ -68,6 +69,7 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
                 lineWrapping: true,
                 readOnly: true,
               }}
+              height="200px"
             />
           </div>
         )}

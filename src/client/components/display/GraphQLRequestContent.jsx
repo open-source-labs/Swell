@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
 
 import ContentReqRow from './ContentReqRow';
 
@@ -46,6 +46,7 @@ function GraphQLRequestContent({ request }) {
               lineWrapping: true,
               readOnly: true,
             }}
+            height="200px"
           />
         </div>
         {/* VARIABLES */}

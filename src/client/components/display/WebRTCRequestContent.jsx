@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
 import * as actions from '../../actions/actions.ts';
@@ -60,6 +60,7 @@ export default function WebRTCRequestContent({ content }) {
             indentUnit: 1,
             tabSize: 1,
           }}
+          height="200px"
           editorDidMount={(editor) => {
             editor.setSize('100%', '100%');
           }}
@@ -82,6 +83,7 @@ export default function WebRTCRequestContent({ content }) {
               lineWrapping: true,
               readOnly: true,
             }}
+            height="200px"
           />
           <button className="button is-webrtc" onClick={() => createLocalSDP()}>
             Create Local SDP

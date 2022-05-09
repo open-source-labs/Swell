@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
@@ -56,6 +56,7 @@ const GraphQLBodyEntryForm = (props) => {
           editorDidMount={(editor) => {
             editor.setSize('100%', 150);
           }}
+          height="200px"
           onBeforeChange={(editor, data, value) => {
             const optionObj = {
               schema: introspectionData.clientSchema,
