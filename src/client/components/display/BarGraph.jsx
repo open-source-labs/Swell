@@ -4,6 +4,9 @@ import { useSelector, connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import * as store from '../../store';
 import * as actions from '../../actions/actions';
+// below two lines need to be in here to register 'category scale'
+import { Chart as ChartJS } from 'chart.js/auto'
+import { Chart } from 'react-chartjs-2'
 
 //necessary for graph styling due to CSP
 //Chart.platform.disableCSSInjection = true;
@@ -47,33 +50,29 @@ const BarGraph = (props) => {
   //default state for chart options
   const [chartOptions, updateOptions] = useState({
     scales: {
-      yAxes: [
-        {
-          scaleLabel: {
-            display: true,
-            labelString: chartURL,
-          },
-          ticks: {
-            beginAtZero: true,
-          },
+      x: {
+        type: 'linear',
+        ticks: {
+          beginAtZero: true,
+        }
+      },
+      y: {
+        type: 'linear',
+        title: {
+          display: true,
+          text: chartURL,
         },
-      ],
-      xAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+        ticks: {
+          beginAtZero: true,
+        }
+      }
     },
-    // animation: {
-    //   duration: 50, //buggy animation, get rid of transition
-    // },
     maintainAspectRatio: false,
   });
 
   //helper function that returns chart data object
   const dataUpdater = (labelArr, timesArr, BGsArr, bordersArr, reqResArr) => {
+    console.log('dataUpdater', labelArr, timesArr, BGsArr, bordersArr, reqResArr)
     return {
       labels: labelArr,
       datasets: [
@@ -94,34 +93,34 @@ const BarGraph = (props) => {
 
   //helper function that returns chart options object
   //update: Might be able to get rid of this function, but it's not used anywhere else
-  const optionsUpdater = (arr) => {
-    return {
-      scales: {
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true, //boolean
-              labelString: chartURL,
-            },
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            // scaleLabel: {
-            //   display: true,
-            // },
-          },
-        ],
-      },
-      // animation: {
-      //   duration: 50,
-      // },
-      maintainAspectRatio: false, //necessary for keeping chart within container
-    };
-  };
+  // const optionsUpdater = (arr) => {
+  //   return {
+  //     scales: {
+  //       yAxes: [
+  //         {
+  //           scaleLabel: {
+  //             display: true, //boolean
+  //             labelString: chartURL,
+  //           },
+  //           ticks: {
+  //             beginAtZero: true,
+  //           },
+  //         },
+  //       ],
+  //       xAxes: [
+  //         {
+  //           // scaleLabel: {
+  //           //   display: true,
+  //           // },
+  //         },
+  //       ],
+  //     },
+  //     // animation: {
+  //     //   duration: 50,
+  //     // },
+  //     maintainAspectRatio: false, //necessary for keeping chart within container
+  //   };
+  // };
 
   // click handling to load response data in the response panel
   const getElementAtEvent = (element) => {
@@ -179,7 +178,7 @@ const BarGraph = (props) => {
     //update state with updated dataset
     updateChart(dataUpdater(urls, times, BGs, borders, reqResObjs));
     //conditionally update options based on length of dataPoints array
-    updateOptions(optionsUpdater(dataPoints[id]));
+    // updateOptions(optionsUpdater(dataPoints[id]));
   }, [dataPoints, currentResponse, chartURL]);
 
   const chartClass = show ? 'chart' : 'chart-closed';
@@ -193,7 +192,7 @@ const BarGraph = (props) => {
           width={50}
           height={200}
           options={chartOptions}
-          getElementAtEvent={getElementAtEvent}
+          // getElementAtEvent={getElementAtEvent}
         />
       </div>
       <div className="is-flex is-justify-content-center">

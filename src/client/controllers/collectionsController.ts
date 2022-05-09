@@ -49,7 +49,7 @@ const collectionsController = {
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
       })
-      .catch((err: string) => console.log('Error in getCollection s', err));
+      .catch((err: string) => console.log('Error in getCollections', err));
   },
 
   collectionNameExists(obj: Workspace): Promise<boolean> {

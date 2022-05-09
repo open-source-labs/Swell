@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from '@uiw/react-codemirror';
+// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
 import * as actions from '../../actions/actions.ts';
@@ -11,7 +12,7 @@ export default function WebRTCRequestContent({ content }) {
   const { iceConfiguration } = content.request.body;
   const [localSdp, setLocalSdp] = useState('');
   const [pcInitiator, setPcInitiator] = useState(null);
-  const dispatch = useDispatch();
+c
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse

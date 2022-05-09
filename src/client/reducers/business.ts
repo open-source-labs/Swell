@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import * as types from '../actions/actionTypes';
 
-// jNote - build interface for state
+// jNote - build interface for state TODO: this should be in types?
 interface StateInterface {
   currentTab: string,
   reqResArray: [],
@@ -84,7 +84,7 @@ interface StateInterface {
       endpoint: string,
       headers: Record<string, unknown>,
       parameters: [],
-      body: Record<string, unknown>, // problem, was 'new Map()'
+      body: Record<string, unknown>,
       urls: [],
     },
   },
@@ -180,7 +180,7 @@ const initialState: StateInterface = {
       endpoint: '',
       headers: {},
       parameters: [],
-      body: new Map(), // jNote - not sure how to match the type with the constructor function here
+      body: {},
       urls: [],
     },
   },

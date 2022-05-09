@@ -3,7 +3,9 @@ import gql from 'graphql-tag';
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
-// moving to graphql-ws
+// TODO: Migrate this file and graphqlServer.js to use graphql-ws
+// instead of deprecated subscription-transport-ws package
+// https://www.apollographql.com/docs/apollo-server/data/subscriptions/
 // import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 // import { createClient } from 'graphql-ws';
 import * as store from '../store';

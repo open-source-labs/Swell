@@ -1,17 +1,16 @@
-import { string } from 'prop-types';
+// import { string } from 'prop-types';
 import { NewRequestResponseObject } from '../../types';
 import * as types from './actionTypes';
-import * as interfaces from '../../types';
+// import * as interfaces from '../../types';
 
 // BUSINESS LOGIC ACTIONS
 
 // action creators
 // SPNOTE START line 11 types.ts history: Record<string, unknown>[];
-export const getHistory = (history: string[]): {type: string, payload: string[]} => ({
+export const getHistory = (history: { date: string; history: NewRequestResponseObject[]; }[]): {type: string, payload: { date: string; history: NewRequestResponseObject[]; }[]} => ({
   type: types.GET_HISTORY,
   payload: history
 });
-
 
 export const deleteFromHistory = (reqRes: string): {type: string, payload: string} => ({
   type: types.DELETE_HISTORY,
