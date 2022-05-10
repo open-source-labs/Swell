@@ -48,7 +48,7 @@ module.exports = () => {
       try {
         // click and check 
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=WebRTC').click();
+        await page.locator('#composer >> a >> text=WebRTC').click();
      
 
         // select STUN or TURN servers, clear it, and type in server

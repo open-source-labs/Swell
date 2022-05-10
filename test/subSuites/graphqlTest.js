@@ -56,12 +56,12 @@ module.exports = () => {
       try {
         // click and check GRAPHQL
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=GRAPHQL').click();
+        await page.locator('#composer >> a >> text=GRAPHQL').click();
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {
           await page.locator('#composer >> button.is-graphQL').click();
-          await page.locator(`a >> text=${method}`).click();
+          await page.locator(`#composer >> a >> text=${method}`).click();
         }
 
         // type in url
@@ -120,7 +120,7 @@ module.exports = () => {
       try {
         // click and check GRAPHQL
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=GRAPHQL').click();
+        await page.locator('#composer >> a >> text=GRAPHQL').click();
 
         // type in url
         await page.locator('.input-is-medium').fill('https://countries.trevorblades.com/');

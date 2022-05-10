@@ -32,7 +32,8 @@ module.exports = () => {
   }
 
 
-  describe('HTTP/S requests', () => {
+  describe('HTTP/S requests', function() {
+    this.timeout(5000)
     setupFxn();
 
     const fillRestRequest = async (
@@ -45,12 +46,12 @@ module.exports = () => {
       try {
         // click and check REST
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=REST').click();
+        await page.locator('#composer >> a >> text=REST').click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
           await page.locator('#composer >> button.is-rest').click();
-          await page.locator(`a >> text=${method}`).click();
+          await page.locator(`#composer >> a >> text=${method}`).click();
         }
 
         // type in url
@@ -73,8 +74,11 @@ module.exports = () => {
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          await page.locator('span >> text=text/plain').click();
-          await page.locator('a >> text=application/json').click();
+          if (await page.locator('button:visible >> text=text/plain').count()===1){
+            await page.locator('button >> text=text/plain').click();
+            await page.locator('a >> text=application/json').click();
+          }
+          
           // insert JSON content into body
           const codeMirror = await page.locator('#body-entry-select');
           await codeMirror.click();
@@ -85,6 +89,9 @@ module.exports = () => {
               await restBody.press('Backspace');
             }
             await restBody.fill(body);
+            for (let i = 0; i < 6; i += 1) {
+              await restBody.press('Delete');
+            }
           } catch (err) {
             console.error(err);
           }
@@ -114,7 +121,7 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events.slice(1, 100)).to.include('userId');
               resolve();
@@ -156,7 +163,7 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('[]');
               resolve();
@@ -172,13 +179,13 @@ module.exports = () => {
           const url = 'http://localhost:3000/book';
           const method = 'POST';
           const body =
-            '"title": "HarryPotter", "author": "JK Rowling", "pages": 500}';
+            '{"title": "HarryPotter", "author": "JK Rowling", "pages": 500}';
           await fillRestRequest(url, method, body);
           await addAndSend(num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('JK Rowling');
               resolve();
@@ -193,13 +200,13 @@ module.exports = () => {
         try {
           const url = 'http://localhost:3000/book/HarryPotter';
           const method = 'PUT';
-          const body = '"author": "Ron Weasley", "pages": 400}';
+          const body = '{"author": "Ron Weasley", "pages": 400}';
           await fillRestRequest(url, method, body);
           await addAndSend(num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Ron Weasley');
               resolve();
@@ -214,13 +221,13 @@ module.exports = () => {
         try {
           const url = 'http://localhost:3000/book/HarryPotter';
           const method = 'PATCH';
-          const body = '"author": "Hermoine Granger"}';
+          const body = '{"author": "Hermoine Granger"}';
           await fillRestRequest(url, method, body);
           await addAndSend(num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Hermoine Granger'); // someone didnt know how to spell :/
               resolve();
@@ -236,12 +243,13 @@ module.exports = () => {
         try {
           const url = 'http://localhost:3000/book/HarryPotter';
           const method = 'DELETE';
-          await fillRestRequest(url, method);
+          const body = '{}'
+          await fillRestRequest(url, method, body);
           await addAndSend(num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Hermoine Granger');
               resolve();
@@ -259,7 +267,7 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code').innerText();
+              const events = await page.locator('#events-display >> .cm-content').innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('[]');
               resolve();
