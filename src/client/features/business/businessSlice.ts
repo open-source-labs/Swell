@@ -1,9 +1,11 @@
 import { format } from 'date-fns';
+import { createSlice } from '@reduxjs/toolkit'
+import { ReqRes } from '../../../types';
 import { stat } from 'fs/promises';
 import * as types from '../../actions/actionTypes';
 
 // jNote - build interface for state TODO: this should be in types?
-interface StateInterface {
+interface State {
   currentTab: string,
   reqResArray: [],
   scheduledReqResArray: [],
@@ -99,7 +101,7 @@ interface StateInterface {
 };
 
 // jNote - need to tie it to state interface
-const initialState: StateInterface = {
+const initialState: State = {
   currentTab: 'First Tab',
   reqResArray: [],
   scheduledReqResArray: [],
@@ -195,10 +197,10 @@ const initialState: StateInterface = {
 };
 
 const businessSlice = createSlice({
-  name: 'store',
+  name: '',
   initialState,
   reducers: {
-    getHistory(state, action) {
+    GET_HISTORY(state: State, action: { date: string; history: ReqRes[]; }[]) {
       state.history = action.payload;
     }
     deleteHistory(state, action) {

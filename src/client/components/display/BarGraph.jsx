@@ -72,7 +72,7 @@ const BarGraph = (props) => {
 
   //helper function that returns chart data object
   const dataUpdater = (labelArr, timesArr, BGsArr, bordersArr, reqResArr) => {
-    console.log('dataUpdater', labelArr, timesArr, BGsArr, bordersArr, reqResArr)
+    // console.log('dataUpdater', labelArr, timesArr, BGsArr, bordersArr, reqResArr)
     return {
       labels: labelArr,
       datasets: [

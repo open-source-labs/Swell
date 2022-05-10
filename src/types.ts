@@ -16,7 +16,17 @@ export type Methods =
   | 'RECEIVER';
 type data = { [key: string]: string };
 
-export interface CookieObject {
+export interface Collection {
+  id: string;
+  name: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  reqResArray: ReqRes[];
+  data?: Record<string, unknown>[];
+  members?: string[];
+}
+
+export interface Cookie {
   name: string;
   value: string;
   domain: string;
@@ -27,55 +37,40 @@ export interface CookieObject {
   session: boolean;
   expires: string | number;
 }
-
-export interface CookieProps {
-  cookies: {
-    expirationDate: string;
-  };
-  detail?: string;
-  className?: string;
-}
+// No uses in codebase
+// export interface CookieProps {
+//   cookies: {
+//     expirationDate: string;
+//   };
+//   detail?: string;
+//   className?: string;
+// }
 
 export interface GithubData {
   profile: object;
-  repos: Workspace[];
+  repos: Collection[];
   files: object[];
 }
 
-export interface GraphQLResponseObject {
-  reqResObj: NewRequestResponseObject;
+export interface GraphQLResponse {
+  reqResObj: ReqRes;
   data: data; //| Record<string, Record<string, unknown[]>>[];
   error?: string;
 }
-export interface GraphQLResponseObjectData {
-  data: data;
-  loading: boolean;
-  networkStatus: number;
-  stale: boolean;
-}
 
-// initialState is not named properly and is not being used?
-
-// export interface initialState {
-//   currentTab: string;
-//   reqResArray: NewRequestResponseObject[];
-//   scheduledReqResArray: NewRequestResponseObject[];
-//   history: Record<string, unknown>[];
-//   collections: Record<string, unknown>[];
-//   warningMessage: Record<string, string>;
-//   newRequestOpenAPI: NewRequestOpenAPI;
-//   newRequestFields: NewRequestFields;
-//   newRequestHeaders?: NewRequestHeaders;
-//   newRequestStreams?: NewRequestStreams;
-//   newRequestCookies?: NewRequestCookies;
-//   newRequestBody?: NewRequestBody;
-//   newRequestSSE: NewRequestSSE;
+// not used in codebase
+// export interface GraphQLResponseData {
+//   data: data;
+//   loading: boolean;
+//   networkStatus: number;
+//   stale: boolean;
 // }
 
-export interface HistoryTab {
-  history: Record<number, unknown>[];
-  collections: Record<string, unknown>[];
-}
+// not used in codebase
+// export interface HistoryTab {
+//   history: Record<number, unknown>[];
+//   collections: Record<string, unknown>[];
+// }
 
 export interface Message {
   source: string;
@@ -83,15 +78,16 @@ export interface Message {
   data: string;
 }
 
-export interface NewRequestBody {
-  //-> wrong. all wrong. -Prince
-  bodyContent: string;
-  bodyVariables: string;
-  bodyType: string;
-  rawType: string;
-  JSONFormatted: boolean;
-  bodyIsNew: boolean;
-}
+// TODO: not sure if this is used, looks like not
+// export interface NewRequestBody {
+//   //-> wrong. all wrong. -Prince
+//   bodyContent: string;
+//   bodyVariables: string;
+//   bodyType: string;
+//   rawType: string;
+//   JSONFormatted: boolean;
+//   bodyIsNew: boolean;
+// }
 
 export interface NewRequestCookies {
   // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
@@ -102,7 +98,7 @@ export interface NewRequestCookies {
   id: string;
 }
 
-export interface NewRequestFields {
+export interface ReqResRequest {
   protocol: Protocol;
   graphQL: boolean;
   gRPC: boolean;
@@ -118,14 +114,14 @@ export interface NewRequestFields {
   network: Network;
   testContent: string;
   testResults: string[];
-  headers: NewRequestHeaders[]; //-> Might need this -Prince
+  headers: RequestHeaders[]; //-> Might need this -Prince
   cookies: NewRequestCookies[];
   body: string;
   bodyType: string;
   bodyVariables: string;
 }
 
-export interface NewRequestHeaders {
+export interface RequestHeaders {
   headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
   count?: number; //-> Might not need this -Prince
   active: boolean;
@@ -134,12 +130,12 @@ export interface NewRequestHeaders {
   id: number;
 }
 
-export interface NewRequestOpenAPI {
+export interface OpenAPIRequest {
   openApiMetadata: Record<string, unknown>;
-  openApiReqArray: NewRequestOpenAPIObject[];
+  openApiReqArray: OpenAPIReqData[];
 }
 
-export interface NewRequestOpenAPIObject {
+export interface OpenAPIReqData {
   id: number;
   enabled: boolean;
   summary?: string;
@@ -149,7 +145,7 @@ export interface NewRequestOpenAPIObject {
   reqServers: string[];
   method: Methods;
   endpoint: string;
-  headers?: NewRequestHeaders;
+  headers?: RequestHeaders;
   parameters?: Record<string, unknown>[];
   urls: string[];
   body?: Map<string, unknown>;
@@ -157,13 +153,13 @@ export interface NewRequestOpenAPIObject {
   queries?: Record<string, unknown>;
 }
 
-export interface NewRequestResponseObject {
+export interface ReqRes {
   id: number;
   graphQL: boolean;
   closeCode: number;
   protocol: Protocol;
-  request: NewRequestFields;
-  response: RequestResponseObjectResponseObject; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
+  request: ReqResRequest;
+  response: ReqResResponse; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
   connection: ConnectionStatus;
   connectionType: string;
   isHTTP2: boolean;
@@ -181,10 +177,11 @@ export interface NewRequestResponseObject {
   openapi: boolean;
 }
 
-export interface NewRequestSSE {
+export interface SSERequest {
   isSSE: boolean;
 }
 
+// TODO: this could be implemented
 export interface NewRequestStreams {
   streamsArr: Record<string, unknown>[];
   count: number;
@@ -200,9 +197,9 @@ export interface NewRequestStreams {
   protoContent: string;
 }
 
-export interface RequestResponseObjectResponseObject {
+export interface ReqResResponse {
   // this is likely not a comprehensive list of all properties
-  cookies: CookieObject[];
+  cookies: Cookie[];
   headers: Record<string, unknown>;
   events: Record<string, unknown>[]; // is this the correct type?
   tab: string;
@@ -226,25 +223,16 @@ export interface WebSocketWindowProps {
 }
 
 export interface WindowExt extends globalThis.Window {
-  api: WindowAPIObject;
+  api: WindowAPI;
 }
 
-export interface WindowAPIObject {
+export interface WindowAPI {
   removeAllListeners: (event: string) => void;
   receive: (event: string, callback: (data: any) => void) => void;
   send: (event: string, data?: any, some?: any) => void;
 }
 
-export interface Workspace {
-  id: string;
-  name: string;
-  createdAt: Date;
-  modifiedAt: Date;
-  reqResArray: NewRequestResponseObject[];
-  data?: Record<string, unknown>[];
-  members?: string[];
-}
-
+// TODO: implement these types
 export interface WRTC {
   RTCPeerConnection:
     | RTCPeerConnection

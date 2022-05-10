@@ -2,27 +2,29 @@ import { v4 as uuid } from 'uuid';
 import db from '../db';
 import * as store from '../store';
 import * as actions from '../actions/actions';
-import { Workspace, WindowAPIObject, WindowExt } from '../../types';
+import { Collection, WindowAPI, WindowExt } from '../../types';
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import { Buffer } from 'node:buffer';
 import githubController from './githubController';
 
-const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
+const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
-{/* TODO: standardize collection data, remove explicit any */}
-api.receive('add-collection', (collectionData: any) => {
+
+api.receive('add-collections', (collectionArr: Collection[]) => {
   // Add parsed text file to db
-  collectionsController.addCollectionToIndexedDb([collectionData]);
+  collectionsController.addCollectionToIndexedDb(collectionArr);
   collectionsController.getCollections();
 });
 
 const collectionsController = {
-  addCollectionToIndexedDb(collection: Workspace[]): void {
+  addCollectionToIndexedDb(collectionArr: Collection[]): void {
     // this method needs to recieve an array of workspaces 
-    for (let workspace of collection) {
+    console.log('arr', collectionArr)
+    for (let collection of collectionArr) {
+      console.log('put collection', collection)
       db.table('collections')
-      .put(workspace)
+      .put(collection)
       .catch((err: string) => console.log('Error in addToCollection', err));
     }
   },
@@ -33,7 +35,7 @@ const collectionsController = {
       .catch((err: string) => console.log('Error in deleteFromCollection', err));
   },
 
-  updateCollectionInIndexedDb(collection: Workspace): void {
+  updateCollectionInIndexedDb(collection: Collection): void {
     collectionsController.deleteCollectionFromIndexedDb(collection.id);
     collectionsController.addCollectionToIndexedDb([collection]);
   },
@@ -41,19 +43,19 @@ const collectionsController = {
   getCollections(): void {
     db.table('collections')
       .toArray()
-      .then((collections: Workspace[] ) => {
-        collections.forEach((collection: Workspace) => {
+      .then((collections: Collection[] ) => {
+        collections.forEach((collection: Collection) => {
           collection.createdAt = new Date(collection.createdAt);
         });
         const collectionsArr = collections.sort(
-          (a: Workspace, b: Workspace) => b.createdAt.valueOf() - a.createdAt.valueOf()
+          (a: Collection, b: Collection) => b.createdAt.valueOf() - a.createdAt.valueOf()
         );
         store.default.dispatch(actions.getCollections(collectionsArr));
       })
       .catch((err: string) => console.log('Error in getCollections', err));
   },
 
-  collectionNameExists(obj: Workspace): Promise<boolean> {
+  collectionNameExists(obj: Collection): Promise<boolean> {
     const { name } = obj;
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
@@ -75,7 +77,7 @@ const collectionsController = {
     db.table('collections')
       .where('id')
       .equals(id)
-      .first((foundCollection: Workspace) => {
+      .first((foundCollection: Collection) => {
         // TODO: we change uuid on export but is this what we want??
         foundCollection.name += ' export';
         foundCollection.id = uuid();
@@ -99,12 +101,12 @@ const collectionsController = {
     const toExport = await db.table('collections')
       .where('id')
       .equals(id)
-      .first((foundWorkspace: Workspace) => {
+      .first((foundCollection: Collection) => {
         // if workspace doesn't have members, add it using node_id
-        if (!foundWorkspace.members) {
-          foundWorkspace.members = [userProfile[0].node_id]
+        if (!foundCollection.members) {
+          foundCollection.members = [userProfile[0].node_id]
         }
-        return foundWorkspace;
+        return foundCollection;
       })
       .catch((error: Record<string, undefined>) => {
         console.error(error.stack || error);
@@ -132,23 +134,22 @@ const collectionsController = {
 
   },
 
-  importCollection(collection: Workspace): Promise<string> {
+  importCollection(collection: Collection): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
-      api.receive('add-collection', (workspaces: Workspace[]) => {
-        // console.log('importCollection', workspaces)
-        collectionsController.addCollectionToIndexedDb(workspaces);
+      api.receive('add-collections', (collection: Collection[]) => {
+        collectionsController.addCollectionToIndexedDb(collection);
         collectionsController.getCollections();
         resolve('okie dokie');
       });
     });
   },
   
-  importFromGithub(joinedWorkspaces: Workspace[]): Promise<string> {
+  importFromGithub(collectionArr: Collection[]): Promise<string> {
     return new Promise((resolve) => {
-      api.send('import-from-github', joinedWorkspaces);
-      api.receive('add-collection', (workspaces: Workspace[]) => {
-        collectionsController.addCollectionToIndexedDb(workspaces);
+      api.send('import-from-github', collectionArr);
+      api.receive('add-collections', (collection: Collection[]) => {
+        collectionsController.addCollectionToIndexedDb(collection);
         collectionsController.getCollections();
         resolve('okie dokie');
       });

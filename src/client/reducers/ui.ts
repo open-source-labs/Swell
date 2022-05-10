@@ -16,7 +16,7 @@ const initialState: UiState = {
   isDark: false,
 };
 
-const uiReducer = (state = initialState, action: Record<string, unknown>): UiState => {
+const uiReducer = (state = initialState, action: Record<string, string>): UiState => {
   switch (action.type) {
     case types.SET_COMPOSER_DISPLAY: {
       return {
