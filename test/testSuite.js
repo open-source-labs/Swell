@@ -28,7 +28,7 @@ describe('Electron UI Rendering', function () {
 
 describe('CRUD functionality', function () {
   reqInputTests(); 
-  httpTest(); //Comment out because no Mongo URI for test server
+  httpTest();
   graphqlTest();
   websocketTest();
   grpcTest();
