@@ -1,7 +1,9 @@
 import React from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+// import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
-import 'codemirror/theme/isotope.css';
+// import 'codemirror/theme/isotope.css';
+import Editor from "@monaco-editor/react";
+
 
 export default function RestRequestContent({ request, isHTTP2 }) {
   // ORGANIZE PROPS
@@ -81,7 +83,12 @@ export default function RestRequestContent({ request, isHTTP2 }) {
         {body.length > 0 && bodyType === 'raw' && (
           <div>
             <div className="is-size-7">Body</div>
-            <CodeMirror
+            <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+            {/* <CodeMirror
               value={bodyText}
               options={{
                 mode: rawType,
@@ -92,7 +99,7 @@ export default function RestRequestContent({ request, isHTTP2 }) {
                 readOnly: true,
               }}
               height="200px"            
-            />
+            /> */}
           </div>
         )}
         {/* FORM DATA */}
@@ -106,7 +113,12 @@ export default function RestRequestContent({ request, isHTTP2 }) {
         {testContent.length > 0 && (
           <div>
             <div className="is-size-7">Tests</div>
-            <CodeMirror
+            <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+            {/* <CodeMirror
               value={testContent}
               options={{
                 mode: rawType,
@@ -116,7 +128,7 @@ export default function RestRequestContent({ request, isHTTP2 }) {
                 lineWrapping: true,
                 readOnly: true,
               }}
-            />
+            /> */}
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+// import CodeMirror from '@uiw/react-codemirror';
+import Editor from "@monaco-editor/react";
 
 import ContentReqRow from './ContentReqRow';
 
@@ -36,7 +37,12 @@ function GraphQLRequestContent({ request }) {
         {/* BODY */}
         <div>
           <div className="is-size-7">Body</div>
-          <CodeMirror
+          <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+          {/* <CodeMirror
             value={bodyText}
             options={{
               mode: 'application/json',
@@ -47,13 +53,18 @@ function GraphQLRequestContent({ request }) {
               readOnly: true,
             }}
             height="200px"
-          />
+          /> */}
         </div>
         {/* VARIABLES */}
         {bodyVariables.length > 0 && (
           <div>
             <div className="is-size-7">Body Variables</div>
-            <CodeMirror
+            <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+            {/* <CodeMirror
               value={bodyVarText}
               options={{
                 mode: 'application/json',
@@ -63,14 +74,19 @@ function GraphQLRequestContent({ request }) {
                 lineWrapping: true,
                 readOnly: true,
               }}
-            />
+            /> */}
           </div>
         )}
         {/* TEST DATA */}
         {testContent.length > 0 && (
           <div>
             <div className="is-size-7">Tests</div>
-            <CodeMirror
+            <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+            {/* <CodeMirror
               value={testContent}
               options={{
                 mode: 'application/json',
@@ -80,7 +96,7 @@ function GraphQLRequestContent({ request }) {
                 lineWrapping: true,
                 readOnly: true,
               }}
-            />
+            /> */}
           </div>
         )}
       </div>

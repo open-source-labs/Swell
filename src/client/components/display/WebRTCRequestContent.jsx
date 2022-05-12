@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+// import CodeMirror from '@uiw/react-codemirror';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
 import * as actions from '../../actions/actions.ts';
+import Editor from "@monaco-editor/react";
+
 
 const jBeautify = require('js-beautify').js;
 
@@ -46,7 +48,12 @@ c
     <div>
       <div className="p-3">
         <div className="is-size-7">Servers</div>
-        <CodeMirror
+        <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+        {/* <CodeMirror
           value={jBeautify(JSON.stringify(body.iceConfiguration.iceServers))}
           options={{
             mode: 'javascript',
@@ -64,7 +71,7 @@ c
           editorDidMount={(editor) => {
             editor.setSize('100%', '100%');
           }}
-        />
+        /> */}
       </div>
       <div className="p-3">
         <div className="is-size-7">Local SDP</div>
@@ -72,7 +79,12 @@ c
           style={{ maxWidth: `100%`, maxHeight: '100%' }}
           className="column is-flex is-flex-direction-column"
         >
-          <CodeMirror
+          <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+          {/* <CodeMirror
             value={localSdp || 'No SDP yet'}
             options={{
               mode: 'application/json',
@@ -84,7 +96,7 @@ c
               readOnly: true,
             }}
             height="200px"
-          />
+          /> */}
           <button className="button is-webrtc" onClick={() => createLocalSDP()}>
             Create Local SDP
           </button>
