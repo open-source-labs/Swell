@@ -14,7 +14,8 @@ const GRPCBodyEntryForm = (props) => {
         },
       ];
 
-      props.newRequestStreams.streamContent.push('');
+      // TODO: below line is mutating react state directly, remove?
+      // props.newRequestStreams.streamContent.push(''); 
       // update state in the store
       props.setNewRequestStreams({
         streamsArr: newStreamsArr,
