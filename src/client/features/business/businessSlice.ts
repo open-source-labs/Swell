@@ -305,18 +305,15 @@ const businessSlice = createSlice({
     },
 
     reqResUpdate(state, action: PayloadAction<ReqRes>) {
-      let indexToBeUpdated;
-      state.reqResArray.forEach((reqRes, index) => {
-        if (reqRes.id === action.payload.id) indexToBeUpdated = index;
-      });
-      if (indexToBeUpdated !== undefined) {
-        action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
-        action.payload.minimized = state.reqResArray[indexToBeUpdated].minimized;
-        state.reqResArray.splice(
-        indexToBeUpdated,
-        1,
-        action.payload
-        ); // FOR SOME REASON THIS IS NECESSARY, MESSES UP CHECKS OTHERWISE
+      for (let i = 0; i < state.reqResArray.length; i++) {
+        if (state.reqResArray[i].id === action.payload.id) {
+          state.reqResArray[i] = {
+            ...action.payload,
+            checked: state.reqResArray[i].checked,
+            minimized: state.reqResArray[i].minimized,
+          }
+          break
+        } 
       }
     },
 

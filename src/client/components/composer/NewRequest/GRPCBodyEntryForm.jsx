@@ -14,7 +14,7 @@ const GRPCBodyEntryForm = (props) => {
         },
       ];
 
-      props.newRequestStreams.streamContent.push('');
+      //props.newRequestStreams.streamContent.push('');
       // update state in the store
       props.setNewRequestStreams({
         streamsArr: newStreamsArr,
