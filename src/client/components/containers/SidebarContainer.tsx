@@ -49,7 +49,7 @@ const SidebarContainer = (props) => {
         />
           <label htmlFor="darkModeSwitch"/>
         <h3 className='has-text-justified align-self-center has-text-weight-bold'>Composer</h3>
-        <a>v1.10.1</a>
+        <a>v1.10.2</a>
       </div>
       <div className="tabs mb-0  header-bar">
         <ul className={`columns is-gapless ${isDark ? 'is-dark-400' : ''}`}>
