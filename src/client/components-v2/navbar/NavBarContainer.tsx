@@ -6,7 +6,7 @@ import axios from 'axios';
 import githubController from '../../controllers/githubController';
 
 // Import MUI (and packaged) components
-import GitHubButton from 'react-github-btn'
+import GitHubButton from 'react-github-btn';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 // Import local components.
 import ProtocolSelect from './ProtocolSelect';
 import LoginStatus from './LoginStatus';
+import GeneralInfo from './GeneralInfo';
 
 
 export default function NavBarContainer(props) {
@@ -53,27 +54,16 @@ export default function NavBarContainer(props) {
 
   return(
     <AppBar sx={{ position: 'static' }}>
-      <Container maxWidth="xl">
+      <Box width="100%">
         <Toolbar disableGutters>
           {/* Login status for the user. */}
           <LoginStatus session={session} setSession={setSession}/>
           {/* Protocol select buttons. */}
           <ProtocolSelect />
           {/* General information about Swell. */}
-          <Box
-            key="swell-info"
-            sx={{
-              flexGrow: 0,
-              display: { xs: 'none', md: 'flex' },
-              alignItems: 'center',
-              m: 1
-            }}>
-            {/* TODO: this GitHub button comes from a component library. Should build your own or find one that supports TS types. */ }
-            {/* @ts-ignore:next-line */}
-            <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
-          </Box>
+          <GeneralInfo />
         </Toolbar>
-      </Container>
+      </Box>
     </AppBar>
   );
   }

@@ -36,7 +36,7 @@ const App = () => {
           {/* New MUI workspace. */}
           <WorkspaceContainer />
           {/* Legacy workspace. */}
-          <ContentsContainer />
+          {/* <ContentsContainer /> */}
           <Divider orientation="vertical"/>
           {/* New MUI main container. */}
           <MainContainer />
