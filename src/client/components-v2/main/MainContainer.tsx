@@ -7,6 +7,10 @@ import * as actions from '../../actions/actions';
 import Http2Composer from './Http2Composer';
 import GraphQLComposer from './GraphQLComposer';
 import GRPCComposer from './GRPCComposer';
+import WebSocketComposer from './WebSocketComposer';
+import WebRTCComposer from './WebRTCComposer';
+import OpenAPIComposer from './OpenAPIComposer';
+import WebhookComposer from './WebhookComposer';
 import ResponsePaneContainer from './response/ResponsePaneContainer';
 
 // Import MUI components
@@ -73,8 +77,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 function MainContainer(props) {
   return(
-    // TODO: change width to 100% after porting to react router
-    <Box sx={{p: 1.5, width: '50%'}}>
+    <Box sx={{p: 1.5, width: '80%'}}>
       <Box>
         <Routes>
           <Route
@@ -91,19 +94,19 @@ function MainContainer(props) {
           />
           <Route
             path="/websocket"
-            element={<p></p>}
+            element={<WebSocketComposer {...props} />}
           />
           <Route
             path="/webrtc"
-            element={<p></p>}
+            element={<WebRTCComposer {...props} />}
           />
           <Route
             path="/openapi"
-            element={<p></p>}
+            element={<OpenAPIComposer {...props} />}
           />
           <Route
             path="/webhook"
-            element={<p></p>}
+            element={<WebhookComposer {...props} />}
           />
         </Routes>
         <ResponsePaneContainer />

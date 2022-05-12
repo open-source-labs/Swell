@@ -37,16 +37,14 @@ const App = () => {
           <WorkspaceContainer />
           {/* Legacy workspace. */}
           <ContentsContainer />
-
           <Divider orientation="vertical"/>
-
           {/* New MUI main container. */}
           <MainContainer />
           {/* Legacy main container */}
-          <div className="tile is-vertical add-vertical-scroll">
+          {/* <div className="tile is-vertical add-vertical-scroll">
             <SidebarContainer />
             <ResponsePaneContainer />
-          </div>
+          </div> */}
         </Box>
         <UpdatePopUpContainer message={message} setMessage={setMessage} />
       </HashRouter>
