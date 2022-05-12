@@ -40,7 +40,6 @@ const historyController = {
           history: historyGroupsObj[date].sort(
             (a: ReqRes, b: ReqRes) => b.createdAt.valueOf() - a.createdAt.valueOf()), 
           }));
-      console.log('historyarr', historyGroupsArr)
       store.default.dispatch(actions.getHistory(historyGroupsArr));
     } catch {
           ((err: string) => console.log('Error in getHistory', err))

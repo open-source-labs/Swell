@@ -6,7 +6,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // ********************************
 
 interface UiState {
-  composerDisplay: string,
   sidebarActiveTab: string,
   workspaceActiveTab: string,
   responsePaneActiveTab: string,
@@ -14,7 +13,6 @@ interface UiState {
 };
 
 const initialState: UiState = {
-  composerDisplay: 'Request',
   sidebarActiveTab: 'composer',
   workspaceActiveTab: 'workspace',
   responsePaneActiveTab: 'events',
@@ -26,7 +24,7 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     setSidebarActiveTab(state, action: PayloadAction<string>) {
-      state.composerDisplay = action.payload;
+      state.sidebarActiveTab = action.payload;
     },
     setWorkspaceActiveTab(state, action: PayloadAction<string>) {
       state.workspaceActiveTab = action.payload;

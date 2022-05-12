@@ -56,9 +56,7 @@ function RestContainer(props) {
     setNewRequestSSE,
     newRequestSSE: { isSSE },
     currentTab,
-    introspectionData,
     setComposerWarningMessage,
-    setComposerDisplay,
     warningMessage,
     reqResAdd,
     setWorkspaceActiveTab

@@ -11,13 +11,14 @@ import * as actions from './../../features/business/businessSlice';
 import * as uiactions from './../../features/ui/uiSlice';
 import ComposerContainer from '../composer/ComposerContainer';
 import HistoryContainer from './HistoryContainer';
+import { RootState } from '../../store';
 
 const SidebarContainer = (props) => {
   // const { isDark } = props;
 
   const dispatch = useDispatch();
-  const activeTab = useSelector((store) => store.ui.sidebarActiveTab);
-  const isDark = useSelector((store) => store.ui.isDark);
+  const activeTab = useSelector((store: RootState) => store.ui.sidebarActiveTab);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const setActiveTab = (tabName: string) =>
     dispatch(uiactions.setSidebarActiveTab(tabName));

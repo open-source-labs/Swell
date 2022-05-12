@@ -13,17 +13,18 @@ import StatusButtons from '../display/StatusButtons';
 import ResponseTime from '../display/ResponseTime';
 import WebSocketWindow from '../display/WebSocketWindow';
 import ReqResCtrl from '../../controllers/reqResController';
+import { RootState } from '../../store';
 
 const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
-  const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
-  const isDark = useSelector((store) => store.ui.isDark);
+  const activeTab = useSelector((store: RootState) => store.ui.responsePaneActiveTab);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const setActiveTab = (tabName) =>
     dispatch(uiactions.setResponsePaneActiveTab(tabName));
 
   const currentResponse = useSelector(
-    (store) => store.business.currentResponse
+    (store: RootState) => store.business.currentResponse
   );
   const { connection } = currentResponse;
 
