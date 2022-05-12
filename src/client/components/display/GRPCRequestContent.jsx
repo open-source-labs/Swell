@@ -1,6 +1,8 @@
 import React from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+// import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
+import Editor from "@monaco-editor/react";
+
 
 function GRPCRequestContent({ request, rpc, service, servicesObj }) {
   const {
@@ -43,7 +45,12 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
         {/* BODY */}
         <div>
           <div className="is-size-7">Body</div>
-          <CodeMirror
+          <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+          {/* <CodeMirror
             value={body}
             options={{
               mode: 'application/json',
@@ -54,12 +61,17 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
               readOnly: true,
             }}
             height="200px"
-          />
+          /> */}
         </div>
         {testContent.length > 0 && (
           <div>
             <div className="is-size-7">Tests</div>
-            <CodeMirror
+            <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue="// some comment"
+          />
+            {/* <CodeMirror
               value={testContent}
               options={{
                 mode: rawType,
@@ -70,7 +82,7 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
                 readOnly: true,
               }}
               height="200px"
-            />
+            /> */}
           </div>
         )}
       </div>

@@ -39,9 +39,12 @@ const head = document.querySelector('head');
 const meta = document.createElement('meta');
 meta.httpEquiv = 'Content-Security-Policy';
 meta.content = `
-  default-src 'self' http://localhost:3000 ws://localhost:3000 https://api.github.com 'unsafe-inline';
+  default-src 'self' http://localhost:3000  https://cdn.jsdelivr.net/ ws://localhost:3000 https://api.github.com 'unsafe-inline';
   img-src 'self' data: https://avatars.githubusercontent.com/;
-  child-src 'none';`;
+  child-src 'none';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net;
+  `;
+
 head.appendChild(meta);
 
 // Render the app
