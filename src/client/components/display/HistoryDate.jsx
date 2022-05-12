@@ -20,11 +20,13 @@ class HistoryDate extends Component {
     let date = parse(current.date, 'MM/dd/yyyy', new Date())
     // let date = parseISO(current.date)
     if (isToday(date)) {
+      console.log('today')
       date = 'Today';
     } // If the date matches todays date render the word "Today"
     else if (isYesterday(date)) {
       date = 'Yesterday';
     } else {
+      log('else')
       date = format(date, 'MMM d, yyyy');
     }
 
