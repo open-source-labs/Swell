@@ -8,11 +8,9 @@ import githubController from '../../controllers/githubController';
 // Import MUI (and packaged) components
 import GitHubButton from 'react-github-btn'
 import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Stack, Divider } from '@mui/material';
 
 // Import local components.
 import ProtocolSelect from './ProtocolSelect';
@@ -57,8 +55,11 @@ export default function NavBarContainer(props) {
     <AppBar sx={{ position: 'static' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* Login status for the user. */}
           <LoginStatus session={session} setSession={setSession}/>
+          {/* Protocol select buttons. */}
           <ProtocolSelect />
+          {/* General information about Swell. */}
           <Box
             key="swell-info"
             sx={{

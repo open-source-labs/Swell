@@ -14,7 +14,7 @@ import WorkspaceContainer from './workspace/WorkspaceContainer';
 import MainContainer from './main/MainContainer';
 
 
-import Box from '@mui/material/Box';
+import { Box, Divider } from '@mui/material';
 
 
 const { api } = window as unknown as WindowExt;
@@ -37,6 +37,9 @@ const App = () => {
           <WorkspaceContainer />
           {/* Legacy workspace. */}
           <ContentsContainer />
+
+          <Divider orientation="vertical"/>
+
           {/* New MUI main container. */}
           <MainContainer />
           {/* Legacy main container */}
