@@ -1,17 +1,16 @@
-import { string } from 'prop-types';
-import { NewRequestResponseObject } from '../../types';
+// import { string } from 'prop-types';
+import { ReqRes } from '../../types';
 import * as types from './actionTypes';
-import * as interfaces from '../../types';
+// import * as interfaces from '../../types';
 
 // BUSINESS LOGIC ACTIONS
 
 // action creators
 // SPNOTE START line 11 types.ts history: Record<string, unknown>[];
-export const getHistory = (history: string[]): {type: string, payload: string[]} => ({
+export const getHistory = (history: { date: string; history: ReqRes[]; }[]): {type: string, payload: { date: string; history: ReqRes[]; }[]} => ({
   type: types.GET_HISTORY,
   payload: history
 });
-
 
 export const deleteFromHistory = (reqRes: string): {type: string, payload: string} => ({
   type: types.DELETE_HISTORY,
@@ -34,7 +33,7 @@ export const deleteFromCollection = (collection: string): {type: string, payload
 });
 
 // SPNOTE line 9 types.ts reqResArray: NewRequestResponseObject[];
-export const collectionToReqRes = (reqResArray: NewRequestResponseObject[]): {type: string, payload: NewRequestResponseObject[]}  => ({
+export const collectionToReqRes = (reqResArray: ReqRes[]): {type: string, payload: ReqRes[]}  => ({
   type: types.COLLECTION_TO_REQRES,
   payload: reqResArray
 });
@@ -53,23 +52,23 @@ export const reqResClear = (): {type: string} => ({
   type: types.REQRES_CLEAR,
 });
 
-export const reqResAdd = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
+export const reqResAdd = (reqRes: ReqRes): {type: string, payload: ReqRes} => ({
   type: types.REQRES_ADD,
   payload: reqRes
 });
 
-export const reqResDelete = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
+export const reqResDelete = (reqRes: ReqRes): {type: string, payload: ReqRes} => ({
   type: types.REQRES_DELETE,
   payload: reqRes
 });
 
-export const reqResUpdate = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
+export const reqResUpdate = (reqRes: ReqRes): {type: string, payload: ReqRes} => ({
   type: types.REQRES_UPDATE,
   payload: reqRes
 });
 
 //reqRes payload type initially assigned to a boolean
-export const scheduledReqResUpdate = (reqRes: NewRequestResponseObject): {type: string, payload: NewRequestResponseObject} => ({
+export const scheduledReqResUpdate = (reqRes: ReqRes): {type: string, payload: ReqRes} => ({
   type: types.SCHEDULED_REQRES_UPDATE,
   payload: reqRes
 });

@@ -185,8 +185,6 @@ const graphqlController = {
     }
     headers.Cookie = cookies;
 
-    // console.log(req)
-    // console.log(getIntrospectionQuery())
     fetch(req.url, {
       method: 'post',
       headers: headers,
@@ -199,7 +197,7 @@ const graphqlController = {
       .catch((err) => 
         event.sender.send(
           'introspect-reply',
-          'Error: Please enter a valid GraphQL API URI'
+          `Error: ${err}`,
         )
       );
   },

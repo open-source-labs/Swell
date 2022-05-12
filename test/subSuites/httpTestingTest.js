@@ -48,12 +48,12 @@ module.exports = () => {
       try {
         // click and check REST
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=REST').click();
+        await page.locator('#composer >> a >> text=REST').click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
           await page.locator('#composer >> button.is-rest').click();
-          await page.locator(`a >> text=${method}`).click();
+          await page.locator(`#composer >> a >> text=${method}`).click();
         }
 
         // type in url

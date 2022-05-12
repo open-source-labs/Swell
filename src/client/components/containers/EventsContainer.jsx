@@ -14,7 +14,7 @@ function EventsContainer({ currentResponse }) {
     return <EmptyState connection={currentResponse.connection} />;
   }
   const { events, headers } = response;
-  console.log("this is the events", events);
+  // console.log("this is the events", events);
   // console.log("this is the headers", headers);
   let responseBody = '';
 

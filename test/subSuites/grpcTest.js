@@ -76,7 +76,7 @@ module.exports = () => {
       try {
 
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=gRPC').click();
+        await page.locator('#composer >> a >> text=gRPC').click();
         await page.locator('.input-is-medium').fill('0.0.0.0:30051');
 
         const codeMirror = await page.locator('#grpcProtoEntryTextArea');
@@ -103,7 +103,7 @@ module.exports = () => {
 
     it('it should work on a unary request', async () => {
       try {
-        await page.locator('a >> text=Greeter').click();
+        await page.locator('#composer >> a >> text=Greeter').click();
         await page.locator('#Select-Request-button').click();
         await page.locator('a >> text=SayHello').click();
         const jsonPretty = await addReqAndSend();

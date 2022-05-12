@@ -11,7 +11,7 @@ export default function WebRTCRequestContent({ content }) {
   const { iceConfiguration } = content.request.body;
   const [localSdp, setLocalSdp] = useState('');
   const [pcInitiator, setPcInitiator] = useState(null);
-  const dispatch = useDispatch();
+c
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse

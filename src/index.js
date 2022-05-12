@@ -1,10 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { orange } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import App from './client/components/containers/App';
+import App from './client/components-v2/App';
 import store from './client/store';
+
+import { CssBaseline } from '@mui/material';
 
 //DO NOT HESITATE TO REACH OUT TO FORMER TEAMS BEFORE TAKING THIS ON AS A PROJECT
 //There is a lot of room for improvements and we have ideas that we didn't have time to implement
@@ -17,25 +18,19 @@ import store from './client/store';
 // MUI theme
 const theme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: {
-      main: '#393939',
+      main: '#1976d2',
     },
     secondary: {
-      main: '#2196f3',
+      main: '#009688',
     },
   },
 });
 
-{/* <ThemeProvider theme={outerTheme}>
-  <Checkbox defaultChecked />
-  <ThemeProvider theme={innerTheme}>
-    <Checkbox defaultChecked />
-  </ThemeProvider>
-</ThemeProvider> */}
-
 // https://content-security-policy.com/
 // add CSP
+// TODO: do this in the webpack config file
 const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
@@ -54,6 +49,7 @@ const container = document.getElementById('root');
 const rt = createRoot(container);
 rt.render(
   <ThemeProvider theme={theme}>
+    <CssBaseline />
     <Provider store={store}>
       <App />
     </Provider>

@@ -94,31 +94,31 @@ module.exports = () => {
     it('can select a request type', async () => {
       // possibly remove the first clicks based on button vs dropdown menu
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=GRAPHQL').click();
+      await page.locator('#composer >> a >> text=GRAPHQL').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('GRAPHQL')
 
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=REST').click();
+      await page.locator('#composer >> a >> text=REST').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('REST')
 
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=gRPC').click();
+      await page.locator('#composer >> a >> text=gRPC').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('gRPC')
 
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=WEB SOCKETS').click();
+      await page.locator('#composer >> a >> text=WEB SOCKETS').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('WEB SOCKETS')
 
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=WebRTC').click();
+      await page.locator('#composer >> a >> text=WebRTC').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('WebRTC')
 
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=OpenAPI').click();
+      await page.locator('#composer >> a >> text=OpenAPI').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('OpenAPI')
 
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=WebHook').click();
+      await page.locator('#composer >> a >> text=WebHook').click();
       expect(await page.locator('#selected-network').innerText()).to.equal('WebHook')
     });
 
@@ -136,32 +136,32 @@ module.exports = () => {
 
       // Make sure REST method is selected
       await page.locator('#selected-network').click();
-      await page.locator('a >> text=REST').click();
+      await page.locator('#composer >> a >> text=REST').click();
 
       // // click and select POST
-      await page.locator('span >> text=GET').click();
-      await page.locator('a >> text=POST').click();
+      await page.locator('#composer >> span >> text=GET').click();
+      await page.locator('#composer >> a >> text=POST').click();
       expect(await page.locator('button.is-rest >> span >> text=POST').count()).to.equal(1);
 
 
       // // click and select PUT
-      await page.locator('span >> text=POST').click();
-      await page.locator('a >> text=PUT').click();
+      await page.locator('#composer >> span >> text=POST').click();
+      await page.locator('#composer >> a >> text=PUT').click();
       expect(await page.locator('button.is-rest >> span >> text=PUT').count()).to.equal(1);
 
       // // click and select GET
-      await page.locator('span >> text=PUT').click();
-      await page.locator('a >> text=GET').click();
+      await page.locator('#composer >> span >> text=PUT').click();
+      await page.locator('#composer >> a >> text=GET').click();
       expect(await page.locator('button.is-rest >> span >> text=GET').count()).to.equal(1);
 
       // // click and select PATCH
-      await page.locator('span >> text=GET').click();
-      await page.locator('a >> text=PATCH').click();
+      await page.locator('#composer >> span >> text=GET').click();
+      await page.locator('#composer >> a >> text=PATCH').click();
       expect(await page.locator('button.is-rest >> span >> text=PATCH').count()).to.equal(1);
 
       // // click and select DELETE
-      await page.locator('span >> text=PATCH').click();
-      await page.locator('a >> text=DELETE').click();
+      await page.locator('#composer >> span >> text=PATCH').click();
+      await page.locator('#composer >> a >> text=DELETE').click();
       expect(await page.locator('button.is-rest >> span >> text=DELETE').count()).to.equal(1);
     });
 
@@ -240,8 +240,8 @@ module.exports = () => {
         expect(bodyInputcount).to.equal(0);
 
         // // click and select POST
-        await page.locator('span >> text=GET').click();
-        await page.locator('a >> text=POST').click();
+        await page.locator('#composer >> span >> text=GET').click();
+        await page.locator('#composer >> a >> text=POST').click();
 
         bodyInputcount = await page.locator('#body-entry-select').count();
         expect(bodyInputcount).to.equal(1);
