@@ -1,4 +1,4 @@
-import { format, parse } from 'date-fns';
+import { format, parse, parseISO } from 'date-fns';
 import * as store from '../store';
 import * as actions from '../actions/actions';
 import db from '../db';
@@ -33,7 +33,8 @@ const historyController = {
         return groups;
       }, {});
       const historyGroupsArr = Object.keys(historyGroupsObj)
-        .sort((a, b) => parse(b, 'MM/dd/yyyy', new Date()).valueOf() - parse(a, 'MM/dd/yyyy', new Date()).valueOf())
+        //.sort((a, b) => parse(b, 'MM/dd/yyyy', new Date()).valueOf() - parse(a, 'MM/dd/yyyy', new Date()).valueOf())
+        .sort((a, b) => parseISO(b).valueOf() - parseISO(a).valueOf())
         .map((date: string) => ({ // this returns an array of objects with K:date T:string and K:array of history objects
           date,
           history: historyGroupsObj[date].sort(

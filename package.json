@@ -174,7 +174,6 @@
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-chartjs-2": "^4.1.0",
-    "react-codemirror2": "^7.2.1",
     "react-dom": "^18.0.0",
     "react-dropzone": "^12.1.0",
     "react-github-btn": "^1.2.2",

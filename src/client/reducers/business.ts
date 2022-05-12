@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import * as types from '../actions/actionTypes';
 
 // jNote - build interface for state TODO: this should be in types?
@@ -204,7 +204,13 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
 
     case types.DELETE_HISTORY: {
       const deleteId: number = action.payload.id;
-      const deleteDate: string = format(action.payload.createdAt, 'MM/dd/yyyy');
+      let createdAt
+      if(typeof action.payload.createdAt === 'string') {
+        createdAt = parseISO(action.payload.createdAt)
+      } else {
+        createdAt = action.payload.createdAt
+      }
+      const deleteDate: string = format(createdAt, 'MM/dd/yyyy');
       const newHistory = JSON.parse(JSON.stringify(state.history));
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newHistory.forEach((obj: $TSFixMe, i: $TSFixMe) => {
@@ -215,6 +221,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
           newHistory.splice(i, 1);
         }
       });
+      console.log('newHistory', newHistory)
       return {
         ...state,
         history: newHistory,
