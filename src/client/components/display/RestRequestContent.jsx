@@ -1,7 +1,7 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
-import 'codemirror/theme/neat.css';
+import 'codemirror/theme/isotope.css';
 
 export default function RestRequestContent({ request, isHTTP2 }) {
   // ORGANIZE PROPS
