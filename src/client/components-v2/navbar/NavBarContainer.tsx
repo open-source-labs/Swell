@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import LoginStatus from './LoginStatus';
-import githubController from '../../controllers/githubController';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
+// import Controllers
+import githubController from '../../controllers/githubController';
+
+// Import MUI (and packaged) components
 import GitHubButton from 'react-github-btn'
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -12,6 +13,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Stack, Divider } from '@mui/material';
+
+// Import local components.
+import ProtocolSelect from './ProtocolSelect';
+import LoginStatus from './LoginStatus';
+
 
 export default function NavBarContainer(props) {
   const [session, setSession] = useState(
@@ -47,49 +53,15 @@ export default function NavBarContainer(props) {
     }
   }, []);
 
-  const pages = [
-    { name: 'HTTP2', route: '/' },
-    { name: 'GRAPHQL', route: '/graphql' },
-    { name: 'GRPC', route: '/grpc' },
-    { name: 'WEB SOCKET', route: '/websocket' },
-    { name: 'WEBRTC', route: '/webrtc' },
-    { name: 'OPENAPI', route: '/openapi' },
-    { name: 'WEBHOOK', route: '/webhook' },
-  ]
-
   return(
     <AppBar sx={{ position: 'static' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <LoginStatus session={session} setSession={setSession}/>
-          <Box 
-            key="page-selector"
-            sx={{ 
-              flexGrow: 1,
-              display: { xs: 'none', md: 'flex' },
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {pages.map((page) => (
-              <Link 
-                key={page.name}
-                to={page.route}
-                >
-                <Button
-                  key={page.name}
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    m: 1
-                  }}>
-                  {page.name}
-                </Button>
-              </Link>
-            ))}
-          </Box>
-          <Box 
+          <ProtocolSelect />
+          <Box
             key="swell-info"
-            sx={{ 
+            sx={{
               flexGrow: 0,
               display: { xs: 'none', md: 'flex' },
               alignItems: 'center',
