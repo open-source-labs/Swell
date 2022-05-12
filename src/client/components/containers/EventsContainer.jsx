@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import CodeMirror from '@uiw/react-codemirror';
-// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from '../display/EmptyState';
 import EventPreview from '../display/EventPreview';
 import 'codemirror/theme/neo.css';
@@ -61,13 +60,14 @@ function EventsContainer({ currentResponse }) {
           className="overflow-event-child-container"
           value={responseBody}
           options={{
-            mode: 'application/json',
+            mode: "application/json",
             theme: 'neo responsebody',
             lineNumbers: true,
             tabSize: 4,
             lineWrapping: true,
             readOnly: true,
           }}
+          height="200px"
         />
       </div>
     </div>

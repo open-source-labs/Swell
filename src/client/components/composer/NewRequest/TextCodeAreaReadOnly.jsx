@@ -1,5 +1,4 @@
 import React from 'react';
-// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import CodeMirror from '@uiw/react-codemirror';
 
 export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
@@ -16,6 +15,7 @@ export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
           readOnly: true,
         }}
         onChange={onChange}
+        height="200px"
       />
     </div>
   );

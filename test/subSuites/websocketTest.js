@@ -58,7 +58,7 @@ module.exports = () => {
       try {
         // select web sockets
         await page.locator('#selected-network').click();
-        await page.locator('a >> text=WEB SOCKETS').click();
+        await page.locator('#composer >> a >> text=WEB SOCKETS').click();
 
         // type in url
         await page.locator('.input-is-medium').fill('ws://localhost:5000/'); // TODO: Should we be using our own local server to test this? Could be easier to go third party

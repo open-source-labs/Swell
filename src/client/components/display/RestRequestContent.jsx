@@ -1,8 +1,7 @@
 import React from 'react';
-// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
-import 'codemirror/theme/neat.css';
+import 'codemirror/theme/isotope.css';
 
 export default function RestRequestContent({ request, isHTTP2 }) {
   // ORGANIZE PROPS
@@ -86,12 +85,13 @@ export default function RestRequestContent({ request, isHTTP2 }) {
               value={bodyText}
               options={{
                 mode: rawType,
-                theme: 'neo readonly',
+                theme: 'isotope',
                 lineNumbers: true,
                 tabSize: 4,
                 lineWrapping: true,
                 readOnly: true,
               }}
+              height="200px"            
             />
           </div>
         )}
@@ -110,7 +110,7 @@ export default function RestRequestContent({ request, isHTTP2 }) {
               value={testContent}
               options={{
                 mode: rawType,
-                theme: 'neat readonly',
+                theme: 'isotope',
                 lineNumbers: true,
                 tabSize: 4,
                 lineWrapping: true,
