@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
 import * as actions from './../../features/business/businessSlice';
@@ -62,6 +61,7 @@ c
             indentUnit: 1,
             tabSize: 1,
           }}
+          height="200px"
           editorDidMount={(editor) => {
             editor.setSize('100%', '100%');
           }}
@@ -84,6 +84,7 @@ c
               lineWrapping: true,
               readOnly: true,
             }}
+            height="200px"
           />
           <button className="button is-webrtc" onClick={() => createLocalSDP()}>
             Create Local SDP
