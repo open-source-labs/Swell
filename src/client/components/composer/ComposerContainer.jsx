@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import NetworkDropdown from './NetworkDropdown';
 import RestContainer from './RestContainer.jsx';
 import OpenAPIContainer from './OpenAPIContainer.jsx';
@@ -14,7 +15,6 @@ import WebhoContainer from './WebhoContainer';
 const mapStateToProps = (store) => {
   return {
     reqResArray: store.business.reqResArray,
-    // composerDisplay: store.ui.composerDisplay,
     newRequestFields: store.business.newRequestFields,
     newRequestHeaders: store.business.newRequestHeaders,
     newRequestStreams: store.business.newRequestStreams,
@@ -36,9 +36,6 @@ const mapDispatchToProps = (dispatch) => ({
   setComposerWarningMessage: (message) => {
     dispatch(actions.setComposerWarningMessage(message));
   },
-  // setComposerDisplay: (composerDisplay) => {
-  //   dispatch(actions.setComposerDisplay(composerDisplay));
-  // },
   setNewRequestHeaders: (requestHeadersObj) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },
@@ -67,7 +64,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actions.resetComposerFields());
   },
   setWorkspaceActiveTab: (tabName) => {
-    dispatch(actions.setWorkspaceActiveTab(tabName));
+    dispatch(uiactions.setWorkspaceActiveTab(tabName));
   },
 });
 

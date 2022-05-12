@@ -193,7 +193,7 @@ const initialState: StateInterface = {
   },
 };
 
-const businessReducer = (state = initialState, action: Record<string, unknown>): StateInterface => {
+const businessReducer = (state = initialState, action: {type: string, payload: unknown}): StateInterface => {
   switch (action.type) {
     case types.GET_HISTORY: {
       return {
@@ -686,6 +686,7 @@ const businessReducer = (state = initialState, action: Record<string, unknown>):
     default:
       return state;
   }
+  return state;
 };
 
 export default businessReducer;

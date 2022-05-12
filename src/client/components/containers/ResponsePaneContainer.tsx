@@ -3,7 +3,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import EventsContainer from './EventsContainer';
 import HeadersContainer from './HeadersContainer';
 import TestsContainer from './TestsContainer';
@@ -19,7 +20,7 @@ const ResponsePaneContainer = () => {
   const isDark = useSelector((store) => store.ui.isDark);
 
   const setActiveTab = (tabName) =>
-    dispatch(actions.setResponsePaneActiveTab(tabName));
+    dispatch(uiactions.setResponsePaneActiveTab(tabName));
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse

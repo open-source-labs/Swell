@@ -1,6 +1,7 @@
 import { format, parse } from 'date-fns';
 import * as store from '../store';
-import * as actions from '../actions/actions';
+import * as actions from './../features/business/businessSlice';
+import * as uiactions from './../features/ui/uiSlice';
 import db from '../db';
 import { ReqRes } from '../../types';
 
@@ -39,6 +40,7 @@ const historyController = {
           history: historyGroupsObj[date].sort(
             (a: ReqRes, b: ReqRes) => b.createdAt.valueOf() - a.createdAt.valueOf()), 
           }));
+      console.log('historyarr', historyGroupsArr)
       store.default.dispatch(actions.getHistory(historyGroupsArr));
     } catch {
           ((err: string) => console.log('Error in getHistory', err))

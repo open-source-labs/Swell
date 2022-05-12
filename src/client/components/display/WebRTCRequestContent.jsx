@@ -3,7 +3,8 @@ import CodeMirror from '@uiw/react-codemirror';
 // import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
-import * as actions from '../../actions/actions.ts';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 
 const jBeautify = require('js-beautify').js;
 

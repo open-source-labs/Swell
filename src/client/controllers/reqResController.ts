@@ -1,5 +1,6 @@
-import * as store from '../store';
-import * as actions from '../actions/actions';
+import * as store from '../store';  // TODO: refactor for Redux Hooks
+import * as actions from './../features/business/businessSlice';
+import * as uiactions from './../features/ui/uiSlice';
 import graphQLController from './graphQLController';
 import { ReqRes, WindowAPI, WindowExt } from '../../types';
 

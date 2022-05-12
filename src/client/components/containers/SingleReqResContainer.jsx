@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from '../display/RestRequestContent';
 import GraphQLRequestContent from '../display/GraphQLRequestContent';
@@ -187,7 +186,7 @@ const SingleReqResContainer = (props) => {
       dispatch(actions.setNewRequestStreams(requestStreamsObj));
     }
 
-    dispatch(actions.setSidebarActiveTab('composer'));
+    dispatch(uiactions.setSidebarActiveTab('composer'));
   };
 
   const removeReqRes = () => {
@@ -307,7 +306,7 @@ const SingleReqResContainer = (props) => {
               //if it's http, dispatch set active tab to "event" for reqResResponse
               //otherwise do nothing
               if (connectionType !== 'WebSocket') {
-                dispatch(actions.setResponsePaneActiveTab('events'));
+                dispatch(uiactions.setResponsePaneActiveTab('events'));
               }
               // console.log(content)
               connectionController.openReqRes(content.id);

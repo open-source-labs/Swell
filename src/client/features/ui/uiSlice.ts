@@ -1,6 +1,19 @@
-import * as types from '../../actions/actionTypes';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const initialState = {
+// ********************************
+// * The Redux store is setup in modern Redux Toolkit style
+// * https://redux-toolkit.js.org/
+// ********************************
+
+interface UiState {
+  composerDisplay: string,
+  sidebarActiveTab: string,
+  workspaceActiveTab: string,
+  responsePaneActiveTab: string,
+  isDark: boolean,
+};
+
+const initialState: UiState = {
   composerDisplay: 'Request',
   sidebarActiveTab: 'composer',
   workspaceActiveTab: 'workspace',
@@ -8,45 +21,30 @@ const initialState = {
   isDark: false,
 };
 
-const uiReducer = (state = initialState, action: { type: string; payload: string | boolean; }): Record<string, unknown> => {
-  switch (action.type) {
-    case types.SET_COMPOSER_DISPLAY: {
-      return {
-        ...state,
-        composerDisplay: action.payload,
-      };
+const uiSlice = createSlice({
+  name: 'ui',
+  initialState,
+  reducers: {
+    setSidebarActiveTab(state, action: PayloadAction<string>) {
+      state.composerDisplay = action.payload;
+    },
+    setWorkspaceActiveTab(state, action: PayloadAction<string>) {
+      state.workspaceActiveTab = action.payload;
+    },
+    setResponsePaneActiveTab(state, action: PayloadAction<string>) {
+      state.responsePaneActiveTab = action.payload;
+    },
+    toggleDarkMode(state, action: PayloadAction<boolean>) {
+      state.isDark = action.payload;
     }
-
-    case types.SET_SIDEBAR_ACTIVE_TAB: {
-      return {
-        ...state,
-        sidebarActiveTab: action.payload,
-      };
-    }
-    case types.SET_WORKSPACE_ACTIVE_TAB: {
-      return {
-        ...state,
-        workspaceActiveTab: action.payload,
-      };
-    }
-
-    case types.SET_RESPONSE_PANE_ACTIVE_TAB: {
-      return {
-        ...state,
-        responsePaneActiveTab: action.payload,
-      };
-    }
-
-    case types.TOGGLE_DARK_MODE: {
-      return {
-        ...state,
-        isDark: action.payload,
-      };
-    }
-
-    default:
-      return state;
   }
-};
+})
 
-export default uiReducer;
+const { actions, reducer } = uiSlice
+export const { 
+  setSidebarActiveTab, 
+  setWorkspaceActiveTab,
+  setResponsePaneActiveTab,
+  toggleDarkMode,
+ } = actions
+export default reducer;

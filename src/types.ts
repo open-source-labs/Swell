@@ -154,27 +154,27 @@ export interface OpenAPIReqData {
 }
 
 export interface ReqRes {
-  id: number;
-  graphQL: boolean;
+  checked: boolean;
   closeCode: number;
+  connection: ConnectionStatus;
+  connectionType: string;
+  createdAt: Date;
+  error: string;
+  graphQL: boolean;
+  gRPC: boolean;
+  id: number;
+  isHTTP2: boolean;
+  minimized: boolean;
+  openapi: boolean;
   protocol: Protocol;
   request: ReqResRequest;
   response: ReqResResponse; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
-  connection: ConnectionStatus;
-  connectionType: string;
-  isHTTP2: boolean;
-  url: string;
-  timeReceived: Date | number;
-  timeSent: number;
   rpc: string;
   service: string;
-  checked: boolean;
+  timeReceived: Date | number;
+  timeSent: number;
+  url: string;
   webRtc: boolean;
-  minimized: boolean;
-  gRPC: boolean;
-  createdAt: Date;
-  error: string;
-  openapi: boolean;
 }
 
 export interface SSERequest {

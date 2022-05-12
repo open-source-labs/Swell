@@ -2,13 +2,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import collectionsController from '../../controllers/collectionsController';
 
 const Collection = (props) => {
   const dispatch = useDispatch();
   const setWorkspaceTab = (tabName) =>
-    dispatch(actions.setWorkspaceActiveTab(tabName));
+    dispatch(uiactions.setWorkspaceActiveTab(tabName));
 
   const addCollectionToReqResContainer = () => {
     props.collectionToReqRes(props.content.reqResArray);

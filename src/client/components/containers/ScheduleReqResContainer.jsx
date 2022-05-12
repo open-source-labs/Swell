@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 
