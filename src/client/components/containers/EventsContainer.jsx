@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import EmptyState from '../display/EmptyState';
 import EventPreview from '../display/EventPreview';
 // import 'codemirror/theme/neo.css';
-import Editor from "@monaco-editor/react";
 
 
 function EventsContainer({ currentResponse }) {
@@ -58,12 +57,7 @@ function EventsContainer({ currentResponse }) {
       )}
       <div className={`${isDark ? 'is-dark-200' : ''} overflow-event-parent-container`}>
         {/* {responseBody} */}
-        <Editor
-            height="90vh"
-            defaultLanguage="javascript"
-            defaultValue="// some comment"
-          />
-        {/* <CodeMirror
+        <CodeMirror
           className="overflow-event-child-container"
           value={responseBody}
           options={{
@@ -75,7 +69,7 @@ function EventsContainer({ currentResponse }) {
             readOnly: true,
           }}
           height="200px"
-        /> */}
+        />
       </div>
     </div>
   );

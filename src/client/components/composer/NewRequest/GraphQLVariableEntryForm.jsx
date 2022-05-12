@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
 // import 'codemirror/addon/edit/matchbrackets';
 // import 'codemirror/addon/edit/closebrackets';
@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 // import 'codemirror/addon/display/autorefresh';
 // import 'codemirror/addon/display/placeholder';
 // import 'codemirror/mode/javascript/javascript';
-import Editor from "@monaco-editor/react";
 
 
 const GraphQLVariableEntryForm = (props) => {
@@ -35,11 +34,6 @@ const GraphQLVariableEntryForm = (props) => {
     <div>
       <div className="composer-section-title">Variables</div>
       <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`} id="gql-var-entry">
-      <Editor
-            height="90vh"
-            defaultLanguage="javascript"
-            defaultValue="// some comment"
-          />
         {/* <CodeMirror
           ref={cmVariables}
           value={cmValue}

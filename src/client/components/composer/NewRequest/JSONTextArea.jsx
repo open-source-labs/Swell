@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
 
 export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {

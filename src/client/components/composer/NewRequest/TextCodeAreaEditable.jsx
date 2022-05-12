@@ -1,38 +1,33 @@
 //import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 import React from 'react';
-// import CodeMirror from '@uiw/react-codemirror';
-// import { javascript } from '@codemirror/lang-javascript';
-// import { oneDark } from '@codemirror/theme-one-dark';
-import Editor from "@monaco-editor/react";
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { xml } from '@codemirror/lang-xml';
+import { json } from '@codemirror/lang-json';
+import { html } from '@codemirror/lang-html';
 
 
-export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
+import { oneDark } from '@codemirror/theme-one-dark';
+
+
+export default function TextCodeAreaEditable({ value, mode, onChange, theme = 'light' }) {
   return (
     <div className="is-neutral-200-box">
-         <Editor
-            height="90vh"
-            defaultLanguage="javascript"
-            defaultValue="// some comment"
-          />
-      {/* <CodeMirror
-            value="console.log('hello world!');"
-            height="200px"
-            // extensions={[javascript(config = {jsx: true})]}
-            extensions={[javascript({ jsx: true })]}
-
-
-        // value={value}
+      <CodeMirror
+        value={value}
+        height="200px"
+        extensions={[html()]}
+        placeholder='Enter body here'
         // mode
-        // theme={oneDark}
+        theme={theme}
         // lineNumbers= {true}
         // tabSize= {4}
-        // // extensions={[javascript()]}
         // lineWrapping= {true}
         // pollInterval= {2000}
         // readOnly= {false}
         onChange={onChange}
         // height="200px"
-      /> */}
+      />
     </div>
   );
 }

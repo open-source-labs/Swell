@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-// import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 // import 'codemirror/addon/edit/matchbrackets';
 // import 'codemirror/addon/edit/closebrackets';
 // import 'codemirror/theme/twilight.css';
@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 // import 'codemirror-graphql/lint';
 // import 'codemirror-graphql/mode';
 // import 'codemirror/addon/lint/lint.css';
-import Editor from "@monaco-editor/react";
 
 
 const jBeautify = require('js-beautify').js;
@@ -40,12 +39,7 @@ const WebRTCServerEntryForm = (props) => {
       {warningMessage ? <div>{warningMessage.body}</div> : null}
       <div className="composer-section-title">TURN or STUN Servers</div>
       <div className={`is-neutral-200-box p-3 ${isDark ? 'is-dark-400' : ''}`}>
-      <Editor
-            height="90vh"
-            defaultLanguage="javascript"
-            defaultValue="// some comment"
-          />
-        {/* <CodeMirror
+        <CodeMirror
           value={cmValue}
           options={{
             mode: 'javascript',
@@ -63,7 +57,7 @@ const WebRTCServerEntryForm = (props) => {
           editorDidMount={(editor, data, value) => {
             editor.setSize('100%', '100%');
           }}
-        /> */}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
 // import 'codemirror/addon/edit/matchbrackets';
 // import 'codemirror/addon/edit/closebrackets';
@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 // import 'codemirror-graphql/lint';
 // import 'codemirror-graphql/mode';
 // import 'codemirror/addon/lint/lint.css';
-import Editor from "@monaco-editor/react";
 
 
 const GraphQLBodyEntryForm = (props) => {
@@ -41,11 +40,6 @@ const GraphQLBodyEntryForm = (props) => {
       }
       <div className="composer-section-title">Body</div>
       <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}>
-      <Editor
-            height="90vh"
-            defaultLanguage="javascript"
-            defaultValue="// some comment"
-          />
         {/* <CodeMirror
           value={cmValue}
           options={{

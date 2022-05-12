@@ -1,17 +1,11 @@
 import React from 'react';
-// import CodeMirror from '@uiw/react-codemirror';
-import Editor from "@monaco-editor/react";
+import CodeMirror from '@uiw/react-codemirror';
 
 
 export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
   return (
     <div className="is-neutral-200-box p-3">
-              <Editor
-            height="90vh"
-            defaultLanguage="javascript"
-            defaultValue="// some comment"
-          />
-      {/* <CodeMirror
+      <CodeMirror
         value={value}
         options={{
           mode,
@@ -23,7 +17,7 @@ export default function TextCodeAreaEditable({ value, mode, onChange, theme }) {
         }}
         onChange={onChange}
         height="200px"
-      /> */}
+      />
     </div>
   );
 }
