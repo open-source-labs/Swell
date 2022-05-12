@@ -6,6 +6,7 @@ import * as actions from '../../actions/actions';
 // Import local components.
 import Http2Composer from './Http2Composer';
 import GraphQLComposer from './GraphQLComposer';
+import GRPCComposer from './GRPCComposer';
 import ResponsePaneContainer from './response/ResponsePaneContainer';
 
 // Import MUI components
@@ -86,7 +87,7 @@ function MainContainer(props) {
           />
           <Route
             path="/grpc"
-            element={<p>/grpc</p>}
+            element={<GRPCComposer {...props} />}
           />
           <Route
             path="/websocket"
