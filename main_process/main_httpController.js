@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron');
 const fs = require('fs');
-const fetch2 = require('node-fetch');
+const fetch = require('cross-fetch');
 const http2 = require('http2');
 const setCookie = require('set-cookie-parser');
 const SSEController = require('./SSEController');
@@ -274,7 +274,7 @@ const httpController = {
     return new Promise((resolve) => {
       const { method, headers, body } = args.options;
 
-      fetch2(headers.url, { method, headers, body })
+      fetch(headers.url, { method, headers, body })
         .then((response) => {
           //console.log('responsefromendpoint====>', response);
           const headers = response.headers.raw();
