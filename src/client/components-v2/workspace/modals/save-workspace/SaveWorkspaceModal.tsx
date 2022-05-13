@@ -1,9 +1,12 @@
-import React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuid } from 'uuid';
+// Import actions.
+import * as actions from '../../../../features/business/businessSlice'
+// Import controllers.
+import collectionsController from '../../../../controllers/collectionsController';
+// Import MUI components.
+import { Backdrop, Box, Modal, Fade, Typography } from '@mui/material';
 
 const style = {
   display: 'flex',
@@ -20,6 +23,85 @@ const style = {
 };
 
 export default function SaveWorkspaceModal({ open, handleClose }) {
+  const dispatch = useDispatch();
+  // Initialize state.
+  const [input, setInput] = useState('');
+  const [collectionNameErrorStyles, setCollectionNameErrorStyles] = useState(false);
+  // Pull elements from store.
+  // TODO: remove explicit any. May require refactoring the store.
+  const reqResArray = useSelector((store: any) => store.business.reqResArray);
+  const collections = useSelector((store: any) => store.business.collections);
+
+  const saveCollection = (inputName) => {
+    const clonedArray = JSON.parse(JSON.stringify(reqResArray));
+    clonedArray.forEach((reqRes) => {
+      //reinitialize and minimize all things
+      reqRes.checked = false;
+      reqRes.minimized = true;
+      reqRes.timeSent = null;
+      reqRes.timeReceived = null;
+      reqRes.connection = 'uninitialized';
+      if (reqRes.response.hasOwnProperty('headers'))
+        reqRes.response = { headers: null, events: null };
+      else reqRes.response = { messages: [] };
+    });
+    const collection = {
+      name: inputName,
+      id: uuid(),
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      reqResArray: clonedArray,
+    };
+    collectionsController.addCollectionToIndexedDb([collection]); //add to IndexedDB
+    dispatch(actions.collectionAdd(collection));
+    // setShowModal(false);
+    setCollectionNameErrorStyles(false);
+    handleClose();
+  };
+
+  const updateCollection = (inputName, inputID) => {
+    const clonedArray = reqResArray.slice();
+    clonedArray.forEach((reqRes) => {
+      //reinitialize and minimize all things
+      reqRes.checked = false;
+      reqRes.minimized = true;
+      reqRes.timeSent = null;
+      reqRes.timeReceived = null;
+      reqRes.connection = 'uninitialized';
+      if (reqRes.response.hasOwnProperty('headers'))
+        reqRes.response = { headers: null, events: null };
+      else reqRes.response = { messages: [] };
+    });
+    // TODO: only adjust modifiedAt property
+    const collectionObj = {
+      name: inputName,
+      id: inputID,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      reqResArray: clonedArray,
+    };
+    collectionsController.updateCollectionInIndexedDb(collectionObj); //add to IndexedDB
+    dispatch(actions.collectionUpdate(collectionObj));
+    setCollectionNameErrorStyles(false);
+    handleClose();
+  };
+
+  const saveName = () => {
+    if (input.trim()) {
+      collectionsController
+        .collectionNameExists(input)
+        .catch((err) =>
+          console.error('error in checking collection name: ', err)
+        )
+        .then((found) => {
+          if (found) {
+            //if the name already exists, change style state
+            setCollectionNameErrorStyles(true);
+          } else saveCollection(input);
+        });
+    }
+  };
+
   return (
     <Modal
       aria-labelledby="save-workspace-modal"
@@ -42,7 +124,7 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
             Put the original app's save workspace functionality here. Maybe there can be two options: save, and save+commit.
           </Typography>
         </Box>
-        
+
       </Fade>
     </Modal>
   );
