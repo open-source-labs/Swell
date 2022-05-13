@@ -3,9 +3,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebSocketMessageProps } from '../../../types';
 
-const WebSocketMessage: React.SFC<WebSocketMessageProps> = ({
+const WebSocketMessage = ({
   source,
   timeReceived,
   data,

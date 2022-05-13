@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReqResCtrl from '../../controllers/reqResController';
-import ReqResContainer from './ReqResContainer.jsx';
+import ReqResContainer from './ReqResContainer';
 import SaveWorkspaceModal from './SaveWorkspaceModal';
 
 function WorkspaceContainer(props) {

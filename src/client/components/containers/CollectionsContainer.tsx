@@ -1,12 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from '../../features/business/businessSlice';
 import Collection from '../display/Collection';
 import collectionsController from '../../controllers/collectionsController';
 import githubController from '../../controllers/githubController';
-import axios from 'axios';
 import db from '../../db';
-import Cookies from 'js-cookie';
 import { useLiveQuery } from 'dexie-react-hooks';
 
 

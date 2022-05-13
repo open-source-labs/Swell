@@ -17,7 +17,7 @@ export default function ImageDropzone({ onFileChange }) {
           className="ml-1 mr-1 input is-small"
           id="wsDragNdrop"
           placeholder={`Drag 'n' drop your image here, or click to select a file`}
-          onFileChange={onFileChange(acceptedFiles)}
+          onChange={() => {onFileChange(acceptedFiles)}}
         />
       </div>
       <aside>

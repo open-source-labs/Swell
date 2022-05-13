@@ -141,14 +141,6 @@ export const setNewRequestSSE = (SSEBool: boolean): {type: string, payload: bool
   payload: SSEBool
 });
 
-// jNote - setCurrentTab below not used??
-
-// // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-// export const setCurrentTab = (tab: $TSFixMe) => ({
-//   type: types.SET_CURRENT_TAB,
-//   payload: tab
-// });
-
 export const setChecksAndMinis = (reqResArray: string[]): {type: string, payload: string[]} => ({
   type: types.SET_CHECKS_AND_MINIS,
   payload: reqResArray
@@ -164,16 +156,6 @@ export const saveCurrentResponseData = (dataObj: Record<string, unknown>, second
   type: types.SAVE_CURRENT_RESPONSE_DATA,
   payload: dataObj,
 });
-
-// UI ACTIONS ** 
-
-//check to make sure this didn't mess with any functionality
-// // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-// export const setComposerDisplay = (composerDisplay: Record<string, unknown>): {type: string, payload: Record<string, unknown>} => ({
-//   type: types.SET_COMPOSER_DISPLAY,
-//   payload: composerDisplay
-// });
-
 
 export const setSidebarActiveTab = (tabName: string): {type: string, payload: string} => ({
   type: types.SET_SIDEBAR_ACTIVE_TAB,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import ScheduleReqResContainer from './ScheduleReqResContainer.jsx';
 import StoppedContainer from './StoppedContainer.jsx';
-import ReqResContainer from './ReqResContainer.jsx';
+import ReqResContainer from './ReqResContainer.tsx';
 
 function ScheduleContainer() {
   const [scheduleInterval, setScheduleInterval] = useState(1);

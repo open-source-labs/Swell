@@ -1,11 +1,9 @@
-import * as types from '../actions/actionTypes';
-
 interface UiState {
   composerDisplay: string,
   sidebarActiveTab: string,
   workspaceActiveTab: string,
   responsePaneActiveTab: string,
-  isDark: boolean,
+  isDark: boolean | string,
 };
 
 const initialState: UiState = {
@@ -16,7 +14,7 @@ const initialState: UiState = {
   isDark: false,
 };
 
-const uiReducer = (state = initialState, action: Record<string, string>): UiState => {
+const uiReducer = (state = initialState, action: Record<string, string | boolean>): UiState => {
   switch (action.type) {
     case types.SET_COMPOSER_DISPLAY: {
       return {
