@@ -6,41 +6,40 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import WebSocketMessage from './WebSocketMessage';
-import { WebSocketWindowProps } from '../../../types';
 import ImageDropzone from './ImageDropzone';
 
 const { api } = window;
 
-const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
+const WebSocketWindow = ({
   content,
   outgoingMessages,
   incomingMessages,
   connection,
 }) => {
-  const [inputMsgImg, setinputMsgImg] = useState({
-    inputMsg: '',
-    inputImg: '',
+  const [inputFields, setInputFields] = useState({
+    message: '',
+    image: '',
   });
 
   // updates the outgoing message when it changes
   const updateOutgoingMessage = (value: any) => {
     console.log('updating msg');
     if (value.includes('data:image/')) {
-      setinputMsgImg({ ...inputMsgImg, inputImg: value });
+      setInputFields({ ...inputFields, image: value });
     } else {
-      setinputMsgImg({ ...inputMsgImg, inputMsg: value });
+      setInputFields({ ...inputFields, message: value });
     }
   };
 
   // sends to WScontroller in main.js to send the message to server
   const sendToWSController = () => {
-    if (inputMsgImg.inputMsg) {
-      api.send('send-ws', content, inputMsgImg.inputMsg);
-      setinputMsgImg({ inputMsg: '', inputImg: '' });
-    } else if (inputMsgImg.inputImg) {
+    if (inputFields.message) {
+      api.send('send-ws', content, inputFields.message);
+      setInputFields({ message: '', image: '' });
+    } else if (inputFields.image) {
       console.log('rerendering');
-      api.send('send-ws', content, inputMsgImg.inputImg);
-      setinputMsgImg({ inputMsg: '', inputImg: '' });
+      api.send('send-ws', content, inputFields.image);
+      setInputFields({ message: '', image: '' });
     }
     // reset inputbox
   };
@@ -57,7 +56,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       });
 
     const data: any = await dataURL(img);
-    if (inputMsgImg.inputImg !== data) {
+    if (inputFields.image !== data) {
       updateOutgoingMessage(data);
     }
   };
@@ -72,7 +71,6 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
   const combinedMessagesReactArr = outgoingMessages
     .map((message) => {
       message.source = 'client';
-
       return message;
     })
     .concat(
@@ -113,7 +111,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
         <input
           className="ml-1 mr-1 input is-small"
           id="wsMsgInput"
-          value={inputMsgImg.inputMsg}
+          value={inputFields.message}
           onKeyPress={handleKeyPress}
           placeholder="Message"
           onChange={(e) => updateOutgoingMessage(e.target.value)}
