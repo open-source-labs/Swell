@@ -93,41 +93,41 @@ export interface NewRequestCookies {
   // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
   // count: number; //-> Pretty sure this is not needed -Prince
   active: boolean;
+  id: string;
   key: string;
   value: string;
-  id: string;
 }
 
 export interface ReqResRequest {
-  protocol: Protocol;
-  graphQL: boolean;
-  gRPC: boolean;
-  ws: boolean;
-  webRtc: boolean;
-  restUrl?: string;
-  wsUrl?: string;
-  gqlUrl?: string;
-  gRpcUrl?: string;
-  webRtcUrl?: string;
-  url?: string;
-  method?: string;
-  network: Network;
-  testContent: string;
-  testResults: string[];
-  headers: RequestHeaders[]; //-> Might need this -Prince
-  cookies: NewRequestCookies[];
   body: string;
   bodyType: string;
   bodyVariables: string;
+  cookies: NewRequestCookies[];
+  graphQL: boolean;
+  gRPC: boolean;
+  gRpcUrl?: string;
+  gqlUrl?: string;
+  headers: RequestHeaders[]; //-> Might need this -Prince
+  method?: string;
+  network: Network;
+  protocol: Protocol;
+  restUrl?: string;
+  testContent: string;
+  testResults: string[];
+  url?: string;
+  webRtc: boolean;
+  webRtcUrl?: string;
+  ws: boolean;
+  wsUrl?: string;
 }
 
 export interface RequestHeaders {
-  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
-  count?: number; //-> Might not need this -Prince
   active: boolean;
+  count?: number; //-> Might not need this -Prince
+  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
+  id: number;
   key: string;
   value: string;
-  id: number;
 }
 
 export interface OpenAPIRequest {

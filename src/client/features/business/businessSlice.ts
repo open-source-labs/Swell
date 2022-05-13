@@ -100,6 +100,9 @@ interface State {
     request: {
       network: string,
     },
+    response: {
+      source: string,
+    },
   },
 };
 
@@ -194,6 +197,9 @@ const initialState: State = {
   currentResponse: {
     request: {
       network: '',
+    },
+    response: {
+      source: ''
     },
   },
 };

@@ -10,14 +10,10 @@ import ImageDropzone from './ImageDropzone';
 
 const { api } = window;
 
-const WebSocketWindow = ({
-  content,
-  outgoingMessages,
-  incomingMessages,
-  connection,
-}) => {
+// TODO: ResponsePaneContainer.tsx should dispach state and we should pull it here, not drill it down
+const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connection}) => {
   const [inputFields, setInputFields] = useState({
-    message: '',
+    msg: '',
     image: '',
   });
 
@@ -27,19 +23,20 @@ const WebSocketWindow = ({
     if (value.includes('data:image/')) {
       setInputFields({ ...inputFields, image: value });
     } else {
-      setInputFields({ ...inputFields, message: value });
+      setInputFields({ ...inputFields, msg: value });
     }
   };
 
   // sends to WScontroller in main.js to send the message to server
+  // TODO: doesn't handle the case of both fields being populated
   const sendToWSController = () => {
-    if (inputFields.message) {
-      api.send('send-ws', content, inputFields.message);
-      setInputFields({ message: '', image: '' });
+    if (inputFields.msg) {
+      api.send('send-ws', content, inputFields.msg);
+      setInputFields({ msg: '', image: '' });
     } else if (inputFields.image) {
       console.log('rerendering');
       api.send('send-ws', content, inputFields.image);
-      setInputFields({ message: '', image: '' });
+      setInputFields({ msg: '', image: '' });
     }
     // reset inputbox
   };
@@ -69,14 +66,14 @@ const WebSocketWindow = ({
   };
   // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
-    .map((message) => {
-      message.source = 'client';
+    .map((message: Record<string, unknown>) => {
+      message = {...message, source: 'client'}  
+      console.log('message after', message)
       return message;
     })
     .concat(
-      incomingMessages.map((message) => {
-        message.source = 'server';
-
+      incomingMessages.map((message: Record<string, unknown>) => {
+        message = {...message, source: 'server'}  
         return message;
       })
     )
@@ -111,7 +108,7 @@ const WebSocketWindow = ({
         <input
           className="ml-1 mr-1 input is-small"
           id="wsMsgInput"
-          value={inputFields.message}
+          value={inputFields.msg}
           onKeyPress={handleKeyPress}
           placeholder="Message"
           onChange={(e) => updateOutgoingMessage(e.target.value)}
