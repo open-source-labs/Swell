@@ -9,6 +9,8 @@ import db from '../../db';
 import Cookies from 'js-cookie';
 import { useLiveQuery } from 'dexie-react-hooks';
 
+
+
 function CollectionsContainer() {
 
   let files = useLiveQuery(() => db.files.toArray());
@@ -77,5 +79,6 @@ function CollectionsContainer() {
     </div>
   );
 }
+
 
 export default CollectionsContainer;
