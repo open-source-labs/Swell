@@ -32,11 +32,12 @@ const App = () => {
     <div id="app" className="is-tall">
       <HashRouter>
         <NavBarContainer />
+        <Divider orientation="horizontal"/>
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* New MUI workspace. */}
           <WorkspaceContainer />
           {/* Legacy workspace. */}
-          {/* <ContentsContainer /> */}
+          <ContentsContainer />
           <Divider orientation="vertical"/>
           {/* New MUI main container. */}
           <MainContainer />

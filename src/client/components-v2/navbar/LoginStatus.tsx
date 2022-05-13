@@ -59,8 +59,9 @@ export default function LoginContainer(props) {
 
   return(
     <Box sx={{
-      width: '20%',
+      display: 'flex',
       alignContent: 'left',
+      flexDirection: 'row',
       pl: 1.5
     }}>
       {session.isActiveSession
@@ -84,7 +85,12 @@ export default function LoginContainer(props) {
           <Button variant="outlined">Invite +</Button>
         </Box>
         :
-        <Box>
+        <Box sx={{
+          flexGrow: 0,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
           <Button variant="outlined" onClick={signInViaGitHub}>Sign In</Button>
         </Box>
       }

@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-
 // import Controllers
 import githubController from '../../controllers/githubController';
-
-// Import MUI (and packaged) components
-import GitHubButton from 'react-github-btn';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-
+// Import MUI components
+import { AppBar, Divider, Toolbar, Box } from '@mui/material';
 // Import local components.
 import ProtocolSelect from './ProtocolSelect';
 import LoginStatus from './LoginStatus';
@@ -53,17 +46,13 @@ export default function NavBarContainer(props) {
   }, []);
 
   return(
-    <AppBar sx={{ position: 'static' }}>
-      <Box width="100%">
-        <Toolbar disableGutters>
-          {/* Login status for the user. */}
-          <LoginStatus session={session} setSession={setSession}/>
-          {/* Protocol select buttons. */}
-          <ProtocolSelect />
-          {/* General information about Swell. */}
-          <GeneralInfo />
-        </Toolbar>
-      </Box>
-    </AppBar>
+    <Box sx={{display: 'flex', flexDirection: 'row'}} width="100%">
+      {/* Login status for the user. */}
+      <LoginStatus session={session} setSession={setSession}/>
+      {/* Protocol select buttons. */}
+      <ProtocolSelect />
+      {/* General information about Swell. */}
+      <GeneralInfo />
+    </Box>
   );
   }

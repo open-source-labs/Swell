@@ -14,7 +14,7 @@ import WebhookComposer from './WebhookComposer';
 import ResponsePaneContainer from './response/ResponsePaneContainer';
 
 // Import MUI components
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 
 const mapStateToProps = (store) => {
   return {
@@ -77,7 +77,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 function MainContainer(props) {
   return(
-    <Box sx={{p: 1.5, width: '80%'}}>
+    <Box sx={{p: 1.5, width: '80%', overflowY: 'scroll'}}>
       <Box>
         <Routes>
           <Route
@@ -109,6 +109,7 @@ function MainContainer(props) {
             element={<WebhookComposer {...props} />}
           />
         </Routes>
+        <Divider orientation="horizontal"/>
         <ResponsePaneContainer />
       </Box>
     </Box>
