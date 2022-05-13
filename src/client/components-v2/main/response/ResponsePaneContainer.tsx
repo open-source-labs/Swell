@@ -3,7 +3,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../../actions/actions';
+import * as actions from './../../../features/business/businessSlice';
+import * as uiactions from './../../../features/ui/uiSlice';
 import ReqResCtrl from '../../../controllers/reqResController';
 
 // Import local components.
@@ -14,17 +15,17 @@ import CookiesContainer from './CookiesContainer';
 import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
-
+import { RootState } from '../../../store';
 const ResponsePaneContainer = () => {
   const dispatch = useDispatch();
-  const activeTab = useSelector((store) => store.ui.responsePaneActiveTab);
-  const isDark = useSelector((store) => store.ui.isDark);
+  const activeTab = useSelector((store: RootState) => store.ui.responsePaneActiveTab);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const setActiveTab = (tabName) =>
-    dispatch(actions.setResponsePaneActiveTab(tabName));
+    dispatch(uiactions.setResponsePaneActiveTab(tabName));
 
   const currentResponse = useSelector(
-    (store) => store.business.currentResponse
+    (store: RootState) => store.business.currentResponse
   );
   const { connection } = currentResponse;
 

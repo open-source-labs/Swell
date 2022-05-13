@@ -2,7 +2,8 @@ import React from 'react';
 import { v4 as uuid } from 'uuid';
 // Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 // Import controllers
 import connectionController from '../../controllers/reqResController';
 import historyController from '../../controllers/historyController';

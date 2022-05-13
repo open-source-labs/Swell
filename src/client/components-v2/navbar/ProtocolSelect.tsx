@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 
 // Import actions so that the navbar can interact with the Redux store.
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 
 // Import MUI components.
 import { Box, Button } from '@mui/material';
@@ -64,7 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actions.resetComposerFields());
   },
   setWorkspaceActiveTab: (tabName) => {
-    dispatch(actions.setWorkspaceActiveTab(tabName));
+    dispatch(uiactions.setWorkspaceActiveTab(tabName));
   },
 });
 
