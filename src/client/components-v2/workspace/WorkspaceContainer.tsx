@@ -6,7 +6,7 @@ import CurrentWorskpaceDisplay from "./CurrentWorkspaceDisplay";
 import CollectionTree from './CollectionTree';
 
 // MUI components and SVG icons
-import { Box, Button, Typography, SelectChangeEvent } from '@mui/material';
+import { Box, Button, Typography, SelectChangeEvent, Divider } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 
 export default function WorkspaceContainer(props) {
@@ -33,17 +33,16 @@ export default function WorkspaceContainer(props) {
 
   return (
     <Box sx={{ minWidth: '20%', align: 'center', p: 1.5 }}>
-
+      {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
       <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} handleWorkspaceChange={handleWorkspaceChange}/>
-
-      <Box sx={{ p: 1 }}>
-        <Typography>Collections</Typography>
-        {currentWorkspace !== undefined && <CollectionTree currentWorkspace={currentWorkspace}/>}
-        <Button variant="text" sx={{ width: 1, maxHeight: '24px', minHeight: '24px' }}>
-          <AddRounded fontSize="small"/>
-        </Button>
-      </Box>
-
+      {/* The display for the collections of your currently-selected workspace. */}
+      <Typography>Collections</Typography>
+      <Divider orientation="horizontal"/>
+      {/*  */}
+      {currentWorkspace !== undefined && <CollectionTree currentWorkspace={currentWorkspace}/>}
+      <Button variant="text" sx={{ width: 1, maxHeight: '24px', minHeight: '24px' }}>
+        <AddRounded fontSize="small"/>
+      </Button>
     </Box>
   )
 }
