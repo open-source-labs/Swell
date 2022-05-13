@@ -3,7 +3,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import historyController from '../../controllers/historyController';
 
 const History = ({
@@ -53,7 +54,7 @@ const History = ({
 }) => {
   const dispatch = useDispatch();
   const setSidebarTab = (tabName) =>
-    dispatch(actions.setSidebarActiveTab(tabName));
+    dispatch(uiactions.setSidebarActiveTab(tabName));
   const setNewRequestSSE = (bool) => dispatch(actions.setNewRequestSSE(bool));
 
   const addHistoryToNewRequest = () => {

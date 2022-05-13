@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import collectionsController from '../../controllers/collectionsController';
 import SaveModalSavedWorkspaces from '../display/SaveModalSavedWorkspaces';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 
 function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();

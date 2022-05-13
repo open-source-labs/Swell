@@ -1,6 +1,7 @@
 import React from 'react';
-import { connect, useSelector } from 'react-redux';
-import * as actions from '../../actions/actions';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../features/business/businessSlice';
+import * as uiactions from '../../features/ui/uiSlice';
 import SingleReqResContainer from './SingleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 

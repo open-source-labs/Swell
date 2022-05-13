@@ -93,41 +93,41 @@ export interface NewRequestCookies {
   // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
   // count: number; //-> Pretty sure this is not needed -Prince
   active: boolean;
+  id: string;
   key: string;
   value: string;
-  id: string;
 }
 
 export interface ReqResRequest {
-  protocol: Protocol;
-  graphQL: boolean;
-  gRPC: boolean;
-  ws: boolean;
-  webRtc: boolean;
-  restUrl?: string;
-  wsUrl?: string;
-  gqlUrl?: string;
-  gRpcUrl?: string;
-  webRtcUrl?: string;
-  url?: string;
-  method?: string;
-  network: Network;
-  testContent: string;
-  testResults: string[];
-  headers: RequestHeaders[]; //-> Might need this -Prince
-  cookies: NewRequestCookies[];
   body: string;
   bodyType: string;
   bodyVariables: string;
+  cookies: NewRequestCookies[];
+  graphQL: boolean;
+  gRPC: boolean;
+  gRpcUrl?: string;
+  gqlUrl?: string;
+  headers: RequestHeaders[]; //-> Might need this -Prince
+  method?: string;
+  network: Network;
+  protocol: Protocol;
+  restUrl?: string;
+  testContent: string;
+  testResults: string[];
+  url?: string;
+  webRtc: boolean;
+  webRtcUrl?: string;
+  ws: boolean;
+  wsUrl?: string;
 }
 
 export interface RequestHeaders {
-  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
-  count?: number; //-> Might not need this -Prince
   active: boolean;
+  count?: number; //-> Might not need this -Prince
+  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
+  id: number;
   key: string;
   value: string;
-  id: number;
 }
 
 export interface OpenAPIRequest {
@@ -154,27 +154,27 @@ export interface OpenAPIReqData {
 }
 
 export interface ReqRes {
-  id: number;
-  graphQL: boolean;
+  checked: boolean;
   closeCode: number;
+  connection: ConnectionStatus;
+  connectionType: string;
+  createdAt: Date;
+  error: string;
+  graphQL: boolean;
+  gRPC: boolean;
+  id: number;
+  isHTTP2: boolean;
+  minimized: boolean;
+  openapi: boolean;
   protocol: Protocol;
   request: ReqResRequest;
   response: ReqResResponse; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
-  connection: ConnectionStatus;
-  connectionType: string;
-  isHTTP2: boolean;
-  url: string;
-  timeReceived: Date | number;
-  timeSent: number;
   rpc: string;
   service: string;
-  checked: boolean;
+  timeReceived: Date | number;
+  timeSent: number;
+  url: string;
   webRtc: boolean;
-  minimized: boolean;
-  gRPC: boolean;
-  createdAt: Date;
-  error: string;
-  openapi: boolean;
 }
 
 export interface SSERequest {

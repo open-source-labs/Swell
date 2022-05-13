@@ -1,12 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import db from '../db';
-import * as store from '../store';
-import * as actions from '../actions/actions';
 import { GithubData, WindowAPI, WindowExt } from '../../types';
+import * as actions from './../features/business/businessSlice';
+import * as uiactions from './../features/ui/uiSlice';
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import Cookies from 'js-cookie';
-import { profile } from 'console';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 

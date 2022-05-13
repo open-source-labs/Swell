@@ -8,8 +8,9 @@ import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 // https://www.apollographql.com/docs/apollo-server/data/subscriptions/
 // import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 // import { createClient } from 'graphql-ws';
-import * as store from '../store';
-import * as actions from '../actions/actions';
+import * as store from '../store';  // TODO: refactor for Redux Hooks
+import * as actions from './../features/business/businessSlice';
+import * as uiactions from './../features/ui/uiSlice';
 import { ReqRes, GraphQLResponse, Cookie, RequestHeaders, NewRequestCookies, WindowAPI, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;

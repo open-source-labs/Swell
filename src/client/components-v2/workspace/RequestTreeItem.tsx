@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import RequestCard from './RequestCard';
 import TreeItem from '@mui/lab/TreeItem';
 
 export default function RequestTreeItem({ request }) {
@@ -21,6 +22,6 @@ export default function RequestTreeItem({ request }) {
   );
 
   return(
-    <TreeItem nodeId={request.id} label={<div>hello</div>} />
+    <TreeItem nodeId={request.id} label={<RequestCard />} />
   )
 }

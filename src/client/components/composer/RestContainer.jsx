@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
 import historyController from '../../controllers/historyController';
 import connectionController from '../../controllers/reqResController';
 import HeaderEntryForm from './NewRequest/HeaderEntryForm';
@@ -13,8 +13,6 @@ import CookieEntryForm from './NewRequest/CookieEntryForm.jsx';
 import RestMethodAndEndpointEntryForm from './NewRequest/RestMethodAndEndpointEntryForm.jsx';
 import NewRequestButton from './NewRequest/NewRequestButton.jsx';
 import SendRequestButton from './NewRequest/SendRequestButton.jsx'
-import RestRequestContent from '../display/RestRequestContent';
-import SingleReqResContainer from '../containers/SingleReqResContainer';
 
 function RestContainer(props) {
   const dispatch = useDispatch();
@@ -58,9 +56,7 @@ function RestContainer(props) {
     setNewRequestSSE,
     newRequestSSE: { isSSE },
     currentTab,
-    introspectionData,
     setComposerWarningMessage,
-    setComposerDisplay,
     warningMessage,
     reqResAdd,
     setWorkspaceActiveTab

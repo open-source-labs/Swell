@@ -1,7 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 
 // Import local components.
 import Http2Composer from './Http2Composer';
@@ -71,7 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actions.resetComposerFields());
   },
   setWorkspaceActiveTab: (tabName) => {
-    dispatch(actions.setWorkspaceActiveTab(tabName));
+    dispatch(uiactions.setWorkspaceActiveTab(tabName));
   },
 });
 
