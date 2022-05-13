@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import graphQLController from '../../../controllers/graphQLController';
-import TextCodeAreaReadOnly from './TextCodeAreaReadOnly';
+import TextCodeArea from './TextCodeArea';
 
 const GraphQLIntrospectionLog = () => {
   const headers = useSelector(
@@ -30,11 +30,11 @@ const GraphQLIntrospectionLog = () => {
           <div>{introspectionData}</div>
         )}
         {!!introspectionData.schemaSDL && (
-          <TextCodeAreaReadOnly
+          <TextCodeArea
             value={introspectionData.schemaSDL}
-            theme="neo sidebar"
             mode="application/json"
             onChange={() => {}}
+            readOnly = {true}
           />
         )}
       </div>

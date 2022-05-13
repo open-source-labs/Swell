@@ -1,6 +1,6 @@
 /* eslint-disable lines-between-class-members */
 import React, { useState, useEffect } from 'react';
-import TextCodeAreaEditable from './TextCodeAreaEditable';
+import TextCodeArea from './TextCodeArea';
 
 const GRPCBodyStream = (props) => {
   const [showError, setError] = useState(null);
@@ -38,9 +38,8 @@ const GRPCBodyStream = (props) => {
     props.newRequestStreams.streamContent[props.stream.id];
   // if none or the first stream query in the array
   const streamBody = (
-    <TextCodeAreaEditable
+    <TextCodeArea
       value={`${streamContentID || ''}`}
-      theme="neo grpc"
       mode="application/json"
       onChange={(editor, data, value) =>
         props.changeHandler(props.stream.id, value)

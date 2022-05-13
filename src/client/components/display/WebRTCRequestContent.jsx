@@ -49,6 +49,7 @@ c
         <div className="is-size-7">Servers</div>
         <CodeMirror
           value={jBeautify(JSON.stringify(body.iceConfiguration.iceServers))}
+          
           options={{
             mode: 'javascript',
             theme: 'neo sidebar',
