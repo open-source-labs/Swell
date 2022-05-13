@@ -5,42 +5,36 @@
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import WebSocketMessage from '../../../components/display/WebSocketMessage';
-import { WebSocketWindowProps } from '../../../../types';
-import ImageDropzone from '../../../components/display/ImageDropzone';
 
 const { api } = window;
 
-const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
-  content,
-  outgoingMessages,
-  incomingMessages,
-  connection,
-}) => {
-  const [inputMsgImg, setinputMsgImg] = useState({
-    inputMsg: '',
-    inputImg: '',
+// TODO: ResponsePaneContainer.tsx should dispach state and we should pull it here, not drill it down
+const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connection}) => {
+  const [inputFields, setInputFields] = useState({
+    msg: '',
+    image: '',
   });
 
   // updates the outgoing message when it changes
   const updateOutgoingMessage = (value: any) => {
     console.log('updating msg');
     if (value.includes('data:image/')) {
-      setinputMsgImg({ ...inputMsgImg, inputImg: value });
+      setInputFields({ ...inputFields, image: value });
     } else {
-      setinputMsgImg({ ...inputMsgImg, inputMsg: value });
+      setInputFields({ ...inputFields, msg: value });
     }
   };
 
   // sends to WScontroller in main.js to send the message to server
+  // TODO: doesn't handle the case of both fields being populated
   const sendToWSController = () => {
-    if (inputMsgImg.inputMsg) {
-      api.send('send-ws', content, inputMsgImg.inputMsg);
-      setinputMsgImg({ inputMsg: '', inputImg: '' });
-    } else if (inputMsgImg.inputImg) {
+    if (inputFields.msg) {
+      api.send('send-ws', content, inputFields.msg);
+      setInputFields({ msg: '', image: '' });
+    } else if (inputFields.image) {
       console.log('rerendering');
-      api.send('send-ws', content, inputMsgImg.inputImg);
-      setinputMsgImg({ inputMsg: '', inputImg: '' });
+      api.send('send-ws', content, inputFields.image);
+      setInputFields({ msg: '', image: '' });
     }
     // reset inputbox
   };
@@ -57,7 +51,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
       });
 
     const data: any = await dataURL(img);
-    if (inputMsgImg.inputImg !== data) {
+    if (inputFields.image !== data) {
       updateOutgoingMessage(data);
     }
   };
@@ -70,15 +64,14 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
   };
   // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
-    .map((message) => {
-      message.source = 'client';
-
+    .map((message: Record<string, unknown>) => {
+      message = {...message, source: 'client'}  
+      console.log('message after', message)
       return message;
     })
     .concat(
-      incomingMessages.map((message) => {
-        message.source = 'server';
-
+      incomingMessages.map((message: Record<string, unknown>) => {
+        message = {...message, source: 'server'}  
         return message;
       })
     )
@@ -113,7 +106,7 @@ const WebSocketWindow: React.SFC<WebSocketWindowProps> = ({
         <input
           className="ml-1 mr-1 input is-small"
           id="wsMsgInput"
-          value={inputMsgImg.inputMsg}
+          value={inputFields.msg}
           onKeyPress={handleKeyPress}
           placeholder="Message"
           onChange={(e) => updateOutgoingMessage(e.target.value)}
@@ -167,3 +160,93 @@ WebSocketWindow.propTypes = {
 };
 
 export default WebSocketWindow;
+
+// This was separate file, maybe re-export eventually 
+
+const WebSocketMessage = ({
+  source,
+  timeReceived,
+  data,
+  index,
+}) => {
+  // conditional classNames and id for messages for styling depending on source
+  const webSocketMessageClassNames =
+    source === 'server'
+      ? 'websocket_message websocket_message-server'
+      : 'websocket_message websocket_message-client';
+  const webSocketMessageIDNames =
+    source === 'server'
+      ? 'id_websocket_message-server'
+      : 'id_websocket_message-client';
+
+  const message_background =
+    source === 'server' ? 'server-background' : 'client-background';
+  const message_sender = source === 'server' ? 'server' : 'client';
+
+  // timestamp for messages
+  const buildTime = (time: number): string => {
+    const hours = new Date(time).getHours();
+    const h = hours >= 10 ? `${hours}` : `0${JSON.stringify(hours)}`;
+    const minutes = new Date(time).getMinutes();
+    const m = minutes >= 10 ? `${minutes}` : `0${JSON.stringify(minutes)}`;
+    const seconds = new Date(time).getSeconds();
+    const s = seconds >= 10 ? `${seconds}` : `0${JSON.stringify(seconds)}`;
+    return `${h}:${m}:${s}`;
+  };
+
+  return (
+    <div>
+      <div className={webSocketMessageClassNames} id={`ws-msg-${index}`}>
+        <div className={message_background}>
+          <div className="websocket_message-data">
+            {typeof data === 'object' ? (
+              // decode buffer to dataURI
+              <img src={new TextDecoder('utf-8').decode(data)} alt="img" />
+            ) : (
+              <div id={webSocketMessageIDNames}>{data}</div>
+            )}
+          </div>
+          <div className="websocket_message-time">
+            {buildTime(timeReceived)}
+          </div>
+        </div>
+      </div>
+      <div className={message_sender}>{message_sender}</div>
+    </div>
+  );
+};
+
+WebSocketMessage.propTypes = {
+  source: PropTypes.string.isRequired,
+  data: PropTypes.any.isRequired,
+  timeReceived: PropTypes.any.isRequired,
+};
+
+// This was separate file, maybe re-export eventually to
+
+import { useDropzone } from 'react-dropzone';
+
+function ImageDropzone({ onFileChange }) {
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  const files = acceptedFiles.map((file) => (
+    <li key={file.path}>image {file.name} uploaded</li>
+  ));
+
+  return (
+    <section className="container">
+      <div {...getRootProps({ className: 'dropzone' })}>
+        <input id="wsFileInput" {...getInputProps()} />
+        <input
+          className="ml-1 mr-1 input is-small"
+          id="wsDragNdrop"
+          placeholder={`Drag 'n' drop your image here, or click to select a file`}
+          onChange={() => {onFileChange(acceptedFiles)}}
+        />
+      </div>
+      <aside>
+        <ul>{files}</ul>
+      </aside>
+    </section>
+  );
+}
