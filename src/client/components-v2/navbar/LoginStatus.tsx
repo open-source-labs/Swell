@@ -41,7 +41,7 @@ export default function LoginContainer(props) {
   const { session, setSession } = props;
 
   const signInViaGitHub = async () => {
-    const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` 
+    const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50`
     window.location.href = url;
   }
 
@@ -59,13 +59,17 @@ export default function LoginContainer(props) {
 
   return(
     <Box sx={{
-      width: '15%',
+      display: 'flex',
+      alignContent: 'left',
+      flexDirection: 'row',
+      pl: 1.5
     }}>
       {session.isActiveSession
-        ? 
-        <Box sx={{ 
+        ?
+        <Box sx={{
           flexGrow: 0,
-          display: { xs: 'none', md: 'flex' },
+          display: 'flex',
+          flexDirection: 'row',
           alignItems: 'center',
         }}>
           <MoreVertRoundedIcon fontSize='small' onClick={handleSignOut}/>
@@ -76,12 +80,17 @@ export default function LoginContainer(props) {
             overlap="circular"
             anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
             variant="dot">
-            <Avatar alt={session.username} src={session.avatar}/> 
+            <Avatar alt={session.username} src={session.avatar}/>
           </StyledBadge>
           <Button variant="outlined">Invite +</Button>
         </Box>
-        : 
-        <Box>
+        :
+        <Box sx={{
+          flexGrow: 0,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
           <Button variant="outlined" onClick={signInViaGitHub}>Sign In</Button>
         </Box>
       }

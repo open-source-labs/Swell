@@ -11,8 +11,10 @@ import { WindowExt } from '../../types'
 import '../../assets/style/App.scss';
 import NavBarContainer from './navbar/NavBarContainer';
 import WorkspaceContainer from './workspace/WorkspaceContainer';
+import MainContainer from './main/MainContainer';
 
-import Box from '@mui/material/Box';
+
+import { Box, Divider } from '@mui/material';
 
 
 const { api } = window as unknown as WindowExt;
@@ -29,45 +31,22 @@ const App = () => {
   return (
     <div id="app" className="is-tall">
       <HashRouter>
-        <NavBarContainer /> 
-        <Box sx={{ height: '100%', display: 'flex' }}> 
+        <NavBarContainer />
+        <Divider orientation="horizontal"/>
+        <Box sx={{ height: '100%', display: 'flex' }}>
+          {/* New MUI workspace. */}
           <WorkspaceContainer />
+          {/* Legacy workspace. */}
           <ContentsContainer />
-          <div className="tile is-vertical add-vertical-scroll">
+          <Divider orientation="vertical"/>
+          {/* New MUI main container. */}
+          <MainContainer />
+          {/* Legacy main container */}
+          {/* <div className="tile is-vertical add-vertical-scroll">
             <SidebarContainer />
             <ResponsePaneContainer />
-        </div>
+          </div> */}
         </Box>
-        <Routes>
-          <Route
-            path="/"
-            element={<p></p>}
-          />
-          <Route
-            path="/graphql"
-            element={<p></p>}
-          />
-          <Route
-            path="/grpc"
-            element={<p></p>}
-          />
-          <Route
-            path="/websocket"
-            element={<p></p>}
-          />
-          <Route
-            path="/webrtc"
-            element={<p></p>}
-          />
-          <Route
-            path="/openapi"
-            element={<p></p>}
-          />
-          <Route
-            path="/webhook"
-            element={<p></p>}
-          />
-        </Routes>
         <UpdatePopUpContainer message={message} setMessage={setMessage} />
       </HashRouter>
     </div>
