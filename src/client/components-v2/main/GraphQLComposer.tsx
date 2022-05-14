@@ -236,8 +236,7 @@ export default function GraphQLComposer(props) {
   };
 
   return(
-    <Box>
-      <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
+    <Box className="is-flex is-flex-direction-column is-justify-content-space-between is-tall" id = "composer-graphql">
         <div
           className="is-flex-grow-3 add-vertical-scroll"
           style={{ overflowX: 'hidden' }}
@@ -290,7 +289,6 @@ export default function GraphQLComposer(props) {
         <div className="is-3rem-footer is-clickable is-margin-top-auto">
           <NewRequestButton onClick={addNewRequest} />
         </div>
-      </div>
     </Box>
   );
 }

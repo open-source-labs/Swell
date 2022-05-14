@@ -47,7 +47,7 @@ const TestEntryForm = (props) => {
           <TextCodeArea
             mode="javascript"
             value={testContent}
-            onChange={(editor, data, value) => {
+            onChange={(value, viewUpdate) => {
               setNewTestContent(value);
             }}
           />

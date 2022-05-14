@@ -53,7 +53,7 @@ const GraphQLVariableEntryForm = (props) => {
           // onBeforeChange={(editor, data, value) => {
           //   setValue(value);
           // }}
-          onChange={(editor, data, value) => {
+          onChange={(value, viewUpdate) => {
             setValue(value) // maybe? the onBeforeChange hook was removed, but all it did was fire before "onChange"
             setNewRequestBody({
               ...newRequestBody,

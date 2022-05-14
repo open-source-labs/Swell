@@ -107,9 +107,8 @@ export default function WebRTCComposer(props) {
   };
 
   return(
-    <Box>
-      <div className="is-flex is-flex-direction-column is-justify-content-space-between is-tall">
-        <div
+    <Box className="is-flex is-flex-direction-column is-justify-content-space-between is-tall"
+    id = "composer-webrtc">        <div
           className="is-flex-grow-3 add-vertical-scroll"
           style={{ overflowX: 'hidden' }}
         >
@@ -143,7 +142,6 @@ export default function WebRTCComposer(props) {
         <div className="is-3rem-footer is-clickable is-margin-top-auto">
           <NewRequestButton onClick={addNewRequest} />
         </div>
-      </div>
     </Box>
   )
 }

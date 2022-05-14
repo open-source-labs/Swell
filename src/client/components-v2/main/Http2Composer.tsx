@@ -263,11 +263,9 @@ export default function Http2Composer(props) {
   };
 
   return(
-    <Box>
-      <div
-        className="is-flex-grow-3 add-vertical-scroll"
-        style={{ overflowX: 'hidden' }}
-      >
+    <Box className="is-flex-grow-3 add-vertical-scroll"
+    style={{ overflowX: 'hidden' }}
+    id = "composer-http2">
         <RestMethodAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestBody={newRequestBody}
@@ -328,7 +326,6 @@ export default function Http2Composer(props) {
           setNewTestContent={setNewTestContent}
           testContent={testContent}
         />
-      </div>
     </Box>
   )
 }

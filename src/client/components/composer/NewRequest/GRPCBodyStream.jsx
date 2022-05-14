@@ -41,7 +41,7 @@ const GRPCBodyStream = (props) => {
     <TextCodeArea
       value={`${streamContentID || ''}`}
       mode="application/json"
-      onChange={(editor, data, value) =>
+      onChange={(value, viewUpdate) =>
         props.changeHandler(props.stream.id, value)
       }
     />
