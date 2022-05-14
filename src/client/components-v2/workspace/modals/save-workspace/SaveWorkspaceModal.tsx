@@ -106,7 +106,7 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
 
   const savedWorkspaceCards = [];
   for(let savedWorkspace of collections) {
-    savedWorkspaceCards.push(<SavedWorkspaceCard key={savedWorkspace.id} workspace={savedWorkspace}/>)
+    savedWorkspaceCards.push(<SavedWorkspaceCard key={savedWorkspace.id} workspace={savedWorkspace} updateCollection={updateCollection}/>)
   }
 
   return (

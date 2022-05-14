@@ -1,12 +1,12 @@
 import React from "react";
 
-import RequestTreeItem from "./RequestTreeItem";
 import RequestCard from "./RequestCard";
 
 import TreeView from '@mui/lab/TreeView';
 import TreeItem from '@mui/lab/TreeItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Box, Typography } from '@mui/material';
 
 export default function CollectionTree({ currentWorkspace }) {
 
@@ -23,15 +23,31 @@ export default function CollectionTree({ currentWorkspace }) {
   // key={request.id} request={request}
 
   return (
-    <TreeView
-      aria-label="collection navigator"
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      sx={{ flexGrow: 1, overflowY: 'auto' }}
+    <Box
+      className="collection-tree"
+      sx={{
+        pt: 1
+      }}
     >
-      <TreeItem nodeId={currentWorkspace.id} label={currentWorkspace.name}>
-        {requestTreeItems}
-      </TreeItem>
-    </TreeView>
+      {reqResArray.length === 0
+        // If there are no requests in the current workspace, render this text.
+        ? <Typography
+            variant="caption"
+          >
+              Start this Workspace by adding a request from the composer.
+          </Typography>
+        // If there are requests in the current workspace, render the collection tree.
+        : <TreeView
+            aria-label="collection navigator"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            sx={{ flexGrow: 1, overflowY: 'auto' }}
+          >
+            <TreeItem nodeId={currentWorkspace.id} label={currentWorkspace.name}>
+              {requestTreeItems}
+            </TreeItem>
+          </TreeView>
+      }
+    </Box>
   );
 }

@@ -1,13 +1,19 @@
 import React from 'react';
 
 // Import MUI components
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
-export default function SavedWorkspaceCard({ workspace }) {
+export default function SavedWorkspaceCard({ workspace, updateCollection }) {
   console.log(workspace)
   return(
-    <Box>
-      {workspace.name}
-    </Box>
+    <Button
+      onClick={() => {
+        updateCollection(workspace.name, workspace.id);
+      }}
+    >
+      <Box>
+        {workspace.name}
+      </Box>
+    </Button>
   )
 }
