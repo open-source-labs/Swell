@@ -4,7 +4,8 @@ import CodeMirror from '@uiw/react-codemirror';
 // import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from '../../../components/display/EmptyState';
 import EventPreview from '../../../components/display/EventPreview';
-import 'codemirror/theme/neo.css';
+import { json } from '@codemirror/lang-json';
+import { EditorView } from "@codemirror/view"
 
 function EventsContainer({ currentResponse }) {
   const { request, response } = currentResponse;
@@ -60,14 +61,12 @@ function EventsContainer({ currentResponse }) {
         <CodeMirror
           className="overflow-event-child-container"
           value={responseBody}
-          options={{
-            mode: 'application/json',
-            theme: 'neo responsebody',
-            lineNumbers: true,
-            tabSize: 4,
-            lineWrapping: true,
-            readOnly: true,
-          }}
+          theme = "dark"
+          readOnly = {true}
+          extensions={[
+            javascript(),
+            EditorView.lineWrapping,
+          ]}
         />
       </div>
     </div>

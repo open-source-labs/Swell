@@ -130,7 +130,7 @@ const GRPCProtoEntryForm = (props) => {
       <div id="grpcProtoEntryTextArea">
         <TextCodeArea
           id="grpcProtoEntryTextArea"
-          onChange={(editor, data, value) => updateProtoBody(value)}
+          onChange={(value, viewUpdate) => updateProtoBody(value)}
           value={props.newRequestStreams.protoContent}
           mode="application/json"
         />

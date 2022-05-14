@@ -43,7 +43,7 @@ const BodyEntryForm = (props) => {
       <TextCodeArea
         mode={newRequestBody.rawType}
         value={newRequestBody.bodyContent}
-        onChange={(editor, data, value) => {
+        onChange={(value, viewUpdate) => {
           setNewRequestBody({
             ...newRequestBody,
             bodyContent: value,

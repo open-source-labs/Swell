@@ -75,7 +75,7 @@ export default function WebRTCRequestContent({ content }) {
           style={{ maxWidth: `100%`, maxHeight: '100%' }}
           className="column is-flex is-flex-direction-column"
         >
-           <CodeMirror
+          <CodeMirror
             value={localSdp || 'No SDP yet'}
             extensions={[
               json(),

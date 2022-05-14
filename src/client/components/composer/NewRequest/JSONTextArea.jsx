@@ -33,10 +33,10 @@ export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
   return (
     <TextCodeArea
       mode={newRequestBody.rawType}
-      onChange={(editor, data, value) => {
+      onChange={(value, viewUpdate) => {
         setNewRequestBody({
-          ...newRequestBody,
-          bodyContent: value,
+        ...newRequestBody,
+        bodyContent: value,
         });
       }}
       value={newRequestBody.bodyContent}
