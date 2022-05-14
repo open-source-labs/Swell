@@ -7,22 +7,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import ComposerContainer from '../composer/ComposerContainer';
 import HistoryContainer from './HistoryContainer';
+import { RootState } from '../../store';
 
 const SidebarContainer = (props) => {
   // const { isDark } = props;
 
   const dispatch = useDispatch();
-  const activeTab = useSelector((store) => store.ui.sidebarActiveTab);
-  const isDark = useSelector((store) => store.ui.isDark);
+  const activeTab = useSelector((store: RootState) => store.ui.sidebarActiveTab);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const setActiveTab = (tabName: string) =>
-    dispatch(actions.setSidebarActiveTab(tabName));
+    dispatch(uiactions.setSidebarActiveTab(tabName));
     
   const handleDarkMode = (e) => {
-    dispatch(actions.toggleDarkMode(e.target.checked));
+    dispatch(uiactions.toggleDarkMode(e.target.checked));
   };
 
 

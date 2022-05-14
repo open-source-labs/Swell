@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
-import * as store from '../../store';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 // below two lines need to be in here to register 'category scale'
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart } from 'react-chartjs-2'

@@ -1,13 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as uiactions from './../../features/ui/uiSlice';
 import BarGraph from '../display/BarGraph';
 import WorkspaceContainer from './WorkspaceContainer';
 import ScheduleContainer from './ScheduleContainer';
@@ -22,7 +15,7 @@ const ContentsContainer = () => {
   const isDark = useSelector((store) => store.ui.isDark);
   
   const setActiveTab = (tabName: string) =>
-    dispatch(actions.setWorkspaceActiveTab(tabName));
+    dispatch(uiactions.setWorkspaceActiveTab(tabName));
 
   const [showGraph, setShowGraph] = useState(false);
 

@@ -1,5 +1,4 @@
 import uiReducer from '../src/client/reducers/ui';
-// import { SET_COMPOSER_DISPLAY } from '../src/client/actions/actionTypes';
 
 describe('UI Reducer', () => {
   let state;

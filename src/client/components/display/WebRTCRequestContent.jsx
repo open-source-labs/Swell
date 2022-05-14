@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
-import * as actions from '../../actions/actions.ts';
 import { json } from '@codemirror/lang-json';
 import { EditorView } from "@codemirror/view"
 import { javascript } from '@codemirror/lang-javascript';
@@ -10,6 +9,8 @@ import { matchBrackets } from '@codemirror/language';
 
 
 
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 
 const jBeautify = require('js-beautify').js;
 

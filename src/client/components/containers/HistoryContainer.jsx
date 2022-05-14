@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
-import * as actions from '../../actions/actions';
+import * as actions from './../../features/business/businessSlice';
+import * as uiactions from './../../features/ui/uiSlice';
 import HistoryDate from '../display/HistoryDate';
 import ClearHistoryBtn from '../display/ClearHistoryBtn';
 
