@@ -5,6 +5,8 @@ import { v4 as uuid } from 'uuid';
 import * as actions from '../../../../features/business/businessSlice'
 // Import controllers.
 import collectionsController from '../../../../controllers/collectionsController';
+// Import local components.
+import SavedWorkspaceCard from './SavedWorkspaceCard';
 // Import MUI components.
 import { Backdrop, Box, Modal, Fade, Typography } from '@mui/material';
 
@@ -95,12 +97,17 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
         )
         .then((found) => {
           if (found) {
-            //if the name already exists, change style state
+            // if the name already exists, change style state
             setCollectionNameErrorStyles(true);
           } else saveCollection(input);
         });
     }
   };
+
+  const savedWorkspaceCards = [];
+  for(let savedWorkspace of collections) {
+    savedWorkspaceCards.push(<SavedWorkspaceCard key={savedWorkspace.id} workspace={savedWorkspace}/>)
+  }
 
   return (
     <Modal
@@ -123,6 +130,7 @@ export default function SaveWorkspaceModal({ open, handleClose }) {
           <Typography id="save-workspace-modal-description" sx={{ mt: 1 }}>
             Put the original app's save workspace functionality here. Maybe there can be two options: save, and save+commit.
           </Typography>
+          {savedWorkspaceCards}
         </Box>
 
       </Fade>
