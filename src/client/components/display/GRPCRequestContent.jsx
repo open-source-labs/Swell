@@ -1,6 +1,10 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
+import { EditorView } from "@codemirror/view"
+import { json } from '@codemirror/lang-json';
+
+
 
 function GRPCRequestContent({ request, rpc, service, servicesObj }) {
   const {
@@ -45,15 +49,16 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
           <div className="is-size-7">Body</div>
           <CodeMirror
             value={body}
-            options={{
-              mode: 'application/json',
-              theme: 'neo readonly',
-              lineNumbers: true,
-              tabSize: 4,
-              lineWrapping: true,
-              readOnly: true,
-            }}
-            height="200px"
+            extensions={[
+              json(),
+              EditorView.lineWrapping,
+            ]}
+            theme = 'dark'
+            readOnly= 'true'
+            height="100%"
+            width = "100%"
+            maxWidth='400px'
+            maxHeight='300px'
           />
         </div>
         {testContent.length > 0 && (
@@ -61,15 +66,15 @@ function GRPCRequestContent({ request, rpc, service, servicesObj }) {
             <div className="is-size-7">Tests</div>
             <CodeMirror
               value={testContent}
-              options={{
-                mode: rawType,
-                theme: 'neat readonly',
-                lineNumbers: true,
-                tabSize: 4,
-                lineWrapping: true,
-                readOnly: true,
-              }}
-              height="200px"
+              theme = 'dark'
+              readOnly= 'true'
+              extensions={[
+                EditorView.lineWrapping,
+              ]}
+              height="100%"
+              width = "100%"
+              maxWidth='400px'
+              maxHeight='300px'
             />
           </div>
         )}

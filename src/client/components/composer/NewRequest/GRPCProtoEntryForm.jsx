@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm.jsx';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
+import TextCodeArea from './TextCodeArea.jsx';
 // import protoParserFunc from "../../../protoParser.js";
 
 const { api } = window;
@@ -128,7 +128,7 @@ const GRPCProtoEntryForm = (props) => {
 
       <div className="is-danger subtitle">{protoError}</div>
       <div id="grpcProtoEntryTextArea">
-        <TextCodeAreaEditable
+        <TextCodeArea
           id="grpcProtoEntryTextArea"
           onChange={(editor, data, value) => updateProtoBody(value)}
           value={props.newRequestStreams.protoContent}

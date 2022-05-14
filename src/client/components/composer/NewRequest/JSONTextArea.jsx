@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CodeMirror from '@uiw/react-codemirror';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
+import TextCodeArea from './TextCodeArea.jsx';
 
 export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
   });
 
   return (
-    <TextCodeAreaEditable
+    <TextCodeArea
       mode={newRequestBody.rawType}
       onChange={(editor, data, value) => {
         setNewRequestBody({

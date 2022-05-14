@@ -7,7 +7,7 @@ import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
 import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
 import JSONPrettify from './JSONPrettify.jsx';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
+import TextCodeArea from './TextCodeArea.jsx';
 import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
 import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
 // import { isAbsolute, relative } from 'path';
@@ -44,7 +44,7 @@ const TestEntryForm = (props) => {
       </div>
       {showTests === true && (
         <div id="test-script-entry">
-          <TextCodeAreaEditable
+          <TextCodeArea
             mode="javascript"
             value={testContent}
             onChange={(editor, data, value) => {

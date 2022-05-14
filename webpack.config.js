@@ -85,15 +85,15 @@ module.exports = {
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
-          'script-src': ["'self'"],
+          'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
           'style-src': "'self' 'unsafe-inline'",
         },
         hashEnabled: {
-          'script-src': true,
+          'script-src': false,
           'style-src': false,
         },
         nonceEnabled: {
-          'script-src': true,
+          'script-src': false,
           'style-src': false,
         },
       },

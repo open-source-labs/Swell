@@ -1,7 +1,10 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
-import 'codemirror/theme/isotope.css';
+// import 'codemirror/theme/isotope.css';
+import { EditorView } from "@codemirror/view"
+
+
 
 export default function RestRequestContent({ request, isHTTP2 }) {
   // ORGANIZE PROPS
@@ -83,15 +86,15 @@ export default function RestRequestContent({ request, isHTTP2 }) {
             <div className="is-size-7">Body</div>
             <CodeMirror
               value={bodyText}
-              options={{
-                mode: rawType,
-                theme: 'isotope',
-                lineNumbers: true,
-                tabSize: 4,
-                lineWrapping: true,
-                readOnly: true,
-              }}
-              height="200px"            
+              theme = 'dark'
+              readOnly = 'true'
+              extensions={[
+                EditorView.lineWrapping,
+              ]}
+              height="100%"
+              width = "100%"
+              maxWidth='400px'
+              maxHeight='300px'        
             />
           </div>
         )}
@@ -108,14 +111,15 @@ export default function RestRequestContent({ request, isHTTP2 }) {
             <div className="is-size-7">Tests</div>
             <CodeMirror
               value={testContent}
-              options={{
-                mode: rawType,
-                theme: 'isotope',
-                lineNumbers: true,
-                tabSize: 4,
-                lineWrapping: true,
-                readOnly: true,
-              }}
+              theme = 'dark'
+              readOnly = 'true'
+              extensions={[
+                EditorView.lineWrapping,
+              ]}
+              height="100%"
+              width = "100%"
+              maxWidth='400px'
+              maxHeight='300px'  
             />
           </div>
         )}

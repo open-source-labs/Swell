@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/theme/twilight.css';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror-graphql/hint';
-import 'codemirror-graphql/lint';
-import 'codemirror-graphql/mode';
-import 'codemirror/addon/lint/lint.css';
+// import 'codemirror/addon/edit/matchbrackets';
+// import 'codemirror/addon/edit/closebrackets';
+// import 'codemirror/theme/twilight.css';
+// import 'codemirror/lib/codemirror.css';
+// import 'codemirror/addon/hint/show-hint';
+// import 'codemirror/addon/hint/show-hint.css';
+// import 'codemirror-graphql/hint';
+// import 'codemirror-graphql/lint';
+// import 'codemirror-graphql/mode';
+// import 'codemirror/addon/lint/lint.css';
+
 
 const GraphQLBodyEntryForm = (props) => {
   const {
@@ -39,7 +40,7 @@ const GraphQLBodyEntryForm = (props) => {
       }
       <div className="composer-section-title">Body</div>
       <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}>
-        <CodeMirror
+        {/* <CodeMirror
           value={cmValue}
           options={{
             mode: 'graphql',
@@ -74,7 +75,7 @@ const GraphQLBodyEntryForm = (props) => {
               bodyIsNew: true,
             });
           }}
-        />
+        /> */}
       </div>
     </div>
   );
