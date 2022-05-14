@@ -22,14 +22,14 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 
 // Testing suite 
-xdescribe('Electron UI Rendering', function () {
+describe('Electron UI Rendering', function () {
   appOpensTests();
 }).timeout(10000);
 
 describe('CRUD functionality', function () {
   reqInputTests(); 
   httpTest();
-  // graphqlTest();
+  graphqlTest();
   // websocketTest();
   // grpcTest();
   // webRTCTest();
