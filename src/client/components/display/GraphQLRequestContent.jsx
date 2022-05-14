@@ -1,5 +1,7 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
+import { EditorView } from "@codemirror/view"
+import { json } from '@codemirror/lang-json';
 
 import ContentReqRow from './ContentReqRow';
 
@@ -38,15 +40,16 @@ function GraphQLRequestContent({ request }) {
           <div className="is-size-7">Body</div>
            <CodeMirror
             value={bodyText}
-            options={{
-              mode: 'application/json',
-              theme: 'neo readonly',
-              lineNumbers: true,
-              tabSize: 4,
-              lineWrapping: true,
-              readOnly: true,
-            }}
-            height="200px"
+            extensions={[
+              json(),
+              EditorView.lineWrapping,
+            ]}
+            theme = 'dark'
+            readOnly= 'true'
+            height="100%"
+            width = "100%"
+            maxWidth='400px'
+            maxHeight='300px'
           />
         </div>
         {/* VARIABLES */}
@@ -55,14 +58,16 @@ function GraphQLRequestContent({ request }) {
             <div className="is-size-7">Body Variables</div>
             <CodeMirror
               value={bodyVarText}
-              options={{
-                mode: 'application/json',
-                theme: 'neo readonly',
-                lineNumbers: true,
-                tabSize: 4,
-                lineWrapping: true,
-                readOnly: true,
-              }}
+              extensions={[
+                json(),
+                EditorView.lineWrapping,
+              ]}
+              theme = 'dark'
+              readOnly= 'true'
+              height="100%"
+              width = "100%"
+              maxWidth='400px'
+              maxHeight='300px'
             />
           </div>
         )}
@@ -72,14 +77,16 @@ function GraphQLRequestContent({ request }) {
             <div className="is-size-7">Tests</div>
              <CodeMirror
               value={testContent}
-              options={{
-                mode: 'application/json',
-                theme: 'neat readonly',
-                lineNumbers: true,
-                tabSize: 4,
-                lineWrapping: true,
-                readOnly: true,
-              }}
+              extensions={[
+                json(),
+                EditorView.lineWrapping,
+              ]}
+              theme = 'dark'
+              readOnly= 'true'
+              height="100%"
+              width = "100%"
+              maxWidth='400px'
+              maxHeight='300px'
             />
           </div>
         )}

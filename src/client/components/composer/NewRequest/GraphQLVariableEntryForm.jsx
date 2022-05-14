@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror, { EditorState } from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
 // import 'codemirror/addon/edit/matchbrackets';
 // import 'codemirror/addon/edit/closebrackets';
@@ -8,7 +8,12 @@ import { useSelector } from 'react-redux';
 // import 'codemirror/addon/display/autorefresh';
 // import 'codemirror/addon/display/placeholder';
 // import 'codemirror/mode/javascript/javascript';
+import { EditorView } from "@codemirror/view"
+export { EditorState } from '@codemirror/state';
 
+import { json } from '@codemirror/lang-json';
+import { EditRoadOutlined, ModeEditRounded } from '@mui/icons-material';
+import { bracketMatching, matchBrackets } from '@codemirror/language';
 
 const GraphQLVariableEntryForm = (props) => {
   const {
@@ -34,36 +39,29 @@ const GraphQLVariableEntryForm = (props) => {
     <div>
       <div className="composer-section-title">Variables</div>
       <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`} id="gql-var-entry">
-        {/* <CodeMirror
+        <CodeMirror
           ref={cmVariables}
           value={cmValue}
-          options={{
-            mode: { name: 'javascript', json: true },
-            theme: 'neo sidebar',
-            scrollbarStyle: 'native',
-            lineNumbers: false,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            indentUnit: 2,
-            tabSize: 2,
-            autoRefresh: true,
-            placeholder: 'Variables must be JSON format',
-          }}
-          height="200px"
-          editorDidMount={(editor) => {
-            editor.setSize('100%', 100);
-          }}
-          onBeforeChange={(editor, data, value) => {
-            setValue(value);
-          }}
+          extensions={[
+            json(),
+            EditorView.lineWrapping,
+          ]}
+          placeholder = 'Variables must be JSON format'
+          theme = 'dark'
+          height="100%"
+          width = "100%"
+          // onBeforeChange={(editor, data, value) => {
+          //   setValue(value);
+          // }}
           onChange={(editor, data, value) => {
+            setValue(value) // maybe? the onBeforeChange hook was removed, but all it did was fire before "onChange"
             setNewRequestBody({
               ...newRequestBody,
               bodyVariables: value,
               bodyIsNew: true,
             });
           }}
-        /> */}
+        />
       </div>
     </div>
   );
