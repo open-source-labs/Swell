@@ -113,6 +113,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
         <div className="dropdown-trigger">
           <button
             className="no-border-please button is-graphQL"
+            id = "graphql-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
