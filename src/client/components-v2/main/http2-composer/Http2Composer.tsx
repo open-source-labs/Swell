@@ -2,20 +2,21 @@ import React from 'react';
 import { v4 as uuid } from 'uuid';
 // Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
-import * as actions from './../../features/business/businessSlice';
-import * as uiactions from './../../features/ui/uiSlice';
+import * as actions from '../../../features/business/businessSlice';
+import * as uiactions from '../../../features/ui/uiSlice';
 // Import controllers
-import connectionController from '../../controllers/reqResController';
-import historyController from '../../controllers/historyController';
+import connectionController from '../../../controllers/reqResController';
+import historyController from '../../../controllers/historyController';
 // Import local components
 // TODO: refactor all of the below components to use MUI, place them in a new "components" folder
-import RestMethodAndEndpointEntryForm from '../../components/composer/NewRequest/RestMethodAndEndpointEntryForm';
-import HeaderEntryForm from '../../components/composer/NewRequest/HeaderEntryForm';
-import CookieEntryForm from '../../components/composer/NewRequest/CookieEntryForm';
-import SendRequestButton from '../../components/composer/NewRequest/SendRequestButton';
-import NewRequestButton from '../../components/composer/NewRequest/NewRequestButton';
-import BodyEntryForm from '../../components/composer/NewRequest/BodyEntryForm';
-import TestEntryForm from '../../components/composer/NewRequest/TestEntryForm';
+import Http2EndpointForm from './Http2EndpointForm';
+import RestMethodAndEndpointEntryForm from '../../../components/composer/NewRequest/RestMethodAndEndpointEntryForm';
+import HeaderEntryForm from '../../../components/composer/NewRequest/HeaderEntryForm';
+import CookieEntryForm from '../../../components/composer/NewRequest/CookieEntryForm';
+import SendRequestButton from '../../../components/composer/NewRequest/SendRequestButton';
+import NewRequestButton from '../../../components/composer/NewRequest/NewRequestButton';
+import BodyEntryForm from '../../../components/composer/NewRequest/BodyEntryForm';
+import TestEntryForm from '../../../components/composer/NewRequest/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
 
@@ -23,6 +24,7 @@ import { Box } from '@mui/material';
 export default function Http2Composer(props) {
   const dispatch = useDispatch();
 
+  // Destructuring state props.
   const {
     currentTab,
     newRequestFields,
@@ -32,20 +34,6 @@ export default function Http2Composer(props) {
     newRequestStreams,
     newRequestSSE,
     warningMessage,
-  } = props;
-
-  const {
-    setNewRequestFields,
-    resetComposerFields,
-    setNewRequestBody,
-    setNewTestContent,
-    setNewRequestHeaders,
-    setNewRequestCookies,
-    setNewRequestStreams,
-    setNewRequestSSE,
-    setComposerWarningMessage,
-    setWorkspaceActiveTab,
-    reqResAdd
   } = props;
 
   const {
@@ -69,6 +57,21 @@ export default function Http2Composer(props) {
     bodyVariables,
     bodyType,
   } = newRequestBody;
+
+  // Destructuring dispatch props.
+  const {
+    setNewRequestFields,
+    resetComposerFields,
+    setNewRequestBody,
+    setNewTestContent,
+    setNewRequestHeaders,
+    setNewRequestCookies,
+    setNewRequestStreams,
+    setNewRequestSSE,
+    setComposerWarningMessage,
+    setWorkspaceActiveTab,
+    reqResAdd
+  } = props;
 
   const { protoPath } = newRequestSSE;
   const { headersArr } = newRequestHeaders;
@@ -263,72 +266,73 @@ export default function Http2Composer(props) {
   };
 
   return(
-    <Box>
-      <div
-        className="is-flex-grow-3 add-vertical-scroll"
-        style={{ overflowX: 'hidden' }}
-      >
-        <RestMethodAndEndpointEntryForm
-          newRequestFields={newRequestFields}
-          newRequestBody={newRequestBody}
-          setNewTestContent={setNewTestContent}
-          setNewRequestFields={setNewRequestFields}
-          setNewRequestBody={setNewRequestBody}
-          warningMessage={warningMessage}
-          setComposerWarningMessage={setComposerWarningMessage}
-        />
-        <span className="inputs">
-          <div>
-            <HeaderEntryForm
-              newRequestHeaders={newRequestHeaders}
-              newRequestStreams={newRequestStreams}
-              newRequestBody={newRequestBody}
-              newRequestFields={newRequestFields}
-              setNewRequestHeaders={setNewRequestHeaders}
-              setNewRequestStreams={setNewRequestStreams}
-            />
-            <CookieEntryForm
-              newRequestCookies={newRequestCookies}
-              newRequestBody={newRequestBody}
-              setNewRequestCookies={setNewRequestCookies}
-            />
-          </div>
-          <div className="is-3rem-footer is-clickable restReqBtns">
-            <SendRequestButton onClick={sendNewRequest} />
-            <p> --- or --- </p>
-            <NewRequestButton onClick={addNewRequest} />
-          </div>
-        </span>
-        {/* SSE TOGGLE SWITCH */}
-        <div className="field mt-2">
-          <span className="composer-section-title mr-3">
-            Server Sent Events
-          </span>
-          <input
-            id="SSEswitch"
-            type="checkbox"
-            className="switch is-outlined is-warning"
-            onChange={(e) => {
-              handleSSEPayload(e);
-            }}
-            checked={isSSE}
-          />
-          <label htmlFor="SSEswitch" />
-        </div>
-        {method !== 'GET' && (
-          <BodyEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
+    <Box sx={{
+      overflowX: 'scroll',
+      overflowY: 'scroll',
+    }}>
+      
+      <Http2EndpointForm />
+      <RestMethodAndEndpointEntryForm
+        newRequestFields={newRequestFields}
+        newRequestBody={newRequestBody}
+        setNewTestContent={setNewTestContent}
+        setNewRequestFields={setNewRequestFields}
+        setNewRequestBody={setNewRequestBody}
+        warningMessage={warningMessage}
+        setComposerWarningMessage={setComposerWarningMessage}
+      />
+
+      <span className="inputs">
+        <div>
+          <HeaderEntryForm
             newRequestHeaders={newRequestHeaders}
+            newRequestStreams={newRequestStreams}
+            newRequestBody={newRequestBody}
+            newRequestFields={newRequestFields}
             setNewRequestHeaders={setNewRequestHeaders}
+            setNewRequestStreams={setNewRequestStreams}
           />
-        )}
-        <TestEntryForm
-          setNewTestContent={setNewTestContent}
-          testContent={testContent}
+          <CookieEntryForm
+            newRequestCookies={newRequestCookies}
+            newRequestBody={newRequestBody}
+            setNewRequestCookies={setNewRequestCookies}
+          />
+        </div>
+        <div className="is-3rem-footer is-clickable restReqBtns">
+          <SendRequestButton onClick={sendNewRequest} />
+          <p> --- or --- </p>
+          <NewRequestButton onClick={addNewRequest} />
+        </div>
+      </span>
+      {/* SSE TOGGLE SWITCH */}
+      <div className="field mt-2">
+        <span className="composer-section-title mr-3">
+          Server Sent Events
+        </span>
+        <input
+          id="SSEswitch"
+          type="checkbox"
+          className="switch is-outlined is-warning"
+          onChange={(e) => {
+            handleSSEPayload(e);
+          }}
+          checked={isSSE}
         />
+        <label htmlFor="SSEswitch" />
       </div>
+      {method !== 'GET' && (
+        <BodyEntryForm
+          warningMessage={warningMessage}
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+          newRequestHeaders={newRequestHeaders}
+          setNewRequestHeaders={setNewRequestHeaders}
+        />
+      )}
+      <TestEntryForm
+        setNewTestContent={setNewTestContent}
+        testContent={testContent}
+      />
     </Box>
   )
 }

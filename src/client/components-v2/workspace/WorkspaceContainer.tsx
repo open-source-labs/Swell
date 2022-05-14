@@ -9,15 +9,15 @@ import CollectionTree from './CollectionTree';
 import { Box, Button, Typography, SelectChangeEvent, Divider } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 
-export default function WorkspaceContainer(props) {
+export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace }) {
   /**
    * TODO: change the workspace container to have adjustable width sizing via user dragging
    * TODO: reimplement the "Schedule" functionality somehow
    * TODO: refactor store to remove explicit any
    */
 
-  // currentWorkspace is the current Workspace's UUID. It is only altered in WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
-  const [currentWorkspaceId, setWorkspace] = React.useState('');
+  // // currentWorkspace is the current Workspace's UUID. It is only altered in WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
+  // const [currentWorkspaceId, setWorkspace] = React.useState('');
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);

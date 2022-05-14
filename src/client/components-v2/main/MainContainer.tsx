@@ -5,7 +5,7 @@ import * as actions from './../../features/business/businessSlice';
 import * as uiactions from './../../features/ui/uiSlice';
 
 // Import local components.
-import Http2Composer from './Http2Composer';
+import Http2Composer from './http2-composer/Http2Composer';
 import GraphQLComposer from './GraphQLComposer';
 import GRPCComposer from './GRPCComposer';
 import WebSocketComposer from './WebSocketComposer';
@@ -79,40 +79,38 @@ const mapDispatchToProps = (dispatch) => ({
 function MainContainer(props) {
   return(
     <Box sx={{p: 1.5, width: '80%', overflowY: 'scroll'}}>
-      <Box>
-        <Routes>
-          <Route
-            path="/"
-            element={<Http2Composer {...props} />}
-          />
-          <Route
-            path="/graphql"
-            element={<GraphQLComposer {...props} />}
-          />
-          <Route
-            path="/grpc"
-            element={<GRPCComposer {...props} />}
-          />
-          <Route
-            path="/websocket"
-            element={<WebSocketComposer {...props} />}
-          />
-          <Route
-            path="/webrtc"
-            element={<WebRTCComposer {...props} />}
-          />
-          <Route
-            path="/openapi"
-            element={<OpenAPIComposer {...props} />}
-          />
-          <Route
-            path="/webhook"
-            element={<WebhookComposer {...props} />}
-          />
-        </Routes>
-        <Divider orientation="horizontal"/>
-        <ResponsePaneContainer />
-      </Box>
+      <Routes>
+        <Route
+          path="/"
+          element={<Http2Composer {...props} />}
+        />
+        <Route
+          path="/graphql"
+          element={<GraphQLComposer {...props} />}
+        />
+        <Route
+          path="/grpc"
+          element={<GRPCComposer {...props} />}
+        />
+        <Route
+          path="/websocket"
+          element={<WebSocketComposer {...props} />}
+        />
+        <Route
+          path="/webrtc"
+          element={<WebRTCComposer {...props} />}
+        />
+        <Route
+          path="/openapi"
+          element={<OpenAPIComposer {...props} />}
+        />
+        <Route
+          path="/webhook"
+          element={<WebhookComposer {...props} />}
+        />
+      </Routes>
+      <Divider orientation="horizontal"/>
+      <ResponsePaneContainer />
     </Box>
   )
 }

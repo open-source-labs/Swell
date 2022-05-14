@@ -22,6 +22,9 @@ const { api } = window as unknown as WindowExt;
 const App = () => {
   const [message, setMessage] = useState(null);
 
+  // currentWorkspace is the current Workspace's UUID. It is only altered in WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
+  const [currentWorkspaceId, setWorkspace] = React.useState('');
+
   useEffect(() => {
     api.send('check-for-update');
     historyController.getHistory();
@@ -35,12 +38,12 @@ const App = () => {
         <Divider orientation="horizontal"/>
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* New MUI workspace. */}
-          <WorkspaceContainer />
+          <WorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
           {/* Legacy workspace. */}
           <ContentsContainer />
           <Divider orientation="vertical"/>
           {/* New MUI main container. */}
-          <MainContainer />
+          <MainContainer currentWorkspaceId={currentWorkspaceId} />
           {/* Legacy main container */}
           {/* <div className="tile is-vertical add-vertical-scroll">
             <SidebarContainer />
