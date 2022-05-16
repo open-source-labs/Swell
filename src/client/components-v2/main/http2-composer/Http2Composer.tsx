@@ -20,19 +20,31 @@ import BodyEntryForm from '../../../components/composer/NewRequest/BodyEntryForm
 import TestEntryForm from '../../../components/composer/NewRequest/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
+import { BooleanValueNode } from 'graphql';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
   interface Parameter {
-    param: string;
+    id: string;
+    key: string;
     value: string;
+    toggle: boolean;
   }
   interface Header {
-    header: string;
+    id: string;
+    key: string;
     value: string;
+    toggle: boolean;
+  }
+  interface Cookie {
+    id: string;
+    key: string;
+    value: string;
+    toggle: BooleanValueNode;
   }
   const [parameters, setParameters] = useState<Parameter[]>([])
   const [headers, setHeaders] = useState<Header[]>([])
+  const [cookies, setCookies] = useState<Cookie[]>([])
 
   const dispatch = useDispatch();
   // Destructuring business store props.
@@ -288,6 +300,8 @@ export default function Http2Composer(props) {
         setParameters={setParameters}
         headers={headers}
         setHeaders={setHeaders}
+        cookies={cookies}
+        setCookies={setCookies}
       />
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
