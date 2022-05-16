@@ -8,7 +8,7 @@ import { STATUS_CODES } from 'http';
 import { truncate } from 'fs-extra';
 
 export default function KeyValueTable({ type, state, setState }) {
-  console.log('state', state)
+  console.log(`${type} state`, state)
 
   const keyValueForms = [];
   for (let i = 0; i < state.length; i += 1) {
