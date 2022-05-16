@@ -4,7 +4,7 @@ import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
 import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
 import JSONPrettify from './JSONPrettify.jsx';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
+import TextCodeArea from './TextCodeArea.jsx';
 
 const BodyEntryForm = (props) => {
   const {
@@ -40,10 +40,10 @@ const BodyEntryForm = (props) => {
     }
 
     return (
-      <TextCodeAreaEditable
+      <TextCodeArea
         mode={newRequestBody.rawType}
         value={newRequestBody.bodyContent}
-        onChange={(editor, data, value) => {
+        onChange={(value, viewUpdate) => {
           setNewRequestBody({
             ...newRequestBody,
             bodyContent: value,

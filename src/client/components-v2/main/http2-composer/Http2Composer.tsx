@@ -289,11 +289,14 @@ export default function Http2Composer(props) {
   };
 
   return(
-    <Box sx={{
-      overflowX: 'scroll',
-      overflowY: 'scroll',
-    }}>
-
+    <Box
+      className="is-flex-grow-3 add-vertical-scroll"
+      sx={{
+        overflowX: 'scroll',
+        overflowY: 'scroll',
+      }}
+      id = "composer-http2"
+    >
       <Http2EndpointForm />
       <Http2MetaData
         parameters={parameters}
@@ -312,7 +315,6 @@ export default function Http2Composer(props) {
         warningMessage={warningMessage}
         setComposerWarningMessage={setComposerWarningMessage}
       />
-
       <span className="inputs">
         <div>
           <HeaderEntryForm

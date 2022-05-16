@@ -157,9 +157,9 @@ export default function WebhookComposer(props) {
   };
 
   return(
-    <Box>
-      <div className='mr-2 is-flex is-justify-content-center'
-      style={{padding: '10px'}}>
+    <Box className='mr-2 is-flex is-justify-content-center'
+    style={{padding: '10px'}}
+    id = "composer-webhook">
       <button
             className={`button ${
               serverStatus ? 'is-wh' : 'is-wh-on'
@@ -182,7 +182,6 @@ export default function WebhookComposer(props) {
             Copy URL
           </button>
         </div>
-      </div>
     </Box>
   )
 }

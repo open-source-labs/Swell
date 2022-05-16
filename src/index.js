@@ -41,7 +41,9 @@ meta.httpEquiv = 'Content-Security-Policy';
 meta.content = `
   default-src 'self' http://localhost:3000 ws://localhost:3000 https://api.github.com 'unsafe-inline';
   img-src 'self' data: https://avatars.githubusercontent.com/;
-  child-src 'none';`;
+  child-src 'none';
+  `;
+
 head.appendChild(meta);
 
 // Render the app

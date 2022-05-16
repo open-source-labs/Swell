@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { useSelector } from 'react-redux';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/theme/twilight.css';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror-graphql/hint';
-import 'codemirror-graphql/lint';
-import 'codemirror-graphql/mode';
-import 'codemirror/addon/lint/lint.css';
+// import 'codemirror/addon/edit/matchbrackets';
+// import 'codemirror/addon/edit/closebrackets';
+// import 'codemirror/theme/twilight.css';
+// import 'codemirror/lib/codemirror.css';
+// import 'codemirror/addon/hint/show-hint';
+// import 'codemirror/addon/hint/show-hint.css';
+// import 'codemirror-graphql/hint';
+// import 'codemirror-graphql/lint';
+// import 'codemirror-graphql/mode';
+// import 'codemirror/addon/lint/lint.css';
+
 
 const GraphQLBodyEntryForm = (props) => {
   const {
@@ -41,33 +42,25 @@ const GraphQLBodyEntryForm = (props) => {
       <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}>
         <CodeMirror
           value={cmValue}
-          options={{
-            mode: 'graphql',
-            theme: 'neo sidebar',
-            scrollbarStyle: 'native',
-            lineNumbers: false,
-            lint: true,
-            hintOptions: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            indentUnit: 2,
-            tabSize: 2,
-          }}
-          editorDidMount={(editor) => {
-            editor.setSize('100%', 150);
-          }}
+          theme = 'dark'
           height="200px"
-          onBeforeChange={(editor, data, value) => {
-            const optionObj = {
-              schema: introspectionData.clientSchema,
-              completeSingle: false,
-            };
-            setValue(value);
-            editor.setOption('lint', optionObj);
-            editor.setOption('hintOptions', optionObj);
-          }}
-          onChange={(editor, data, value) => {
-            editor.showHint();
+          width = "100%"
+          maxHeight='300px'
+
+          // GraphQL mode currently not available via react-codemirror. Below functionality is commented out since it cannot be used
+          // In the future, if graphql mode gets ported and CodeMirror can integrate schema again, maybe add back in?
+
+          // onBeforeChange={(editor, data, value) => {
+          //   const optionObj = {
+          //     schema: introspectionData.clientSchema,
+          //     completeSingle: false,
+          //   };
+          //   setValue(value);
+          //   editor.setOption('lint', optionObj);
+          //   editor.setOption('hintOptions', optionObj);
+          // }}
+
+          onChange={(value, viewUpdate) => {
             setNewRequestBody({
               ...newRequestBody,
               bodyContent: value,

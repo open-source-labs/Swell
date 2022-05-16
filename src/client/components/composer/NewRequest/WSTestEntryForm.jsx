@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import TextCodeAreaEditable from './TextCodeAreaEditable.jsx';
+import TextCodeArea from './TextCodeArea.jsx';
 import WebsocketTestSnippetsContainer from './TestSnippets/WebsocketTestSnippetsContainer';
 
 const WSTestEntryForm = (props) => {
@@ -36,10 +36,10 @@ const WSTestEntryForm = (props) => {
       </div>
       {showTests === true && (
         <div id="test-script-entry">
-          <TextCodeAreaEditable
+          <TextCodeArea
             mode="javascript"
             value={testContent}
-            onChange={(editor, data, value) => {
+            onChange={(value, viewUpdate) => {
               setNewTestContent(value);
             }}
           />

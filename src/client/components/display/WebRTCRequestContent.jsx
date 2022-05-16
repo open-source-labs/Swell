@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../controllers/webrtcPeerController';
+import { json } from '@codemirror/lang-json';
+import { EditorView } from "@codemirror/view"
+import { javascript } from '@codemirror/lang-javascript';
+import { matchBrackets } from '@codemirror/language';
+
+
+
 import * as actions from './../../features/business/businessSlice';
 import * as uiactions from './../../features/ui/uiSlice';
 
@@ -12,7 +19,8 @@ export default function WebRTCRequestContent({ content }) {
   const { iceConfiguration } = content.request.body;
   const [localSdp, setLocalSdp] = useState('');
   const [pcInitiator, setPcInitiator] = useState(null);
-c
+
+  const dispatch = useDispatch();
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
@@ -49,22 +57,16 @@ c
         <div className="is-size-7">Servers</div>
         <CodeMirror
           value={jBeautify(JSON.stringify(body.iceConfiguration.iceServers))}
-          options={{
-            mode: 'javascript',
-            theme: 'neo sidebar',
-            scrollbarStyle: 'native',
-            lineNumbers: true,
-            lint: true,
-            hintOptions: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            indentUnit: 1,
-            tabSize: 1,
-          }}
-          height="200px"
-          editorDidMount={(editor) => {
-            editor.setSize('100%', '100%');
-          }}
+          theme = 'dark'
+          readOnly= 'true'
+          extensions={[
+            javascript(),
+            EditorView.lineWrapping,
+          ]}
+          height="100%"
+          width = "100%"
+          maxWidth='400px'
+          maxHeight='300px'
         />
       </div>
       <div className="p-3">
@@ -75,16 +77,15 @@ c
         >
           <CodeMirror
             value={localSdp || 'No SDP yet'}
-            options={{
-              mode: 'application/json',
-              theme: 'neo readonly',
-              lineNumbers: true,
-              tabSize: 4,
-              scrollbarStyle: 'native',
-              lineWrapping: true,
-              readOnly: true,
-            }}
-            height="200px"
+            extensions={[
+              json(),
+            ]}
+            theme = 'dark'
+            readOnly= 'true'
+            height="100%"
+            width = "100%"
+            maxWidth='400px'
+            maxHeight='300px'
           />
           <button className="button is-webrtc" onClick={() => createLocalSDP()}>
             Create Local SDP

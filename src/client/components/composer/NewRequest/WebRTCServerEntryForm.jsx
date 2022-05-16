@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/theme/twilight.css';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror-graphql/hint';
-import 'codemirror-graphql/lint';
-import 'codemirror-graphql/mode';
-import 'codemirror/addon/lint/lint.css';
+import { EditorView } from "@codemirror/view"
+import { javascript } from '@codemirror/lang-javascript';
+
 
 const jBeautify = require('js-beautify').js;
 
@@ -40,22 +33,13 @@ const WebRTCServerEntryForm = (props) => {
       <div className={`is-neutral-200-box p-3 ${isDark ? 'is-dark-400' : ''}`}>
         <CodeMirror
           value={cmValue}
-          options={{
-            mode: 'javascript',
-            theme: 'neo sidebar',
-            scrollbarStyle: 'native',
-            lineNumbers: true,
-            lint: true,
-            hintOptions: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            indentUnit: 1,
-            tabSize: 1,
-          }}
-          height="200px"
-          editorDidMount={(editor, data, value) => {
-            editor.setSize('100%', '100%');
-          }}
+          extensions={[
+            javascript(),
+            EditorView.lineWrapping,
+          ]}
+          theme = "dark"
+          height="100%"
+          width = "100%"
         />
       </div>
     </div>
