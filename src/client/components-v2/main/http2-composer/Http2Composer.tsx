@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 // Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
@@ -8,8 +8,9 @@ import * as uiactions from '../../../features/ui/uiSlice';
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
 import Http2EndpointForm from './Http2EndpointForm';
+import Http2MetaData from './Http2MetaData';
+// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
 import RestMethodAndEndpointEntryForm from '../../../components/composer/NewRequest/RestMethodAndEndpointEntryForm';
 import HeaderEntryForm from '../../../components/composer/NewRequest/HeaderEntryForm';
 import CookieEntryForm from '../../../components/composer/NewRequest/CookieEntryForm';
@@ -22,9 +23,19 @@ import { Box } from '@mui/material';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
-  const dispatch = useDispatch();
+  interface Parameter {
+    param: string;
+    value: string;
+  }
+  interface Header {
+    header: string;
+    value: string;
+  }
+  const [parameters, setParameters] = useState<Parameter[]>([])
+  const [headers, setHeaders] = useState<Header[]>([])
 
-  // Destructuring state props.
+  const dispatch = useDispatch();
+  // Destructuring business store props.
   const {
     currentTab,
     newRequestFields,
@@ -270,8 +281,14 @@ export default function Http2Composer(props) {
       overflowX: 'scroll',
       overflowY: 'scroll',
     }}>
-      
+
       <Http2EndpointForm />
+      <Http2MetaData
+        parameters={parameters}
+        setParameters={setParameters}
+        headers={headers}
+        setHeaders={setHeaders}
+      />
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestBody={newRequestBody}

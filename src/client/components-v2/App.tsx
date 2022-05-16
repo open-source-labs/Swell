@@ -40,7 +40,7 @@ const App = () => {
           {/* New MUI workspace. */}
           <WorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
           {/* Legacy workspace. */}
-          <ContentsContainer />
+          {/* <ContentsContainer /> */}
           <Divider orientation="vertical"/>
           {/* New MUI main container. */}
           <MainContainer currentWorkspaceId={currentWorkspaceId} />
