@@ -56,8 +56,7 @@ export default function Http2MetaData({ parameters, setParameters, headers, setH
       </Box>
       {/* TODO: add parameter support for HTTP2 requests */}
       <TabPanel value={tab} index={0}>
-        <Http2Body />
-        {/* <KeyValueTable type='Parameter' state={parameters} setState={setParameters} /> */}
+        <KeyValueTable type='Parameter' state={parameters} setState={setParameters} />
       </TabPanel>
       <TabPanel value={tab} index={1}>
         <KeyValueTable type='Header' state={headers} setState={setHeaders} />
