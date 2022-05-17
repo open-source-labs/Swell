@@ -7,8 +7,8 @@
 		const extraca = require("fs").readFileSync(process.env.NODE_EXTRA_CA_CERTS);
 	}catch(e){
 		return;
-	} 
-	
+	}
+
 	const NativeSecureContext = process.binding('crypto').SecureContext;
 	const oldaddRootCerts = NativeSecureContext.prototype.addRootCerts;
 	NativeSecureContext.prototype.addRootCerts = function(){
@@ -226,7 +226,7 @@ const sendStatusToWindow = (text) => {
 ipcMain.on('login-via-github', async () => {
   const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` // ${process.env.GITHUB_CLIENT_ID};
   await shell.openExternal(url, { activate: true });
-  
+
 })
 
 ipcMain.on('check-for-update', () => {
@@ -319,7 +319,7 @@ ipcMain.on('import-from-github', async (event, args) => {
 
   console.log('main.js import-from-github args', args);
 
-  // requiring typescript type Workspace makes sanitation uncessesary 
+  // requiring typescript type Workspace makes sanitation uncessesary
   const ids = {};
   let index = 0;
   const newCollectionArr = []
