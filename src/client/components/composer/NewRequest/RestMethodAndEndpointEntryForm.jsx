@@ -18,7 +18,7 @@ const RestMethodAndEndpointEntryForm = ({
   const isDark = useSelector(state => state.ui.isDark);
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
-  
+
   useEffect(() => {
     const closeDropdown = (event) => {
       if (!dropdownEl.current.contains(event.target)) {
@@ -28,7 +28,7 @@ const RestMethodAndEndpointEntryForm = ({
     document.addEventListener('click', closeDropdown);
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
-  
+
 
   const warningCheck = () => {
     if (warningMessage.uri) {
@@ -37,7 +37,7 @@ const RestMethodAndEndpointEntryForm = ({
       setComposerWarningMessage({ ...newWarningMessage });
     }
   };
-  
+
   const methodChangeHandler = (newMethodStr) => {
     warningCheck();
     //if one of 5 http methods (get, post, put, patch, delete)
@@ -46,17 +46,17 @@ const RestMethodAndEndpointEntryForm = ({
       bodyType: 'raw',
       bodyContent: '',
     });
-    
+
     //always set new method
     setNewRequestFields({
       ...newRequestFields,
       method: newMethodStr,
       protocol: '',
     });
-    
+
     setNewTestContent('');
   };
-  
+
   const urlChangeHandler = (e, network) => {
     warningCheck();
     const url = e.target.value;
@@ -66,9 +66,9 @@ const RestMethodAndEndpointEntryForm = ({
       url,
     });
   };
-  
+
   return (
-    
+
     <div>
       <div
         ref={dropdownEl}
