@@ -18,6 +18,7 @@ const langs = {
 
 export default function TextCodeArea({ value, mode, onChange, theme = 'dark' , readOnly = false}) {
   const lang = mode.substring(mode.indexOf('/') + 1) // Grab language mode based on value passed in
+  console.log(lang)
   return (
     <div className="is-neutral-200-box">
       <CodeMirror

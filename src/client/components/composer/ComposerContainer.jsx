@@ -94,9 +94,9 @@ const ComposerContainer = (props) => {
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'GQL',
-          bodyContent: `query {
+          // bodyContent: `query {
 
-}`,
+// }`,
           bodyVariables: '',
         });
         break;

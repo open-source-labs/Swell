@@ -5,13 +5,6 @@ import TextCodeArea from './TextCodeArea.jsx';
 
 export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
   useEffect(() => {
-    if (newRequestBody.bodyContent === '') {
-      setNewRequestBody({
-        ...newRequestBody,
-        bodyContent: '{\n  \n}',
-      });
-      return;
-    }
     try {
       JSON.parse(newRequestBody.bodyContent);
       if (!newRequestBody.JSONFormatted) {

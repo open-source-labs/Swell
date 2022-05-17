@@ -44,45 +44,44 @@ module.exports = () => {
       cookies = []
     ) => {
       try {
-        // click and check REST
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=REST').click();
+        // Make sure HTTP2 method is selected
+        await page.locator('button>> text=HTTP2').click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
-          await page.locator('#composer >> button.is-rest').click();
-          await page.locator(`#composer >> a >> text=${method}`).click();
+          await page.locator('button#rest-method').click();
+          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
         }
 
         // type in url
-        await page.locator('.input-is-medium').fill(url);
+        await page.locator('#url-input').fill(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
           await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Headers"), 5)').click();
+          await page.locator('#add-header').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
           await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Cookies"), 5)').click();
+          await page.locator('#add-cookie').click();
         });
 
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          if (await page.locator('button:visible >> text=text/plain').count()===1){
-            await page.locator('button >> text=text/plain').click();
-            await page.locator('a >> text=application/json').click();
+          if (await page.locator('#body-type-select').innerText()==='raw'){
+            await page.locator('#raw-body-type').click();
+            await page.locator('.dropdown-item >> text=application/json').click();
           }
           
           // insert JSON content into body
           const codeMirror = await page.locator('#body-entry-select');
           await codeMirror.click();
-          const restBody = await codeMirror.locator('textarea');
+          const restBody = await codeMirror.locator('.cm-content');
 
           try {
             for (let i = 0; i < 100; i += 1) {
@@ -133,7 +132,6 @@ module.exports = () => {
       });
     });
 
-    /** *************** !! FOR BELOW TO WORK, YOU MUST ADD YOUR OWN MONGO URI TO A .ENV FILE WITH (MONGO_URI = "YOUR_URI") !! **************** */
     describe('httpTest Server', () => {
       before('CLEAR DB', (done) => {
         chai

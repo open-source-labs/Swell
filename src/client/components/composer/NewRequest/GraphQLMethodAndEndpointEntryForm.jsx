@@ -57,13 +57,11 @@ const GraphQLMethodAndEndpointEntryForm = ({
     // GraphQL features
     if (value === 'QUERY') {
       if (!newRequestFields.graphQL) {
-        newBody = `query {
 
-}`;
       } else {
         newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
           ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'query')
-          : `query ${newRequestBody.bodyContent}`;
+          : `${newRequestBody.bodyContent}`;
       }
       setNewRequestBody({
         ...newRequestBody,
@@ -73,7 +71,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     } else if (value === 'MUTATION') {
       newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
         ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'mutation')
-        : `mutation ${newRequestBody.bodyContent}`;
+        : `${newRequestBody.bodyContent}`;
 
       setNewRequestBody({
         ...newRequestBody,
@@ -83,7 +81,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     } else if (value === 'SUBSCRIPTION') {
       newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
         ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'subscription')
-        : `subscription ${newRequestBody.bodyContent}`;
+        : `${newRequestBody.bodyContent}`;
 
       setNewRequestBody({
         ...newRequestBody,
@@ -113,6 +111,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
         <div className="dropdown-trigger">
           <button
             className="no-border-please button is-graphQL"
+            id = "graphql-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}

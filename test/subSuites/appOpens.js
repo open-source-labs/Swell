@@ -57,16 +57,16 @@ module.exports = () => {
         expect(await page.title()).to.equal('Swell');
       })
       
-      xit('Page should contain a composer div', async () => {
-        expect(await page.locator('div#composer').count()).to.equal(1)
+      it('Page should contain a composer div', async () => {
+        expect(await page.locator('div[id^="composer"]').count()).to.equal(1)
       });
   
       it('Page should contain a workspace div', async () => {
-        expect(await page.locator('div#workspace').count()).to.equal(1)
+        expect(await page.locator('div[id^="workspace"]').count()).to.equal(1)
       });
   
       it('Page should contain a responses div', async () => {
-        expect(await page.locator('div#responses').count()).to.equal(1)
+        expect(await page.locator('div[id^="responses"]').count()).to.equal(1)
       });
     });
   });

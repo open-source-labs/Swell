@@ -80,6 +80,7 @@ const RestMethodAndEndpointEntryForm = ({
         <div className="dropdown-trigger">
           <button
             className="is-rest button no-border-please"
+            id = "rest-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -159,6 +160,7 @@ const RestMethodAndEndpointEntryForm = ({
 
         <input
           className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
+          id = "url-input"
           type="text"
           placeholder="Enter endpoint"
           value={newRequestFields.restUrl}
