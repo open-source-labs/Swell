@@ -2,14 +2,14 @@ import React from 'react';
 // Import MUI components
 import { Box, Button, MenuItem, FormControl, Select, SelectChangeEvent, TextField } from '@mui/material'
 
-export default function Http2EndpointForm(props) {
-  const [method, setMethod] = React.useState('get');
+export default function Http2EndpointForm({ http2Method, setHttp2Method, http2Uri, setHttp2Uri }) {
+  // const [method, setMethod] = React.useState('get');
   const handleMethodSelect = (event: SelectChangeEvent) => {
-    setMethod(event.target.value as string);
+    setHttp2Method(event.target.value as string);
   };
-  const [uri, setUri] = React.useState('');
+  // const [uri, setUri] = React.useState('');
   const handleUriInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUri(event.target.value as string);
+    setHttp2Uri(event.target.value as string);
   };
   return(
     <Box className="http2-endpoint-form"
@@ -21,17 +21,18 @@ export default function Http2EndpointForm(props) {
         sx={{
           width: '15%'
         }}
+        color="warning"
       >
         <Select
           id="method-select"
-          value={method}
+          value={http2Method}
           onChange={handleMethodSelect}
         >
-          <MenuItem value="get">GET</MenuItem>
-          <MenuItem value="post">POST</MenuItem>
-          <MenuItem value="put">PUT</MenuItem>
-          <MenuItem value="patch">PATCH</MenuItem>
-          <MenuItem value="delete">DELETE</MenuItem>
+          <MenuItem value="GET">GET</MenuItem>
+          <MenuItem value="POST">POST</MenuItem>
+          <MenuItem value="PUT">PUT</MenuItem>
+          <MenuItem value="PATCH">PATCH</MenuItem>
+          <MenuItem value="DELETE">DELETE</MenuItem>
         </Select>
       </FormControl>
       <TextField
@@ -39,11 +40,12 @@ export default function Http2EndpointForm(props) {
           width: '85%',
           px: 1
         }}
-        value={uri}
+        value={http2Uri}
         onChange={handleUriInput}
       />
       <Button
         variant='outlined'
+        color="success"
       >
         Send
       </Button>

@@ -42,9 +42,12 @@ export default function Http2Composer(props) {
     value: string;
     toggle: BooleanValueNode;
   }
+
   const [parameters, setParameters] = useState<Parameter[]>([])
   const [headers, setHeaders] = useState<Header[]>([])
   const [cookies, setCookies] = useState<Cookie[]>([])
+  const [http2Method, setHttp2Method] = useState('GET')
+  const [http2Uri, setHttp2Uri] = useState('')
 
   const dispatch = useDispatch();
   // Destructuring business store props.
@@ -58,6 +61,8 @@ export default function Http2Composer(props) {
     newRequestSSE,
     warningMessage,
   } = props;
+
+  console.log(newRequestBody)
 
   const {
     gRPC,
@@ -297,7 +302,12 @@ export default function Http2Composer(props) {
       }}
       id = "composer-http2"
     >
-      <Http2EndpointForm />
+      <Http2EndpointForm
+        http2Method={http2Method}
+        setHttp2Method={setHttp2Method}
+        http2Uri={http2Uri}
+        setHttp2Uri={setHttp2Uri}
+      />
       <Http2MetaData
         parameters={parameters}
         setParameters={setParameters}
@@ -305,6 +315,7 @@ export default function Http2Composer(props) {
         setHeaders={setHeaders}
         cookies={cookies}
         setCookies={setCookies}
+        http2Method={http2Method}
       />
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}

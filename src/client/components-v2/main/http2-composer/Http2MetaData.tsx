@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 // Import local components
-import Http2Parameters from './Http2Parameters';
-import Http2Headers from './Http2Headers'
 import KeyValueTable from './KeyValueTable';
+import Http2Body from './Http2Body'
 // Import MUI components
 import { Box, Tabs, Tab } from '@mui/material';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
@@ -39,7 +38,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function Http2MetaData({ parameters, setParameters, headers, setHeaders, cookies, setCookies }) {
+export default function Http2MetaData({ parameters, setParameters, headers, setHeaders, cookies, setCookies, http2Method }) {
   const [tab, setTab] = useState(0)
   const handleTabChange = (event: React.SyntheticEvent, tab: number) => {
     setTab(tab);
@@ -57,7 +56,8 @@ export default function Http2MetaData({ parameters, setParameters, headers, setH
       </Box>
       {/* TODO: add parameter support for HTTP2 requests */}
       <TabPanel value={tab} index={0}>
-        <KeyValueTable type='Parameter' state={parameters} setState={setParameters} />
+        <Http2Body />
+        {/* <KeyValueTable type='Parameter' state={parameters} setState={setParameters} /> */}
       </TabPanel>
       <TabPanel value={tab} index={1}>
         <KeyValueTable type='Header' state={headers} setState={setHeaders} />
@@ -66,7 +66,10 @@ export default function Http2MetaData({ parameters, setParameters, headers, setH
         <KeyValueTable type='Cookie' state={cookies} setState={setCookies} />
       </TabPanel>
       <TabPanel value={tab} index={3}>
-        Render Body Input Here
+        {http2Method === 'GET'
+          ? 'No body required for this method'
+          : <Http2Body />
+        }
       </TabPanel>
       <TabPanel value={tab} index={4}>
         Render Test Snippets Here
