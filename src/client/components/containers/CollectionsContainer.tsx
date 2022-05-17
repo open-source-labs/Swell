@@ -65,11 +65,11 @@ function CollectionsContainer() {
         >
           Import from Github
         </button>
-        <ul>
+        {/* <ul>
           {files.map((file) => (
             <li key={file.repository.full_name}>{file.repository.name}</li>
           ))}
-        </ul>
+        </ul> */}
         <hr />
       </div>
 

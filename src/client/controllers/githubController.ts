@@ -6,6 +6,7 @@ import * as uiactions from './../features/ui/uiSlice';
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import Cookies from 'js-cookie';
+import { Collection } from 'dexie';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
@@ -13,7 +14,7 @@ const githubController = {
   async importFromRepo(): Promise<string> {
     // setup authorization
     const token = await db.auth.toArray();
-    console.log(await db.files.toArray());
+    // console.log(await db.files.toArray());
     const octokit = new Octokit({
       auth: token[0].auth,
     });
@@ -77,8 +78,20 @@ const githubController = {
     }
     console.log('db updated');
   },
-};
+}
+  
+//   async saveContentsToDB (data: ReqResRequest, auth: string): Promise<void> {
+//     db.table('contents').clear();
+//     for (let content of data.contents) {
+//       db.table('contents')
+//         .put(content)
+//         .catch((err: string) =>
+//           console.log('Error in saveContentsToDB/contents', err)
+//         );
+//     }
+//   }
 
+// }
 export default githubController;
 
 // async importFromRepo(): Promise<string> {
