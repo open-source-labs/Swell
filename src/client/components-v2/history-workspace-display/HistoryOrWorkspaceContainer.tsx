@@ -26,7 +26,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 1 }}>
           <Box>{children}</Box>
         </Box>
       )}
@@ -41,7 +41,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function HistoryOrWorkspaceContainer() {
+export default function HistoryOrWorkspaceContainer(props) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -52,12 +52,12 @@ export default function HistoryOrWorkspaceContainer() {
     <Box sx={{ minWidth: '25%', overflow: 'auto', maxHeight: '100%', overflowX: 'auto' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab icon={<WorkIcon />} label="Current Workspace"  {...a11yProps(0)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
-          <Tab icon={<AccessTimeIcon />} label='View History' {...a11yProps(1)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
+          <Tab icon={<WorkIcon fontSize='small'/>} {...a11yProps(0)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
+          <Tab icon={<AccessTimeIcon fontSize='small'/>} {...a11yProps(1)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <WorkspaceContainer />
+        <WorkspaceContainer {...props} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <HistoryContainer />

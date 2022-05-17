@@ -18,7 +18,7 @@ export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceCha
 
   return (
     <Box sx={{mr: 1, flexGrow: 1}}>
-      <FormControl 
+      <FormControl
         fullWidth
         variant="standard">
         <Select
