@@ -12,7 +12,7 @@ import '../../assets/style/App.scss';
 import NavBarContainer from './navbar/NavBarContainer';
 import WorkspaceContainer from './workspace/WorkspaceContainer';
 import MainContainer from './main/MainContainer';
-
+import HistoryOrWorkspaceContainer from './history-workspace-display/HistoryOrWorkspaceContainer';
 
 import { Box, Divider } from '@mui/material';
 
@@ -38,7 +38,8 @@ const App = () => {
         <Divider orientation="horizontal"/>
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* New MUI workspace. */}
-          <WorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
+          {/* <WorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} /> */}
+          <HistoryOrWorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
           {/* Legacy workspace. */}
           {/* <ContentsContainer /> */}
           <Divider orientation="vertical"/>

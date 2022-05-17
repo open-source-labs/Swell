@@ -30,12 +30,12 @@ describe('CRUD functionality', function () {
   reqInputTests(); 
   httpTest();
   graphqlTest();
-  websocketTest();
-  grpcTest();
-  webRTCTest();
+  // websocketTest();
+  // grpcTest();
+  // webRTCTest();
 }).timeout(10000);
 
-describe("Swell Testing functionality", function () {
+xdescribe("Swell Testing functionality", function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();

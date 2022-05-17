@@ -34,11 +34,11 @@ module.exports = () => {
   describe('URL/request method inputs', () => {
     setupFxn();
 
-    it('can switch tabs in the composer pane', async () => { // May refactor since history tab will be a dropdown1
+    it('can view history in the composer pane', async () => { // May refactor since history tab will be a dropdown1
       
       // Click history, confirm history column is active
       await page.locator('a >> text=History').click();
-      const historySelected = await page.locator('div#composer >> .is-active').innerText();
+      const historySelected = await page.locator('div[id^="composer"] >> .is-active').innerText();
       expect(historySelected).to.equal('History');
 
       // Click composer, confirm composer column is active
@@ -93,33 +93,26 @@ module.exports = () => {
 
     it('can select a request type', async () => {
       // possibly remove the first clicks based on button vs dropdown menu
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=GRAPHQL').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('GRAPHQL')
+      await page.locator('button>> text=GRAPHQL').click();
+      expect(await page.locator('div#composer-graphql').count()).to.equal(1)
 
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=REST').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('REST')
+      await page.locator('button>> text=HTTP2').click();
+      expect(await page.locator('div#composer-http2').count()).to.equal(1)
 
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=gRPC').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('gRPC')
+      await page.locator('button>> text=GRPC').click();
+      expect(await page.locator('div#composer-grpc').count()).to.equal(1)
 
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=WEB SOCKETS').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('WEB SOCKETS')
+      await page.locator('button>> text=WEB SOCKET').click();
+      expect(await page.locator('div#composer-websocket').count()).to.equal(1)
 
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=WebRTC').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('WebRTC')
+      await page.locator('button>> text=WEBRTC').click();
+      expect(await page.locator('div#composer-webrtc').count()).to.equal(1)
 
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=OpenAPI').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('OpenAPI')
+      await page.locator('button>> text=OPENAPI').click();
+      expect(await page.locator('div#composer-openapi').count()).to.equal(1)
 
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=WebHook').click();
-      expect(await page.locator('#selected-network').innerText()).to.equal('WebHook')
+      await page.locator('button>> text=WEBHOOK').click();
+      expect(await page.locator('div#composer-webhook').count()).to.equal(1)
     });
 
     // WIP code below to check dropdown menu items
@@ -134,42 +127,42 @@ module.exports = () => {
 
     it('can select a REST method', async () => { // ************************ REDO THIS TEST, it chains clicks in a bad way ********************
 
-      // Make sure REST method is selected
-      await page.locator('#selected-network').click();
-      await page.locator('#composer >> a >> text=REST').click();
+      // Make sure HTTP2 method is selected
+      await page.locator('button>> text=HTTP2').click();
+
 
       // // click and select POST
-      await page.locator('#composer >> span >> text=GET').click();
-      await page.locator('#composer >> a >> text=POST').click();
+      await page.locator('button#rest-method').click();
+      await page.locator('div[id^="composer"] >> a >> text=POST').click();
       expect(await page.locator('button.is-rest >> span >> text=POST').count()).to.equal(1);
 
 
       // // click and select PUT
-      await page.locator('#composer >> span >> text=POST').click();
-      await page.locator('#composer >> a >> text=PUT').click();
+      await page.locator('button#rest-method').click();
+      await page.locator('div[id^="composer"] >> a >> text=PUT').click();
       expect(await page.locator('button.is-rest >> span >> text=PUT').count()).to.equal(1);
 
       // // click and select GET
-      await page.locator('#composer >> span >> text=PUT').click();
-      await page.locator('#composer >> a >> text=GET').click();
+      await page.locator('button#rest-method').click();
+      await page.locator('div[id^="composer"] >> a >> text=GET').click();
       expect(await page.locator('button.is-rest >> span >> text=GET').count()).to.equal(1);
 
       // // click and select PATCH
-      await page.locator('#composer >> span >> text=GET').click();
-      await page.locator('#composer >> a >> text=PATCH').click();
+      await page.locator('button#rest-method').click();
+      await page.locator('div[id^="composer"] >> a >> text=PATCH').click();
       expect(await page.locator('button.is-rest >> span >> text=PATCH').count()).to.equal(1);
 
       // // click and select DELETE
-      await page.locator('#composer >> span >> text=PATCH').click();
-      await page.locator('#composer >> a >> text=DELETE').click();
+      await page.locator('button#rest-method').click();
+      await page.locator('div[id^="composer"] >> a >> text=DELETE').click();
       expect(await page.locator('button.is-rest >> span >> text=DELETE').count()).to.equal(1);
     });
 
 
     it('can type url into url input', async () => {
-      await page.locator('.input-is-medium').fill('http://jsonplaceholder.typicode.com/posts/1');
+      await page.locator('#url-input').fill('http://jsonplaceholder.typicode.com/posts/1');
 
-      const input = await page.locator('.input-is-medium').inputValue();
+      const input = await page.locator('#url-input').inputValue();
 
       expect(input).to.equal('http://jsonplaceholder.typicode.com/posts/1')
     });
@@ -186,8 +179,7 @@ module.exports = () => {
       });
 
       it('can add new headers in request', async () => {
-        // click add header (specifically the button immediately to the right of the "header" title)
-        const addHeaderButton = await page.locator('button:near(:text("Headers"), 5)');
+        const addHeaderButton = await page.locator('button#add-header');
         expect(await addHeaderButton.count()).to.equal(1);
 
         await addHeaderButton.click();
@@ -215,7 +207,7 @@ module.exports = () => {
   
       it('can add new cookies in request', async () => {
         // click add cookie
-        const addCookieButton = await page.locator('button:near(:text("Cookies"), 5)');
+        const addCookieButton = await page.locator('button#add-cookie');
         expect(await addCookieButton.count()).to.equal(1);
 
         await addCookieButton.click();
@@ -236,12 +228,15 @@ module.exports = () => {
 
     describe('Request body inputs', () => {
       it('body input appears for non GET requests', async () => {
+              // // click and select GET
+        await page.locator('button#rest-method').click();
+        await page.locator('text=GET').click();
         let bodyInputcount = await page.locator('#body-entry-select').count();
         expect(bodyInputcount).to.equal(0);
 
         // // click and select POST
-        await page.locator('#composer >> span >> text=GET').click();
-        await page.locator('#composer >> a >> text=POST').click();
+        await page.locator('button#rest-method').click();
+        await page.locator('div[id^="composer"] >> a >> text=POST').click();
 
         bodyInputcount = await page.locator('#body-entry-select').count();
         expect(bodyInputcount).to.equal(1);
@@ -249,9 +244,9 @@ module.exports = () => {
   
       it('can type plain text into body', async () => {
         const input = 'Team Swell is the best!';
-        const bodyInput = await page.locator('#body-entry-select >> textarea');
+        const bodyInput = await page.locator('div.cm-line');
         await bodyInput.fill(input);
-        expect(await page.locator('div.CodeMirror-code >> span').innerText()).to.equal(input)
+        expect(await page.locator('div.cm-content').innerText()).to.equal(input)
       });
     });
   });

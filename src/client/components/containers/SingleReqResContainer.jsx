@@ -150,7 +150,7 @@ const SingleReqResContainer = (props) => {
       bodyType: content.request.bodyType || 'raw',
       bodyContent: content.request.body || '',
       bodyVariables: content.request.bodyVariables || '',
-      rawType: content.request.rawType || 'Text (text/plain)',
+      rawType: content.request.rawType || 'text/plain',
       JSONFormatted: true,
       bodyIsNew: false,
     };

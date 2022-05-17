@@ -302,7 +302,17 @@ export default function Http2Composer(props) {
       }}
       id = "composer-http2"
     >
-      <Http2EndpointForm
+      {/**
+       * TODO:
+       * The two commented components are our attempt to port the entire app to use MaterialUI for consistency.
+       * The first one...
+       * ... is an HTTP2Enpoint form with a (1) method select (2) endpoint form (3) send button.
+       * The second one...
+       * ... is all of the metadata you would need for an HTTP2 request (parameters, headers, body, cookies)
+       * These are not tied to the Redux store currently, and thus do not interact with the app yet.
+       * They are just standalone components that need to be integrated with the logic of the app.
+       */}
+      {/* <Http2EndpointForm
         http2Method={http2Method}
         setHttp2Method={setHttp2Method}
         http2Uri={http2Uri}
@@ -316,7 +326,7 @@ export default function Http2Composer(props) {
         cookies={cookies}
         setCookies={setCookies}
         http2Method={http2Method}
-      />
+      /> */}
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestBody={newRequestBody}

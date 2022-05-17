@@ -119,9 +119,6 @@ function ProtocolSelect(props) {
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'GQL',
-          bodyContent: `query {
-
-}`,
           bodyVariables: '',
         });
         break;
@@ -260,8 +257,6 @@ function ProtocolSelect(props) {
         props.setNewRequestBody({
           ...props.newRequestBody,
           bodyType: 'none',
-          // vvv need to update this and figure out what we are going to do with it
-          bodyContent: `We will put our URL here maybe?`,
         });
         break;
       }
@@ -287,7 +282,10 @@ function ProtocolSelect(props) {
             key={page.name}
             variant="contained"
             color="primary"
-            onClick={() => onProtocolSelect(page.value)}
+            onClick={() => {
+              console.log(page.value)
+              onProtocolSelect(page.value)}
+            }
             sx={{
               m: 1
             }}>

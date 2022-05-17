@@ -61,6 +61,7 @@ const BodyTypeSelect = (props) => {
       <div className="dropdown-trigger">
         <button
           className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button"
+          id = "body-type-select"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}

@@ -209,6 +209,7 @@ class HeaderEntryForm extends Component {
           <div className="composer-section-title">{headerName}</div>
           <button
             className={`${this.props.isDark ? 'is-dark-200' : ''} button is-small add-header-gRPC-cookie-button`}
+            id = "add-header"
             style={{height: '3px', width: '3px'}}
             onClick={() => this.addHeader()}
           >

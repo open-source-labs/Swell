@@ -55,8 +55,7 @@ module.exports = () => {
     ) => {
       try {
         // click and check GRAPHQL
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=GRAPHQL').click();
+        await page.locator('button>> text=GRAPHQL').click();
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {

@@ -4,8 +4,9 @@ import CodeMirror from '@uiw/react-codemirror';
 // import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from '../../../components/display/EmptyState';
 import EventPreview from '../../../components/display/EventPreview';
-import { json } from '@codemirror/lang-json';
 import { EditorView } from "@codemirror/view"
+import { javascript } from '@codemirror/lang-javascript';
+
 
 function EventsContainer({ currentResponse }) {
   const { request, response } = currentResponse;
