@@ -282,7 +282,10 @@ function ProtocolSelect(props) {
             key={page.name}
             variant="contained"
             color="primary"
-            onClick={() => onProtocolSelect(page.value)}
+            onClick={() => {
+              console.log(page.value)
+              onProtocolSelect(page.value)}
+            }
             sx={{
               m: 1
             }}>

@@ -33,7 +33,6 @@ export default function WorkspaceContainer(props) {
 
   return (
     <Box sx={{ minWidth: '20%', align: 'center', p: 1.5 }}>
-
       <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} handleWorkspaceChange={handleWorkspaceChange}/>
 
       <Box sx={{ p: 1 }}>

@@ -34,13 +34,13 @@ const historyController = {
         return groups;
       }, {});
       const historyGroupsArr = Object.keys(historyGroupsObj)
-        //.sort((a, b) => parse(b, 'MM/dd/yyyy', new Date()).valueOf() - parse(a, 'MM/dd/yyyy', new Date()).valueOf())
-        .sort((a, b) => parseISO(b).valueOf() - parseISO(a).valueOf())
+        .sort((a, b) => parse(b, 'MM/dd/yyyy', new Date()).valueOf() - parse(a, 'MM/dd/yyyy', new Date()).valueOf())
         .map((date: string) => ({ // this returns an array of objects with K:date T:string and K:array of history objects
           date,
           history: historyGroupsObj[date].sort(
             (a: ReqRes, b: ReqRes) => b.createdAt.valueOf() - a.createdAt.valueOf()), 
           }));
+          console.log(historyGroupsArr)
       store.default.dispatch(actions.getHistory(historyGroupsArr));
     } catch {
           ((err: string) => console.log('Error in getHistory', err))

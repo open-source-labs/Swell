@@ -173,7 +173,7 @@ const History = ({
       bodyType: bodyType || 'raw',
       bodyContent: body || '',
       bodyVariables: bodyVariables || '',
-      rawType: rawType || 'Text (text/plain)',
+      rawType: rawType || 'text/plain',
       JSONFormatted: JSONFormatted || true,
       bodyIsNew: false,
     };
