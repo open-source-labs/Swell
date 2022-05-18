@@ -13,7 +13,6 @@ import { Box, Button, Typography, SelectChangeEvent, Divider } from '@mui/materi
 import { AddRounded } from '@mui/icons-material';
 
 export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace }) {
-  const [showGraph, setShowGraph] = useState(false);
 
   /**
    * TODO: change the workspace container to have adjustable width sizing via user dragging
@@ -36,7 +35,7 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
   return (
     <Box className="workspace-container" sx={{ minWidth: '20%', align: 'center', p: 1.5 }}>
       {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
-      <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} handleWorkspaceChange={handleWorkspaceChange}/>
+      <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} currentWorkspace={currentWorkspace} handleWorkspaceChange={handleWorkspaceChange}/>
       <Box className="collections-container">
         <Typography>Requests</Typography>
         <Divider orientation="horizontal" />

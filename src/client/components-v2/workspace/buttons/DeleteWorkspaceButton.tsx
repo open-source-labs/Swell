@@ -1,21 +1,26 @@
 import React from 'react';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../../features/business/businessSlice'
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import collectionsController from '../../../controllers/collectionsController';
 import { Button } from '@mui/material';
 
 export default function DeleteRequestButton(props) {
-  const handleDeleteRequest = (event) => {
-    console.log(event);
-    return null;
-  }
+  const dispatch = useDispatch();
+
+  const deleteWorkspace = () => {
+    dispatch(actions.deleteFromCollection(props.currentWorkspace));
+    collectionsController.deleteCollectionFromIndexedDb(props.id)
+  };
 
   return(
     <Button
       color="error"
       variant="text"
       sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
-      onClick={handleDeleteRequest}
+      onClick={deleteWorkspace}
     >
-      <ClearRoundedIcon fontSize="small"/>
+      <DeleteForeverRoundedIcon fontSize="small"/>
     </Button>
   )
 }
