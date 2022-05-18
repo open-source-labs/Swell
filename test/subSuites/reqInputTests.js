@@ -1,3 +1,6 @@
+// Testing UI that all protocol and request types are represented, parameters can be entered,
+// and panels appear appropriately in the application 
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
@@ -92,7 +95,7 @@ module.exports = () => {
 
 
     it('can select a request type', async () => {
-      // possibly remove the first clicks based on button vs dropdown menu
+
       await page.locator('button>> text=GRAPHQL').click();
       expect(await page.locator('div#composer-graphql').count()).to.equal(1)
 
@@ -166,7 +169,7 @@ module.exports = () => {
 
       expect(input).to.equal('http://jsonplaceholder.typicode.com/posts/1')
     });
-  });
+  }).timeout(20000);
 
   
   describe('REST parameter inputs', async () => { // Add tests for deleting header and checking/unchecking boxes
@@ -249,7 +252,7 @@ module.exports = () => {
         expect(await page.locator('div.cm-content').innerText()).to.equal(input)
       });
     });
-  });
+  }).timeout(20000);
 
 
 };

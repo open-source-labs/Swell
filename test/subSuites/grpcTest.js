@@ -1,3 +1,8 @@
+// gRPC tests using "hw2.proto" file to set up gRPC in grpcServer
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock server. 
+
 const grpcServer = require('../grpcServer.js');
 const graphqlServer = require('../graphqlServer');
 const {_electron: electron} = require('playwright');
@@ -75,13 +80,12 @@ module.exports = () => {
     const composerSetup = async () => {
       try {
 
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=gRPC').click();
-        await page.locator('.input-is-medium').fill('0.0.0.0:30051');
+        await page.locator('button>> text=GRPC').click();
+        await page.locator('#url-input').fill('0.0.0.0:30051');
 
         const codeMirror = await page.locator('#grpcProtoEntryTextArea');
         await codeMirror.click();
-        const grpcProto = await codeMirror.locator('textarea');
+        const grpcProto = await codeMirror.locator('.cm-content');
         await grpcProto.fill(proto);
 
         await page.locator('#save-proto').click();
@@ -164,5 +168,5 @@ module.exports = () => {
         console.error(err);
       }
     });
-  });
+  }).timeout(20000);
 };
