@@ -1,3 +1,5 @@
+
+
 import { ApolloClient, OperationVariables, InMemoryCache } from '@apollo/client';
 import gql from 'graphql-tag';
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -18,14 +20,15 @@ const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 const graphQLController = {
   openGraphQLConnection(reqResObj: ReqRes): void {
     // initialize response data
-    reqResObj.response.headers = {};
-    reqResObj.response.events = [];
-    reqResObj.response.cookies = [];
-    reqResObj.connection = 'open';
-    reqResObj.timeSent = Date.now();
+    const newReqRes = {...reqResObj}
+    newReqRes.response.headers = {};
+    newReqRes.response.events = [];
+    newReqRes.response.cookies = [];
+    newReqRes.connection = 'open';
+    newReqRes.timeSent = Date.now();
     // store.default.dispatch(actions.reqResUpdate(reqResObj));
     // send reqRes object to main process through context bridge
-    this.sendGqlToMain({ reqResObj })
+    this.sendGqlToMain({ newReqRes })
       .then((response) => {
         if (response.error)
           this.handleError(response.reqResObj.error, response.reqResObj);

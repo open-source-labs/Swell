@@ -41,8 +41,7 @@ module.exports = () => {
     before(async () => {
       // try {
         
-      await page.locator('#selected-network').click();
-      await page.locator('a >> text=gRPC').click();
+        await page.locator('button>> text=GRPC').click();
       // Read the data on the hw2.proto file.
       try {
         fs.readFile(path.join(__dirname, '../hw2.proto'), 'utf8', (err, data) => {
@@ -78,14 +77,14 @@ module.exports = () => {
 
     const composerSetup = async () => {
       try {
-        await page.locator('#selected-network').click();
-        await page.locator('a >> text=gRPC').click();
-        await page.locator('.input-is-medium').fill('0.0.0.0:30051');
+        await page.locator('button>> text=GRPC').click();
+        await page.locator('#url-input').fill('0.0.0.0:30051');
+
 
         const codeMirror = await page.locator('#grpcProtoEntryTextArea');
         await codeMirror.click();
-        const protoInput = await codeMirror.locator('textarea');
-        await protoInput.fill(proto);
+        const grpcProto = await codeMirror.locator('.cm-content');
+        await grpcProto.fill(proto);
 
         await page.locator('#save-proto').click();
       } catch (err) {
@@ -108,15 +107,16 @@ module.exports = () => {
         // click the view tests button to reveal the test code editor
         await page.locator('span >> text=View Tests').click();
         // set the value of the code editor to be some hard coded simple assertion tests
-
+        
         const codeMirror2 = await page.locator('#test-script-entry');
         await codeMirror2.click();
-        const scriptBody = await codeMirror2.locator('textarea');
+        const scriptBody = await codeMirror2.locator('.cm-content');
 
         try {
-          for (let i = 0; i < 100; i += 1) {
-            await scriptBody.press('Backspace');
-          }
+          // for (let i = 0; i < 100; i += 1) {
+          //   await scriptBody.press('Backspace');
+          // }
+          scriptBody.fill('')
           await scriptBody.fill(script);
         } catch (err) {
           console.error(err);
@@ -137,7 +137,7 @@ module.exports = () => {
       await clearAndFillTestScriptArea(script);
       await addReqAndSend(num);
       // Select the Tests column inside of Responses pane.
-      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
       // Select the results of the first test, and check to see its status.
       const testStatus = await page.locator('#TestResult-0-status').innerText();
       // Check status.
@@ -150,7 +150,7 @@ module.exports = () => {
         "expect([1, 2]).to.be.an('array').that.does.not.include(3);";
       await clearAndFillTestScriptArea(script);
       await addReqAndSend(num);
-      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
       const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
       await page.locator('button >> text=Remove').click();
@@ -162,7 +162,7 @@ module.exports = () => {
         "assert.strictEqual(response.headers['content-type'], 'application/grpc+proto');";
       await clearAndFillTestScriptArea(script);
       await addReqAndSend(num);
-      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
       const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
       await page.locator('button >> text=Remove').click();
@@ -172,7 +172,7 @@ module.exports = () => {
       const script = `assert.strictEqual(response.events[0].message, "Hello string");`;
       await clearAndFillTestScriptArea(script);
       await addReqAndSend(num);
-      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
       const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
       await page.locator('button >> text=Remove').click();
@@ -182,10 +182,10 @@ module.exports = () => {
       const script = `const grpcTestVariable = "Hello string"; \nassert.strictEqual(response.events[0].message, grpcTestVariable)`;
       await clearAndFillTestScriptArea(script);
       await addReqAndSend(num);
-      await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+      await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
       const testStatus = await page.locator('#TestResult-0-status').innerText();
       expect(testStatus).to.equal('PASS');
       await page.locator('button >> text=Remove').click();
     });
-  });
+  }).timeout(20000);
 };

@@ -59,36 +59,34 @@ module.exports = () => {
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {
-          await page.locator('#composer >> button.is-graphQL').click();
-          await page.locator(`#composer >> a >> text=${method}`).click();
+          await page.locator('button#graphql-method').click();
+          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
         }
 
         // type in url
-        await page.locator('.input-is-medium').fill(url);
+        await page.locator('#url-input').fill(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
           await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Headers"), 5)').click();
+          await page.locator('#add-header').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
           await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Cookies"), 5)').click();
+          await page.locator('#add-cookie').click();
         });
 
         // select Body, clear it, and type in query
         const codeMirror = await page.locator('#gql-body-entry');
         await codeMirror.click();
-        const gqlBodyCode = await codeMirror.locator('textarea');
+        const gqlBodyCode = await codeMirror.locator('.cm-content');
 
         try {
-          for (let i = 0; i < 100; i += 1) {
-            await gqlBodyCode.press('Backspace');
-          }
+          await gqlBodyCode.fill('');
           await gqlBodyCode.fill(query);
         } catch (err) {
           console.error(err);
@@ -97,7 +95,7 @@ module.exports = () => {
         // select Variables and type in variables
         const codeMirror2 = await page.locator('#gql-var-entry');
         await codeMirror2.click();
-        await codeMirror2.locator('textarea').fill(variables);
+        await codeMirror2.locator('.cm-content').fill(variables);
 
       } catch (err) {
         console.error(err);
@@ -118,11 +116,10 @@ module.exports = () => {
     it('it should be able to introspect the schema (PUBLIC API)', async () => {
       try {
         // click and check GRAPHQL
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=GRAPHQL').click();
+        await page.locator('button>> text=GRAPHQL').click();
 
         // type in url
-        await page.locator('.input-is-medium').fill('https://countries.trevorblades.com/');
+        await page.locator('#url-input').fill('https://countries.trevorblades.com/');
 
         // click introspect
         await page.locator('button >> text=Introspect').click();
@@ -130,9 +127,9 @@ module.exports = () => {
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const introspectionResult = await page.locator('#gql-introspection >> .CodeMirror-code')
+              const introspectionResult = await page.locator('#gql-introspection >> .cm-content')
               expect(await introspectionResult.count()).to.equal(1)
-              expect(await introspectionResult.innerText()).to.include('1');
+              expect(await introspectionResult.innerText()).to.include('directive');
               resolve();
             } catch (err) {
               console.error(err);
@@ -142,7 +139,7 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    }).timeout(5000);
+    }).timeout(20000);
 
     it('it should be able to create queries using variables (PUBLIC API)', async () => {
       try {
@@ -158,7 +155,7 @@ module.exports = () => {
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              const events = await page.locator('#events-display >> .CodeMirror-code')
+              const events = await page.locator('#events-display >> .cm-content')
               expect(await events.count()).to.equal(1)
               expect(await events.innerText()).to.include('Abu Dhabi');
               resolve();
@@ -187,7 +184,7 @@ module.exports = () => {
             try {
               const statusCode = await page.locator('.status-tag').innerText();
               
-              const events = await page.locator('#events-display >> .CodeMirror-code')
+              const events = await page.locator('#events-display >> .cm-content')
               expect(await events.count()).to.equal(1)
 
               expect(statusCode).to.equal('Error');
@@ -219,7 +216,7 @@ module.exports = () => {
             try {
               const statusCode = await page.locator('.status-tag').innerText();
 
-              const events = await page.locator('#events-display >> .CodeMirror-code')
+              const events = await page.locator('#events-display >> .cm-content')
               expect(await events.count()).to.equal(1)
 
               expect(statusCode).to.equal('Success');
@@ -260,7 +257,7 @@ module.exports = () => {
               await page.locator(`#view-button-${num-2}`).click();
 
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .CodeMirror-code')
+              const events = await page.locator('#events-display >> .cm-content')
               expect(await events.count()).to.equal(1)
 
               expect(statusCode).to.equal('Success');
@@ -274,8 +271,8 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-    }).timeout(5000);
-  });
+    });
+  }).timeout(20000);
 
 }
   

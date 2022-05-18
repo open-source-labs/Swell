@@ -55,51 +55,49 @@ module.exports = () => {
     ) => {
       try {
         // click and check 
-        await page.locator('#selected-network').click();
-        await page.locator('a >> text=GRAPHQL').click();
+        await page.locator('button>> text=GRAPHQL').click();
+
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {
-          await page.locator('#composer >> button.is-graphQL').click();
-          await page.locator(`a >> text=${method}`).click();
+          await page.locator('button#graphql-method').click();
+          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
         }
 
         // type in url
-        await page.locator('.input-is-medium').fill(url);
+        await page.locator('#url-input').fill(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
           await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Headers"), 5)').click();
+          await page.locator('#add-header').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
           await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Cookies"), 5)').click();
+          await page.locator('#add-cookie').click();
         });
 
 
         // select Body, clear it, and type in query
         const codeMirror = await page.locator('#gql-body-entry');
         await codeMirror.click();
-        const gqlBodyCode = await codeMirror.locator('textarea');
+        const gqlBodyCode = await codeMirror.locator('.cm-content');
 
-        try {
-          for (let i = 0; i < 100; i += 1) {
-            await gqlBodyCode.press('Backspace');
-          }
-          await gqlBodyCode.fill(body);
-        } catch (err) {
-          console.error(err);
+          try {
+            await gqlBodyCode.fill('');
+            await gqlBodyCode.fill(body);
+          } catch (err) {
+            console.error(err);
         }
 
         // select Variables and type in variables
         const codeMirror2 = await page.locator('#gql-var-entry');
         await codeMirror2.click();
-        await codeMirror2.locator('textarea').fill(variables);
+        await codeMirror2.locator('.cm-content').fill(variables);
 
       } catch (err) {
         console.error(err);
@@ -122,15 +120,16 @@ module.exports = () => {
         // click the view tests button to reveal the test code editor
         await page.locator('span >> text=View Tests').click();
         // set the value of the code editor to be some hard coded simple assertion tests
-
+        
         const codeMirror2 = await page.locator('#test-script-entry');
         await codeMirror2.click();
-        const scriptBody = await codeMirror2.locator('textarea');
+        const scriptBody = await codeMirror2.locator('.cm-content');
 
         try {
-          for (let i = 0; i < 100; i += 1) {
-            await scriptBody.press('Backspace');
-          }
+          // for (let i = 0; i < 100; i += 1) {
+          //   await scriptBody.press('Backspace');
+          // }
+          scriptBody.fill('')
           await scriptBody.fill(script);
         } catch (err) {
           console.error(err);
@@ -222,5 +221,5 @@ module.exports = () => {
       });
       expect(testStatus).to.equal('PASS');
     });
-  });
+  }).timeout(20000);
 };

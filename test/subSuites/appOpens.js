@@ -69,5 +69,5 @@ module.exports = () => {
         expect(await page.locator('div[id^="responses"]').count()).to.equal(1)
       });
     });
-  });
+  }).timeout(20000);
 };

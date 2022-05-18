@@ -47,19 +47,18 @@ module.exports = () => {
     ) => {
       try {
         // click and check 
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=WebRTC').click();
-     
+        await page.locator('button>> text=WEBRTC').click();
 
         // select STUN or TURN servers, clear it, and type in server
-        const codeMirror = await page.locator('.react-codemirror2');
+        const codeMirror = await page.locator('.cm-editor');
         await codeMirror.click();
-        const webRTCServer = await codeMirror.locator('textarea');
+        const webRTCServer = await codeMirror.locator('.cm-content');
 
         try {
-          for (let i = 0; i < 100; i += 1) {
-            await webRTCServer.press('Backspace');
-          }
+          // for (let i = 0; i < 100; i += 1) {
+          //   await webRTCServer.press('Backspace');
+          // }
+          await webRTCServer.fill('');
           await webRTCServer.fill(server);
         } catch (err) {
           console.error(err);
@@ -93,5 +92,5 @@ module.exports = () => {
     });
 
     
-  });
+  }).timeout(20000);
 };

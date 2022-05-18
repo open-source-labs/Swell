@@ -47,46 +47,49 @@ module.exports = () => {
     ) => {
       try {
         // click and check REST
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=REST').click();
+        await page.locator('button>> text=HTTP2').click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
-          await page.locator('#composer >> button.is-rest').click();
-          await page.locator(`#composer >> a >> text=${method}`).click();
+          await page.locator('button#rest-method').click();
+          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
         }
 
         // type in url
-        await page.locator('.input-is-medium').fill(url);
+        await page.locator('#url-input').fill(url);
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
           await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Headers"), 5)').click();
+          await page.locator('#add-header').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
           await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
           await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('button:near(:text("Cookies"), 5)').click();
+          await page.locator('#add-cookie').click();
         });
 
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          await page.locator('span >> text=text/plain').click();
-          await page.locator('a >> text=application/json').click();
+          if (await page.locator('#body-type-select').innerText()==='raw'){
+            await page.locator('#raw-body-type').click();
+            await page.locator('.dropdown-item >> text=application/json').click();
+          }
+          
           // insert JSON content into body
           const codeMirror = await page.locator('#body-entry-select');
           await codeMirror.click();
-          const restBody = await codeMirror.locator('textarea');
+          const restBody = await codeMirror.locator('.cm-content');
 
           try {
-            for (let i = 0; i < 100; i += 1) {
-              await restBody.press('Backspace');
-            }
+            // for (let i = 0; i < 100; i += 1) {
+            //   await restBody.press('Backspace');
+            // }
+            await restBody.fill('');
             await restBody.fill(body);
           } catch (err) {
             console.error(err);
@@ -114,12 +117,13 @@ module.exports = () => {
 
         const codeMirror2 = await page.locator('#test-script-entry');
         await codeMirror2.click();
-        const scriptBody = await codeMirror2.locator('textarea');
+        const scriptBody = await codeMirror2.locator('.cm-content');
 
         try {
-          for (let i = 0; i < 100; i += 1) {
-            await scriptBody.press('Backspace');
-          }
+          // for (let i = 0; i < 100; i += 1) {
+          //   await scriptBody.press('Backspace');
+          // }
+          await scriptBody.fill('');
           await scriptBody.fill(script);
         } catch (err) {
           console.error(err);
@@ -159,7 +163,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
 
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
@@ -173,7 +177,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('FAIL');
       });
@@ -186,7 +190,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
@@ -199,7 +203,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('FAIL');
       });
@@ -215,7 +219,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const firstStatus = await page.locator('#TestResult-0-status').innerText();
         const secondStatus = await page.locator('#TestResult-1-status').innerText();
         const thirdStatus = await await page.locator('#TestResult-2-status').innerText();
@@ -236,7 +240,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const firstStatus = await page.locator('#TestResult-0-status').innerText();
         const secondStatus = await page.locator('#TestResult-1-status').innerText();
         const thirdStatus = await await page.locator('#TestResult-2-status').innerText();
@@ -258,7 +262,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
@@ -272,7 +276,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
@@ -286,7 +290,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await page.locator('#TestResult-0-status').innerText();
@@ -308,7 +312,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await page.locator('#TestResult-0-status').innerText();
@@ -327,7 +331,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
@@ -341,7 +345,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
       });
@@ -355,7 +359,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -376,7 +380,7 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -398,10 +402,10 @@ module.exports = () => {
         await clearAndFillTestScriptArea(script);
         await addAndSend(num);
 
-        await page.locator('a >> text=Tests').click(); // THIS BREAKS EVERYTHING!!!!!!!!!!!!!!!!!
+        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
         const { selector } = await page.locator('.empty-state-wrapper');
         expect(selector).to.equal('.empty-state-wrapper');
       });
     });
-  });
+  }).timeout(20000);
 };

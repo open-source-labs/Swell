@@ -169,6 +169,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
         <input
           className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
           type="text"
+          id = "url-input"
           placeholder="Enter endpoint"
           value={newRequestFields.gqlUrl}
           onChange={(e) => {

@@ -75,13 +75,12 @@ module.exports = () => {
     const composerSetup = async () => {
       try {
 
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=gRPC').click();
-        await page.locator('.input-is-medium').fill('0.0.0.0:30051');
+        await page.locator('button>> text=GRPC').click();
+        await page.locator('#url-input').fill('0.0.0.0:30051');
 
         const codeMirror = await page.locator('#grpcProtoEntryTextArea');
         await codeMirror.click();
-        const grpcProto = await codeMirror.locator('textarea');
+        const grpcProto = await codeMirror.locator('.cm-content');
         await grpcProto.fill(proto);
 
         await page.locator('#save-proto').click();
@@ -164,5 +163,5 @@ module.exports = () => {
         console.error(err);
       }
     });
-  });
+  }).timeout(20000);
 };
