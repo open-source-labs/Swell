@@ -89,13 +89,14 @@ const collectionsController = {
       });
   },
 
-  async exportToGithub(id: string): Promise<void> {
-    console.log('exportToGithub', id)
+  async exportToGithub(id: string, repo: string, sha: string): Promise<void> {
+    // console.log('exportToGithub workspace id:', id)
+    // console.log('exportToGitHub repo name:', repo)
     const token = await db.auth.toArray();
     const octokit = new Octokit({
       auth: token[0].auth,
     })
-    let repos = await db.repos.toArray()
+    // let repos = await db.repos.toArray()
     let userProfile = await db.profile.toArray()
 
     const toExport = await db.table('collections')
@@ -115,9 +116,11 @@ const collectionsController = {
     // make popup, for now hardcoding
     const date = Date.now()
     console.log(date.toString())
+    console.log('repo.sha', repo.sha);
     const response = await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+      sha: sha,
       owner: userProfile[0].login,
-      repo: 'swell-file-does-not-exist',
+      repo: repo,
       path: '.swell',
       message: `saving ${toExport.name} @ ${new Date(Date.now()).toString()}`,
       committer: {

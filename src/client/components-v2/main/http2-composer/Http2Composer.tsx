@@ -62,7 +62,7 @@ export default function Http2Composer(props) {
     warningMessage,
   } = props;
 
-  console.log(newRequestBody)
+  // console.log(newRequestBody)
 
   const {
     gRPC,

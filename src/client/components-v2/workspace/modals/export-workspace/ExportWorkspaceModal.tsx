@@ -10,6 +10,8 @@ import collectionsController from '../../../../controllers/collectionsController
 import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import * as actions from '../../../../features/business/businessSlice';
+import * as uiactions from '../../../../features/ui/uiSlice';
 
 const style = {
   display: 'flex',
@@ -61,6 +63,9 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
           {/* <Box id="import-workspace-modal-description" sx={{ m: 1, webkitJustifyContent: 'space-around', minWidth: 200 }}> */}
               <Button
                 variant="contained" size="small" 
+                onClick={() =>
+                  collectionsController.exportCollection(localWorkspaces)
+                  }
                 >Files
               </Button>
               <Button
@@ -72,4 +77,4 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
       </Fade>
     </Modal>
   );
-}
+};

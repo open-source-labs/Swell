@@ -6,6 +6,7 @@ import * as uiactions from './../features/ui/uiSlice';
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import Cookies from 'js-cookie';
+import { Collection } from 'dexie';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
@@ -13,7 +14,6 @@ const githubController = {
   async importFromRepo(): Promise<string> {
     // setup authorization
     const token = await db.auth.toArray();
-    console.log(await db.files.toArray());
     const octokit = new Octokit({
       auth: token[0].auth,
     });
@@ -27,7 +27,6 @@ const githubController = {
         path: '.swell',
       }
     );
-    // console.log('github import', Buffer.from(response.data.content, 'base64').toString('UTF-8'))
     return JSON.parse(
       Buffer.from(response.data.content, 'base64').toString('UTF-8')
     );
@@ -44,7 +43,6 @@ const githubController = {
       withCredentials: true,
       headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
     });
-    console.log('getUserData', response);
     return response.data;
   },
 
@@ -77,16 +75,8 @@ const githubController = {
     }
     console.log('db updated');
   },
-};
-
+}
+  
 export default githubController;
 
-// async importFromRepo(): Promise<string> {
-//   const token = await db.auth.toArray();
-//   const octokit = new Octokit({
-//     auth: token[0].auth
-//   });
-//   Cookies.set('auth', token[0].auth);
-//   const response = await octokit.request('GET /search/swell:in path')
-// }
 
