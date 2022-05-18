@@ -37,13 +37,13 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   let files = useLiveQuery(() => db.files.toArray());
   // console.log(files[0].repository.full_name)
   let repoToExportTo;
-  if(files !== undefined) {
-    files[0].repository.full_name;
-  } else {
-    repoToExportTo = '';
-  }
+  // if(files !== undefined) {
+  //   files[0].repository.full_name;
+  // } else {
+  //   repoToExportTo = '';
+  // }
 
-  const [selectedRepo, setSelectedRepo] = React.useState(repoToExportTo);
+  const [selectedRepo, setSelectedRepo] = React.useState('');
 
   const handleImportFromGithubClick = () => {
     setImportFromGithubList(!importFromGithubList)
@@ -62,7 +62,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   const dispatch = useDispatch();
 
   const localWorkspaces = useSelector((store: any) => store.business.collections);
-  
+
 
   const importFileClick = () => {
     collectionsController.importCollection(localWorkspaces);
@@ -92,16 +92,16 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
     return swellFileContents;
   };
 
-  
+
   const swellRepositoriesArray = [];
   if (files !== undefined) {
     for (let file of files) {
       const owner = file.repository.owner.login;
       const repo = file.repository.name;
       swellRepositoriesArray.push(
-        <List 
+        <List
           key={file.repository.id}
-          component="div" 
+          component="div"
           disablePadding
         >
           <ListItemButton onClick={() => importFromGithub(owner,repo)} sx={{ pl: 4 }}>
@@ -117,9 +117,9 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   if(workspaces !== undefined) {
     for (let workspace of workspaces) {
       exportDbWorkspacesToFiles.push(
-        <List 
+        <List
           key={workspace.id}
-          component="div" 
+          component="div"
           disablePadding
         >
           <ListItemButton onClick={() => collectionsController.exportToFile(workspace.id)} sx={{ pl: 4 }}>
@@ -135,7 +135,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
     for (let workspace of workspaces) {
       // onClick={() => collectionsController.exportToGithub(workspace.id)
       exportDbWorkspacesToGithub.push(
-        <List 
+        <List
           key={workspace.id}
           component="div"
           disablePadding
@@ -158,7 +158,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
     }
   }
 
-  
+
 
   return (
 <Modal sx={{display: 'flex', alignItems: 'center',justifyContent: 'center'}}
@@ -176,7 +176,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', }}>
     <nav aria-label="main mailbox folders">
       {/* List containing Import functionality */}
-      <List > 
+      <List >
         {/* Import from files. Opens local file system */}
         <ListItem disablePadding>
           <ListItemButton onClick={importFileClick}>
@@ -188,7 +188,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
         </ListItem>
         {/* Import from Github. Pulls all Swell repos from user's github (which are stored in IndexedDB upon login) */}
         <ListItem disablePadding>
-          <ListItemButton onClick={handleImportFromGithubClick}> 
+          <ListItemButton onClick={handleImportFromGithubClick}>
             <ListItemIcon>
               <GitHubIcon/>
             </ListItemIcon>
@@ -201,9 +201,9 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
         </Collapse>
       </List>
   </nav>
-  
+
   <Divider />
-  
+
   <nav aria-label="secondary mailbox folders">
     {/* List containing Export functionality */}
     <List>
@@ -224,7 +224,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
         {exportDbWorkspacesToFiles}
       </Collapse>
       {/**
-       * Export to GitHub. 
+       * Export to GitHub.
        */}
        <ListItem disablePadding>
         <ListItemButton onClick={handleExportToGithubListClick}>
@@ -237,9 +237,9 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
       </ListItem>
       <Collapse in={exportToGithubList} timeout="auto" unmountOnExit>
         {exportDbWorkspacesToGithub}
-        {/* We want to render a list of clickable workspaces, 
-          derived from the IndexedDB. Upon clicking each workspace, 
-          we want to open a dialog box, allowing the user to choose 
+        {/* We want to render a list of clickable workspaces,
+          derived from the IndexedDB. Upon clicking each workspace,
+          we want to open a dialog box, allowing the user to choose
           which repo to save it in. */}
         {/* {dbWorkspaces} */}
       </Collapse>

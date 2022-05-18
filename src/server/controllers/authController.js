@@ -125,9 +125,12 @@ authController.getSwellFile = async (req, res, next) => {
       headers: {
         authorization: `token ${req.cookies.auth}`,
         accept: 'application/vnd.github.v3+json',
-      } 
+      }
     });
-    res.locals.github.files = response.data.items;
+    // res.locals.github.files = response.data.items;
+    // const regex = new RegExp("/\.swell/", 'g' )
+    // response.data.items.filter((val) => val.name.search('.swell') !== -1)
+    res.locals.github.files = response.data.items.filter((val) => val.name.search('.swell') !== -1) // response.data.items
     return next();
   } catch (err) {
     return next({

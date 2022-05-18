@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import BarGraph from '../../components/display/BarGraph';
 import ScheduleContainer from '../../components/containers/ScheduleContainer';
-import WorkspaceContainer from "../workspace/WorkspaceContainer";
+import WorkspaceContainer from "./WorkspaceContainer";
 import HistoryContainer from '../../components/containers/HistoryContainer';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import WorkIcon from '@mui/icons-material/Work';
