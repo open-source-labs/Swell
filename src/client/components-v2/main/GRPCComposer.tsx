@@ -176,7 +176,7 @@ export default function GRPCComposer(props) {
   };
 
   return(
-    <Box className="is-flex is-flex-direction-column is-justify-content-space-between is-tall" id = "composer-grpc">
+    <Box className="is-flex is-flex-direction-column is-justify-content-space-between" id = "composer-grpc">
         <div
           className="is-flex-grow-3 add-vertical-scroll"
           style={{ overflowX: 'hidden' }}

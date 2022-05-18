@@ -109,7 +109,7 @@ function MainContainer(props) {
           element={<WebhookComposer {...props} />}
         />
       </Routes>
-      <Divider orientation="horizontal"/>
+      {/* <Divider orientation="horizontal"/> */}
       <ResponsePaneContainer />
     </Box>
   )

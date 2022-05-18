@@ -236,7 +236,7 @@ export default function GraphQLComposer(props) {
   };
 
   return(
-    <Box className="is-flex is-flex-direction-column is-justify-content-space-between is-tall" id = "composer-graphql">
+    <Box className="is-flex is-flex-direction-column is-justify-content-space-between" id = "composer-graphql">
         <div
           className="is-flex-grow-3 add-vertical-scroll"
           style={{ overflowX: 'hidden' }}

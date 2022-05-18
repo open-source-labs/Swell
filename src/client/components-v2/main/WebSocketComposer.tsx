@@ -103,7 +103,7 @@ export default function WebSocketComposer(props) {
   };
 
   return(
-    <Box className="is-flex is-flex-direction-column is-justify-content-space-between is-tall" id = "composer-websocket">
+    <Box className="is-flex is-flex-direction-column is-justify-content-space-between" id = "composer-websocket">
         <div
           className="is-flex-grow-3 add-vertical-scroll"
           style={{ overflowX: 'hidden' }}

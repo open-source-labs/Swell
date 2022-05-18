@@ -120,7 +120,7 @@ export default function OpenAPIComposer(props) {
   };
 
   return(
-    <Box className="is-flex is-flex-direction-column is-justify-content-space-between is-tall" id= "composer-openapi">
+    <Box className="is-flex is-flex-direction-column is-justify-content-space-between" id= "composer-openapi">
         <div
           className="is-flex-grow-3 add-vertical-scroll"
           style={{ overflowX: 'hidden' }}
