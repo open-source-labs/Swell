@@ -7,7 +7,51 @@ import * as actions from './../../features/business/businessSlice';
 import * as uiactions from './../../features/ui/uiSlice';
 
 // Import MUI components.
+import { styled } from '@mui/system';
 import { Box, Button } from '@mui/material';
+import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
+
+const blue = {
+  500: '#51819b',
+  600: '#51819b',
+  700: '#7ebdde',
+};
+
+const white = {
+  500: '#f0f6fa',
+}
+
+const CustomButton = styled(ButtonUnstyled)`
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: bold;
+  font-size: 0.875rem;
+  background-color: ${blue[500]};
+  padding: 10px 0px;
+  border-radius: 3px;
+  color: ${white[500]};
+  transition: all 150ms ease;
+  cursor: pointer;
+  border: none;
+  width: 8vw;
+
+  &:hover {
+    background-color: ${blue[600]};
+  }
+
+  &.${buttonUnstyledClasses.active} {
+    background-color: ${blue[700]};
+  }
+
+  &.${buttonUnstyledClasses.focusVisible} {
+    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
+    outline: none;
+  }
+
+  &.${buttonUnstyledClasses.disabled} {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
 
 const mapStateToProps = (store) => {
   return {
@@ -71,13 +115,13 @@ const mapDispatchToProps = (dispatch) => ({
  * value: The value of the button used to update the Redux store.
  */
 const pages = [
-  { name: 'HTTP2', route: '/', value: 'rest' },
-  { name: 'GRAPHQL', route: '/graphql', value: 'graphQL' },
-  { name: 'GRPC', route: '/grpc', value: 'grpc' },
-  { name: 'WEB SOCKET', route: '/websocket', value: 'ws' },
-  { name: 'WEBRTC', route: '/webrtc', value: 'webrtc' },
-  { name: 'OPENAPI', route: '/openapi', value: 'openapi' },
-  { name: 'WEBHOOK', route: '/webhook', value: 'webhook' },
+  { name: 'HTTP/2', route: '/', value: 'rest' },
+  { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
+  { name: 'gRPC', route: '/grpc', value: 'grpc' },
+  { name: 'WebSocket', route: '/websocket', value: 'ws' },
+  { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
+  { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
+  { name: 'Webhook', route: '/webhook', value: 'webhook' },
 ]
 
 /**
@@ -274,10 +318,10 @@ function ProtocolSelect(props) {
           key={page.name}
           to={page.route}
           >
-          <Button
+          <CustomButton
             key={page.name}
-            variant="contained"
-            color="primary"
+            // variant="contained"
+            // color="primary"
             onClick={() => {
               console.log(page.value)
               onProtocolSelect(page.value)}
@@ -286,7 +330,7 @@ function ProtocolSelect(props) {
               m: 1
             }}>
             {page.name}
-          </Button>
+          </CustomButton>
         </Link>
       ))}
     </Box>
