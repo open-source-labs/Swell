@@ -39,9 +39,9 @@ const App = () => {
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* New MUI workspace. */}
           {/* <WorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} /> */}
-          {/* <HistoryOrWorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} /> */}
+          <HistoryOrWorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
           {/* Legacy workspace. */}
-          <ContentsContainer />
+          {/* <ContentsContainer /> */}
           <Divider orientation="vertical"/>
           {/* New MUI main container. */}
           <MainContainer currentWorkspaceId={currentWorkspaceId} />

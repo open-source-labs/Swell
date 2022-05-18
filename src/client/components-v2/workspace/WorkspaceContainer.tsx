@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from 'react-redux';
 
 // Local components
 import CurrentWorskpaceDisplay from "./CurrentWorkspaceDisplay";
+import LegacyWorkspace from "../../components/containers/WorkspaceContainer";
+import BarGraph from "../../components/display/BarGraph";
+// import CollectionsContainer from "../../components/containers/CollectionsContainer";
 import CollectionTree from './CollectionTree';
 
 // MUI components and SVG icons
@@ -10,14 +13,12 @@ import { Box, Button, Typography, SelectChangeEvent, Divider } from '@mui/materi
 import { AddRounded } from '@mui/icons-material';
 
 export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace }) {
+
   /**
    * TODO: change the workspace container to have adjustable width sizing via user dragging
    * TODO: reimplement the "Schedule" functionality somehow
    * TODO: refactor store to remove explicit any
    */
-
-  // // currentWorkspace is the current Workspace's UUID. It is only altered in WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
-  // const [currentWorkspaceId, setWorkspace] = React.useState('');
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
@@ -34,22 +35,32 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
   return (
     <Box className="workspace-container" sx={{ minWidth: '20%', align: 'center', p: 1.5 }}>
       {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
-      <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} handleWorkspaceChange={handleWorkspaceChange}/>
+      <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} currentWorkspace={currentWorkspace} handleWorkspaceChange={handleWorkspaceChange}/>
+      <Box className="collections-container">
+        <Typography>Requests</Typography>
+        <Divider orientation="horizontal" />
+        <LegacyWorkspace />
+      </Box>
+
       {/* Conditionally render either a message or collection tree depending on if a workspace is selected */}
-      {currentWorkspace === undefined
-        ? <Typography variant="caption">Get started by selecting, importing, or creating a new workspace.</Typography>
-        : <Box className="collections-container">
-            <Typography>Collections</Typography>
-            <Divider orientation="horizontal" />
-            <CollectionTree currentWorkspace={currentWorkspace}/>
-          </Box>
+      {
+        // currentWorkspace === undefined
+        // ? <Typography variant="caption">Get started by selecting, importing, or creating a new workspace.</Typography>
+        // : <Box className="collections-container">
+        //     <Typography>Requests</Typography>
+        //     <Divider orientation="horizontal" />
+        //     <LegacyWorkspace />
+        //     {/* <CollectionTree currentWorkspace={currentWorkspace}/> */}
+        //   </Box>
       }
+
       {/**
        * TODO:
        * Below button is not ready to be added. Would eventually be used to add another collection to a workspace.
        * However, workspaces are currently only built to handle 1 collection max.
        * Need to refactor Redux store to get this button to work.
        */}
+
       {/* <Button variant="text" sx={{ width: 1, maxHeight: '24px', minHeight: '24px' }}>
         <AddRounded fontSize="small"/>
       </Button> */}
