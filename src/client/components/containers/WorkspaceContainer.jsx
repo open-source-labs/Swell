@@ -33,7 +33,7 @@ function WorkspaceContainer(props) {
             setShowModal(true);
           }}
         >
-          Save Workspace
+          Save or Create New Workspace
         </button>
       </div>
 
