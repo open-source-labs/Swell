@@ -80,26 +80,6 @@ const githubController = {
   },
 }
   
-//   async saveContentsToDB (data: ReqResRequest, auth: string): Promise<void> {
-//     db.table('contents').clear();
-//     for (let content of data.contents) {
-//       db.table('contents')
-//         .put(content)
-//         .catch((err: string) =>
-//           console.log('Error in saveContentsToDB/contents', err)
-//         );
-//     }
-//   }
-
-// }
 export default githubController;
 
-// async importFromRepo(): Promise<string> {
-//   const token = await db.auth.toArray();
-//   const octokit = new Octokit({
-//     auth: token[0].auth
-//   });
-//   Cookies.set('auth', token[0].auth);
-//   const response = await octokit.request('GET /search/swell:in path')
-// }
 
