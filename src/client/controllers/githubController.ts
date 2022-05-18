@@ -14,7 +14,6 @@ const githubController = {
   async importFromRepo(): Promise<string> {
     // setup authorization
     const token = await db.auth.toArray();
-    // console.log(await db.files.toArray());
     const octokit = new Octokit({
       auth: token[0].auth,
     });
@@ -28,7 +27,6 @@ const githubController = {
         path: '.swell',
       }
     );
-    // console.log('github import', Buffer.from(response.data.content, 'base64').toString('UTF-8'))
     return JSON.parse(
       Buffer.from(response.data.content, 'base64').toString('UTF-8')
     );
@@ -45,7 +43,6 @@ const githubController = {
       withCredentials: true,
       headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
     });
-    console.log('getUserData', response);
     return response.data;
   },
 

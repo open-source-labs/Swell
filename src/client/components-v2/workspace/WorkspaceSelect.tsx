@@ -51,7 +51,7 @@ export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceCha
         </Select>
         <FormHelperText>Current Workspace</FormHelperText>
       </FormControl>
-      <ImportWorkspaceModal open={open} handleClose={handleClose}/>
+      {/* <ImportWorkspaceModal open={open} handleClose={handleClose}/> */}
     </Box>
   )
 }

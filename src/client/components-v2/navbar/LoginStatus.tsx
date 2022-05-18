@@ -72,7 +72,12 @@ export default function LoginContainer(props) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <MoreVertRoundedIcon fontSize='small' onClick={handleSignOut}/>
+          <Button
+            sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
+            onClick={handleSignOut}
+          >
+            <LogoutRoundedIcon fontSize='small' />
+          </Button>
           <StyledBadge
             sx={{
               m: 1,
@@ -82,7 +87,7 @@ export default function LoginContainer(props) {
             variant="dot">
             <Avatar alt={session.username} src={session.avatar}/>
           </StyledBadge>
-          <Button variant="outlined">Invite +</Button>
+          {/* <Button variant="outlined">Invite +</Button> */}
         </Box>
         :
         <Box sx={{

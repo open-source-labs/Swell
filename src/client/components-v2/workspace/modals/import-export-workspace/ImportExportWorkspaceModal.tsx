@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
+import { Box, Button, Backdrop } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import collectionsController from '../../../../controllers/collectionsController';
@@ -30,16 +28,22 @@ import ExportToGithubDialog from './ExportToGitHubDialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 
-export default function ImportWorkspaceModal({ open, handleClose }) {
+export default function ImportExportWorkspaceModal({ open, handleClose }) {
   const [importFromGithubList, setImportFromGithubList] = React.useState(false);
   const [exportToLocalFilesList, setExportToLocalFilesList] = React.useState(false);
   const [exportToGithubList, setExportToGithubList] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   let files = useLiveQuery(() => db.files.toArray());
-  console.log(files[0].repository.full_name)
-  const [selectedRepo, setSelectedRepo] = React.useState("files[0].repository.full_name");
+  // console.log(files[0].repository.full_name)
+  let repoToExportTo;
+  if(files !== undefined) {
+    files[0].repository.full_name;
+  } else {
+    repoToExportTo = '';
+  }
 
+  const [selectedRepo, setSelectedRepo] = React.useState(repoToExportTo);
 
   const handleImportFromGithubClick = () => {
     setImportFromGithubList(!importFromGithubList)
@@ -61,9 +65,8 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
   
 
   const importFileClick = () => {
-      collectionsController.importCollection(localWorkspaces);
+    collectionsController.importCollection(localWorkspaces);
   }
-
 
   const importFromGithub = async (owner, repo) => {
     const token = await db.auth.toArray();
@@ -96,7 +99,11 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
       const owner = file.repository.owner.login;
       const repo = file.repository.name;
       swellRepositoriesArray.push(
-        <List component="div" disablePadding>
+        <List 
+          key={file.repository.id}
+          component="div" 
+          disablePadding
+        >
           <ListItemButton onClick={() => importFromGithub(owner,repo)} sx={{ pl: 4 }}>
             <ListItemText primary={file.repository.full_name} />
           </ListItemButton>
@@ -110,7 +117,11 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
   if(workspaces !== undefined) {
     for (let workspace of workspaces) {
       exportDbWorkspacesToFiles.push(
-        <List component="div" disablePadding>
+        <List 
+          key={workspace.id}
+          component="div" 
+          disablePadding
+        >
           <ListItemButton onClick={() => collectionsController.exportToFile(workspace.id)} sx={{ pl: 4 }}>
             <ListItemText primary={workspace.name} />
           </ListItemButton>
@@ -122,16 +133,25 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
   const exportDbWorkspacesToGithub = [];
   if(workspaces !== undefined) {
     for (let workspace of workspaces) {
+      // onClick={() => collectionsController.exportToGithub(workspace.id)
       exportDbWorkspacesToGithub.push(
-        <List component="div" disablePadding>
-          <ListItemButton onClick={() => collectionsController.exportToGithub(workspace.id)} sx={{ pl: 4 }}>
+        <List 
+          key={workspace.id}
+          component="div"
+          disablePadding
+        >
+          <ListItemButton sx={{ pl: 4 }} onClick={() => setDialogOpen(true)}>
             <ListItemText primary={workspace.name} />
           </ListItemButton>
           <ExportToGithubDialog
             allUserRepos={files}
+            workspace={workspace}
             selectedRepo={selectedRepo}
             open={dialogOpen}
-            onClose={handleClose}
+            onClose={() => {
+              setDialogOpen(false);
+              handleClose();
+            }}
           />
         </List>
       )
@@ -216,7 +236,7 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
         </ListItemButton>
       </ListItem>
       <Collapse in={exportToGithubList} timeout="auto" unmountOnExit>
-      {exportDbWorkspacesToGithub}
+        {exportDbWorkspacesToGithub}
         {/* We want to render a list of clickable workspaces, 
           derived from the IndexedDB. Upon clicking each workspace, 
           we want to open a dialog box, allowing the user to choose 
