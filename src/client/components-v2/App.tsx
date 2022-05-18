@@ -1,18 +1,13 @@
-import React, { useState, useEffect, JSXElementConstructor } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import ContentsContainer from '../components/containers/ContentsContainer';
-import SidebarContainer from '../components/containers/SidebarContainer';
-import ResponsePaneContainer from '../components/containers/ResponsePaneContainer';
-import RightSideContainer from '../components/containers/RightSideContainer';
+import React, { useState, useEffect } from 'react';
+import { HashRouter } from 'react-router-dom';
 import historyController from '../controllers/historyController';
 import collectionsController from '../controllers/collectionsController';
 import UpdatePopUpContainer from '../components/containers/UpdatePopUpContainer';
 import { WindowExt } from '../../types'
 import '../../assets/style/App.scss';
 import NavBarContainer from './navbar/NavBarContainer';
-import WorkspaceContainer from './workspace/WorkspaceContainer';
 import MainContainer from './main/MainContainer';
-import HistoryOrWorkspaceContainer from './history-workspace-display/HistoryOrWorkspaceContainer';
+import HistoryOrWorkspaceContainer from './workspace/HistoryOrWorkspaceContainer';
 
 import { Box, Divider } from '@mui/material';
 

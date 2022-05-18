@@ -8,6 +8,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
+// Database handling
+import db from '../../../../db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 
 // export interface SimpleDialogProps {
@@ -17,8 +20,19 @@ import ListItemButton from '@mui/material/ListItemButton';
 // }
 
 export default function ExportToGithubDialog({ allUserRepos, workspace, selectedRepo, open, onClose}) {
-  // const { onClose, selectedValue, open } = props;
-  
+  let files = useLiveQuery(() => db.files.toArray());
+  let repos = useLiveQuery(() => db.repos.toArray());
+
+  // db.table('repo')
+  // .where('name')
+  // .equalsIgnoreCase(name)
+  // .first((foundCollection: boolean) => !!foundCollection)
+  // .then((found: boolean) => resolve(found))
+  // .catch((error: Record<string, undefined>) => {
+  //   console.error(error.stack || error);
+  //   reject(error);
+  // });
+
   const handleClose = () => {
     onClose(selectedRepo);
   };
@@ -31,29 +45,42 @@ export default function ExportToGithubDialog({ allUserRepos, workspace, selected
     console.log('need to export this specific file to this clicked-on repo.')
     console.log('workspace to export:', workspace)
     console.log('repo metadata:', repo.repository)
-    collectionsController.exportToGithub(workspace.id, repo.repository.name, repo.sha)
-    // 
+    // grab sha off of current workspace
+    let sha = '';
+    for(let file of files) {
+      if (file.repository.full_name === repo.full_name) {
+        sha = file.sha;
+      }
+    }
+    // db.table('files')
+    //   .where((workspace) => {
+
+    //   })
+
+
+
+    collectionsController.exportToGithub(workspace.id, repo.name, sha)
   }
 
-  console.log(
-    'all user repos:', allUserRepos
-  )
   const repoListItems = []
-  for (let repo of allUserRepos) {
-    // console.log('sha', repo.sha);
-    repoListItems.push(
-      <ListItemButton 
-        key={repo.repository.id}
-        onClick={() => handleExportToRepo(repo)}
-      >
-        <ListItem>
-          <ListItemText primary={repo.repository.full_name} />
-        </ListItem>
-      </ListItemButton>
-    )
+
+  if(repos !== undefined) {
+    console.log(repos)
+    for (let repo of repos) {
+      repoListItems.push(
+        <ListItemButton
+          key={repo.id}
+          onClick={() => handleExportToRepo(repo)}
+        >
+          <ListItem>
+            <ListItemText primary={repo.full_name} />
+          </ListItem>
+        </ListItemButton>
+      )
+    }
   }
 
-  
+
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Select a repository to export to.</DialogTitle>
