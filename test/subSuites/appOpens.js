@@ -1,3 +1,6 @@
+// Test to see if the Electron application opens and runs properly, with proper windows and 
+// major component names
+
 const fs = require('fs-extra');
 const {_electron: electron} = require('playwright');
 const pwTest = require('@playwright/test');

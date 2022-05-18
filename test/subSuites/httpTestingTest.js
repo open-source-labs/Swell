@@ -1,3 +1,5 @@
+// Confirm testing of request/response works for REST
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
@@ -86,9 +88,6 @@ module.exports = () => {
           const restBody = await codeMirror.locator('.cm-content');
 
           try {
-            // for (let i = 0; i < 100; i += 1) {
-            //   await restBody.press('Backspace');
-            // }
             await restBody.fill('');
             await restBody.fill(body);
           } catch (err) {
@@ -120,9 +119,6 @@ module.exports = () => {
         const scriptBody = await codeMirror2.locator('.cm-content');
 
         try {
-          // for (let i = 0; i < 100; i += 1) {
-          //   await scriptBody.press('Backspace');
-          // }
           await scriptBody.fill('');
           await scriptBody.fill(script);
         } catch (err) {

@@ -1,3 +1,5 @@
+// Confirm testing of request/response works for grpc
+
 const grpcServer = require('../grpcServer.js');
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
@@ -113,9 +115,6 @@ module.exports = () => {
         const scriptBody = await codeMirror2.locator('.cm-content');
 
         try {
-          // for (let i = 0; i < 100; i += 1) {
-          //   await scriptBody.press('Backspace');
-          // }
           scriptBody.fill('')
           await scriptBody.fill(script);
         } catch (err) {

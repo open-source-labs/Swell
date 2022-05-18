@@ -1,3 +1,8 @@
+// webRTC test using public server. Currently very thin, only confirms that a server
+// can be added to the workspace
+// TODO: Properly test webRTC protocol. Please note the webRTC protocol is very broken and unsure if it
+// even currently works for any functionality purposes.
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
@@ -55,9 +60,6 @@ module.exports = () => {
         const webRTCServer = await codeMirror.locator('.cm-content');
 
         try {
-          // for (let i = 0; i < 100; i += 1) {
-          //   await webRTCServer.press('Backspace');
-          // }
           await webRTCServer.fill('');
           await webRTCServer.fill(server);
         } catch (err) {

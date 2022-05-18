@@ -1,3 +1,6 @@
+// Testing UI that all protocol and request types are represented, parameters can be entered,
+// and panels appear appropriately in the application 
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect

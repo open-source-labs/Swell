@@ -1,4 +1,9 @@
 /* eslint-disable no-async-promise-executor */
+// Testing websocket requests using websocketserver.js
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock WS server. 
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect;

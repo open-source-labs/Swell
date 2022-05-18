@@ -1,3 +1,8 @@
+// gRPC tests using "hw2.proto" file to set up gRPC in grpcServer
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock server. 
+
 const grpcServer = require('../grpcServer.js');
 const graphqlServer = require('../graphqlServer');
 const {_electron: electron} = require('playwright');

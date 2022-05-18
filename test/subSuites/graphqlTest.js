@@ -1,3 +1,8 @@
+// Test GraphQL protocol by introspecting and querying both public and local GraphQL APIs
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock server. 
+
 const graphqlServer = require('../graphqlServer');
 const {_electron: electron} = require('playwright');
 const chai = require('chai')

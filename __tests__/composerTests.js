@@ -2,7 +2,7 @@
 import React from 'react';
 import ProtocolSelect from '../src/client/components/composer/NewRequest/ProtocolSelect.jsx';
 
-// Commented out this file since it is using Enzyme, which has been falling out of favor
+// Commented out this file since it is using Enzyme, which has been falling out of favor and currently does not work for this app version
 // TODO: for the next tester, recommended to migrate to React Testing Library
 
 // import { configure, shallow } from 'enzyme';
