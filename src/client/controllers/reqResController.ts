@@ -6,14 +6,14 @@ import { ReqRes, WindowAPI, WindowExt } from '../../types';
 
 
 
-const { api }: { api: WindowAPI} = window as unknown as WindowExt; 
+const { api }: { api: WindowAPI} = window as unknown as WindowExt;
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
-  
+
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
     const { reqResArray }: { reqResArray: ReqRes[] } = store.default.getState().business;
-    
+
     if (reqResArray.every((obj: ReqRes): boolean => obj.checked === true)) {
       reqResArray.forEach((obj: ReqRes): boolean => obj.checked = false);
     } else {
@@ -25,7 +25,7 @@ const connectionController = {
   openReqRes(id: number): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
-    
+
     api.receive('reqResUpdate', (reqResObj: ReqRes) => {
       if (
         (reqResObj.connection === 'closed' ||

@@ -68,12 +68,11 @@ const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connectio
   const combinedMessagesReactArr = outgoingMessages
     .map((message: Record<string, unknown>) => {
       message = {...message, source: 'client'}  
-      console.log('message after', message)
       return message;
     })
     .concat(
       incomingMessages.map((message: Record<string, unknown>) => {
-        message = {...message, source: 'server'}  
+        message = {...message, source: 'server'}
         return message;
       })
     )
