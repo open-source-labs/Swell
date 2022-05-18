@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Box } from '@mui/material';
 import WorkspaceSelect from './WorkspaceSelect';
 import DeleteWorkspaceButton from "./buttons/DeleteWorkspaceButton"
-import ExportWorkspaceButton from "./buttons/ExportWorkspaceButton";
+import ImportExportWorkspaceButton from "./buttons/ImportExportWorkspaceButton";
 import InviteToWorkspaceButton from "./buttons/InviteToWorkspaceButton";
 
 const mapStateToProps = (store) => {
@@ -19,7 +19,7 @@ function CurrentWorkspaceDisplay(props) {
       <WorkspaceSelect {...props} />
       {/* <SaveWorkspaceButton /> */}
       <DeleteWorkspaceButton id={props.currentWorkspaceId} currentWorkspace={props.currentWorkspace} />
-      <ExportWorkspaceButton />
+      <ImportExportWorkspaceButton />
       <InviteToWorkspaceButton />
     </Box>
   )

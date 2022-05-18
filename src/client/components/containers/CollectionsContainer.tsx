@@ -64,12 +64,12 @@ function CollectionsContainer() {
           onClick={handleImportFromGithub}
         >
           Import from Github
-        </button> */}
-        <ul>
-          {/* {files.map((file) => (
+        </button>
+        {/* <ul>
+          {files.map((file) => (
             <li key={file.repository.full_name}>{file.repository.name}</li>
-          ))} */}
-        </ul>
+          ))}
+        </ul> */}
         <hr />
       </div>
 

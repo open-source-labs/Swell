@@ -115,6 +115,7 @@
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.9",
+    "@jest-runner/electron": "^3.0.1",
     "@redux-devtools/extension": "^3.2.2",
     "@reduxjs/toolkit": "^1.8.1",
     "@uiw/react-codemirror": "^4.7.0",
@@ -180,8 +181,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
     "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.17.3",

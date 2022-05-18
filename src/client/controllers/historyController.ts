@@ -48,5 +48,3 @@ const historyController = {
 };
 
 export default historyController;
-
-

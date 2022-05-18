@@ -52,5 +52,3 @@ describe('db test', () => {
     });
   });
 });
-// describe("collection tests", () => {});
-// });

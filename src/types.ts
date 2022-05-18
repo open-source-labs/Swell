@@ -22,6 +22,7 @@ export interface Collection {
   createdAt: Date;
   modifiedAt: Date;
   reqResArray: ReqRes[];
+  reqResRequest: ReqResRequest[];
   data?: Record<string, unknown>[];
   members?: string[];
 }

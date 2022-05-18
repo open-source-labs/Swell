@@ -30,6 +30,7 @@ const Collection = (props) => {
         >
           {props.content.name}
         </div>
+
         <div className="is-flex is-justify-content-space-between is-align-items-center">
           <div
             className="is-clickable is-primary-link m-3"
@@ -39,6 +40,7 @@ const Collection = (props) => {
           >
             Export To File
           </div>
+          
           <div
             className="is-clickable is-primary-link m-3"
             onClick={() => {

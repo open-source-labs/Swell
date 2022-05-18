@@ -10,6 +10,8 @@ import collectionsController from '../../../../controllers/collectionsController
 import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import * as actions from '../../../../features/business/businessSlice';
+import * as uiactions from '../../../../features/ui/uiSlice';
 
 const style = {
   display: 'flex',
@@ -23,11 +25,12 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 1,
-  justifyContent: 'space-around' 
+  justifyContent: 'space-around',
 };
 
 export default function ImportWorkspaceModal({ open, handleClose }) {
   let files = useLiveQuery(() => db.files.toArray());
+  console.log(files)
   const dispatch = useDispatch();
 
   const localWorkspaces = useSelector((store) => store.business.collections);
@@ -40,6 +43,13 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
       ...githubWorkspaces,
     ]);
   };
+
+  const swellRepositoriesArray = [];
+  if (files !== undefined) {
+    for (let file of files){
+    swellRepositoriesArray.push(<Box> {file.repository.full_name}</Box>)
+  };
+};
 
   return (
     <Modal
@@ -55,25 +65,37 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography id="import-workspace-modal-title" variant="h6" component="h2">
+          <Typography
+            id="import-workspace-modal-title"
+            variant="h6"
+            component="h2"
+          >
             Import from
           </Typography>
-          {/* <Box id="import-workspace-modal-description" sx={{ m: 1, webkitJustifyContent: 'space-around', minWidth: 200 }}> */}
-              <Button
-                variant="contained" size="small" 
-                onClick={() =>
-                collectionsController.importCollection(localWorkspaces)
-                }
-                >Files
-              </Button>
-              <Button
-                variant="contained" size="small" 
-                onClick={handleImportFromGithub}
-                >GitHub
-              </Button>
-          {/* </Box> */}
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() =>
+              collectionsController.importCollection(localWorkspaces)
+            }
+          >
+            Files
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick = {handleImportFromGithub}
+            // onClick={files.map((file) => (
+            //   <li key={file.repository.full_name}>{file.repository.name}</li>
+            // ))}
+          >
+            GitHub
+          </Button>
+          {swellRepositoriesArray}
         </Box>
       </Fade>
     </Modal>
   );
 }
+
+// {handleImportFromGithub}
