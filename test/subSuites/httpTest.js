@@ -1,3 +1,9 @@
+// http tests using local server and public API
+// TODO: Please note, this is only testing HTTP currently. HTTP2 testing is non-existent and should be added 
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock server. 
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
@@ -33,7 +39,6 @@ module.exports = () => {
 
 
   describe('HTTP/S requests', function() {
-    this.timeout(5000)
     setupFxn();
 
     const fillRestRequest = async (
@@ -84,13 +89,8 @@ module.exports = () => {
           const restBody = await codeMirror.locator('.cm-content');
 
           try {
-            for (let i = 0; i < 100; i += 1) {
-              await restBody.press('Backspace');
-            }
+            restBody.fill('')
             await restBody.fill(body);
-            for (let i = 0; i < 6; i += 1) {
-              await restBody.press('Delete');
-            }
           } catch (err) {
             console.error(err);
           }
@@ -276,5 +276,5 @@ module.exports = () => {
         }
       });
     });
-  });
+  }).timeout(20000);
 };

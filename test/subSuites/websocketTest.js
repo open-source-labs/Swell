@@ -1,4 +1,9 @@
 /* eslint-disable no-async-promise-executor */
+// Testing websocket requests using websocketserver.js
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock WS server. 
+
 const {_electron: electron} = require('playwright');
 const chai = require('chai')
 const expect = chai.expect;
@@ -57,11 +62,10 @@ module.exports = () => {
     it('it should send and receive messages to the mock server', async () => {
       try {
         // select web sockets
-        await page.locator('#selected-network').click();
-        await page.locator('#composer >> a >> text=WEB SOCKETS').click();
+        await page.locator('button>> text=WEB SOCKET').click();
 
         // type in url
-        await page.locator('.input-is-medium').fill('ws://localhost:5000/'); // TODO: Should we be using our own local server to test this? Could be easier to go third party
+        await page.locator('#url-input').fill('ws://localhost:5000/'); // TODO: Should we be using our own local server to test this? Could be easier to go third party
 
         //
         await addAndSend(num++);
@@ -141,5 +145,5 @@ module.exports = () => {
         console.error(err);
       }
     });
-  });
+  }).timeout(20000);
 };
