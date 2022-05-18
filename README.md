@@ -8,7 +8,7 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/getswell/getswell/issues)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Swell-%20For%20all%20your%20streaming%20API%20testing%20needs&url=https://www.getswell.io&hashtags=SSE,WebSocket,HTTP,API,developers)
 
-Swell is a API development tool that enables developers to test endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, GraphQL and gRPC.
+Swell is an API development tool that enables developers to test endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, GraphQL, gRPC, WebRTC, OpenAPI, and WebHooks.
 
 ## Getting Started
 
@@ -31,6 +31,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - Compose test suites in JavaScript with Chai-style TDD/BDD assertion syntax
 - Execute a collection of requests in succession and receive clear visual feedback of each test's status
 - Schedule requests on to be sent on a regular time interval to support endpoint functional validation tests
+- Register with Github to save and share Swell workspaces directly in your repository
 
 ## Supported Technologies
 
@@ -76,14 +77,13 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 ## Additional Features
 
-- _Send Request Directly to Endpoint_: You are able to immedeately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
+- _Send Request Directly to Endpoint_: You are able to immediately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
   <kbd><img src="./ReadMeGifs/Gifs/DirectSendRequest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Scripting in Swell_: Swell allows you to write assertion tests to aid in the test-driven development cycle of backend API services.
   <kbd><img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 - _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
-- _Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team.
 - _Preview_: You can now view a rendered preview of certain API responses (HTML)
   <kbd><img src="./ReadMeGifs/Gifs/AdditionalFeatures.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
@@ -93,14 +93,13 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - _Schedule Tests_: You can also automate sending requests to occur on a periodic basis.
   <kbd><img src="./ReadMeGifs/Gifs/ScheduleTest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
-- _Dark Mode_: Swell allows you to toggle between light and dark mode when viewing the application.  
-  <kbd><img src="./ReadMeGifs/Gifs/DarkMode.gif"
-       style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
+- *New in Version 1.10.2!* _Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
 
 ## Built With
 
 - Electron
 - React
+- Material UI
 - Redux
 - Apollo Client
 - Websockets
@@ -111,6 +110,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - IndexedDB
 - Chai
 - Mocha
+- Playwright
 
 ## Authors
 
@@ -167,6 +167,10 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Sam Pyo** - [samhpyo](https://github.com/samhpyo)
 - **Drew Pomatti** - [thedrewery](https://github.com/thedrewery)
 - **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)	
+- **Yale Yng-Wong** - [ywy-w](https://github.com/ywy-w)
+- **Evelin Goldin** - [evelingoldin](https://github.com/evelingoldin)
+- **Alexander Adams** - [alex-e-adams](https://github.com/alex-e-adams)
+- **Ethan Sclarsky** - [esclarsky](https://github.com/esclarsky)
 
 ## License
 
