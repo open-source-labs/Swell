@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from 'react-redux';
 
 // Local components
 import CurrentWorskpaceDisplay from "./CurrentWorkspaceDisplay";
+import LegacyWorkspace from "../../components/containers/WorkspaceContainer";
+import BarGraph from "../../components/display/BarGraph";
+// import CollectionsContainer from "../../components/containers/CollectionsContainer";
 import CollectionTree from './CollectionTree';
 
 // MUI components and SVG icons
@@ -10,14 +13,13 @@ import { Box, Button, Typography, SelectChangeEvent, Divider } from '@mui/materi
 import { AddRounded } from '@mui/icons-material';
 
 export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace }) {
+  const [showGraph, setShowGraph] = useState(false);
+
   /**
    * TODO: change the workspace container to have adjustable width sizing via user dragging
    * TODO: reimplement the "Schedule" functionality somehow
    * TODO: refactor store to remove explicit any
    */
-
-  // // currentWorkspace is the current Workspace's UUID. It is only altered in WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
-  // const [currentWorkspaceId, setWorkspace] = React.useState('');
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
@@ -39,9 +41,10 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
       {currentWorkspace === undefined
         ? <Typography variant="caption">Get started by selecting, importing, or creating a new workspace.</Typography>
         : <Box className="collections-container">
-            <Typography>Collections</Typography>
+            <Typography>Requests</Typography>
             <Divider orientation="horizontal" />
-            <CollectionTree currentWorkspace={currentWorkspace}/>
+            <LegacyWorkspace />
+            {/* <CollectionTree currentWorkspace={currentWorkspace}/> */}
           </Box>
       }
       {/**
@@ -53,6 +56,7 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
       {/* <Button variant="text" sx={{ width: 1, maxHeight: '24px', minHeight: '24px' }}>
         <AddRounded fontSize="small"/>
       </Button> */}
+      {/* BARGRAPH CONTENT */}
     </Box>
   )
 }

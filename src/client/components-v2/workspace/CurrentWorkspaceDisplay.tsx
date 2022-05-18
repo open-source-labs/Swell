@@ -10,7 +10,7 @@ export default function CurrentWorkspaceDisplay(props) {
     <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', pb: 1 }}>
       {/* The below select menu should contain all saved workspaces in the Swell app. */}
       <WorkspaceSelect {...props} />
-      <SaveWorkspaceButton />
+      {/* <SaveWorkspaceButton /> */}
       <ExportWorkspaceButton />
       <InviteToWorkspaceButton />
     </Box>
