@@ -99,6 +99,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 - Electron
 - React
+- React Router
 - Material UI
 - Redux
 - Apollo Client
