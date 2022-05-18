@@ -25,10 +25,10 @@ const SingleReqResContainer = (props) => {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-
     reqResDelete,
     index,
   } = props;
+  
   const network = content.request.network;
   const method = content.request.method;
 

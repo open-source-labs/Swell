@@ -203,7 +203,7 @@ const BarGraph = (props) => {
             setChartURL('');
           }}
         >
-          Clear Response History
+          Clear Response Metrics
           {host && (
             <span>
               {' '}

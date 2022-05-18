@@ -20,7 +20,7 @@ api.receive('add-collections', (collectionArr: Collection[]) => {
 
 const collectionsController = {
   addCollectionToIndexedDb(collectionArr: Collection[]): void {
-    // this method needs to recieve an array of workspaces 
+    // this method needs to recieve an array of workspaces
     console.log('arr', collectionArr)
     for (let collection of collectionArr) {
       console.log('put collection', collection)
@@ -56,8 +56,7 @@ const collectionsController = {
       .catch((err: string) => console.log('Error in getCollections', err));
   },
 
-  collectionNameExists(obj: Collection): Promise<boolean> {
-    const { name } = obj;
+  collectionNameExists(name: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
       db.table('collections')
@@ -145,7 +144,7 @@ const collectionsController = {
       });
     });
   },
-  
+
   importFromGithub(collectionArr: Collection[]): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-from-github', collectionArr);
