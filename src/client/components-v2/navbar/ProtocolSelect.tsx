@@ -12,7 +12,6 @@ import { Box, Button } from '@mui/material';
 const mapStateToProps = (store) => {
   return {
     reqResArray: store.business.reqResArray,
-    // composerDisplay: store.ui.composerDisplay,
     newRequestFields: store.business.newRequestFields,
     newRequestHeaders: store.business.newRequestHeaders,
     newRequestStreams: store.business.newRequestStreams,
@@ -34,9 +33,6 @@ const mapDispatchToProps = (dispatch) => ({
   setComposerWarningMessage: (message) => {
     dispatch(actions.setComposerWarningMessage(message));
   },
-  // setComposerDisplay: (composerDisplay) => {
-  //   dispatch(actions.setComposerDisplay(composerDisplay));
-  // },
   setNewRequestHeaders: (requestHeadersObj) => {
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
   },

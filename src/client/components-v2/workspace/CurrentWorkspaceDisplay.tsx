@@ -1,18 +1,28 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Box } from '@mui/material';
 import WorkspaceSelect from './WorkspaceSelect';
-import SaveWorkspaceButton from "./buttons/SaveWorkspaceButton";
+import DeleteWorkspaceButton from "./buttons/DeleteWorkspaceButton"
 import ImportExportWorkspaceButton from "./buttons/ImportExportWorkspaceButton";
 import InviteToWorkspaceButton from "./buttons/InviteToWorkspaceButton";
 
-export default function CurrentWorkspaceDisplay(props) {
+const mapStateToProps = (store) => {
+  return {
+    workspaces: store.business.collections,
+  };
+};
+
+function CurrentWorkspaceDisplay(props) {
   return (
-    <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', pb: 1 }}>
       {/* The below select menu should contain all saved workspaces in the Swell app. */}
       <WorkspaceSelect {...props} />
-      <SaveWorkspaceButton />
+      {/* <SaveWorkspaceButton /> */}
+      <DeleteWorkspaceButton id={props.currentWorkspaceId} currentWorkspace={props.currentWorkspace} />
       <ImportExportWorkspaceButton />
       <InviteToWorkspaceButton />
     </Box>
   )
 }
+
+export default connect(mapStateToProps)(CurrentWorkspaceDisplay);

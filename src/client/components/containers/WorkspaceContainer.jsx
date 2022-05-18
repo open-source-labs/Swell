@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import ReqResCtrl from '../../controllers/reqResController';
 import ReqResContainer from './ReqResContainer';
 import SaveWorkspaceModal from './SaveWorkspaceModal';
+// Import MUI components
 
 function WorkspaceContainer(props) {
   const [showModal, setShowModal] = useState(false);
@@ -32,7 +33,7 @@ function WorkspaceContainer(props) {
             setShowModal(true);
           }}
         >
-          Save Workspace
+          Save or Create New Workspace
         </button>
       </div>
 

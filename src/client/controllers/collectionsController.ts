@@ -20,7 +20,7 @@ api.receive('add-collections', (collectionArr: Collection[]) => {
 
 const collectionsController = {
   addCollectionToIndexedDb(collectionArr: Collection[]): void {
-    // this method needs to recieve an array of workspaces 
+    // this method needs to recieve an array of workspaces
     console.log('arr', collectionArr)
     for (let collection of collectionArr) {
       console.log('put collection', collection)
@@ -56,8 +56,7 @@ const collectionsController = {
       .catch((err: string) => console.log('Error in getCollections', err));
   },
 
-  collectionNameExists(obj: Collection): Promise<boolean> {
-    const { name } = obj;
+  collectionNameExists(name: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
       db.table('collections')
@@ -73,7 +72,6 @@ const collectionsController = {
     });
   },
 
-  //OLD EXPORT TO FILES
   exportToFile(id: string): void {
     console.log('exportToFile', id)
     db.table('collections')
@@ -91,27 +89,44 @@ const collectionsController = {
       });
   },
 
-  //OLD EXPORT TO GITHUB
-  async exportToGithub(name: string): Promise<void> {
+  async exportToGithub(id: string): Promise<void> {
+    console.log('exportToGithub', id)
     const token = await db.auth.toArray();
     const octokit = new Octokit({
       auth: token[0].auth,
     })
+    let repos = await db.repos.toArray()
     let userProfile = await db.profile.toArray()
 
+    const toExport = await db.table('collections')
+      .where('id')
+      .equals(id)
+      .first((foundCollection: Collection) => {
+        // if workspace doesn't have members, add it using node_id
+        if (!foundCollection.members) {
+          foundCollection.members = [userProfile[0].node_id]
+        }
+        return foundCollection;
+      })
+      .catch((error: Record<string, undefined>) => {
+        console.error(error.stack || error);
+        throw(error);
+      });
     // make popup, for now hardcoding
     const date = Date.now()
+    console.log(date.toString())
     const response = await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
       owner: userProfile[0].login,
-      repo: name,
+      repo: 'swell-file-does-not-exist',
       path: '.swell',
-      message: `saving ${name} @ ${new Date(Date.now()).toString()}`,
+      message: `saving ${toExport.name} @ ${new Date(Date.now()).toString()}`,
       committer: {
         name: 'Swell App',
         email: 'swell@swell.com'
       },
       content: Buffer.from(JSON.stringify(toExport)).toString('base64'),
     })
+    console.log('octokit response', response)
     setTimeout(async () => {
       const userData = await githubController.getUserData(token[0].auth);
       githubController.saveUserDataToDB(userData, token[0].auth)
@@ -119,18 +134,6 @@ const collectionsController = {
 
   },
 
-  exportCollection(collection: Collection): Promise<string> {
-    return new Promise((resolve) => {
-      api.send('export-collection', collection);
-      api.receive('add-collections', (collection: Collection[]) => {
-        // collectionsController.addCollectionToIndexedDb(collection);
-        collectionsController.getCollections();
-        resolve('okie dokie');
-      });
-    });
-  },
-
-  
   importCollection(collection: Collection): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
@@ -141,7 +144,7 @@ const collectionsController = {
       });
     });
   },
-  
+
   importFromGithub(collectionArr: Collection[]): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-from-github', collectionArr);

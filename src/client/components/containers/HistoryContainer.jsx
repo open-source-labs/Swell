@@ -68,15 +68,15 @@ const HistoryContainer = (props) => {
   });
 
   return (
-    <div
-      className={`p-3 is-flex is-flex-direction-column is-tall-not-5rem ${isDark ? 'is-dark-400' : ''}`}
+    <span
+      className={`p-3 is-flex is-flex-direction-column is-tall-not-1rem ${isDark ? 'is-dark-400' : ''}`}
       id="history-container"
     >
-      <div>
+      <span id="history-container"className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <ClearHistoryBtn clearHistory={clearHistory} />
-      </div>
+      </span>
       <div className="add-vertical-scroll">{historyDates}</div>
-    </div>
+    </span>
   );
 };
 

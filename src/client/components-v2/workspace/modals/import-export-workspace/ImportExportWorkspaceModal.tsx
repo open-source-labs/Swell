@@ -19,52 +19,26 @@ import SnippetFolderRoundedIcon from '@mui/icons-material/SnippetFolderRounded';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
 import { Octokit } from 'octokit';
-import {collectionAdd} from '../../../../features/business/businessSlice'
+import { collectionAdd } from '../../../../features/business/businessSlice'
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 // import local components
 import ExportToGithubList from './ExportToGithubListItem'
+import ExportToGithubDialog from './ExportToGitHubDialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-
-
-
-export interface SimpleDialogProps {
-  open: boolean;
-  selectedValue: string;
-  onClose: (value: string) => void;
-}
-
-function SimpleDialog(props: SimpleDialogProps) {
-  const { onClose, selectedValue, open } = props;
-  
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
-
-  const handleListItemClick = (value: string) => {
-    onClose(value);
-  };
-
-
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Select a repository to export to.</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        <ListItem autoFocus button onClick={() => handleListItemClick}>
-          <ListItemText primary="repo" />
-        </ListItem >
-      </List>
-    </Dialog>
-  );
-}
 
 export default function ImportWorkspaceModal({ open, handleClose }) {
   const [importFromGithubList, setImportFromGithubList] = React.useState(false);
   const [exportToLocalFilesList, setExportToLocalFilesList] = React.useState(false);
   const [exportToGithubList, setExportToGithubList] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  let files = useLiveQuery(() => db.files.toArray());
+  console.log(files[0].repository.full_name)
+  const [selectedRepo, setSelectedRepo] = React.useState("files[0].repository.full_name");
 
 
   const handleImportFromGithubClick = () => {
@@ -79,7 +53,7 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
     setExportToGithubList(!exportToGithubList)
   }
 
-  let files = useLiveQuery(() => db.files.toArray());
+  files = useLiveQuery(() => db.files.toArray());
   let workspaces = useLiveQuery(() => db.collections.toArray());
   const dispatch = useDispatch();
 
@@ -153,9 +127,10 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
           <ListItemButton onClick={() => collectionsController.exportToGithub(workspace.id)} sx={{ pl: 4 }}>
             <ListItemText primary={workspace.name} />
           </ListItemButton>
-          <SimpleDialog
-            selectedValue={workspace.name}
-            open={open}
+          <ExportToGithubDialog
+            allUserRepos={files}
+            selectedRepo={selectedRepo}
+            open={dialogOpen}
             onClose={handleClose}
           />
         </List>
