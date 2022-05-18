@@ -45,7 +45,7 @@ function CollectionsContainer() {
   return (
     <div>
       <div className="mt-3 is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
-        <button
+        {/* <button
           className={`button is-medium is-primary ${
             isDark ? '' : 'is-outlined'
           } button-padding-verticals mx-3`}
@@ -55,8 +55,8 @@ function CollectionsContainer() {
           }
         >
           Import from Files
-        </button>
-        <button
+        </button> */}
+        {/* <button
           className={`button is-medium is-primary ${
             isDark ? '' : 'is-outlined'
           } button-padding-verticals mx-3`}
@@ -64,11 +64,11 @@ function CollectionsContainer() {
           onClick={handleImportFromGithub}
         >
           Import from Github
-        </button>
+        </button> */}
         <ul>
-          {files.map((file) => (
+          {/* {files.map((file) => (
             <li key={file.repository.full_name}>{file.repository.name}</li>
-          ))}
+          ))} */}
         </ul>
         <hr />
       </div>
