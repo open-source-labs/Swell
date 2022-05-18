@@ -38,9 +38,8 @@ const historyController = {
         .map((date: string) => ({ // this returns an array of objects with K:date T:string and K:array of history objects
           date,
           history: historyGroupsObj[date].sort(
-            (a: ReqRes, b: ReqRes) => b.createdAt.valueOf() - a.createdAt.valueOf()), 
+            (a: ReqRes, b: ReqRes) => b.createdAt.valueOf() - a.createdAt.valueOf()),
           }));
-          console.log(historyGroupsArr)
       store.default.dispatch(actions.getHistory(historyGroupsArr));
     } catch {
           ((err: string) => console.log('Error in getHistory', err))
