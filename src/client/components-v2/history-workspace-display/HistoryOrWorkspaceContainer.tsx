@@ -58,7 +58,7 @@ export default function HistoryOrWorkspaceContainer(props) {
 
   return (
     <Box sx={{ minWidth: '25%', overflow: 'auto', maxHeight: '100%', overflowX: 'auto', overflowY: 'scroll' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab icon={<WorkIcon fontSize='small'/>} {...a11yProps(0)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
           <Tab icon={<ScheduleSendRoundedIcon fontSize='small'/>} {...a11yProps(1)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>

@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../features/business/businessSlice';
+// Import local components
+import WorkspaceContextMenu from "./WorkspaceContextMenu";
 // Import MUI components
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import ImportWorkspaceModal from "./modals/import-workspace/ImportWorkspaceModal"
-import { Box, Select, MenuItem, FormControl, FormHelperText } from '@mui/material';
+import { Box, Select, MenuItem, FormControl, FormHelperText, Button } from '@mui/material';
 
 export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceChange }) {
   const [open, setOpen] = React.useState(false);
@@ -26,14 +28,22 @@ export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceCha
 
   const menuItems = [];
   for (let workspace of localWorkspaces) {
+    console.log(workspace)
     menuItems.push(
-      <MenuItem
+      <WorkspaceContextMenu
         key={workspace.id}
-        value={workspace.id}
-        onClick={() => collectionToReqRes(workspace.reqResArray)}
-      >
-        {workspace.name}
-      </MenuItem>)
+        id={workspace.id}
+        name={workspace.name}
+        reqResArray={workspace.reqResArray}
+      />
+      // <MenuItem
+      //   key={workspace.id}
+      //   value={workspace.id}
+      //   onClick={() => collectionToReqRes(workspace.reqResArray)}
+      // >
+      //   {workspace.name}
+      // </MenuItem>
+    )
   }
 
   return (
@@ -48,7 +58,9 @@ export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceCha
           onChange={handleWorkspaceChange}
         >
           {menuItems}
-          <MenuItem value="" onClick={handleOpen}><FileDownloadRoundedIcon /></MenuItem>
+          {/* Import Workspace button */}
+          {/* <MenuItem value="" onClick={handleOpen}><FileDownloadRoundedIcon /></MenuItem> */}
+          <WorkspaceContextMenu />
         </Select>
         <FormHelperText>Current Workspace</FormHelperText>
       </FormControl>

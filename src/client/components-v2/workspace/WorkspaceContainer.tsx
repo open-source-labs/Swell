@@ -37,26 +37,34 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
     <Box className="workspace-container" sx={{ minWidth: '20%', align: 'center', p: 1.5 }}>
       {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
       <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} handleWorkspaceChange={handleWorkspaceChange}/>
+      <Box className="collections-container">
+        <Typography>Requests</Typography>
+        <Divider orientation="horizontal" />
+        <LegacyWorkspace />
+      </Box>
+
       {/* Conditionally render either a message or collection tree depending on if a workspace is selected */}
-      {currentWorkspace === undefined
-        ? <Typography variant="caption">Get started by selecting, importing, or creating a new workspace.</Typography>
-        : <Box className="collections-container">
-            <Typography>Requests</Typography>
-            <Divider orientation="horizontal" />
-            <LegacyWorkspace />
-            {/* <CollectionTree currentWorkspace={currentWorkspace}/> */}
-          </Box>
+      {
+        // currentWorkspace === undefined
+        // ? <Typography variant="caption">Get started by selecting, importing, or creating a new workspace.</Typography>
+        // : <Box className="collections-container">
+        //     <Typography>Requests</Typography>
+        //     <Divider orientation="horizontal" />
+        //     <LegacyWorkspace />
+        //     {/* <CollectionTree currentWorkspace={currentWorkspace}/> */}
+        //   </Box>
       }
+
       {/**
        * TODO:
        * Below button is not ready to be added. Would eventually be used to add another collection to a workspace.
        * However, workspaces are currently only built to handle 1 collection max.
        * Need to refactor Redux store to get this button to work.
        */}
+
       {/* <Button variant="text" sx={{ width: 1, maxHeight: '24px', minHeight: '24px' }}>
         <AddRounded fontSize="small"/>
       </Button> */}
-      {/* BARGRAPH CONTENT */}
     </Box>
   )
 }

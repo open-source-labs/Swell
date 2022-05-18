@@ -2,6 +2,7 @@ import React from "react";
 import { Box } from '@mui/material';
 import WorkspaceSelect from './WorkspaceSelect';
 import SaveWorkspaceButton from "./buttons/SaveWorkspaceButton";
+import DeleteWorkspaceButton from "./buttons/DeleteWorkspaceButton"
 import ExportWorkspaceButton from "./buttons/ExportWorkspaceButton";
 import InviteToWorkspaceButton from "./buttons/InviteToWorkspaceButton";
 
@@ -11,6 +12,7 @@ export default function CurrentWorkspaceDisplay(props) {
       {/* The below select menu should contain all saved workspaces in the Swell app. */}
       <WorkspaceSelect {...props} />
       {/* <SaveWorkspaceButton /> */}
+      {/* <DeleteWorkspaceButton /> */}
       <ExportWorkspaceButton />
       <InviteToWorkspaceButton />
     </Box>
