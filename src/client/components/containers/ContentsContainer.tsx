@@ -5,6 +5,8 @@ import BarGraph from '../display/BarGraph';
 import WorkspaceContainer from './WorkspaceContainer';
 import ScheduleContainer from './ScheduleContainer';
 import CollectionsContainer from './CollectionsContainer';
+import HistoryContainer from './HistoryContainer';
+
 
 const ContentsContainer = () => {
   const dispatch = useDispatch();
@@ -13,7 +15,7 @@ const ContentsContainer = () => {
     (store) => store.business.currentResponse
   );
   const isDark = useSelector((store) => store.ui.isDark);
-  
+
   const setActiveTab = (tabName: string) =>
     dispatch(uiactions.setWorkspaceActiveTab(tabName));
 
@@ -24,7 +26,7 @@ const ContentsContainer = () => {
     // className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} column is-tall is-one-third is-flex is-flex-direction-column`}  // gigi playing with css
       className={`${isDark ? 'is-dark-400 dark-divider' : 'is-divider-neutral-300'} box is-3 is-tall add-vertical-scroll`}
       id="workspace"
-      style={{margin: "10px", maxHeight: "98vh"}}
+      style={{margin: "10px", maxHeight: "98vh", width: '26vw'}}
     >
       {/* HEADER */}
       <div className="hero is-primary has-text-centered">
@@ -40,12 +42,15 @@ const ContentsContainer = () => {
             <a onClick={() => setActiveTab('workspace')}>Requests</a>
           </li>
           <li
-            className={`column ${
-              activeTab === 'saved-workspace' ? 'is-active' : ''
-            }`}
+            className={`column ${activeTab === 'history' ? 'is-active' : ''}`}
           >
-            <a onClick={() => setActiveTab('saved-workspace')}>
-              Saved Workspace
+            <a onClick={() => setActiveTab('history')}>History</a>
+          </li>
+          <li
+            className={`column ${activeTab === 'saved' ? 'is-active' : ''}`}
+          >
+            <a onClick={() => setActiveTab('saved')}>
+              Saved
             </a>
           </li>
           <li
@@ -55,12 +60,13 @@ const ContentsContainer = () => {
           </li>
         </ul>
       </div>
-
       {/* WORKSPACE CONTENT */}
       <div className="is-flex-grow-3 add-vertical-scroll">
         {activeTab === 'workspace' && <WorkspaceContainer />}
 
-        {activeTab === 'saved-workspace' && <CollectionsContainer />}
+        {activeTab === 'history' && <HistoryContainer />}
+
+        {activeTab === 'saved' && <CollectionsContainer />}
 
         {activeTab === 'schedule' && <ScheduleContainer />}
       </div>
