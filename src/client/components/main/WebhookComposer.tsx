@@ -158,7 +158,7 @@ export default function WebhookComposer(props) {
 
   return(
     <Box className='mr-2 is-flex is-justify-content-center'
-    style={{padding: '10px'}}
+    sx={{padding: '10px', height: '40%'}}
     id = "composer-webhook">
       <button
             className={`button ${

@@ -25,10 +25,10 @@ const CustomButton = styled(ButtonUnstyled)`
   font-family: IBM Plex Sans, sans-serif;
   font-weight: bold;
   font-size: 0.875rem;
-  background-color: ${blue[500]};
+  background-color: ${white[500]};
   padding: 10px 0px;
   border-radius: 3px;
-  color: ${white[500]};
+  color: ${blue[500]};
   transition: all 150ms ease;
   cursor: pointer;
   border: none;

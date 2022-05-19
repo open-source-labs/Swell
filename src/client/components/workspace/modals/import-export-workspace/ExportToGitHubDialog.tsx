@@ -12,26 +12,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
-
-// export interface SimpleDialogProps {
-//   open: boolean;
-//   selectedValue: string;
-//   onClose: (value: string) => void;
-// }
-
 export default function ExportToGithubDialog({ allUserRepos, workspace, selectedRepo, open, onClose}) {
   let files = useLiveQuery(() => db.files.toArray());
   let repos = useLiveQuery(() => db.repos.toArray());
-
-  // db.table('repo')
-  // .where('name')
-  // .equalsIgnoreCase(name)
-  // .first((foundCollection: boolean) => !!foundCollection)
-  // .then((found: boolean) => resolve(found))
-  // .catch((error: Record<string, undefined>) => {
-  //   console.error(error.stack || error);
-  //   reject(error);
-  // });
 
   const handleClose = () => {
     onClose(selectedRepo);
@@ -52,13 +35,6 @@ export default function ExportToGithubDialog({ allUserRepos, workspace, selected
         sha = file.sha;
       }
     }
-    // db.table('files')
-    //   .where((workspace) => {
-
-    //   })
-
-
-
     collectionsController.exportToGithub(workspace.id, repo.name, sha)
   }
 
@@ -79,7 +55,6 @@ export default function ExportToGithubDialog({ allUserRepos, workspace, selected
       )
     }
   }
-
 
   return (
     <Dialog onClose={handleClose} open={open}>
