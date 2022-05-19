@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import App from './client/components-v2/App';
+import App from './client/components/App';
 import store from './client/store';
 
 import { CssBaseline } from '@mui/material';

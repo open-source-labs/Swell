@@ -18,6 +18,13 @@ const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 const graphQLController = {
   openGraphQLConnection(reqResObj: ReqRes): void {
     // initialize response data
+    reqResObj = {
+      ...reqResObj,
+      response: {
+        ...reqResObj.response,
+      }
+    }
+    console.log(reqResObj)
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.response.cookies = [];
@@ -107,12 +114,7 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers: Record<string, string> = {};
-    reqResObj.request.headers.forEach(({
-      active,
-      key,
-      value
-    }: RequestHeaders) => {
-    
+    reqResObj.request.headers.forEach(({active, key, value}: RequestHeaders) => {
       if (active) headers[key] = value;
     });
 
@@ -133,8 +135,8 @@ const graphQLController = {
     //   url: wsUri,
     //   connectionParams: {
     //     headers,
-    //     timeout: 30000,  
-    //     reconnect: true,   
+    //     timeout: 30000,
+    //     reconnect: true,
     //   },
     // }));
 
