@@ -55,7 +55,9 @@
       "main_process/main_touchbar.js",
       "main_process/SSEController.js",
       "main_process/main_testingController.js",
-      "preload.js"
+      "preload.js",
+      "src/server/server.js",
+      "src/server/controllers/authController.js"
     ],
     "nodeVersion": "16.15.0",
     "nsis": {
