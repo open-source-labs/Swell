@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 
 const blue = {
   500: '#51819b',
@@ -18,6 +19,38 @@ const blue = {
 const white = {
   500: '#f0f6fa',
 }
+
+const CustomButton = styled(ButtonUnstyled)`
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: bold;
+  font-size: 0.875rem;
+  background-color: ${white[500]};
+  padding: 10px 0px;
+  border-radius: 3px;
+  color: ${blue[500]};
+  transition: all 150ms ease;
+  cursor: pointer;
+  border: none;
+  width: 8vw;
+
+  &:hover {
+    background-color: ${blue[500]};
+  }
+
+  &.${buttonUnstyledClasses.active} {
+    background-color: ${blue[500]};
+  }
+
+  &.${buttonUnstyledClasses.focusVisible} {
+    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
+    outline: none;
+  }
+
+  &.${buttonUnstyledClasses.disabled} {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
 
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -96,10 +129,11 @@ export default function LoginContainer(props) {
         }}>
           <LightTooltip title="Logout">
             <Button
+              color='secondary'
               sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
               onClick={handleSignOut}
             >
-              <LogoutRoundedIcon fontSize='small' color={white[500]} />
+              <LogoutRoundedIcon fontSize='small' />
             </Button>
           </LightTooltip>
           <StyledBadge
@@ -120,7 +154,7 @@ export default function LoginContainer(props) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <Button variant="text" onClick={signInViaGitHub}>Sign In</Button>
+          <Button color='secondary' variant="text" onClick={signInViaGitHub}>Sign In</Button>
         </Box>
       }
     </Box>

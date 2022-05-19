@@ -49,7 +49,7 @@ const App = () => {
       <HashRouter>
         {/* Navigation bar. Top of the application. */}
         <NavBarContainer />
-        <Divider orientation="horizontal" sx={{ borderBottomWidth: 2, background: '#51819b' }}/>
+        {/* <Divider orientation="horizontal" sx={{ borderBottomWidth: 2, background: '#51819b' }}/> */}
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* Workspace. Left side of the application. */}
           <HistoryOrWorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
