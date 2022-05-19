@@ -117,8 +117,8 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 2000,
     height: 1000,
-    minWidth: 1304,
-    minHeight: 700,
+    minWidth: 1000,
+    minHeight: 600,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
     webPreferences: {

@@ -23,6 +23,7 @@ interface Repos {
 }
 
 interface Files {
+  repository: any;
   sha: string;
 }
 
