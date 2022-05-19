@@ -1,5 +1,13 @@
 
 // COMPOSER TAB
+// * {
+//   background-color: gray;
+// }
+
+.composer {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 
 .include-data-checkbox {
   background: #FFFFFF;
@@ -9,6 +17,7 @@
   border-radius: 2px;
   max-width: 26px;
   max-height: 26px;
+  margin-left: 2px !important;
 }
 
 .switch:focus {
@@ -16,16 +25,22 @@
   outline: none;
 }
 
+.add-header-gRPC-cookie-button {
+   color: $primary !important;
+  border-color: $primary !important;
+  width: 3px !important;
+  height: 3px !important;
+  margin-left: 2px !important;
+  margin-right: 2px !important;
+  font-size: 16px !important;
+  border-radius: 2px !important;
+}
+
 .add-header-or-cookie-button {
-  color: $primary;
-  border-color: $primary;
-  min-width: 80px;
+  color: $primary !important;
+  border-color: $primary !important;
+  min-width: 5px;
 }
-
-.composer-section-title {
-    // access to all section headers in Composer Pane
-}
-
 
 .prettify-select {
   // for application JSON body in REST requests
@@ -35,15 +50,11 @@
 // grpc
 .protocol-select-button {
   border: none !important;
-  border-bottom: 1px solid $neutral-300 !important;
+  border-bottom: 1px solid $neutral-300 !important; // this is the dividing line underneath the protocol dropdown -Prince
 }
 
 .stream-title {
   font-size: 70%
-}
-
-.proto-warning-message {
-  
 }
 
 // needed for add new request button
@@ -62,6 +73,17 @@
 
 .input {
   outline: none !important;
+
+}
+
+.key {
+  border: 1px solid $neutral-200 !important;
+  border-radius: 4px;
+}
+
+.value {
+  border: 1px solid $neutral-200 !important;
+  border-radius: 4px;
 }
 
 // HISTORY TAB
@@ -97,7 +119,7 @@
   & :global(.react-codemirror2) {
          overflow: auto; /* you can use hidden here as well */
     }
- }
+}
 
 .cm-s-responsebody .CodeMirror-wrap {
   height: 1000px !important;
@@ -165,4 +187,20 @@
 
 .tabs {
   margin-bottom: 0 !important;
+}
+
+.no-border-please {
+  border: none !important;
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.restReqBtns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: start;
 }

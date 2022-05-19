@@ -1,12 +1,16 @@
-import uiReducer from '../src/client/reducers/ui';
-// import { SET_COMPOSER_DISPLAY } from '../src/client/actions/actionTypes';
+import reducer,{ 
+  setSidebarActiveTab, 
+  setWorkspaceActiveTab,
+  setResponsePaneActiveTab,
+  toggleDarkMode,
+ } from '../src/client/features/ui/uiSlice.ts';
 
 describe('UI Reducer', () => {
   let state;
 
   beforeEach(() => {
     state = {
-      composerDisplay: 'Request',
+      isDark: false,
       sidebarActiveTab: 'composer',
       workspaceActiveTab: 'workspace',
       responsePaneActiveTab: 'events',
@@ -15,22 +19,57 @@ describe('UI Reducer', () => {
 
   describe('default state', () => {
     it('should return a default state when given an undefined input', () => {
-      expect(uiReducer(undefined, { type: undefined })).toEqual(state);
+      expect(reducer(undefined, { type: undefined })).toEqual(state);
     });
     it('should return default state with unrecognized action types', () => {
-      expect(uiReducer(undefined, { type: 'BAD_TYPE' })).toEqual(state);
+      expect(reducer(undefined, { type: 'BAD_TYPE' })).toEqual(state);
     });
   });
-
-  describe('should handle SET_COMPOSER_DISPLAY', () => {
+  
+  describe('Set sidebar active tab', () => {
     const action = {
-      type: 'SET_COMPOSER_DISPLAY',
-      payload: 'warning',
+      payload: 'the active sidebar tab is this one!',
     };
 
-    it('should update the composerDisplay', () => {
-      const { composerDisplay } = uiReducer(state, action);
-      expect(composerDisplay).toEqual(action.payload);
+    it('sets the sidebar active tab', () => {
+      const { sidebarActiveTab } = reducer(state, setSidebarActiveTab(action.payload));
+      expect(sidebarActiveTab).toEqual(action.payload);
     });
   });
+
+  describe('Set workspace active tab', () => {
+    const action = {
+      payload: 'the active workspace tab is this one!',
+    };
+
+    it('sets the workspace active tab', () => {
+      const { workspaceActiveTab } = reducer(state, setWorkspaceActiveTab(action.payload));
+      expect(workspaceActiveTab).toEqual(action.payload);
+    });
+  });
+
+  describe('Set response pane active tab', () => {
+    const action = {
+      payload: 'the active response pane tab is this one!',
+    };
+
+    it('sets the response pane active tab', () => {
+      const { responsePaneActiveTab } = reducer(state, setResponsePaneActiveTab(action.payload));
+      expect(responsePaneActiveTab).toEqual(action.payload);
+    });
+  });
+
+  describe('Toggle dark mode', () => {
+    const action = {
+      payload: true,
+    };
+
+    it('Toggles dark mode', () => {
+      const newState = reducer(state, toggleDarkMode(false));
+      expect(newState.isDark).toEqual(false);
+      const { isDark } = reducer(newState, toggleDarkMode(action.payload));
+      expect(isDark).toEqual(true);
+    });
+  });
+
 });

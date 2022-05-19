@@ -16,7 +16,7 @@ We use Github to host code, to track issues and feature requests, as well as acc
 Pull requests are the best way to propose changes to Swell. We actively welcome your pull requests:
 
 1. Fork the repo and create your branch from `dev`.
-2. If you've added code that should be tested, add tests.
+2. If you've added code that should be tested, add tests (see testing details above "License" below).
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes.
 5. Make sure your code lints.
@@ -49,10 +49,20 @@ People _love_ thorough bug reports. I'm not even kidding.
 - 2 spaces for indentation rather than tabs
 - You can try running `npm run lint` for style unification
 
+## Test early, test often!
+
+- Run npm run test or npm run test-mocha for E2E testing with [Playwright](https://playwright.dev/docs/api/class-electron) and Mocha
+- Run npm run test-jest for unit and integration tests with Jest 
+- Check code coverage!
+  - In the 'test/coverage' directory, check jest-coverage and mocha-coverage directories
+    - View each index.html in your browser for coverage reports generated with Istanbul that will show covered and uncovered lines in accessed modules
+  - Merge the coverage reports by running npm run report
+    - View an overall coverage report at index.html in the total-coverage directory
+- Contribute to the testing suite
+  - Add tests for uncovered lines, modules, functions. Leave no stone unturned!
+
 ## License
 
 By contributing, you agree that your contributions will be licensed under its MIT License.
 
-## References
 
-This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)

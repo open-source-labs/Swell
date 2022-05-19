@@ -1,14 +1,14 @@
-@import "colors";
+@import 'colors';
+@import 'darkMode';
 
 @import 'infinite';
 // @import "@fortawesome/fontawesome-free";
-@import "base";
-@import "sidebar";
-@import "workspace";
+@import 'base';
+@import 'sidebar';
+@import 'workspace';
 @import 'webSocketResponse';
-@import "responsepane";
-@import "bulma";
+@import 'responsepane';
+@import 'bulma';
 @import '~bulma-switch';
 @import '~bulma-checkradio';
-
 

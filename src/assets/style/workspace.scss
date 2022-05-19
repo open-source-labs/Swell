@@ -4,8 +4,10 @@
 }
 
 .cards-dropdown {
-  border: 1px solid $neutral-300;
+  border: 1px solid $neutral-200;
   height: 24px;
+  border-radius: 4px;
+  margin-bottom: 5px;
 }
 
 .show-hide-tests {
@@ -115,8 +117,8 @@
 }
 
 .is-graph-footer {
-  background-color: $neutral-200;
-  color: $primary-500;
+  background-color: $neutral-100;
+  color: $primary-500 !important;
   min-height: 3rem;
   height: 3rem;
   margin-top: auto;
@@ -126,12 +128,6 @@
   // height: 3rem !important;
   margin-bottom: 0.7rem;
   margin-top: auto;
-}
-
-.req-status {
-}
-
-.connection-uninitialized {
 }
 
 .connection-closedsocket {
@@ -187,7 +183,7 @@
 
 .is-primary-link {
   &:hover {
-    color: $primary-500;
+    color: $primary-500 !important;
   }
 }
 

@@ -1,46 +1,61 @@
-// Integration test for electron for spectron
-// ****** use "npm run test-mocha" to run these tests ******
+// End-to-end testing on the electron app using Playwright
+// ****** use "npm run test-mocha" or "npm run test" to run these tests ******
 
-// import other tests
+// This testing suite uses Playwright to launch an instance of the Electron application.
+// Each test is in the suite below is run with a separate instance of Electron, this is what
+// setupFxn() in each of the files is. It will set up Electron, and also set up functionality
+// to screenshot the window on a failed test.
+// Please note many of these tests are written contingent on each other, and there is room for 
+// better optimization of end-to-end testing. 
+
+// TODO: openAPI testing and webRTC testing is extremely thin, essentially non-existent. Webhook
+// testing needs to be added
+// TODO: Much of the UI is untested, recommended to add testing suites either here or in the 
+// Jest suite to confirm UI rendering. i.e. "View Response History" is untested, populating
+// the composer from workspaces is untested, response cookies and headers are untested. These may
+// be added in end-to-end testing for confirmation of functionality, and in integration testing
+// for confirmation of proper rendering and usage.
+
+
+// Import various tests
 const appOpensTests = require('./subSuites/appOpens');
 const reqInputTests = require('./subSuites/reqInputTests');
 const httpTest = require('./subSuites/httpTest');
 const websocketTest = require('./subSuites/websocketTest');
 const grpcTest = require('./subSuites/grpcTest');
 const graphqlTest = require('./subSuites/graphqlTest');
-
+const openAPITest = require('./subSuites/openAPITest');
 const httpTestingTest = require('./subSuites/httpTestingTest');
 const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
+const webRTCTest = require('./subSuites/webRTCTest');
 
-const app = require('./testApp');
+// Package requirements
+const path = require('path');
+const fs = require('fs-extra');
 
-describe('Electron Tests', function () {
-  this.timeout(200000);
-  // before and after here are to test if the app can be opened and closed
-  before(() => app.start());
+// Remove all files from "failedTests" directory on launching the tests, we want only the most recent test screenshots
+fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
-  after(() => {
-    if (app && app.isRunning()) {
-      return app.stop();
-    }
-  });
 
-  // these are test suites within this broader suite
+// Testing suite 
+describe('Electron UI Rendering', function () {
   appOpensTests();
+}).timeout(20000);
 
-  // execute differnt types of test here
-  describe('CRUD functionality', () => {
-    reqInputTests();
-    // httpTest(); //Comment out because no Mongo URI for test server
-    graphqlTest();
-    websocketTest();
-    grpcTest();
-  });
+describe('Protocol selection and usage', function () {
+  reqInputTests(); 
+  httpTest();
+  graphqlTest();
+  websocketTest();
+  grpcTest();
+  webRTCTest();
+  openAPITest();
+}).timeout(20000);
 
-  // describe("Swell Testing functionality", function () {
-  //   httpTestingTest();
-  //   grpcTestingTest();
-  //   graphqlTestingTest();
-  // });
-});
+describe("Request/response testing functionality", function () {
+  httpTestingTest();
+  grpcTestingTest();
+  graphqlTestingTest();
+}).timeout(20000);
+

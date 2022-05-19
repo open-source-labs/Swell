@@ -1,11 +1,8 @@
-const { ApolloClient } = require('apollo-client');
+const { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } = require('@apollo/client');
 const gql = require('graphql-tag');
-const { InMemoryCache } = require('apollo-cache-inmemory');
-const { createHttpLink } = require('apollo-link-http');
-const { ApolloLink } = require('apollo-link');
-const { introspectionQuery } = require('graphql');
-const { onError } = require('apollo-link-error');
-const fetch2 = require('node-fetch');
+const { getIntrospectionQuery } = require('graphql');
+const { onError } = require("@apollo/client/link/error");
+const fetch = require('cross-fetch');
 const cookie = require('cookie');
 const { ipcMain } = require('electron');
 
@@ -82,7 +79,7 @@ const graphqlController = {
       uri: reqResObj.url,
       headers,
       credentials: 'include',
-      fetch: fetch2,
+      fetch: fetch,
     });
 
     const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -92,7 +89,7 @@ const graphqlController = {
       }
       try {
         // check if there are any errors in the graphQLErrors array
-        if (graphQLErrors.length !== 0) {
+        if (graphQLErrors) {
           graphQLErrors.forEach((currError) => {
             reqResObj.error = JSON.stringify(currError);
             event.sender.send('reply-gql', { error: currError, reqResObj });
@@ -125,6 +122,7 @@ const graphqlController = {
         client
           .query({ query: body, variables, context: headers })
           .then((data) => {
+            console.log(`hi`)
             // handle tests
             if (reqResObj.request.testContent) {
               reqResObj.response.testResult = testingController.runTest(
@@ -187,17 +185,19 @@ const graphqlController = {
     }
     headers.Cookie = cookies;
 
-    fetch2(req.url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ query: introspectionQuery }),
+    fetch(req.url, {
+      method: 'post',
+      headers: headers,
+      body: JSON.stringify({ query: getIntrospectionQuery() }),
     })
       .then((resp) => resp.json())
-      .then((data) => event.sender.send('introspect-reply', data.data))
-      .catch((err) =>
+      .then((data) => {
+        event.sender.send('introspect-reply', data.data)
+      })
+      .catch((err) => 
         event.sender.send(
           'introspect-reply',
-          'Error: Please enter a valid GraphQL API URI'
+          `Error: ${err}`,
         )
       );
   },

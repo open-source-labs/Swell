@@ -1,6 +1,11 @@
 import ReqResCtrl from '../src/client/controllers/reqResController';
 
-xdescribe('REST API Requests', () => {
+// TODO: Integration tests with the actual API. The controller calls api.send and api.recieve
+// without attachement to the API, the tests in this file don't perform anything.
+// Additionally, add a testing file for graphQLController. This is currently untested
+// and is a dependency for reqResController.
+
+describe('REST API Requests', () => {
   let state;
   beforeEach(() => {
     state = {
@@ -70,7 +75,7 @@ xdescribe('REST API Requests', () => {
       // define request
       const request = {
         id: 'testID',
-        // created_at: 2020-11-04T19:33:55.829Z,
+        // createdAt: 2020-11-04T19:33:55.829Z,
         protocol: 'http://',
         host: 'http://jsonplaceholder.typicode.com',
         path: '/posts',
@@ -104,9 +109,13 @@ xdescribe('REST API Requests', () => {
         tab: 'First Tab',
       };
 
-      ReqResCtrl.openReqRes(request);
+      state = ReqResCtrl.openReqRes(request);
       const response = state.reqResArray[0];
       expect(response.toEqual('hello'));
     });
+
+    it('should toggle select all',()=>{
+      expect(ReqResCtrl.toggleSelectAll()).not.toThrowError;
+    })
   });
 });
