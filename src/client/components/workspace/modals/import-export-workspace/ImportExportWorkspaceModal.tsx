@@ -35,13 +35,6 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   let files = useLiveQuery(() => db.files.toArray());
-  // console.log(files[0].repository.full_name)
-  let repoToExportTo;
-  // if(files !== undefined) {
-  //   files[0].repository.full_name;
-  // } else {
-  //   repoToExportTo = '';
-  // }
 
   const [selectedRepo, setSelectedRepo] = React.useState('');
 
@@ -133,7 +126,6 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   const exportDbWorkspacesToGithub = [];
   if(workspaces !== undefined) {
     for (let workspace of workspaces) {
-      // onClick={() => collectionsController.exportToGithub(workspace.id)
       exportDbWorkspacesToGithub.push(
         <List
           key={workspace.id}
@@ -158,6 +150,19 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
     }
   }
 
+  const style = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 1
+  };
 
 
   return (
@@ -173,7 +178,8 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
   }}
 >
   <Fade in={open}>
-  <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', }}>
+  {/* sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', }}> */}
+  <Box sx={style}>
     <nav aria-label="main mailbox folders">
       {/* List containing Import functionality */}
       <List >

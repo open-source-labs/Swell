@@ -15,7 +15,7 @@ export default function GeneralInfo(props) {
       }}>
       {/* TODO: this GitHub button comes from a component library. Should build your own or find one that supports TS types. */ }
       {/* @ts-ignore:next-line */}
-      <GitHubButton href="https://github.com/oslabs-beta/Swell" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star oslabs-beta/Swell on GitHub">Star</GitHubButton>
+      <GitHubButton href="https://github.com/open-source-labs/Swell" data-size="large" data-show-count="true" aria-label="Star open-source-labs/Swell on GitHub">Star</GitHubButton>
     </Box>
   )
 }

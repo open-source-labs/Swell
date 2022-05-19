@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../../features/business/businessSlice';
 import * as uiactions from '../../../features/ui/uiSlice';
 import ReqResCtrl from '../../../controllers/reqResController';
+import { Box } from '@mui/material';
 
 // Import local components.
 import EventsContainer from './EventsContainer';
@@ -39,10 +40,16 @@ const ResponsePaneContainer = () => {
   }
 
   return (
+    <Box
+      sx={{
+        height: '100%',
+        p: 1,
+      }}
+    >
     <div
       className={`${isDark ? 'is-dark-400' : 'is-divider-neutral-300'} box is-3 add-vertical-scroll`} // gigi playing with css
       // className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
-      style={{ height: '50vh', margin: "0px", padding: "0px"}}
+      style={{ height: '54%', margin: "0px", marginTop: "1px"}}
       id="responses"
     >
 
@@ -203,6 +210,7 @@ const ResponsePaneContainer = () => {
           </div>
         )}
     </div>
+    </Box>
   );
 };
 

@@ -19,7 +19,7 @@ import NewRequestButton from '../new-request/NewRequestButton';
 import BodyEntryForm from '../new-request/BodyEntryForm';
 import TestEntryForm from '../new-request/TestEntryForm';
 // Import MUI components
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { BooleanValueNode } from 'graphql';
 
 // Translated from RestContainer.jsx
@@ -297,11 +297,16 @@ export default function Http2Composer(props) {
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
+        height: '40%',
+        px: 1,
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
       id = "composer-http2"
     >
+      {/* <Typography align='center'>
+        HTTP/2
+      </Typography> */}
       {/**
        * TODO:
        * The two commented components are our attempt to port the entire app to use MaterialUI for consistency.

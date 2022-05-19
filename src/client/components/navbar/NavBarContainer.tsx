@@ -47,8 +47,10 @@ export default function NavBarContainer(props) {
     }
   }, []);
 
+  // bgcolor: '#e0e0e0'
+
   return(
-    <Box sx={{display: 'flex', flexDirection: 'row'}} width="100%">
+    <Box sx={{display: 'flex', flexDirection: 'row', bgcolor: '#51819b' }} width="100%">
       {/* Login status for the user. */}
       <LoginStatus session={session} setSession={setSession}/>
       {/* Protocol select buttons. */}
