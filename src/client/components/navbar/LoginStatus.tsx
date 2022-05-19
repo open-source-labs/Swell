@@ -1,13 +1,25 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+
+const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 11,
+      fontWeight: 'bold',
+    },
+}));
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -72,12 +84,14 @@ export default function LoginContainer(props) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <Button
-            sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
-            onClick={handleSignOut}
-          >
-            <LogoutRoundedIcon fontSize='small' />
-          </Button>
+          <LightTooltip title="Logout">
+            <Button
+              sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
+              onClick={handleSignOut}
+            >
+              <LogoutRoundedIcon fontSize='small' />
+            </Button>
+          </LightTooltip>
           <StyledBadge
             sx={{
               m: 1,

@@ -5,7 +5,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import WebSocketMessage from './WebSocketMessage';
 import ImageDropzone from './ImageDropzone';
 
 const { api } = window;
@@ -67,7 +67,7 @@ const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connectio
   // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
     .map((message: Record<string, unknown>) => {
-      message = {...message, source: 'client'}  
+      message = {...message, source: 'client'}
       return message;
     })
     .concat(

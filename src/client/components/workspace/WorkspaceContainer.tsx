@@ -33,7 +33,7 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
   })
 
   return (
-    <Box className="workspace-container" sx={{ minWidth: '20%', align: 'center', p: 1.5 }}>
+    <Box className="workspace-container" sx={{ minWidth: '20%', align: 'center' }}>
       {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
       <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} currentWorkspace={currentWorkspace} handleWorkspaceChange={handleWorkspaceChange}/>
       <Box className="collections-container">

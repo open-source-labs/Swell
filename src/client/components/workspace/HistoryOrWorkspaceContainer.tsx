@@ -46,7 +46,7 @@ export default function HistoryOrWorkspaceContainer(props) {
   const [showGraph, setShowGraph] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
-  const currentResponse = useSelector((store: any) => store.business.currentResponse);
+  // const currentResponse = useSelector((store: any) => store.business.currentResponse);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

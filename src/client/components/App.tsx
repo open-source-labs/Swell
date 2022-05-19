@@ -24,6 +24,7 @@ import { Box, Divider } from '@mui/material';
  * - AA 18 May, 2022
  */
 import '../../assets/style/App.scss';
+import WorkspaceContainer from './workspace/WorkspaceContainer';
 
 
 const { api } = window as unknown as WindowExt;
@@ -52,7 +53,7 @@ const App = () => {
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* Workspace. Left side of the application. */}
           <HistoryOrWorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
-          <Divider orientation="vertical"/>
+          {/* <Divider orientation="horizontal" /> */}
           {/* Main container. Contains the composer and response panes. */}
           <MainContainer currentWorkspaceId={currentWorkspaceId} />
         </Box>
