@@ -8,7 +8,7 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/getswell/getswell/issues)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Swell-%20For%20all%20your%20streaming%20API%20testing%20needs&url=https://www.getswell.io&hashtags=SSE,WebSocket,HTTP,API,developers)
 
-Swell is an API development tool that enables developers to test endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, GraphQL, gRPC, WebRTC, OpenAPI, and WebHooks.
+Swell is an API development tool that enables developers to test endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, GraphQL, gRPC, WebRTC, and OpenAPI.
 
 ## Getting Started
 
@@ -31,7 +31,6 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - Compose test suites in JavaScript with Chai-style TDD/BDD assertion syntax
 - Execute a collection of requests in succession and receive clear visual feedback of each test's status
 - Schedule requests on to be sent on a regular time interval to support endpoint functional validation tests
-- Register with Github to save and share Swell workspaces directly in your repository
 
 ## Supported Technologies
 
@@ -72,8 +71,6 @@ Swell is a one-stop shop for sending and monitoring your API requests
     ]
     ```
 
-- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook. 
-  <kbd><img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 ## Additional Features
 
@@ -93,7 +90,16 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - _Schedule Tests_: You can also automate sending requests to occur on a periodic basis.
   <kbd><img src="./ReadMeGifs/Gifs/ScheduleTest.gif"
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
-- *New in Version 1.10.2!* _Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
+
+## WIP Features
+**Clone this repo and check out dev mode for the latest and greatest!**
+
+- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook. 
+  <kbd><img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
+- *New in Dev Version 1.10.2!* _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
+
+- *New in Dev Version 1.10.2!* _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
 
 ## Built With
 
