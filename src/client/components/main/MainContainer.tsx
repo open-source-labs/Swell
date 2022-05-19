@@ -78,7 +78,14 @@ const mapDispatchToProps = (dispatch) => ({
 
 function MainContainer(props) {
   return(
-    <Box sx={{p: 1, width: '75%', overflowY: 'scroll'}}>
+    <Box
+      sx={{
+        width: '75%',
+        // overflowY: 'scroll',
+        // display: 'flex',
+        // flexDirection: 'column'
+      }}
+    >
       <Routes>
         <Route
           path="/"
@@ -109,6 +116,7 @@ function MainContainer(props) {
           element={<WebhookComposer {...props} />}
         />
       </Routes>
+      <Divider orientation='horizontal' sx={{ borderBottomWidth: 2, background: '#51819b' }} />
       <ResponsePaneContainer />
     </Box>
   )

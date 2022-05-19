@@ -45,15 +45,15 @@ const App = () => {
    * main containers for this application.
    */
   return (
-    <div id="app" className="git brais-tall">
+    <div id="app" className="is-tall">
       <HashRouter>
         {/* Navigation bar. Top of the application. */}
         <NavBarContainer />
-        <Divider orientation="horizontal"/>
+        <Divider orientation="horizontal" sx={{ borderBottomWidth: 2, background: '#51819b' }}/>
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* Workspace. Left side of the application. */}
           <HistoryOrWorkspaceContainer currentWorkspaceId={currentWorkspaceId} setWorkspace={setWorkspace} />
-          {/* <Divider orientation="horizontal" /> */}
+          <Divider orientation="vertical" sx={{ borderRightWidth: 2, background: '#51819b' }} />
           {/* Main container. Contains the composer and response panes. */}
           <MainContainer currentWorkspaceId={currentWorkspaceId} />
         </Box>

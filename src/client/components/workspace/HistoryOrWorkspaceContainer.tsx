@@ -55,17 +55,16 @@ export default function HistoryOrWorkspaceContainer(props) {
   return (
     <Box
       sx={{
-        minWidth: '25%',
-        maxHeight: '100%',
-        overflowX: 'auto',
+        width: '25%',
+        height: '100%',
         overflowY: 'scroll',
       }}
     >
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab icon={<Work fontSize='small'/>} {...a11yProps(0)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
-          <Tab icon={<ScheduleSendRounded fontSize='small'/>} {...a11yProps(1)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
-          <Tab icon={<AccessTime fontSize='small'/>} {...a11yProps(2)} sx={{fontSize:'10px', overflowWrap: "break-word", maxWidth: '50%'}}/>
+          <Tab icon={<Work fontSize='small'/>} {...a11yProps(0)} sx={{fontSize:'10px', overflowWrap: "break-word", width: '33.33%'}}/>
+          <Tab icon={<ScheduleSendRounded fontSize='small'/>} {...a11yProps(1)} sx={{fontSize:'10px', overflowWrap: "break-word", width: '33.33%'}}/>
+          <Tab icon={<AccessTime fontSize='small'/>} {...a11yProps(2)} sx={{fontSize:'10px', overflowWrap: "break-word", width: '33.33%'}}/>
         </Tabs>
       </Box>
       {value === 1 && (<Box

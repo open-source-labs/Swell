@@ -9,6 +9,16 @@ import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
+const blue = {
+  500: '#51819b',
+  600: '#51819b',
+  700: '#7ebdde',
+};
+
+const white = {
+  500: '#f0f6fa',
+}
+
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -89,7 +99,7 @@ export default function LoginContainer(props) {
               sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
               onClick={handleSignOut}
             >
-              <LogoutRoundedIcon fontSize='small' />
+              <LogoutRoundedIcon fontSize='small' color={white[500]} />
             </Button>
           </LightTooltip>
           <StyledBadge
@@ -110,7 +120,7 @@ export default function LoginContainer(props) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <Button variant="outlined" onClick={signInViaGitHub}>Sign In</Button>
+          <Button variant="text" onClick={signInViaGitHub}>Sign In</Button>
         </Box>
       }
     </Box>
