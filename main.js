@@ -206,6 +206,8 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
   if (!isDev) {
+    // TODO: this is crucial code! run express server if production mode
+    const express = require('./src/server/server');
     autoUpdater.checkForUpdates();
   }
 });
