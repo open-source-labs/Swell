@@ -13,7 +13,7 @@ import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled'
 
 const blue = {
   500: '#51819b',
-  600: '#51819b',
+  600: '#95ceed',
   700: '#7ebdde',
 };
 
