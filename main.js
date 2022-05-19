@@ -7,8 +7,8 @@
 		const extraca = require("fs").readFileSync(process.env.NODE_EXTRA_CA_CERTS);
 	}catch(e){
 		return;
-	} 
-	
+	}
+
 	const NativeSecureContext = process.binding('crypto').SecureContext;
 	const oldaddRootCerts = NativeSecureContext.prototype.addRootCerts;
 	NativeSecureContext.prototype.addRootCerts = function(){
@@ -31,7 +31,7 @@
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
 const { autoUpdater } = require('electron-updater');
 const {
@@ -50,6 +50,8 @@ const protoParserFunc = require('./main_process/protoParser.js');
 
 // openapi parser func for parsing openAPI documents in JSON or YAML format
 const openapiParserFunc = require('./main_process/openapiParser.js');
+
+// require('dotenv').config();
 
 // require menu file
 require('./menu/mainMenu');
@@ -76,10 +78,13 @@ let mainWindow;
  *********************** */
 // default to production mode
 let isDev = false;
+
 // if running webpack-server, change to development mode
-if (process.argv.includes('dev')) {
+// console.log(process.argv);
+if (process.argv.includes('--dev')) {
   isDev = true;
 }
+
 
 /** ***********************
  ******* MODE DISPLAY ****
@@ -87,16 +92,14 @@ if (process.argv.includes('dev')) {
 
 isDev
   ? console.log(`
-
-=========================
-  Launching in DEV mode
-=========================
+    =========================
+      Launching in DEV mode
+    =========================
   `)
   : console.log(`
-
-================================
-  Launching in PRODUCTION mode
-================================
+    ================================
+      Launching in PRODUCTION mode
+    ================================
   `);
 
 if (process.platform === 'win32') {
@@ -114,11 +117,10 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 2000,
     height: 1000,
-    minWidth: 1304,
-    minHeight: 700,
+    minWidth: 1000,
+    minHeight: 600,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
     show: false,
-    title: 'Swell',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: process.env.NODE_ENV !== 'test', // true if in dev mode
@@ -141,6 +143,9 @@ function createWindow() {
       slashes: true,
     });
 
+    // Dev mode title
+    mainWindow.setTitle("Swell (devMode)")
+
     // If we are in developer mode Add React & Redux DevTools to Electron App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -156,6 +161,7 @@ function createWindow() {
       pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
     });
+
   }
 
   // our new app window will load content depending on the boolean value of the dev variable
@@ -163,7 +169,6 @@ function createWindow() {
 
   // give our new window the earlier created touchbar
   mainWindow.setTouchBar(touchBar);
-
   // prevent webpack-dev-server from setting new title
   mainWindow.on('page-title-updated', (e) => e.preventDefault());
 
@@ -201,6 +206,8 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
   if (!isDev) {
+    // TODO: this is crucial code! run express server if production mode
+    const express = require('./src/server/server');
     autoUpdater.checkForUpdates();
   }
 });
@@ -217,6 +224,12 @@ const sendStatusToWindow = (text) => {
     mainWindow.webContents.send('message', text);
   }
 };
+
+ipcMain.on('login-via-github', async () => {
+  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` // ${process.env.GITHUB_CLIENT_ID};
+  await shell.openExternal(url, { activate: true });
+
+})
 
 ipcMain.on('check-for-update', () => {
   // listens to ipcRenderer in UpdatePopUpContainer.jsx
@@ -272,6 +285,65 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// ============ IMPORT / EXPORT FROM GITHUB ===============
+
+// ipcMain.on('export-collection', (event, args) => {
+//   const content = JSON.stringify(args.collection);
+//   dialog.showSaveDialog(null).then((resp) => {
+//     if (resp.filePath === undefined) {
+//       console.log("You didn't save the file");
+//       return;
+//     }
+
+//     // fileName is a string that contains the path and filename created in the save file dialog.
+//     fs.writeFile(resp.filePath, content, (err) => {
+//       if (err) {
+//         console.log('An error ocurred creating the file ', err.message);
+//       }
+//     });
+//   });
+// });
+
+ipcMain.on('import-from-github', async (event, args) => {
+  async function popOverwrite(collection) {
+    // TODO: add in mod date, is Yes No ordering correct on popup?
+    const options = {
+      type: 'question',
+      buttons: ['No', 'Yes'],
+      defaultId: 0,
+      title: 'Question',
+      message: `The collection ${collection.name} already exists in Swell`,
+      detail: 'Do you want to overwrite?',
+    };
+    return await dialog.showMessageBox(null, options);
+  }
+
+  console.log('main.js import-from-github args', args);
+
+  // requiring typescript type Workspace makes sanitation uncessesary
+  const ids = {};
+  let index = 0;
+  const newCollectionArr = []
+  for(let collection of args) {
+    // console.log('main.js workspace\n', workspace)
+    if (ids[collection.id]) {
+      const result = await popOverwrite(collection);
+      if (result.response === 1) {
+        newCollectionArr[ids[collection.id]] = collection;
+        continue;
+      }
+    }
+    ids[collection.id] = index;
+    index++;
+    newCollectionArr.push(collection)
+
+  };
+  // send full array of workspaces to chromium for state update
+  event.sender.send('add-collections', newCollectionArr);
+});
+
+// ============ IMPORT / EXPORT FROM FILES ===============
 
 // export collection ipc now promise-based
 ipcMain.on('export-collection', (event, args) => {
@@ -365,7 +437,7 @@ ipcMain.on('import-collection', (event, args) => {
         }
       }
       // send data to chromium for state update
-      event.sender.send('add-collection', JSON.stringify(JSON.parse(data)));
+      event.sender.send('add-collections', [JSON.parse(data)]);
     });
   });
 });

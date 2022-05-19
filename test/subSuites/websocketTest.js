@@ -1,70 +1,89 @@
 /* eslint-disable no-async-promise-executor */
-const chai = require('chai');
-const path = require('path');
-const app = require('../testApp.js');
-const composerObj = require('../pageObjects/ComposerObj.js');
-const workspaceObj = require('../pageObjects/WorkspaceObj.js');
+// Testing websocket requests using websocketserver.js
+// TODO: possibly remove our own server from this testing suite and go with a public API.
+// Tests may fail due to the user's computer and this testing suite becomes heavier 
+// with a mock WS server. 
 
-const { expect } = chai;
+const {_electron: electron} = require('playwright');
+const chai = require('chai')
+const expect = chai.expect;
+const path = require('path');
+const fs = require('fs-extra');
+
+let electronApp, page, num, messageNum;
 
 module.exports = () => {
-  describe('Websocket requests', () => {
-    before(() => {
-      app.client.$('button=Clear Workspace').click();
+
+  const setupFxn = function() {
+    before(async () => {
+      electronApp = await electron.launch({ args: ['main.js'] });
+      page = electronApp.windows()[0]; // In case there is more than one window
+      await page.waitForLoadState(`domcontentloaded`);
+
+      num=0
+      messageNum = 0;
+    });
+    
+    // close Electron app when complete
+    after(async () => {
+      await electronApp.close();
     });
 
-    const addAndSend = async () => {
+    afterEach(async function() {
+      if (this.currentTest.state === 'failed') {
+        console.log(`Screenshotting failed test window`)
+        const imageBuffer = await page.screenshot();
+        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+      }
+    });
+  }
+
+
+  describe('Websocket requests', () => {
+    setupFxn();
+
+    before(async () => {
+      await page.locator('button >> text=Clear Workspace').click();
+    });
+
+    const addAndSend = async (num) => {
       try {
-        await composerObj.addRequestBtn.click();
-        await workspaceObj.latestSendRequestBtn.click();
+        await page.locator('button >> text=Add to Workspace').click();
+        await page.locator(`#send-button-${num}`).click();
       } catch (err) {
         console.error(err);
       }
     };
 
-    after(() => {
-      app.client.$('button=Clear Workspace').click();
-    });
+    // after(() => {
+    //   app.client.$('button=Clear Workspace').click();
+    // });
 
     it('it should send and receive messages to the mock server', async () => {
       try {
         // select web sockets
-        await composerObj.selectedNetwork.click();
-        await app.client.$('a=WEB SOCKETS').click();
+        await page.locator('button>> text=WEB SOCKET').click();
 
         // type in url
-        await composerObj.url.setValue('ws://localhost:5000/');
+        await page.locator('#url-input').fill('ws://localhost:5000/'); // TODO: Should we be using our own local server to test this? Could be easier to go third party
 
         //
-
-        await addAndSend();
+        await addAndSend(num++);
 
         await new Promise((resolve) =>
           setTimeout(async () => {
             try {
-              await app.client
-                .$('#wsSendData')
-                .click()
-                .$('#wsMsgInput')
-                .click()
-                .keys('testing websocket protocol');
-              await app.client.$('button=Send Message').click();
+              await page.locator('#wsSendData').click();
+              await page.locator('#wsMsgInput').fill('testing websocket protocol');
+              await page.locator('button >> text=Send Message').click();
 
               await new Promise((resolve) =>
                 setTimeout(async () => {
                   try {
-                    const messageClient = await app.client
-                      .$('#ws-msg-0')
-                      .getText();
-                    const messageServer = await app.client
-                      .$('#ws-msg-1')
-                      .getText();
-                    expect(messageClient).to.include(
-                      'testing websocket protocol'
-                    );
-                    expect(messageServer).to.include(
-                      'testing websocket protocol'
-                    );
+                    const messageClient = await page.locator(`#ws-msg-${messageNum++}`).innerText();
+                    const messageServer = await page.locator(`#ws-msg-${messageNum++}`).innerText();
+                    expect(messageClient).to.include('testing websocket protocol');
+                    expect(messageServer).to.include('testing websocket protocol');
                     resolve();
                   } catch (err) {
                     console.error(err);
@@ -86,7 +105,6 @@ module.exports = () => {
       try {
         await new Promise(async (resolve) => {
           try {
-            // instead of this, we need to click "select file", and choose a file
             const toUpload = path.join(
               __dirname,
               '..',
@@ -97,30 +115,26 @@ module.exports = () => {
               '128x128.png'
             );
 
-            await app.client.chooseFile('#wsFileInput', toUpload);
-            // const val = app.client.getValue("#upload-test");
-            await app.client.$('#wsSendImgBtn').click();
+            const handle = await page.locator('input[type="file"]');
+            await handle.setInputFiles(toUpload);
+            
 
+            // const val = app.client.getValue("#upload-test");
+            await page.locator('#wsSendImgBtn').click();
+
+            // why is this checking the first message again? shouldnt it check the image?
             await new Promise((resolve) =>
-              setTimeout(async () => {
-                try {
-                  const messageClient = await app.client
-                    .$('#ws-msg-0')
-                    .getText();
-                  const messageServer = await app.client
-                    .$('#ws-msg-1')
-                    .getText();
-                  expect(messageClient).to.include(
-                    'testing websocket protocol'
-                  );
-                  expect(messageServer).to.include(
-                    'testing websocket protocol'
-                  );
-                  resolve();
-                } catch (err) {
-                  console.error(err);
-                }
-              }, 300)
+                setTimeout(async () => {
+                  try {
+                    const messageClient = await page.locator(`#ws-msg-${messageNum++}`);
+                    const messageServer = await page.locator(`#ws-msg-${messageNum++}`);
+                    expect(await messageClient.innerHTML()).to.include('img');
+                    expect(await messageServer.innerHTML()).to.include('img');
+                    resolve();
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }, 300)
             );
             resolve();
           } catch (err) {
@@ -131,5 +145,5 @@ module.exports = () => {
         console.error(err);
       }
     });
-  });
+  }).timeout(20000);
 };

@@ -1,18 +1,30 @@
-import ApolloClient, { OperationVariables } from 'apollo-client';
+import { ApolloClient, OperationVariables, InMemoryCache } from '@apollo/client';
 import gql from 'graphql-tag';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { WebSocketLink } from 'apollo-link-ws';
+import { WebSocketLink } from "@apollo/client/link/ws";
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
-import * as store from '../store';
-import * as actions from '../actions/actions';
-import { NewRequestResponseObject, GraphQLResponseObject, GraphQLResponseObjectData, CookieObject, NewRequestHeaders, NewRequestCookies, WindowAPIObject, WindowExt } from '../../types';
+// TODO: Migrate this file and graphqlServer.js to use graphql-ws
+// instead of deprecated subscription-transport-ws package
+// https://www.apollographql.com/docs/apollo-server/data/subscriptions/
+// import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+// import { createClient } from 'graphql-ws';
+import * as store from '../store';  // TODO: refactor for Redux Hooks
+import * as actions from './../features/business/businessSlice';
+import * as uiactions from './../features/ui/uiSlice';
+import { ReqRes, GraphQLResponse, Cookie, RequestHeaders, NewRequestCookies, WindowAPI, WindowExt } from '../../types';
 
-const { api }: { api: WindowAPIObject } = window as unknown as WindowExt;
+const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
 const graphQLController = {
-  openGraphQLConnection(reqResObj: NewRequestResponseObject): void {
+  openGraphQLConnection(reqResObj: ReqRes): void {
     // initialize response data
+    reqResObj = {
+      ...reqResObj,
+      response: {
+        ...reqResObj.response,
+      }
+    }
+    console.log(reqResObj)
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.response.cookies = [];
@@ -29,12 +41,12 @@ const graphQLController = {
       .catch((err) => console.log('error in sendGqlToMain', err));
   },
 
-  openGraphQLConnectionAndRunCollection(reqResArray: NewRequestResponseObject[]): void {
+  openGraphQLConnectionAndRunCollection(reqResArray: ReqRes[]): void {
     // initialize response data
     let index = 0;
     const reqResObj = reqResArray[index]; //-> this seems erroneous -Prince
     api.removeAllListeners('reply-gql');
-    api.receive('reply-gql', (result: GraphQLResponseObject) => {
+    api.receive('reply-gql', (result: GraphQLResponse) => {
       // needs formatting because component reads them in a particular order
       result.reqResObj.response.cookies = this.cookieFormatter(
         result.reqResObj.response.cookies
@@ -60,7 +72,7 @@ const graphQLController = {
       }
     });
 
-    const runSingleGraphQLRequest = (reqResObj: NewRequestResponseObject) => {
+    const runSingleGraphQLRequest = (reqResObj: ReqRes) => {
       reqResObj.response.headers = {};
       reqResObj.response.events = [];
       reqResObj.response.cookies = [];
@@ -72,12 +84,12 @@ const graphQLController = {
   },
 
   // handles graphQL queries and mutations
-  sendGqlToMain(args: Record<string, NewRequestResponseObject>): Promise<GraphQLResponseObject> {
+  sendGqlToMain(args: Record<string, ReqRes>): Promise<GraphQLResponse> {
     return new Promise((resolve) => {
       // send object to the context bridge
       api.removeAllListeners('reply-gql');
       api.send('open-gql', args);
-      api.receive('reply-gql', (result: GraphQLResponseObject) => {
+      api.receive('reply-gql', (result: GraphQLResponse) => {
         // needs formatting because component reads them in a particular order
         result.reqResObj.response.cookies = this.cookieFormatter(
           result.reqResObj.response.cookies
@@ -87,7 +99,7 @@ const graphQLController = {
     });
   },
 
-  openSubscription(reqResObj: NewRequestResponseObject): void {
+  openSubscription(reqResObj: ReqRes): void {
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.connection = 'open';
@@ -102,12 +114,7 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers: Record<string, string> = {};
-    reqResObj.request.headers.forEach(({
-      active,
-      key,
-      value
-    }: NewRequestHeaders) => {
-    
+    reqResObj.request.headers.forEach(({active, key, value}: RequestHeaders) => {
       if (active) headers[key] = value;
     });
 
@@ -121,6 +128,17 @@ const graphQLController = {
       }, '');
     }
     headers.Cookie = cookiesStr;
+
+    // moving to graphql-ws
+
+    // const wsLink = new GraphQLWsLink(createClient({
+    //   url: wsUri,
+    //   connectionParams: {
+    //     headers,
+    //     timeout: 30000,
+    //     reconnect: true,
+    //   },
+    // }));
 
     const wsLink = new WebSocketLink(
       new SubscriptionClient(wsUri, {
@@ -154,7 +172,7 @@ const graphQLController = {
         next(subsEvent) {
           // Notify your application with the new arrived data
           reqResObj.response.events.push(subsEvent.data);
-          const newReqRes: NewRequestResponseObject = JSON.parse(JSON.stringify(reqResObj));
+          const newReqRes: ReqRes = JSON.parse(JSON.stringify(reqResObj));
           store.default.dispatch(actions.saveCurrentResponseData(newReqRes));
           store.default.dispatch(actions.reqResUpdate(newReqRes));
         },
@@ -164,7 +182,7 @@ const graphQLController = {
       });
   },
 
-  handleResponse(response: GraphQLResponseObject, reqResObj: NewRequestResponseObject): void {
+  handleResponse(response: GraphQLResponse, reqResObj: ReqRes): void {
     reqResObj.connection = 'closed';
     reqResObj.connectionType = 'plain';
     reqResObj.timeReceived = Date.now();
@@ -176,7 +194,7 @@ const graphQLController = {
     store.default.dispatch(actions.updateGraph(reqResObj));
   },
 
-  handleError(errorsObj: string, reqResObj: NewRequestResponseObject): void {
+  handleError(errorsObj: string, reqResObj: ReqRes): void {
     reqResObj.connection = 'error';
     reqResObj.timeReceived = Date.now();
 
@@ -186,8 +204,8 @@ const graphQLController = {
   },
 
   // objects that travel over IPC API have their properties alphabetized...
-  cookieFormatter(cookieArray: CookieObject[]): CookieObject[] {
-    return cookieArray.map((eachCookie: CookieObject) => {
+  cookieFormatter(cookieArray: Cookie[]): Cookie[] {
+    return cookieArray.map((eachCookie: Cookie) => {
       const cookieFormat = {
         name: eachCookie.name,
         value: eachCookie.value,
@@ -203,7 +221,7 @@ const graphQLController = {
     });
   },
 
-  introspect(url: string, headers: NewRequestHeaders[], cookies: NewRequestCookies[]): void {
+  introspect(url: string, headers: RequestHeaders[], cookies: NewRequestCookies[]): void {
     const introspectionObject = {
       url,
       headers,
@@ -211,6 +229,7 @@ const graphQLController = {
     };
     api.send('introspect', JSON.stringify(introspectionObject));
     api.receive('introspect-reply', (data: IntrospectionQuery) => {
+      console.log(data)
       if (data !== 'Error: Please enter a valid GraphQL API URI') {
         // formatted for Codemirror hint and lint
         const clientSchema = buildClientSchema(data);

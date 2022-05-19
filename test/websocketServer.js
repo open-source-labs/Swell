@@ -1,13 +1,13 @@
 const WebSocketServer = require('websocket').server;
-const http = require('npm-http-server');
+var http = require('http');
 
-const server = http.createServer((request, response) => {
-  console.log(`${new Date()} Received request for ${request.url}`);
-  response.writeHead(404);
-  response.end();
+var server = http.createServer(function(request, response) {
+    console.log((new Date()) + ' Received request for ' + request.url);
+    response.writeHead(404);
+    response.end();
 });
-server.listen(5000, () => {
-  console.log(`${new Date()} Server is listening on port 5000`);
+server.listen(5001, function() {
+    console.log((new Date()) + ' Server is listening on port 5001');
 });
 
 wsServer = new WebSocketServer({
