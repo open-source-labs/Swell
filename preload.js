@@ -4,11 +4,13 @@ const apiObj = {
   send: (channel, ...data) => {
     // allow list channels SENDING to Main
     const allowedChannels = [
+      'login-via-github',
       'check-for-update',
       'confirm-clear-history',
       'export-collection',
       'fatalError',
       'import-collection',
+      'import-from-github',
       'import-proto',
       'import-openapi',
       'open-http',
@@ -22,6 +24,7 @@ const apiObj = {
       'introspect',
       'open-ws',
       'send-ws',
+      'set-cookie',
       'close-ws',
       'open-openapi',
       'exportChatLog',
@@ -33,16 +36,18 @@ const apiObj = {
   receive: (channel, cb) => {
     // allow list channels
     const allowedChannels = [
-      'add-collection',
+      'add-collections',
       'clear-history-response',
+      'export-from-github',
+      'introspect-reply',
       'message',
       'openapi-info',
+      'openapiParserFunc-return',
       'proto-info',
       'protoParserFunc-return',
-      'openapiParserFunc-return',
       'reply-gql',
       'reqResUpdate',
-      'introspect-reply',
+      'set-cookie',
       'update-connectionArray',
     ];
     if (allowedChannels.includes(channel)) {

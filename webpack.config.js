@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -6,8 +7,19 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   target: 'web',
-  node: {
-    fs: 'empty',
+  resolve: {
+    fallback: {
+      buffer: require.resolve('buffer'),
+      fs: false,
+      tls: false,
+      net: false,
+      path: false,
+      zlib: false,
+      http: false,
+      https: false,
+      stream: false,
+      crypto: false,
+    },
   },
   entry: ['./src/index.js'],
   output: {
@@ -59,29 +71,30 @@ module.exports = {
       },
     ],
   },
-  
+
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
       // if using template, add <title>Swell</title> and delete line 59.
       // template: path.resolve(__dirname, "index-csp.html"),
       filename: 'index.html',
-      title: 'Swell',
+      title: require('./package.json').name,
+      // TODO: update CSP with nonce inline styling. Refactor code to be more secure (do not use 'unsafe-inline')
       cspPlugin: {
         enabled: true,
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
-          'script-src': ["'self'"],
-          'style-src': ["'self'"],
+          'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
+          'style-src': "'self' 'unsafe-inline'",
         },
         hashEnabled: {
-          'script-src': true,
-          'style-src': true,
+          'script-src': false,
+          'style-src': false,
         },
         nonceEnabled: {
-          'script-src': true,
-          'style-src': true,
+          'script-src': false,
+          'style-src': false,
         },
       },
     }),
@@ -91,6 +104,23 @@ module.exports = {
     new BundleAnalyzerPlugin({
       openAnalyzer: false,
       analyzerMode: 'static',
+    }),
+    new webpack.ProvidePlugin({
+      process: "node:buffer",
+      Buffer: ["buffer", "Buffer"],
+    }),
+    new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
+        const mod = resource.request.replace(/^node:/, "");
+        switch (mod) {
+            case "buffer":
+                resource.request = "buffer";
+                break;
+            case "stream":
+                resource.request = "readable-stream";
+                break;
+            default:
+                throw new Error(`Not found ${mod}`);
+        }
     }),
   ],
 };

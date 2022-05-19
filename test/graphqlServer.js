@@ -2,8 +2,13 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { execute, subscribe } = require('graphql');
-const { makeExecutableSchema } = require('graphql-tools');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { createServer } = require('http');
+// TODO: Migrate this file and graphQLController.ts to use graphql-ws
+// instead of deprecated subscription-transport-ws package
+// https://www.apollographql.com/docs/apollo-server/data/subscriptions/
+// import { WebSocketServer } from 'ws';
+// import { useServer } from 'graphql-ws/lib/use/ws';
 const { SubscriptionServer } = require('subscriptions-transport-ws');
 const { PubSub } = require('graphql-subscriptions');
 const bodyParser = require('body-parser');
@@ -82,9 +87,11 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 app.use('/graphql', bodyParser.json());
 
-const apolloServer = new ApolloServer({ schema });
+let apolloServer = new ApolloServer({ schema });
 
-apolloServer.applyMiddleware({ app });
+apolloServer.start().then(res=>{
+  apolloServer.applyMiddleware({ app });
+})
 
 const graphqlApp = ws.listen(PORT, () => {
   console.log(`GraphQL Server is now running on http://localhost:${PORT}`);
