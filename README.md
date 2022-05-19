@@ -98,7 +98,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
   <kbd><img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 - *New in Dev Version 1.10.2!* _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
-  <kbd><img src="./ReadMeGifs/Gifs/newUI.png" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+  <kbd><img src="./ReadMeGifs/Gifs/NewUI.png" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 - *New in Dev Version 1.10.2!* _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
   <kbd><img src="./ReadMeGifs/Gifs/GithubIntegration.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
