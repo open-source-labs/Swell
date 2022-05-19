@@ -26,7 +26,7 @@ authController.checkForCookie = async (req, res, next) => {
  */
 authController.getToken = async (req, res, next) => {
   const requestToken = req.query.code;
-  const url = `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_SECRET_ID}&code=${requestToken}&scope=repo`;
+  const url = `https://github.com/login/oauth/access_token?client_id=6e9d37a09ab8bda68d50&client_secret=02f39942f97b1e2210db340a274f762561e6adf0&code=${requestToken}&scope=repo`;
   try {
     const response = await axios.post(url, {
       headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
