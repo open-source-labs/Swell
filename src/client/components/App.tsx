@@ -1,5 +1,5 @@
 // Base React and React Router scaffolding
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { HashRouter } from 'react-router-dom';
 
 // Controllers
@@ -42,12 +42,9 @@ import WorkspaceContainer from './workspace/WorkspaceContainer';
 const { api } = window as unknown as WindowExt;
 
 const App = () => {
-  // Used to toggle the "update" pop-up.
-  const [message, setMessage] = useState(null);
-
   // currentWorkspace is the current Workspace's UUID. It is only altered in
   // WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
-  const [currentWorkspaceId, setWorkspace] = React.useState('');
+  const [currentWorkspaceId, setWorkspace] = useState('');
 
   // Upon opening the application, populate your history and collections.
   useEffect(() => {
@@ -64,14 +61,8 @@ const App = () => {
     <div id="app" className="is-tall">
       <HashRouter>
         <ErrorBoundary>
-          {/* Navigation bar. Top of the application. */}
           <NavBarContainer />
         </ErrorBoundary>
-
-        {/* <Divider
-          orientation="horizontal"
-          sx={{ borderBottomWidth: 2, background: '#51819b' }}
-        /> */}
 
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* Workspace. Left side of the application. */}
@@ -95,7 +86,7 @@ const App = () => {
         </Box>
 
         <ErrorBoundary>
-          <UpdatePopUpContainer message={message} setMessage={setMessage} />
+          <UpdatePopUpContainer />
         </ErrorBoundary>
       </HashRouter>
     </div>
