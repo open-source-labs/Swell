@@ -1,6 +1,7 @@
 /**
  * @file Defines a generic error boundary component for catching and containing errors in a React
- * app.
+ * app. This is basically a try/catch for React apps; if this catches an error, it gracefully
+ * breaks just a specific part of the app, instead of the whole thing.
  *
  * As of 6/14/22, error boundaries can still only be implemented in class components. A hooks
  * version is in the works, but don't try to convert this until that hook is actually available.
