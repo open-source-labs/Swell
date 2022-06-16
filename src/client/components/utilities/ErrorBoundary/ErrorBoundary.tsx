@@ -12,7 +12,6 @@
  */
 
 import React, { Component, ReactNode } from 'react';
-import { Navigate, Link } from 'react-router-dom';
 
 interface Props {
   /** Component children. */
@@ -22,16 +21,10 @@ interface Props {
 interface State {
   /** Indicates whether the boundary has caught an error. */
   hasError: boolean;
-
-  /**
-   * Defines whether the component should redirect the user, instead of
-   * rendering its children.
-   */
-  redirect: boolean;
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  state: State = { hasError: false, redirect: false };
+  state: State = { hasError: false };
 
   /**
    * Returns new state slice to merge into the component state, in the event
@@ -53,35 +46,19 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   /**
-   * Re-runs after each re-render. Mainly here to make sure auto-redirects
-   * happen (see how render method is set up).
-   */
-  componentDidUpdate(): void {
-    if (this.state.hasError) {
-      setTimeout(() => this.setState({ redirect: true }), 5000);
-    }
-  }
-
-  /**
    * Conditionally renders children based on whether the error boundary itself
    * caught an error.
    */
   render() {
-    if (this.state.redirect) {
-      return <h1>Whoops...</h1>;
-      return <Navigate to="/" />;
+    if (!this.state.hasError) {
+      return this.props.children;
     }
 
-    if (this.state.hasError) {
-      return (
-        <h2>
-          There was an error with this component. <Link to="/">Click here</Link>{' '}
-          or wait five seconds to be redirected.
-        </h2>
-      );
-    }
-
-    return this.props.children;
+    return (
+      <h2>
+        There was an error with this component. The error has been logged.
+      </h2>
+    );
   }
 }
 
