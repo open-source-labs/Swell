@@ -1,3 +1,40 @@
+/**
+ * @file Defines a collection of types that are meant to be used through the
+ * TypeScript application. Not all types need to be here, especially if some
+ * type information only makes sense for internal implementations, but most of
+ * them should be here.
+ */
+
+/**
+ * Defines a placeholder alias for the any type.
+ *
+ * PLEASE do not use this for new code. This is just here as a bandaid for
+ * legacy code that was typed too loosely.
+ */
+export type $TSFixMe = any;
+
+/**
+ * Defines a placeholder alias for a function that takes any amount of
+ * arguments, of any kind, and returns any kind of value.
+ *
+ * PLEASE do not use this for new code. This is just here as a bandaid for
+ * legacy code that was typed too loosely.
+ */
+export type $TSFixMeFunction = (...args: any[]) => any;
+
+/**
+ * Defines a placeholder for a value that is meant to be an object, but doesn't
+ * have information about whether it should have precise properties on it, or
+ * should be a Record object.
+ *
+ * Do NOT use the "object" type in TypeScript; there are basically no properties
+ * that you can access from it in a type-safe way. It's next to useless.
+ *
+ * PLEASE do not use this for new code. This is just here as a bandaid for
+ * legacy code that was typed too loosely.
+ */
+export type $TSFixMeObject = any;
+
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
@@ -14,7 +51,6 @@ export type Methods =
   | 'INTROSPECTION'
   | 'INITIATOR'
   | 'RECEIVER';
-type data = { [key: string]: string };
 
 export interface Collection {
   id: string;
@@ -48,14 +84,14 @@ export interface Cookie {
 // }
 
 export interface GithubData {
-  profile: object;
+  profile: $TSFixMeObject;
   repos: Collection[];
-  files: object[];
+  files: $TSFixMeObject[];
 }
 
 export interface GraphQLResponse {
   reqResObj: ReqRes;
-  data: data; //| Record<string, Record<string, unknown[]>>[];
+  data: Record<string, string>; //| Record<string, Record<string, unknown[]>>[];
   error?: string;
 }
 
@@ -169,7 +205,11 @@ export interface ReqRes {
   openapi: boolean;
   protocol: Protocol;
   request: ReqResRequest;
-  response: ReqResResponse; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
+
+  // This prop was previously:
+  // Record<string, string[]> | Record<string, Record<string, string | boolean>>
+  response: ReqResResponse;
+
   rpc: string;
   service: string;
   timeReceived: Date | number;
@@ -182,7 +222,9 @@ export interface SSERequest {
   isSSE: boolean;
 }
 
-// TODO: this could be implemented
+/**
+ * @todo This interface might not be implemented yet?
+ */
 export interface NewRequestStreams {
   streamsArr: Record<string, unknown>[];
   count: number;
