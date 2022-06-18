@@ -66,7 +66,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif|)$/,
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
         use: 'url-loader',
       },
     ],
@@ -106,21 +106,21 @@ module.exports = {
       analyzerMode: 'static',
     }),
     new webpack.ProvidePlugin({
-      process: "node:buffer",
-      Buffer: ["buffer", "Buffer"],
+      process: 'node:buffer',
+      Buffer: ['buffer', 'Buffer'],
     }),
     new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
-        const mod = resource.request.replace(/^node:/, "");
-        switch (mod) {
-            case "buffer":
-                resource.request = "buffer";
-                break;
-            case "stream":
-                resource.request = "readable-stream";
-                break;
-            default:
-                throw new Error(`Not found ${mod}`);
-        }
+      const mod = resource.request.replace(/^node:/, '');
+      switch (mod) {
+        case 'buffer':
+          resource.request = 'buffer';
+          break;
+        case 'stream':
+          resource.request = 'readable-stream';
+          break;
+        default:
+          throw new Error(`Not found ${mod}`);
+      }
     }),
   ],
 };

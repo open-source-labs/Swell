@@ -1,5 +1,5 @@
 {
-  "name": "Swell",
+  "name": "swell",
   "version": "1.10.2",
   "description": "Swell",
   "main": "main.js",
@@ -113,6 +113,8 @@
     "@codemirror/lang-json": "^0.20.0",
     "@codemirror/lang-xml": "^0.20.0",
     "@codemirror/language": "^0.20.0",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
@@ -340,7 +342,6 @@
     },
     {
       "name": "Hideaki Aomori",
-      "email": "https://www.linkedin.com/in/hideaki-aomori",
       "url": "http://github.com/h15200"
     },
     {
@@ -365,138 +366,112 @@
     },
     {
       "name": "Wyatt Bell",
-      "email": "www.linkedin.com/in/wyatt-bell1",
       "url": "https://github.com/wcbell51"
     },
     {
       "name": "Grace Kim",
-      "email": "https://www.linkedin.com/in/gracekiim/",
       "url": "https://github.com/gracekiim"
     },
     {
       "name": "John Madrigal",
-      "email": "www.linkedin.com/in/john-r-madrigal",
       "url": "https://github.com/johnmadrigal "
     },
     {
       "name": "Michael Miller",
-      "email": "https://www.linkedin.com/in/migueljmiller/",
       "url": "https://github.com/mjmiguel"
     },
     {
       "name": "Alex Sanhueza",
-      "email": "https://www.linkedin.com/in/alex-sanhueza/",
       "url": "https://github.com/alexsanhueza"
     },
     {
       "name": "Gary Slootskiy",
-      "email": "https://www.linkedin.com/in/garyslootskiy/",
       "url": "https://github.com/garyslootskiy"
     },
     {
       "name": "Robin Yoong",
-      "email": "https://www.linkedin.com/in/robinyoong/",
       "url": "https://github.com/robinyoong"
     },
     {
       "name": "Nathaniel Adams",
-      "email": "https://www.linkedin.com/in/adamsnathaniel/",
       "url": "https://github.com/nathanielBadams"
     },
     {
       "name": "Sam Haar",
-      "email": "https://www.linkedin.com/in/samhaar/",
       "url": "https://github.com/samhaar"
     },
     {
       "name": "Edward Cho",
-      "email": "https://www.linkedin.com/in/edwardcho1231/",
       "url": "https://github.com/edwardcho1231"
     },
     {
       "name": "Miguel Gonzalez",
-      "email": "https://www.linkedin.com/in/miguel-gonzalez96/",
       "url": "https://github.com/MigGonzalez"
     },
     {
       "name": "Jason Liggayu",
-      "email": "https://www.linkedin.com/in/jasonliggayu/",
       "url": "https://github.com/jasonligg"
     },
     {
       "name": "Warren Tait",
-      "email": "https://www.linkedin.com/in/warrenhtait/",
       "url": "https://github.com/whtait"
     },
     {
       "name": "Ted Craig",
-      "email": "https://www.linkedin.com/in/mr-ted-craig/",
       "url": "https://github.com/tedcraig"
     },
     {
       "name": "Colin Gibson",
-      "email": "https://www.linkedin.com/in/colin--gibson/",
       "url": "https://github.com/cgefx"
     },
     {
       "name": "John Jongsun Suh",
-      "email": "https://www.linkedin.com/in/john-jongsun-suh/",
       "url": "https://github.com/MajorLift"
     },
     {
       "name": "Anthony Wong",
-      "email": "https://www.linkedin.com/in/aw-anthony/",
       "url": "https://github.com/awong428"
     },
     {
       "name": "Jennifer Wu",
-      "email": "https://www.linkedin.com/in/jennifer-sh-wu/",
       "url": "https://github.com/jsh-wu"
     },
     {
       "name": "Christopher Pan",
-      "email": "https://www.linkedin.com/in/christopherjpan/",
       "url": "https://github.com/Relai1"
     },
     {
       "name": "Jacob Viesselman",
-      "email": "https://www.linkedin.com/in/jacobviesselman/",
       "url": "https://github.com/JacobViesselman"
     },
     {
       "name": "Michael Prince",
-      "email": "https://www.linkedin.com/in/michael-prince/",
       "url": "https://github.com/MichaelGPrince"
     },
     {
       "name": "Adrian Uesugui",
-      "email": "https://www.linkedin.com/in/auesugui/",
       "url": "https://github.com/auesugui"
     },
     {
       "name": "Genevieve Annable",
-      "email": "https://www.linkedin.com/in/genevieveannable/",
       "url": "https://github.com/gigifeeds"
     },
     {
       "name": "Drew Pomatti",
-      "email": "https://www.linkedin.com/in/drewpomatti/",
       "url": "https://github.com/thedrewery"
     },
     {
       "name": "Sam Pyo",
-      "email": "https://www.linkedin.com/in/samhpyo/",
       "url": "https://github.com/samhpyo"
     },
     {
       "name": "Jay Wall",
-      "email": "https://www.linkedin.com/in/walljay/",
       "url": "https://github.com/hanswand"
     },
     {
       "name": "Kurtis Waterbury",
-      "email": "https://www.linkedin.com/in/kurtiswaterbury/",
       "url": "https://github.com/kurto8"
     }
   ]
 }
+
