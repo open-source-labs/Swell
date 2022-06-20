@@ -1,5 +1,7 @@
 import { format, parseISO } from 'date-fns';
+import historyReducer from './history';
 import * as actionTypes from '../actions(deprecated)/actionTypes';
+
 import { $TSFixMe } from '../../types';
 
 /**
@@ -27,7 +29,15 @@ import { $TSFixMe } from '../../types';
  *
  * @todo Replace all instances of the $TSFixMe types and Record<string, unknown>
  * with more precise type info.
- * @todo Maybe move this to central types file?
+ *
+ * @todo Maybe move this to central types file? Only do this if other files
+ * actually need to import the type information directly, and not just a value
+ * or function from here that just happens to use the type info.
+ */
+
+/**
+ * Defines the fields needed for a new request. This SEEMS to be a general-
+ * purpose request that can work with all protocols?
  */
 interface NewRequestFields {
   protocol: string;
@@ -108,14 +118,26 @@ interface NewRequestBody {
  * Defines the top-level state for the business logic in the Redux store. This
  * does NOT deal with UI and animations.
  */
-interface StateInterface {
+export interface StateInterface {
   currentTab: string;
   reqResArray: $TSFixMe[];
   scheduledReqResArray: $TSFixMe[];
-  history: $TSFixMe[];
   collections: $TSFixMe[];
   warningMessage: Record<string, unknown>;
   dataPoints: Record<string, unknown>;
+
+  // This type definition might not be right, but it matches how the value was
+  // being used beforehand
+  history: {
+    date: string;
+    history: $TSFixMe[];
+
+    /**
+     * Should probably be a number or string (one or the other, not union)
+     */
+    id: $TSFixMe;
+    createdAt: $TSFixMe;
+  }[];
 
   newRequestHeaders: {
     headersArr: $TSFixMe[];
@@ -150,8 +172,10 @@ interface StateInterface {
   newRequestOpenAPIObject: NewRequestOpenAPIObject;
 }
 
-// jNote - need to tie it to state interface
-const initialState: StateInterface = {
+/**
+ * Defines the initial state for the primary reducer function
+ */
+export const initialState: StateInterface = {
   currentTab: 'First Tab',
   reqResArray: [],
   scheduledReqResArray: [],
@@ -259,53 +283,46 @@ const initialState: StateInterface = {
   },
 };
 
-type HistoryActions =
-  | { type: typeof actionTypes.CLEAR_HISTORY }
-  | { type: typeof actionTypes.GET_HISTORY; payload: StateInterface['history'] }
-  | {
-      type: typeof actionTypes.DELETE_HISTORY;
-      payload: { id: number; createdAt: string | Date };
-    };
+type CollectionsActions =
+  | { type: typeof actionTypes.COLLECTION_ADD }
+  | { type: typeof actionTypes.GET_COLLECTIONS }
+  | { type: typeof actionTypes.DELETE_COLLECTION }
+  | { type: typeof actionTypes.COLLECTION_UPDATE };
 
-function historyReducer(
-  state: StateInterface['history'],
-  action: HistoryActions
-): StateInterface['history'] {
+function collectionsReducer(
+  collections: StateInterface['collections'],
+  action: CollectionsActions
+): StateInterface['collections'] {
   switch (action.type) {
-    case 'GET_HISTORY': {
+    case actionTypes.GET_COLLECTIONS: {
       return action.payload;
     }
 
-    case 'CLEAR_HISTORY': {
-      return [];
+    case actionTypes.DELETE_COLLECTION: {
+      const deleteId = action.payload.id;
+      return collections.filter((element) => element !== deleteId);
     }
 
-    case 'DELETE_HISTORY': {
-      const deleteId = action.payload.id;
-      const createdAt =
-        typeof action.payload.createdAt === 'string'
-          ? parseISO(action.payload.createdAt)
-          : action.payload.createdAt;
+    case actionTypes.COLLECTION_ADD: {
+      return [action.payload, ...collections];
+    }
 
-      const deleteDate = format(createdAt, 'MM/dd/yyyy');
-      const newHistory = JSON.parse(JSON.stringify(state.history));
+    case actionTypes.COLLECTION_UPDATE: {
+      // update collection from state
+      const collectionName = action.payload.name;
+      const newCollections: string[] = JSON.parse(JSON.stringify(collections));
 
-      newHistory.forEach((obj: $TSFixMe, i: number) => {
-        if (obj.date === deleteDate) {
-          obj.history = obj.history.filter((hist) => hist.id !== deleteId);
-        }
-
-        if (obj.history.length === 0) {
-          newHistory.splice(i, 1);
+      newCollections.forEach((obj: $TSFixMe, i) => {
+        if (obj.name === collectionName) {
+          newCollections[i] = action.payload;
         }
       });
 
-      console.log('newHistory', newHistory);
-      return newHistory;
+      return newCollections;
     }
 
     default: {
-      return state;
+      return collections;
     }
   }
 }
@@ -315,73 +332,76 @@ const businessReducer = (
   action: { type: string; payload: unknown }
 ): StateInterface => {
   switch (action.type) {
-    // Copied over
-    case actionTypes.GET_HISTORY: {
-      return {
-        ...state,
-        history: action.payload,
-      };
-    }
+    // copied over to historyReducer
+    // case actionTypes.GET_HISTORY: {
+    //   return {
+    //     ...state,
+    //     history: action.payload,
+    //   };
+    // }
 
-    case actionTypes.DELETE_HISTORY: {
-      const deleteId: number = action.payload.id;
-      let createdAt;
-      if (typeof action.payload.createdAt === 'string') {
-        createdAt = parseISO(action.payload.createdAt);
-      } else {
-        createdAt = action.payload.createdAt;
-      }
+    //copied over to historyReducer
+    // case actionTypes.DELETE_HISTORY: {
+    //   const deleteId: number = action.payload.id;
+    //   let createdAt;
+    //   if (typeof action.payload.createdAt === 'string') {
+    //     createdAt = parseISO(action.payload.createdAt);
+    //   } else {
+    //     createdAt = action.payload.createdAt;
+    //   }
 
-      const deleteDate: string = format(createdAt, 'MM/dd/yyyy');
-      const newHistory = JSON.parse(JSON.stringify(state.history));
+    //   const deleteDate: string = format(createdAt, 'MM/dd/yyyy');
+    //   const newHistory = JSON.parse(JSON.stringify(state.history));
 
-      newHistory.forEach((obj: $TSFixMe, i: number) => {
-        if (obj.date === deleteDate) {
-          obj.history = obj.history.filter((hist) => hist.id !== deleteId);
-        }
+    //   newHistory.forEach((obj: $TSFixMe, i: number) => {
+    //     if (obj.date === deleteDate) {
+    //       obj.history = obj.history.filter((hist) => hist.id !== deleteId);
+    //     }
 
-        if (obj.history.length === 0) {
-          newHistory.splice(i, 1);
-        }
-      });
-      console.log('newHistory', newHistory);
-      return {
-        ...state,
-        history: newHistory,
-      };
-    }
+    //     if (obj.history.length === 0) {
+    //       newHistory.splice(i, 1);
+    //     }
+    //   });
+    //   console.log('newHistory', newHistory);
+    //   return {
+    //     ...state,
+    //     history: newHistory,
+    //   };
+    // }
 
-    // Copied over
-    case actionTypes.CLEAR_HISTORY: {
-      return {
-        ...state,
-        history: [],
-      };
-    }
+    // Copied over to historyReducer
+    // case actionTypes.CLEAR_HISTORY: {
+    //   return {
+    //     ...state,
+    //     history: [],
+    //   };
+    // }
 
-    case actionTypes.GET_COLLECTIONS: {
-      return {
-        ...state,
-        collections: action.payload,
-      };
-    }
+    //copied over to collectionsReducer
+    // case actionTypes.GET_COLLECTIONS: {
+    //   return {
+    //     ...state,
+    //     collections: action.payload,
+    //   };
+    // }
 
-    case actionTypes.DELETE_COLLECTION: {
-      const deleteId: Record<string, unknown> = action.payload.id;
-      const newCollections: string[] = JSON.parse(
-        JSON.stringify(state.collections)
-      );
-      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-      newCollections.forEach((obj: Record<string, unknown>, i: $TSFixMe) => {
-        if (obj.id === deleteId) {
-          newCollections.splice(i, 1);
-        }
-      });
-      return {
-        ...state,
-        collections: newCollections,
-      };
-    }
+    //copied over to collectionsReducer
+    // case actionTypes.DELETE_COLLECTION: {
+    //   const deleteId: Record<string, unknown> = action.payload.id;
+    //   const newCollections: string[] = JSON.parse(
+    //     JSON.stringify(state.collections)
+    //   );
+    //   // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
+    //   newCollections.forEach((obj: Record<string, unknown>, i: $TSFixMe) => {
+    //     if (obj.id === deleteId) {
+    //       newCollections.splice(i, 1);
+    //     }
+    //   });
+    //   return {
+    //     ...state,
+    //     collections: newCollections,
+    //   };
+    // }
 
     case actionTypes.RESET_COMPOSER_FIELDS: {
       return {
@@ -422,32 +442,34 @@ const businessReducer = (
       };
     }
 
-    case actionTypes.COLLECTION_ADD: {
-      // add to collection to array in state
-      return {
-        ...state,
-        collections: [action.payload, ...state.collections],
-      };
-    }
+    // //copied over to collectionsReducer
+    // case actionTypes.COLLECTION_ADD: {
+    //   // add to collection to array in state
+    //   return {
+    //     ...state,
+    //     collections: [action.payload, ...state.collections],
+    //   };
+    // }
 
-    case actionTypes.COLLECTION_UPDATE: {
-      // update collection from state
-      const collectionName = action.payload.name;
-      const newCollections: string[] = JSON.parse(
-        JSON.stringify(state.collections)
-      );
-      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-      newCollections.forEach((obj: $TSFixMe, i: $TSFixMe) => {
-        if (obj.name === collectionName) {
-          newCollections[i] = action.payload;
-        }
-      });
+    // //copied over to collectionsReducer
+    // case actionTypes.COLLECTION_UPDATE: {
+    //   // update collection from state
+    //   const collectionName = action.payload.name;
+    //   const newCollections: string[] = JSON.parse(
+    //     JSON.stringify(state.collections)
+    //   );
+    //   // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
+    //   newCollections.forEach((obj: $TSFixMe, i: $TSFixMe) => {
+    //     if (obj.name === collectionName) {
+    //       newCollections[i] = action.payload;
+    //     }
+    //   });
 
-      return {
-        ...state,
-        collections: newCollections,
-      };
-    }
+    //   return {
+    //     ...state,
+    //     collections: newCollections,
+    //   };
+    // }
 
     case actionTypes.REQRES_CLEAR: {
       return {
@@ -512,7 +534,6 @@ const businessReducer = (
     case actionTypes.REQRES_UPDATE: {
       const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
-      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       reqResDeepCopy.forEach((reqRes: $TSFixMe, index: $TSFixMe) => {
         if (reqRes.id === action.payload.id) indexToBeUpdated = index;
       });
