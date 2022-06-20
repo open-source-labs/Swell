@@ -1,3 +1,22 @@
+/**
+ * @file Defines the main entrypoint for the Swell app's frontend.
+ *
+ * DO NOT HESITATE TO REACH OUT TO FORMER TEAMS BEFORE TAKING THIS ON AS A
+ * PROJECT. There is a lot of room for improvements, and everyone has ideas that
+ * there just wasn't enough time to implement.
+ *
+ * People who have said they'd be willing to help:
+ * - Adrian U
+ * - Jacob V
+ * - Michael P
+ * - Chris
+ * - Jen
+ *
+ * People who have helped before, but who may or may not be available:
+ * - Jongsun
+ * - Colin
+ */
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -7,15 +26,10 @@ import store from './client/store';
 
 import { CssBaseline } from '@mui/material';
 
-//DO NOT HESITATE TO REACH OUT TO FORMER TEAMS BEFORE TAKING THIS ON AS A PROJECT
-//There is a lot of room for improvements and we have ideas that we didn't have time to implement
-//Adrian U, Jacob V, and Michael P would be glad to help. Chris and Jen can hardly contain their excitement.
-//Jongsun and Colin from the previous team helped us a ton and are great dudes.
+// Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our
+// own root node in the body element before rendering into it
 
-// Since we are using HtmlWebpackPlugin WITHOUT a template,
-// we should create our own root node in the body element before rendering into it
-
-// MUI theme
+// Sets up Material UI theme
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -28,9 +42,12 @@ const theme = createTheme({
   },
 });
 
-// https://content-security-policy.com/
-// add CSP
-// TODO: do this in the webpack config file
+/**
+ * Adds Content Security Policy
+ * https://content-security-policy.com/
+ *
+ * @todo Migrate all this logic into the Webpack config file
+ */
 const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
