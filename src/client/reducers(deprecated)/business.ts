@@ -3,99 +3,99 @@ import * as types from '../actions/actionTypes';
 
 // jNote - build interface for state TODO: this should be in types?
 interface StateInterface {
-  currentTab: string,
-  reqResArray: [],
-  scheduledReqResArray: [],
-  history: [],
-  collections: [],
-  warningMessage: Record<string, unknown>,
+  currentTab: string;
+  reqResArray: [];
+  scheduledReqResArray: [];
+  history: [];
+  collections: [];
+  warningMessage: Record<string, unknown>;
   newRequestsOpenAPI: {
     openapiMetadata: {
-      info: Record<string, unknown>,
-      tags: [],
-      serverUrls: [],
-    },
-    openapiReqArray: [],
-  },
+      info: Record<string, unknown>;
+      tags: [];
+      serverUrls: [];
+    };
+    openapiReqArray: [];
+  };
   newRequestFields: {
-    protocol: string,
-    restUrl: string,
-    wsUrl: string,
-    gqlUrl: string,
-    grpcUrl: string,
-    webrtcUrl: string,
-    url: string,
-    method: string,
-    graphQL: boolean,
-    gRPC: boolean,
-    ws: boolean,
-    openapi: boolean,
-    webrtc: boolean,
-    webhook: boolean,
-    network: string,
-    testContent: string,
-    testResults: [],
-    openapiReqObj: Record<string, unknown>,
-  },
+    protocol: string;
+    restUrl: string;
+    wsUrl: string;
+    gqlUrl: string;
+    grpcUrl: string;
+    webrtcUrl: string;
+    url: string;
+    method: string;
+    graphQL: boolean;
+    gRPC: boolean;
+    ws: boolean;
+    openapi: boolean;
+    webrtc: boolean;
+    webhook: boolean;
+    network: string;
+    testContent: string;
+    testResults: [];
+    openapiReqObj: Record<string, unknown>;
+  };
   newRequestHeaders: {
-    headersArr: [],
-    count: number,
-  },
+    headersArr: [];
+    count: number;
+  };
   newRequestStreams: {
-    streamsArr: [],
-    count: number,
-    streamContent: [],
-    selectedPackage: null,
-    selectedRequest: null,
-    selectedService: null,
-    selectedServiceObj: null,
-    selectedStreamingType: null,
-    initialQuery: null,
-    queryArr: null,
-    protoPath: null,
-    services: null,
-    protoContent: string,
-  },
+    streamsArr: [];
+    count: number;
+    streamContent: [];
+    selectedPackage: null;
+    selectedRequest: null;
+    selectedService: null;
+    selectedServiceObj: null;
+    selectedStreamingType: null;
+    initialQuery: null;
+    queryArr: null;
+    protoPath: null;
+    services: null;
+    protoContent: string;
+  };
   newRequestCookies: {
-    cookiesArr: [],
-    count: number,
-  },
+    cookiesArr: [];
+    count: number;
+  };
   newRequestBody: {
-    bodyContent: string,
-    bodyVariables: string,
-    bodyType: string,
-    rawType: string,
-    JSONFormatted: boolean,
-    bodyIsNew: boolean,
-  },
+    bodyContent: string;
+    bodyVariables: string;
+    bodyType: string;
+    rawType: string;
+    JSONFormatted: boolean;
+    bodyIsNew: boolean;
+  };
   newRequestSSE: {
-    isSSE: boolean,
-  },
+    isSSE: boolean;
+  };
   newRequestOpenAPIObject: {
     request: {
-      id: number,
-      enabled: boolean,
-      reqTags: [],
-      reqServers: [],
-      summary: string,
-      description: string,
-      operationId: string,
-      method: string,
-      endpoint: string,
-      headers: Record<string, unknown>,
-      parameters: [],
-      body: Record<string, unknown>,
-      urls: [],
-    },
-  },
-  introspectionData: { schemaSDL: null, clientSchema: null },
-  dataPoints: Record<string, unknown>,
+      id: number;
+      enabled: boolean;
+      reqTags: [];
+      reqServers: [];
+      summary: string;
+      description: string;
+      operationId: string;
+      method: string;
+      endpoint: string;
+      headers: Record<string, unknown>;
+      parameters: [];
+      body: Record<string, unknown>;
+      urls: [];
+    };
+  };
+  introspectionData: { schemaSDL: null; clientSchema: null };
+  dataPoints: Record<string, unknown>;
   currentResponse: {
     request: {
-      network: string,
-    },
-  },
-};
+      network: string;
+    };
+  };
+}
 
 // jNote - need to tie it to state interface
 const initialState: StateInterface = {
@@ -193,7 +193,10 @@ const initialState: StateInterface = {
   },
 };
 
-const businessReducer = (state = initialState, action: {type: string, payload: unknown}): StateInterface => {
+const businessReducer = (
+  state = initialState,
+  action: { type: string; payload: unknown }
+): StateInterface => {
   switch (action.type) {
     case types.GET_HISTORY: {
       return {
@@ -204,11 +207,11 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
 
     case types.DELETE_HISTORY: {
       const deleteId: number = action.payload.id;
-      let createdAt
-      if(typeof action.payload.createdAt === 'string') {
-        createdAt = parseISO(action.payload.createdAt)
+      let createdAt;
+      if (typeof action.payload.createdAt === 'string') {
+        createdAt = parseISO(action.payload.createdAt);
       } else {
-        createdAt = action.payload.createdAt
+        createdAt = action.payload.createdAt;
       }
       const deleteDate: string = format(createdAt, 'MM/dd/yyyy');
       const newHistory = JSON.parse(JSON.stringify(state.history));
@@ -216,12 +219,14 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
       newHistory.forEach((obj: $TSFixMe, i: $TSFixMe) => {
         if (obj.date === deleteDate)
           // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
-          obj.history = obj.history.filter((hist: $TSFixMe) => hist.id !== deleteId);
+          obj.history = obj.history.filter(
+            (hist: $TSFixMe) => hist.id !== deleteId
+          );
         if (obj.history.length === 0) {
           newHistory.splice(i, 1);
         }
       });
-      console.log('newHistory', newHistory)
+      console.log('newHistory', newHistory);
       return {
         ...state,
         history: newHistory,
@@ -244,7 +249,9 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
 
     case types.DELETE_COLLECTION: {
       const deleteId: Record<string, unknown> = action.payload.id;
-      const newCollections: string[] = JSON.parse(JSON.stringify(state.collections));
+      const newCollections: string[] = JSON.parse(
+        JSON.stringify(state.collections)
+      );
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newCollections.forEach((obj: Record<string, unknown>, i: $TSFixMe) => {
         if (obj.id === deleteId) {
@@ -257,7 +264,7 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
       };
     }
 
-    case types.RESET_COMPOSER_FIELDS: { 
+    case types.RESET_COMPOSER_FIELDS: {
       return {
         ...state,
         newRequestHeaders: {
@@ -276,7 +283,8 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
           rawType: 'text/plain',
           JSONFormatted: true,
         },
-        newRequestFields: { // should this clear every field or just protocol?
+        newRequestFields: {
+          // should this clear every field or just protocol?
           ...state.newRequestFields,
           protocol: '',
         },
@@ -306,7 +314,9 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
     case types.COLLECTION_UPDATE: {
       // update collection from state
       const collectionName = action.payload.name;
-      const newCollections: string[] = JSON.parse(JSON.stringify(state.collections));
+      const newCollections: string[] = JSON.parse(
+        JSON.stringify(state.collections)
+      );
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       newCollections.forEach((obj: $TSFixMe, i: $TSFixMe) => {
         if (obj.name === collectionName) {
@@ -353,7 +363,7 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
           history: [action.payload],
         });
       }
-    
+
       return {
         ...state,
         reqResArray,
@@ -657,7 +667,9 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
         case 'cookie': {
           request.cookies = value;
           // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-          const openapiReqArray: [Record<string, unknown>] = [...state.openapiReqArray].push({ request });
+          const openapiReqArray: [Record<string, unknown>] = [
+            ...state.openapiReqArray,
+          ].push({ request });
           return {
             ...state,
             newRequestsOpenAPI: openapiReqArray,
@@ -697,3 +709,4 @@ const businessReducer = (state = initialState, action: {type: string, payload: u
 };
 
 export default businessReducer;
+
