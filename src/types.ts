@@ -4,12 +4,14 @@
  * type information only makes sense for internal implementations, but most of
  * them should be here.
  */
+import { WritableDraft } from 'immer/dist/internal';
 
 /**
  * Defines a placeholder alias for the any type.
  *
  * PLEASE do not use this for new code. This is just here as a bandaid for
- * legacy code that was typed too loosely.
+ * legacy code that was typed too loosely. The goal should be to get rid of this
+ * type.
  */
 export type $TSFixMe = any;
 
@@ -18,7 +20,8 @@ export type $TSFixMe = any;
  * arguments, of any kind, and returns any kind of value.
  *
  * PLEASE do not use this for new code. This is just here as a bandaid for
- * legacy code that was typed too loosely.
+ * legacy code that was typed too loosely. The goal should be to get rid of this
+ * type.
  */
 export type $TSFixMeFunction = (...args: any[]) => any;
 
@@ -31,9 +34,39 @@ export type $TSFixMeFunction = (...args: any[]) => any;
  * that you can access from it in a type-safe way. It's next to useless.
  *
  * PLEASE do not use this for new code. This is just here as a bandaid for
- * legacy code that was typed too loosely.
+ * legacy code that was typed too loosely. The goal should be to get rid of this
+ * type.
  */
 export type $TSFixMeObject = any;
+
+/**
+ * Takes a union of Redux Toolkit actions and turns it into a Toolkit slice
+ * reducer object. This takes each action in the union, converts it into a
+ * single Toolkit reducer function, and then throws all the new reducer
+ * functions into an object at the end.
+ */
+export type ActionsToSliceReducers<
+  State,
+  ActionUnion extends { type: string; payload: unknown }
+> = {
+  // The type isn't used in the final return type
+  [Action in ActionUnion as Action['type']]: (
+    state: WritableDraft<State>,
+    action: Action
+  ) => void;
+};
+
+/**
+ * Represents any possible valid, serializable JSON value, including values
+ * nested to any arbitrary level.
+ */
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
 
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
@@ -275,7 +308,9 @@ export interface WindowAPI {
   send: (event: string, data?: any, some?: any) => void;
 }
 
-// TODO: implement these types
+/**
+ * @todo Figure out what these types should be and then implement them
+ */
 export interface WRTC {
   RTCPeerConnection:
     | RTCPeerConnection
