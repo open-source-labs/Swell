@@ -7,31 +7,37 @@ import * as types from './actionTypes';
 
 // action creators
 // SPNOTE START line 11 types.ts history: Record<string, unknown>[];
-export const getHistory = (
-  history: { date: string; history: ReqRes[] }[]
-): { type: string; payload: { date: string; history: ReqRes[] }[] } => ({
-  type: types.GET_HISTORY,
-  payload: history,
-});
+export function getHistory<Hist extends { date: string; history: ReqRes[] }[]>(
+  history: Hist
+): { type: typeof types.GET_HISTORY; payload: Hist } {
+  return {
+    type: types.GET_HISTORY,
+    payload: history,
+  };
+}
 
-export const deleteFromHistory = (
-  reqRes: string
-): { type: string; payload: string } => ({
-  type: types.DELETE_HISTORY,
-  payload: reqRes,
-});
+export function deleteFromHistory<ReqRes extends string>(
+  reqRes: ReqRes
+): { type: typeof types.DELETE_HISTORY; payload: ReqRes } {
+  return {
+    type: types.DELETE_HISTORY,
+    payload: reqRes,
+  };
+}
 
-export const clearHistory = (): { type: string } => ({
-  type: types.CLEAR_HISTORY,
-});
+export function clearHistory(): { type: typeof types.CLEAR_HISTORY } {
+  return { type: types.CLEAR_HISTORY };
+}
 
 // SPNOTE line 11 types.ts collections: Record<string, unknown>[];
-export const getCollections = (
-  collections: string[]
-): { type: string; payload: string[] } => ({
-  type: types.GET_COLLECTIONS,
-  payload: collections,
-});
+export function getCollections<Coll extends string[]>(
+  collections: Coll
+): { type: string; payload: Coll } {
+  return {
+    type: types.GET_COLLECTIONS,
+    payload: collections,
+  };
+}
 
 export const deleteFromCollection = (
   collection: string
