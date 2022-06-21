@@ -1,16 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-// ********************************
-// * The Redux store is setup in modern Redux Toolkit style
-// * https://redux-toolkit.js.org/
-// ********************************
+/**
+ * @file Defines state management for just the UI part of the app.
+ *
+ * If all the properties here are non-model state, this file might be overkill,
+ * and could maybe be deleted in favor of using the React context API and non-
+ * global/hooks-based state.
+ */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UiState {
-  sidebarActiveTab: string,
-  workspaceActiveTab: string,
-  responsePaneActiveTab: string,
-  isDark: boolean,
-};
+  sidebarActiveTab: string;
+  workspaceActiveTab: string;
+  responsePaneActiveTab: string;
+  isDark: boolean;
+}
 
 const initialState: UiState = {
   sidebarActiveTab: 'composer',
@@ -34,15 +36,16 @@ const uiSlice = createSlice({
     },
     toggleDarkMode(state, action: PayloadAction<boolean>) {
       state.isDark = action.payload;
-    }
-  }
-})
+    },
+  },
+});
 
-const { actions, reducer } = uiSlice
-export const { 
-  setSidebarActiveTab, 
+const { actions, reducer } = uiSlice;
+export const {
+  setSidebarActiveTab,
   setWorkspaceActiveTab,
   setResponsePaneActiveTab,
   toggleDarkMode,
- } = actions
+} = actions;
 export default reducer;
+
