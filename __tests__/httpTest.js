@@ -61,7 +61,7 @@ describe('REST API Requests', () => {
         isSSE: false,
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
-      dataPoints: [],
+      graphPoints: [],
       currentResponse: {
         request: {
           network: '',
@@ -114,8 +114,8 @@ describe('REST API Requests', () => {
       expect(response.toEqual('hello'));
     });
 
-    it('should toggle select all',()=>{
+    it('should toggle select all', () => {
       expect(ReqResCtrl.toggleSelectAll()).not.toThrowError;
-    })
+    });
   });
 });

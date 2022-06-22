@@ -1,4 +1,4 @@
-import reducer, { 
+import reducer, {
   getHistory,
   deleteFromHistory,
   clearHistory,
@@ -28,9 +28,8 @@ import reducer, {
   setNewRequestSSE,
   setIntrospectionData,
   saveCurrentResponseData,
-  setNewRequestsOpenAPI
+  setNewRequestsOpenAPI,
 } from '../src/client/features/business/businessSlice.ts';
-
 
 describe('Business reducer', () => {
   let state;
@@ -122,16 +121,16 @@ describe('Business reducer', () => {
         },
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
-      dataPoints: {},
+      graphPoints: {},
       currentResponse: {
         request: {
           network: '',
         },
         response: {
-          source: ''
+          source: '',
         },
       },
-    }
+    };
   });
 
   describe('default state', () => {
@@ -225,7 +224,7 @@ describe('Business reducer', () => {
           createdAt: new Date('2019-02-15T00:40:56.360Z'),
         },
       };
-      console.log(action.payload.createdAt)
+      console.log(action.payload.createdAt);
       const { history } = reducer(state, deleteFromHistory(action.payload));
       expect(history).not.toBe(fakeHistory);
       expect(history[1].history.length).toEqual(1);
@@ -279,32 +278,31 @@ describe('Business reducer', () => {
       state.history = fakeHistory;
     });
 
-    it('should clear history', ()=>{
-      const action = {type: 'CLEAR_HISTORY'}
-      const { history } = reducer(state, clearHistory())
-      console.log(history)
-      expect(history).toEqual([])
+    it('should clear history', () => {
+      const action = { type: 'CLEAR_HISTORY' };
+      const { history } = reducer(state, clearHistory());
+      console.log(history);
+      expect(history).toEqual([]);
     });
-
   });
 
   describe('Get collections', () => {
     const fakeCollections = [
       {
         id: 'collection1',
-        collection1: `test`
+        collection1: `test`,
       },
       {
         id: 'collection2',
-        collection2: 'another test'
+        collection2: 'another test',
       },
       {
         id: 'collection3',
-        collection3: 'a third test'
+        collection3: 'a third test',
       },
       {
         id: 'collection4',
-        collection4: 'the last test'
+        collection4: 'the last test',
       },
     ];
 
@@ -313,7 +311,10 @@ describe('Business reducer', () => {
     };
 
     it('should replace collections in state', () => {
-      const { reqResArray, collections } = reducer(state, getCollections(fakeCollections));
+      const { reqResArray, collections } = reducer(
+        state,
+        getCollections(fakeCollections)
+      );
       expect(reqResArray).toEqual([]);
       expect(collections).toEqual(fakeCollections);
     });
@@ -323,19 +324,19 @@ describe('Business reducer', () => {
     const fakeCollections = [
       {
         id: 'collection1',
-        collection1: `test`
+        collection1: `test`,
       },
       {
         id: 'collection2',
-        collection2: 'another test'
+        collection2: 'another test',
       },
       {
         id: 'collection3',
-        collection3: 'a third test'
+        collection3: 'a third test',
       },
       {
         id: 'collection4',
-        collection4: 'the last test'
+        collection4: 'the last test',
       },
     ];
     beforeEach(() => {
@@ -343,25 +344,28 @@ describe('Business reducer', () => {
     });
 
     const action = {
-      payload: {id: 'collection3'},
+      payload: { id: 'collection3' },
     };
 
     it('should delete a specific collection', () => {
-      const {collections} = reducer(state, deleteFromCollection(action.payload));
+      const { collections } = reducer(
+        state,
+        deleteFromCollection(action.payload)
+      );
       expect(collections.length).toEqual(3);
-      expect(collections[2]).toEqual(fakeCollections[3])
+      expect(collections[2]).toEqual(fakeCollections[3]);
     });
   });
 
   describe('Reset composer fields', () => {
     const fakeRequestHeaders = {
-      headersArr: [`fake`,`request`,`headers`],
-      count: 3
-    }
+      headersArr: [`fake`, `request`, `headers`],
+      count: 3,
+    };
     const fakeRequestCookies = {
-      headersArr: [`fake`,`request`,`cookies`],
-      count: 3
-    }
+      headersArr: [`fake`, `request`, `cookies`],
+      count: 3,
+    };
     const fakeRequestBody = {
       bodyIsNew: false,
       bodyContent: 'BIG HOWDY',
@@ -369,7 +373,7 @@ describe('Business reducer', () => {
       bodyType: 'fit but still eats bread',
       rawType: 'text/jokes',
       JSONFormatted: false,
-    }
+    };
     const fakeRequestFields = {
       protocol: 'ghost',
       restUrl: 'http://',
@@ -389,14 +393,13 @@ describe('Business reducer', () => {
       testContent: '',
       testResults: [],
       openapiReqObj: {},
-    }
+    };
     const fakeRequestSSE = {
-      isSSE: true
-    }
+      isSSE: true,
+    };
     const fakeWarningMessage = {
-      err: `you can't do this to me`
-    }
-
+      err: `you can't do this to me`,
+    };
 
     beforeEach(() => {
       state.newRequestHeaders = fakeRequestHeaders;
@@ -412,7 +415,14 @@ describe('Business reducer', () => {
     };
 
     it('Reset composer fields', () => {
-      const {newRequestHeaders, newRequestCookies, newRequestBody, newRequestFields, newRequestSSE, warningMessage} = reducer(state, resetComposerFields(action.payload));
+      const {
+        newRequestHeaders,
+        newRequestCookies,
+        newRequestBody,
+        newRequestFields,
+        newRequestSSE,
+        warningMessage,
+      } = reducer(state, resetComposerFields(action.payload));
       expect(newRequestHeaders).toEqual({
         headersArr: [],
         count: 0,
@@ -462,72 +472,75 @@ describe('Business reducer', () => {
         collection1: [`hi`],
         collection2: [`bye`],
         collection3: [`howdy`],
-      }
+      },
     };
 
     it('should convert collections to request/responses', () => {
-      const {reqResArray} = reducer(state,collectionToReqRes(action.payload));
+      const { reqResArray } = reducer(
+        state,
+        collectionToReqRes(action.payload)
+      );
       expect(reqResArray).toEqual(action.payload);
     });
-    
+
     it('should copy collection, not point request/responses to collections', () => {
-      const {reqResArray} = reducer(state,collectionToReqRes(action.payload));
+      const { reqResArray } = reducer(
+        state,
+        collectionToReqRes(action.payload)
+      );
       expect(reqResArray).not.toBe(action.payload);
     });
   });
 
   describe('Collection add', () => {
     const action = {
-      payload: {newCollection: [`hi`]}
+      payload: { newCollection: [`hi`] },
     };
 
     it('should add a collection to collections', () => {
-      const {collections} = reducer(state,collectionAdd(action.payload));
+      const { collections } = reducer(state, collectionAdd(action.payload));
       expect(collections).toEqual([action.payload]);
     });
-    
   });
 
   describe('Collection update', () => {
     const fakeCollections = [
       {
         name: 'collection1',
-        collection1: `test`
+        collection1: `test`,
       },
       {
         name: 'collection2',
-        collection2: 'another test'
+        collection2: 'another test',
       },
       {
         name: 'collection3',
-        collection3: 'a third test'
+        collection3: 'a third test',
       },
       {
         name: 'collection4',
-        collection4: 'the last test'
+        collection4: 'the last test',
       },
     ];
 
     const action = {
       payload: {
         name: 'collection3',
-        collection3: 'this should be updated'
-      }
+        collection3: 'this should be updated',
+      },
     };
     beforeEach(() => {
       state.collections = fakeCollections;
     });
 
     it('should update a collection by name', () => {
-      const {collections} = reducer(state,collectionUpdate(action.payload));
+      const { collections } = reducer(state, collectionUpdate(action.payload));
       expect(collections[2]).toEqual(action.payload);
     });
-    
   });
 
   describe('Reqres clear', () => {
-    const action = {
-    };
+    const action = {};
 
     it('should empty the reqResArray', () => {
       const initialReqResArray = [{ first: 1 }, { second: 2 }];
@@ -630,7 +643,7 @@ describe('Business reducer', () => {
     });
   });
 
-  describe('Set checks and minis',()=>{
+  describe('Set checks and minis', () => {
     const fakeReqResArray = [
       {
         id: 'c8d73eec-e383-4735-943a-20deab42ecff',
@@ -646,14 +659,14 @@ describe('Business reducer', () => {
       },
     ];
     const action = {
-      payload: fakeReqResArray
-    }
-    it('Should replace reqResArray with new',()=>{
+      payload: fakeReqResArray,
+    };
+    it('Should replace reqResArray with new', () => {
       state.reqResArray = ['nothing'];
-      const {reqResArray} = reducer(state, setChecksAndMinis(action.payload));
-      expect(reqResArray).toEqual(fakeReqResArray)
-    })
-  })
+      const { reqResArray } = reducer(state, setChecksAndMinis(action.payload));
+      expect(reqResArray).toEqual(fakeReqResArray);
+    });
+  });
 
   describe('Reqres update', () => {
     const fakeReqResArray = [
@@ -691,7 +704,7 @@ describe('Business reducer', () => {
     });
   });
 
-  describe('Scheduled req res update',()=>{
+  describe('Scheduled req res update', () => {
     const fakeReqResArray1 = [
       {
         id: 'c8d73eec-e383-4735-943a-20deab42ecff',
@@ -700,23 +713,28 @@ describe('Business reducer', () => {
       {
         id: '0faf2207-20d3-4f62-98ca-51a39c8c15dd',
         createdAt: '2019-02-15T00:40:56.360Z',
-      }]
-    const fakeReqRes=
-      {
-        id: '577eab93-e707-4dc0-af45-7adcc78807fa',
-        createdAt: '2019-02-15T00:16:56.133Z',
-      };
+      },
+    ];
+    const fakeReqRes = {
+      id: '577eab93-e707-4dc0-af45-7adcc78807fa',
+      createdAt: '2019-02-15T00:16:56.133Z',
+    };
     const action = {
-      payload: fakeReqRes
-    }
-    it('Should add reqres to end of schedule array',()=>{
+      payload: fakeReqRes,
+    };
+    it('Should add reqres to end of schedule array', () => {
       state.scheduledReqResArray = fakeReqResArray1;
-      const {scheduledReqResArray} = reducer(state, scheduledReqResUpdate(action.payload));
-      expect(scheduledReqResArray[scheduledReqResArray.length-1]).toEqual(fakeReqRes)
-    })
-  })
+      const { scheduledReqResArray } = reducer(
+        state,
+        scheduledReqResUpdate(action.payload)
+      );
+      expect(scheduledReqResArray[scheduledReqResArray.length - 1]).toEqual(
+        fakeReqRes
+      );
+    });
+  });
 
-  describe('Scheduled req res delete',()=>{
+  describe('Scheduled req res delete', () => {
     const fakeReqResArray = [
       {
         id: 'c8d73eec-e383-4735-943a-20deab42ecff',
@@ -731,27 +749,30 @@ describe('Business reducer', () => {
         createdAt: '2019-02-15T00:16:56.133Z',
       },
     ];
-    const action = {payload: 'doesnt matter'}
-    it('Should delete everything from scheduled reqres',()=>{
+    const action = { payload: 'doesnt matter' };
+    it('Should delete everything from scheduled reqres', () => {
       state.scheduledReqResArray = fakeReqResArray;
-      const {scheduledReqResArray} = reducer(state, scheduledReqResDelete(action.payload));
-      expect(scheduledReqResArray).toEqual([])
-    })
-  })
+      const { scheduledReqResArray } = reducer(
+        state,
+        scheduledReqResDelete(action.payload)
+      );
+      expect(scheduledReqResArray).toEqual([]);
+    });
+  });
 
-  describe('Update graph',()=>{
-    const newData ={
+  describe('Update graph', () => {
+    const newData = {
       id: '577eab93-e707-4dc0-af45-7adcc78807fa',
       url: 'google.com',
       timeSent: '11:30',
       timeRecieved: '15:30',
-      createdAt: '2019-02-15T00:16:56.133Z'
-    }
-    it('Should add a data point to the graph', ()=>{
-      const {dataPoints} = reducer(state, updateGraph(newData));
-      expect(dataPoints[newData.id].length).toEqual(1);
-    })
-  })
+      createdAt: '2019-02-15T00:16:56.133Z',
+    };
+    it('Should add a data point to the graph', () => {
+      const { graphPoints } = reducer(state, updateGraph(newData));
+      expect(graphPoints[newData.id].length).toEqual(1);
+    });
+  });
 
   describe('Set composer warning message', () => {
     const action = {
@@ -760,7 +781,10 @@ describe('Business reducer', () => {
 
     it('should update the warningMessage', () => {
       const initialMessage = state.warningMessage;
-      const { warningMessage } = reducer(state, setComposerWarningMessage(action.payload));
+      const { warningMessage } = reducer(
+        state,
+        setComposerWarningMessage(action.payload)
+      );
       expect(warningMessage).not.toEqual(initialMessage);
       expect(warningMessage).toEqual(action.payload);
     });
@@ -857,39 +881,66 @@ describe('Business reducer', () => {
       },
     };
     it('sets the newRequestStreams', () => {
-      const { newRequestStreams } = reducer(state, setNewRequestStreams(requestStreamsAction.payload));
+      const { newRequestStreams } = reducer(
+        state,
+        setNewRequestStreams(requestStreamsAction.payload)
+      );
       expect(newRequestStreams).toEqual(requestStreamsAction.payload);
     });
     it('sets the newRequestFields on POST', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(postAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(postAction.payload)
+      );
       expect(newRequestFields).toEqual(postAction.payload);
     });
     it('sets the newRequestFields on GET', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(getAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(getAction.payload)
+      );
       expect(newRequestFields).toEqual(getAction.payload);
     });
     it('sets the newRequestFields on PUT', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(putAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(putAction.payload)
+      );
       expect(newRequestFields).toEqual(putAction.payload);
     });
     it('sets the newRequestFields on PATCH', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(patchAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(patchAction.payload)
+      );
       expect(newRequestFields).toEqual(patchAction.payload);
     });
     it('sets the newRequestFields on DELETE', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(deleteAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(deleteAction.payload)
+      );
       expect(newRequestFields).toEqual(deleteAction.payload);
     });
     it('sets the newRequestFields on QUERY', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(queryAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(queryAction.payload)
+      );
       expect(newRequestFields).toEqual(queryAction.payload);
     });
     it('sets the newRequestFields on MUTATION', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(mutationAction));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(mutationAction)
+      );
       expect(newRequestFields).toEqual(mutationAction.payload);
     });
     it('sets the newRequestFields on SUBSCRIPTION', () => {
-      const { newRequestFields } = reducer(state, setNewRequestFields(subscriptionAction.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewRequestFields(subscriptionAction.payload)
+      );
       expect(newRequestFields).toEqual(subscriptionAction.payload);
     });
   });
@@ -946,7 +997,10 @@ describe('Business reducer', () => {
     };
 
     it('sets new requestHeaders', () => {
-      const { newRequestHeaders } = reducer(state, setNewRequestHeaders(contentTypeHeaderAction.payload));
+      const { newRequestHeaders } = reducer(
+        state,
+        setNewRequestHeaders(contentTypeHeaderAction.payload)
+      );
       expect(newRequestHeaders.headersArr.length).toBe(1);
       expect(newRequestHeaders.headersArr[0]).toEqual(
         contentTypeHeaderAction.payload.headersArr[0]
@@ -955,7 +1009,10 @@ describe('Business reducer', () => {
       expect(newRequestHeaders.override).toBe(false);
     });
     it('can set multiple requestHeaders', () => {
-      const { newRequestHeaders } = reducer(state, setNewRequestHeaders(otherHeaderAction.payload));
+      const { newRequestHeaders } = reducer(
+        state,
+        setNewRequestHeaders(otherHeaderAction.payload)
+      );
       expect(newRequestHeaders.headersArr.length).toBe(2);
       expect(newRequestHeaders.headersArr[1]).toEqual(
         otherHeaderAction.payload.headersArr[1]
@@ -977,7 +1034,10 @@ describe('Business reducer', () => {
     };
 
     it('sets new requestBody', () => {
-      const { newRequestBody } = reducer(state, setNewRequestBody(action.payload));
+      const { newRequestBody } = reducer(
+        state,
+        setNewRequestBody(action.payload)
+      );
       expect(newRequestBody).toEqual(action.payload);
       expect(typeof newRequestBody.bodyContent).toBe('string');
       expect(typeof newRequestBody.JSONFormatted).toBe('boolean');
@@ -1005,7 +1065,10 @@ describe('Business reducer', () => {
     };
 
     it('sets new requestCookies', () => {
-      const { newRequestCookies } = reducer(state, setNewRequestCookies(cookieAction.payload));
+      const { newRequestCookies } = reducer(
+        state,
+        setNewRequestCookies(cookieAction.payload)
+      );
       expect(newRequestCookies.cookiesArr.length).toBe(1);
       expect(newRequestCookies.cookiesArr[0]).toEqual(
         cookieAction.payload.cookiesArr[0]
@@ -1013,7 +1076,10 @@ describe('Business reducer', () => {
       expect(newRequestCookies.count).toBe(1);
     });
     it('can set multiple requestCookies', () => {
-      const { newRequestCookies } = reducer(state, setNewRequestCookies(otherCookieAction.payload));
+      const { newRequestCookies } = reducer(
+        state,
+        setNewRequestCookies(otherCookieAction.payload)
+      );
       expect(newRequestCookies.cookiesArr.length).toBe(2);
       expect(newRequestCookies.cookiesArr[1]).toEqual(
         otherCookieAction.payload.cookiesArr[1]
@@ -1028,7 +1094,10 @@ describe('Business reducer', () => {
     };
 
     it('sets new test content', () => {
-      const { newRequestFields } = reducer(state, setNewTestContent(action.payload));
+      const { newRequestFields } = reducer(
+        state,
+        setNewTestContent(action.payload)
+      );
       expect(newRequestFields.testContent).toEqual(action.payload);
     });
   });
@@ -1039,8 +1108,11 @@ describe('Business reducer', () => {
     };
 
     it('sets new test content', () => {
-      const { newRequestSSE } = reducer(state, setNewRequestSSE(action.payload));
-      expect(newRequestSSE).toEqual({'isSSE': true});
+      const { newRequestSSE } = reducer(
+        state,
+        setNewRequestSSE(action.payload)
+      );
+      expect(newRequestSSE).toEqual({ isSSE: true });
     });
   });
 
@@ -1050,7 +1122,10 @@ describe('Business reducer', () => {
     };
 
     it('sets new introspection data', () => {
-      const { introspectionData } = reducer(state, setIntrospectionData(action.payload));
+      const { introspectionData } = reducer(
+        state,
+        setIntrospectionData(action.payload)
+      );
       expect(introspectionData).toEqual(action.payload);
     });
   });
@@ -1061,7 +1136,10 @@ describe('Business reducer', () => {
     };
 
     it('saves current response data', () => {
-      const { currentResponse } = reducer(state, saveCurrentResponseData(action.payload));
+      const { currentResponse } = reducer(
+        state,
+        saveCurrentResponseData(action.payload)
+      );
       expect(currentResponse).toEqual(action.payload);
     });
   });
@@ -1072,9 +1150,11 @@ describe('Business reducer', () => {
     };
 
     it('sets the new requests for openAPI', () => {
-      const { newRequestsOpenAPI } = reducer(state, setNewRequestsOpenAPI(action.payload));
+      const { newRequestsOpenAPI } = reducer(
+        state,
+        setNewRequestsOpenAPI(action.payload)
+      );
       expect(newRequestsOpenAPI).toEqual(action.payload);
     });
   });
-
 });
