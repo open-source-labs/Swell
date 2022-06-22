@@ -1,8 +1,8 @@
 import { format, parseISO } from 'date-fns';
-import historyReducer from './history';
-import * as actionTypes from '../actions(deprecated)/actionTypes';
+import historyReducer from '../history/old-history';
+import * as actionTypes from '../../actions(deprecated)/actionTypes';
 
-import { $TSFixMe } from '../../types';
+import { $TSFixMe } from '../../../types';
 
 /**
  * This section defines the interfaces for the Redux store state. Only the

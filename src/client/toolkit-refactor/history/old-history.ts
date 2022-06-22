@@ -3,8 +3,8 @@
  * array property of the Redux store.
  */
 
-import * as actionTypes from '../actions(deprecated)/actionTypes';
-import { initialState, StateInterface } from './business-v2';
+import * as actionTypes from '../../actions(deprecated)/actionTypes';
+import { initialState, StateInterface } from '../_temp/business-v2';
 import { format, parseISO } from 'date-fns';
 
 /**

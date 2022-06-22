@@ -393,10 +393,12 @@ const businessReducer = (
     case types.REQRES_UPDATE: {
       const reqResDeepCopy = JSON.parse(JSON.stringify(state.reqResArray));
       let indexToBeUpdated;
+
       // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
       reqResDeepCopy.forEach((reqRes: $TSFixMe, index: $TSFixMe) => {
         if (reqRes.id === action.payload.id) indexToBeUpdated = index;
       });
+
       if (indexToBeUpdated !== undefined) {
         // @ts-expect-error ts-migrate(2339) FIXME: Property 'checked' does not exist on type 'never'.
         action.payload.checked = state.reqResArray[indexToBeUpdated].checked;
