@@ -1,4 +1,4 @@
-import { ReqRes, Collection, $TSFixMe, $TSFixMeObject } from '../../types';
+import { ReqRes, Collection, $TSFixMe, $TSFixMeObject } from '../../../types';
 
 // In separate slice file
 type NewRequestFields = {
@@ -118,7 +118,7 @@ type State = {
     clientSchema: $TSFixMe | null;
   };
 
-  dataPoints: Record<string, $TSFixMe>;
+  graphPoints: Record<ReqRes['id'], GraphPoint[]>; //GraphPoint type defined in graphPointsSlice
   currentResponse: {
     request: {
       network: string;

@@ -7,6 +7,12 @@
 import { WritableDraft } from 'immer/dist/internal';
 
 /**
+ * Defines a type that is only included because it's required for a function
+ * signature, but otherwise isn't used at all.
+ */
+export type $NotUsed = unknown;
+
+/**
  * Defines a placeholder alias for the any type.
  *
  * PLEASE do not use this for new code. This is just here as a bandaid for

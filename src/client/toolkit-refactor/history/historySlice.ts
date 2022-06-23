@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { $TSFixMe, ReqRes } from '../../../types';
+import { reqResSlice } from '../reqRes/reqResSlice';
+
+import { ReqRes } from '../../../types';
 import { format, parseISO } from 'date-fns';
 
 type HistoryItem = {
@@ -43,11 +45,11 @@ const HistorySlice = createSlice({
       // you really need it for performance. Even then, there might be more
       // performant methods. Most of the time, it's just hard to
       // read/understand. Here, there's a 99% chance that elements are
-      // accidentally being skipped in this loop because forEach assumes that
-      // the array being iterated over won't have elements deleted mid-
-      // iteration. The problem is, we don't fully know if other parts of the
-      // code are compensating for this
-      state.forEach((obj, index) => {
+      // accidentally being skipped in this loop because all loops like for/of
+      // and forEach assume that the array being iterated over won't have
+      // elements deleted mid-iteration. The problem is, we don't fully know if
+      // other parts of the code are compensating for this
+      for (const [index, obj] of state.entries()) {
         if (obj.date === deleteDate) {
           obj.history = obj.history.filter((hist) => hist.id !== deleteId);
         }
@@ -55,8 +57,30 @@ const HistorySlice = createSlice({
         if (obj.history.length === 0) {
           state.splice(index, 1);
         }
-      });
+      }
     },
+  },
+
+  // Go through the history
+  extraReducers: (builder) => {
+    builder.addCase(reqResSlice.actions.itemAdded, (state, action) => {
+      const formattedDate = format(action.payload.createdAt, 'MM/dd/yyyy');
+      let updated = false;
+
+      for (const historyObj of state) {
+        if (historyObj.date === formattedDate) {
+          historyObj.history.unshift(action.payload);
+          updated = true;
+        }
+      }
+
+      if (!updated) {
+        state.unshift({
+          date: formattedDate,
+          history: [action.payload],
+        });
+      }
+    });
   },
 });
 

@@ -21,7 +21,7 @@ const initialState: UiState = {
   isDark: false,
 };
 
-const uiSlice = createSlice({
+export const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
@@ -40,12 +40,12 @@ const uiSlice = createSlice({
   },
 });
 
-const { actions, reducer } = uiSlice;
-export const {
-  setSidebarActiveTab,
-  setWorkspaceActiveTab,
-  setResponsePaneActiveTab,
-  toggleDarkMode,
-} = actions;
-export default reducer;
+// const { actions, reducer } = uiSlice;
+// export const {
+//   setSidebarActiveTab,
+//   setWorkspaceActiveTab,
+//   setResponsePaneActiveTab,
+//   toggleDarkMode,
+// } = actions;
+// export default reducer;
 

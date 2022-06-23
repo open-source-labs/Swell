@@ -89,7 +89,7 @@ interface StateInterface {
     };
   };
   introspectionData: { schemaSDL: null; clientSchema: null };
-  dataPoints: Record<string, unknown>;
+  graphPoints: Record<string, unknown>;
   currentResponse: {
     request: {
       network: string;
@@ -185,7 +185,7 @@ const initialState: StateInterface = {
     },
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
-  dataPoints: {},
+  graphPoints: {},
   currentResponse: {
     request: {
       network: '',
@@ -442,32 +442,32 @@ const businessReducer = (
       const { id } = action.payload;
       // action.payload is the latest reqRes object
 
-      // dataPoints to be used by graph
-      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints));
-      dataPointsCopy.current = id;
+      // graphPoints to be used by graph
+      const graphPointsCopy = JSON.parse(JSON.stringify(state.graphPoints));
+      graphPointsCopy.current = id;
       // if more than 8 points, data will shift down an index
-      if (!dataPointsCopy[id]) {
-        dataPointsCopy[id] = [];
-      } else if (dataPointsCopy[id].length > 49) {
-        dataPointsCopy[id] = dataPointsCopy[id].slice(1);
+      if (!graphPointsCopy[id]) {
+        graphPointsCopy[id] = [];
+      } else if (graphPointsCopy[id].length > 49) {
+        graphPointsCopy[id] = graphPointsCopy[id].slice(1);
       }
 
       // check if new object is a closed request with timeSent and timeReceived
       if (
-        !dataPointsCopy[id].some(
+        !graphPointsCopy[id].some(
           // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name '$TSFixMe'.
           (elem: $TSFixMe) => elem.timeSent === action.payload.timeSent
         )
       ) {
         // if a color hasn't been added to this specific request id, add a new one
-        const color = !dataPointsCopy[id][0]?.color
+        const color = !graphPointsCopy[id][0]?.color
           ? `${Math.random() * 256}, ${Math.random() * 256}, ${
               Math.random() * 256
             }`
-          : dataPointsCopy[id][0].color;
+          : graphPointsCopy[id][0].color;
 
-        // add dataPoint to array connected to its id -and return to state
-        dataPointsCopy[id].push({
+        // add graphPoint to array connected to its id -and return to state
+        graphPointsCopy[id].push({
           reqRes: action.payload,
           url: action.payload.url,
           timeSent: action.payload.timeSent,
@@ -477,28 +477,28 @@ const businessReducer = (
         });
         return {
           ...state,
-          dataPoints: dataPointsCopy,
+          graphPoints: graphPointsCopy,
         };
       }
       return {
         ...state,
-        dataPoints: dataPointsCopy,
+        graphPoints: graphPointsCopy,
       };
     }
 
     case types.CLEAR_GRAPH: {
-      const dataPointsCopy = JSON.parse(JSON.stringify(state.dataPoints));
-      dataPointsCopy[action.payload] = [];
+      const graphPointsCopy = JSON.parse(JSON.stringify(state.graphPoints));
+      graphPointsCopy[action.payload] = [];
       return {
         ...state,
-        dataPoints: dataPointsCopy,
+        graphPoints: graphPointsCopy,
       };
     }
 
     case types.CLEAR_ALL_GRAPH: {
       return {
         ...state,
-        dataPoints: {},
+        graphPoints: {},
       };
     }
 

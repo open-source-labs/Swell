@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReqRes, Collection } from '../../../types';
 
 // ********************************
@@ -9,102 +9,102 @@ import { ReqRes, Collection } from '../../../types';
 // ********************************
 
 interface State {
-  currentTab: string,
-  reqResArray: ReqRes[],
-  scheduledReqResArray: ReqRes[],
-  history: Collection[],
-  collections: Collection[],
-  warningMessage: Record<string, unknown>,
+  currentTab: string;
+  reqResArray: ReqRes[];
+  scheduledReqResArray: ReqRes[];
+  history: Collection[];
+  collections: Collection[];
+  warningMessage: Record<string, unknown>;
   newRequestsOpenAPI: {
     openapiMetadata: {
-      info: Record<string, unknown>,
-      tags: [],
-      serverUrls: [],
-    },
-    openapiReqArray: [],
-  },
+      info: Record<string, unknown>;
+      tags: [];
+      serverUrls: [];
+    };
+    openapiReqArray: [];
+  };
   newRequestFields: {
-    protocol: string,
-    restUrl: string,
-    wsUrl: string,
-    gqlUrl: string,
-    grpcUrl: string,
-    webrtcUrl: string,
-    url: string,
-    method: string,
-    graphQL: boolean,
-    gRPC: boolean,
-    ws: boolean,
-    openapi: boolean,
-    webrtc: boolean,
-    webhook: boolean,
-    network: string,
-    testContent: string,
-    testResults: [],
-    openapiReqObj: Record<string, unknown>,
-  },
+    protocol: string;
+    restUrl: string;
+    wsUrl: string;
+    gqlUrl: string;
+    grpcUrl: string;
+    webrtcUrl: string;
+    url: string;
+    method: string;
+    graphQL: boolean;
+    gRPC: boolean;
+    ws: boolean;
+    openapi: boolean;
+    webrtc: boolean;
+    webhook: boolean;
+    network: string;
+    testContent: string;
+    testResults: [];
+    openapiReqObj: Record<string, unknown>;
+  };
   newRequestHeaders: {
-    headersArr: [],
-    count: number,
-  },
+    headersArr: [];
+    count: number;
+  };
   newRequestStreams: {
-    streamsArr: [],
-    count: number,
-    streamContent: [],
-    selectedPackage: null,
-    selectedRequest: null,
-    selectedService: null,
-    selectedServiceObj: null,
-    selectedStreamingType: null,
-    initialQuery: null,
-    queryArr: null,
-    protoPath: null,
-    services: null,
-    protoContent: string,
-  },
+    streamsArr: [];
+    count: number;
+    streamContent: [];
+    selectedPackage: null;
+    selectedRequest: null;
+    selectedService: null;
+    selectedServiceObj: null;
+    selectedStreamingType: null;
+    initialQuery: null;
+    queryArr: null;
+    protoPath: null;
+    services: null;
+    protoContent: string;
+  };
   newRequestCookies: {
-    cookiesArr: [],
-    count: number,
-  },
+    cookiesArr: [];
+    count: number;
+  };
   newRequestBody: {
-    bodyContent: string,
-    bodyVariables: string,
-    bodyType: string,
-    rawType: string,
-    JSONFormatted: boolean,
-    bodyIsNew: boolean,
-  },
+    bodyContent: string;
+    bodyVariables: string;
+    bodyType: string;
+    rawType: string;
+    JSONFormatted: boolean;
+    bodyIsNew: boolean;
+  };
   newRequestSSE: {
-    isSSE: boolean,
-  },
+    isSSE: boolean;
+  };
   newRequestOpenAPIObject: {
     request: {
-      id: number,
-      enabled: boolean,
-      reqTags: [],
-      reqServers: [],
-      summary: string,
-      description: string,
-      operationId: string,
-      method: string,
-      endpoint: string,
-      headers: Record<string, unknown>,
-      parameters: [],
-      body: Record<string, unknown>,
-      urls: [],
-    },
-  },
-  introspectionData: { schemaSDL: null, clientSchema: null },
-  dataPoints: Record<string, unknown>,
+      id: number;
+      enabled: boolean;
+      reqTags: [];
+      reqServers: [];
+      summary: string;
+      description: string;
+      operationId: string;
+      method: string;
+      endpoint: string;
+      headers: Record<string, unknown>;
+      parameters: [];
+      body: Record<string, unknown>;
+      urls: [];
+    };
+  };
+  introspectionData: { schemaSDL: null; clientSchema: null };
+  graphPoints: Record<string, unknown>;
   currentResponse: {
     request: {
-      network: string,
-    },
+      network: string;
+    };
     response: {
-      source: string,
-    },
-  },
-};
+      source: string;
+    };
+  };
+}
 
 const initialState: State = {
   currentTab: 'First Tab',
@@ -193,13 +193,13 @@ const initialState: State = {
     },
   },
   introspectionData: { schemaSDL: null, clientSchema: null },
-  dataPoints: {},
+  graphPoints: {},
   currentResponse: {
     request: {
       network: '',
     },
     response: {
-      source: ''
+      source: '',
     },
   },
 };
@@ -242,20 +242,20 @@ const businessSlice = createSlice({
     },
 
     resetComposerFields(state) {
-      state.newRequestHeaders = {headersArr: [], count: 0},
-      state.newRequestCookies = {cookiesArr: [], count: 0},
-            // should this clear every field or just protocol?
-      state.newRequestFields=  {...state.newRequestFields, protocol: ''},
-      state.newRequestSSE = {isSSE: false},
-      state.warningMessage = {}
+      (state.newRequestHeaders = { headersArr: [], count: 0 }),
+        (state.newRequestCookies = { cookiesArr: [], count: 0 }),
+        // should this clear every field or just protocol?
+        (state.newRequestFields = { ...state.newRequestFields, protocol: '' }),
+        (state.newRequestSSE = { isSSE: false }),
+        (state.warningMessage = {});
       state.newRequestBody = {
-        bodyIsNew: state.newRequestBody.bodyIsNew,  // why is this state saved?
+        bodyIsNew: state.newRequestBody.bodyIsNew, // why is this state saved?
         bodyContent: '',
         bodyVariables: '',
         bodyType: 'raw',
         rawType: 'text/plain',
         JSONFormatted: true,
-      }
+      };
     },
 
     collectionToReqRes(state, action: PayloadAction<ReqRes[]>) {
@@ -272,12 +272,12 @@ const businessSlice = createSlice({
         if (obj.name === collectionName) {
           state.collections[i] = action.payload;
         }
-      })
+      });
     },
 
     reqResClear(state) {
-      state.reqResArray = [],
-      state.currentResponse = {request: {network: ''}}
+      (state.reqResArray = []),
+        (state.currentResponse = { request: { network: '' } });
     },
 
     reqResAdd(state, action: PayloadAction<ReqRes>) {
@@ -317,9 +317,9 @@ const businessSlice = createSlice({
             ...action.payload,
             checked: state.reqResArray[i].checked,
             minimized: state.reqResArray[i].minimized,
-          }
-          break
-        } 
+          };
+          break;
+        }
       }
     },
 
@@ -333,8 +333,8 @@ const businessSlice = createSlice({
 
     updateGraph(state, action: PayloadAction<ReqRes>) {
       const { id } = action.payload; // latest reqRes object
-      // dataPoints to be used by graph
-      const data = JSON.parse(JSON.stringify(state.dataPoints));
+      // graphPoints to be used by graph
+      const data = JSON.parse(JSON.stringify(state.graphPoints));
       data.current = id; // more than 8 points and data will shift down an index
       if (!data[id]) {
         data[id] = [];
@@ -349,7 +349,7 @@ const businessSlice = createSlice({
               Math.random() * 256
             }`
           : data[id][0].color;
-        // add dataPoint to array connected to its id -and return to state
+        // add graphPoint to array connected to its id -and return to state
         data[id].push({
           reqRes: action.payload,
           url: action.payload.url,
@@ -359,18 +359,21 @@ const businessSlice = createSlice({
           color,
         });
       }
-      state.dataPoints = data
+      state.graphPoints = data;
     },
 
     clearGraph(state, action: PayloadAction<number>) {
-      state.dataPoints[action.payload] = []; 
+      state.graphPoints[action.payload] = [];
     },
 
     clearAllGraph(state, action: PayloadAction<Collection>) {
-      state.dataPoints = {};
+      state.graphPoints = {};
     },
 
-    setComposerWarningMessage(state, action: PayloadAction<Record<string, string>>) {
+    setComposerWarningMessage(
+      state,
+      action: PayloadAction<Record<string, string>>
+    ) {
       state.warningMessage = action.payload;
     },
 
@@ -378,40 +381,61 @@ const businessSlice = createSlice({
       state.newRequestFields = action.payload;
     },
 
-    setNewRequestHeaders(state, action: PayloadAction<Record<string, [] | number>>) {
+    setNewRequestHeaders(
+      state,
+      action: PayloadAction<Record<string, [] | number>>
+    ) {
       state.newRequestHeaders = action.payload;
     },
 
-    setNewRequestStreams(state, action: PayloadAction<Record<string, [] | number | string | null>>) {
+    setNewRequestStreams(
+      state,
+      action: PayloadAction<Record<string, [] | number | string | null>>
+    ) {
       state.newRequestStreams = action.payload;
     },
 
-    setNewRequestBody(state, action: PayloadAction<Record<string, string | boolean>>) {
+    setNewRequestBody(
+      state,
+      action: PayloadAction<Record<string, string | boolean>>
+    ) {
       state.newRequestBody = action.payload;
     },
 
-    setNewRequestCookies(state, action: PayloadAction<Record<string, [] | number>>) {
-      state.newRequestCookies = action.payload
+    setNewRequestCookies(
+      state,
+      action: PayloadAction<Record<string, [] | number>>
+    ) {
+      state.newRequestCookies = action.payload;
     },
 
     setNewTestContent(state, action: PayloadAction<string>) {
-      state.newRequestFields.testContent =action.payload;
+      state.newRequestFields.testContent = action.payload;
     },
 
     setNewRequestSSE(state, action: PayloadAction<boolean>) {
-      state.newRequestSSE = { isSSE: action.payload }
+      state.newRequestSSE = { isSSE: action.payload };
     },
 
-    setIntrospectionData(state, action: PayloadAction<Record<string, unknown>>) {
+    setIntrospectionData(
+      state,
+      action: PayloadAction<Record<string, unknown>>
+    ) {
       state.introspectionData = action.payload;
     },
 
-    saveCurrentResponseData(state, action: PayloadAction<Record<string, unknown>>) {
+    saveCurrentResponseData(
+      state,
+      action: PayloadAction<Record<string, unknown>>
+    ) {
       state.currentResponse = action.payload;
     },
 
-    setNewRequestsOpenAPI(state, action: PayloadAction<Record<string, unknown>>) {
-      state.newRequestsOpenAPI = action.payload
+    setNewRequestsOpenAPI(
+      state,
+      action: PayloadAction<Record<string, unknown>>
+    ) {
+      state.newRequestsOpenAPI = action.payload;
     },
     // TODO: OpenAPI is not implemented, let's delete yes?
     // setOpenAPIServersGlobal(state, action: PayloadAction<[]>) {
@@ -511,11 +535,11 @@ const businessSlice = createSlice({
     //     newRequestsOpenAPI: openapiReqArray,
     //   };
     // }
-  }
-})
+  },
+});
 
-const { actions, reducer } = businessSlice
-export const { 
+const { actions, reducer } = businessSlice;
+export const {
   getHistory,
   deleteFromHistory,
   clearHistory,
@@ -545,6 +569,7 @@ export const {
   setNewRequestSSE,
   setIntrospectionData,
   saveCurrentResponseData,
-  setNewRequestsOpenAPI
-} = actions
+  setNewRequestsOpenAPI,
+} = actions;
 export default reducer;
+
