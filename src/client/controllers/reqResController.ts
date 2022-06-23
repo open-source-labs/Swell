@@ -6,7 +6,7 @@ import { ReqRes, WindowAPI, WindowExt } from '../../types';
 
 
 
-const { api }: { api: WindowAPI} = window as unknown as WindowExt;
+const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
 
@@ -48,9 +48,6 @@ const connectionController = {
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
     const reqResArr: ReqRes[] = store.default.getState().business.reqResArray;
     const reqResObj: ReqRes = reqResArr.find((el: ReqRes) => el.id === id);
-
-    // console.log('this is the reqResArr!!!!!!!', reqResArr);
-    //console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
 
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);

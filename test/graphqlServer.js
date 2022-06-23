@@ -4,14 +4,14 @@ const { ApolloServer } = require('apollo-server-express');
 const { execute, subscribe } = require('graphql');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { createServer } = require('http');
-// TODO: Migrate this file and graphQLController.ts to use graphql-ws
-// instead of deprecated subscription-transport-ws package
-// https://www.apollographql.com/docs/apollo-server/data/subscriptions/
-// import { WebSocketServer } from 'ws';
-// import { useServer } from 'graphql-ws/lib/use/ws';
-const { SubscriptionServer } = require('subscriptions-transport-ws');
+
 const { PubSub } = require('graphql-subscriptions');
 const bodyParser = require('body-parser');
+
+const { WebSocketServer } = require('ws');
+const { useServer } = require('graphql-ws/lib/use/ws');
+
+const { server } = require('websocket');
 
 const PORT = 4000;
 
@@ -62,6 +62,7 @@ const resolvers = {
         description: args.description,
         url: args.url,
       };
+      console.log(link)
       links.push(link);
       pubsub.publish('NEW_LINK', { newLink: link });
       return link;
@@ -87,25 +88,36 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 app.use('/graphql', bodyParser.json());
 
-let apolloServer = new ApolloServer({ schema });
+let apolloServer = new ApolloServer({
+  schema,
+  plugins: [
+    // Proper shutdown for the WebSoket server.
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await serverCleanup.dispose();
+          },
+        };
+      },
+    },
+  ],
+});
 
-apolloServer.start().then(res=>{
+apolloServer.start().then(res => {
   apolloServer.applyMiddleware({ app });
 })
 
 const graphqlApp = ws.listen(PORT, () => {
   console.log(`GraphQL Server is now running on http://localhost:${PORT}`);
-  new SubscriptionServer(
-    {
-      execute,
-      subscribe,
-      schema,
-    },
-    {
-      server: ws,
-      path: '/graphql',
-    }
-  );
+
+  const wsServer = new WebSocketServer({
+    server: ws,
+    path: '/graphql',
+  })
+
+  const serverCleanup = useServer({ schema }, wsServer);
+
 });
 
 module.exports = graphqlApp;

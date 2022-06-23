@@ -4,7 +4,7 @@
 // with a mock server. 
 
 const graphqlServer = require('../graphqlServer');
-const {_electron: electron} = require('playwright');
+const { _electron: electron } = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path');
@@ -14,16 +14,16 @@ let electronApp, page, num;
 
 module.exports = () => {
 
-  const setupFxn = function() {
+  const setupFxn = function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
 
       await page.locator('button >> text=Clear Workspace').click();
-      num=0
+      num = 0
     });
-    
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
@@ -36,7 +36,7 @@ module.exports = () => {
       }
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       if (this.currentTest.state === 'failed') {
         console.log(`Screenshotting failed test window`)
         const imageBuffer = await page.screenshot();
@@ -49,7 +49,7 @@ module.exports = () => {
   describe('GraphQL requests', () => {
     setupFxn();
 
-    
+
     const fillGQLRequest = async (
       url,
       method,
@@ -188,7 +188,7 @@ module.exports = () => {
           setTimeout(async () => {
             try {
               const statusCode = await page.locator('.status-tag').innerText();
-              
+
               const events = await page.locator('#events-display >> .cm-content')
               expect(await events.count()).to.equal(1)
 
@@ -259,7 +259,7 @@ module.exports = () => {
         await new Promise((resolve) => {
           setTimeout(async () => {
             try {
-              await page.locator(`#view-button-${num-2}`).click();
+              await page.locator(`#view-button-${num - 2}`).click();
 
               const statusCode = await page.locator('.status-tag').innerText();
               const events = await page.locator('#events-display >> .cm-content')
@@ -280,4 +280,4 @@ module.exports = () => {
   }).timeout(20000);
 
 }
-  
+
