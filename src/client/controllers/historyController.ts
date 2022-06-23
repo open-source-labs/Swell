@@ -39,12 +39,12 @@ const historyController = {
           date,
           history: historyGroupsObj[date].sort(
             (a: ReqRes, b: ReqRes) => b.createdAt.valueOf() - a.createdAt.valueOf()),
-          }));
+        }));
       store.default.dispatch(actions.getHistory(historyGroupsArr));
     } catch {
-          ((err: string) => console.log('Error in getHistory', err))
-      };
-    }
+      ((err: string) => console.log('Error in getHistory', err))
+    };
+  }
 };
 
 export default historyController;

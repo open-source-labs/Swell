@@ -1,30 +1,30 @@
 // Confirm testing of request/response works for grpc
 
 const grpcServer = require('../grpcServer.js');
-const {_electron: electron} = require('playwright');
+const { _electron: electron } = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path');
 const fs = require('fs');
 
-let electronApp, page, num=0;
+let electronApp, page, num = 0;
 
 
 module.exports = () => {
 
-  const setupFxn = function() {
+  const setupFxn = function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
     });
-    
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       if (this.currentTest.state === 'failed') {
         console.log(`Screenshotting failed test window`)
         const imageBuffer = await page.screenshot();
@@ -39,11 +39,11 @@ module.exports = () => {
     let proto = '';
 
     // These functions run before any of the "it" tests.
-    
+
     before(async () => {
       // try {
-        
-        await page.locator('button>> text=GRPC').click();
+
+      await page.locator('button>> text=GRPC').click();
       // Read the data on the hw2.proto file.
       try {
         fs.readFile(path.join(__dirname, '../hw2.proto'), 'utf8', (err, data) => {
@@ -109,7 +109,7 @@ module.exports = () => {
         // click the view tests button to reveal the test code editor
         await page.locator('span >> text=View Tests').click();
         // set the value of the code editor to be some hard coded simple assertion tests
-        
+
         const codeMirror2 = await page.locator('#test-script-entry');
         await codeMirror2.click();
         const scriptBody = await codeMirror2.locator('.cm-content');
