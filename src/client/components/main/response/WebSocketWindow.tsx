@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
 import WebSocketMessage from './WebSocketMessage';
 import ImageDropzone from './ImageDropzone';
@@ -11,7 +12,12 @@ import ImageDropzone from './ImageDropzone';
 const { api } = window;
 
 // TODO: ResponsePaneContainer.tsx should dispach state and we should pull it here, not drill it down
-const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connection}) => {
+const WebSocketWindow = ({
+  content,
+  outgoingMessages,
+  incomingMessages,
+  connection,
+}) => {
   const [inputFields, setInputFields] = useState({
     msg: '',
     image: '',
@@ -67,12 +73,12 @@ const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connectio
   // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
     .map((message: Record<string, unknown>) => {
-      message = {...message, source: 'client'}
+      message = { ...message, source: 'client' };
       return message;
     })
     .concat(
       incomingMessages.map((message: Record<string, unknown>) => {
-        message = {...message, source: 'server'}
+        message = { ...message, source: 'server' };
         return message;
       })
     )
@@ -153,6 +159,7 @@ const WebSocketWindow = ({content, outgoingMessages, incomingMessages, connectio
   );
 };
 
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 WebSocketWindow.propTypes = {
   outgoingMessages: PropTypes.array.isRequired,
   incomingMessages: PropTypes.array.isRequired,

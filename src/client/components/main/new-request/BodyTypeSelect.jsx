@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
 import dropDownArrow from '../../../../assets/icons/caret-down-white.svg';
 
@@ -61,7 +62,7 @@ const BodyTypeSelect = (props) => {
       <div className="dropdown-trigger">
         <button
           className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button"
-          id = "body-type-select"
+          id="body-type-select"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -122,6 +123,7 @@ const BodyTypeSelect = (props) => {
   );
 };
 
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 BodyTypeSelect.propTypes = {
   newRequestBody: PropTypes.object.isRequired,
   setNewRequestBody: PropTypes.func.isRequired,

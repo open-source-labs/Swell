@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import CodeMirror from '@uiw/react-codemirror';
 import TextCodeArea from './TextCodeArea.jsx';
 
@@ -28,8 +27,8 @@ export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
       mode={newRequestBody.rawType}
       onChange={(value, viewUpdate) => {
         setNewRequestBody({
-        ...newRequestBody,
-        bodyContent: value,
+          ...newRequestBody,
+          bodyContent: value,
         });
       }}
       value={newRequestBody.bodyContent}
