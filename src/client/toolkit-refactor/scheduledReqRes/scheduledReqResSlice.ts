@@ -10,11 +10,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReqRes } from '../../../types';
 
 const initialState: ReqRes[] = [];
-export const scheduledReqResSlice = createSlice({
+const scheduledReqResSlice = createSlice({
   name: 'scheduledReqRes',
   initialState,
   reducers: {
-    updated(state, action: PayloadAction<ReqRes>) {
+    added(state, action: PayloadAction<ReqRes>) {
       state.push(action.payload);
     },
 
@@ -23,4 +23,7 @@ export const scheduledReqResSlice = createSlice({
     },
   },
 });
+
+export const { added, cleared } = scheduledReqResSlice.actions;
+export default scheduledReqResSlice.reducer;
 
