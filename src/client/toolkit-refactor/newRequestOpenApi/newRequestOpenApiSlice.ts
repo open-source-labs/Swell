@@ -8,22 +8,12 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { compose } from 'redux';
-import { $NotUsed, $TSFixMe, $TSFixMeObject } from '../../../types';
+import { $NotUsed, $TSFixMe } from '../../../types';
 
-/*test file expects newRequestsOpenAPI to equal THIS PAYLOAD below
-  //from actions file:
-    export const setNewRequestsOpenAPI = ({
-      openapiMetadata,
-      openapiReqArray,
-    }: Record<string, unknown>): {
-      type: string;
-      payload: Record<string, unknown>;
-    } => ({
-      type: types.SET_NEW_REQUESTS_OPENAPI,
-      payload: { openapiMetadata, openapiReqArray },
-    });
-*/
-
+/**
+ * Describes a single element within the NewRequestOpenApi type's array of
+ * requests.
+ */
 export type OpenApiRequest = {
   request: {
     id: number;
@@ -48,6 +38,9 @@ export type OpenApiRequest = {
   rawType: string | $TSFixMe;
 };
 
+/**
+ * Describes an object for keeping track of all OpenAPI request information.
+ */
 export type NewRequestOpenApi = {
   openApiMetadata: {
     info: Record<string, $TSFixMe>;
@@ -58,17 +51,31 @@ export type NewRequestOpenApi = {
   openApiReqArray: OpenApiRequest[];
 };
 
-type Temp2 = {
+/**
+ * An object with info about how a request should be updated? Maybe?
+ *
+ * There were a lot of typos in the reducer logic for this file, and the
+ * function was never added to any of the code, so there's no way to tell from
+ * context alone.
+ */
+type RequestUpdateInfo = {
   id: number;
   location: 'path' | 'query' | 'header' | 'cookie';
-  name: $TSFixMe;
+  name: string;
   value: $TSFixMe;
 };
 
-type Temp3 = {
+/**
+ * Defines a custom type for media/request information? Maybe?
+ *
+ * There were a lot of typos in the reducer logic for this file, and the
+ * function was never added to any of the code, so there's no way to tell from
+ * context alone.
+ */
+type MediaInfo = {
   requestId: number;
   mediaType: string;
-  requestBody: $TSFixMeObject;
+  requestBody: $TSFixMe;
 };
 
 const initialState: NewRequestOpenApi = {
@@ -123,7 +130,7 @@ export const newRequestOpenApiSlice = createSlice({
       // why, though – is there any special meaning, or was this just a clumsy
       // attempt at saving keystrokes?
       const reqToBeUpdated = filteredById.pop();
-      if (reqToBeUpdated == undefined) {
+      if (!reqToBeUpdated) {
         return;
       }
 
@@ -136,13 +143,12 @@ export const newRequestOpenApiSlice = createSlice({
     },
 
     // Previously SET_NEW_OPENAPI_PARAMETER
-    newParameterAdded(state, action: PayloadAction<Temp2>) {
+    newParameterAdded(state, action: PayloadAction<RequestUpdateInfo>) {
       const { id, location, name, value } = action.payload;
       const filteredById = state.openApiReqArray.filter(
         (entry) => entry.request.id === id
       );
 
-      // Guard clause checks for when filtered array is empty
       const latestRequest = filteredById.pop();
       if (!latestRequest) {
         return;
@@ -209,14 +215,14 @@ export const newRequestOpenApiSlice = createSlice({
     },
 
     // Previously SET_NEW_OPENAPI_REQUEST_BODY
-    requestBodyUpdated(state, action: PayloadAction<Temp3>) {
+    requestBodyUpdated(state, action: PayloadAction<MediaInfo>) {
       const { requestId, mediaType, requestBody } = action.payload;
       const filteredById = state.openApiReqArray.filter(
         (reqResObj) => reqResObj.request.id === requestId
       );
 
       const latest = filteredById.pop();
-      if (latest == undefined) {
+      if (!latest) {
         return;
       }
 
