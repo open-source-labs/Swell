@@ -1,6 +1,52 @@
+/**
+ * @file
+ *
+ * Remember: this is Redux Toolkit. Returning undefined is valid, because
+ * Toolkit runs some processes after the reducer runs to merge the Immer object
+ * into the previous state.
+ */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { compose } from 'redux';
-import { $NotUsed, $TSFixMe } from '../../../types';
+import { $NotUsed, $TSFixMe, $TSFixMeObject } from '../../../types';
+
+/*test file expects newRequestsOpenAPI to equal THIS PAYLOAD below
+  //from actions file:
+    export const setNewRequestsOpenAPI = ({
+      openapiMetadata,
+      openapiReqArray,
+    }: Record<string, unknown>): {
+      type: string;
+      payload: Record<string, unknown>;
+    } => ({
+      type: types.SET_NEW_REQUESTS_OPENAPI,
+      payload: { openapiMetadata, openapiReqArray },
+    });
+*/
+
+export type OpenApiRequest = {
+  request: {
+    id: number;
+  };
+
+  // No idea why headers is an array of single-property objects, instead of just
+  // strings;
+  headers: { name: string }[];
+
+  urls: string[];
+  endpoint: string;
+  reqServers: string[];
+  serverIds: number[];
+  cookies: string;
+  method: string;
+
+  // Below types should probably be strings, but who knows, really? Types united
+  // with any to "temporarily" turn off type-checking (with how this project
+  // tends to go, these types might be stuck like this for months/years)
+  body: string | $TSFixMe;
+  mediaType: string | $TSFixMe;
+  rawType: string | $TSFixMe;
+};
 
 export type NewRequestOpenApi = {
   openApiMetadata: {
@@ -8,7 +54,21 @@ export type NewRequestOpenApi = {
     tags: $TSFixMe[];
     serverUrls: $TSFixMe[];
   };
-  openApiReqArray: $TSFixMe[];
+
+  openApiReqArray: OpenApiRequest[];
+};
+
+type Temp2 = {
+  id: number;
+  location: 'path' | 'query' | 'header' | 'cookie';
+  name: $TSFixMe;
+  value: $TSFixMe;
+};
+
+type Temp3 = {
+  requestId: number;
+  mediaType: string;
+  requestBody: $TSFixMeObject;
 };
 
 const initialState: NewRequestOpenApi = {
@@ -20,27 +80,15 @@ const initialState: NewRequestOpenApi = {
   openApiReqArray: [],
 };
 
-/**
- * SET_NEW_REQUESTS_OPENAPI
- * SET_OPENAPI_SERVERS_GLOBAL
- * SET_NEW_OPENAPI_SERVERS
- * SET_NEW_OPENAPI_PARAMETER
- * SET_NEW_OPENAPI_REQUEST_BODY
- */
-type Temp1 = { id: $TSFixMe; serverIds: number[] };
-type Temp2 = {
-  id: $TSFixMe;
-  location: 'path' | 'query' | 'header' | 'cookie';
-  name: $TSFixMe;
-  value: $TSFixMe;
-};
-
 export const newRequestOpenApiSlice = createSlice({
   name: 'newRequestOpenApi',
   initialState,
   reducers: {
     // Previously SET_NEW_REQUESTS_OPENAPI
-    newRequest(_state: $NotUsed, action: PayloadAction<NewRequestOpenApi>) {
+    requestsReplaced(
+      _state: $NotUsed,
+      action: PayloadAction<NewRequestOpenApi>
+    ) {
       return action.payload;
     },
 
@@ -65,138 +113,153 @@ export const newRequestOpenApiSlice = createSlice({
      * while to unravel this, because it's clear that someone lost the thread
      * along the way, and who knows how that affects the components
      */
-    newServer(state, action: PayloadAction<Temp1>) {
-      const { id, serverIds } = action.payload;
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-      const request = [...state.openapiReqArray]
-        .filter(({ request }) => request.id === id)
-        .pop();
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiMetadata' does not exist on type ... Remove this comment to see the full error message
-      request.reqServers = [...state.openapiMetadata.serverUrls].filter(
-        (_, i) => serverIds.includes(i)
+    newServerAdded(state, action: PayloadAction<OpenApiRequest>) {
+      const { id } = action.payload.request;
+      const filteredById = state.openApiReqArray.filter(
+        (reqObj) => reqObj.request.id === id
       );
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-      const openapiReqArray = [...state.openapiReqArray].push({ request });
-      return {
-        ...state,
-        newRequestsOpenAPI: openapiReqArray,
-      };
+
+      // Previous logic only ever looked for the most recent element; not sure
+      // why, though – is there any special meaning, or was this just a clumsy
+      // attempt at saving keystrokes?
+      const reqToBeUpdated = filteredById.pop();
+      if (reqToBeUpdated == undefined) {
+        return;
+      }
+
+      const serverIds = new Set(action.payload.serverIds);
+      reqToBeUpdated.reqServers = state.openApiMetadata.serverUrls.filter(
+        (_, i) => serverIds.has(i)
+      );
+
+      state.openApiReqArray.push(reqToBeUpdated);
     },
 
     // Previously SET_NEW_OPENAPI_PARAMETER
-    newParameter(state, action: PayloadAction<Temp2>) {
-      /**
-       * 1. Extract all necessary props from payload (id, loc, name, value)
-       * 2. Filter the openapiReqArray to just the objs that meet this criteria
-       *    - The request.id prop on the object matches the payload id
-       * 3. Grab the last element of the filtered array; call this request
-       *    - Current logic does not check whether array is empty and last value
-       *      doesn't actually exist/is undefined
-       * 4. Map requst.reqServers to a new URL array by:
-       *    1. Appending request.endpoint to the end of each URL (not sure if
-       *       slashes are accounted for correctly or are necessary)
-       * 5. Switch based on the location prop in the payload
-       * 6. If the case is path:
-       *    1. Map each URL in URL array to have its text replaced. All
-       *       instances of "{${payload.name}}" will become payload.value
-       *    2. Do absolutely nothing with this mapped array. Obvious bug
-       *    3. Set the value of request.urls to be the URLs array
-       *    4. Destructure openapiReqArray
-       *    5. Push a new object to the array copy with one prop: request, which
-       *       will just be the prior value of the request variable
-       *    6. Set the value of newRequestsOpenAPI to be the result of the push;
-       *       this will always be length of the array post-push. Obvious bug
-       *    7. Return a copy of the state, where the newRequestOpenAPI prop gets
-       *       its value replaced by the variable version
-       * 7. If the case is query:
-       *    1.
-       * 8. If the case is header:
-       * 9. If the case is cookie:
-       */
+    newParameterAdded(state, action: PayloadAction<Temp2>) {
       const { id, location, name, value } = action.payload;
-
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-      const request = [...state.openapiReqArray]
-        .filter(({ request }) => request.id === id)
-        .pop();
-
-      const urls = [...request.reqServers].map(
-        (url) => (url += request.endpoint)
+      const filteredById = state.openApiReqArray.filter(
+        (entry) => entry.request.id === id
       );
+
+      // Guard clause checks for when filtered array is empty
+      const latestRequest = filteredById.pop();
+      if (!latestRequest) {
+        return;
+      }
+
+      const appendEndpoint = (url: string) => `${url}${latestRequest.endpoint}`;
+
       switch (location) {
         case 'path': {
-          urls.map((url) => url.replace(`{${name}}`, value));
-          request.urls = urls;
-          // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-          const openapiReqArray = [...state.openapiReqArray].push({ request });
-          return {
-            ...state,
-            newRequestsOpenAPI: openapiReqArray,
-          };
+          // First arg of replace call was `{${name}}`, but { and } are not
+          // valid HTTP characters. Changed arg to just name, but not fully
+          // sure what happens when you try to use a URL with invalid
+          // characters
+          const updateKeyValues = compose(
+            (url) => url.replace(name, value),
+            appendEndpoint
+          );
+
+          latestRequest.urls = latestRequest.reqServers.map(updateKeyValues);
+          state.openApiReqArray.push(latestRequest);
+          return;
         }
+
         case 'query': {
-          urls.map((url) => {
-            if (url.slice(-1) !== '?') url += '?';
-            url += `${name}=${value}&`;
-          });
-          request.urls = urls;
-          // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-          const openapiReqArray = [...state.openapiReqArray].push({ request });
-          return {
-            ...state,
-            newRequestsOpenAPI: openapiReqArray,
-          };
+          const appendKeyValues = compose((url) => {
+            const queryBoundary = url.at(-1) === '?' ? '' : '?';
+            return `${url}${queryBoundary}${name}=${value}&`;
+          }, appendEndpoint);
+
+          latestRequest.urls = latestRequest.reqServers.map(appendKeyValues);
+          state.openApiReqArray.push(latestRequest);
+          return;
         }
+
         case 'header': {
-          // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'key'.
-          if (['Content-Type', 'Authorization', 'Accepts'].includes(key)) break;
-          request.headers.push({ name: value });
-          // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-          const openapiReqArray = [...state.openapiReqArray].push({ request });
-          return {
-            ...state,
-            newRequestsOpenAPI: openapiReqArray,
-          };
+          // Actions that require no action from the reducer
+          const nonActionHeaders = ['Content-Type', 'Authorization', 'Accepts'];
+
+          // Logic previously checked for variable called key; it did not exist
+          // in the previous implementation. Assuming this is supposed to be the
+          // "name" prop from the payload, but not sure
+          if (nonActionHeaders.includes(name)) {
+            return;
+          }
+
+          // No idea why this is an array, where each element is a single key-
+          // value pair, instead of an object that has them all grouped together
+          // under one value
+          latestRequest.headers.push({ name: value });
+          state.openApiReqArray.push(latestRequest);
+          return;
         }
+
         case 'cookie': {
-          request.cookies = value;
-          // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-          const openapiReqArray: [Record<string, unknown>] = [
-            ...state.openapiReqArray,
-          ].push({ request });
-          return {
-            ...state,
-            newRequestsOpenAPI: openapiReqArray,
-          };
+          latestRequest.cookies = value;
+          state.openApiReqArray.push(latestRequest);
+          return;
         }
+
         default: {
-          return state;
+          assertTypeExhaustion(location);
         }
       }
     },
 
     // Previously SET_NEW_OPENAPI_REQUEST_BODY
-    newRequestBody(state, action) {
-      const { id, mediaType, requestBody } = action.payload;
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-      const request: Record<string, unknown> = [...state.openapiReqArray]
-        .filter(({ request }) => request.id === id)
-        .pop();
-      const { method } = request;
-      if (
-        !['get', 'delete', 'head'].includes(method) &&
-        requestBody !== undefined
-      ) {
-        request.body = requestBody;
-        request.rawType = mediaType;
+    requestBodyUpdated(state, action: PayloadAction<Temp3>) {
+      const { requestId, mediaType, requestBody } = action.payload;
+      const filteredById = state.openApiReqArray.filter(
+        (reqResObj) => reqResObj.request.id === requestId
+      );
+
+      const latest = filteredById.pop();
+      if (latest == undefined) {
+        return;
       }
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'openapiReqArray' does not exist on type ... Remove this comment to see the full error message
-      const openapiReqArray = [...state.openapiReqArray].push({ request });
-      return {
-        ...state,
-        newRequestsOpenAPI: openapiReqArray,
-      };
+
+      const updateNeeded =
+        !['get', 'delete', 'head'].includes(latest.method) &&
+        requestBody != undefined;
+
+      if (updateNeeded) {
+        latest.rawType = mediaType;
+        latest.body = requestBody;
+      }
+
+      state.openApiReqArray.push(latest);
     },
   },
 });
+
+/**
+ * During runtime, this just throws an error. For development, this will make
+ * sure that every single argument passed in is of type never.
+ *
+ * @example Say you have a variable x, whose type is a union of the discrete
+ * string values "A" | "B" | "C". You can use this function with x to make sure
+ * you're taking care of all three cases properly.
+ *
+ * switch (x) {
+ *  case "A": {
+ *    return;
+ *  }
+ *  case "B": {
+ *    return;
+ *  }
+ *  default: {
+ *    checkTypeExhaustion(x);
+ *  }
+ * }
+ *
+ * In the above example, VS Code will yell at you because you didn't have
+ * anything for case "C". So the type of x can still be the string literal "C",
+ * which has no overlap with type never. You'd have to add a case for "C" to get
+ * VS Code to stop yelling at you.
+ */
+function assertTypeExhaustion(..._: never[]): never {
+  throw new Error('Not all types have been exhausted properly');
+}
 
