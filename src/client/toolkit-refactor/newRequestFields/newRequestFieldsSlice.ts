@@ -1,9 +1,8 @@
 /**
  * @file Defines the slice for the NewRequestFields.
  */
-import { $NotUsed, $TSFixMe, ActionsToSliceReducers } from '../../../types';
+import { $NotUsed, $TSFixMe } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { resetComposerFields } from '../_temp/_sharedActions';
 
 /**
  * Defines the type constract for the NewRequestFields state object.
@@ -55,28 +54,35 @@ const initialState: NewRequestFields = {
   openapiReqObj: {},
 };
 
-export const NewRequestFieldsSlice = createSlice({
+const newRequestFieldsSlice = createSlice({
   name: 'newRequestFields',
   initialState,
 
   reducers: {
-    setNewRequestFields: (
+    // Previously SET_NEW_REQUEST_FIELDS/setNewRequestFields
+    newRequestFields: (
       _state: $NotUsed,
       action: PayloadAction<NewRequestFields>
     ) => {
       return action.payload;
     },
 
-    setNewTestContent: (state, action: PayloadAction<string>) => {
+    // Previously SET_NEW_TEST_CONTENT/setNewTestContent
+    newTestContent: (
+      state,
+      action: PayloadAction<NewRequestFields['testContent']>
+    ) => {
       state.testContent = action.payload;
     },
 
-    [resetComposerFields]: (
-      _state: $NotUsed,
-      action: PayloadAction<NewRequestFields>
-    ) => {
-      return action.payload;
+    // Previously RESET_COMPOSER_FIELDS/resetComposerFields
+    composerFieldsReset: () => {
+      return initialState;
     },
   },
 });
+
+export const { newRequestFields, newTestContent, composerFieldsReset } =
+  newRequestFieldsSlice.actions;
+export default newRequestFieldsSlice.reducer;
 

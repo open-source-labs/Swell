@@ -3,7 +3,7 @@
  * arrays and associated values.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes, $NotUsed } from '../../../types';
+import { ReqRes } from '../../../types';
 
 type ReqResStore = {
   reqResArray: ReqRes[];
@@ -25,7 +25,7 @@ const initialState: ReqResStore = {
 
 // export const reqResItemAdded = createAction('reqResItemAdded');
 
-export const reqResSlice = createSlice({
+const reqResSlice = createSlice({
   name: 'reqRes',
   initialState,
   reducers: {
@@ -80,4 +80,14 @@ export const reqResSlice = createSlice({
     },
   },
 });
+
+export const {
+  replaced,
+  cleared,
+  itemAdded,
+  itemDeleted,
+  updated,
+  responseDataSaved,
+} = reqResSlice.actions;
+export default reqResSlice.reducer;
 

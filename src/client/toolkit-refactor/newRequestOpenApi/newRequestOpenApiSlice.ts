@@ -1,11 +1,13 @@
 /**
- * @file
+ * @file Defines the slice for managing all state related to the Open API
+ * protocol.
  *
  * Remember: this is Redux Toolkit. Returning undefined is valid, because
  * Toolkit runs some processes after the reducer runs to merge the Immer object
  * into the previous state.
  */
 
+import { assertTypeExhaustion } from '../../../helpers';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { compose } from 'redux';
 import { $NotUsed, $TSFixMe } from '../../../types';
@@ -87,7 +89,7 @@ const initialState: NewRequestOpenApi = {
   openApiReqArray: [],
 };
 
-export const newRequestOpenApiSlice = createSlice({
+const newRequestOpenApiSlice = createSlice({
   name: 'newRequestOpenApi',
   initialState,
   reducers: {
@@ -115,10 +117,6 @@ export const newRequestOpenApiSlice = createSlice({
 
     /**
      * Previously SET_NEW_OPENAPI_SERVERS
-     *
-     * This code is really messed up. It looks simple, but it's going to take a
-     * while to unravel this, because it's clear that someone lost the thread
-     * along the way, and who knows how that affects the components
      */
     newServerAdded(state, action: PayloadAction<OpenApiRequest>) {
       const { id } = action.payload.request;
@@ -240,32 +238,11 @@ export const newRequestOpenApiSlice = createSlice({
   },
 });
 
-/**
- * During runtime, this just throws an error. For development, this will make
- * sure that every single argument passed in is of type never.
- *
- * @example Say you have a variable x, whose type is a union of the discrete
- * string values "A" | "B" | "C". You can use this function with x to make sure
- * you're taking care of all three cases properly.
- *
- * switch (x) {
- *  case "A": {
- *    return;
- *  }
- *  case "B": {
- *    return;
- *  }
- *  default: {
- *    checkTypeExhaustion(x);
- *  }
- * }
- *
- * In the above example, VS Code will yell at you because you didn't have
- * anything for case "C". So the type of x can still be the string literal "C",
- * which has no overlap with type never. You'd have to add a case for "C" to get
- * VS Code to stop yelling at you.
- */
-function assertTypeExhaustion(..._: never[]): never {
-  throw new Error('Not all types have been exhausted properly');
-}
+export const {
+  requestBodyUpdated,
+  requestsReplaced,
+  newParameterAdded,
+  newServerAdded,
+} = newRequestOpenApiSlice.actions;
+export default newRequestOpenApiSlice.reducer;
 

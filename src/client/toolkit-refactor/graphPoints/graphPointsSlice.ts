@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
+import { ReqRes, HttpRequest } from '../../../types';
 
 /**
  * Keeps track of the current color to use with UI_SAFE_COLORS
@@ -18,53 +18,6 @@ const UI_SAFE_COLORS = [
   '#28B55E', // Green
   '#DED554', // Yellow
 ];
-
-/**
- * Defines a whole HTTP request for generating graph data.
- *
- * Type definitions ripped from httpTest file.
- */
-type HttpRequest = {
-  id: number;
-
-  /**
-   * createdAt should be formatted like a Date object timestamp
-   */
-  createdAt: string;
-  protocol: string;
-  host: string;
-  path: string;
-  url: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  timeSent: string | null;
-  timeReceived: string | null;
-  connection: string;
-  connectionType: $TSFixMe | null;
-  checkSelected: boolean;
-  protoPath: string | null;
-
-  request: {
-    method: string;
-    headers: $TSFixMeObject[][];
-    cookies: $TSFixMe[];
-    body: string;
-    bodyType: string;
-    bodyVariables: string;
-    rawType: string;
-    isSSE: boolean;
-    network: string;
-    restUrl: string;
-    wsUrl: string;
-    gqlUrl: string;
-    grpcUrl: string;
-  };
-
-  response: { headers: $TSFixMe | null; events: $TSFixMe | null };
-  checked: boolean;
-  minimized: boolean;
-  tab: string;
-};
 
 type GraphPoint = {
   reqRes: HttpRequest;
@@ -89,8 +42,8 @@ const initialState: GraphRecord = {};
  * Custom action creator needed because generating colors in a non-deterministic
  * way is a side effect and absolutely should not be in the Redux reducers.
  */
-const graphUpdated = createAction(
-  'graphPoints/updateGraph',
+export const graphUpdated = createAction(
+  'graphPoints/graphUpdated',
   (httpRequest: HttpRequest) => {
     // Previous code; keeping until we can tell where graph points are used
     // const MAX_CHANNEL_VALUE = 256;
@@ -108,20 +61,23 @@ const graphUpdated = createAction(
   }
 );
 
-export const GraphPointsSlice = createSlice({
+const graphPointsSlice = createSlice({
   name: 'graphPoints',
   initialState,
   reducers: {
-    clearGraph: (state, action: PayloadAction<number>) => {
+    // was clearGraph or CLEAR_GRAPH previously
+    groupCleared: (state, action: PayloadAction<number>) => {
       state[action.payload] = [];
     },
 
-    clearAllGraph: () => {
+    //was clearAllGraph or CLEAR_ALL_GRAPH previously
+    graphCleared: () => {
       return initialState;
     },
   },
 
   extraReducers: (builder) => {
+    //graphUpdated was updateGraph or UPDATE_GRAPH previously
     builder.addCase(graphUpdated, (state, action) => {
       const { httpRequest, color } = action.payload;
 
@@ -154,4 +110,7 @@ export const GraphPointsSlice = createSlice({
     });
   },
 });
+
+export const { groupCleared, graphCleared } = graphPointsSlice.actions;
+export default graphPointsSlice.reducer;
 

@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { reqResSlice } from '../reqRes/reqResSlice';
+import { itemAdded } from '../reqRes/reqResSlice';
 
-import { ReqRes } from '../../../types';
+import { $NotUsed, ReqRes } from '../../../types';
 import { format, parseISO } from 'date-fns';
+import { WritableDraft } from 'immer/dist/internal';
+import produce from 'immer';
 
 type HistoryItem = {
   /**
@@ -19,15 +21,24 @@ const HistorySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    cleared(state): void {
-      state = [];
+    // Previously CLEAR_HISTORY
+    cleared(): HistoryItem[] {
+      return [];
     },
 
-    set(state, action: PayloadAction<HistoryItem[]>): void {
-      state = action.payload;
+    // Previously GET_HISTORY
+    set<HI extends HistoryItem>(
+      _state: $NotUsed,
+      action: PayloadAction<HI[]>
+    ): HI[] {
+      return action.payload;
     },
 
-    deleted(state, action: PayloadAction<ReqRes>): void {
+    // Previously DELETE_HISTORY
+    deleted(
+      state,
+      action: PayloadAction<ReqRes>
+    ): WritableDraft<HistoryItem>[] {
       let { createdAt } = action.payload;
       if (typeof createdAt === 'string') {
         createdAt = parseISO(createdAt);
@@ -36,34 +47,29 @@ const HistorySlice = createSlice({
       const deleteDate = format(createdAt, 'MM/dd/yyyy');
       const deleteId = action.payload.id;
 
-      // Note to any new-ish devs: if you're using the .splice method, then 9
-      // times out of 10, there's a better way to do the same thing. The only
-      // reason why this is being kept as-is is because someone wrote this with
-      // no documentation, and we're afraid of making breaking changes
-      //
-      // .splice is really squirrelly when looping and should be avoided unless
-      // you really need it for performance. Even then, there might be more
-      // performant methods. Most of the time, it's just hard to
-      // read/understand. Here, there's a 99% chance that elements are
-      // accidentally being skipped in this loop because all loops like for/of
-      // and forEach assume that the array being iterated over won't have
-      // elements deleted mid-iteration. The problem is, we don't fully know if
-      // other parts of the code are compensating for this
-      for (const [index, obj] of state.entries()) {
-        if (obj.date === deleteDate) {
-          obj.history = obj.history.filter((hist) => hist.id !== deleteId);
-        }
+      // Note: The previous version of the code used mid-looping splicing to
+      // remove elements. This can cause elements to be skipped because forEach
+      // and other array methods expect the array to stay the same size
+      // throughout
+      return produce<HistoryItem[]>([], (draft) => {
+        for (const historyObj of state) {
+          if (historyObj.date === deleteDate) {
+            historyObj.history = historyObj.history.filter(
+              (hist) => hist.id !== deleteId
+            );
+          }
 
-        if (obj.history.length === 0) {
-          state.splice(index, 1);
+          if (historyObj.history.length > 0) {
+            draft.push(historyObj);
+          }
         }
-      }
+      });
     },
   },
 
-  // Go through the history
   extraReducers: (builder) => {
-    builder.addCase(reqResSlice.actions.itemAdded, (state, action) => {
+    // Case was previously REQRES_ADD
+    builder.addCase(itemAdded, (state, action) => {
       const formattedDate = format(action.payload.createdAt, 'MM/dd/yyyy');
       let updated = false;
 
@@ -84,5 +90,6 @@ const HistorySlice = createSlice({
   },
 });
 
-export default HistorySlice;
+export const { cleared, set, deleted } = HistorySlice.actions;
+export default HistorySlice.reducer;
 

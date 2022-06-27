@@ -6,7 +6,7 @@
  * elements to be skipped.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Collection } from '../../../types';
+import { Collection, $NotUsed } from '../../../types';
 
 const initialState: Collection[] = [];
 
@@ -14,35 +14,43 @@ const CollectionsSlice = createSlice({
   name: 'collections',
   initialState,
   reducers: {
-    getCollections: (state, action: PayloadAction<Collection[]>) => {
-      state = action.payload;
+    // Previously GET_COLLECTIONS
+    replaced: (_state: $NotUsed, action: PayloadAction<Collection[]>) => {
+      return action.payload;
     },
 
-    deleteCollection: (state, action: PayloadAction<Collection>) => {
+    // Previously DELETION_COLLECTION
+    itemDeleted: (state, action: PayloadAction<Collection>) => {
       /**
-       * @todo Check to see if this loop is actually working. forEach splices
-       * are wonky and cause elements to be skipped
+       * @todo Check to see if this loop is actually working. splices in loops
+       * are wonky and cause elements to be skipped. 99% of the time, elements
+       * will be skipped; need to determine if other parts of the code are
+       * compensating in some way
        */
-      state.forEach((obj, i) => {
+      for (const [index, obj] of state.entries()) {
         if (obj.id === action.payload.id) {
-          state.splice(i, 1);
+          state.splice(index, 1);
         }
-      });
+      }
     },
 
-    collectionAdd: (state, action: PayloadAction<Collection>) => {
+    // Previously COLLECTION_ADD
+    itemAdded: (state, action: PayloadAction<Collection>) => {
       state.unshift(action.payload);
     },
 
-    collectionUpdate: (state, action: PayloadAction<Collection>) => {
-      state.forEach((obj, i) => {
+    // Previously COLLECTION_UPDATE
+    itemUpdated: (state, action: PayloadAction<Collection>) => {
+      for (const [index, obj] of state.entries()) {
         if (obj.name === action.payload.name) {
-          state[i] = action.payload;
+          state[index] = action.payload;
         }
-      });
+      }
     },
   },
 });
 
-export default CollectionsSlice;
+export const { replaced, itemAdded, itemDeleted, itemUpdated } =
+  CollectionsSlice.actions;
+export default CollectionsSlice.reducer;
 
