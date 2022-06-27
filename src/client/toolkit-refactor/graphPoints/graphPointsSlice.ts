@@ -1,72 +1,157 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes, $TSFixMe } from '../../../types';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
 
-//type of objects inside array of objects for each id key
-type GraphPoint = {
-  reqRes: ReqRes;
+/**
+ * Keeps track of the current color to use with UI_SAFE_COLORS
+ */
+let currentColorIndex = 0;
+
+/**
+ * Defines a preset array of colors for graph points. If any color were allowed,
+ * you would get weird cases where colors are almost the same as the background
+ */
+const UI_SAFE_COLORS = [
+  '#C74CAE', // Magenta
+  '#614EBF', // Purple/indigo
+  '#28A5B0', // Teal
+  '#DB613B', // Orange
+  '#28B55E', // Green
+  '#DED554', // Yellow
+];
+
+/**
+ * Defines a whole HTTP request for generating graph data.
+ *
+ * Type definitions ripped from httpTest file.
+ */
+type HttpRequest = {
+  id: number;
+
+  /**
+   * createdAt should be formatted like a Date object timestamp
+   */
+  createdAt: string;
+  protocol: string;
+  host: string;
+  path: string;
   url: string;
-  timeSent: number;
-  timeReceived: Date | number;
-  createdAt: Date;
+  graphQL: boolean;
+  gRPC: boolean;
+  timeSent: string | null;
+  timeReceived: string | null;
+  connection: string;
+  connectionType: $TSFixMe | null;
+  checkSelected: boolean;
+  protoPath: string | null;
+
+  request: {
+    method: string;
+    headers: $TSFixMeObject[][];
+    cookies: $TSFixMe[];
+    body: string;
+    bodyType: string;
+    bodyVariables: string;
+    rawType: string;
+    isSSE: boolean;
+    network: string;
+    restUrl: string;
+    wsUrl: string;
+    gqlUrl: string;
+    grpcUrl: string;
+  };
+
+  response: { headers: $TSFixMe | null; events: $TSFixMe | null };
+  checked: boolean;
+  minimized: boolean;
+  tab: string;
+};
+
+type GraphPoint = {
+  reqRes: HttpRequest;
+  url: string;
+  timeSent: string | null;
+  timeReceived: string | null;
+  createdAt: string;
   color: string;
 };
 
-//"GraphRecord" was previously named "DataPoints"
+/**
+ * Defines a collection of various graph points for request objects, grouped by
+ * the ID of each request object.
+ *
+ * Previously called DataPoints
+ */
 type GraphRecord = Record<ReqRes['id'], GraphPoint[]>;
-// shape of graphPoints object {
-//   id1: [array of graph points entry objects],
-//   id2: [array of graph points entry objects],
-//   etc
-// }
 
 const initialState: GraphRecord = {};
+
+/**
+ * Custom action creator needed because generating colors in a non-deterministic
+ * way is a side effect and absolutely should not be in the Redux reducers.
+ */
+const graphUpdated = createAction(
+  'graphPoints/updateGraph',
+  (httpRequest: HttpRequest) => {
+    // Previous code; keeping until we can tell where graph points are used
+    // const MAX_CHANNEL_VALUE = 256;
+    // const redChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE)
+    // const greenChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE)
+    // const blueChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE);
+    // return { payload: {
+    //   httpRequest,
+    //   color: `${redChannel}, ${greenChannel}, ${blueChannel}`
+    // }};
+
+    const color = UI_SAFE_COLORS[currentColorIndex];
+    currentColorIndex = (1 + currentColorIndex) % UI_SAFE_COLORS.length;
+    return { payload: { httpRequest, color } };
+  }
+);
 
 export const GraphPointsSlice = createSlice({
   name: 'graphPoints',
   initialState,
   reducers: {
-    updateGraph: (state, action) => {
-      // action.payload is the latest reqRes object (ReqRes type)
-      const { id } = action.payload;
-      // if more than 8 points, data will shift down an index
-      if (!state[id]) {
-        state[id] = [];
-      } else if (state[id].length > 49) {
-        state[id] = state[id].slice(1);
-      }
-      // check if new object is a closed request with timeSent and timeReceived
-      if (
-        !state[id].some(
-          (elem: $TSFixMe) => elem.timeSent === action.payload.timeSent
-        )
-      ) {
-        // if a color hasn't been added to this specific request id, add a new one
-        const color = !state[id][0]?.color
-          ? /**
-             * @todo change this part below - math.random produces side effects
-             */
-            `${Math.random() * 256}, ${Math.random() * 256}, ${
-              Math.random() * 256
-            }`
-          : state[id][0].color;
-
-        // add graphPoint to array connected to its id
-        state[id].push({
-          reqRes: action.payload,
-          url: action.payload.url,
-          timeSent: action.payload.timeSent,
-          timeReceived: action.payload.timeReceived,
-          createdAt: action.payload.createdAt,
-          color,
-        });
-      }
-    },
-    clearGraph: (state, action) => {
+    clearGraph: (state, action: PayloadAction<number>) => {
       state[action.payload] = [];
     },
-    clearAllGraph: (state) => {
-      state = {};
+
+    clearAllGraph: () => {
+      return initialState;
     },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(graphUpdated, (state, action) => {
+      const { httpRequest, color } = action.payload;
+
+      const { id } = httpRequest;
+      if (!state[id]) {
+        state[id] = [];
+      }
+
+      const pointsArray = state[id];
+      const previouslySent = pointsArray.some(
+        (request) => request.timeSent === httpRequest.timeSent
+      );
+
+      if (previouslySent) {
+        return;
+      }
+
+      if (pointsArray.length > 49) {
+        state[id] = pointsArray.slice(1);
+      }
+
+      pointsArray.push({
+        reqRes: httpRequest,
+        url: httpRequest.url,
+        timeSent: httpRequest.timeSent,
+        timeReceived: httpRequest.timeReceived,
+        createdAt: httpRequest.createdAt,
+        color: pointsArray?.[0]?.color ?? color,
+      });
+    });
   },
 });
 
