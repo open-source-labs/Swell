@@ -31,8 +31,8 @@ export type OpenApiRequest = {
   method: string;
 
   // Below types should probably be strings, but who knows, really? Types united
-  // with any to "temporarily" turn off type-checking (with how this project
-  // tends to go, these types might be stuck like this for months/years)
+  // with $TSFixMe to "temporarily" turn off type-checking (with how this
+  // project tends to go, these types might be stuck like this for months/years)
   body: string | $TSFixMe;
   mediaType: string | $TSFixMe;
   rawType: string | $TSFixMe;
