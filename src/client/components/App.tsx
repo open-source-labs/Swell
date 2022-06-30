@@ -60,19 +60,15 @@ const App = () => {
   return (
     <div id="app" className="is-tall">
       <HashRouter>
-        <ErrorBoundary>
-          <NavBarContainer />
-        </ErrorBoundary>
+        <NavBarContainer />
 
         <Box sx={{ height: '100%', display: 'flex' }}>
           {/* Workspace. Left side of the application. */}
 
-          <ErrorBoundary>
-            <HistoryOrWorkspaceContainer
-              currentWorkspaceId={currentWorkspaceId}
-              setWorkspace={setWorkspace}
-            />
-          </ErrorBoundary>
+          <HistoryOrWorkspaceContainer
+            currentWorkspaceId={currentWorkspaceId}
+            setWorkspace={setWorkspace}
+          />
 
           <Divider
             orientation="vertical"
@@ -80,14 +76,10 @@ const App = () => {
           />
 
           {/* Main container. Contains the composer and response panes. */}
-          <ErrorBoundary>
-            <MainContainer currentWorkspaceId={currentWorkspaceId} />
-          </ErrorBoundary>
+          <MainContainer currentWorkspaceId={currentWorkspaceId} />
         </Box>
 
-        <ErrorBoundary>
-          <UpdatePopUpContainer />
-        </ErrorBoundary>
+        <UpdatePopUpContainer />
       </HashRouter>
     </div>
   );
