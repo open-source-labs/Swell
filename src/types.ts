@@ -4,7 +4,8 @@
  * type information only makes sense for internal implementations, but most of
  * them should be here.
  */
-import { WritableDraft } from 'immer/dist/internal';
+
+import { GraphQLSchema } from 'graphql';
 
 /**
  * Defines a type that is only included because it's required for a function
@@ -44,23 +45,6 @@ export type $TSFixMeFunction = (...args: any[]) => any;
  * type.
  */
 export type $TSFixMeObject = any;
-
-/**
- * Takes a union of Redux Toolkit actions and turns it into a Toolkit slice
- * reducer object. This takes each action in the union, converts it into a
- * single Toolkit reducer function, and then throws all the new reducer
- * functions into an object at the end.
- */
-export type ActionsToSliceReducers<
-  State,
-  ActionUnion extends { type: string; payload: unknown }
-> = {
-  // The type isn't used in the final return type
-  [Action in ActionUnion as Action['type']]: (
-    state: WritableDraft<State>,
-    action: Action
-  ) => void;
-};
 
 /**
  * Represents any possible valid, serializable JSON value, including values
@@ -111,16 +95,10 @@ export interface Cookie {
   secure: boolean;
   httpOnly: boolean;
   session: boolean;
+
+  //may be 'expirationDate' elsewhere in code?? mainprocess main_httpController?
   expires: string | number;
 }
-// No uses in codebase
-// export interface CookieProps {
-//   cookies: {
-//     expirationDate: string;
-//   };
-//   detail?: string;
-//   className?: string;
-// }
 
 export interface GithubData {
   profile: $TSFixMeObject;
@@ -130,23 +108,11 @@ export interface GithubData {
 
 export interface GraphQLResponse {
   reqResObj: ReqRes;
-  data: Record<string, string>; //| Record<string, Record<string, unknown[]>>[];
+
+  /** Type information for data property may or may not be right */
+  data: Record<string, string>;
   error?: string;
 }
-
-// not used in codebase
-// export interface GraphQLResponseData {
-//   data: data;
-//   loading: boolean;
-//   networkStatus: number;
-//   stale: boolean;
-// }
-
-// not used in codebase
-// export interface HistoryTab {
-//   history: Record<number, unknown>[];
-//   collections: Record<string, unknown>[];
-// }
 
 export interface Message {
   source: string;
@@ -154,20 +120,16 @@ export interface Message {
   data: string;
 }
 
-// TODO: not sure if this is used, looks like not
-// export interface NewRequestBody {
-//   //-> wrong. all wrong. -Prince
-//   bodyContent: string;
-//   bodyVariables: string;
-//   bodyType: string;
-//   rawType: string;
-//   JSONFormatted: boolean;
-//   bodyIsNew: boolean;
-// }
+export interface NewRequestBody {
+  bodyContent: string;
+  bodyVariables: string;
+  bodyType: string;
+  rawType: string;
+  JSONFormatted: boolean;
+  bodyIsNew: boolean;
+}
 
-export interface NewRequestCookies {
-  // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
-  // count: number; //-> Pretty sure this is not needed -Prince
+export interface CookieOrHeader {
   active: boolean;
   id: string;
   key: string;
@@ -178,12 +140,12 @@ export interface ReqResRequest {
   body: string;
   bodyType: string;
   bodyVariables: string;
-  cookies: NewRequestCookies[];
+  cookies: CookieOrHeader[];
   graphQL: boolean;
   gRPC: boolean;
   gRpcUrl?: string;
   gqlUrl?: string;
-  headers: RequestHeaders[]; //-> Might need this -Prince
+  headers: CookieOrHeader[];
   method?: string;
   network: Network;
   protocol: Protocol;
@@ -197,14 +159,60 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
-export interface RequestHeaders {
-  active: boolean;
-  count?: number; //-> Might not need this -Prince
-  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
+/**
+ * Describes the results of calling built-in introspection functions in GraphQL.
+ */
+export type IntrospectionData = {
+  schemaSDL: string | null;
+  clientSchema: GraphQLSchema | null;
+};
+
+/**
+ * Defines a whole HTTP request for generating graph data.
+ *
+ * Type definitions ripped from httpTest file.
+ */
+export type HttpRequest = {
   id: number;
-  key: string;
-  value: string;
-}
+  /**
+   * createdAt should be formatted like a Date object timestamp. Date objects
+   * are not valid serializable JSON values, and Redux will complain about them
+   */
+  createdAt: string;
+  protocol: string;
+  host: string;
+  path: string;
+  url: string;
+  graphQL: boolean;
+  gRPC: boolean;
+  timeSent: string | null;
+  timeReceived: string | null;
+  connection: string;
+  connectionType: $TSFixMe | null;
+  checkSelected: boolean;
+  protoPath: string | null;
+
+  request: {
+    method: string;
+    headers: $TSFixMeObject[][];
+    cookies: $TSFixMe[];
+    body: string;
+    bodyType: string;
+    bodyVariables: string;
+    rawType: string;
+    isSSE: boolean;
+    network: string;
+    restUrl: string;
+    wsUrl: string;
+    gqlUrl: string;
+    grpcUrl: string;
+  };
+
+  response: { headers: $TSFixMe | null; events: $TSFixMe | null };
+  checked: boolean;
+  minimized: boolean;
+  tab: string;
+};
 
 export interface OpenAPIRequest {
   openApiMetadata: Record<string, unknown>;
@@ -221,7 +229,7 @@ export interface OpenAPIReqData {
   reqServers: string[];
   method: Methods;
   endpoint: string;
-  headers?: RequestHeaders;
+  headers?: CookieOrHeader;
   parameters?: Record<string, unknown>[];
   urls: string[];
   body?: Map<string, unknown>;
@@ -244,11 +252,7 @@ export interface ReqRes {
   openapi: boolean;
   protocol: Protocol;
   request: ReqResRequest;
-
-  // This prop was previously:
-  // Record<string, string[]> | Record<string, Record<string, string | boolean>>
   response: ReqResResponse;
-
   rpc: string;
   service: string;
   timeReceived: Date | number;
@@ -261,12 +265,10 @@ export interface SSERequest {
   isSSE: boolean;
 }
 
-/**
- * @todo This interface might not be implemented yet?
- */
 export interface NewRequestStreams {
   streamsArr: Record<string, unknown>[];
   count: number;
+  selectedServiceObj: $TSFixMeObject | null;
   streamContent: Record<string, unknown>[];
   selectedPackage: string | null;
   selectedRequest: string | null;
@@ -279,15 +281,22 @@ export interface NewRequestStreams {
   protoContent: string;
 }
 
+/**@todo make sure all properties are correct and add any not listed yet*/
 export interface ReqResResponse {
-  // this is likely not a comprehensive list of all properties
-  cookies: Cookie[];
-  headers: Record<string, unknown>;
-  events: Record<string, unknown>[]; // is this the correct type?
-  tab: string;
-  timeSent: number;
-  timeReceived: number;
-  url: string;
+  cookies: Cookie[]; //*HAS 'cookies' property, array of 'cookie' types - CORRECT
+  headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
+  events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
+  tab: string; //have not found this property mentioned yet
+  timeSent: number; //should be in 'times' property below instead??
+  timeReceived: number; //should be in 'times' property below instead??
+  url: string; //have not found this property mentioned yet
+  /**@todo */ //BELOW - additional properties not sure about yet/that weren't listed here before
+  times?: $TSFixMeObject[]; //main_grpcController array of objects {timeSent: Date, timeReceived: Date}
+  testResult?: $TSFixMe; //mainprocess main_graphqlController
+  responseSize?: $TSFixMe; //mainprocess main_httpController line 196ish
+  status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
+  messages?: $TSFixMeObject[]; //main_wsController, array of objects {data: @TSFixMe, timeReceived: Date}
+  connection?: string; //main_wsController
 }
 
 export interface WebSocketMessageProps {
