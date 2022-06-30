@@ -10,7 +10,12 @@ import NewRequestReducer from '../toolkit-refactor/newRequest/newRequestSlice';
 import NewRequestFieldsReducer from '../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 import ScheduledReqResReducer from '../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
 import NewRequestOpenApiReducer from '../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
+import IntrospectionDataReducer from '../toolkit-refactor/introspectionData/introspectionDataSlice';
 
+// Note: There was previously a currentTab prop in the Redux store; it wasn't
+// used anywhere, and there was no info about it other than it was a string. We
+// dropped it from the store, but it might make sense to add it back at some
+// point
 const rootReducer = combineReducers({
   history: HistoryReducer,
   newRequest: NewRequestReducer,
@@ -21,6 +26,7 @@ const rootReducer = combineReducers({
   newRequestOpenApi: NewRequestOpenApiReducer,
   reqRes: ReqResReducer,
   ui: UiReducer,
+  introspectionData: IntrospectionDataReducer,
 });
 
 export default rootReducer;

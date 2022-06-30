@@ -21,12 +21,12 @@ const HistorySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    // Previously CLEAR_HISTORY
+    // Previously CLEAR_HISTORY or clearHistory
     cleared(): HistoryItem[] {
       return [];
     },
 
-    // Previously GET_HISTORY
+    // Previously GET_HISTORY or getHistory
     set<HI extends HistoryItem>(
       _state: $NotUsed,
       action: PayloadAction<HI[]>
@@ -34,7 +34,7 @@ const HistorySlice = createSlice({
       return action.payload;
     },
 
-    // Previously DELETE_HISTORY
+    // Previously DELETE_HISTORY or deleteHistory
     deleted(
       state,
       action: PayloadAction<ReqRes>
@@ -68,7 +68,7 @@ const HistorySlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // Case was previously REQRES_ADD
+    // Case was previously REQRES_ADD or reqresAdd
     builder.addCase(itemAdded, (state, action) => {
       const formattedDate = format(action.payload.createdAt, 'MM/dd/yyyy');
       let updated = false;

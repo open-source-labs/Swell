@@ -14,12 +14,12 @@ const CollectionsSlice = createSlice({
   name: 'collections',
   initialState,
   reducers: {
-    // Previously GET_COLLECTIONS
+    // Previously GET_COLLECTIONS, even though it was a setter
     replaced: (_state: $NotUsed, action: PayloadAction<Collection[]>) => {
       return action.payload;
     },
 
-    // Previously DELETION_COLLECTION
+    // Previously DELETE_COLLECTION or deleteCollection
     itemDeleted: (state, action: PayloadAction<Collection>) => {
       /**
        * @todo Check to see if this loop is actually working. splices in loops
@@ -32,14 +32,19 @@ const CollectionsSlice = createSlice({
           state.splice(index, 1);
         }
       }
+
+      /**
+       * Possible replacement if splices should be corrected for:
+       * return state.filter((obj) => obj.id !== action.payload.id)
+       */
     },
 
-    // Previously COLLECTION_ADD
+    // Previously COLLECTION_ADD or collectionAdd
     itemAdded: (state, action: PayloadAction<Collection>) => {
       state.unshift(action.payload);
     },
 
-    // Previously COLLECTION_UPDATE
+    // Previously COLLECTION_UPDATE or collectionUpdate
     itemUpdated: (state, action: PayloadAction<Collection>) => {
       for (const [index, obj] of state.entries()) {
         if (obj.name === action.payload.name) {
