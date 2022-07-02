@@ -1,7 +1,7 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import { io } from 'socket.io-client'
+import { io } from 'socket.io-client';
 
 // Import MUI components
 import { Box } from '@mui/material';
@@ -13,7 +13,7 @@ export default function WebhookComposer(props) {
   const isDark = false;
 
   const {
-    resetComposerFields,
+    composerFieldsReset,
     setNewRequestFields,
     newRequestFields,
     newRequestFields: {
@@ -43,7 +43,7 @@ export default function WebhookComposer(props) {
     setNewRequestHeaders,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
-    setNewRequestCookies,
+    newRequestCookiesSet,
     newRequestCookies,
     newRequestCookies: { cookiesArr },
     setNewRequestStreams,
@@ -54,7 +54,7 @@ export default function WebhookComposer(props) {
     introspectionData,
     setComposerWarningMessage,
     warningMessage,
-    reqResAdd,
+    reqResItemAdded,
     setWorkspaceActiveTab,
   } = props;
 
@@ -68,9 +68,9 @@ export default function WebhookComposer(props) {
 
   useEffect(() => {
     socket.on('response', (event) => {
-      console.log("this is the event in webho", event.headers);
+      console.log('this is the event in webho', event.headers);
       const protocol = 'I do not know what this is for?';
-      console.log('this is event.headers', event.headers["user-agent"]);
+      console.log('this is event.headers', event.headers['user-agent']);
       // url = event.headers;
       url = event.headers['user-agent'];
       const reqRes = {
@@ -98,7 +98,7 @@ export default function WebhookComposer(props) {
           // bodyType,
           // bodyVariables: bodyVariables || '',
           // rawType,
-          network
+          network,
           // restUrl,
           // webrtcUrl,
         },
@@ -111,7 +111,7 @@ export default function WebhookComposer(props) {
         tab: currentTab,
       };
       console.log('line 125 in webho', reqRes);
-      reqResAdd(reqRes);
+      reqResItemAdded(reqRes);
     });
   }, []);
 
@@ -150,38 +150,42 @@ export default function WebhookComposer(props) {
         .then((data) => data.json())
         .then((url) => {
           // set boolean value server status to false
-          console.log(url)
+          console.log(url);
         })
         .catch((err) => console.error(err));
     }
   };
 
-  return(
-    <Box className='mr-2 is-flex is-justify-content-center'
-    sx={{padding: '10px', height: '40%'}}
-    id = "composer-webhook">
+  return (
+    <Box
+      className="mr-2 is-flex is-justify-content-center"
+      sx={{ padding: '10px', height: '40%' }}
+      id="composer-webhook"
+    >
       <button
-            className={`button ${
-              serverStatus ? 'is-wh' : 'is-wh-on'
-            }  add-request-button is-vertical-align-center no-border-please`}
-            onClick={() => startServerButton()}
-          >
-            <span>{serverStatus ? 'Stop Server' : 'Start Server'}</span>
-          </button>
-          <input
-            className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
-            type="text"
-            value={whUrl}
-            readOnly //solved react error dev console
-          />
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <button
-            className="button is-primary-100 is-3rem-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
-            onClick={() => copyClick()}
-          >
-            Copy URL
-          </button>
-        </div>
+        className={`button ${
+          serverStatus ? 'is-wh' : 'is-wh-on'
+        }  add-request-button is-vertical-align-center no-border-please`}
+        onClick={() => startServerButton()}
+      >
+        <span>{serverStatus ? 'Stop Server' : 'Start Server'}</span>
+      </button>
+      <input
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
+        type="text"
+        value={whUrl}
+        readOnly //solved react error dev console
+      />
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <button
+          className="button is-primary-100 is-3rem-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
+          onClick={() => copyClick()}
+        >
+          Copy URL
+        </button>
+      </div>
     </Box>
-  )
+  );
 }

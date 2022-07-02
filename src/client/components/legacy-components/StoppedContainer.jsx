@@ -1,35 +1,45 @@
 import React from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
+
+/**@todo delete after slice convserion complete */
 import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+import { graphCleared } from '../../toolkit-refactor/graphPoints/graphPointsSlice';
+
+import {
+  reqResUpdated,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
+
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 
+/**@todo switch to use hooks? */
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
   scheduledReqResArray: store.business.scheduledReqResArray,
   currentTab: store.business.currentTab,
 });
 
+/**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
+  reqResItemDeleted: (reqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
+  reqResUpdated: (reqRes) => {
+    dispatch(reqResUpdated(reqRes));
   },
   scheduledReqResDelete: () => {
     dispatch(actions.scheduledReqResDelete());
   },
-  clearAllGraph: () => {
-    dispatch(actions.clearAllGraph());
+  graphCleared: () => {
+    dispatch(graphCleared());
   },
 });
 
 const StoppedContainer = (props) => {
   const {
     reqResArray,
-    reqResDelete,
-    reqResUpdate,
+    itemDeleted,
+    updated,
     runScheduledTests,
     scheduledReqResArray,
     scheduledReqResDelete,
@@ -37,6 +47,7 @@ const StoppedContainer = (props) => {
   } = props;
   const dispatch = useDispatch();
 
+  /**@todo maybe access functions (last two) directly from container instead of passing through props? */
   const scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
     return (
       <SingleScheduleReqResContainer
@@ -45,8 +56,8 @@ const StoppedContainer = (props) => {
         key={index}
         date={reqRes.response.headers.date[0]}
         index={index}
-        reqResDelete={reqResDelete}
-        reqResUpdate={reqResUpdate}
+        itemDeleted={itemDeleted}
+        updated={updated}
       />
     );
   });
@@ -59,8 +70,10 @@ const StoppedContainer = (props) => {
         <center className="queue">Scheduled Requests</center>
         <div className="prettify-select is-align-self-center mt-3 mb-3">
           <button
-            className={`button is-small is-danger ${isDark ? '' : 'is-outlined' } button-hover-color`}
-            style={{width: '190px'}}
+            className={`button is-small is-danger ${
+              isDark ? '' : 'is-outlined'
+            } button-hover-color`}
+            style={{ width: '190px' }}
             onClick={() => {
               scheduledReqResDelete();
               clearAllGraph();

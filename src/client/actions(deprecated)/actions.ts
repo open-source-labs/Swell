@@ -282,7 +282,8 @@ export const setOpenAPIRequestBody = (
   payload: { id: requestId, mediaType, requestBody },
 });
 
-export const queueOpenAPIRequests = (): { type: string } => ({
-  type: types.QUEUE_OPENAPI_REQUESTS,
-});
+//// not used anywhere
+// export const queueOpenAPIRequests = (): { type: string } => ({
+//   type: types.QUEUE_OPENAPI_REQUESTS,
+// });
 

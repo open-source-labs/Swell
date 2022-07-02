@@ -3,6 +3,7 @@
  */
 import { $NotUsed, $TSFixMe } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { composerFieldsReset } from '../newRequest/newRequestSlice';
 
 /**
  * Defines the type constract for the NewRequestFields state object.
@@ -60,7 +61,7 @@ const newRequestFieldsSlice = createSlice({
 
   reducers: {
     // Previously SET_NEW_REQUEST_FIELDS/setNewRequestFields
-    newRequestFields: (
+    fieldsReplaced: (
       _state: $NotUsed,
       action: PayloadAction<NewRequestFields>
     ) => {
@@ -74,15 +75,15 @@ const newRequestFieldsSlice = createSlice({
     ) => {
       state.testContent = action.payload;
     },
+  },
 
-    // Previously RESET_COMPOSER_FIELDS/resetComposerFields
-    composerFieldsReset: () => {
+  extraReducers: (builder) => {
+    builder.addCase(composerFieldsReset, () => {
       return initialState;
-    },
+    });
   },
 });
 
-export const { newRequestFields, newTestContent, composerFieldsReset } =
-  newRequestFieldsSlice.actions;
+export const { fieldsReplaced, newTestContent } = newRequestFieldsSlice.actions;
 export default newRequestFieldsSlice.reducer;
 

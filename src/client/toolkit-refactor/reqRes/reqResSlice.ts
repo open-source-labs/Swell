@@ -34,20 +34,25 @@ const reqResSlice = createSlice({
      * to a new ReqRes array, or for a request having its checkboxes updated
      * and/or being minimized
      */
-    replaced(state, action: PayloadAction<ReqRes[]>) {
+    //previously both COLLECTION_TO_REQRES/collectionToReqRes
+    // AND SET_CHECKS_AND_MINIS/setChecksAndMinis
+    reqResReplaced(state, action: PayloadAction<ReqRes[]>) {
       state.reqResArray = action.payload;
     },
 
-    cleared(state, _unusedAction: PayloadAction<void>) {
+    //previously was REQRES_CLEAR or reqResClear
+    reqResCleared(state, _unusedAction: PayloadAction<void>) {
       state.reqResArray = [];
       state.currentResponse.request.network = '';
     },
 
-    itemAdded(state, action: PayloadAction<ReqRes>) {
+    //previously was REQRES_ADD or reqResAdd
+    reqResItemAdded(state, action: PayloadAction<ReqRes>) {
       state.reqResArray.push(action.payload);
     },
 
-    itemDeleted(state, action: PayloadAction<ReqRes>) {
+    //previously was REQRES_DELETE or reqResDelete
+    reqResItemDeleted(state, action: PayloadAction<ReqRes>) {
       const deletionIndex = state.reqResArray.findIndex(
         (reqRes) => reqRes.id === action.payload.id
       );
@@ -57,7 +62,8 @@ const reqResSlice = createSlice({
       }
     },
 
-    updated(state, action: PayloadAction<ReqRes>) {
+    //previously was REQRES_UPDATE or reqResUpdate
+    reqResUpdated(state, action: PayloadAction<ReqRes>) {
       const updateIndex = state.reqResArray.findIndex(
         (reqRes) => reqRes.id === action.payload.id
       );
@@ -72,6 +78,7 @@ const reqResSlice = createSlice({
       }
     },
 
+    //previously was SAVE_CURRENT_RESPONSE_DATA or saveCurrentResponseData
     responseDataSaved(
       state,
       action: PayloadAction<ReqResStore['currentResponse']>
@@ -82,11 +89,11 @@ const reqResSlice = createSlice({
 });
 
 export const {
-  replaced,
-  cleared,
-  itemAdded,
-  itemDeleted,
-  updated,
+  reqResReplaced,
+  reqResCleared,
+  reqResItemAdded,
+  reqResItemDeleted,
+  reqResUpdated,
   responseDataSaved,
 } = reqResSlice.actions;
 export default reqResSlice.reducer;

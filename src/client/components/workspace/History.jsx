@@ -3,8 +3,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { useDispatch } from 'react-redux';
+
+/**@todo delete when slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
 import * as uiactions from '../../features/ui/uiSlice';
+
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+
 import historyController from '../../controllers/historyController';
 
 const History = ({
@@ -47,7 +55,7 @@ const History = ({
   },
   setNewRequestFields,
   setNewRequestHeaders,
-  setNewRequestCookies,
+  newRequestCookiesSet,
   setNewRequestBody,
   setNewRequestStreams,
   deleteFromHistory,
@@ -55,7 +63,7 @@ const History = ({
   const dispatch = useDispatch();
   const setSidebarTab = (tabName) =>
     dispatch(uiactions.setSidebarActiveTab(tabName));
-  const setNewRequestSSE = (bool) => dispatch(actions.setNewRequestSSE(bool));
+  const setNewRequestSSE = (bool) => dispatch(newRequestSSESet(bool));
 
   const addHistoryToNewRequest = () => {
     let requestFieldObj = {};
@@ -179,7 +187,7 @@ const History = ({
     };
     setNewRequestFields(requestFieldObj);
     setNewRequestHeaders(requestHeadersObj);
-    setNewRequestCookies(requestCookiesObj);
+    newRequestCookiesSet(requestCookiesObj);
     setNewRequestBody(requestBodyObj);
     setNewRequestSSE(isSSE);
     // for gRPC

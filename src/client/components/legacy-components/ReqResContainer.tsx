@@ -1,26 +1,37 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
+
+/**@todo delete after slice convserion complete */
 import * as actions from '../../features/business/businessSlice';
+
+import {
+  reqResUpdated,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
+
 import SingleReqResContainer from './SingleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 
+/**@todo change to use hooks? */
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
   currentTab: store.business.currentTab,
 });
 
+/**@todo change to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
+  reqResItemDeleted: (reqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
+  reqResUpdated: (reqRes) => {
+    dispatch(reqResUpdated(reqRes));
   },
 });
 
 const ReqResContainer = (props) => {
-  const { reqResArray, reqResDelete, reqResUpdate, displaySchedule } = props;
+  const { reqResArray, itemDeleted, updated, displaySchedule } = props;
 
+  /**@todo maybe access functions (last two) directly from container instead of passing through props? */
   const reqResMapped = reqResArray.map((reqRes, index) => {
     return (
       <SingleReqResContainer
@@ -28,8 +39,8 @@ const ReqResContainer = (props) => {
         content={reqRes}
         key={index}
         index={index}
-        reqResDelete={reqResDelete}
-        reqResUpdate={reqResUpdate}
+        itemDeleted={itemDeleted}
+        updated={updated}
       />
     );
   });
@@ -44,7 +55,9 @@ const ReqResContainer = (props) => {
       {reqResArray.length > 0 && displaySchedule && (
         <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
           <button
-            className={`${isDark ? 'is-dark-200' : ''} button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color`}
+            className={`${
+              isDark ? 'is-dark-200' : ''
+            } button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color`}
             type="button"
             onClick={runCollectionTest}
           >

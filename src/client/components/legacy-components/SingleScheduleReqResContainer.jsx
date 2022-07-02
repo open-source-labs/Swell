@@ -2,10 +2,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+/**@todo delete when slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
+
 import RestRequestContent from './display/RestRequestContent';
 import GraphQLRequestContent from './display/GraphQLRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
+
+import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
 
 const SingleScheduleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -38,10 +43,7 @@ const SingleScheduleReqResContainer = (props) => {
 
   useEffect(() => {
     dispatch(
-      actions.saveCurrentResponseData(
-        content,
-        'SingleScheduleReqResContainerComponent'
-      )
+      responseDataSaved(content, 'SingleScheduleReqResContainerComponent')
     );
   }, [content, dispatch]);
 
@@ -119,7 +121,7 @@ const SingleScheduleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
             id={`view-button-${index}`}
             onClick={() => {
-              dispatch(actions.saveCurrentResponseData(content));
+              dispatch(responseDataSaved(content));
             }}
           >
             View Response

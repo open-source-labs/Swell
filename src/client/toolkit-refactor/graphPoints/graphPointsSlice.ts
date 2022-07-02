@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes, HttpRequest } from '../../../types';
+import { ReqRes } from '../../../types';
 
 /**
  * Keeps track of the current color to use with UI_SAFE_COLORS
@@ -19,12 +19,19 @@ const UI_SAFE_COLORS = [
   '#DED554', // Yellow
 ];
 
+/**
+ * Defines a object for representing a graph point.
+ *
+ * @todo Update code so that all Date objects are removed; Dates are not valid
+ * JSON-serializable values.
+ */
 type GraphPoint = {
-  reqRes: HttpRequest;
+  reqRes: ReqRes;
   url: string;
-  timeSent: string | null;
-  timeReceived: string | null;
-  createdAt: string;
+  timeSent: number | null;
+
+  timeReceived: number | Date;
+  createdAt: Date | string;
   color: string;
 };
 
@@ -44,7 +51,7 @@ const initialState: GraphRecord = {};
  */
 export const graphUpdated = createAction(
   'graphPoints/graphUpdated',
-  (httpRequest: HttpRequest) => {
+  (reqRes: ReqRes) => {
     // Previous code; keeping until we can tell where graph points are used
     // const MAX_CHANNEL_VALUE = 256;
     // const redChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE)
@@ -57,7 +64,7 @@ export const graphUpdated = createAction(
 
     const color = UI_SAFE_COLORS[currentColorIndex];
     currentColorIndex = (1 + currentColorIndex) % UI_SAFE_COLORS.length;
-    return { payload: { httpRequest, color } };
+    return { payload: { reqRes, color } };
   }
 );
 
@@ -79,16 +86,16 @@ const graphPointsSlice = createSlice({
   extraReducers: (builder) => {
     //graphUpdated was updateGraph or UPDATE_GRAPH previously
     builder.addCase(graphUpdated, (state, action) => {
-      const { httpRequest, color } = action.payload;
+      const { reqRes, color } = action.payload;
 
-      const { id } = httpRequest;
+      const { id } = reqRes;
       if (!state[id]) {
         state[id] = [];
       }
 
       const pointsArray = state[id];
       const previouslySent = pointsArray.some(
-        (request) => request.timeSent === httpRequest.timeSent
+        (request) => request.timeSent === reqRes.timeSent
       );
 
       if (previouslySent) {
@@ -100,11 +107,11 @@ const graphPointsSlice = createSlice({
       }
 
       pointsArray.push({
-        reqRes: httpRequest,
-        url: httpRequest.url,
-        timeSent: httpRequest.timeSent,
-        timeReceived: httpRequest.timeReceived,
-        createdAt: httpRequest.createdAt,
+        reqRes: reqRes,
+        url: reqRes.url,
+        timeSent: reqRes.timeSent,
+        timeReceived: reqRes.timeReceived,
+        createdAt: reqRes.createdAt,
         color: pointsArray?.[0]?.color ?? color,
       });
     });

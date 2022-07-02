@@ -1,44 +1,58 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector, connect } from 'react-redux';
-import { Line } from 'react-chartjs-2';
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
-// below two lines need to be in here to register 'category scale'
-import { Chart as ChartJS } from 'chart.js/auto'
-import { Chart } from 'react-chartjs-2'
+
+/**
+ * Previous imports say that all these are necessary, even though most aren't
+ * being used?
+ *
+ * @todo Look into this.
+ */
+import { Chart as ChartJS } from 'chart.js/auto';
+import { Chart, Line } from 'react-chartjs-2';
+
+import { appDispatch } from '../../toolkit-refactor/store';
+import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
+import {
+  graphCleared,
+  graphUpdated,
+} from '../../toolkit-refactor/graphPoints/graphPointsSlice';
 
 //necessary for graph styling due to CSP
 //Chart.platform.disableCSSInjection = true;
 
+/**@todo switch to use hooks? */
 const mapStateToProps = (store) => ({
   dataPoints: store.business.dataPoints,
   currentResponse: store.business.currentResponse,
 });
 
+/**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  saveCurrentResponseData: (reqRes) => {
-    dispatch(actions.saveCurrentResponseData(reqRes, 'bargraph'));
-  },
   updateGraph: (reqRes) => {
-    dispatch(actions.updateGraph(reqRes));
+    dispatch(graphUpdated(reqRes));
   },
+
   clearGraph: (id) => {
-    store.default.dispatch(actions.clearGraph(id));
+    dispatch(graphCleared(id));
+  },
+
+  responseDataSaved: (reqRes) => {
+    dispatch(responseDataSaved(reqRes, 'bargraph'));
   },
 });
 
 const BarGraph = (props) => {
-  const { dataPoints, currentResponse } = props;
+  const { dataPoints, currentResponse, responseDataSaved, clearGraph } = props;
 
   const [chartURL, setChartURL] = useState('');
   const [host, setHost] = useState(null);
 
   //state for showing graph, depending on whether there are data points or not.
   //must default to true, because graph will not render if initial container's display is 'none'
-  const [show, toggleShow] = useState(true);
+  const [visible, setVisible] = useState(true);
   //Default state for chart data
-  const [chartData, updateChart] = useState({
+  const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
       {
@@ -48,13 +62,13 @@ const BarGraph = (props) => {
   });
 
   //default state for chart options
-  const [chartOptions, updateOptions] = useState({
+  const [chartOptions, setChartOptions] = useState({
     scales: {
       x: {
         type: 'linear',
         ticks: {
           beginAtZero: true,
-        }
+        },
       },
       y: {
         type: 'linear',
@@ -64,15 +78,14 @@ const BarGraph = (props) => {
         },
         ticks: {
           beginAtZero: true,
-        }
-      }
+        },
+      },
     },
     maintainAspectRatio: false,
   });
 
   //helper function that returns chart data object
   const dataUpdater = (labelArr, timesArr, BGsArr, bordersArr, reqResArr) => {
-    // console.log('dataUpdater', labelArr, timesArr, BGsArr, bordersArr, reqResArr)
     return {
       labels: labelArr,
       datasets: [
@@ -130,7 +143,7 @@ const BarGraph = (props) => {
     const reqResToSend =
       element[0]._chart.config.data.datasets[0].reqRes[index];
     // send the data to the response panel
-    props.saveCurrentResponseData(reqResToSend);
+    responseDataSaved(reqResToSend);
   };
 
   useEffect(() => {
@@ -169,24 +182,29 @@ const BarGraph = (props) => {
       borders = dataPoints[id].map((point) => 'rgba(' + point.color + ', 1)');
       reqResObjs = dataPoints[id].map((point) => point.reqRes);
       //show graph upon receiving data points
-      toggleShow(true);
+      setVisible(true);
     } else {
       setHost(null);
       //hide graph when no data points
-      toggleShow(false);
+      setVisible(false);
     }
     //update state with updated dataset
-    updateChart(dataUpdater(urls, times, BGs, borders, reqResObjs));
+    setChartData(dataUpdater(urls, times, BGs, borders, reqResObjs));
     //conditionally update options based on length of dataPoints array
     // updateOptions(optionsUpdater(dataPoints[id]));
   }, [dataPoints, currentResponse, chartURL]);
 
-  const chartClass = show ? 'chart' : 'chart-closed';
+  const chartClass = visible ? 'chart' : 'chart-closed';
   const isDark = useSelector((state) => state.ui.isDark);
 
   return (
     <div>
-      <div id="chartContainer" className={`border-top pt-1 ${chartClass} ${isDark ? 'is-dark-100' : ''}`}>
+      <div
+        id="chartContainer"
+        className={`border-top pt-1 ${chartClass} ${
+          isDark ? 'is-dark-100' : ''
+        }`}
+      >
         <Line
           data={chartData}
           width={50}
@@ -197,9 +215,11 @@ const BarGraph = (props) => {
       </div>
       <div className="is-flex is-justify-content-center">
         <button
-          className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button clear-chart-button mb-3`}
+          className={`${
+            isDark ? 'is-dark-200' : ''
+          } button is-small add-header-or-cookie-button clear-chart-button mb-3`}
           onClick={() => {
-            props.clearGraph(currentResponse.id);
+            clearGraph(currentResponse.id);
             setChartURL('');
           }}
         >

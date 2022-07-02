@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+/**@todo delete after slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
 import * as uiactions from '../../features/ui/uiSlice';
+
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from './display/RestRequestContent';
 import GraphQLRequestContent from './display/GraphQLRequestContent';
@@ -9,9 +12,21 @@ import WebRTCRequestContent from './display/WebRTCRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
 import OpenAPIRequestContent from './display/OpenAPIRequestContent';
 
+import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
+import {
+  fieldsReplaced,
+  newFields,
+} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+
+import { appDispatch, useAppDispatch } from '../../toolkit-refactor/store';
+
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const currentResponse = useSelector(
     (store) => store.business.currentResponse
@@ -25,7 +40,7 @@ const SingleReqResContainer = (props) => {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-    reqResDelete,
+    itemDeleted,
     index,
   } = props;
 
@@ -155,11 +170,11 @@ const SingleReqResContainer = (props) => {
       bodyIsNew: false,
     };
 
-    dispatch(actions.setNewRequestFields(requestFieldObj));
+    dispatch(fieldsReplaced(requestBodyObj));
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+    dispatch(newRequestCookiesSet(requestCookiesObj));
     dispatch(actions.setNewRequestBody(requestBodyObj));
-    dispatch(actions.setNewRequestSSE(content.request.isSSE));
+    dispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
@@ -191,10 +206,10 @@ const SingleReqResContainer = (props) => {
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);
-    reqResDelete(content);
+    itemDeleted(content);
   };
 
-// changes the color of boarder depending on the response?
+  // changes the color of boarder depending on the response?
   const getBorderClass = () => {
     let classes = 'highlighted-response ';
     if (currentResponse.gRPC) classes += 'is-grpc-border';
@@ -290,7 +305,7 @@ const SingleReqResContainer = (props) => {
           id={request.method.split(' ').join('-')}
           onClick={() => {
             removeReqRes();
-            dispatch(actions.saveCurrentResponseData({}));
+            dispatch(responseDataSaved({}));
           }}
         >
           Remove
@@ -311,7 +326,7 @@ const SingleReqResContainer = (props) => {
               // console.log(content)
               connectionController.openReqRes(content.id);
               dispatch(
-                actions.saveCurrentResponseData(
+                responseDataSaved(
                   content,
                   'singleReqResContainercomponentSendHandler'
                 )
@@ -328,7 +343,7 @@ const SingleReqResContainer = (props) => {
             id={`view-button-${index}`}
             onClick={() => {
               console.log('WE PRESSED THE BUTTON', content);
-              dispatch(actions.saveCurrentResponseData(content));
+              dispatch(responseDataSaved(content));
             }}
           >
             View Response

@@ -15,12 +15,15 @@ const CollectionsSlice = createSlice({
   initialState,
   reducers: {
     // Previously GET_COLLECTIONS, even though it was a setter
-    replaced: (_state: $NotUsed, action: PayloadAction<Collection[]>) => {
+    collectionsReplaced: (
+      _state: $NotUsed,
+      action: PayloadAction<Collection[]>
+    ) => {
       return action.payload;
     },
 
-    // Previously DELETE_COLLECTION or deleteCollection
-    itemDeleted: (state, action: PayloadAction<Collection>) => {
+    // Previously DELETE_COLLECTION or deleteFromCollection (not deleteCollection)
+    collectionDeleted: (state, action: PayloadAction<Collection>) => {
       /**
        * @todo Check to see if this loop is actually working. splices in loops
        * are wonky and cause elements to be skipped. 99% of the time, elements
@@ -40,12 +43,12 @@ const CollectionsSlice = createSlice({
     },
 
     // Previously COLLECTION_ADD or collectionAdd
-    itemAdded: (state, action: PayloadAction<Collection>) => {
+    collectionAdded: (state, action: PayloadAction<Collection>) => {
       state.unshift(action.payload);
     },
 
     // Previously COLLECTION_UPDATE or collectionUpdate
-    itemUpdated: (state, action: PayloadAction<Collection>) => {
+    collectionUpdated: (state, action: PayloadAction<Collection>) => {
       for (const [index, obj] of state.entries()) {
         if (obj.name === action.payload.name) {
           state[index] = action.payload;
@@ -55,7 +58,11 @@ const CollectionsSlice = createSlice({
   },
 });
 
-export const { replaced, itemAdded, itemDeleted, itemUpdated } =
-  CollectionsSlice.actions;
+export const {
+  collectionsReplaced,
+  collectionAdded,
+  collectionDeleted,
+  collectionUpdated,
+} = CollectionsSlice.actions;
 export default CollectionsSlice.reducer;
 

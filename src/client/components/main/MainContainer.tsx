@@ -1,8 +1,17 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+/**@todo delete after slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
 import * as uiactions from '../../features/ui/uiSlice';
+
+import { reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  composerFieldsReset,
+  newRequestSSESet,
+  newRequestCookiesSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
 
 // Import local components.
 import Http2Composer from './http2-composer/Http2Composer';
@@ -17,6 +26,7 @@ import ResponsePaneContainer from './response/ResponsePaneContainer';
 // Import MUI components
 import { Box, Divider } from '@mui/material';
 
+/**@todo switch to hooks? */
 const mapStateToProps = (store) => {
   return {
     reqResArray: store.business.reqResArray,
@@ -34,9 +44,10 @@ const mapStateToProps = (store) => {
   };
 };
 
+/**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResAdd: (reqRes) => {
-    dispatch(actions.reqResAdd(reqRes));
+  reqResItemAdded: (reqRes) => {
+    dispatch(reqResItemAdded(reqRes));
   },
   setComposerWarningMessage: (message) => {
     dispatch(actions.setComposerWarningMessage(message));
@@ -59,17 +70,17 @@ const mapDispatchToProps = (dispatch) => ({
   setNewTestContent: (testContent) => {
     dispatch(actions.setNewTestContent(testContent));
   },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+  newRequestCookiesSet: (requestCookiesObj) => {
+    dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  setNewRequestSSE: (requestSSEBool) => {
-    dispatch(actions.setNewRequestSSE(requestSSEBool));
+  newRequestSSESet: (requestSSEBool) => {
+    dispatch(newRequestSSESet(requestSSEBool));
   },
   setNewRequestsOpenAPI: (parsedDocument) => {
     dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
   },
-  resetComposerFields: () => {
-    dispatch(actions.resetComposerFields());
+  composerFieldsReset: () => {
+    dispatch(composerFieldsReset());
   },
   setWorkspaceActiveTab: (tabName) => {
     dispatch(uiactions.setWorkspaceActiveTab(tabName));
@@ -77,7 +88,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function MainContainer(props) {
-  return(
+  return (
     <Box
       sx={{
         width: '75%',
@@ -87,39 +98,21 @@ function MainContainer(props) {
       }}
     >
       <Routes>
-        <Route
-          path="/"
-          element={<Http2Composer {...props} />}
-        />
-        <Route
-          path="/graphql"
-          element={<GraphQLComposer {...props} />}
-        />
-        <Route
-          path="/grpc"
-          element={<GRPCComposer {...props} />}
-        />
-        <Route
-          path="/websocket"
-          element={<WebSocketComposer {...props} />}
-        />
-        <Route
-          path="/webrtc"
-          element={<WebRTCComposer {...props} />}
-        />
-        <Route
-          path="/openapi"
-          element={<OpenAPIComposer {...props} />}
-        />
-        <Route
-          path="/webhook"
-          element={<WebhookComposer {...props} />}
-        />
+        <Route path="/" element={<Http2Composer {...props} />} />
+        <Route path="/graphql" element={<GraphQLComposer {...props} />} />
+        <Route path="/grpc" element={<GRPCComposer {...props} />} />
+        <Route path="/websocket" element={<WebSocketComposer {...props} />} />
+        <Route path="/webrtc" element={<WebRTCComposer {...props} />} />
+        <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
+        <Route path="/webhook" element={<WebhookComposer {...props} />} />
       </Routes>
-      <Divider orientation='horizontal' sx={{ borderBottomWidth: 2, background: '#51819b' }} />
+      <Divider
+        orientation="horizontal"
+        sx={{ borderBottomWidth: 2, background: '#51819b' }}
+      />
       <ResponsePaneContainer />
     </Box>
-  )
+  );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);

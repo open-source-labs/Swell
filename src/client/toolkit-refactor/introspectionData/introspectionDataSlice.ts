@@ -13,8 +13,8 @@ const introspectionDataSlice = createSlice({
   name: 'introspectionData',
   initialState,
   reducers: {
-    //dataChanged previously SET_INTROSPECTION_DATA or setIntrospectionData
-    dataChanged: (
+    //previously SET_INTROSPECTION_DATA or setIntrospectionData
+    introspectionDataChanged: (
       _state: $NotUsed,
       action: PayloadAction<IntrospectionData>
     ) => {
@@ -23,6 +23,6 @@ const introspectionDataSlice = createSlice({
   },
 });
 
-export const { dataChanged } = introspectionDataSlice.actions;
+export const { introspectionDataChanged } = introspectionDataSlice.actions;
 export default introspectionDataSlice.reducer;
 

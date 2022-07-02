@@ -1,7 +1,12 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
+
+/**@todo delete when slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+
+import { newRequestCookiesSet } from '../../toolkit-refactor/newRequest/newRequestSlice';
+
+import { AppDispatch } from '../../toolkit-refactor/store';
 import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';
 
@@ -27,8 +32,8 @@ const mapDispatchToProps = (dispatch) => ({
   setNewRequestBody: (requestBodyObj) => {
     dispatch(actions.setNewRequestBody(requestBodyObj));
   },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+  newRequestCookiesSet: (requestCookiesObj) => {
+    dispatch(newRequestCookiesSet(requestCookiesObj));
   },
   setNewRequestStreams: (requestStreamsObj) => {
     dispatch(actions.setNewRequestStreams(requestStreamsObj));
@@ -42,7 +47,7 @@ const HistoryContainer = (props) => {
     deleteFromHistory,
     setNewRequestFields,
     setNewRequestHeaders,
-    setNewRequestCookies,
+    newRequestCookiesSet,
     setNewRequestBody,
     setNewRequestStreams,
   } = props;
@@ -60,7 +65,7 @@ const HistoryContainer = (props) => {
         deleteFromHistory={deleteFromHistory}
         setNewRequestFields={setNewRequestFields}
         setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestCookies={setNewRequestCookies}
+        newRequestCookiesSet={newRequestCookiesSet}
         setNewRequestBody={setNewRequestBody}
         setNewRequestStreams={setNewRequestStreams}
       />
@@ -69,10 +74,15 @@ const HistoryContainer = (props) => {
 
   return (
     <span
-      className={`p-3 is-flex is-flex-direction-column is-tall-not-1rem ${isDark ? 'is-dark-400' : ''}`}
+      className={`p-3 is-flex is-flex-direction-column is-tall-not-1rem ${
+        isDark ? 'is-dark-400' : ''
+      }`}
       id="history-container"
     >
-      <span id="history-container"className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
+      <span
+        id="history-container"
+        className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3"
+      >
         <ClearHistoryBtn clearHistory={clearHistory} />
       </span>
       <div className="add-vertical-scroll">{historyDates}</div>

@@ -8,12 +8,12 @@ import WSEndpointEntryForm from './new-request/WSEndpointEntryForm';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import WSTestEntryForm from './new-request/WSTestEntryForm.jsx';
 // Import MUI components
-import { Box } from '@mui/material'
+import { Box } from '@mui/material';
 
 export default function WebSocketComposer(props) {
   const {
     setNewTestContent,
-    resetComposerFields,
+    composerFieldsReset,
     setNewRequestFields,
     newRequestFields,
     newRequestFields: {
@@ -29,9 +29,9 @@ export default function WebSocketComposer(props) {
     currentTab,
     setComposerWarningMessage,
     warningMessage,
-    reqResAdd,
+    reqResItemAdded,
     setWorkspaceActiveTab,
-  } = props
+  } = props;
 
   const requestValidationCheck = () => {
     interface ValidationMessage {
@@ -88,10 +88,10 @@ export default function WebSocketComposer(props) {
     // add request to history
     // TODO: fix TS type error
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
     setNewRequestFields({
       ...newRequestFields,
       protocol: 'ws://',
@@ -102,7 +102,7 @@ export default function WebSocketComposer(props) {
     setWorkspaceActiveTab('workspace');
   };
 
-  return(
+  return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
@@ -111,26 +111,26 @@ export default function WebSocketComposer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id = "composer-websocket"
+      id="composer-websocket"
     >
-        <div
-          className="is-flex-grow-3 add-vertical-scroll"
-          style={{ overflowX: 'hidden' }}
-        >
-          <WSEndpointEntryForm
-            newRequestFields={newRequestFields}
-            setNewRequestFields={setNewRequestFields}
-            warningMessage={warningMessage}
-            setComposerWarningMessage={setComposerWarningMessage}
-          />
-        </div>
-        <WSTestEntryForm
-          setNewTestContent={setNewTestContent}
-          testContent={testContent}
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: 'hidden' }}
+      >
+        <WSEndpointEntryForm
+          newRequestFields={newRequestFields}
+          setNewRequestFields={setNewRequestFields}
+          warningMessage={warningMessage}
+          setComposerWarningMessage={setComposerWarningMessage}
         />
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+      </div>
+      <WSTestEntryForm
+        setNewTestContent={setNewTestContent}
+        testContent={testContent}
+      />
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </Box>
-  )
+  );
 }

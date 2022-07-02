@@ -3,13 +3,23 @@ import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 
 // Import actions so that the navbar can interact with the Redux store.
+/**@todo delete after slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
 import * as uiactions from '../../features/ui/uiSlice';
+
+import { reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  composerFieldsReset,
+  newRequestSSESet,
+  newRequestCookiesSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';
 import { Box, Button } from '@mui/material';
-import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
+import ButtonUnstyled, {
+  buttonUnstyledClasses,
+} from '@mui/base/ButtonUnstyled';
 
 const blue = {
   500: '#51819b',
@@ -19,7 +29,7 @@ const blue = {
 
 const white = {
   500: '#f0f6fa',
-}
+};
 
 const CustomButton = styled(ButtonUnstyled)`
   font-family: IBM Plex Sans, sans-serif;
@@ -43,7 +53,8 @@ const CustomButton = styled(ButtonUnstyled)`
   }
 
   &.${buttonUnstyledClasses.focusVisible} {
-    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
+    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
+      0 0 0 5px rgba(0, 127, 255, 0.5);
     outline: none;
   }
 
@@ -53,6 +64,7 @@ const CustomButton = styled(ButtonUnstyled)`
   }
 `;
 
+/**@todo switch to hooks? */
 const mapStateToProps = (store) => {
   return {
     reqResArray: store.business.reqResArray,
@@ -70,9 +82,10 @@ const mapStateToProps = (store) => {
   };
 };
 
+/**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResAdd: (reqRes) => {
-    dispatch(actions.reqResAdd(reqRes));
+  reqResItemAdded: (reqRes) => {
+    dispatch(reqResItemAdded(reqRes));
   },
   setComposerWarningMessage: (message) => {
     dispatch(actions.setComposerWarningMessage(message));
@@ -92,17 +105,17 @@ const mapDispatchToProps = (dispatch) => ({
   setNewTestContent: (testContent) => {
     dispatch(actions.setNewTestContent(testContent));
   },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+  newRequestCookiesSet: (requestCookiesObj) => {
+    dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  setNewRequestSSE: (requestSSEBool) => {
-    dispatch(actions.setNewRequestSSE(requestSSEBool));
+  newRequestSSESet: (requestSSEBool) => {
+    dispatch(newRequestSSESet(requestSSEBool));
   },
   setNewRequestsOpenAPI: (parsedDocument) => {
     dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
   },
-  resetComposerFields: () => {
-    dispatch(actions.resetComposerFields());
+  composerFieldsReset: () => {
+    dispatch(composerFieldsReset());
   },
   setWorkspaceActiveTab: (tabName) => {
     dispatch(uiactions.setWorkspaceActiveTab(tabName));
@@ -122,13 +135,14 @@ const pages = [
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
-]
+];
 
 /**
  * ProtocolSelect is a component in the navbar that alters the redux store based on the protocol that is selected.
  * It is responsible for kicking off the process of creating default values for the composer containers.
  * Click a protocol button -> Alter the Redux store accordingly -> Route to the appropriate "main" container
  */
+/**@todo - refactor below function to be more DRY */
 function ProtocolSelect(props) {
   /**
    * Alters the Redux store when a protocol is selected.
@@ -143,7 +157,7 @@ function ProtocolSelect(props) {
     props.setComposerWarningMessage({});
     switch (network) {
       case 'graphQL': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -164,7 +178,7 @@ function ProtocolSelect(props) {
         break;
       }
       case 'rest': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -185,7 +199,7 @@ function ProtocolSelect(props) {
         break;
       }
       case 'openapi': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -206,7 +220,7 @@ function ProtocolSelect(props) {
         break;
       }
       case 'grpc': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -227,7 +241,7 @@ function ProtocolSelect(props) {
         break;
       }
       case 'ws': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -248,7 +262,7 @@ function ProtocolSelect(props) {
         break;
       }
       case 'webrtc': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -278,7 +292,7 @@ function ProtocolSelect(props) {
         break;
       }
       case 'webhook': {
-        props.resetComposerFields();
+        props.composerFieldsReset();
         props.setNewRequestFields({
           ...props.newRequestFields,
           protocol: '',
@@ -304,7 +318,7 @@ function ProtocolSelect(props) {
     }
   };
 
-  return(
+  return (
     <Box
       key="page-selector"
       sx={{
@@ -312,29 +326,28 @@ function ProtocolSelect(props) {
         display: { xs: 'none', md: 'flex' },
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
+      }}
+    >
       {pages.map((page) => (
-        <Link
-          key={page.name}
-          to={page.route}
-          >
+        <Link key={page.name} to={page.route}>
           <CustomButton
             key={page.name}
             // variant="contained"
             // color="primary"
             onClick={() => {
-              console.log(page.value)
-              onProtocolSelect(page.value)}
-            }
+              console.log(page.value);
+              onProtocolSelect(page.value);
+            }}
             sx={{
-              m: 1
-            }}>
+              m: 1,
+            }}
+          >
             {page.name}
           </CustomButton>
         </Link>
       ))}
     </Box>
-  )
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProtocolSelect);

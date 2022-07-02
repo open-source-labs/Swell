@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   NewRequestStreams,
   NewRequestBody,
@@ -61,38 +61,38 @@ const newRequestSlice = createSlice({
   name: 'newRequest',
   initialState,
   reducers: {
-    // Previously setNewRequestHeaders
-    newRequestHeaders: (
+    // Previously SET_NEW_REQUEST_HEADERS or setNewRequestHeaders
+    newRequestHeadersSet: (
       state,
       action: PayloadAction<NewRequestStore['newRequestHeaders']>
     ) => {
       state.newRequestHeaders = action.payload;
     },
 
-    // Previously setNewRequestBody
-    newRequestBody: (state, action: PayloadAction<NewRequestBody>) => {
+    // Previously SET_NEW_REQUEST_BODY or setNewRequestBody
+    newRequestBodySet: (state, action: PayloadAction<NewRequestBody>) => {
       state.newRequestBody = action.payload;
     },
 
-    // Previously setNewRequestStreams
-    newRequestStreams: (state, action: PayloadAction<NewRequestStreams>) => {
+    // Previously SET_NEW_REQUEST_STREAMS or setNewRequestStreams
+    newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
       state.newRequestStreams = action.payload;
     },
 
-    // Previously setNewRequestCookies
-    newRequestCookies: (
+    // Previously SET_NEW_REQUEST_COOKIES or setNewRequestCookies
+    newRequestCookiesSet: (
       state,
       action: PayloadAction<NewRequestStore['newRequestCookies']>
     ) => {
       state.newRequestCookies = action.payload;
     },
 
-    // Previously setNewRequestSSE
-    newRequestSSE: (state, action: PayloadAction<boolean>) => {
+    // Previously SET_NEW_REQUEST_SSE or setNewRequestSSE
+    newRequestSSESet: (state, action: PayloadAction<boolean>) => {
       state.newRequestSSE.isSSE = action.payload;
     },
 
-    // Previously resetComposerFields
+    // Previously RESET_COMPOSER_FIELDS or resetComposerFields
     composerFieldsReset: () => {
       return initialState;
     },
@@ -100,11 +100,11 @@ const newRequestSlice = createSlice({
 });
 
 export const {
-  newRequestHeaders,
-  newRequestBody,
-  newRequestCookies,
-  newRequestSSE,
-  newRequestStreams,
+  newRequestHeadersSet,
+  newRequestBodySet,
+  newRequestCookiesSet,
+  newRequestSSESet,
+  newRequestStreamsSet,
   composerFieldsReset,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;

@@ -19,7 +19,7 @@ import { Box } from '@mui/material';
 // Translated from GraphQLContainer.jsx
 export default function GraphQLComposer(props) {
   const {
-    resetComposerFields,
+    composerFieldsReset,
     setNewRequestFields,
     newRequestFields,
     newRequestFields: {
@@ -48,7 +48,7 @@ export default function GraphQLComposer(props) {
     setNewRequestHeaders,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
-    setNewRequestCookies,
+    newRequestCookiesSet,
     newRequestCookies,
     newRequestCookies: { cookiesArr },
     setNewRequestStreams,
@@ -59,7 +59,7 @@ export default function GraphQLComposer(props) {
     introspectionData,
     setComposerWarningMessage,
     warningMessage,
-    reqResAdd,
+    reqResItemAdded,
     setWorkspaceActiveTab,
   } = props;
 
@@ -68,7 +68,7 @@ export default function GraphQLComposer(props) {
       uri?: string;
       json?: string;
       body?: string;
-    };
+    }
     const validationMessage: ValidationMessage = {};
     //Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
@@ -214,10 +214,10 @@ export default function GraphQLComposer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
 
     // GRAPHQL REQUESTS
 
@@ -235,7 +235,7 @@ export default function GraphQLComposer(props) {
     setWorkspaceActiveTab('workspace');
   };
 
-  return(
+  return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
@@ -244,60 +244,60 @@ export default function GraphQLComposer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id = "composer-graphql"
+      id="composer-graphql"
     >
-        <div
-          className="is-flex-grow-3 add-vertical-scroll"
-          style={{ overflowX: 'hidden' }}
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-          // tabIndex={0}
-        >
-          <GraphQLMethodAndEndpointEntryForm
-            newRequestFields={newRequestFields}
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            setNewRequestFields={setNewRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
-            setNewRequestCookies={setNewRequestCookies}
-            setNewRequestBody={setNewRequestBody}
-            warningMessage={warningMessage}
-            setComposerWarningMessage={setComposerWarningMessage}
-            setNewTestContent={setNewTestContent}
-          />
-          <HeaderEntryForm
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            newRequestFields={newRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
-          />
-          <CookieEntryForm
-            newRequestCookies={newRequestCookies}
-            newRequestBody={newRequestBody}
-            setNewRequestCookies={setNewRequestCookies}
-          />
-          <GraphQLBodyEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-            introspectionData={introspectionData}
-          />
-          <GraphQLVariableEntryForm
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-          />
-          <TestEntryForm
-            setNewTestContent={setNewTestContent}
-            testContent={testContent}
-          />
-          <GraphQLIntrospectionLog />
-        </div>
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: 'hidden' }}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+        // tabIndex={0}
+      >
+        <GraphQLMethodAndEndpointEntryForm
+          newRequestFields={newRequestFields}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          setNewRequestFields={setNewRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+          newRequestCookiesSet={newRequestCookiesSet}
+          setNewRequestBody={setNewRequestBody}
+          warningMessage={warningMessage}
+          setComposerWarningMessage={setComposerWarningMessage}
+          setNewTestContent={setNewTestContent}
+        />
+        <HeaderEntryForm
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          newRequestFields={newRequestFields}
+          setNewRequestHeaders={setNewRequestHeaders}
+          setNewRequestStreams={setNewRequestStreams}
+        />
+        <CookieEntryForm
+          newRequestCookies={newRequestCookies}
+          newRequestBody={newRequestBody}
+          newRequestCookiesSet={newRequestCookiesSet}
+        />
+        <GraphQLBodyEntryForm
+          warningMessage={warningMessage}
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+          introspectionData={introspectionData}
+        />
+        <GraphQLVariableEntryForm
+          newRequestBody={newRequestBody}
+          setNewRequestBody={setNewRequestBody}
+        />
+        <TestEntryForm
+          setNewTestContent={setNewTestContent}
+          testContent={testContent}
+        />
+        <GraphQLIntrospectionLog />
+      </div>
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </Box>
   );
 }

@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
 // Import controllers.
 import connectionController from '../../controllers/reqResController';
+
 // Import Redux actions and methods.
-import * as actions from '../../features/business/businessSlice'
-import * as uiactions from '../../features/ui/uiSlice'
+/**@todo delete when slice conversion complete */
+import * as actions from '../../features/business/businessSlice';
+import * as uiactions from '../../features/ui/uiSlice';
+
+import {
+  reqResUpdated,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+
 import { connect, useSelector, useDispatch } from 'react-redux';
 // Import local components.
 import DeleteRequestButton from './buttons/DeleteRequestButton';
@@ -11,27 +23,39 @@ import DeleteRequestButton from './buttons/DeleteRequestButton';
 import { Box } from '@mui/material';
 import { TreeItem } from '@mui/lab';
 
+/**@todo switch to hooks? */
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
   currentTab: store.business.currentTab,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
+/**@todo switch to hooks? */
+const mapDispatchToProps = (dispatch: ReturnType<typeof useDispatch>) => ({
+  reqResItemDeleted: (reqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
+  reqResUpdated: (reqRes) => {
+    dispatch(reqResUpdated(reqRes));
   },
 });
 
 function RequestCard(props) {
+  const dispatch = useDispatch();
+  const currentResponse = useSelector(
+    // TODO: remove explicit any.
+    (store: any) => store.business.currentResponse
+  );
+  const newRequestFields = useSelector(
+    // TODO: remove explicit any.
+    (store: any) => store.business.newRequestFields
+  );
+
   const [showDetails, setShowDetails] = useState(false);
   const {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-    reqResDelete,
+    itemDeleted,
   } = props;
 
   const network = content.request.network;
@@ -162,9 +186,9 @@ function RequestCard(props) {
 
     dispatch(actions.setNewRequestFields(requestFieldObj));
     dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+    dispatch(newRequestCookiesSet(requestCookiesObj));
     dispatch(actions.setNewRequestBody(requestBodyObj));
-    dispatch(actions.setNewRequestSSE(content.request.isSSE));
+    dispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
@@ -196,19 +220,10 @@ function RequestCard(props) {
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);
-    reqResDelete(content);
+    dispatch(itemDeleted(content));
   };
 
-  const dispatch = useDispatch();
-  const currentResponse = useSelector(
-    // TODO: remove explicit any.
-    (store: any) => store.business.currentResponse
-  );
-  const newRequestFields = useSelector(
-    // TODO: remove explicit any.
-    (store: any) => store.business.newRequestFields
-  );
-  return(
+  return (
     <TreeItem
       key={content.id}
       nodeId={content.id}
@@ -216,12 +231,11 @@ function RequestCard(props) {
       label={
         <Box>
           {request.method} {url}
-          <DeleteRequestButton removeReqRes={removeReqRes}/>
+          <DeleteRequestButton removeReqRes={removeReqRes} />
         </Box>
       }
     />
-  )
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestCard);
-

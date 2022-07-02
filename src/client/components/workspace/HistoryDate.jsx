@@ -17,7 +17,7 @@ class HistoryDate extends Component {
     const current = this.props.history.find(
       (a) => a.date === this.props.content.date
     );
-    let date = parse(current.date, 'MM/dd/yyyy', new Date())
+    let date = parse(current.date, 'MM/dd/yyyy', new Date());
     // let date = parseISO(current.date)
     if (isToday(date)) {
       date = 'Today';
@@ -37,7 +37,7 @@ class HistoryDate extends Component {
           deleteFromHistory={this.props.deleteFromHistory}
           setNewRequestFields={this.props.setNewRequestFields}
           setNewRequestHeaders={this.props.setNewRequestHeaders}
-          setNewRequestCookies={this.props.setNewRequestCookies}
+          newRequestCookiesSet={this.props.newRequestCookiesSet}
           setNewRequestBody={this.props.setNewRequestBody}
           setNewRequestStreams={this.props.setNewRequestStreams}
           newRequestFields={this.props.newRequestFields}

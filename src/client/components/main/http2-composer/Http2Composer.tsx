@@ -2,8 +2,21 @@ import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 // Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
+
+/**@todo delete when slice conversion complete */
 import * as actions from '../../../features/business/businessSlice';
 import * as uiactions from '../../../features/ui/uiSlice';
+
+import {
+  responseDataSaved,
+  reqResItemAdded,
+} from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
@@ -43,11 +56,11 @@ export default function Http2Composer(props) {
     toggle: BooleanValueNode;
   }
 
-  const [parameters, setParameters] = useState<Parameter[]>([])
-  const [headers, setHeaders] = useState<Header[]>([])
-  const [cookies, setCookies] = useState<Cookie[]>([])
-  const [http2Method, setHttp2Method] = useState('GET')
-  const [http2Uri, setHttp2Uri] = useState('')
+  const [parameters, setParameters] = useState<Parameter[]>([]);
+  const [headers, setHeaders] = useState<Header[]>([]);
+  const [cookies, setCookies] = useState<Cookie[]>([]);
+  const [http2Method, setHttp2Method] = useState('GET');
+  const [http2Uri, setHttp2Uri] = useState('');
 
   const dispatch = useDispatch();
   // Destructuring business store props.
@@ -78,27 +91,22 @@ export default function Http2Composer(props) {
     testContent,
   } = newRequestFields;
 
-  const {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  } = newRequestBody;
+  const { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType } =
+    newRequestBody;
 
   // Destructuring dispatch props.
   const {
     setNewRequestFields,
-    resetComposerFields,
+    composerFieldsReset,
     setNewRequestBody,
     setNewTestContent,
     setNewRequestHeaders,
-    setNewRequestCookies,
+    newRequestCookiesSet,
     setNewRequestStreams,
-    setNewRequestSSE,
+    newRequestSSESet,
     setComposerWarningMessage,
     setWorkspaceActiveTab,
-    reqResAdd
+    reqResItemAdded,
   } = props;
 
   const { protoPath } = newRequestSSE;
@@ -114,8 +122,8 @@ export default function Http2Composer(props) {
     interface ValidationMessage {
       uri?: string;
       json?: string;
-    };
-    const validationMessage: ValidationMessage = {}
+    }
+    const validationMessage: ValidationMessage = {};
     // Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
@@ -198,20 +206,17 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
     // dispatch(actions.scheduledReqResUpdate(reqRes));
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
     // dispatch(actions.setResponsePaneActiveTab('events'));
     // dispatch(actions.setSidebarActiveTab('composer'));
 
     connectionController.openReqRes(reqRes.id);
     dispatch(
-      actions.saveCurrentResponseData(
-        reqRes,
-        'singleReqResContainercomponentSendHandler'
-      )
+      responseDataSaved(reqRes, 'singleReqResContainercomponentSendHandler')
     );
   };
 
@@ -282,18 +287,18 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
     setWorkspaceActiveTab('workspace');
   };
 
   const handleSSEPayload = (e) => {
-    setNewRequestSSE(e.target.checked);
+    newRequestSSESet(e.target.checked);
   };
 
-  return(
+  return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
@@ -302,7 +307,7 @@ export default function Http2Composer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id = "composer-http2"
+      id="composer-http2"
     >
       {/* <Typography align='center'>
         HTTP/2
@@ -354,7 +359,7 @@ export default function Http2Composer(props) {
           <CookieEntryForm
             newRequestCookies={newRequestCookies}
             newRequestBody={newRequestBody}
-            setNewRequestCookies={setNewRequestCookies}
+            newRequestCookiesSet={newRequestCookiesSet}
           />
         </div>
         <div className="is-3rem-footer is-clickable restReqBtns">
@@ -365,9 +370,7 @@ export default function Http2Composer(props) {
       </span>
       {/* SSE TOGGLE SWITCH */}
       <div className="field mt-2">
-        <span className="composer-section-title mr-3">
-          Server Sent Events
-        </span>
+        <span className="composer-section-title mr-3">Server Sent Events</span>
         <input
           id="SSEswitch"
           type="checkbox"
@@ -393,5 +396,5 @@ export default function Http2Composer(props) {
         testContent={testContent}
       />
     </Box>
-  )
+  );
 }

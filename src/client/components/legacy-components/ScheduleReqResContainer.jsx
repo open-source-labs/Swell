@@ -1,29 +1,39 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+
+/**@todo delete when slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
+
+import {
+  reqResUpdated,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
+
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
 
+/**@todo switch to use hooks? */
 const mapStateToProps = (store) => ({
   reqResArray: store.business.reqResArray,
   scheduledReqResArray: store.business.scheduledReqResArray,
   currentTab: store.business.currentTab,
 });
 
+/**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
+  itemDeleted: (reqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
+  updated: (reqRes) => {
+    dispatch(reqResUpdated(reqRes));
   },
 });
 
 const ScheduleReqResContainer = (props) => {
   const {
     reqResArray,
-    reqResDelete,
-    reqResUpdate,
+    itemDeleted,
+    updated,
     scheduleInterval,
     scheduledReqResArray,
   } = props;
@@ -37,6 +47,7 @@ const ScheduleReqResContainer = (props) => {
     return () => clearInterval(interval);
   }, [reqResArray, scheduleInterval]);
 
+  /**@todo maybe access functions (last two) directly from container instead of passing through props? */
   const scheduledReqResMapped = scheduledReqResArray.map((reqRes, index) => {
     return (
       <SingleScheduleReqResContainer
@@ -45,8 +56,8 @@ const ScheduleReqResContainer = (props) => {
         date={reqRes.response.headers.date[0]}
         key={index}
         index={index}
-        reqResDelete={reqResDelete}
-        reqResUpdate={reqResUpdate}
+        itemDeleted={itemDeleted}
+        updated={updated}
       />
     );
   });

@@ -1,16 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+/**@todo delete after slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
+
+import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
+
 import Collection from '../../components/display/Collection';
 import collectionsController from '../../controllers/collectionsController';
 import githubController from '../../controllers/githubController';
 import db from '../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
-
-
 function CollectionsContainer() {
-
   let files = useLiveQuery(() => db.files.toArray());
   const dispatch = useDispatch();
 
@@ -33,8 +35,8 @@ function CollectionsContainer() {
         deleteFromCollection={() => {
           dispatch(actions.deleteFromCollection(collection));
         }}
-        collectionToReqRes={(reqResArray) => {
-          dispatch(actions.collectionToReqRes(reqResArray));
+        reqResReplaced={(reqResArray) => {
+          dispatch(reqResReplaced(reqResArray));
         }}
       />
     );
@@ -77,6 +79,5 @@ function CollectionsContainer() {
     </div>
   );
 }
-
 
 export default CollectionsContainer;

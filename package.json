@@ -209,6 +209,8 @@
     "@types/react-redux": "^7.1.24",
     "@types/set-cookie-parser": "2.4.2",
     "@types/uuid": "^8.3.4",
+    "@types/webrtc": "^0.0.32",
+    "@types/websocket": "^1.0.5",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
@@ -476,4 +478,3 @@
     }
   ]
 }
-

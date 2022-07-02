@@ -14,16 +14,17 @@ const scheduledReqResSlice = createSlice({
   name: 'scheduledReqRes',
   initialState,
   reducers: {
-    added(state, action: PayloadAction<ReqRes>) {
+    scheduledReqResAdded(state, action: PayloadAction<ReqRes>) {
       state.push(action.payload);
     },
 
-    cleared() {
+    scheduledReqResCleared() {
       return initialState;
     },
   },
 });
 
-export const { added, cleared } = scheduledReqResSlice.actions;
+export const { scheduledReqResAdded, scheduledReqResCleared } =
+  scheduledReqResSlice.actions;
 export default scheduledReqResSlice.reducer;
 

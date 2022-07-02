@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { itemAdded } from '../reqRes/reqResSlice';
+import { reqResItemAdded } from '../reqRes/reqResSlice';
 
 import { $NotUsed, ReqRes } from '../../../types';
 import { format, parseISO } from 'date-fns';
@@ -22,20 +22,20 @@ const HistorySlice = createSlice({
   initialState,
   reducers: {
     // Previously CLEAR_HISTORY or clearHistory
-    cleared(): HistoryItem[] {
+    historyCleared(): HistoryItem[] {
       return [];
     },
 
     // Previously GET_HISTORY or getHistory
-    set<HI extends HistoryItem>(
+    historySet<HI extends HistoryItem>(
       _state: $NotUsed,
       action: PayloadAction<HI[]>
     ): HI[] {
       return action.payload;
     },
 
-    // Previously DELETE_HISTORY or deleteHistory
-    deleted(
+    // Previously DELETE_HISTORY or deleteFromHistory (not deleteHistory)
+    historyDeleted(
       state,
       action: PayloadAction<ReqRes>
     ): WritableDraft<HistoryItem>[] {
@@ -69,7 +69,7 @@ const HistorySlice = createSlice({
 
   extraReducers: (builder) => {
     // Case was previously REQRES_ADD or reqresAdd
-    builder.addCase(itemAdded, (state, action) => {
+    builder.addCase(reqResItemAdded, (state, action) => {
       const formattedDate = format(action.payload.createdAt, 'MM/dd/yyyy');
       let updated = false;
 
@@ -90,6 +90,7 @@ const HistorySlice = createSlice({
   },
 });
 
-export const { cleared, set, deleted } = HistorySlice.actions;
+export const { historyCleared, historySet, historyDeleted } =
+  HistorySlice.actions;
 export default HistorySlice.reducer;
 

@@ -3,14 +3,15 @@ import CodeMirror from '@uiw/react-codemirror';
 import { useSelector, useDispatch } from 'react-redux';
 import Peer from '../../../controllers/webrtcPeerController';
 import { json } from '@codemirror/lang-json';
-import { EditorView } from "@codemirror/view"
+import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { matchBrackets } from '@codemirror/language';
 
-
-
+/**@todo delete when slice conversion complete */
 import * as actions from '../../../features/business/businessSlice';
 import * as uiactions from '../../../features/ui/uiSlice';
+
+import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
 
 const jBeautify = require('js-beautify').js;
 
@@ -29,7 +30,7 @@ export default function WebRTCRequestContent({ content }) {
   useEffect(() => {
     if (pcInitiator?.connection?.localDescription) {
       dispatch(
-        actions.saveCurrentResponseData({
+        responseDataSaved({
           ...content,
           webrtcData: {
             localSdp: pcInitiator.connection.localDescription.sdp,
@@ -57,16 +58,13 @@ export default function WebRTCRequestContent({ content }) {
         <div className="is-size-7">Servers</div>
         <CodeMirror
           value={jBeautify(JSON.stringify(body.iceConfiguration.iceServers))}
-          theme = 'dark'
-          readOnly= 'true'
-          extensions={[
-            javascript(),
-            EditorView.lineWrapping,
-          ]}
+          theme="dark"
+          readOnly="true"
+          extensions={[javascript(), EditorView.lineWrapping]}
           height="100%"
-          width = "100%"
-          maxWidth='400px'
-          maxHeight='300px'
+          width="100%"
+          maxWidth="400px"
+          maxHeight="300px"
         />
       </div>
       <div className="p-3">
@@ -77,15 +75,13 @@ export default function WebRTCRequestContent({ content }) {
         >
           <CodeMirror
             value={localSdp || 'No SDP yet'}
-            extensions={[
-              json(),
-            ]}
-            theme = 'dark'
-            readOnly= 'true'
+            extensions={[json()]}
+            theme="dark"
+            readOnly="true"
             height="100%"
-            width = "100%"
-            maxWidth='400px'
-            maxHeight='300px'
+            width="100%"
+            maxWidth="400px"
+            maxHeight="300px"
           />
           <button className="button is-webrtc" onClick={() => createLocalSDP()}>
             Create Local SDP

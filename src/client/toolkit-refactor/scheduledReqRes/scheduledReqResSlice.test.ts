@@ -7,7 +7,10 @@
  * codebase is such a mess that we need some basic assurance about features
  * being added in before we try integrating them with the rest of the app.
  */
-import reducer, { cleared, added } from './scheduledReqResSlice';
+import reducer, {
+  scheduledReqResCleared,
+  scheduledReqResAdded,
+} from './scheduledReqResSlice';
 import { ReqRes, ReqResRequest, ReqResResponse } from '../../../types';
 
 const dummyRequest: Readonly<ReqResRequest> = {
@@ -77,19 +80,19 @@ describe('scheduledReqResSlice reducer', () => {
   });
 
   it('Should update state by performing immutable pushes', () => {
-    const start = reducer(testingState, added(dummyReqRes));
+    const start = reducer(testingState, scheduledReqResAdded(dummyReqRes));
     expect(start).toEqual([dummyReqRes]);
 
-    const updated = reducer(start, added(dummyReqRes));
+    const updated = reducer(start, scheduledReqResAdded(dummyReqRes));
     expect(start).toEqual([dummyReqRes]);
     expect(updated).toEqual([dummyReqRes, dummyReqRes]);
   });
 
   it('Should clear out the state immutably', () => {
-    const start = reducer(testingState, added(dummyReqRes));
+    const start = reducer(testingState, scheduledReqResAdded(dummyReqRes));
     expect(start).toEqual([dummyReqRes]);
 
-    const updated = reducer(start, cleared());
+    const updated = reducer(start, scheduledReqResCleared());
     expect(start).toEqual([dummyReqRes]);
     expect(updated).toEqual([]);
   });

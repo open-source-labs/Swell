@@ -22,7 +22,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './client/components/App';
-import store from './client/store';
+import store from './client/toolkit-refactor/store';
 
 import { CssBaseline } from '@mui/material';
 

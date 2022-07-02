@@ -29,10 +29,6 @@ type UiState = {
  */
 type UiAction =
   | {
-      type: typeof ActionTypes.SET_COMPOSER_DISPLAY;
-      payload: UiState['composerDisplay'];
-    }
-  | {
       type: typeof ActionTypes.SET_SIDEBAR_ACTIVE_TAB;
       payload: UiState['sidebarActiveTab'];
     }
@@ -65,12 +61,13 @@ const uiReducer = (
   action: UiAction
 ): UiState => {
   switch (action.type) {
-    case ActionTypes.SET_COMPOSER_DISPLAY: {
-      return {
-        ...state,
-        composerDisplay: action.payload,
-      };
-    }
+    ////set composer display commented out in main container
+    // case ActionTypes.SET_COMPOSER_DISPLAY: {
+    //   return {
+    //     ...state,
+    //     composerDisplay: action.payload,
+    //   };
+    // }
 
     case ActionTypes.SET_SIDEBAR_ACTIVE_TAB: {
       return {

@@ -280,7 +280,7 @@ const businessSlice = createSlice({
         (state.currentResponse = { request: { network: '' } });
     },
 
-    reqResAdd(state, action: PayloadAction<ReqRes>) {
+    reqResItemAdded(state, action: PayloadAction<ReqRes>) {
       state.reqResArray.push(action.payload);
       const addDate = format(action.payload.createdAt, 'MM/dd/yyyy');
       let updated = false;
@@ -550,7 +550,7 @@ export const {
   collectionAdd,
   collectionUpdate,
   reqResClear,
-  reqResAdd,
+  reqResItemAdded,
   reqResDelete,
   setChecksAndMinis,
   reqResUpdate,
