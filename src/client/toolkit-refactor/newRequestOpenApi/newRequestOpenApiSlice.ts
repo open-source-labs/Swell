@@ -94,7 +94,7 @@ const newRequestOpenApiSlice = createSlice({
   initialState,
   reducers: {
     // Previously SET_NEW_REQUESTS_OPENAPI or setNewRequestsOpenAPI
-    requestsReplaced(
+    openApiRequestsReplaced(
       _state: $NotUsed,
       action: PayloadAction<NewRequestOpenApi>
     ) {
@@ -240,7 +240,7 @@ const newRequestOpenApiSlice = createSlice({
 
 export const {
   requestBodyUpdated,
-  requestsReplaced,
+  openApiRequestsReplaced,
   newParameterAdded,
   newServerAdded,
 } = newRequestOpenApiSlice.actions;

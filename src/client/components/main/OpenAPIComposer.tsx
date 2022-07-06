@@ -15,9 +15,9 @@ import { Box } from '@mui/material';
 export default function OpenAPIComposer(props) {
   const {
     composerFieldsReset,
-    setNewRequestsOpenAPI,
+    openApiRequestsReplaced,
     newRequestsOpenAPI,
-    setNewRequestFields,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -30,15 +30,15 @@ export default function OpenAPIComposer(props) {
       network,
       testContent,
     },
-    setNewRequestBody,
+    newRequestBodySet,
     newRequestBody,
     newRequestBody: { rawType, bodyType },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
     newRequestCookiesSet,
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
@@ -53,7 +53,7 @@ export default function OpenAPIComposer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -104,12 +104,12 @@ export default function OpenAPIComposer(props) {
       //reset for next request
       composerFieldsReset();
 
-      setNewRequestBody({
+      newRequestBodySet({
         ...newRequestBody,
         bodyType: '',
         rawType: '',
       });
-      setNewRequestFields({
+      fieldsReplaced({
         ...newRequestFields,
         url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         restUrl,
@@ -139,29 +139,29 @@ export default function OpenAPIComposer(props) {
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}
           newRequestBody={newRequestBody}
-          setNewRequestFields={setNewRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeadersSet={newRequestHeadersSet}
           newRequestCookiesSet={newRequestCookiesSet}
           newRequestsOpenAPI={newRequestsOpenAPI}
-          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
-          setNewRequestBody={setNewRequestBody}
+          openApiRequestsReplaced={openApiRequestsReplaced}
+          newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          setComposerWarningMessage={setComposerWarningMessage}
+          setWarningMessage={setWarningMessage}
         />
 
         <OpenAPIDocumentEntryForm
           newRequestFields={newRequestFields}
-          setNewRequestFields={setNewRequestFields}
+          fieldsReplaced={fieldsReplaced}
           newRequestHeaders={newRequestHeaders}
-          setNewRequestHeaders={setNewRequestHeaders}
+          newRequestHeadersSet={newRequestHeadersSet}
           newRequestCookiesSet={newRequestCookiesSet}
           newRequestsOpenAPI={newRequestsOpenAPI}
-          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
+          openApiRequestsReplaced={openApiRequestsReplaced}
         />
         <OpenAPIMetadata newRequestsOpenAPI={newRequestsOpenAPI} />
         <OpenAPIServerForm
           newRequestsOpenAPI={newRequestsOpenAPI}
-          setNewRequestsOpenAPI={setNewRequestsOpenAPI}
+          openApiRequestsReplaced={openApiRequestsReplaced}
         />
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">

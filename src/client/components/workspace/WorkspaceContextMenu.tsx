@@ -10,6 +10,8 @@ import * as actions from '../../features/business/businessSlice';
 import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
 
 export default function WorkspaceContextMenu({ id, name, reqResArray }) {
+  const dispatch = useDispatch();
+
   const [contextMenu, setContextMenu] = React.useState<{
     mouseX: number;
     mouseY: number;
@@ -34,11 +36,6 @@ export default function WorkspaceContextMenu({ id, name, reqResArray }) {
     setContextMenu(null);
   };
 
-  const dispatch = useDispatch();
-  const collectionsToReqRes = (reqResArray) => {
-    dispatch(reqResReplaced(reqResArray));
-  };
-
   // <MenuItem
   //   key={workspace.id}
   //   value={workspace.id}
@@ -51,7 +48,7 @@ export default function WorkspaceContextMenu({ id, name, reqResArray }) {
     <MenuItem
       key={id}
       value={id}
-      onClick={() => collectionsToReqRes(reqResArray)}
+      onClick={() => dispatch(reqResReplaced(reqResArray))}
     >
       <div
         onContextMenu={handleContextMenu}

@@ -34,12 +34,12 @@ class HistoryDate extends Component {
           content={history}
           key={i}
           focusOnForm={this.focusOnForm}
-          deleteFromHistory={this.props.deleteFromHistory}
-          setNewRequestFields={this.props.setNewRequestFields}
-          setNewRequestHeaders={this.props.setNewRequestHeaders}
+          historyDeleted={this.props.historyDeleted}
+          fieldsReplaced={this.props.fieldsReplaced}
+          newRequestHeadersSet={this.props.newRequestHeadersSet}
           newRequestCookiesSet={this.props.newRequestCookiesSet}
-          setNewRequestBody={this.props.setNewRequestBody}
-          setNewRequestStreams={this.props.setNewRequestStreams}
+          newRequestBodySet={this.props.newRequestBodySet}
+          newRequestStreamsSet={this.props.newRequestStreamsSet}
           newRequestFields={this.props.newRequestFields}
         />
       );

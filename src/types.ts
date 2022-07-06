@@ -136,6 +136,35 @@ export interface CookieOrHeader {
   value: string;
 }
 
+/**
+ * Defines the type constract for the NewRequestFields state object.
+ *
+ * @todo See if it makes sense to redefine some of the properties to be
+ * template literal types. For example, since restUrl must start with "http://",
+ * type string could possibly be replaced with the type `http://${string}`.
+ * Not sure if this could cause things to break, though.
+ */
+export type NewRequestFields = {
+  protocol: string;
+  restUrl: string;
+  wsUrl: string;
+  gqlUrl: string;
+  grpcUrl: string;
+  webrtcUrl: string;
+  url: string;
+  method: string;
+  graphQL: boolean;
+  gRPC: boolean;
+  ws: boolean;
+  openapi: boolean;
+  webrtc: boolean;
+  webhook: boolean;
+  network: string;
+  testContent: string;
+  testResults: $TSFixMe[];
+  openapiReqObj: Record<string, $TSFixMe>;
+};
+
 export interface ReqResRequest {
   body: string;
   bodyType: string;

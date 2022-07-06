@@ -14,17 +14,16 @@ import ReqResCtrl from '../../controllers/reqResController';
 
 /**@todo switch to use hooks? */
 const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  scheduledReqResArray: store.business.scheduledReqResArray,
-  currentTab: store.business.currentTab,
+  reqResArray: store.reqRes.reqResArray,
+  scheduledReqResArray: store.scheduledReqRes,
 });
 
 /**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  itemDeleted: (reqRes) => {
+  reqResItemDeleted: (reqRes) => {
     dispatch(reqResItemDeleted(reqRes));
   },
-  updated: (reqRes) => {
+  reqResUpdated: (reqRes) => {
     dispatch(reqResUpdated(reqRes));
   },
 });

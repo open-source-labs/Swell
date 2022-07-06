@@ -14,9 +14,10 @@ import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 // import { createClient } from 'graphql-ws';
 
 /**@todo delete next 2 imports (store, actions) when toolkit conversion complete */
-import * as store from '../store'; // TODO: refactor for Redux Hooks
-import * as actions from './../features/business/businessSlice';
+//import * as store from '../store'; // TODO: refactor for Redux Hooks
+//import * as actions from './../features/business/businessSlice';
 
+import Store from '../toolkit-refactor/store';
 import {
   ReqRes,
   GraphQLResponse,
@@ -85,8 +86,6 @@ const graphQLController = {
         appDispatch(responseDataSaved(result.reqResObj));
 
         appDispatch(graphUpdated(result.reqResObj));
-
-        appDispatch(graphUpdated(result.reqResObj));
         index += 1;
         if (reqResArray.length > index)
           runSingleGraphQLRequest(reqResArray[index]);
@@ -126,7 +125,7 @@ const graphQLController = {
     reqResObj.connection = 'open';
     appDispatch(reqResUpdated(reqResObj));
 
-    const currentID = store.default.getState().business.currentResponse.id;
+    const currentID = store.getState().reqRes.currentResponse.id;
     if (currentID === reqResObj.id) appDispatch(responseDataSaved(reqResObj));
 
     // have to replace http with ws to connect to the websocket
@@ -214,7 +213,7 @@ const graphQLController = {
 
     appDispatch(reqResUpdated(reqResObj));
     appDispatch(responseDataSaved(reqResObj));
-    store.default.dispatch(actions.updateGraph(reqResObj));
+    appDispatch(graphUpdated(reqResObj));
   },
 
   handleError(errorsObj: string, reqResObj: ReqRes): void {
@@ -264,14 +263,8 @@ const graphQLController = {
         const schemaSDL = printSchema(clientSchema);
         const modifiedData = { schemaSDL, clientSchema };
 
-        /**@todo delete store line after toolkit conversion good */
-        store.default.dispatch(actions.setIntrospectionData(modifiedData));
-        //keep this line
         appDispatch(introspectionDataChanged(modifiedData));
       } else {
-        /** @todo Delete store.default line after Toolkit conversion verified */
-        store.default.dispatch(actions.setIntrospectionData(data));
-        //keep this line
         appDispatch(introspectionDataChanged(data));
       }
     });

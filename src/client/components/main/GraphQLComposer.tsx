@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
+
 // TODO: refactor all of the below components to use MUI, place them in a new "components" folder
 import HeaderEntryForm from './new-request/HeaderEntryForm.jsx';
 import GraphQLMethodAndEndpointEntryForm from './new-request/GraphQLMethodAndEndpointEntryForm';
@@ -13,14 +14,16 @@ import GraphQLVariableEntryForm from './new-request/GraphQLVariableEntryForm';
 import GraphQLIntrospectionLog from './new-request/GraphQLIntrospectionLog.jsx';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import TestEntryForm from './new-request/TestEntryForm.jsx';
+
 // Import MUI components
 import { Box } from '@mui/material';
+import { $TSFixMe } from '../../../types';
 
 // Translated from GraphQLContainer.jsx
-export default function GraphQLComposer(props) {
+export default function GraphQLComposer(props: $TSFixMe) {
   const {
     composerFieldsReset,
-    setNewRequestFields,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -35,8 +38,8 @@ export default function GraphQLComposer(props) {
       network,
       testContent,
     },
-    setNewTestContent,
-    setNewRequestBody,
+    newTestContentSet,
+    newRequestBodySet,
     newRequestBody,
     newRequestBody: {
       JSONFormatted,
@@ -45,19 +48,19 @@ export default function GraphQLComposer(props) {
       bodyVariables,
       bodyType,
     },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
     newRequestCookiesSet,
     newRequestCookies,
     newRequestCookies: { cookiesArr },
-    setNewRequestStreams,
+    newRequestStreamsSet,
     newRequestStreams,
     newRequestStreams: { protoPath },
     newRequestSSE: { isSSE },
     currentTab,
     introspectionData,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
@@ -91,9 +94,12 @@ export default function GraphQLComposer(props) {
           const body = gql`
             ${bodyContent}
           `;
-        } catch (e) {
-          console.log('error in gql-tag for client', e);
-          validationMessage.body = `Invalid graphQL body: \n ${e.message}`;
+        } catch (err: unknown) {
+          const msg =
+            err instanceof Error ? err.message : 'Non-error object thrown';
+
+          console.log('error in gql-tag for client', err);
+          validationMessage.body = `Invalid graphQL body: \n ${msg}`;
         }
       }
       // need to add validation check for gql variables
@@ -104,7 +110,7 @@ export default function GraphQLComposer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -140,8 +146,12 @@ export default function GraphQLComposer(props) {
         protoPath,
         request: {
           method,
-          headers: headersArr.filter((header) => header.active && !!header.key),
-          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+          headers: headersArr.filter(
+            (header: $TSFixMe) => header.active && !!header.key
+          ),
+          cookies: cookiesArr.filter(
+            (cookie: $TSFixMe) => cookie.active && !!cookie.key
+          ),
           body: bodyContent || '',
           bodyType,
           bodyVariables: bodyVariables || '',
@@ -190,8 +200,12 @@ export default function GraphQLComposer(props) {
       checkSelected: false,
       request: {
         method,
-        headers: headersArr.filter((header) => header.active && !!header.key),
-        cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
+        headers: headersArr.filter(
+          (header: $TSFixMe) => header.active && !!header.key
+        ),
+        cookies: cookiesArr.filter(
+          (cookie: $TSFixMe) => cookie.active && !!cookie.key
+        ),
         body: bodyContent || '',
         bodyType,
         bodyVariables: bodyVariables || '',
@@ -221,12 +235,12 @@ export default function GraphQLComposer(props) {
 
     // GRAPHQL REQUESTS
 
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: 'GQL',
       rawType: '',
     });
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       url: gqlUrl,
       gqlUrl,
@@ -253,26 +267,26 @@ export default function GraphQLComposer(props) {
         // tabIndex={0}
       >
         <GraphQLMethodAndEndpointEntryForm
-          newRequestFields={newRequestFields}
+          fieldsReplaced={fieldsReplaced}
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
-          setNewRequestFields={setNewRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
+          newRequestFields={newRequestFields}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
           newRequestCookiesSet={newRequestCookiesSet}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          setComposerWarningMessage={setComposerWarningMessage}
-          setNewTestContent={setNewTestContent}
+          setWarningMessage={setWarningMessage}
+          newTestContentSet={newTestContentSet}
         />
         <HeaderEntryForm
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
           newRequestFields={newRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
         />
         <CookieEntryForm
           newRequestCookies={newRequestCookies}
@@ -282,15 +296,15 @@ export default function GraphQLComposer(props) {
         <GraphQLBodyEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           introspectionData={introspectionData}
         />
         <GraphQLVariableEntryForm
           newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
         />
         <TestEntryForm
-          setNewTestContent={setNewTestContent}
+          newTestContentSet={newTestContentSet}
           testContent={testContent}
         />
         <GraphQLIntrospectionLog />

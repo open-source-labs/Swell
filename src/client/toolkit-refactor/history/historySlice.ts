@@ -35,10 +35,7 @@ const HistorySlice = createSlice({
     },
 
     // Previously DELETE_HISTORY or deleteFromHistory (not deleteHistory)
-    historyDeleted(
-      state,
-      action: PayloadAction<ReqRes>
-    ): WritableDraft<HistoryItem>[] {
+    historyDeleted(state, action: PayloadAction<ReqRes>) {
       let { createdAt } = action.payload;
       if (typeof createdAt === 'string') {
         createdAt = parseISO(createdAt);
@@ -51,19 +48,25 @@ const HistorySlice = createSlice({
       // remove elements. This can cause elements to be skipped because forEach
       // and other array methods expect the array to stay the same size
       // throughout
-      return produce<HistoryItem[]>([], (draft) => {
-        for (const historyObj of state) {
-          if (historyObj.date === deleteDate) {
-            historyObj.history = historyObj.history.filter(
-              (hist) => hist.id !== deleteId
-            );
-          }
+      // const updatedHistoryItems: HistoryItem[] = [];
 
-          if (historyObj.history.length > 0) {
-            draft.push(historyObj);
-          }
+      /** @todo Refactor this to use Immer-style syntax */
+      const newHistory: HistoryItem[] = [];
+      for (const historyObj of state) {
+        let currentObj = historyObj;
+        if (currentObj.date === deleteDate) {
+          currentObj = {
+            ...currentObj,
+            history: currentObj.history.filter((hist) => hist.id !== deleteId),
+          };
         }
-      });
+
+        if (currentObj.history.length > 0) {
+          newHistory.push(currentObj);
+        }
+      }
+
+      return newHistory;
     },
   },
 

@@ -10,7 +10,7 @@ import RestRequestContent from './display/RestRequestContent';
 import GraphQLRequestContent from './display/GraphQLRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
 
-import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
+import { responseDataSaved } from '../../toolkit-refactor/reqRes/reqResSlice';
 
 const SingleScheduleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);

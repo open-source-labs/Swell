@@ -3,7 +3,7 @@
 import React from 'react';
 
 export default function WebsocketTestSnippets(props) {
-  const { setNewTestContent, setShowTests } = props;
+  const { newTestContentSet, setShowTests } = props;
 
   const snippets = {
     'Status code: connection is open':
@@ -12,7 +12,7 @@ export default function WebsocketTestSnippets(props) {
 
   const handleClickOne = () => {
     setShowTests(true);
-    setNewTestContent(snippets['Status code: connection is open']);
+    newTestContentSet(snippets['Status code: connection is open']);
   };
 
   return (

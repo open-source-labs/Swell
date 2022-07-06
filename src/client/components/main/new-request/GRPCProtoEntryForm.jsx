@@ -19,7 +19,7 @@ const GRPCProtoEntryForm = (props) => {
     // reset streaming type next to the URL & reset Select Service dropdown to default option
     // reset selected package name, service, request, streaming type & protoContent
     if (props.newRequestStreams.protoContent !== null) {
-      props.setNewRequestStreams({
+      props.newRequestStreamsSet({
         ...props.newRequestStreams,
         selectedPackage: null,
         selectedService: null,
@@ -35,7 +35,7 @@ const GRPCProtoEntryForm = (props) => {
     //listens for imported proto content from main process
     api.receive('proto-info', (readProto, parsedProto) => {
       saveChanges(true);
-      props.setNewRequestStreams({
+      props.newRequestStreamsSet({
         ...props.newRequestStreams,
         protoContent: readProto,
         services: parsedProto.serviceArr,
@@ -49,7 +49,7 @@ const GRPCProtoEntryForm = (props) => {
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
   const updateProtoBody = (value) => {
     showError(null);
-    props.setNewRequestStreams({
+    props.newRequestStreamsSet({
       ...props.newRequestStreams,
       protoContent: value,
     });
@@ -76,7 +76,7 @@ const GRPCProtoEntryForm = (props) => {
         const streamsArr = [props.newRequestStreams.streamsArr[0]];
         const streamContent = [''];
 
-        props.setNewRequestStreams({
+        props.newRequestStreamsSet({
           ...props.newRequestStreams,
           selectedPackage: null,
           selectedService: null,
@@ -94,7 +94,7 @@ const GRPCProtoEntryForm = (props) => {
       api.send('protoParserFunc-request', props.newRequestStreams.protoContent);
     }
   };
-  
+
   const isDark = useSelector((state) => state.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
@@ -111,13 +111,17 @@ const GRPCProtoEntryForm = (props) => {
         <div className="composer-section-title">Proto</div>
         <div>
           <button
-            className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button mr-1`}
+            className={`${
+              isDark ? 'is-dark-300' : ''
+            } button is-small add-header-or-cookie-button mr-1`}
             onClick={importProtos}
           >
             Load Proto
           </button>
           <button
-            className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button`}
+            className={`${
+              isDark ? 'is-dark-300' : ''
+            } button is-small add-header-or-cookie-button`}
             id="save-proto"
             onClick={submitUpdatedProto}
           >
@@ -137,7 +141,7 @@ const GRPCProtoEntryForm = (props) => {
       </div>
       <GRPCAutoInputForm
         newRequestStreams={props.newRequestStreams}
-        setNewRequestStreams={props.setNewRequestStreams}
+        newRequestStreamsSet={props.newRequestStreamsSet}
         changesSaved={changesSaved}
         saveChanges={saveChanges}
       />

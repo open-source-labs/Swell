@@ -10,8 +10,10 @@ import collectionsController from '../../../../controllers/collectionsController
 import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
+
+/**@todo delete when slice conversion complete */
 import * as actions from '../../../../features/business/businessSlice';
-import * as uiactions from '../../../../features/ui/uiSlice';
+//import * as uiactions from '../../../../features/ui/uiSlice';
 
 const style = {
   display: 'flex',
@@ -30,7 +32,7 @@ const style = {
 
 export default function ImportWorkspaceModal({ open, handleClose }) {
   let files = useLiveQuery(() => db.files.toArray());
-  console.log(files)
+  console.log(files);
   const dispatch = useDispatch();
 
   const localWorkspaces = useSelector((store) => store.business.collections);
@@ -46,10 +48,10 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
 
   const swellRepositoriesArray = [];
   if (files !== undefined) {
-    for (let file of files){
-    swellRepositoriesArray.push(<Box> {file.repository.full_name}</Box>)
-  };
-};
+    for (let file of files) {
+      swellRepositoriesArray.push(<Box> {file.repository.full_name}</Box>);
+    }
+  }
 
   return (
     <Modal
@@ -84,7 +86,7 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
           <Button
             variant="contained"
             size="small"
-            onClick = {handleImportFromGithub}
+            onClick={handleImportFromGithub}
             // onClick={files.map((file) => (
             //   <li key={file.repository.full_name}>{file.repository.name}</li>
             // ))}
@@ -99,3 +101,4 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
 }
 
 // {handleImportFromGithub}
+

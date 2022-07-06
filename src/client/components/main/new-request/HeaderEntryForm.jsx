@@ -91,7 +91,7 @@ class HeaderEntryForm extends Component {
       value: contentType,
     };
     headersDeepCopy.unshift(contentTypeHeader);
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
     });
@@ -102,7 +102,7 @@ class HeaderEntryForm extends Component {
       (header) => !header.key.toLowerCase().includes('content-type')
     );
 
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: filtered,
       count: filtered.length,
     });
@@ -119,7 +119,7 @@ class HeaderEntryForm extends Component {
       value: '',
     });
 
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       override: false,
       count: headersDeepCopy.length,
@@ -151,7 +151,7 @@ class HeaderEntryForm extends Component {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
 
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
     });
@@ -168,7 +168,7 @@ class HeaderEntryForm extends Component {
   deleteHeader = (index) => {
     const newHeadersArr = this.props.newRequestHeaders.headersArr.slice();
     newHeadersArr.splice(index, 1);
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: newHeadersArr,
       count: newHeadersArr.length,
     });

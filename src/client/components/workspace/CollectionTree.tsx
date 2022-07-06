@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 
 /**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
+//import * as actions from '../../features/business/businessSlice';
 
 import {
   reqResUpdated,
@@ -17,11 +17,11 @@ import TreeItem from '@mui/lab/TreeItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Typography } from '@mui/material';
+import { RootState } from '../../toolkit-refactor/store';
 
 /**@todo switch to use hooks? */
-const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  currentTab: store.business.currentTab,
+const mapStateToProps = (store: RootState) => ({
+  reqResArray: store.reqRes.reqResArray,
 });
 
 /**@switch to use hooks? */

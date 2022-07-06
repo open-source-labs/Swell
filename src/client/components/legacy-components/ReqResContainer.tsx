@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, useSelector } from 'react-redux';
 
 /**@todo delete after slice convserion complete */
-import * as actions from '../../features/business/businessSlice';
+//import * as actions from '../../features/business/businessSlice';
 
 import {
   reqResUpdated,
@@ -11,11 +11,11 @@ import {
 
 import SingleReqResContainer from './SingleReqResContainer';
 import ReqResCtrl from '../../controllers/reqResController';
+import { RootState } from '../../toolkit-refactor/store';
 
 /**@todo change to use hooks? */
-const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  currentTab: store.business.currentTab,
+const mapStateToProps = (store: RootState) => ({
+  reqResArray: store.reqRes.reqResArray,
 });
 
 /**@todo change to use hooks? */

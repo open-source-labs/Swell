@@ -4,18 +4,24 @@ import { v4 as uuid } from 'uuid';
 import { useDispatch } from 'react-redux';
 
 /**@todo delete when slice conversion complete */
-import * as actions from '../../../features/business/businessSlice';
-import * as uiactions from '../../../features/ui/uiSlice';
+//import * as actions from '../../../features/business/businessSlice';
+//import * as uiactions from '../../../features/ui/uiSlice';
 
-import {
-  responseDataSaved,
-  reqResItemAdded,
-} from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
 import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
 import {
   newRequestSSESet,
   newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
 } from '../../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  setResponsePaneActiveTab,
+  setSidebarActiveTab,
+} from '../../../toolkit-refactor/ui/uiSlice';
+//import { scheduledReqResAdded } from '../../../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
+import { setWarningMessage } from '../../../toolkit-refactor/warningMessage/warningMessageSlice';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
@@ -96,15 +102,15 @@ export default function Http2Composer(props) {
 
   // Destructuring dispatch props.
   const {
-    setNewRequestFields,
+    fieldsReplaced,
     composerFieldsReset,
-    setNewRequestBody,
-    setNewTestContent,
-    setNewRequestHeaders,
+    newRequestBodySet,
+    newTestContentSet,
+    newRequestHeadersSet,
     newRequestCookiesSet,
-    setNewRequestStreams,
+    newRequestStreamsSet,
     newRequestSSESet,
-    setComposerWarningMessage,
+    setWarningMessage,
     setWorkspaceActiveTab,
     reqResItemAdded,
   } = props;
@@ -143,7 +149,7 @@ export default function Http2Composer(props) {
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -207,12 +213,12 @@ export default function Http2Composer(props) {
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
-    // dispatch(actions.scheduledReqResUpdate(reqRes));
+    // dispatch(scheduledReqResAdded(reqRes));
 
     //reset for next request
     composerFieldsReset();
-    // dispatch(actions.setResponsePaneActiveTab('events'));
-    // dispatch(actions.setSidebarActiveTab('composer'));
+    dispatch(setResponsePaneActiveTab('events'));
+    dispatch(setSidebarActiveTab('composer'));
 
     connectionController.openReqRes(reqRes.id);
     dispatch(
@@ -224,7 +230,7 @@ export default function Http2Composer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -340,11 +346,11 @@ export default function Http2Composer(props) {
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestBody={newRequestBody}
-        setNewTestContent={setNewTestContent}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestBody={setNewRequestBody}
+        newTestContentSet={newTestContentSet}
+        fieldsReplaced={fieldsReplaced}
+        newRequestBodySet={newRequestBodySet}
         warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
+        setWarningMessage={setWarningMessage}
       />
       <span className="inputs">
         <div>
@@ -353,8 +359,8 @@ export default function Http2Composer(props) {
             newRequestStreams={newRequestStreams}
             newRequestBody={newRequestBody}
             newRequestFields={newRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
+            newRequestHeadersSet={newRequestHeadersSet}
+            newRequestStreamsSet={newRequestStreamsSet}
           />
           <CookieEntryForm
             newRequestCookies={newRequestCookies}
@@ -386,13 +392,13 @@ export default function Http2Composer(props) {
         <BodyEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestHeaders={newRequestHeaders}
-          setNewRequestHeaders={setNewRequestHeaders}
+          newRequestHeadersSet={newRequestHeadersSet}
         />
       )}
       <TestEntryForm
-        setNewTestContent={setNewTestContent}
+        newTestContentSet={newTestContentSet}
         testContent={testContent}
       />
     </Box>

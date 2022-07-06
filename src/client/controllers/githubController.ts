@@ -1,8 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import db from '../db';
 import { GithubData, WindowAPI, WindowExt } from '../../types';
+
+/**@todo delete when slice conversion complete */
 import * as actions from './../features/business/businessSlice';
-import * as uiactions from './../features/ui/uiSlice';
+//import * as uiactions from './../features/ui/uiSlice';
+
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import Cookies from 'js-cookie';
@@ -75,8 +78,7 @@ const githubController = {
     }
     console.log('db updated');
   },
-}
-  
-export default githubController;
+};
 
+export default githubController;
 

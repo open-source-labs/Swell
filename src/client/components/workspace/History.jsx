@@ -3,15 +3,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { historyDeleted } from '../../toolkit-refactor/history/historySlice';
+import { setSidebarActiveTab } from '../../toolkit-refactor/ui/uiSlice';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
-
-import {
-  newRequestSSESet,
-  newRequestCookiesSet,
-} from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { newRequestSSESet } from '../../toolkit-refactor/newRequest/newRequestSlice';
 
 import historyController from '../../controllers/historyController';
 
@@ -53,16 +48,14 @@ const History = ({
     servicesObj,
     protoContent,
   },
-  setNewRequestFields,
-  setNewRequestHeaders,
+  fieldsReplaced,
+  newRequestHeadersSet,
   newRequestCookiesSet,
-  setNewRequestBody,
-  setNewRequestStreams,
-  deleteFromHistory,
+  newRequestBodySet,
+  newRequestStreamsSet,
 }) => {
   const dispatch = useDispatch();
-  const setSidebarTab = (tabName) =>
-    dispatch(uiactions.setSidebarActiveTab(tabName));
+  const setSidebarTab = (tabName) => dispatch(setSidebarActiveTab(tabName));
   const setNewRequestSSE = (bool) => dispatch(newRequestSSESet(bool));
 
   const addHistoryToNewRequest = () => {
@@ -185,10 +178,10 @@ const History = ({
       JSONFormatted: JSONFormatted || true,
       bodyIsNew: false,
     };
-    setNewRequestFields(requestFieldObj);
-    setNewRequestHeaders(requestHeadersObj);
+    fieldsReplaced(requestFieldObj);
+    newRequestHeadersSet(requestHeadersObj);
     newRequestCookiesSet(requestCookiesObj);
-    setNewRequestBody(requestBodyObj);
+    newRequestBodySet(requestBodyObj);
     setNewRequestSSE(isSSE);
     // for gRPC
     if (content && gRPC) {
@@ -209,7 +202,7 @@ const History = ({
         services: servicesObj,
         protoContent,
       };
-      setNewRequestStreams(requestStreamsObj);
+      newRequestStreamsSet(requestStreamsObj);
     }
     setSidebarTab('composer');
   };
@@ -236,9 +229,9 @@ const History = ({
       break;
   }
 
-  const deleteHistory = (e) => {
-    deleteFromHistory(content);
-    historyController.deleteHistoryFromIndexedDb(e.target.id);
+  const deleteHistory = (event) => {
+    dispatch(historyDeleted(content));
+    historyController.deleteHistoryFromIndexedDb(event.target.id);
   };
 
   const urlDisplay = url && url.length > 32 ? url.slice(0, 32) + '...' : url;

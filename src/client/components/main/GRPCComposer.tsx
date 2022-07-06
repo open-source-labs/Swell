@@ -15,7 +15,7 @@ import { Box } from '@mui/material';
 export default function GRPCComposer(props) {
   const {
     composerFieldsReset,
-    setNewRequestFields,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -30,16 +30,16 @@ export default function GRPCComposer(props) {
       network,
       testContent,
     },
-    setNewRequestBody,
-    setNewTestContent,
+    newRequestBodySet,
+    newTestContentSet,
     newRequestBody,
     newRequestBody: { rawType, bodyType },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
     newRequestCookiesSet,
     newRequestCookies: { cookiesArr },
-    setNewRequestStreams,
+    newRequestStreamsSet,
     newRequestStreams,
     newRequestStreams: {
       selectedService,
@@ -55,7 +55,7 @@ export default function GRPCComposer(props) {
     },
     newRequestSSE: { isSSE },
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
@@ -75,7 +75,7 @@ export default function GRPCComposer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -156,12 +156,12 @@ export default function GRPCComposer(props) {
     composerFieldsReset();
 
     // GRPC REQUESTS
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: 'GRPC',
       rawType: '',
     });
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       url: grpcUrl,
       grpcUrl,
@@ -196,13 +196,13 @@ export default function GRPCComposer(props) {
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
-          setNewRequestFields={setNewRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
           newRequestCookiesSet={newRequestCookiesSet}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          setComposerWarningMessage={setComposerWarningMessage}
+          setWarningMessage={setWarningMessage}
         />
         <HeaderEntryForm
           stylesObj={HeaderEntryFormStyle}
@@ -210,15 +210,15 @@ export default function GRPCComposer(props) {
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
           newRequestFields={newRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
         />
         <GRPCProtoEntryForm
           newRequestStreams={newRequestStreams}
-          setNewRequestStreams={setNewRequestStreams}
+          newRequestStreamsSet={newRequestStreamsSet}
         />
         <TestEntryForm
-          setNewTestContent={setNewTestContent}
+          newTestContentSet={newTestContentSet}
           testContent={testContent}
         />
       </div>

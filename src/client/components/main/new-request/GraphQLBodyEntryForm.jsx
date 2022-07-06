@@ -12,13 +12,12 @@ import { useSelector } from 'react-redux';
 // import 'codemirror-graphql/mode';
 // import 'codemirror/addon/lint/lint.css';
 
-
 const GraphQLBodyEntryForm = (props) => {
   const {
     newRequestBody,
     newRequestBody: { bodyContent },
     newRequestBody: { bodyIsNew },
-    setNewRequestBody,
+    newRequestBodySet,
     warningMessage,
     introspectionData,
   } = props;
@@ -39,14 +38,16 @@ const GraphQLBodyEntryForm = (props) => {
         warningMessage ? <div>{warningMessage.body}</div> : null
       }
       <div className="composer-section-title">Body</div>
-      <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}>
+      <div
+        id="gql-body-entry"
+        className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}
+      >
         <CodeMirror
           value={cmValue}
-          theme = 'dark'
+          theme="dark"
           height="200px"
-          width = "100%"
-          maxHeight='300px'
-
+          width="100%"
+          maxHeight="300px"
           // GraphQL mode currently not available via react-codemirror. Below functionality is commented out since it cannot be used
           // In the future, if graphql mode gets ported and CodeMirror can integrate schema again, maybe add back in?
 
@@ -61,7 +62,7 @@ const GraphQLBodyEntryForm = (props) => {
           // }}
 
           onChange={(value, viewUpdate) => {
-            setNewRequestBody({
+            newRequestBodySet({
               ...newRequestBody,
               bodyContent: value,
               bodyIsNew: true,

@@ -1,6 +1,6 @@
 /**@todo delete below 2 imports after slice conversion complete */
-import * as store from '../store'; // TODO: refactor for Redux Hooks
-import * as actions from './../features/business/businessSlice';
+import Store from '../toolkit-refactor/store';
+//import * as actions from './../features/business/businessSlice';
 
 import { appDispatch } from '../toolkit-refactor/store';
 import {
@@ -13,6 +13,7 @@ import {
 import graphQLController from './graphQLController';
 import { ReqRes, WindowAPI, WindowExt } from '../../types';
 import {
+  groupCleared,
   graphCleared,
   graphUpdated,
 } from '../toolkit-refactor/graphPoints/graphPointsSlice';
@@ -23,13 +24,12 @@ const connectionController = {
 
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
-    const { reqResArray }: { reqResArray: ReqRes[] } =
-      store.default.getState().business;
+    const { reqResArray } = Store.getState().reqRes;
 
-    if (reqResArray.every((obj: ReqRes): boolean => obj.checked === true)) {
-      reqResArray.forEach((obj: ReqRes): boolean => (obj.checked = false));
+    if (reqResArray.every((obj) => obj.checked === true)) {
+      reqResArray.forEach((obj) => (obj.checked = false));
     } else {
-      reqResArray.forEach((obj: ReqRes): boolean => (obj.checked = true));
+      reqResArray.forEach((obj) => (obj.checked = true));
     }
     appDispatch(reqResReplaced(reqResArray));
   },
@@ -50,14 +50,19 @@ const connectionController = {
       }
       appDispatch(reqResUpdated(reqResObj));
       // If current selected response equals reqResObj received, update current response
-      const currentID = store.default.getState().business.currentResponse.id;
+
+      /** @todo Find where id should be */
+      const currentID = Store.getState().reqRes.currentResponse.id;
       if (currentID === reqResObj.id) {
         appDispatch(responseDataSaved(reqResObj, 'currentID===reqResObj.id'));
       }
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr: ReqRes[] = store.default.getState().business.reqResArray;
-    const reqResObj: ReqRes = reqResArr.find((el: ReqRes) => el.id === id);
+    const reqResArr: ReqRes[] = Store.getState().reqRes.reqResArray;
+    const reqResObj = reqResArr.find((el) => el.id === id);
+    if (!reqResObj) {
+      return;
+    }
 
     // console.log('this is the reqResArr!!!!!!!', reqResArr);
     //console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
@@ -106,7 +111,7 @@ const connectionController = {
       appDispatch(reqResUpdated(reqResObj));
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr: ReqRes[] = store.default.getState().business.reqResArray;
+    const reqResArr: ReqRes[] = Store.getState().reqRes.reqResArray;
     const reqResObj: ReqRes = reqResArr.find((el: ReqRes) => el.id === id);
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
@@ -184,12 +189,8 @@ const connectionController = {
   openAllSelectedReqRes(): void {
     connectionController.closeAllReqRes();
 
-    const { reqResArray }: { reqResArray: ReqRes[] } =
-      store.default.getState().business;
-
-    reqResArray.forEach((reqRes: ReqRes) =>
-      connectionController.openReqRes(reqRes.id)
-    );
+    const { reqResArray } = Store.getState().reqRes;
+    reqResArray.forEach((reqRes) => connectionController.openReqRes(reqRes.id));
   },
 
   // We are pretty sure that this is not used anymore... -Prince
@@ -200,7 +201,7 @@ const connectionController = {
   // },
 
   setReqResConnectionToClosed(id: number): void {
-    const reqResArr = store.default.getState().business.reqResArray;
+    const reqResArr = Store.getState().reqRes.reqResArray;
 
     const foundReqRes: ReqRes = JSON.parse(
       JSON.stringify(reqResArr.find((reqRes: ReqRes) => reqRes.id === id))
@@ -240,8 +241,7 @@ const connectionController = {
 
   /* Closes all open endpoint */
   closeAllReqRes(): void {
-    const { reqResArray }: { reqResArray: ReqRes[] } =
-      store.default.getState().business;
+    const { reqResArray } = Store.getState().reqRes;
     reqResArray.forEach((reqRes: ReqRes) =>
       connectionController.closeReqRes(reqRes)
     );
@@ -254,8 +254,7 @@ const connectionController = {
 
   // toggles minimized in ReqRes array in state
   toggleMinimizeAll(): void {
-    const { reqResArray }: { reqResArray: ReqRes[] } =
-      store.default.getState().business;
+    const { reqResArray }: { reqResArray: ReqRes[] } = Store.getState().reqRes;
 
     if (reqResArray.every((obj: ReqRes) => obj.minimized === true)) {
       reqResArray.forEach((obj: ReqRes) => (obj.minimized = false));
@@ -266,7 +265,7 @@ const connectionController = {
   },
   // clears a dataPoint from state
   clearGraph(): void {
-    appDispatch(graphCleared());
+    appDispatch(groupCleared());
   },
   // clears ALL data points from state
   clearAllGraph(): void {

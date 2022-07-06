@@ -1,35 +1,51 @@
 import React from 'react';
 // Http2Body needs access to the Redux store.
 import { connect } from 'react-redux';
-import * as actions from '../../../features/business/businessSlice';
+
+/**@todo delete when slice conversion complete */
+//import * as actions from '../../../features/business/businessSlice';
+
+import { RootState } from '../../../toolkit-refactor/store';
+
+import {
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+
 // Import local components
 import BodyTypeSelect from './BodyTypeSelect';
 // Import MUI components
-import { Box } from '@mui/material'
-import WWWForm from '../../../components/composer/NewRequest/WWWForm';
-import JSONTextArea from '../../../components/composer/NewRequest/JSONTextArea';
-import TextCodeArea from '../../../components/composer/NewRequest/TextCodeArea';
+import { Box } from '@mui/material';
+import WWWForm from '../../../components/main/new-request/WWWForm';
+import JSONTextArea from '../../../components/main/new-request/JSONTextArea';
+import TextCodeArea from '../../../components/main/new-request/TextCodeArea';
 
-
-const mapStateToProps = (store) => {
+/**@todo switch to hooks? */
+const mapStateToProps = (store: RootState) => {
   return {
-    newRequestHeaders: store.business.newRequestHeaders,
-    newRequestBody: store.business.newRequestBody,
-    warningMessage: store.business.warningMessage,
+    newRequestHeaders: store.newRequest.newRequestHeaders,
+    newRequestBody: store.newRequest.newRequestBody,
+    warningMessage: store.warningMessage,
   };
 };
 
+/**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
 });
 
-function Http2Body({ newRequestHeaders, newRequestBody, warningMessage, setNewRequestHeaders, setNewRequestBody}) {
-
+function Http2Body({
+  newRequestHeaders,
+  newRequestBody,
+  warningMessage,
+  newRequestHeadersSet,
+  newRequestBodySet,
+}) {
   const bodyEntryArea = () => {
     //BodyType of none : display nothing
     if (newRequestBody.bodyType === 'none') {
@@ -39,7 +55,7 @@ function Http2Body({ newRequestHeaders, newRequestBody, warningMessage, setNewRe
     if (newRequestBody.bodyType === 'x-www-form-urlencoded') {
       return (
         <WWWForm
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestBody={newRequestBody}
         />
       );
@@ -48,7 +64,7 @@ function Http2Body({ newRequestHeaders, newRequestBody, warningMessage, setNewRe
     if (newRequestBody.rawType === 'application/json') {
       return (
         <JSONTextArea
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestBody={newRequestBody}
         />
       );
@@ -59,7 +75,7 @@ function Http2Body({ newRequestHeaders, newRequestBody, warningMessage, setNewRe
         mode={newRequestBody.rawType}
         value={newRequestBody.bodyContent}
         onChange={(value, viewUpdate) => {
-          setNewRequestBody({
+          newRequestBodySet({
             ...newRequestBody,
             bodyContent: value,
           });
@@ -67,7 +83,7 @@ function Http2Body({ newRequestHeaders, newRequestBody, warningMessage, setNewRe
       />
     );
   };
-  return(
+  return (
     <Box
       sx={{
         display: 'flex',
@@ -77,7 +93,7 @@ function Http2Body({ newRequestHeaders, newRequestBody, warningMessage, setNewRe
       <BodyTypeSelect />
       {bodyEntryArea()}
     </Box>
-  )
+  );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Http2Body)
+export default connect(mapStateToProps, mapDispatchToProps)(Http2Body);

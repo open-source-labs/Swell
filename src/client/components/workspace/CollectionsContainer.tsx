@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../features/business/businessSlice';
 
 import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { collectionDeleted } from '../../toolkit-refactor/collections/collectionsSlice';
 
 import Collection from '../../components/display/Collection';
 import collectionsController from '../../controllers/collectionsController';
@@ -32,8 +33,8 @@ function CollectionsContainer() {
       <Collection
         content={collection}
         key={idx}
-        deleteFromCollection={() => {
-          dispatch(actions.deleteFromCollection(collection));
+        collectionDeleted={() => {
+          dispatch(collectionDeleted(collection));
         }}
         reqResReplaced={(reqResArray) => {
           dispatch(reqResReplaced(reqResArray));

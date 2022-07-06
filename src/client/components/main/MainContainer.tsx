@@ -1,17 +1,31 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
 
 /**@todo delete after slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+//import * as actions from '../../features/business/businessSlice';
+//import * as uiactions from '../../features/ui/uiSlice';
 
-import { reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
   composerFieldsReset,
   newRequestSSESet,
   newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
 } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { openApiRequestsReplaced } from '../../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
+import {
+  setWorkspaceActiveTab,
+  /*, setComposerDisplay */
+} from '../../toolkit-refactor/ui/uiSlice';
+import {
+  fieldsReplaced,
+  newTestContentSet,
+} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import { setWarningMessage } from '../../toolkit-refactor/warningMessage/warningMessageSlice';
 
 // Import local components.
 import Http2Composer from './http2-composer/Http2Composer';
@@ -25,69 +39,68 @@ import ResponsePaneContainer from './response/ResponsePaneContainer';
 
 // Import MUI components
 import { Box, Divider } from '@mui/material';
+import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 
 /**@todo switch to hooks? */
-const mapStateToProps = (store) => {
+const mapStateToProps = (store: RootState) => {
   return {
-    reqResArray: store.business.reqResArray,
-    newRequestFields: store.business.newRequestFields,
-    newRequestHeaders: store.business.newRequestHeaders,
-    newRequestStreams: store.business.newRequestStreams,
-    newRequestBody: store.business.newRequestBody,
-    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
-    newRequestCookies: store.business.newRequestCookies,
-    newRequestSSE: store.business.newRequestSSE,
-    currentTab: store.business.currentTab,
-    warningMessage: store.business.warningMessage,
-    introspectionData: store.business.introspectionData,
-    webrtcData: store.business.webrtcData,
+    reqResArray: store.reqRes.reqResArray,
+    newRequestFields: store.newRequestFields,
+    newRequestHeaders: store.newRequest.newRequestHeaders,
+    newRequestStreams: store.newRequest.newRequestStreams,
+    newRequestBody: store.newRequest.newRequestBody,
+    newRequestOpenAPI: store.newRequestOpenApi,
+    newRequestCookies: store.newRequest.newRequestCookies,
+    newRequestSSE: store.newRequest.newRequestSSE,
+    warningMessage: store.warningMessage,
+    introspectionData: store.introspectionData,
   };
 };
 
 /**@todo switch to hooks? */
-const mapDispatchToProps = (dispatch) => ({
-  reqResItemAdded: (reqRes) => {
-    dispatch(reqResItemAdded(reqRes));
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  reqResItemAdded: (reqRes: ReqRes) => {
+    dispatch(ReqResSlice.reqResItemAdded(reqRes));
   },
-  setComposerWarningMessage: (message) => {
-    dispatch(actions.setComposerWarningMessage(message));
+  setWarningMessage: (message: $TSFixMe) => {
+    dispatch(setWarningMessage(message));
   },
   // setComposerDisplay: (composerDisplay) => {
-  //   dispatch(actions.setComposerDisplay(composerDisplay));
+  //   dispatch(setComposerDisplay(composerDisplay));
   // },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj: $TSFixMeObject) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestStreams: (requestStreamsObj) => {
-    dispatch(actions.setNewRequestStreams(requestStreamsObj));
+  newRequestStreamsSet: (requestStreamsObj: $TSFixMeObject) => {
+    dispatch(newRequestStreamsSet(requestStreamsObj));
   },
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
+  fieldsReplaced: (requestFields: $TSFixMe) => {
+    dispatch(fieldsReplaced(requestFields));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
-  setNewTestContent: (testContent) => {
-    dispatch(actions.setNewTestContent(testContent));
+  newTestContentSet: (testContent: $TSFixMe) => {
+    dispatch(newTestContentSet(testContent));
   },
-  newRequestCookiesSet: (requestCookiesObj) => {
+  newRequestCookiesSet: (requestCookiesObj: $TSFixMeObject) => {
     dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  newRequestSSESet: (requestSSEBool) => {
+  newRequestSSESet: (requestSSEBool: boolean) => {
     dispatch(newRequestSSESet(requestSSEBool));
   },
-  setNewRequestsOpenAPI: (parsedDocument) => {
-    dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
+  openApiRequestsReplaced: (parsedDocument: $TSFixMe) => {
+    dispatch(openApiRequestsReplaced(parsedDocument));
   },
   composerFieldsReset: () => {
     dispatch(composerFieldsReset());
   },
-  setWorkspaceActiveTab: (tabName) => {
-    dispatch(uiactions.setWorkspaceActiveTab(tabName));
+  setWorkspaceActiveTab: (tabName: $TSFixMe) => {
+    dispatch(setWorkspaceActiveTab(tabName));
   },
 });
 
-function MainContainer(props) {
+function MainContainer(props: $TSFixMeObject) {
   return (
     <Box
       sx={{

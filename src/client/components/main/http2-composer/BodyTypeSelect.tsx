@@ -1,6 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../features/business/businessSlice';
+
+/**@todo delete when slice conversion complete */
+//import * as actions from '../../../features/business/businessSlice';
+
+import { RootState } from '../../../toolkit-refactor/store';
+
+import {
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+
 import {
   Box,
   Button,
@@ -10,42 +20,44 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
-// setNewRequestBody={setNewRequestBody}
+// newRequestBodySet={newRequestBodySet}
 // newRequestBody={newRequestBody}
-// setNewRequestHeaders={setNewRequestHeaders}
+// newRequestHeadersSet={newRequestHeadersSet}
 // newRequestHeaders={newRequestHeaders}
 
-const mapStateToProps = (store) => {
+/**@todo switch to use hooks? */
+const mapStateToProps = (store: RootState) => {
   return {
-    newRequestHeaders: store.business.newRequestHeaders,
-    newRequestBody: store.business.newRequestBody,
+    newRequestHeaders: store.newRequest.newRequestHeaders,
+    newRequestBody: store.newRequest.newRequestBody,
   };
 };
 
+/**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
 });
 
 function BodyTypeSelect({
   newRequestHeaders,
   newRequestBody,
-  setNewRequestHeaders,
-  setNewRequestBody,
+  newRequestHeadersSet,
+  newRequestBodySet,
 }) {
   const handleBodyTypeSelect = (event: SelectChangeEvent) => {
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: event.target.value,
     });
   };
 
   const handleRawBodyTypeSelect = (event: SelectChangeEvent) => {
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       rawType: event.target.value,
     });
@@ -57,7 +69,7 @@ function BodyTypeSelect({
       null,
       4
     );
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyContent: prettyString,
     });

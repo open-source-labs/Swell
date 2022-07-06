@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 /**@todo delete after slice conversion complete */
 import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+//import * as uiactions from '../../features/ui/uiSlice';
 
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from './display/RestRequestContent';
@@ -12,7 +12,7 @@ import WebRTCRequestContent from './display/WebRTCRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
 import OpenAPIRequestContent from './display/OpenAPIRequestContent';
 
-import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
+import { responseDataSaved } from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
   fieldsReplaced,
   newFields,
@@ -20,21 +20,23 @@ import {
 import {
   newRequestSSESet,
   newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
 } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  setResponsePaneActiveTab,
+  setSidebarActiveTab,
+} from '../../toolkit-refactor/ui/uiSlice';
 
-import { appDispatch, useAppDispatch } from '../../toolkit-refactor/store';
+import { useAppDispatch } from '../../toolkit-refactor/store';
 
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useAppDispatch();
 
-  const currentResponse = useSelector(
-    (store) => store.business.currentResponse
-  );
-
-  const newRequestFields = useSelector(
-    (store) => store.business.newRequestFields
-  );
+  const currentResponse = useSelector((store) => store.reqRes.currentResponse);
+  const newRequestFields = useSelector((store) => store.newRequestFields);
 
   const {
     content,
@@ -171,9 +173,9 @@ const SingleReqResContainer = (props) => {
     };
 
     dispatch(fieldsReplaced(requestBodyObj));
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+    dispatch(newRequestHeadersSet(requestHeadersObj));
     dispatch(newRequestCookiesSet(requestCookiesObj));
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+    dispatch(newRequestBodySet(requestBodyObj));
     dispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
@@ -198,10 +200,10 @@ const SingleReqResContainer = (props) => {
         protoContent: content.protoContent,
       };
 
-      dispatch(actions.setNewRequestStreams(requestStreamsObj));
+      dispatch(newRequestStreamsSet(requestStreamsObj));
     }
 
-    dispatch(uiactions.setSidebarActiveTab('composer'));
+    dispatch(setSidebarActiveTab('composer'));
   };
 
   const removeReqRes = () => {
@@ -321,7 +323,7 @@ const SingleReqResContainer = (props) => {
               //if it's http, dispatch set active tab to "event" for reqResResponse
               //otherwise do nothing
               if (connectionType !== 'WebSocket') {
-                dispatch(uiactions.setResponsePaneActiveTab('events'));
+                dispatch(setResponsePaneActiveTab('events'));
               }
               // console.log(content)
               connectionController.openReqRes(content.id);

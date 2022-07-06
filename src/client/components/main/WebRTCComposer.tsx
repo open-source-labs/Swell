@@ -14,7 +14,7 @@ import { Box } from '@mui/material';
 export default function WebRTCComposer(props) {
   const {
     composerFieldsReset,
-    setNewRequestFields,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -28,18 +28,18 @@ export default function WebRTCComposer(props) {
       network,
       testContent,
     },
-    setNewTestContent,
-    setNewRequestBody,
+    newTestContentSet,
+    newRequestBodySet,
     newRequestBody,
     newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     webrtcData,
     newRequestHeaders,
     newRequestCookiesSet,
-    setNewRequestStreams,
+    newRequestStreamsSet,
     newRequestStreams,
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
@@ -92,12 +92,12 @@ export default function WebRTCComposer(props) {
     //reset for next request
     composerFieldsReset();
 
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: 'stun-ice',
       rawType: '',
     });
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       url,
       webrtcUrl,
@@ -121,24 +121,24 @@ export default function WebRTCComposer(props) {
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
-          setNewRequestFields={setNewRequestFields}
-          setNewRequestHeaders={setNewRequestHeaders}
-          setNewRequestStreams={setNewRequestStreams}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
           newRequestCookiesSet={newRequestCookiesSet}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          setComposerWarningMessage={setComposerWarningMessage}
-          setNewTestContent={setNewTestContent}
+          setWarningMessage={setWarningMessage}
+          newTestContentSet={newTestContentSet}
         />
 
         <WebRTCServerEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
         />
 
         <TestEntryForm
-          setNewTestContent={setNewTestContent}
+          newTestContentSet={newTestContentSet}
           testContent={testContent}
         />
       </div>

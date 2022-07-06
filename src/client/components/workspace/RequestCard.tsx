@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 // Import controllers.
 import connectionController from '../../controllers/reqResController';
 
+import { RootState } from '../../toolkit-refactor/store';
+
+import { NewRequestStreams, NewRequestFields } from '../../../types';
+
 // Import Redux actions and methods.
 /**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+//import * as actions from '../../features/business/businessSlice';
+//import * as uiactions from '../../features/ui/uiSlice';
 
 import {
   reqResUpdated,
@@ -14,7 +18,11 @@ import {
 import {
   newRequestSSESet,
   newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
 } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { setSidebarActiveTab } from '../../toolkit-refactor/ui/uiSlice';
 
 import { connect, useSelector, useDispatch } from 'react-redux';
 // Import local components.
@@ -22,11 +30,11 @@ import DeleteRequestButton from './buttons/DeleteRequestButton';
 // Import MUI components.
 import { Box } from '@mui/material';
 import { TreeItem } from '@mui/lab';
+import { fieldsReplaced } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
 /**@todo switch to hooks? */
-const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  currentTab: store.business.currentTab,
+const mapStateToProps = (store: RootState) => ({
+  reqResArray: store.reqRes.reqResArray,
 });
 
 /**@todo switch to hooks? */
@@ -68,23 +76,7 @@ function RequestCard(props) {
   }, [content.request.network]);
 
   const copyToComposer = () => {
-    let requestFieldObj = {};
-
-    if (network === 'rest') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        restUrl: content.request.restUrl,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        webrtc: content.webrtc || false,
-        network,
-        testContent: content.request.testContent,
-      };
-    }
-
+    let requestFieldObj: NewRequestFields;
     if (network === 'ws') {
       requestFieldObj = {
         ...newRequestFields,
@@ -110,9 +102,7 @@ function RequestCard(props) {
         network,
         webrtcData: content.webrtcData,
       };
-    }
-
-    if (network === 'graphQL') {
+    } else if (network === 'graphQL') {
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -124,9 +114,7 @@ function RequestCard(props) {
         network,
         testContent: content.request.testContent,
       };
-    }
-
-    if (network === 'grpc') {
+    } else if (network === 'grpc') {
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -135,6 +123,23 @@ function RequestCard(props) {
         grpcUrl: content.request.grpcUrl,
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
+        network,
+        testContent: content.request.testContent,
+      };
+    }
+
+    // Else clause covers "rest" case; treated as default so that there's some
+    // guarantee that requestFieldObj is definitely assigned
+    else {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        restUrl: content.request.restUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        webrtc: content.webrtc || false,
         network,
         testContent: content.request.testContent,
       };
@@ -184,10 +189,10 @@ function RequestCard(props) {
       bodyIsNew: false,
     };
 
-    dispatch(actions.setNewRequestFields(requestFieldObj));
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+    dispatch(fieldsReplaced(requestFieldObj));
+    dispatch(newRequestHeadersSet(requestHeadersObj));
     dispatch(newRequestCookiesSet(requestCookiesObj));
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+    dispatch(newRequestBodySet(requestBodyObj));
     dispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
@@ -212,10 +217,10 @@ function RequestCard(props) {
         protoContent: content.protoContent,
       };
 
-      dispatch(actions.setNewRequestStreams(requestStreamsObj));
+      dispatch(newRequestStreamsSet(requestStreamsObj));
     }
 
-    dispatch(uiactions.setSidebarActiveTab('composer'));
+    dispatch(setSidebarActiveTab('composer'));
   };
 
   const removeReqRes = () => {

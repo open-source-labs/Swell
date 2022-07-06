@@ -1,38 +1,9 @@
 /**
  * @file Defines the slice for the NewRequestFields.
  */
-import { $NotUsed, $TSFixMe } from '../../../types';
+import { NewRequestFields } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { composerFieldsReset } from '../newRequest/newRequestSlice';
-
-/**
- * Defines the type constract for the NewRequestFields state object.
- *
- * @todo See if it makes sense to redefine some of the properties to be
- * template literal types. For example, since restUrl must start with "http://",
- * type string could possibly be replaced with the type `http://${string}`.
- * Not sure if this could cause things to break, though.
- */
-type NewRequestFields = {
-  protocol: string;
-  restUrl: string;
-  wsUrl: string;
-  gqlUrl: string;
-  grpcUrl: string;
-  webrtcUrl: string;
-  url: string;
-  method: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  ws: boolean;
-  openapi: boolean;
-  webrtc: boolean;
-  webhook: boolean;
-  network: string;
-  testContent: string;
-  testResults: $TSFixMe[];
-  openapiReqObj: Record<string, $TSFixMe>;
-};
 
 const initialState: NewRequestFields = {
   protocol: '',
@@ -61,15 +32,12 @@ const newRequestFieldsSlice = createSlice({
 
   reducers: {
     // Previously SET_NEW_REQUEST_FIELDS/setNewRequestFields
-    fieldsReplaced: (
-      _state: $NotUsed,
-      action: PayloadAction<NewRequestFields>
-    ) => {
+    fieldsReplaced: (_, action: PayloadAction<NewRequestFields>) => {
       return action.payload;
     },
 
     // Previously SET_NEW_TEST_CONTENT/setNewTestContent
-    newTestContent: (
+    newTestContentSet: (
       state,
       action: PayloadAction<NewRequestFields['testContent']>
     ) => {
@@ -84,6 +52,7 @@ const newRequestFieldsSlice = createSlice({
   },
 });
 
-export const { fieldsReplaced, newTestContent } = newRequestFieldsSlice.actions;
+export const { fieldsReplaced, newTestContentSet } =
+  newRequestFieldsSlice.actions;
 export default newRequestFieldsSlice.reducer;
 

@@ -5,9 +5,9 @@ import dropDownArrow from '../../../../assets/icons/caret-down-white.svg';
 
 const BodyTypeSelect = (props) => {
   const {
-    setNewRequestBody,
+    newRequestBodySet,
     newRequestBody,
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
   } = props;
 
@@ -28,14 +28,14 @@ const BodyTypeSelect = (props) => {
     const filtered = newRequestHeaders.headersArr.filter(
       (header) => header.key.toLowerCase() !== 'content-type'
     );
-    setNewRequestHeaders({
+    newRequestHeadersSet({
       headersArr: filtered,
       count: filtered.length,
     });
   };
 
   const setNewBodyType = (bodyTypeStr) => {
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: bodyTypeStr,
     });
@@ -49,7 +49,7 @@ const BodyTypeSelect = (props) => {
       key: 'Content-type',
       value: newBodyType,
     };
-    setNewRequestHeaders({
+    newRequestHeadersSet({
       headersArr: headersCopy.headersArr,
     });
   };
@@ -126,7 +126,7 @@ const BodyTypeSelect = (props) => {
 /** @todo Remove propTypes check when component is converted to TypeScript*/
 BodyTypeSelect.propTypes = {
   newRequestBody: PropTypes.object.isRequired,
-  setNewRequestBody: PropTypes.func.isRequired,
+  newRequestBodySet: PropTypes.func.isRequired,
 };
 
 export default BodyTypeSelect;

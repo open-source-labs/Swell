@@ -12,9 +12,9 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { Chart, Line } from 'react-chartjs-2';
 
 import { appDispatch } from '../../toolkit-refactor/store';
-import { responseDataSaved } from '../toolkit-refactor/reqRes/reqResSlice';
+import { responseDataSaved } from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
-  graphCleared,
+  groupCleared,
   graphUpdated,
 } from '../../toolkit-refactor/graphPoints/graphPointsSlice';
 
@@ -23,27 +23,26 @@ import {
 
 /**@todo switch to use hooks? */
 const mapStateToProps = (store) => ({
-  dataPoints: store.business.dataPoints,
-  currentResponse: store.business.currentResponse,
+  dataPoints: store.graphPoints,
+  currentResponse: store.reqRes.currentResponse,
 });
 
 /**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  updateGraph: (reqRes) => {
+  graphUpdated: (reqRes) => {
     dispatch(graphUpdated(reqRes));
   },
-
-  clearGraph: (id) => {
-    dispatch(graphCleared(id));
+  groupCleared: (id) => {
+    dispatch(groupCleared(id));
   },
-
   responseDataSaved: (reqRes) => {
     dispatch(responseDataSaved(reqRes, 'bargraph'));
   },
 });
 
 const BarGraph = (props) => {
-  const { dataPoints, currentResponse, responseDataSaved, clearGraph } = props;
+  const { dataPoints, currentResponse, responseDataSaved, groupCleared } =
+    props;
 
   const [chartURL, setChartURL] = useState('');
   const [host, setHost] = useState(null);
@@ -219,7 +218,7 @@ const BarGraph = (props) => {
             isDark ? 'is-dark-200' : ''
           } button is-small add-header-or-cookie-button clear-chart-button mb-3`}
           onClick={() => {
-            clearGraph(currentResponse.id);
+            groupCleared(currentResponse.id);
             setChartURL('');
           }}
         >

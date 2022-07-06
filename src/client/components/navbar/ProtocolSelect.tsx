@@ -1,18 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
+import { RootState } from '../../toolkit-refactor/store';
 
 // Import actions so that the navbar can interact with the Redux store.
 /**@todo delete after slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+//import * as actions from '../../features/business/businessSlice';
+//import * as uiactions from '../../features/ui/uiSlice';
 
-import { reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
   composerFieldsReset,
   newRequestSSESet,
   newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
 } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { openApiRequestsReplaced } from '../../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
+
+import { setWorkspaceActiveTab } from '../../toolkit-refactor/ui/uiSlice';
+import {
+  fieldsReplaced,
+  newTestContentSet,
+} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import { setWarningMessage } from '../../toolkit-refactor/warningMessage/warningMessageSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';
@@ -65,45 +77,43 @@ const CustomButton = styled(ButtonUnstyled)`
 `;
 
 /**@todo switch to hooks? */
-const mapStateToProps = (store) => {
+const mapStateToProps = (store: RootState) => {
   return {
-    reqResArray: store.business.reqResArray,
-    newRequestFields: store.business.newRequestFields,
-    newRequestHeaders: store.business.newRequestHeaders,
-    newRequestStreams: store.business.newRequestStreams,
-    newRequestBody: store.business.newRequestBody,
-    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
-    newRequestCookies: store.business.newRequestCookies,
-    newRequestSSE: store.business.newRequestSSE,
-    currentTab: store.business.currentTab,
-    warningMessage: store.business.warningMessage,
-    introspectionData: store.business.introspectionData,
-    webrtcData: store.business.webrtcData,
+    reqResArray: store.reqRes.reqResArray,
+    newRequestFields: store.newRequestFields,
+    newRequestHeaders: store.newRequest.newRequestHeaders,
+    newRequestStreams: store.newRequest.newRequestStreams,
+    newRequestBody: store.newRequest.newRequestBody,
+    newRequestsOpenAPI: store.newRequestOpenApi,
+    newRequestCookies: store.newRequest.newRequestCookies,
+    newRequestSSE: store.newRequest.newRequestSSE,
+    warningMessage: store.warningMessage,
+    introspectionData: store.introspectionData,
   };
 };
 
 /**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
   reqResItemAdded: (reqRes) => {
-    dispatch(reqResItemAdded(reqRes));
+    dispatch(ReqResSlice.reqResItemAdded(reqRes));
   },
-  setComposerWarningMessage: (message) => {
-    dispatch(actions.setComposerWarningMessage(message));
+  setWarningMessage: (message) => {
+    dispatch(setWarningMessage(message));
   },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestStreams: (requestStreamsObj) => {
-    dispatch(actions.setNewRequestStreams(requestStreamsObj));
+  newRequestStreamsSet: (requestStreamsObj) => {
+    dispatch(newRequestStreamsSet(requestStreamsObj));
   },
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
+  fieldsReplaced: (requestFields) => {
+    dispatch(fieldsReplaced(requestFields));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
-  setNewTestContent: (testContent) => {
-    dispatch(actions.setNewTestContent(testContent));
+  newTestContentSet: (testContent) => {
+    dispatch(newTestContentSet(testContent));
   },
   newRequestCookiesSet: (requestCookiesObj) => {
     dispatch(newRequestCookiesSet(requestCookiesObj));
@@ -111,14 +121,14 @@ const mapDispatchToProps = (dispatch) => ({
   newRequestSSESet: (requestSSEBool) => {
     dispatch(newRequestSSESet(requestSSEBool));
   },
-  setNewRequestsOpenAPI: (parsedDocument) => {
-    dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
+  openApiRequestsReplaced: (parsedDocument) => {
+    dispatch(openApiRequestsReplaced(parsedDocument));
   },
   composerFieldsReset: () => {
     dispatch(composerFieldsReset());
   },
   setWorkspaceActiveTab: (tabName) => {
-    dispatch(uiactions.setWorkspaceActiveTab(tabName));
+    dispatch(setWorkspaceActiveTab(tabName));
   },
 });
 
@@ -152,13 +162,13 @@ function ProtocolSelect(props) {
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
       delete warningMessage.uri;
-      props.setComposerWarningMessage({ ...warningMessage });
+      props.setWarningMessage({ ...warningMessage });
     }
-    props.setComposerWarningMessage({});
+    props.setWarningMessage({});
     switch (network) {
       case 'graphQL': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.gqlUrl,
@@ -170,7 +180,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'GQL',
           bodyVariables: '',
@@ -179,7 +189,7 @@ function ProtocolSelect(props) {
       }
       case 'rest': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.restUrl,
@@ -191,7 +201,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: ``,
@@ -200,7 +210,7 @@ function ProtocolSelect(props) {
       }
       case 'openapi': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: '',
@@ -212,7 +222,7 @@ function ProtocolSelect(props) {
           network: 'openapi',
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: '',
@@ -221,7 +231,7 @@ function ProtocolSelect(props) {
       }
       case 'grpc': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.grpcUrl,
@@ -233,7 +243,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'GRPC',
           bodyContent: ``,
@@ -242,7 +252,7 @@ function ProtocolSelect(props) {
       }
       case 'ws': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.wsUrl,
@@ -254,7 +264,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: '',
@@ -263,7 +273,7 @@ function ProtocolSelect(props) {
       }
       case 'webrtc': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.webrtcUrl,
@@ -276,7 +286,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'stun-ice',
           bodyContent: {
@@ -293,7 +303,7 @@ function ProtocolSelect(props) {
       }
       case 'webhook': {
         props.composerFieldsReset();
-        props.setNewRequestFields({
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           //??? might need to fix url vvv if we want to pass our url api from the state
@@ -308,7 +318,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
         });

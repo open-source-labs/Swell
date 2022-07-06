@@ -1,76 +1,82 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
+/**@todo delete general actions when slice conversion complete */
+//import * as actions from '../../features/business/businessSlice';
 
-import { newRequestCookiesSet } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import * as HistorySlice from '../../toolkit-refactor/history/historySlice';
 
-import { AppDispatch } from '../../toolkit-refactor/store';
+import {
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+
 import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';
 
+/**@todo switch to hooks? */
 const mapStateToProps = (store) => ({
-  history: store.business.history,
-  newRequestFields: store.business.newRequestFields,
-  newRequestStreams: store.business.newRequestStreams,
+  history: store.history,
+  newRequestFields: store.newRequestFields,
+  newRequestStreams: store.newRequest.newRequestStreams,
 });
 
+/**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  clearHistory: () => {
-    dispatch(actions.clearHistory());
+  historyCleared: () => {
+    dispatch(HistorySlice.historyCleared());
   },
-  deleteFromHistory: (reqRes) => {
-    dispatch(actions.deleteFromHistory(reqRes));
+  historyDeleted: (reqRes) => {
+    dispatch(HistorySlice.historyDeleted(reqRes));
   },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
+  fieldsReplaced: (requestFields) => {
+    dispatch(fieldsReplaced(requestFields));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
   newRequestCookiesSet: (requestCookiesObj) => {
     dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  setNewRequestStreams: (requestStreamsObj) => {
-    dispatch(actions.setNewRequestStreams(requestStreamsObj));
+  newRequestStreamsSet: (requestStreamsObj) => {
+    dispatch(newRequestStreamsSet(requestStreamsObj));
   },
 });
 
 const HistoryContainer = (props) => {
   const {
     history,
-    clearHistory,
-    deleteFromHistory,
-    setNewRequestFields,
-    setNewRequestHeaders,
+    historyCleared,
+    historyDeleted,
+    fieldsReplaced,
+    newRequestHeadersSet,
     newRequestCookiesSet,
-    setNewRequestBody,
-    setNewRequestStreams,
+    newRequestBodySet,
+    newRequestStreamsSet,
   } = props;
 
   const isDark = useSelector((store) => store.ui.isDark);
 
   // history is already sorted by created_at from getHistory
-  const historyDates = history.map((date, i) => {
-    return (
-      <HistoryDate
-        className="historyDate"
-        content={date}
-        key={i}
-        history={history}
-        deleteFromHistory={deleteFromHistory}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        newRequestCookiesSet={newRequestCookiesSet}
-        setNewRequestBody={setNewRequestBody}
-        setNewRequestStreams={setNewRequestStreams}
-      />
-    );
-  });
+  const historyDates = history.map((date, index) => (
+    <HistoryDate
+      className="historyDate"
+      content={date}
+      key={index}
+      history={history}
+      historyDeleted={historyDeleted}
+      fieldsReplaced={fieldsReplaced}
+      newRequestHeadersSet={newRequestHeadersSet}
+      newRequestCookiesSet={newRequestCookiesSet}
+      newRequestBodySet={newRequestBodySet}
+      newRequestStreamsSet={newRequestStreamsSet}
+    />
+  ));
 
   return (
     <span
@@ -83,7 +89,7 @@ const HistoryContainer = (props) => {
         id="history-container"
         className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3"
       >
-        <ClearHistoryBtn clearHistory={clearHistory} />
+        <ClearHistoryBtn historyCleared={historyCleared} />
       </span>
       <div className="add-vertical-scroll">{historyDates}</div>
     </span>

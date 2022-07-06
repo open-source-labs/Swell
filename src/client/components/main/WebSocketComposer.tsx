@@ -12,9 +12,9 @@ import { Box } from '@mui/material';
 
 export default function WebSocketComposer(props) {
   const {
-    setNewTestContent,
+    newTestContentSet,
+    fieldsReplaced,
     composerFieldsReset,
-    setNewRequestFields,
     newRequestFields,
     newRequestFields: {
       url,
@@ -27,7 +27,7 @@ export default function WebSocketComposer(props) {
       testContent,
     },
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
@@ -53,7 +53,7 @@ export default function WebSocketComposer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -92,7 +92,7 @@ export default function WebSocketComposer(props) {
 
     //reset for next request
     composerFieldsReset();
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       protocol: 'ws://',
       url: wsUrl,
@@ -119,13 +119,13 @@ export default function WebSocketComposer(props) {
       >
         <WSEndpointEntryForm
           newRequestFields={newRequestFields}
-          setNewRequestFields={setNewRequestFields}
+          fieldsReplaced={fieldsReplaced}
           warningMessage={warningMessage}
-          setComposerWarningMessage={setComposerWarningMessage}
+          setWarningMessage={setWarningMessage}
         />
       </div>
       <WSTestEntryForm
-        setNewTestContent={setNewTestContent}
+        newTestContentSet={newTestContentSet}
         testContent={testContent}
       />
       <div className="is-3rem-footer is-clickable is-margin-top-auto">

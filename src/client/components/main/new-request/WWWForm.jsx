@@ -1,6 +1,7 @@
 /* eslint-disable react/sort-comp */
 /* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
+
 /** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
 import ContentReqRowComposer from './ContentReqRowComposer.jsx';
@@ -73,12 +74,12 @@ class WWWForm extends Component {
       /(([^(&|\n)]+=[^(&|\n)]+)&?)+/g
     );
     if (matches) {
-      this.props.setNewRequestBody({
+      this.props.newRequestBodySet({
         ...this.props.newRequestBody,
         bodyContent: matches.join(''),
       });
     } else {
-      this.props.setNewRequestBody({
+      this.props.newRequestBodySet({
         ...this.props.newRequestBody,
         bodyContent: '',
       });
@@ -208,7 +209,7 @@ class WWWForm extends Component {
 /** @todo Remove propTypes check when component is converted to TypeScript*/
 WWWForm.propTypes = {
   newRequestBody: PropTypes.object.isRequired,
-  setNewRequestBody: PropTypes.func.isRequired,
+  newRequestBodySet: PropTypes.func.isRequired,
 };
 
 export default WWWForm;

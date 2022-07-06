@@ -1,61 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { io } from 'socket.io-client';
 
 // Import MUI components
 import { Box } from '@mui/material';
+import { $TSFixMe } from '../../../types';
 
 const socket = io('http://localhost:3000');
 
-export default function WebhookComposer(props) {
+export default function WebhookComposer(props: $TSFixMe) {
   // TODO: A relic of the past... it must be purged.
   const isDark = false;
 
   const {
-    composerFieldsReset,
-    setNewRequestFields,
-    newRequestFields,
+    //composerFieldsReset,
+    // newRequestFields,
     newRequestFields: {
       gRPC,
       webrtc,
-      url,
+      // url,
       method,
       graphQL,
-      restUrl,
-      wsUrl,
-      gqlUrl,
-      grpcUrl,
+      // restUrl,
+      // wsUrl,
+      // gqlUrl,
+      // grpcUrl,
       webhook,
       network,
-      testContent,
+      // testContent,
     },
-    setNewTestContent,
-    setNewRequestBody,
-    newRequestBody,
-    newRequestBody: {
-      JSONFormatted,
-      rawType,
-      bodyContent,
-      bodyVariables,
-      bodyType,
-    },
-    setNewRequestHeaders,
-    newRequestHeaders,
-    newRequestHeaders: { headersArr },
-    newRequestCookiesSet,
-    newRequestCookies,
-    newRequestCookies: { cookiesArr },
-    setNewRequestStreams,
-    newRequestStreams,
-    newRequestStreams: { protoPath },
-    newRequestSSE: { isSSE },
+    //newTestContentSet,
+    //newRequestBodySet,
+    // newRequestBody,
+    // newRequestBody: {
+    //   JSONFormatted,
+    //   rawType,
+    //   bodyContent,
+    //   bodyVariables,
+    //   bodyType,
+    // },
+    //newRequestHeadersSet,
+    // newRequestHeaders,
+    // newRequestHeaders: { headersArr },
+    //newRequestCookiesSet,
+    // newRequestCookies,
+    // newRequestCookies: { cookiesArr },
+    //newRequestStreamsSet,
+    // newRequestStreams,
+    // newRequestStreams: { protoPath },
+    //newRequestSSE: { isSSE },
     currentTab,
-    introspectionData,
-    setComposerWarningMessage,
-    warningMessage,
+    //introspectionData,
+    //setWarningMessage,
+    //warningMessage,
     reqResItemAdded,
-    setWorkspaceActiveTab,
+    //setWorkspaceActiveTab,
   } = props;
 
   const [whUrl, updateURL] = useState('');
@@ -72,7 +72,7 @@ export default function WebhookComposer(props) {
       const protocol = 'I do not know what this is for?';
       console.log('this is event.headers', event.headers['user-agent']);
       // url = event.headers;
-      url = event.headers['user-agent'];
+      const url = event.headers['user-agent'];
       const reqRes = {
         id: uuid(),
         created_at: new Date(),
