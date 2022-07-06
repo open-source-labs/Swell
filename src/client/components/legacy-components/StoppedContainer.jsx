@@ -2,21 +2,21 @@ import React from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 
 /**@todo delete after slice convserion complete */
-import * as actions from '../../features/business/businessSlice';
-import { graphCleared } from '../../toolkit-refactor/graphPoints/graphPointsSlice';
+//import * as actions from '../../features/business/businessSlice';
 
+import { graphCleared } from '../../toolkit-refactor/graphPoints/graphPointsSlice';
 import {
   reqResUpdated,
   reqResItemDeleted,
 } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { scheduledReqResCleared } from '../../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
 
 import SingleScheduleReqResContainer from './SingleScheduleReqResContainer';
 
 /**@todo switch to use hooks? */
 const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  scheduledReqResArray: store.business.scheduledReqResArray,
-  currentTab: store.business.currentTab,
+  reqResArray: store.reqRes.reqResArray,
+  scheduledReqResArray: store.scheduledReqRes,
 });
 
 /**@todo switch to use hooks? */
@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => ({
   reqResUpdated: (reqRes) => {
     dispatch(reqResUpdated(reqRes));
   },
-  scheduledReqResDelete: () => {
-    dispatch(actions.scheduledReqResDelete());
+  scheduledReqResCleared: () => {
+    dispatch(scheduledReqResCleared());
   },
   graphCleared: () => {
     dispatch(graphCleared());
@@ -42,8 +42,8 @@ const StoppedContainer = (props) => {
     updated,
     runScheduledTests,
     scheduledReqResArray,
-    scheduledReqResDelete,
-    clearAllGraph,
+    scheduledReqResCleared,
+    graphCleared,
   } = props;
   const dispatch = useDispatch();
 
@@ -75,8 +75,8 @@ const StoppedContainer = (props) => {
             } button-hover-color`}
             style={{ width: '190px' }}
             onClick={() => {
-              scheduledReqResDelete();
-              clearAllGraph();
+              scheduledReqResCleared();
+              graphCleared();
             }}
           >
             Clear

@@ -3,7 +3,7 @@
  * arrays and associated values.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes } from '../../../types';
+import { HttpRequest, ReqRes } from '../../../types';
 
 type ReqResStore = {
   reqResArray: ReqRes[];
@@ -13,6 +13,8 @@ type ReqResStore = {
     };
   };
 };
+
+const initialState2: HttpRequest = {};
 
 const initialState: ReqResStore = {
   reqResArray: [],
