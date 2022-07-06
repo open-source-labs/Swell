@@ -64,9 +64,6 @@ const connectionController = {
       return;
     }
 
-    // console.log('this is the reqResArr!!!!!!!', reqResArr);
-    //console.log('this is the openConnectionArray!!!!!!!', this.openConnectionArray);
-
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {

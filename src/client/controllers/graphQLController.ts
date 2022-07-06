@@ -4,14 +4,23 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import gql from 'graphql-tag';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
-// TODO: Migrate this file and graphqlServer.js to use graphql-ws
-// instead of deprecated subscription-transport-ws package
-// https://www.apollographql.com/docs/apollo-server/data/subscriptions/
-// import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-// import { createClient } from 'graphql-ws';
+import * as store from '../store'; // TODO: refactor for Redux Hooks
+import * as actions from './../features/business/businessSlice';
+import * as uiactions from './../features/ui/uiSlice';
+import {
+  ReqRes,
+  GraphQLResponse,
+  Cookie,
+  RequestHeaders,
+  NewRequestCookies,
+  WindowAPI,
+  WindowExt,
+} from '../../types';
+import { reqResUpdate } from '../actions(deprecated)/actions';
+import ReqResContainer from '../components/legacy-components/ReqResContainer';
 
 /**@todo delete next 2 imports (store, actions) when toolkit conversion complete */
 //import * as store from '../store'; // TODO: refactor for Redux Hooks
@@ -120,10 +129,8 @@ const graphQLController = {
   },
 
   openSubscription(reqResObj: ReqRes): void {
-    reqResObj.response.headers = {};
-    reqResObj.response.events = [];
-    reqResObj.connection = 'open';
-    appDispatch(reqResUpdated(reqResObj));
+    console.log('openSubscription');
+    store.default.dispatch(actions.reqResUpdate(reqResObj));
 
     const currentID = store.getState().reqRes.currentResponse.id;
     if (currentID === reqResObj.id) appDispatch(responseDataSaved(reqResObj));
@@ -133,9 +140,11 @@ const graphQLController = {
 
     // Map all headers to headers object
     const headers: Record<string, string> = {};
-    reqResObj.request.headers.forEach(({ active, key, value }) => {
-      if (active) headers[key] = value;
-    });
+    reqResObj.request.headers.forEach(
+      ({ active, key, value }: RequestHeaders) => {
+        if (active) headers[key] = value;
+      }
+    );
 
     // Reformat cookies
     let cookiesStr = '';
@@ -151,23 +160,13 @@ const graphQLController = {
     }
     headers.Cookie = cookiesStr;
 
-    // moving to graphql-ws
-
-    // const wsLink = new GraphQLWsLink(createClient({
-    //   url: wsUri,
-    //   connectionParams: {
-    //     headers,
-    //     timeout: 30000,
-    //     reconnect: true,
-    //   },
-    // }));
-
-    const wsLink = new WebSocketLink(
-      new SubscriptionClient(wsUri, {
-        reconnect: true,
-        timeout: 30000,
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: wsUri,
         connectionParams: {
           headers,
+          timeout: 30000,
+          reconnect: true,
         },
       })
     );
@@ -193,7 +192,7 @@ const graphQLController = {
       .subscribe({
         next(subsEvent) {
           // Notify your application with the new arrived data
-          reqResObj.response.events.push(subsEvent.data);
+          console.log('new link', subsEvent.data);
           const newReqRes: ReqRes = JSON.parse(JSON.stringify(reqResObj));
           appDispatch(responseDataSaved(newReqRes));
           appDispatch(reqResUpdated(newReqRes));
