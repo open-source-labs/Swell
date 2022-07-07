@@ -79,7 +79,10 @@ const collectionsController = {
       .where('id')
       .equals(id)
       .first((foundCollection: Collection) => {
-        // TODO: we change uuid on export but is this what we want??
+        /**
+         * @todo UUID is being changed on export; figure out if that makes
+         * sense
+         */
         foundCollection.name += ' export';
         foundCollection.id = uuid();
         api.send('export-collection', { collection: foundCollection });

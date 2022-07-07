@@ -13,7 +13,7 @@ const introspectionDataSlice = createSlice({
   name: 'introspectionData',
   initialState,
   reducers: {
-    //previously SET_INTROSPECTION_DATA or setIntrospectionData
+    //Before toolkit conversion was SET_INTROSPECTION_DATA or setIntrospectionData
     introspectionDataChanged: (
       _state: $NotUsed,
       action: PayloadAction<IntrospectionData>

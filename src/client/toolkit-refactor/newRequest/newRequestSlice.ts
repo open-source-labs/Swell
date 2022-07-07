@@ -61,7 +61,7 @@ const newRequestSlice = createSlice({
   name: 'newRequest',
   initialState,
   reducers: {
-    // Previously SET_NEW_REQUEST_HEADERS or setNewRequestHeaders
+    //Before toolkit conversion was SET_NEW_REQUEST_HEADERS or setNewRequestHeaders
     newRequestHeadersSet: (
       state,
       action: PayloadAction<NewRequestStore['newRequestHeaders']>
@@ -69,17 +69,17 @@ const newRequestSlice = createSlice({
       state.newRequestHeaders = action.payload;
     },
 
-    // Previously SET_NEW_REQUEST_BODY or setNewRequestBody
+    //Before toolkit conversion was SET_NEW_REQUEST_BODY or setNewRequestBody
     newRequestBodySet: (state, action: PayloadAction<NewRequestBody>) => {
       state.newRequestBody = action.payload;
     },
 
-    // Previously SET_NEW_REQUEST_STREAMS or setNewRequestStreams
+    //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
     newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
       state.newRequestStreams = action.payload;
     },
 
-    // Previously SET_NEW_REQUEST_COOKIES or setNewRequestCookies
+    //Before toolkit conversion was SET_NEW_REQUEST_COOKIES or setNewRequestCookies
     newRequestCookiesSet: (
       state,
       action: PayloadAction<NewRequestStore['newRequestCookies']>
@@ -87,12 +87,12 @@ const newRequestSlice = createSlice({
       state.newRequestCookies = action.payload;
     },
 
-    // Previously SET_NEW_REQUEST_SSE or setNewRequestSSE
+    //Before toolkit conversion was SET_NEW_REQUEST_SSE or setNewRequestSSE
     newRequestSSESet: (state, action: PayloadAction<boolean>) => {
       state.newRequestSSE.isSSE = action.payload;
     },
 
-    // Previously RESET_COMPOSER_FIELDS or resetComposerFields
+    //Before toolkit conversion was RESET_COMPOSER_FIELDS or resetComposerFields
     composerFieldsReset: () => {
       return initialState;
     },

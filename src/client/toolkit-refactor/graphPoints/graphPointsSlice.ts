@@ -52,16 +52,6 @@ const initialState: GraphRecord = {};
 export const graphUpdated = createAction(
   'graphPoints/graphUpdated',
   (reqRes: ReqRes) => {
-    // Previous code; keeping until we can tell where graph points are used
-    // const MAX_CHANNEL_VALUE = 256;
-    // const redChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE)
-    // const greenChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE)
-    // const blueChannel = Math.floor(Math.random() * MAX_CHANNEL_VALUE);
-    // return { payload: {
-    //   httpRequest,
-    //   color: `${redChannel}, ${greenChannel}, ${blueChannel}`
-    // }};
-
     const color = UI_SAFE_COLORS[currentColorIndex];
     currentColorIndex = (1 + currentColorIndex) % UI_SAFE_COLORS.length;
     return { payload: { reqRes, color } };
@@ -72,19 +62,19 @@ const graphPointsSlice = createSlice({
   name: 'graphPoints',
   initialState,
   reducers: {
-    // was clearGraph or CLEAR_GRAPH previously
+    //Before toolkit conversion was clearGraph or CLEAR_GRAPH
     groupCleared: (state, action: PayloadAction<number>) => {
       state[action.payload] = [];
     },
 
-    //was clearAllGraph or CLEAR_ALL_GRAPH previously
+    //Before toolkit conversion was clearAllGraph or CLEAR_ALL_GRAPH
     graphCleared: () => {
       return initialState;
     },
   },
 
   extraReducers: (builder) => {
-    //graphUpdated was updateGraph or UPDATE_GRAPH previously
+    //Before toolkit conversino was graphUpdated was updateGraph or UPDATE_GRAPH
     builder.addCase(graphUpdated, (state, action) => {
       const { reqRes, color } = action.payload;
 

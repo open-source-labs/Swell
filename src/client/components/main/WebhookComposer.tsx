@@ -10,7 +10,14 @@ import { $TSFixMe } from '../../../types';
 const socket = io('http://localhost:3000');
 
 export default function WebhookComposer(props: $TSFixMe) {
-  // TODO: A relic of the past... it must be purged.
+  /**
+   * @todo There was a previous todo with the text "A relic of the past... it
+   * must be purged." We're 99% sure this refers to the isDark variable, rather
+   * than anything else in the component.
+   *
+   * This seems to have been put in place before the dedicated UI slice had a
+   * chance to be created.
+   */
   const isDark = false;
 
   const {

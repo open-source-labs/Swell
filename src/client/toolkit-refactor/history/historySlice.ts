@@ -21,12 +21,12 @@ const HistorySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    // Previously CLEAR_HISTORY or clearHistory
+    //Before toolkit conversion was CLEAR_HISTORY or clearHistory
     historyCleared(): HistoryItem[] {
       return [];
     },
 
-    // Previously GET_HISTORY or getHistory
+    //Before toolkit conversion was GET_HISTORY or getHistory
     historySet<HI extends HistoryItem>(
       _state: $NotUsed,
       action: PayloadAction<HI[]>
@@ -34,7 +34,7 @@ const HistorySlice = createSlice({
       return action.payload;
     },
 
-    // Previously DELETE_HISTORY or deleteFromHistory (not deleteHistory)
+    //Before toolkit convserion was DELETE_HISTORY or deleteFromHistory
     historyDeleted(state, action: PayloadAction<ReqRes>) {
       let { createdAt } = action.payload;
       if (typeof createdAt === 'string') {
@@ -71,7 +71,7 @@ const HistorySlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // Case was previously REQRES_ADD or reqresAdd
+    //Before toolkit conversion was REQRES_ADD or reqresAdd
     builder.addCase(reqResItemAdded, (state, action) => {
       const formattedDate = format(action.payload.createdAt, 'MM/dd/yyyy');
       let updated = false;

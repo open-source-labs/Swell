@@ -30,7 +30,7 @@
 // Import parts of electron to use
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
-
+// ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
 const { autoUpdater } = require('electron-updater');
@@ -204,7 +204,12 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
   if (!isDev) {
-    // TODO: this is crucial code! run express server if production mode
+    /**
+     * Note: Even though Express is not used for the duration of the block, this
+     * is crucial code, and while VS Code will flag it as not being used, it
+     * should not be removed. Express server is used in production mode as there
+     * is no dev server.
+     */
     const express = require('./src/server/server');
     autoUpdater.checkForUpdates();
   }
@@ -304,7 +309,7 @@ app.on('activate', () => {
 
 ipcMain.on('import-from-github', async (event, args) => {
   async function popOverwrite(collection) {
-    // TODO: add in mod date, is Yes No ordering correct on popup?
+    /** @todo add in mod date, is Yes No ordering correct on popup?  */
     const options = {
       type: 'question',
       buttons: ['No', 'Yes'],

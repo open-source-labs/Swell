@@ -11,7 +11,11 @@ import ImageDropzone from './ImageDropzone';
 
 const { api } = window;
 
-// TODO: ResponsePaneContainer.tsx should dispach state and we should pull it here, not drill it down
+/**
+ * @todo ResponsePaneContainer.tsx should dispach state and we should pull it
+ * here, not drill it down
+ */
+
 const WebSocketWindow = ({
   content,
   outgoingMessages,
@@ -34,7 +38,10 @@ const WebSocketWindow = ({
   };
 
   // sends to WScontroller in main.js to send the message to server
-  // TODO: doesn't handle the case of both fields being populated
+  /**
+   * @todo Fix issue where this doesn't handle the case of both fields being
+   * populated
+   */
   const sendToWSController = () => {
     if (inputFields.msg) {
       api.send('send-ws', content, inputFields.msg);

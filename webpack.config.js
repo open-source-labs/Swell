@@ -79,7 +79,11 @@ module.exports = {
       // template: path.resolve(__dirname, "index-csp.html"),
       filename: 'index.html',
       title: require('./package.json').name,
-      // TODO: update CSP with nonce inline styling. Refactor code to be more secure (do not use 'unsafe-inline')
+
+      /**
+       * @todo Update CSP (Content Security Policy) with "nonce" inline styling.
+       * Refactor code to be more secure (do not use 'unsafe-inline')
+       */
       cspPlugin: {
         enabled: true,
         policy: {

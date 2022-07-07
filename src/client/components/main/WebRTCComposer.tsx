@@ -3,7 +3,11 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import WebRTCSessionEntryForm from './new-request/WebRTCSessionEntryForm.jsx';
 import WebRTCServerEntryForm from './new-request/WebRTCServerEntryForm.jsx';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
@@ -85,7 +89,7 @@ export default function WebRTCComposer(props) {
     };
 
     // add request to history
-    // TODO: fix this TS type error
+    /** @todo Fix this TS type error  */
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 
@@ -115,7 +119,7 @@ export default function WebRTCComposer(props) {
         className="is-flex-grow-3 add-vertical-scroll"
         style={{ overflowX: 'hidden' }}
       >
-        {/* TODO: fix TSX type error */}
+        {/** @todo Fix TSX type error */}
         <WebRTCSessionEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}

@@ -93,7 +93,7 @@ const newRequestOpenApiSlice = createSlice({
   name: 'newRequestOpenApi',
   initialState,
   reducers: {
-    // Previously SET_NEW_REQUESTS_OPENAPI or setNewRequestsOpenAPI
+    //Before toolkit conversion was SET_NEW_REQUESTS_OPENAPI or setNewRequestsOpenAPI
     openApiRequestsReplaced(
       _state: $NotUsed,
       action: PayloadAction<NewRequestOpenApi>
@@ -102,9 +102,9 @@ const newRequestOpenApiSlice = createSlice({
     },
 
     /**
-     * Previously SET_OPENAPI_SERVERS_GLOBAL or setOpenAPIServersGlobal. The old name made it sound like
-     * that it was meant to handle new server URLs being added, but the logic
-     * only ever removed items.
+     * Before toolkit conversion was SET_OPENAPI_SERVERS_GLOBAL or setOpenAPIServersGlobal.
+     * The old name made it sound like that it was meant to handle new server
+     * URLs being added, but the logic only ever removed items.
      */
     serversRemovedByIndex(state, action: PayloadAction<number[]>) {
       const serverIndices = new Set(action.payload);
@@ -116,7 +116,7 @@ const newRequestOpenApiSlice = createSlice({
     },
 
     /**
-     * Previously SET_NEW_OPENAPI_SERVERS or setOpenAPIServers
+     * Before toolkit conversion was SET_NEW_OPENAPI_SERVERS or setOpenAPIServers
      */
     newServerAdded(state, action: PayloadAction<OpenApiRequest>) {
       const { id } = action.payload.request;
@@ -140,7 +140,7 @@ const newRequestOpenApiSlice = createSlice({
       state.openApiReqArray.push(reqToBeUpdated);
     },
 
-    // Previously SET_NEW_OPENAPI_PARAMETER or setOpenAPIParameter
+    // Before toolkit conversion was SET_NEW_OPENAPI_PARAMETER or setOpenAPIParameter
     newParameterAdded(state, action: PayloadAction<RequestUpdateInfo>) {
       const { id, location, name, value } = action.payload;
       const filteredById = state.openApiReqArray.filter(
@@ -212,7 +212,7 @@ const newRequestOpenApiSlice = createSlice({
       }
     },
 
-    // Previously SET_NEW_OPENAPI_REQUEST_BODY or setOpenAPIRequestBody
+    // Before toolkit conversion was SET_NEW_OPENAPI_REQUEST_BODY or setOpenAPIRequestBody
     requestBodyUpdated(state, action: PayloadAction<MediaInfo>) {
       const { requestId, mediaType, requestBody } = action.payload;
       const filteredById = state.openApiReqArray.filter(

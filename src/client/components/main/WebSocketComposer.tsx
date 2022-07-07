@@ -3,7 +3,10 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import WSEndpointEntryForm from './new-request/WSEndpointEntryForm';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import WSTestEntryForm from './new-request/WSTestEntryForm.jsx';
@@ -86,7 +89,7 @@ export default function WebSocketComposer(props) {
     };
 
     // add request to history
-    // TODO: fix TS type error
+    /** @todo Fix TS type error */
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 

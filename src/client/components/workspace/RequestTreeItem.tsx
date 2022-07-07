@@ -6,14 +6,11 @@ import { RootState } from '../../toolkit-refactor/store';
 
 export default function RequestTreeItem({ request }) {
   /**
-   * TODO: implement "Show Details" functionality here
-   * To add here, it seems that the "Show Details" functionality is only for WebRTC
+   * @todo Implement "Show Details" functionality here. It seems that the
+   * "Show Details" functionality is only for WebRTC.
    */
   const dispatch = useDispatch();
 
-  /**
-   * TODO: refactor store to remove explicit any. Will require refactoring the reqRes array type.
-   */
   const currentResponse = useSelector(
     (store: RootState) => store.reqRes.reqResArray
   );

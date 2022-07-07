@@ -2,7 +2,8 @@ import React from 'react';
 // Http2Body needs access to the Redux store.
 import { connect } from 'react-redux';
 
-import { RootState } from '../../../toolkit-refactor/store';
+import { AppDispatch, RootState } from '../../../toolkit-refactor/store';
+import { $TSFixMeObject } from '../../../../types';
 
 import {
   newRequestBodySet,
@@ -27,11 +28,11 @@ const mapStateToProps = (store: RootState) => {
 };
 
 /**@todo switch to hooks? */
-const mapDispatchToProps = (dispatch) => ({
-  newRequestHeadersSet: (requestHeadersObj) => {
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  newRequestHeadersSet: (requestHeadersObj: $TSFixMeObject) => {
     dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  newRequestBodySet: (requestBodyObj) => {
+  newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
     dispatch(newRequestBodySet(requestBodyObj));
   },
 });

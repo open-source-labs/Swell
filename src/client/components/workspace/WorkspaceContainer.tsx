@@ -1,3 +1,9 @@
+/**
+ * @todo Change the workspace container to have adjustable width sizing via
+ * user dragging
+ *
+ * @todo Reimplement the "Schedule" functionality somehow
+ */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -23,12 +29,6 @@ export default function WorkspaceContainer({
   currentWorkspaceId,
   setWorkspace,
 }) {
-  /**
-   * TODO: change the workspace container to have adjustable width sizing via user dragging
-   * TODO: reimplement the "Schedule" functionality somehow
-   * TODO: refactor store to remove explicit any
-   */
-
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
   };
@@ -71,10 +71,10 @@ export default function WorkspaceContainer({
       }
 
       {/**
-       * TODO:
-       * Below button is not ready to be added. Would eventually be used to add another collection to a workspace.
-       * However, workspaces are currently only built to handle 1 collection max.
-       * Need to refactor Redux store to get this button to work.
+       * @todo Below button is not ready to be added. Would eventually be used
+       * to add another collection to a workspace. However, workspaces are
+       * currently only built to handle 1 collection max. Need to refactor Redux
+       * store to get this button to work.
        */}
 
       {/* <Button variant="text" sx={{ width: 1, maxHeight: '24px', minHeight: '24px' }}>
