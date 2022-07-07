@@ -9,9 +9,9 @@ import TextCodeArea from './TextCodeArea.jsx';
 const BodyEntryForm = (props) => {
   const {
     newRequestBody,
-    setNewRequestBody,
+    newRequestBodySet,
     newRequestHeaders,
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     warningMessage,
   } = props;
 
@@ -24,7 +24,7 @@ const BodyEntryForm = (props) => {
     if (newRequestBody.bodyType === 'x-www-form-urlencoded') {
       return (
         <WWWForm
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestBody={newRequestBody}
         />
       );
@@ -33,7 +33,7 @@ const BodyEntryForm = (props) => {
     if (newRequestBody.rawType === 'application/json') {
       return (
         <JSONTextArea
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestBody={newRequestBody}
         />
       );
@@ -44,7 +44,7 @@ const BodyEntryForm = (props) => {
         mode={newRequestBody.rawType}
         value={newRequestBody.bodyContent}
         onChange={(value, viewUpdate) => {
-          setNewRequestBody({
+          newRequestBodySet({
             ...newRequestBody,
             bodyContent: value,
           });
@@ -59,18 +59,18 @@ const BodyEntryForm = (props) => {
       <div className="is-flex is-align-items-center is-justify-content-space-between">
         <span className="is-flex is-align-items-center">
           <BodyTypeSelect
-            setNewRequestBody={setNewRequestBody}
+            newRequestBodySet={newRequestBodySet}
             newRequestBody={newRequestBody}
-            setNewRequestHeaders={setNewRequestHeaders}
+            newRequestHeadersSet={newRequestHeadersSet}
             newRequestHeaders={newRequestHeaders}
           />
 
           {/* DROP DOWN MENU FOR SELECTING RAW TEXT TYPE */}
           {newRequestBody.bodyType === 'raw' && (
             <RawBodyTypeSelect
-              setNewRequestBody={setNewRequestBody}
+              newRequestBodySet={newRequestBodySet}
               newRequestBody={newRequestBody}
-              setNewRequestHeaders={setNewRequestHeaders}
+              newRequestHeadersSet={newRequestHeadersSet}
               newRequestHeaders={newRequestHeaders}
             />
           )}
@@ -79,7 +79,7 @@ const BodyEntryForm = (props) => {
           newRequestBody.rawType === 'application/json' && (
             <JSONPrettify
               newRequestBody={newRequestBody}
-              setNewRequestBody={setNewRequestBody}
+              newRequestBodySet={newRequestBodySet}
             />
           )}
       </div>

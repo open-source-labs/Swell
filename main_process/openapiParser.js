@@ -1,6 +1,9 @@
 const YAML = require('yamljs');
 
-// TODO: Validation, Callbacks
+/**
+ * @todo The previous todo just said "Validation, Callbacks". That's it. Maybe
+ * it means to add validation and to refactor this to add support for callbacks?
+ */
 const openapiParserFunc = (input) => {
   if (input === undefined || input === null)
     ReferenceError('OpenAPI Document not found.');

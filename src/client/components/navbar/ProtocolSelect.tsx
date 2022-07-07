@@ -1,15 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
+import { RootState } from '../../toolkit-refactor/store';
 
 // Import actions so that the navbar can interact with the Redux store.
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  composerFieldsReset,
+  newRequestSSESet,
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { openApiRequestsReplaced } from '../../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
+
+import { setWorkspaceActiveTab } from '../../toolkit-refactor/ui/uiSlice';
+import {
+  fieldsReplaced,
+  newTestContentSet,
+} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import { setWarningMessage } from '../../toolkit-refactor/warningMessage/warningMessageSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';
 import { Box, Button } from '@mui/material';
-import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
+import ButtonUnstyled, {
+  buttonUnstyledClasses,
+} from '@mui/base/ButtonUnstyled';
 
 const blue = {
   500: '#51819b',
@@ -19,7 +37,7 @@ const blue = {
 
 const white = {
   500: '#f0f6fa',
-}
+};
 
 const CustomButton = styled(ButtonUnstyled)`
   font-family: IBM Plex Sans, sans-serif;
@@ -43,7 +61,8 @@ const CustomButton = styled(ButtonUnstyled)`
   }
 
   &.${buttonUnstyledClasses.focusVisible} {
-    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
+    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
+      0 0 0 5px rgba(0, 127, 255, 0.5);
     outline: none;
   }
 
@@ -53,59 +72,59 @@ const CustomButton = styled(ButtonUnstyled)`
   }
 `;
 
-const mapStateToProps = (store) => {
+/**@todo switch to hooks? */
+const mapStateToProps = (store: RootState) => {
   return {
-    reqResArray: store.business.reqResArray,
-    newRequestFields: store.business.newRequestFields,
-    newRequestHeaders: store.business.newRequestHeaders,
-    newRequestStreams: store.business.newRequestStreams,
-    newRequestBody: store.business.newRequestBody,
-    newRequestsOpenAPI: store.business.newRequestsOpenAPI,
-    newRequestCookies: store.business.newRequestCookies,
-    newRequestSSE: store.business.newRequestSSE,
-    currentTab: store.business.currentTab,
-    warningMessage: store.business.warningMessage,
-    introspectionData: store.business.introspectionData,
-    webrtcData: store.business.webrtcData,
+    reqResArray: store.reqRes.reqResArray,
+    newRequestFields: store.newRequestFields,
+    newRequestHeaders: store.newRequest.newRequestHeaders,
+    newRequestStreams: store.newRequest.newRequestStreams,
+    newRequestBody: store.newRequest.newRequestBody,
+    newRequestsOpenAPI: store.newRequestOpenApi,
+    newRequestCookies: store.newRequest.newRequestCookies,
+    newRequestSSE: store.newRequest.newRequestSSE,
+    warningMessage: store.warningMessage,
+    introspectionData: store.introspectionData,
   };
 };
 
+/**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResAdd: (reqRes) => {
-    dispatch(actions.reqResAdd(reqRes));
+  reqResItemAdded: (reqRes) => {
+    dispatch(ReqResSlice.reqResItemAdded(reqRes));
   },
-  setComposerWarningMessage: (message) => {
-    dispatch(actions.setComposerWarningMessage(message));
+  setWarningMessage: (message) => {
+    dispatch(setWarningMessage(message));
   },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestStreams: (requestStreamsObj) => {
-    dispatch(actions.setNewRequestStreams(requestStreamsObj));
+  newRequestStreamsSet: (requestStreamsObj) => {
+    dispatch(newRequestStreamsSet(requestStreamsObj));
   },
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
+  fieldsReplaced: (requestFields) => {
+    dispatch(fieldsReplaced(requestFields));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
-  setNewTestContent: (testContent) => {
-    dispatch(actions.setNewTestContent(testContent));
+  newTestContentSet: (testContent) => {
+    dispatch(newTestContentSet(testContent));
   },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+  newRequestCookiesSet: (requestCookiesObj) => {
+    dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  setNewRequestSSE: (requestSSEBool) => {
-    dispatch(actions.setNewRequestSSE(requestSSEBool));
+  newRequestSSESet: (requestSSEBool) => {
+    dispatch(newRequestSSESet(requestSSEBool));
   },
-  setNewRequestsOpenAPI: (parsedDocument) => {
-    dispatch(actions.setNewRequestsOpenAPI(parsedDocument));
+  openApiRequestsReplaced: (parsedDocument) => {
+    dispatch(openApiRequestsReplaced(parsedDocument));
   },
-  resetComposerFields: () => {
-    dispatch(actions.resetComposerFields());
+  composerFieldsReset: () => {
+    dispatch(composerFieldsReset());
   },
   setWorkspaceActiveTab: (tabName) => {
-    dispatch(uiactions.setWorkspaceActiveTab(tabName));
+    dispatch(setWorkspaceActiveTab(tabName));
   },
 });
 
@@ -122,13 +141,14 @@ const pages = [
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
-]
+];
 
 /**
  * ProtocolSelect is a component in the navbar that alters the redux store based on the protocol that is selected.
  * It is responsible for kicking off the process of creating default values for the composer containers.
  * Click a protocol button -> Alter the Redux store accordingly -> Route to the appropriate "main" container
  */
+/**@todo - refactor below function to be more DRY */
 function ProtocolSelect(props) {
   /**
    * Alters the Redux store when a protocol is selected.
@@ -138,13 +158,13 @@ function ProtocolSelect(props) {
     if (props.warningMessage.uri) {
       const warningMessage = { ...props.warningMessage };
       delete warningMessage.uri;
-      props.setComposerWarningMessage({ ...warningMessage });
+      props.setWarningMessage({ ...warningMessage });
     }
-    props.setComposerWarningMessage({});
+    props.setWarningMessage({});
     switch (network) {
       case 'graphQL': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.gqlUrl,
@@ -156,7 +176,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'GQL',
           bodyVariables: '',
@@ -164,8 +184,8 @@ function ProtocolSelect(props) {
         break;
       }
       case 'rest': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.restUrl,
@@ -177,7 +197,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: ``,
@@ -185,8 +205,8 @@ function ProtocolSelect(props) {
         break;
       }
       case 'openapi': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: '',
@@ -198,7 +218,7 @@ function ProtocolSelect(props) {
           network: 'openapi',
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: '',
@@ -206,8 +226,8 @@ function ProtocolSelect(props) {
         break;
       }
       case 'grpc': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.grpcUrl,
@@ -219,7 +239,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'GRPC',
           bodyContent: ``,
@@ -227,8 +247,8 @@ function ProtocolSelect(props) {
         break;
       }
       case 'ws': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.wsUrl,
@@ -240,7 +260,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
           bodyContent: '',
@@ -248,8 +268,8 @@ function ProtocolSelect(props) {
         break;
       }
       case 'webrtc': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           url: props.newRequestFields.webrtcUrl,
@@ -262,7 +282,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'stun-ice',
           bodyContent: {
@@ -278,8 +298,8 @@ function ProtocolSelect(props) {
         break;
       }
       case 'webhook': {
-        props.resetComposerFields();
-        props.setNewRequestFields({
+        props.composerFieldsReset();
+        props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
           //??? might need to fix url vvv if we want to pass our url api from the state
@@ -294,7 +314,7 @@ function ProtocolSelect(props) {
           network,
           testContent: '',
         });
-        props.setNewRequestBody({
+        props.newRequestBodySet({
           ...props.newRequestBody,
           bodyType: 'none',
         });
@@ -304,7 +324,7 @@ function ProtocolSelect(props) {
     }
   };
 
-  return(
+  return (
     <Box
       key="page-selector"
       sx={{
@@ -312,29 +332,28 @@ function ProtocolSelect(props) {
         display: { xs: 'none', md: 'flex' },
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
+      }}
+    >
       {pages.map((page) => (
-        <Link
-          key={page.name}
-          to={page.route}
-          >
+        <Link key={page.name} to={page.route}>
           <CustomButton
             key={page.name}
             // variant="contained"
             // color="primary"
             onClick={() => {
-              console.log(page.value)
-              onProtocolSelect(page.value)}
-            }
+              console.log(page.value);
+              onProtocolSelect(page.value);
+            }}
             sx={{
-              m: 1
-            }}>
+              m: 1,
+            }}
+          >
             {page.name}
           </CustomButton>
         </Link>
       ))}
     </Box>
-  )
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProtocolSelect);

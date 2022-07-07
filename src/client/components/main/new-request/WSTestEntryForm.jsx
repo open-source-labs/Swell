@@ -6,7 +6,7 @@ import TextCodeArea from './TextCodeArea.jsx';
 import WebsocketTestSnippetsContainer from './test-snippets/WebsocketTestSnippetsContainer';
 
 const WSTestEntryForm = (props) => {
-  const { testContent, setNewTestContent } = props;
+  const { testContent, newTestContentSet } = props;
 
   const [showTests, setShowTests] = useState(false);
   const handleShowTests = () => setShowTests(!showTests);
@@ -16,11 +16,13 @@ const WSTestEntryForm = (props) => {
     <div className="mt-4 mb-4">
       <WebsocketTestSnippetsContainer
         testContent={testContent}
-        setNewTestContent={setNewTestContent}
+        newTestContentSet={newTestContentSet}
         setShowTests={setShowTests}
       />
       <div
-        className={`${isDark ? 'is-dark-200' : ''} is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
         onClick={handleShowTests}
       >
         {showTests === true && (
@@ -40,7 +42,7 @@ const WSTestEntryForm = (props) => {
             mode="javascript"
             value={testContent}
             onChange={(value, viewUpdate) => {
-              setNewTestContent(value);
+              newTestContentSet(value);
             }}
           />
         </div>

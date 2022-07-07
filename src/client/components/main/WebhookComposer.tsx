@@ -1,61 +1,68 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import { io } from 'socket.io-client'
+import { io } from 'socket.io-client';
 
 // Import MUI components
 import { Box } from '@mui/material';
+import { $TSFixMe } from '../../../types';
 
 const socket = io('http://localhost:3000');
 
-export default function WebhookComposer(props) {
-  // TODO: A relic of the past... it must be purged.
+export default function WebhookComposer(props: $TSFixMe) {
+  /**
+   * @todo There was a previous todo with the text "A relic of the past... it
+   * must be purged." We're 99% sure this refers to the isDark variable, rather
+   * than anything else in the component.
+   *
+   * This seems to have been put in place before the dedicated UI slice had a
+   * chance to be created.
+   */
   const isDark = false;
 
   const {
-    resetComposerFields,
-    setNewRequestFields,
-    newRequestFields,
+    //composerFieldsReset,
+    // newRequestFields,
     newRequestFields: {
       gRPC,
       webrtc,
-      url,
+      // url,
       method,
       graphQL,
-      restUrl,
-      wsUrl,
-      gqlUrl,
-      grpcUrl,
+      // restUrl,
+      // wsUrl,
+      // gqlUrl,
+      // grpcUrl,
       webhook,
       network,
-      testContent,
+      // testContent,
     },
-    setNewTestContent,
-    setNewRequestBody,
-    newRequestBody,
-    newRequestBody: {
-      JSONFormatted,
-      rawType,
-      bodyContent,
-      bodyVariables,
-      bodyType,
-    },
-    setNewRequestHeaders,
-    newRequestHeaders,
-    newRequestHeaders: { headersArr },
-    setNewRequestCookies,
-    newRequestCookies,
-    newRequestCookies: { cookiesArr },
-    setNewRequestStreams,
-    newRequestStreams,
-    newRequestStreams: { protoPath },
-    newRequestSSE: { isSSE },
+    //newTestContentSet,
+    //newRequestBodySet,
+    // newRequestBody,
+    // newRequestBody: {
+    //   JSONFormatted,
+    //   rawType,
+    //   bodyContent,
+    //   bodyVariables,
+    //   bodyType,
+    // },
+    //newRequestHeadersSet,
+    // newRequestHeaders,
+    // newRequestHeaders: { headersArr },
+    //newRequestCookiesSet,
+    // newRequestCookies,
+    // newRequestCookies: { cookiesArr },
+    //newRequestStreamsSet,
+    // newRequestStreams,
+    // newRequestStreams: { protoPath },
+    //newRequestSSE: { isSSE },
     currentTab,
-    introspectionData,
-    setComposerWarningMessage,
-    warningMessage,
-    reqResAdd,
-    setWorkspaceActiveTab,
+    //introspectionData,
+    //setWarningMessage,
+    //warningMessage,
+    reqResItemAdded,
+    //setWorkspaceActiveTab,
   } = props;
 
   const [whUrl, updateURL] = useState('');
@@ -68,11 +75,11 @@ export default function WebhookComposer(props) {
 
   useEffect(() => {
     socket.on('response', (event) => {
-      console.log("this is the event in webho", event.headers);
+      console.log('this is the event in webho', event.headers);
       const protocol = 'I do not know what this is for?';
-      console.log('this is event.headers', event.headers["user-agent"]);
+      console.log('this is event.headers', event.headers['user-agent']);
       // url = event.headers;
-      url = event.headers['user-agent'];
+      const url = event.headers['user-agent'];
       const reqRes = {
         id: uuid(),
         created_at: new Date(),
@@ -98,7 +105,7 @@ export default function WebhookComposer(props) {
           // bodyType,
           // bodyVariables: bodyVariables || '',
           // rawType,
-          network
+          network,
           // restUrl,
           // webrtcUrl,
         },
@@ -111,7 +118,7 @@ export default function WebhookComposer(props) {
         tab: currentTab,
       };
       console.log('line 125 in webho', reqRes);
-      reqResAdd(reqRes);
+      reqResItemAdded(reqRes);
     });
   }, []);
 
@@ -150,38 +157,42 @@ export default function WebhookComposer(props) {
         .then((data) => data.json())
         .then((url) => {
           // set boolean value server status to false
-          console.log(url)
+          console.log(url);
         })
         .catch((err) => console.error(err));
     }
   };
 
-  return(
-    <Box className='mr-2 is-flex is-justify-content-center'
-    sx={{padding: '10px', height: '40%'}}
-    id = "composer-webhook">
+  return (
+    <Box
+      className="mr-2 is-flex is-justify-content-center"
+      sx={{ padding: '10px', height: '40%' }}
+      id="composer-webhook"
+    >
       <button
-            className={`button ${
-              serverStatus ? 'is-wh' : 'is-wh-on'
-            }  add-request-button is-vertical-align-center no-border-please`}
-            onClick={() => startServerButton()}
-          >
-            <span>{serverStatus ? 'Stop Server' : 'Start Server'}</span>
-          </button>
-          <input
-            className={`${isDark ? 'dark-address-input' : ''} ml-1 input input-is-medium is-info`}
-            type="text"
-            value={whUrl}
-            readOnly //solved react error dev console
-          />
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <button
-            className="button is-primary-100 is-3rem-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
-            onClick={() => copyClick()}
-          >
-            Copy URL
-          </button>
-        </div>
+        className={`button ${
+          serverStatus ? 'is-wh' : 'is-wh-on'
+        }  add-request-button is-vertical-align-center no-border-please`}
+        onClick={() => startServerButton()}
+      >
+        <span>{serverStatus ? 'Stop Server' : 'Start Server'}</span>
+      </button>
+      <input
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
+        type="text"
+        value={whUrl}
+        readOnly //solved react error dev console
+      />
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <button
+          className="button is-primary-100 is-3rem-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
+          onClick={() => copyClick()}
+        >
+          Copy URL
+        </button>
+      </div>
     </Box>
-  )
+  );
 }

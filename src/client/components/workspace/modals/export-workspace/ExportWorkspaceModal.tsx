@@ -10,8 +10,7 @@ import collectionsController from '../../../../controllers/collectionsController
 import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import * as actions from '../../../../features/business/businessSlice';
-import * as uiactions from '../../../../features/ui/uiSlice';
+import { RootState } from '../../../../toolkit-refactor/store';
 
 const style = {
   display: 'flex',
@@ -25,15 +24,15 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 1,
-  justifyContent: 'space-around' 
+  justifyContent: 'space-around',
 };
 
 export default function ExportWorkspaceModal({ open, handleClose }) {
   let files = useLiveQuery(() => db.files.toArray());
   const dispatch = useDispatch();
 
-  const localWorkspaces = useSelector((store) => store.business.collections);
-  const isDark = useSelector((state) => state.ui.isDark);
+  const localWorkspaces = useSelector((store: RootState) => store.collections);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const handleImportFromGithub = async () => {
     const githubWorkspaces = await githubController.importFromRepo();
@@ -57,24 +56,30 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography id="export-workspace-modal-title" variant="h6" component="h2">
+          <Typography
+            id="export-workspace-modal-title"
+            variant="h6"
+            component="h2"
+          >
             Export to
           </Typography>
           {/* <Box id="import-workspace-modal-description" sx={{ m: 1, webkitJustifyContent: 'space-around', minWidth: 200 }}> */}
-              <Button
-                variant="contained" size="small" 
-                onClick={() =>
-                  collectionsController.exportCollection(localWorkspaces)
-                  }
-                >Files
-              </Button>
-              <Button
-                variant="contained" size="small" 
-                >GitHub
-              </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() =>
+              collectionsController.exportCollection(localWorkspaces)
+            }
+          >
+            Files
+          </Button>
+          <Button variant="contained" size="small">
+            GitHub
+          </Button>
           {/* </Box> */}
         </Box>
       </Fade>
     </Modal>
   );
-};
+}
+

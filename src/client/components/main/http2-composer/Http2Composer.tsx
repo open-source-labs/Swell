@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
-// Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
-import * as actions from '../../../features/business/businessSlice';
-import * as uiactions from '../../../features/ui/uiSlice';
+
+import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  setResponsePaneActiveTab,
+  setSidebarActiveTab,
+} from '../../../toolkit-refactor/ui/uiSlice';
+//import { scheduledReqResAdded } from '../../../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
+import { setWarningMessage } from '../../../toolkit-refactor/warningMessage/warningMessageSlice';
+
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
 // Import local components
 import Http2EndpointForm from './Http2EndpointForm';
 import Http2MetaData from './Http2MetaData';
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import RestMethodAndEndpointEntryForm from '../new-request/RestMethodAndEndpointEntryForm';
 import HeaderEntryForm from '../new-request/HeaderEntryForm';
 import CookieEntryForm from '../new-request/CookieEntryForm';
@@ -43,14 +61,14 @@ export default function Http2Composer(props) {
     toggle: BooleanValueNode;
   }
 
-  const [parameters, setParameters] = useState<Parameter[]>([])
-  const [headers, setHeaders] = useState<Header[]>([])
-  const [cookies, setCookies] = useState<Cookie[]>([])
-  const [http2Method, setHttp2Method] = useState('GET')
-  const [http2Uri, setHttp2Uri] = useState('')
+  const [parameters, setParameters] = useState<Parameter[]>([]);
+  const [headers, setHeaders] = useState<Header[]>([]);
+  const [cookies, setCookies] = useState<Cookie[]>([]);
+  const [http2Method, setHttp2Method] = useState('GET');
+  const [http2Uri, setHttp2Uri] = useState('');
 
   const dispatch = useDispatch();
-  // Destructuring business store props.
+  // Destructuring store props.
   const {
     currentTab,
     newRequestFields,
@@ -78,27 +96,22 @@ export default function Http2Composer(props) {
     testContent,
   } = newRequestFields;
 
-  const {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  } = newRequestBody;
+  const { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType } =
+    newRequestBody;
 
   // Destructuring dispatch props.
   const {
-    setNewRequestFields,
-    resetComposerFields,
-    setNewRequestBody,
-    setNewTestContent,
-    setNewRequestHeaders,
-    setNewRequestCookies,
-    setNewRequestStreams,
-    setNewRequestSSE,
-    setComposerWarningMessage,
+    fieldsReplaced,
+    composerFieldsReset,
+    newRequestBodySet,
+    newTestContentSet,
+    newRequestHeadersSet,
+    newRequestCookiesSet,
+    newRequestStreamsSet,
+    newRequestSSESet,
+    setWarningMessage,
     setWorkspaceActiveTab,
-    reqResAdd
+    reqResItemAdded,
   } = props;
 
   const { protoPath } = newRequestSSE;
@@ -114,8 +127,8 @@ export default function Http2Composer(props) {
     interface ValidationMessage {
       uri?: string;
       json?: string;
-    };
-    const validationMessage: ValidationMessage = {}
+    }
+    const validationMessage: ValidationMessage = {};
     // Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
@@ -131,11 +144,11 @@ export default function Http2Composer(props) {
     return validationMessage;
   };
 
-  // TODO: what does this function do?
+  /** @todo Figure out what this function does */
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -198,33 +211,32 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
-    // dispatch(actions.scheduledReqResUpdate(reqRes));
+    reqResItemAdded(reqRes);
+    // dispatch(scheduledReqResAdded(reqRes));
 
     //reset for next request
-    resetComposerFields();
-    // dispatch(actions.setResponsePaneActiveTab('events'));
-    // dispatch(actions.setSidebarActiveTab('composer'));
+    composerFieldsReset();
+    dispatch(setResponsePaneActiveTab('events'));
+    dispatch(setSidebarActiveTab('composer'));
 
     connectionController.openReqRes(reqRes.id);
     dispatch(
-      actions.saveCurrentResponseData(
-        reqRes,
-        'singleReqResContainercomponentSendHandler'
-      )
+      responseDataSaved(reqRes, 'singleReqResContainercomponentSendHandler')
     );
   };
 
-  // TODO: what does this function do?
+  /** @todo Figure out what this function does */
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
+    const httpOrWebsocketRegex = /(http|ws)s?:\/\//;
+    const protocol = url.match(httpOrWebsocketRegex)[0];
+
     let reqRes;
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
@@ -282,18 +294,14 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
     setWorkspaceActiveTab('workspace');
   };
 
-  const handleSSEPayload = (e) => {
-    setNewRequestSSE(e.target.checked);
-  };
-
-  return(
+  return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
@@ -302,20 +310,24 @@ export default function Http2Composer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id = "composer-http2"
+      id="composer-http2"
     >
       {/* <Typography align='center'>
         HTTP/2
       </Typography> */}
       {/**
-       * TODO:
-       * The two commented components are our attempt to port the entire app to use MaterialUI for consistency.
-       * The first one...
-       * ... is an HTTP2Enpoint form with a (1) method select (2) endpoint form (3) send button.
-       * The second one...
-       * ... is all of the metadata you would need for an HTTP2 request (parameters, headers, body, cookies)
-       * These are not tied to the Redux store currently, and thus do not interact with the app yet.
-       * They are just standalone components that need to be integrated with the logic of the app.
+       * @todo The two commented-out components are our attempt to port the
+       * entire app to use MaterialUI for consistency.
+       *
+       * The first one is an HTTP2Enpoint form with a (1) method select (2)
+       * endpoint form (3) send button.
+       *
+       * The second one is all of the metadata you would need for an HTTP2
+       * request (parameters, headers, body, cookies)
+       *
+       * These are not tied to the Redux store currently, and thus do not
+       * interact with the app yet. They are just standalone components that
+       * need to be integrated with the logic of the app.
        */}
       {/* <Http2EndpointForm
         http2Method={http2Method}
@@ -335,11 +347,11 @@ export default function Http2Composer(props) {
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestBody={newRequestBody}
-        setNewTestContent={setNewTestContent}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestBody={setNewRequestBody}
+        newTestContentSet={newTestContentSet}
+        fieldsReplaced={fieldsReplaced}
+        newRequestBodySet={newRequestBodySet}
         warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
+        setWarningMessage={setWarningMessage}
       />
       <span className="inputs">
         <div>
@@ -348,13 +360,13 @@ export default function Http2Composer(props) {
             newRequestStreams={newRequestStreams}
             newRequestBody={newRequestBody}
             newRequestFields={newRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
+            newRequestHeadersSet={newRequestHeadersSet}
+            newRequestStreamsSet={newRequestStreamsSet}
           />
           <CookieEntryForm
             newRequestCookies={newRequestCookies}
             newRequestBody={newRequestBody}
-            setNewRequestCookies={setNewRequestCookies}
+            newRequestCookiesSet={newRequestCookiesSet}
           />
         </div>
         <div className="is-3rem-footer is-clickable restReqBtns">
@@ -365,16 +377,12 @@ export default function Http2Composer(props) {
       </span>
       {/* SSE TOGGLE SWITCH */}
       <div className="field mt-2">
-        <span className="composer-section-title mr-3">
-          Server Sent Events
-        </span>
+        <span className="composer-section-title mr-3">Server Sent Events</span>
         <input
           id="SSEswitch"
           type="checkbox"
           className="switch is-outlined is-warning"
-          onChange={(e) => {
-            handleSSEPayload(e);
-          }}
+          onChange={(e) => newRequestSSESet(e)}
           checked={isSSE}
         />
         <label htmlFor="SSEswitch" />
@@ -383,15 +391,15 @@ export default function Http2Composer(props) {
         <BodyEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestHeaders={newRequestHeaders}
-          setNewRequestHeaders={setNewRequestHeaders}
+          newRequestHeadersSet={newRequestHeadersSet}
         />
       )}
       <TestEntryForm
-        setNewTestContent={setNewTestContent}
+        newTestContentSet={newTestContentSet}
         testContent={testContent}
       />
     </Box>
-  )
+  );
 }

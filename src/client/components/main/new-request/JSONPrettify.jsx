@@ -1,13 +1,13 @@
 import React from 'react';
 
-function JSONPrettify({ setNewRequestBody, newRequestBody }) {
+function JSONPrettify({ newRequestBodySet, newRequestBody }) {
   const prettyPrintJSON = () => {
     const prettyString = JSON.stringify(
       JSON.parse(newRequestBody.bodyContent),
       null,
       4
     );
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyContent: prettyString,
     });

@@ -2,14 +2,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
 
 const RawBodyTypeSelect = (props) => {
   const {
-    setNewRequestBody,
+    newRequestBodySet,
     newRequestBody,
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
   } = props;
 
@@ -30,14 +31,14 @@ const RawBodyTypeSelect = (props) => {
   //   const filtered = newRequestHeaders.headersArr.filter(
   //     (header) => header.key.toLowerCase() !== "content-type"
   //   );
-  //   setNewRequestHeaders({
+  //   newRequestHeadersSet({
   //     headersArr: filtered,
   //     count: filtered.length,
   //   });
   // }
 
   const setNewRawBodyType = (rawTypeStr) => {
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       rawType: rawTypeStr,
     });
@@ -48,7 +49,7 @@ const RawBodyTypeSelect = (props) => {
       key: 'Content-type',
       value: rawTypeStr,
     };
-    setNewRequestHeaders({
+    newRequestHeadersSet({
       headersArr: headersCopy.headersArr,
     });
   };
@@ -61,7 +62,7 @@ const RawBodyTypeSelect = (props) => {
       <div className="dropdown-trigger">
         <button
           className="button is-small is-primary is-outlined add-header-or-cookie-button"
-          id = "raw-body-type"
+          id="raw-body-type"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -152,9 +153,10 @@ const RawBodyTypeSelect = (props) => {
   );
 };
 
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 RawBodyTypeSelect.propTypes = {
   newRequestBody: PropTypes.object.isRequired,
-  setNewRequestBody: PropTypes.func.isRequired,
+  newRequestBodySet: PropTypes.func.isRequired,
 };
 
 export default RawBodyTypeSelect;

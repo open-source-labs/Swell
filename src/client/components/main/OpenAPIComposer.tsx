@@ -3,21 +3,25 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import OpenAPIEntryForm from './new-request/OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './new-request/OpenAPIDocumentEntryForm.jsx';
 import OpenAPIMetadata from './new-request/OpenAPIMetadata.jsx';
 import OpenAPIServerForm from './new-request/OpenAPIServerForm.jsx';
 // Import MUI components
-import { Box } from '@mui/material'
+import { Box } from '@mui/material';
 
 export default function OpenAPIComposer(props) {
   const {
-    resetComposerFields,
-    setNewRequestsOpenAPI,
+    composerFieldsReset,
+    openApiRequestsReplaced,
     newRequestsOpenAPI,
-    setNewRequestFields,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -30,17 +34,17 @@ export default function OpenAPIComposer(props) {
       network,
       testContent,
     },
-    setNewRequestBody,
+    newRequestBodySet,
     newRequestBody,
     newRequestBody: { rawType, bodyType },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
-    setNewRequestCookies,
+    newRequestCookiesSet,
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
-    reqResAdd,
+    reqResItemAdded,
     setWorkspaceActiveTab,
   } = props;
 
@@ -53,7 +57,7 @@ export default function OpenAPIComposer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -97,19 +101,19 @@ export default function OpenAPIComposer(props) {
       };
 
       // add request to history
-      // TODO: fix TS type error
+      /** @todo Fix TS type error */
       historyController.addHistoryToIndexedDb(reqRes);
-      reqResAdd(reqRes);
+      reqResItemAdded(reqRes);
 
       //reset for next request
-      resetComposerFields();
+      composerFieldsReset();
 
-      setNewRequestBody({
+      newRequestBodySet({
         ...newRequestBody,
         bodyType: '',
         rawType: '',
       });
-      setNewRequestFields({
+      fieldsReplaced({
         ...newRequestFields,
         url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         restUrl,
@@ -119,8 +123,8 @@ export default function OpenAPIComposer(props) {
     setWorkspaceActiveTab('workspace');
   };
 
-  return(
-      <Box
+  return (
+    <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
         height: '40%',
@@ -128,46 +132,45 @@ export default function OpenAPIComposer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id= "composer-openapi"
+      id="composer-openapi"
     >
-        <div
-          className="is-flex-grow-3 add-vertical-scroll"
-          style={{ overflowX: 'hidden' }}
-        >
-          {/* TODO: fix TS type error */}
-          <OpenAPIEntryForm
-            newRequestFields={newRequestFields}
-            newRequestHeaders={newRequestHeaders}
-            newRequestBody={newRequestBody}
-            setNewRequestFields={setNewRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestCookies={setNewRequestCookies}
-            newRequestsOpenAPI={newRequestsOpenAPI}
-            setNewRequestsOpenAPI={setNewRequestsOpenAPI}
-            setNewRequestBody={setNewRequestBody}
-            warningMessage={warningMessage}
-            setComposerWarningMessage={setComposerWarningMessage}
-          />
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: 'hidden' }}
+      >
+        {/** @todo fix TS type error */}
+        <OpenAPIEntryForm
+          newRequestFields={newRequestFields}
+          newRequestHeaders={newRequestHeaders}
+          newRequestBody={newRequestBody}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestCookiesSet={newRequestCookiesSet}
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          openApiRequestsReplaced={openApiRequestsReplaced}
+          newRequestBodySet={newRequestBodySet}
+          warningMessage={warningMessage}
+          setWarningMessage={setWarningMessage}
+        />
 
-          <OpenAPIDocumentEntryForm
-            newRequestFields={newRequestFields}
-            setNewRequestFields={setNewRequestFields}
-            newRequestHeaders={newRequestHeaders}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestCookies={setNewRequestCookies}
-            newRequestsOpenAPI={newRequestsOpenAPI}
-            setNewRequestsOpenAPI={setNewRequestsOpenAPI}
-          />
-          <OpenAPIMetadata newRequestsOpenAPI={newRequestsOpenAPI} />
-          <OpenAPIServerForm
-            newRequestsOpenAPI={newRequestsOpenAPI}
-            setNewRequestsOpenAPI={setNewRequestsOpenAPI}
-          />
-        </div>
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+        <OpenAPIDocumentEntryForm
+          newRequestFields={newRequestFields}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeaders={newRequestHeaders}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestCookiesSet={newRequestCookiesSet}
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          openApiRequestsReplaced={openApiRequestsReplaced}
+        />
+        <OpenAPIMetadata newRequestsOpenAPI={newRequestsOpenAPI} />
+        <OpenAPIServerForm
+          newRequestsOpenAPI={newRequestsOpenAPI}
+          openApiRequestsReplaced={openApiRequestsReplaced}
+        />
+      </div>
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </Box>
-  )
-
+  );
 }

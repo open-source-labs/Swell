@@ -20,7 +20,10 @@ module.exports = merge(base, {
       },
       '/api': {
         target: 'http://localhost:3000',
-        // TODO: change secure to true and refactor
+        /**
+         * @todo Change secure option to true, and refactor code to account for
+         * change
+         */
         secure: false,
       },
     },
@@ -28,7 +31,8 @@ module.exports = merge(base, {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
-      middlewares.unshift({ // unshift does not work, ends in infinite calls to this function
+      middlewares.unshift({
+        // unshift does not work, ends in infinite calls to this function
         name: 'run-in-electron',
         path: '/dev',
         middleware: (req, res) => {
@@ -39,7 +43,9 @@ module.exports = merge(base, {
           })
             .on('close', () => process.exit(130))
             .on('error', (spawnError) => console.error(spawnError));
-          return res.status(200).send('Opened the Electron app in development mode.')
+          return res
+            .status(200)
+            .send('Opened the Electron app in development mode.');
         },
       });
       return middlewares;

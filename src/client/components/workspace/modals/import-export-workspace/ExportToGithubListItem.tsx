@@ -13,31 +13,28 @@ export default function ExportToGithubList({ workspaces }) {
   const [expand, setExpand] = useState(false);
   const handleListButtonClick = () => {
     setExpand(!expand);
-  }
+  };
 
-  console.log('workspaces', workspaces)
-  const workspacesList = [];
-  for (let workspace of workspaces) {
-    workspacesList.push(
+  console.log('workspaces', workspaces);
+  const workspacesList = workspaces.map((ws: typeof workspaces[0]) => {
+    return (
       <ListItem disablePadding>
         <ListItemButton onClick={handleListButtonClick}>
-          <ListItemText primary={workspace.name}/>
-            {expand ? <ExpandLess /> : <ExpandMore />}
+          <ListItemText primary={ws.name} />
+          {expand ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={expand} timeout="auto" unmountOnExit>
           hello
         </Collapse>
-      </ListItem>  
-    )
-  }
+      </ListItem>
+    );
+  });
 
-  return(
-    {workspacesList}
-  )
-  
+  return { workspacesList };
 }
 
-{/* <ListItem disablePadding>
+{
+  /* <ListItem disablePadding>
 <ListItemButton onClick={handleExportToGithubListClick}>
   <ListItemIcon>
     <GitHubIcon/>
@@ -48,4 +45,6 @@ export default function ExportToGithubList({ workspaces }) {
 </ListItem>
 <Collapse in={exportToLocalFilesList} timeout="auto" unmountOnExit>
 {dbWorkspaces}
-</Collapse> */}
+</Collapse> */
+}
+

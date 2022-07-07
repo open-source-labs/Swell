@@ -1,21 +1,21 @@
 // https://github.com/electron/electron/issues/10257
 // Code fix to support NODE_EXTRA_CA_CERTS env. There is currently no other fixes to the NODE_TLS_REJECT_UNAUTHORIZED at the moment.
 
-(function(){
-	if(!process.env.NODE_EXTRA_CA_CERTS) return;
-	try{
-		const extraca = require("fs").readFileSync(process.env.NODE_EXTRA_CA_CERTS);
-	}catch(e){
-		return;
-	}
+(function () {
+  if (!process.env.NODE_EXTRA_CA_CERTS) return;
+  try {
+    const extraca = require('fs').readFileSync(process.env.NODE_EXTRA_CA_CERTS);
+  } catch (e) {
+    return;
+  }
 
-	const NativeSecureContext = process.binding('crypto').SecureContext;
-	const oldaddRootCerts = NativeSecureContext.prototype.addRootCerts;
-	NativeSecureContext.prototype.addRootCerts = function(){
-		const ret = oldaddRootCerts.apply(this, ...args);
-		this.addCACert(extraca);
-		return ret;
-	};
+  const NativeSecureContext = process.binding('crypto').SecureContext;
+  const oldaddRootCerts = NativeSecureContext.prototype.addRootCerts;
+  NativeSecureContext.prototype.addRootCerts = function () {
+    const ret = oldaddRootCerts.apply(this, ...args);
+    this.addCACert(extraca);
+    return ret;
+  };
 })();
 
 // Allow self-signing HTTPS over TLS
@@ -30,7 +30,7 @@
 // Import parts of electron to use
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
-
+// ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
 const { autoUpdater } = require('electron-updater');
@@ -84,7 +84,6 @@ let isDev = false;
 if (process.argv.includes('--dev')) {
   isDev = true;
 }
-
 
 /** ***********************
  ******* MODE DISPLAY ****
@@ -144,7 +143,7 @@ function createWindow() {
     });
 
     // Dev mode title
-    mainWindow.setTitle("Swell (devMode)")
+    mainWindow.setTitle('Swell (devMode)');
 
     // If we are in developer mode Add React & Redux DevTools to Electron App
     installExtension(REACT_DEVELOPER_TOOLS)
@@ -161,7 +160,6 @@ function createWindow() {
       pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
     });
-
   }
 
   // our new app window will load content depending on the boolean value of the dev variable
@@ -206,7 +204,12 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
   if (!isDev) {
-    // TODO: this is crucial code! run express server if production mode
+    /**
+     * Note: Even though Express is not used for the duration of the block, this
+     * is crucial code, and while VS Code will flag it as not being used, it
+     * should not be removed. Express server is used in production mode as there
+     * is no dev server.
+     */
     const express = require('./src/server/server');
     autoUpdater.checkForUpdates();
   }
@@ -226,10 +229,9 @@ const sendStatusToWindow = (text) => {
 };
 
 ipcMain.on('login-via-github', async () => {
-  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50` // ${process.env.GITHUB_CLIENT_ID};
+  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50`; // ${process.env.GITHUB_CLIENT_ID};
   await shell.openExternal(url, { activate: true });
-
-})
+});
 
 ipcMain.on('check-for-update', () => {
   // listens to ipcRenderer in UpdatePopUpContainer.jsx
@@ -307,7 +309,7 @@ app.on('activate', () => {
 
 ipcMain.on('import-from-github', async (event, args) => {
   async function popOverwrite(collection) {
-    // TODO: add in mod date, is Yes No ordering correct on popup?
+    /** @todo add in mod date, is Yes No ordering correct on popup?  */
     const options = {
       type: 'question',
       buttons: ['No', 'Yes'],
@@ -324,8 +326,8 @@ ipcMain.on('import-from-github', async (event, args) => {
   // requiring typescript type Workspace makes sanitation uncessesary
   const ids = {};
   let index = 0;
-  const newCollectionArr = []
-  for(let collection of args) {
+  const newCollectionArr = [];
+  for (let collection of args) {
     // console.log('main.js workspace\n', workspace)
     if (ids[collection.id]) {
       const result = await popOverwrite(collection);
@@ -336,9 +338,8 @@ ipcMain.on('import-from-github', async (event, args) => {
     }
     ids[collection.id] = index;
     index++;
-    newCollectionArr.push(collection)
-
-  };
+    newCollectionArr.push(collection);
+  }
   // send full array of workspaces to chromium for state update
   event.sender.send('add-collections', newCollectionArr);
 });

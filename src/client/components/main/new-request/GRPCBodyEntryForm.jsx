@@ -14,11 +14,8 @@ const GRPCBodyEntryForm = (props) => {
         },
       ];
 
-      // TODO: below line is mutating react state directly, remove?
-      // props.newRequestStreams.streamContent.push(''); 
-
       // update state in the store
-      props.setNewRequestStreams({
+      props.newRequestStreamsSet({
         streamsArr: newStreamsArr,
         count: newStreamsArr.length,
         streamContent: props.newRequestStreams.streamContent,
@@ -40,7 +37,7 @@ const GRPCBodyEntryForm = (props) => {
     // push query of initial stream body into streamContent array
     streamContent.push(firstBodyQuery);
     // update mew state in the store
-    props.setNewRequestStreams({
+    props.newRequestStreamsSet({
       ...props.newRequestStreams,
       streamsArr,
       count: streamsArr.length,
@@ -58,7 +55,7 @@ const GRPCBodyEntryForm = (props) => {
       if (streamsArr[i].id === streamID) {
         streamsArr[streamID].query = value;
         streamContent[streamID] = value;
-        props.setNewRequestStreams({
+        props.newRequestStreamsSet({
           ...props.newRequestStreams,
           streamsArr,
           streamContent,
@@ -71,7 +68,7 @@ const GRPCBodyEntryForm = (props) => {
   const streamArr = props.newRequestStreams.streamsArr.map((stream, index) => (
     <GRPCBodyStream
       newRequestStreams={props.newRequestStreams}
-      setNewRequestStreams={props.setNewRequestStreams}
+      newRequestStreamsSet={props.newRequestStreamsSet}
       selectedPackage={props.newRequestStreams.selectedPackage}
       selectedService={props.selectedService}
       selectedRequest={props.selectedRequest}

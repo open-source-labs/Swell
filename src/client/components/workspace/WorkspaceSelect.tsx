@@ -1,43 +1,50 @@
-import React from "react";
+import React, { FC } from 'react';
+import { ReqRes } from '../../../types';
+
 import { useSelector, useDispatch, connect } from 'react-redux';
-import * as actions from '../../features/business/businessSlice';
+
+import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
+
 // Import local components
-import DeleteWorkspaceButton from './buttons/DeleteWorkspaceButton'
+import DeleteWorkspaceButton from './buttons/DeleteWorkspaceButton';
 // Import MUI components
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
-import ImportWorkspaceModal from "./modals/import-workspace/ImportWorkspaceModal"
-import { Box, Select, MenuItem, FormControl, FormHelperText, Button } from '@mui/material';
+import ImportWorkspaceModal from './modals/import-workspace/ImportWorkspaceModal';
+import {
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  FormHelperText,
+  Button,
+} from '@mui/material';
 
-export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceChange, workspaces }) {
-  const [open, setOpen] = React.useState(false);
-  // TODO: change store explicit any to a more defined type
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function WorkspaceSelect({
+  currentWorkspaceId,
+  handleWorkspaceChange,
+  workspaces,
+}) {
+  // This state is used in the commented-out modal component
+  const setIsOpen = React.useState(false)[1];
   const dispatch = useDispatch();
 
-  const collectionToReqRes = (reqResArray) => {
-    dispatch(actions.collectionToReqRes(reqResArray));
-  }
+  const updateReqRes = (reqResArray: ReqRes[]) => {
+    dispatch(reqResReplaced(reqResArray));
+  };
 
-  // const localWorkspaces = useSelector((store: any) => store.business.collections);
-  const menuItems = [];
-  for (let workspace of workspaces) {
-    menuItems.push(
-      <MenuItem
-        key={workspace.id}
-        value={workspace.id}
-        onClick={() => collectionToReqRes(workspace.reqResArray)}
-      >
-        {workspace.name}
-      </MenuItem>
-    )
-  }
+  const menuItems = workspaces.map((workspace) => (
+    <MenuItem
+      key={workspace.id}
+      value={workspace.id}
+      onClick={() => updateReqRes(workspace.reqResArray)}
+    >
+      {workspace.name}
+    </MenuItem>
+  ));
 
   return (
-    <Box sx={{mr: 1, flexGrow: 1}}>
-      <FormControl
-        fullWidth
-        variant="standard">
+    <Box sx={{ mr: 1, flexGrow: 1 }}>
+      <FormControl fullWidth variant="standard">
         <Select
           id="workspace-select"
           label="workspace"
@@ -51,7 +58,16 @@ export default function WorkspaceSelect({ currentWorkspaceId, handleWorkspaceCha
         </Select>
         <FormHelperText>Current Workspace</FormHelperText>
       </FormControl>
-      {/* <ImportWorkspaceModal open={open} handleClose={handleClose}/> */}
+
+      {/**
+       * @todo This modal seems close to done, but there's no way to turn it
+       * off. It just hijacks your ability to use the app. Uncomment this
+       * component to see for yourself.
+       */}
+      {/* <ImportWorkspaceModal
+        open={() => setIsOpen(true)}
+        handleClose={() => setIsOpen(false)}
+      /> */}
     </Box>
-  )
+  );
 }

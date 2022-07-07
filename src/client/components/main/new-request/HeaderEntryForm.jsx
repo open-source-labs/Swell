@@ -3,17 +3,8 @@
 import React, { Component } from 'react';
 import ContentReqRowComposer from './ContentReqRowComposer';
 
-
 class HeaderEntryForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: true,
-    };
-    this.onChangeUpdateHeader = this.onChangeUpdateHeader.bind(this);
-    this.toggleShow = this.toggleShow.bind(this);
-    this.deleteHeader = this.deleteHeader.bind(this);
-  }
+  state = { show: true };
 
   componentDidUpdate() {
     const headersDeepCopy = JSON.parse(
@@ -100,7 +91,7 @@ class HeaderEntryForm extends Component {
       value: contentType,
     };
     headersDeepCopy.unshift(contentTypeHeader);
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
     });
@@ -111,7 +102,7 @@ class HeaderEntryForm extends Component {
       (header) => !header.key.toLowerCase().includes('content-type')
     );
 
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: filtered,
       count: filtered.length,
     });
@@ -128,14 +119,15 @@ class HeaderEntryForm extends Component {
       value: '',
     });
 
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       override: false,
       count: headersDeepCopy.length,
     });
   }
 
-  onChangeUpdateHeader(id, field, value) {
+  // Must be arrow function
+  onChangeUpdateHeader = (id, field, value) => {
     const headersDeepCopy = JSON.parse(
       JSON.stringify(this.props.newRequestHeaders.headersArr)
     );
@@ -159,27 +151,29 @@ class HeaderEntryForm extends Component {
       headersDeepCopy[indexToBeUpdated].active = true;
     }
 
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
     });
-  }
+  };
 
-  toggleShow() {
+  // Must be arrow function
+  toggleShow = () => {
     this.setState({
       show: !this.state.show,
     });
-  }
+  };
 
-  deleteHeader(index) {
+  // Must be arrow function
+  deleteHeader = (index) => {
     const newHeadersArr = this.props.newRequestHeaders.headersArr.slice();
     newHeadersArr.splice(index, 1);
-    this.props.setNewRequestHeaders({
+    this.props.newRequestHeadersSet({
       headersArr: newHeadersArr,
       count: newHeadersArr.length,
     });
-  }
-  
+  };
+
   render() {
     let headerName = 'Headers';
     let addHeaderName = '+';
@@ -203,14 +197,15 @@ class HeaderEntryForm extends Component {
     );
 
     return (
-      <div className="mt-2"
-      style={{margin: '10px'}}>
+      <div className="mt-2" style={{ margin: '10px' }}>
         <div className="is-flex is-align-content-center">
           <div className="composer-section-title">{headerName}</div>
           <button
-            className={`${this.props.isDark ? 'is-dark-200' : ''} button is-small add-header-gRPC-cookie-button`}
-            id = "add-header"
-            style={{height: '3px', width: '3px'}}
+            className={`${
+              this.props.isDark ? 'is-dark-200' : ''
+            } button is-small add-header-gRPC-cookie-button`}
+            id="add-header"
+            style={{ height: '3px', width: '3px' }}
             onClick={() => this.addHeader()}
           >
             {addHeaderName}
@@ -223,7 +218,5 @@ class HeaderEntryForm extends Component {
 }
 
 export default HeaderEntryForm;
-
-
 
 // is-justify-content-space-between

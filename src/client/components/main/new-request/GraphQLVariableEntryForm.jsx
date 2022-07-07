@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 // import 'codemirror/addon/display/autorefresh';
 // import 'codemirror/addon/display/placeholder';
 // import 'codemirror/mode/javascript/javascript';
-import { EditorView } from "@codemirror/view"
+import { EditorView } from '@codemirror/view';
 export { EditorState } from '@codemirror/state';
 
 import { json } from '@codemirror/lang-json';
@@ -20,7 +20,7 @@ const GraphQLVariableEntryForm = (props) => {
     newRequestBody: { bodyVariables },
     newRequestBody: { bodyIsNew },
     newRequestBody,
-    setNewRequestBody,
+    newRequestBodySet,
   } = props;
 
   const [cmValue, setValue] = useState(bodyVariables);
@@ -38,24 +38,24 @@ const GraphQLVariableEntryForm = (props) => {
   return (
     <div>
       <div className="composer-section-title">Variables</div>
-      <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`} id="gql-var-entry">
+      <div
+        className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}
+        id="gql-var-entry"
+      >
         <CodeMirror
           ref={cmVariables}
           value={cmValue}
-          extensions={[
-            json(),
-            EditorView.lineWrapping,
-          ]}
-          placeholder = 'Variables must be JSON format'
-          theme = 'dark'
+          extensions={[json(), EditorView.lineWrapping]}
+          placeholder="Variables must be JSON format"
+          theme="dark"
           height="100%"
-          width = "100%"
+          width="100%"
           // onBeforeChange={(editor, data, value) => {
           //   setValue(value);
           // }}
           onChange={(value, viewUpdate) => {
-            setValue(value) // maybe? the onBeforeChange hook was removed, but all it did was fire before "onChange"
-            setNewRequestBody({
+            setValue(value); // maybe? the onBeforeChange hook was removed, but all it did was fire before "onChange"
+            newRequestBodySet({
               ...newRequestBody,
               bodyVariables: value,
               bodyIsNew: true,

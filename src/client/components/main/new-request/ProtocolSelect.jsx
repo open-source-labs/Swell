@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
 
 const classNames = require('classnames');
@@ -102,6 +104,7 @@ class ProtocolSelect extends Component {
   }
 }
 
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 ProtocolSelect.propTypes = {
   currentProtocol: PropTypes.string.isRequired,
   onChangeHandler: PropTypes.func.isRequired,
