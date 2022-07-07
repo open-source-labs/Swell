@@ -4,16 +4,16 @@ import CodeMirror from '@uiw/react-codemirror';
 // import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from './EmptyState';
 import EventPreview from './EventPreview';
-import { EditorView } from "@codemirror/view"
+import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 
-
 function EventsContainer({ currentResponse }) {
-  const { request, response } = currentResponse;
-    // console.log('this is the request', request);
-    // console.log('this is the response', response);
-  if (!response || !response.events || response.events.length < 1) {
+  const isDark = useSelector((state) => state.ui.isDark);
 
+  const { request, response } = currentResponse;
+  // console.log('this is the request', request);
+  // console.log('this is the response', response);
+  if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;
   }
   const { events, headers } = response;
@@ -44,8 +44,6 @@ function EventsContainer({ currentResponse }) {
     responseBody = JSON.stringify(events[0], null, 4);
   }
 
-  const isDark = useSelector(state => state.ui.isDark);
-
   return (
     <div
       className="tab_content-response overflow-event-parent-container"
@@ -53,21 +51,24 @@ function EventsContainer({ currentResponse }) {
     >
       {request.method === 'GET' && (
         <EventPreview
-          className={`${isDark ? 'is-dark-200' : ''} overflow-event-child-container`}
+          className={`${
+            isDark ? 'is-dark-200' : ''
+          } overflow-event-child-container`}
           contents={responseBody}
         />
       )}
-      <div className={`${isDark ? 'is-dark-200' : ''} overflow-event-parent-container`}>
+      <div
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } overflow-event-parent-container`}
+      >
         {/* {responseBody} */}
         <CodeMirror
           className="overflow-event-child-container"
           value={responseBody}
-          theme = "dark"
-          readOnly = {true}
-          extensions={[
-            javascript(),
-            EditorView.lineWrapping,
-          ]}
+          theme="dark"
+          readOnly={true}
+          extensions={[javascript(), EditorView.lineWrapping]}
         />
       </div>
     </div>

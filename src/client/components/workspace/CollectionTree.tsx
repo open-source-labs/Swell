@@ -1,79 +1,85 @@
-import React from "react";
+import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../features/business/businessSlice';
+
+import {
+  reqResUpdated,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
 
 // import RequestCard from "./RequestCard";
-import ReqResContainer from "../legacy-components/ReqResContainer";
-
+import ReqResContainer from '../legacy-components/ReqResContainer';
 
 import TreeView from '@mui/lab/TreeView';
 import TreeItem from '@mui/lab/TreeItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Typography } from '@mui/material';
+import { RootState } from '../../toolkit-refactor/store';
 
-const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  currentTab: store.business.currentTab,
+/**@todo switch to use hooks? */
+const mapStateToProps = (store: RootState) => ({
+  reqResArray: store.reqRes.reqResArray,
 });
 
+/**@switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
+  reqResItemDeleted: (reqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
+  reqResUpdated: (reqRes) => {
+    dispatch(reqResUpdated(reqRes));
   },
 });
 
-function CollectionTree({ currentWorkspace, reqResDelete, reqResUpdate }) {
-
+function CollectionTree({ currentWorkspace, reqResItemDeleted, updated }) {
   const { reqResArray } = currentWorkspace;
-  const requestTreeItems = []
-  for (let i = 0; i < reqResArray.length; i+=1) {
+  const requestTreeItems = [];
+  for (let i = 0; i < reqResArray.length; i += 1) {
     requestTreeItems.push(
       <TreeItem
         key={reqResArray[i].id}
         nodeId={reqResArray[i].id}
         label={
+          /**@todo maybe access functions (last two) directly from container instead of passing through props? */
           <SingleReqResContainer
             className="reqResChild"
             content={reqResArray[i]}
             key={reqResArray[i].id}
             index={i}
-            reqResDelete={reqResDelete}
-            reqResUpdate={reqResUpdate}
+            reqResItemDeleted={reqResItemDeleted}
+            updated={updated}
           />
         }
-    />
-    )
+      />
+    );
   }
   // key={request.id} request={request}
 
-        // <RequestCard
-      //   key={reqResArray[i].id}
-      //   content={reqResArray[i]}
-      //   index={i}
-      //   reqResDelete={reqResDelete}
-      //   reqResUpdate={reqResUpdate}
-      // />
+  // <RequestCard
+  //   key={reqResArray[i].id}
+  //   content={reqResArray[i]}
+  //   index={i}
+  //   reqResItemDeleted={reqResItemDeleted}
+  //   updated={updated}
+  // />
 
   return (
     <Box
       className="collection-tree"
       sx={{
-        pt: 1
+        pt: 1,
       }}
     >
-      {reqResArray.length === 0
-        // If there are no requests in the current workspace, render this text.
-        ? <Typography
-            variant="caption"
-          >
-              Start this Workspace by adding a request from the composer.
+      {
+        reqResArray.length === 0 ? (
+          // If there are no requests in the current workspace, render this text.
+          <Typography variant="caption">
+            Start this Workspace by adding a request from the composer.
           </Typography>
-        // If there are requests in the current workspace, render the collection tree.
-        : <ReqResContainer displaySchedule />
+        ) : (
+          // If there are requests in the current workspace, render the collection tree.
+          <ReqResContainer displaySchedule />
+        )
         // : <TreeView
         //     aria-label="collection navigator"
         //     defaultCollapseIcon={<ExpandMoreIcon />}
@@ -88,6 +94,5 @@ function CollectionTree({ currentWorkspace, reqResDelete, reqResUpdate }) {
     </Box>
   );
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionTree);

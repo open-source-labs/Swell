@@ -6,12 +6,12 @@ const { buffer } = require('stream/consumers');
 const authController = {};
 
 authController.checkForCookie = async (req, res, next) => {
-  try{
-    if (!req.cookies.auth){
-      console.log('no auth', req.cookies)
+  try {
+    if (!req.cookies.auth) {
+      console.log('no auth', req.cookies);
       // res.cookie()
     }
-    return next()
+    return next();
   } catch (err) {
     return next({
       log: `Error in authController.checkForCookie Err: ${err.message}`,
@@ -19,7 +19,7 @@ authController.checkForCookie = async (req, res, next) => {
       message: { err: 'An error occurred' },
     });
   }
-}
+};
 
 /**
  * Middleware for the /signup/github/callback route
@@ -31,7 +31,8 @@ authController.getToken = async (req, res, next) => {
     const response = await axios.post(url, {
       headers: { Accept: 'application/json', 'Content-Type': 'text/json' },
     });
-    // TODO: make this less hacky :)
+
+    /** @todo Make this less hacky :))))) */
     const token = response.data.split('=')[1].split('&')[0];
     res.locals.access_token = token;
     return next();
@@ -62,14 +63,14 @@ authController.getUserInfo = async (req, res, next) => {
       message: { err: 'An error occurred' },
     });
   }
-}
+};
 
 /**
  * Middleware for the /api/import route
  */
 authController.getProfile = async (req, res, next) => {
   const url = 'https://api.github.com/user';
-  console.log('cookies auth', req.cookies.auth)
+  console.log('cookies auth', req.cookies.auth);
   //console.log('cookies auth', req.cookies.auth)
   try {
     const response = await axios.get(url, {
@@ -125,12 +126,14 @@ authController.getSwellFile = async (req, res, next) => {
       headers: {
         authorization: `token ${req.cookies.auth}`,
         accept: 'application/vnd.github.v3+json',
-      }
+      },
     });
     // res.locals.github.files = response.data.items;
     // const regex = new RegExp("/\.swell/", 'g' )
     // response.data.items.filter((val) => val.name.search('.swell') !== -1)
-    res.locals.github.files = response.data.items.filter((val) => val.name.search('.swell') !== -1) // response.data.items
+    res.locals.github.files = response.data.items.filter(
+      (val) => val.name.search('.swell') !== -1
+    ); // response.data.items
     return next();
   } catch (err) {
     return next({
@@ -141,7 +144,4 @@ authController.getSwellFile = async (req, res, next) => {
   }
 };
 
-
-
 module.exports = authController;
-

@@ -1,5 +1,7 @@
+/**
+ * @todo This protocol is not working at all. Needs work on every level.
+ */
 import { WRTC } from '../../types';
-//TODO: This protocol is not working at all. Needs work on every level.
 
 /**
  * exports Peer class for use in WebRTC implementations

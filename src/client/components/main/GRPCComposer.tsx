@@ -3,7 +3,11 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import GRPCTypeAndEndpointEntryForm from './new-request/GRPCTypeAndEndpointEntryForm';
 import HeaderEntryForm from './new-request/HeaderEntryForm';
 import GRPCProtoEntryForm from './new-request/GRPCProtoEntryForm.jsx';
@@ -14,8 +18,8 @@ import { Box } from '@mui/material';
 
 export default function GRPCComposer(props) {
   const {
-    resetComposerFields,
-    setNewRequestFields,
+    composerFieldsReset,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -30,16 +34,16 @@ export default function GRPCComposer(props) {
       network,
       testContent,
     },
-    setNewRequestBody,
-    setNewTestContent,
+    newRequestBodySet,
+    newTestContentSet,
     newRequestBody,
     newRequestBody: { rawType, bodyType },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     newRequestHeaders,
     newRequestHeaders: { headersArr },
-    setNewRequestCookies,
+    newRequestCookiesSet,
     newRequestCookies: { cookiesArr },
-    setNewRequestStreams,
+    newRequestStreamsSet,
     newRequestStreams,
     newRequestStreams: {
       selectedService,
@@ -55,16 +59,16 @@ export default function GRPCComposer(props) {
     },
     newRequestSSE: { isSSE },
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
-    reqResAdd,
+    reqResItemAdded,
     setWorkspaceActiveTab,
   } = props;
 
   const requestValidationCheck = () => {
     interface ValidationMessage {
       uri?: string;
-    };
+    }
     const validationMessage: ValidationMessage = {};
     //Error conditions...
     if (newRequestFields.grpcUrl) return true;
@@ -75,7 +79,7 @@ export default function GRPCComposer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -148,20 +152,20 @@ export default function GRPCComposer(props) {
     };
 
     // add request to history
-    // TODO: fix TS error
+    /** @todo Fix TS error */
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
 
     // GRPC REQUESTS
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: 'GRPC',
       rawType: '',
     });
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       url: grpcUrl,
       grpcUrl,
@@ -175,7 +179,7 @@ export default function GRPCComposer(props) {
     display: !/wss?:\/\//.test(protocol) ? 'block' : 'none',
   };
 
-  return(
+  return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
@@ -184,48 +188,47 @@ export default function GRPCComposer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id = "composer-grpc"
+      id="composer-grpc"
     >
-        <div
-          className="is-flex-grow-3 add-vertical-scroll"
-          style={{ overflowX: 'hidden' }}
-        >
-          {/* TODO: fix TSX typing errors */}
-          <GRPCTypeAndEndpointEntryForm
-            newRequestFields={newRequestFields}
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            setNewRequestFields={setNewRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
-            setNewRequestCookies={setNewRequestCookies}
-            setNewRequestBody={setNewRequestBody}
-            warningMessage={warningMessage}
-            setComposerWarningMessage={setComposerWarningMessage}
-          />
-          <HeaderEntryForm
-            stylesObj={HeaderEntryFormStyle}
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            newRequestFields={newRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
-          />
-          <GRPCProtoEntryForm
-            newRequestStreams={newRequestStreams}
-            setNewRequestStreams={setNewRequestStreams}
-          />
-          <TestEntryForm
-            setNewTestContent={setNewTestContent}
-            testContent={testContent}
-          />
-        </div>
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: 'hidden' }}
+      >
+        {/**@todo Fix TSX typing errors */}
+        <GRPCTypeAndEndpointEntryForm
+          newRequestFields={newRequestFields}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
+          newRequestCookiesSet={newRequestCookiesSet}
+          newRequestBodySet={newRequestBodySet}
+          warningMessage={warningMessage}
+          setWarningMessage={setWarningMessage}
+        />
+        <HeaderEntryForm
+          stylesObj={HeaderEntryFormStyle}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          newRequestFields={newRequestFields}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
+        />
+        <GRPCProtoEntryForm
+          newRequestStreams={newRequestStreams}
+          newRequestStreamsSet={newRequestStreamsSet}
+        />
+        <TestEntryForm
+          newTestContentSet={newTestContentSet}
+          testContent={testContent}
+        />
+      </div>
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </Box>
-  )
-
+  );
 }

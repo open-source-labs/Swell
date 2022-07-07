@@ -7,7 +7,7 @@ import ReqResContainer from './ReqResContainer.tsx';
 function ScheduleContainer() {
   const [scheduleInterval, setScheduleInterval] = useState(1);
   const [runScheduledTests, setScheduledTests] = useState(false);
-  const isDark = useSelector(state => state.ui.isDark);
+  const isDark = useSelector((state) => state.ui.isDark);
 
   return (
     <div>
@@ -18,7 +18,9 @@ function ScheduleContainer() {
             <p>(Seconds):</p>
           </span>
           <input
-            className={`${isDark ? 'is-dark-200': ''} ml-1 input input-is-medium is-info`}
+            className={`${
+              isDark ? 'is-dark-200' : ''
+            } ml-1 input input-is-medium is-info`}
             style={{ width: '65px' }}
             type="number"
             // min="1"
@@ -30,7 +32,9 @@ function ScheduleContainer() {
         </div>
         <div className="ml-2">
           <button
-            className={`button is-small is-primary ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
+            className={`button is-small is-primary ${
+              isDark ? '' : 'is-outlined'
+            } button-padding-vertical button-hover-color ml-3`}
             onClick={() => {
               setScheduledTests(true);
             }}
@@ -38,7 +42,9 @@ function ScheduleContainer() {
             Run
           </button>
           <button
-            className={`button is-small is-danger ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
+            className={`button is-small is-danger ${
+              isDark ? '' : 'is-outlined'
+            } button-padding-vertical button-hover-color ml-3`}
             onClick={() => {
               setScheduledTests(false);
             }}

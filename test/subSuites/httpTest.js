@@ -1,44 +1,55 @@
-// http tests using local server and public API
-// TODO: Please note, this is only testing HTTP currently. HTTP2 testing is non-existent and should be added 
-// TODO: possibly remove our own server from this testing suite and go with a public API.
-// Tests may fail due to the user's computer and this testing suite becomes heavier 
-// with a mock server. 
+/**
+ * @file http tests using local server and public API
+ *
+ * @todo Please note, this is only testing HTTP currently. HTTP2 testing is
+ * non-existent and should be added.
+ *
+ * @todo Possibly remove our own server from this testing suite and go with a
+ * public API. Tests may fail due to the user's computer and this testing suite
+ * becomes heavier with a mock server.
+ */
 
-const {_electron: electron} = require('playwright');
-const chai = require('chai')
-const expect = chai.expect
+const { _electron: electron } = require('playwright');
+const chai = require('chai');
+const expect = chai.expect;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const path = require('path');
 const fs = require('fs');
 
-let electronApp, page, num=0;
+let electronApp,
+  page,
+  num = 0;
 
 module.exports = () => {
-
-  const setupFxn = function() {
+  const setupFxn = function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
     });
-    
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       if (this.currentTest.state === 'failed') {
-        console.log(`Screenshotting failed test window`)
+        console.log(`Screenshotting failed test window`);
         const imageBuffer = await page.screenshot();
-        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+        fs.writeFileSync(
+          path.resolve(
+            __dirname + '/../failedTests',
+            `FAILED_${this.currentTest.title}.png`
+          ),
+          imageBuffer
+        );
       }
     });
-  }
+  };
 
-
-  describe('HTTP/S requests', function() {
+  describe('HTTP/S requests', function () {
     setupFxn();
 
     const fillRestRequest = async (
@@ -55,7 +66,9 @@ module.exports = () => {
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
           await page.locator('button#rest-method').click();
-          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
+          await page
+            .locator(`div[id^="composer"] >> a >> text=${method}`)
+            .click();
         }
 
         // type in url
@@ -63,33 +76,43 @@ module.exports = () => {
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
-          await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
-          await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
+          await page
+            .locator(`#header-row${index} >> [placeholder="Key"]`)
+            .fill(key);
+          await page
+            .locator(`#header-row${index} >> [placeholder="Value"]`)
+            .fill(value);
           await page.locator('#add-header').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
-          await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
-          await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
+          await page
+            .locator(`#cookie-row${index} >> [placeholder="Key"]`)
+            .fill(key);
+          await page
+            .locator(`#cookie-row${index} >> [placeholder="Value"]`)
+            .fill(value);
           await page.locator('#add-cookie').click();
         });
 
         // Add BODY as JSON if it isn't GET
         if (method !== 'GET') {
           // select body type JSON
-          if (await page.locator('#body-type-select').innerText()==='raw'){
+          if ((await page.locator('#body-type-select').innerText()) === 'raw') {
             await page.locator('#raw-body-type').click();
-            await page.locator('.dropdown-item >> text=application/json').click();
+            await page
+              .locator('.dropdown-item >> text=application/json')
+              .click();
           }
-          
+
           // insert JSON content into body
           const codeMirror = await page.locator('#body-entry-select');
           await codeMirror.click();
           const restBody = await codeMirror.locator('.cm-content');
 
           try {
-            restBody.fill('')
+            restBody.fill('');
             await restBody.fill(body);
           } catch (err) {
             console.error(err);
@@ -120,7 +143,9 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events.slice(1, 100)).to.include('userId');
               resolve();
@@ -161,7 +186,9 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('[]');
               resolve();
@@ -183,7 +210,9 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('JK Rowling');
               resolve();
@@ -204,7 +233,9 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Ron Weasley');
               resolve();
@@ -225,7 +256,9 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Hermoine Granger'); // someone didnt know how to spell :/
               resolve();
@@ -241,13 +274,15 @@ module.exports = () => {
         try {
           const url = 'http://localhost:3000/book/HarryPotter';
           const method = 'DELETE';
-          const body = '{}'
+          const body = '{}';
           await fillRestRequest(url, method, body);
           await addAndSend(num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('Hermoine Granger');
               resolve();
@@ -265,7 +300,9 @@ module.exports = () => {
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
-              const events = await page.locator('#events-display >> .cm-content').innerText();
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
               expect(statusCode).to.equal('200');
               expect(events).to.include('[]');
               resolve();

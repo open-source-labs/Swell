@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
 
 const classNames = require('classnames');

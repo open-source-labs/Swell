@@ -5,21 +5,21 @@ import TextCodeArea from './TextCodeArea';
 
 const GraphQLIntrospectionLog = () => {
   const headers = useSelector(
-    (store) => store.business.newRequestHeaders.headersArr
+    (store) => store.newRequest.newRequestHeaders.headersArr
   );
   const cookies = useSelector(
-    (store) => store.business.newRequestCookies.cookiesArr
+    (store) => store.newRequest.newRequestCookies.cookiesArr
   );
-  const introspectionData = useSelector(
-    (store) => store.business.introspectionData
-  );
-  const url = useSelector((store) => store.business.newRequestFields.url);
+  const introspectionData = useSelector((store) => store.introspectionData);
+  const url = useSelector((store) => store.newRequestFields.url);
   const isDark = useSelector((store) => store.ui.isDark);
 
   return (
     <div>
       <button
-        className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } button is-small add-header-or-cookie-button`}
         onClick={() => graphQLController.introspect(url, headers, cookies)}
       >
         Introspect
@@ -34,7 +34,7 @@ const GraphQLIntrospectionLog = () => {
             value={introspectionData.schemaSDL}
             mode="application/json"
             onChange={() => {}}
-            readOnly = {true}
+            readOnly={true}
           />
         )}
       </div>

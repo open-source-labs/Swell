@@ -6,8 +6,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import collectionsController from '../../../controllers/collectionsController';
 import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
-import * as actions from '../../../features/business/businessSlice';
-import * as uiactions from '../../../features/ui/uiSlice';
+
+import {
+  collectionUpdated,
+  collectionAdded,
+} from '../../../toolkit-refactor/collections/collectionsSlice';
 
 function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();
@@ -16,8 +19,8 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const [collectionNameErrorStyles, setCollectionNameErrorStyles] =
     useState(false);
   // PULL elements FROM store
-  const reqResArray = useSelector((store) => store.business.reqResArray);
-  const collections = useSelector((store) => store.business.collections);
+  const reqResArray = useSelector((store) => store.reqRes.reqResArray);
+  const collections = useSelector((store) => store.collections);
 
   const saveCollection = (inputName) => {
     const clonedArray = JSON.parse(JSON.stringify(reqResArray));
@@ -39,7 +42,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
       reqResArray: clonedArray,
     };
     collectionsController.addCollectionToIndexedDb([collection]); //add to IndexedDB
-    dispatch(actions.collectionAdd(collection));
+    dispatch(collectionAdded(collection));
     setShowModal(false);
     setCollectionNameErrorStyles(false);
   };
@@ -64,7 +67,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
       reqResArray: clonedArray,
     };
     collectionsController.updateCollectionInIndexedDb(collectionObj); //add to IndexedDB
-    dispatch(actions.collectionUpdate(collectionObj));
+    dispatch(collectionUpdated(collectionObj));
     setShowModal(false);
     setCollectionNameErrorStyles(false);
   };
@@ -137,12 +140,14 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
                   onClick={() => {
                     setShowModal(false);
                     setCollectionNameErrorStyles(false);
-                  }}>
+                  }}
+                >
                   Cancel
                 </button>
                 <button
                   className="button is-small is-fullwidth m-3 "
-                  onClick={saveName}>
+                  onClick={saveName}
+                >
                   Save
                 </button>
               </div>

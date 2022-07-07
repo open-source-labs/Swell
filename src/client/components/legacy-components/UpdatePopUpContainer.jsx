@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const { api } = window;
 
-const UpdatePopUpContainer = ({ message, setMessage }) => {
+const UpdatePopUpContainer = () => {
+  // Used to toggle the "update" pop-up.
+  const [message, setMessage] = useState(null);
+
   useEffect(() => {
     api.receive('message', (e, text) => {
       console.log('AUTO-UPDATER STATUS: ' + e);
@@ -10,14 +13,19 @@ const UpdatePopUpContainer = ({ message, setMessage }) => {
     });
   });
 
+  if (!message) {
+    return null;
+  }
+
   const handleUpdateClick = () => {
     api.send('quit-and-install');
     setMessage(null);
   };
 
-  return message ? (
+  return (
     <div id="update-modal">
       <span>{message}</span>
+
       {message === 'Update downloaded.' && (
         <>
           <span className="updateMessage">
@@ -26,12 +34,14 @@ const UpdatePopUpContainer = ({ message, setMessage }) => {
           </span>
         </>
       )}
+
       <button
         className="button is-small modal-button"
         onClick={() => setMessage(null)}
       >
         Dismiss
       </button>
+
       {message === 'Update downloaded.' && (
         <button
           className="button is-small is-full-width modal-button-update"
@@ -41,7 +51,7 @@ const UpdatePopUpContainer = ({ message, setMessage }) => {
         </button>
       )}
     </div>
-  ) : null;
+  );
 };
 
 export default UpdatePopUpContainer;
