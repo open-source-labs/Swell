@@ -24,7 +24,11 @@ import historyController from '../../../controllers/historyController';
 // Import local components
 import Http2EndpointForm from './Http2EndpointForm';
 import Http2MetaData from './Http2MetaData';
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import RestMethodAndEndpointEntryForm from '../new-request/RestMethodAndEndpointEntryForm';
 import HeaderEntryForm from '../new-request/HeaderEntryForm';
 import CookieEntryForm from '../new-request/CookieEntryForm';
@@ -140,7 +144,7 @@ export default function Http2Composer(props) {
     return validationMessage;
   };
 
-  // TODO: what does this function do?
+  /** @todo Figure out what this function does */
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
@@ -221,7 +225,7 @@ export default function Http2Composer(props) {
     );
   };
 
-  // TODO: what does this function do?
+  /** @todo Figure out what this function does */
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
@@ -229,8 +233,10 @@ export default function Http2Composer(props) {
       return;
     }
 
+    const httpOrWebsocketRegex = /(http|ws)s?:\/\//;
+    const protocol = url.match(httpOrWebsocketRegex)[0];
+
     let reqRes;
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
     if (!/wss?:\/\//.test(protocol) && !gRPC) {
       const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
@@ -295,10 +301,6 @@ export default function Http2Composer(props) {
     setWorkspaceActiveTab('workspace');
   };
 
-  const handleSSEPayload = (e) => {
-    newRequestSSESet(e.target.checked);
-  };
-
   return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
@@ -314,14 +316,18 @@ export default function Http2Composer(props) {
         HTTP/2
       </Typography> */}
       {/**
-       * TODO:
-       * The two commented components are our attempt to port the entire app to use MaterialUI for consistency.
-       * The first one...
-       * ... is an HTTP2Enpoint form with a (1) method select (2) endpoint form (3) send button.
-       * The second one...
-       * ... is all of the metadata you would need for an HTTP2 request (parameters, headers, body, cookies)
-       * These are not tied to the Redux store currently, and thus do not interact with the app yet.
-       * They are just standalone components that need to be integrated with the logic of the app.
+       * @todo The two commented-out components are our attempt to port the
+       * entire app to use MaterialUI for consistency.
+       *
+       * The first one is an HTTP2Enpoint form with a (1) method select (2)
+       * endpoint form (3) send button.
+       *
+       * The second one is all of the metadata you would need for an HTTP2
+       * request (parameters, headers, body, cookies)
+       *
+       * These are not tied to the Redux store currently, and thus do not
+       * interact with the app yet. They are just standalone components that
+       * need to be integrated with the logic of the app.
        */}
       {/* <Http2EndpointForm
         http2Method={http2Method}
@@ -376,9 +382,7 @@ export default function Http2Composer(props) {
           id="SSEswitch"
           type="checkbox"
           className="switch is-outlined is-warning"
-          onChange={(e) => {
-            handleSSEPayload(e);
-          }}
+          onChange={(e) => newRequestSSESet(e)}
           checked={isSSE}
         />
         <label htmlFor="SSEswitch" />

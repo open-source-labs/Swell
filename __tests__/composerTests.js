@@ -1,9 +1,15 @@
+/**
+ * @file This entire file has been commented out, since all testing was done in
+ * Enzyme, which is quickly losing relevance and is no longer the best tool for
+ * testing frontend applications, especially React applications.
+ *
+ * @todo For the next tester, recommended that logic be migrated over to
+ * React Testing Library.
+ */
+
 /* eslint-disable react/jsx-props-no-spreading */
 // import React from 'react';
 // import ProtocolSelect from '../src/client/components/composer/NewRequest/ProtocolSelect.jsx';
-
-// Commented out this file since it is using Enzyme, which has been falling out of favor and currently does not work for this app version
-// TODO: for the next tester, recommended to migrate to React Testing Library
 
 // import { configure, shallow } from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';

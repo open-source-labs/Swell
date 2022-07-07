@@ -3,7 +3,11 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import OpenAPIEntryForm from './new-request/OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './new-request/OpenAPIDocumentEntryForm.jsx';
@@ -97,7 +101,7 @@ export default function OpenAPIComposer(props) {
       };
 
       // add request to history
-      // TODO: fix TS type error
+      /** @todo Fix TS type error */
       historyController.addHistoryToIndexedDb(reqRes);
       reqResItemAdded(reqRes);
 
@@ -134,7 +138,7 @@ export default function OpenAPIComposer(props) {
         className="is-flex-grow-3 add-vertical-scroll"
         style={{ overflowX: 'hidden' }}
       >
-        {/* TODO: fix TS type error */}
+        {/** @todo fix TS type error */}
         <OpenAPIEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}

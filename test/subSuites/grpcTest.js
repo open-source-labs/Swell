@@ -1,42 +1,49 @@
-// gRPC tests using "hw2.proto" file to set up gRPC in grpcServer
-// TODO: possibly remove our own server from this testing suite and go with a public API.
-// Tests may fail due to the user's computer and this testing suite becomes heavier 
-// with a mock server. 
+/**
+ * @file gRPC tests using "hw2.proto" file to set up gRPC in grpcServer
+ *
+ * @todo Possibly remove our own server from this testing suite and go with a
+ * public API. Tests may fail due to the user's computer and this testing suite
+ * becomes heavier with a mock server.
+ */
 
 const grpcServer = require('../grpcServer.js');
 const graphqlServer = require('../graphqlServer');
-const {_electron: electron} = require('playwright');
-const chai = require('chai')
-const expect = chai.expect
+const { _electron: electron } = require('playwright');
+const chai = require('chai');
+const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
 
 let electronApp, page, num;
 
 module.exports = () => {
-
-  const setupFxn =  function() {
+  const setupFxn = function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
-      num=0;
+      num = 0;
     });
-    
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       if (this.currentTest.state === 'failed') {
-        console.log(`Screenshotting failed test window`)
+        console.log(`Screenshotting failed test window`);
         const imageBuffer = await page.screenshot();
-        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+        fs.writeFileSync(
+          path.resolve(
+            __dirname + '/../failedTests',
+            `FAILED_${this.currentTest.title}.png`
+          ),
+          imageBuffer
+        );
       }
     });
-  }
-
+  };
 
   describe('gRPC requests', () => {
     setupFxn();
@@ -50,7 +57,9 @@ module.exports = () => {
           'utf8',
           (err, data) => {
             if (err) console.log(err);
-            proto = data; //TODO: confirm this works?
+
+            /** @todo Confirm whether this assignment works */
+            proto = data;
             done();
           }
         );
@@ -79,7 +88,6 @@ module.exports = () => {
 
     const composerSetup = async () => {
       try {
-
         await page.locator('button>> text=GRPC').click();
         await page.locator('#url-input').fill('0.0.0.0:30051');
 

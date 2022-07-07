@@ -31,12 +31,12 @@ const newRequestFieldsSlice = createSlice({
   initialState,
 
   reducers: {
-    // Previously SET_NEW_REQUEST_FIELDS/setNewRequestFields
+    //Before toolkit conversion was SET_NEW_REQUEST_FIELDS or setNewRequestFields
     fieldsReplaced: (_, action: PayloadAction<NewRequestFields>) => {
       return action.payload;
     },
 
-    // Previously SET_NEW_TEST_CONTENT/setNewTestContent
+    //Before toolkit conversion was SET_NEW_TEST_CONTENT or setNewTestContent
     newTestContentSet: (
       state,
       action: PayloadAction<NewRequestFields['testContent']>

@@ -1,28 +1,29 @@
-// webRTC test using public server. Currently very thin, only confirms that a server
-// can be added to the workspace
-// TODO: Properly test webRTC protocol. Please note the webRTC protocol is very broken and unsure if it
-// even currently works for any functionality purposes.
+/**
+ * @file webRTC test using public server. Currently very thin, only confirms
+ * that a server can be added to the workspace.
+ *
+ * @todo Properly test webRTC protocol. Please note the webRTC protocol is very
+ * broken and unsure if it even currently works for any functionality purposes.
+ */
 
-const {_electron: electron} = require('playwright');
-const chai = require('chai')
-const expect = chai.expect
+const { _electron: electron } = require('playwright');
+const chai = require('chai');
+const expect = chai.expect;
 const path = require('path');
 const fs = require('fs');
 
 let electronApp, page;
 
 module.exports = () => {
-
-  const setupFxn = function() {
+  const setupFxn = function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
 
       await page.locator('button >> text=Clear Workspace').click();
-
     });
-    
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
@@ -31,27 +32,30 @@ module.exports = () => {
       } catch (err) {
         console.error(err);
       }
-
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       if (this.currentTest.state === 'failed') {
-        console.log(`Screenshotting failed test window`)
+        console.log(`Screenshotting failed test window`);
         const imageBuffer = await page.screenshot();
-        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+        fs.writeFileSync(
+          path.resolve(
+            __dirname + '/../failedTests',
+            `FAILED_${this.currentTest.title}.png`
+          ),
+          imageBuffer
+        );
       }
     });
-  }
+  };
 
   describe('webRTC request testing', () => {
     setupFxn();
 
     // This will fill out the composer with a GraphQL request when invoked.
-    const fillServerInfo = async (
-      server
-    ) => {
+    const fillServerInfo = async (server) => {
       try {
-        // click and check 
+        // click and check
         await page.locator('button>> text=WEBRTC').click();
 
         // select STUN or TURN servers, clear it, and type in server
@@ -80,19 +84,16 @@ module.exports = () => {
       }
     };
 
-
     it('it should be able to add a server to the workspace', async () => {
-      
-      const server = '[{"urls": "stun:stun1.l.google.com:19302"}]'
+      const server = '[{"urls": "stun:stun1.l.google.com:19302"}]';
 
       // type in server
       await fillServerInfo(server);
       await addAndCreateLocalSDP();
       await page.locator(`text=Remove`).click();
       const SDP = await page.locator(`text=Create Local SDP`);
-      expect(await SDP.count()).to.equal(0)
+      expect(await SDP.count()).to.equal(0);
     });
-
-    
   }).timeout(20000);
 };
+

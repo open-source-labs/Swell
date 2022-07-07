@@ -1,11 +1,15 @@
 import ReqResCtrl from '../src/client/controllers/reqResController';
 
-// TODO: Integration tests with the actual API. The controller calls api.send and api.recieve
-// without attachement to the API, the tests in this file don't perform anything.
-// Additionally, add a testing file for graphQLController. This is currently untested
-// and is a dependency for reqResController.
-
-/**@todo refactor for new state structure with redux slices */
+/**
+ * @todo Integration tests with the actual API. The controller calls api.send
+ * and api.recieve without attachement to the API, the tests in this file don't
+ * perform anything.
+ *
+ * Additionally, add a testing file for graphQLController. This is currently
+ * untested and is a dependency for reqResController.
+ *
+ * @todo Refactor for new state structure with redux slices
+ */
 
 describe('REST API Requests', () => {
   let state;

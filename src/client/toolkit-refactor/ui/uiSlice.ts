@@ -11,6 +11,11 @@ interface UiState {
   sidebarActiveTab: string;
   workspaceActiveTab: string;
   responsePaneActiveTab: string;
+  /**
+   * @todo - dark mode not enabled or implemented, either complete feature or
+   * remove this piece of state and it's references, but make sure all other
+   * functionality still good
+   * */
   isDark: boolean;
 }
 
@@ -48,3 +53,4 @@ export const {
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
+

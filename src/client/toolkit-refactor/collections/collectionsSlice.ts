@@ -2,8 +2,8 @@
  * @file Defines slice for working with collection values.
  *
  * @todo Figure out exactly what a collection is.
- * @todo CHeck the forEach calls in deleteCollection to see if the splices cause
- * elements to be skipped.
+ * @todo Check the for...of calls in collectionDeleted to see if the splices
+ * cause elements to be skipped.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Collection, $NotUsed } from '../../../types';
@@ -14,7 +14,7 @@ const CollectionsSlice = createSlice({
   name: 'collections',
   initialState,
   reducers: {
-    // Previously GET_COLLECTIONS, even though it was a setter
+    //Before toolkit conversion was GET_COLLECTIONS, even though it was a setter
     collectionsReplaced: (
       _state: $NotUsed,
       action: PayloadAction<Collection[]>
@@ -22,7 +22,7 @@ const CollectionsSlice = createSlice({
       return action.payload;
     },
 
-    // Previously DELETE_COLLECTION or deleteFromCollection (not deleteCollection)
+    //Before toolkit conversion was DELETE_COLLECTION or deleteFromCollection
     collectionDeleted: (state, action: PayloadAction<Collection>) => {
       /**
        * @todo Check to see if this loop is actually working. splices in loops
@@ -42,12 +42,12 @@ const CollectionsSlice = createSlice({
        */
     },
 
-    // Previously COLLECTION_ADD or collectionAdd
+    //Before toolkit conversion was COLLECTION_ADD or collectionAdd
     collectionAdded: (state, action: PayloadAction<Collection>) => {
       state.unshift(action.payload);
     },
 
-    // Previously COLLECTION_UPDATE or collectionUpdate
+    //Before toolkit conversion was COLLECTION_UPDATE or collectionUpdate
     collectionUpdated: (state, action: PayloadAction<Collection>) => {
       for (const [index, obj] of state.entries()) {
         if (obj.name === action.payload.name) {

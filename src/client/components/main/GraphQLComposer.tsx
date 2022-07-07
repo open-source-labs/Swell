@@ -5,7 +5,10 @@ import { v4 as uuid } from 'uuid';
 import historyController from '../../controllers/historyController';
 // Import local components
 
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import HeaderEntryForm from './new-request/HeaderEntryForm.jsx';
 import GraphQLMethodAndEndpointEntryForm from './new-request/GraphQLMethodAndEndpointEntryForm';
 import CookieEntryForm from './new-request/CookieEntryForm';

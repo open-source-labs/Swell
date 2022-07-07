@@ -3,7 +3,11 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
 // Import local components
-// TODO: refactor all of the below components to use MUI, place them in a new "components" folder
+
+/**
+ * @todo Refactor all of the below components to use MUI, place them in a new
+ * "components" folder
+ */
 import GRPCTypeAndEndpointEntryForm from './new-request/GRPCTypeAndEndpointEntryForm';
 import HeaderEntryForm from './new-request/HeaderEntryForm';
 import GRPCProtoEntryForm from './new-request/GRPCProtoEntryForm.jsx';
@@ -148,7 +152,7 @@ export default function GRPCComposer(props) {
     };
 
     // add request to history
-    // TODO: fix TS error
+    /** @todo Fix TS error */
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 
@@ -190,7 +194,7 @@ export default function GRPCComposer(props) {
         className="is-flex-grow-3 add-vertical-scroll"
         style={{ overflowX: 'hidden' }}
       >
-        {/* TODO: fix TSX typing errors */}
+        {/**@todo Fix TSX typing errors */}
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
           newRequestHeaders={newRequestHeaders}

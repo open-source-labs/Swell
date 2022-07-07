@@ -1,20 +1,5 @@
 /**
  * @file Defines the main entrypoint for the Swell app's frontend.
- *
- * DO NOT HESITATE TO REACH OUT TO FORMER TEAMS BEFORE TAKING THIS ON AS A
- * PROJECT. There is a lot of room for improvements, and everyone has ideas that
- * there just wasn't enough time to implement.
- *
- * People who have said they'd be willing to help:
- * - Adrian U
- * - Jacob V
- * - Michael P
- * - Chris
- * - Jen
- *
- * People who have helped before, but who may or may not be available:
- * - Jongsun
- * - Colin
  */
 
 import React from 'react';

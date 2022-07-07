@@ -21,14 +21,13 @@ import ErrorBoundary from './utilities/ErrorBoundary/ErrorBoundary';
 
 // Import styling
 /**
+ * @todo
  * Note to future devs:
- * Our team is finishing our work on this app, and part of our stretch goals
- * were to migrate all of the existing components to use Material UI. We made
- * this decision for a few reasons:
+ * Our team was not able to complete migrating all of the existing components
+ * to use Material UI. This should be finished for a couple of reasons:
  *
- * (1) There are a toooon of people who work on this application. It needs
- * consistent styling, and making changes to the SASS files can really
- * complicate development of the app.
+ * (1) This application needs consistent styling, and making changes to the
+ * SASS files can really complicate development of the app.
  *
  * (2) Material UI is very easy to use and very supported. If you know React and
  * a touch of CSS, you'll be able to quickly make visually-compatible components
