@@ -214,7 +214,7 @@
     "cross-env": "^7.0.3",
     "csp-html-webpack-plugin": "^5.1.0",
     "css-loader": "^6.7.1",
-    "electron": "^18.1.0",
+    "electron": "^18.3.5",
     "electron-builder": "^23.0.3",
     "electron-react-devtools": "^0.5.3",
     "eslint": "^8.14.0",
