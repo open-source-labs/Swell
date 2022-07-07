@@ -5,15 +5,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
-
 const GraphQLMethodAndEndpointEntryForm = ({
   warningMessage,
-  setComposerWarningMessage,
-  setNewRequestFields,
+  setWarningMessage,
+  fieldsReplaced,
   newRequestFields,
-  setNewRequestBody,
+  newRequestBodySet,
   newRequestBody,
-  setNewRequestHeaders,
+  newRequestHeadersSet,
   newRequestStreams,
   newRequestHeaders: { headersArr },
 }) => {
@@ -34,7 +33,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     if (warningMessage.uri) {
       const newWarningMessage = { ...warningMessage };
       delete warningMessage.uri;
-      setComposerWarningMessage({ ...newWarningMessage });
+      setWarningMessage({ ...newWarningMessage });
     }
   };
 
@@ -42,7 +41,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     warningCheck();
     const url = e.target.value;
 
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       gqlUrl: url,
       url,
@@ -57,13 +56,12 @@ const GraphQLMethodAndEndpointEntryForm = ({
     // GraphQL features
     if (value === 'QUERY') {
       if (!newRequestFields.graphQL) {
-
       } else {
         newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
           ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'query')
           : `${newRequestBody.bodyContent}`;
       }
-      setNewRequestBody({
+      newRequestBodySet({
         ...newRequestBody,
         bodyContent: newBody,
         bodyIsNew: false,
@@ -73,7 +71,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
         ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'mutation')
         : `${newRequestBody.bodyContent}`;
 
-      setNewRequestBody({
+      newRequestBodySet({
         ...newRequestBody,
         bodyContent: newBody,
         bodyIsNew: false,
@@ -83,14 +81,14 @@ const GraphQLMethodAndEndpointEntryForm = ({
         ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'subscription')
         : `${newRequestBody.bodyContent}`;
 
-      setNewRequestBody({
+      newRequestBodySet({
         ...newRequestBody,
         bodyContent: newBody,
         bodyIsNew: false,
       });
     }
 
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       method: value,
       protocol: value === 'SUBSCRIPTION' ? 'ws://' : '',
@@ -106,12 +104,12 @@ const GraphQLMethodAndEndpointEntryForm = ({
         className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${
           dropdownIsActive ? 'is-active' : ''
         }`}
-        style={{padding: '10px'}}
+        style={{ padding: '10px' }}
       >
         <div className="dropdown-trigger">
           <button
             className="no-border-please button is-graphQL"
-            id = "graphql-method"
+            id="graphql-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
@@ -167,9 +165,11 @@ const GraphQLMethodAndEndpointEntryForm = ({
         </div>
 
         <input
-          className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
+          className={`${
+            isDark ? 'is-dark-300' : ''
+          } ml-1 input input-is-medium is-info`}
           type="text"
-          id = "url-input"
+          id="url-input"
           placeholder="Enter endpoint"
           value={newRequestFields.gqlUrl}
           onChange={(e) => {

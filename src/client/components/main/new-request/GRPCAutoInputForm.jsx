@@ -37,7 +37,7 @@ const GRPCAutoInputForm = (props) => {
     let streamContent = [''];
     setRequestOption('Select Request');
     // the selected service name is saved in state of the store, mostly everything else is reset
-    props.setNewRequestStreams({
+    props.newRequestStreamsSet({
       ...props.newRequestStreams,
       selectedService: serviceName,
       selectedServiceObj: serviceObj,
@@ -67,7 +67,7 @@ const GRPCAutoInputForm = (props) => {
     // clears all stream bodies except the first when switching from client/directional stream to something else
 
     // the selected request name is saved in state of the store
-    props.setNewRequestStreams({
+    props.newRequestStreamsSet({
       ...props.newRequestStreams,
       selectedPackage: null,
       selectedRequest: requestName,
@@ -129,7 +129,7 @@ const GRPCAutoInputForm = (props) => {
     streamContentCopy.pop();
     streamContentCopy.push(queryJSON);
 
-    props.setNewRequestStreams({
+    props.newRequestStreamsSet({
       ...props.newRequestStreams,
       selectedPackage: selectedServiceObj.packageName,
       selectedStreamingType: rpc.type,
@@ -182,7 +182,7 @@ const GRPCAutoInputForm = (props) => {
       </span>
       <GRPCBodyEntryForm
         newRequestStreams={props.newRequestStreams}
-        setNewRequestStreams={props.setNewRequestStreams}
+        newRequestStreamsSet={props.newRequestStreamsSet}
         selectedPackage={selectedPackage}
         selectedService={selectedService}
         selectedRequest={selectedRequest}

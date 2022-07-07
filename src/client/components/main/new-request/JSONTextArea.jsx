@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import CodeMirror from '@uiw/react-codemirror';
 import TextCodeArea from './TextCodeArea.jsx';
 
-export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
+export default function JSONTextArea({ newRequestBody, newRequestBodySet }) {
   useEffect(() => {
     try {
       JSON.parse(newRequestBody.bodyContent);
       if (!newRequestBody.JSONFormatted) {
-        setNewRequestBody({
+        newRequestBodySet({
           ...newRequestBody,
           JSONFormatted: true,
         });
       }
     } catch (error) {
       if (newRequestBody.JSONFormatted) {
-        setNewRequestBody({
+        newRequestBodySet({
           ...newRequestBody,
           JSONFormatted: false,
         });
@@ -27,9 +26,9 @@ export default function JSONTextArea({ newRequestBody, setNewRequestBody }) {
     <TextCodeArea
       mode={newRequestBody.rawType}
       onChange={(value, viewUpdate) => {
-        setNewRequestBody({
-        ...newRequestBody,
-        bodyContent: value,
+        newRequestBodySet({
+          ...newRequestBody,
+          bodyContent: value,
         });
       }}
       value={newRequestBody.bodyContent}

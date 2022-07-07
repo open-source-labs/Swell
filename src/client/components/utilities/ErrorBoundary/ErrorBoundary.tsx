@@ -11,7 +11,7 @@
  * {@link https://reactjs.org/docs/error-boundaries.html}
  */
 
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, ErrorInfo } from 'react';
 
 interface Props {
   /** Component children. */
@@ -41,7 +41,7 @@ class ErrorBoundary extends Component<Props, State> {
    * @todo If this app ever gets big enough (in terms of users), this function
    * should be beefed up to do more than just log an error.
    */
-  componentDidCatch(error, info): void {
+  componentDidCatch(error: Error, info: ErrorInfo): void {
     console.error('ErrorBoundary caught an error', error, info);
   }
 

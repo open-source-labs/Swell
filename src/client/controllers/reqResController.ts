@@ -1,25 +1,35 @@
-import * as store from '../store';  // TODO: refactor for Redux Hooks
-import * as actions from './../features/business/businessSlice';
-import * as uiactions from './../features/ui/uiSlice';
+import Store from '../toolkit-refactor/store';
+import { appDispatch } from '../toolkit-refactor/store';
+
+import {
+  responseDataSaved,
+  reqResUpdated,
+  reqResReplaced,
+  reqResCleared,
+} from '../toolkit-refactor/reqRes/reqResSlice';
+import {
+  groupCleared,
+  graphCleared,
+  graphUpdated,
+} from '../toolkit-refactor/graphPoints/graphPointsSlice';
+
 import graphQLController from './graphQLController';
 import { ReqRes, WindowAPI, WindowExt } from '../../types';
 
-
-
-const { api }: { api: WindowAPI } = window as unknown as WindowExt;
+const { api } = window as unknown as WindowExt;
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
 
   // toggles checked in state for entire reqResArray
   toggleSelectAll(): void {
-    const { reqResArray }: { reqResArray: ReqRes[] } = store.default.getState().business;
+    const { reqResArray } = Store.getState().reqRes;
 
-    if (reqResArray.every((obj: ReqRes): boolean => obj.checked === true)) {
-      reqResArray.forEach((obj: ReqRes): boolean => obj.checked = false);
+    if (reqResArray.every((obj) => obj.checked === true)) {
+      reqResArray.forEach((obj) => (obj.checked = false));
     } else {
-      reqResArray.forEach((obj: ReqRes): boolean => obj.checked = true);
+      reqResArray.forEach((obj) => (obj.checked = true));
     }
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
+    appDispatch(reqResReplaced(reqResArray));
   },
   // listens for reqResUpdate event from main process telling it to update reqResObj REST EVENTS
   openReqRes(id: number): void {
@@ -34,20 +44,23 @@ const connectionController = {
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
       ) {
-        store.default.dispatch(actions.updateGraph(reqResObj));
+        appDispatch(graphUpdated(reqResObj));
       }
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
+      appDispatch(reqResUpdated(reqResObj));
       // If current selected response equals reqResObj received, update current response
-      const currentID = store.default.getState().business.currentResponse.id;
+
+      /** @todo Find where id should be */
+      const currentID = Store.getState().reqRes.currentResponse.id;
       if (currentID === reqResObj.id) {
-        store.default.dispatch(
-          actions.saveCurrentResponseData(reqResObj, 'currentID===reqResObj.id')
-        );
+        appDispatch(responseDataSaved(reqResObj, 'currentID===reqResObj.id'));
       }
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr: ReqRes[] = store.default.getState().business.reqResArray;
-    const reqResObj: ReqRes = reqResArr.find((el: ReqRes) => el.id === id);
+    const reqResArr: ReqRes[] = Store.getState().reqRes.reqResArray;
+    const reqResObj = reqResArr.find((el) => el.id === id);
+    if (!reqResObj) {
+      return;
+    }
 
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
@@ -88,12 +101,12 @@ const connectionController = {
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
       ) {
-        store.default.dispatch(actions.updateGraph(reqResObj));
+        appDispatch(graphUpdated(reqResObj));
       }
-      store.default.dispatch(actions.scheduledReqResUpdate(reqResObj));
+      appDispatch(reqResUpdated(reqResObj));
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
-    const reqResArr: ReqRes[] = store.default.getState().business.reqResArray;
+    const reqResArr: ReqRes[] = Store.getState().reqRes.reqResArray;
     const reqResObj: ReqRes = reqResArr.find((el: ReqRes) => el.id === id);
     if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
@@ -119,7 +132,6 @@ const connectionController = {
     }
   },
 
-
   runCollectionTest(reqResArray: ReqRes[]): void {
     api.removeAllListeners('reqResUpdate');
     let index = 0;
@@ -131,13 +143,11 @@ const connectionController = {
         reqResObj.timeReceived &&
         reqResObj.response.events.length > 0
       ) {
-        store.default.dispatch(actions.updateGraph(reqResObj));
+        appDispatch(graphUpdated(reqResObj));
       }
-      store.default.dispatch(actions.reqResUpdate(reqResObj));
+      appDispatch(reqResUpdated(reqResObj));
 
-      store.default.dispatch(
-        actions.saveCurrentResponseData(reqResObj, 'api.receive reqresupdate')
-      );
+      appDispatch(responseDataSaved(reqResObj, 'api.receive reqresupdate'));
       if (index < reqResArray.length) {
         runSingletest(reqResArray[index]);
         index += 1;
@@ -154,7 +164,8 @@ const connectionController = {
         // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
         api.send('open-ws', reqResObj);
         // update the connectionArray when connection is open from ws
-        api.receive('update-connectionArray', (connectionArray: number[]) => { // is this the correct type???
+        api.receive('update-connectionArray', (connectionArray: number[]) => {
+          // is this the correct type???
           connectionController.openConnectionArray.push(...connectionArray);
         });
       }
@@ -173,9 +184,8 @@ const connectionController = {
   openAllSelectedReqRes(): void {
     connectionController.closeAllReqRes();
 
-    const { reqResArray }: { reqResArray: ReqRes[] } = store.default.getState().business;
-
-    reqResArray.forEach((reqRes: ReqRes) => connectionController.openReqRes(reqRes.id));
+    const { reqResArray } = Store.getState().reqRes;
+    reqResArray.forEach((reqRes) => connectionController.openReqRes(reqRes.id));
   },
 
   // We are pretty sure that this is not used anymore... -Prince
@@ -186,19 +196,16 @@ const connectionController = {
   // },
 
   setReqResConnectionToClosed(id: number): void {
-    const reqResArr = store.default.getState().business.reqResArray;
+    const reqResArr = Store.getState().reqRes.reqResArray;
 
     const foundReqRes: ReqRes = JSON.parse(
       JSON.stringify(reqResArr.find((reqRes: ReqRes) => reqRes.id === id))
     );
 
     foundReqRes.connection = 'closed';
-    store.default.dispatch(actions.reqResUpdate(foundReqRes));
-    store.default.dispatch(
-      actions.saveCurrentResponseData(
-        foundReqRes,
-        'foundreqres.connection closed'
-      )
+    appDispatch(reqResUpdated(foundReqRes));
+    appDispatch(
+      responseDataSaved(foundReqRes, 'foundreqres.connection closed')
     );
   },
 
@@ -229,33 +236,35 @@ const connectionController = {
 
   /* Closes all open endpoint */
   closeAllReqRes(): void {
-    const { reqResArray }: { reqResArray: ReqRes[] } = store.default.getState().business;
-    reqResArray.forEach((reqRes: ReqRes) => connectionController.closeReqRes(reqRes));
+    const { reqResArray } = Store.getState().reqRes;
+    reqResArray.forEach((reqRes: ReqRes) =>
+      connectionController.closeReqRes(reqRes)
+    );
   },
 
   clearAllReqRes(): void {
     connectionController.closeAllReqRes();
-    store.default.dispatch(actions.reqResClear());
+    appDispatch(reqResCleared());
   },
 
   // toggles minimized in ReqRes array in state
   toggleMinimizeAll(): void {
-    const { reqResArray }: { reqResArray: ReqRes[] } = store.default.getState().business;
+    const { reqResArray }: { reqResArray: ReqRes[] } = Store.getState().reqRes;
 
     if (reqResArray.every((obj: ReqRes) => obj.minimized === true)) {
-      reqResArray.forEach((obj: ReqRes) => obj.minimized = false);
+      reqResArray.forEach((obj: ReqRes) => (obj.minimized = false));
     } else {
-      reqResArray.forEach((obj: ReqRes) => obj.minimized = true);
+      reqResArray.forEach((obj: ReqRes) => (obj.minimized = true));
     }
-    store.default.dispatch(actions.setChecksAndMinis(reqResArray));
+    appDispatch(reqResReplaced(reqResArray));
   },
   // clears a dataPoint from state
   clearGraph(): void {
-    store.default.dispatch(actions.clearGraph());
+    appDispatch(groupCleared());
   },
   // clears ALL data points from state
   clearAllGraph(): void {
-    store.default.dispatch(actions.clearAllGraph());
+    appDispatch(graphCleared());
   },
 };
 

@@ -2,14 +2,10 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable camelcase */
 import React from 'react';
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
 
-const WebSocketMessage = ({
-  source,
-  timeReceived,
-  data,
-  index,
-}) => {
+const WebSocketMessage = ({ source, timeReceived, data, index }) => {
   // conditional classNames and id for messages for styling depending on source
   const webSocketMessageClassNames =
     source === 'server'
@@ -57,6 +53,7 @@ const WebSocketMessage = ({
   );
 };
 
+/** @todo Remove propTypes check when component is converted to TypeScript*/
 WebSocketMessage.propTypes = {
   source: PropTypes.string.isRequired,
   data: PropTypes.any.isRequired,
@@ -64,3 +61,4 @@ WebSocketMessage.propTypes = {
 };
 
 export default WebSocketMessage;
+

@@ -1,17 +1,16 @@
 import { v4 as uuid } from 'uuid';
 import db from '../db';
 import { GithubData, WindowAPI, WindowExt } from '../../types';
-import * as actions from './../features/business/businessSlice';
-import * as uiactions from './../features/ui/uiSlice';
+
 import axios from 'axios';
 import { Octokit } from 'octokit';
 import Cookies from 'js-cookie';
-import { Collection } from 'dexie';
+import { Collection } from '../../types';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
 const githubController = {
-  async importFromRepo(): Promise<string> {
+  async importFromRepo(): Promise<Collection[]> {
     // setup authorization
     const token = await db.auth.toArray();
     const octokit = new Octokit({
@@ -27,9 +26,13 @@ const githubController = {
         path: '.swell',
       }
     );
-    return JSON.parse(
+
+    const parsedJson = JSON.parse(
       Buffer.from(response.data.content, 'base64').toString('UTF-8')
     );
+
+    // Type assertion bad; should be removed when possible
+    return parsedJson as Collection[];
   },
 
   async updateUserDataToDB(auth: string): Promise<void> {
@@ -75,8 +78,7 @@ const githubController = {
     }
     console.log('db updated');
   },
-}
-  
-export default githubController;
+};
 
+export default githubController;
 

@@ -14,7 +14,7 @@ import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
 import RestTestSnippetsContainer from './test-snippets/RestTestSnippetsContainer';
 
 const TestEntryForm = (props) => {
-  const { testContent, setNewTestContent } = props;
+  const { testContent, newTestContentSet } = props;
   const isDark = useSelector((store) => store.ui.isDark);
 
   const [showTests, setShowTests] = useState(false);
@@ -24,11 +24,13 @@ const TestEntryForm = (props) => {
     <div className="mt-4 mb-4">
       <RestTestSnippetsContainer
         testContent={testContent}
-        setNewTestContent={setNewTestContent}
+        newTestContentSet={newTestContentSet}
         setShowTests={setShowTests}
       />
       <div
-        className={`${isDark ? 'is-dark-200' : ''} is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
         onClick={handleShowTests}
       >
         {showTests === true && (
@@ -48,7 +50,7 @@ const TestEntryForm = (props) => {
             mode="javascript"
             value={testContent}
             onChange={(value, viewUpdate) => {
-              setNewTestContent(value);
+              newTestContentSet(value);
             }}
           />
         </div>

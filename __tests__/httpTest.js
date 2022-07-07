@@ -5,6 +5,8 @@ import ReqResCtrl from '../src/client/controllers/reqResController';
 // Additionally, add a testing file for graphQLController. This is currently untested
 // and is a dependency for reqResController.
 
+/**@todo refactor for new state structure with redux slices */
+
 describe('REST API Requests', () => {
   let state;
   beforeEach(() => {
@@ -61,7 +63,7 @@ describe('REST API Requests', () => {
         isSSE: false,
       },
       introspectionData: { schemaSDL: null, clientSchema: null },
-      dataPoints: [],
+      graphPoints: [],
       currentResponse: {
         request: {
           network: '',
@@ -114,8 +116,8 @@ describe('REST API Requests', () => {
       expect(response.toEqual('hello'));
     });
 
-    it('should toggle select all',()=>{
+    it('should toggle select all', () => {
       expect(ReqResCtrl.toggleSelectAll()).not.toThrowError;
-    })
+    });
   });
 });

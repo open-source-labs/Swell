@@ -1,4 +1,6 @@
-<p align="center"><img src="./src/assets/img/horizontal-logo-lockup.png" style="margin-top: 10px; margin-bottom: -10px;"></p>
+<img src="./src/assets/img/horizontal-logo-lockup.png" style="display: block; margin: 10px auto -10px;">
+
+<!-- Do not remove the empty header below; used to separate logo from icons -->
 
 #
 
@@ -23,7 +25,7 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - Send and monitor streams over HTTP2 / HTTP1 (including SSEs) and WebSockets
 - Create GraphQL queries, introspections, mutations, and subscriptions
 - Make API requests based on a range of provided options that conform to the specifications defined in an OpenAPI document.
-- Verify STUN and TURN server connectivity for WebRTC applications by generating an SDP
+- Verify STUN and TURN server connectivity for WebRTC applications by generating an SDP (Session Description Protocol)
 - Provides full streaming testing support for gRPC
 - View response timing information and history in an interactive chart for each request
 - Save workspaces of multiple requests for later access
@@ -48,29 +50,26 @@ Swell is a one-stop shop for sending and monitoring your API requests
 
 - _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
   <kbd><img src="./ReadMeGifs/Gifs/GRPCResponses.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-  
 - _OpenAPI_: Swell supports the enumeration and execution of REST and RPC API requests as defined in a user-provided OpenAPI document.
   <kbd><img src="./ReadMeGifs/Gifs/openapi.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-  
 - _WebRTC_: Swell enables testing STUN and TURN ICE server connectivity for WebRTC applications.  
   <kbd><img src="./ReadMeGifs/Gifs/webrtc.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
-  
-    Developers enter ICE server details as an array of JavaScript objects (example code block below).  An RTCPeerConnection is instantiated and an SDP is generated.
 
-    ```javascript
-    [
-      {
-        urls: 'turn:111.222.333.444:54321',
-        username: 'myAwesomeUsername',
-        credential: 'mySecretPassword',  // or token
-        credentialType: 'password'
-      },
-      {
-        urls: 'stun:555.777.888.999:43210',
-      },
-    ]
-    ```
+  Developers enter ICE server details as an array of JavaScript objects (example code block below). An RTCPeerConnection is instantiated and an SDP is generated.
 
+  ```javascript
+  [
+    {
+      urls: 'turn:111.222.333.444:54321',
+      username: 'myAwesomeUsername',
+      credential: 'mySecretPassword', // or token
+      credentialType: 'password',
+    },
+    {
+      urls: 'stun:555.777.888.999:43210',
+    },
+  ];
+  ```
 
 ## Additional Features
 
@@ -92,16 +91,18 @@ Swell is a one-stop shop for sending and monitoring your API requests
        style="float: left; margin-right: 10px; margin-bottom : 30px; margin-top : 10px; border: 1px solid black;" /></kbd>
 
 ## WIP Features
+
 **Clone this repo and check out dev mode for the latest and greatest!**
 
-- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook. 
+- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
   <kbd><img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
-- *New in Dev Version 1.10.2!* _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
+- _New in Dev Version 1.10.2!_ _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
   <kbd><img src="./ReadMeGifs/Gifs/NewUI.png" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
-- *New in Dev Version 1.10.2!* _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
+- _New in Dev Version 1.10.2!_ _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
   <kbd><img src="./ReadMeGifs/Gifs/GithubIntegration.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
+
 ## Built With
 
 - Electron
@@ -174,11 +175,15 @@ Swell is a one-stop shop for sending and monitoring your API requests
 - **Jay Wall** - [hanswand](https://github.com/hanswand)
 - **Sam Pyo** - [samhpyo](https://github.com/samhpyo)
 - **Drew Pomatti** - [thedrewery](https://github.com/thedrewery)
-- **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)	
+- **Kurtis Waterbury** - [kurto8](https://github.com/kurto8)
 - **Yale Yng-Wong** - [ywy-w](https://github.com/ywy-w)
 - **Evelin Goldin** - [evelingoldin](https://github.com/evelingoldin)
 - **Alexander Adams** - [alex-e-adams](https://github.com/alex-e-adams)
 - **Ethan Sclarsky** - [esclarsky](https://github.com/esclarsky)
+- **Travis Lovis** - [tlovis](https://github.com/tlovis)
+- **HyeJin Kim** - [hyejinkim](https://github.com/hyejinkim)
+- **Alexa Nunes** - [A13xaNunes](https://github.com/A13xaNunes)
+- **Michael Smith** - [Parkreiner](https://github.com/Parkreiner)
 
 ## License
 

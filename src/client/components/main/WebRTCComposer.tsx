@@ -9,12 +9,12 @@ import WebRTCServerEntryForm from './new-request/WebRTCServerEntryForm.jsx';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import TestEntryForm from './new-request/TestEntryForm.jsx';
 // Import MUI components
-import { Box } from '@mui/material'
+import { Box } from '@mui/material';
 
 export default function WebRTCComposer(props) {
   const {
-    resetComposerFields,
-    setNewRequestFields,
+    composerFieldsReset,
+    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -28,20 +28,20 @@ export default function WebRTCComposer(props) {
       network,
       testContent,
     },
-    setNewTestContent,
-    setNewRequestBody,
+    newTestContentSet,
+    newRequestBodySet,
     newRequestBody,
     newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
-    setNewRequestHeaders,
+    newRequestHeadersSet,
     webrtcData,
     newRequestHeaders,
-    setNewRequestCookies,
-    setNewRequestStreams,
+    newRequestCookiesSet,
+    newRequestStreamsSet,
     newRequestStreams,
     currentTab,
-    setComposerWarningMessage,
+    setWarningMessage,
     warningMessage,
-    reqResAdd,
+    reqResItemAdded,
     setWorkspaceActiveTab,
   } = props;
 
@@ -87,17 +87,17 @@ export default function WebRTCComposer(props) {
     // add request to history
     // TODO: fix this TS type error
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
 
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: 'stun-ice',
       rawType: '',
     });
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       url,
       webrtcUrl,
@@ -106,45 +106,45 @@ export default function WebRTCComposer(props) {
     setWorkspaceActiveTab('workspace');
   };
 
-  return(
+  return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
-      id = "composer-webrtc"
+      id="composer-webrtc"
     >
-        <div
-          className="is-flex-grow-3 add-vertical-scroll"
-          style={{ overflowX: 'hidden' }}
-        >
-          {/* TODO: fix TSX type error */}
-          <WebRTCSessionEntryForm
-            newRequestFields={newRequestFields}
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            setNewRequestFields={setNewRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
-            setNewRequestCookies={setNewRequestCookies}
-            setNewRequestBody={setNewRequestBody}
-            warningMessage={warningMessage}
-            setComposerWarningMessage={setComposerWarningMessage}
-            setNewTestContent={setNewTestContent}
-          />
+      <div
+        className="is-flex-grow-3 add-vertical-scroll"
+        style={{ overflowX: 'hidden' }}
+      >
+        {/* TODO: fix TSX type error */}
+        <WebRTCSessionEntryForm
+          newRequestFields={newRequestFields}
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          fieldsReplaced={fieldsReplaced}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
+          newRequestCookiesSet={newRequestCookiesSet}
+          newRequestBodySet={newRequestBodySet}
+          warningMessage={warningMessage}
+          setWarningMessage={setWarningMessage}
+          newTestContentSet={newTestContentSet}
+        />
 
-          <WebRTCServerEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-          />
+        <WebRTCServerEntryForm
+          warningMessage={warningMessage}
+          newRequestBody={newRequestBody}
+          newRequestBodySet={newRequestBodySet}
+        />
 
-          <TestEntryForm
-            setNewTestContent={setNewTestContent}
-            testContent={testContent}
-          />
-        </div>
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+        <TestEntryForm
+          newTestContentSet={newTestContentSet}
+          testContent={testContent}
+        />
+      </div>
+      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+        <NewRequestButton onClick={addNewRequest} />
+      </div>
     </Box>
-  )
+  );
 }

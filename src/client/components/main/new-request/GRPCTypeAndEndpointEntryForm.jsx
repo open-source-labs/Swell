@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 
 const GRPCTypeAndEndpointEntryForm = ({
   warningMessage,
-  setComposerWarningMessage,
-  setNewRequestFields,
+  setWarningMessage,
+  fieldsReplaced,
   newRequestFields,
   newRequestStreams,
 }) => {
@@ -13,14 +13,14 @@ const GRPCTypeAndEndpointEntryForm = ({
     if (warningMessage.uri) {
       const warningMessage = { ...warningMessage };
       delete warningMessage.uri;
-      setComposerWarningMessage({ ...warningMessage });
+      setWarningMessage({ ...warningMessage });
     }
   };
 
   const urlChangeHandler = (e) => {
     warningCheck();
     const url = e.target.value;
-    setNewRequestFields({
+    fieldsReplaced({
       ...newRequestFields,
       grpcUrl: url,
       url,
@@ -34,16 +34,20 @@ const GRPCTypeAndEndpointEntryForm = ({
   const isDark = useSelector((state) => state.ui.isDark);
 
   return (
-    <div className={`ml-2 mr-2 is-flex is-justify-content-center `}
-    style={{padding: '10px'}}>
+    <div
+      className={`ml-2 mr-2 is-flex is-justify-content-center `}
+      style={{ padding: '10px' }}
+    >
       {/* button id is now stream for vanilla JS selector, this should change */}
       <button id="stream" className="no-border-please button is-grpc">
         <span>{grpcStreamLabel}</span>
       </button>
       <input
-        className={`${isDark ? 'is-dark-300' : '' } ml-1 input input-is-medium is-info`}
+        className={`${
+          isDark ? 'is-dark-300' : ''
+        } ml-1 input input-is-medium is-info`}
         type="text"
-        id = "url-input"
+        id="url-input"
         placeholder="Enter endpoint"
         value={newRequestFields.grpcUrl}
         onChange={(e) => {

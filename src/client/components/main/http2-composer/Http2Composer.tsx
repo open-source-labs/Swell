@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
-// Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
-import * as actions from '../../../features/business/businessSlice';
-import * as uiactions from '../../../features/ui/uiSlice';
+
+import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  setResponsePaneActiveTab,
+  setSidebarActiveTab,
+} from '../../../toolkit-refactor/ui/uiSlice';
+//import { scheduledReqResAdded } from '../../../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
+import { setWarningMessage } from '../../../toolkit-refactor/warningMessage/warningMessageSlice';
+
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
@@ -43,14 +57,14 @@ export default function Http2Composer(props) {
     toggle: BooleanValueNode;
   }
 
-  const [parameters, setParameters] = useState<Parameter[]>([])
-  const [headers, setHeaders] = useState<Header[]>([])
-  const [cookies, setCookies] = useState<Cookie[]>([])
-  const [http2Method, setHttp2Method] = useState('GET')
-  const [http2Uri, setHttp2Uri] = useState('')
+  const [parameters, setParameters] = useState<Parameter[]>([]);
+  const [headers, setHeaders] = useState<Header[]>([]);
+  const [cookies, setCookies] = useState<Cookie[]>([]);
+  const [http2Method, setHttp2Method] = useState('GET');
+  const [http2Uri, setHttp2Uri] = useState('');
 
   const dispatch = useDispatch();
-  // Destructuring business store props.
+  // Destructuring store props.
   const {
     currentTab,
     newRequestFields,
@@ -78,27 +92,22 @@ export default function Http2Composer(props) {
     testContent,
   } = newRequestFields;
 
-  const {
-    JSONFormatted,
-    rawType,
-    bodyContent,
-    bodyVariables,
-    bodyType,
-  } = newRequestBody;
+  const { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType } =
+    newRequestBody;
 
   // Destructuring dispatch props.
   const {
-    setNewRequestFields,
-    resetComposerFields,
-    setNewRequestBody,
-    setNewTestContent,
-    setNewRequestHeaders,
-    setNewRequestCookies,
-    setNewRequestStreams,
-    setNewRequestSSE,
-    setComposerWarningMessage,
+    fieldsReplaced,
+    composerFieldsReset,
+    newRequestBodySet,
+    newTestContentSet,
+    newRequestHeadersSet,
+    newRequestCookiesSet,
+    newRequestStreamsSet,
+    newRequestSSESet,
+    setWarningMessage,
     setWorkspaceActiveTab,
-    reqResAdd
+    reqResItemAdded,
   } = props;
 
   const { protoPath } = newRequestSSE;
@@ -114,8 +123,8 @@ export default function Http2Composer(props) {
     interface ValidationMessage {
       uri?: string;
       json?: string;
-    };
-    const validationMessage: ValidationMessage = {}
+    }
+    const validationMessage: ValidationMessage = {};
     // Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
@@ -135,7 +144,7 @@ export default function Http2Composer(props) {
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -198,20 +207,17 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
-    // dispatch(actions.scheduledReqResUpdate(reqRes));
+    reqResItemAdded(reqRes);
+    // dispatch(scheduledReqResAdded(reqRes));
 
     //reset for next request
-    resetComposerFields();
-    // dispatch(actions.setResponsePaneActiveTab('events'));
-    // dispatch(actions.setSidebarActiveTab('composer'));
+    composerFieldsReset();
+    dispatch(setResponsePaneActiveTab('events'));
+    dispatch(setSidebarActiveTab('composer'));
 
     connectionController.openReqRes(reqRes.id);
     dispatch(
-      actions.saveCurrentResponseData(
-        reqRes,
-        'singleReqResContainercomponentSendHandler'
-      )
+      responseDataSaved(reqRes, 'singleReqResContainercomponentSendHandler')
     );
   };
 
@@ -219,7 +225,7 @@ export default function Http2Composer(props) {
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
-      setComposerWarningMessage(warnings);
+      setWarningMessage(warnings);
       return;
     }
 
@@ -282,18 +288,18 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    reqResAdd(reqRes);
+    reqResItemAdded(reqRes);
 
     //reset for next request
-    resetComposerFields();
+    composerFieldsReset();
     setWorkspaceActiveTab('workspace');
   };
 
   const handleSSEPayload = (e) => {
-    setNewRequestSSE(e.target.checked);
+    newRequestSSESet(e.target.checked);
   };
 
-  return(
+  return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
@@ -302,7 +308,7 @@ export default function Http2Composer(props) {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id = "composer-http2"
+      id="composer-http2"
     >
       {/* <Typography align='center'>
         HTTP/2
@@ -335,11 +341,11 @@ export default function Http2Composer(props) {
       <RestMethodAndEndpointEntryForm
         newRequestFields={newRequestFields}
         newRequestBody={newRequestBody}
-        setNewTestContent={setNewTestContent}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestBody={setNewRequestBody}
+        newTestContentSet={newTestContentSet}
+        fieldsReplaced={fieldsReplaced}
+        newRequestBodySet={newRequestBodySet}
         warningMessage={warningMessage}
-        setComposerWarningMessage={setComposerWarningMessage}
+        setWarningMessage={setWarningMessage}
       />
       <span className="inputs">
         <div>
@@ -348,13 +354,13 @@ export default function Http2Composer(props) {
             newRequestStreams={newRequestStreams}
             newRequestBody={newRequestBody}
             newRequestFields={newRequestFields}
-            setNewRequestHeaders={setNewRequestHeaders}
-            setNewRequestStreams={setNewRequestStreams}
+            newRequestHeadersSet={newRequestHeadersSet}
+            newRequestStreamsSet={newRequestStreamsSet}
           />
           <CookieEntryForm
             newRequestCookies={newRequestCookies}
             newRequestBody={newRequestBody}
-            setNewRequestCookies={setNewRequestCookies}
+            newRequestCookiesSet={newRequestCookiesSet}
           />
         </div>
         <div className="is-3rem-footer is-clickable restReqBtns">
@@ -365,9 +371,7 @@ export default function Http2Composer(props) {
       </span>
       {/* SSE TOGGLE SWITCH */}
       <div className="field mt-2">
-        <span className="composer-section-title mr-3">
-          Server Sent Events
-        </span>
+        <span className="composer-section-title mr-3">Server Sent Events</span>
         <input
           id="SSEswitch"
           type="checkbox"
@@ -383,15 +387,15 @@ export default function Http2Composer(props) {
         <BodyEntryForm
           warningMessage={warningMessage}
           newRequestBody={newRequestBody}
-          setNewRequestBody={setNewRequestBody}
+          newRequestBodySet={newRequestBodySet}
           newRequestHeaders={newRequestHeaders}
-          setNewRequestHeaders={setNewRequestHeaders}
+          newRequestHeadersSet={newRequestHeadersSet}
         />
       )}
       <TestEntryForm
-        setNewTestContent={setNewTestContent}
+        newTestContentSet={newTestContentSet}
         testContent={testContent}
       />
     </Box>
-  )
+  );
 }

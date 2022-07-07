@@ -27,6 +27,7 @@
     "./main_process/*.ts",
     "src/assets/**/*.ts"
   ],
+
   "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
   "typeRoots": ["./node_modules/@types"]
 }

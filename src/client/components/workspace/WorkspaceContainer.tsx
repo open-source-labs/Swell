@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // Local components
-import CurrentWorskpaceDisplay from "./CurrentWorkspaceDisplay";
-import LegacyWorkspaceContainer from "./LegacyWorkspaceContainer";
-import BarGraph from "../legacy-components/BarGraph";
+import CurrentWorskpaceDisplay from './CurrentWorkspaceDisplay';
+import LegacyWorkspaceContainer from './LegacyWorkspaceContainer';
+import BarGraph from '../legacy-components/BarGraph';
 // import CollectionsContainer from "../../components/containers/CollectionsContainer";
 import CollectionTree from './CollectionTree';
 
 // MUI components and SVG icons
-import { Box, Button, Typography, SelectChangeEvent, Divider } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+  SelectChangeEvent,
+  Divider,
+} from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
+import { RootState, useAppDispatch } from '../../toolkit-refactor/store';
 
-export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace }) {
-
+export default function WorkspaceContainer({
+  currentWorkspaceId,
+  setWorkspace,
+}) {
   /**
    * TODO: change the workspace container to have adjustable width sizing via user dragging
    * TODO: reimplement the "Schedule" functionality somehow
@@ -22,20 +31,27 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
-  }
+  };
 
   // Grab all of the workspaces from the Redux store. Hopefully this is O(1)...
-  const allWorkspaces = useSelector((store: any) => store.business.collections);
+  const allWorkspaces = useSelector((store: RootState) => store.collections);
 
   // Based on the currentWorkspaceUUID, grab the appropriate workspace from the "workspaces" array and pass it into the CollectionTree component.
-  const currentWorkspace = allWorkspaces.find(workspace => {
+  const currentWorkspace = allWorkspaces.find((workspace) => {
     return workspace.id === currentWorkspaceId;
-  })
+  });
 
   return (
-    <Box className="workspace-container" sx={{ minWidth: '20%', align: 'center' }}>
+    <Box
+      className="workspace-container"
+      sx={{ minWidth: '20%', align: 'center' }}
+    >
       {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
-      <CurrentWorskpaceDisplay currentWorkspaceId={currentWorkspaceId} currentWorkspace={currentWorkspace} handleWorkspaceChange={handleWorkspaceChange}/>
+      <CurrentWorskpaceDisplay
+        currentWorkspaceId={currentWorkspaceId}
+        currentWorkspace={currentWorkspace}
+        handleWorkspaceChange={handleWorkspaceChange}
+      />
       <Box className="collections-container">
         <Typography>Requests</Typography>
         <Divider orientation="horizontal" />
@@ -65,5 +81,5 @@ export default function WorkspaceContainer({ currentWorkspaceId, setWorkspace })
         <AddRounded fontSize="small"/>
       </Button> */}
     </Box>
-  )
+  );
 }

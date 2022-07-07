@@ -1,45 +1,59 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../features/business/businessSlice'
-import PropTypes from 'prop-types';
-import { Box, Button, Select, MenuItem, FormControl, SelectChangeEvent } from '@mui/material';
 
-// setNewRequestBody={setNewRequestBody}
-// newRequestBody={newRequestBody}
-// setNewRequestHeaders={setNewRequestHeaders}
-// newRequestHeaders={newRequestHeaders}
+import { RootState } from '../../../toolkit-refactor/store';
 
-const mapStateToProps = (store) => {
+import {
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+
+import {
+  Box,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  SelectChangeEvent,
+} from '@mui/material';
+
+/**@todo switch to use hooks? */
+const mapStateToProps = (store: RootState) => {
   return {
-    newRequestHeaders: store.business.newRequestHeaders,
-    newRequestBody: store.business.newRequestBody,
+    newRequestHeaders: store.newRequest.newRequestHeaders,
+    newRequestBody: store.newRequest.newRequestBody,
   };
 };
 
+/**@todo switch to use hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
 });
 
-function BodyTypeSelect({ newRequestHeaders, newRequestBody, setNewRequestHeaders, setNewRequestBody }) {
-
+function BodyTypeSelect({
+  newRequestHeaders,
+  newRequestBody,
+  newRequestHeadersSet,
+  newRequestBodySet,
+}) {
   const handleBodyTypeSelect = (event: SelectChangeEvent) => {
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyType: event.target.value,
     });
-  }
+  };
 
   const handleRawBodyTypeSelect = (event: SelectChangeEvent) => {
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       rawType: event.target.value,
     });
-  }
+  };
 
   const prettifyJSON = () => {
     const prettyString = JSON.stringify(
@@ -47,25 +61,25 @@ function BodyTypeSelect({ newRequestHeaders, newRequestBody, setNewRequestHeader
       null,
       4
     );
-    setNewRequestBody({
+    newRequestBodySet({
       ...newRequestBody,
       bodyContent: prettyString,
     });
-  }
+  };
 
-  return(
+  return (
     <Box
       sx={{
         display: 'flex',
         width: '50%',
-        py: 1
+        py: 1,
       }}
     >
       <FormControl
         size="small"
         sx={{
           width: '50%',
-          pr: 1
+          pr: 1,
         }}
       >
         <Select
@@ -74,48 +88,49 @@ function BodyTypeSelect({ newRequestHeaders, newRequestBody, setNewRequestHeader
           onChange={handleBodyTypeSelect}
         >
           <MenuItem value="raw">raw</MenuItem>
-          <MenuItem value="x-www-form-urlencoded">x-www-form-urlencoded</MenuItem>
+          <MenuItem value="x-www-form-urlencoded">
+            x-www-form-urlencoded
+          </MenuItem>
           <MenuItem value="none">none</MenuItem>
         </Select>
       </FormControl>
-      { newRequestBody.bodyType === 'raw'
-        && <FormControl
-              size="small"
-              sx={{
-                width: '50%',
-                pr: 1
-              }}
-            >
-              <Select
-                id="raw-body-type-select"
-                value={newRequestBody.rawType}
-                onChange={handleRawBodyTypeSelect}
-              >
-                <MenuItem value="text/plain">text/plain</MenuItem>
-                <MenuItem value="application/json">application/json</MenuItem>
-                <MenuItem value="application/javascript">application/javascript</MenuItem>
-                <MenuItem value="application/xml">application/xml</MenuItem>
-                <MenuItem value="text/xml">text/xml</MenuItem>
-                <MenuItem value="text/html">text/html</MenuItem>
-              </Select>
-            </FormControl>
-      }
-      { newRequestBody.bodyType === 'raw'
-        && newRequestBody.rawType === 'application/json'
-        && (
+      {newRequestBody.bodyType === 'raw' && (
+        <FormControl
+          size="small"
+          sx={{
+            width: '50%',
+            pr: 1,
+          }}
+        >
+          <Select
+            id="raw-body-type-select"
+            value={newRequestBody.rawType}
+            onChange={handleRawBodyTypeSelect}
+          >
+            <MenuItem value="text/plain">text/plain</MenuItem>
+            <MenuItem value="application/json">application/json</MenuItem>
+            <MenuItem value="application/javascript">
+              application/javascript
+            </MenuItem>
+            <MenuItem value="application/xml">application/xml</MenuItem>
+            <MenuItem value="text/xml">text/xml</MenuItem>
+            <MenuItem value="text/html">text/html</MenuItem>
+          </Select>
+        </FormControl>
+      )}
+      {newRequestBody.bodyType === 'raw' &&
+        newRequestBody.rawType === 'application/json' && (
           <Button
             sx={{
-              pr: 1
+              pr: 1,
             }}
             onClick={prettifyJSON}
           >
             Prettify
           </Button>
-        )
-
-      }
+        )}
     </Box>
-  )
+  );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BodyTypeSelect)
+export default connect(mapStateToProps, mapDispatchToProps)(BodyTypeSelect);

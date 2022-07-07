@@ -9,7 +9,7 @@ import dropDownArrowUp from '../../../../../assets/icons/caret-up-tests.svg';
 import WebsocketTestSnippets from './WebsocketTestSnippets';
 
 export default function WebsocketTestSnippetsContainer(props) {
-  const { setShowTests, testContent, setNewTestContent } = props;
+  const { setShowTests, testContent, newTestContentSet } = props;
   const [showSnippets, setShowSnippets] = useState(false);
   const isDark = useSelector((store) => store.ui.isDark);
 
@@ -19,7 +19,9 @@ export default function WebsocketTestSnippetsContainer(props) {
   return (
     <div>
       <div
-        className={`${isDark ? 'is-dark-200' : ''} is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } is-rest-invert show-hide-tests cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
         onClick={handleShowSnippets}
       >
         {showSnippets === true && (
@@ -39,11 +41,11 @@ export default function WebsocketTestSnippetsContainer(props) {
         <div id="test-snippets">
           <WebsocketTestSnippets
             testContent={testContent}
-            setNewTestContent={setNewTestContent}
+            newTestContentSet={newTestContentSet}
             setShowTests={setShowTests}
           />
         </div>
       )}
     </div>
   );
-};
+}
