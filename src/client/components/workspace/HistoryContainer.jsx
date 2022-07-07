@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
 
-/**@todo delete general actions when slice conversion complete */
-//import * as actions from '../../features/business/businessSlice';
-
 import * as HistorySlice from '../../toolkit-refactor/history/historySlice';
+import { fieldsReplaced } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
 import {
   newRequestCookiesSet,

@@ -6,11 +6,7 @@ import { RootState } from '../../toolkit-refactor/store';
 
 import { NewRequestStreams, NewRequestFields } from '../../../types';
 
-// Import Redux actions and methods.
-/**@todo delete when slice conversion complete */
-//import * as actions from '../../features/business/businessSlice';
-//import * as uiactions from '../../features/ui/uiSlice';
-
+// Import Redux actions and methods
 import {
   reqResUpdated,
   reqResItemDeleted,
@@ -50,12 +46,11 @@ const mapDispatchToProps = (dispatch: ReturnType<typeof useDispatch>) => ({
 function RequestCard(props) {
   const dispatch = useDispatch();
   const currentResponse = useSelector(
-    // TODO: remove explicit any.
-    (store: any) => store.business.currentResponse
+    (store: RootState) => store.reqRes.currentResponse
   );
+
   const newRequestFields = useSelector(
-    // TODO: remove explicit any.
-    (store: any) => store.business.newRequestFields
+    (store: RootState) => store.newRequestFields
   );
 
   const [showDetails, setShowDetails] = useState(false);
@@ -63,7 +58,7 @@ function RequestCard(props) {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-    itemDeleted,
+    reqResItemDeleted,
   } = props;
 
   const network = content.request.network;

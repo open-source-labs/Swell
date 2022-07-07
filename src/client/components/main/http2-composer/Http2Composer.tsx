@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
-// Give composer access to both business Redux store slice and all actions
 import { useDispatch } from 'react-redux';
-
-/**@todo delete when slice conversion complete */
-//import * as actions from '../../../features/business/businessSlice';
-//import * as uiactions from '../../../features/ui/uiSlice';
 
 import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
 import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
@@ -69,7 +64,7 @@ export default function Http2Composer(props) {
   const [http2Uri, setHttp2Uri] = useState('');
 
   const dispatch = useDispatch();
-  // Destructuring business store props.
+  // Destructuring store props.
   const {
     currentTab,
     newRequestFields,

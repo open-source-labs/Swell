@@ -6,26 +6,17 @@ import { json } from '@codemirror/lang-json';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { matchBrackets } from '@codemirror/language';
-
-/**@todo delete when slice conversion complete */
-import * as actions from '../../../features/business/businessSlice';
-//import * as uiactions from '../../../features/ui/uiSlice';
-
 import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
 
 const jBeautify = require('js-beautify').js;
 
 export default function WebRTCRequestContent({ content }) {
-  const { body } = content.request;
   const { iceConfiguration } = content.request.body;
   const [localSdp, setLocalSdp] = useState('');
   const [pcInitiator, setPcInitiator] = useState(null);
 
   const dispatch = useDispatch();
-
-  const currentResponse = useSelector(
-    (store) => store.business.currentResponse
-  );
+  const currentResponse = useSelector((store) => store.reqRes.currentResponse);
 
   useEffect(() => {
     if (pcInitiator?.connection?.localDescription) {
@@ -45,11 +36,11 @@ export default function WebRTCRequestContent({ content }) {
   }, [currentResponse]);
 
   function createLocalSDP() {
-    const pc = new Peer(iceConfiguration);
-    pc.role = 'INITIATOR';
-    pc.initDataChannelAndEvents();
-    pc.createLocalSdp();
-    setPcInitiator(pc);
+    const peerConnection = new Peer(iceConfiguration);
+    peerConnection.role = 'INITIATOR';
+    peerConnection.initDataChannelAndEvents();
+    peerConnection.createLocalSdp();
+    setPcInitiator(peerConnection);
   }
 
   return (
@@ -57,7 +48,7 @@ export default function WebRTCRequestContent({ content }) {
       <div className="p-3">
         <div className="is-size-7">Servers</div>
         <CodeMirror
-          value={jBeautify(JSON.stringify(body.iceConfiguration.iceServers))}
+          value={jBeautify(JSON.stringify(iceConfiguration.iceServers))}
           theme="dark"
           readOnly="true"
           extensions={[javascript(), EditorView.lineWrapping]}

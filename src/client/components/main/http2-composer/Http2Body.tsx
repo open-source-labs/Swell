@@ -2,9 +2,6 @@ import React from 'react';
 // Http2Body needs access to the Redux store.
 import { connect } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-//import * as actions from '../../../features/business/businessSlice';
-
 import { RootState } from '../../../toolkit-refactor/store';
 
 import {

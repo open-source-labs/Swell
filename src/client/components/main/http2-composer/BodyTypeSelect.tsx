@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-//import * as actions from '../../../features/business/businessSlice';
-
 import { RootState } from '../../../toolkit-refactor/store';
 
 import {
@@ -19,11 +16,6 @@ import {
   FormControl,
   SelectChangeEvent,
 } from '@mui/material';
-
-// newRequestBodySet={newRequestBodySet}
-// newRequestBody={newRequestBody}
-// newRequestHeadersSet={newRequestHeadersSet}
-// newRequestHeaders={newRequestHeaders}
 
 /**@todo switch to use hooks? */
 const mapStateToProps = (store: RootState) => {

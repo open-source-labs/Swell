@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-
 import {
   reqResUpdated,
   reqResItemDeleted,
@@ -31,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
 const ScheduleReqResContainer = (props) => {
   const {
     reqResArray,
-    itemDeleted,
+    reqResItemDeleted,
     updated,
     scheduleInterval,
     scheduledReqResArray,
@@ -55,7 +52,7 @@ const ScheduleReqResContainer = (props) => {
         date={reqRes.response.headers.date[0]}
         key={index}
         index={index}
-        itemDeleted={itemDeleted}
+        reqResItemDeleted={reqResItemDeleted}
         updated={updated}
       />
     );

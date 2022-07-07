@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-/**@todo delete after slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-//import * as uiactions from '../../features/ui/uiSlice';
-
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from './display/RestRequestContent';
 import GraphQLRequestContent from './display/GraphQLRequestContent';
@@ -12,7 +8,10 @@ import WebRTCRequestContent from './display/WebRTCRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
 import OpenAPIRequestContent from './display/OpenAPIRequestContent';
 
-import { responseDataSaved } from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  responseDataSaved,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
   fieldsReplaced,
   newFields,
@@ -42,7 +41,7 @@ const SingleReqResContainer = (props) => {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-    itemDeleted,
+    reqResItemDeleted,
     index,
   } = props;
 
@@ -208,7 +207,7 @@ const SingleReqResContainer = (props) => {
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);
-    itemDeleted(content);
+    reqResItemDeleted(content);
   };
 
   // changes the color of boarder depending on the response?

@@ -7,10 +7,6 @@ import { v4 as uuid } from 'uuid';
 import collectionsController from '../../../controllers/collectionsController';
 import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../../features/business/businessSlice';
-//import * as uiactions from '../../../features/ui/uiSlice';
-
 import {
   collectionUpdated,
   collectionAdded,
@@ -23,7 +19,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const [collectionNameErrorStyles, setCollectionNameErrorStyles] =
     useState(false);
   // PULL elements FROM store
-  const reqResArray = useSelector((store) => store.reqResArray);
+  const reqResArray = useSelector((store) => store.reqRes.reqResArray);
   const collections = useSelector((store) => store.collections);
 
   const saveCollection = (inputName) => {

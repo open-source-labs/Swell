@@ -7,33 +7,19 @@ import gql from 'graphql-tag';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
-import * as store from '../store'; // TODO: refactor for Redux Hooks
-import * as actions from './../features/business/businessSlice';
-import * as uiactions from './../features/ui/uiSlice';
+
 import {
-  ReqRes,
-  GraphQLResponse,
-  Cookie,
-  RequestHeaders,
-  NewRequestCookies,
   WindowAPI,
-  WindowExt,
-} from '../../types';
-import { reqResUpdate } from '../actions(deprecated)/actions';
-import ReqResContainer from '../components/legacy-components/ReqResContainer';
-
-/**@todo delete next 2 imports (store, actions) when toolkit conversion complete */
-//import * as store from '../store'; // TODO: refactor for Redux Hooks
-//import * as actions from './../features/business/businessSlice';
-
-import Store from '../toolkit-refactor/store';
-import {
   ReqRes,
   GraphQLResponse,
   Cookie,
   CookieOrHeader,
   WindowExt,
 } from '../../types';
+
+import ReqResContainer from '../components/legacy-components/ReqResContainer';
+
+import Store from '../toolkit-refactor/store';
 
 import { appDispatch } from '../toolkit-refactor/store';
 import { introspectionDataChanged } from '../toolkit-refactor/introspectionData/introspectionDataSlice';
@@ -130,9 +116,9 @@ const graphQLController = {
 
   openSubscription(reqResObj: ReqRes): void {
     console.log('openSubscription');
-    store.default.dispatch(actions.reqResUpdate(reqResObj));
+    appDispatch(reqResUpdated(reqResObj));
 
-    const currentID = store.getState().reqRes.currentResponse.id;
+    const currentID = Store.getState().reqRes.currentResponse.id;
     if (currentID === reqResObj.id) appDispatch(responseDataSaved(reqResObj));
 
     // have to replace http with ws to connect to the websocket
@@ -141,7 +127,7 @@ const graphQLController = {
     // Map all headers to headers object
     const headers: Record<string, string> = {};
     reqResObj.request.headers.forEach(
-      ({ active, key, value }: RequestHeaders) => {
+      ({ active, key, value }: CookieOrHeader) => {
         if (active) headers[key] = value;
       }
     );

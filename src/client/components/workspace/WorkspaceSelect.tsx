@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ReqRes } from '../../../types';
 
 import { useSelector, useDispatch, connect } from 'react-redux';
-
-/**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
 
 import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
 
@@ -27,17 +24,14 @@ export default function WorkspaceSelect({
   handleWorkspaceChange,
   workspaces,
 }) {
-  const [open, setOpen] = React.useState(false);
-  // TODO: change store explicit any to a more defined type
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // This state is used in the commented-out modal component
+  const setIsOpen = React.useState(false)[1];
   const dispatch = useDispatch();
 
   const updateReqRes = (reqResArray: ReqRes[]) => {
     dispatch(reqResReplaced(reqResArray));
   };
 
-  // const localWorkspaces = useSelector((store: any) => store.business.collections);
   const menuItems = workspaces.map((workspace) => (
     <MenuItem
       key={workspace.id}
@@ -64,7 +58,16 @@ export default function WorkspaceSelect({
         </Select>
         <FormHelperText>Current Workspace</FormHelperText>
       </FormControl>
-      {/* <ImportWorkspaceModal open={open} handleClose={handleClose}/> */}
+
+      {/**
+       * @todo This modal seems close to done, but there's no way to turn it
+       * off. It just hijacks your ability to use the app. Uncomment this
+       * component to see for yourself.
+       */}
+      {/* <ImportWorkspaceModal
+        open={() => setIsOpen(true)}
+        handleClose={() => setIsOpen(false)}
+      /> */}
     </Box>
   );
 }

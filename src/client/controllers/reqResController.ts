@@ -1,22 +1,20 @@
-/**@todo delete below 2 imports after slice conversion complete */
 import Store from '../toolkit-refactor/store';
-//import * as actions from './../features/business/businessSlice';
-
 import { appDispatch } from '../toolkit-refactor/store';
+
 import {
   responseDataSaved,
   reqResUpdated,
   reqResReplaced,
   reqResCleared,
 } from '../toolkit-refactor/reqRes/reqResSlice';
-
-import graphQLController from './graphQLController';
-import { ReqRes, WindowAPI, WindowExt } from '../../types';
 import {
   groupCleared,
   graphCleared,
   graphUpdated,
 } from '../toolkit-refactor/graphPoints/graphPointsSlice';
+
+import graphQLController from './graphQLController';
+import { ReqRes, WindowAPI, WindowExt } from '../../types';
 
 const { api } = window as unknown as WindowExt;
 const connectionController = {

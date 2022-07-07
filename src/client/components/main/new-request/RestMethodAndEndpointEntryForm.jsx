@@ -164,9 +164,7 @@ const RestMethodAndEndpointEntryForm = ({
           type="text"
           placeholder="Enter endpoint"
           value={newRequestFields.restUrl}
-          onChange={(e) => {
-            urlChangeHandler(e, newRequestFields.network);
-          }}
+          onChange={(e) => urlChangeHandler(e, newRequestFields.network)}
         />
       </div>
 

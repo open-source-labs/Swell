@@ -1,9 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../../features/business/businessSlice';
-
 import { collectionDeleted } from '../../../toolkit-refactor/collections/collectionsSlice';
 
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';

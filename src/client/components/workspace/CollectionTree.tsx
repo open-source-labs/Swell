@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-//import * as actions from '../../features/business/businessSlice';
-
 import {
   reqResUpdated,
   reqResItemDeleted,
@@ -34,7 +31,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-function CollectionTree({ currentWorkspace, itemDeleted, updated }) {
+function CollectionTree({ currentWorkspace, reqResItemDeleted, updated }) {
   const { reqResArray } = currentWorkspace;
   const requestTreeItems = [];
   for (let i = 0; i < reqResArray.length; i += 1) {
@@ -49,7 +46,7 @@ function CollectionTree({ currentWorkspace, itemDeleted, updated }) {
             content={reqResArray[i]}
             key={reqResArray[i].id}
             index={i}
-            itemDeleted={itemDeleted}
+            reqResItemDeleted={reqResItemDeleted}
             updated={updated}
           />
         }
@@ -62,7 +59,7 @@ function CollectionTree({ currentWorkspace, itemDeleted, updated }) {
   //   key={reqResArray[i].id}
   //   content={reqResArray[i]}
   //   index={i}
-  //   itemDeleted={itemDeleted}
+  //   reqResItemDeleted={reqResItemDeleted}
   //   updated={updated}
   // />
 

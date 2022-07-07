@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
 
-/**@todo delete after slice convserion complete */
-//import * as actions from '../../features/business/businessSlice';
-
 import {
   reqResUpdated,
   reqResItemDeleted,
@@ -29,7 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ReqResContainer = (props) => {
-  const { reqResArray, itemDeleted, updated, displaySchedule } = props;
+  const { reqResArray, reqResItemDeleted, updated, displaySchedule } = props;
 
   /**@todo maybe access functions (last two) directly from container instead of passing through props? */
   const reqResMapped = reqResArray.map((reqRes, index) => {
@@ -39,7 +36,7 @@ const ReqResContainer = (props) => {
         content={reqRes}
         key={index}
         index={index}
-        itemDeleted={itemDeleted}
+        reqResItemDeleted={reqResItemDeleted}
         updated={updated}
       />
     );
@@ -48,7 +45,7 @@ const ReqResContainer = (props) => {
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
-  const isDark = useSelector((store) => store.ui.isDark);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   return (
     <div>

@@ -3,10 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
 
-/**@todo delete after slice conversion complete */
-//import * as actions from '../../features/business/businessSlice';
-//import * as uiactions from '../../features/ui/uiSlice';
-
 import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
   composerFieldsReset,

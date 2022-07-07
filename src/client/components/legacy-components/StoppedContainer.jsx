@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 
-/**@todo delete after slice convserion complete */
-//import * as actions from '../../features/business/businessSlice';
-
 import { graphCleared } from '../../toolkit-refactor/graphPoints/graphPointsSlice';
 import {
   reqResUpdated,
@@ -38,7 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
 const StoppedContainer = (props) => {
   const {
     reqResArray,
-    itemDeleted,
+    reqResItemDeleted,
     updated,
     runScheduledTests,
     scheduledReqResArray,
@@ -56,7 +53,7 @@ const StoppedContainer = (props) => {
         key={index}
         date={reqRes.response.headers.date[0]}
         index={index}
-        itemDeleted={itemDeleted}
+        reqResItemDeleted={reqResItemDeleted}
         updated={updated}
       />
     );

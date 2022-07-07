@@ -1,24 +1,22 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-/**@todo delete after slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-
 import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
 import { collectionDeleted } from '../../toolkit-refactor/collections/collectionsSlice';
-
+import { useAppDispatch } from '../../toolkit-refactor/store';
 import Collection from '../../components/display/Collection';
 import collectionsController from '../../controllers/collectionsController';
 import githubController from '../../controllers/githubController';
 import db from '../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { RootState } from '../../toolkit-refactor/store';
 
 function CollectionsContainer() {
   let files = useLiveQuery(() => db.files.toArray());
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const localWorkspaces = useSelector((store) => store.business.collections);
-  const isDark = useSelector((state) => state.ui.isDark);
+  const localWorkspaces = useSelector((store: RootState) => store.collections);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   const handleImportFromGithub = async () => {
     const githubWorkspaces = await githubController.importFromRepo();

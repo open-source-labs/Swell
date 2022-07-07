@@ -4,10 +4,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../../features/business/businessSlice';
-//import * as uiactions from '../../../features/ui/uiSlice';
-
 import { setResponsePaneActiveTab } from '../../../toolkit-refactor/ui/uiSlice';
 
 import ReqResCtrl from '../../../controllers/reqResController';

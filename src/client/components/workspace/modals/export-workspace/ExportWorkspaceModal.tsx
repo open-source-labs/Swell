@@ -10,10 +10,7 @@ import collectionsController from '../../../../controllers/collectionsController
 import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
-
-/**@todo delete when slice conversion complete */
-import * as actions from '../../../../features/business/businessSlice';
-//import * as uiactions from '../../../../features/ui/uiSlice';
+import { RootState } from '../../../../toolkit-refactor/store';
 
 const style = {
   display: 'flex',
@@ -34,8 +31,8 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
   let files = useLiveQuery(() => db.files.toArray());
   const dispatch = useDispatch();
 
-  const localWorkspaces = useSelector((store) => store.business.collections);
-  const isDark = useSelector((state) => state.ui.isDark);
+  const localWorkspaces = useSelector((store: RootState) => store.collections);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const handleImportFromGithub = async () => {
     const githubWorkspaces = await githubController.importFromRepo();

@@ -5,6 +5,8 @@ import ReqResCtrl from '../src/client/controllers/reqResController';
 // Additionally, add a testing file for graphQLController. This is currently untested
 // and is a dependency for reqResController.
 
+/**@todo refactor for new state structure with redux slices */
+
 describe('REST API Requests', () => {
   let state;
   beforeEach(() => {

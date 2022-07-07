@@ -4,10 +4,6 @@ import { connect, useSelector } from 'react-redux';
 import { RootState } from '../../toolkit-refactor/store';
 
 // Import actions so that the navbar can interact with the Redux store.
-/**@todo delete after slice conversion complete */
-//import * as actions from '../../features/business/businessSlice';
-//import * as uiactions from '../../features/ui/uiSlice';
-
 import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
   composerFieldsReset,

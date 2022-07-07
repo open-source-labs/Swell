@@ -4,9 +4,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
-/**@todo delete when slice conversion complete */
-import * as actions from '../../features/business/businessSlice';
-
 import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
 
 export default function WorkspaceContextMenu({ id, name, reqResArray }) {

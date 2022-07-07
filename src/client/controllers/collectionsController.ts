@@ -1,10 +1,5 @@
 import { v4 as uuid } from 'uuid';
 import db from '../db';
-import * as store from '../store';
-
-/**@todo delete when slice conversion complete */
-import * as actions from './../features/business/businessSlice';
-//import * as uiactions from './../features/ui/uiSlice';
 
 import { appDispatch } from '../toolkit-refactor/store';
 import { collectionsReplaced } from '../toolkit-refactor/collections/collectionsSlice';
