@@ -55,7 +55,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _WebRTC_: Swell makes it easy to test STUN and TURN ICE server connectivity for WebRTC applications.  
   <img src="./ReadMeGifs/Gifs/webrtc.gif" style="display: block; margin: 10px auto 30px; " />
 
-  Once you enter enter ICE server details as an array of JavaScript objects (example code block below). An RTCPeerConnection will be instantiated, as an SDP is generated.
+  Once you enter ICE server details as an array of JavaScript objects (example code block below). An RTCPeerConnection will be instantiated, as an SDP is generated.
 
   ```js
   [
@@ -97,10 +97,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
   <img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
-- _New in Dev Version 1.10.2!_ _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
+- _Added in Dev Version 1.10.2!_ _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
   <img src="./ReadMeGifs/Gifs/NewUI.png" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
-- _New in Dev Version 1.10.2!_ _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
+- _Added in Dev Version 1.10.2!_ _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
   <img src="./ReadMeGifs/Gifs/GithubIntegration.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
 ## Built With
