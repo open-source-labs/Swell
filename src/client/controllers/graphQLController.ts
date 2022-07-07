@@ -114,6 +114,7 @@ const graphQLController = {
     });
   },
 
+  // open communication from server to client using websocket
   openSubscription(reqResObj: ReqRes): void {
     console.log('openSubscription');
     appDispatch(reqResUpdated(reqResObj));
@@ -146,6 +147,7 @@ const graphQLController = {
     }
     headers.Cookie = cookiesStr;
 
+    // create websocket client
     const wsLink = new GraphQLWsLink(
       createClient({
         url: wsUri,
@@ -156,7 +158,7 @@ const graphQLController = {
         },
       })
     );
-
+    // create apollo client
     const apolloClient = new ApolloClient({
       link: wsLink,
       cache: new InMemoryCache(),
