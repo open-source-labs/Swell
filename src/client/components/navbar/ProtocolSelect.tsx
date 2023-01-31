@@ -141,6 +141,7 @@ const pages = [
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
+  { name: 'tRPC', route: '/trpc', value: 'tRPC'},
 ];
 
 /**
@@ -162,6 +163,14 @@ function ProtocolSelect(props) {
     }
     props.setWarningMessage({});
     switch (network) {
+      /**
+       * @TODO add tRPC state management
+       */ 
+      // case 'tRPC': {
+      //   break;
+      // }
+
+      
       case 'graphQL': {
         props.composerFieldsReset();
         props.fieldsReplaced({
