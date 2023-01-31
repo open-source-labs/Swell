@@ -141,6 +141,7 @@ const pages = [
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
+  { name: 'tRPC', route: '/trpc', value: 'tRPC'},
 ];
 
 /**
@@ -162,6 +163,36 @@ function ProtocolSelect(props) {
     }
     props.setWarningMessage({});
     switch (network) {
+      /**
+       * @TODO add tRPC state management
+       */ 
+      case 'tRPC': {
+        // NOTE THIS IS FOR GQL NOT TRPC
+        props.composerFieldsReset();
+        props.fieldsReplaced({
+          ...props.newRequestFields,
+          protocol: '',
+          url: props.newRequestFields.gqlUrl,
+          method: 'QUERY',
+          graphQL: true,
+          gRPC: false,
+          webrtc: false,
+          webhook: false,
+          network,
+          testContent: '',
+        });
+        props.newRequestBodySet({
+          ...props.newRequestBody,
+          bodyType: 'GQL',
+          bodyVariables: '',
+        });
+        // NOTE THIS IS FOR GQL NOT TRPC
+        
+        console.log("setting tRPC state");
+        break;
+      }
+
+      
       case 'graphQL': {
         props.composerFieldsReset();
         props.fieldsReplaced({
