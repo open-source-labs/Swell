@@ -4,6 +4,7 @@
 import { NewRequestFields } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { composerFieldsReset } from '../newRequest/newRequestSlice';
+import { StateEffect } from '@uiw/react-codemirror';
 
 const initialState: NewRequestFields = {
   protocol: '',
@@ -43,6 +44,78 @@ const newRequestFieldsSlice = createSlice({
     ) => {
       state.testContent = action.payload;
     },
+
+    newRequestProtocolSelected: (state, action: PayloadAction<string>) => {
+      switch (action.payload) {
+        /**
+         * @TODO add tRPC state management
+         */
+        case 'tRPC': {
+          // NOTE THIS IS FOR GQL NOT TRPC
+          return {...initialState}
+          // NOTE THIS IS FOR GQL NOT TRPC
+        }
+        case 'graphQL': {
+          return {
+            ...initialState,
+            url: initialState.gqlUrl,
+            method: 'QUERY',
+            graphQL: true,
+          };
+        }
+        case 'rest': {
+          return {
+            ...initialState,
+            url: initialState.restUrl,
+            method: 'GET',
+          };
+        }
+        case 'openapi': {
+          return {
+            ...initialState,
+            url: '',
+            method: 'GET',
+            network: 'openapi',
+          };
+        }
+        case 'grpc': {
+          return {
+            ...initialState,
+            url: initialState.grpcUrl,
+            method: '',
+            gRPC: true,
+          };
+        }
+        case 'ws': {
+          return {
+            ...initialState,
+            url: initialState.wsUrl,
+            method: '',
+            ws: false,
+          };
+        }
+        case 'webrtc': {
+          return {
+            ...initialState,
+            url: initialState.webrtcUrl,
+            method: 'WebRTC',
+            webrtc: true,
+          };
+        }
+        case 'webhook': {
+          return {
+            ...initialState,
+            //??? might need to fix url vvv if we want to pass our url api from the state
+            url: '',
+            method: 'Webhook',
+            webhook: true,
+          };
+        }
+        default: {
+          return state;
+        }
+      }
+    }
   },
 
   extraReducers: (builder) => {
@@ -52,7 +125,7 @@ const newRequestFieldsSlice = createSlice({
   },
 });
 
-export const { fieldsReplaced, newTestContentSet } =
+export const { fieldsReplaced, newTestContentSet, newRequestProtocolSelected } =
   newRequestFieldsSlice.actions;
 export default newRequestFieldsSlice.reducer;
 
