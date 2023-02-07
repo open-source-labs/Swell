@@ -30,8 +30,11 @@ import { Box } from '@mui/material';
 import { $TSFixMe } from '../../../types';
 import { RootState } from '../../toolkit-refactor/store';
 
-// import tRPC specific components
+// import tRPC client Module
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+
+/**@todo remov */
+import safeEval from 'safe-eval';
 
 // Translated from GraphQLContainer.jsx
 export default function TRPCComposer(props: $TSFixMe) {
@@ -53,7 +56,7 @@ export default function TRPCComposer(props: $TSFixMe) {
 
     // url - useSelector(state.newRequestFields.url)
     // hardcode the url
-    const clientURL = 'https://localhost:3000/trpc';
+    const clientURL = 'https://localhost:3001/trpc';
 
     const client = createTRPCProxyClient({
       links: [
@@ -65,7 +68,8 @@ export default function TRPCComposer(props: $TSFixMe) {
     // actual query - useSelector(state.newRequest.newRequestBody)
     console.log("logging req body pre request", requestBody);
     const request = requestBody.bodyContent
-    eval(request).then((res: object) => console.log(JSON.stringify(res)));
+    console.log(JSON.stringify(eval(request)));
+    // safeEval(request).then((res: object) => console.log(JSON.stringify(res)));
     // send request
     // worry about connecting to store and sending both the request and response to the store
 
@@ -108,9 +112,7 @@ export default function TRPCComposer(props: $TSFixMe) {
           newRequestBody={newRequestBody}
           newRequestCookiesSet={newRequestCookiesSet}
         /> */}
-        <TRPCBodyEntryForm
-          newRequestBodySet={newRequestBodySet}
-        />
+        <TRPCBodyEntryForm/>
         {/* <TRPCVariableEntryForm
           newRequestBody={newRequestBody}
           newRequestBodySet={newRequestBodySet}
