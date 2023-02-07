@@ -2,21 +2,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 import { RootState } from '../../../toolkit-refactor/store';
+import { fieldsReplaced } from '../../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
-const TRPCMethodAndEndpointEntryForm = ({
-  warningMessage,
-  setWarningMessage,
-  fieldsReplaced,
-  newRequestFields,
-  newRequestBodySet,
-  newRequestBody,
-}) => {
+const TRPCMethodAndEndpointEntryForm = () => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
-  //console
+  const requestFields = useSelector((state: RootState) => state.newRequestFields)
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const closeDropdown = (event) => {
       if (!dropdownEl.current.contains(event.target)) {
@@ -27,70 +23,23 @@ const TRPCMethodAndEndpointEntryForm = ({
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  const warningCheck = () => {
-    if (warningMessage.uri) {
-      const newWarningMessage = { ...warningMessage };
-      delete warningMessage.uri;
-      setWarningMessage({ ...newWarningMessage });
-    }
-  };
-
   const urlChangeHandler = (e) => {
-    warningCheck();
-    const url = e.target.value;
+    const url: string = e.target.value;
 
-    fieldsReplaced({
-      ...newRequestFields,
+    dispatch(fieldsReplaced({
+      ...requestFields,
       gqlUrl: url,
-      url,
-    });
+      url: url,
+    }));
   };
 
-  const methodChangeHandler = (value) => {
-    warningCheck();
-
-    let newBody;
-    const methodReplaceRegex = new RegExp(`${newRequestFields.method}`, 'mi');
-    // GraphQL features
-    if (value === 'QUERY') {
-      if (!newRequestFields.graphQL) {
-      } else {
-        newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
-          ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'query')
-          : `${newRequestBody.bodyContent}`;
-      }
-      newRequestBodySet({
-        ...newRequestBody,
-        bodyContent: newBody,
-        bodyIsNew: false,
-      });
-    } else if (value === 'MUTATION') {
-      newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
-        ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'mutation')
-        : `${newRequestBody.bodyContent}`;
-
-      newRequestBodySet({
-        ...newRequestBody,
-        bodyContent: newBody,
-        bodyIsNew: false,
-      });
-    } else if (value === 'SUBSCRIPTION') {
-      newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
-        ? newRequestBody.bodyContent.replace(methodReplaceRegex, 'subscription')
-        : `${newRequestBody.bodyContent}`;
-
-      newRequestBodySet({
-        ...newRequestBody,
-        bodyContent: newBody,
-        bodyIsNew: false,
-      });
-    }
-
-    fieldsReplaced({
-      ...newRequestFields,
-      method: value,
-      protocol: value === 'SUBSCRIPTION' ? 'ws://' : '',
-    });
+  const methodChangeHandler = (selectedMethod: string) => {
+    // GraphQL group had this method change handler modify the body of the query
+    dispatch(fieldsReplaced({
+      ...requestFields,
+      method: selectedMethod,
+      protocol: selectedMethod === 'SUBSCRIPTION' ? 'ws://' : '',
+    }));
   };
 
   const isDark = useSelector((store: RootState) => store.ui.isDark);
@@ -112,7 +61,7 @@ const TRPCMethodAndEndpointEntryForm = ({
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
           >
-            <span>{newRequestFields.method}</span>
+            <span>{requestFields.method}</span>
             <span className="icon is-small">
               <img
                 src={dropDownArrow}
@@ -126,7 +75,7 @@ const TRPCMethodAndEndpointEntryForm = ({
 
         <div className="dropdown-menu" id="dropdown-menu">
           <ul className="dropdown-content">
-            {newRequestFields.method !== 'QUERY' && (
+            {requestFields.method !== 'QUERY' && (
               <a
                 onClick={() => {
                   setDropdownIsActive(false);
@@ -137,7 +86,7 @@ const TRPCMethodAndEndpointEntryForm = ({
                 QUERY
               </a>
             )}
-            {newRequestFields.method !== 'MUTATION' && (
+            {requestFields.method !== 'MUTATION' && (
               <a
                 onClick={() => {
                   setDropdownIsActive(false);
@@ -148,7 +97,7 @@ const TRPCMethodAndEndpointEntryForm = ({
                 MUTATION
               </a>
             )}
-            {newRequestFields.method !== 'SUBSCRIPTION' && (
+            {requestFields.method !== 'SUBSCRIPTION' && (
               <a
                 onClick={() => {
                   setDropdownIsActive(false);
@@ -169,16 +118,16 @@ const TRPCMethodAndEndpointEntryForm = ({
           type="text"
           id="url-input"
           placeholder="Enter endpoint"
-          value={newRequestFields.gqlUrl}
+          value={requestFields.gqlUrl}
           onChange={(e) => {
             urlChangeHandler(e);
           }}
         />
       </div>
 
-      {warningMessage.uri && (
+      {/* {warningMessage.uri && (
         <div className="warningMessage">{warningMessage.uri}</div>
-      )}
+      )} */}
     </div>
   );
 };
