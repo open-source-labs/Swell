@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
 
 // import 'codemirror/addon/edit/matchbrackets';
@@ -23,6 +23,7 @@ const TRPCBodyEntryForm = (props) => {
   const {
     newRequestBodySet,
   } = props;
+  const dispatch = useDispatch();
   const newRequestBody = useSelector((store: RootState) => store.newRequest.newRequestBody)
   const { bodyContent, bodyIsNew } = newRequestBody
 
@@ -62,11 +63,11 @@ const TRPCBodyEntryForm = (props) => {
           // }}
 
           onChange={(value, viewUpdate) => {
-            newRequestBodySet({
+            dispatch(newRequestBodySet({
               ...newRequestBody,
               bodyContent: value,
               bodyIsNew: true,
-            });
+            }));
           }}
         />
       </div>
