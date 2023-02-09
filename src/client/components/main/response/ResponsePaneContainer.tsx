@@ -46,9 +46,9 @@ const ResponsePaneContainer = () => {
       <div
         className={`${
           isDark ? 'is-dark-400' : 'is-divider-neutral-300'
-        } box is-3 add-vertical-scroll`} // gigi playing with css
+        } box is-3 add-vertical-scroll`}
         // className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
-        style={{ height: '54%', margin: '0px', marginTop: '1px' }}
+        style={{ height: '100%', margin: '0px', marginTop: '1px' }}
         id="responses"
       >
         {/* <button onClick={() => testing()}>></button> */}

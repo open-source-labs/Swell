@@ -15,7 +15,7 @@ import { WindowExt } from '../../types';
 
 // Material UI components
 import { Box, Divider } from '@mui/material';
-
+import Split from "react-split";
 // Error handling
 import ErrorBoundary from './utilities/ErrorBoundary/ErrorBoundary';
 
@@ -63,26 +63,26 @@ const App = () => {
           <NavBarContainer />
         </ErrorBoundary>
 
-        <Box sx={{ height: '100%', display: 'flex' }}>
+        {/* <Box sx={{ height: '100%', display: 'flex' }}> */}
           {/* Workspace. Left side of the application. */}
+          <Split direction="horizontal" gutterSize={5} style={{ width: '100%', height: '100%', display: 'flex'}}>
+              <ErrorBoundary>
+                <HistoryOrWorkspaceContainer
+                  currentWorkspaceId={currentWorkspaceId}
+                  setWorkspace={setWorkspace}
+                />
+              </ErrorBoundary>
+            {/* <Divider
+              orientation="vertical"
+              sx={{ borderRightWidth: 2, background: '#51819b' }}
+            /> */}
 
-          <ErrorBoundary>
-            <HistoryOrWorkspaceContainer
-              currentWorkspaceId={currentWorkspaceId}
-              setWorkspace={setWorkspace}
-            />
-          </ErrorBoundary>
-
-          <Divider
-            orientation="vertical"
-            sx={{ borderRightWidth: 2, background: '#51819b' }}
-          />
-
-          {/* Main container. Contains the composer and response panes. */}
-          <ErrorBoundary>
-            <MainContainer currentWorkspaceId={currentWorkspaceId} />
-          </ErrorBoundary>
-        </Box>
+            {/* Main container. Contains the composer and response panes. */}
+            <ErrorBoundary>
+              <MainContainer currentWorkspaceId={currentWorkspaceId} />
+            </ErrorBoundary>
+          </Split>
+        {/* </Box> */}
 
         <ErrorBoundary>
           <UpdatePopUpContainer />

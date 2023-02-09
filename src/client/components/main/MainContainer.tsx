@@ -37,7 +37,7 @@ import ResponsePaneContainer from './response/ResponsePaneContainer';
 // Import MUI components
 import { Box, Divider } from '@mui/material';
 import { AppDispatch, RootState } from '../../toolkit-refactor/store';
-
+import Split from "react-split";
 /**@todo switch to hooks? */
 const mapStateToProps = (store: RootState) => {
   return {
@@ -107,21 +107,25 @@ function MainContainer(props: $TSFixMeObject) {
         // flexDirection: 'column'
       }}
     >
-      <Routes>
-        <Route path="/" element={<Http2Composer {...props} />} />
-        <Route path="/graphql" element={<GraphQLComposer {...props} />} />
-        <Route path="/grpc" element={<GRPCComposer {...props} />} />
-        <Route path="/websocket" element={<WebSocketComposer {...props} />} />
-        <Route path="/webrtc" element={<WebRTCComposer {...props} />} />
-        <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
-        <Route path="/webhook" element={<WebhookComposer {...props} />} />
-        <Route path="/trpc" element={<TRPCComposer {...props} />} />
-      </Routes>
-      <Divider
-        orientation="horizontal"
-        sx={{ borderBottomWidth: 2, background: '#51819b' }}
-      />
-      <ResponsePaneContainer />
+      <Split direction='vertical' gutterSize={5} style={{height: '100%'}}>
+          <Box sx={{display: 'flex'}}>
+            <Routes>
+              <Route path="/" element={<Http2Composer {...props} />} />
+              <Route path="/graphql" element={<GraphQLComposer {...props} />} />
+              <Route path="/grpc" element={<GRPCComposer {...props} />} />
+              <Route path="/websocket" element={<WebSocketComposer {...props} />} />
+              <Route path="/webrtc" element={<WebRTCComposer {...props} />} />
+              <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
+              <Route path="/webhook" element={<WebhookComposer {...props} />} />
+              <Route path="/trpc" element={<TRPCComposer {...props} />} />
+            </Routes>
+          </Box>
+          {/* <Divider
+            orientation="horizontal"
+            sx={{ borderBottomWidth: 2, background: '#51819b' }}
+          /> */}
+          <ResponsePaneContainer />
+      </Split>
     </Box>
   );
 }
