@@ -81,7 +81,7 @@ export default function TRPCComposer(props: $TSFixMe) {
     // STEP 2: send request
     console.log(request);
     const displayRes = eval(request).then((res: object) => JSON.stringify(res))
-      .then(res => setDisplay(res));
+      .then((res:any) => setDisplay(res));
     //STEP 3: Update info in req res and dispatch new req, res to store
     // dispatch(reqResUpdated); // how long did it take?
 
