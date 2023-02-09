@@ -28,7 +28,6 @@ const TRPCMethodAndEndpointEntryForm = () => {
 
     dispatch(fieldsReplaced({
       ...requestFields,
-      gqlUrl: url,
       url: url,
     }));
   };
@@ -118,7 +117,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
           type="text"
           id="url-input"
           placeholder="Enter endpoint"
-          value={requestFields.gqlUrl}
+          value={requestFields.url}
           onChange={(e) => {
             urlChangeHandler(e);
           }}

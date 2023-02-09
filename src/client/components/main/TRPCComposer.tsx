@@ -61,13 +61,9 @@ export default function TRPCComposer(props: $TSFixMe) {
 
 
   const sendRequest = () => {
-    // Import trpc/client import { createTRPCProxyClient, httpBatchLink } from "@trpc/client"
-    // Import safe eval
-
-    // url - useSelector(state.newRequestFields.url)
-    // hardcode the url
-    const clientURL = 'http://localhost:3001/trpc';
-
+ 
+    const clientURL = requestFields.url; //grabbing url from 
+    console.log(clientURL)
     const client = createTRPCProxyClient({
       links: [
         httpBatchLink({
@@ -76,7 +72,6 @@ export default function TRPCComposer(props: $TSFixMe) {
       ],
     })
     // actual query - useSelector(state.newRequest.newRequestBody)
-    console.log("logging req body pre request", requestBody);
     const request = requestBody.bodyContent
     // console.log(JSON.stringify(eval(request)));
     // safeEval(request).then((res: object) => console.log(JSON.stringify(res)));
@@ -84,7 +79,7 @@ export default function TRPCComposer(props: $TSFixMe) {
 
     // STEP 2: send request
     console.log(request);
-    eval(request).then((res: object) => console.log(JSON.stringify(res)));
+     eval(request).then((res: object) => console.log(JSON.stringify(res)));
 
     //STEP 3: Update info in req res and dispatch new req, res to store
     dispatch(reqResUpdated); // how long did it take?
@@ -133,7 +128,7 @@ export default function TRPCComposer(props: $TSFixMe) {
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >
-        {/* <TRPCMethodAndEndpointEntryForm
+        <TRPCMethodAndEndpointEntryForm
           requestFields={requestFields}
           requestHeaders={requestHeaders}
           newRequestHeadersSet={newRequestHeadersSet}
@@ -141,7 +136,7 @@ export default function TRPCComposer(props: $TSFixMe) {
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
-        /> */}
+        />
         {/* <HeaderEntryForm
           RequestFields={requestFields}
           newRequestHeadersSet={newRequestHeadersSet}
