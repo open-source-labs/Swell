@@ -25,6 +25,16 @@ import {
   composerFieldsReset,
 } from '../../toolkit-refactor/newRequest/newRequestSlice';
 
+
+import {
+  reqResReplaced,
+  reqResCleared,
+  reqResItemAdded,
+  reqResItemDeleted,
+  reqResUpdated,
+  responseDataSaved,
+} from '../../toolkit-refactor/reqRes/reqResSlice'
+
 // Import MUI components
 import { Box } from '@mui/material';
 import { $TSFixMe } from '../../../types';
@@ -70,12 +80,39 @@ export default function TRPCComposer(props: $TSFixMe) {
     const request = requestBody.bodyContent
     // console.log(JSON.stringify(eval(request)));
     // safeEval(request).then((res: object) => console.log(JSON.stringify(res)));
+    
+
+    // STEP 2: send request
     console.log(request);
     eval(request).then((res: object) => console.log(JSON.stringify(res)));
+
+    //STEP 3: Update info in req res and dispatch new req, res to store
+    dispatch(reqResUpdated); // how long did it take?
+
+    //STEP 4: figure out how to get response to display if it isnt
+
     // eval(request);
     // send request
     // worry about connecting to store and sending both the request and response to the store
     // client.users.byId.query('1')
+
+    // In the SingleReqResContainer
+    // responseSent() => {
+    //   // check the request type
+    //   // if it's http, dispatch set active tab to "event" for reqResResponse
+    //   // otherwise do nothing
+    //   if (connectionType !== 'WebSocket') {
+    //     dispatch(setResponsePaneActiveTab('events'));
+    //   }
+    //   // console.log(content)
+    //   connectionController.openReqRes(content.id);
+    //   dispatch(
+    //     responseDataSaved(
+    //       content,
+    //       'singleReqResContainercomponentSendHandler'
+    //     )
+    //   // ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
+    // }}
   };
 
 
