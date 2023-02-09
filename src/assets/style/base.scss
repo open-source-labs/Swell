@@ -32,7 +32,7 @@ input:focus {
 
 #update-modal {
   position: relative;
-  width: 100%; 
+  width: 100%;
   background-color: $neutral-500;
   color: $neutral-100;
   display: flex;
@@ -91,4 +91,21 @@ $switch-focus: 5px solid red;
 
 .add-vertical-scroll {
   overflow-y: auto !important;
+}
+
+.gutter {
+  background-color: $primary-500;
+  background-repeat: no-repeat;
+  height: 1rem;
+  background-position: 50%;
+}
+
+
+// cursorStyles not working
+.gutter.gutter-horizontal:hover {
+  cursor: col-resize;
+}
+
+.gutter.gutter-vertical:hover {
+  cursor: row-resize;
 }
