@@ -95,17 +95,17 @@ $switch-focus: 5px solid red;
 
 .gutter {
   background-color: $primary-500;
-  background-repeat: no-repeat;
-  height: 1rem;
   background-position: 50%;
 }
 
-
 // cursorStyles not working
+.gutter.gutter-horizontal {
+  height: 100%;
+}
+
 .gutter.gutter-horizontal:hover {
   cursor: col-resize;
 }
-
 .gutter.gutter-vertical:hover {
   cursor: row-resize;
 }

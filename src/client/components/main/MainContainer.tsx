@@ -107,7 +107,7 @@ function MainContainer(props: $TSFixMeObject) {
         // flexDirection: 'column'
       }}
     >
-      <Split direction='vertical' style={{height: 'calc(100vh - 4rem)'}}>
+      <Split direction='vertical' gutterSize={5} style={{height: '100%'}}>
           <Box sx={{display: 'flex'}}>
             <Routes>
               <Route path="/" element={<Http2Composer {...props} />} />

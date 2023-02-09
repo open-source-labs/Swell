@@ -65,7 +65,7 @@ const App = () => {
 
         {/* <Box sx={{ height: '100%', display: 'flex' }}> */}
           {/* Workspace. Left side of the application. */}
-          <Split direction="horizontal" style={{ width: '100%', height: '100vh', display: 'flex' }}>
+          <Split direction="horizontal" gutterSize={5} style={{ width: '100%', height: '100%', display: 'flex'}}>
               <ErrorBoundary>
                 <HistoryOrWorkspaceContainer
                   currentWorkspaceId={currentWorkspaceId}
