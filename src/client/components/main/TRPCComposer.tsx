@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { v4 as uuid } from 'uuid';
 // Import controllers
@@ -58,6 +58,7 @@ export default function TRPCComposer(props: $TSFixMe) {
   const requestHeaders = useSelector((state: RootState) => state.newRequest.newRequestHeaders)
   const requestFields = useSelector((state: RootState) => state.newRequestFields)
 
+  const [display, setDisplay] = useState('');
 
 
   const sendRequest = () => {
@@ -79,10 +80,10 @@ export default function TRPCComposer(props: $TSFixMe) {
 
     // STEP 2: send request
     console.log(request);
-     eval(request).then((res: object) => console.log(JSON.stringify(res)));
-
+    const displayRes = eval(request).then((res: object) => JSON.stringify(res))
+      .then(res => setDisplay(res));
     //STEP 3: Update info in req res and dispatch new req, res to store
-    dispatch(reqResUpdated); // how long did it take?
+    // dispatch(reqResUpdated); // how long did it take?
 
     //STEP 4: figure out how to get response to display if it isnt
 
@@ -115,7 +116,7 @@ export default function TRPCComposer(props: $TSFixMe) {
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
-        height: '40%',
+        height: '100%',
         px: 1,
         overflowX: 'scroll',
         overflowY: 'scroll',
@@ -155,6 +156,9 @@ export default function TRPCComposer(props: $TSFixMe) {
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <SendRequestButton onClick={sendRequest} />
+      </div>
+      <div className="displayRes">
+        {display}
       </div>
     </Box>
   );
