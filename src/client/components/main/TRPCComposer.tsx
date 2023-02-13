@@ -18,6 +18,7 @@ import TestEntryForm from './new-request/TestEntryForm.jsx';
 
 // Import Redux
 import { useSelector, useDispatch } from 'react-redux';
+
 import {
   newRequestHeadersSet,
   newRequestBodySet,
@@ -42,6 +43,8 @@ import { RootState } from '../../toolkit-refactor/store';
 
 // import tRPC client Module
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { AnyAction } from 'redux';
+import { bool } from 'prop-types';
 
 /**@todo remov */
 //import safeEval from 'safe-eval';
@@ -58,12 +61,13 @@ export default function TRPCComposer(props: $TSFixMe) {
   const requestHeaders = useSelector((state: RootState) => state.newRequest.newRequestHeaders)
   const requestFields = useSelector((state: RootState) => state.newRequestFields)
 
-  const [display, setDisplay] = useState('');
 
+  // REMOVE
+  const requestStuff = useSelector((state: RootState) => state.newRequest)
 
   const sendRequest = () => {
  
-    const clientURL = requestFields.url; //grabbing url from 
+    const clientURL: string = requestFields.url; //grabbing url from 
     console.log(clientURL)
     const client = createTRPCProxyClient({
       links: [
@@ -77,11 +81,54 @@ export default function TRPCComposer(props: $TSFixMe) {
     // console.log(JSON.stringify(eval(request)));
     // safeEval(request).then((res: object) => console.log(JSON.stringify(res)));
     
-
+    // function parseStringToJSON(str) {
+    //   try {
+    //     // Add quotes around the property names
+    //     str = str.replace(/([a-zA-Z0-9]+):/g, '"$1":');
+    //     const obj = JSON.parse(str);
+    //     return JSON.stringify(obj, null, 2);
+    //   } catch (error) {
+    //     return "Invalid JSON string";
+    //   }
+    // }
+    
     // STEP 2: send request
     console.log(request);
-    const displayRes = eval(request).then((res: object) => JSON.stringify(res))
-      .then((res:any) => setDisplay(res));
+    // const displayRes = eval(request).then((res: object) => JSON.stringify(res))
+    //   .then((res:any) => setDisplay(res));
+    const reqArray = request.split("\n");
+
+    Promise.all(reqArray.map(el => eval(el))).then((res: any) => {
+        const newCurrentResponse: any = {
+          checkSelected: false,
+          checked: false,
+          connection: "closed",
+          connectionType: "plain",
+          createdAt: new Date(),
+          gRPC: false,
+          graphQL: false,
+          host: "http://localhost:3000",
+          id: "2702218b-854d-4530-a480-9efa5af2c821",
+          minimized: false,
+          path: "/",
+          protoPath: undefined,
+          protocol: "http://",
+          request: {...requestStuff},
+          tab: undefined,
+          timeReceived: 1676146914257,
+          timeSent: 1676146914244,
+          url: clientURL,
+          webrtc: false,
+          response: {
+            events: [res],
+          }
+        };
+        dispatch(responseDataSaved(newCurrentResponse));
+      });
+
+    
+    // Promise.all(reqArray.map(el => eval(el))).then((res: any)=> setDisplay(res));
+  
     //STEP 3: Update info in req res and dispatch new req, res to store
     // dispatch(reqResUpdated); // how long did it take?
 
@@ -156,9 +203,6 @@ export default function TRPCComposer(props: $TSFixMe) {
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
         <SendRequestButton onClick={sendRequest} />
-      </div>
-      <div className="displayRes">
-        {display}
       </div>
     </Box>
   );

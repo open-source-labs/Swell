@@ -10,6 +10,8 @@ import { javascript } from '@codemirror/lang-javascript';
 function EventsContainer({ currentResponse }) {
   const isDark = useSelector((state) => state.ui.isDark);
 
+  console.log(currentResponse);
+
   const { request, response } = currentResponse;
   // console.log('this is the request', request);
   // console.log('this is the response', response);
