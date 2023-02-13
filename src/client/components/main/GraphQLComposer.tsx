@@ -256,7 +256,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
-        height: '40%',
+        height: '100%',
         px: 1,
         overflowX: 'scroll',
         overflowY: 'scroll',

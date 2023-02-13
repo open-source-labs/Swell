@@ -172,9 +172,9 @@ function ProtocolSelect(props) {
         props.fieldsReplaced({
           ...props.newRequestFields,
           protocol: '',
-          url: props.newRequestFields.gqlUrl,
+          url: props.newRequestFields.restUrl,
           method: 'QUERY',
-          graphQL: true,
+          graphQL: false,
           gRPC: false,
           webrtc: false,
           webhook: false,

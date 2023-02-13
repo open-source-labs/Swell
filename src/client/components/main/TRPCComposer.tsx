@@ -1,261 +1,169 @@
-import React from 'react';
+import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../controllers/historyController';
+import SendRequestButton from './new-request/SendRequestButton';
 // Import local components
 
 /**
  * @todo CHANGE CODE TO REFELCT TRPC
  */
 import HeaderEntryForm from './new-request/HeaderEntryForm.jsx';
-import GraphQLMethodAndEndpointEntryForm from './new-request/GraphQLMethodAndEndpointEntryForm';
+import TRPCMethodAndEndpointEntryForm from './tRPC/TRPCMethodAndEndpointEntryForm';
 import CookieEntryForm from './new-request/CookieEntryForm';
-import GraphQLBodyEntryForm from './new-request/GraphQLBodyEntryForm';
-import GraphQLVariableEntryForm from './new-request/GraphQLVariableEntryForm';
-import GraphQLIntrospectionLog from './new-request/GraphQLIntrospectionLog.jsx';
+import TRPCBodyEntryForm from './tRPC/TRPCBodyEntryForm';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import TestEntryForm from './new-request/TestEntryForm.jsx';
+
+// Import Redux
+import { useSelector, useDispatch } from 'react-redux';
+
+import {
+  newRequestHeadersSet,
+  newRequestBodySet,
+  newRequestCookiesSet,
+  composerFieldsReset,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+
+
+import {
+  reqResReplaced,
+  reqResCleared,
+  reqResItemAdded,
+  reqResItemDeleted,
+  reqResUpdated,
+  responseDataSaved,
+} from '../../toolkit-refactor/reqRes/reqResSlice'
 
 // Import MUI components
 import { Box } from '@mui/material';
 import { $TSFixMe } from '../../../types';
+import { RootState } from '../../toolkit-refactor/store';
+
+// import tRPC client Module
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { AnyAction } from 'redux';
+import { bool } from 'prop-types';
+
+/**@todo remov */
+//import safeEval from 'safe-eval';
 
 // Translated from GraphQLContainer.jsx
 export default function TRPCComposer(props: $TSFixMe) {
   const {
-    composerFieldsReset,
-    fieldsReplaced,
-    newRequestFields,
-    newRequestFields: {
-      gRPC,
-      webrtc,
-      url,
-      method,
-      graphQL,
-      restUrl,
-      wsUrl,
-      gqlUrl,
-      grpcUrl,
-      network,
-      testContent,
-    },
-    newTestContentSet,
-    newRequestBodySet,
-    newRequestBody,
-    newRequestBody: {
-      JSONFormatted,
-      rawType,
-      bodyContent,
-      bodyVariables,
-      bodyType,
-    },
-    newRequestHeadersSet,
-    newRequestHeaders,
-    newRequestHeaders: { headersArr },
-    newRequestCookiesSet,
-    newRequestCookies,
-    newRequestCookies: { cookiesArr },
-    newRequestStreamsSet,
-    newRequestStreams,
-    newRequestStreams: { protoPath },
-    newRequestSSE: { isSSE },
-    currentTab,
-    introspectionData,
     setWarningMessage,
     warningMessage,
-    reqResItemAdded,
     setWorkspaceActiveTab,
   } = props;
+  const dispatch = useDispatch();
+  const requestBody = useSelector((state: RootState) => state.newRequest.newRequestBody)
+  const requestHeaders = useSelector((state: RootState) => state.newRequest.newRequestHeaders)
+  const requestFields = useSelector((state: RootState) => state.newRequestFields)
 
-  const requestValidationCheck = () => {
-    interface ValidationMessage {
-      uri?: string;
-      json?: string;
-      body?: string;
-    }
-    const validationMessage: ValidationMessage = {};
-    //Error conditions...
-    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
-      //if url is only http/https/ws/wss://
-      validationMessage.uri = 'Enter a valid URI';
-    }
-    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
-      //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = 'Enter a valid URI';
-    }
-    if (!JSONFormatted && rawType === 'application/json') {
-      validationMessage.json = 'Please fix JSON body formatting errors';
-    }
-    if (method === 'QUERY') {
-      if (url && !bodyContent) {
-        validationMessage.body = 'GraphQL Body is Missing';
-      }
-      if (url && bodyContent) {
-        try {
-          const body = gql`
-            ${bodyContent}
-          `;
-        } catch (err: unknown) {
-          const msg =
-            err instanceof Error ? err.message : 'Non-error object thrown';
 
-          console.log('error in gql-tag for client', err);
-          validationMessage.body = `Invalid graphQL body: \n ${msg}`;
-        }
-      }
-      // need to add validation check for gql variables
-    }
-    return validationMessage;
+  // REMOVE
+  const requestStuff = useSelector((state: RootState) => state.newRequest)
+
+  const sendRequest = () => {
+ 
+    const clientURL: string = requestFields.url; //grabbing url from 
+    console.log(clientURL)
+    const client = createTRPCProxyClient({
+      links: [
+        httpBatchLink({
+          url: clientURL, // this would be the url from user eg: http://localhost:3000/trpc  (assuming it is listening)
+        }),
+      ],
+    })
+    // actual query - useSelector(state.newRequest.newRequestBody)
+    const request = requestBody.bodyContent
+    // console.log(JSON.stringify(eval(request)));
+    // safeEval(request).then((res: object) => console.log(JSON.stringify(res)));
+    
+    // function parseStringToJSON(str) {
+    //   try {
+    //     // Add quotes around the property names
+    //     str = str.replace(/([a-zA-Z0-9]+):/g, '"$1":');
+    //     const obj = JSON.parse(str);
+    //     return JSON.stringify(obj, null, 2);
+    //   } catch (error) {
+    //     return "Invalid JSON string";
+    //   }
+    // }
+    
+    // STEP 2: send request
+    console.log(request);
+    // const displayRes = eval(request).then((res: object) => JSON.stringify(res))
+    //   .then((res:any) => setDisplay(res));
+    const reqArray = request.split("\n");
+
+    Promise.all(reqArray.map(el => eval(el))).then((res: any) => {
+        const newCurrentResponse: any = {
+          checkSelected: false,
+          checked: false,
+          connection: "closed",
+          connectionType: "plain",
+          createdAt: new Date(),
+          gRPC: false,
+          graphQL: false,
+          host: "http://localhost:3000",
+          id: "2702218b-854d-4530-a480-9efa5af2c821",
+          minimized: false,
+          path: "/",
+          protoPath: undefined,
+          protocol: "http://",
+          request: {...requestStuff},
+          tab: undefined,
+          timeReceived: 1676146914257,
+          timeSent: 1676146914244,
+          url: clientURL,
+          webrtc: false,
+          response: {
+            events: [res],
+          }
+        };
+        dispatch(responseDataSaved(newCurrentResponse));
+      });
+
+    
+    // Promise.all(reqArray.map(el => eval(el))).then((res: any)=> setDisplay(res));
+  
+    //STEP 3: Update info in req res and dispatch new req, res to store
+    // dispatch(reqResUpdated); // how long did it take?
+
+    //STEP 4: figure out how to get response to display if it isnt
+
+    // eval(request);
+    // send request
+    // worry about connecting to store and sending both the request and response to the store
+    // client.users.byId.query('1')
+
+    // In the SingleReqResContainer
+    // responseSent() => {
+    //   // check the request type
+    //   // if it's http, dispatch set active tab to "event" for reqResResponse
+    //   // otherwise do nothing
+    //   if (connectionType !== 'WebSocket') {
+    //     dispatch(setResponsePaneActiveTab('events'));
+    //   }
+    //   // console.log(content)
+    //   connectionController.openReqRes(content.id);
+    //   dispatch(
+    //     responseDataSaved(
+    //       content,
+    //       'singleReqResContainercomponentSendHandler'
+    //     )
+    //   // ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
+    // }}
   };
 
-  const addNewRequest = () => {
-    const warnings = requestValidationCheck();
-    if (Object.keys(warnings).length > 0) {
-      setWarningMessage(warnings);
-      return;
-    }
-
-    let reqRes;
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-    if (!/wss?:\/\//.test(protocol) && !gRPC) {
-      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      const host = protocol + URIWithoutProtocol.split('/')[0];
-      let path = `/${URIWithoutProtocol.split('/')
-        .splice(1)
-        .join('/')
-        .replace(/\/{2,}/g, '/')}`;
-      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-        path = path.substring(0, path.length - 1);
-      }
-      path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
-        id: uuid(),
-        createdAt: new Date(),
-        protocol: url.match(/https?:\/\//)[0],
-        host,
-        path,
-        url,
-        graphQL,
-        gRPC,
-        webrtc,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'uninitialized',
-        connectionType: null,
-        checkSelected: false,
-        protoPath,
-        request: {
-          method,
-          headers: headersArr.filter(
-            (header: $TSFixMe) => header.active && !!header.key
-          ),
-          cookies: cookiesArr.filter(
-            (cookie: $TSFixMe) => cookie.active && !!cookie.key
-          ),
-          body: bodyContent || '',
-          bodyType,
-          bodyVariables: bodyVariables || '',
-          rawType,
-          isSSE,
-          network,
-          restUrl,
-          testContent: testContent || '',
-          wsUrl,
-          gqlUrl,
-          grpcUrl,
-        },
-        response: {
-          headers: null,
-          events: null,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-    }
-    // GraphQL Subscriptions
-    const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-    const host = protocol + URIWithoutProtocol.split('/')[0];
-    let path = `/${URIWithoutProtocol.split('/')
-      .splice(1)
-      .join('/')
-      .replace(/\/{2,}/g, '/')}`;
-    if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-      path = path.substring(0, path.length - 1);
-    }
-    path = path.replace(/wss?:\//g, 'ws://');
-    reqRes = {
-      id: uuid(),
-      createdAt: new Date(),
-      protocol: 'ws://',
-      host,
-      path,
-      url,
-      graphQL,
-      gRPC,
-      timeSent: null,
-      timeReceived: null,
-      connection: 'uninitialized',
-      connectionType: null,
-      checkSelected: false,
-      request: {
-        method,
-        headers: headersArr.filter(
-          (header: $TSFixMe) => header.active && !!header.key
-        ),
-        cookies: cookiesArr.filter(
-          (cookie: $TSFixMe) => cookie.active && !!cookie.key
-        ),
-        body: bodyContent || '',
-        bodyType,
-        bodyVariables: bodyVariables || '',
-        rawType,
-        network,
-        restUrl,
-        testContent: testContent || '',
-        wsUrl,
-        gqlUrl,
-        grpcUrl,
-      },
-      response: {
-        headers: null,
-        events: null,
-      },
-      checked: false,
-      minimized: false,
-      tab: currentTab,
-    };
-
-    // add request to history
-    historyController.addHistoryToIndexedDb(reqRes);
-    reqResItemAdded(reqRes);
-
-    //reset for next request
-    composerFieldsReset();
-
-    // GRAPHQL REQUESTS
-
-    newRequestBodySet({
-      ...newRequestBody,
-      bodyType: 'GQL',
-      rawType: '',
-    });
-    fieldsReplaced({
-      ...newRequestFields,
-      url: gqlUrl,
-      gqlUrl,
-    });
-
-    setWorkspaceActiveTab('workspace');
-  };
 
   return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
       sx={{
-        height: '40%',
+        height: '100%',
         px: 1,
         overflowX: 'scroll',
         overflowY: 'scroll',
@@ -268,25 +176,17 @@ export default function TRPCComposer(props: $TSFixMe) {
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >
-        <GraphQLMethodAndEndpointEntryForm
-          fieldsReplaced={fieldsReplaced}
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
-          newRequestFields={newRequestFields}
+        <TRPCMethodAndEndpointEntryForm
+          requestFields={requestFields}
+          requestHeaders={requestHeaders}
           newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
           newRequestCookiesSet={newRequestCookiesSet}
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
-          newTestContentSet={newTestContentSet}
         />
-        <HeaderEntryForm
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
-          newRequestFields={newRequestFields}
+        {/* <HeaderEntryForm
+          RequestFields={requestFields}
           newRequestHeadersSet={newRequestHeadersSet}
           newRequestStreamsSet={newRequestStreamsSet}
         />
@@ -294,25 +194,15 @@ export default function TRPCComposer(props: $TSFixMe) {
           newRequestCookies={newRequestCookies}
           newRequestBody={newRequestBody}
           newRequestCookiesSet={newRequestCookiesSet}
-        />
-        <GraphQLBodyEntryForm
-          warningMessage={warningMessage}
+        /> */}
+        <TRPCBodyEntryForm newRequestBodySet={newRequestBodySet}/>
+        {/* <TRPCVariableEntryForm
           newRequestBody={newRequestBody}
           newRequestBodySet={newRequestBodySet}
-          introspectionData={introspectionData}
-        />
-        <GraphQLVariableEntryForm
-          newRequestBody={newRequestBody}
-          newRequestBodySet={newRequestBodySet}
-        />
-        <TestEntryForm
-          newTestContentSet={newTestContentSet}
-          testContent={testContent}
-        />
-        <GraphQLIntrospectionLog />
+        /> */}
       </div>
       <div className="is-3rem-footer is-clickable is-margin-top-auto">
-        <NewRequestButton onClick={addNewRequest} />
+        <SendRequestButton onClick={sendRequest} />
       </div>
     </Box>
   );
