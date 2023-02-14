@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { RootState } from '../../toolkit-refactor/store';
@@ -87,6 +87,8 @@ const mapStateToProps = (store: RootState) => {
     introspectionData: store.introspectionData,
   };
 };
+
+
 
 /**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
@@ -355,6 +357,7 @@ function ProtocolSelect(props) {
     }
   };
 
+
   return (
     <Box
       key="page-selector"
@@ -366,7 +369,7 @@ function ProtocolSelect(props) {
       }}
     >
       {pages.map((page) => (
-        <Link key={page.name} to={page.route}>
+        <Link key={page.name} to={page.route} >
           <CustomButton
             key={page.name}
             // variant="contained"
