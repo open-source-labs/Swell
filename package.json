@@ -175,7 +175,6 @@
     "react-spring": "^9.4.4",
     "redux": "^4.2.0",
     "resize-observer-polyfill": "^1.5.1",
-    "safe-eval": "^0.4.1",
     "sass": "^1.51.0",
     "set-cookie-parser": "^2.4.8",
     "socket.io": "^4.5.0",
