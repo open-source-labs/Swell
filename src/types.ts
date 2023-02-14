@@ -155,6 +155,7 @@ export type NewRequestFields = {
   method: string;
   graphQL: boolean;
   gRPC: boolean;
+  tRPC: boolean;
   ws: boolean;
   openapi: boolean;
   webrtc: boolean;
