@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { RootState } from '../../toolkit-refactor/store';
@@ -32,10 +32,15 @@ import ButtonUnstyled, {
 } from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
 
+const black = {
+  100: '#000036'
+}
 const blue = {
   500: '#51819b',
   600: '#95ceed',
   700: '#7ebdde',
+  800: '#3730a3',
+  900: '#1e3a8a'
 };
 
 const white = {
@@ -55,24 +60,22 @@ const CustomButton = styled(ButtonUnstyled)`
   border: none;
   width: 8vw;
 
+
   &:hover {
-    background-color: ${blue[600]};
+    color: white;
+    background-color: #ff9e43;
   }
 
-  &.${buttonUnstyledClasses.active} {
-    background-color: ${blue[700]};
+  &:active {
+    color: white;
+    background-color:  #ff9e43;
+    box-shadow: inset 0px 0px 4px #ff3000;
   }
+`;
 
-  &.${buttonUnstyledClasses.focusVisible} {
-    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
-      0 0 0 5px rgba(0, 127, 255, 0.5);
-    outline: none;
-  }
-
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+const SelectedButton = styled(CustomButton)`
+  color: white;
+  background-color: #ff9e43;
 `;
 
 /**
@@ -80,6 +83,7 @@ const CustomButton = styled(ButtonUnstyled)`
  * route: The React Router route to redirect to on click.
  * value: The value of the button used to update the Redux store.
  */
+
 const pages = [
   { name: 'HTTP/2', route: '/', value: 'rest' },
   { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
@@ -97,6 +101,7 @@ const pages = [
  * Click a protocol button -> Alter the Redux store accordingly -> Route to the appropriate "main" container
  */
 /**@todo - refactor below function to be more DRY */
+
 function ProtocolSelect() {
 
   const dispatch = useDispatch()
@@ -117,6 +122,11 @@ function ProtocolSelect() {
     dispatch(newRequestContentByProtocol(network))
   };
 
+  const [curPage, setCurPage] = useState('');
+  const handleClick = (page: {name: string; route: string; value: string}) => {
+    setCurPage(page.name)
+  }
+ 
   return (
     <Box
       key="page-selector"
@@ -128,21 +138,38 @@ function ProtocolSelect() {
       }}
     >
       {pages.map((page) => (
-        <Link key={page.name} to={page.route}>
-          <CustomButton
-            key={page.name}
-            // variant="contained"
-            // color="primary"
-            onClick={() => {
-              console.log(page.value);
-              onProtocolSelect(page.value);
-            }}
-            sx={{
-              m: 1,
-            }}
-          >
-            {page.name}
-          </CustomButton>
+        <Link key={page.name} to={page.route} >
+          {page.name === curPage ? 
+            <SelectedButton
+              key={page.name}
+              // variant="contained"
+              // color="primary"
+              onClick={() => {
+                console.log(page.value);
+                onProtocolSelect(page.value);
+                handleClick(page);
+              }}
+              sx={{
+                m: 1,
+              }}>
+                {page.name}
+            </SelectedButton>
+          :
+            <CustomButton
+              key={page.name}
+              // variant="contained"
+              // color="primary"
+              onClick={() => {
+                console.log(page.value);
+                onProtocolSelect(page.value);
+                handleClick(page);
+              }}
+              sx={{
+                m: 1,
+              }}>
+                {page.name}
+            </CustomButton>
+          }
         </Link>
       ))}
     </Box>
@@ -150,3 +177,4 @@ function ProtocolSelect() {
 }
 export default ProtocolSelect;
 // export default connect(mapStateToProps, mapDispatchToProps)(ProtocolSelect);
+
