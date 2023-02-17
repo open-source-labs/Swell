@@ -66,6 +66,7 @@ export default function TRPCComposer(props: $TSFixMe) {
   const requestStuff = useSelector((state: RootState) => state.newRequest)
 
   const sendRequest = () => {
+
     // type trpcRequest = {
     //   url + path,
     //   queryMethod: mutation/sub/query,
@@ -73,9 +74,9 @@ export default function TRPCComposer(props: $TSFixMe) {
     // }
     //http://localhost:3000/trpc/querybyId
     //client.path.query(body)
-    
 
-    const clientURL: string = requestFields.url; //grabbing url from 
+    const clientURL: string = requestFields.url; //grabbing url from
+
     console.log(clientURL)
     const client = createTRPCProxyClient({
       links: [
@@ -88,7 +89,7 @@ export default function TRPCComposer(props: $TSFixMe) {
     const request = requestBody.bodyContent
     // console.log(JSON.stringify(eval(request)));
     // safeEval(request).then((res: object) => console.log(JSON.stringify(res)));
-    
+
     // function parseStringToJSON(str) {
     //   try {
     //     // Add quotes around the property names
@@ -99,7 +100,7 @@ export default function TRPCComposer(props: $TSFixMe) {
     //     return "Invalid JSON string";
     //   }
     // }
-    
+
     // STEP 2: send request
     console.log(request);
     // const displayRes = eval(request).then((res: object) => JSON.stringify(res))
@@ -146,9 +147,9 @@ export default function TRPCComposer(props: $TSFixMe) {
         reqResItemAdded(newCurrentResponse);
       });
 
-    
+
     // Promise.all(reqArray.map(el => eval(el))).then((res: any)=> setDisplay(res));
-  
+
     //STEP 3: Update info in req res and dispatch new req, res to store
     // dispatch(reqResUpdated); // how long did it take?
 

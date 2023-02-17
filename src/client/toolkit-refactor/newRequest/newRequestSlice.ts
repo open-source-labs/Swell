@@ -1,4 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Action } from '@remix-run/router';
 import {
   NewRequestStreams,
   NewRequestBody,
@@ -96,7 +97,80 @@ const newRequestSlice = createSlice({
     composerFieldsReset: () => {
       return initialState;
     },
-  },
+
+    // this reducer should only be invoked in conjunction with the newRequestFieldsByProtocol reducer
+    newRequestContentByProtocol: (state, action: PayloadAction<string>) => {
+      switch (action.payload) {
+        case 'tRPC': {
+          return {
+            ...initialState,
+            bodyType: 'TRPC',
+            bodyVariables: '',
+          };
+        }
+        case 'graphQL': {
+          return {
+            ...initialState,
+            bodyType: 'GQL',
+            bodyVariables: '',
+          };
+        }
+        case 'rest': {
+          return {
+            ...initialState,
+            bodyType: 'none',
+            bodyContent: ``,
+          };
+        }
+        case 'openapi': {
+          return {
+            ...initialState,
+            bodyType: 'none',
+            bodyContent: '',
+          };
+        }
+        case 'grpc': {
+          return {
+            ...initialState,
+            bodyType: 'GRPC',
+            bodyContent: ``,
+          };
+        }
+        case 'ws': {
+          return {
+            ...initialState,
+            bodyType: 'none',
+            bodyContent: '',
+          };
+        }
+        case 'webrtc': {
+          return {
+            ...initialState,
+            bodyType: 'stun-ice',
+            newRequestBody: {
+              bodyContent: {
+                iceConfiguration: {
+                  iceServers: [
+                    {
+                      urls: 'stun:stun1.l.google.com:19302',
+                    },
+                  ],
+                },
+              },
+            }
+          };
+        }
+        case 'webhook': {
+          return {
+            ...initialState,
+            bodyType: 'none',
+          };
+        }
+        default:
+          return state;
+      }
+    },
+  }
 });
 
 export const {
@@ -106,6 +180,7 @@ export const {
   newRequestSSESet,
   newRequestStreamsSet,
   composerFieldsReset,
+  newRequestContentByProtocol
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 

@@ -17,6 +17,7 @@ const initialState: NewRequestFields = {
   method: 'GET',
   graphQL: false,
   gRPC: false,
+  tRPC: false,
   ws: false,
   openapi: false,
   webrtc: false,
@@ -44,16 +45,18 @@ const newRequestFieldsSlice = createSlice({
     ) => {
       state.testContent = action.payload;
     },
-
-    newRequestProtocolSelected: (state, action: PayloadAction<string>) => {
+    newRequestFieldsByProtocol: (state, action: PayloadAction<string>) => {
       switch (action.payload) {
         /**
          * @TODO add tRPC state management
          */
         case 'tRPC': {
-          // NOTE THIS IS FOR GQL NOT TRPC
-          return {...initialState}
-          // NOTE THIS IS FOR GQL NOT TRPC
+          return {
+            ...initialState,
+            url: initialState.restUrl,
+            method: 'QUERY',
+            tRPC: true,
+          }
         }
         case 'graphQL': {
           return {
@@ -125,7 +128,7 @@ const newRequestFieldsSlice = createSlice({
   },
 });
 
-export const { fieldsReplaced, newTestContentSet, newRequestProtocolSelected } =
+export const { fieldsReplaced, newTestContentSet, newRequestFieldsByProtocol } =
   newRequestFieldsSlice.actions;
 export default newRequestFieldsSlice.reducer;
 
