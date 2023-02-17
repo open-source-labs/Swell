@@ -67,7 +67,16 @@ export default function TRPCComposer(props: $TSFixMe) {
 
   const sendRequest = () => {
 
+    // type trpcRequest = {
+    //   url + path,
+    //   queryMethod: mutation/sub/query,
+    //   body: parsed as an object;
+    // }
+    //http://localhost:3000/trpc/querybyId
+    //client.path.query(body)
+
     const clientURL: string = requestFields.url; //grabbing url from
+
     console.log(clientURL)
     const client = createTRPCProxyClient({
       links: [
@@ -96,7 +105,16 @@ export default function TRPCComposer(props: $TSFixMe) {
     console.log(request);
     // const displayRes = eval(request).then((res: object) => JSON.stringify(res))
     //   .then((res:any) => setDisplay(res));
-    const reqArray = request.split("\n");
+    const reqArray = request.split("\n").map(el => {
+      el = el.replace(/^[^.]*./, "client.")
+      return el;
+    });
+
+    // console.log(Function(request)());
+    // Function('console.log("hi")')();
+
+    // http://localhost:3001/trpc
+    //client.users.byId.query("1");
 
     Promise.all(reqArray.map(el => eval(el))).then((res: any) => {
         const newCurrentResponse: any = {
@@ -108,15 +126,15 @@ export default function TRPCComposer(props: $TSFixMe) {
           gRPC: false,
           graphQL: false,
           host: "http://localhost:3000",
-          id: "2702218b-854d-4530-a480-9efa5af2c821",
+          id: uuid(),
           minimized: false,
           path: "/",
           protoPath: undefined,
           protocol: "http://",
           request: {...requestStuff},
           tab: undefined,
-          timeReceived: 1676146914257,
-          timeSent: 1676146914244,
+          timeReceived: null,
+          timeSent: null,
           url: clientURL,
           webrtc: false,
           response: {
@@ -124,6 +142,9 @@ export default function TRPCComposer(props: $TSFixMe) {
           }
         };
         dispatch(responseDataSaved(newCurrentResponse));
+        // add request to history
+        historyController.addHistoryToIndexedDb(newCurrentResponse);
+        reqResItemAdded(newCurrentResponse);
       });
 
 
@@ -188,9 +209,9 @@ export default function TRPCComposer(props: $TSFixMe) {
         {/* <HeaderEntryForm
           RequestFields={requestFields}
           newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-        />
-        <CookieEntryForm
+          // newRequestStreamsSet={newRequestStreamsSet}
+        /> */}
+        {/* <CookieEntryForm
           newRequestCookies={newRequestCookies}
           newRequestBody={newRequestBody}
           newRequestCookiesSet={newRequestCookiesSet}
