@@ -154,7 +154,7 @@ export default function LoginContainer(props) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <Button color='secondary' variant="text" onClick={signInViaGitHub}>Sign In</Button>
+          <Button color='secondary' variant="text" onClick={signInViaGitHub} >Sign In</Button>
         </Box>
       }
     </Box>

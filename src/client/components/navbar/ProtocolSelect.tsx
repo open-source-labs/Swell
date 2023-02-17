@@ -32,6 +32,9 @@ import ButtonUnstyled, {
 } from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
 
+const black = {
+  100: '#000036'
+}
 const blue = {
   500: '#51819b',
   600: '#95ceed',
@@ -59,34 +62,20 @@ const CustomButton = styled(ButtonUnstyled)`
 
 
   &:hover {
-    background-color: ${blue[600]};
+    color: white;
+    background-color: #ff9e43;
   }
 
-
-  &.${buttonUnstyledClasses.active} {
-    background-color: ${blue[700]};
-  }
-
-  &.${buttonUnstyledClasses.focusVisible} {
-    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
-      0 0 0 5px rgba(0, 127, 255, 0.5);
-    outline: none;
-  }
-
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
+  &:active {
+    color: white;
+    background-color:  #ff9e43;
+    box-shadow: inset 0px 0px 4px #ff3000;
   }
 `;
 
 const SelectedButton = styled(CustomButton)`
-  box-sizing: content-box;
-  color: black;
-  background-color: ${blue[700]};
-  border-bottom: 4px solid ${blue[900]}  ;
-  border-radius: 3px;
-  font-size: 1.0rem;
-  
+  color: white;
+  background-color: #ff9e43;
 `;
 
 /**
