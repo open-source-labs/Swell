@@ -151,8 +151,7 @@ function ProtocolSelect() {
               }}
               sx={{
                 m: 1,
-              }}
-              >
+              }}>
                 {page.name}
             </SelectedButton>
           :
@@ -167,8 +166,7 @@ function ProtocolSelect() {
               }}
               sx={{
                 m: 1,
-              }}
-              >
+              }}>
                 {page.name}
             </CustomButton>
           }
