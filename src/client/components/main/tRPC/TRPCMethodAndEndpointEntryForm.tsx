@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import e from 'express';
 
 const TRPCMethodAndEndpointEntryForm = () => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
@@ -23,6 +24,18 @@ const TRPCMethodAndEndpointEntryForm = () => {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
+  const populateUrl = (request: string) => {
+    const url: string = request;
+    const classToValue = document.getElementById('url-input') as HTMLInputElement;
+    if (url === 'QUERY' || url === 'MUTATE') {
+    classToValue.value = requestFields.url; 
+  }
+  else if (url === 'SUBSCRIPTION') {
+    console.log(requestFields.wsUrl);
+    classToValue.value = requestFields.wsUrl; 
+    }
+  }
+
   const urlChangeHandler = (e) => {
     const url: string = e.target.value;
 
@@ -32,12 +45,20 @@ const TRPCMethodAndEndpointEntryForm = () => {
     }));
   };
 
+  // const methodChangeHandler = (selectedMethod: string) => {
+  //   // GraphQL group had this method change handler modify the body of the query
+  //   dispatch(fieldsReplaced({
+  //     ...requestFields,
+  //     method: selectedMethod,
+  //     protocol: selectedMethod === 'SUBSCRIPTION' ? 'ws://' : '',
+  //   }));
+  // };
+
   const methodChangeHandler = (selectedMethod: string) => {
     // GraphQL group had this method change handler modify the body of the query
     dispatch(fieldsReplaced({
       ...requestFields,
       method: selectedMethod,
-      protocol: selectedMethod === 'SUBSCRIPTION' ? 'ws://' : '',
     }));
   };
 
@@ -76,31 +97,35 @@ const TRPCMethodAndEndpointEntryForm = () => {
           <ul className="dropdown-content">
             {requestFields.method !== 'QUERY' && (
               <a
-                onClick={() => {
+                onClick={(e) => {
                   setDropdownIsActive(false);
                   methodChangeHandler('QUERY');
+                  populateUrl('QUERY')
+                  
                 }}
                 className="dropdown-item"
               >
                 QUERY
               </a>
             )}
-            {requestFields.method !== 'MUTATION' && (
+            {requestFields.method !== 'MUTATE' && (
               <a
-                onClick={() => {
+                onClick={(e) => {
                   setDropdownIsActive(false);
-                  methodChangeHandler('MUTATION');
+                  methodChangeHandler('MUTATE');
+                  populateUrl ('MUTATE')
                 }}
                 className="dropdown-item"
               >
-                MUTATION
+                MUTATE
               </a>
             )}
             {requestFields.method !== 'SUBSCRIPTION' && (
               <a
-                onClick={() => {
+                onClick={(e) => {
                   setDropdownIsActive(false);
                   methodChangeHandler('SUBSCRIPTION');
+                  populateUrl('SUBSCRIPTION')
                 }}
                 className="dropdown-item"
               >
@@ -117,10 +142,9 @@ const TRPCMethodAndEndpointEntryForm = () => {
           type="text"
           id="url-input"
           placeholder="Enter endpoint"
-          value={requestFields.url}
           onChange={(e) => {
-            urlChangeHandler(e);
-          }}
+            urlChangeHandler(e)}
+          }
         />
       </div>
 
