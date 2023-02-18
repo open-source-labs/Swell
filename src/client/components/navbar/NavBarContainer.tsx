@@ -11,7 +11,7 @@ import LoginStatus from './LoginStatus';
 import GeneralInfo from './GeneralInfo';
 
 
-export default function NavBarContainer() {
+export default function NavBarContainer(props) {
   const [session, setSession] = useState(
     {
       username: null,
@@ -24,7 +24,7 @@ export default function NavBarContainer() {
 
   // Upon logging in, verify that the user's GitHub access token is still valid.
   useEffect(() => {
-    const checkAuth = async (token : string) => {
+    const checkAuth = async (token) => {
       const response = await axios.get('https://api.github.com/user', {
         headers: { Authorization: `token ${token}`},
       });

@@ -159,6 +159,7 @@
     "js-cookie": "^3.0.1",
     "mali": "^0.46.1",
     "ngrok": "^4.3.1",
+    "node-fetch": "^3.3.0",
     "npm": "^8.7.0",
     "octokit": "^1.7.1",
     "patch-package": "^6.4.7",

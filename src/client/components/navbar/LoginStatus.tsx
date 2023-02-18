@@ -109,6 +109,7 @@ export default function LoginContainer(props) {
       currentTeam: null,
       isActiveSession: false,
     });
+    console.log(endSessionLog);
   }
 
   return(
@@ -130,7 +131,8 @@ export default function LoginContainer(props) {
             <Button
               color='secondary'
               sx={{ maxWidth: '24px', maxHeight: '24px', minWidth: '24px', minHeight: '24px' }}
-              onClick={handleSignOut}>
+              onClick={handleSignOut}
+            >
               <LogoutRoundedIcon fontSize='small' />
             </Button>
           </LightTooltip>
@@ -152,7 +154,7 @@ export default function LoginContainer(props) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <Button color='secondary' variant="text" onClick={signInViaGitHub} >Sign In</Button>
+          <Button color='secondary' variant="text" onClick={signInViaGitHub}>Sign In</Button>
         </Box>
       }
     </Box>
