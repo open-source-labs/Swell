@@ -66,7 +66,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif|)$/,
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
         use: 'url-loader',
       },
     ],
@@ -79,7 +79,11 @@ module.exports = {
       // template: path.resolve(__dirname, "index-csp.html"),
       filename: 'index.html',
       title: require('./package.json').name,
-      // TODO: update CSP with nonce inline styling. Refactor code to be more secure (do not use 'unsafe-inline')
+
+      /**
+       * @todo Update CSP (Content Security Policy) with "nonce" inline styling.
+       * Refactor code to be more secure (do not use 'unsafe-inline')
+       */
       cspPlugin: {
         enabled: true,
         policy: {
@@ -106,21 +110,21 @@ module.exports = {
       analyzerMode: 'static',
     }),
     new webpack.ProvidePlugin({
-      process: "node:buffer",
-      Buffer: ["buffer", "Buffer"],
+      process: 'node:buffer',
+      Buffer: ['buffer', 'Buffer'],
     }),
     new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
-        const mod = resource.request.replace(/^node:/, "");
-        switch (mod) {
-            case "buffer":
-                resource.request = "buffer";
-                break;
-            case "stream":
-                resource.request = "readable-stream";
-                break;
-            default:
-                throw new Error(`Not found ${mod}`);
-        }
+      const mod = resource.request.replace(/^node:/, '');
+      switch (mod) {
+        case 'buffer':
+          resource.request = 'buffer';
+          break;
+        case 'stream':
+          resource.request = 'readable-stream';
+          break;
+        default:
+          throw new Error(`Not found ${mod}`);
+      }
     }),
   ],
 };

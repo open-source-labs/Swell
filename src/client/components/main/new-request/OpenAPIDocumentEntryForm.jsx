@@ -11,7 +11,7 @@ const OpenAPIDocumentEntryForm = (props) => {
     api.receive('openapi-info', (readDocument, parsedDocument) => {
       console.log('received openapi-info');
 
-      props.setNewRequestsOpenAPI(parsedDocument);
+      props.openApiRequestsReplaced(parsedDocument);
     });
     api.send('import-openapi');
   };
@@ -22,7 +22,9 @@ const OpenAPIDocumentEntryForm = (props) => {
     <div className="mt-3">
       <div className="is-flex is-justify-content-flex-end is-align-content-center">
         <button
-          className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button mr-1`}
+          className={`${
+            isDark ? 'is-dark-300' : ''
+          } button is-small add-header-or-cookie-button mr-1`}
           onClick={importDocument}
         >
           Load Document

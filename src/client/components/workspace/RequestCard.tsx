@@ -1,37 +1,64 @@
 import React, { useState, useEffect } from 'react';
 // Import controllers.
 import connectionController from '../../controllers/reqResController';
-// Import Redux actions and methods.
-import * as actions from '../../features/business/businessSlice'
-import * as uiactions from '../../features/ui/uiSlice'
+
+import { RootState } from '../../toolkit-refactor/store';
+
+import { NewRequestStreams, NewRequestFields } from '../../../types';
+
+// Import Redux actions and methods
+import {
+  reqResUpdated,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { setSidebarActiveTab } from '../../toolkit-refactor/ui/uiSlice';
+
 import { connect, useSelector, useDispatch } from 'react-redux';
 // Import local components.
 import DeleteRequestButton from './buttons/DeleteRequestButton';
 // Import MUI components.
 import { Box } from '@mui/material';
 import { TreeItem } from '@mui/lab';
+import { fieldsReplaced } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
-const mapStateToProps = (store) => ({
-  reqResArray: store.business.reqResArray,
-  currentTab: store.business.currentTab,
+/**@todo switch to hooks? */
+const mapStateToProps = (store: RootState) => ({
+  reqResArray: store.reqRes.reqResArray,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  reqResDelete: (reqRes) => {
-    dispatch(actions.reqResDelete(reqRes));
+/**@todo switch to hooks? */
+const mapDispatchToProps = (dispatch: ReturnType<typeof useDispatch>) => ({
+  reqResItemDeleted: (reqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdate: (reqRes) => {
-    dispatch(actions.reqResUpdate(reqRes));
+  reqResUpdated: (reqRes) => {
+    dispatch(reqResUpdated(reqRes));
   },
 });
 
 function RequestCard(props) {
+  const dispatch = useDispatch();
+  const currentResponse = useSelector(
+    (store: RootState) => store.reqRes.currentResponse
+  );
+
+  const newRequestFields = useSelector(
+    (store: RootState) => store.newRequestFields
+  );
+
   const [showDetails, setShowDetails] = useState(false);
   const {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-    reqResDelete,
+    reqResItemDeleted,
   } = props;
 
   const network = content.request.network;
@@ -44,23 +71,7 @@ function RequestCard(props) {
   }, [content.request.network]);
 
   const copyToComposer = () => {
-    let requestFieldObj = {};
-
-    if (network === 'rest') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        restUrl: content.request.restUrl,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        webrtc: content.webrtc || false,
-        network,
-        testContent: content.request.testContent,
-      };
-    }
-
+    let requestFieldObj: NewRequestFields;
     if (network === 'ws') {
       requestFieldObj = {
         ...newRequestFields,
@@ -86,9 +97,7 @@ function RequestCard(props) {
         network,
         webrtcData: content.webrtcData,
       };
-    }
-
-    if (network === 'graphQL') {
+    } else if (network === 'graphQL') {
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -100,9 +109,7 @@ function RequestCard(props) {
         network,
         testContent: content.request.testContent,
       };
-    }
-
-    if (network === 'grpc') {
+    } else if (network === 'grpc') {
       requestFieldObj = {
         ...newRequestFields,
         method: content.request.method || 'GET',
@@ -111,6 +118,23 @@ function RequestCard(props) {
         grpcUrl: content.request.grpcUrl,
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
+        network,
+        testContent: content.request.testContent,
+      };
+    }
+
+    // Else clause covers "rest" case; treated as default so that there's some
+    // guarantee that requestFieldObj is definitely assigned
+    else {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        restUrl: content.request.restUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        webrtc: content.webrtc || false,
         network,
         testContent: content.request.testContent,
       };
@@ -160,11 +184,11 @@ function RequestCard(props) {
       bodyIsNew: false,
     };
 
-    dispatch(actions.setNewRequestFields(requestFieldObj));
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-    dispatch(actions.setNewRequestSSE(content.request.isSSE));
+    dispatch(fieldsReplaced(requestFieldObj));
+    dispatch(newRequestHeadersSet(requestHeadersObj));
+    dispatch(newRequestCookiesSet(requestCookiesObj));
+    dispatch(newRequestBodySet(requestBodyObj));
+    dispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
@@ -188,27 +212,18 @@ function RequestCard(props) {
         protoContent: content.protoContent,
       };
 
-      dispatch(actions.setNewRequestStreams(requestStreamsObj));
+      dispatch(newRequestStreamsSet(requestStreamsObj));
     }
 
-    dispatch(uiactions.setSidebarActiveTab('composer'));
+    dispatch(setSidebarActiveTab('composer'));
   };
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);
-    reqResDelete(content);
+    dispatch(itemDeleted(content));
   };
 
-  const dispatch = useDispatch();
-  const currentResponse = useSelector(
-    // TODO: remove explicit any.
-    (store: any) => store.business.currentResponse
-  );
-  const newRequestFields = useSelector(
-    // TODO: remove explicit any.
-    (store: any) => store.business.newRequestFields
-  );
-  return(
+  return (
     <TreeItem
       key={content.id}
       nodeId={content.id}
@@ -216,12 +231,11 @@ function RequestCard(props) {
       label={
         <Box>
           {request.method} {url}
-          <DeleteRequestButton removeReqRes={removeReqRes}/>
+          <DeleteRequestButton removeReqRes={removeReqRes} />
         </Box>
       }
     />
-  )
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestCard);
-

@@ -21,7 +21,7 @@ const GRPCBodyStream = (props) => {
       streamsArr[i].id = i;
     }
     // update the state in the store
-    props.setNewRequestStreams({
+    props.newRequestStreamsSet({
       ...props.newRequestStreams,
       streamsArr,
       count: streamsArr.length,

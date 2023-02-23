@@ -39,7 +39,7 @@ class CookieEntryForm extends Component {
       value: '',
     });
 
-    this.props.setNewRequestCookies({
+    this.props.newRequestCookiesSet({
       cookiesArr: cookiesDeepCopy,
       override: false,
       count: cookiesDeepCopy.length,
@@ -65,7 +65,7 @@ class CookieEntryForm extends Component {
       cookiesDeepCopy[indexToBeUpdated].active = true;
     }
 
-    this.props.setNewRequestCookies({
+    this.props.newRequestCookiesSet({
       cookiesArr: cookiesDeepCopy,
       count: cookiesDeepCopy.length,
     });
@@ -74,7 +74,7 @@ class CookieEntryForm extends Component {
   deleteCookie = (index) => {
     const newCookies = this.createDeepCookieCopy();
     newCookies.splice(index, 1);
-    this.props.setNewRequestCookies({
+    this.props.newRequestCookiesSet({
       cookiesArr: newCookies,
       count: newCookies.length,
     });
@@ -102,15 +102,16 @@ class CookieEntryForm extends Component {
     );
 
     return (
-      <div className="mt-2"
-      style={{margin: '10px'}}>
+      <div className="mt-2" style={{ margin: '10px' }}>
         <div className="is-flex is-align-content-center">
           <div className="composer-section-title">Cookies</div>
           <button
-            className={`${this.props.isDark ? 'is-dark-200' : ''} button add-header-gRPC-cookie-button`}
-            id = "add-cookie"
+            className={`${
+              this.props.isDark ? 'is-dark-200' : ''
+            } button add-header-gRPC-cookie-button`}
+            id="add-cookie"
             onClick={() => this.addCookie(this.createDeepCookieCopy())}
-            style={{height: '3px', width: '3px'}}
+            style={{ height: '3px', width: '3px' }}
           >
             {addCookieName}
           </button>

@@ -10,33 +10,17 @@ const template = [
   {
     label: 'Edit',
     submenu: [
-      {
-        role: 'undo',
-      },
-      {
-        role: 'redo',
-      },
-      {
-        type: 'separator', // A dividing line between menu items
-      },
-      {
-        role: 'cut',
-      },
-      {
-        role: 'copy',
-      },
-      {
-        role: 'paste',
-      },
-      {
-        role: 'pasteandmatchstyle',
-      },
-      {
-        role: 'delete',
-      },
-      {
-        role: 'selectall',
-      },
+      { role: 'undo' },
+      { role: 'redo' },
+
+      // A dividing line between menu items
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' },
+      { role: 'pasteandmatchstyle' },
+      { role: 'delete' },
+      { role: 'selectall' },
     ],
   },
   {
@@ -49,6 +33,7 @@ const template = [
           if (focusedWindow) focusedWindow.reload();
         },
       },
+
       // THIS ENABLES DEVELOPER TOOLS IN THE BUILT APPLICATION
       {
         label: 'Toggle Developer Tools',
@@ -59,37 +44,18 @@ const template = [
           if (focusedWindow) focusedWindow.webContents.toggleDevTools();
         },
       },
-      {
-        type: 'separator',
-      },
-      {
-        role: 'resetzoom',
-      },
-      {
-        role: 'zoomin',
-      },
-      {
-        role: 'zoomout',
-      },
-      {
-        type: 'separator',
-      },
-      {
-        role: 'togglefullscreen',
-      },
+
+      { type: 'separator' },
+      { role: 'resetzoom' },
+      { role: 'zoomin' },
+      { role: 'zoomout' },
+      { type: 'separator' },
+      { role: 'togglefullscreen' },
     ],
   },
-  {
-    role: 'window',
-    submenu: [
-      {
-        role: 'minimize',
-      },
-      {
-        role: 'close',
-      },
-    ],
-  },
+
+  { role: 'window', submenu: [{ role: 'minimize' }, { role: 'close' }] },
+
   {
     role: 'help',
     submenu: [
@@ -115,52 +81,24 @@ if (process.platform === 'darwin') {
     // add on these new menu items
     label: name,
     submenu: [
-      {
-        role: 'about',
-      },
-      {
-        type: 'separator',
-      },
-      {
-        role: 'services',
-        submenu: [],
-      },
-      {
-        type: 'separator',
-      },
-      {
-        role: 'hide',
-      },
-      {
-        role: 'hideothers',
-      },
-      {
-        role: 'unhide',
-      },
-      {
-        type: 'separator',
-      },
-      {
-        role: 'quit',
-      },
+      { role: 'about' },
+      { type: 'separator' },
+      { role: 'services', submenu: [] },
+      { type: 'separator' },
+      { role: 'hide' },
+      { role: 'hideothers' },
+      { role: 'unhide' },
+      { type: 'separator' },
+      { role: 'quit' },
     ],
   });
   // template[1] refers to the Edit menu.
   template[1].submenu.push(
     // If user is on macOS also provide speech based submenu items in addition to the edit menu's other submenu items that were set earlier
-    {
-      type: 'separator',
-    },
+    { type: 'separator' },
     {
       label: 'Speech',
-      submenu: [
-        {
-          role: 'startspeaking',
-        },
-        {
-          role: 'stopspeaking',
-        },
-      ],
+      submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }],
     }
   );
   // template[3] refers to the Window menu.

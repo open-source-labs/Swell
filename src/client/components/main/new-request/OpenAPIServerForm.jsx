@@ -4,7 +4,7 @@ import ContentReqRowComposer from './ContentReqRowComposer';
 
 export default function OpenAPIServerForm({
   newRequestsOpenAPI,
-  setNewRequestsOpenAPI,
+  openApiRequestsReplaced,
 }) {
   const onChangeUpdateHeader = (id, field, value) => {
     const serversDeepCopy = JSON.parse(
@@ -27,7 +27,7 @@ export default function OpenAPIServerForm({
       serversDeepCopy[indexToBeUpdated].active = true;
     }
 
-    setNewRequestsOpenAPI({
+    openApiRequestsReplaced({
       serverUrls: serversDeepCopy,
     });
   };
@@ -52,13 +52,17 @@ export default function OpenAPIServerForm({
     }
   );
 
-  const isDark = useSelector(state => state.ui.isDark);
+  const isDark = useSelector((state) => state.ui.isDark);
 
   return (
     <div className="mt-2">
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Servers</div>
-        <button className={`${isDark ? 'is-dark-300' : ''} button is-small add-header-or-cookie-button`}>
+        <button
+          className={`${
+            isDark ? 'is-dark-300' : ''
+          } button is-small add-header-or-cookie-button`}
+        >
           + Server
         </button>
       </div>

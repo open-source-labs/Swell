@@ -10,8 +10,7 @@ import collectionsController from '../../../../controllers/collectionsController
 import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import * as actions from '../../../../features/business/businessSlice';
-import * as uiactions from '../../../../features/ui/uiSlice';
+import { RootState } from '../../../../toolkit-refactor/store';
 
 const style = {
   display: 'flex',
@@ -30,11 +29,11 @@ const style = {
 
 export default function ImportWorkspaceModal({ open, handleClose }) {
   let files = useLiveQuery(() => db.files.toArray());
-  console.log(files)
-  const dispatch = useDispatch();
+  console.log(files);
 
-  const localWorkspaces = useSelector((store) => store.business.collections);
-  const isDark = useSelector((state) => state.ui.isDark);
+  const dispatch = useDispatch();
+  const localWorkspaces = useSelector((store: RootState) => store.collections);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   const handleImportFromGithub = async () => {
     const githubWorkspaces = await githubController.importFromRepo();
@@ -44,12 +43,9 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
     ]);
   };
 
-  const swellRepositoriesArray = [];
-  if (files !== undefined) {
-    for (let file of files){
-    swellRepositoriesArray.push(<Box> {file.repository.full_name}</Box>)
-  };
-};
+  const swellReposContent = (files ?? []).map((file) => (
+    <Box>{file.repository.full_name}</Box>
+  ));
 
   return (
     <Modal
@@ -84,14 +80,14 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
           <Button
             variant="contained"
             size="small"
-            onClick = {handleImportFromGithub}
+            onClick={handleImportFromGithub}
             // onClick={files.map((file) => (
             //   <li key={file.repository.full_name}>{file.repository.name}</li>
             // ))}
           >
             GitHub
           </Button>
-          {swellRepositoriesArray}
+          {swellReposContent}
         </Box>
       </Fade>
     </Modal>
@@ -99,3 +95,4 @@ export default function ImportWorkspaceModal({ open, handleClose }) {
 }
 
 // {handleImportFromGithub}
+

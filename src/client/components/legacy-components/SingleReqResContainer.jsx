@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from './display/RestRequestContent';
 import GraphQLRequestContent from './display/GraphQLRequestContent';
@@ -9,23 +8,40 @@ import WebRTCRequestContent from './display/WebRTCRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
 import OpenAPIRequestContent from './display/OpenAPIRequestContent';
 
+import {
+  responseDataSaved,
+  reqResItemDeleted,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  fieldsReplaced,
+  newFields,
+} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import {
+  newRequestSSESet,
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+import {
+  setResponsePaneActiveTab,
+  setSidebarActiveTab,
+} from '../../toolkit-refactor/ui/uiSlice';
+
+import { useAppDispatch } from '../../toolkit-refactor/store';
+
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const currentResponse = useSelector(
-    (store) => store.business.currentResponse
-  );
-
-  const newRequestFields = useSelector(
-    (store) => store.business.newRequestFields
-  );
+  const currentResponse = useSelector((store) => store.reqRes.currentResponse);
+  const newRequestFields = useSelector((store) => store.newRequestFields);
 
   const {
     content,
     //change content for webhook
     content: { protocol, request, connection, connectionType, isHTTP2, url },
-    reqResDelete,
+    reqResItemDeleted,
     index,
   } = props;
 
@@ -155,11 +171,11 @@ const SingleReqResContainer = (props) => {
       bodyIsNew: false,
     };
 
-    dispatch(actions.setNewRequestFields(requestFieldObj));
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
-    dispatch(actions.setNewRequestBody(requestBodyObj));
-    dispatch(actions.setNewRequestSSE(content.request.isSSE));
+    dispatch(fieldsReplaced(requestBodyObj));
+    dispatch(newRequestHeadersSet(requestHeadersObj));
+    dispatch(newRequestCookiesSet(requestCookiesObj));
+    dispatch(newRequestBodySet(requestBodyObj));
+    dispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
       const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
@@ -183,18 +199,18 @@ const SingleReqResContainer = (props) => {
         protoContent: content.protoContent,
       };
 
-      dispatch(actions.setNewRequestStreams(requestStreamsObj));
+      dispatch(newRequestStreamsSet(requestStreamsObj));
     }
 
-    dispatch(uiactions.setSidebarActiveTab('composer'));
+    dispatch(setSidebarActiveTab('composer'));
   };
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);
-    reqResDelete(content);
+    reqResItemDeleted(content);
   };
 
-// changes the color of boarder depending on the response?
+  // changes the color of boarder depending on the response?
   const getBorderClass = () => {
     let classes = 'highlighted-response ';
     if (currentResponse.gRPC) classes += 'is-grpc-border';
@@ -290,7 +306,7 @@ const SingleReqResContainer = (props) => {
           id={request.method.split(' ').join('-')}
           onClick={() => {
             removeReqRes();
-            dispatch(actions.saveCurrentResponseData({}));
+            dispatch(responseDataSaved({}));
           }}
         >
           Remove
@@ -306,12 +322,12 @@ const SingleReqResContainer = (props) => {
               //if it's http, dispatch set active tab to "event" for reqResResponse
               //otherwise do nothing
               if (connectionType !== 'WebSocket') {
-                dispatch(uiactions.setResponsePaneActiveTab('events'));
+                dispatch(setResponsePaneActiveTab('events'));
               }
               // console.log(content)
               connectionController.openReqRes(content.id);
               dispatch(
-                actions.saveCurrentResponseData(
+                responseDataSaved(
                   content,
                   'singleReqResContainercomponentSendHandler'
                 )
@@ -328,7 +344,7 @@ const SingleReqResContainer = (props) => {
             id={`view-button-${index}`}
             onClick={() => {
               console.log('WE PRESSED THE BUTTON', content);
-              dispatch(actions.saveCurrentResponseData(content));
+              dispatch(responseDataSaved(content));
             }}
           >
             View Response

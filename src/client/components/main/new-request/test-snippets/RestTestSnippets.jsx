@@ -3,7 +3,7 @@
 import React from 'react';
 
 export default function RestTestSnippets(props) {
-  const { setNewTestContent, setShowTests } = props;
+  const { newTestContentSet, setShowTests } = props;
 
   const snippets = {
     'Status code: Code is 200':
@@ -15,12 +15,12 @@ export default function RestTestSnippets(props) {
 
   const handleClickOne = () => {
     setShowTests(true);
-    setNewTestContent(snippets['Status code: Code is 200']);
+    newTestContentSet(snippets['Status code: Code is 200']);
   };
 
   const handleClickTwo = () => {
     setShowTests(true);
-    setNewTestContent(snippets['Access the cookies from the response object']);
+    newTestContentSet(snippets['Access the cookies from the response object']);
   };
 
   return (

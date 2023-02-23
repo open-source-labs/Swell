@@ -1,6 +1,6 @@
 {
-  "name": "Swell",
-  "version": "1.10.2",
+  "name": "swell",
+  "version": "1.12.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -108,11 +108,13 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.0",
-    "@codemirror/lang-html": "^0.20.0",
-    "@codemirror/lang-javascript": "^0.20.0",
-    "@codemirror/lang-json": "^0.20.0",
-    "@codemirror/lang-xml": "^0.20.0",
-    "@codemirror/language": "^0.20.0",
+    "@codemirror/lang-html": "0.20.0",
+    "@codemirror/lang-javascript": "0.20.0",
+    "@codemirror/lang-json": "0.20.0",
+    "@codemirror/lang-xml": "0.20.0",
+    "@codemirror/language": "0.20.0",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
@@ -120,7 +122,8 @@
     "@jest-runner/electron": "^3.0.1",
     "@redux-devtools/extension": "^3.2.2",
     "@reduxjs/toolkit": "^1.8.1",
-    "@uiw/react-codemirror": "^4.7.0",
+    "@trpc/client": "^10.10.0",
+    "@uiw/react-codemirror": "4.7.0",
     "apollo-server-express": "^3.6.7",
     "axios": "^0.27.1",
     "body-parser": "^1.20.0",
@@ -131,7 +134,7 @@
     "chai-http": "^4.3.0",
     "chart.js": "^3.7.1",
     "classnames": "^2.3.1",
-    "codemirror": "^5.65.3",
+    "codemirror": "5.65.3",
     "concurrently": "^7.1.0",
     "cookie-parser": "^1.4.6",
     "cross-fetch": "^3.1.5",
@@ -156,6 +159,7 @@
     "js-cookie": "^3.0.1",
     "mali": "^0.46.1",
     "ngrok": "^4.3.1",
+    "node-fetch": "^3.3.0",
     "npm": "^8.7.0",
     "octokit": "^1.7.1",
     "patch-package": "^6.4.7",
@@ -168,6 +172,7 @@
     "react-github-btn": "^1.2.2",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
+    "react-split": "^2.0.14",
     "react-spring": "^9.4.4",
     "redux": "^4.2.0",
     "resize-observer-polyfill": "^1.5.1",
@@ -175,7 +180,6 @@
     "set-cookie-parser": "^2.4.8",
     "socket.io": "^4.5.0",
     "socket.io-client": "^4.5.0",
-    "subscriptions-transport-ws": "^0.11.0",
     "uuid": "^8.3.2",
     "vm2": "^3.9.9",
     "websocket": "^1.0.34",
@@ -200,12 +204,15 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@types/cookie": "^0.5.1",
     "@types/jest": "^27.4.1",
+    "@types/js-cookie": "^3.0.2",
     "@types/node": "^17.0.28",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
     "@types/react-redux": "^7.1.24",
     "@types/set-cookie-parser": "2.4.2",
     "@types/uuid": "^8.3.4",
+    "@types/webrtc": "^0.0.32",
+    "@types/websocket": "^1.0.5",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
@@ -213,11 +220,12 @@
     "cross-env": "^7.0.3",
     "csp-html-webpack-plugin": "^5.1.0",
     "css-loader": "^6.7.1",
-    "electron": "^18.1.0",
+    "electron": "^18.3.5",
     "electron-builder": "^23.0.3",
     "electron-react-devtools": "^0.5.3",
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "fake-indexeddb": "^3.1.7",
     "html-webpack-plugin": "^5.5.0",
     "istanbul": "^0.4.5",
@@ -253,6 +261,31 @@
     "url": "http://www.getswell.io"
   },
   "contributors": [
+    {
+      "name": "Jack Sonoda",
+      "email": "jackksono@gmail.com",
+      "url": "https://github.com/jackksono"
+    },
+    {
+      "name": "Tanner Malmedal",
+      "email": "tannermalmedal@gmail.com",
+      "url": "https://github.com/tannermalmedal"
+    },
+    {
+      "name": "Jaden Nguyen",
+      "email": "jadenthai206@gmail.com",
+      "url": "https://github.com/jaden-nguyen"
+    },
+    {
+      "name": "Mihran Baytaryan",
+      "email": "mihranbaytaryan@gmail.com",
+      "url": "https://github.com/mihran-baytaryan"
+    },
+    {
+      "name": "David Beame",
+      "email": "dbeame291@gmail.com",
+      "url": "https://github.com/KingzandBean"
+    },
     {
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
@@ -340,7 +373,6 @@
     },
     {
       "name": "Hideaki Aomori",
-      "email": "https://www.linkedin.com/in/hideaki-aomori",
       "url": "http://github.com/h15200"
     },
     {
@@ -365,137 +397,110 @@
     },
     {
       "name": "Wyatt Bell",
-      "email": "www.linkedin.com/in/wyatt-bell1",
       "url": "https://github.com/wcbell51"
     },
     {
       "name": "Grace Kim",
-      "email": "https://www.linkedin.com/in/gracekiim/",
       "url": "https://github.com/gracekiim"
     },
     {
       "name": "John Madrigal",
-      "email": "www.linkedin.com/in/john-r-madrigal",
       "url": "https://github.com/johnmadrigal "
     },
     {
       "name": "Michael Miller",
-      "email": "https://www.linkedin.com/in/migueljmiller/",
       "url": "https://github.com/mjmiguel"
     },
     {
       "name": "Alex Sanhueza",
-      "email": "https://www.linkedin.com/in/alex-sanhueza/",
       "url": "https://github.com/alexsanhueza"
     },
     {
       "name": "Gary Slootskiy",
-      "email": "https://www.linkedin.com/in/garyslootskiy/",
       "url": "https://github.com/garyslootskiy"
     },
     {
       "name": "Robin Yoong",
-      "email": "https://www.linkedin.com/in/robinyoong/",
       "url": "https://github.com/robinyoong"
     },
     {
       "name": "Nathaniel Adams",
-      "email": "https://www.linkedin.com/in/adamsnathaniel/",
       "url": "https://github.com/nathanielBadams"
     },
     {
       "name": "Sam Haar",
-      "email": "https://www.linkedin.com/in/samhaar/",
       "url": "https://github.com/samhaar"
     },
     {
       "name": "Edward Cho",
-      "email": "https://www.linkedin.com/in/edwardcho1231/",
       "url": "https://github.com/edwardcho1231"
     },
     {
       "name": "Miguel Gonzalez",
-      "email": "https://www.linkedin.com/in/miguel-gonzalez96/",
       "url": "https://github.com/MigGonzalez"
     },
     {
       "name": "Jason Liggayu",
-      "email": "https://www.linkedin.com/in/jasonliggayu/",
       "url": "https://github.com/jasonligg"
     },
     {
       "name": "Warren Tait",
-      "email": "https://www.linkedin.com/in/warrenhtait/",
       "url": "https://github.com/whtait"
     },
     {
       "name": "Ted Craig",
-      "email": "https://www.linkedin.com/in/mr-ted-craig/",
       "url": "https://github.com/tedcraig"
     },
     {
       "name": "Colin Gibson",
-      "email": "https://www.linkedin.com/in/colin--gibson/",
       "url": "https://github.com/cgefx"
     },
     {
       "name": "John Jongsun Suh",
-      "email": "https://www.linkedin.com/in/john-jongsun-suh/",
       "url": "https://github.com/MajorLift"
     },
     {
       "name": "Anthony Wong",
-      "email": "https://www.linkedin.com/in/aw-anthony/",
       "url": "https://github.com/awong428"
     },
     {
       "name": "Jennifer Wu",
-      "email": "https://www.linkedin.com/in/jennifer-sh-wu/",
       "url": "https://github.com/jsh-wu"
     },
     {
       "name": "Christopher Pan",
-      "email": "https://www.linkedin.com/in/christopherjpan/",
       "url": "https://github.com/Relai1"
     },
     {
       "name": "Jacob Viesselman",
-      "email": "https://www.linkedin.com/in/jacobviesselman/",
       "url": "https://github.com/JacobViesselman"
     },
     {
       "name": "Michael Prince",
-      "email": "https://www.linkedin.com/in/michael-prince/",
       "url": "https://github.com/MichaelGPrince"
     },
     {
       "name": "Adrian Uesugui",
-      "email": "https://www.linkedin.com/in/auesugui/",
       "url": "https://github.com/auesugui"
     },
     {
       "name": "Genevieve Annable",
-      "email": "https://www.linkedin.com/in/genevieveannable/",
       "url": "https://github.com/gigifeeds"
     },
     {
       "name": "Drew Pomatti",
-      "email": "https://www.linkedin.com/in/drewpomatti/",
       "url": "https://github.com/thedrewery"
     },
     {
       "name": "Sam Pyo",
-      "email": "https://www.linkedin.com/in/samhpyo/",
       "url": "https://github.com/samhpyo"
     },
     {
       "name": "Jay Wall",
-      "email": "https://www.linkedin.com/in/walljay/",
       "url": "https://github.com/hanswand"
     },
     {
       "name": "Kurtis Waterbury",
-      "email": "https://www.linkedin.com/in/kurtiswaterbury/",
       "url": "https://github.com/kurto8"
     }
   ]

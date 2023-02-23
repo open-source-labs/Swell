@@ -1,79 +1,93 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
-import * as actions from '../../features/business/businessSlice';
-import * as uiactions from '../../features/ui/uiSlice';
+
+import * as HistorySlice from '../../toolkit-refactor/history/historySlice';
+import { fieldsReplaced } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+
+import {
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../toolkit-refactor/newRequest/newRequestSlice';
+
 import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';
 
+/**@todo switch to hooks? */
 const mapStateToProps = (store) => ({
-  history: store.business.history,
-  newRequestFields: store.business.newRequestFields,
-  newRequestStreams: store.business.newRequestStreams,
+  history: store.history,
+  newRequestFields: store.newRequestFields,
+  newRequestStreams: store.newRequest.newRequestStreams,
 });
 
+/**@todo switch to hooks? */
 const mapDispatchToProps = (dispatch) => ({
-  clearHistory: () => {
-    dispatch(actions.clearHistory());
+  historyCleared: () => {
+    dispatch(HistorySlice.historyCleared());
   },
-  deleteFromHistory: (reqRes) => {
-    dispatch(actions.deleteFromHistory(reqRes));
+  historyDeleted: (reqRes) => {
+    dispatch(HistorySlice.historyDeleted(reqRes));
   },
-  setNewRequestHeaders: (requestHeadersObj) => {
-    dispatch(actions.setNewRequestHeaders(requestHeadersObj));
+  newRequestHeadersSet: (requestHeadersObj) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   },
-  setNewRequestFields: (requestFields) => {
-    dispatch(actions.setNewRequestFields(requestFields));
+  fieldsReplaced: (requestFields) => {
+    dispatch(fieldsReplaced(requestFields));
   },
-  setNewRequestBody: (requestBodyObj) => {
-    dispatch(actions.setNewRequestBody(requestBodyObj));
+  newRequestBodySet: (requestBodyObj) => {
+    dispatch(newRequestBodySet(requestBodyObj));
   },
-  setNewRequestCookies: (requestCookiesObj) => {
-    dispatch(actions.setNewRequestCookies(requestCookiesObj));
+  newRequestCookiesSet: (requestCookiesObj) => {
+    dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  setNewRequestStreams: (requestStreamsObj) => {
-    dispatch(actions.setNewRequestStreams(requestStreamsObj));
+  newRequestStreamsSet: (requestStreamsObj) => {
+    dispatch(newRequestStreamsSet(requestStreamsObj));
   },
 });
 
 const HistoryContainer = (props) => {
   const {
     history,
-    clearHistory,
-    deleteFromHistory,
-    setNewRequestFields,
-    setNewRequestHeaders,
-    setNewRequestCookies,
-    setNewRequestBody,
-    setNewRequestStreams,
+    historyCleared,
+    historyDeleted,
+    fieldsReplaced,
+    newRequestHeadersSet,
+    newRequestCookiesSet,
+    newRequestBodySet,
+    newRequestStreamsSet,
   } = props;
 
   const isDark = useSelector((store) => store.ui.isDark);
 
   // history is already sorted by created_at from getHistory
-  const historyDates = history.map((date, i) => {
-    return (
-      <HistoryDate
-        className="historyDate"
-        content={date}
-        key={i}
-        history={history}
-        deleteFromHistory={deleteFromHistory}
-        setNewRequestFields={setNewRequestFields}
-        setNewRequestHeaders={setNewRequestHeaders}
-        setNewRequestCookies={setNewRequestCookies}
-        setNewRequestBody={setNewRequestBody}
-        setNewRequestStreams={setNewRequestStreams}
-      />
-    );
-  });
+  const historyDates = history.map((date, index) => (
+    <HistoryDate
+      className="historyDate"
+      content={date}
+      key={index}
+      history={history}
+      historyDeleted={historyDeleted}
+      fieldsReplaced={fieldsReplaced}
+      newRequestHeadersSet={newRequestHeadersSet}
+      newRequestCookiesSet={newRequestCookiesSet}
+      newRequestBodySet={newRequestBodySet}
+      newRequestStreamsSet={newRequestStreamsSet}
+    />
+  ));
 
   return (
     <span
-      className={`p-3 is-flex is-flex-direction-column is-tall-not-1rem ${isDark ? 'is-dark-400' : ''}`}
+      className={`p-3 is-flex is-flex-direction-column is-tall-not-1rem ${
+        isDark ? 'is-dark-400' : ''
+      }`}
       id="history-container"
     >
-      <span id="history-container"className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
-        <ClearHistoryBtn clearHistory={clearHistory} />
+      <span
+        id="history-container"
+        className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3"
+      >
+        <ClearHistoryBtn historyCleared={historyCleared} />
       </span>
       <div className="add-vertical-scroll">{historyDates}</div>
     </span>

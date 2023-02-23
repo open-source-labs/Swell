@@ -1,3 +1,63 @@
+/**
+ * @file Defines a collection of types that are meant to be used through the
+ * TypeScript application. Not all types need to be here, especially if some
+ * type information only makes sense for internal implementations, but most of
+ * them should be here.
+ */
+
+import { GraphQLSchema } from 'graphql';
+
+/**
+ * Defines a type that is only included because it's required for a function
+ * signature, but otherwise isn't used at all.
+ */
+export type $NotUsed = unknown;
+
+/**
+ * Defines a placeholder alias for the any type.
+ *
+ * PLEASE do not use this for new code. This is just here as a bandaid for
+ * legacy code that was typed too loosely. The goal should be to get rid of this
+ * type.
+ */
+export type $TSFixMe = any;
+
+/**
+ * Defines a placeholder alias for a function that takes any amount of
+ * arguments, of any kind, and returns any kind of value.
+ *
+ * PLEASE do not use this for new code. This is just here as a bandaid for
+ * legacy code that was typed too loosely. The goal should be to get rid of this
+ * type.
+ */
+export type $TSFixMeFunction = (...args: any[]) => any;
+
+/**
+ * Defines a placeholder for a value that is meant to be an object, but doesn't
+ * have information about whether it should have precise properties on it, or
+ * should be a Record object.
+ *
+ * Do NOT use the "object" type in TypeScript; there are basically no properties
+ * that you can access from it in a type-safe way. It's next to useless.
+ *
+ * PLEASE do not use this for new code. This is just here as a bandaid for
+ * legacy code that was typed too loosely. The goal should be to get rid of this
+ * type.
+ */
+export type $TSFixMeObject = any;
+
+/**
+ * Represents any possible valid, serializable JSON value, including values
+ * nested to any arbitrary level.
+ */
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
@@ -14,7 +74,6 @@ export type Methods =
   | 'INTROSPECTION'
   | 'INITIATOR'
   | 'RECEIVER';
-type data = { [key: string]: string };
 
 export interface Collection {
   id: string;
@@ -36,42 +95,24 @@ export interface Cookie {
   secure: boolean;
   httpOnly: boolean;
   session: boolean;
+
+  //may be 'expirationDate' elsewhere in code?? mainprocess main_httpController?
   expires: string | number;
 }
-// No uses in codebase
-// export interface CookieProps {
-//   cookies: {
-//     expirationDate: string;
-//   };
-//   detail?: string;
-//   className?: string;
-// }
 
 export interface GithubData {
-  profile: object;
+  profile: $TSFixMeObject;
   repos: Collection[];
-  files: object[];
+  files: $TSFixMeObject[];
 }
 
 export interface GraphQLResponse {
   reqResObj: ReqRes;
-  data: data; //| Record<string, Record<string, unknown[]>>[];
+
+  /** Type information for data property may or may not be right */
+  data: Record<string, string>;
   error?: string;
 }
-
-// not used in codebase
-// export interface GraphQLResponseData {
-//   data: data;
-//   loading: boolean;
-//   networkStatus: number;
-//   stale: boolean;
-// }
-
-// not used in codebase
-// export interface HistoryTab {
-//   history: Record<number, unknown>[];
-//   collections: Record<string, unknown>[];
-// }
 
 export interface Message {
   source: string;
@@ -79,36 +120,62 @@ export interface Message {
   data: string;
 }
 
-// TODO: not sure if this is used, looks like not
-// export interface NewRequestBody {
-//   //-> wrong. all wrong. -Prince
-//   bodyContent: string;
-//   bodyVariables: string;
-//   bodyType: string;
-//   rawType: string;
-//   JSONFormatted: boolean;
-//   bodyIsNew: boolean;
-// }
+export interface NewRequestBody {
+  bodyContent: string;
+  bodyVariables: string;
+  bodyType: string;
+  rawType: string;
+  JSONFormatted: boolean;
+  bodyIsNew: boolean;
+}
 
-export interface NewRequestCookies {
-  // cookiesArr: Record<string, unknown>[]; //-> Pretty sure this is not needed -Prince
-  // count: number; //-> Pretty sure this is not needed -Prince
+export interface CookieOrHeader {
   active: boolean;
   id: string;
   key: string;
   value: string;
 }
 
+/**
+ * Defines the type constract for the NewRequestFields state object.
+ *
+ * @todo See if it makes sense to redefine some of the properties to be
+ * template literal types. For example, since restUrl must start with "http://",
+ * type string could possibly be replaced with the type `http://${string}`.
+ * Not sure if this could cause things to break, though.
+ */
+export type NewRequestFields = {
+  protocol: string;
+  restUrl: string;
+  wsUrl: string;
+  gqlUrl: string;
+  grpcUrl: string;
+  webrtcUrl: string;
+  url: string;
+  method: string;
+  graphQL: boolean;
+  gRPC: boolean;
+  tRPC: boolean;
+  ws: boolean;
+  openapi: boolean;
+  webrtc: boolean;
+  webhook: boolean;
+  network: string;
+  testContent: string;
+  testResults: $TSFixMe[];
+  openapiReqObj: Record<string, $TSFixMe>;
+};
+
 export interface ReqResRequest {
   body: string;
   bodyType: string;
   bodyVariables: string;
-  cookies: NewRequestCookies[];
+  cookies: CookieOrHeader[];
   graphQL: boolean;
   gRPC: boolean;
   gRpcUrl?: string;
   gqlUrl?: string;
-  headers: RequestHeaders[]; //-> Might need this -Prince
+  headers: CookieOrHeader[];
   method?: string;
   network: Network;
   protocol: Protocol;
@@ -122,14 +189,60 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
-export interface RequestHeaders {
-  active: boolean;
-  count?: number; //-> Might not need this -Prince
-  headersArr?: Record<string, unknown>[]; //-> Might not need this -Prince
+/**
+ * Describes the results of calling built-in introspection functions in GraphQL.
+ */
+export type IntrospectionData = {
+  schemaSDL: string | null;
+  clientSchema: GraphQLSchema | null;
+};
+
+/**
+ * Defines a whole HTTP request for generating graph data.
+ *
+ * Type definitions ripped from httpTest file.
+ */
+export type HttpRequest = {
   id: number;
-  key: string;
-  value: string;
-}
+  /**
+   * createdAt should be formatted like a Date object timestamp. Date objects
+   * are not valid serializable JSON values, and Redux will complain about them
+   */
+  createdAt: string;
+  protocol: string;
+  host: string;
+  path: string;
+  url: string;
+  graphQL: boolean;
+  gRPC: boolean;
+  timeSent: string | null;
+  timeReceived: string | null;
+  connection: string;
+  connectionType: $TSFixMe | null;
+  checkSelected: boolean;
+  protoPath: string | null;
+
+  request: {
+    method: string;
+    headers: $TSFixMeObject[][];
+    cookies: $TSFixMe[];
+    body: string;
+    bodyType: string;
+    bodyVariables: string;
+    rawType: string;
+    isSSE: boolean;
+    network: string;
+    restUrl: string;
+    wsUrl: string;
+    gqlUrl: string;
+    grpcUrl: string;
+  };
+
+  response: { headers: $TSFixMe | null; events: $TSFixMe | null };
+  checked: boolean;
+  minimized: boolean;
+  tab: string;
+};
 
 export interface OpenAPIRequest {
   openApiMetadata: Record<string, unknown>;
@@ -146,7 +259,7 @@ export interface OpenAPIReqData {
   reqServers: string[];
   method: Methods;
   endpoint: string;
-  headers?: RequestHeaders;
+  headers?: CookieOrHeader;
   parameters?: Record<string, unknown>[];
   urls: string[];
   body?: Map<string, unknown>;
@@ -154,6 +267,19 @@ export interface OpenAPIReqData {
   queries?: Record<string, unknown>;
 }
 
+/**
+ * @todo should be refactored as most of this information is repeated in the
+ * request property and has led to inconsistent usage accross app
+ * 
+ * ReqRes {
+ *  id: number;
+ *  request: ReqResReqest;
+ *  response: ReqResResponse;
+ * }
+ * 
+ * as well as any additional metadata needed as properties that doesn't already
+ * exist in the request or response properties
+ */
 export interface ReqRes {
   checked: boolean;
   closeCode: number;
@@ -169,7 +295,7 @@ export interface ReqRes {
   openapi: boolean;
   protocol: Protocol;
   request: ReqResRequest;
-  response: ReqResResponse; // This was previously: Record<string, string[]> | Record<string, Record<string, string | boolean>>;
+  response: ReqResResponse;
   rpc: string;
   service: string;
   timeReceived: Date | number;
@@ -182,10 +308,10 @@ export interface SSERequest {
   isSSE: boolean;
 }
 
-// TODO: this could be implemented
 export interface NewRequestStreams {
   streamsArr: Record<string, unknown>[];
   count: number;
+  selectedServiceObj: $TSFixMeObject | null;
   streamContent: Record<string, unknown>[];
   selectedPackage: string | null;
   selectedRequest: string | null;
@@ -198,15 +324,22 @@ export interface NewRequestStreams {
   protoContent: string;
 }
 
+/**@todo make sure all properties are correct and add any not listed yet*/
 export interface ReqResResponse {
-  // this is likely not a comprehensive list of all properties
   cookies: Cookie[];
-  headers: Record<string, unknown>;
-  events: Record<string, unknown>[]; // is this the correct type?
-  tab: string;
-  timeSent: number;
-  timeReceived: number;
-  url: string;
+  headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
+  events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
+  tab: string; //have not found this property mentioned yet should be removed for seperation of concerns
+  timeSent: number; //should be in 'times' property below instead??
+  timeReceived: number; //should be in 'times' property below instead??
+  url: string; //have not found this property mentioned yet
+  /**@todo */ //BELOW - additional properties not sure about yet/that weren't listed here before
+  times?: $TSFixMeObject[]; //main_grpcController array of objects {timeSent: Date, timeReceived: Date}
+  testResult?: $TSFixMe; //mainprocess main_graphqlController
+  responseSize?: $TSFixMe; //mainprocess main_httpController line 196ish
+  status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
+  messages?: $TSFixMeObject[]; //main_wsController, array of objects {data: @TSFixMe, timeReceived: Date}
+  connection?: string; //main_wsController
 }
 
 export interface WebSocketMessageProps {
@@ -233,7 +366,9 @@ export interface WindowAPI {
   send: (event: string, data?: any, some?: any) => void;
 }
 
-// TODO: implement these types
+/**
+ * @todo Figure out what these types should be and then implement them
+ */
 export interface WRTC {
   RTCPeerConnection:
     | RTCPeerConnection
