@@ -25,6 +25,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Make API requests based on a range of provided options that conform to the specifications defined in OpenAPI documents.
 - Verify STUN and TURN server connectivity for WebRTC applications by generating an SDP (Session Description Protocol)
 - Diagnose and monitor your gRPC streaming connections
+- Make customizable requests to TypeScript Remote Procedure Call (tRPC) endpoints
 - View response timing information and history in an interactive chart for each request
 - Store workspaces of multiple requests for later use
 - Import, export, and share workspaces with other developers
@@ -48,6 +49,20 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
   <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
+
+- _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations.
+  <img src="./ReadMeGifs/Gifs/tRPC-query.gif" style="display: block; margin: 10px auto 30px;" />
+  <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" />
+
+  Calls are currently being made using Swell's own TRPCProxyClient generated from the URL provided by the user.
+  Batch requests must be entered one request per line. Swell will treat each line of code entered into the editor as a separate request before batching and returning responses.
+  Each request must follow the general format client.procedure.querytype(). For example:
+
+  ```js
+  client.getUser.query({ name: 'Luke Skywalker' });
+  ```
+
+  See [tRPC docs](https://trpc.io/docs/) for more information on sending tRPC requests or setting up a tRPC server.
 
 - _OpenAPI_: Swell supports the enumeration and execution of REST and RPC API requests as defined in a user-provided OpenAPI document.
   <img src="./ReadMeGifs/Gifs/openapi.gif" style="display: block; margin: 10px auto 30px;" />
@@ -97,10 +112,11 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
   <img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
-- _Added in Dev Version 1.10.2!_ _UI Updates_: Built with Material UI, a smoother, more intutive interface for enhanced user experience.
+- _UI Updates_: Built with Material UI, a smoother, more intuitive interface for enhanced user experience.
   <img src="./ReadMeGifs/Gifs/NewUI.png" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
+  Added in version 1.12.0: resizable panels between composer, response, and workspace and visual feedbackfor when users is selecting different communi
 
-- _Added in Dev Version 1.10.2!_ _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
+- _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
   <img src="./ReadMeGifs/Gifs/GithubIntegration.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
 ## Built With
@@ -113,6 +129,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Apollo Client
 - Websockets
 - gRPC-js
+- tRPC
 - VM2
 - Chart.js
 - Bulma
@@ -123,6 +140,11 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 ## Authors
 
+- **Jack Sonoda** - [jackksono](https://github.com/jackksono)
+- **Jaden Nguyen** - [jaden-nguyen](https://github.com/jaden-nguyen)
+- **Taner Malmedal** - [tannermalmedal](https://github.com/tannermalmedal)
+- **Mihran Baytaryan** - [mihran-baytaryan](https://github.com/mihran-baytaryan)
+- **David Beame** - [KingzandBean](https://github.com/KingzandBean)
 - **Grace Kim** - [gracekiim](https://github.com/gracekiim)
 - **Alex Sanhueza** - [alexsanhueza](https://github.com/alexsanhueza)
 - **Wyatt Bell** - [wcbell51](https://github.com/wcbell51)
