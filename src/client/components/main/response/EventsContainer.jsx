@@ -11,14 +11,10 @@ function EventsContainer({ currentResponse }) {
   const isDark = useSelector((state) => state.ui.isDark);
 
   const { request, response } = currentResponse;
-  // console.log('this is the request', request);
-  // console.log('this is the response', response);
   if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;
   }
   const { events, headers } = response;
-  // console.log("this is the events", events);
-  // console.log("this is the headers", headers);
   let responseBody = '';
 
   // If it's a stream or graphQL subscription
@@ -62,7 +58,6 @@ function EventsContainer({ currentResponse }) {
           isDark ? 'is-dark-200' : ''
         } overflow-event-parent-container`}
       >
-        {/* {responseBody} */}
         <CodeMirror
           className="overflow-event-child-container"
           value={responseBody}

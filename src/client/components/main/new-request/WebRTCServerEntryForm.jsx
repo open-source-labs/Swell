@@ -8,11 +8,12 @@ const jBeautify = require('js-beautify').js;
 
 const WebRTCServerEntryForm = (props) => {
   const { warningMessage } = props;
-  const { bodyContent, bodyIsNew } = props.newRequestBody;
-
+  const requestBody = useSelector(state => state.newRequest.newRequestBody);
+  const {bodyIsNew} = requestBody;
   const [cmValue, setValue] = useState('');
   const isDark = useSelector((state) => state.ui.isDark);
 
+  const bodyContent = useSelector(state => state.newRequest.newRequestBody.bodyContent);
   useEffect(() => {
     if (!bodyIsNew) {
       /**
@@ -21,7 +22,7 @@ const WebRTCServerEntryForm = (props) => {
        * anything. Need to investigate
        */
       setValue(
-        jBeautify(JSON.stringify(bodyContent.iceConfiguration.iceServers))
+        jBeautify(JSON.stringify(bodyContent?.iceConfiguration?.iceServers))
       );
     }
   }, [bodyContent, bodyIsNew]);

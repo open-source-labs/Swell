@@ -166,7 +166,7 @@ export default function WebhookComposer(props: $TSFixMe) {
   return (
     <Box
       className="mr-2 is-flex is-justify-content-center"
-      sx={{ padding: '10px', height: '40%' }}
+      sx={{ padding: '10px', height: '100%', width: '100%' }}
       id="composer-webhook"
     >
       <button

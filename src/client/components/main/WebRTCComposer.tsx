@@ -113,6 +113,7 @@ export default function WebRTCComposer(props) {
   return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
+      sx={{ padding: '10px', height: '100%', width: '100%' }}
       id="composer-webrtc"
     >
       <div

@@ -1,6 +1,6 @@
 {
   "name": "swell",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -122,6 +122,7 @@
     "@jest-runner/electron": "^3.0.1",
     "@redux-devtools/extension": "^3.2.2",
     "@reduxjs/toolkit": "^1.8.1",
+    "@trpc/client": "^10.10.0",
     "@uiw/react-codemirror": "4.7.0",
     "apollo-server-express": "^3.6.7",
     "axios": "^0.27.1",
@@ -158,6 +159,7 @@
     "js-cookie": "^3.0.1",
     "mali": "^0.46.1",
     "ngrok": "^4.3.1",
+    "node-fetch": "^3.3.0",
     "npm": "^8.7.0",
     "octokit": "^1.7.1",
     "patch-package": "^6.4.7",
@@ -170,6 +172,7 @@
     "react-github-btn": "^1.2.2",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
+    "react-split": "^2.0.14",
     "react-spring": "^9.4.4",
     "redux": "^4.2.0",
     "resize-observer-polyfill": "^1.5.1",
@@ -258,6 +261,31 @@
     "url": "http://www.getswell.io"
   },
   "contributors": [
+    {
+      "name": "Jack Sonoda",
+      "email": "jackksono@gmail.com",
+      "url": "https://github.com/jackksono"
+    },
+    {
+      "name": "Tanner Malmedal",
+      "email": "tannermalmedal@gmail.com",
+      "url": "https://github.com/tannermalmedal"
+    },
+    {
+      "name": "Jaden Nguyen",
+      "email": "jadenthai206@gmail.com",
+      "url": "https://github.com/jaden-nguyen"
+    },
+    {
+      "name": "Mihran Baytaryan",
+      "email": "mihranbaytaryan@gmail.com",
+      "url": "https://github.com/mihran-baytaryan"
+    },
+    {
+      "name": "David Beame",
+      "email": "dbeame291@gmail.com",
+      "url": "https://github.com/KingzandBean"
+    },
     {
       "name": "Kyle Combs",
       "email": "combskyle@gmail.com",
@@ -477,4 +505,3 @@
     }
   ]
 }
-
