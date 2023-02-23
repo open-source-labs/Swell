@@ -22,6 +22,7 @@ import { RootState } from '../../toolkit-refactor/store';
 
 // import tRPC client Module
 import { createTRPCProxyClient, httpBatchLink, createWSClient, wsLink, splitLink } from "@trpc/client";
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 /**
  * 
@@ -37,6 +38,8 @@ export default function TRPCComposer() {
   /** reqRes slice from redux store, contains request and response data */
   const requestStuff = useSelector((state: RootState) => state.newRequest)
 
+  let subscription: any;
+
   const sendRequest = () => {
 
     let isWebsocket = false;
@@ -45,7 +48,7 @@ export default function TRPCComposer() {
     const request = requestBody.bodyContent;
     const httpRegex = /^http:\/\/([a-zA-Z0-9-]+\.[a-zA-Z]{2,}|localhost)(:[0-9]+)?(\/.*)?$/ // trpc doesn't accept https requests to my knowledge otherwise https?
     const wsRegex = /^(ws|wss):\/\/(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|localhost)(:[0-9]+)?(\/.*)?$/;
-
+    
     //checks if URL is to WebSocket or standard HTTP
     if (wsRegex.test(clientURL)) {
       
@@ -61,7 +64,8 @@ export default function TRPCComposer() {
       const persistentData: Array<any> = [];
 
       //current WebSocket is listening for anytime an event is sent back to client
-      ws.addEventListener('message', (event) => {    
+      ws.onmessage = ((event) => {  
+        console.log(ws.readyState); 
         persistentData.push(JSON.parse(event.data));
           const newCurrentResponse: any = {
             checkSelected: false,
@@ -107,7 +111,8 @@ export default function TRPCComposer() {
       
       //replacing user's client name to what app is expecting
       const editedRequest = request.replace(/^[^.]*./, "client.")
-      eval(editedRequest);
+      subscription = eval(editedRequest);
+      console.log(subscription);
     
     } else {
       
@@ -168,8 +173,9 @@ export default function TRPCComposer() {
         <TRPCMethodAndEndpointEntryForm/>
         <TRPCBodyEntryForm newRequestBodySet={newRequestBodySet}/>
       </div>
-      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+      <div className="is-3rem-footer is-clickable is-margin-top-auto" style={{display: 'flex', justifyContent: 'space-around'}}>
         <SendRequestButton onClick={sendRequest} />
+        {requestFields.method === 'SUBSCRIPTION' && <SendRequestButton onClick={() => subscription.unsubscribe()} buttonText = 'Close Subscription'></SendRequestButton>}
       </div>
     </Box>
   );
