@@ -65,7 +65,6 @@ export default function TRPCComposer() {
 
       //current WebSocket is listening for anytime an event is sent back to client
       ws.onmessage = ((event) => {  
-        console.log(ws.readyState); 
         persistentData.push(JSON.parse(event.data));
           const newCurrentResponse: any = {
             checkSelected: false,
@@ -112,7 +111,6 @@ export default function TRPCComposer() {
       //replacing user's client name to what app is expecting
       const editedRequest = request.replace(/^[^.]*./, "client.")
       subscription = eval(editedRequest);
-      console.log(subscription);
     
     } else {
       
