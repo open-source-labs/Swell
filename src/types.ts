@@ -267,6 +267,19 @@ export interface OpenAPIReqData {
   queries?: Record<string, unknown>;
 }
 
+/**
+ * @todo should be refactored as most of this information is repeated in the
+ * request property and has led to inconsistent usage accross app
+ * 
+ * ReqRes {
+ *  id: number;
+ *  request: ReqResReqest;
+ *  response: ReqResResponse;
+ * }
+ * 
+ * as well as any additional metadata needed as properties that doesn't already
+ * exist in the request or response properties
+ */
 export interface ReqRes {
   checked: boolean;
   closeCode: number;
@@ -313,10 +326,10 @@ export interface NewRequestStreams {
 
 /**@todo make sure all properties are correct and add any not listed yet*/
 export interface ReqResResponse {
-  cookies: Cookie[]; //*HAS 'cookies' property, array of 'cookie' types - CORRECT
+  cookies: Cookie[];
   headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
   events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
-  tab: string; //have not found this property mentioned yet
+  tab: string; //have not found this property mentioned yet should be removed for seperation of concerns
   timeSent: number; //should be in 'times' property below instead??
   timeReceived: number; //should be in 'times' property below instead??
   url: string; //have not found this property mentioned yet

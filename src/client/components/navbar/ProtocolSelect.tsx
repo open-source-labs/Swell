@@ -6,35 +6,21 @@ import { RootState } from '../../toolkit-refactor/store';
 // Import actions so that the navbar can interact with the Redux store.
 import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
 import {
-  composerFieldsReset,
-  newRequestSSESet,
-  newRequestCookiesSet,
-  newRequestStreamsSet,
-  newRequestBodySet,
-  newRequestHeadersSet,
   newRequestContentByProtocol
 } from '../../toolkit-refactor/newRequest/newRequestSlice';
-import { openApiRequestsReplaced } from '../../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
 
-import { setWorkspaceActiveTab } from '../../toolkit-refactor/ui/uiSlice';
+
 import {
-  fieldsReplaced,
-  newTestContentSet,
   newRequestFieldsByProtocol
 } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
-import { setWarningMessage } from '../../toolkit-refactor/warningMessage/warningMessageSlice';
+
 
 // Import MUI components.
 import { styled } from '@mui/system';
 import { Box, Button } from '@mui/material';
-import ButtonUnstyled, {
-  buttonUnstyledClasses,
-} from '@mui/base/ButtonUnstyled';
+import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
 
-const black = {
-  100: '#000036'
-}
 const blue = {
   500: '#51819b',
   600: '#95ceed',
@@ -110,14 +96,7 @@ function ProtocolSelect() {
    * @param network
    */
   const onProtocolSelect = (network: string) => {
-    /**@todo update warning message with hooks*/
-
-    // if (props.warningMessage.uri) {
-    //   const warningMessage = { ...props.warningMessage };
-    //   delete warningMessage.uri;
-    //   props.setWarningMessage({ ...warningMessage });
-    // }
-    // props.setWarningMessage({});
+    
     dispatch(newRequestFieldsByProtocol(network))
     dispatch(newRequestContentByProtocol(network))
   };
@@ -142,10 +121,7 @@ function ProtocolSelect() {
           {page.name === curPage ? 
             <SelectedButton
               key={page.name}
-              // variant="contained"
-              // color="primary"
               onClick={() => {
-                console.log(page.value);
                 onProtocolSelect(page.value);
                 handleClick(page);
               }}
@@ -157,10 +133,7 @@ function ProtocolSelect() {
           :
             <CustomButton
               key={page.name}
-              // variant="contained"
-              // color="primary"
               onClick={() => {
-                console.log(page.value);
                 onProtocolSelect(page.value);
                 handleClick(page);
               }}
@@ -176,4 +149,4 @@ function ProtocolSelect() {
   );
 }
 export default ProtocolSelect;
-// export default connect(mapStateToProps, mapDispatchToProps)(ProtocolSelect);
+

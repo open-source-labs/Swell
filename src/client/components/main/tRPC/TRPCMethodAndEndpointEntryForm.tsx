@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
@@ -135,10 +135,6 @@ const TRPCMethodAndEndpointEntryForm = () => {
           }
         />
       </div>
-
-      {/* {warningMessage.uri && (
-        <div className="warningMessage">{warningMessage.uri}</div>
-      )} */}
     </div>
   );
 };

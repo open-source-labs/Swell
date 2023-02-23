@@ -1,5 +1,14 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Action } from '@remix-run/router';
+/**
+ * @file Defines the slice for the new requests
+ * 
+ * slice contains request body and header information
+ * 
+ * @todo should be combined with new Request fields slice as the data related to constructing
+ * each request is associated
+ */
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import {
   NewRequestStreams,
   NewRequestBody,

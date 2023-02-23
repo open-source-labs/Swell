@@ -1,20 +1,38 @@
 /**
  * @file Defines the slice for the NewRequestFields.
+ * 
+ * slice contains general request information
+ * 
+ * @todo should be combined with new Request slice as the data related to constructing
+ * each request is linked with 
+ * 
+ * @todo refactor request type state into a single state with descrete options
  */
 import { NewRequestFields } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { composerFieldsReset } from '../newRequest/newRequestSlice';
-import { StateEffect } from '@uiw/react-codemirror';
+
 
 const initialState: NewRequestFields = {
   protocol: '',
+  method: 'GET',
+  network: 'rest',
+  url: 'http://',
+
+  // it is unclear how request specific urls function in the app, useage is inconsistent
+  // reccomend treating as constants and URL property should be variable 
+  // as there is only one url per request
+  // can be refactored out of the app
   restUrl: 'http://',
   wsUrl: 'ws://',
   gqlUrl: 'https://',
   grpcUrl: '',
   webrtcUrl: '',
-  url: 'http://',
-  method: 'GET',
+
+  // the purpose of these booleans is unclear, inconsistent useage throughout app 
+  // should be refactored into a single piece of state 
+  // with descrete options that indicate the type of request
+  // a request cannot be gRPC and tRPC at the same time
   graphQL: false,
   gRPC: false,
   tRPC: false,
@@ -22,7 +40,7 @@ const initialState: NewRequestFields = {
   openapi: false,
   webrtc: false,
   webhook: false,
-  network: 'rest',
+
   testContent: '',
   testResults: [],
   openapiReqObj: {},
@@ -45,11 +63,10 @@ const newRequestFieldsSlice = createSlice({
     ) => {
       state.testContent = action.payload;
     },
+
+    // sets inital request state when a protocol is selected 
     newRequestFieldsByProtocol: (state, action: PayloadAction<string>) => {
       switch (action.payload) {
-        /**
-         * @TODO add tRPC state management
-         */
         case 'tRPC': {
           return {
             ...initialState,
@@ -108,7 +125,6 @@ const newRequestFieldsSlice = createSlice({
         case 'webhook': {
           return {
             ...initialState,
-            //??? might need to fix url vvv if we want to pass our url api from the state
             url: '',
             method: 'Webhook',
             webhook: true,

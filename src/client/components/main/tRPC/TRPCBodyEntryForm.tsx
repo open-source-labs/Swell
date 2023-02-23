@@ -3,22 +3,12 @@ import CodeMirror from '@uiw/react-codemirror';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
 
-// import 'codemirror/addon/edit/matchbrackets';
-// import 'codemirror/addon/edit/closebrackets';
-// import 'codemirror/theme/twilight.css';
-// import 'codemirror/lib/codemirror.css';
-// import 'codemirror/addon/hint/show-hint';
-// import 'codemirror/addon/hint/show-hint.css';
-// import 'codemirror-graphql/hint';
-// import 'codemirror-graphql/lint';
-// import 'codemirror-graphql/mode';
-// import 'codemirror/addon/lint/lint.css';
 
-const TRPCBodyEntryForm = (props) => {
-  // // set a new value for codemirror only if loading from history or changing query type
-  // useEffect(() => {
-  //   if (!bodyIsNew) setValue(bodyContent);
-  // }, [bodyContent]);
+/**
+ * renders entry form for TRPC request
+ */
+const TRPCBodyEntryForm = (props : any) => {
+
 
   const {
     newRequestBodySet,
@@ -34,10 +24,6 @@ const TRPCBodyEntryForm = (props) => {
 
   return (
     <div className="mt-3">
-      {
-        // conditionally render warning message
-        // warningMessage ? <div>{warningMessage.body}</div> : null
-      }
       <div className="composer-section-title">Body</div>
       <div
         id="gql-body-entry"
@@ -49,19 +35,6 @@ const TRPCBodyEntryForm = (props) => {
           height="200px"
           width="100%"
           maxHeight="300px"
-          // GraphQL mode currently not available via react-codemirror. Below functionality is commented out since it cannot be used
-          // In the future, if graphql mode gets ported and CodeMirror can integrate schema again, maybe add back in?
-
-          // onBeforeChange={(editor, data, value) => {
-          //   const optionObj = {
-          //     schema: introspectionData.clientSchema,
-          //     completeSingle: false,
-          //   };
-          //   setValue(value);
-          //   editor.setOption('lint', optionObj);
-          //   editor.setOption('hintOptions', optionObj);
-          // }}
-
           onChange={(value, viewUpdate) => {
             dispatch(newRequestBodySet({
               ...newRequestBody,
