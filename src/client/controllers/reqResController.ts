@@ -37,13 +37,11 @@ const connectionController = {
     api.removeAllListeners('reqResUpdate');
 
     api.receive('reqResUpdate', (reqResObj: ReqRes) => {
-      if (
-        (reqResObj.connection === 'closed' ||
-          reqResObj.connection === 'error') &&
+      if ((reqResObj.connection === 'closed' ||
+        reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
-        reqResObj.response.events.length > 0
-      ) {
+        reqResObj.response.events.length > 0) {
         appDispatch(graphUpdated(reqResObj));
       }
       appDispatch(reqResUpdated(reqResObj));

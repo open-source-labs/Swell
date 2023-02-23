@@ -41,10 +41,15 @@ const head = document.querySelector('head');
 const meta = document.createElement('meta');
 meta.httpEquiv = 'Content-Security-Policy';
 meta.content = `
-default-src 'self' http://localhost:3000 ws://localhost:3000 https://api.github.com 'unsafe-inline';  
+default-src 'self' http://localhost:3000 ws://localhost:3000 https://api.github.com 'unsafe-inline' 'unsafe-eval' * self blob: data: gap:;  
   img-src 'self' data: https://avatars.githubusercontent.com/;
   child-src 'none';
   `;
+
+  //<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  const otherMeta = document.createElement('otherMeta')
+  otherMeta.content = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'">`
+  //meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-eval'"
 
 head.appendChild(meta);
 
