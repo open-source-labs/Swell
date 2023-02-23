@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, Component } from 'react';
-import { useSpring, animated } from 'react-spring';
+// import { useSpring, animated } from 'react-spring';
 import ResizeObserver from 'resize-observer-polyfill';
-import { Spring, config } from 'react-spring';
+// import { Spring, config } from 'react-spring';
 
 const VerticalProgress = (props) => {
   const { total, pass } = props;
