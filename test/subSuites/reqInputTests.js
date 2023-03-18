@@ -18,6 +18,7 @@ module.exports = () => {
 
     // close Electron app when complete
     after(async () => {
+      await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
     });
 
