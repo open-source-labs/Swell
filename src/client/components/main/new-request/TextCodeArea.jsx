@@ -1,6 +1,7 @@
 //import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
 import { xml } from '@codemirror/lang-xml';
 import { json } from '@codemirror/lang-json';
@@ -25,7 +26,8 @@ export default function TextCodeArea({
   value,
   mode,
   onChange,
-  theme = 'dark',
+  height = '200px',
+  placeholder = 'Enter body here',
   readOnly = false,
 }) {
   const lang = mode.substring(mode.indexOf('/') + 1); // Grab language mode based on value passed in
@@ -34,10 +36,10 @@ export default function TextCodeArea({
     <div className="is-neutral-200-box">
       <CodeMirror
         value={value}
-        height="200px"
+        height={height}
         extensions={[langs[lang](), EditorView.lineWrapping]}
-        placeholder="Enter body here"
-        theme={theme}
+        placeholder={placeholder}
+        theme={vscodeDark}
         onChange={onChange}
         readOnly={readOnly}
       />

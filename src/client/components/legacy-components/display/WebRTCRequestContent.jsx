@@ -5,8 +5,8 @@ import Peer from '../../../controllers/webrtcPeerController';
 import { json } from '@codemirror/lang-json';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
-import { matchBrackets } from '@codemirror/language';
 import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 const jBeautify = require('js-beautify').js;
 
@@ -49,7 +49,7 @@ export default function WebRTCRequestContent({ content }) {
         <div className="is-size-7">Servers</div>
         <CodeMirror
           value={jBeautify(JSON.stringify(iceConfiguration.iceServers))}
-          theme="dark"
+          theme={vscodeDark}
           readOnly="true"
           extensions={[javascript(), EditorView.lineWrapping]}
           height="100%"
@@ -67,7 +67,7 @@ export default function WebRTCRequestContent({ content }) {
           <CodeMirror
             value={localSdp || 'No SDP yet'}
             extensions={[json()]}
-            theme="dark"
+            theme={vscodeDark}
             readOnly="true"
             height="100%"
             width="100%"

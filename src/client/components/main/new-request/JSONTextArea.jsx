@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
 import TextCodeArea from './TextCodeArea.jsx';
 
 export default function JSONTextArea({ newRequestBody, newRequestBodySet }) {
@@ -25,7 +24,7 @@ export default function JSONTextArea({ newRequestBody, newRequestBodySet }) {
   return (
     <TextCodeArea
       mode={newRequestBody.rawType}
-      onChange={(value, viewUpdate) => {
+      onChange={(value) => {
         newRequestBodySet({
           ...newRequestBody,
           bodyContent: value,

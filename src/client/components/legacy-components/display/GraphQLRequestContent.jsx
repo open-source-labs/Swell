@@ -1,8 +1,8 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { EditorView } from "@codemirror/view"
+import { EditorView } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
-
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import ContentReqRow from './ContentReqRow';
 
 function GraphQLRequestContent({ request }) {
@@ -38,18 +38,15 @@ function GraphQLRequestContent({ request }) {
         {/* BODY */}
         <div>
           <div className="is-size-7">Body</div>
-           <CodeMirror
+          <CodeMirror
             value={bodyText}
-            extensions={[
-              json(),
-              EditorView.lineWrapping,
-            ]}
-            theme = 'dark'
-            readOnly= 'true'
+            extensions={[json(), EditorView.lineWrapping]}
+            theme={vscodeDark}
+            readOnly="true"
             height="100%"
-            width = "100%"
-            maxWidth='400px'
-            maxHeight='300px'
+            width="100%"
+            maxWidth="400px"
+            maxHeight="300px"
           />
         </div>
         {/* VARIABLES */}
@@ -58,16 +55,13 @@ function GraphQLRequestContent({ request }) {
             <div className="is-size-7">Body Variables</div>
             <CodeMirror
               value={bodyVarText}
-              extensions={[
-                json(),
-                EditorView.lineWrapping,
-              ]}
-              theme = 'dark'
-              readOnly= 'true'
+              extensions={[json(), EditorView.lineWrapping]}
+              theme={vscodeDark}
+              readOnly="true"
               height="100%"
-              width = "100%"
-              maxWidth='400px'
-              maxHeight='300px'
+              width="100%"
+              maxWidth="400px"
+              maxHeight="300px"
             />
           </div>
         )}
@@ -75,18 +69,15 @@ function GraphQLRequestContent({ request }) {
         {testContent.length > 0 && (
           <div>
             <div className="is-size-7">Tests</div>
-             <CodeMirror
+            <CodeMirror
               value={testContent}
-              extensions={[
-                json(),
-                EditorView.lineWrapping,
-              ]}
-              theme = 'dark'
-              readOnly= 'true'
+              extensions={[json(), EditorView.lineWrapping]}
+              theme={vscodeDark}
+              readOnly="true"
               height="100%"
-              width = "100%"
-              maxWidth='400px'
-              maxHeight='300px'
+              width="100%"
+              maxWidth="400px"
+              maxHeight="300px"
             />
           </div>
         )}
