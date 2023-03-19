@@ -3,9 +3,9 @@
  * arrays and associated values.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HttpRequest, ReqRes } from '../../../types';
+import { ReqRes } from '../../../types';
 
-/** 
+/**
  * @todo based on current useage type def is innaccurate or incomplete
  * currentReponse stores the last returned ReqRes type
  * in theory currentResponse property is unnessecary as the last element in the
@@ -19,8 +19,6 @@ type ReqResStore = {
     };
   };
 };
-
-const initialState2: HttpRequest = {};
 
 const initialState: ReqResStore = {
   reqResArray: [],
