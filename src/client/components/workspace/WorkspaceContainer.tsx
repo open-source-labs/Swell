@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // Local components
-import CurrentWorskpaceDisplay from './CurrentWorkspaceDisplay';
+import CurrentWorkspaceDisplay from './CurrentWorkspaceDisplay';
 import LegacyWorkspaceContainer from './LegacyWorkspaceContainer';
 import BarGraph from '../legacy-components/BarGraph';
 // import CollectionsContainer from "../../components/containers/CollectionsContainer";
@@ -24,11 +24,12 @@ import {
 } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import { RootState, useAppDispatch } from '../../toolkit-refactor/store';
+import { WorkspaceContainerProps } from '../../../types';
 
 export default function WorkspaceContainer({
   currentWorkspaceId,
   setWorkspace,
-}) {
+}: WorkspaceContainerProps) {
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
   };
@@ -46,8 +47,11 @@ export default function WorkspaceContainer({
       className="workspace-container"
       sx={{ minWidth: '20%', align: 'center' }}
     >
-      {/* The display for your current workspace. Contains functionality for saving, importing, exporting, and adding other GitHub users to your workspace. */}
-      <CurrentWorskpaceDisplay
+      {/* 
+      The display for your current workspace. Contains functionality for 
+      saving, importing, exporting, and adding other GitHub users to your 
+      workspace. */}
+      <CurrentWorkspaceDisplay
         currentWorkspaceId={currentWorkspaceId}
         currentWorkspace={currentWorkspace}
         handleWorkspaceChange={handleWorkspaceChange}
