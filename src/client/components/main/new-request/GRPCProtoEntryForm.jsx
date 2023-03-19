@@ -137,6 +137,7 @@ const GRPCProtoEntryForm = (props) => {
           onChange={(value, viewUpdate) => updateProtoBody(value)}
           value={props.newRequestStreams.protoContent}
           mode="application/json"
+          placeholder="Enter proto here"
         />
       </div>
       <GRPCAutoInputForm
