@@ -1,29 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { useDispatch } from 'react-redux';
 
 import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
-import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
-import {
-  newRequestSSESet,
-  newRequestCookiesSet,
-  newRequestStreamsSet,
-  newRequestBodySet,
-  newRequestHeadersSet,
-} from '../../../toolkit-refactor/newRequest/newRequestSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
 } from '../../../toolkit-refactor/ui/uiSlice';
-//import { scheduledReqResAdded } from '../../../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
-import { setWarningMessage } from '../../../toolkit-refactor/warningMessage/warningMessageSlice';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
-// Import local components
-import Http2EndpointForm from './Http2EndpointForm';
-import Http2MetaData from './Http2MetaData';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -37,36 +24,10 @@ import NewRequestButton from '../new-request/NewRequestButton';
 import BodyEntryForm from '../new-request/BodyEntryForm';
 import TestEntryForm from '../new-request/TestEntryForm';
 // Import MUI components
-import { Box, Typography } from '@mui/material';
-import { BooleanValueNode } from 'graphql';
+import { Box } from '@mui/material';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
-  interface Parameter {
-    id: string;
-    key: string;
-    value: string;
-    toggle: boolean;
-  }
-  interface Header {
-    id: string;
-    key: string;
-    value: string;
-    toggle: boolean;
-  }
-  interface Cookie {
-    id: string;
-    key: string;
-    value: string;
-    toggle: BooleanValueNode;
-  }
-
-  const [parameters, setParameters] = useState<Parameter[]>([]);
-  const [headers, setHeaders] = useState<Header[]>([]);
-  const [cookies, setCookies] = useState<Cookie[]>([]);
-  const [http2Method, setHttp2Method] = useState('GET');
-  const [http2Uri, setHttp2Uri] = useState('');
-
   const dispatch = useDispatch();
   // Destructuring store props.
   const {
@@ -312,9 +273,6 @@ export default function Http2Composer(props) {
       }}
       id="composer-http2"
     >
-      {/* <Typography align='center'>
-        HTTP/2
-      </Typography> */}
       {/**
        * @todo The two commented-out components are our attempt to port the
        * entire app to use MaterialUI for consistency.
@@ -328,6 +286,40 @@ export default function Http2Composer(props) {
        * These are not tied to the Redux store currently, and thus do not
        * interact with the app yet. They are just standalone components that
        * need to be integrated with the logic of the app.
+       *
+       * Import the following if you wish to uncomment the code below:
+       *
+       * import Http2EndpointForm from './Http2EndpointForm';
+       * import Http2MetaData from './Http2MetaData'
+       * import { BooleanValueNode } from 'graphql';
+       * import { useState } from 'react';
+       *
+       * Also, setup the following interface and react hooks:
+       *
+       *  interface Parameter {
+       *    id: string;
+       *    key: string;
+       *    value: string;
+       *    toggle: boolean;
+       *  }
+       *   interface Header {
+       *    id: string;
+       *    key: string;
+       *    value: string;
+       *    toggle: boolean;
+       *  }
+       *   interface Cookie {
+       *    id: string;
+       *    key: string;
+       *    value: string;
+       *    toggle: BooleanValueNode;
+       *  }
+       *
+       * const [parameters, setParameters] = useState<Parameter[]>([]);
+       * const [headers, setHeaders] = useState<Header[]>([]);
+       * const [cookies, setCookies] = useState<Cookie[]>([]);
+       * const [http2Method, setHttp2Method] = useState('GET');
+       * const [http2Uri, setHttp2Uri] = useState('');
        */}
       {/* <Http2EndpointForm
         http2Method={http2Method}
