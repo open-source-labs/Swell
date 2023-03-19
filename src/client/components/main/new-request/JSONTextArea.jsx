@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import TextCodeArea from './TextCodeArea.jsx';
+import TextCodeArea from './TextCodeArea.tsx';
 
 export default function JSONTextArea({ newRequestBody, newRequestBodySet }) {
   useEffect(() => {

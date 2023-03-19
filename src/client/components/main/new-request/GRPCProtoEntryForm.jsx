@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm.jsx';
-import TextCodeArea from './TextCodeArea.jsx';
+import TextCodeArea from './TextCodeArea.tsx';
 // import protoParserFunc from "../../../protoParser.js";
 
 const { api } = window;
