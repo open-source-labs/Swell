@@ -4,7 +4,7 @@ import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
 import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
 import JSONPrettify from './JSONPrettify.jsx';
-import TextCodeArea from './TextCodeArea.jsx';
+import TextCodeArea from './TextCodeArea.tsx';
 
 const BodyEntryForm = (props) => {
   const {

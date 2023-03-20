@@ -2,15 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import WWWForm from './WWWForm.jsx';
-import BodyTypeSelect from './BodyTypeSelect.jsx';
-import JSONTextArea from './JSONTextArea.jsx';
-import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
-import JSONPrettify from './JSONPrettify.jsx';
-import TextCodeArea from './TextCodeArea.jsx';
-import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
-import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
-// import { isAbsolute, relative } from 'path';
+import TextCodeArea from './TextCodeArea.tsx';
 import RestTestSnippetsContainer from './test-snippets/RestTestSnippetsContainer';
 
 const TestEntryForm = (props) => {
@@ -49,7 +41,7 @@ const TestEntryForm = (props) => {
           <TextCodeArea
             mode="javascript"
             value={testContent}
-            onChange={(value, viewUpdate) => {
+            onChange={(value) => {
               newTestContentSet(value);
             }}
           />

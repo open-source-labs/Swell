@@ -1,10 +1,8 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import ContentReqRow from './ContentReqRow';
-// import 'codemirror/theme/isotope.css';
-import { EditorView } from "@codemirror/view"
-
-
+import { EditorView } from '@codemirror/view';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 export default function RestRequestContent({ request, isHTTP2 }) {
   // ORGANIZE PROPS
@@ -86,15 +84,13 @@ export default function RestRequestContent({ request, isHTTP2 }) {
             <div className="is-size-7">Body</div>
             <CodeMirror
               value={bodyText}
-              theme = 'dark'
-              readOnly = 'true'
-              extensions={[
-                EditorView.lineWrapping,
-              ]}
+              theme={vscodeDark}
+              readOnly="true"
+              extensions={[EditorView.lineWrapping]}
               height="100%"
-              width = "100%"
-              maxWidth='400px'
-              maxHeight='300px'        
+              width="100%"
+              maxWidth="400px"
+              maxHeight="300px"
             />
           </div>
         )}
@@ -111,15 +107,13 @@ export default function RestRequestContent({ request, isHTTP2 }) {
             <div className="is-size-7">Tests</div>
             <CodeMirror
               value={testContent}
-              theme = 'dark'
-              readOnly = 'true'
-              extensions={[
-                EditorView.lineWrapping,
-              ]}
+              theme={vscodeDark}
+              readOnly="true"
+              extensions={[EditorView.lineWrapping]}
               height="100%"
-              width = "100%"
-              maxWidth='400px'
-              maxHeight='300px'  
+              width="100%"
+              maxWidth="400px"
+              maxHeight="300px"
             />
           </div>
         )}

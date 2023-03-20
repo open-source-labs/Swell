@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import CodeMirror from '@uiw/react-codemirror';
-// import { UnControlled as CodeMirror } from 'react-codemirror2';
 import EmptyState from './EmptyState';
 import EventPreview from './EventPreview';
 import { EditorView } from '@codemirror/view';
-import { javascript } from '@codemirror/lang-javascript';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { json } from '@codemirror/lang-json';
 
 function EventsContainer({ currentResponse }) {
   const isDark = useSelector((state) => state.ui.isDark);
@@ -61,9 +61,9 @@ function EventsContainer({ currentResponse }) {
         <CodeMirror
           className="overflow-event-child-container"
           value={responseBody}
-          theme="dark"
+          theme={vscodeDark}
           readOnly={true}
-          extensions={[javascript(), EditorView.lineWrapping]}
+          extensions={[json(), EditorView.lineWrapping]}
         />
       </div>
     </div>

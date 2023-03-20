@@ -270,13 +270,13 @@ export interface OpenAPIReqData {
 /**
  * @todo should be refactored as most of this information is repeated in the
  * request property and has led to inconsistent usage accross app
- * 
+ *
  * ReqRes {
  *  id: number;
  *  request: ReqResReqest;
  *  response: ReqResResponse;
  * }
- * 
+ *
  * as well as any additional metadata needed as properties that doesn't already
  * exist in the request or response properties
  */
@@ -381,3 +381,7 @@ export interface WRTC {
   RTCIceCandidate: RTCIceCandidate | webkitRTCIceCandidate | mozRTCIceCandidate;
 }
 
+export interface WorkspaceContainerProps {
+  currentWorkspaceId: string;
+  setWorkspace: React.Dispatch<React.SetStateAction<string>>;
+}

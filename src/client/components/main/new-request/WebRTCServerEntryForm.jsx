@@ -3,17 +3,21 @@ import { useSelector } from 'react-redux';
 import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { json } from '@codemirror/lang-json';
 
 const jBeautify = require('js-beautify').js;
 
 const WebRTCServerEntryForm = (props) => {
   const { warningMessage } = props;
-  const requestBody = useSelector(state => state.newRequest.newRequestBody);
-  const {bodyIsNew} = requestBody;
+  const requestBody = useSelector((state) => state.newRequest.newRequestBody);
+  const { bodyIsNew } = requestBody;
   const [cmValue, setValue] = useState('');
   const isDark = useSelector((state) => state.ui.isDark);
 
-  const bodyContent = useSelector(state => state.newRequest.newRequestBody.bodyContent);
+  const bodyContent = useSelector(
+    (state) => state.newRequest.newRequestBody.bodyContent
+  );
   useEffect(() => {
     if (!bodyIsNew) {
       /**
@@ -34,10 +38,9 @@ const WebRTCServerEntryForm = (props) => {
       <div className={`is-neutral-200-box p-3 ${isDark ? 'is-dark-400' : ''}`}>
         <CodeMirror
           value={cmValue}
+          theme={vscodeDark}
           extensions={[javascript(), EditorView.lineWrapping]}
-          theme="dark"
-          height="100%"
-          width="100%"
+          height="100px"
         />
       </div>
     </div>

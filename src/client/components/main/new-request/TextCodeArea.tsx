@@ -1,13 +1,23 @@
-//import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
 import { xml } from '@codemirror/lang-xml';
 import { json } from '@codemirror/lang-json';
 import { html } from '@codemirror/lang-html';
-import { EditorView } from '@codemirror/view';
+import { EditorView, ViewUpdate } from '@codemirror/view';
+import { LanguageSupport } from '@codemirror/language';
 
-const langs = {
+interface TextCodeAreaProps {
+  value: string;
+  mode: string;
+  onChange: (value: string, viewUpdate: ViewUpdate) => void;
+  height: string;
+  placeholder: string;
+  readOnly: boolean;
+}
+
+const langs: { [key: string]: () => LanguageSupport } = {
   json: json,
   xml: xml,
   html: html,
@@ -25,19 +35,20 @@ export default function TextCodeArea({
   value,
   mode,
   onChange,
-  theme = 'dark',
+  height = '200px',
+  placeholder = 'Enter body here',
   readOnly = false,
-}) {
-  const lang = mode.substring(mode.indexOf('/') + 1); // Grab language mode based on value passed in
+}: TextCodeAreaProps) {
+  const lang: string = mode.substring(mode.indexOf('/') + 1); // Grab language mode based on value passed in
   console.log(lang);
   return (
     <div className="is-neutral-200-box">
       <CodeMirror
         value={value}
-        height="200px"
+        height={height}
         extensions={[langs[lang](), EditorView.lineWrapping]}
-        placeholder="Enter body here"
-        theme={theme}
+        placeholder={placeholder}
+        theme={vscodeDark}
         onChange={onChange}
         readOnly={readOnly}
       />

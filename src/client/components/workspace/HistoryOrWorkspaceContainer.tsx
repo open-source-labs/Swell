@@ -8,6 +8,7 @@ import HistoryContainer from './HistoryContainer';
 // Import MUI components and icons
 import { Box, Tabs, Tab, Button } from '@mui/material';
 import { AccessTime, Work, ScheduleSendRounded } from '@mui/icons-material';
+import { WorkspaceContainerProps } from '../../../types';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,7 +43,9 @@ function a11yProps(index: number) {
   };
 }
 
-export default function HistoryOrWorkspaceContainer(props) {
+export default function HistoryOrWorkspaceContainer(
+  props: WorkspaceContainerProps
+) {
   const [showGraph, setShowGraph] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
