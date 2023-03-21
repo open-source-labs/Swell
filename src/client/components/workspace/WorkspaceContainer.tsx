@@ -38,8 +38,7 @@ export default function WorkspaceContainer({
     >
       {/* 
       The display for your current workspace. Contains functionality for 
-      saving, importing, exporting, and adding other GitHub users to your 
-      workspace. */}
+      saving, importing, exporting  workspace to your local machine. */}
       <CurrentWorkspaceDisplay
         currentWorkspaceId={currentWorkspaceId}
         currentWorkspace={currentWorkspace}

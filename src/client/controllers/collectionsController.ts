@@ -5,10 +5,6 @@ import { appDispatch } from '../toolkit-refactor/store';
 import { collectionsReplaced } from '../toolkit-refactor/collections/collectionsSlice';
 
 import { Collection, WindowAPI, WindowExt } from '../../types';
-import axios from 'axios';
-import { Octokit } from 'octokit';
-import { Buffer } from 'node:buffer';
-import githubController from './githubController';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
@@ -93,71 +89,9 @@ const collectionsController = {
       });
   },
 
-  async exportToGithub(id: string, repo: string, sha: string): Promise<void> {
-    // console.log('exportToGithub workspace id:', id)
-    // console.log('exportToGitHub repo name:', repo)
-    const token = await db.auth.toArray();
-    const octokit = new Octokit({
-      auth: token[0].auth,
-    });
-    // let repos = await db.repos.toArray()
-    let userProfile = await db.profile.toArray();
-
-    const toExport = await db
-      .table('collections')
-      .where('id')
-      .equals(id)
-      .first((foundCollection: Collection) => {
-        // if workspace doesn't have members, add it using node_id
-        if (!foundCollection.members) {
-          foundCollection.members = [userProfile[0].node_id];
-        }
-        return foundCollection;
-      })
-      .catch((error: Record<string, undefined>) => {
-        console.error(error.stack || error);
-        throw error;
-      });
-    // make popup, for now hardcoding
-    const date = Date.now();
-    console.log(date.toString());
-    console.log('repo.sha', repo.sha);
-    const response = await octokit.request(
-      'PUT /repos/{owner}/{repo}/contents/{path}',
-      {
-        sha: sha,
-        owner: userProfile[0].login,
-        repo: repo,
-        path: '.swell',
-        message: `saving ${toExport.name} @ ${new Date(Date.now()).toString()}`,
-        committer: {
-          name: 'Swell App',
-          email: 'swell@swell.com',
-        },
-        content: Buffer.from(JSON.stringify(toExport)).toString('base64'),
-      }
-    );
-    console.log('octokit response', response);
-    setTimeout(async () => {
-      const userData = await githubController.getUserData(token[0].auth);
-      githubController.saveUserDataToDB(userData, token[0].auth);
-    }, 1000);
-  },
-
   importCollection(collection: Collection): Promise<string> {
     return new Promise((resolve) => {
       api.send('import-collection', collection);
-      api.receive('add-collections', (collection: Collection[]) => {
-        collectionsController.addCollectionToIndexedDb(collection);
-        collectionsController.getCollections();
-        resolve('okie dokie');
-      });
-    });
-  },
-
-  importFromGithub(collectionArr: Collection[]): Promise<string> {
-    return new Promise((resolve) => {
-      api.send('import-from-github', collectionArr);
       api.receive('add-collections', (collection: Collection[]) => {
         collectionsController.addCollectionToIndexedDb(collection);
         collectionsController.getCollections();

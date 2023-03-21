@@ -117,9 +117,6 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   Added in version 1.12.0: resizable panels between composer, response, and workspace and visual feedbackfor when users is selecting different communication protocols.
   <img src="./ReadMeGifs/Gifs/tRPC-UI.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
-- _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
-  <img src="./ReadMeGifs/Gifs/GithubIntegration.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
-
 ## Built With
 
 - Electron
