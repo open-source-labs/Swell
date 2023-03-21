@@ -20,7 +20,6 @@ module.exports = () => {
   describe('GraphQL requests', () => {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      num = 0;
     });
 
     // close Electron app when complete
@@ -121,10 +120,10 @@ module.exports = () => {
       }
     };
 
-    const addAndSend = async (num) => {
+    const addAndSend = async (n) => {
       try {
         await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${num}`).click();
+        await page.locator(`#send-button-${n}`).click();
       } catch (err) {
         console.error(err);
       }
@@ -179,9 +178,10 @@ module.exports = () => {
                 const introspectionResult = await page.locator(
                   '#gql-introspection >> .cm-content'
                 );
+                console.log('result', introspectionResult);
                 expect(await introspectionResult.count()).to.equal(1);
                 expect(await introspectionResult.innerText()).to.include(
-                  'directive'
+                  'Continent'
                 );
                 resolve();
               } catch (err) {
@@ -344,6 +344,69 @@ module.exports = () => {
           console.error(err);
         }
       });
+
+      it('App stops receiving events after unsubscribe (LOCAL API)', async () => {
+        try {
+          const url = 'http://localhost:4000/graphql';
+          // START SUBSCRIPTION
+          const SUBSCRIPTION = 'SUBSCRIPTION';
+          const query = 'subscription {newLink {id description url}}';
+
+          await fillGQLRequest(url, SUBSCRIPTION, query);
+          await addAndSend(num++);
+
+          // SEND MUTATION
+          const MUTATION = 'MUTATION';
+          const query2 =
+            'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {description}}';
+
+          await fillGQLRequest(url, MUTATION, query2);
+          await addAndSend(num++);
+
+          // UNSUNSCRIBE FROM SERVER
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                await page.locator('#view-button-0').click();
+                const button = await page.locator(
+                  'button >> text=Close Connection'
+                );
+                await button.scrollIntoViewIfNeeded();
+                await button.click();
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 500);
+          });
+
+          // SEND ADDITIONAL MUTATION AFTER UNSUBSCRIBED FROM SERVER
+          const query3 =
+            'mutation {post(url: "www.moreexamples.com" description: "Fake site") {description}}';
+
+          await fillGQLRequest(url, MUTATION, query3);
+          await addAndSend(num++);
+
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                await page.locator('#view-button-0').click();
+
+                const events = await page.locator(
+                  '#events-display >> .cm-content'
+                );
+                expect(await events.count()).to.equal(1);
+                expect(await events.innerText()).to.not.include('Fake site');
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 1000);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }).timeout(5000);
     }).timeout(20000);
   });
 };

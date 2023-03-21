@@ -14,7 +14,7 @@ import {
 } from '../toolkit-refactor/graphPoints/graphPointsSlice';
 
 import graphQLController from './graphQLController';
-import { ReqRes, WindowAPI, WindowExt } from '../../types';
+import { ReqRes, WindowExt } from '../../types';
 
 const { api } = window as unknown as WindowExt;
 const connectionController = {
@@ -37,11 +37,13 @@ const connectionController = {
     api.removeAllListeners('reqResUpdate');
 
     api.receive('reqResUpdate', (reqResObj: ReqRes) => {
-      if ((reqResObj.connection === 'closed' ||
-        reqResObj.connection === 'error') &&
+      if (
+        (reqResObj.connection === 'closed' ||
+          reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
-        reqResObj.response.events.length > 0) {
+        reqResObj.response.events.length > 0
+      ) {
         appDispatch(graphUpdated(reqResObj));
       }
       appDispatch(reqResUpdated(reqResObj));
@@ -210,26 +212,15 @@ const connectionController = {
   closeReqRes(reqResObj: ReqRes): void {
     if (reqResObj.protocol.includes('http')) {
       api.send('close-http', reqResObj);
+    } else if (
+      reqResObj.graphQL &&
+      reqResObj.request?.method === 'SUBSCRIPTION'
+    ) {
+      graphQLController.closeSubscription(reqResObj);
     }
 
     const { id } = reqResObj;
     this.setReqResConnectionToClosed(id);
-
-    // We are pretty sure that this code block is never executed... -Prince
-    // // WS is the only protocol using openConnectionArray
-    // const foundAbortController = this.openConnectionArray.find(
-    //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
-    //   (obj) => obj.id === id
-    // );
-    // // @ts-expect-error ts-migrate(2339) FIXME: Property 'protocol' does not exist on type 'never'... Remove this comment to see the full error message
-    // if (foundAbortController && foundAbortController.protocol === 'WS') {
-    //   console.log('you dummy, you thought you didnt need this');
-    //   api.send('close-ws');
-    // }
-    // this.openConnectionArray = this.openConnectionArray.filter(
-    //   // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
-    //   (obj) => obj.id !== id
-    // );
   },
 
   /* Closes all open endpoint */
