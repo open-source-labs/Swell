@@ -52,7 +52,7 @@ const connectionController = {
       /** @todo Find where id should be */
       const currentID = Store.getState().reqRes.currentResponse.id;
       if (currentID === reqResObj.id) {
-        appDispatch(responseDataSaved(reqResObj, 'currentID===reqResObj.id'));
+        appDispatch(responseDataSaved(reqResObj));
       }
     });
     // Since only obj ID is passed in, next two lines get the current array of request objects and finds the one with matching ID
@@ -147,7 +147,7 @@ const connectionController = {
       }
       appDispatch(reqResUpdated(reqResObj));
 
-      appDispatch(responseDataSaved(reqResObj, 'api.receive reqresupdate'));
+      appDispatch(responseDataSaved(reqResObj));
       if (index < reqResArray.length) {
         runSingletest(reqResArray[index]);
         index += 1;
@@ -204,9 +204,7 @@ const connectionController = {
 
     foundReqRes.connection = 'closed';
     appDispatch(reqResUpdated(foundReqRes));
-    appDispatch(
-      responseDataSaved(foundReqRes, 'foundreqres.connection closed')
-    );
+    appDispatch(responseDataSaved(foundReqRes));
   },
 
   closeReqRes(reqResObj: ReqRes): void {

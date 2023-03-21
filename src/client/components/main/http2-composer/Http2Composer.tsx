@@ -181,9 +181,7 @@ export default function Http2Composer(props) {
     dispatch(setSidebarActiveTab('composer'));
 
     connectionController.openReqRes(reqRes.id);
-    dispatch(
-      responseDataSaved(reqRes, 'singleReqResContainercomponentSendHandler')
-    );
+    dispatch(responseDataSaved(reqRes));
   };
 
   /** @todo Figure out what this function does */

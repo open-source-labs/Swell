@@ -36,9 +36,7 @@ const SingleScheduleReqResContainer = (props) => {
     currentResponse.id === content.id ? getBorderClass(currentResponse) : '';
 
   useEffect(() => {
-    dispatch(
-      responseDataSaved(content, 'SingleScheduleReqResContainerComponent')
-    );
+    dispatch(responseDataSaved(content));
   }, [content, dispatch]);
 
   return (
