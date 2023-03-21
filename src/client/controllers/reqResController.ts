@@ -217,6 +217,8 @@ const connectionController = {
       reqResObj.request?.method === 'SUBSCRIPTION'
     ) {
       graphQLController.closeSubscription(reqResObj);
+    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
+      api.send('close-ws');
     }
 
     const { id } = reqResObj;
