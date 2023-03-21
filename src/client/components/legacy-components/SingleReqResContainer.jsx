@@ -326,12 +326,7 @@ const SingleReqResContainer = (props) => {
               }
               // console.log(content)
               connectionController.openReqRes(content.id);
-              dispatch(
-                responseDataSaved(
-                  content,
-                  'singleReqResContainercomponentSendHandler'
-                )
-              ); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
+              dispatch(responseDataSaved(content)); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
             }}
           >
             Send
