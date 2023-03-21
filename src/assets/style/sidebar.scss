@@ -10,7 +10,7 @@
 }
 
 .include-data-checkbox {
-  background: #FFFFFF;
+  background: #FFFFFF; // this is checkboxes in top right container
   /* neutral-300 */
   border: 1px solid lightgrey;
   box-sizing: border-box;
@@ -101,7 +101,7 @@
   background-color: $neutral-100;
   color: $neutral-400;
   border: 1px solid $neutral-300;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: "Source Sans Pro", sans-serif !important;
   font-size: .75em;
 }
 .cm-s-sidebar .CodeMirror-gutters {
@@ -130,7 +130,7 @@
   color: $neutral-400;
   max-height: 100px !important;
   border: 1px solid $neutral-300;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: "Source Sans Pro", sans-serif !important;
   font-size: .75em;
 }
 .cm-s-grpc .CodeMirror-gutters {

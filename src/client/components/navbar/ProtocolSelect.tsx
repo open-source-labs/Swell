@@ -22,7 +22,7 @@ import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
 
 const blue = {
-  500: '#51819b',
+  500: '#373f51', //text for top buttons
   600: '#95ceed',
   700: '#7ebdde',
   800: '#3730a3',
@@ -34,7 +34,7 @@ const white = {
 };
 
 const CustomButton = styled(ButtonUnstyled)`
-  font-family: IBM Plex Sans, sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-weight: bold;
   font-size: 0.875rem;
   background-color: ${white[500]};
@@ -49,19 +49,19 @@ const CustomButton = styled(ButtonUnstyled)`
 
   &:hover {
     color: white;
-    background-color: #ff9e43;
+    background-color: #58a4b0;
   }
 
   &:active {
     color: white;
-    background-color:  #ff9e43;
+    background-color:  #58a4b0;
     box-shadow: inset 0px 0px 4px #ff3000;
   }
 `;
 
 const SelectedButton = styled(CustomButton)`
   color: white;
-  background-color: #ff9e43;
+  background-color: #58a4b0;
 `;
 
 /**
