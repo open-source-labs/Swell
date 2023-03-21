@@ -1,5 +1,5 @@
-$neutral-100: #AEAEAE;
-$neutral-200: #9F9F9F;
+$neutral-100: #aeaeae;
+$neutral-200: #9f9f9f;
 $neutral-300: #575757;
 $neutral-400: #1f282e;
 $neutral-500: #434343;
@@ -7,71 +7,50 @@ $neutral-600: #000000;
 $text: #00000099;
 
 .is-dark-mode {
-    background-color: $neutral-500 !important;
-    color: white;
+  background-color: $neutral-500 !important;
+  color: white;
 }
 
 .is-dark-500 {
-    background-color: $neutral-500 !important;
-    color: white;
-    //scrollbar-color: grey !important;
-    
+  background-color: $neutral-500 !important;
+  color: white;
+  //scrollbar-color: grey !important;
 }
 
 .is-dark-400 {
-    background-color: $neutral-400 !important;
-    color: white;
-    // sidebar container: 64
-    // contents container: 39
-    // ResponsePaneContainer: 56
+  background-color: $neutral-400 !important;
+  color: white;
+  // sidebar container: 64
+  // contents container: 39
+  // ResponsePaneContainer: 56
 }
 
 .is-dark-300 {
-    background-color: $neutral-300 !important;
-    color: white;
-    outline: 1px solid $neutral-200 !important
+  background-color: $neutral-300 !important;
+  color: white;
+  outline: 1px solid $neutral-200 !important;
 }
 
 .is-dark-200 {
-    background-color: $neutral-200 !important;
-    color: white;
+  background-color: $neutral-200 !important;
+  color: white;
 }
 
 .is-dark-100 {
-    background-color: $neutral-100 !important;
-    color: white;
+  background-color: $neutral-100 !important;
+  color: white;
 }
 
 .dark-protocol-text {
-    color: $text !important;
+  color: $text !important;
 }
 .dark-address-input {
-    background-color: $neutral-300 !important;
-    color: white !important;
+  background-color: $neutral-300 !important;
+  color: white !important;
 }
-.dark-divider { // this is the divider underneath tabs -Prince
-    border-left: 1px solid $neutral-300;
-    border-right: 1px solid $neutral-300;
+.dark-divider {
+  // this is the divider underneath tabs -Prince
+  border-left: 1px solid $neutral-300;
+  border-right: 1px solid $neutral-300;
 }
 
-// composercontainer:260 x
-// historycontainer:69 x
-// networkdropdown:76, background color of the dropdown when dropped down (does not seem to change the text color) x
-// networkdropdown:56, background color of the drowndown before dropped down (changes text color but not the carrot) x
-// workspacecontainer:10, just the buttons doesn't do anything anymore -Prince x
-// entryform: 29, changes view test background and text color
-// ContentsContainer:29
-// test snippets folder/resttestsnippets: 20 x
-// ***sidebarContainer: 42, changes background color of "composer" and "history" div x
-// EventPreview:14, 53
-// ResponsePaneContainer:38
-// CookieEntryForm: 108
-// HeadersContainer: 28
-// HeaderEntryForm: 209
-//contentsContainer: 74, changed view response history 
-// ReqResContainer:47 x
-// CookieContainer: 31
-// RestMethodAndEndPointEntryForm: 157
-// ScheduleContainer: 18 x
-// Responsepane.scss: 44
-// ContentReqRowComposer:15, 31, 39

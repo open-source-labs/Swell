@@ -110,7 +110,7 @@ const SingleScheduleReqResContainer = (props) => {
       <div className="is-flex">
         {true && (
           <button
-            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
+            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 border-curve"
             id={`view-button-${index}`}
             onClick={() => {
               dispatch(responseDataSaved(content));

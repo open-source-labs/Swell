@@ -6,13 +6,12 @@
 .cards-dropdown {
   border: 1px solid $neutral-200;
   height: 24px;
-  border-radius: 4px;
   margin-bottom: 5px;
 }
 
 .show-hide-tests {
   height: 3.5vh;
-  font-size: "18rem";
+  font-size: '18rem';
 }
 
 .show-hide-tests-icon {
@@ -22,7 +21,7 @@
 
 .show-hide-event {
   height: 3.5vh;
-  font-size: "16rem";
+  font-size: '16rem';
 }
 
 .show-hide-event-icon {
@@ -111,9 +110,8 @@
 }
 
 .highlighted-response {
-  border-radius: 0px 0px 5px 5px;
-  border: 2px solid lightgray;
-  opacity: 0.8;
+  border-radius: 5px;
+  border: 3px solid lightgray;
 }
 
 .is-graph-footer {
@@ -191,12 +189,8 @@
   border-top: 1px solid $neutral-300;
 }
 
-.bl-border-curve {
-  border-radius: 0px 0px 0px 5px !important;
-}
-
-.br-border-curve {
-  border-radius: 0px 0px 5px 0px !important;
+.border-curve {
+  border-radius: 2px !important;
 }
 
 // CODEMIRROR STYLES
@@ -206,7 +200,7 @@
   color: $neutral-400;
   max-height: 150px !important;
   border: 1px solid $neutral-300;
-  font-family: "Source Sans Pro", sans-serif !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
   font-size: 0.75em;
 }
 .cm-s-readonly .CodeMirror-gutters {
@@ -233,3 +227,4 @@
 .clear-chart-button {
   float: right;
 }
+
