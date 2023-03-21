@@ -1,23 +1,24 @@
-$primary-100: #ffd645;
-$primary-200: #f66b61;
-$primary-300: #21d4a4;
+$primary-100: #58a4b0; // send req and add workspace buttons, changed this - Jason
+$primary-200: #1b1b1e; // clear workspace btn
+$primary-300: #21d4bc;
 $primary-400: #9b5088; // this is not currently used
-$primary-500: #50809b;
+$primary-500: #373f51; // responses header
 
-$rest: #ff9e43;
-$graphql: #ff9e43;
-$grpc: #ff9e43;
-$websockets: #ff9e43;
-$webrtc: #ff9e43;
-$openapi: #ff9e43;
-$webhook: #ff9e43;
-$webhookOn: #ff9e43;
+// changed all of this, this is for button near the url in the respective navbar btn
+$rest: #58a4b0; // get button in http/2
+$graphql: #58a4b0;
+$grpc: #58a4b0;
+$websockets: #58a4b0;
+$webrtc: #58a4b0;
+$openapi: #58a4b0;
+$webhook: #58a4b0;
+$webhookOn: #58a4b0;
 
 $neutral-100: #5e5e5e;
-$neutral-200: #f4f5f7;
-$neutral-300: #e1e1e1;
+$neutral-200: #f4f5f7; // test snippets and view test button background color
+$neutral-300: #e1e1e1; // drop shadow on response box
 $neutral-400: #737581;
-$neutral-500: #4a4b53;
+$neutral-500: #f4f5f7;
 $neutral-600: #000000;
 $neutral-700: #f3f3f3; // gigi added to set background of 3 main containers
 
@@ -53,16 +54,16 @@ $text: $neutral-400;
 }
 .cm-s-neo .cm-variable,
 .cm-s-neo .cm-qualifier {
-  color: #06a568 !important;
+  color: #a59a06 !important;
 }
 
 .is-primary-100 {
-  color: $neutral-500 !important;
-  background-color: $primary-100 !important;
+  color: $neutral-500 !important; // this is send and add font color
+  background-color: $primary-100 !important; // this changes add to work space button
 }
 
 .is-primary-200 {
-  color: $neutral-500;
+  color: $neutral-500; 
   background-color: $primary-100;
 }
 
