@@ -24,7 +24,7 @@ import NewRequestButton from '../new-request/NewRequestButton';
 import BodyEntryForm from '../new-request/BodyEntryForm';
 import TestEntryForm from '../new-request/TestEntryForm';
 // Import MUI components
-import { Box } from '@mui/material';
+import { Box, FormControlLabel, Switch } from '@mui/material';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
@@ -359,23 +359,21 @@ export default function Http2Composer(props) {
             newRequestCookiesSet={newRequestCookiesSet}
           />
         </div>
+      </span>
+      {/* SSE TOGGLE SWITCH */}
+      <div className="field mt-2 httpResReq">
         <div className="is-3rem-footer is-clickable restReqBtns">
           <SendRequestButton onClick={sendNewRequest} />
           <p> --- or --- </p>
           <NewRequestButton onClick={addNewRequest} />
         </div>
-      </span>
-      {/* SSE TOGGLE SWITCH */}
-      <div className="field mt-2">
-        <span className="composer-section-title mr-3">Server Sent Events</span>
-        <input
-          id="SSEswitch"
-          type="checkbox"
-          className="switch is-outlined is-warning"
-          onChange={(e) => newRequestSSESet(e)}
+        <FormControlLabel
+          control={<Switch />}
+          className=".cm-s-neo .cm-number"
+          label="Server Sent Events"
+          onChange={() => newRequestSSESet(!isSSE)}
           checked={isSSE}
         />
-        <label htmlFor="SSEswitch" />
       </div>
       {method !== 'GET' && (
         <BodyEntryForm

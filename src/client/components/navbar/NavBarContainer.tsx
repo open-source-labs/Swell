@@ -8,7 +8,7 @@ import GeneralInfo from './GeneralInfo';
 export default function NavBarContainer() {
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'row', bgcolor: '#373f51' }}
+      sx={{ display: 'flex', flexDirection: 'row', bgcolor: '#4f5a74' }}
       width="100%"
     >
       {/* Protocol select buttons. */}
