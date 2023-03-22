@@ -123,9 +123,12 @@
 }
 
 .is-3rem-footer {
-  // height: 3rem !important;
-  margin-bottom: 0.7rem;
-  margin-top: auto;
+  margin-bottom: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.is-no-top-margin-footer {
+  margin-top: 0;
 }
 
 .connection-closedsocket {

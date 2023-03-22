@@ -37,18 +37,13 @@ const ResponsePaneContainer = () => {
   // console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        p: 1,
-      }}
-    >
+    <Box>
       <div
         className={`${
           isDark ? 'is-dark-400' : 'is-divider-neutral-300'
         } box is-3 add-vertical-scroll`}
         // className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
-        style={{ height: '100%', margin: '0px', marginTop: '1px' }}
+        style={{ height: '90%', margin: '0px', padding: '0.5rem' }}
         id="responses"
       >
         {/* <button onClick={() => testing()}>></button> */}
