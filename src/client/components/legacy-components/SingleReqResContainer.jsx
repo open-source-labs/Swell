@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import connectionController from '../../controllers/reqResController';
 import RestRequestContent from './display/RestRequestContent';
@@ -8,14 +8,8 @@ import WebRTCRequestContent from './display/WebRTCRequestContent';
 import GRPCRequestContent from './display/GRPCRequestContent';
 import OpenAPIRequestContent from './display/OpenAPIRequestContent';
 
-import {
-  responseDataSaved,
-  reqResItemDeleted,
-} from '../../toolkit-refactor/reqRes/reqResSlice';
-import {
-  fieldsReplaced,
-  newFields,
-} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import { responseDataSaved } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { fieldsReplaced } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 import {
   newRequestSSESet,
   newRequestCookiesSet,
@@ -302,7 +296,7 @@ const SingleReqResContainer = (props) => {
       {/* REMOVE / SEND BUTTONS */}
       <div className="is-flex">
         <button
-          className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 bl-border-curve"
+          className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 border-curve"
           id={request.method.split(' ').join('-')}
           onClick={() => {
             removeReqRes();
@@ -314,7 +308,7 @@ const SingleReqResContainer = (props) => {
         {/* SEND BUTTON */}
         {connection === 'uninitialized' && (
           <button
-            className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 br-border-curve"
+            className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 border-curve"
             id={`send-button-${index}`}
             disabled={network === 'webrtc'}
             onClick={() => {
@@ -335,7 +329,7 @@ const SingleReqResContainer = (props) => {
         {/* VIEW RESPONSE BUTTON */}
         {connection !== 'uninitialized' && (
           <button
-            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 br-border-curve"
+            className="is-flex-basis-0 is-flex-grow-1 button is-neutral-50 is-size-7 border-curve"
             id={`view-button-${index}`}
             onClick={() => {
               console.log('WE PRESSED THE BUTTON', content);
