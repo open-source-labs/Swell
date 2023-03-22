@@ -1,184 +1,92 @@
-/**
- * @todo This protocol is not working at all. Needs work on every level.
- */
-import { WRTC } from '../../types';
+import {
+  reqResUpdated,
+  responseDataSaved,
+} from '../toolkit-refactor/reqRes/reqResSlice';
+import { appDispatch } from '../toolkit-refactor/store';
 
-/**
- * exports Peer class for use in WebRTC implementations
- *
- * @file   webrtcPeerController.js
- * @author Ted Craig
- * @since  1.0.0
- */
+// https://ourcodeworld.com/articles/read/1526/how-to-test-online-whether-a-stun-turn-server-is-working-properly-or-not
+class Peer {
+  config: RTCConfiguration;
+  connection: RTCPeerConnection;
 
-export default class Peer {
-  //  ┌──────────────────────────────┐
-  //  │        CONSTRUCTOR           │
-  //  └──────────────────────────────┘
-  initConfig: RTCConfiguration;
-
-  _roles: Record<string, string>;
-
-  role: string;
-
-  constructor(initConfig: RTCConfiguration) {
-    this.initConfig = initConfig;
-    this._roles = {
-      INITIATOR: 'INITIATOR',
-      PENDING: 'PENDING',
-      RECEIVER: 'RECEIVER',
+  constructor(config: RTCConfiguration) {
+    this.config = config;
+    this.connection = this.createConnection();
+    this.connection.onicecandidateerror = (e: Event) => {
+      console.error(e);
     };
-    this.role = 'PENDING';
-    this._createPeer(initConfig);
-    this._initICECandidateEvents();
-    // this.connection = connection;
   }
 
-  //  ┌──────────────────────────────┐
-  //  │       GET BROWSER RTC        │
-  //  └──────────────────────────────┘
-
-  getBrowserRTC(): null | Record<number, WRTC> {
-    //-> we are pretty sure that this is not the correct type, but it works, so...
-    if (typeof globalThis === 'undefined') return null;
-    const wrtc = {
-      RTCPeerConnection:
-        globalThis.RTCPeerConnection ||
-        globalThis.mozRTCPeerConnection ||
-        globalThis.webkitRTCPeerConnection,
-      RTCSessionDescription:
-        globalThis.RTCSessionDescription ||
-        globalThis.mozRTCSessionDescription ||
-        globalThis.webkitRTCSessionDescription,
-      RTCIceCandidate:
-        globalThis.RTCIceCandidate ||
-        globalThis.mozRTCIceCandidate ||
-        globalThis.webkitRTCIceCandidate,
-    };
-    if (!wrtc.RTCPeerConnection) return null;
-    // console.log(wrtc);
-    return wrtc;
+  createConnection(): RTCPeerConnection {
+    return new RTCPeerConnection(this.config);
   }
 
-  //  ┌──────────────────────────────┐
-  //  │       _ CREATE PEER          │
-  //  └──────────────────────────────┘
-  _createPeer(config: RTCConfiguration): void {
-    // grab RTCPeerConnection from globalThis
-    // console.log('[webrtcPeerController][Peer][_createPeer] getBrowserRTC():');
-    // console.log(this.getBrowserRTC());
-    const Wrtc = this.getBrowserRTC();
-
-    // instantiate a new peer connection with config and return
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-    this.connection = new Wrtc.RTCPeerConnection(config);
+  async establishSDP() {
+    this.connection.createDataChannel('test');
+    this.connection
+      .createOffer()
+      .then((offer: RTCSessionDescriptionInit) =>
+        this.connection.setLocalDescription(offer)
+      );
   }
+}
 
-  //  ┌──────────────────────────────┐
-  //  │ _ INIT ICE CANDIDATE EVENTS  │
-  //  └──────────────────────────────┘
-  _initICECandidateEvents(): void {
-    // setup ice candidate event handler
-    // listen for ICE candidates.  Each time a candidate is added to the list, re-log the whole SDP
-    // this.connection.onicecandidate = (event) => {
-    //   if (
-    //     event &&
-    //     event.target &&
-    //     event.target.iceGatheringState === 'complete'
-    //   ) {
-    //     console.log(
-    //       'done gathering candidates - got iceGatheringState complete'
-    //     );
-    //   } else if (event && event.candidate == null) {
-    //     console.log('done gathering candidates - got null candidate');
-    //   } else {
-    //     console.log(
-    //       event.target.iceGatheringState,
-    //       event,
-    //       this.connection.localDescription
-    //     );
-    //     // console.log('corresponding SDP for above ICE candidate in JSON:');
-    //     // console.log(JSON.stringify(this.connection.localDescription));
-    //   }
-    // };
-  }
+// `ReqRes` type need to be fixed consistently across the board
+// To make the type for `content` work properly
+export default async function testSDPConnection(content) {
+  const { iceConfiguration } = content.request.body;
+  // Technically, setting the connection status as 'closed' right away
+  // is not entirely accurated. Since we are closing the server a second
+  // after it is opened to avoid timeout issue anyway, this is as good
+  // as a 'closed' connection.
+  // Also, the current setup only works with one iceServer. To expand
+  // this feature we need to get the relevant `ReqRes` from `Store.getState()`
+  // and add the response there. See `graphQLController.openSubscription()` for example
+  const newReqRes = { ...content, connection: 'closed' };
+  const pc = new Peer(iceConfiguration);
+  pc.connection.onicecandidate = (e) => {
+    if (!e.candidate) return;
 
-  //  ┌──────────────────────────────┐
-  //  │ INIT DATA CHANNEL AND EVENTS │
-  //  └──────────────────────────────┘
-  initDataChannelAndEvents(): void {
-    // check for role before continuing
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-    if (this.role === this._roles.PENDING) {
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-      console.log(`peer role is ${this.role}. Skipping channel init.`);
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-    } else if (this.role === this._roles.INITIATOR) {
-      // on our local connection, create a data channel and pass it the name "chatRoom1"
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-      const dataChannel = this.connection.createDataChannel('chatRoom1');
-
-      // when the channel is opened ...
-      dataChannel.onopen = (event: any) => console.log('Connection opened!');
-
-      // when the channel is closed ...
-      dataChannel.onclose = (event: any) =>
-        console.log('Connection closed! Goodbye (^-^)');
-
-      // when message received...
-      dataChannel.onmessage = (event: any) =>
-        console.log('Received Msg: ' + event.data);
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-    } else if (this.role === this._roles.RECEIVER) {
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-      this.connection.ondatachannel = (event: any) => {
-        // create new property on rc object and assign it to be the incoming data channel (*** is this the name that was passed in by the local client? ***)
-        const incomingChannel = event.channel;
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel = incomingChannel;
-        // when the channel is opened ...
-        //remoteConnection.dataChannel.onopen = event => console.log("Connection opened!");
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel.onopen = (event: any) =>
-          console.log('Connection opened!');
-        // when the channel is closed ...
-        //remoteConnection.dataChannel.onclose = event => console.log("Connection closed! Goodbye (^-^)");
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel.onclose = (event: any) =>
-          console.log('Connection closed! Goodbye (^-^)');
-        // when message received...
-        //remoteConnection.dataChannel.onmessage = event => console.log("PeerA: " + event.data);
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        this.connection.dataChannel.onmessage = (event: any) =>
-          console.log('Received Msg' + event.data);
+    const { type, address } = e.candidate;
+    if (type === 'srflx') {
+      newReqRes.response = {
+        ...newReqRes.response,
+        events: [
+          ...newReqRes.response.events,
+          {
+            serverType: 'STUN',
+            publicIpAddress: address,
+            eventCandidate: e.candidate,
+          },
+        ],
       };
+      appDispatch(responseDataSaved(newReqRes));
+      appDispatch(reqResUpdated(newReqRes));
+      console.log('STUN Server is reachable!');
+      console.log('Public IP Address: ', address);
     }
-  }
 
-  //  ┌──────────────────────────────┐
-  //  │       CREATE LOCAL SDP       │
-  //  └──────────────────────────────┘
-  createLocalSdp() {
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-    if (this.role === this._roles.PENDING) this.role = this._roles.INITIATOR;
-
-    // @ts-expect-error ts-migrate(2339) FIXME: Property 'role' does not exist on type 'Peer'.
-    if (this.role === this._roles.INITIATOR) {
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-      this.connection
-        .createOffer()
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-        .then((offer: any) => this.connection.setLocalDescription(offer))
-        .then((a: any) => {
-          console.log('offer set successfully!');
-          // return the offer/localDescription
-          // @ts-expect-error ts-migrate(2339) FIXME: Property 'connection' does not exist on type 'Peer... Remove this comment to see the full error message
-          return this.connection.localDescription;
-        })
-        .catch(
-          `[webrtcPeerController][createLocalSdp] ERROR while attempting to set offer`
-        );
+    if (type === 'relay') {
+      newReqRes.response = {
+        ...newReqRes.response,
+        events: [
+          ...newReqRes.response.events,
+          {
+            serverType: 'TURN',
+            publicIpAddress: address,
+            eventCandidate: e.candidate,
+          },
+        ],
+      };
+      appDispatch(responseDataSaved(newReqRes));
+      appDispatch(reqResUpdated(newReqRes));
+      console.log('TURN Server is reachable!');
     }
-  }
+  };
+  pc.establishSDP();
+  setTimeout(() => {
+    pc.connection.close();
+    console.log('WebRTC connection closed.');
+  }, 1000);
 }
 
