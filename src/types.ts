@@ -100,12 +100,6 @@ export interface Cookie {
   expires: string | number;
 }
 
-export interface GithubData {
-  profile: $TSFixMeObject;
-  repos: Collection[];
-  files: $TSFixMeObject[];
-}
-
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 
@@ -385,3 +379,4 @@ export interface WorkspaceContainerProps {
   currentWorkspaceId: string;
   setWorkspace: React.Dispatch<React.SetStateAction<string>>;
 }
+

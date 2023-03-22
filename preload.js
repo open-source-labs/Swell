@@ -4,13 +4,11 @@ const apiObj = {
   send: (channel, ...data) => {
     // allow list channels SENDING to Main
     const allowedChannels = [
-      'login-via-github',
       'check-for-update',
       'confirm-clear-history',
       'export-collection',
       'fatalError',
       'import-collection',
-      'import-from-github',
       'import-proto',
       'import-openapi',
       'open-http',
@@ -38,7 +36,6 @@ const apiObj = {
     const allowedChannels = [
       'add-collections',
       'clear-history-response',
-      'export-from-github',
       'introspect-reply',
       'message',
       'openapi-info',

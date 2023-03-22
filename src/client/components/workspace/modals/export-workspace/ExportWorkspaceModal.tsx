@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
@@ -7,9 +7,6 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import collectionsController from '../../../../controllers/collectionsController';
-import githubController from '../../../../controllers/githubController';
-import db from '../../../../db';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { RootState } from '../../../../toolkit-refactor/store';
 
 const style = {
@@ -28,19 +25,8 @@ const style = {
 };
 
 export default function ExportWorkspaceModal({ open, handleClose }) {
-  let files = useLiveQuery(() => db.files.toArray());
-  const dispatch = useDispatch();
-
   const localWorkspaces = useSelector((store: RootState) => store.collections);
   const isDark = useSelector((store: RootState) => store.ui.isDark);
-
-  const handleImportFromGithub = async () => {
-    const githubWorkspaces = await githubController.importFromRepo();
-    collectionsController.importFromGithub([
-      ...localWorkspaces,
-      ...githubWorkspaces,
-    ]);
-  };
 
   return (
     <Modal
@@ -63,7 +49,6 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
           >
             Export to
           </Typography>
-          {/* <Box id="import-workspace-modal-description" sx={{ m: 1, webkitJustifyContent: 'space-around', minWidth: 200 }}> */}
           <Button
             variant="contained"
             size="small"
@@ -73,10 +58,6 @@ export default function ExportWorkspaceModal({ open, handleClose }) {
           >
             Files
           </Button>
-          <Button variant="contained" size="small">
-            GitHub
-          </Button>
-          {/* </Box> */}
         </Box>
       </Fade>
     </Modal>

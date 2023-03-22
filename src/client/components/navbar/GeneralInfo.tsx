@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import GitHubButton from 'react-github-btn';
 
-export default function GeneralInfo(props) {
+export default function GeneralInfo() {
   return (
     <Box
       key="swell-info"
