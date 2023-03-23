@@ -1,38 +1,37 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import ScheduleReqResContainer from './ScheduleReqResContainer.jsx';
-import StoppedContainer from './StoppedContainer.jsx';
-import ReqResContainer from './ReqResContainer.tsx';
-import { simpleLoadTest } from './LoadTest.ts';
+import ScheduleReqResContainer from './ScheduleReqResContainer';
+import StoppedContainer from './StoppedContainer';
+import ReqResContainer from './ReqResContainer';
+import { simpleLoadTest } from './LoadTest';
 
-function ScheduleContainer() {
-  const [scheduleInterval, setScheduleInterval] = useState(1);
-  const [runScheduledTests, setScheduledTests] = useState(false);
-  const [concurrentUsers, setConcurrentUsers] = useState(1);
-  const [callsPerSecond, setCallsPerSecond] = useState(1);
-  const [totalTime, setTotalTime] = useState(10);
-  const [userUrl, setUserUrl] = useState('');
-  const isDark = useSelector((state) => state.ui.isDark);
+interface ScheduleContainerProps {}
+
+const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
+  const [scheduleInterval, setScheduleInterval] = useState<number>(1);
+  const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
+  const [concurrentUsers, setConcurrentUsers] = useState<number>(1);
+  const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
+  const [totalTime, setTotalTime] = useState<number>(10);
+  const [userUrl, setUserUrl] = useState<string>('');
+  const isDark = useSelector((state: any) => state.ui.isDark);
 
   return (
     <div>
-      
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
-          <p>URL:</p>
-          <input
-            className={`${
-              isDark ? 'is-dark-200' : ''
-            } ml-1 input is-info`}
-            style={{ width: '65px' }}
-            type="text"
-            placeholder="URL"
-            value={userUrl}
-            onChange={(e) => {
-              setUserUrl(e.target.value);
-            }}
-          />
-        </div>
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
+      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+        <p>URL:</p>
+        <input
+          className={`${isDark ? 'is-dark-200' : ''} ml-1 input is-info`}
+          style={{ width: '65px' }}
+          type="text"
+          placeholder="URL"
+          value={userUrl}
+          onChange={(e) => {
+            setUserUrl(e.target.value);
+          }}
+        />
+      </div>
+      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
         <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
           <p>Users:</p>
           <input
@@ -78,8 +77,8 @@ function ScheduleContainer() {
             }}
           />
         </div>
-        </div>
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
+      </div>
+      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
         <div className="ml-2">
           <button
             className={`button is-small is-primary ${

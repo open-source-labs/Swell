@@ -19,6 +19,8 @@ interface LoadTestResult {
   totalReceived: number;
   totalMissed: number;
   averageResponseTime: number;
+  totalNotSent: number;
+  totalRateLimited: number;
 }
 
 export async function simpleLoadTest(
@@ -28,8 +30,8 @@ export async function simpleLoadTest(
   durationInSeconds: number
 ): Promise<LoadTestResult> {
   // Initialize variables for start and end times of the load test.
-  const startTime = Date.now();
-  const endTime = startTime + durationInSeconds * 1000;
+  const startTest = Date.now();
+  const endTest = startTest + durationInSeconds * 1000;
   // Calculate the delay between each request based on the desired requests per second.
   const delayBetweenRequests = 1000 / requestsPerSecond;
 
@@ -38,6 +40,8 @@ export async function simpleLoadTest(
   let totalReceived = 0;
   let totalMissed = 0;
   let totalResponseTime = 0;
+  let totalNotSent = 0;
+  let totalRateLimited = 0;
 
   // Define the sendRequest function, which sends a request to the target URL and updates the counters.
   const sendRequest = async () => {
@@ -56,20 +60,38 @@ export async function simpleLoadTest(
         totalMissed += 1;
       }
     } catch (error) {
-      // If there is an error in sending the request, increment the totalMissed counter.
-      totalMissed += 1;
+      // Check if the error is related to rate-limiting
+      if (error.message.includes('rate limit') || error.code === 'RATE_LIMITED_ERROR_CODE') {
+        totalRateLimited += 1;
+      } else {
+        throw error;
+      }
     }
   };
 
   // Define the runUserLoad function, which simulates a single user sending requests to the target URL.
   const runUserLoad = async () => {
     // Keep sending requests until the end time of the load test is reached.
-    while (Date.now() < endTime) {
-      await sendRequest();
+    while (Date.now() < endTest) {
+      const startOfSecond = Date.now();
+      let requestsThisSecond = 0;
+
+      while (Date.now() - startOfSecond < 1000) {
+        await sendRequest();
+        requestsThisSecond++;
+
       // Wait for the calculated delay between requests before sending the next one.
       await new Promise((resolve) => setTimeout(resolve, delayBetweenRequests));
     }
-  };
+
+    // Check if the desired number of requests were sent
+    const desiredRequests = requestsPerSecond;
+    const actualRequests = requestsThisSecond;
+    if (actualRequests < desiredRequests) {
+      totalNotSent += desiredRequests - actualRequests;
+    }
+  }
+};
 
   // Create an array of userPromises, each representing a concurrent user's load test execution.
   const userPromises = Array(concurrentUsers)
@@ -81,13 +103,15 @@ export async function simpleLoadTest(
 
   // Calculate the average response time based on the total response time and number of received responses.
   const averageResponseTime =
-    totalReceived === 0 ? 0 : totalResponseTime / totalReceived;
+    totalReceived === 0 ? totalReceived : totalResponseTime / totalReceived;
 
   // Return the load test results as an object.
   return {
     totalSent,
     totalReceived,
     totalMissed,
+    totalNotSent,
+    totalRateLimited,
     averageResponseTime,
   };
 }
