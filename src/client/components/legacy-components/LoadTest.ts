@@ -61,7 +61,7 @@ export async function simpleLoadTest(
       }
     } catch (error) {
       // Check if the error is related to rate-limiting
-      if (error.message.includes('rate limit') || error.code === 'RATE_LIMITED_ERROR_CODE') {
+      if (error.message.toLowerCase().includes('rate limit') || error.code.toLowerCase().includes('rate_limited') {
         totalRateLimited += 1;
       } else {
         throw error;
