@@ -24,12 +24,11 @@ interface LoadTestResult {
 
 export async function simpleLoadTest(
   url: string,
-  // concurrentUsers: number, at this time concurrentUsers is not 
   requestsPerSecond: number,
   durationInSeconds: number
 ): Promise<LoadTestResult> {
   // Initialize variables for start and end times of the load test.
-  const startTest = Date.now();
+  const startTest = performance.now();
   const endTest = startTest + durationInSeconds * 1000;
   // Calculate the delay between each request based on the desired requests per second.
   const delayBetweenRequests = 1000 / requestsPerSecond;
@@ -74,11 +73,11 @@ export async function simpleLoadTest(
   // Define the runUserLoad function, which simulates a single user sending requests to the target URL.
   const runUserLoad = async () => {
     // Keep sending requests until the end time of the load test is reached.
-    while (Date.now() < endTest) {
-      const startOfSecond = Date.now();
-      let requestsThisSecond = 0;
+    while (performance.now() < endTest) {
+      const startOfSecond: number = performance.now();
+      let requestsThisSecond: number = 0;
 
-      while (Date.now() - startOfSecond < 1000) {
+      while (performance.now() - startOfSecond < 1000) {
         await sendRequest();
         requestsThisSecond++;
 
@@ -89,13 +88,16 @@ export async function simpleLoadTest(
       }
 
       // Check if the desired number of requests were sent
-      const desiredRequests = requestsPerSecond;
-      const actualRequests = requestsThisSecond;
+      const desiredRequests: number = requestsPerSecond;
+      const actualRequests: number = requestsThisSecond;
       if (actualRequests < desiredRequests) {
         totalNotSent += desiredRequests - actualRequests;
       }
     }
   };
+
+  // Run the load test by calling the runUserLoad function.
+  await runUserLoad();
 
   // Calculate the average response time based on the total response time and number of received responses.
   const averageResponseTime =
