@@ -20,12 +20,12 @@ interface LoadTestResult {
   totalMissed: number;
   averageResponseTime: number;
   totalNotSent: number;
-  totalRateLimited: number;
+  errorCounts: { [errorCode: string]: number };
 }
 
 export async function simpleLoadTest(
   url: string,
-  concurrentUsers: number,
+  // concurrentUsers: number, at this time concurrentUsers is not 
   requestsPerSecond: number,
   durationInSeconds: number
 ): Promise<LoadTestResult> {
@@ -41,15 +41,15 @@ export async function simpleLoadTest(
   let totalMissed = 0;
   let totalResponseTime = 0;
   let totalNotSent = 0;
-  let totalRateLimited = 0;
+  const errorCounts: { [errorCode: string]: number } = {};
 
   // Define the sendRequest function, which sends a request to the target URL and updates the counters.
   const sendRequest = async () => {
     try {
       totalSent += 1;
-      const startTime = Date.now();
+      const startTime = performance.now();
       const response = await fetch(url);
-      const endTime = Date.now();
+      const endTime = performance.now();
       // If the response is successful (HTTP status 200-299), increment the totalReceived counter
       // and update the totalResponseTime.
       if (response.ok) {
@@ -60,11 +60,14 @@ export async function simpleLoadTest(
         totalMissed += 1;
       }
     } catch (error) {
-      // Check if the error is related to rate-limiting
-      if (error.message.includes('rate limit') || error.code === 'RATE_LIMITED_ERROR_CODE') {
-        totalRateLimited += 1;
+      const typedError = error as { code?: string; message: string };
+      // Increment the count for the error code in the errorCounts object
+      // this way the user gets all errors and can look up error code to see if code is 429: Too Many Requests
+      const errorCode = typedError.code || typedError.message;
+      if (errorCounts[errorCode]) {
+        errorCounts[errorCode] += 1;
       } else {
-        throw error;
+        errorCounts[errorCode] = 1;
       }
     }
   };
@@ -80,26 +83,30 @@ export async function simpleLoadTest(
         await sendRequest();
         requestsThisSecond++;
 
-      // Wait for the calculated delay between requests before sending the next one.
-      await new Promise((resolve) => setTimeout(resolve, delayBetweenRequests));
+        // Wait for the calculated delay between requests before sending the next one.
+        await new Promise((resolve) =>
+          setTimeout(resolve, delayBetweenRequests)
+        );
+      }
+
+      // Check if the desired number of requests were sent
+      const desiredRequests = requestsPerSecond;
+      const actualRequests = requestsThisSecond;
+      if (actualRequests < desiredRequests) {
+        totalNotSent += desiredRequests - actualRequests;
+      }
     }
+  };
 
-    // Check if the desired number of requests were sent
-    const desiredRequests = requestsPerSecond;
-    const actualRequests = requestsThisSecond;
-    if (actualRequests < desiredRequests) {
-      totalNotSent += desiredRequests - actualRequests;
-    }
-  }
-};
+  // // Promise.all() does not run code in parallel and still turns them concurrently, 
+  // // so at the moment no difference between 100 single promieses and 10 users doing 10 promises.
+  // // Create an array of userPromises, each representing a concurrent user's load test execution.
+  // const userPromises = Array(concurrentUsers)
+  //   .fill(null)
+  //   .map(() => runUserLoad());
 
-  // Create an array of userPromises, each representing a concurrent user's load test execution.
-  const userPromises = Array(concurrentUsers)
-    .fill(null)
-    .map(() => runUserLoad());
-
-  // Wait for all userPromises to complete, effectively running the load test.
-  await Promise.all(userPromises);
+  // // Wait for all userPromises to complete, effectively running the load test.
+  // await Promise.all(userPromises); 
 
   // Calculate the average response time based on the total response time and number of received responses.
   const averageResponseTime =
@@ -111,7 +118,7 @@ export async function simpleLoadTest(
     totalReceived,
     totalMissed,
     totalNotSent,
-    totalRateLimited,
+    errorCounts,
     averageResponseTime,
   };
 }

@@ -10,7 +10,6 @@ interface ScheduleContainerProps {}
 const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
   const [scheduleInterval, setScheduleInterval] = useState<number>(1);
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
-  const [concurrentUsers, setConcurrentUsers] = useState<number>(1);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
   const [userUrl, setUserUrl] = useState<string>('');
@@ -32,21 +31,6 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
         />
       </div>
       <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
-          <p>Users:</p>
-          <input
-            className={`${
-              isDark ? 'is-dark-200' : ''
-            } ml-1 input input-is-medium is-info`}
-            style={{ width: '65px' }}
-            type="number"
-            placeholder="Users"
-            value={concurrentUsers}
-            onChange={(e) => {
-              setConcurrentUsers(e.target.value);
-            }}
-          />
-        </div>
         <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
           <p>Frequency:</p>
           <input
@@ -87,7 +71,6 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
             onClick={async () => {
               const results = await simpleLoadTest(
                 userUrl,
-                concurrentUsers,
                 callsPerSecond,
                 totalTime
               );
