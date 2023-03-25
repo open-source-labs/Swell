@@ -2,7 +2,6 @@
  * Executes a simple load test against a specified URL.
  *
  * @param {string} url - The URL to send the requests to.
- * @param {number} concurrentUsers - The number of concurrent users to simulate.
  * @param {number} requestsPerSecond - The number of requests per second each user should send.
  * @param {number} durationInSeconds - The duration of the test in seconds.
  *
@@ -97,16 +96,6 @@ export async function simpleLoadTest(
       }
     }
   };
-
-  // // Promise.all() does not run code in parallel and still turns them concurrently, 
-  // // so at the moment no difference between 100 single promieses and 10 users doing 10 promises.
-  // // Create an array of userPromises, each representing a concurrent user's load test execution.
-  // const userPromises = Array(concurrentUsers)
-  //   .fill(null)
-  //   .map(() => runUserLoad());
-
-  // // Wait for all userPromises to complete, effectively running the load test.
-  // await Promise.all(userPromises); 
 
   // Calculate the average response time based on the total response time and number of received responses.
   const averageResponseTime =
