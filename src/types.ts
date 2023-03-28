@@ -46,18 +46,6 @@ export type $TSFixMeFunction = (...args: any[]) => any;
  */
 export type $TSFixMeObject = any;
 
-/**
- * Represents any possible valid, serializable JSON value, including values
- * nested to any arbitrary level.
- */
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
-
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
@@ -161,6 +149,10 @@ export type NewRequestFields = {
 };
 
 export interface ReqResRequest {
+  // Currently, the body for WebRTC connection is an object
+  // and typescript does not support union between string and object very well
+  // Ideally we should move the WebRTC body information to a new key value
+  // to fully resolve the issue
   body: string;
   bodyType: string;
   bodyVariables: string;
@@ -188,53 +180,6 @@ export interface ReqResRequest {
 export type IntrospectionData = {
   schemaSDL: string | null;
   clientSchema: GraphQLSchema | null;
-};
-
-/**
- * Defines a whole HTTP request for generating graph data.
- *
- * Type definitions ripped from httpTest file.
- */
-export type HttpRequest = {
-  id: number;
-  /**
-   * createdAt should be formatted like a Date object timestamp. Date objects
-   * are not valid serializable JSON values, and Redux will complain about them
-   */
-  createdAt: string;
-  protocol: string;
-  host: string;
-  path: string;
-  url: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  timeSent: string | null;
-  timeReceived: string | null;
-  connection: string;
-  connectionType: $TSFixMe | null;
-  checkSelected: boolean;
-  protoPath: string | null;
-
-  request: {
-    method: string;
-    headers: $TSFixMeObject[][];
-    cookies: $TSFixMe[];
-    body: string;
-    bodyType: string;
-    bodyVariables: string;
-    rawType: string;
-    isSSE: boolean;
-    network: string;
-    restUrl: string;
-    wsUrl: string;
-    gqlUrl: string;
-    grpcUrl: string;
-  };
-
-  response: { headers: $TSFixMe | null; events: $TSFixMe | null };
-  checked: boolean;
-  minimized: boolean;
-  tab: string;
 };
 
 export interface OpenAPIRequest {
@@ -362,21 +307,6 @@ export interface WindowAPI {
   removeAllListeners: (event: string) => void;
   receive: (event: string, callback: (data: any) => void) => void;
   send: (event: string, data?: any, some?: any) => void;
-}
-
-/**
- * @todo Figure out what these types should be and then implement them
- */
-export interface WRTC {
-  RTCPeerConnection:
-    | RTCPeerConnection
-    | webkitRTCPeerConnection
-    | mozRTCPeerConnection;
-  RTCSessionDescription:
-    | RTCSessionDescription
-    | webkitRTCSessionDescription
-    | mozRTCSessionDescription;
-  RTCIceCandidate: RTCIceCandidate | webkitRTCIceCandidate | mozRTCIceCandidate;
 }
 
 export interface WorkspaceContainerProps {
