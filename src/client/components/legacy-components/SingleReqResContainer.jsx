@@ -332,7 +332,6 @@ const SingleReqResContainer = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-50 is-size-7 border-curve"
             id={`view-button-${index}`}
             onClick={() => {
-              console.log('WE PRESSED THE BUTTON', content);
               dispatch(responseDataSaved(content));
             }}
           >

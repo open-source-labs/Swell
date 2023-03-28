@@ -102,7 +102,6 @@ async function protoParserFunc(protoBodyData) {
       for (const [requestName, requestDef] of Object.entries(
         serviceDef.service
       )) {
-        // console.log('request name: ', requestName)
         const streamingReq = requestDef.requestStream;
         const streamingRes = requestDef.responseStream;
 

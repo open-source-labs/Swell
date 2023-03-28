@@ -18,7 +18,6 @@ const sendStream = () => {
     return;
   }
 
-  // console.log(`the time is: ${Date.now()}`);
   sse.send(`the time is: ${Date.now()}`);
   setTimeout(sendStream, timeInterval);
 };
