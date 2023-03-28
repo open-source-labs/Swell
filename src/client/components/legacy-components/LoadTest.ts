@@ -11,6 +11,9 @@
  * @example
  * const testResults = await simpleLoadTest('https://api.example.com/data', 10, 5, 30);
  * console.log(testResults);
+ * 
+ * For GraphQL Load Testing, uses this URL https://countries.trevorblades.com/
+ * Also need to include request body when load testing
  */
 
 interface LoadTestResult {
