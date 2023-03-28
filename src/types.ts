@@ -165,21 +165,20 @@ export interface ReqResRequest {
   bodyType: string;
   bodyVariables: string;
   cookies: CookieOrHeader[];
-  graphQL: boolean;
-  gRPC: boolean;
-  gRpcUrl?: string;
+  grpcUrl?: string;
   gqlUrl?: string;
+  isSSE?: boolean;
   headers: CookieOrHeader[];
   method?: string;
   network: Network;
-  protocol: Protocol;
+  rawType: string;
   restUrl?: string;
   testContent: string;
-  testResults: string[];
+  testResults?: string[];
   url?: string;
-  webRtc: boolean;
+  webRtc?: boolean;
   webRtcUrl?: string;
-  ws: boolean;
+  ws?: boolean;
   wsUrl?: string;
 }
 
@@ -276,26 +275,31 @@ export interface OpenAPIReqData {
  */
 export interface ReqRes {
   checked: boolean;
-  closeCode: number;
+  checkSelected: boolean;
+  closeCode?: number;
   connection: ConnectionStatus;
-  connectionType: string;
+  connectionType: string | null;
   createdAt: Date;
-  error: string;
+  error?: string;
   graphQL: boolean;
   gRPC: boolean;
-  id: number;
-  isHTTP2: boolean;
+  host: string;
+  id: string;
+  isHTTP2?: boolean;
   minimized: boolean;
-  openapi: boolean;
+  openapi?: boolean;
   protocol: Protocol;
+  protoPath: string;
+  path: string;
   request: ReqResRequest;
   response: ReqResResponse;
-  rpc: string;
-  service: string;
-  timeReceived: Date | number;
-  timeSent: number;
+  rpc?: string;
+  service?: string;
+  tab: string;
+  timeReceived: Date | number | null;
+  timeSent: number | null;
   url: string;
-  webRtc: boolean;
+  webrtc: boolean;
 }
 
 export interface SSERequest {
@@ -320,13 +324,13 @@ export interface NewRequestStreams {
 
 /**@todo make sure all properties are correct and add any not listed yet*/
 export interface ReqResResponse {
-  cookies: Cookie[];
+  cookies?: Cookie[];
   headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
   events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
-  tab: string; //have not found this property mentioned yet should be removed for seperation of concerns
-  timeSent: number; //should be in 'times' property below instead??
-  timeReceived: number; //should be in 'times' property below instead??
-  url: string; //have not found this property mentioned yet
+  tab?: string; //have not found this property mentioned yet should be removed for seperation of concerns
+  timeSent?: number; //should be in 'times' property below instead??
+  timeReceived?: number; //should be in 'times' property below instead??
+  url?: string; //have not found this property mentioned yet
   /**@todo */ //BELOW - additional properties not sure about yet/that weren't listed here before
   times?: $TSFixMeObject[]; //main_grpcController array of objects {timeSent: Date, timeReceived: Date}
   testResult?: $TSFixMe; //mainprocess main_graphqlController

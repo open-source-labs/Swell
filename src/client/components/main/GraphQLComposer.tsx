@@ -20,7 +20,7 @@ import TestEntryForm from './new-request/TestEntryForm.jsx';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe } from '../../../types';
+import { $TSFixMe, ReqRes } from '../../../types';
 
 // Translated from GraphQLContainer.jsx
 export default function GraphQLComposer(props: $TSFixMe) {
@@ -117,7 +117,6 @@ export default function GraphQLComposer(props: $TSFixMe) {
       return;
     }
 
-    let reqRes;
     const protocol: string = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
     const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
     const host: string = protocol + URIWithoutProtocol.split('/')[0];
@@ -131,7 +130,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
     path = /wss?:\/\//.test(protocol)
       ? path.replace(/wss?:\//g, 'ws://')
       : path.replace(/https?:\//g, 'http://');
-    reqRes = {
+    const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
       protocol: /wss?:\/\//.test(protocol)
@@ -170,8 +169,8 @@ export default function GraphQLComposer(props: $TSFixMe) {
         grpcUrl,
       },
       response: {
-        headers: null,
-        events: null,
+        headers: {},
+        events: [],
       },
       checked: false,
       minimized: false,
