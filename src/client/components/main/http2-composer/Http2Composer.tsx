@@ -25,6 +25,7 @@ import BodyEntryForm from '../new-request/BodyEntryForm';
 import TestEntryForm from '../new-request/TestEntryForm';
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
+import { CookieOrHeader, ReqRes } from '../../../../types';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
@@ -103,6 +104,63 @@ export default function Http2Composer(props) {
     return validationMessage;
   };
 
+  const composeReqRes = (): ReqRes => {
+    const protocol: string = url.match(/(https?:\/\/)/)[0];
+    const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
+    const host: string = protocol + URIWithoutProtocol.split('/')[0];
+    let path: string = `/${URIWithoutProtocol.split('/')
+      .splice(1)
+      .join('/')
+      .replace(/\/{2,}/g, '/')}`;
+    if (path.charAt(path.length - 1) === '/' && path.length > 1) {
+      path = path.substring(0, path.length - 1);
+    }
+    path = path.replace(/https?:\//g, 'http://');
+    return {
+      id: uuid(),
+      createdAt: new Date(),
+      protocol: url.match(/https?:\/\//)[0],
+      host,
+      path,
+      url,
+      webrtc,
+      graphQL,
+      gRPC,
+      timeSent: null,
+      timeReceived: null,
+      connection: 'uninitialized',
+      connectionType: null,
+      checkSelected: false,
+      protoPath,
+      request: {
+        method,
+        headers: headersArr.filter(
+          (header: CookieOrHeader) => header.active && !!header.key
+        ),
+        cookies: cookiesArr.filter(
+          (cookie: CookieOrHeader) => cookie.active && !!cookie.key
+        ),
+        body: bodyContent || '',
+        bodyType,
+        bodyVariables: bodyVariables || '',
+        rawType,
+        isSSE,
+        network,
+        restUrl,
+        testContent: testContent || '',
+        wsUrl,
+        gqlUrl,
+        grpcUrl,
+      },
+      response: {
+        headers: {},
+        events: [],
+      },
+      checked: false,
+      minimized: false,
+      tab: currentTab,
+    };
+  };
   /** @todo Figure out what this function does */
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
@@ -110,63 +168,7 @@ export default function Http2Composer(props) {
       setWarningMessage(warnings);
       return;
     }
-
-    let reqRes;
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-    if (!/wss?:\/\//.test(protocol) && !gRPC) {
-      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      URIWithoutProtocol; // deleteable ???
-      const host = protocol + URIWithoutProtocol.split('/')[0];
-      let path = `/${URIWithoutProtocol.split('/')
-        .splice(1)
-        .join('/')
-        .replace(/\/{2,}/g, '/')}`;
-      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-        path = path.substring(0, path.length - 1);
-      }
-      path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
-        id: uuid(),
-        createdAt: new Date(),
-        protocol: url.match(/https?:\/\//)[0],
-        host,
-        path,
-        url,
-        webrtc,
-        graphQL,
-        gRPC,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'uninitialized',
-        connectionType: null,
-        checkSelected: false,
-        protoPath,
-        request: {
-          method,
-          headers: headersArr.filter((header) => header.active && !!header.key),
-          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
-          body: bodyContent || '',
-          bodyType,
-          bodyVariables: bodyVariables || '',
-          rawType,
-          isSSE,
-          network,
-          restUrl,
-          testContent: testContent || '',
-          wsUrl,
-          gqlUrl,
-          grpcUrl,
-        },
-        response: {
-          headers: null,
-          events: null,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-    }
+    const reqRes: ReqRes = composeReqRes();
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
@@ -189,65 +191,7 @@ export default function Http2Composer(props) {
       setWarningMessage(warnings);
       return;
     }
-
-    const httpOrWebsocketRegex = /(http|ws)s?:\/\//;
-    const protocol = url.match(httpOrWebsocketRegex)[0];
-
-    let reqRes;
-    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-    if (!/wss?:\/\//.test(protocol) && !gRPC) {
-      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      URIWithoutProtocol; // deleteable ???
-      const host = protocol + URIWithoutProtocol.split('/')[0];
-      let path = `/${URIWithoutProtocol.split('/')
-        .splice(1)
-        .join('/')
-        .replace(/\/{2,}/g, '/')}`;
-      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-        path = path.substring(0, path.length - 1);
-      }
-      path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
-        id: uuid(),
-        createdAt: new Date(),
-        protocol: url.match(/https?:\/\//)[0],
-        host,
-        path,
-        url,
-        webrtc,
-        graphQL,
-        gRPC,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'uninitialized',
-        connectionType: null,
-        checkSelected: false,
-        protoPath,
-        request: {
-          method,
-          headers: headersArr.filter((header) => header.active && !!header.key),
-          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
-          body: bodyContent || '',
-          bodyType,
-          bodyVariables: bodyVariables || '',
-          rawType,
-          isSSE,
-          network,
-          restUrl,
-          testContent: testContent || '',
-          wsUrl,
-          gqlUrl,
-          grpcUrl,
-        },
-        response: {
-          headers: null,
-          events: null,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-    }
+    const reqRes: ReqRes = composeReqRes();
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
