@@ -5,6 +5,13 @@ const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
+// Page title is set in HtmlWebpackPlugin(), and `name` in `package.json`
+// requires all letters to be lower case
+// For consistency with an app that has the first letter of the name
+// as upper case, we will normalize the name here
+const { name } = require('./package.json');
+const title = name.charAt(0).toUpperCase() + name.slice(1);
+
 module.exports = {
   target: 'web',
   resolve: {
@@ -75,10 +82,8 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
-      // if using template, add <title>Swell</title> and delete line 59.
-      // template: path.resolve(__dirname, "index-csp.html"),
       filename: 'index.html',
-      title: require('./package.json').name,
+      title: title,
 
       /**
        * @todo Update CSP (Content Security Policy) with "nonce" inline styling.

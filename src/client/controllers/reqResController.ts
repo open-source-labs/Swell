@@ -32,7 +32,7 @@ const connectionController = {
     appDispatch(reqResReplaced(reqResArray));
   },
   // listens for reqResUpdate event from main process telling it to update reqResObj REST EVENTS
-  openReqRes(id: number): void {
+  openReqRes(id: number | string): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
     api.removeAllListeners('reqResUpdate');
 
@@ -208,13 +208,10 @@ const connectionController = {
   },
 
   closeReqRes(reqResObj: ReqRes): void {
-    if (reqResObj.protocol.includes('http')) {
-      api.send('close-http', reqResObj);
-    } else if (
-      reqResObj.graphQL &&
-      reqResObj.request?.method === 'SUBSCRIPTION'
-    ) {
+    if (reqResObj.graphQL && reqResObj.request?.method === 'SUBSCRIPTION') {
       graphQLController.closeSubscription(reqResObj);
+    } else if (reqResObj.protocol.includes('http')) {
+      api.send('close-http', reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol)) {
       api.send('close-ws');
     }

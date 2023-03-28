@@ -45,7 +45,7 @@ const GRPCServiceOrRequestSelect = (props) => {
       <div className="dropdown-trigger">
         <button
           id={id}
-          className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button"
+          className="button is-small is-outlined is-primary mr-3"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}
