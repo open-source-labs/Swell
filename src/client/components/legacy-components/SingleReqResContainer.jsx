@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import connectionController from '../../controllers/reqResController';
+import testSDPConnection from '../../controllers/webrtcPeerController';
 import RestRequestContent from './display/RestRequestContent';
 import GraphQLRequestContent from './display/GraphQLRequestContent';
 import WebRTCRequestContent from './display/WebRTCRequestContent';
@@ -41,12 +42,6 @@ const SingleReqResContainer = (props) => {
 
   const network = content.request.network;
   const method = content.request.method;
-
-  useEffect(() => {
-    if (content.request.network === 'webrtc') {
-      setShowDetails(true);
-    }
-  }, [content.request.network]);
 
   const copyToComposer = () => {
     let requestFieldObj = {};
@@ -310,17 +305,21 @@ const SingleReqResContainer = (props) => {
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 border-curve"
             id={`send-button-${index}`}
-            disabled={network === 'webrtc'}
             onClick={() => {
-              //check the request type
-              //if it's http, dispatch set active tab to "event" for reqResResponse
-              //otherwise do nothing
-              if (connectionType !== 'WebSocket') {
-                dispatch(setResponsePaneActiveTab('events'));
+              if (network === 'webrtc') {
+                testSDPConnection(content);
+              } else {
+                //if it's http, dispatch set active tab to "event" for reqResResponse
+                //otherwise do nothing
+                if (connectionType !== 'WebSocket') {
+                  dispatch(setResponsePaneActiveTab('events'));
+                }
+                connectionController.openReqRes(content.id);
+                // Dispatch will fire first before the callback of
+                // [ipcMain.on('open-ws'] is fired.
+                // Check async and callback queue concepts
+                dispatch(responseDataSaved(content));
               }
-              // console.log(content)
-              connectionController.openReqRes(content.id);
-              dispatch(responseDataSaved(content)); //dispatch will fire first before the callback of [ipcMain.on('open-ws'] is fired. check async and callback queue concepts
             }}
           >
             Send
