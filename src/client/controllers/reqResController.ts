@@ -208,13 +208,10 @@ const connectionController = {
   },
 
   closeReqRes(reqResObj: ReqRes): void {
-    if (reqResObj.protocol.includes('http')) {
-      api.send('close-http', reqResObj);
-    } else if (
-      reqResObj.graphQL &&
-      reqResObj.request?.method === 'SUBSCRIPTION'
-    ) {
+    if (reqResObj.graphQL && reqResObj.request?.method === 'SUBSCRIPTION') {
       graphQLController.closeSubscription(reqResObj);
+    } else if (reqResObj.protocol.includes('http')) {
+      api.send('close-http', reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol)) {
       api.send('close-ws');
     }
