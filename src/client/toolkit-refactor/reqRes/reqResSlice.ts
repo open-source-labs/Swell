@@ -3,32 +3,16 @@
  * arrays and associated values.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HttpRequest, ReqRes } from '../../../types';
+import { ReqRes } from '../../../types';
 
-/** 
- * @todo based on current useage type def is innaccurate or incomplete
- * currentReponse stores the last returned ReqRes type
- * in theory currentResponse property is unnessecary as the last element in the
- * reqResArray is the current response but it is used throughout the app
- */
 type ReqResStore = {
   reqResArray: ReqRes[];
-  currentResponse: {
-    request: {
-      network: string;
-    };
-  };
+  currentResponse: ReqRes;
 };
-
-const initialState2: HttpRequest = {};
 
 const initialState: ReqResStore = {
   reqResArray: [],
-  currentResponse: {
-    request: {
-      network: '',
-    },
-  },
+  currentResponse: {} as ReqRes,
 };
 
 // export const reqResItemAdded = createAction('reqResItemAdded');
@@ -51,7 +35,7 @@ const reqResSlice = createSlice({
     //previously was REQRES_CLEAR or reqResClear
     reqResCleared(state, _unusedAction: PayloadAction<void>) {
       state.reqResArray = [];
-      state.currentResponse.request.network = '';
+      state.currentResponse = {} as ReqRes;
     },
 
     //previously was REQRES_ADD or reqResAdd

@@ -1,23 +1,24 @@
-$primary-100: #ffd645;
-$primary-200: #f66b61;
-$primary-300: #21d4a4;
+$primary-100: #58a4b0; // send req and add workspace buttons, changed this - Jason
+$primary-200: #1b1b1e; // clear workspace btn
+$primary-300: #21d4bc;
 $primary-400: #9b5088; // this is not currently used
-$primary-500: #50809b;
+$primary-500: #475168; // responses header
 
-$rest: #ff9e43;
-$graphql: #ff9e43;
-$grpc: #ff9e43;
-$websockets: #ff9e43;
-$webrtc: #ff9e43;
-$openapi: #ff9e43;
-$webhook: #ff9e43;
-$webhookOn: #ff9e43;
+// changed all of this, this is for button near the url in the respective navbar btn
+$rest: $primary-100; // get button in http/2
+$graphql: $primary-100;
+$grpc: $primary-100;
+$websockets: $primary-100;
+$webrtc: $primary-100;
+$openapi: $primary-100;
+$webhook: $primary-100;
+$webhookOn: $primary-100;
 
-$neutral-100: #5e5e5e;
-$neutral-200: #f4f5f7;
-$neutral-300: #e1e1e1;
+$neutral-100: #888888;
+$neutral-200: #f0f6fa; // test snippets and view test button background color
+$neutral-300: #e1e1e1; // drop shadow on response box
 $neutral-400: #737581;
-$neutral-500: #4a4b53;
+$neutral-500: #f4f5f7;
 $neutral-600: #000000;
 $neutral-700: #f3f3f3; // gigi added to set background of 3 main containers
 
@@ -53,12 +54,12 @@ $text: $neutral-400;
 }
 .cm-s-neo .cm-variable,
 .cm-s-neo .cm-qualifier {
-  color: #06a568 !important;
+  color: #a59a06 !important;
 }
 
 .is-primary-100 {
-  color: $neutral-500 !important;
-  background-color: $primary-100 !important;
+  color: $neutral-500 !important; // this is send and add font color
+  background-color: $primary-100 !important; // this changes add to work space button
 }
 
 .is-primary-200 {
@@ -71,8 +72,9 @@ $text: $neutral-400;
   background-color: $rest !important;
 }
 
+// test snippet btn on top right
 .is-rest-invert {
-  color: $rest !important;
+  color: $primary-500 !important;
   background-color: $neutral-200 !important;
 }
 
@@ -105,12 +107,12 @@ $text: $neutral-400;
   background-color: $websockets !important;
 }
 
-.is-wh{
+.is-wh {
   color: $neutral-200 !important;
   background-color: $webhook !important;
 }
 
-.is-wh-on{
+.is-wh-on {
   color: $neutral-200 !important;
   background-color: $webhookOn !important;
 }
@@ -162,13 +164,21 @@ $text: $neutral-400;
   border-color: $webrtc !important;
 }
 
+// send request, view request detail font and box
 .is-neutral-300 {
   color: $neutral-600 !important;
   background-color: $neutral-300 !important;
 }
 
+// this one is for the view reponse button
+.is-neutral-50 {
+  color: #373f51 !important;
+  background-color: $neutral-200 !important;
+}
+
+//and send in workspace container
 .is-neutral-100 {
-  color: $neutral-600 !important;
+  color: $neutral-200 !important;
   background-color: $neutral-100 !important;
 }
 
@@ -191,7 +201,8 @@ $text: $neutral-400;
   border: 1px solid $neutral-300;
 }
 
-.is-divider-neutral-300 { // this is the divider between the tabs -Prince
+.is-divider-neutral-300 {
+  // this is the divider between the tabs -Prince
   border-left: 1px solid $neutral-300;
   border-right: 1px solid $neutral-300;
   background-color: $neutral-700;
@@ -212,3 +223,4 @@ $text: $neutral-400;
   background: $neutral-200;
   padding-left: 1em;
 }
+

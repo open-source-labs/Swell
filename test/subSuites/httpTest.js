@@ -10,6 +10,7 @@
  */
 
 const { _electron: electron } = require('playwright');
+const pwTest = require('@playwright/test');
 const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
@@ -22,15 +23,14 @@ let electronApp,
   num = 0;
 
 module.exports = () => {
-  const setupFxn = function () {
+  describe('HTTP/S requests', function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      page = electronApp.windows()[0]; // In case there is more than one window
-      await page.waitForLoadState(`domcontentloaded`);
     });
 
     // close Electron app when complete
     after(async () => {
+      await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
     });
 
@@ -47,10 +47,6 @@ module.exports = () => {
         );
       }
     });
-  };
-
-  describe('HTTP/S requests', function () {
-    setupFxn();
 
     const fillRestRequest = async (
       url,
@@ -61,7 +57,7 @@ module.exports = () => {
     ) => {
       try {
         // Make sure HTTP2 method is selected
-        await page.locator('button>> text=HTTP2').click();
+        await page.locator('button>> text=HTTP/2').click();
 
         // click and select METHOD if it isn't GET
         if (method !== 'GET') {
@@ -132,7 +128,30 @@ module.exports = () => {
       }
     };
 
+    // The app takes a while to launch, and without these rendering checks
+    // within each test file the tests can get flakey because of long load times
+    // so these are here to ensure the app launches as expect before continuing
+    describe('Window rendering', () => {
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok;
+      });
+
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        pwTest.expect(window).toBeVisible();
+      });
+
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });
+    });
+
     describe('public API', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+      });
+
       it('it should GET information from a public API', async () => {
         try {
           // TEST GET Request from JSON Placeholder
@@ -160,7 +179,7 @@ module.exports = () => {
     describe('httpTest Server', () => {
       before('CLEAR DB', (done) => {
         chai
-          .request('http://localhost:3000')
+          .request('http://localhost:3004')
           .get('/clear')
           .end((err, res) => {
             done(); // <= Call done to signal callback end
@@ -169,7 +188,7 @@ module.exports = () => {
 
       after('CLEAR DB', (done) => {
         chai
-          .request('http://localhost:3000')
+          .request('http://localhost:3004')
           .get('/clear')
           .send()
           .end((err, res) => {
@@ -179,7 +198,7 @@ module.exports = () => {
 
       it('it should GET information from an http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book';
+          const url = 'http://localhost:3004/book';
           const method = 'GET';
           await fillRestRequest(url, method);
           await addAndSend(num++);
@@ -201,7 +220,7 @@ module.exports = () => {
 
       it('it should POST to local http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book';
+          const url = 'http://localhost:3004/book';
           const method = 'POST';
           const body =
             '{"title": "HarryPotter", "author": "JK Rowling", "pages": 500}';
@@ -225,7 +244,7 @@ module.exports = () => {
 
       it('it should PUT to local http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book/HarryPotter';
+          const url = 'http://localhost:3004/book/HarryPotter';
           const method = 'PUT';
           const body = '{"author": "Ron Weasley", "pages": 400}';
           await fillRestRequest(url, method, body);
@@ -248,7 +267,7 @@ module.exports = () => {
 
       it('it should PATCH to local http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book/HarryPotter';
+          const url = 'http://localhost:3004/book/HarryPotter';
           const method = 'PATCH';
           const body = '{"author": "Hermoine Granger"}';
           await fillRestRequest(url, method, body);
@@ -272,7 +291,7 @@ module.exports = () => {
       it('it should DELETE to local http test server', async () => {
         // DELETE HARRYPOTTER
         try {
-          const url = 'http://localhost:3000/book/HarryPotter';
+          const url = 'http://localhost:3004/book/HarryPotter';
           const method = 'DELETE';
           const body = '{}';
           await fillRestRequest(url, method, body);
@@ -293,7 +312,7 @@ module.exports = () => {
         }
         // CHECK TO SEE IF IT IS DELETED
         try {
-          const url = 'http://localhost:3000/book';
+          const url = 'http://localhost:3004/book';
           const method = 'GET';
           await fillRestRequest(url, method);
           await addAndSend(num++);

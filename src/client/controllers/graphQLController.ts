@@ -9,7 +9,6 @@ import { createClient } from 'graphql-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 
 import {
-  WindowAPI,
   ReqRes,
   GraphQLResponse,
   Cookie,
@@ -17,10 +16,7 @@ import {
   WindowExt,
 } from '../../types';
 
-import ReqResContainer from '../components/legacy-components/ReqResContainer';
-
 import Store from '../toolkit-refactor/store';
-
 import { appDispatch } from '../toolkit-refactor/store';
 import { introspectionDataChanged } from '../toolkit-refactor/introspectionData/introspectionDataSlice';
 import {
@@ -31,7 +27,26 @@ import { graphUpdated } from '../toolkit-refactor/graphPoints/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;
 
-const graphQLController = {
+interface GqlController {
+  subscriptions: { [key: string]: any };
+  openGraphQLConnection: (reqResObj: ReqRes) => void;
+  openGraphQLConnectionAndRunCollection: (reqResArray: ReqRes[]) => void;
+  sendGqlToMain: (args: Record<string, ReqRes>) => Promise<GraphQLResponse>;
+  openSubscription: (reqResObj: ReqRes) => void;
+  closeSubscription: (reqResObj: ReqRes) => void;
+  handleResponse: (response: GraphQLResponse, reqResObj: ReqRes) => void;
+  handleError: (errorsObj: string, reqResObj: ReqRes) => void;
+  cookieFormatter: (cookieArray: Cookie[]) => Cookie[];
+  introspect: (
+    url: string,
+    headers: CookieOrHeader[],
+    cookies: CookieOrHeader[]
+  ) => void;
+}
+
+const graphQLController: GqlController = {
+  subscriptions: {},
+
   openGraphQLConnection(reqResObj: ReqRes): void {
     // initialize response data
     reqResObj = {
@@ -117,11 +132,6 @@ const graphQLController = {
   // open communication from server to client using websocket
   openSubscription(reqResObj: ReqRes): void {
     console.log('openSubscription');
-    appDispatch(reqResUpdated(reqResObj));
-
-    const currentID = Store.getState().reqRes.currentResponse.id;
-    if (currentID === reqResObj.id) appDispatch(responseDataSaved(reqResObj));
-
     // have to replace http with ws to connect to the websocket
     const wsUri = reqResObj.url.replace(/http/gi, 'ws');
 
@@ -172,7 +182,7 @@ const graphQLController = {
       ? JSON.parse(reqResObj.request.bodyVariables)
       : {};
 
-    apolloClient
+    const subscription = apolloClient
       .subscribe({
         query,
         variables,
@@ -181,7 +191,22 @@ const graphQLController = {
         next(subsEvent) {
           // Notify your application with the new arrived data
           console.log('new link', subsEvent.data);
-          const newReqRes: ReqRes = JSON.parse(JSON.stringify(reqResObj));
+          const existingSub: ReqRes =
+            Store.getState().reqRes.reqResArray.find(
+              (entry) => entry.id === reqResObj.id
+            ) || reqResObj;
+          const newReqRes: ReqRes = JSON.parse(
+            JSON.stringify({
+              ...existingSub,
+              response: {
+                ...existingSub.response,
+                events: existingSub.response.events
+                  ? [...existingSub.response.events, subsEvent.data]
+                  : [subsEvent.data],
+              },
+              connection: 'open',
+            })
+          );
           appDispatch(responseDataSaved(newReqRes));
           appDispatch(reqResUpdated(newReqRes));
         },
@@ -189,6 +214,25 @@ const graphQLController = {
           console.error(err);
         },
       });
+
+    this.subscriptions[reqResObj.id] = subscription;
+
+    const newReqRes: ReqRes = { ...reqResObj, connection: 'open' };
+    appDispatch(reqResUpdated(newReqRes));
+
+    const currentID = Store.getState().reqRes.currentResponse.id;
+    if (currentID === reqResObj.id) appDispatch(responseDataSaved(newReqRes));
+  },
+
+  closeSubscription(reqResObj: ReqRes): void {
+    const { id } = reqResObj;
+    if (this.subscriptions[id]) {
+      this.subscriptions[id].unsubscribe();
+      delete this.subscriptions[id];
+      console.log('Unsubscribed successfully.');
+    } else {
+      console.warn('Cannot find subscription to unsubscribe.');
+    }
   },
 
   handleResponse(response: GraphQLResponse, reqResObj: ReqRes): void {

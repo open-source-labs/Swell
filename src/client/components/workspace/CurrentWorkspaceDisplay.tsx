@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import WorkspaceSelect from './WorkspaceSelect';
 import DeleteWorkspaceButton from './buttons/DeleteWorkspaceButton';
 import ImportExportWorkspaceButton from './buttons/ImportExportWorkspaceButton';
-import InviteToWorkspaceButton from './buttons/InviteToWorkspaceButton';
 import { RootState } from '../../toolkit-refactor/store';
 
 const mapStateToProps = (store: RootState) => {
@@ -24,7 +23,6 @@ function CurrentWorkspaceDisplay(props) {
         currentWorkspace={props.currentWorkspace}
       />
       <ImportExportWorkspaceButton />
-      <InviteToWorkspaceButton />
     </Box>
   );
 }

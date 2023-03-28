@@ -117,7 +117,6 @@ export default function WebhookComposer(props: $TSFixMe) {
         minimized: false,
         tab: currentTab,
       };
-      console.log('line 125 in webho', reqRes);
       reqResItemAdded(reqRes);
     });
   }, []);
@@ -185,9 +184,9 @@ export default function WebhookComposer(props: $TSFixMe) {
         value={whUrl}
         readOnly //solved react error dev console
       />
-      <div className="is-3rem-footer is-clickable is-margin-top-auto">
+      <div className="is-no-top-margin-footer is-clickable is-margin-top-auto">
         <button
-          className="button is-primary-100 is-3rem-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
+          className="button is-primary-100 is-no-top-margin-footer is-clickable no-border-please is-fullwidth ml-1 is-margin-top-auto"
           onClick={() => copyClick()}
         >
           Copy URL

@@ -1,4 +1,3 @@
-
 // COMPOSER TAB
 // * {
 //   background-color: gray;
@@ -10,7 +9,7 @@
 }
 
 .include-data-checkbox {
-  background: #FFFFFF;
+  background: #ffffff; // this is checkboxes in top right container
   /* neutral-300 */
   border: 1px solid lightgrey;
   box-sizing: border-box;
@@ -26,7 +25,7 @@
 }
 
 .add-header-gRPC-cookie-button {
-   color: $primary !important;
+  color: $primary !important;
   border-color: $primary !important;
   width: 3px !important;
   height: 3px !important;
@@ -54,26 +53,19 @@
 }
 
 .stream-title {
-  font-size: 70%
+  font-size: 70%;
 }
 
 // needed for add new request button
 .is-hack-height {
-  height: 86.75%
+  height: 86.75%;
 }
 
-
 .add-request-button {
-  border: 1px solid #3734A9 !important;
+  border: 1px solid #3734a9 !important;
   &:hover {
     box-shadow: 1px 1px 1px 1px $neutral-300;
   }
-}
-
-
-.input {
-  outline: none !important;
-
 }
 
 .key {
@@ -93,7 +85,6 @@
 
 .history-method {
   width: 130px;
-
 }
 
 // CODE MIRROR
@@ -101,8 +92,8 @@
   background-color: $neutral-100;
   color: $neutral-400;
   border: 1px solid $neutral-300;
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: .75em;
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-size: 0.75em;
 }
 .cm-s-sidebar .CodeMirror-gutters {
   border: none;
@@ -117,8 +108,8 @@
 
 .component {
   & :global(.react-codemirror2) {
-         overflow: auto; /* you can use hidden here as well */
-    }
+    overflow: auto; /* you can use hidden here as well */
+  }
 }
 
 .cm-s-responsebody .CodeMirror-wrap {
@@ -130,8 +121,8 @@
   color: $neutral-400;
   max-height: 100px !important;
   border: 1px solid $neutral-300;
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: .75em;
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-size: 0.75em;
 }
 .cm-s-grpc .CodeMirror-gutters {
   border: none;
@@ -143,16 +134,13 @@
   color: $neutral-300;
 }
 
-
-
-
 .switch:focus {
   border: none;
   outline: none;
 }
 
 .add-request-button {
-  border: 1px solid #3734A9 !important;
+  border: 1px solid #3734a9 !important;
   position: absolute;
   &:hover {
     box-shadow: 1px 1px 1px 1px $neutral-300;
@@ -172,7 +160,7 @@
 }
 
 .stream-title {
-  font-size: 70%
+  font-size: 70%;
 }
 
 .is-button-footer {
@@ -182,7 +170,7 @@
 }
 
 .is-tall-not-5rem {
-  height: calc( 100% - 5rem );
+  height: calc(100% - 5rem);
 }
 
 .tabs {
@@ -198,9 +186,16 @@
   justify-content: space-between;
 }
 
+.httpResReq {
+  display: flex;
+  justify-content: space-between;
+}
+
 .restReqBtns {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  // justify-content: start;
+
+  p {
+    line-height: 3.5rem;
+  }
 }
+

@@ -3,17 +3,20 @@ import { useSelector } from 'react-redux';
 import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 const jBeautify = require('js-beautify').js;
 
 const WebRTCServerEntryForm = (props) => {
   const { warningMessage } = props;
-  const requestBody = useSelector(state => state.newRequest.newRequestBody);
-  const {bodyIsNew} = requestBody;
+  const requestBody = useSelector((state) => state.newRequest.newRequestBody);
+  const { bodyIsNew } = requestBody;
   const [cmValue, setValue] = useState('');
   const isDark = useSelector((state) => state.ui.isDark);
 
-  const bodyContent = useSelector(state => state.newRequest.newRequestBody.bodyContent);
+  const bodyContent = useSelector(
+    (state) => state.newRequest.newRequestBody.bodyContent
+  );
   useEffect(() => {
     if (!bodyIsNew) {
       /**
@@ -30,14 +33,20 @@ const WebRTCServerEntryForm = (props) => {
   return (
     <div className="mt-3">
       {warningMessage ? <div>{warningMessage.body}</div> : null}
-      <div className="composer-section-title">TURN or STUN Servers</div>
+      <div className="composer-section-title">
+        TURN or STUN Servers (Currently read only)
+      </div>
       <div className={`is-neutral-200-box p-3 ${isDark ? 'is-dark-400' : ''}`}>
+        {/*
+         * The WebRTC architecture in Swell does not support updating the STUN/TURN server info
+         * to avoid confusion, we will set the `readonly` flag to `true`
+         */}
         <CodeMirror
           value={cmValue}
+          theme={vscodeDark}
           extensions={[javascript(), EditorView.lineWrapping]}
-          theme="dark"
-          height="100%"
-          width="100%"
+          height="100px"
+          readOnly="true"
         />
       </div>
     </div>
