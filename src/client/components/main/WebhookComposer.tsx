@@ -117,7 +117,6 @@ export default function WebhookComposer(props: $TSFixMe) {
         minimized: false,
         tab: currentTab,
       };
-      console.log('line 125 in webho', reqRes);
       reqResItemAdded(reqRes);
     });
   }, []);
