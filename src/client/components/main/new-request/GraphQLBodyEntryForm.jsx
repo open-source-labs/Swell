@@ -28,10 +28,7 @@ const GraphQLBodyEntryForm = (props) => {
         warningMessage ? <div>{warningMessage.body}</div> : null
       }
       <div className="composer-section-title">Body</div>
-      <div
-        id="gql-body-entry"
-        className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}
-      >
+      <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}`}>
         <TextCodeArea
           mode="application/json"
           value={cmValue}

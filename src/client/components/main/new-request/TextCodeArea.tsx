@@ -12,9 +12,9 @@ interface TextCodeAreaProps {
   value: string;
   mode: string;
   onChange: (value: string, viewUpdate: ViewUpdate) => void;
-  height: string;
-  placeholder: string;
-  readOnly: boolean;
+  height?: string;
+  placeholder?: string;
+  readOnly?: boolean;
 }
 
 const langs: { [key: string]: () => LanguageSupport } = {
@@ -41,7 +41,7 @@ export default function TextCodeArea({
 }: TextCodeAreaProps) {
   const lang: string = mode.substring(mode.indexOf('/') + 1); // Grab language mode based on value passed in
   return (
-    <div className="is-neutral-200-box">
+    <div className="is-neutral-200-box p-3">
       <CodeMirror
         value={value}
         height={height}

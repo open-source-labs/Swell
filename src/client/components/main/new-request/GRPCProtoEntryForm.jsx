@@ -133,7 +133,6 @@ const GRPCProtoEntryForm = (props) => {
       <div className="is-danger subtitle">{protoError}</div>
       <div id="grpcProtoEntryTextArea">
         <TextCodeArea
-          id="grpcProtoEntryTextArea"
           onChange={(value, viewUpdate) => updateProtoBody(value)}
           value={props.newRequestStreams.protoContent}
           mode="application/json"
