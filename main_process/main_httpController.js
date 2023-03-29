@@ -5,6 +5,7 @@ const http2 = require('http2');
 const setCookie = require('set-cookie-parser');
 const SSEController = require('./SSEController');
 const testingController = require('./main_testingController');
+const simpleLoadTest = require('../src/client/components/legacy-components/LoadTest')
 
 // Use this for HTTPS cert when in Dev or Test environment and
 // using a server with self-signed cert on localhost
@@ -454,6 +455,23 @@ const httpController = {
       return cookieFormat;
     });
   },
+   // ----------------------------------------------------------------------------
+
+   runLoadTest(event, reqResObj) {
+    const { 
+      url,
+      frequency,
+      duration,
+    } = reqResObj;
+    simpleLoadTest(url, frequency, duration)
+    .then((results) => {
+      reqResObj.response.events = results
+      event.sender.send('load-test-results', results);
+    })
+    .catch((error) => {
+      console.error('Error during runLoadTesting')
+    })
+  },
 
   // parses SSE format into an object
   // SSE format -> 'key1: value1\nkey2: value2\nkey3: value3\n\n
@@ -471,6 +489,10 @@ const httpController = {
 };
 
 module.exports = () => {
+  // create ipc event listener for load-test
+  ipcMain.on('http-load-test', (event, reqResObj) => {
+    httpController.runLoadTest(event, reqResObj);
+  })
   // creating our event listeners for IPC events
   ipcMain.on('open-http', (event, reqResObj) => {
     // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process

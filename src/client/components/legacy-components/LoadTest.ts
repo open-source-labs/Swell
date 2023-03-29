@@ -13,7 +13,7 @@
  * console.log(testResults);
  */
 
-interface LoadTestResult {
+export interface LoadTestResult {
   totalSent: number;
   totalReceived: number;
   totalMissed: number;

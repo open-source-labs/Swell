@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ScheduleReqResContainer from './ScheduleReqResContainer';
 import StoppedContainer from './StoppedContainer';
 import ReqResContainer from './ReqResContainer';
 import { simpleLoadTest } from './LoadTest';
+import LoadTestController from './LoadTestController';
 
 interface ScheduleContainerProps {}
 
@@ -14,6 +15,10 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
   const [totalTime, setTotalTime] = useState<number>(10);
   const [userUrl, setUserUrl] = useState<string>('');
   const isDark = useSelector((state: any) => state.ui.isDark);
+  const loadTestController = new LoadTestController();
+  const reqResArray = useSelector((state) => state.reqRes.reqResArray);
+  const reqResObj = reqResArray[reqResArray.length - 1];
+  
 
   return (
     <div>
@@ -75,6 +80,8 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
                 totalTime
               );
               console.log(results);
+              // Assuming you have a valid reqResObj
+              loadTestController.processLoadTestResults(results, reqResObj);
             }}
           >
             Run
@@ -100,6 +107,6 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
       {!runScheduledTests && <StoppedContainer />}
     </div>
   );
-}
+};
 
 export default ScheduleContainer;
