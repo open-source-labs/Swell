@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import SendRequestButton from './new-request/SendRequestButton';
@@ -8,16 +8,11 @@ import TRPCBodyEntryForm from './tRPC/TRPCBodyEntryForm';
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 // Import Actions from RTK slice
-import {
-  newRequestHeadersSet,
-  newRequestBodySet,
-  newRequestCookiesSet,
-} from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { newRequestBodySet } from '../../toolkit-refactor/newRequest/newRequestSlice';
 import { responseDataSaved } from '../../toolkit-refactor/reqRes/reqResSlice';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe } from '../../../types';
 import { RootState } from '../../toolkit-refactor/store';
 
 // import tRPC client Module
@@ -26,9 +21,7 @@ import {
   httpBatchLink,
   createWSClient,
   wsLink,
-  splitLink,
 } from '@trpc/client';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 /**
  *
