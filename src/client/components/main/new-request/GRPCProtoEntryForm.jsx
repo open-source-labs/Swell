@@ -106,7 +106,7 @@ const GRPCProtoEntryForm = (props) => {
      - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
      */
   return (
-    <div className="mt-1">
+    <div className="mt-5">
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>

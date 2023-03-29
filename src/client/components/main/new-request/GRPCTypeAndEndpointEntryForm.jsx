@@ -35,7 +35,7 @@ const GRPCTypeAndEndpointEntryForm = ({
 
   return (
     <div
-      className={`ml-2 mr-2 is-flex is-justify-content-center `}
+      className={`is-flex is-justify-content-center `}
       style={{ padding: '10px' }}
     >
       {/* button id is now stream for vanilla JS selector, this should change */}

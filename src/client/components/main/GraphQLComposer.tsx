@@ -212,7 +212,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
       id="composer-graphql"
     >
       <div
-        className="is-flex-grow-3 add-vertical-scroll"
+        className="add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
