@@ -45,6 +45,10 @@ const url = require('url');
 const fs = require('fs');
 const log = require('electron-log');
 
+// TODO: Figure out the best location for this fork. Also need to figure out how to start and stop the forked process on demand.
+const { fork } = require('child_process');
+const ps = fork(`${__dirname}/src/server/mockServer.js`);
+
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
 
