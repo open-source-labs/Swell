@@ -219,17 +219,11 @@ export default function GraphQLComposer(props: $TSFixMe) {
       >
         <GraphQLMethodAndEndpointEntryForm
           fieldsReplaced={fieldsReplaced}
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
           newRequestFields={newRequestFields}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-          newRequestCookiesSet={newRequestCookiesSet}
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
-          newTestContentSet={newTestContentSet}
         />
         <HeaderEntryForm
           newRequestHeaders={newRequestHeaders}

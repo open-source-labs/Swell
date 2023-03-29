@@ -12,9 +12,6 @@ const GraphQLMethodAndEndpointEntryForm = ({
   newRequestFields,
   newRequestBodySet,
   newRequestBody,
-  newRequestHeadersSet,
-  newRequestStreams,
-  newRequestHeaders: { headersArr },
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
