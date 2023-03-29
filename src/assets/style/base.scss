@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
   font-size: 13px;
@@ -13,7 +12,7 @@
 }
 
 .hero h3 {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600; // font boldness in banner (composer, workspace responses)
 }
 
@@ -109,3 +108,8 @@ $switch-focus: 5px solid red;
 .gutter.gutter-vertical:hover {
   cursor: row-resize;
 }
+
+.no-focus-outline:focus {
+  outline: none;
+}
+
