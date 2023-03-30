@@ -34,26 +34,12 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ reqResArray, reqR
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
-  const [userUrl, setUserUrl] = useState<string>('');
   const isDark = useSelector((state: any) => state.ui.isDark);
 
   const reqResObj = reqResArray[reqResArray.length - 1];
 
   return (
     <div>
-      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
-        <p>URL:</p>
-        <input
-          className={`${isDark ? 'is-dark-200' : ''} ml-1 input is-info`}
-          style={{ width: '65px' }}
-          type="text"
-          placeholder="URL"
-          value={userUrl}
-          onChange={(e) => {
-            setUserUrl(e.target.value);
-          }}
-        />
-      </div>
       <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
         <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
           <p>Frequency:</p>
