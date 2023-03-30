@@ -203,7 +203,7 @@ class HeaderEntryForm extends Component {
           <button
             className={`${
               this.props.isDark ? 'is-dark-200' : ''
-            } button is-small add-header-gRPC-cookie-button`}
+            } button is-small add-header-gRPC-cookie-button ml-2`}
             id="add-header"
             style={{ height: '3px', width: '3px' }}
             onClick={() => this.addHeader()}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NewRequestBody } from '../../../../types';
 import { RootState } from '../../../toolkit-refactor/store';
 import TextCodeArea from '../new-request/TextCodeArea';
 
@@ -21,14 +20,11 @@ const TRPCBodyEntryForm = (props: any) => {
   return (
     <div className="mt-3">
       <div className="composer-section-title">Body</div>
-      <div
-        id="gql-body-entry"
-        className={`${isDark ? 'is-dark-400' : ''}is-neutral-200-box p-3`}
-      >
+      <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}`}>
         <TextCodeArea
           mode="application/json"
           value={cmValue}
-          onChange={(value: NewRequestBody) => {
+          onChange={(value: string) => {
             dispatch(
               newRequestBodySet({
                 ...newRequestBody,

@@ -27,16 +27,6 @@ const RawBodyTypeSelect = (props) => {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  // const removeContentTypeHeader = () => {
-  //   const filtered = newRequestHeaders.headersArr.filter(
-  //     (header) => header.key.toLowerCase() !== "content-type"
-  //   );
-  //   newRequestHeadersSet({
-  //     headersArr: filtered,
-  //     count: filtered.length,
-  //   });
-  // }
-
   const setNewRawBodyType = (rawTypeStr) => {
     newRequestBodySet({
       ...newRequestBody,
@@ -61,7 +51,7 @@ const RawBodyTypeSelect = (props) => {
     >
       <div className="dropdown-trigger">
         <button
-          className="button is-small is-primary is-outlined add-header-or-cookie-button"
+          className="button is-small is-primary is-outlined"
           id="raw-body-type"
           aria-haspopup="true"
           aria-controls="dropdown-menu"

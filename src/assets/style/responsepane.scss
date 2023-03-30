@@ -38,35 +38,6 @@
   text-align: center;
 }
 
-// EVENTS (CODEMIRROR STYLES)
-.CodeMirror * {
-  font-family: 'Lucida Console', Monaco, monospace;
-  // background-color: grey;
-}
-
-.cm-s-neo.CodeMirror {
-  background-color: transparent !important;
-}
-
-.cm-s-responsebody {
-  // background-color: $neutral-100;
-  color: $neutral-400;
-  border: 1px solid $neutral-300;
-  font-size: 1rem;
-  margin-bottom: 0 !important;
-  // height: 800px !important;
-  height: calc(100vh - 8rem) !important;
-  // height: 100% !important;
-}
-.cm-s-responsebody .CodeMirror-gutters {
-  border: none;
-  color: $neutral-300;
-}
-.cm-s-responsebody .CodeMirror-linenumber {
-  border: none;
-  color: $neutral-300;
-}
-
 // HEADERS & COOKIES
 
 .scrollable-containers {

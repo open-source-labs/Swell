@@ -113,11 +113,11 @@ export default function WebRTCComposer(props) {
   return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
-      sx={{ padding: '10px', height: '100%', width: '100%' }}
+      sx={{ height: '100%', width: '100%' }}
       id="composer-webrtc"
     >
       <div
-        className="is-flex-grow-3 add-vertical-scroll"
+        className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
         {/** @todo Fix TSX type error */}
@@ -146,9 +146,9 @@ export default function WebRTCComposer(props) {
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />
-      </div>
-      <div className="is-3rem-footer is-clickable is-margin-top-auto">
-        <NewRequestButton onClick={addNewRequest} />
+        <div className="is-3rem-footer is-clickable is-margin-top-auto">
+          <NewRequestButton onClick={addNewRequest} />
+        </div>
       </div>
     </Box>
   );

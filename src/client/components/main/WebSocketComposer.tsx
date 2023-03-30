@@ -116,23 +116,25 @@ export default function WebSocketComposer(props) {
       }}
       id="composer-websocket"
     >
-      <div
-        className="is-flex-grow-3 add-vertical-scroll"
-        style={{ overflowX: 'hidden' }}
-      >
-        <WSEndpointEntryForm
-          newRequestFields={newRequestFields}
-          fieldsReplaced={fieldsReplaced}
-          warningMessage={warningMessage}
-          setWarningMessage={setWarningMessage}
+      <div className="container-margin">
+        <div
+          className="is-flex-grow-3 add-vertical-scroll"
+          style={{ overflowX: 'hidden' }}
+        >
+          <WSEndpointEntryForm
+            newRequestFields={newRequestFields}
+            fieldsReplaced={fieldsReplaced}
+            warningMessage={warningMessage}
+            setWarningMessage={setWarningMessage}
+          />
+        </div>
+        <WSTestEntryForm
+          newTestContentSet={newTestContentSet}
+          testContent={testContent}
         />
-      </div>
-      <WSTestEntryForm
-        newTestContentSet={newTestContentSet}
-        testContent={testContent}
-      />
-      <div className="is-3rem-footer is-clickable is-margin-top-auto">
-        <NewRequestButton onClick={addNewRequest} />
+        <div className="is-3rem-footer is-clickable is-margin-top-auto">
+          <NewRequestButton onClick={addNewRequest} />
+        </div>
       </div>
     </Box>
   );
