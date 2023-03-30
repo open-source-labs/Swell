@@ -108,9 +108,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.0",
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-    "@fortawesome/fontawesome-free": "^6.1.1",
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.9",
@@ -152,12 +149,10 @@
     "graphql-ws": "^5.8.1",
     "highland": "^2.13.5",
     "js-beautify": "^1.14.3",
-    "js-cookie": "^3.0.1",
     "mali": "^0.46.1",
     "ngrok": "^4.3.1",
     "node-fetch": "^3.3.0",
     "npm": "^8.7.0",
-    "octokit": "^1.7.1",
     "patch-package": "^6.4.7",
     "path": "^0.12.7",
     "prop-types": "^15.8.1",
@@ -200,7 +195,6 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@types/cookie": "^0.5.1",
     "@types/jest": "^27.4.1",
-    "@types/js-cookie": "^3.0.2",
     "@types/node": "^17.0.28",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
@@ -501,4 +495,3 @@
     }
   ]
 }
-
