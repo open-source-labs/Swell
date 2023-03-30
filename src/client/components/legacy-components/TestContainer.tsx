@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import ScheduleReqResContainer from './ScheduleReqResContainer';
 import StoppedContainer from './StoppedContainer';
 import ReqResContainer from './ReqResContainer';
-import { simpleLoadTest } from './LoadTest';
+import { simpleLoadTest } from './LoadTest'; // => changed simpleloadtest with mine so need to comment out
+import { graphLoadTest } from './GraphqlLoadTest';
 
 interface ScheduleContainerProps {}
 
@@ -70,6 +71,35 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
             } button-padding-vertical button-hover-color ml-3`}
             onClick={async () => {
               const results = await simpleLoadTest(
+                userUrl,
+                callsPerSecond,
+                totalTime
+              );
+              console.log(results);
+            }}
+          >
+            Run GraphQL
+          </button>
+          <button
+            className={`button is-small is-danger ${
+              isDark ? '' : 'is-outlined'
+            } button-padding-vertical button-hover-color ml-3`}
+            onClick={() => {
+              setScheduledTests(false);
+            }}
+          >
+            Stop
+          </button>
+        </div>
+      </div>
+      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
+        <div className="ml-2">
+          <button
+            className={`button is-small is-primary ${
+              isDark ? '' : 'is-outlined'
+            } button-padding-vertical button-hover-color ml-3`}
+            onClick={async () => {
+              const results = await graphLoadTest(
                 userUrl,
                 callsPerSecond,
                 totalTime
