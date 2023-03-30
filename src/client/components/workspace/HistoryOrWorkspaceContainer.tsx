@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 // Import local components
 import BarGraph from '../legacy-components/BarGraph';
-import ScheduleContainer from '../legacy-components/TestContainer';
+import ScheduleContainer from '../main/loadTest/TestContainer';
 import WorkspaceContainer from './WorkspaceContainer';
 import HistoryContainer from './HistoryContainer';
 // Import MUI components and icons

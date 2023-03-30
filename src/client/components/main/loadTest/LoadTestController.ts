@@ -1,9 +1,9 @@
-import store from "../../toolkit-refactor/store";
-import { appDispatch } from "../../toolkit-refactor/store";
-import { responseDataSaved, reqResUpdated } from "../../toolkit-refactor/reqRes/reqResSlice";
-import { ReqRes, WindowExt } from "../../../types";
+import store from "../../../toolkit-refactor/store";
+import { appDispatch } from "../../../toolkit-refactor/store";
+import { responseDataSaved, reqResUpdated } from "../../../toolkit-refactor/reqRes/reqResSlice";
+import { ReqRes, WindowExt } from "../../../../types";
 import { LoadTestResult } from "./LoadTest";
-import { graphUpdated } from "../../toolkit-refactor/graphPoints/graphPointsSlice";
+import { graphUpdated } from "../../../toolkit-refactor/graphPoints/graphPointsSlice";
 
 const { api } = window as unknown as WindowExt;
 
@@ -23,7 +23,6 @@ const LoadTestController = {
   processLoadTestResults(id: string | number, results: LoadTestResult): void {
     // Get the current array of request objects
     const reqResArray: ReqRes[] = store.getState().reqRes.reqResArray;
-    console.log('ID HERE', id);
 
     // Find the reqResObj with a matching ID
     const reqResObj: ReqRes = reqResArray.find(
@@ -36,7 +35,6 @@ const LoadTestController = {
         events: this.convertLoadTestResultToEventsArray(results),
       }
     }
-    console.log('newReqRes.response.events', newReqRes.response.events);
     // Check if the reqResObj is valid and has the necessary conditions
     if (
       reqResObj &&

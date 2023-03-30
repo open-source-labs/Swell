@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ScheduleReqResContainer from './ScheduleReqResContainer';
-import StoppedContainer from './StoppedContainer';
-import ReqResContainer from './ReqResContainer';
+import ScheduleReqResContainer from '../../legacy-components/ScheduleReqResContainer';
+import StoppedContainer from '../../legacy-components/StoppedContainer';
+import ReqResContainer from '../../legacy-components/ReqResContainer';
 import { simpleLoadTest, LoadTestResult } from './LoadTest';
 import LoadTestController from './LoadTestController';
 import { connect } from 'react-redux';
-import { reqResUpdated, reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
-import { RootState, AppDispatch } from '../../toolkit-refactor/store';
-import { ReqRes } from '../../../types';
+import { reqResUpdated, reqResItemAdded } from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { RootState, AppDispatch } from '../../../toolkit-refactor/store';
+import { ReqRes } from '../../../../types';
 
 const mapStateToProps = (store: RootState) => ({
   reqResArray: store.reqRes.reqResArray,
@@ -23,13 +23,13 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
 });
 
-interface ScheduleContainerProps {
+interface TestContainerProps {
   reqResArray: ReqRes[];
   reqResItemAdded: (reqRes: ReqRes) => void;
   reqResUpdated: (reqRes: ReqRes) => void;
 }
 
-const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ reqResArray, reqResItemAdded, reqResUpdated }) => {
+const TestContainer: React.FC<TestContainerProps> = ({ reqResArray, reqResItemAdded, reqResUpdated }) => {
   const [scheduleInterval, setScheduleInterval] = useState<number>(1);
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
@@ -84,9 +84,7 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ reqResArray, reqR
                 callsPerSecond,
                 totalTime
               );
-              console.log(results);
-              // console.log('reqresArray', reqResArray);
-              // console.log('reqresobj', reqResObj.url);
+
               // Assuming you have a valid reqResObj
               LoadTestController.processLoadTestResults(reqResObj.id, results);
             }}
@@ -116,4 +114,4 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ reqResArray, reqR
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduleContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TestContainer);
