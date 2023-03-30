@@ -20,6 +20,7 @@ import { ReqRes } from '../../../types';
 
 const mapStateToProps = (store: RootState) => ({
   reqResArray: store.reqRes.reqResArray,
+  currentResponse: store.reqRes.currentResponse,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -37,14 +38,14 @@ interface TestContainerProps {
   reqResUpdated: (reqRes: ReqRes) => void;
 }
 
-const TestContainer: React.FC<TestContainerProps> = ({ reqResArray, reqResItemAdded, reqResUpdated }) => {
+const TestContainer: React.FC<TestContainerProps> = ({ reqResArray, currentResponse, reqResItemAdded, reqResUpdated }) => {
   const [scheduleInterval, setScheduleInterval] = useState<number>(1);
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
   const isDark = useSelector((state: any) => state.ui.isDark);
 
-  const reqResObj = reqResArray[reqResArray.length - 1];
+  const reqResObj = currentResponse;
 
   return (
     <div>
