@@ -108,7 +108,7 @@ class CookieEntryForm extends Component {
           <button
             className={`${
               this.props.isDark ? 'is-dark-200' : ''
-            } button add-header-gRPC-cookie-button`}
+            } button add-header-gRPC-cookie-button ml-2`}
             id="add-cookie"
             onClick={() => this.addCookie(this.createDeepCookieCopy())}
             style={{ height: '3px', width: '3px' }}

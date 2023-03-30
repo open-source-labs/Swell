@@ -1,8 +1,8 @@
 /**
  * @file Defines the slice for the new requests
- * 
+ *
  * slice contains request body and header information
- * 
+ *
  * @todo should be combined with new Request fields slice as the data related to constructing
  * each request is associated
  */
@@ -108,55 +108,46 @@ const newRequestSlice = createSlice({
     },
 
     // this reducer should only be invoked in conjunction with the newRequestFieldsByProtocol reducer
-    newRequestContentByProtocol: (state, action: PayloadAction<string>) => {
+    newRequestContentByProtocol: (
+      state,
+      action: PayloadAction<string>
+    ): NewRequestStore => {
+      const composeNewRequestStore = (bodyType: string): NewRequestStore => {
+        return {
+          ...initialState,
+          newRequestBody: {
+            ...initialState.newRequestBody,
+            bodyType: bodyType,
+            bodyVariables: '',
+          },
+        };
+      };
+
       switch (action.payload) {
         case 'tRPC': {
-          return {
-            ...initialState,
-            bodyType: 'TRPC',
-            bodyVariables: '',
-          };
+          return composeNewRequestStore('TRPC');
         }
         case 'graphQL': {
-          return {
-            ...initialState,
-            bodyType: 'GQL',
-            bodyVariables: '',
-          };
+          return composeNewRequestStore('GQL');
         }
         case 'rest': {
-          return {
-            ...initialState,
-            bodyType: 'none',
-            bodyContent: ``,
-          };
+          return composeNewRequestStore('none');
         }
         case 'openapi': {
-          return {
-            ...initialState,
-            bodyType: 'none',
-            bodyContent: '',
-          };
+          return composeNewRequestStore('none');
         }
         case 'grpc': {
-          return {
-            ...initialState,
-            bodyType: 'GRPC',
-            bodyContent: ``,
-          };
+          return composeNewRequestStore('GRPC');
         }
         case 'ws': {
-          return {
-            ...initialState,
-            bodyType: 'none',
-            bodyContent: '',
-          };
+          return composeNewRequestStore('none');
         }
         case 'webrtc': {
           return {
             ...initialState,
-            bodyType: 'stun-ice',
             newRequestBody: {
+              ...initialState.newRequestBody,
+              bodyType: 'stun-ice',
               bodyContent: {
                 iceConfiguration: {
                   iceServers: [
@@ -166,20 +157,17 @@ const newRequestSlice = createSlice({
                   ],
                 },
               },
-            }
+            },
           };
         }
         case 'webhook': {
-          return {
-            ...initialState,
-            bodyType: 'none',
-          };
+          return composeNewRequestStore('none');
         }
         default:
           return state;
       }
     },
-  }
+  },
 });
 
 export const {
@@ -189,7 +177,7 @@ export const {
   newRequestSSESet,
   newRequestStreamsSet,
   composerFieldsReset,
-  newRequestContentByProtocol
+  newRequestContentByProtocol,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 

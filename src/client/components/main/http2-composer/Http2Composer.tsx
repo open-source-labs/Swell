@@ -276,60 +276,58 @@ export default function Http2Composer(props) {
         setCookies={setCookies}
         http2Method={http2Method}
       /> */}
-      <RestMethodAndEndpointEntryForm
-        newRequestFields={newRequestFields}
-        newRequestBody={newRequestBody}
-        newTestContentSet={newTestContentSet}
-        fieldsReplaced={fieldsReplaced}
-        newRequestBodySet={newRequestBodySet}
-        warningMessage={warningMessage}
-        setWarningMessage={setWarningMessage}
-      />
-      <span className="inputs">
-        <div>
-          <HeaderEntryForm
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            newRequestFields={newRequestFields}
-            newRequestHeadersSet={newRequestHeadersSet}
-            newRequestStreamsSet={newRequestStreamsSet}
-          />
-          <CookieEntryForm
-            newRequestCookies={newRequestCookies}
-            newRequestBody={newRequestBody}
-            newRequestCookiesSet={newRequestCookiesSet}
-          />
-        </div>
-      </span>
-      {/* SSE TOGGLE SWITCH */}
-      <div className="field mt-2 httpResReq">
-        <div className="is-3rem-footer is-clickable restReqBtns">
+      <div className="container-margin">
+        <RestMethodAndEndpointEntryForm
+          newRequestFields={newRequestFields}
+          newRequestBody={newRequestBody}
+          newTestContentSet={newTestContentSet}
+          fieldsReplaced={fieldsReplaced}
+          newRequestBodySet={newRequestBodySet}
+          warningMessage={warningMessage}
+          setWarningMessage={setWarningMessage}
+        />
+        <span>
+          <div>
+            <HeaderEntryForm
+              newRequestHeaders={newRequestHeaders}
+              newRequestStreams={newRequestStreams}
+              newRequestBody={newRequestBody}
+              newRequestFields={newRequestFields}
+              newRequestHeadersSet={newRequestHeadersSet}
+              newRequestStreamsSet={newRequestStreamsSet}
+            />
+            <CookieEntryForm
+              newRequestCookies={newRequestCookies}
+              newRequestBody={newRequestBody}
+              newRequestCookiesSet={newRequestCookiesSet}
+            />
+          </div>
+        </span>
+        {/* SSE TOGGLE SWITCH */}
+        <div className="field mt-2 flex-space-around">
           <SendRequestButton onClick={sendNewRequest} />
-          <p> --- or --- </p>
+          <FormControlLabel
+            control={<Switch />}
+            label="Server Sent Events"
+            onChange={() => newRequestSSESet(!isSSE)}
+            checked={isSSE}
+          />
           <NewRequestButton onClick={addNewRequest} />
         </div>
-        <FormControlLabel
-          control={<Switch />}
-          className=".cm-s-neo .cm-number"
-          label="Server Sent Events"
-          onChange={() => newRequestSSESet(!isSSE)}
-          checked={isSSE}
+        {method !== 'GET' && (
+          <BodyEntryForm
+            warningMessage={warningMessage}
+            newRequestBody={newRequestBody}
+            newRequestBodySet={newRequestBodySet}
+            newRequestHeaders={newRequestHeaders}
+            newRequestHeadersSet={newRequestHeadersSet}
+          />
+        )}
+        <TestEntryForm
+          newTestContentSet={newTestContentSet}
+          testContent={testContent}
         />
       </div>
-      {method !== 'GET' && (
-        <BodyEntryForm
-          warningMessage={warningMessage}
-          newRequestBody={newRequestBody}
-          newRequestBodySet={newRequestBodySet}
-          newRequestHeaders={newRequestHeaders}
-          newRequestHeadersSet={newRequestHeadersSet}
-        />
-      )}
-      <TestEntryForm
-        newTestContentSet={newTestContentSet}
-        testContent={testContent}
-      />
     </Box>
   );
 }

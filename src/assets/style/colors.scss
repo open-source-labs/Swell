@@ -27,35 +27,6 @@ $primary: $primary-500;
 $success: $primary-300;
 $danger: $primary-200;
 $text: $neutral-400;
-// $link: $blue
-// $info: $cyan
-// $success: $green
-// $warning: $yellow
-// $dark: $grey-darker
-
-// CODE MIRROR COLORS
-.cm-s-neo .cm-comment {
-  color: $neutral-400 !important;
-}
-.cm-s-neo .cm-keyword,
-.cm-s-neo .cm-property {
-  color: #a626a4 !important;
-}
-.cm-s-neo .cm-atom,
-.cm-s-neo .cm-number {
-  color: $primary-200 !important;
-}
-.cm-s-neo .cm-node,
-.cm-s-neo .cm-tag {
-  color: #a57b25 !important;
-}
-.cm-s-neo .cm-string {
-  color: $primary-500 !important;
-}
-.cm-s-neo .cm-variable,
-.cm-s-neo .cm-qualifier {
-  color: #a59a06 !important;
-}
 
 .is-primary-100 {
   color: $neutral-500 !important; // this is send and add font color
