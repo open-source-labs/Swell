@@ -1,5 +1,5 @@
 // Base React and React Router scaffolding
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter } from 'react-router-dom';
 
 // Controllers
@@ -13,30 +13,12 @@ import NavBarContainer from './navbar/NavBarContainer';
 import MainContainer from './main/MainContainer';
 import { WindowExt } from '../../types';
 
-// Material UI components
-import { Box, Divider } from '@mui/material';
-import Split from "react-split";
+import Split from 'react-split';
 // Error handling
 import ErrorBoundary from './utilities/ErrorBoundary/ErrorBoundary';
 
 // Import styling
-/**
- * @todo
- * Note to future devs:
- * Our team was not able to complete migrating all of the existing components
- * to use Material UI. This should be finished for a couple of reasons:
- *
- * (1) This application needs consistent styling, and making changes to the
- * SASS files can really complicate development of the app.
- *
- * (2) Material UI is very easy to use and very supported. If you know React and
- * a touch of CSS, you'll be able to quickly make visually-compatible components
- * without touching CSS files, which will speed up development.
- *
- * - AA 18 May, 2022
- */
 import '../../assets/style/App.scss';
-import WorkspaceContainer from './workspace/WorkspaceContainer';
 
 const { api } = window as unknown as WindowExt;
 
@@ -63,26 +45,25 @@ const App = () => {
           <NavBarContainer />
         </ErrorBoundary>
 
-        {/* <Box sx={{ height: '100%', display: 'flex' }}> */}
-          {/* Workspace. Left side of the application. */}
-          <Split direction="horizontal" gutterSize={5} style={{ width: '100%', height: '100%', display: 'flex'}}>
-              <ErrorBoundary>
-                <HistoryOrWorkspaceContainer
-                  currentWorkspaceId={currentWorkspaceId}
-                  setWorkspace={setWorkspace}
-                />
-              </ErrorBoundary>
-            {/* <Divider
-              orientation="vertical"
-              sx={{ borderRightWidth: 2, background: '#51819b' }}
-            /> */}
+        {/* Workspace. Left side of the application. */}
+        <Split
+          direction="horizontal"
+          sizes={[35, 65]}
+          gutterSize={5}
+          style={{ width: '100%', height: '100%', display: 'flex' }}
+        >
+          <ErrorBoundary>
+            <HistoryOrWorkspaceContainer
+              currentWorkspaceId={currentWorkspaceId}
+              setWorkspace={setWorkspace}
+            />
+          </ErrorBoundary>
 
-            {/* Main container. Contains the composer and response panes. */}
-            <ErrorBoundary>
-              <MainContainer currentWorkspaceId={currentWorkspaceId} />
-            </ErrorBoundary>
-          </Split>
-        {/* </Box> */}
+          {/* Main container. Contains the composer and response panes. */}
+          <ErrorBoundary>
+            <MainContainer currentWorkspaceId={currentWorkspaceId} />
+          </ErrorBoundary>
+        </Split>
 
         <ErrorBoundary>
           <UpdatePopUpContainer />

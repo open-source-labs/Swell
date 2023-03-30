@@ -211,6 +211,17 @@ const graphQLController: GqlController = {
           appDispatch(reqResUpdated(newReqRes));
         },
         error(err) {
+          const newReqRes: ReqRes = {
+            ...reqResObj,
+            connection: 'error',
+            error: err,
+            response: {
+              ...reqResObj.response,
+              events: [err],
+            },
+          };
+          appDispatch(responseDataSaved(newReqRes));
+          appDispatch(reqResUpdated(newReqRes));
           console.error(err);
         },
       });

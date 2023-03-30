@@ -135,7 +135,7 @@ export default function OpenAPIComposer(props) {
       id="composer-openapi"
     >
       <div
-        className="is-flex-grow-3 add-vertical-scroll"
+        className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
         {/** @todo fix TS type error */}

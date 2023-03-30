@@ -196,26 +196,6 @@
   border-radius: 2px !important;
 }
 
-// CODEMIRROR STYLES
-
-.cm-s-readonly {
-  background-color: $neutral-100;
-  color: $neutral-400;
-  max-height: 150px !important;
-  border: 1px solid $neutral-300;
-  font-family: 'Source Sans Pro', sans-serif !important;
-  font-size: 0.75em;
-}
-.cm-s-readonly .CodeMirror-gutters {
-  border: none;
-  background-color: $neutral-100;
-  color: $neutral-300;
-}
-.cm-s-readonly .CodeMirror-linenumber {
-  border: none;
-  color: $neutral-300;
-}
-
 .no-styling {
   padding: 0;
   margin: 0;

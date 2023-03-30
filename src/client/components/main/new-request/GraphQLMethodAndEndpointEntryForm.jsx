@@ -12,9 +12,6 @@ const GraphQLMethodAndEndpointEntryForm = ({
   newRequestFields,
   newRequestBodySet,
   newRequestBody,
-  newRequestHeadersSet,
-  newRequestStreams,
-  newRequestHeaders: { headersArr },
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
@@ -97,7 +94,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     <div>
       <div
         ref={dropdownEl}
-        className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${
+        className={`is-flex is-justify-content-center dropdown ${
           dropdownIsActive ? 'is-active' : ''
         }`}
         style={{ padding: '10px' }}

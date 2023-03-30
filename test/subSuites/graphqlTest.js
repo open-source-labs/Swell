@@ -178,7 +178,6 @@ module.exports = () => {
                 const introspectionResult = await page.locator(
                   '#gql-introspection >> .cm-content'
                 );
-                console.log('result', introspectionResult);
                 expect(await introspectionResult.count()).to.equal(1);
                 expect(await introspectionResult.innerText()).to.include(
                   'Continent'
@@ -332,7 +331,6 @@ module.exports = () => {
                 expect(await events.count()).to.equal(1);
 
                 expect(statusCode).to.equal('Success');
-                console.log('here', await events.innerText());
                 expect(await events.innerText()).to.include('Tethics');
                 resolve();
               } catch (err) {
@@ -407,6 +405,41 @@ module.exports = () => {
           console.error(err);
         }
       }).timeout(5000);
+
+      it('subscriptions should error with incorrect schema (LOCAL API)', async () => {
+        try {
+          // START SUBSCRIPTION
+          const method = 'SUBSCRIPTION';
+          const url = 'http://localhost:4000/graphql';
+          // Misspelled `newLink`
+          const query = 'subscription {newnk {id description url}}';
+
+          await fillGQLRequest(url, method, query);
+          await addAndSend(num++);
+
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                const statusCode = await page
+                  .locator('.status-tag')
+                  .innerText();
+                const events = await page.locator(
+                  '#events-display >> .cm-content'
+                );
+                expect(await events.count()).to.equal(1);
+
+                expect(statusCode).to.equal('Error');
+                expect(await events.innerText()).to.include('newnk');
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 1000);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      });
     }).timeout(20000);
   });
 };

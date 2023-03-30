@@ -122,7 +122,6 @@ const graphqlController = {
         client
           .query({ query: body, variables, context: headers })
           .then((data) => {
-            console.log(`hi`)
             // handle tests
             if (reqResObj.request.testContent) {
               reqResObj.response.testResult = testingController.runTest(

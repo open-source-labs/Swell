@@ -1,40 +1,40 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
-import { RootState } from '../../toolkit-refactor/store';
 
 // Import actions so that the navbar can interact with the Redux store.
-import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
-import {
-  newRequestContentByProtocol
-} from '../../toolkit-refactor/newRequest/newRequestSlice';
-
-
-import {
-  newRequestFieldsByProtocol
-} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
-
+import { newRequestContentByProtocol } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
 
-const blue = {
+interface color {
+  [key: number]: string;
+}
+
+interface page {
+  name: string;
+  route: string;
+  value: string;
+}
+
+const blue: color = {
   500: '#373f51', //text for top buttons
   600: '#95ceed',
   700: '#7ebdde',
   800: '#3730a3',
-  900: '#1e3a8a'
+  900: '#1e3a8a',
 };
 
-const white = {
+const white: color = {
   500: '#f0f6fa',
 };
 
 const CustomButton = styled(ButtonUnstyled)`
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: bold;
   font-size: 0.875rem;
   background-color: ${white[500]};
@@ -46,16 +46,10 @@ const CustomButton = styled(ButtonUnstyled)`
   border: none;
   width: 8vw;
 
-
-  &:hover {
-    color: white;
-    background-color: #58a4b0;
-  }
-
+  &:hover,
   &:active {
     color: white;
-    background-color:  #58a4b0;
-    box-shadow: inset 0px 0px 4px #ff3000;
+    background-color: #58a4b0;
   }
 `;
 
@@ -69,8 +63,7 @@ const SelectedButton = styled(CustomButton)`
  * route: The React Router route to redirect to on click.
  * value: The value of the button used to update the Redux store.
  */
-
-const pages = [
+const pages: page[] = [
   { name: 'HTTP/2', route: '/', value: 'rest' },
   { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
   { name: 'gRPC', route: '/grpc', value: 'grpc' },
@@ -78,7 +71,7 @@ const pages = [
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
-  { name: 'tRPC', route: '/trpc', value: 'tRPC'},
+  { name: 'tRPC', route: '/trpc', value: 'tRPC' },
 ];
 
 /**
@@ -86,26 +79,23 @@ const pages = [
  * It is responsible for kicking off the process of creating default values for the composer containers.
  * Click a protocol button -> Alter the Redux store accordingly -> Route to the appropriate "main" container
  */
-/**@todo - refactor below function to be more DRY */
-
 function ProtocolSelect() {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   /**
    * Alters the Redux store when a protocol is selected.
    * @param network
    */
   const onProtocolSelect = (network: string) => {
-    
-    dispatch(newRequestFieldsByProtocol(network))
-    dispatch(newRequestContentByProtocol(network))
+    dispatch(newRequestFieldsByProtocol(network));
+    dispatch(newRequestContentByProtocol(network));
+  };
+  const [curPage, setCurPage] = useState('');
+
+  const handleClick = (value: string, name: string): void => {
+    onProtocolSelect(value);
+    setCurPage(name);
   };
 
-  const [curPage, setCurPage] = useState('');
-  const handleClick = (page: {name: string; route: string; value: string}) => {
-    setCurPage(page.name)
-  }
- 
   return (
     <Box
       key="page-selector"
@@ -116,37 +106,28 @@ function ProtocolSelect() {
         alignItems: 'center',
       }}
     >
-      {pages.map((page) => (
-        <Link key={page.name} to={page.route} >
-          {page.name === curPage ? 
+      {pages.map(({ name, route, value }: page) => (
+        <Link className="no-focus-outline" key={name} to={route}>
+          {name === curPage ? (
             <SelectedButton
-              key={page.name}
-              onClick={() => {
-                onProtocolSelect(page.value);
-                handleClick(page);
-              }}
-              sx={{
-                m: 1,
-              }}>
-                {page.name}
+              key={name}
+              onClick={() => handleClick(value, name)}
+              sx={{ m: 1 }}
+            >
+              {name}
             </SelectedButton>
-          :
+          ) : (
             <CustomButton
-              key={page.name}
-              onClick={() => {
-                onProtocolSelect(page.value);
-                handleClick(page);
-              }}
-              sx={{
-                m: 1,
-              }}>
-                {page.name}
+              key={name}
+              onClick={() => handleClick(value, name)}
+              sx={{ m: 1 }}
+            >
+              {name}
             </CustomButton>
-          }
+          )}
         </Link>
       ))}
     </Box>
   );
 }
 export default ProtocolSelect;
-
