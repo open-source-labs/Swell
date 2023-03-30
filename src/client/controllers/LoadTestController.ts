@@ -18,25 +18,6 @@ const { api } = window as unknown as WindowExt;
 
 const LoadTestController = {
   /**
-   * Converts a LoadTestResult object into an array of events.
-   *
-   * @param {LoadTestResult} loadTestResult - The LoadTestResult object containing the load test results.
-   * @returns {Record<string, unknown>[]} An array of events, each represented as an object.
-   */
-  convertLoadTestResultToEventsArray(
-    loadTestResult: LoadTestResult
-  ): Record<string, unknown>[] {
-    return [
-      { totalSent: loadTestResult.totalSent },
-      { totalReceived: loadTestResult.totalReceived },
-      { totalMissed: loadTestResult.totalMissed },
-      { averageResponseTime: loadTestResult.averageResponseTime },
-      { totalNotSent: loadTestResult.totalNotSent },
-      { errorCounts: loadTestResult.errorCounts },
-    ];
-  },
-
-  /**
    * Processes the results of a load test and updates the application state.
    *
    * This function finds the matching request-response object in the store using the provided ID,
@@ -54,7 +35,7 @@ const LoadTestController = {
       ...reqResObj,
       response: {
         ...reqResObj.response,
-        events: this.convertLoadTestResultToEventsArray(results),
+        events: results,
       },
     };
 

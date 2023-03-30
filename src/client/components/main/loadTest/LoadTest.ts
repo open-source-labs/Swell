@@ -13,14 +13,15 @@
  * console.log(testResults);
  */
 
-export interface LoadTestResult {
-  totalSent: number;
-  totalReceived: number;
-  totalMissed: number;
-  averageResponseTime: number;
-  totalNotSent: number;
-  errorCounts: { [errorCode: string]: number };
-}
+export type LoadTestResult = [
+  { totalSent: number },
+  { totalReceived: number },
+  { totalMissed: number },
+  { averageResponseTime: number },
+  { totalNotSent: number },
+  { errorCounts: { [errorCode: string]: number } },
+];
+
 
 export async function simpleLoadTest(
   url: string,
@@ -103,14 +104,13 @@ export async function simpleLoadTest(
   const averageResponseTime =
     totalReceived === 0 ? totalReceived : totalResponseTime / totalReceived;
 
-  // Return the load test results as an object.
-  return {
-    totalSent,
-    totalReceived,
-    totalMissed,
-    totalNotSent,
-    errorCounts,
-    averageResponseTime,
-  };
+    return [
+      { totalSent },
+      { totalReceived },
+      { totalMissed },
+      { averageResponseTime },
+      { totalNotSent },
+      { errorCounts },
+    ];
 }
 
