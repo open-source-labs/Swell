@@ -51,7 +51,7 @@ const ResponsePaneContainer = () => {
         {/* HEADER */}
         <div
           className="hero is-primary is-flex is-flex-direction-row is-justify-content-center"
-          style={{ padding: '10px' }}
+          style={{ padding: '10px', position: 'sticky' }}
         >
           <ResponseTime currentResponse={currentResponse} />
           {currentResponse.responseSize && (

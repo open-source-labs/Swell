@@ -308,6 +308,10 @@ const SingleReqResContainer = (props) => {
             onClick={() => {
               if (network === 'webrtc') {
                 testSDPConnection(content);
+              } else if (content.graphQL && request.method === 'SUBSCRIPTION') {
+                // For GraphQL subscriptions, `GraphQLController::openSubscription` will take care of
+                // updating state, and we do not want to overwrite response data here
+                connectionController.openReqRes(content.id);
               } else {
                 //if it's http, dispatch set active tab to "event" for reqResResponse
                 //otherwise do nothing
