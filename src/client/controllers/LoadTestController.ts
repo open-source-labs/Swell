@@ -1,9 +1,9 @@
-import store from "../../../toolkit-refactor/store";
-import { appDispatch } from "../../../toolkit-refactor/store";
-import { responseDataSaved, reqResUpdated } from "../../../toolkit-refactor/reqRes/reqResSlice";
-import { ReqRes, WindowExt } from "../../../../types";
-import { LoadTestResult } from "./LoadTest";
-import { graphUpdated } from "../../../toolkit-refactor/graphPoints/graphPointsSlice";
+import store from "../toolkit-refactor/store";
+import { appDispatch } from "../toolkit-refactor/store";
+import { responseDataSaved, reqResUpdated } from "../toolkit-refactor/reqRes/reqResSlice";
+import { ReqRes, WindowExt } from "../../types";
+import { LoadTestResult } from "../components/main/loadTest/LoadTest";
+import { graphUpdated } from "../toolkit-refactor/graphPoints/graphPointsSlice";
 
 const { api } = window as unknown as WindowExt;
 

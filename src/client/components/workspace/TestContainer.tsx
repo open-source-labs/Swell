@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ScheduleReqResContainer from '../../legacy-components/ScheduleReqResContainer';
-import StoppedContainer from '../../legacy-components/StoppedContainer';
-import ReqResContainer from '../../legacy-components/ReqResContainer';
-import { simpleLoadTest, LoadTestResult } from './LoadTest';
-import LoadTestController from './LoadTestController';
+import ScheduleReqResContainer from '../legacy-components/ScheduleReqResContainer';
+import StoppedContainer from '../legacy-components/StoppedContainer';
+import ReqResContainer from '../legacy-components/ReqResContainer';
+import { simpleLoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
+import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
-import { reqResUpdated, reqResItemAdded } from '../../../toolkit-refactor/reqRes/reqResSlice';
-import { RootState, AppDispatch } from '../../../toolkit-refactor/store';
-import { ReqRes } from '../../../../types';
+import { reqResUpdated, reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { RootState, AppDispatch } from '../../toolkit-refactor/store';
+import { ReqRes } from '../../../types';
 
 const mapStateToProps = (store: RootState) => ({
   reqResArray: store.reqRes.reqResArray,
