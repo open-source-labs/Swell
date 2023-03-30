@@ -3,22 +3,41 @@ import { useSelector, useDispatch } from 'react-redux';
 import ScheduleReqResContainer from './ScheduleReqResContainer';
 import StoppedContainer from './StoppedContainer';
 import ReqResContainer from './ReqResContainer';
-import { simpleLoadTest } from './LoadTest';
+import { simpleLoadTest, LoadTestResult } from './LoadTest';
 import LoadTestController from './LoadTestController';
+import { connect } from 'react-redux';
+import { reqResUpdated, reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { RootState, AppDispatch } from '../../toolkit-refactor/store';
+import { ReqRes } from '../../../types';
 
-interface ScheduleContainerProps {}
+const mapStateToProps = (store: RootState) => ({
+  reqResArray: store.reqRes.reqResArray,
+});
 
-const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  reqResItemAdded: (reqRes: ReqRes) => {
+    dispatch(reqResItemAdded(reqRes));
+  },
+  reqResUpdated: (reqRes: ReqRes) => {
+    dispatch(reqResUpdated(reqRes));
+  },
+});
+
+interface ScheduleContainerProps {
+  reqResArray: ReqRes[];
+  reqResItemAdded: (reqRes: ReqRes) => void;
+  reqResUpdated: (reqRes: ReqRes) => void;
+}
+
+const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ reqResArray, reqResItemAdded, reqResUpdated }) => {
   const [scheduleInterval, setScheduleInterval] = useState<number>(1);
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
   const [userUrl, setUserUrl] = useState<string>('');
   const isDark = useSelector((state: any) => state.ui.isDark);
-  const loadTestController = new LoadTestController();
-  const reqResArray = useSelector((state) => state.reqRes.reqResArray);
+
   const reqResObj = reqResArray[reqResArray.length - 1];
-  
 
   return (
     <div>
@@ -75,13 +94,15 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
             } button-padding-vertical button-hover-color ml-3`}
             onClick={async () => {
               const results = await simpleLoadTest(
-                userUrl,
+                reqResObj.url,
                 callsPerSecond,
                 totalTime
               );
               console.log(results);
+              // console.log('reqresArray', reqResArray);
+              // console.log('reqresobj', reqResObj.url);
               // Assuming you have a valid reqResObj
-              loadTestController.processLoadTestResults(results, reqResObj);
+              LoadTestController.processLoadTestResults(reqResObj.id, results);
             }}
           >
             Run
@@ -109,4 +130,4 @@ const ScheduleContainer: React.FC<ScheduleContainerProps> = () => {
   );
 };
 
-export default ScheduleContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleContainer);

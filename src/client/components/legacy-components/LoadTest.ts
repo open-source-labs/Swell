@@ -47,6 +47,7 @@ export async function simpleLoadTest(
       totalSent += 1;
       const startTime = performance.now();
       const response = await fetch(url);
+      // console.log(response);
       const endTime = performance.now();
       // If the response is successful (HTTP status 200-299), increment the totalReceived counter
       // and update the totalResponseTime.

@@ -7,22 +7,54 @@ import { graphUpdated } from "../../toolkit-refactor/graphPoints/graphPointsSlic
 
 const { api } = window as unknown as WindowExt;
 
-const LoadTestController = () => {
+const LoadTestController = {
 
-  const processLoadTestResults = (loadTestResults: LoadTestResult, reqResObj: ReqRes) => {
-    api.receive('load-test-results', (reqResObj: ReqRes) => {
-      if (reqResObj.response.events) {
-        appDispatch(graphUpdated(reqResObj));
-        appDispatch(reqResUpdated(reqResObj));
+  convertLoadTestResultToEventsArray(loadTestResult: LoadTestResult): Record<string, unknown>[] {
+    return [
+      { totalSent: loadTestResult.totalSent },
+      { totalReceived: loadTestResult.totalReceived },
+      { totalMissed: loadTestResult.totalMissed },
+      { averageResponseTime: loadTestResult.averageResponseTime },
+      { totalNotSent: loadTestResult.totalNotSent },
+      { errorCounts: loadTestResult.errorCounts },
+    ];
+  },
+  
+  processLoadTestResults(id: string | number, results: LoadTestResult): void {
+    // Get the current array of request objects
+    const reqResArray: ReqRes[] = store.getState().reqRes.reqResArray;
+    console.log('ID HERE', id);
+
+    // Find the reqResObj with a matching ID
+    const reqResObj: ReqRes = reqResArray.find(
+      (el: ReqRes) => el.id === id
+    );
+    const newReqRes: ReqRes = {
+      ...reqResObj,
+      response: {
+        ...reqResObj.response,
+        events: this.convertLoadTestResultToEventsArray(results),
       }
-    })
-
-    api.send('http-load-test')
-  };
-
-  return {
-    processLoadTestResults,
-  };
+    }
+    console.log('newReqRes.response.events', newReqRes.response.events);
+    // Check if the reqResObj is valid and has the necessary conditions
+    if (
+      reqResObj &&
+      (reqResObj.connection === "closed" || reqResObj.connection === "error") &&
+      reqResObj.timeSent &&
+      reqResObj.timeReceived &&
+      reqResObj.response.events.length > 0
+    ) {
+      // Dispatch graphUpdated and reqResUpdated actions
+      appDispatch(graphUpdated(newReqRes));
+      appDispatch(reqResUpdated(newReqRes));
+      appDispatch(responseDataSaved(newReqRes));
+    }
+    // Dispatch graphUpdated and reqResUpdated actions
+    // appDispatch(graphUpdated(reqResObj));
+    appDispatch(reqResUpdated(newReqRes));
+    appDispatch(responseDataSaved(newReqRes));
+  },
 };
 
 export default LoadTestController;
