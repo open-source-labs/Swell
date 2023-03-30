@@ -36,7 +36,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - _HTTP2_: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, with the ability to revert to HTTP1.1 for legacy servers. Multiple concurrent streams are allowed for each connection.
   <img src="./ReadMeGifs/Gifs/HttpTesting.gif" style="display: block;  margin: 10px auto 30px; border: 1px solid black;" />
-  
+
 - _GraphQL_: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions – as well as Introspection. Variables are also supported, making creating queries easy.
   <img src="./ReadMeGifs/Gifs/GraphQL.gif" style="display: block; margin: 10px auto 30px;" />
 
@@ -88,11 +88,11 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - _WebSockets (WS)_: Swell enables connecting directly to WebSocket servers with an HTTP handshake, with developers able to send messages to the connected WS server directly. All outgoing and incoming messages are displayed in real time.
   <img src="./ReadMeGifs/Gifs/Websockets.gif" style="display: block; margin: 10px auto 30px;" />
-  
+
 - _WebRTC_: Swell makes it easy to test STUN and TURN ICE server connectivity for WebRTC applications.  
   <img src="./ReadMeGifs/Gifs/webrtc.gif" style="display: block; margin: 10px auto 30px; " />
 
-  Currently, it is a read-only feature. When the write feature for ICE server is enable, ICE server details can be entered as an array of JavaScript objects (example code block below). An RTCPeerConnection will be instantiated, as an SDP is generated.
+  Currently, it is a read-only feature. When the write feature for ICE server is enabled, ICE server details can be entered as an array of JavaScript objects (example code block below). An RTCPeerConnection will be instantiated, as an SDP is generated.
 
   ```js
   [
