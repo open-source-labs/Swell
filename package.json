@@ -1,6 +1,6 @@
 {
   "name": "swell",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
@@ -501,3 +501,4 @@
     }
   ]
 }
+

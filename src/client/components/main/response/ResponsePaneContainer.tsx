@@ -37,17 +37,17 @@ const ResponsePaneContainer = () => {
   // console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
 
   return (
-    <Box>
+    <Box id="responses">
       <div
         className={`${
           isDark ? 'is-dark-400' : 'is-divider-neutral-300'
         } box is-3 add-vertical-scroll`}
-        // className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
-        style={{ height: '90%', margin: '0px', padding: '0.5rem' }}
-        id="responses"
+        style={{
+          height: '90%',
+          margin: '0px',
+          padding: '0.5rem 1rem 0.5rem 1rem',
+        }}
       >
-        {/* <button onClick={() => testing()}>></button> */}
-
         {/* HEADER */}
         <div
           className="hero is-primary is-flex is-flex-direction-row is-justify-content-center"
@@ -156,7 +156,7 @@ const ResponsePaneContainer = () => {
             currentResponse.request?.method !== 'WS' &&
             currentResponse.request?.method !== 'SUBSCRIPTION' &&
             (connection === 'closed' || connection === 'error') && (
-              <div className="is-3rem-footer mx-3">
+              <div className="is-3rem-footer">
                 <button
                   className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
                   onClick={() => {

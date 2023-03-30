@@ -36,7 +36,7 @@ const WebRTCServerEntryForm = (props) => {
       <div className="composer-section-title">
         TURN or STUN Servers (Currently read only)
       </div>
-      <div className={`is-neutral-200-box p-3 ${isDark ? 'is-dark-400' : ''}`}>
+      <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
         {/*
          * The WebRTC architecture in Swell does not support updating the STUN/TURN server info
          * to avoid confusion, we will set the `readonly` flag to `true`
