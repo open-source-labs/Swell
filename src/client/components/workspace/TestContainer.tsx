@@ -6,7 +6,10 @@ import ReqResContainer from '../legacy-components/ReqResContainer';
 import { simpleLoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
 import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
-import { reqResUpdated, reqResItemAdded } from '../../toolkit-refactor/reqRes/reqResSlice';
+import {
+  reqResUpdated,
+  reqResItemAdded,
+} from '../../toolkit-refactor/reqRes/reqResSlice';
 import { RootState, AppDispatch } from '../../toolkit-refactor/store';
 import { ReqRes } from '../../../types';
 
@@ -38,8 +41,13 @@ interface TestContainerProps {
   reqResUpdated: (reqRes: ReqRes) => void;
 }
 
-const TestContainer: React.FC<TestContainerProps> = ({ reqResArray, currentResponse, reqResItemAdded, reqResUpdated }) => {
-  const [scheduleInterval, setScheduleInterval] = useState<number>(1);
+const TestContainer: React.FC<TestContainerProps> = ({
+  reqResArray,
+  currentResponse,
+  reqResItemAdded,
+  reqResUpdated,
+}) => {
+  const [isTestRunning, setIsTestRunning] = useState<boolean>(false);
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
@@ -88,18 +96,21 @@ const TestContainer: React.FC<TestContainerProps> = ({ reqResArray, currentRespo
               isDark ? '' : 'is-outlined'
             } button-padding-vertical button-hover-color ml-3`}
             onClick={async () => {
+              setIsTestRunning(true);
               const results = await simpleLoadTest(
                 reqResObj.url,
                 callsPerSecond,
                 totalTime
               );
-
               // Assuming you have a valid reqResObj
               LoadTestController.processLoadTestResults(reqResObj.id, results);
+              setIsTestRunning(false);
             }}
+            disabled={isTestRunning}
           >
             Run
           </button>
+          {/* {currently the stop button does not work, no functionality in the loadtest to stop cancel out of the test} */}
           <button
             className={`button is-small is-danger ${
               isDark ? '' : 'is-outlined'
@@ -115,10 +126,6 @@ const TestContainer: React.FC<TestContainerProps> = ({ reqResArray, currentRespo
       <div className="m-1">
         <ReqResContainer displaySchedule={false} />
       </div>
-      {runScheduledTests && (
-        <ScheduleReqResContainer scheduleInterval={scheduleInterval} />
-      )}
-      {!runScheduledTests && <StoppedContainer />}
     </div>
   );
 };
