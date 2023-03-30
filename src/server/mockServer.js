@@ -2,7 +2,10 @@ const path = require('path');
 const express = require('express');
 const mockServer = express();
 
-const port = 9990;
+const PORT = 9990;
+const ROOT = '/';
+const MOCK = '/mock';
+const LISTROUTES = '/list-routes';
 
 // TODO: move these functions to a middleware file?
 // TODO: create a function and endpoint to delete a mock route
@@ -14,25 +17,34 @@ const createMockRoute = (method, endpoint, response) => {
   });
 };
 
-// returns all existing routes as an array of strings
+// returns an object where the keys are the method types and the values are an array of endpoints
 const getAllExistingRoutes = () => {
-  const routes = mockServer._router.stack
-    .filter((layer) => layer.route)
-    .map(
-      (layer) => `${Object.keys(layer.route.methods)} - ${layer.route.path}`
-    );
+  const routesObj = mockServer._router.stack.reduce((outputObj, layer) => {
+    const { route } = layer;
 
-  return routes;
+    if (route && ![ROOT, MOCK, LISTROUTES].includes(route.path)) {
+      const { methods, path } = route;
+      const method = Object.keys(methods);
+
+      outputObj.hasOwnProperty(method)
+        ? outputObj[method].push(path)
+        : outputObj[method] = [path];
+    }
+
+    return outputObj;
+  }, {});
+
+  return routesObj;
 };
 
 mockServer.use(express.static(path.resolve(__dirname, '../../build')));
 mockServer.use(express.urlencoded({ extended: true }));
 mockServer.use(express.json());
 
-mockServer.get('/', (req, res) => res.send('Hello World!'));
+mockServer.get(ROOT, (req, res) => res.send('Hello World!'));
 
 // renderer process sends a POST request to /mock with the user's mock data
-mockServer.post('/mock', (req, res) => {
+mockServer.post(MOCK, (req, res) => {
   const { method, endpoint, response } = req.body;
 
   createMockRoute(method, endpoint, response);
@@ -42,13 +54,10 @@ mockServer.post('/mock', (req, res) => {
 });
 
 // gets all the routes that have been created
-mockServer.get('/list-routes', (req, res) => {
-  // gets all routes and joins them into a newline separated string
-  const routes = getAllExistingRoutes().join('\n');
-
-  res.send(routes);
+mockServer.get(LISTROUTES, (req, res) => {
+  res.send(getAllExistingRoutes());
 });
 
-module.exports = mockServer.listen(port, () =>
-  console.log(`Listening on port ${port}`)
+module.exports = mockServer.listen(PORT, () =>
+  console.log(`Listening on port ${PORT}`)
 );
