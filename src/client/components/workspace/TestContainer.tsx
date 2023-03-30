@@ -10,6 +10,14 @@ import { reqResUpdated, reqResItemAdded } from '../../toolkit-refactor/reqRes/re
 import { RootState, AppDispatch } from '../../toolkit-refactor/store';
 import { ReqRes } from '../../../types';
 
+/**
+ * TestContainer component allows users to configure and perform load tests.
+ * It contains inputs for the load test frequency and duration, as well as buttons
+ * to start and stop the tests. The component also renders the ReqResContainer,
+ * ScheduleReqResContainer, and StoppedContainer components to display the results
+ * of the tests.
+ */
+
 const mapStateToProps = (store: RootState) => ({
   reqResArray: store.reqRes.reqResArray,
 });
