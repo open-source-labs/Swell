@@ -13,8 +13,6 @@
  * console.log(testResults);
  */
 
-const axios = require('axios');
-
 export type LoadTestResult = [
   { totalSent: number },
   { totalReceived: number },
@@ -49,7 +47,7 @@ export async function simpleLoadTest(
     try {
       totalSent += 1;
       const startTime = performance.now();
-      const response = await axios.get(url);
+      const response = await fetch(url);
       const endTime = performance.now();
       // If the response is successful (HTTP status 200-299), increment the totalReceived counter
       // and update the totalResponseTime.
