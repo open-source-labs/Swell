@@ -1,47 +1,44 @@
 // Confirm testing of request/response works for GraphQL
 
-const graphqlServer = require('../graphqlServer');
-const {_electron: electron} = require('playwright');
-const chai = require('chai')
-const expect = chai.expect
+const { _electron: electron } = require('playwright');
+const chai = require('chai');
+const expect = chai.expect;
 const path = require('path');
 const fs = require('fs');
 
-let electronApp, page, num=0;
+let electronApp,
+  page,
+  num = 0;
 
 module.exports = () => {
-
-  const setupFxn = function() {
+  const setupFxn = function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       page = electronApp.windows()[0]; // In case there is more than one window
       await page.waitForLoadState(`domcontentloaded`);
 
       await page.locator('button >> text=Clear Workspace').click();
-
     });
-    
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
-
-      try {
-        graphqlServer.close();
-        console.log('graphqlServer closed');
-      } catch (err) {
-        console.error(err);
-      }
-
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       if (this.currentTest.state === 'failed') {
-        console.log(`Screenshotting failed test window`)
+        console.log(`Screenshotting failed test window`);
         const imageBuffer = await page.screenshot();
-        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
+        fs.writeFileSync(
+          path.resolve(
+            __dirname + '/../failedTests',
+            `FAILED_${this.currentTest.title}.png`
+          ),
+          imageBuffer
+        );
       }
     });
-  }
+  };
 
   describe('GraphQL Testing Controller', () => {
     setupFxn();
@@ -56,14 +53,15 @@ module.exports = () => {
       cookies = []
     ) => {
       try {
-        // click and check 
+        // click and check
         await page.locator('button>> text=GRAPHQL').click();
-
 
         // click and select METHOD if it isn't QUERY
         if (method !== 'QUERY') {
           await page.locator('button#graphql-method').click();
-          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
+          await page
+            .locator(`div[id^="composer"] >> a >> text=${method}`)
+            .click();
         }
 
         // type in url
@@ -71,36 +69,42 @@ module.exports = () => {
 
         // set headers
         headers.forEach(async ({ key, value }, index) => {
-          await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
-          await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
+          await page
+            .locator(`#header-row${index} >> [placeholder="Key"]`)
+            .fill(key);
+          await page
+            .locator(`#header-row${index} >> [placeholder="Value"]`)
+            .fill(value);
           await page.locator('#add-header').click();
         });
 
         // set cookies
         cookies.forEach(async ({ key, value }, index) => {
-          await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
-          await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
+          await page
+            .locator(`#cookie-row${index} >> [placeholder="Key"]`)
+            .fill(key);
+          await page
+            .locator(`#cookie-row${index} >> [placeholder="Value"]`)
+            .fill(value);
           await page.locator('#add-cookie').click();
         });
-
 
         // select Body, clear it, and type in query
         const codeMirror = await page.locator('#gql-body-entry');
         await codeMirror.click();
         const gqlBodyCode = await codeMirror.locator('.cm-content');
 
-          try {
-            await gqlBodyCode.fill('');
-            await gqlBodyCode.fill(body);
-          } catch (err) {
-            console.error(err);
+        try {
+          await gqlBodyCode.fill('');
+          await gqlBodyCode.fill(body);
+        } catch (err) {
+          console.error(err);
         }
 
         // select Variables and type in variables
         const codeMirror2 = await page.locator('#gql-var-entry');
         await codeMirror2.click();
         await codeMirror2.locator('.cm-content').fill(variables);
-
       } catch (err) {
         console.error(err);
       }
@@ -122,13 +126,13 @@ module.exports = () => {
         // click the view tests button to reveal the test code editor
         await page.locator('span >> text=View Tests').click();
         // set the value of the code editor to be some hard coded simple assertion tests
-        
+
         const codeMirror2 = await page.locator('#test-script-entry');
         await codeMirror2.click();
         const scriptBody = await codeMirror2.locator('.cm-content');
 
         try {
-          scriptBody.fill('')
+          scriptBody.fill('');
           await scriptBody.fill(script);
         } catch (err) {
           console.error(err);
@@ -140,7 +144,6 @@ module.exports = () => {
         console.error(err);
       }
     };
-
 
     it('it should be able to resolve a simple passing test', async () => {
       const method = 'QUERY';
@@ -181,7 +184,7 @@ module.exports = () => {
       await addAndSend(num++);
 
       // Select the Tests column inside of Responses pane.
-      await page.locator('a >> text=Tests').click(); 
+      await page.locator('a >> text=Tests').click();
 
       const testStatus = await new Promise((resolve) => {
         setTimeout(async () => {

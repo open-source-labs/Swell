@@ -8,7 +8,7 @@
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
     "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test process.env.TRAVIS_LOCAL_API=true nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --exit",
     "server-sse": "node ./test/fakeSSEServer.js",
-    "server-gql": "node ./test/graphqlServer.js",
+    "server-gql": "node ./test/graphqlServer.mjs",
     "server-grpc": "node ./test/grpcServer.js",
     "server-http": "node ./test/httpServer.js",
     "server-http2": "node ./test/HTTP2_server.js",
@@ -107,6 +107,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.0",
+    "@apollo/server": "^4.6.0",
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.9",
@@ -117,7 +118,6 @@
     "@uiw/codemirror-extensions-langs": "^4.19.9",
     "@uiw/codemirror-theme-vscode": "^4.19.9",
     "@uiw/react-codemirror": "^4.19.9",
-    "apollo-server-express": "^3.6.7",
     "axios": "^0.27.1",
     "body-parser": "^1.20.0",
     "bulma": "^0.9.3",
@@ -494,4 +494,3 @@
     }
   ]
 }
-
