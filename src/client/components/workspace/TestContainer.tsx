@@ -51,81 +51,123 @@ const TestContainer: React.FC<TestContainerProps> = ({
   const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
   const isDark = useSelector((state: any) => state.ui.isDark);
 
-  const reqResObj = currentResponse;
+  const handleShowLoadTest = () => {
+    setShowLoadTest(!showLoadTest);
+  };
+
+
+  const [showLoadTest, setShowLoadTest] = useState(false);
+
+  const reqResObj = currentResponse.url 
+  ? currentResponse : reqResArray.length > 0 
+  ? reqResArray[reqResArray.length - 1] : null;
 
   return (
-    <div>
-      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
-          <p>Frequency:</p>
-          <input
-            className={`${
-              isDark ? 'is-dark-200' : ''
-            } ml-1 input input-is-medium is-info`}
-            style={{ width: '65px' }}
-            type="number"
-            placeholder="Calls/sec"
-            value={callsPerSecond}
-            onChange={(e) => {
-              setCallsPerSecond(e.target.value);
-            }}
-          />
-        </div>
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
-          <p>Duration:</p>
-          <input
-            className={`${
-              isDark ? 'is-dark-200' : ''
-            } ml-1 input input-is-medium is-info`}
-            style={{ width: '65px' }}
-            type="number"
-            placeholder="Duration"
-            value={totalTime}
-            onChange={(e) => {
-              setTotalTime(e.target.value);
-            }}
-          />
-        </div>
+    <div className="mt-4 mb-4">
+      <div
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
+        onClick={handleShowLoadTest}
+      >
+        {showLoadTest === true && (
+          <>
+            <span>Hide Load Test</span>
+          </>
+        )}
+
+        {showLoadTest === false && (
+          <>
+            <span>Load Test</span>
+          </>
+        )}
       </div>
-      <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
-        <div className="ml-2">
-          <button
-            className={`button is-small is-primary ${
-              isDark ? '' : 'is-outlined'
-            } button-padding-vertical button-hover-color ml-3`}
-            onClick={async () => {
-              setIsTestRunning(true);
-              const results = await simpleLoadTest(
-                reqResObj.url,
-                callsPerSecond,
-                totalTime
-              );
-              // Assuming you have a valid reqResObj
-              LoadTestController.processLoadTestResults(reqResObj.id, results);
-              setIsTestRunning(false);
-            }}
-            disabled={isTestRunning}
-          >
-            Run
-          </button>
-          {/* {currently the stop button does not work, no functionality in the loadtest to stop cancel out of the test} */}
-          <button
-            className={`button is-small is-danger ${
-              isDark ? '' : 'is-outlined'
-            } button-padding-vertical button-hover-color ml-3`}
-            onClick={() => {
-              setScheduledTests(false);
-            }}
-          >
-            Stop
-          </button>
+      {showLoadTest === true && (
+        <div id="test-snippets">
+          <div>
+            <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
+              <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+                <p>Frequency:</p>
+                <input
+                  className={`${
+                    isDark ? 'is-dark-200' : ''
+                  } ml-1 input input-is-medium is-info`}
+                  style={{ width: '65px' }}
+                  type="number"
+                  placeholder="Calls/sec"
+                  value={callsPerSecond}
+                  onChange={(e) => {
+                    setCallsPerSecond(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+                <p>Duration:</p>
+                <input
+                  className={`${
+                    isDark ? 'is-dark-200' : ''
+                  } ml-1 input input-is-medium is-info`}
+                  style={{ width: '65px' }}
+                  type="number"
+                  placeholder="Duration"
+                  value={totalTime}
+                  onChange={(e) => {
+                    setTotalTime(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
+              <div className="ml-2">
+                <button
+                  className={`button is-small is-primary ${
+                    isDark ? '' : 'is-outlined'
+                  } button-padding-vertical button-hover-color ml-3`}
+                  onClick={async () => {
+                    const controller = new AbortController();
+                    setAbortController(controller);
+                    setIsTestRunning(true);
+                    const results = await simpleLoadTest(
+                      reqResObj.url,
+                      callsPerSecond,
+                      totalTime,
+                      controller.signal
+                    );
+                    // Assuming you have a valid reqResObj
+                    LoadTestController.processLoadTestResults(
+                      reqResObj.id,
+                      results
+                    );
+                    setIsTestRunning(false);
+                  }}
+                  disabled={isTestRunning || !reqResObj || !reqResObj.url}
+                >
+                  Run
+                </button>
+                {/* {currently the stop button does not work, no functionality in the loadtest to stop cancel out of the test} */}
+                <button
+                  className={`button is-small is-danger ${
+                    isDark ? '' : 'is-outlined'
+                  } button-padding-vertical button-hover-color ml-3`}
+                  onClick={() => {
+                    if (abortController) {
+                      abortController.abort();
+                      setAbortController(null);
+                    }
+                    setScheduledTests(false);
+                  }}
+                  
+                >
+                  Stop
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="m-1">
-        <ReqResContainer displaySchedule={false} />
-      </div>
+      )}
     </div>
   );
 };

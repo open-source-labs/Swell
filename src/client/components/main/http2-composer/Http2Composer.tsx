@@ -27,6 +27,8 @@ import TestEntryForm from '../new-request/TestEntryForm';
 import { Box, FormControlLabel, Switch } from '@mui/material';
 import { CookieOrHeader, ReqRes } from '../../../../types';
 
+import TestContainer from '../../workspace/TestContainer';
+
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
   const dispatch = useDispatch();
@@ -327,6 +329,7 @@ export default function Http2Composer(props) {
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />
+        <TestContainer />
       </div>
     </Box>
   );

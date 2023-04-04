@@ -26,7 +26,8 @@ export type LoadTestResult = [
 export async function simpleLoadTest(
   url: string,
   requestsPerSecond: number,
-  durationInSeconds: number
+  durationInSeconds: number,
+  abortSignal: AbortSignal
 ): Promise<LoadTestResult> {
   // Initialize variables for start and end times of the load test.
   const startTest = performance.now();
@@ -74,7 +75,7 @@ export async function simpleLoadTest(
   // Define the runUserLoad function, which simulates a single user sending requests to the target URL.
   const runUserLoad = async () => {
     // Keep sending requests until the end time of the load test is reached.
-    while (performance.now() < endTest) {
+    while (performance.now() < endTest && !abortSignal.aborted) {
       const startOfSecond: number = performance.now();
       let requestsThisSecond: number = 0;
 
