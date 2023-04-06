@@ -9,7 +9,7 @@ import historyController from '../../controllers/historyController';
  */
 import WSEndpointEntryForm from './new-request/WSEndpointEntryForm';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
-import WSTestEntryForm from './new-request/WSTestEntryForm.jsx';
+import TestEntryForm from './new-request/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
 
@@ -128,7 +128,8 @@ export default function WebSocketComposer(props) {
             setWarningMessage={setWarningMessage}
           />
         </div>
-        <WSTestEntryForm
+        <TestEntryForm
+          isWebSocket="true"
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />

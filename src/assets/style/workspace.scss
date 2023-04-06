@@ -212,6 +212,27 @@
   margin: 0;
 }
 
+.assertion-test-snippets {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem auto 0.5rem 0;
+  gap: 0.5rem;
+
+  header {
+    text-decoration: underline;
+  }
+
+  span {
+    display: inline-block;
+    transition: transform 0.3s ease-out;
+
+    &:hover {
+      cursor: pointer;
+      transform: translate(5px, 0);
+    }
+  }
+}
+
 // BARGRAPH
 
 .bar-graph {

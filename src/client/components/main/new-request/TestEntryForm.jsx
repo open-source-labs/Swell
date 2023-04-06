@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import TextCodeArea from './TextCodeArea.tsx';
-import RestTestSnippetsContainer from './test-snippets/RestTestSnippetsContainer';
+import RestTestSnippets from './test-snippets/RestTestSnippets.jsx';
+import WebsocketTestSnippets from './test-snippets/WebsocketTestSnippets.jsx';
 
 const TestEntryForm = (props) => {
-  const { testContent, newTestContentSet } = props;
+  const { isWebSocket, testContent, newTestContentSet } = props;
   const isDark = useSelector((store) => store.ui.isDark);
 
   const [showTests, setShowTests] = useState(false);
@@ -14,11 +15,19 @@ const TestEntryForm = (props) => {
 
   return (
     <div className="mt-4 mb-4">
-      <RestTestSnippetsContainer
-        testContent={testContent}
-        newTestContentSet={newTestContentSet}
-        setShowTests={setShowTests}
-      />
+      {isWebSocket ? (
+        <WebsocketTestSnippets
+          testContent={testContent}
+          newTestContentSet={newTestContentSet}
+          setShowTests={setShowTests}
+        />
+      ) : (
+        <RestTestSnippets
+          testContent={testContent}
+          newTestContentSet={newTestContentSet}
+          setShowTests={setShowTests}
+        />
+      )}
       <div
         className={`${
           isDark ? 'is-dark-200' : ''
