@@ -332,7 +332,6 @@ const httpController = {
       SSEController.createStream(reqResObj, options, event);
     } else {
       try {
-        console.log('in try block of establishHTTP1Connection');
         const response = await this.makeFetch({ options }, event, reqResObj);
 
         const heads = response.headers;

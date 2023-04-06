@@ -230,9 +230,7 @@ const graphQLController: GqlController = {
 
     const newReqRes: ReqRes = { ...reqResObj, connection: 'open' };
     appDispatch(reqResUpdated(newReqRes));
-
-    const currentID = Store.getState().reqRes.currentResponse.id;
-    if (currentID === reqResObj.id) appDispatch(responseDataSaved(newReqRes));
+    appDispatch(responseDataSaved(newReqRes));
   },
 
   closeSubscription(reqResObj: ReqRes): void {
