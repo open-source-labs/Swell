@@ -36,12 +36,12 @@ const TestEntryForm = (props) => {
       >
         {showTests === true && (
           <>
-            <span>Hide Tests</span>
+            <span>Hide Assertion Tests</span>
           </>
         )}
         {showTests === false && (
           <>
-            <span>View Tests</span>
+            <span>View Assertion Tests</span>
           </>
         )}
       </div>
