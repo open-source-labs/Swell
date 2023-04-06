@@ -89,12 +89,23 @@
   font-size: 1.4rem;
 }
 
-.pass-fail-button {
-  min-width: 8vh;
-  max-height: 4vh;
-  max-width: 8vh;
-  padding: 0.5vh;
-  font-weight: 600;
+@mixin pass-fail-button {
+  display: flex;
+  padding: 0.3rem;
+}
+
+.pass-fail-response {
+  @include pass-fail-button;
+}
+
+.pass-fail-button-success {
+  @include pass-fail-button;
+  background-color: $primary-300;
+}
+
+.pass-fail-button-failure {
+  @include pass-fail-button;
+  background-color: $primary-400;
 }
 
 .is-flex-basis-0 {
