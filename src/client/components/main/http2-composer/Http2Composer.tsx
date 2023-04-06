@@ -325,11 +325,11 @@ export default function Http2Composer(props) {
             newRequestHeadersSet={newRequestHeadersSet}
           />
         )}
+          <TestContainer />
         <TestEntryForm
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />
-        <TestContainer />
       </div>
     </Box>
   );

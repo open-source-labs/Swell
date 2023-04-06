@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 // Import local components
-import BarGraph from '../legacy-components/BarGraph';
-import ScheduleContainer from './TestContainer';
 import WorkspaceContainer from './WorkspaceContainer';
 import HistoryContainer from './HistoryContainer';
 // Import MUI components and icons
@@ -46,7 +44,6 @@ function a11yProps(index: number) {
 export default function HistoryOrWorkspaceContainer(
   props: WorkspaceContainerProps
 ) {
-  const [showGraph, setShowGraph] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -73,16 +70,7 @@ export default function HistoryOrWorkspaceContainer(
             sx={{
               fontSize: '10px',
               overflowWrap: 'break-word',
-              width: '33.33%',
-            }}
-          />
-          <Tab
-            icon={<ScheduleSendRounded fontSize="small" />}
-            {...a11yProps(1)}
-            sx={{
-              fontSize: '10px',
-              overflowWrap: 'break-word',
-              width: '33.33%',
+              width: '50%',
             }}
           />
           <Tab
@@ -91,44 +79,13 @@ export default function HistoryOrWorkspaceContainer(
             sx={{
               fontSize: '10px',
               overflowWrap: 'break-word',
-              width: '33.33%',
+              width: '50%',
             }}
           />
         </Tabs>
       </Box>
-      {value === 1 && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            px: 1,
-            py: 1,
-          }}
-        >
-          <Button
-            className={`is-flex is-align-items-center is-justify-content-center is-graph-footer is-clickable`}
-            variant="outlined"
-            onClick={() => setShowGraph(showGraph === false)}
-          >
-            {showGraph && 'Hide Response Metrics'}
-            {!showGraph && 'View Response Metrics'}
-          </Button>
-          {showGraph && (
-            <Box
-              sx={{
-                py: 1,
-              }}
-            >
-              <BarGraph />
-            </Box>
-          )}
-        </Box>
-      )}
       <TabPanel value={value} index={0}>
         <WorkspaceContainer {...props} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ScheduleContainer />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <HistoryContainer />
