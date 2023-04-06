@@ -50,13 +50,13 @@ interface LoadTestResult {
       try {
         totalSent += 1;
         const startTime = performance.now();
-        // this is knows it's a HTTP request
-        // so I need to reformat this segment to be the body or whatever the format that graphQL does
-        // but ideally we would want to just import the result of running the query through this
+        // this is knows it's a HTTP request post request in order to get graphQL query
+        // reqResObject.request.body will body part => {continents{name code}}
+        // reqResObject.request.method will have => QUERY
+        // reqResObject.host will have the URL
         const response = await fetch(url, {
             method:'POST',
             headers: {"Content-Type": "application/json"},
-            // this body here needs to be replaced with whatever the user passes in
             body: JSON.stringify({
                 query: `
                     query {
