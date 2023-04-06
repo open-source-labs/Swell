@@ -16,6 +16,8 @@
  * - reqInputTests()
  * - httpTest()
  * - graphqlTest()
+ * - httpTestingTest()
+ * - graphqlTestingTest()
  *
  * The rest of the tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
