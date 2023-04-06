@@ -8,7 +8,11 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const path = require('path');
 const fs = require('fs');
-const { clearAndFillTestScriptArea } = require('./testHelper');
+const {
+  fillRestRequest,
+  addAndSend,
+  clearAndFillTestScriptArea,
+} = require('./testHelper');
 
 let electronApp,
   page,
@@ -42,84 +46,10 @@ module.exports = () => {
       }
     });
 
-    const fillRestRequest = async (
-      url,
-      method,
-      body = '',
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        // Make sure HTTP2 method is selected
-        await page.locator('button>> text=HTTP/2').click();
-
-        // click and select METHOD if it isn't GET
-        if (method !== 'GET') {
-          await page.locator('button#rest-method').click();
-          await page
-            .locator(`div[id^="composer"] >> a >> text=${method}`)
-            .click();
-        }
-
-        // type in url
-        await page.locator('#url-input').fill(url);
-
-        // set headers
-        headers.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#header-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#header-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-header').click();
-        });
-
-        // set cookies
-        cookies.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-cookie').click();
-        });
-
-        // Add BODY as JSON if it isn't GET
-        if (method !== 'GET') {
-          // select body type JSON
-          if ((await page.locator('#body-type-select').innerText()) === 'raw') {
-            await page.locator('#raw-body-type').click();
-            await page
-              .locator('.dropdown-item >> text=application/json')
-              .click();
-          }
-
-          // insert JSON content into body
-          const codeMirror = await page.locator('#body-entry-select');
-          await codeMirror.click();
-          const restBody = await codeMirror.locator('.cm-content');
-
-          try {
-            restBody.fill('');
-            await restBody.fill(body);
-          } catch (err) {
-            console.error(err);
-          }
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const addAndSend = async (num) => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${num}`).click();
-      } catch (err) {
-        console.error(err);
-      }
+    const addAndSendRequest = async (url, method, script, n) => {
+      await fillRestRequest(page, url, method);
+      await clearAndFillTestScriptArea(page, script);
+      await addAndSend(page, n);
     };
 
     // The app takes a while to launch, and without these rendering checks
@@ -150,9 +80,7 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "assert.strictEqual(3, 3, 'correct types');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
         await page.locator('a >> text=Tests').click();
 
         const testStatus = await page
@@ -165,11 +93,9 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "assert.strictEqual(3, '3', 'wrong types');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
-        await page.locator('a >> text=Tests').click();
+        await addAndSendRequest(url, method, script, num++);
 
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -180,11 +106,9 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "expect(3, 'correct types').to.equal(3);";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -195,11 +119,9 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "expect(3, 'correct types').to.equal('3');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -211,11 +133,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "assert.strictEqual(3, '3', 'wrong types');\nassert.strictEqual(3, '3', 'this assert is a message');\nassert.strictEqual(3, 3, 'correct types');\nassert.strictEqual(3, 3, 'this assert is a message');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const firstStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -240,11 +160,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "expect(3, 'wrong types').to.equal('3');\nexpect(3, 'this expect is a message').to.equal('3');\nexpect(3, 'correct types').to.equal(3);\nexpect(3, 'this expect is a message').to.equal(3);";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const firstStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -270,11 +188,9 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "assert.exists(response, 'response is object');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -286,11 +202,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "assert.strictEqual(response.status, 200, 'response is 200');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -302,11 +216,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "assert.exists(response.cookies, 'cookies exists on response object');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await page.locator('#TestResult-0-status').innerText();
@@ -324,11 +236,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "assert.exists(response.headers, 'headers exists on response object');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await page.locator('#TestResult-0-status').innerText();
@@ -343,11 +253,9 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "expect(response, 'response exists').to.exist;";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -359,11 +267,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "expect(response.status, 'response is 200').to.equal(200);";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await page
           .locator('#TestResult-0-status')
           .innerText();
@@ -375,11 +281,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "expect(response.cookies, 'cookies exists on response object').to.exist;";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -396,11 +300,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "expect(response.headers, 'headers exists on reponse object').to.exist;";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -418,11 +320,9 @@ module.exports = () => {
         const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "const foo = 'bar';";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const element = await page.locator('.empty-state-wrapper');
         expect(await element.count()).to.equal(1);
       });

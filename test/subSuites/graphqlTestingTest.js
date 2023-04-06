@@ -5,7 +5,11 @@ const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs');
-const { clearAndFillTestScriptArea } = require('./testHelper');
+const {
+  fillGQLRequest,
+  addAndSend,
+  clearAndFillTestScriptArea,
+} = require('./testHelper');
 
 let electronApp,
   page,
@@ -37,92 +41,17 @@ module.exports = () => {
       }
     });
 
-    const fillGQLBasicInfo = async (
+    const fillAndSendRequest = async (
       url,
       method,
-      headers = [],
-      cookies = []
+      query,
+      script,
+      n,
+      variables
     ) => {
-      try {
-        // click and check GRAPHQL
-        await page.locator('button>> text=GraphQL').click();
-
-        // click and select METHOD if it isn't QUERY
-        if (method !== 'QUERY') {
-          await page.locator('button#graphql-method').click();
-          await page
-            .locator(`div[id^="composer"] >> a >> text=${method}`)
-            .click();
-        }
-
-        // type in url
-        await page.locator('#url-input').fill(url);
-
-        // set headers
-        headers.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#header-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#header-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-header').click();
-        });
-
-        // set cookies
-        cookies.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-cookie').click();
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const fillGQLRequest = async (
-      url,
-      method,
-      query = '',
-      variables = '',
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        await fillGQLBasicInfo(url, method, headers, cookies);
-
-        // select Body, clear it, and type in query
-        const codeMirror = await page.locator('#gql-body-entry');
-        await codeMirror.click();
-        const gqlBodyCode = await codeMirror.locator('.cm-content');
-
-        try {
-          await gqlBodyCode.fill('');
-          await gqlBodyCode.fill(query);
-        } catch (err) {
-          console.error(err);
-        }
-
-        // select Variables and type in variables
-        const codeMirror2 = await page.locator('#gql-var-entry');
-        await codeMirror2.click();
-        await codeMirror2.locator('.cm-content').fill(variables);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const addAndSend = async (n) => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${n}`).click();
-      } catch (err) {
-        console.error(err);
-      }
+      await fillGQLRequest(page, url, method, query, variables);
+      await clearAndFillTestScriptArea(page, script);
+      await addAndSend(page, n);
     };
 
     // The app takes a while to launch, and without these rendering checks
@@ -155,11 +84,7 @@ module.exports = () => {
         const query = 'query($code: ID!) {country(code: $code) {capital}}';
         const variables = '{"code": "AE"}';
         const script = "assert.strictEqual(3, 3, 'Expect correct types.');";
-
-        // type in url
-        await fillGQLRequest(url, method, query, variables);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await fillAndSendRequest(url, method, query, script, num++, variables);
 
         // Select the Tests column inside of Responses pane.
         await page.locator('a >> text=Tests').click();
@@ -181,11 +106,7 @@ module.exports = () => {
         const query = 'query($code: ID!) {country(code: $code) {capital}}';
         const variables = '{"code": "AE"}';
         const script = "assert.strictEqual(3, 2, 'Expect failing test.');";
-
-        // type in url
-        await fillGQLRequest(url, method, query, variables);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await fillAndSendRequest(url, method, query, script, num++, variables);
 
         // Select the Tests column inside of Responses pane.
         await page.locator('a >> text=Tests').click();
@@ -208,11 +129,7 @@ module.exports = () => {
         const variables = '{"code": "AE"}';
         const script =
           "expect(response.headers, 'headers exists on response object').to.exist;";
-
-        // type in url
-        await fillGQLRequest(url, method, query, variables);
-        await clearAndFillTestScriptArea(page, script);
-        await addAndSend(num++);
+        await fillAndSendRequest(url, method, query, script, num++, variables);
 
         // Select the Tests column inside of Responses pane.
         await page.locator('a >> text=Tests').click();
