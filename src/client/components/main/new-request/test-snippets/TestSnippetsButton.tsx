@@ -2,12 +2,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../../../toolkit-refactor/store';
 
 export default function TestSnippetsButton({
   showSnippets,
   handleShowSnippets,
+}: {
+  showSnippets: boolean;
+  handleShowSnippets: () => void;
 }) {
-  const isDark = useSelector((store) => store.ui.isDark);
+  const isDark = useSelector((store: RootState) => store.ui.isDark);
   return (
     <div
       className={`${

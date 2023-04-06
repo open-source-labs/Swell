@@ -2,26 +2,29 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import TestSnippetsButton from './TestSnippetsButton';
+import { AppDispatch } from '../../../../toolkit-refactor/store';
 
-export default function RestTestSnippets(props) {
-  const { setShowTests, newTestContentSet } = props;
+export default function WebsocketTestSnippets({
+  setShowTests,
+  newTestContentSet,
+}: {
+  setShowTests: (arg: boolean) => AppDispatch;
+  newTestContentSet: (arg: string) => AppDispatch;
+}) {
   const [showSnippets, setShowSnippets] = useState(false);
 
-  const handleShowSnippets = () => {
+  const handleShowSnippets = (): void => {
     setShowSnippets(!showSnippets);
   };
 
-  const snippets = {
-    'Assert response status code is 200':
-      "assert.strictEqual(response.status, 200, 'response is 200')",
-
-    'Assert cookies are accessible from the response object':
-      "assert.exists(response.cookies, 'cookies exists on response object')",
+  const snippets: { [key: string]: string } = {
+    'Assert connection is open':
+      "assert.strictEqual(response.connection, 'open', 'response is open')",
   };
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent) => {
     setShowTests(true);
-    newTestContentSet(snippets[`${event.target.innerHTML}`]);
+    newTestContentSet(snippets[`${(event.target as HTMLElement).innerHTML}`]);
   };
 
   return (
@@ -36,10 +39,7 @@ export default function RestTestSnippets(props) {
           <header>
             Click on the following example to create assertion test below!
           </header>
-          <span onClick={handleClick}>Assert response status code is 200</span>
-          <span onClick={handleClick}>
-            Assert cookies are accessible from the response object
-          </span>
+          <span onClick={handleClick}>Assert connection is open</span>
         </div>
       )}
     </div>
