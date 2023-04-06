@@ -1,18 +1,23 @@
 import React from 'react';
 import { Box, List, ListItem, Stack } from '@mui/material';
+import { ReqRes, TestResult } from '../../../../types';
 
-export default function SingleTestContainer({ currentResponse }) {
-  const { response } = currentResponse;
+export default function SingleTestContainer({
+  currentResponse,
+}: {
+  currentResponse: ReqRes;
+}) {
+  const { testResult } = currentResponse.response;
 
   const { url } = currentResponse;
 
-  const passFailScripts = [];
+  const passFailScripts: JSX.Element[] = [];
 
-  let pass = 0;
-  let fail = 0;
+  let pass: number = 0;
+  let fail: number = 0;
 
-  if (response.testResult !== undefined && response.testResult !== null) {
-    response.testResult.forEach((ele, idx) => {
+  if (testResult !== undefined && testResult !== null) {
+    testResult.forEach((ele: TestResult, idx: number) => {
       const { status, message } = ele;
       if (status === 'PASS') pass += 1;
       else fail += 1;
