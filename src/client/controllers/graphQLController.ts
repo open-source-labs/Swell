@@ -55,7 +55,7 @@ const graphQLController: GqlController = {
         ...reqResObj.response,
       },
     };
-    console.log(reqResObj);
+    console.log(reqResObj, 'this is reqResObj in graphQLController');
     reqResObj.response.headers = {};
     reqResObj.response.events = [];
     reqResObj.response.cookies = [];
