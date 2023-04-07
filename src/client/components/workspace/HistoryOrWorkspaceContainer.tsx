@@ -5,7 +5,7 @@ import WorkspaceContainer from './WorkspaceContainer';
 import HistoryContainer from './HistoryContainer';
 // Import MUI components and icons
 import { Box, Tabs, Tab, Button } from '@mui/material';
-import { AccessTime, Work, ScheduleSendRounded } from '@mui/icons-material';
+import { AccessTime, Work } from '@mui/icons-material';
 import { WorkspaceContainerProps } from '../../../types';
 
 interface TabPanelProps {
@@ -75,7 +75,7 @@ export default function HistoryOrWorkspaceContainer(
           />
           <Tab
             icon={<AccessTime fontSize="small" />}
-            {...a11yProps(2)}
+            {...a11yProps(1)}
             sx={{
               fontSize: '10px',
               overflowWrap: 'break-word',
@@ -87,7 +87,7 @@ export default function HistoryOrWorkspaceContainer(
       <TabPanel value={value} index={0}>
         <WorkspaceContainer {...props} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={1}>
         <HistoryContainer />
       </TabPanel>
     </Box>

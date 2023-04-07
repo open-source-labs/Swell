@@ -136,6 +136,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       totalTime,
                       controller.signal
                     );
+                    console.log('reqResObj.request.method',reqResObj.request.method)
                     // Assuming you have a valid reqResObj
                     LoadTestController.processLoadTestResults(
                       reqResObj.id,
@@ -143,7 +144,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     );
                     setIsTestRunning(false);
                   }}
-                  disabled={isTestRunning || !reqResObj || !reqResObj.url}
+                  disabled={isTestRunning || !reqResObj || !reqResObj.url || reqResObj.request.method !== 'GET'}
                 >
                   Run
                 </button>
@@ -164,6 +165,10 @@ const TestContainer: React.FC<TestContainerProps> = ({
                   Stop
                 </button>
               </div>
+            </div>
+            <div>
+            Attention: This load test is specifically designed for HTTP GET requests and is intended for backend testing purposes only. 
+            Please be aware that running this test on websites may lead to CORS issues.
             </div>
           </div>
         </div>

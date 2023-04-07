@@ -14,12 +14,12 @@
  */
 
 export type LoadTestResult = [
-  { totalSent: number },
-  { totalReceived: number },
-  { totalMissed: number },
-  { averageResponseTime: number },
-  { totalNotSent: number },
-  { errorCounts: { [errorCode: string]: number } },
+  { totalSent: number,
+  totalReceived: number,
+  totalMissed: number,
+  averageResponseTime: number,
+  totalNotSent: number,
+  errorCounts: { [errorCode: string]: number } },
 ];
 
 
@@ -106,12 +106,12 @@ export async function simpleLoadTest(
     totalReceived === 0 ? totalReceived : totalResponseTime / totalReceived;
 
     return [
-      { totalSent },
-      { totalReceived },
-      { totalMissed },
-      { averageResponseTime },
-      { totalNotSent },
-      { errorCounts },
+      { totalSent,
+      totalReceived,
+      totalMissed,
+      averageResponseTime,
+      totalNotSent,
+      errorCounts },
     ];
 }
 
