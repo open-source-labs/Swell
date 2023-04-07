@@ -245,6 +245,8 @@ export interface ReqRes {
   timeSent: number | null;
   url: string;
   webrtc: boolean;
+  frequency?: number;
+  duration?: number;
 }
 
 export interface SSERequest {
