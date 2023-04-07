@@ -77,7 +77,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
     } else if (reqResObj.request.method !== 'GET') {
       return 'Only GET requests are supported for load tests.';
     } else {
-      return '';
+      return null;
     }
   };
 
@@ -173,7 +173,18 @@ const TestContainer: React.FC<TestContainerProps> = ({
                   >
                     Run
                   </button>
-                  <span className="tooltip-text">{getDisabledReason()}</span>
+                  <span
+                    className={`tooltip-text ${
+                      isTestRunning ||
+                      !reqResObj ||
+                      !reqResObj.url ||
+                      reqResObj.request.method !== 'GET'
+                        ? 'show-tooltip'
+                        : 'hide-tooltip'
+                    }`}
+                  >
+                    {getDisabledReason()}
+                  </span>
                 </div>
                 <button
                   className={`button is-small is-danger ${
