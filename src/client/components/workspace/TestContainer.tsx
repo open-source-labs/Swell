@@ -4,6 +4,7 @@ import ScheduleReqResContainer from '../legacy-components/ScheduleReqResContaine
 import StoppedContainer from '../legacy-components/StoppedContainer';
 import ReqResContainer from '../legacy-components/ReqResContainer';
 import { simpleLoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
+import { graphLoadTest, GraphLoadTestResult } from  '../main/loadTest/GraphqlLoadTest';
 import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
 import {
@@ -147,12 +148,25 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       const controller = new AbortController();
                       setAbortController(controller);
                       setIsTestRunning(true);
-                      const results = await simpleLoadTest(
-                        reqResObj.url,
-                        callsPerSecond,
-                        totalTime,
-                        controller.signal
-                      );
+
+                      let results: LoadTestResult | GraphLoadTestResult;
+
+                      if (reqResObj.graphQL) {
+                        results = await graphLoadTest(
+                          reqResObj.url,
+                          reqResObj.request,
+                          callsPerSecond,
+                          totalTime
+                        )
+                      } else {
+                        results = await simpleLoadTest(
+                          reqResObj.url,
+                          callsPerSecond,
+                          totalTime,
+                          controller.signal
+                        );
+                      }
+
                       console.log(
                         'reqResObj.request.method',
                         reqResObj.request.method
@@ -167,8 +181,8 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     disabled={
                       isTestRunning ||
                       !reqResObj ||
-                      !reqResObj.url ||
-                      reqResObj.request.method !== 'GET'
+                      !reqResObj.url
+                      // reqResObj.request.method !== 'GET'
                     }
                   >
                     Run

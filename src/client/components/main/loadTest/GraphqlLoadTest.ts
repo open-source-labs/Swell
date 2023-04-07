@@ -16,21 +16,25 @@
  * Also need to include request body when load testing
  */
 
-interface LoadTestResult {
-    totalSent: number;
-    totalReceived: number;
-    totalMissed: number;
-    averageResponseTime: number;
-    totalNotSent: number;
-    errorCounts: { [errorCode: string]: number };
-  }
+import gql from 'graphql-tag';
+
+export type GraphLoadTestResult = [
+  { totalSent: number,
+  totalReceived: number,
+  totalMissed: number,
+  averageResponseTime: number,
+  totalNotSent: number,
+  errorCounts: { [errorCode: string]: number } },
+];
+
   
   export async function graphLoadTest(
     url: string,
+    request: any,
     requestsPerSecond: number,
     durationInSeconds: number,
     
-  ): Promise<LoadTestResult> {
+  ): Promise<GraphLoadTestResult> {
     // Initialize variables for start and end times of the load test.
     const startTest = performance.now();
     const endTest = startTest + durationInSeconds * 1000;
@@ -54,19 +58,15 @@ interface LoadTestResult {
         // reqResObject.request.body will body part => {continents{name code}}
         // reqResObject.request.method will have => QUERY
         // reqResObject.host will have the URL
+        const requestBody = {
+          query: `${request.body}`
+        };
+        // console.log('${JSON.stringify(request.method)} ${JSON.stringify(request.body)}', `${JSON.stringify(request.method)} ${JSON.stringify(request.body)}`);
+        console.log('JSON.stringify(request.method request.body)', requestBody);
         const response = await fetch(url, {
             method:'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                query: `
-                    query {
-                        continents {
-                            name
-                            code
-                        }
-                    }
-                `
-            })
+            body: requestBody
         })
         const endTime = performance.now();
         // If the response is successful (HTTP status 200-299), increment the totalReceived counter
