@@ -166,12 +166,6 @@ const TestContainer: React.FC<TestContainerProps> = ({
                           controller.signal
                         );
                       }
-
-                      console.log(
-                        'reqResObj.request.method',
-                        reqResObj.request.method
-                      );
-                      // Assuming you have a valid reqResObj
                       LoadTestController.processLoadTestResults(
                         reqResObj.id,
                         results
@@ -181,8 +175,9 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     disabled={
                       isTestRunning ||
                       !reqResObj ||
-                      !reqResObj.url
-                      // reqResObj.request.method !== 'GET'
+                      !reqResObj.url ||
+                      reqResObj.request.method !== 'GET' &&
+                      !reqResObj.graphQL
                     }
                   >
                     Run
@@ -192,7 +187,8 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       isTestRunning ||
                       !reqResObj ||
                       !reqResObj.url ||
-                      reqResObj.request.method !== 'GET'
+                      reqResObj.request.method !== 'GET' &&
+                      !reqResObj.graphQL
                         ? 'show-tooltip'
                         : 'hide-tooltip'
                     }`}
@@ -218,7 +214,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
             </div>
             <div>
               Attention: This load test is specifically designed for HTTP GET
-              requests and is intended for backend testing purposes only. Please
+              requests & GraphQL Query. This is intended for backend testing purposes only. Please
               be aware that running this test on websites may lead to CORS
               issues.
             </div>

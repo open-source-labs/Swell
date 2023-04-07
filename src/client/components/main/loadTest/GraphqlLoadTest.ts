@@ -10,13 +10,9 @@
  *
  * @example
 
- * Right now Load test only does a HTTP fetch request because this is a copy from Fred's
-// I've tweaked it to be able to accept a hard coded GraphQL query on lines 57
- * const testResults = await simpleLoadTest('https://countries.trevorblades.com/', 10, 5, 30, query)??
- * Also need to include request body when load testing
+ * 
  */
 
-import gql from 'graphql-tag';
 
 export type GraphLoadTestResult = [
   { totalSent: number,
@@ -54,19 +50,15 @@ export type GraphLoadTestResult = [
       try {
         totalSent += 1;
         const startTime = performance.now();
-        // this is knows it's a HTTP request post request in order to get graphQL query
-        // reqResObject.request.body will body part => {continents{name code}}
-        // reqResObject.request.method will have => QUERY
-        // reqResObject.host will have the URL
+
+        const query = `query ${request.body}`;
         const requestBody = {
-          query: `${request.body}`
+          query: query
         };
-        // console.log('${JSON.stringify(request.method)} ${JSON.stringify(request.body)}', `${JSON.stringify(request.method)} ${JSON.stringify(request.body)}`);
-        console.log('JSON.stringify(request.method request.body)', requestBody);
         const response = await fetch(url, {
             method:'POST',
             headers: {"Content-Type": "application/json"},
-            body: requestBody
+            body: requestBody as unknown as BodyInit,
         })
         const endTime = performance.now();
         // If the response is successful (HTTP status 200-299), increment the totalReceived counter
@@ -117,20 +109,17 @@ export type GraphLoadTestResult = [
       }
     };
   
-    // Run the load test by calling the runUserLoad function.
     await runUserLoad();
   
-    // Calculate the average response time based on the total response time and number of received responses.
     const averageResponseTime =
       totalReceived === 0 ? totalReceived : totalResponseTime / totalReceived;
   
-    // Return the load test results as an object.
-    return {
-      totalSent,
+    return [
+      { totalSent,
       totalReceived,
       totalMissed,
-      totalNotSent,
-      errorCounts,
       averageResponseTime,
-    };
+      totalNotSent,
+      errorCounts },
+    ];
   }
