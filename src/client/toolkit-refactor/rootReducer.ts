@@ -7,7 +7,6 @@ import CollectionsReducer from '../toolkit-refactor/collections/collectionsSlice
 import ReqResReducer from '../toolkit-refactor/reqRes/reqResSlice';
 import NewRequestReducer from '../toolkit-refactor/newRequest/newRequestSlice';
 import NewRequestFieldsReducer from '../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
-import ScheduledReqResReducer from '../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
 import NewRequestOpenApiReducer from '../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
 import IntrospectionDataReducer from '../toolkit-refactor/introspectionData/introspectionDataSlice';
 import WarningMessageReducer from '../toolkit-refactor/warningMessage/warningMessageSlice';
@@ -19,7 +18,6 @@ import WarningMessageReducer from '../toolkit-refactor/warningMessage/warningMes
 const rootReducer = combineReducers({
   history: HistoryReducer,
   newRequest: NewRequestReducer,
-  scheduledReqRes: ScheduledReqResReducer,
   graphPoints: GraphPointsReducer,
   collections: CollectionsReducer,
   newRequestFields: NewRequestFieldsReducer,
