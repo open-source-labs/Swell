@@ -70,13 +70,13 @@ export type GraphLoadTestResult = [
         }
         headers.Cookie = cookies;
         
-        const variables = request.bodyVariables
+        const variables: JSON = request.bodyVariables
         ? JSON.parse(request.bodyVariables)
         : {};
 
         const requestBody: string = JSON.stringify({
           query: `${request.body}`,
-          variables: {variables}
+          variables: variables
         });
 
         const response = await fetch(url, {
