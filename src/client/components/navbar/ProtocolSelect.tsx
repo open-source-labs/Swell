@@ -60,7 +60,7 @@ const SelectedButton = styled(CustomButton)`
 
 /**
  * name: The display name for the button.
- * route: The React Router route to redirect to on click.
+ * route: The React Router route to redirect to on click (see MainContainer.tsx)
  * value: The value of the button used to update the Redux store.
  */
 const pages: page[] = [
@@ -72,6 +72,7 @@ const pages: page[] = [
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
   { name: 'tRPC', route: '/trpc', value: 'tRPC' },
+  { name: 'Mock', route: '/mockserver', value: 'mockserver'}
 ];
 
 /**
