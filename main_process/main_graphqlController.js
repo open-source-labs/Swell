@@ -203,8 +203,6 @@ const graphqlController = {
 };
 
 module.exports = () => {
-  
-  
   ipcMain.on('open-gql', (event, args) => {
     graphqlController.openConnection(event, args);
   });
