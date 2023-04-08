@@ -9,12 +9,10 @@
  *                            total received responses, total missed responses, and the average response time.
  *
  * @example
-
+ * const testResults = await simpleLoadTest('https://api.example.com/data', 10, 5, 30);
+ * console.log(testResults);
  * 
  */
-
-import RestRequestContent from "../../legacy-components/display/RestRequestContent";
-
 
 export type LoadTestResult = [
   { totalSent: number,
