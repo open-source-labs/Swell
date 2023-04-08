@@ -26,9 +26,14 @@ const apiObj = {
       'close-ws',
       'open-openapi',
       'exportChatLog',
+      'start-mock-server',
+      'stop-mock-server',
+      'submit-mock-request',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
+    } else {
+      console.log('Channel not allowed: ', channel);
     }
   },
   receive: (channel, cb) => {
@@ -49,6 +54,8 @@ const apiObj = {
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
+    } else {
+      console.log('Channel not allowed: ', channel);
     }
   },
   removeAllListeners: (channel, cb) => {
@@ -56,6 +63,8 @@ const apiObj = {
     const allowedChannels = ['reqResUpdate', 'reply-gql'];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
+    } else {
+      console.log('Channel not allowed: ', channel);
     }
   },
 };
