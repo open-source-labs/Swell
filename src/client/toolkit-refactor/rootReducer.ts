@@ -11,6 +11,7 @@ import ScheduledReqResReducer from '../toolkit-refactor/scheduledReqRes/schedule
 import NewRequestOpenApiReducer from '../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
 import IntrospectionDataReducer from '../toolkit-refactor/introspectionData/introspectionDataSlice';
 import WarningMessageReducer from '../toolkit-refactor/warningMessage/warningMessageSlice';
+import MockServerReducer from '../toolkit-refactor/mockServer/mockServerSlice';
 
 // Note: There was previously a currentTab prop in the Redux store; it wasn't
 // used anywhere, and there was no info about it other than it was a string. We
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   ui: UiReducer,
   introspectionData: IntrospectionDataReducer,
   warningMessage: WarningMessageReducer,
+  mockServer: MockServerReducer,
 });
 
 export default rootReducer;
