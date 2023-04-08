@@ -137,18 +137,9 @@ const ResponsePaneContainer = () => {
               <TestsContainer currentResponse={currentResponse} />
             )}
             {/* currentResponse.request?.network === "ws" */}
-            {activeTab === 'wsWindow' &&
-              currentResponse.request &&
-              currentResponse.response &&
-              currentResponse.request && (
-                <WebSocketWindow
-                  key={0}
-                  outgoingMessages={currentResponse.request.messages}
-                  incomingMessages={currentResponse.response.messages}
-                  content={currentResponse}
-                  connection={currentResponse.connection}
-                />
-              )}
+            {activeTab === 'wsWindow' && (
+              <WebSocketWindow key={0} content={currentResponse} />
+            )}
           </div>
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
           {currentResponse.id &&

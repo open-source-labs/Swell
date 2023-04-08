@@ -313,11 +313,11 @@ const SingleReqResContainer = (props) => {
                 // updating state, and we do not want to overwrite response data here
                 connectionController.openReqRes(content.id);
               } else {
-                //if it's http, dispatch set active tab to "event" for reqResResponse
-                //otherwise do nothing
-                if (connectionType !== 'WebSocket') {
-                  dispatch(setResponsePaneActiveTab('events'));
-                }
+                dispatch(
+                  setResponsePaneActiveTab(
+                    connectionType === 'WebSocket' ? 'wsWindow' : 'events'
+                  )
+                );
                 connectionController.openReqRes(content.id);
                 // Dispatch will fire first before the callback of
                 // [ipcMain.on('open-ws'] is fired.

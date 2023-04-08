@@ -16,6 +16,7 @@
  * - reqInputTests()
  * - httpTest()
  * - graphqlTest()
+ * - websocketTest()
  * - webRTCTest() - for read-only server input (which is the current state of the app)
  * - httpTestingTest()
  * - graphqlTestingTest()
