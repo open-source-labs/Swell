@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ScheduleReqResContainer from '../legacy-components/ScheduleReqResContainer';
 import StoppedContainer from '../legacy-components/StoppedContainer';
 import ReqResContainer from '../legacy-components/ReqResContainer';
-import { simpleLoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
-import { graphLoadTest, GraphLoadTestResult } from  '../main/loadTest/GraphqlLoadTest';
+import { LoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
 import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
 import {
@@ -149,23 +148,13 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       setAbortController(controller);
                       setIsTestRunning(true);
 
-                      let results: LoadTestResult | GraphLoadTestResult;
-
-                      if (reqResObj.graphQL) {
-                        results = await graphLoadTest(
-                          reqResObj.url,
-                          reqResObj.request,
-                          callsPerSecond,
-                          totalTime
-                        )
-                      } else {
-                        results = await simpleLoadTest(
-                          reqResObj.url,
-                          callsPerSecond,
-                          totalTime,
-                          controller.signal
-                        );
-                      }
+                      let results: LoadTestResult = await LoadTest(
+                        reqResObj,
+                        callsPerSecond,
+                        totalTime,
+                        controller.signal
+                      )
+                      
                       LoadTestController.processLoadTestResults(
                         reqResObj.id,
                         results
