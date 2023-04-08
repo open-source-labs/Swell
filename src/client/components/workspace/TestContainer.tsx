@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ScheduleReqResContainer from '../legacy-components/ScheduleReqResContainer';
 import StoppedContainer from '../legacy-components/StoppedContainer';
 import ReqResContainer from '../legacy-components/ReqResContainer';
-import { simpleLoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
+import { LoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
 import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
 import {
@@ -147,17 +147,14 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       const controller = new AbortController();
                       setAbortController(controller);
                       setIsTestRunning(true);
-                      const results = await simpleLoadTest(
-                        reqResObj.url,
+
+                      let results: LoadTestResult = await LoadTest(
+                        reqResObj,
                         callsPerSecond,
                         totalTime,
                         controller.signal
-                      );
-                      console.log(
-                        'reqResObj.request.method',
-                        reqResObj.request.method
-                      );
-                      // Assuming you have a valid reqResObj
+                      )
+                      
                       LoadTestController.processLoadTestResults(
                         reqResObj.id,
                         results
@@ -168,7 +165,8 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       isTestRunning ||
                       !reqResObj ||
                       !reqResObj.url ||
-                      reqResObj.request.method !== 'GET'
+                      reqResObj.request.method !== 'GET' &&
+                      !reqResObj.graphQL
                     }
                   >
                     Run
@@ -178,7 +176,8 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       isTestRunning ||
                       !reqResObj ||
                       !reqResObj.url ||
-                      reqResObj.request.method !== 'GET'
+                      reqResObj.request.method !== 'GET' &&
+                      !reqResObj.graphQL
                         ? 'show-tooltip'
                         : 'hide-tooltip'
                     }`}
@@ -204,7 +203,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
             </div>
             <div>
               Attention: This load test is specifically designed for HTTP GET
-              requests and is intended for backend testing purposes only. Please
+              requests & GraphQL Query. This is intended for backend testing purposes only. Please
               be aware that running this test on websites may lead to CORS
               issues.
             </div>
