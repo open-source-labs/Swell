@@ -44,22 +44,46 @@ export type GraphLoadTestResult = [
     let totalResponseTime = 0;
     let totalNotSent = 0;
     const errorCounts: { [errorCode: string]: number } = {};
+
+    interface Header {
+      
+    }
   
     // Define the sendRequest function, which sends a request to the target URL and updates the counters.
     const sendRequest = async () => {
       try {
         totalSent += 1;
         const startTime = performance.now();
+        
+        const headers: {[key: string]: string} = {};
 
-        const query = `query ${request.body}`;
-        const requestBody = {
-          query: query
-        };
+        request.headers.forEach((header: any) => {
+          headers[header.key] = header.value;
+        });
+        
+        let cookies = '';
+        if (request.cookies.length) {
+          cookies = request.cookies.reduce(
+            (acc: {}, userCookie: {key: string, value: string}) => `${acc}${userCookie.key}=${userCookie.value}; `,
+            ''
+          );
+        }
+        headers.Cookie = cookies;
+        
+        const variables = request.bodyVariables
+        ? JSON.parse(request.bodyVariables)
+        : {};
+
+        const requestBody: string = JSON.stringify({
+          query: `${request.body}`,
+          variables: {variables}
+        });
+
         const response = await fetch(url, {
-            method:'POST',
-            headers: {"Content-Type": "application/json"},
-            body: requestBody as unknown as BodyInit,
-        })
+          method: 'POST',
+          headers: headers,
+          body: requestBody,
+        });
         const endTime = performance.now();
         // If the response is successful (HTTP status 200-299), increment the totalReceived counter
         // and update the totalResponseTime.
