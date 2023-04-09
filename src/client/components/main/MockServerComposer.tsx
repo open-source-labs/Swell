@@ -21,6 +21,8 @@ const { api } = (window as any);
 // TODO: modify the styling and position of the buttons
 // TODO: add typing to the props object
 // TODO: add an option to see the list of existing routes that shows up in the response window
+// TODO: add endpoint validation
+// TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
 
 const MockServerComposer = (props) => {
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
@@ -63,6 +65,13 @@ const MockServerComposer = (props) => {
 
       // grab the method type from the RestMethodAndEndpointEntryForm component
       const methodType = document.querySelector('#rest-method-type')?.innerHTML;
+
+      // check if the body is parsable JSON
+      try {
+        JSON.parse(props.newRequestBody.bodyContent);
+      } catch (err) {
+        alert('Please enter a JSON parsable body');
+      }
 
       // parse the response from the BodyEntryForm component because it is a stringified JSON object in props
       const parsedCodeMirrorBodyContent = JSON.parse(props.newRequestBody.bodyContent);
