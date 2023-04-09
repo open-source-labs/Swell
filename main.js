@@ -60,6 +60,7 @@ require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
 
+// require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
 // configure logging
@@ -68,6 +69,7 @@ autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
 let mainWindow;
+let mockServerProcess = null;
 
 /** **********************
  ******** SET isDev *****
@@ -214,6 +216,9 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  if (mockServerProcess) {
+    mockServerProcess.kill();
+  }
   app.quit();
 });
 
@@ -487,8 +492,6 @@ ipcMain.on('openapiParserFunc-request', (event, data) => {
 
 //======================= MOCK SERVER =======================//
 const { spawn } = require('child_process');
-
-let mockServerProcess = null;
 
 // starts the mock server by spawning a Node child process
 ipcMain.on('start-mock-server', () => {
