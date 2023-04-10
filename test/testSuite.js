@@ -11,19 +11,19 @@
  * Please note many of these tests are written contingent on each other, and
  * there is room for better optimization of end-to-end testing.
  *
- * @todo As of v.13, the following tests should be up to date and passing:
- * - appOpensTests()
- * - reqInputTests()
- * - httpTest()
- * - graphqlTest()
- * - websocketTest()
- * - webRTCTest() - for read-only server input (which is the current state of the app)
- * - httpTestingTest()
- * - graphqlTestingTest()
+ * @todo As of v.13, all tests should be passing EXCEPT:
+ * - gRPCtest()
+ * - openAPITest()
+ * - gRPCTestingTest()
  *
- * The rest of the tests are failing due to one of the following:
+ *  Above tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
  * - Functionality in the app simply is not working as intended
+ *
+ * These features have incomplete and/or non-existent testing infrastructure:
+ * - webRTCTest() - for read-only server input (which is the current state of the app)
+ * - tRPC feature does not have E2E tests
+ *
  */
 
 // Import various tests
