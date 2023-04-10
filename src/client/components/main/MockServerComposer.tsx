@@ -1,5 +1,5 @@
 // react-redux
-import React, { useState, useRef, useEffect, forwardRef } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startServer, stopServer } from '../../../client/toolkit-refactor/mockServer/mockServerSlice';
 
@@ -10,7 +10,7 @@ import CookieEntryForm from './new-request/CookieEntryForm';
 import BodyEntryForm from './new-request/BodyEntryForm';
 
 // mui
-import { Box, Button, Card, styled, Tooltip, TooltipProps, tooltipClasses, Typography } from '@mui/material';
+import { Box, Button, styled, Tooltip, TooltipProps, tooltipClasses, Typography } from '@mui/material';
 
 /**
  * grab context from Electron window
@@ -36,7 +36,6 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 const MockServerComposer = (props) => {
-  const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
   const dispatch = useDispatch();
   
   // grab the isServerStarted state from the Redux store
@@ -59,23 +58,18 @@ const MockServerComposer = (props) => {
     isServerStarted ? stopMockServer() : startMockServer();
   };
 
-  // updates the userDefinedEndpoint state when the user types
-  const handleEndpointChange = (input: string) => {
-    setUserDefinedEndpoint(input);
-  };
-
   // triggers when the user clicks the submit button
   const handleEndpointSubmit = async () => {
     // check if the mock server is running
     if (isServerStarted) {
       // check if endpoint starts with a forward slash
       const parsedUserDefinedEndpoint = 
-        userDefinedEndpoint[0] === '/' 
-          ? userDefinedEndpoint 
-          : `/${userDefinedEndpoint}`;
+        props.newRequestFields.restUrl[0] === '/' 
+          ? props.newRequestFields.restUrl 
+          : `/${props.newRequestFields.restUrl}`;
 
       // grab the method type from the RestMethodAndEndpointEntryForm component
-      const methodType = document.querySelector('#rest-method-type')?.innerHTML;
+      const methodType = props.newRequestFields.method;
 
       // check if the body is parsable JSON
       try {
@@ -138,33 +132,32 @@ const MockServerComposer = (props) => {
               <b>To view your response:</b>
             </Typography>
             <Typography variant="body2">
-              Make a request to: localhost:9990/yourendpointhere
+              Make a request to: localhost:9990/yourendpoint
             </Typography>  
           </>
         }
         >
-          <div className="rest-method-and-endpoint-entry-form-container">
-          <RestMethodAndEndpointEntryForm 
-            {...props} 
-            id="rest-method"
-            onEndpointChange={handleEndpointChange}
-            placeholder='/Enter Mock Endpoint'
-          />
+          <div className="is-flex is-align-items-center">
+            <Button 
+              className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
+              id="response" 
+              variant="contained" 
+              color="primary" 
+              onClick={handleServerButtonClick}
+              sx={{ mr: 1, textTransform: 'none' }}>
+                {isServerStarted ? 'Stop Server' : 'Start Server'}
+            </Button>
+            <RestMethodAndEndpointEntryForm 
+              {...props} 
+              id="rest-method"
+              placeholder='/Enter Mock Endpoint'
+            />
           </div>
         </HtmlTooltip>
         <HeaderEntryForm {...props} />
         <CookieEntryForm {...props} />
         <BodyEntryForm {...props} /> 
         <div className="is-flex">
-          <Button 
-            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
-            id="response" 
-            variant="contained" 
-            color="primary" 
-            onClick={handleServerButtonClick}
-            sx={{ mr: 1, textTransform: 'none' }}>
-              {isServerStarted ? 'Stop Server' : 'Start Server'}
-          </Button>
           <Button 
             className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
             variant="contained" 
