@@ -7,7 +7,6 @@
  */
 
 const grpcServer = require('../grpcServer.js');
-const graphqlServer = require('../graphqlServer');
 const { _electron: electron } = require('playwright');
 const chai = require('chai');
 const expect = chai.expect;
