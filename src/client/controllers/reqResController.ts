@@ -42,6 +42,7 @@ const connectionController = {
           reqResObj.connection === 'error') &&
         reqResObj.timeSent &&
         reqResObj.timeReceived &&
+        reqResObj.response.events &&
         reqResObj.response.events.length > 0
       ) {
         appDispatch(graphUpdated(reqResObj));
@@ -66,16 +67,9 @@ const connectionController = {
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webRtc) {
+    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
-
-      // pretty sure this is not needed anymore... -Prince
-      // update the connectionArray when connection is open from ws
-      // api.receive('update-connectionArray', (connectionArray: any) => {
-      //   // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
-      //   this.openConnectionArray.push(...connectionArray);
-      // });
     }
     // gRPC connection
     else if (reqResObj.gRPC) {

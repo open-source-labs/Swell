@@ -1,17 +1,16 @@
 /**
  * @file Defines the slice for the NewRequestFields.
- * 
+ *
  * slice contains general request information
- * 
+ *
  * @todo should be combined with new Request slice as the data related to constructing
- * each request is linked with 
- * 
+ * each request is linked with
+ *
  * @todo refactor request type state into a single state with descrete options
  */
 import { NewRequestFields } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { composerFieldsReset } from '../newRequest/newRequestSlice';
-
 
 const initialState: NewRequestFields = {
   protocol: '',
@@ -20,7 +19,7 @@ const initialState: NewRequestFields = {
   url: 'http://',
 
   // it is unclear how request specific urls function in the app, useage is inconsistent
-  // reccomend treating as constants and URL property should be variable 
+  // reccomend treating as constants and URL property should be variable
   // as there is only one url per request
   // can be refactored out of the app
   restUrl: 'http://',
@@ -29,8 +28,8 @@ const initialState: NewRequestFields = {
   grpcUrl: '',
   webrtcUrl: '',
 
-  // the purpose of these booleans is unclear, inconsistent useage throughout app 
-  // should be refactored into a single piece of state 
+  // the purpose of these booleans is unclear, inconsistent useage throughout app
+  // should be refactored into a single piece of state
   // with descrete options that indicate the type of request
   // a request cannot be gRPC and tRPC at the same time
   graphQL: false,
@@ -64,7 +63,7 @@ const newRequestFieldsSlice = createSlice({
       state.testContent = action.payload;
     },
 
-    // sets inital request state when a protocol is selected 
+    // sets inital request state when a protocol is selected
     newRequestFieldsByProtocol: (state, action: PayloadAction<string>) => {
       switch (action.payload) {
         case 'tRPC': {
@@ -73,7 +72,7 @@ const newRequestFieldsSlice = createSlice({
             url: initialState.restUrl,
             method: 'QUERY',
             tRPC: true,
-          }
+          };
         }
         case 'graphQL': {
           return {
@@ -112,6 +111,7 @@ const newRequestFieldsSlice = createSlice({
             url: initialState.wsUrl,
             method: '',
             ws: false,
+            network: 'ws',
           };
         }
         case 'webrtc': {
@@ -134,7 +134,7 @@ const newRequestFieldsSlice = createSlice({
           return state;
         }
       }
-    }
+    },
   },
 
   extraReducers: (builder) => {

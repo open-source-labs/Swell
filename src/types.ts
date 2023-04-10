@@ -118,6 +118,11 @@ export interface CookieOrHeader {
   value: string;
 }
 
+export interface WebsocketMessages {
+  data: string;
+  timeReceived: number;
+}
+
 /**
  * Defines the type constract for the NewRequestFields state object.
  *
@@ -162,6 +167,7 @@ export interface ReqResRequest {
   isSSE?: boolean;
   headers: CookieOrHeader[];
   method?: string;
+  messages?: WebsocketMessages[];
   network: Network;
   rawType: string;
   restUrl?: string;
@@ -269,6 +275,11 @@ export interface NewRequestStreams {
   protoContent: string;
 }
 
+export interface TestResult {
+  message: string;
+  status: string;
+}
+
 /**@todo make sure all properties are correct and add any not listed yet*/
 export interface ReqResResponse {
   cookies?: Cookie[];
@@ -280,10 +291,10 @@ export interface ReqResResponse {
   url?: string; //have not found this property mentioned yet
   /**@todo */ //BELOW - additional properties not sure about yet/that weren't listed here before
   times?: $TSFixMeObject[]; //main_grpcController array of objects {timeSent: Date, timeReceived: Date}
-  testResult?: $TSFixMe; //mainprocess main_graphqlController
+  testResult?: TestResult[];
   responseSize?: $TSFixMe; //mainprocess main_httpController line 196ish
   status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
-  messages?: $TSFixMeObject[]; //main_wsController, array of objects {data: @TSFixMe, timeReceived: Date}
+  messages?: WebsocketMessages[];
   connection?: string; //main_wsController
 }
 

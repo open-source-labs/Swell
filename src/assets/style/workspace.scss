@@ -89,12 +89,23 @@
   font-size: 1.4rem;
 }
 
-.pass-fail-button {
-  min-width: 8vh;
-  max-height: 4vh;
-  max-width: 8vh;
-  padding: 0.5vh;
-  font-weight: 600;
+@mixin pass-fail-button {
+  display: flex;
+  padding: 0.3rem;
+}
+
+.pass-fail-response {
+  @include pass-fail-button;
+}
+
+.pass-fail-button-success {
+  @include pass-fail-button;
+  background-color: $primary-300;
+}
+
+.pass-fail-button-failure {
+  @include pass-fail-button;
+  background-color: $primary-400;
 }
 
 .is-flex-basis-0 {
@@ -199,6 +210,27 @@
 .no-styling {
   padding: 0;
   margin: 0;
+}
+
+.assertion-test-snippets {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem auto 0.5rem 0;
+  gap: 0.5rem;
+
+  header {
+    text-decoration: underline;
+  }
+
+  span {
+    display: inline-block;
+    transition: transform 0.3s ease-out;
+
+    &:hover {
+      cursor: pointer;
+      transform: translate(5px, 0);
+    }
+  }
 }
 
 // BARGRAPH
