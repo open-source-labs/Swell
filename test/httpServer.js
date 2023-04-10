@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const PORT = process.env.NODE_ENV === 'test' ? 3004 : 3000;
+const PORT = 3004;
 
 let mockDB = [];
 

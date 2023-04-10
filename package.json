@@ -163,7 +163,6 @@
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
     "react-split": "^2.0.14",
-    "react-spring": "^9.4.4",
     "redux": "^4.2.0",
     "resize-observer-polyfill": "^1.5.1",
     "sass": "^1.51.0",
@@ -514,4 +513,3 @@
     }
   ]
 }
-

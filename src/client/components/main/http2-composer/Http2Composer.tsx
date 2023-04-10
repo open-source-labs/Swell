@@ -175,7 +175,6 @@ export default function Http2Composer(props) {
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
-    // dispatch(scheduledReqResAdded(reqRes));
 
     //reset for next request
     composerFieldsReset();
@@ -327,7 +326,7 @@ export default function Http2Composer(props) {
             newRequestHeadersSet={newRequestHeadersSet}
           />
         )}
-          <TestContainer />
+        <TestContainer />
         <TestEntryForm
           newTestContentSet={newTestContentSet}
           testContent={testContent}
