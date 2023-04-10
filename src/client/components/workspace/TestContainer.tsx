@@ -49,7 +49,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
     ? reqResArray[reqResArray.length - 1]
     : null;
 
-  const getDisabledReason = () => {
+  const getDisabledReason = (): string => {
     const basePrompt = `
       Please note that this load test will execute 
       the selected request in the workspace to the left.
@@ -150,17 +150,19 @@ const TestContainer: React.FC<TestContainerProps> = ({
                         setAbortController(controller);
                         setIsTestRunning(true);
 
-                        let results: LoadTestResult = await LoadTest(
-                          reqResObj,
-                          callsPerSecond,
-                          totalTime,
-                          controller.signal
-                        );
+                        if (reqResObj) {
+                          let results: LoadTestResult = await LoadTest(
+                            reqResObj,
+                            callsPerSecond,
+                            totalTime,
+                            controller.signal
+                          );
 
-                        LoadTestController.processLoadTestResults(
-                          reqResObj.id,
-                          results
-                        );
+                          LoadTestController.processLoadTestResults(
+                            reqResObj.id,
+                            results
+                          );
+                        }
                         setIsTestRunning(false);
                       }}
                       disabled={disabled}
