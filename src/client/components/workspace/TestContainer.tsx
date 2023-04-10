@@ -12,6 +12,7 @@ import {
 } from '../../toolkit-refactor/reqRes/reqResSlice';
 import { RootState, AppDispatch } from '../../toolkit-refactor/store';
 import { ReqRes } from '../../../types';
+import { Box } from '@mui/material';
 
 /**
  * TestContainer component allows users to configure and perform load tests.
@@ -61,7 +62,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
 
   const [showLoadTest, setShowLoadTest] = useState(false);
 
-  const reqResObj = currentResponse.url
+  const reqResObj: ReqRes | null = currentResponse.url
     ? currentResponse
     : reqResArray.length > 0
     ? reqResArray[reqResArray.length - 1]
@@ -105,7 +106,10 @@ const TestContainer: React.FC<TestContainerProps> = ({
         <div id="test-snippets">
           <div>
             <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
-              <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+              <Box
+                className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center"
+                marginRight={2}
+              >
                 <p>Frequency:</p>
                 <input
                   className={`${
@@ -119,8 +123,11 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     setCallsPerSecond(e.target.value);
                   }}
                 />
-              </div>
-              <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+              </Box>
+              <Box
+                className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center"
+                marginLeft={2}
+              >
                 <p>Duration:</p>
                 <input
                   className={`${
@@ -134,7 +141,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     setTotalTime(e.target.value);
                   }}
                 />
-              </div>
+              </Box>
             </div>
             <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
               <div className="ml-2">
@@ -153,8 +160,8 @@ const TestContainer: React.FC<TestContainerProps> = ({
                         callsPerSecond,
                         totalTime,
                         controller.signal
-                      )
-                      
+                      );
+
                       LoadTestController.processLoadTestResults(
                         reqResObj.id,
                         results
@@ -165,8 +172,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       isTestRunning ||
                       !reqResObj ||
                       !reqResObj.url ||
-                      reqResObj.request.method !== 'GET' &&
-                      !reqResObj.graphQL
+                      (reqResObj.request.method !== 'GET' && !reqResObj.graphQL)
                     }
                   >
                     Run
@@ -176,8 +182,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       isTestRunning ||
                       !reqResObj ||
                       !reqResObj.url ||
-                      reqResObj.request.method !== 'GET' &&
-                      !reqResObj.graphQL
+                      (reqResObj.request.method !== 'GET' && !reqResObj.graphQL)
                         ? 'show-tooltip'
                         : 'hide-tooltip'
                     }`}
@@ -203,9 +208,9 @@ const TestContainer: React.FC<TestContainerProps> = ({
             </div>
             <div>
               Attention: This load test is specifically designed for HTTP GET
-              requests & GraphQL Query. This is intended for backend testing purposes only. Please
-              be aware that running this test on websites may lead to CORS
-              issues.
+              requests & GraphQL Query. This is intended for backend testing
+              purposes only. Please be aware that running this test on websites
+              may lead to CORS issues.
             </div>
           </div>
         </div>
