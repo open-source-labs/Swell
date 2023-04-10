@@ -1,5 +1,5 @@
 // react-redux
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startServer, stopServer } from '../../../client/toolkit-refactor/mockServer/mockServerSlice';
 
@@ -10,7 +10,7 @@ import CookieEntryForm from './new-request/CookieEntryForm';
 import BodyEntryForm from './new-request/BodyEntryForm';
 
 // mui
-import { Box, Button } from '@mui/material';
+import { Box, Button, Card, styled, Tooltip, TooltipProps, tooltipClasses, Typography } from '@mui/material';
 
 /**
  * grab context from Electron window
@@ -18,11 +18,22 @@ import { Box, Button } from '@mui/material';
  */
 const { api } = (window as any);
 
-// TODO: modify the styling and position of the buttons
 // TODO: add typing to the props object
 // TODO: add an option to see the list of existing routes that shows up in the response window
 // TODO: add endpoint validation
 // TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 500,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}));
 
 const MockServerComposer = (props) => {
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
@@ -107,17 +118,62 @@ const MockServerComposer = (props) => {
       id="mockcomposer-http2"
     >
       <div className="container-margin">
-        <RestMethodAndEndpointEntryForm 
-          {...props} 
-          id="rest-method"
-          onEndpointChange={handleEndpointChange}
-          placeholder='/Enter Mock Endpoint'
-        />
+        <HtmlTooltip title={
+          <>
+            <Typography variant="body1">
+              <b>To create a mock response:</b>
+              <br />
+            </Typography>
+            <Typography variant="body2">
+              1. Select a REST method from the dropdown.
+              <br />
+              2. Enter your desired /endpoint.
+              <br />
+              3. Define your desired response in the body.
+              <br />
+              4. Click "Start Server" then "Submit".
+            </Typography>
+            <br />
+            <Typography variant="body1">
+              <b>To view your response:</b>
+            </Typography>
+            <Typography variant="body2">
+              Make a request to: localhost:9990/yourendpointhere
+            </Typography>  
+          </>
+        }
+        >
+          <div className="rest-method-and-endpoint-entry-form-container">
+          <RestMethodAndEndpointEntryForm 
+            {...props} 
+            id="rest-method"
+            onEndpointChange={handleEndpointChange}
+            placeholder='/Enter Mock Endpoint'
+          />
+          </div>
+        </HtmlTooltip>
         <HeaderEntryForm {...props} />
         <CookieEntryForm {...props} />
         <BodyEntryForm {...props} /> 
-        <Button id="response" variant="contained" color="primary" onClick={handleServerButtonClick}>{isServerStarted ? 'Stop Server' : 'Start Server'}</Button>
-        <Button variant="contained" color="primary" onClick={handleEndpointSubmit}>Submit</Button>
+        <div className="is-flex">
+          <Button 
+            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
+            id="response" 
+            variant="contained" 
+            color="primary" 
+            onClick={handleServerButtonClick}
+            sx={{ mr: 1, textTransform: 'none' }}>
+              {isServerStarted ? 'Stop Server' : 'Start Server'}
+          </Button>
+          <Button 
+            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
+            variant="contained" 
+            color="primary" 
+            onClick={handleEndpointSubmit}
+            sx={{ ml : 1, textTransform: 'none' }}>
+              Submit
+          </Button>
+        </div>
       </div>
     </Box>
   )
