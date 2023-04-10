@@ -5,6 +5,7 @@ import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
 import { RootState } from '../../toolkit-refactor/store';
 import { ReqRes } from '../../../types';
+import { Box } from '@mui/material';
 import { SwellWrappedTooltip } from '../customMuiStyles/tooltip';
 
 /**
@@ -42,13 +43,13 @@ const TestContainer: React.FC<TestContainerProps> = ({
 
   const [showLoadTest, setShowLoadTest] = useState(false);
 
-  const reqResObj = currentResponse.url
+  const reqResObj: ReqRes | null = currentResponse.url
     ? currentResponse
     : reqResArray.length > 0
     ? reqResArray[reqResArray.length - 1]
     : null;
 
-  const getDisabledReason = () => {
+  const getDisabledReason = (): string => {
     const basePrompt = `
       Please note that this load test will execute 
       the selected request in the workspace to the left.
@@ -96,7 +97,10 @@ const TestContainer: React.FC<TestContainerProps> = ({
         <div id="test-snippets">
           <div>
             <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
-              <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+              <Box
+                className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center"
+                marginRight={2}
+              >
                 <p>Frequency:</p>
                 <input
                   className={`${
@@ -110,8 +114,11 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     setCallsPerSecond(Number(e.target.value));
                   }}
                 />
-              </div>
-              <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center">
+              </Box>
+              <Box
+                className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center"
+                marginLeft={2}
+              >
                 <p>Duration:</p>
                 <input
                   className={`${
@@ -125,7 +132,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     setTotalTime(Number(e.target.value));
                   }}
                 />
-              </div>
+              </Box>
             </div>
             <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
               <div className="ml-2">
@@ -143,17 +150,19 @@ const TestContainer: React.FC<TestContainerProps> = ({
                         setAbortController(controller);
                         setIsTestRunning(true);
 
-                        let results: LoadTestResult = await LoadTest(
-                          reqResObj,
-                          callsPerSecond,
-                          totalTime,
-                          controller.signal
-                        );
+                        if (reqResObj) {
+                          let results: LoadTestResult = await LoadTest(
+                            reqResObj,
+                            callsPerSecond,
+                            totalTime,
+                            controller.signal
+                          );
 
-                        LoadTestController.processLoadTestResults(
-                          reqResObj.id,
-                          results
-                        );
+                          LoadTestController.processLoadTestResults(
+                            reqResObj.id,
+                            results
+                          );
+                        }
                         setIsTestRunning(false);
                       }}
                       disabled={disabled}
