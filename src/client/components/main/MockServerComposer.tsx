@@ -1,7 +1,8 @@
 // react-redux
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startServer, stopServer } from '../../../client/toolkit-refactor/mockServer/mockServerSlice';
+import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
 // forms
 import RestMethodAndEndpointEntryForm from './new-request/RestMethodAndEndpointEntryForm';
@@ -40,6 +41,10 @@ const MockServerComposer = (props) => {
   
   // grab the isServerStarted state from the Redux store
   let isServerStarted = useSelector((state: any) => state.mockServer.isServerStarted);
+
+  useEffect(() => {
+    dispatch(newRequestFieldsByProtocol('mock'));
+  }, [dispatch])
 
   const startMockServer = () => {
     api.send('start-mock-server');
@@ -100,6 +105,8 @@ const MockServerComposer = (props) => {
     }
   }
 
+  console.log(props);
+
   return (
     <Box
       className="is-flex-grow-3 add-vertical-scroll"
@@ -150,8 +157,8 @@ const MockServerComposer = (props) => {
                 {isServerStarted ? 'Stop Server' : 'Start Server'}
             </Button>
             <RestMethodAndEndpointEntryForm 
-              {...props} 
-              id="rest-method"
+              {...props}
+              method={props.newRequestFields.method}
               placeholder='/Enter Mock Endpoint'
             />
           </div>

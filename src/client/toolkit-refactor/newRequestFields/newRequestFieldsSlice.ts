@@ -130,6 +130,13 @@ const newRequestFieldsSlice = createSlice({
             webhook: true,
           };
         }
+        case 'mock': {
+          return {
+            ...initialState,
+            url: '',
+            method: 'GET',
+          };
+        }
         default: {
           return state;
         }
