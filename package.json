@@ -159,7 +159,6 @@
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
     "react-split": "^2.0.14",
-    "react-spring": "^9.4.4",
     "redux": "^4.2.0",
     "resize-observer-polyfill": "^1.5.1",
     "sass": "^1.51.0",
@@ -250,6 +249,26 @@
     "url": "http://www.getswell.io"
   },
   "contributors": [
+    {
+      "name": "Chris Suzukida",
+      "email": "chris.suzukida@gmail.com",
+      "url": "https://github.com/csuzukida"
+    },
+    {
+      "name": "Fred Kim",
+      "email": "fredkim21@gmail.com",
+      "url": "https://https://github.com/Fredkim21"
+    },
+    {
+      "name": "Jason Huang",
+      "email": "jjhuang3@hotmail.com",
+      "url": "https://https://github.com/jjhuang3"
+    },
+    {
+      "name": "Nattie Chan",
+      "email": "nattie.chan@gmail.com",
+      "url": "https://https://github.com/nattiechan"
+    },
     {
       "name": "Jack Sonoda",
       "email": "jackksono@gmail.com",

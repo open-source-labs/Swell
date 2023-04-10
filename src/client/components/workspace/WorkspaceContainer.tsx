@@ -1,36 +1,20 @@
 /**
  * @todo Change the workspace container to have adjustable width sizing via
  * user dragging
- *
- * @todo Reimplement the "Schedule" functionality somehow
  */
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 // Local components
-import CurrentWorkspaceDisplay from './CurrentWorkspaceDisplay';
 import LegacyWorkspaceContainer from './LegacyWorkspaceContainer';
+import WorkspaceSelect from './WorkspaceSelect';
+import DeleteWorkspaceButton from './buttons/DeleteWorkspaceButton';
+import ImportExportWorkspaceButton from './buttons/ImportExportWorkspaceButton';
 
 // MUI components and SVG icons
-import { Box, Typography, SelectChangeEvent, Divider } from '@mui/material';
-import { RootState } from '../../toolkit-refactor/store';
+import { Box, Typography, Divider } from '@mui/material';
 import { WorkspaceContainerProps } from '../../../types';
 
-export default function WorkspaceContainer({
-  currentWorkspaceId,
-  setWorkspace,
-}: WorkspaceContainerProps) {
-  const handleWorkspaceChange = (event: SelectChangeEvent) => {
-    setWorkspace(event.target.value as string);
-  };
-
-  // Grab all of the workspaces from the Redux store. Hopefully this is O(1)...
-  const allWorkspaces = useSelector((store: RootState) => store.collections);
-
-  const currentWorkspace = allWorkspaces.find((workspace) => {
-    return workspace.id === currentWorkspaceId;
-  });
-
+export default function WorkspaceContainer(props: WorkspaceContainerProps) {
   return (
     <Box
       className="workspace-container"
@@ -39,11 +23,12 @@ export default function WorkspaceContainer({
       {/* 
       The display for your current workspace. Contains functionality for 
       saving, importing, exporting  workspace to your local machine. */}
-      <CurrentWorkspaceDisplay
-        currentWorkspaceId={currentWorkspaceId}
-        currentWorkspace={currentWorkspace}
-        handleWorkspaceChange={handleWorkspaceChange}
-      />
+      <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', pb: 1 }}>
+        {/* The below select menu should contain all saved workspaces in the Swell app. */}
+        <WorkspaceSelect {...props} />
+        <DeleteWorkspaceButton {...props} />
+        <ImportExportWorkspaceButton />
+      </Box>
       <Box className="collections-container">
         <Typography>Requests</Typography>
         <Divider orientation="horizontal" />

@@ -75,7 +75,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const saveName = () => {
     if (input.trim()) {
       collectionsController
-        .collectionNameExists({ name: input })
+        .collectionNameExists(input)
         .catch((err) =>
           console.error('error in checking collection name: ', err)
         )

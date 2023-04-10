@@ -16,6 +16,10 @@
  * - reqInputTests()
  * - httpTest()
  * - graphqlTest()
+ * - websocketTest()
+ * - webRTCTest() - for read-only server input (which is the current state of the app)
+ * - httpTestingTest()
+ * - graphqlTestingTest()
  *
  * The rest of the tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
