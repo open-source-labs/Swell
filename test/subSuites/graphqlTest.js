@@ -342,5 +342,86 @@ module.exports = () => {
         }
       });
     }).timeout(20000);
+
+    describe('GraphQL load testing', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+      });
+
+      beforeEach(() => (num = 0));
+
+      afterEach(
+        async () => await page.locator('button >> text=Clear Workspace').click()
+      );
+
+      // limiting the amount of time required to simulate the load test
+      const loadTestDuration = 3;
+
+      it('Load test run button is disabled with no request in workspace window', async () => {
+        try {
+          await page.locator('button>> text=GraphQL').click();
+          await page.locator('span >> text=Load Test').click();
+          const runButton = page.locator('button>> text=Run');
+          pwTest.expect(runButton).toBeDisabled();
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      it('Run button is disabled for requests other than `QUERY`', async () => {
+        try {
+          const method = 'SUBSCRIPTION';
+          const url = 'http://localhost:4000/graphql';
+          const query = 'subscription {newLink {id description url}}';
+          await fillGQLRequest(page, url, method, query);
+          await page.locator('button >> text=Add to Workspace').click();
+          await page.locator('span >> text=Load Test').click();
+          const runButton = page.locator('button>> text=Run');
+          pwTest.expect(runButton).toBeDisabled();
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      it('Successful load test with `QUERY`', async () => {
+        try {
+          const method = 'QUERY';
+          const url = 'http://localhost:4000/graphql';
+          const query = 'query {feed {descriptions}}';
+          await fillGQLRequest(page, url, method, query);
+          await page.locator('button >> text=Add to Workspace').click();
+          await page.locator('span >> text=Load Test').click();
+          await page
+            .locator('[placeholder="Duration"]')
+            .fill(loadTestDuration.toString());
+          await page.locator('button>> text=Run').click();
+
+          // The load test takes a minimum of 4 seconds to execute
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                const statusCode = await page
+                  .locator('.status-tag')
+                  .innerText();
+
+                const events = await page.locator(
+                  '#events-display >> .cm-content'
+                );
+                expect(await events.count()).to.equal(1);
+
+                expect(statusCode).to.equal('Success');
+                expect(await events.innerText()).to.include('"totalSent": 3');
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 5000);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }).timeout(7000);
+    }).timeout(20000);
   });
 };

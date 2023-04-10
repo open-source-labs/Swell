@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -15,7 +16,8 @@ app.get('/clear', (req, res) => {
   res.sendStatus(200);
 });
 
-app.get('/book', (req, res) => res.status(200).json(mockDB));
+// selectively enable cors to facilitate E2E testing
+app.get('/book', cors(), (req, res) => res.status(200).json(mockDB));
 
 app.post('/book', (req, res) => {
   const { title, author, pages } = req.body;
