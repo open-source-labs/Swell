@@ -1,36 +1,40 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { collectionDeleted } from '../../../toolkit-refactor/collections/collectionsSlice';
 
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import collectionsController from '../../../controllers/collectionsController';
 import { Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import { SwellTooltip } from '../../customMuiStyles/tooltip';
+import { Collection, WorkspaceContainerProps } from '../../../../types';
+import { RootState } from '../../../toolkit-refactor/store';
 
-const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-    fontWeight: 'bold',
-  },
-}));
-
-export default function DeleteRequestButton(props) {
+export default function DeleteRequestButton({
+  currentWorkspaceId,
+  setWorkspace,
+}: WorkspaceContainerProps) {
   const dispatch = useDispatch();
+  // Grab all of the workspaces from the Redux store. Hopefully this is O(1)...
+  const allWorkspaces = useSelector((store: RootState) => store.collections);
+
+  const currentWorkspace = (): Collection => {
+    const workspace: Collection | undefined = allWorkspaces.find(
+      (workspace: Collection) => {
+        return workspace.id === currentWorkspaceId;
+      }
+    );
+    return workspace || ({} as Collection);
+  };
 
   const deleteWorkspace = () => {
-    dispatch(collectionDeleted(props.currentWorkspace));
-    collectionsController.deleteCollectionFromIndexedDb(props.id);
+    dispatch(collectionDeleted(currentWorkspace()));
+    collectionsController.deleteCollectionFromIndexedDb(currentWorkspaceId);
+    setWorkspace('');
   };
 
   return (
-    <LightTooltip title="Delete Workspace">
+    <SwellTooltip title="Delete Workspace">
       <Button
         color="error"
         variant="text"
@@ -44,6 +48,6 @@ export default function DeleteRequestButton(props) {
       >
         <ClearRoundedIcon fontSize="small" />
       </Button>
-    </LightTooltip>
+    </SwellTooltip>
   );
 }

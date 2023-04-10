@@ -56,8 +56,7 @@ const collectionsController = {
   collectionNameExists(name: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // resolve and reject are functions!
-      db.table('collections');
-      db.table('repo')
+      db.table('collections')
         .where('name')
         .equalsIgnoreCase(name)
         .first((foundCollection: boolean) => !!foundCollection)

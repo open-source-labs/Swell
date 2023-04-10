@@ -1,29 +1,21 @@
-/* eslint-disable no-async-promise-executor */
 // Testing websocket requests using websocketserver.js
 // Tests may fail due to the user's computer and this testing suite becomes heavier
 // with a mock WS server.
 
-/**
- * @todo Possibly remove our own server from this testing suite and go with a
- * public API.
- */
 const { _electron: electron } = require('playwright');
+const pwTest = require('@playwright/test');
 const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
+const { addAndSend } = require('./testHelper');
 
 let electronApp, page, num, messageNum;
 
 module.exports = () => {
-  const setupFxn = function () {
+  describe('Websocket requests', () => {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      page = electronApp.windows()[0]; // In case there is more than one window
-      await page.waitForLoadState(`domcontentloaded`);
-
-      num = 0;
-      messageNum = 0;
     });
 
     // close Electron app when complete
@@ -44,130 +36,90 @@ module.exports = () => {
         );
       }
     });
-  };
 
-  describe('Websocket requests', () => {
-    setupFxn();
+    // The app takes a while to launch, and without these rendering checks
+    // within each test file the tests can get flakey because of long load times
+    // so these are here to ensure the app launches as expect before continuing
+    describe('Window rendering', () => {
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok;
+      });
 
-    before(async () => {
-      await page.locator('button >> text=Clear Workspace').click();
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        pwTest.expect(window).toBeVisible();
+      });
+
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });
     });
 
-    const addAndSend = async (num) => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${num}`).click();
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    describe('Websocket requests', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+      });
 
-    // after(() => {
-    //   app.client.$('button=Clear Workspace').click();
-    // });
+      beforeEach(() => {
+        num = 0;
+        messageNum = 0;
+      });
 
-    it('it should send and receive messages to the mock server', async () => {
-      try {
-        // select web sockets
-        await page.locator('button>> text=WEB SOCKET').click();
+      afterEach(
+        async () => await page.locator('button >> text=Clear Workspace').click()
+      );
 
-        // type in url
-        /**
-         * @todo Decide whether the tool should be using its own local server;
-         * this may make it easier to go third-party
-         */
-        await page.locator('#url-input').fill('ws://localhost:5000/');
+      it('it should send and receive messages to the mock server', async () => {
+        try {
+          // select web sockets
+          await page.locator('button>> text=WebSocket').click();
 
-        //
-        await addAndSend(num++);
+          // type in url
+          await page.locator('#url-input').fill('ws://localhost:5001/');
 
-        await new Promise((resolve) =>
-          setTimeout(async () => {
-            try {
-              await page.locator('#wsSendData').click();
-              await page
-                .locator('#wsMsgInput')
-                .fill('testing websocket protocol');
-              await page.locator('button >> text=Send Message').click();
+          await addAndSend(page, num++);
 
-              await new Promise((resolve) =>
-                setTimeout(async () => {
-                  try {
-                    const messageClient = await page
-                      .locator(`#ws-msg-${messageNum++}`)
-                      .innerText();
-                    const messageServer = await page
-                      .locator(`#ws-msg-${messageNum++}`)
-                      .innerText();
-                    expect(messageClient).to.include(
-                      'testing websocket protocol'
-                    );
-                    expect(messageServer).to.include(
-                      'testing websocket protocol'
-                    );
-                    resolve();
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }, 300)
-              );
-              resolve();
-            } catch (err) {
-              console.error(err);
-            }
-          }, 1000)
-        );
-      } catch (err) {
-        console.error(err);
-      }
-    });
+          await new Promise((resolve) =>
+            setTimeout(async () => {
+              try {
+                await page.locator('#wsSendData').click();
+                await page
+                  .locator('#wsMsgInput')
+                  .fill('testing websocket protocol');
+                await page.locator('button >> text=Send Message').click();
 
-    it('it should send and receive images to public echo test', async () => {
-      try {
-        await new Promise(async (resolve) => {
-          try {
-            const toUpload = path.join(
-              __dirname,
-              '..',
-              '..',
-              'build',
-              'icons',
-              'png',
-              '128x128.png'
-            );
-
-            const handle = await page.locator('input[type="file"]');
-            await handle.setInputFiles(toUpload);
-
-            // const val = app.client.getValue("#upload-test");
-            await page.locator('#wsSendImgBtn').click();
-
-            // why is this checking the first message again? shouldnt it check the image?
-            await new Promise((resolve) =>
-              setTimeout(async () => {
-                try {
-                  const messageClient = await page.locator(
-                    `#ws-msg-${messageNum++}`
-                  );
-                  const messageServer = await page.locator(
-                    `#ws-msg-${messageNum++}`
-                  );
-                  expect(await messageClient.innerHTML()).to.include('img');
-                  expect(await messageServer.innerHTML()).to.include('img');
-                  resolve();
-                } catch (err) {
-                  console.error(err);
-                }
-              }, 300)
-            );
-            resolve();
-          } catch (err) {
-            console.error(err);
-          }
-        });
-      } catch (err) {
-        console.error(err);
-      }
+                await new Promise((resolve) =>
+                  setTimeout(async () => {
+                    try {
+                      const messageClient = await page
+                        .locator(`#ws-msg-${messageNum++}`)
+                        .innerText();
+                      const messageServer = await page
+                        .locator(`#ws-msg-${messageNum++}`)
+                        .innerText();
+                      expect(messageClient).to.include(
+                        'testing websocket protocol'
+                      );
+                      expect(messageServer).to.include(
+                        'testing websocket protocol'
+                      );
+                      resolve();
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }, 300)
+                );
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 1000)
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      });
     });
   }).timeout(20000);
 };

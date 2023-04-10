@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import ScheduleReqResContainer from '../legacy-components/ScheduleReqResContainer';
-import StoppedContainer from '../legacy-components/StoppedContainer';
-import ReqResContainer from '../legacy-components/ReqResContainer';
+import { useSelector } from 'react-redux';
 import { LoadTest, LoadTestResult } from '../main/loadTest/LoadTest';
 import LoadTestController from '../../controllers/LoadTestController';
 import { connect } from 'react-redux';
-import {
-  reqResUpdated,
-  reqResItemAdded,
-} from '../../toolkit-refactor/reqRes/reqResSlice';
-import { RootState, AppDispatch } from '../../toolkit-refactor/store';
+import { RootState } from '../../toolkit-refactor/store';
 import { ReqRes } from '../../../types';
 import { Box } from '@mui/material';
+import { SwellWrappedTooltip } from '../customMuiStyles/tooltip';
 
 /**
  * TestContainer component allows users to configure and perform load tests.
@@ -27,29 +21,16 @@ const mapStateToProps = (store: RootState) => ({
   currentResponse: store.reqRes.currentResponse,
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  reqResItemAdded: (reqRes: ReqRes) => {
-    dispatch(reqResItemAdded(reqRes));
-  },
-  reqResUpdated: (reqRes: ReqRes) => {
-    dispatch(reqResUpdated(reqRes));
-  },
-});
-
 interface TestContainerProps {
   reqResArray: ReqRes[];
-  reqResItemAdded: (reqRes: ReqRes) => void;
-  reqResUpdated: (reqRes: ReqRes) => void;
+  currentResponse: ReqRes;
 }
 
 const TestContainer: React.FC<TestContainerProps> = ({
   reqResArray,
   currentResponse,
-  reqResItemAdded,
-  reqResUpdated,
 }) => {
   const [isTestRunning, setIsTestRunning] = useState<boolean>(false);
-  const [runScheduledTests, setScheduledTests] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
   const [abortController, setAbortController] =
@@ -69,18 +50,28 @@ const TestContainer: React.FC<TestContainerProps> = ({
     : null;
 
   const getDisabledReason = () => {
+    const basePrompt = `
+      Please note that this load test will execute 
+      the selected request in the workspace to the left.
+    `;
     if (isTestRunning) {
       return 'Load test is currently running.';
     } else if (!reqResObj) {
       return 'Please add workspace or send request';
     } else if (!reqResObj.url) {
       return 'URL is missing.';
-    } else if (reqResObj.request.method !== 'GET') {
-      return 'Only GET requests are supported for load tests.';
+    } else if (reqResObj.request.method !== 'GET' && !reqResObj.graphQL) {
+      return `Only GET requests are supported for load tests. ${basePrompt}`;
     } else {
-      return null;
+      return basePrompt;
     }
   };
+
+  const disabled: boolean =
+    isTestRunning ||
+    !reqResObj ||
+    !reqResObj.url ||
+    (reqResObj.request.method !== 'GET' && !reqResObj.graphQL);
 
   return (
     <div className="mt-4 mb-4">
@@ -120,7 +111,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                   placeholder="Calls/sec"
                   value={callsPerSecond}
                   onChange={(e) => {
-                    setCallsPerSecond(e.target.value);
+                    setCallsPerSecond(Number(e.target.value));
                   }}
                 />
               </Box>
@@ -138,58 +129,47 @@ const TestContainer: React.FC<TestContainerProps> = ({
                   placeholder="Duration"
                   value={totalTime}
                   onChange={(e) => {
-                    setTotalTime(e.target.value);
+                    setTotalTime(Number(e.target.value));
                   }}
                 />
               </Box>
             </div>
             <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center mt-2">
               <div className="ml-2">
-                <div className="tooltip-wrapper">
-                  <button
-                    className={`button is-small is-primary ${
-                      isDark ? '' : 'is-outlined'
-                    } button-padding-vertical button-hover-color ml-3`}
-                    onClick={async () => {
-                      const controller = new AbortController();
-                      setAbortController(controller);
-                      setIsTestRunning(true);
+                <SwellWrappedTooltip
+                  title={getDisabledReason()}
+                  placement="top"
+                >
+                  <span>
+                    <button
+                      className={`button is-small is-primary ${
+                        isDark ? '' : 'is-outlined'
+                      } button-padding-vertical button-hover-color ml-3`}
+                      onClick={async () => {
+                        const controller = new AbortController();
+                        setAbortController(controller);
+                        setIsTestRunning(true);
 
-                      let results: LoadTestResult = await LoadTest(
-                        reqResObj,
-                        callsPerSecond,
-                        totalTime,
-                        controller.signal
-                      );
+                        let results: LoadTestResult = await LoadTest(
+                          reqResObj,
+                          callsPerSecond,
+                          totalTime,
+                          controller.signal
+                        );
 
-                      LoadTestController.processLoadTestResults(
-                        reqResObj.id,
-                        results
-                      );
-                      setIsTestRunning(false);
-                    }}
-                    disabled={
-                      isTestRunning ||
-                      !reqResObj ||
-                      !reqResObj.url ||
-                      (reqResObj.request.method !== 'GET' && !reqResObj.graphQL)
-                    }
-                  >
-                    Run
-                  </button>
-                  <span
-                    className={`tooltip-text ${
-                      isTestRunning ||
-                      !reqResObj ||
-                      !reqResObj.url ||
-                      (reqResObj.request.method !== 'GET' && !reqResObj.graphQL)
-                        ? 'show-tooltip'
-                        : 'hide-tooltip'
-                    }`}
-                  >
-                    {getDisabledReason()}
+                        LoadTestController.processLoadTestResults(
+                          reqResObj.id,
+                          results
+                        );
+                        setIsTestRunning(false);
+                      }}
+                      disabled={disabled}
+                      style={disabled ? { pointerEvents: 'none' } : {}}
+                    >
+                      Run
+                    </button>
                   </span>
-                </div>
+                </SwellWrappedTooltip>
                 <button
                   className={`button is-small is-danger ${
                     isDark ? '' : 'is-outlined'
@@ -199,7 +179,6 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       abortController.abort();
                       setAbortController(null);
                     }
-                    setScheduledTests(false);
                   }}
                 >
                   Stop
@@ -219,4 +198,4 @@ const TestContainer: React.FC<TestContainerProps> = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestContainer);
+export default connect(mapStateToProps)(TestContainer);

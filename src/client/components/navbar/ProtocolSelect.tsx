@@ -7,9 +7,18 @@ import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFie
 
 // Import MUI components.
 import { styled } from '@mui/system';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Tooltip,
+  TooltipProps,
+  Typography,
+  tooltipClasses,
+} from '@mui/material';
+import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
+import { SwellTooltip } from '../customMuiStyles/tooltip';
 
 interface color {
   [key: number]: string;
@@ -66,6 +75,9 @@ const SelectedButton = styled(CustomButton)`
 const pages: page[] = [
   { name: 'HTTP/2', route: '/', value: 'rest' },
   { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
+];
+
+const experimentalPages: page[] = [
   { name: 'gRPC', route: '/grpc', value: 'grpc' },
   { name: 'WebSocket', route: '/websocket', value: 'ws' },
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
@@ -73,6 +85,9 @@ const pages: page[] = [
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
   { name: 'tRPC', route: '/trpc', value: 'tRPC' },
 ];
+
+const experimentalTooltipText: string =
+  'Feel free to explore the experimental features to the right!';
 
 /**
  * ProtocolSelect is a component in the navbar that alters the redux store based on the protocol that is selected.
@@ -96,6 +111,30 @@ function ProtocolSelect() {
     setCurPage(name);
   };
 
+  const createButtons = (pageArray: page[]): JSX.Element[] => {
+    return pageArray.map(({ name, route, value }: page) => (
+      <Link className="no-focus-outline" key={name} to={route}>
+        {name === curPage ? (
+          <SelectedButton
+            key={name}
+            onClick={() => handleClick(value, name)}
+            sx={{ m: 1 }}
+          >
+            {name}
+          </SelectedButton>
+        ) : (
+          <CustomButton
+            key={name}
+            onClick={() => handleClick(value, name)}
+            sx={{ m: 1 }}
+          >
+            {name}
+          </CustomButton>
+        )}
+      </Link>
+    ));
+  };
+
   return (
     <Box
       key="page-selector"
@@ -106,27 +145,19 @@ function ProtocolSelect() {
         alignItems: 'center',
       }}
     >
-      {pages.map(({ name, route, value }: page) => (
-        <Link className="no-focus-outline" key={name} to={route}>
-          {name === curPage ? (
-            <SelectedButton
-              key={name}
-              onClick={() => handleClick(value, name)}
-              sx={{ m: 1 }}
-            >
-              {name}
-            </SelectedButton>
-          ) : (
-            <CustomButton
-              key={name}
-              onClick={() => handleClick(value, name)}
-              sx={{ m: 1 }}
-            >
-              {name}
-            </CustomButton>
-          )}
-        </Link>
-      ))}
+      {createButtons(pages)}
+      <Divider sx={{ ml: 1 }} orientation="vertical" flexItem />
+      <SwellTooltip title={experimentalTooltipText}>
+        <ScienceRoundedIcon
+          sx={{
+            ml: 1.5,
+            mr: 1,
+            color: `${white[500]}`,
+            '&:hover': { color: '#58a4b0' },
+          }}
+        />
+      </SwellTooltip>
+      {createButtons(experimentalPages)}
     </Box>
   );
 }
