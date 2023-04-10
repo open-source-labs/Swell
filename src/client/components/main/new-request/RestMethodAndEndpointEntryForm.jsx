@@ -14,7 +14,6 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBodySet,
   newRequestBody,
   newTestContentSet,
-  onEndpointChange,
   placeholder,
   value,
 }) => {
@@ -63,7 +62,6 @@ const RestMethodAndEndpointEntryForm = ({
       restUrl: url,
       url,
     });
-    onEndpointChange(url);
   };
 
   return (
