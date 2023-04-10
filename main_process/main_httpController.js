@@ -139,9 +139,10 @@ const httpController = {
   },
 
   attachRequestToHTTP2Client(client, event, reqResObj) {
+    const { request, response } = reqResObj;
     // initialize / clear response data and update front end
-    reqResObj.response.headers = {};
-    reqResObj.response.events = [];
+    response.headers = {};
+    response.events = [];
     reqResObj.connection = 'pending';
     reqResObj.timeSent = Date.now();
 
@@ -166,8 +167,8 @@ const httpController = {
     this.openHTTP2Streams[reqResObj.id] = reqStream;
 
     // close the writable side of our stream
-    reqResObj.request.method !== 'GET' && reqResObj.request.method !== 'HEAD'
-      ? reqStream.end(reqResObj.request.body)
+    request.method !== 'GET' && request.method !== 'HEAD'
+      ? reqStream.end(request.body)
       : reqStream.end();
 
     // persists outside of listeners
@@ -194,7 +195,7 @@ const httpController = {
 
       // check if response comes with 'content-length' header
       if (!headers['content-length'] && !headers['Content-Length']) {
-        reqResObj.responseSize = null;
+        response.responseSize = null;
       } else {
         let contentLength;
         headers['content-length']
@@ -206,23 +207,20 @@ const httpController = {
         const conversionFigure = 1023.89427;
         const octetToByteConversion =
           headers[`${contentLength}`] / conversionFigure;
-        const responseSize =
+        response.responseSize =
           Math.round((octetToByteConversion + Number.EPSILON) * 100) / 100;
-        reqResObj.responseSize = responseSize;
       }
 
       // content length is received in different letter cases. Whichever is returned will be used as the length for the calculation.
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
-      reqResObj.response.headers = headers;
+      response.headers = headers;
 
       // if cookie exists, parse the cookie(s)
       if (headers['set-cookie']) {
         const parsedCookies = setCookie.parse(headers['set-cookie']);
-        reqResObj.response.cookies =
-          httpController.cookieFormatter(parsedCookies);
+        response.cookies = httpController.cookieFormatter(parsedCookies);
       }
-      console.log('reqResObj inside main_httpController', reqResObj);
       // send updated reqResObj to renderer process
       event.sender.send('reqResUpdate', reqResObj);
     });
