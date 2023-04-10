@@ -287,9 +287,8 @@ export default function Http2Composer(props) {
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
-          onEndpointChange={(input: string) => undefined}
           placeholder='Enter URL or paste text' 
-          value={undefined}
+          value={newRequestFields.restUrl}
         />
         <span>
           <div>
