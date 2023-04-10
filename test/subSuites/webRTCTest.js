@@ -1,37 +1,32 @@
 /**
  * @file webRTC test using public server. Currently very thin, only confirms
- * that a server can be added to the workspace.
+ * that a request can be made to a public server, since the input is read-only
+ * in the application.
  *
- * @todo Properly test webRTC protocol. Please note the webRTC protocol is very
- * broken and unsure if it even currently works for any functionality purposes.
  */
 
 const { _electron: electron } = require('playwright');
+const pwTest = require('@playwright/test');
 const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs');
+const { addAndSend } = require('./testHelper');
 
-let electronApp, page;
+let electronApp,
+  page,
+  num = 0;
 
 module.exports = () => {
-  const setupFxn = function () {
+  describe('WebRTC request testing', () => {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      page = electronApp.windows()[0]; // In case there is more than one window
-      await page.waitForLoadState(`domcontentloaded`);
-
-      await page.locator('button >> text=Clear Workspace').click();
     });
 
     // close Electron app when complete
     after(async () => {
+      await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
-
-      try {
-      } catch (err) {
-        console.error(err);
-      }
     });
 
     afterEach(async function () {
@@ -47,52 +42,48 @@ module.exports = () => {
         );
       }
     });
-  };
 
-  describe('webRTC request testing', () => {
-    setupFxn();
+    // The app takes a while to launch, and without these rendering checks
+    // within each test file the tests can get flakey because of long load times
+    // so these are here to ensure the app launches as expect before continuing
+    describe('Window rendering', () => {
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok;
+      });
 
-    // This will fill out the composer with a GraphQL request when invoked.
-    const fillServerInfo = async (server) => {
-      try {
-        // click and check
-        await page.locator('button>> text=WEBRTC').click();
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        pwTest.expect(window).toBeVisible();
+      });
 
-        // select STUN or TURN servers, clear it, and type in server
-        const codeMirror = await page.locator('.cm-editor');
-        await codeMirror.click();
-        const webRTCServer = await codeMirror.locator('.cm-content');
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });
+    });
 
+    describe('WebRTC request testing (read-only)', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+      });
+
+      it('it should be able to make requests to a public STUN server', async () => {
         try {
-          await webRTCServer.fill('');
-          await webRTCServer.fill(server);
+          await page.locator('button>> text=WebRTC').click();
+          await addAndSend(page, num++);
+          await new Promise((resolve) =>
+            setTimeout(async () => {
+              const events = await page
+                .locator('#events-display >> .cm-content')
+                .innerText();
+              expect(events).to.include('"serverType": "STUN"');
+              resolve();
+            }, 1000)
+          );
         } catch (err) {
           console.error(err);
         }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    // This will add and send the most recent request in the workspace.
-    const addAndCreateLocalSDP = async () => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`text=Create Local SDP`).click();
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    it('it should be able to add a server to the workspace', async () => {
-      const server = '[{"urls": "stun:stun1.l.google.com:19302"}]';
-
-      // type in server
-      await fillServerInfo(server);
-      await addAndCreateLocalSDP();
-      await page.locator(`text=Remove`).click();
-      const SDP = await page.locator(`text=Create Local SDP`);
-      expect(await SDP.count()).to.equal(0);
+      });
     });
   }).timeout(20000);
 };

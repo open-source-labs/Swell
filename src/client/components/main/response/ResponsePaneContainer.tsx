@@ -89,7 +89,6 @@ const ResponsePaneContainer = () => {
                       setActiveTab('events');
                     }}
                   >
-                    {' '}
                     Events
                   </a>
                 </li>
@@ -112,14 +111,14 @@ const ResponsePaneContainer = () => {
                       activeTab === 'cookies' ? 'is-active' : ''
                     }`}
                   >
-                    <a onClick={() => setActiveTab('cookies')}> Cookies</a>
+                    <a onClick={() => setActiveTab('cookies')}>Cookies</a>
                   </li>
                 </>
               )}
               <li
                 className={`column ${activeTab === 'tests' ? 'is-active' : ''}`}
               >
-                <a onClick={() => setActiveTab('tests')}> Tests</a>
+                <a onClick={() => setActiveTab('tests')}>Tests</a>
               </li>
             </ul>
           </div>
