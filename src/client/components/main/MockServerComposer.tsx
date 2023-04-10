@@ -112,20 +112,22 @@ const MockServerComposer = (props) => {
       id="mockcomposer-http2"
     >
       <div className="container-margin">
-        <HtmlTooltip title={
+        <HtmlTooltip placement="bottom-end" title={
           <>
             <Typography variant="body1">
               <b>To create a mock response:</b>
               <br />
             </Typography>
             <Typography variant="body2">
-              1. Select a REST method from the dropdown.
+              1. Click "Start Server".
               <br />
-              2. Enter your desired /endpoint.
+              2. Select a request type from the dropdown.
               <br />
-              3. Define your desired response in the body.
+              3. Enter your desired /endpoint.
               <br />
-              4. Click "Start Server" then "Submit".
+              4. Define your desired response in the body. 
+              <br />
+              5. Click "Submit".
             </Typography>
             <br />
             <Typography variant="body1">
