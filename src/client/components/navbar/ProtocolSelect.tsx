@@ -7,14 +7,7 @@ import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFie
 
 // Import MUI components.
 import { styled } from '@mui/system';
-import {
-  Box,
-  Divider,
-  Tooltip,
-  TooltipProps,
-  Typography,
-  tooltipClasses,
-} from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 import { useDispatch } from 'react-redux';
@@ -75,16 +68,16 @@ const SelectedButton = styled(CustomButton)`
 const pages: page[] = [
   { name: 'HTTP/2', route: '/', value: 'rest' },
   { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
+  { name: 'WebSocket', route: '/websocket', value: 'ws' },
 ];
 
 const experimentalPages: page[] = [
+  { name: 'Mock', route: '/mockserver', value: 'mockserver' },
   { name: 'gRPC', route: '/grpc', value: 'grpc' },
-  { name: 'WebSocket', route: '/websocket', value: 'ws' },
+  { name: 'tRPC', route: '/trpc', value: 'tRPC' },
+  { name: 'Webhook', route: '/webhook', value: 'webhook' },
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
-  { name: 'Webhook', route: '/webhook', value: 'webhook' },
-  { name: 'tRPC', route: '/trpc', value: 'tRPC' },
-  { name: 'Mock', route: '/mockserver', value: 'mockserver'}
 ];
 
 const experimentalTooltipText: string =
@@ -139,7 +132,7 @@ function ProtocolSelect() {
             </CustomButton>
           )}
         </Link>
-      )
+      );
     });
   };
 
