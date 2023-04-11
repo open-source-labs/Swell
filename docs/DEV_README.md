@@ -66,13 +66,14 @@ From a codebase standpoint:
 ## What is the way to render electron app during development for WSL users?
 
 - WSL and Electron doesn't work well together where the application won't load when using npm run dev.
+- We have a few solutions you can try, but it's not by any means the only way or even guarenteed method.
 - One solution suggestion is to download the repo directly on your windows machine and not use WSL.
     - You can right-click on the bottom-left of your VSCode and uncheck remote host so that you still get the command-line functionalities.
 - Another solution is to use Xserver (graphical interface for linux) to render things from Linux onto your Windows.
     - This article was really helpful in getting things to work (https://www.beekeeperstudio.io/blog/building-electron-windows-ubuntu-wsl2)
     - The two difference that diverges from the articles instructions is on WSL Config step with .bashrc file and VcsXsrv config step 3
         - Here is the article to refer to (https://skeptric.com/wsl2-xserver/)
-        - .bashrc File: 
+        - inside of your .bashrc File: 
             - You should add this following script instead of what they put:
                 - export DISPLAY=$(/sbin/ip route | awk '/default/ { print $3 }'):0
         - VcsXsrv:
