@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const mockServerSlice = createSlice({
   name: 'mockServer',
   initialState: {
-    isServerStarted: false
+    isServerStarted: false,
   },
   reducers: {
     startServer: (state) => {
