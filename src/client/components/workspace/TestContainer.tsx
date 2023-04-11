@@ -55,7 +55,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
       the selected request in the workspace to the left.
     `;
     if (isTestRunning) {
-      return 'Load test is currently running.';
+      return 'Load stress test is currently running.';
     } else if (!reqResObj) {
       return 'Please add workspace or send request';
     } else if (!reqResObj.url) {
@@ -83,13 +83,13 @@ const TestContainer: React.FC<TestContainerProps> = ({
       >
         {showLoadTest === true && (
           <>
-            <span>Hide Load Test</span>
+            <span>Hide Load Stres Test</span>
           </>
         )}
 
         {showLoadTest === false && (
           <>
-            <span>Load Test</span>
+            <span>Load Stress Test</span>
           </>
         )}
       </div>
@@ -188,7 +188,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
               </div>
             </div>
             <div>
-              Attention: This load test is specifically designed for HTTP GET
+              Attention: This load stress test is specifically designed for HTTP GET
               requests & GraphQL Query. This is intended for backend testing
               purposes only. Please be aware that running this test on websites
               may lead to CORS issues.
