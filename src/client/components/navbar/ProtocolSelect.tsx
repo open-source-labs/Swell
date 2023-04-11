@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Import actions so that the navbar can interact with the Redux store.
 import { newRequestContentByProtocol } from '../../toolkit-refactor/newRequest/newRequestSlice';
@@ -97,6 +97,8 @@ const experimentalTooltipText: string =
  */
 function ProtocolSelect() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const currPath = location.pathname;
   /**
    * Alters the Redux store when a protocol is selected.
    * @param network
@@ -113,27 +115,32 @@ function ProtocolSelect() {
   };
 
   const createButtons = (pageArray: page[]): JSX.Element[] => {
-    return pageArray.map(({ name, route, value }: page) => (
-      <Link className="no-focus-outline" key={name} to={route}>
-        {name === curPage ? (
-          <SelectedButton
-            key={name}
-            onClick={() => handleClick(value, name)}
-            sx={{ m: 1 }}
-          >
-            {name}
-          </SelectedButton>
-        ) : (
-          <CustomButton
-            key={name}
-            onClick={() => handleClick(value, name)}
-            sx={{ m: 1 }}
-          >
-            {name}
-          </CustomButton>
-        )}
-      </Link>
-    ));
+    return pageArray.map(({ name, route, value }: page) => {
+      const isDisabled = currPath === route;
+      return (
+        <Link className="no-focus-outline" key={name} to={route}>
+          {name === curPage ? (
+            <SelectedButton
+              key={name}
+              onClick={() => handleClick(value, name)}
+              sx={{ m: 1 }}
+              disabled={isDisabled}
+            >
+              {name}
+            </SelectedButton>
+          ) : (
+            <CustomButton
+              key={name}
+              onClick={() => handleClick(value, name)}
+              sx={{ m: 1 }}
+              disabled={isDisabled}
+            >
+              {name}
+            </CustomButton>
+          )}
+        </Link>
+      )
+    });
   };
 
   return (
