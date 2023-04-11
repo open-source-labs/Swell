@@ -81,7 +81,7 @@ const RestMethodAndEndpointEntryForm = ({
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
           >
-            <span id="rest-method-type">{newRequestFields.method}</span>
+            <span>{newRequestFields.method}</span>
             <span className="icon is-medium">
               <img
                 src={dropDownArrow}

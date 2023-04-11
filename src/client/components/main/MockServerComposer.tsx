@@ -164,7 +164,7 @@ const MockServerComposer = (props) => {
         <HeaderEntryForm {...props} />
         <CookieEntryForm {...props} />
         <BodyEntryForm isMockServer placeholder={instructions} {...props} /> 
-        <div className="is-flex">
+        <div className="is-flex mt-3">
           <Button 
             className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
             variant="contained" 
