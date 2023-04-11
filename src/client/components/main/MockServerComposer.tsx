@@ -25,21 +25,7 @@ const { api } = (window as any);
 // TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
 // TODO: hook up the headers and cookies to the mock endpoint creation
 
-/**
- * Tooltip styling
- */
-const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 500,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}));
-
+// styling for the mui box modal component
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
