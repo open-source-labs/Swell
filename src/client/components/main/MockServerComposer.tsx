@@ -146,7 +146,7 @@ const MockServerComposer = (props) => {
 
   return (
     <Box
-      className="is-flex-grow-3 add-vertical-scroll"
+      className="add-vertical-scroll"
       sx={{
         height: '100%',
         px: 1,
@@ -155,7 +155,7 @@ const MockServerComposer = (props) => {
       }}
       id="mockcomposer-http2"
     >
-      <div className="container-margin">
+      <div className="is-flex is-flex-direction-column container-margin">
         <div className="is-flex is-align-items-center">
           <Button 
             className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
@@ -166,11 +166,14 @@ const MockServerComposer = (props) => {
             sx={{ mr: 1, textTransform: 'none' }}>
               {isServerStarted ? 'Stop Server' : 'Start Server'}
           </Button>
-          <RestMethodAndEndpointEntryForm 
-            {...props}
-            method={props.newRequestFields.method}
-            placeholder='/Enter Mock Endpoint'
-          />
+          <div className="is-flex-grow-1">
+            <RestMethodAndEndpointEntryForm 
+              {...props}
+              method={props.newRequestFields.method}
+              placeholder='/Enter Mock Endpoint'
+              style={{ width: '100%' }}
+            />
+          </div>
         </div>
         <HeaderEntryForm {...props} />
         <CookieEntryForm {...props} />
