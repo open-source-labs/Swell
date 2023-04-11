@@ -199,6 +199,7 @@
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "babel-loader": "^8.2.5",
+    "cors": "^2.8.5",
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "concurrently": "^8.0.1",
