@@ -286,6 +286,7 @@ export default function Http2Composer(props) {
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
+          value={newRequestFields.restUrl}
         />
         <span>
           <div>

@@ -4,6 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+import { PropaneSharp } from '@mui/icons-material';
 
 const RestMethodAndEndpointEntryForm = ({
   warningMessage,
@@ -13,6 +14,8 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBodySet,
   newRequestBody,
   newTestContentSet,
+  placeholder='Enter URL or paste text here',
+  value,
 }) => {
   const isDark = useSelector((state) => state.ui.isDark);
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
@@ -157,8 +160,8 @@ const RestMethodAndEndpointEntryForm = ({
           } ml-1 input input-is-medium is-info`}
           id="url-input"
           type="text"
-          placeholder="Enter endpoint"
-          value={newRequestFields.restUrl}
+          placeholder={placeholder}
+          value={value}
           onChange={urlChangeHandler}
         />
       </div>

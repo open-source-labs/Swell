@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Import actions so that the navbar can interact with the Redux store.
 import { newRequestContentByProtocol } from '../../toolkit-refactor/newRequest/newRequestSlice';
@@ -69,7 +69,7 @@ const SelectedButton = styled(CustomButton)`
 
 /**
  * name: The display name for the button.
- * route: The React Router route to redirect to on click.
+ * route: The React Router route to redirect to on click (see MainContainer.tsx)
  * value: The value of the button used to update the Redux store.
  */
 const pages: page[] = [
@@ -84,6 +84,7 @@ const experimentalPages: page[] = [
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
   { name: 'tRPC', route: '/trpc', value: 'tRPC' },
+  { name: 'Mock', route: '/mockserver', value: 'mockserver'}
 ];
 
 const experimentalTooltipText: string =
@@ -96,6 +97,8 @@ const experimentalTooltipText: string =
  */
 function ProtocolSelect() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const currPath = location.pathname;
   /**
    * Alters the Redux store when a protocol is selected.
    * @param network
@@ -112,27 +115,32 @@ function ProtocolSelect() {
   };
 
   const createButtons = (pageArray: page[]): JSX.Element[] => {
-    return pageArray.map(({ name, route, value }: page) => (
-      <Link className="no-focus-outline" key={name} to={route}>
-        {name === curPage ? (
-          <SelectedButton
-            key={name}
-            onClick={() => handleClick(value, name)}
-            sx={{ m: 1 }}
-          >
-            {name}
-          </SelectedButton>
-        ) : (
-          <CustomButton
-            key={name}
-            onClick={() => handleClick(value, name)}
-            sx={{ m: 1 }}
-          >
-            {name}
-          </CustomButton>
-        )}
-      </Link>
-    ));
+    return pageArray.map(({ name, route, value }: page) => {
+      const isDisabled = currPath === route;
+      return (
+        <Link className="no-focus-outline" key={name} to={route}>
+          {name === curPage ? (
+            <SelectedButton
+              key={name}
+              onClick={() => handleClick(value, name)}
+              sx={{ m: 1 }}
+              disabled={isDisabled}
+            >
+              {name}
+            </SelectedButton>
+          ) : (
+            <CustomButton
+              key={name}
+              onClick={() => handleClick(value, name)}
+              sx={{ m: 1 }}
+              disabled={isDisabled}
+            >
+              {name}
+            </CustomButton>
+          )}
+        </Link>
+      )
+    });
   };
 
   return (
