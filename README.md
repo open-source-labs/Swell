@@ -132,7 +132,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 ## Considering iterating Swell in the future?
 
-Feel free to check out the `DEV_README.md` in the `docs` folder.
+Feel free to check out the `DEV-README.md` in the `docs` folder.
 
 ## Authors
 
