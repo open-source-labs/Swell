@@ -14,7 +14,7 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBodySet,
   newRequestBody,
   newTestContentSet,
-  placeholder,
+  placeholder='Enter URL or paste text here',
   value,
 }) => {
   const isDark = useSelector((state) => state.ui.isDark);

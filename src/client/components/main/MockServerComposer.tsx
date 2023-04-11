@@ -170,7 +170,7 @@ const MockServerComposer = (props) => {
             <RestMethodAndEndpointEntryForm 
               {...props}
               method={props.newRequestFields.method}
-              placeholder='/Enter Mock Endpoint'
+              placeholder='/Enter mock endpoint'
               style={{ width: '100%' }}
             />
           </div>

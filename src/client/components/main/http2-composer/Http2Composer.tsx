@@ -286,7 +286,6 @@ export default function Http2Composer(props) {
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
-          placeholder='Enter URL or paste text' 
           value={newRequestFields.restUrl}
         />
         <span>
