@@ -49,6 +49,22 @@ const TestContainer: React.FC<TestContainerProps> = ({
     ? reqResArray[reqResArray.length - 1]
     : null;
 
+  const isDisabledForHttp: boolean =
+    reqResObj !== null &&
+    !reqResObj.graphQL &&
+    reqResObj.request.method !== 'GET';
+  const isDisabledForGraphql: boolean =
+    reqResObj !== null &&
+    reqResObj.graphQL &&
+    reqResObj.request.method !== 'QUERY';
+
+  const disabled: boolean =
+    isTestRunning ||
+    !reqResObj ||
+    !reqResObj.url ||
+    isDisabledForHttp ||
+    isDisabledForGraphql;
+
   const getDisabledReason = (): string => {
     const basePrompt = `
       Please note that this stress test will execute 
@@ -60,18 +76,12 @@ const TestContainer: React.FC<TestContainerProps> = ({
       return 'Please add workspace or send request';
     } else if (!reqResObj.url) {
       return 'URL is missing.';
-    } else if (reqResObj.request.method !== 'GET' && !reqResObj.graphQL) {
-      return `Only GET requests are supported for stress tests. ${basePrompt}`;
+    } else if (isDisabledForHttp || isDisabledForGraphql) {
+      return `Stress testing enabled only for GET (HTTP/2), and QUERY (GraphQL) requests. ${basePrompt}`;
     } else {
       return basePrompt;
     }
   };
-
-  const disabled: boolean =
-    isTestRunning ||
-    !reqResObj ||
-    !reqResObj.url ||
-    (reqResObj.request.method !== 'GET' && !reqResObj.graphQL);
 
   return (
     <div className="mt-4 mb-4">

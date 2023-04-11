@@ -292,7 +292,7 @@ export interface ReqResResponse {
   /**@todo */ //BELOW - additional properties not sure about yet/that weren't listed here before
   times?: $TSFixMeObject[]; //main_grpcController array of objects {timeSent: Date, timeReceived: Date}
   testResult?: TestResult[];
-  responseSize?: $TSFixMe; //mainprocess main_httpController line 196ish
+  responseSize?: number; //mainprocess main_httpController line 196ish
   status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
   messages?: WebsocketMessages[];
   connection?: string; //main_wsController
