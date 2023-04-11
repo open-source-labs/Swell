@@ -1,7 +1,10 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startServer, stopServer } from '../../../client/toolkit-refactor/mockServer/mockServerSlice';
+import {
+  startServer,
+  stopServer,
+} from '../../../client/toolkit-refactor/mockServer/mockServerSlice';
 import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
 // forms
@@ -11,13 +14,13 @@ import CookieEntryForm from './new-request/CookieEntryForm';
 import BodyEntryForm from './new-request/BodyEntryForm';
 
 // mui
-import { Box, Button, Modal, styled, Tooltip, TooltipProps, tooltipClasses, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 
 /**
  * grab context from Electron window
  * note: api is the ipcRenderer object (see preload.js)
  */
-const { api } = (window as any);
+const { api } = window as any;
 
 // TODO: add typing to the props object
 // TODO: add an option to see the list of existing routes that shows up in the response window
@@ -39,18 +42,18 @@ const style = {
 };
 
 const MockServerComposer = (props) => {
-  const [isMockServer, setIsMockServer] = useState(true);
-  const [modalText, setModalText] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
   const dispatch = useDispatch();
-  
+
   // grab the isServerStarted state from the Redux store
-  let isServerStarted = useSelector((state: any) => state.mockServer.isServerStarted);
+  let isServerStarted = useSelector(
+    (state: any) => state.mockServer.isServerStarted
+  );
 
   useEffect(() => {
     dispatch(newRequestFieldsByProtocol('mock'));
-  }, [dispatch])
+  }, [dispatch]);
 
   const startMockServer = () => {
     api.send('start-mock-server');
@@ -74,9 +77,9 @@ const MockServerComposer = (props) => {
     // check if the mock server is running
     if (isServerStarted) {
       // check if endpoint starts with a forward slash
-      const parsedUserDefinedEndpoint = 
-        props.newRequestFields.restUrl[0] === '/' 
-          ? props.newRequestFields.restUrl 
+      const parsedUserDefinedEndpoint =
+        props.newRequestFields.restUrl[0] === '/'
+          ? props.newRequestFields.restUrl
           : `/${props.newRequestFields.restUrl}`;
 
       // grab the method type from the RestMethodAndEndpointEntryForm component
@@ -90,7 +93,9 @@ const MockServerComposer = (props) => {
       }
 
       // parse the response from the BodyEntryForm component because it is a stringified JSON object in props
-      const parsedCodeMirrorBodyContent = JSON.parse(props.newRequestBody.bodyContent);
+      const parsedCodeMirrorBodyContent = JSON.parse(
+        props.newRequestBody.bodyContent
+      );
 
       // create an object that contains the method, endpoint, and response
       const postData = {
@@ -98,27 +103,20 @@ const MockServerComposer = (props) => {
         endpoint: parsedUserDefinedEndpoint,
         response: parsedCodeMirrorBodyContent,
       };
-  
-      // send a message with the stringified postData to the main_mockServerController to execute the POST request 
+
+      // send a message with the stringified postData to the main_mockServerController to execute the POST request
       api.send('submit-mock-request', JSON.stringify(postData));
 
-      // TODO: figure out how to populate the response window with a success message and instructions on how to view the mock response. For now it will just show a modal with the instructions
-      const responseString = `Endpoint submitted! 
-      Please make a request to: 
-      http://localhost:9990${parsedUserDefinedEndpoint} to see the response.`;
-
       setUserDefinedEndpoint(parsedUserDefinedEndpoint);
-      setModalText(responseString);
       setShowModal(true);
     } else {
       alert('Please start the mock server before submitting an endpoint');
     }
-  }
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setModalText('');
-  }
+  };
 
   // instructions to pass down to the BodyEntryForm component as a placeholder
   const instructions = `
@@ -143,62 +141,64 @@ const MockServerComposer = (props) => {
     >
       <div className="is-flex is-flex-direction-column container-margin">
         <div className="is-flex is-align-items-center">
-          <Button 
-            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
-            id="response" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
+            id="response"
+            variant="contained"
+            color="primary"
             onClick={handleServerButtonClick}
-            sx={{ mr: 1, textTransform: 'none' }}>
-              {isServerStarted ? 'Stop Server' : 'Start Server'}
+            sx={{ mr: 1, textTransform: 'none' }}
+          >
+            {isServerStarted ? 'Stop Server' : 'Start Server'}
           </Button>
           <div className="is-flex-grow-1">
-            <RestMethodAndEndpointEntryForm 
+            <RestMethodAndEndpointEntryForm
               {...props}
               method={props.newRequestFields.method}
-              placeholder='/Enter mock endpoint'
+              placeholder="/Enter mock endpoint"
               style={{ width: '100%' }}
             />
           </div>
         </div>
         <HeaderEntryForm {...props} />
         <CookieEntryForm {...props} />
-        <BodyEntryForm isMockServer placeholder={instructions} {...props} /> 
+        <BodyEntryForm
+          isMockServer={true}
+          placeholder={instructions}
+          {...props}
+        />
         <div className="is-flex mt-3">
-          <Button 
-            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
+            variant="contained"
+            color="primary"
             onClick={handleEndpointSubmit}
-            sx={{ ml : 1, textTransform: 'none' }}>
-              Submit
-          </Button>
-          <Modal
-            open={showModal}
-            onClose={handleCloseModal}
+            sx={{ ml: 1, textTransform: 'none' }}
           >
+            Submit
+          </Button>
+          <Modal open={showModal} onClose={handleCloseModal}>
             <Box sx={style} className="is-flex is-flex-direction-column">
               <div>
                 <Typography variant="h6">
                   Mock endpoint successfully created!
                   <br />
                   <br />
-                  To view the response visit: 
+                  To view the response visit:
                   <br />
                   localhost:9990{userDefinedEndpoint}
                 </Typography>
               </div>
               <div className="is-flex is-justify-content-flex-end">
-                <Button onClick={handleCloseModal}>
-                  Close
-                </Button>
+                <Button onClick={handleCloseModal}>Close</Button>
               </div>
             </Box>
           </Modal>
         </div>
       </div>
     </Box>
-  )
+  );
 };
 
 export default MockServerComposer;
+
