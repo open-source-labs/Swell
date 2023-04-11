@@ -51,17 +51,17 @@ const TestContainer: React.FC<TestContainerProps> = ({
 
   const getDisabledReason = (): string => {
     const basePrompt = `
-      Please note that this load test will execute 
+      Please note that this stress test will execute 
       the selected request in the workspace to the left.
     `;
     if (isTestRunning) {
-      return 'Load stress test is currently running.';
+      return 'Stress test is currently running.';
     } else if (!reqResObj) {
       return 'Please add workspace or send request';
     } else if (!reqResObj.url) {
       return 'URL is missing.';
     } else if (reqResObj.request.method !== 'GET' && !reqResObj.graphQL) {
-      return `Only GET requests are supported for load tests. ${basePrompt}`;
+      return `Only GET requests are supported for stress tests. ${basePrompt}`;
     } else {
       return basePrompt;
     }
@@ -83,13 +83,13 @@ const TestContainer: React.FC<TestContainerProps> = ({
       >
         {showLoadTest === true && (
           <>
-            <span>Hide Load Stres Test</span>
+            <span>Hide Stress Test</span>
           </>
         )}
 
         {showLoadTest === false && (
           <>
-            <span>Load Stress Test</span>
+            <span>View Stress Test</span>
           </>
         )}
       </div>
@@ -188,7 +188,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
               </div>
             </div>
             <div>
-              Attention: This load stress test is specifically designed for HTTP GET
+              Attention: This stress test is specifically designed for HTTP GET
               requests & GraphQL Query. This is intended for backend testing
               purposes only. Please be aware that running this test on websites
               may lead to CORS issues.
