@@ -37,7 +37,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   <img src="./ReadMeGifs/Gifs/GraphQL.gif" style="display: block; margin: 10px auto 30px;" />
 
 - _Server-Sent Events (SSE)_: Initiated by a simple toggle box, Swell displays SSE events one by one as they come in. Similar to HTTP2 streams, multiple open connection streams are allowed for SSE.
-  <img src="./ReadMeGifs/Gifs/SSE.gif" style="display: block; margin: 10px auto 30px;" />
+  <img src="./ReadMeGifs/Gifs/ServerSideEvents.gif" style="display: block; margin: 10px auto 30px;" />
 
 - _WebSockets (WS)_: Swell enables connecting directly to WebSocket servers with an HTTP handshake, with developers able to send messages to the connected WS server directly. All outgoing and incoming messages are displayed in real time.
   <img src="./ReadMeGifs/Gifs/Websockets.gif" style="display: block; margin: 10px auto 30px;" />
