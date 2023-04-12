@@ -45,6 +45,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 ## Additional features
 
 - _Stress testing for HTTP/2 and GraphQL_: Test your server backend with Swell's stress testing feature to ensure your server can manage expected and unexpected loads accordingly
+  <img src="./ReadMeGifs/Gifs/HttpStressTest.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
+  <img src="./ReadMeGifs/Gifs/GraphQLTest.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 
 - _Send Requests Directly to an Endpoint_: You are able to immediately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
   <img src="./ReadMeGifs/Gifs/DirectSendRequest.gif"
