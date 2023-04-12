@@ -52,7 +52,7 @@ People _love_ thorough bug reports. I'm not even kidding.
 ## Test early, test often!
 
 - Run npm run test or npm run test-mocha for E2E testing with [Playwright](https://playwright.dev/docs/api/class-electron) and Mocha
-- Run npm run test-jest for unit and integration tests with Jest 
+- Run npm run test-jest for unit and integration tests with Jest
 - Check code coverage!
   - In the 'test/coverage' directory, check jest-coverage and mocha-coverage directories
     - View each index.html in your browser for coverage reports generated with Istanbul that will show covered and uncovered lines in accessed modules
@@ -61,8 +61,10 @@ People _love_ thorough bug reports. I'm not even kidding.
 - Contribute to the testing suite
   - Add tests for uncovered lines, modules, functions. Leave no stone unturned!
 
+## Considering iterating Swell in the future?
+
+Feel free to check out the `DEV-README.md` in the `docs` folder.
+
 ## License
 
 By contributing, you agree that your contributions will be licensed under its MIT License.
-
-
