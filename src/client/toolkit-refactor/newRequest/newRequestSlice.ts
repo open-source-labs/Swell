@@ -163,6 +163,9 @@ const newRequestSlice = createSlice({
         case 'webhook': {
           return composeNewRequestStore('none');
         }
+        case 'mockserver': {
+          return composeNewRequestStore('none');
+        }
         default:
           return state;
       }

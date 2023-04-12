@@ -56,8 +56,9 @@ const wsController = {
     socket.on('connectFailed', (error) => {
       console.log(`WS Connect Error: ${error.toString()}`);
       reqResObj.connection = 'error';
+      reqResObj.error = error;
+      reqResObj.response.events.push(error);
       reqResObj.timeReceived = Date.now();
-      // reqResObj.response.events.push(JSON.stringify(errorsObj)); need to move
       event.sender.send('reqResUpdate', reqResObj);
     });
 

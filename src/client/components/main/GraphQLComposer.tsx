@@ -17,6 +17,7 @@ import GraphQLVariableEntryForm from './new-request/GraphQLVariableEntryForm';
 import GraphQLIntrospectionLog from './new-request/GraphQLIntrospectionLog.jsx';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import TestEntryForm from './new-request/TestEntryForm.jsx';
+import TestContainer from '../workspace/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
@@ -248,6 +249,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
           newRequestBody={newRequestBody}
           newRequestBodySet={newRequestBodySet}
         />
+        <TestContainer />
         <TestEntryForm
           newTestContentSet={newTestContentSet}
           testContent={testContent}

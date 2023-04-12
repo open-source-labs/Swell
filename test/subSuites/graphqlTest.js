@@ -13,6 +13,11 @@ const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
+const {
+  fillGQLBasicInfo,
+  fillGQLRequest,
+  addAndSend,
+} = require('./testHelper');
 
 let electronApp, page, num;
 
@@ -41,92 +46,9 @@ module.exports = () => {
       }
     });
 
-    const fillGQLBasicInfo = async (
-      url,
-      method,
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        // click and check GRAPHQL
-        await page.locator('button>> text=GraphQL').click();
-
-        // click and select METHOD if it isn't QUERY
-        if (method !== 'QUERY') {
-          await page.locator('button#graphql-method').click();
-          await page
-            .locator(`div[id^="composer"] >> a >> text=${method}`)
-            .click();
-        }
-
-        // type in url
-        await page.locator('#url-input').fill(url);
-
-        // set headers
-        headers.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#header-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#header-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-header').click();
-        });
-
-        // set cookies
-        cookies.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-cookie').click();
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const fillGQLRequest = async (
-      url,
-      method,
-      query = '',
-      variables = '',
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        await fillGQLBasicInfo(url, method, headers, cookies);
-
-        // select Body, clear it, and type in query
-        const codeMirror = await page.locator('#gql-body-entry');
-        await codeMirror.click();
-        const gqlBodyCode = await codeMirror.locator('.cm-content');
-
-        try {
-          await gqlBodyCode.fill('');
-          await gqlBodyCode.fill(query);
-        } catch (err) {
-          console.error(err);
-        }
-
-        // select Variables and type in variables
-        const codeMirror2 = await page.locator('#gql-var-entry');
-        await codeMirror2.click();
-        await codeMirror2.locator('.cm-content').fill(variables);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const addAndSend = async (n) => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${n}`).click();
-      } catch (err) {
-        console.error(err);
-      }
+    const fillAndSendRequest = async (url, method, query, n, variables) => {
+      await fillGQLRequest(page, url, method, query, variables);
+      await addAndSend(page, n);
     };
 
     // The app takes a while to launch, and without these rendering checks
@@ -165,7 +87,7 @@ module.exports = () => {
           // For introspection specifically, headers are required
           const headers = [{ key: 'Content-type', value: 'application/json' }];
 
-          await fillGQLBasicInfo(URL, 'QUERY', headers);
+          await fillGQLBasicInfo(page, URL, 'QUERY', headers);
 
           // click introspect
           const button = await page.locator('button >> text=Introspect');
@@ -199,10 +121,7 @@ module.exports = () => {
           const url = 'https://countries.trevorblades.com/';
           const query = 'query($code: ID!) {country(code: $code) {capital}}';
           const variables = '{"code": "AE"}';
-
-          // type in url
-          await fillGQLRequest(url, method, query, variables);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, method, query, num++, variables);
 
           await new Promise((resolve) => {
             setTimeout(async () => {
@@ -228,10 +147,7 @@ module.exports = () => {
           const method = 'QUERY';
           const url = 'http://localhost:4000/graphql';
           const query = 'query {feed {descriptions}}';
-
-          // type in url
-          await fillGQLRequest(url, method, query);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, method, query, num++);
 
           await new Promise((resolve) => {
             setTimeout(async () => {
@@ -266,10 +182,7 @@ module.exports = () => {
           const url = 'http://localhost:4000/graphql';
           const query =
             'mutation {post(url: "www.piedpiper.com" description: "Middle-out compression") {url}}';
-
-          // type in url
-          await fillGQLRequest(url, method, query);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, method, query, num++);
 
           await new Promise((resolve) => {
             setTimeout(async () => {
@@ -304,18 +217,14 @@ module.exports = () => {
           const method = 'SUBSCRIPTION';
           const url = 'http://localhost:4000/graphql';
           const query = 'subscription {newLink {id description url}}';
-
-          await fillGQLRequest(url, method, query);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, method, query, num++);
 
           // SEND MUTATION
           const method2 = 'MUTATION';
           const url2 = 'http://localhost:4000/graphql';
           const query2 =
             'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {description}}';
-
-          await fillGQLRequest(url2, method2, query2);
-          await addAndSend(num++);
+          await fillAndSendRequest(url2, method2, query2, num++);
 
           await new Promise((resolve) => {
             setTimeout(async () => {
@@ -349,17 +258,13 @@ module.exports = () => {
           // START SUBSCRIPTION
           const SUBSCRIPTION = 'SUBSCRIPTION';
           const query = 'subscription {newLink {id description url}}';
-
-          await fillGQLRequest(url, SUBSCRIPTION, query);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, SUBSCRIPTION, query, num++);
 
           // SEND MUTATION
           const MUTATION = 'MUTATION';
           const query2 =
             'mutation {post(url: "www.gavinbelson.com" description: "Tethics") {description}}';
-
-          await fillGQLRequest(url, MUTATION, query2);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, MUTATION, query2, num++);
 
           // UNSUNSCRIBE FROM SERVER
           await new Promise((resolve) => {
@@ -381,9 +286,7 @@ module.exports = () => {
           // SEND ADDITIONAL MUTATION AFTER UNSUBSCRIBED FROM SERVER
           const query3 =
             'mutation {post(url: "www.moreexamples.com" description: "Fake site") {description}}';
-
-          await fillGQLRequest(url, MUTATION, query3);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, MUTATION, query3, num++);
 
           await new Promise((resolve) => {
             setTimeout(async () => {
@@ -413,9 +316,7 @@ module.exports = () => {
           const url = 'http://localhost:4000/graphql';
           // Misspelled `newLink`
           const query = 'subscription {newnk {id description url}}';
-
-          await fillGQLRequest(url, method, query);
-          await addAndSend(num++);
+          await fillAndSendRequest(url, method, query, num++);
 
           await new Promise((resolve) => {
             setTimeout(async () => {
@@ -440,6 +341,87 @@ module.exports = () => {
           console.error(err);
         }
       });
+    }).timeout(20000);
+
+    describe('GraphQL load testing', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+      });
+
+      beforeEach(() => (num = 0));
+
+      afterEach(
+        async () => await page.locator('button >> text=Clear Workspace').click()
+      );
+
+      // limiting the amount of time required to simulate the load test
+      const loadTestDuration = 3;
+
+      it('Load test run button is disabled with no request in workspace window', async () => {
+        try {
+          await page.locator('button>> text=GraphQL').click();
+          await page.locator('span >> text=Load Test').click();
+          const runButton = page.locator('button>> text=Run');
+          pwTest.expect(runButton).toBeDisabled();
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      it('Run button is disabled for requests other than `QUERY`', async () => {
+        try {
+          const method = 'SUBSCRIPTION';
+          const url = 'http://localhost:4000/graphql';
+          const query = 'subscription {newLink {id description url}}';
+          await fillGQLRequest(page, url, method, query);
+          await page.locator('button >> text=Add to Workspace').click();
+          await page.locator('span >> text=Load Test').click();
+          const runButton = page.locator('button>> text=Run');
+          pwTest.expect(runButton).toBeDisabled();
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      it('Successful load test with `QUERY`', async () => {
+        try {
+          const method = 'QUERY';
+          const url = 'http://localhost:4000/graphql';
+          const query = 'query {feed {descriptions}}';
+          await fillGQLRequest(page, url, method, query);
+          await page.locator('button >> text=Add to Workspace').click();
+          await page.locator('span >> text=Load Test').click();
+          await page
+            .locator('[placeholder="Duration"]')
+            .fill(loadTestDuration.toString());
+          await page.locator('button>> text=Run').click();
+
+          // The load test takes a minimum of 4 seconds to execute
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                const statusCode = await page
+                  .locator('.status-tag')
+                  .innerText();
+
+                const events = await page.locator(
+                  '#events-display >> .cm-content'
+                );
+                expect(await events.count()).to.equal(1);
+
+                expect(statusCode).to.equal('Success');
+                expect(await events.innerText()).to.include('"totalSent": 3');
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 5000);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }).timeout(7000);
     }).timeout(20000);
   });
 };

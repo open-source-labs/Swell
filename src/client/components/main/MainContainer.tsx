@@ -32,6 +32,7 @@ import WebRTCComposer from './WebRTCComposer';
 import OpenAPIComposer from './OpenAPIComposer';
 import WebhookComposer from './WebhookComposer';
 import TRPCComposer from './TRPCComposer';
+import MockServerComposer from './MockServerComposer';
 import ResponsePaneContainer from './response/ResponsePaneContainer';
 
 // Import MUI components
@@ -121,6 +122,7 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
             <Route path="/webhook" element={<WebhookComposer {...props} />} />
             <Route path="/trpc" element={<TRPCComposer {...props} />} />
+            <Route path="/mockserver" element={<MockServerComposer {...props} />} />
           </Routes>
         </Box>
         <ResponsePaneContainer />

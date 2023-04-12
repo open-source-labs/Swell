@@ -37,7 +37,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|js)x?$/,
+        test: /\.(ts|js|mjs)x?$/,
         include: [path.resolve(__dirname, 'src')],
         use: {
           loader: 'babel-loader',
@@ -50,7 +50,7 @@ module.exports = {
           },
         },
         resolve: {
-          extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+          extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
         },
       },
       {

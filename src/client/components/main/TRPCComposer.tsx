@@ -159,7 +159,7 @@ export default function TRPCComposer() {
         overflowX: 'scroll',
         overflowY: 'scroll',
       }}
-      id="composer-graphql"
+      id="composer-trpc"
     >
       <div
         className="is-flex-grow-3 add-vertical-scroll container-margin"
