@@ -136,6 +136,17 @@ Moreover, the mock server functionality can be extended to GraphQL as well so th
 
 The `RTCConfiguration` format required for WebRTC STUN/TURN server is an object with `iceServers` as the key and an array of objects as the value. With the current input format on the application, it is very difficult and error-prone to attempt to format the user input correctly. Based on research it seems like many other alternatives that test STUN/TURN servers separate each key/value into its input text box (similar to how key/value pairs for headers are done for HTTP/2 in Swell). Our assumption is that this way the application can have better control formatting `RTCConfiguration`. If anyone is considering advancing the current WebRTC functionalities in the future, this should be a priority so we can fully enable the ability to test any STUN/TURN servers using Swell.
 
+### _Incomplete E2E testing coverage_
+
+Some of the following features either have broken, or no E2E testing coverage in the repository:
+
+- gRPC
+- tRPC
+- OpenAPI
+- Mock server
+
+Future iteration should consider fix or add E2E testing coverage for these features.
+
 ### _Broken Travis CI build_
 
 In the `README` document, you will notice that the link to the `Build Status` to Travis CI is not functional. A broken CI/CD pipeline blocks the ability to automatically package and release new iterations of the application, so it would be great if we can rebuild CI/CD using alternative services like GitHub Actions.

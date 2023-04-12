@@ -114,6 +114,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 2000,
     height: 1000,
+    title: 'Swell', // Ensure the app has a title with first letter capitalized
     minWidth: 1000,
     minHeight: 600,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
