@@ -55,7 +55,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
        style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 
 - _Scripting in Swell_: If you favor test-driven development, Swell allows you to write assertion tests to aid defining and testing backend API services.
-  <img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif"
+  <img src="./ReadMeGifs/Gifs/Assertion-Testing.gif"
        style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 
 - _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
@@ -70,6 +70,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 ## Experimental Features
 
 - _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
+  <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
 
 - _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
   <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
