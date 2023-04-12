@@ -1,3 +1,9 @@
+/**
+ * This module contains helper functions that facilitates with
+ * filling in information, adding and sending requests in the UI
+ * for E2E testing.
+ */
+
 const fillRestRequest = async (
   page,
   url,
