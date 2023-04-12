@@ -149,7 +149,7 @@ Future iteration should consider fix or add E2E testing coverage for these featu
 
 ### _Broken Travis CI build_
 
-In the `README` document, you will notice that the link to the `Build Status` to Travis CI is not functional. A broken CI/CD pipeline blocks the ability to automatically package and release new iterations of the application, so it would be great if we can rebuild CI/CD using alternative services like GitHub Actions.
+The [Travis CI link](https://travis-ci.org/open-source-labs/Swell) is not functional. A broken CI/CD pipeline blocks the ability to automatically package and release new iterations of the application, so it would be great if we can rebuild CI/CD using alternative services like GitHub Actions.
 
 ---
 
