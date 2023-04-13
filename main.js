@@ -205,12 +205,13 @@ app.on('ready', () => {
   createWindow();
   if (!isDev) {
     /**
-     * Note: Even though Express is not used for the duration of the block, this
-     * is crucial code, and while VS Code will flag it as not being used, it
-     * should not be removed. Express server is used in production mode as there
-     * is no dev server.
+     * Note: Even though Express and mock server is not used for the duration of the block,
+     * this is crucial code, and while VS Code will flag it as not being used, it
+     * should not be removed. The servers must be required upon app startup (especially in
+     * packaged versions) or else the packaged app would not recognize the servers at all.
      */
     const express = require('./src/server/server');
+    const mockServer = require('./src/server/mockServer.js');
     autoUpdater.checkForUpdates();
   }
 });
@@ -420,12 +421,6 @@ ipcMain.on('import-proto', (event) => {
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
-          // console.log(
-          //   "finished with logic. about to send importedProto : ",
-          //   importedProto,
-          //   " and protoObj : ",
-          //   protoObj
-          // );
           mainWindow.webContents.send('proto-info', importedProto, protoObj);
         });
       });
@@ -492,11 +487,11 @@ ipcMain.on('openapiParserFunc-request', (event, data) => {
 });
 
 //======================= MOCK SERVER =======================//
-const { spawn } = require('child_process');
+const { fork } = require('child_process');
 
-// starts the mock server by spawning a Node child process
+// starts the mock server by forking a Node child process
 ipcMain.on('start-mock-server', () => {
-  mockServerProcess = spawn('node', ['./src/server/mockServer.js']);
+  mockServerProcess = fork('node', ['./src/server/mockServer.js']);
   mockServerProcess.on('error', (err) => {
     console.log('Error starting mock server', err);
   });
