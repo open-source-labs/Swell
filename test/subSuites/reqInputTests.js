@@ -146,7 +146,12 @@ module.exports = () => {
     });
 
     describe('HTTP/2 URL input successful', () => {
+      // Any button in the nav bar that is selected is disabled
+      // And hard refreshing the page in a test environment is not entirely robust
+      // since the app can take a bit to load. In that case,
+      // we work around the limitation by clicking another feature and return to HTTP/2
       before(async () => {
+        await page.locator('button>> text=GraphQL').click();
         await page.locator('button>> text=HTTP/2').click();
       });
 

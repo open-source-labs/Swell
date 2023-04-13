@@ -17,7 +17,11 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const path = require('path');
 const fs = require('fs');
-const { fillRestRequest, addAndSend } = require('./testHelper');
+const {
+  isButtonDisabled,
+  fillRestRequest,
+  addAndSend,
+} = require('./testHelper');
 
 let electronApp,
   page,
@@ -252,7 +256,7 @@ module.exports = () => {
       });
     });
 
-    describe('HTTP/S load testing', () => {
+    describe('HTTP/S stress testing', () => {
       before(async () => {
         page = electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
@@ -266,17 +270,20 @@ module.exports = () => {
 
       beforeEach(() => (num = 0));
 
-      afterEach(
-        async () => await page.locator('button >> text=Clear Workspace').click()
-      );
+      afterEach(async () => {
+        await page.locator('span >> text=Hide Stress Test').click();
+        await page.locator('button >> text=Clear Workspace').click();
+      });
 
-      // limiting the amount of time required to simulate the load test
-      const loadTestDuration = 3;
+      // limiting the amount of time required to simulate the stress test
+      const stressTestDuration = 3;
 
-      it('Load test run button is disabled with no request in workspace window', async () => {
+      it('Stress test run button is disabled with no request in workspace window', async () => {
         try {
-          await page.locator('button>> text=HTTP/2').click();
-          await page.locator('span >> text=Load Test').click();
+          const httpPath = 'button>> text=HTTP/2';
+          if (!isButtonDisabled(page, httpPath))
+            await page.locator(httpPath).click();
+          await page.locator('span >> text=View Stress Test').click();
           const runButton = page.locator('button>> text=Run');
           pwTest.expect(runButton).toBeDisabled();
         } catch (err) {
@@ -292,7 +299,7 @@ module.exports = () => {
             '{"title": "HarryPotter", "author": "JK Rowling", "pages": 500}';
           await fillRestRequest(page, url, method, body);
           await page.locator('button >> text=Add to Workspace').click();
-          await page.locator('span >> text=Load Test').click();
+          await page.locator('span >> text=View Stress Test').click();
           const runButton = page.locator('button>> text=Run');
           pwTest.expect(runButton).toBeDisabled();
         } catch (err) {
@@ -300,19 +307,19 @@ module.exports = () => {
         }
       });
 
-      it('Successful load test with `GET` request', async () => {
+      it('Successful stress test with `GET` request', async () => {
         try {
           const url = 'http://localhost:3004/book';
           const method = 'GET';
           await fillRestRequest(page, url, method);
           await page.locator('button >> text=Add to Workspace').click();
-          await page.locator('span >> text=Load Test').click();
+          await page.locator('span >> text=View Stress Test').click();
           await page
             .locator('[placeholder="Duration"]')
-            .fill(loadTestDuration.toString());
+            .fill(stressTestDuration.toString());
           await page.locator('button>> text=Run').click();
 
-          // The load test takes a minimum of 4 seconds to execute
+          // The stress test takes a minimum of 4 seconds to execute
           await new Promise((resolve) => {
             setTimeout(async () => {
               try {

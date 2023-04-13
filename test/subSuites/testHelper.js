@@ -4,6 +4,12 @@
  * for E2E testing.
  */
 
+const isButtonDisabled = async (page, path) => {
+  const button = await page.locator(path);
+  const isDisabled = await button.getAttribute('disabled');
+  return isDisabled !== null;
+};
+
 const fillRestRequest = async (
   page,
   url,
@@ -14,7 +20,9 @@ const fillRestRequest = async (
 ) => {
   try {
     // Make sure HTTP2 method is selected
-    await page.locator('button>> text=HTTP/2').click();
+    const httpPath = 'button>> text=HTTP/2';
+    if (!(await isButtonDisabled(page, httpPath)))
+      await page.locator(httpPath).click();
 
     // click and select METHOD if it isn't GET
     if (method !== 'GET') {
@@ -81,7 +89,9 @@ const fillGQLBasicInfo = async (
 ) => {
   try {
     // click and check GRAPHQL
-    await page.locator('button>> text=GraphQL').click();
+    const gqlPath = 'button>> text=GraphQL';
+    if (!(await isButtonDisabled(page, gqlPath)))
+      await page.locator(gqlPath).click();
 
     // click and select METHOD if it isn't QUERY
     if (method !== 'QUERY') {
@@ -186,6 +196,7 @@ const clearAndFillTestScriptArea = async (page, script) => {
 };
 
 module.exports = {
+  isButtonDisabled,
   fillRestRequest,
   fillGQLBasicInfo,
   fillGQLRequest,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // Import actions so that the navbar can interact with the Redux store.
@@ -60,13 +60,15 @@ const SelectedButton = styled(CustomButton)`
   background-color: #58a4b0;
 `;
 
+const HTTP_NAME = 'HTTP/2';
+const HTTP_VALUE = 'rest';
 /**
  * name: The display name for the button.
  * route: The React Router route to redirect to on click (see MainContainer.tsx)
  * value: The value of the button used to update the Redux store.
  */
 const pages: page[] = [
-  { name: 'HTTP/2', route: '/', value: 'rest' },
+  { name: HTTP_NAME, route: '/', value: HTTP_VALUE },
   { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
   { name: 'WebSocket', route: '/websocket', value: 'ws' },
 ];
@@ -101,6 +103,22 @@ function ProtocolSelect() {
     dispatch(newRequestContentByProtocol(network));
   };
   const [curPage, setCurPage] = useState('');
+
+  useEffect(() => {
+    const currentPage: page | undefined = [...pages, ...experimentalPages].find(
+      ({ route }) => route === currPath
+    );
+    if (!currentPage) {
+      console.warn(
+        `Current page path cannot be found. Default to ${HTTP_NAME}`
+      );
+      onProtocolSelect(HTTP_VALUE);
+      setCurPage(HTTP_NAME);
+    } else {
+      onProtocolSelect(currentPage.value);
+      setCurPage(currentPage.name);
+    }
+  }, []);
 
   const handleClick = (value: string, name: string): void => {
     onProtocolSelect(value);

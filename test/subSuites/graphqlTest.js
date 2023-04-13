@@ -77,9 +77,15 @@ module.exports = () => {
 
       beforeEach(() => (num = 0));
 
-      afterEach(
-        async () => await page.locator('button >> text=Clear Workspace').click()
-      );
+      afterEach(async () => {
+        await page.locator('button >> text=Clear Workspace').click();
+        // Any button in the nav bar that is selected is disabled
+        // And hard refreshing the page in a test environment is not entirely robust
+        // since the app can take a bit to load. In that case,
+        // we work around the limitation by clicking another feature and return to HTTP/2
+        await page.locator('button>> text=HTTP/2').click();
+        await page.locator('button>> text=GraphQL').click();
+      });
 
       it('it should be able to introspect the schema (PUBLIC API)', async () => {
         try {
@@ -283,6 +289,10 @@ module.exports = () => {
             }, 500);
           });
 
+          // Purely a workaround to ensure `fillAndSendRequest()` can select `MUTATION` correctly
+          await page.locator('button#graphql-method').click();
+          await page.locator(`div[id^="composer"] >> a >> text=QUERY`).click();
+
           // SEND ADDITIONAL MUTATION AFTER UNSUBSCRIBED FROM SERVER
           const query3 =
             'mutation {post(url: "www.moreexamples.com" description: "Fake site") {description}}';
@@ -349,19 +359,26 @@ module.exports = () => {
         await page.waitForLoadState(`domcontentloaded`);
       });
 
-      beforeEach(() => (num = 0));
+      beforeEach(async () => {
+        num = 0;
+      });
 
-      afterEach(
-        async () => await page.locator('button >> text=Clear Workspace').click()
-      );
+      afterEach(async () => {
+        await page.locator('button >> text=Clear Workspace').click();
+        // Any button in the nav bar that is selected is disabled
+        // And hard refreshing the page in a test environment is not entirely robust
+        // since the app can take a bit to load. In that case,
+        // we work around the limitation by clicking another feature and return to HTTP/2
+        await page.locator('button>> text=HTTP/2').click();
+        await page.locator('button>> text=GraphQL').click();
+      });
 
       // limiting the amount of time required to simulate the load test
-      const loadTestDuration = 3;
+      const stressTestDuration = 3;
 
-      it('Load test run button is disabled with no request in workspace window', async () => {
+      it('Stress test run button is disabled with no request in workspace window', async () => {
         try {
-          await page.locator('button>> text=GraphQL').click();
-          await page.locator('span >> text=Load Test').click();
+          await page.locator('span >> text=View Stress Test').click();
           const runButton = page.locator('button>> text=Run');
           pwTest.expect(runButton).toBeDisabled();
         } catch (err) {
@@ -376,7 +393,7 @@ module.exports = () => {
           const query = 'subscription {newLink {id description url}}';
           await fillGQLRequest(page, url, method, query);
           await page.locator('button >> text=Add to Workspace').click();
-          await page.locator('span >> text=Load Test').click();
+          await page.locator('span >> text=View Stress Test').click();
           const runButton = page.locator('button>> text=Run');
           pwTest.expect(runButton).toBeDisabled();
         } catch (err) {
@@ -384,17 +401,17 @@ module.exports = () => {
         }
       });
 
-      it('Successful load test with `QUERY`', async () => {
+      it('Successful stress test with `QUERY`', async () => {
         try {
           const method = 'QUERY';
           const url = 'http://localhost:4000/graphql';
           const query = 'query {feed {descriptions}}';
           await fillGQLRequest(page, url, method, query);
           await page.locator('button >> text=Add to Workspace').click();
-          await page.locator('span >> text=Load Test').click();
+          await page.locator('span >> text=View Stress Test').click();
           await page
             .locator('[placeholder="Duration"]')
-            .fill(loadTestDuration.toString());
+            .fill(stressTestDuration.toString());
           await page.locator('button>> text=Run').click();
 
           // The load test takes a minimum of 4 seconds to execute
