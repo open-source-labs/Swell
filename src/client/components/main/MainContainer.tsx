@@ -100,14 +100,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 function MainContainer(props: $TSFixMeObject) {
   return (
-    <Box
-      sx={{
-        width: '75%',
-        // overflowY: 'scroll',
-        // display: 'flex',
-        // flexDirection: 'column'
-      }}
-    >
+    <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
         <Box sx={{ display: 'flex' }}>
           <Routes>
@@ -122,7 +115,10 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
             <Route path="/webhook" element={<WebhookComposer {...props} />} />
             <Route path="/trpc" element={<TRPCComposer {...props} />} />
-            <Route path="/mockserver" element={<MockServerComposer {...props} />} />
+            <Route
+              path="/mockserver"
+              element={<MockServerComposer {...props} />}
+            />
           </Routes>
         </Box>
         <ResponsePaneContainer />

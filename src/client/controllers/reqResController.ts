@@ -146,7 +146,7 @@ const connectionController = {
   //   return this.openConnectionArray.find((obj) => (obj.id = id));
   // },
 
-  setReqResConnectionToClosed(id: number): void {
+  setReqResConnectionToClosed(id: string): void {
     const reqResArr = Store.getState().reqRes.reqResArray;
 
     const foundReqRes: ReqRes = JSON.parse(

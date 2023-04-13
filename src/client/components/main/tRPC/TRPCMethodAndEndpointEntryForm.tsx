@@ -16,7 +16,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const closeDropdown = (event) => {
+    const closeDropdown = (event: MouseEvent) => {
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
@@ -48,7 +48,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
     }
   };
 
-  const urlChangeHandler = (e) => {
+  const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url: string = e.target.value;
 
     dispatch(

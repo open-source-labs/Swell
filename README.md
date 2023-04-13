@@ -50,8 +50,6 @@ Swell is a one-stop shop for sending and monitoring your API requests:
        style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 
 - _Send Requests Directly to an Endpoint_: You are able to immediately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
-  <img src="./ReadMeGifs/Gifs/DirectSendRequest.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 
 - _Scripting in Swell_: If you favor test-driven development, Swell allows you to write assertion tests to aid defining and testing backend API services.
   <img src="./ReadMeGifs/Gifs/Assertion-Testing.gif"
@@ -60,11 +58,8 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
 
 - _Preview_: You can now view a rendered preview of certain API responses (HTML)
-  <img src="./ReadMeGifs/Gifs/AdditionalFeatures.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
+
 - _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one; instead each request will fire off in the order of staging.
-  <img src="./ReadMeGifs/Gifs/CollectionTest.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 
 ## Experimental Features
 
