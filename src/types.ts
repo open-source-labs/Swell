@@ -46,18 +46,6 @@ export type $TSFixMeFunction = (...args: any[]) => any;
  */
 export type $TSFixMeObject = any;
 
-/**
- * Represents any possible valid, serializable JSON value, including values
- * nested to any arbitrary level.
- */
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
-
 export type Protocol = 'http://' | 'ws://';
 export type Network = 'rest' | 'ws' | 'webRtc' | 'graphQL' | 'gRpc' | 'openApi';
 export type ConnectionStatus = 'uninitialized' | 'error' | 'open' | 'closed';
@@ -100,12 +88,6 @@ export interface Cookie {
   expires: string | number;
 }
 
-export interface GithubData {
-  profile: $TSFixMeObject;
-  repos: Collection[];
-  files: $TSFixMeObject[];
-}
-
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 
@@ -134,6 +116,11 @@ export interface CookieOrHeader {
   id: string;
   key: string;
   value: string;
+}
+
+export interface WebsocketMessages {
+  data: string;
+  timeReceived: number;
 }
 
 /**
@@ -167,25 +154,29 @@ export type NewRequestFields = {
 };
 
 export interface ReqResRequest {
+  // Currently, the body for WebRTC connection is an object
+  // and typescript does not support union between string and object very well
+  // Ideally we should move the WebRTC body information to a new key value
+  // to fully resolve the issue
   body: string;
   bodyType: string;
   bodyVariables: string;
   cookies: CookieOrHeader[];
-  graphQL: boolean;
-  gRPC: boolean;
-  gRpcUrl?: string;
+  grpcUrl?: string;
   gqlUrl?: string;
+  isSSE?: boolean;
   headers: CookieOrHeader[];
   method?: string;
+  messages?: WebsocketMessages[];
   network: Network;
-  protocol: Protocol;
+  rawType: string;
   restUrl?: string;
   testContent: string;
-  testResults: string[];
+  testResults?: string[];
   url?: string;
-  webRtc: boolean;
+  webRtc?: boolean;
   webRtcUrl?: string;
-  ws: boolean;
+  ws?: boolean;
   wsUrl?: string;
 }
 
@@ -195,53 +186,6 @@ export interface ReqResRequest {
 export type IntrospectionData = {
   schemaSDL: string | null;
   clientSchema: GraphQLSchema | null;
-};
-
-/**
- * Defines a whole HTTP request for generating graph data.
- *
- * Type definitions ripped from httpTest file.
- */
-export type HttpRequest = {
-  id: number;
-  /**
-   * createdAt should be formatted like a Date object timestamp. Date objects
-   * are not valid serializable JSON values, and Redux will complain about them
-   */
-  createdAt: string;
-  protocol: string;
-  host: string;
-  path: string;
-  url: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  timeSent: string | null;
-  timeReceived: string | null;
-  connection: string;
-  connectionType: $TSFixMe | null;
-  checkSelected: boolean;
-  protoPath: string | null;
-
-  request: {
-    method: string;
-    headers: $TSFixMeObject[][];
-    cookies: $TSFixMe[];
-    body: string;
-    bodyType: string;
-    bodyVariables: string;
-    rawType: string;
-    isSSE: boolean;
-    network: string;
-    restUrl: string;
-    wsUrl: string;
-    gqlUrl: string;
-    grpcUrl: string;
-  };
-
-  response: { headers: $TSFixMe | null; events: $TSFixMe | null };
-  checked: boolean;
-  minimized: boolean;
-  tab: string;
 };
 
 export interface OpenAPIRequest {
@@ -270,38 +214,45 @@ export interface OpenAPIReqData {
 /**
  * @todo should be refactored as most of this information is repeated in the
  * request property and has led to inconsistent usage accross app
- * 
+ *
  * ReqRes {
  *  id: number;
  *  request: ReqResReqest;
  *  response: ReqResResponse;
  * }
- * 
+ *
  * as well as any additional metadata needed as properties that doesn't already
  * exist in the request or response properties
  */
 export interface ReqRes {
   checked: boolean;
-  closeCode: number;
+  checkSelected: boolean;
+  closeCode?: number;
   connection: ConnectionStatus;
-  connectionType: string;
+  connectionType: string | null;
   createdAt: Date;
-  error: string;
+  error?: string;
   graphQL: boolean;
   gRPC: boolean;
-  id: number;
-  isHTTP2: boolean;
+  host: string;
+  id: string;
+  isHTTP2?: boolean;
   minimized: boolean;
-  openapi: boolean;
+  openapi?: boolean;
   protocol: Protocol;
+  protoPath: string;
+  path: string;
   request: ReqResRequest;
   response: ReqResResponse;
-  rpc: string;
-  service: string;
-  timeReceived: Date | number;
-  timeSent: number;
+  rpc?: string;
+  service?: string;
+  tab: string;
+  timeReceived: Date | number | null;
+  timeSent: number | null;
   url: string;
-  webRtc: boolean;
+  webrtc: boolean;
+  frequency?: number;
+  duration?: number;
 }
 
 export interface SSERequest {
@@ -324,21 +275,26 @@ export interface NewRequestStreams {
   protoContent: string;
 }
 
+export interface TestResult {
+  message: string;
+  status: string;
+}
+
 /**@todo make sure all properties are correct and add any not listed yet*/
 export interface ReqResResponse {
-  cookies: Cookie[];
+  cookies?: Cookie[];
   headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
   events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
-  tab: string; //have not found this property mentioned yet should be removed for seperation of concerns
-  timeSent: number; //should be in 'times' property below instead??
-  timeReceived: number; //should be in 'times' property below instead??
-  url: string; //have not found this property mentioned yet
+  tab?: string; //have not found this property mentioned yet should be removed for seperation of concerns
+  timeSent?: number; //should be in 'times' property below instead??
+  timeReceived?: number; //should be in 'times' property below instead??
+  url?: string; //have not found this property mentioned yet
   /**@todo */ //BELOW - additional properties not sure about yet/that weren't listed here before
   times?: $TSFixMeObject[]; //main_grpcController array of objects {timeSent: Date, timeReceived: Date}
-  testResult?: $TSFixMe; //mainprocess main_graphqlController
-  responseSize?: $TSFixMe; //mainprocess main_httpController line 196ish
+  testResult?: TestResult[];
+  responseSize?: number; //mainprocess main_httpController line 196ish
   status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
-  messages?: $TSFixMeObject[]; //main_wsController, array of objects {data: @TSFixMe, timeReceived: Date}
+  messages?: WebsocketMessages[];
   connection?: string; //main_wsController
 }
 
@@ -366,18 +322,8 @@ export interface WindowAPI {
   send: (event: string, data?: any, some?: any) => void;
 }
 
-/**
- * @todo Figure out what these types should be and then implement them
- */
-export interface WRTC {
-  RTCPeerConnection:
-    | RTCPeerConnection
-    | webkitRTCPeerConnection
-    | mozRTCPeerConnection;
-  RTCSessionDescription:
-    | RTCSessionDescription
-    | webkitRTCSessionDescription
-    | mozRTCSessionDescription;
-  RTCIceCandidate: RTCIceCandidate | webkitRTCIceCandidate | mozRTCIceCandidate;
+export interface WorkspaceContainerProps {
+  currentWorkspaceId: string;
+  setWorkspace: React.Dispatch<React.SetStateAction<string>>;
 }
 

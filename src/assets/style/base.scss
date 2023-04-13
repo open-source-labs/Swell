@@ -1,9 +1,6 @@
-
 * {
   box-sizing: border-box;
-  font-size: 12px;
-  // background-color: lightgray;
-  // background-color: aquamarine;
+  font-size: 13px;
 }
 
 // BULMA ADJUSTMENTS
@@ -13,7 +10,7 @@
 }
 
 .hero h3 {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600; // font boldness in banner (composer, workspace responses)
 }
 
@@ -39,7 +36,6 @@ input:focus {
   align-items: center;
   justify-content: space-around;
   height: 2.5rem !important;
-  // z-index: 100;
   opacity: 0.8;
   margin: 0;
   padding: 0;
@@ -109,3 +105,8 @@ $switch-focus: 5px solid red;
 .gutter.gutter-vertical:hover {
   cursor: row-resize;
 }
+
+.no-focus-outline:focus {
+  outline: none;
+}
+

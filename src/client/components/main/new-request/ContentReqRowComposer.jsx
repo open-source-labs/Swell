@@ -28,23 +28,20 @@ export default function ContentReqRowComposer({
       <input
         onChange={(e) => changeHandler(data.id, 'key', e.target.value)}
         placeholder="Key"
-        className="input"
         type="text"
-        style={{marginLeft: '3px'}}
+        style={{ marginLeft: '15px', width: '20vw' }}
         value={data.key}
-        className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 key`}
+        className={`${isDark ? 'is-dark-300' : ''} p-1 key`}
       />
       <input
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
         placeholder="Value"
-        className="input"
         type="text"
-        style={{marginLeft: '3px', width: '25vw'}}
+        style={{ marginLeft: '20px', width: '30vw' }}
         value={data.value}
-        className={`${isDark ? 'is-dark-300' : ''} is-justify-content-center p-1 value is-border-neutral-200`} 
-        // Removed is-flex-grow-4
+        className={`${isDark ? 'is-dark-300' : ''} p-1 value`}
       />
-      <div className="is-flex is-justify-content-center is-align-items-center ml-1">
+      <div className="is-flex is-justify-content-center is-align-items-center ml-4">
         <div className="delete m-auto" onClick={() => deleteItem(index)} />
       </div>
     </div>

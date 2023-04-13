@@ -3,18 +3,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png'
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
 
 const TRPCMethodAndEndpointEntryForm = () => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
-  const requestFields = useSelector((state: RootState) => state.newRequestFields)
+  const requestFields = useSelector(
+    (state: RootState) => state.newRequestFields
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const closeDropdown = (event) => {
+    const closeDropdown = (event: MouseEvent) => {
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
@@ -26,30 +28,35 @@ const TRPCMethodAndEndpointEntryForm = () => {
   const populateUrl = (request: string) => {
     const urlAction: string = request;
     if (urlAction === 'QUERY' || urlAction === 'MUTATE') {
-      dispatch(fieldsReplaced({
-        ...requestFields,
-        url: requestFields.restUrl, 
-        method: urlAction,
-        protocol: 'http://'
-      })); 
+      dispatch(
+        fieldsReplaced({
+          ...requestFields,
+          url: requestFields.restUrl,
+          method: urlAction,
+          protocol: 'http://',
+        })
+      );
+    } else if (urlAction === 'SUBSCRIPTION') {
+      dispatch(
+        fieldsReplaced({
+          ...requestFields,
+          url: requestFields.wsUrl,
+          method: urlAction,
+          protocol: 'ws://',
+        })
+      );
     }
-    else if (urlAction === 'SUBSCRIPTION') {
-      dispatch(fieldsReplaced({
-        ...requestFields,
-        url: requestFields.wsUrl, 
-        method: urlAction,
-        protocol: 'ws://'
-      }));
-    }
-  }
+  };
 
-  const urlChangeHandler = (e) => {
+  const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url: string = e.target.value;
 
-    dispatch(fieldsReplaced({
-      ...requestFields,
-      url: url,
-    }));
+    dispatch(
+      fieldsReplaced({
+        ...requestFields,
+        url: url,
+      })
+    );
   };
 
   const isDark = useSelector((store: RootState) => store.ui.isDark);
@@ -58,7 +65,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
     <div>
       <div
         ref={dropdownEl}
-        className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${
+        className={`is-flex is-justify-content-center dropdown ${
           dropdownIsActive ? 'is-active' : ''
         }`}
         style={{ padding: '10px' }}
@@ -89,8 +96,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
               <a
                 onClick={(e) => {
                   setDropdownIsActive(false);
-                  populateUrl('QUERY')
-                  
+                  populateUrl('QUERY');
                 }}
                 className="dropdown-item"
               >
@@ -101,7 +107,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
               <a
                 onClick={(e) => {
                   setDropdownIsActive(false);
-                  populateUrl('MUTATE')
+                  populateUrl('MUTATE');
                 }}
                 className="dropdown-item"
               >
@@ -112,7 +118,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
               <a
                 onClick={(e) => {
                   setDropdownIsActive(false);
-                  populateUrl('SUBSCRIPTION')
+                  populateUrl('SUBSCRIPTION');
                 }}
                 className="dropdown-item"
               >
@@ -131,8 +137,8 @@ const TRPCMethodAndEndpointEntryForm = () => {
           placeholder="Enter endpoint"
           value={requestFields.url}
           onChange={(e) => {
-            urlChangeHandler(e)}
-          }
+            urlChangeHandler(e);
+          }}
         />
       </div>
     </div>
@@ -140,3 +146,4 @@ const TRPCMethodAndEndpointEntryForm = () => {
 };
 
 export default TRPCMethodAndEndpointEntryForm;
+

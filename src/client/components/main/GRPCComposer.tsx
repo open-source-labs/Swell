@@ -191,7 +191,7 @@ export default function GRPCComposer(props) {
       id="composer-grpc"
     >
       <div
-        className="is-flex-grow-3 add-vertical-scroll"
+        className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
         {/**@todo Fix TSX typing errors */}

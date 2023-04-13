@@ -38,35 +38,6 @@
   text-align: center;
 }
 
-// EVENTS (CODEMIRROR STYLES)
-.CodeMirror * {
-  font-family: "Lucida Console", Monaco, monospace;
-  // background-color: grey;
-}
-
-.cm-s-neo.CodeMirror {
-  background-color: transparent !important;
-}
-
-.cm-s-responsebody {
-  // background-color: $neutral-100;
-  color: $neutral-400;
-  border: 1px solid $neutral-300;
-  font-size: 0.75rem;
-  margin-bottom: 0 !important;
-  // height: 800px !important;
-  height: calc(100vh - 8rem) !important;
-  // height: 100% !important;
-}
-.cm-s-responsebody .CodeMirror-gutters {
-  border: none;
-  color: $neutral-300;
-}
-.cm-s-responsebody .CodeMirror-linenumber {
-  border: none;
-  color: $neutral-300;
-}
-
 // HEADERS & COOKIES
 
 .scrollable-containers {
@@ -88,7 +59,8 @@ table {
   overflow-x: hidden !important;
 }
 
-th, td {
+th,
+td {
   min-width: 9rem;
   max-width: 50%;
   border-bottom: 2px solid;
@@ -117,7 +89,7 @@ th, td {
 
 .status-tag {
   position: absolute;
-  font-size: 0.75rem;
+  font-size: 1rem;
   right: 1rem;
   display: flex;
   justify-content: center;
@@ -126,7 +98,7 @@ th, td {
   margin-top: 2px;
   border: 0px;
   border-radius: 2px;
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: 'Lucida Console', Monaco, monospace;
   font-weight: 600;
 }
 
@@ -137,7 +109,7 @@ th, td {
 .response-time-placement {
   position: absolute;
   left: 1rem;
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: 'Lucida Console', Monaco, monospace;
   font-weight: 600;
   font-size: 0.75rem;
   margin-top: 0.25rem;
@@ -146,7 +118,7 @@ th, td {
 .response-size-placement {
   position: absolute;
   left: 5rem;
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: 'Lucida Console', Monaco, monospace;
   font-weight: 600;
   font-size: 0.75rem;
   margin-top: 0.25rem;
@@ -158,8 +130,8 @@ th, td {
   max-height: 100vh;
   width: 100%;
   height: 100%;
-  padding-right: 17px;
   box-sizing: content-box;
+  justify-self: center;
 }
 
 .overflow-event-parent-container {
@@ -167,3 +139,4 @@ th, td {
   width: 100%;
   height: 100%;
 }
+

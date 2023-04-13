@@ -26,42 +26,35 @@ const ResponsePaneContainer = () => {
   );
   const isDark = useSelector((store: RootState) => store.ui.isDark);
 
-  const setActiveTab = (tabName) => dispatch(setResponsePaneActiveTab(tabName));
+  const setActiveTab = (tabName: string) =>
+    dispatch(setResponsePaneActiveTab(tabName));
 
   const currentResponse = useSelector(
     (store: RootState) => store.reqRes.currentResponse
   );
-  const { connection } = currentResponse;
-
-  // UNCOMMENT FOR DEBUGGING
-  // console.log('currentResponse on ResponsePaneContainer --> ', currentResponse);
+  const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        p: 1,
-      }}
-    >
+    <Box id="responses">
       <div
         className={`${
           isDark ? 'is-dark-400' : 'is-divider-neutral-300'
         } box is-3 add-vertical-scroll`}
-        // className={`${isDark ? 'is-dark-400' : ''} column is-one-third is-flex is-flex-direction-column is-tall`}
-        style={{ height: '100%', margin: '0px', marginTop: '1px' }}
-        id="responses"
+        style={{
+          height: '90%',
+          margin: '0px',
+          padding: '0.5rem 1rem 0.5rem 1rem',
+        }}
       >
-        {/* <button onClick={() => testing()}>></button> */}
-
         {/* HEADER */}
         <div
           className="hero is-primary is-flex is-flex-direction-row is-justify-content-center"
-          style={{ padding: '10px' }}
+          style={{ padding: '10px', position: 'sticky' }}
         >
           <ResponseTime currentResponse={currentResponse} />
-          {currentResponse.responseSize && (
+          {response?.responseSize && (
             <div className="response-size-placement">
-              {`${currentResponse.responseSize}kb`}
+              {`${response?.responseSize}kb`}
             </div>
           )}
           <h3>Responses</h3>
@@ -73,7 +66,7 @@ const ResponsePaneContainer = () => {
             <ul
               className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}
             >
-              {currentResponse.request?.network === 'ws' ? (
+              {request?.network === 'ws' ? (
                 <li
                   className={`column ${
                     activeTab === 'wsWindow' ? 'is-active' : ''
@@ -94,13 +87,12 @@ const ResponsePaneContainer = () => {
                       setActiveTab('events');
                     }}
                   >
-                    {' '}
                     Events
                   </a>
                 </li>
               )}
               {/* IF NOT WEBSOCKETS */}
-              {currentResponse.request?.network !== 'ws' && (
+              {request?.network !== 'ws' && (
                 <>
                   <li
                     className={`column ${
@@ -108,7 +100,7 @@ const ResponsePaneContainer = () => {
                     }`}
                   >
                     <a onClick={() => setActiveTab('headers')}>
-                      {currentResponse.gRPC === true ? 'Metadata' : 'Headers'}
+                      {gRPC === true ? 'Metadata' : 'Headers'}
                     </a>
                   </li>
 
@@ -117,14 +109,14 @@ const ResponsePaneContainer = () => {
                       activeTab === 'cookies' ? 'is-active' : ''
                     }`}
                   >
-                    <a onClick={() => setActiveTab('cookies')}> Cookies</a>
+                    <a onClick={() => setActiveTab('cookies')}>Cookies</a>
                   </li>
                 </>
               )}
               <li
                 className={`column ${activeTab === 'tests' ? 'is-active' : ''}`}
               >
-                <a onClick={() => setActiveTab('tests')}> Tests</a>
+                <a onClick={() => setActiveTab('tests')}>Tests</a>
               </li>
             </ul>
           </div>
@@ -143,29 +135,20 @@ const ResponsePaneContainer = () => {
               <TestsContainer currentResponse={currentResponse} />
             )}
             {/* currentResponse.request?.network === "ws" */}
-            {activeTab === 'wsWindow' &&
-              currentResponse.request &&
-              currentResponse.response &&
-              currentResponse.request && (
-                <WebSocketWindow
-                  key={0}
-                  outgoingMessages={currentResponse.request.messages}
-                  incomingMessages={currentResponse.response.messages}
-                  content={currentResponse}
-                  connection={currentResponse.connection}
-                />
-              )}
+            {activeTab === 'wsWindow' && (
+              <WebSocketWindow key={0} content={currentResponse} />
+            )}
           </div>
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
-          {currentResponse.id &&
-            currentResponse.request?.method !== 'WS' &&
-            currentResponse.request?.method !== 'SUBSCRIPTION' &&
+          {id &&
+            request?.method !== 'WS' &&
+            request?.method !== 'SUBSCRIPTION' &&
             (connection === 'closed' || connection === 'error') && (
-              <div className="is-3rem-footer mx-3">
+              <div className="is-3rem-footer">
                 <button
                   className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
                   onClick={() => {
-                    ReqResCtrl.openReqRes(currentResponse.id);
+                    ReqResCtrl.openReqRes(id);
                   }}
                   type="button"
                 >
@@ -175,10 +158,10 @@ const ResponsePaneContainer = () => {
             )}
         </div>
         {/* CLOSE RESPONSE BUTTON */}
-        {(currentResponse.request?.method === 'WS' ||
-          currentResponse.request?.method === 'SUBSCRIPTION' ||
-          currentResponse.request?.isSSE ||
-          currentResponse.isHTTP2) &&
+        {(request?.method === 'WS' ||
+          request?.method === 'SUBSCRIPTION' ||
+          request?.isSSE ||
+          isHTTP2) &&
           connection === 'open' && (
             <div className="is-3rem-footer ml-3 mr-3">
               <button
@@ -193,14 +176,13 @@ const ResponsePaneContainer = () => {
             </div>
           )}
         {/* RENDER RE-OPEN CONNECTION BUTTON ONLY FOR OPEN WEB SOCKETS / SUBSCRIPTIONS */}
-        {(currentResponse.request?.method === 'WS' ||
-          currentResponse.request?.method === 'SUBSCRIPTION') &&
+        {(request?.method === 'WS' || request?.method === 'SUBSCRIPTION') &&
           (connection === 'closed' || connection === 'error') && (
             <div className="is-3rem-footer mx-3">
               <button
                 className="button is-normal is-fullwidth is-primary-100 is-button-footer is-margin-top-auto add-request-button"
                 onClick={() => {
-                  ReqResCtrl.openReqRes(currentResponse.id);
+                  ReqResCtrl.openReqRes(id);
                 }}
                 type="button"
               >

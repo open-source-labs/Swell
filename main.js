@@ -53,17 +53,14 @@ const openapiParserFunc = require('./main_process/openapiParser.js');
 
 // require('dotenv').config();
 
-// require menu file
 require('./menu/mainMenu');
-// require http controller file
 require('./main_process/main_httpController.js')();
-// require gql controller file
 require('./main_process/main_graphqlController')();
-// require grpc controller file
 require('./main_process/main_grpcController.js')();
-// require ws controller file
 require('./main_process/main_wsController.js')();
-// require mac touchBar
+require('./main_process/main_mockController.js')();
+
+// require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
 // configure logging
@@ -72,6 +69,7 @@ autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
 let mainWindow;
+let mockServerProcess = null;
 
 /** **********************
  ******** SET isDev *****
@@ -112,10 +110,11 @@ if (process.platform === 'win32') {
  ********************************************** */
 
 function createWindow() {
-  // Create the new browser window instance.
+  // create the new browser window instance
   mainWindow = new BrowserWindow({
     width: 2000,
     height: 1000,
+    title: 'Swell', // Ensure the app has a title with first letter capitalized
     minWidth: 1000,
     minHeight: 600,
     backgroundColor: '-webkit-linear-gradient(top, #3dadc2 0%,#2f4858 100%)',
@@ -130,11 +129,11 @@ function createWindow() {
     icon: `${__dirname}/src/assets/icons/64x64.png`,
   });
 
-  // and load the index.html of the app.
+  // load the index.html of the app
   let indexPath;
 
   if (isDev) {
-    // if we are in dev mode load up 'http://localhost:8080/index.html'
+    // if we are in dev mode load 'http://localhost:8080/index.html'
     indexPath = url.format({
       protocol: 'http:',
       host: 'localhost:8080',
@@ -142,10 +141,10 @@ function createWindow() {
       slashes: true,
     });
 
-    // Dev mode title
+    // dev mode title
     mainWindow.setTitle('Swell (devMode)');
 
-    // If we are in developer mode Add React & Redux DevTools to Electron App
+    // if we are in developer mode Add React & Redux DevTools to Electron App
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
@@ -162,24 +161,25 @@ function createWindow() {
     });
   }
 
-  // our new app window will load content depending on the boolean value of the dev variable
+  // the new app window will load content depending on the boolean value of the dev variable
   mainWindow.loadURL(indexPath);
 
   // give our new window the earlier created touchbar
   mainWindow.setTouchBar(touchBar);
+
   // prevent webpack-dev-server from setting new title
   mainWindow.on('page-title-updated', (e) => e.preventDefault());
 
-  // Don't show until we are ready and loaded
+  // don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
-    // Open the DevTools automatically if developing
+    // open the DevTools automatically if developing
     if (isDev && process.env.NODE_ENV !== 'test') {
       mainWindow.webContents.openDevTools();
     }
   });
 
-  // Emitted when the window is closed.
+  // emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
@@ -205,18 +205,22 @@ app.on('ready', () => {
   createWindow();
   if (!isDev) {
     /**
-     * Note: Even though Express is not used for the duration of the block, this
-     * is crucial code, and while VS Code will flag it as not being used, it
-     * should not be removed. Express server is used in production mode as there
-     * is no dev server.
+     * Note: Even though Express and mock server is not used for the duration of the block,
+     * this is crucial code, and while VS Code will flag it as not being used, it
+     * should not be removed. The servers must be required upon app startup (especially in
+     * packaged versions) or else the packaged app would not recognize the servers at all.
      */
     const express = require('./src/server/server');
+    const mockServer = require('./src/server/mockServer.js');
     autoUpdater.checkForUpdates();
   }
 });
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  if (mockServerProcess) {
+    mockServerProcess.kill();
+  }
   app.quit();
 });
 
@@ -227,11 +231,6 @@ const sendStatusToWindow = (text) => {
     mainWindow.webContents.send('message', text);
   }
 };
-
-ipcMain.on('login-via-github', async () => {
-  const url = `http://github.com/login/oauth/authorize?scope=repo&redirect_uri=http://localhost:3000/signup/github/callback/&client_id=6e9d37a09ab8bda68d50`; // ${process.env.GITHUB_CLIENT_ID};
-  await shell.openExternal(url, { activate: true });
-});
 
 ipcMain.on('check-for-update', () => {
   // listens to ipcRenderer in UpdatePopUpContainer.jsx
@@ -286,62 +285,6 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
-});
-
-// ============ IMPORT / EXPORT FROM GITHUB ===============
-
-// ipcMain.on('export-collection', (event, args) => {
-//   const content = JSON.stringify(args.collection);
-//   dialog.showSaveDialog(null).then((resp) => {
-//     if (resp.filePath === undefined) {
-//       console.log("You didn't save the file");
-//       return;
-//     }
-
-//     // fileName is a string that contains the path and filename created in the save file dialog.
-//     fs.writeFile(resp.filePath, content, (err) => {
-//       if (err) {
-//         console.log('An error ocurred creating the file ', err.message);
-//       }
-//     });
-//   });
-// });
-
-ipcMain.on('import-from-github', async (event, args) => {
-  async function popOverwrite(collection) {
-    /** @todo add in mod date, is Yes No ordering correct on popup?  */
-    const options = {
-      type: 'question',
-      buttons: ['No', 'Yes'],
-      defaultId: 0,
-      title: 'Question',
-      message: `The collection ${collection.name} already exists in Swell`,
-      detail: 'Do you want to overwrite?',
-    };
-    return await dialog.showMessageBox(null, options);
-  }
-
-  console.log('main.js import-from-github args', args);
-
-  // requiring typescript type Workspace makes sanitation uncessesary
-  const ids = {};
-  let index = 0;
-  const newCollectionArr = [];
-  for (let collection of args) {
-    // console.log('main.js workspace\n', workspace)
-    if (ids[collection.id]) {
-      const result = await popOverwrite(collection);
-      if (result.response === 1) {
-        newCollectionArr[ids[collection.id]] = collection;
-        continue;
-      }
-    }
-    ids[collection.id] = index;
-    index++;
-    newCollectionArr.push(collection);
-  }
-  // send full array of workspaces to chromium for state update
-  event.sender.send('add-collections', newCollectionArr);
 });
 
 // ============ IMPORT / EXPORT FROM FILES ===============
@@ -459,7 +402,7 @@ ipcMain.on('confirm-clear-history', (event) => {
     .catch((err) => console.log(`Error on 'confirm-clear-history': ${err}`));
 });
 
-// ================= GRPCProtoEntryForm Calls that uses protoParserFunc =======
+// =============== GRPCProtoEntryForm Calls that uses protoParserFunc ======= //
 ipcMain.on('import-proto', (event) => {
   let importedProto;
   dialog
@@ -478,12 +421,6 @@ ipcMain.on('import-proto', (event) => {
         }
         importedProto = file;
         protoParserFunc(importedProto).then((protoObj) => {
-          // console.log(
-          //   "finished with logic. about to send importedProto : ",
-          //   importedProto,
-          //   " and protoObj : ",
-          //   protoObj
-          // );
           mainWindow.webContents.send('proto-info', importedProto, protoObj);
         });
       });
@@ -506,7 +443,7 @@ ipcMain.on('protoParserFunc-request', (event, data) => {
     });
 });
 
-// ====== Loading and parsing an OpenAPI Document with openapiParserFunc ======
+//====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//
 ipcMain.on('import-openapi', (event) => {
   let importedDocument;
   dialog
@@ -547,4 +484,29 @@ ipcMain.on('openapiParserFunc-request', (event, data) => {
       console.log('error in openapiParserFunc-request:, ', err);
       mainWindow.webContents.send('openapiParserFunc-return', { error: err });
     });
+});
+
+//======================= MOCK SERVER =======================//
+const { fork } = require('child_process');
+
+// starts the mock server by forking a Node child process
+ipcMain.on('start-mock-server', () => {
+  mockServerProcess = fork('node', ['./src/server/mockServer.js']);
+  mockServerProcess.on('error', (err) => {
+    console.log('Error starting mock server', err);
+  });
+  mockServerProcess.on('close', (code) => {
+    console.log('Mock server closed with code', code);
+  });
+});
+
+// stops the mock server by killing the Node child process
+ipcMain.on('stop-mock-server', () => {
+  if (mockServerProcess) {
+    mockServerProcess.kill();
+    mockServerProcess = null;
+    console.log('Mock server killed');
+  } else {
+    console.log('No mock server to kill');
+  }
 });

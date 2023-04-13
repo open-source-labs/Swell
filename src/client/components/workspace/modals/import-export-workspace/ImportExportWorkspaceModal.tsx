@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Box, Button, Backdrop } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { Box, Backdrop } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import collectionsController from '../../../../controllers/collectionsController';
-import githubController from '../../../../controllers/githubController';
 import db from '../../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import List from '@mui/material/List';
@@ -14,97 +13,28 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import SnippetFolderRoundedIcon from '@mui/icons-material/SnippetFolderRounded';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
-import { Octokit } from 'octokit';
-
-import { collectionAdded } from '../../../../toolkit-refactor/collections/collectionsSlice';
 
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
-// import local components
-import ExportToGithubList from './ExportToGithubListItem';
-import ExportToGithubDialog from './ExportToGitHubDialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
 import { RootState } from '../../../../toolkit-refactor/store';
 
 export default function ImportExportWorkspaceModal({ open, handleClose }) {
-  const [importFromGithubList, setImportFromGithubList] = React.useState(false);
   const [exportToLocalFilesList, setExportToLocalFilesList] =
     React.useState(false);
-  const [exportToGithubList, setExportToGithubList] = React.useState(false);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-
-  let files = useLiveQuery(() => db.files.toArray());
-
-  const [selectedRepo, setSelectedRepo] = React.useState('');
-
-  const handleImportFromGithubClick = () => {
-    setImportFromGithubList(!importFromGithubList);
-  };
 
   const handleExportToFilesClick = () => {
     setExportToLocalFilesList(!exportToLocalFilesList);
   };
 
-  const handleExportToGithubListClick = () => {
-    setExportToGithubList(!exportToGithubList);
-  };
-
-  files = useLiveQuery(() => db.files.toArray());
   let workspaces = useLiveQuery(() => db.collections.toArray());
-  const dispatch = useDispatch();
 
   const localWorkspaces = useSelector((store: RootState) => store.collections);
 
   const importFileClick = () => {
     collectionsController.importCollection(localWorkspaces);
   };
-
-  const importFromGithub = async (owner, repo) => {
-    const token = await db.auth.toArray();
-    const octokit = new Octokit({
-      auth: token[0].auth,
-    });
-    const response = await octokit.request(
-      'GET /repos/{owner}/{repo}/contents/{path}',
-      {
-        owner: owner,
-        repo: repo,
-        path: '.swell',
-      }
-    );
-    const swellFileContents = JSON.parse(
-      Buffer.from(response.data.content, 'base64').toString('UTF-8')
-    );
-    dispatch(collectionAdded(swellFileContents)); //adds to Redux store
-    // we also need to save this collection to the Indexed DB under the collections database.
-    db.table('collections')
-      .put(swellFileContents)
-      .catch((err: string) => console.log('Error in addToCollection', err));
-    return swellFileContents;
-  };
-
-  const swellRepositoriesArray = [];
-  if (files !== undefined) {
-    for (let file of files) {
-      const owner = file.repository.owner.login;
-      const repo = file.repository.name;
-      swellRepositoriesArray.push(
-        <List key={file.repository.id} component="div" disablePadding>
-          <ListItemButton
-            onClick={() => importFromGithub(owner, repo)}
-            sx={{ pl: 4 }}
-          >
-            <ListItemText primary={file.repository.full_name} />
-          </ListItemButton>
-        </List>
-      );
-    }
-  }
 
   const exportDbWorkspacesToFiles = [];
   // get an array of all of the collections in the 'collections' table of the IndexedDB
@@ -118,29 +48,6 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
           >
             <ListItemText primary={workspace.name} />
           </ListItemButton>
-        </List>
-      );
-    }
-  }
-
-  const exportDbWorkspacesToGithub = [];
-  if (workspaces !== undefined) {
-    for (let workspace of workspaces) {
-      exportDbWorkspacesToGithub.push(
-        <List key={workspace.id} component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => setDialogOpen(true)}>
-            <ListItemText primary={workspace.name} />
-          </ListItemButton>
-          <ExportToGithubDialog
-            allUserRepos={files}
-            workspace={workspace}
-            selectedRepo={selectedRepo}
-            open={dialogOpen}
-            onClose={() => {
-              setDialogOpen(false);
-              handleClose();
-            }}
-          />
         </List>
       );
     }
@@ -188,19 +95,6 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
                   <ListItemText primary="Import from Files" />
                 </ListItemButton>
               </ListItem>
-              {/* Import from Github. Pulls all Swell repos from user's github (which are stored in IndexedDB upon login) */}
-              <ListItem disablePadding>
-                <ListItemButton onClick={handleImportFromGithubClick}>
-                  <ListItemIcon>
-                    <GitHubIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Import from GitHub" />
-                  {importFromGithubList ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={importFromGithubList} timeout="auto" unmountOnExit>
-                {swellRepositoriesArray}
-              </Collapse>
             </List>
           </nav>
 
@@ -229,28 +123,7 @@ export default function ImportExportWorkspaceModal({ open, handleClose }) {
               >
                 {exportDbWorkspacesToFiles}
               </Collapse>
-              {/**
-               * Export to GitHub.
-               */}
-              <ListItem disablePadding>
-                <ListItemButton onClick={handleExportToGithubListClick}>
-                  <ListItemIcon>
-                    <GitHubIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Export to GitHub" />
-                  {exportToGithubList ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={exportToGithubList} timeout="auto" unmountOnExit>
-                {exportDbWorkspacesToGithub}
-                {/* We want to render a list of clickable workspaces,
-          derived from the IndexedDB. Upon clicking each workspace,
-          we want to open a dialog box, allowing the user to choose
-          which repo to save it in. */}
-                {/* {dbWorkspaces} */}
-              </Collapse>
             </List>
-            {/* <ExportToGithubListItem workspaces={workspaces} /> */}
           </nav>
         </Box>
       </Fade>

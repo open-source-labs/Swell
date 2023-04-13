@@ -17,10 +17,11 @@ import GraphQLVariableEntryForm from './new-request/GraphQLVariableEntryForm';
 import GraphQLIntrospectionLog from './new-request/GraphQLIntrospectionLog.jsx';
 import NewRequestButton from './new-request/NewRequestButton.jsx';
 import TestEntryForm from './new-request/TestEntryForm.jsx';
+import TestContainer from '../workspace/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe } from '../../../types';
+import { $TSFixMe, ReqRes } from '../../../types';
 
 // Translated from GraphQLContainer.jsx
 export default function GraphQLComposer(props: $TSFixMe) {
@@ -117,90 +118,37 @@ export default function GraphQLComposer(props: $TSFixMe) {
       return;
     }
 
-    let reqRes;
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-    if (!/wss?:\/\//.test(protocol) && !gRPC) {
-      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      const host = protocol + URIWithoutProtocol.split('/')[0];
-      let path = `/${URIWithoutProtocol.split('/')
-        .splice(1)
-        .join('/')
-        .replace(/\/{2,}/g, '/')}`;
-      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-        path = path.substring(0, path.length - 1);
-      }
-      path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
-        id: uuid(),
-        createdAt: new Date(),
-        protocol: url.match(/https?:\/\//)[0],
-        host,
-        path,
-        url,
-        graphQL,
-        gRPC,
-        webrtc,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'uninitialized',
-        connectionType: null,
-        checkSelected: false,
-        protoPath,
-        request: {
-          method,
-          headers: headersArr.filter(
-            (header: $TSFixMe) => header.active && !!header.key
-          ),
-          cookies: cookiesArr.filter(
-            (cookie: $TSFixMe) => cookie.active && !!cookie.key
-          ),
-          body: bodyContent || '',
-          bodyType,
-          bodyVariables: bodyVariables || '',
-          rawType,
-          isSSE,
-          network,
-          restUrl,
-          testContent: testContent || '',
-          wsUrl,
-          gqlUrl,
-          grpcUrl,
-        },
-        response: {
-          headers: null,
-          events: null,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-    }
-    // GraphQL Subscriptions
-    const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-    const host = protocol + URIWithoutProtocol.split('/')[0];
-    let path = `/${URIWithoutProtocol.split('/')
+    const protocol: string = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+    const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
+    const host: string = protocol + URIWithoutProtocol.split('/')[0];
+    let path: string = `/${URIWithoutProtocol.split('/')
       .splice(1)
       .join('/')
       .replace(/\/{2,}/g, '/')}`;
     if (path.charAt(path.length - 1) === '/' && path.length > 1) {
       path = path.substring(0, path.length - 1);
     }
-    path = path.replace(/wss?:\//g, 'ws://');
-    reqRes = {
+    path = /wss?:\/\//.test(protocol)
+      ? path.replace(/wss?:\//g, 'ws://')
+      : path.replace(/https?:\//g, 'http://');
+    const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
-      protocol: 'ws://',
+      protocol: /wss?:\/\//.test(protocol)
+        ? 'ws://'
+        : url.match(/https?:\/\//)[0],
       host,
       path,
       url,
       graphQL,
       gRPC,
+      webrtc,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
+      protoPath,
       request: {
         method,
         headers: headersArr.filter(
@@ -213,6 +161,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
         bodyType,
         bodyVariables: bodyVariables || '',
         rawType,
+        isSSE,
         network,
         restUrl,
         testContent: testContent || '',
@@ -221,8 +170,8 @@ export default function GraphQLComposer(props: $TSFixMe) {
         grpcUrl,
       },
       response: {
-        headers: null,
-        events: null,
+        headers: {},
+        events: [],
       },
       checked: false,
       minimized: false,
@@ -264,24 +213,18 @@ export default function GraphQLComposer(props: $TSFixMe) {
       id="composer-graphql"
     >
       <div
-        className="is-flex-grow-3 add-vertical-scroll"
+        className="add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         // tabIndex={0}
       >
         <GraphQLMethodAndEndpointEntryForm
           fieldsReplaced={fieldsReplaced}
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
           newRequestFields={newRequestFields}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-          newRequestCookiesSet={newRequestCookiesSet}
           newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
-          newTestContentSet={newTestContentSet}
         />
         <HeaderEntryForm
           newRequestHeaders={newRequestHeaders}
@@ -306,6 +249,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
           newRequestBody={newRequestBody}
           newRequestBodySet={newRequestBodySet}
         />
+        <TestContainer />
         <TestEntryForm
           newTestContentSet={newTestContentSet}
           testContent={testContent}

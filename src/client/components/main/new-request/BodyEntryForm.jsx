@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import WWWForm from './WWWForm.jsx';
 import BodyTypeSelect from './BodyTypeSelect.jsx';
 import JSONTextArea from './JSONTextArea.jsx';
 import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
 import JSONPrettify from './JSONPrettify.jsx';
-import TextCodeArea from './TextCodeArea.jsx';
+import TextCodeArea from './TextCodeArea.tsx';
 
 const BodyEntryForm = (props) => {
   const {
@@ -13,7 +13,18 @@ const BodyEntryForm = (props) => {
     newRequestHeaders,
     newRequestHeadersSet,
     warningMessage,
+    isMockServer
   } = props;
+
+  useEffect(() => {
+    if (isMockServer) {
+      newRequestBodySet({
+        ...newRequestBody,
+        bodyType: 'raw',
+        bodyContent: '',
+      });
+    }
+  }, [isMockServer]);
 
   const bodyEntryArea = () => {
     //BodyType of none : display nothing
@@ -49,6 +60,7 @@ const BodyEntryForm = (props) => {
             bodyContent: value,
           });
         }}
+        placeholder={props.placeholder}
       />
     );
   };
@@ -98,5 +110,10 @@ const BodyEntryForm = (props) => {
     </div>
   );
 };
+
+BodyEntryForm.defaultProps = {
+  isMockServer: false,
+  placeholder: 'Enter body here',
+}
 
 export default BodyEntryForm;

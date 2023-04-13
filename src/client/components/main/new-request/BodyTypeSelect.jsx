@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 /** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
-import dropDownArrow from '../../../../assets/icons/caret-down-white.svg';
+import dropDownArrow from '../../../../assets/icons/caret-down.svg';
 
 const BodyTypeSelect = (props) => {
   const {
@@ -61,7 +61,7 @@ const BodyTypeSelect = (props) => {
     >
       <div className="dropdown-trigger">
         <button
-          className="button is-small is-outlined is-primary mr-3 add-header-or-cookie-button"
+          className="button is-small is-outlined is-primary mr-3"
           id="body-type-select"
           aria-haspopup="true"
           aria-controls="dropdown-menu"

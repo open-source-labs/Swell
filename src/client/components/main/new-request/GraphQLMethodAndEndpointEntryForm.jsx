@@ -12,9 +12,6 @@ const GraphQLMethodAndEndpointEntryForm = ({
   newRequestFields,
   newRequestBodySet,
   newRequestBody,
-  newRequestHeadersSet,
-  newRequestStreams,
-  newRequestHeaders: { headersArr },
 }) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
@@ -29,16 +26,12 @@ const GraphQLMethodAndEndpointEntryForm = ({
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  const warningCheck = () => {
-    if (warningMessage.uri) {
-      const newWarningMessage = { ...warningMessage };
-      delete warningMessage.uri;
-      setWarningMessage({ ...newWarningMessage });
-    }
+  const clearWarningIfApplicable = () => {
+    if (warningMessage.uri) setWarningMessage({});
   };
 
   const urlChangeHandler = (e) => {
-    warningCheck();
+    clearWarningIfApplicable();
     const url = e.target.value;
 
     fieldsReplaced({
@@ -49,7 +42,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
   };
 
   const methodChangeHandler = (value) => {
-    warningCheck();
+    clearWarningIfApplicable();
 
     let newBody;
     const methodReplaceRegex = new RegExp(`${newRequestFields.method}`, 'mi');
@@ -101,7 +94,7 @@ const GraphQLMethodAndEndpointEntryForm = ({
     <div>
       <div
         ref={dropdownEl}
-        className={`ml-2 mr-2 is-flex is-justify-content-center dropdown ${
+        className={`is-flex is-justify-content-center dropdown ${
           dropdownIsActive ? 'is-active' : ''
         }`}
         style={{ padding: '10px' }}

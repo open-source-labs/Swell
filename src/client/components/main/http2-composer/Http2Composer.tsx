@@ -1,29 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { useDispatch } from 'react-redux';
 
 import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
-import { composerFieldsReset } from '../../../toolkit-refactor/newRequest/newRequestSlice';
-import {
-  newRequestSSESet,
-  newRequestCookiesSet,
-  newRequestStreamsSet,
-  newRequestBodySet,
-  newRequestHeadersSet,
-} from '../../../toolkit-refactor/newRequest/newRequestSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
 } from '../../../toolkit-refactor/ui/uiSlice';
-//import { scheduledReqResAdded } from '../../../toolkit-refactor/scheduledReqRes/scheduledReqResSlice';
-import { setWarningMessage } from '../../../toolkit-refactor/warningMessage/warningMessageSlice';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
-// Import local components
-import Http2EndpointForm from './Http2EndpointForm';
-import Http2MetaData from './Http2MetaData';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -37,36 +24,13 @@ import NewRequestButton from '../new-request/NewRequestButton';
 import BodyEntryForm from '../new-request/BodyEntryForm';
 import TestEntryForm from '../new-request/TestEntryForm';
 // Import MUI components
-import { Box, Typography } from '@mui/material';
-import { BooleanValueNode } from 'graphql';
+import { Box, FormControlLabel, Switch } from '@mui/material';
+import { CookieOrHeader, ReqRes } from '../../../../types';
+
+import TestContainer from '../../workspace/TestContainer';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
-  interface Parameter {
-    id: string;
-    key: string;
-    value: string;
-    toggle: boolean;
-  }
-  interface Header {
-    id: string;
-    key: string;
-    value: string;
-    toggle: boolean;
-  }
-  interface Cookie {
-    id: string;
-    key: string;
-    value: string;
-    toggle: BooleanValueNode;
-  }
-
-  const [parameters, setParameters] = useState<Parameter[]>([]);
-  const [headers, setHeaders] = useState<Header[]>([]);
-  const [cookies, setCookies] = useState<Cookie[]>([]);
-  const [http2Method, setHttp2Method] = useState('GET');
-  const [http2Uri, setHttp2Uri] = useState('');
-
   const dispatch = useDispatch();
   // Destructuring store props.
   const {
@@ -79,8 +43,6 @@ export default function Http2Composer(props) {
     newRequestSSE,
     warningMessage,
   } = props;
-
-  // console.log(newRequestBody)
 
   const {
     gRPC,
@@ -144,6 +106,63 @@ export default function Http2Composer(props) {
     return validationMessage;
   };
 
+  const composeReqRes = (): ReqRes => {
+    const protocol: string = url.match(/(https?:\/\/)/)[0];
+    const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
+    const host: string = protocol + URIWithoutProtocol.split('/')[0];
+    let path: string = `/${URIWithoutProtocol.split('/')
+      .splice(1)
+      .join('/')
+      .replace(/\/{2,}/g, '/')}`;
+    if (path.charAt(path.length - 1) === '/' && path.length > 1) {
+      path = path.substring(0, path.length - 1);
+    }
+    path = path.replace(/https?:\//g, 'http://');
+    return {
+      id: uuid(),
+      createdAt: new Date(),
+      protocol: url.match(/https?:\/\//)[0],
+      host,
+      path,
+      url,
+      webrtc,
+      graphQL,
+      gRPC,
+      timeSent: null,
+      timeReceived: null,
+      connection: 'uninitialized',
+      connectionType: null,
+      checkSelected: false,
+      protoPath,
+      request: {
+        method,
+        headers: headersArr.filter(
+          (header: CookieOrHeader) => header.active && !!header.key
+        ),
+        cookies: cookiesArr.filter(
+          (cookie: CookieOrHeader) => cookie.active && !!cookie.key
+        ),
+        body: bodyContent || '',
+        bodyType,
+        bodyVariables: bodyVariables || '',
+        rawType,
+        isSSE,
+        network,
+        restUrl,
+        testContent: testContent || '',
+        wsUrl,
+        gqlUrl,
+        grpcUrl,
+      },
+      response: {
+        headers: {},
+        events: [],
+      },
+      checked: false,
+      minimized: false,
+      tab: currentTab,
+    };
+  };
   /** @todo Figure out what this function does */
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
@@ -151,68 +170,11 @@ export default function Http2Composer(props) {
       setWarningMessage(warnings);
       return;
     }
-
-    let reqRes;
-    const protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
-    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-    if (!/wss?:\/\//.test(protocol) && !gRPC) {
-      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      URIWithoutProtocol; // deleteable ???
-      const host = protocol + URIWithoutProtocol.split('/')[0];
-      let path = `/${URIWithoutProtocol.split('/')
-        .splice(1)
-        .join('/')
-        .replace(/\/{2,}/g, '/')}`;
-      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-        path = path.substring(0, path.length - 1);
-      }
-      path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
-        id: uuid(),
-        createdAt: new Date(),
-        protocol: url.match(/https?:\/\//)[0],
-        host,
-        path,
-        url,
-        webrtc,
-        graphQL,
-        gRPC,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'uninitialized',
-        connectionType: null,
-        checkSelected: false,
-        protoPath,
-        request: {
-          method,
-          headers: headersArr.filter((header) => header.active && !!header.key),
-          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
-          body: bodyContent || '',
-          bodyType,
-          bodyVariables: bodyVariables || '',
-          rawType,
-          isSSE,
-          network,
-          restUrl,
-          testContent: testContent || '',
-          wsUrl,
-          gqlUrl,
-          grpcUrl,
-        },
-        response: {
-          headers: null,
-          events: null,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-    }
+    const reqRes: ReqRes = composeReqRes();
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
-    // dispatch(scheduledReqResAdded(reqRes));
 
     //reset for next request
     composerFieldsReset();
@@ -220,9 +182,7 @@ export default function Http2Composer(props) {
     dispatch(setSidebarActiveTab('composer'));
 
     connectionController.openReqRes(reqRes.id);
-    dispatch(
-      responseDataSaved(reqRes, 'singleReqResContainercomponentSendHandler')
-    );
+    dispatch(responseDataSaved(reqRes));
   };
 
   /** @todo Figure out what this function does */
@@ -232,65 +192,7 @@ export default function Http2Composer(props) {
       setWarningMessage(warnings);
       return;
     }
-
-    const httpOrWebsocketRegex = /(http|ws)s?:\/\//;
-    const protocol = url.match(httpOrWebsocketRegex)[0];
-
-    let reqRes;
-    // HTTP && GRAPHQL QUERY & MUTATION REQUESTS
-    if (!/wss?:\/\//.test(protocol) && !gRPC) {
-      const URIWithoutProtocol = `${url.split(protocol)[1]}/`;
-      URIWithoutProtocol; // deleteable ???
-      const host = protocol + URIWithoutProtocol.split('/')[0];
-      let path = `/${URIWithoutProtocol.split('/')
-        .splice(1)
-        .join('/')
-        .replace(/\/{2,}/g, '/')}`;
-      if (path.charAt(path.length - 1) === '/' && path.length > 1) {
-        path = path.substring(0, path.length - 1);
-      }
-      path = path.replace(/https?:\//g, 'http://');
-      reqRes = {
-        id: uuid(),
-        createdAt: new Date(),
-        protocol: url.match(/https?:\/\//)[0],
-        host,
-        path,
-        url,
-        webrtc,
-        graphQL,
-        gRPC,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'uninitialized',
-        connectionType: null,
-        checkSelected: false,
-        protoPath,
-        request: {
-          method,
-          headers: headersArr.filter((header) => header.active && !!header.key),
-          cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
-          body: bodyContent || '',
-          bodyType,
-          bodyVariables: bodyVariables || '',
-          rawType,
-          isSSE,
-          network,
-          restUrl,
-          testContent: testContent || '',
-          wsUrl,
-          gqlUrl,
-          grpcUrl,
-        },
-        response: {
-          headers: null,
-          events: null,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-    }
+    const reqRes: ReqRes = composeReqRes();
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
@@ -312,9 +214,6 @@ export default function Http2Composer(props) {
       }}
       id="composer-http2"
     >
-      {/* <Typography align='center'>
-        HTTP/2
-      </Typography> */}
       {/**
        * @todo The two commented-out components are our attempt to port the
        * entire app to use MaterialUI for consistency.
@@ -328,6 +227,40 @@ export default function Http2Composer(props) {
        * These are not tied to the Redux store currently, and thus do not
        * interact with the app yet. They are just standalone components that
        * need to be integrated with the logic of the app.
+       *
+       * Import the following if you wish to uncomment the code below:
+       *
+       * import Http2EndpointForm from './Http2EndpointForm';
+       * import Http2MetaData from './Http2MetaData'
+       * import { BooleanValueNode } from 'graphql';
+       * import { useState } from 'react';
+       *
+       * Also, setup the following interface and react hooks:
+       *
+       *  interface Parameter {
+       *    id: string;
+       *    key: string;
+       *    value: string;
+       *    toggle: boolean;
+       *  }
+       *   interface Header {
+       *    id: string;
+       *    key: string;
+       *    value: string;
+       *    toggle: boolean;
+       *  }
+       *   interface Cookie {
+       *    id: string;
+       *    key: string;
+       *    value: string;
+       *    toggle: BooleanValueNode;
+       *  }
+       *
+       * const [parameters, setParameters] = useState<Parameter[]>([]);
+       * const [headers, setHeaders] = useState<Header[]>([]);
+       * const [cookies, setCookies] = useState<Cookie[]>([]);
+       * const [http2Method, setHttp2Method] = useState('GET');
+       * const [http2Uri, setHttp2Uri] = useState('');
        */}
       {/* <Http2EndpointForm
         http2Method={http2Method}
@@ -344,62 +277,60 @@ export default function Http2Composer(props) {
         setCookies={setCookies}
         http2Method={http2Method}
       /> */}
-      <RestMethodAndEndpointEntryForm
-        newRequestFields={newRequestFields}
-        newRequestBody={newRequestBody}
-        newTestContentSet={newTestContentSet}
-        fieldsReplaced={fieldsReplaced}
-        newRequestBodySet={newRequestBodySet}
-        warningMessage={warningMessage}
-        setWarningMessage={setWarningMessage}
-      />
-      <span className="inputs">
-        <div>
-          <HeaderEntryForm
-            newRequestHeaders={newRequestHeaders}
-            newRequestStreams={newRequestStreams}
-            newRequestBody={newRequestBody}
-            newRequestFields={newRequestFields}
-            newRequestHeadersSet={newRequestHeadersSet}
-            newRequestStreamsSet={newRequestStreamsSet}
-          />
-          <CookieEntryForm
-            newRequestCookies={newRequestCookies}
-            newRequestBody={newRequestBody}
-            newRequestCookiesSet={newRequestCookiesSet}
-          />
-        </div>
-        <div className="is-3rem-footer is-clickable restReqBtns">
+      <div className="container-margin">
+        <RestMethodAndEndpointEntryForm
+          newRequestFields={newRequestFields}
+          newRequestBody={newRequestBody}
+          newTestContentSet={newTestContentSet}
+          fieldsReplaced={fieldsReplaced}
+          newRequestBodySet={newRequestBodySet}
+          warningMessage={warningMessage}
+          setWarningMessage={setWarningMessage}
+          value={newRequestFields.restUrl}
+        />
+        <span>
+          <div>
+            <HeaderEntryForm
+              newRequestHeaders={newRequestHeaders}
+              newRequestStreams={newRequestStreams}
+              newRequestBody={newRequestBody}
+              newRequestFields={newRequestFields}
+              newRequestHeadersSet={newRequestHeadersSet}
+              newRequestStreamsSet={newRequestStreamsSet}
+            />
+            <CookieEntryForm
+              newRequestCookies={newRequestCookies}
+              newRequestBody={newRequestBody}
+              newRequestCookiesSet={newRequestCookiesSet}
+            />
+          </div>
+        </span>
+        {/* SSE TOGGLE SWITCH */}
+        <div className="field mt-2 flex-space-around">
           <SendRequestButton onClick={sendNewRequest} />
-          <p> --- or --- </p>
+          <FormControlLabel
+            control={<Switch />}
+            label="Server Sent Events"
+            onChange={() => newRequestSSESet(!isSSE)}
+            checked={isSSE}
+          />
           <NewRequestButton onClick={addNewRequest} />
         </div>
-      </span>
-      {/* SSE TOGGLE SWITCH */}
-      <div className="field mt-2">
-        <span className="composer-section-title mr-3">Server Sent Events</span>
-        <input
-          id="SSEswitch"
-          type="checkbox"
-          className="switch is-outlined is-warning"
-          onChange={(e) => newRequestSSESet(e)}
-          checked={isSSE}
+        {method !== 'GET' && (
+          <BodyEntryForm
+            warningMessage={warningMessage}
+            newRequestBody={newRequestBody}
+            newRequestBodySet={newRequestBodySet}
+            newRequestHeaders={newRequestHeaders}
+            newRequestHeadersSet={newRequestHeadersSet}
+          />
+        )}
+        <TestContainer />
+        <TestEntryForm
+          newTestContentSet={newTestContentSet}
+          testContent={testContent}
         />
-        <label htmlFor="SSEswitch" />
       </div>
-      {method !== 'GET' && (
-        <BodyEntryForm
-          warningMessage={warningMessage}
-          newRequestBody={newRequestBody}
-          newRequestBodySet={newRequestBodySet}
-          newRequestHeaders={newRequestHeaders}
-          newRequestHeadersSet={newRequestHeadersSet}
-        />
-      )}
-      <TestEntryForm
-        newTestContentSet={newTestContentSet}
-        testContent={testContent}
-      />
     </Box>
   );
 }

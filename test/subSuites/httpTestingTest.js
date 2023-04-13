@@ -1,225 +1,153 @@
 // Confirm testing of request/response works for REST
 
-const {_electron: electron} = require('playwright');
-const chai = require('chai')
-const expect = chai.expect
-const path = require('path');
-const fs = require('fs-extra');
+const { _electron: electron } = require('playwright');
+const pwTest = require('@playwright/test');
+const chai = require('chai');
+const expect = chai.expect;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
+const path = require('path');
+const fs = require('fs');
+const {
+  fillRestRequest,
+  addAndSend,
+  clearAndFillTestScriptArea,
+} = require('./testHelper');
 
-let electronApp, page, num=0;
+let electronApp,
+  page,
+  num = 0;
 
 module.exports = () => {
-
-  const setupFxn = function() {
-    beforeEach(async () => {
+  describe('HTTP Assertion Testing', function () {
+    before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      page = electronApp.windows()[0]; // In case there is more than one window
-      await page.waitForLoadState(`domcontentloaded`);
+      await chai.request('http://localhost:3004').get('/clear').send();
     });
-    
+
     // close Electron app when complete
-    // after(async () => {
-    //   await electronApp.close();
-    // });
-
-    afterEach(async function() {
-      if (this.currentTest.state === 'failed') {
-        console.log(`Screenshotting failed test window`)
-        const imageBuffer = await page.screenshot();
-        fs.writeFileSync(path.resolve(__dirname + '/../failedTests', `FAILED_${this.currentTest.title}.png`), imageBuffer)
-      }
+    after(async () => {
+      await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
-
-      // await page.locator('span >> text=Hide Tests').click();
-
+      await chai.request('http://localhost:3004').get('/clear').send();
     });
-  }
 
-  describe('HTTP Testing Controller', () => {
-    setupFxn();
-
-    const fillRestRequest = async (
-      url,
-      method,
-      body = '',
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        // click and check REST
-        await page.locator('button>> text=HTTP2').click();
-
-        // click and select METHOD if it isn't GET
-        if (method !== 'GET') {
-          await page.locator('button#rest-method').click();
-          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
-        }
-
-        // type in url
-        await page.locator('#url-input').fill(url);
-
-        // set headers
-        headers.forEach(async ({ key, value }, index) => {
-          await page.locator(`#header-row${index} >> [placeholder="Key"]`).fill(key);
-          await page.locator(`#header-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('#add-header').click();
-        });
-
-        // set cookies
-        cookies.forEach(async ({ key, value }, index) => {
-          await page.locator(`#cookie-row${index} >> [placeholder="Key"]`).fill(key);
-          await page.locator(`#cookie-row${index} >> [placeholder="Value"]`).fill(value);
-          await page.locator('#add-cookie').click();
-        });
-
-        // Add BODY as JSON if it isn't GET
-        if (method !== 'GET') {
-          // select body type JSON
-          if (await page.locator('#body-type-select').innerText()==='raw'){
-            await page.locator('#raw-body-type').click();
-            await page.locator('.dropdown-item >> text=application/json').click();
-          }
-          
-          // insert JSON content into body
-          const codeMirror = await page.locator('#body-entry-select');
-          await codeMirror.click();
-          const restBody = await codeMirror.locator('.cm-content');
-
-          try {
-            await restBody.fill('');
-            await restBody.fill(body);
-          } catch (err) {
-            console.error(err);
-          }
-        }
-      } catch (err) {
-        console.error(err);
+    afterEach(async function () {
+      if (this.currentTest.state === 'failed') {
+        console.log(`Screenshotting failed test window`);
+        const imageBuffer = await page.screenshot();
+        fs.writeFileSync(
+          path.resolve(
+            __dirname + '/../failedTests',
+            `FAILED_${this.currentTest.title}.png`
+          ),
+          imageBuffer
+        );
       }
+    });
+
+    const addAndSendRequest = async (url, method, script, n) => {
+      await fillRestRequest(page, url, method);
+      await clearAndFillTestScriptArea(page, script);
+      await addAndSend(page, n);
     };
 
-    const addAndSend = async (num) => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${num}`).click();
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const clearAndFillTestScriptArea = async (script) => {
-      try {
-        // click the view tests button to reveal the test code editor
-        await page.locator('span >> text=View Tests').click();
-        // set the value of the code editor to be some hard coded simple assertion tests
-
-        const codeMirror2 = await page.locator('#test-script-entry');
-        await codeMirror2.click();
-        const scriptBody = await codeMirror2.locator('.cm-content');
-
-        try {
-          await scriptBody.fill('');
-          await scriptBody.fill(script);
-        } catch (err) {
-          console.error(err);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    // ==================================================================
-
-    describe('simple assertions w/ chai.assert and chai.expect', () => {
-      before('CLEAR DB', (done) => {
-        chai
-          .request('http://localhost:3000')
-          .get('/clear')
-          .end((err, res) => {
-            done(); // <= Call done to signal callback end
-          });
+    // The app takes a while to launch, and without these rendering checks
+    // within each test file the tests can get flakey because of long load times
+    // so these are here to ensure the app launches as expect before continuing
+    describe('Window rendering', () => {
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok;
       });
 
-      after('CLEAR DB', (done) => {
-        chai
-          .request('http://localhost:3000')
-          .get('/clear')
-          .send()
-          .end((err, res) => {
-            done(); // <= Call done to signal callback end
-          });
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        pwTest.expect(window).toBeVisible();
+      });
+
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });
+    });
+
+    describe('simple assertions w/ chai.assert and chai.expect', () => {
+      before('Eatablish page', async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
       });
 
       it('a simple assertion (assert) should PASS when making a GET request', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "assert.strictEqual(3, 3, 'correct types');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
+        await page.locator('a >> text=Tests').click();
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('PASS');
       });
 
       it('a simple assertion (assert) should FAIL when making a GET request', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "assert.strictEqual(3, '3', 'wrong types');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('FAIL');
       });
 
       it('a simple assertion (expect) should PASS when making a GET request', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "expect(3, 'correct types').to.equal(3);";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('PASS');
       });
 
       it('a simple assertion (expect) should FAIL when making a GET request', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "expect(3, 'correct types').to.equal('3');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('FAIL');
       });
-    });
 
-    describe('Multiple assertion statements', () => {
       it('should handle multiple different simple assert statements', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script =
           "assert.strictEqual(3, '3', 'wrong types');\nassert.strictEqual(3, '3', 'this assert is a message');\nassert.strictEqual(3, 3, 'correct types');\nassert.strictEqual(3, 3, 'this assert is a message');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const firstStatus = await page.locator('#TestResult-0-status').innerText();
-        const secondStatus = await page.locator('#TestResult-1-status').innerText();
-        const thirdStatus = await await page.locator('#TestResult-2-status').innerText();
-        const fourthStatus = await await page.locator('#TestResult-3-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const firstStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
+        const secondStatus = await page
+          .locator('#TestResult-1-status')
+          .innerText();
+        const thirdStatus = await await page
+          .locator('#TestResult-2-status')
+          .innerText();
+        const fourthStatus = await await page
+          .locator('#TestResult-3-status')
+          .innerText();
 
         expect(firstStatus).to.equal('FAIL');
         expect(secondStatus).to.equal('FAIL');
@@ -228,19 +156,25 @@ module.exports = () => {
       });
 
       it('should handle multiple different simple expect statements', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script =
           "expect(3, 'wrong types').to.equal('3');\nexpect(3, 'this expect is a message').to.equal('3');\nexpect(3, 'correct types').to.equal(3);\nexpect(3, 'this expect is a message').to.equal(3);";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const firstStatus = await page.locator('#TestResult-0-status').innerText();
-        const secondStatus = await page.locator('#TestResult-1-status').innerText();
-        const thirdStatus = await await page.locator('#TestResult-2-status').innerText();
-        const fourthStatus = await await page.locator('#TestResult-3-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const firstStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
+        const secondStatus = await page
+          .locator('#TestResult-1-status')
+          .innerText();
+        const thirdStatus = await await page
+          .locator('#TestResult-2-status')
+          .innerText();
+        const fourthStatus = await await page
+          .locator('#TestResult-3-status')
+          .innerText();
 
         expect(firstStatus).to.equal('FAIL');
         expect(secondStatus).to.equal('FAIL');
@@ -251,29 +185,29 @@ module.exports = () => {
 
     describe('Assertions on response object', () => {
       it('chai.assert: should be able to access the response object', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "assert.exists(response, 'response is object');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('PASS');
       });
 
       it('chai.assert: should be able to access the status code from the response object', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script =
           "assert.strictEqual(response.status, 200, 'response is 200');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -282,11 +216,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "assert.exists(response.cookies, 'cookies exists on response object');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await page.locator('#TestResult-0-status').innerText();
@@ -304,11 +236,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "assert.exists(response.headers, 'headers exists on response object');";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
             const text = await page.locator('#TestResult-0-status').innerText();
@@ -320,29 +250,29 @@ module.exports = () => {
       });
 
       it('chai.expect: should be able to access the response object', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "expect(response, 'response exists').to.exist;";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('PASS');
       });
 
       it('chai.expect: should be able to access the status code from the response object', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script =
           "expect(response.status, 'response is 200').to.equal(200);";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const testStatus = await page.locator('#TestResult-0-status').innerText();
+        await page.locator('a >> text=Tests').click();
+        const testStatus = await page
+          .locator('#TestResult-0-status')
+          .innerText();
         expect(testStatus).to.equal('PASS');
       });
 
@@ -351,11 +281,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "expect(response.cookies, 'cookies exists on response object').to.exist;";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -372,11 +300,9 @@ module.exports = () => {
         const method = 'GET';
         const script =
           "expect(response.headers, 'headers exists on reponse object').to.exist;";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
+        await page.locator('a >> text=Tests').click();
 
         const testStatus = await new Promise((resolve) => {
           setTimeout(async () => {
@@ -391,16 +317,14 @@ module.exports = () => {
 
     describe('Using variables', () => {
       it('Test results do not render if JavaScript is entered but specifically not assertion tests', async () => {
-        const url = 'http://localhost:3000/book';
+        const url = 'http://localhost:3004/book';
         const method = 'GET';
         const script = "const foo = 'bar';";
-        await fillRestRequest(url, method);
-        await clearAndFillTestScriptArea(script);
-        await addAndSend(num);
+        await addAndSendRequest(url, method, script, num++);
 
-        await page.locator('a >> text=Tests').click(); // This causes rendering to fail >_>
-        const { selector } = await page.locator('.empty-state-wrapper');
-        expect(selector).to.equal('.empty-state-wrapper');
+        await page.locator('a >> text=Tests').click();
+        const element = await page.locator('.empty-state-wrapper');
+        expect(await element.count()).to.equal(1);
       });
     });
   }).timeout(20000);

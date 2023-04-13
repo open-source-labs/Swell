@@ -4,13 +4,11 @@ const apiObj = {
   send: (channel, ...data) => {
     // allow list channels SENDING to Main
     const allowedChannels = [
-      'login-via-github',
       'check-for-update',
       'confirm-clear-history',
       'export-collection',
       'fatalError',
       'import-collection',
-      'import-from-github',
       'import-proto',
       'import-openapi',
       'open-http',
@@ -28,9 +26,14 @@ const apiObj = {
       'close-ws',
       'open-openapi',
       'exportChatLog',
+      'start-mock-server',
+      'stop-mock-server',
+      'submit-mock-request',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
+    } else {
+      console.log('Channel not allowed: ', channel);
     }
   },
   receive: (channel, cb) => {
@@ -38,7 +41,6 @@ const apiObj = {
     const allowedChannels = [
       'add-collections',
       'clear-history-response',
-      'export-from-github',
       'introspect-reply',
       'message',
       'openapi-info',
@@ -52,6 +54,8 @@ const apiObj = {
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => cb(...args));
+    } else {
+      console.log('Channel not allowed: ', channel);
     }
   },
   removeAllListeners: (channel, cb) => {
@@ -59,6 +63,8 @@ const apiObj = {
     const allowedChannels = ['reqResUpdate', 'reply-gql'];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
+    } else {
+      console.log('Channel not allowed: ', channel);
     }
   },
 };

@@ -10,27 +10,32 @@
  */
 
 const { _electron: electron } = require('playwright');
+const pwTest = require('@playwright/test');
 const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const path = require('path');
 const fs = require('fs');
+const {
+  isButtonDisabled,
+  fillRestRequest,
+  addAndSend,
+} = require('./testHelper');
 
 let electronApp,
   page,
   num = 0;
 
 module.exports = () => {
-  const setupFxn = function () {
+  describe('HTTP/S requests', function () {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      page = electronApp.windows()[0]; // In case there is more than one window
-      await page.waitForLoadState(`domcontentloaded`);
     });
 
     // close Electron app when complete
     after(async () => {
+      await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
     });
 
@@ -47,99 +52,42 @@ module.exports = () => {
         );
       }
     });
-  };
 
-  describe('HTTP/S requests', function () {
-    setupFxn();
-
-    const fillRestRequest = async (
-      url,
-      method,
-      body = '',
-      headers = [],
-      cookies = []
-    ) => {
-      try {
-        // Make sure HTTP2 method is selected
-        await page.locator('button>> text=HTTP2').click();
-
-        // click and select METHOD if it isn't GET
-        if (method !== 'GET') {
-          await page.locator('button#rest-method').click();
-          await page
-            .locator(`div[id^="composer"] >> a >> text=${method}`)
-            .click();
-        }
-
-        // type in url
-        await page.locator('#url-input').fill(url);
-
-        // set headers
-        headers.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#header-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#header-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-header').click();
-        });
-
-        // set cookies
-        cookies.forEach(async ({ key, value }, index) => {
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Key"]`)
-            .fill(key);
-          await page
-            .locator(`#cookie-row${index} >> [placeholder="Value"]`)
-            .fill(value);
-          await page.locator('#add-cookie').click();
-        });
-
-        // Add BODY as JSON if it isn't GET
-        if (method !== 'GET') {
-          // select body type JSON
-          if ((await page.locator('#body-type-select').innerText()) === 'raw') {
-            await page.locator('#raw-body-type').click();
-            await page
-              .locator('.dropdown-item >> text=application/json')
-              .click();
-          }
-
-          // insert JSON content into body
-          const codeMirror = await page.locator('#body-entry-select');
-          await codeMirror.click();
-          const restBody = await codeMirror.locator('.cm-content');
-
-          try {
-            restBody.fill('');
-            await restBody.fill(body);
-          } catch (err) {
-            console.error(err);
-          }
-        }
-      } catch (err) {
-        console.error(err);
-      }
+    const fillAndSentRequest = async (url, method, n, body) => {
+      await fillRestRequest(page, url, method, body);
+      await addAndSend(page, n);
     };
 
-    const addAndSend = async (num) => {
-      try {
-        await page.locator('button >> text=Add to Workspace').click();
-        await page.locator(`#send-button-${num}`).click();
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    // The app takes a while to launch, and without these rendering checks
+    // within each test file the tests can get flakey because of long load times
+    // so these are here to ensure the app launches as expect before continuing
+    describe('Window rendering', () => {
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok;
+      });
+
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        pwTest.expect(window).toBeVisible();
+      });
+
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });
+    });
 
     describe('public API', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+      });
+
       it('it should GET information from a public API', async () => {
         try {
           // TEST GET Request from JSON Placeholder
           const url = 'http://jsonplaceholder.typicode.com/posts';
           const method = 'GET';
-          await fillRestRequest(url, method);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -160,7 +108,7 @@ module.exports = () => {
     describe('httpTest Server', () => {
       before('CLEAR DB', (done) => {
         chai
-          .request('http://localhost:3000')
+          .request('http://localhost:3004')
           .get('/clear')
           .end((err, res) => {
             done(); // <= Call done to signal callback end
@@ -169,7 +117,7 @@ module.exports = () => {
 
       after('CLEAR DB', (done) => {
         chai
-          .request('http://localhost:3000')
+          .request('http://localhost:3004')
           .get('/clear')
           .send()
           .end((err, res) => {
@@ -179,10 +127,9 @@ module.exports = () => {
 
       it('it should GET information from an http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book';
+          const url = 'http://localhost:3004/book';
           const method = 'GET';
-          await fillRestRequest(url, method);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -201,12 +148,11 @@ module.exports = () => {
 
       it('it should POST to local http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book';
+          const url = 'http://localhost:3004/book';
           const method = 'POST';
           const body =
             '{"title": "HarryPotter", "author": "JK Rowling", "pages": 500}';
-          await fillRestRequest(url, method, body);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++, body);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -225,11 +171,10 @@ module.exports = () => {
 
       it('it should PUT to local http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book/HarryPotter';
+          const url = 'http://localhost:3004/book/HarryPotter';
           const method = 'PUT';
           const body = '{"author": "Ron Weasley", "pages": 400}';
-          await fillRestRequest(url, method, body);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++, body);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -248,11 +193,10 @@ module.exports = () => {
 
       it('it should PATCH to local http test server', async () => {
         try {
-          const url = 'http://localhost:3000/book/HarryPotter';
+          const url = 'http://localhost:3004/book/HarryPotter';
           const method = 'PATCH';
           const body = '{"author": "Hermoine Granger"}';
-          await fillRestRequest(url, method, body);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++, body);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -272,11 +216,10 @@ module.exports = () => {
       it('it should DELETE to local http test server', async () => {
         // DELETE HARRYPOTTER
         try {
-          const url = 'http://localhost:3000/book/HarryPotter';
+          const url = 'http://localhost:3004/book/HarryPotter';
           const method = 'DELETE';
           const body = '{}';
-          await fillRestRequest(url, method, body);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++, body);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -293,10 +236,9 @@ module.exports = () => {
         }
         // CHECK TO SEE IF IT IS DELETED
         try {
-          const url = 'http://localhost:3000/book';
+          const url = 'http://localhost:3004/book';
           const method = 'GET';
-          await fillRestRequest(url, method);
-          await addAndSend(num++);
+          await fillAndSentRequest(url, method, num++);
           await new Promise((resolve) =>
             setTimeout(async () => {
               const statusCode = await page.locator('.status-tag').innerText();
@@ -313,5 +255,89 @@ module.exports = () => {
         }
       });
     });
+
+    describe('HTTP/S stress testing', () => {
+      before(async () => {
+        page = electronApp.windows()[0]; // In case there is more than one window
+        await page.waitForLoadState(`domcontentloaded`);
+        await chai.request('http://localhost:3004').get('/clear').send();
+        await page.locator('button >> text=Clear Workspace').click();
+      });
+
+      after(async () => {
+        await chai.request('http://localhost:3004').get('/clear').send();
+      });
+
+      beforeEach(() => (num = 0));
+
+      afterEach(async () => {
+        await page.locator('span >> text=Hide Stress Test').click();
+        await page.locator('button >> text=Clear Workspace').click();
+      });
+
+      // limiting the amount of time required to simulate the stress test
+      const stressTestDuration = 3;
+
+      it('Stress test run button is disabled with no request in workspace window', async () => {
+        try {
+          const httpPath = 'button>> text=HTTP/2';
+          if (!isButtonDisabled(page, httpPath))
+            await page.locator(httpPath).click();
+          await page.locator('span >> text=View Stress Test').click();
+          const runButton = page.locator('button>> text=Run');
+          pwTest.expect(runButton).toBeDisabled();
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      it('Run button is disabled for requests other than `GET` request', async () => {
+        try {
+          const url = 'http://localhost:3004/book';
+          const method = 'POST';
+          const body =
+            '{"title": "HarryPotter", "author": "JK Rowling", "pages": 500}';
+          await fillRestRequest(page, url, method, body);
+          await page.locator('button >> text=Add to Workspace').click();
+          await page.locator('span >> text=View Stress Test').click();
+          const runButton = page.locator('button>> text=Run');
+          pwTest.expect(runButton).toBeDisabled();
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      it('Successful stress test with `GET` request', async () => {
+        try {
+          const url = 'http://localhost:3004/book';
+          const method = 'GET';
+          await fillRestRequest(page, url, method);
+          await page.locator('button >> text=Add to Workspace').click();
+          await page.locator('span >> text=View Stress Test').click();
+          await page
+            .locator('[placeholder="Duration"]')
+            .fill(stressTestDuration.toString());
+          await page.locator('button>> text=Run').click();
+
+          // The stress test takes a minimum of 4 seconds to execute
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                const events = await page.locator(
+                  '#events-display >> .cm-content'
+                );
+                expect(await events.count()).to.equal(1);
+                expect(await events.innerText()).to.include('"totalSent": 3');
+                resolve();
+              } catch (err) {
+                console.error(err);
+              }
+            }, 5000);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }).timeout(7000);
+    }).timeout(20000);
   }).timeout(20000);
 };

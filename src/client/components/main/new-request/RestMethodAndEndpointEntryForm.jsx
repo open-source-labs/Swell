@@ -4,7 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-// import ProtocolSelect from "./ProtocolSelect.jsx";
+import { PropaneSharp } from '@mui/icons-material';
 
 const RestMethodAndEndpointEntryForm = ({
   warningMessage,
@@ -14,6 +14,8 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBodySet,
   newRequestBody,
   newTestContentSet,
+  placeholder='Enter URL or paste text here',
+  value,
 }) => {
   const isDark = useSelector((state) => state.ui.isDark);
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
@@ -29,16 +31,12 @@ const RestMethodAndEndpointEntryForm = ({
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  const warningCheck = () => {
-    if (warningMessage.uri) {
-      const newWarningMessage = { ...warningMessage };
-      delete warningMessage.uri;
-      setWarningMessage({ ...newWarningMessage });
-    }
+  const clearWarningIfApplicable = () => {
+    if (warningMessage.uri) setWarningMessage({});
   };
 
   const methodChangeHandler = (newMethodStr) => {
-    warningCheck();
+    clearWarningIfApplicable();
     //if one of 5 http methods (get, post, put, patch, delete)
     newRequestBodySet({
       ...newRequestBody,
@@ -56,8 +54,8 @@ const RestMethodAndEndpointEntryForm = ({
     newTestContentSet('');
   };
 
-  const urlChangeHandler = (e, network) => {
-    warningCheck();
+  const urlChangeHandler = (e) => {
+    clearWarningIfApplicable();
     const url = e.target.value;
     fieldsReplaced({
       ...newRequestFields,
@@ -162,9 +160,9 @@ const RestMethodAndEndpointEntryForm = ({
           } ml-1 input input-is-medium is-info`}
           id="url-input"
           type="text"
-          placeholder="Enter endpoint"
-          value={newRequestFields.restUrl}
-          onChange={(e) => urlChangeHandler(e, newRequestFields.network)}
+          placeholder={placeholder}
+          value={value}
+          onChange={urlChangeHandler}
         />
       </div>
 

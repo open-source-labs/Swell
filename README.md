@@ -3,12 +3,11 @@
 # Swell
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/open-source-labs/Swell/blob/master/LICENSE.txt)
-[![Build Status](https://travis-ci.org/open-source-labs/Swell.svg?branch=master)](https://travis-ci.org/open-source-labs/Swell)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/open-source-labs/Swell?color=blue)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/getswell/getswell/issues)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Swell-%20For%20all%20your%20streaming%20API%20testing%20needs&url=https://www.getswell.io&hashtags=SSE,WebSocket,HTTP,API,developers)
 
-Swell is an API development tool that enables developers to test endpoints served over streaming technologies including Server-Sent Events (SSE), WebSockets, HTTP2, GraphQL, gRPC, WebRTC, and OpenAPI.
+Swell is an API development tool that enables developers to test HTTP2, GraphQL endpoints, as well as ones served over streaming technologies including Server-Sent Events (SSE), WebSockets, gRPC, WebRTC, and OpenAPI.
 
 ## Getting Started
 
@@ -20,32 +19,52 @@ Swell is available for OSX, Linux, and Windows.
 
 Swell is a one-stop shop for sending and monitoring your API requests:
 
-- Send and monitor streams over HTTP2 / HTTP1 (including SSEs) and WebSockets
+- Send and monitor streams over HTTP/2 (including SSEs) and WebSockets
 - Create GraphQL queries, introspections, mutations, and subscriptions
-- Make API requests based on a range of provided options that conform to the specifications defined in OpenAPI documents.
-- Verify STUN and TURN server connectivity for WebRTC applications by generating an SDP (Session Description Protocol)
-- Diagnose and monitor your gRPC streaming connections
-- Make customizable requests to TypeScript Remote Procedure Call (tRPC) endpoints
-- View response timing information and history in an interactive chart for each request
+- Stress testing HTTP/2 and GraphQL endpoints
+- Create your own HTTP/2 mock server
 - Store workspaces of multiple requests for later use
-- Import, export, and share workspaces with other developers
+- Import and export workspaces locally
 - Compose test suites in JavaScript with Chai-style TDD/BDD assertion syntax
-- Execute a collection of requests in succession and receive clear visual feedback of each test's status
-- Schedule requests to be sent on a regular time interval to support endpoint functional validation tests
 
-## Supported Technologies
+## Core features
 
 - _HTTP2_: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, with the ability to revert to HTTP1.1 for legacy servers. Multiple concurrent streams are allowed for each connection.
   <img src="./ReadMeGifs/Gifs/HttpTesting.gif" style="display: block;  margin: 10px auto 30px; border: 1px solid black;" />
 
+- _GraphQL_: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions – as well as Introspection. Variables are also supported, making creating queries easy.
+  <img src="./ReadMeGifs/Gifs/GraphQL.gif" style="display: block; margin: 10px auto 30px;" />
+
 - _Server-Sent Events (SSE)_: Initiated by a simple toggle box, Swell displays SSE events one by one as they come in. Similar to HTTP2 streams, multiple open connection streams are allowed for SSE.
-  <img src="./ReadMeGifs/Gifs/SSE.gif" style="display: block; margin: 10px auto 30px;" />
+  <img src="./ReadMeGifs/Gifs/ServerSideEvents.gif" style="display: block; margin: 10px auto 30px;" />
 
 - _WebSockets (WS)_: Swell enables connecting directly to WebSocket servers with an HTTP handshake, with developers able to send messages to the connected WS server directly. All outgoing and incoming messages are displayed in real time.
   <img src="./ReadMeGifs/Gifs/Websockets.gif" style="display: block; margin: 10px auto 30px;" />
 
-- _GraphQL_: Swell includes full support for all three root types of GraphQL - queries, mutations, and subscriptions – as well as Introspection. Variables are also supported, making creating queries easy.
-  <img src="./ReadMeGifs/Gifs/GraphQL.gif" style="display: block; margin: 10px auto 30px;" />
+## Additional features
+
+- _Stress testing for HTTP/2 and GraphQL_: Test your server backend with Swell's stress testing feature to ensure your server can manage expected and unexpected loads accordingly
+  <img src="./ReadMeGifs/Gifs/HttpStressTest.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
+  <img src="./ReadMeGifs/Gifs/GraphQLTest.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
+
+- _Send Requests Directly to an Endpoint_: You are able to immediately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
+
+- _Scripting in Swell_: If you favor test-driven development, Swell allows you to write assertion tests to aid defining and testing backend API services.
+  <img src="./ReadMeGifs/Gifs/Assertion-Testing.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
+
+- _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
+
+- _Preview_: You can now view a rendered preview of certain API responses (HTML)
+
+- _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one; instead each request will fire off in the order of staging.
+
+## Experimental Features
+
+- _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
+  <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
 
 - _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
   <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
@@ -64,13 +83,13 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
   See [tRPC docs](https://trpc.io/docs/) for more information on sending tRPC requests or setting up a tRPC server.
 
-- _OpenAPI_: Swell supports the enumeration and execution of REST and RPC API requests as defined in a user-provided OpenAPI document.
-  <img src="./ReadMeGifs/Gifs/openapi.gif" style="display: block; margin: 10px auto 30px;" />
+- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
+  <img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
 - _WebRTC_: Swell makes it easy to test STUN and TURN ICE server connectivity for WebRTC applications.  
   <img src="./ReadMeGifs/Gifs/webrtc.gif" style="display: block; margin: 10px auto 30px; " />
 
-  Once you enter ICE server details as an array of JavaScript objects (example code block below). An RTCPeerConnection will be instantiated, as an SDP is generated.
+  Currently, it is a read-only feature. When the write feature for ICE server is enabled, ICE server details can be entered as an array of JavaScript objects (example code block below). An RTCPeerConnection will be instantiated, as an SDP is generated.
 
   ```js
   [
@@ -86,39 +105,8 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   ];
   ```
 
-## Additional Features
-
-- _Send Requests Directly to an Endpoint_: You are able to immediately send a request to an endpoint OR stage a request in your workspace for multi-level testing.
-  <img src="./ReadMeGifs/Gifs/DirectSendRequest.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
-- _Scripting in Swell_: If your favors test-driven development, Swell allows you to write assertion tests to aid defining and testing backend API services.
-  <img src="./ReadMeGifs/Gifs/SimpleResponseTest.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
-- _Workspaces_: Swell allows you to save workspaces for easier testing of multiple requests.
-- _Preview_: You can now view a rendered preview of certain API responses (HTML)
-  <img src="./ReadMeGifs/Gifs/AdditionalFeatures.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
-- _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one; instead each request will fire off in the order of staging.
-  <img src="./ReadMeGifs/Gifs/CollectionTest.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
-- _Schedule Tests_: You can also automate sending requests cyclically.
-  <img src="./ReadMeGifs/Gifs/ScheduleTest.gif"
-       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
-
-## WIP Features
-
-**Clone this repo and check out dev mode for the latest and greatest!**
-
-- _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
-  <img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
-
-- _UI Updates_: Built with Material UI, a smoother, more intuitive interface for enhanced user experience.
-  <img src="./ReadMeGifs/Gifs/NewUI.png" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
-  Added in version 1.12.0: resizable panels between composer, response, and workspace and visual feedbackfor when users is selecting different communication protocols.
-  <img src="./ReadMeGifs/Gifs/tRPC-UI.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
-
-- _Github Integration + Import/Export Workspaces_: Swell allows you to import and export workspaces, making it easy to share collections with your team. You can even register with Github to save your workspaces directly into your repository!
-  <img src="./ReadMeGifs/Gifs/GithubIntegration.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
+- _OpenAPI_: Swell supports the enumeration and execution of REST and RPC API requests as defined in a user-provided OpenAPI document.
+  <img src="./ReadMeGifs/Gifs/openapi.gif" style="display: block; margin: 10px auto 30px;" />
 
 ## Built With
 
@@ -139,8 +127,16 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Mocha
 - Playwright
 
+## Considering iterating Swell in the future?
+
+Feel free to check out the `DEV-README.md` in the `docs` folder.
+
 ## Authors
 
+- **Chris Suzukida** - [csuzukida](https://github.com/csuzukida)
+- **Fred Kim** - [Fredkim21](https://https://github.com/Fredkim21)
+- **Jason Huang** - [jjhuang3](https://https://github.com/jjhuang3)
+- **Nattie Chan** - [nattiechan](https://https://github.com/nattiechan)
 - **Jack Sonoda** - [jackksono](https://github.com/jackksono)
 - **Jaden Nguyen** - [jaden-nguyen](https://github.com/jaden-nguyen)
 - **Taner Malmedal** - [tannermalmedal](https://github.com/tannermalmedal)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm.jsx';
-import TextCodeArea from './TextCodeArea.jsx';
+import TextCodeArea from './TextCodeArea.tsx';
 // import protoParserFunc from "../../../protoParser.js";
 
 const { api } = window;
@@ -106,7 +106,7 @@ const GRPCProtoEntryForm = (props) => {
      - the GRPCAutoInputForm component renders the section with the dropdown lists for services and requests
      */
   return (
-    <div className="mt-1">
+    <div className="mt-5">
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>
@@ -133,10 +133,10 @@ const GRPCProtoEntryForm = (props) => {
       <div className="is-danger subtitle">{protoError}</div>
       <div id="grpcProtoEntryTextArea">
         <TextCodeArea
-          id="grpcProtoEntryTextArea"
           onChange={(value, viewUpdate) => updateProtoBody(value)}
           value={props.newRequestStreams.protoContent}
           mode="application/json"
+          placeholder="Enter proto here"
         />
       </div>
       <GRPCAutoInputForm

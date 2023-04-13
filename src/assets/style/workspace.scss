@@ -6,13 +6,12 @@
 .cards-dropdown {
   border: 1px solid $neutral-200;
   height: 24px;
-  border-radius: 4px;
   margin-bottom: 5px;
 }
 
 .show-hide-tests {
   height: 3.5vh;
-  font-size: "18rem";
+  font-size: '18rem';
 }
 
 .show-hide-tests-icon {
@@ -22,7 +21,7 @@
 
 .show-hide-event {
   height: 3.5vh;
-  font-size: "16rem";
+  font-size: '16rem';
 }
 
 .show-hide-event-icon {
@@ -90,12 +89,23 @@
   font-size: 1.4rem;
 }
 
-.pass-fail-button {
-  min-width: 8vh;
-  max-height: 4vh;
-  max-width: 8vh;
-  padding: 0.5vh;
-  font-weight: 600;
+@mixin pass-fail-button {
+  display: flex;
+  padding: 0.3rem;
+}
+
+.pass-fail-response {
+  @include pass-fail-button;
+}
+
+.pass-fail-button-success {
+  @include pass-fail-button;
+  background-color: $primary-300;
+}
+
+.pass-fail-button-failure {
+  @include pass-fail-button;
+  background-color: $primary-400;
 }
 
 .is-flex-basis-0 {
@@ -111,9 +121,8 @@
 }
 
 .highlighted-response {
-  border-radius: 0px 0px 5px 5px;
-  border: 2px solid lightgray;
-  opacity: 0.8;
+  border-radius: 5px;
+  border: 3px solid lightgray;
 }
 
 .is-graph-footer {
@@ -125,9 +134,12 @@
 }
 
 .is-3rem-footer {
-  // height: 3rem !important;
-  margin-bottom: 0.7rem;
-  margin-top: auto;
+  margin-bottom: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.is-no-top-margin-footer {
+  margin-top: 0;
 }
 
 .connection-closedsocket {
@@ -191,37 +203,34 @@
   border-top: 1px solid $neutral-300;
 }
 
-.bl-border-curve {
-  border-radius: 0px 0px 0px 5px !important;
-}
-
-.br-border-curve {
-  border-radius: 0px 0px 5px 0px !important;
-}
-
-// CODEMIRROR STYLES
-
-.cm-s-readonly {
-  background-color: $neutral-100;
-  color: $neutral-400;
-  max-height: 150px !important;
-  border: 1px solid $neutral-300;
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 0.75em;
-}
-.cm-s-readonly .CodeMirror-gutters {
-  border: none;
-  background-color: $neutral-100;
-  color: $neutral-300;
-}
-.cm-s-readonly .CodeMirror-linenumber {
-  border: none;
-  color: $neutral-300;
+.border-curve {
+  border-radius: 2px !important;
 }
 
 .no-styling {
   padding: 0;
   margin: 0;
+}
+
+.assertion-test-snippets {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem auto 0.5rem 0;
+  gap: 0.5rem;
+
+  header {
+    text-decoration: underline;
+  }
+
+  span {
+    display: inline-block;
+    transition: transform 0.3s ease-out;
+
+    &:hover {
+      cursor: pointer;
+      transform: translate(5px, 0);
+    }
+  }
 }
 
 // BARGRAPH
@@ -233,3 +242,4 @@
 .clear-chart-button {
   float: right;
 }
+

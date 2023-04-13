@@ -11,15 +11,19 @@
  * Please note many of these tests are written contingent on each other, and
  * there is room for better optimization of end-to-end testing.
  *
- * @todo openAPI testing and webRTC testing is extremely thin, essentially
- * non-existent. Webhook testing needs to be added
+ * @todo As of v.13, all tests should be passing EXCEPT:
+ * - gRPCtest()
+ * - openAPITest()
+ * - gRPCTestingTest()
  *
- * @todo Much of the UI is untested, recommended to add testing suites either
- * here or in the Jest suite to confirm UI rendering. i.e. "View Response
- * History" is untested, populating the composer from workspaces is untested,
- * response cookies and headers are untested. These may be added in end-to-end
- * testing for confirmation of functionality, and in integration testing for
- * confirmation of proper rendering and usage.
+ *  Above tests are failing due to one of the following:
+ * - Test-cases are no longer up-to-date with how the current UI functions
+ * - Functionality in the app simply is not working as intended
+ *
+ * These features have incomplete and/or non-existent testing infrastructure:
+ * - webRTCTest() - for read-only server input (which is the current state of the app)
+ * - tRPC feature does not have E2E tests
+ *
  */
 
 // Import various tests
