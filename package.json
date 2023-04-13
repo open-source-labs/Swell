@@ -37,26 +37,13 @@
     "appId": "com.getswell.Swell.app",
     "extends": null,
     "files": [
-      "dist/index.html",
-      "dist/bundle.js",
-      "dist/main.css",
-      "dist/img/swell-bg__2JecU.png",
-      "dist/img/Trashcan__3piXy.png",
-      "dist/img/arrow_drop_down_white_192x192__3cp1B.png",
+      "dist/*",
       "menu/mainMenu.js",
       "package.json",
       "main.js",
-      "main_process/protoParser.js",
-      "main_process/openapiParser.js",
-      "main_process/main_grpcController.js",
-      "main_process/main_graphqlController.js",
-      "main_process/main_httpController.js",
-      "main_process/main_wsController.js",
-      "main_process/main_touchbar.js",
-      "main_process/SSEController.js",
-      "main_process/main_testingController.js",
+      "main_process/*",
       "preload.js",
-      "src/server/server.js"
+      "src/server/*"
     ],
     "nodeVersion": "16.15.0",
     "nsis": {
@@ -514,3 +501,4 @@
     }
   ]
 }
+
