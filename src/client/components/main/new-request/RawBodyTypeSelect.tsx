@@ -1,25 +1,35 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useRef, useEffect } from 'react';
+
 /** @todo Remove propTypes check when component is converted to TypeScript*/
 import PropTypes from 'prop-types';
+
+import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
 
-const RawBodyTypeSelect = (props) => {
-  const {
-    newRequestBodySet,
-    newRequestBody,
-    newRequestHeadersSet,
-    newRequestHeaders,
-  } = props;
+interface RawBodyTypeSelectProps {
+  newRequestBodySet: (value: any) => void;
+  newRequestBody: any;
+  newRequestHeadersSet: (value: any) => void;
+  newRequestHeaders: any;
+}
 
-  const [dropdownIsActive, setDropdownIsActive] = useState();
-  const dropdownEl = useRef();
+interface RequestHeader {
+  id: number;
+  active: boolean;
+  key: string;
+  value: string;
+}
+
+const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
+  const { newRequestBodySet, newRequestBody, newRequestHeadersSet, newRequestHeaders } = props;
+  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
+  const dropdownEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const closeDropdown = (event) => {
-      if (!dropdownEl.current.contains(event.target)) {
+    const closeDropdown = (event: MouseEvent) => {
+      if (dropdownEl.current && !dropdownEl.current.contains(event.target as Node)) {
         setDropdownIsActive(false);
       }
     };
@@ -27,7 +37,7 @@ const RawBodyTypeSelect = (props) => {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  const setNewRawBodyType = (rawTypeStr) => {
+  const setNewRawBodyType = (rawTypeStr: string) => {
     newRequestBodySet({
       ...newRequestBody,
       rawType: rawTypeStr,
@@ -38,7 +48,7 @@ const RawBodyTypeSelect = (props) => {
       active: true,
       key: 'Content-type',
       value: rawTypeStr,
-    };
+    } as RequestHeader;
     newRequestHeadersSet({
       headersArr: headersCopy.headersArr,
     });
@@ -143,10 +153,12 @@ const RawBodyTypeSelect = (props) => {
   );
 };
 
-/** @todo Remove propTypes check when component is converted to TypeScript*/
-RawBodyTypeSelect.propTypes = {
-  newRequestBody: PropTypes.object.isRequired,
-  newRequestBodySet: PropTypes.func.isRequired,
-};
-
 export default RawBodyTypeSelect;
+
+/** @todo Remove propTypes check when component is converted to TypeScript*/
+// RawBodyTypeSelect.propTypes = {
+//   newRequestBody: PropTypes.object.isRequired,
+//   newRequestBodySet: PropTypes.func.isRequired,
+// };
+
+// export default RawBodyTypeSelect;

@@ -1,10 +1,31 @@
-//Refactored to function components
+// Refactored to function components
+// cookieentryform
 
 import React, { useState, useEffect } from 'react';
-import ContentReqRowComposer from './ContentReqRowComposer.tsx';
+import ContentReqRowComposer from './ContentReqRowComposer';
 
-const CookieEntryForm = (props) => {
-  const [show, setShow] = useState(false);
+interface Cookie {
+  id: string;
+  active: boolean;
+  key: string;
+  value: string;
+}
+
+interface Props {
+  newRequestCookies: {
+    cookiesArr: Cookie[];
+    count: number;
+  };
+  newRequestCookiesSet: (obj: {
+    cookiesArr: Cookie[];
+    override?: boolean;
+    count: number;
+  }) => string;
+  isDark: boolean;
+}
+
+const CookieEntryForm = (props: Props) => {
+  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     const cookiesDeepCopy = createDeepCookieCopy();
@@ -24,9 +45,9 @@ const CookieEntryForm = (props) => {
 
   const createDeepCookieCopy = () => {
     return JSON.parse(JSON.stringify(props.newRequestCookies.cookiesArr));
-  }
+  };
 
-  const addCookie = (cookiesDeepCopy) => {
+  const addCookie = (cookiesDeepCopy: Cookie[]) => {
     cookiesDeepCopy.push({
       id: `cookie${props.newRequestCookies.count}`,
       active: false,
@@ -39,34 +60,42 @@ const CookieEntryForm = (props) => {
       override: false,
       count: cookiesDeepCopy.length,
     });
-  }
+  };
 
-  const onChangeUpdateCookie = (id, field, value) => {
+  const onChangeUpdateCookie = (
+    id: string,
+    field: 'key' | 'value' | 'active',
+    value: boolean | string | number,
+  ) => {
     const cookiesDeepCopy = createDeepCookieCopy();
 
-    //find cookie to update
-    let indexToBeUpdated;
+    // find cookie to update
+    let indexToBeUpdated: number = -1;
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
       if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
         break;
       }
     }
-    //update
+
+    // update
+
     cookiesDeepCopy[indexToBeUpdated][field] = value;
 
-    //also switch checkbox if they are typing
+    // also switch checkbox if they are typing
     if (field === 'key' || field === 'value') {
       cookiesDeepCopy[indexToBeUpdated].active = true;
+
     }
 
     props.newRequestCookiesSet({
       cookiesArr: cookiesDeepCopy,
       count: cookiesDeepCopy.length,
     });
-  }
 
-  const deleteCookie = (index) => {
+  };
+
+  const deleteCookie = (index: number) => {
     const newCookies = createDeepCookieCopy();
     newCookies.splice(index, 1);
     props.newRequestCookiesSet({
@@ -88,8 +117,8 @@ const CookieEntryForm = (props) => {
   ));
 
   const toggleShow = () => {
-    setShow(show);
-  }
+    setShow(!show);
+  };
 
   return (
     <div className="mt-2" style={{ margin: '10px' }}>
@@ -97,7 +126,7 @@ const CookieEntryForm = (props) => {
         <div className="composer-section-title">Cookies</div>
         <button
           className={`${props.isDark ? 'is-dark-200' : ''
-          } button add-header-gRPC-cookie-button ml-2`}
+            } button add-header-gRPC-cookie-button ml-2`}
           id="add-cookie"
           onClick={() => addCookie(createDeepCookieCopy())}
           style={{ height: '3px', width: '3px' }}
@@ -114,7 +143,7 @@ export default CookieEntryForm;
 
 
 // import React, { Component } from 'react';
-// import ContentReqRowComposer from './ContentReqRowComposer';
+// import ContentReqRowComposer from './ContentReqRowComposer.tsx';
 
 // class CookieEntryForm extends Component {
 //   constructor(props) {
@@ -221,9 +250,8 @@ export default CookieEntryForm;
 //         <div className="is-flex is-align-content-center">
 //           <div className="composer-section-title">Cookies</div>
 //           <button
-//             className={`${
-//               this.props.isDark ? 'is-dark-200' : ''
-//             } button add-header-gRPC-cookie-button ml-2`}
+//             className={`${this.props.isDark ? 'is-dark-200' : ''
+//               } button add-header-gRPC-cookie-button ml-2`}
 //             id="add-cookie"
 //             onClick={() => this.addCookie(this.createDeepCookieCopy())}
 //             style={{ height: '3px', width: '3px' }}
@@ -239,5 +267,4 @@ export default CookieEntryForm;
 
 // export default CookieEntryForm;
 
-// is-justify-content-space-between was removed from + cookie button
 

@@ -103,7 +103,7 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     value: string
   ) {
     const wwwFieldsDeepCopy = createWWWClone();
-    let indexToBeUpdated: number;
+    let indexToBeUpdated: number = -1;
     for (let i = 0; i < wwwFieldsDeepCopy.length; i++) {
       if (wwwFieldsDeepCopy[i].id === id) {
         indexToBeUpdated = i;
@@ -138,10 +138,8 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     }
     return (
       wwwFields
-        .map((wwwField) =>
-          wwwField.key === '' && wwwField.value === '' ? 1 : 0
-        )
-        .reduce((acc, cur) => acc + cur) === 0
+      .map((wwwField) => (wwwField.key === '' && wwwField.value === '' ? 1 : 0))
+      .reduce((acc, cur) => (acc === 0 ? cur : acc)) === 0
     );
   }
 }

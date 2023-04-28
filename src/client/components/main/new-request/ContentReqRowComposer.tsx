@@ -1,23 +1,25 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-//Imported from CookieEntryForm && HeadEntryForm
+
+//contentReqRowComposer
 
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 interface Props {
   data: {
-    id: string;
+    id: any;
     active: boolean;
     key: string;
     value: string | number | boolean;
   };
-  changeHandler: (id: string, field: 'active' | 'key' | 'value', value: boolean | string | number) => void;
+  changeHandler: (id: string, field: 'active' | 'key' | 'value', value: boolean | string | number) => any;
   index: number;
-  deleteItem: (index: number) => void;
+  deleteItem: (index: number) => any;
   type: string;
 }
+
 
 export default function ContentReqRowComposer({
   data,
@@ -26,7 +28,8 @@ export default function ContentReqRowComposer({
   deleteItem,
   type,
 }: Props) {
-  const isDark = useSelector((store) => store.ui.isDark);
+  const isDark = useSelector((store: { ui: { isDark: boolean } }) => (store as any).ui.isDark);
+
 
   return (
     <div className={`is-flex mt-1 ${type}`} id={`${type}${index}`}>
@@ -52,7 +55,7 @@ export default function ContentReqRowComposer({
         placeholder="Value"
         type="text"
         style={{ marginLeft: '20px', width: '30vw' }}
-        value={data.value}
+        value={typeof data.value === 'string' || typeof data.value === 'number' ? data.value : []}
         className={`${isDark ? 'is-dark-300' : ''} p-1 value`}
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
       />
@@ -63,7 +66,6 @@ export default function ContentReqRowComposer({
   );
 }
 
-
 // import React from 'react';
 // import { useSelector } from 'react-redux';
 
@@ -73,7 +75,7 @@ export default function ContentReqRowComposer({
 //   index,
 //   deleteItem,
 //   type,
-// }) {
+// }: Props) {
 //   const isDark = useSelector((store) => store.ui.isDark);
 
 //   return (
@@ -89,20 +91,20 @@ export default function ContentReqRowComposer({
 //         <label htmlFor={data.id} />
 //       </div>
 //       <input
-//         onChange={(e) => changeHandler(data.id, 'key', e.target.value)}
 //         placeholder="Key"
 //         type="text"
 //         style={{ marginLeft: '15px', width: '20vw' }}
 //         value={data.key}
 //         className={`${isDark ? 'is-dark-300' : ''} p-1 key`}
+//         onChange={(e) => changeHandler(data.id, 'key', e.target.value)}
 //       />
 //       <input
-//         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
 //         placeholder="Value"
 //         type="text"
 //         style={{ marginLeft: '20px', width: '30vw' }}
 //         value={data.value}
 //         className={`${isDark ? 'is-dark-300' : ''} p-1 value`}
+//         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
 //       />
 //       <div className="is-flex is-justify-content-center is-align-items-center ml-4">
 //         <div className="delete m-auto" onClick={() => deleteItem(index)} />
@@ -110,3 +112,5 @@ export default function ContentReqRowComposer({
 //     </div>
 //   );
 // }
+
+

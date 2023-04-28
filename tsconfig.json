@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Basic Options */
+    "allowImportingTsExtensions": true,
     "sourceMap": true, // allow sourcemap support
     "module": "es6", // specify module code generation
     "jsx": "react", // use typescript to transpile jsx to js
@@ -28,8 +29,9 @@
     "src/assets/**/*.ts",
     "src/client/toolkit-refactor/reqRes/SingleReqResContainer.jsx",
     "src/client/components/main/new-request/ContentReqRowComposer.tsx",
-    "src/client/components/main/new-request/HeaderEntryForm.jsx"
-, "src/client/components/main/GraphQL-composer/GraphQLBodyEntryForm.jsx"  ],
+    "src/client/components/main/new-request/HeaderEntryForm.tsx",
+    "src/client/components/main/new-request/CookieEntryForm.tsx"
+, "src/client/components/main/new-request/RawBodyTypeSelect.tsx", "src/client/components/main/new-request/BodyEntryForm.jsx"  ],
   "exclude": [
     "node_modules",
     "dist",

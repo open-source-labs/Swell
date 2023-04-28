@@ -3,7 +3,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
 
-const BodyTypeSelect = (props) => {
+interface Props {
+  newRequestBodySet: (value: any) => void;
+  newRequestBody: any;
+  newRequestHeadersSet: (value: any) => void;
+  newRequestHeaders: any;
+}
+
+const BodyTypeSelect = (props: Props) => {
   const {
     newRequestBodySet,
     newRequestBody,
@@ -11,22 +18,25 @@ const BodyTypeSelect = (props) => {
     newRequestHeaders,
   } = props;
 
-  const [dropdownIsActive, setDropdownIsActive] = useState();
-  const dropdownEl = useRef();
+  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>();
+  const dropdownEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const closeDropdown = (event) => {
-      if (!dropdownEl.current.contains(event.target)) {
+    const closeDropdown = (event: MouseEvent) => {
+      if (
+        dropdownEl.current &&
+        !dropdownEl.current.contains(event.target as Node)
+      ) {
         setDropdownIsActive(false);
       }
     };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
+    document.addEventListener("click", closeDropdown);
+    return () => document.removeEventListener("click", closeDropdown);
   }, []);
 
   const removeContentTypeHeader = () => {
     const filtered = newRequestHeaders.headersArr.filter(
-      (header) => header.key.toLowerCase() !== 'content-type'
+      (header: any) => header.key.toLowerCase() !== "content-type"
     );
     newRequestHeadersSet({
       headersArr: filtered,
@@ -34,19 +44,19 @@ const BodyTypeSelect = (props) => {
     });
   };
 
-  const setNewBodyType = (bodyTypeStr) => {
+  const setNewBodyType = (bodyTypeStr: string) => {
     newRequestBodySet({
       ...newRequestBody,
       bodyType: bodyTypeStr,
     });
   };
 
-  const setContentTypeHeader = (newBodyType) => {
+  const setContentTypeHeader = (newBodyType: string) => {
     const headersCopy = JSON.parse(JSON.stringify(newRequestHeaders));
     headersCopy.headersArr[0] = {
       id: Math.random() * 1000000,
       active: true,
-      key: 'Content-type',
+      key: "Content-type",
       value: newBodyType,
     };
     newRequestHeadersSet({
@@ -57,7 +67,7 @@ const BodyTypeSelect = (props) => {
   return (
     <div
       ref={dropdownEl}
-      className={`mt-1 mb- dropdown ${dropdownIsActive ? 'is-active' : ''}`}
+      className={`mt-1 mb- dropdown ${dropdownIsActive ? "is-active" : ""}`}
     >
       <div className="dropdown-trigger">
         <button
@@ -124,9 +134,9 @@ const BodyTypeSelect = (props) => {
 };
 
 /** @todo Remove propTypes check when component is converted to TypeScript*/
-BodyTypeSelect.propTypes = {
-  newRequestBody: PropTypes.object.isRequired,
-  newRequestBodySet: PropTypes.func.isRequired,
-};
+// BodyTypeSelect.propTypes = {
+//   newRequestBody: PropTypes.object.isRequired,
+//   newRequestBodySet: PropTypes.func.isRequired,
+// };
 
 export default BodyTypeSelect;
