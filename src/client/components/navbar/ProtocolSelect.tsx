@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // Import actions so that the navbar can interact with the Redux store.
-import { newRequestContentByProtocol } from '../../toolkit-refactor/newRequest/newRequestSlice';
-import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import { newRequestContentByProtocol } from '../../toolkit-refactor/slices/newRequestSlice';
+import { newRequestFieldsByProtocol } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';

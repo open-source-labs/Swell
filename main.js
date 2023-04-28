@@ -432,15 +432,16 @@ ipcMain.on('import-proto', (event) => {
 
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
-ipcMain.on('protoParserFunc-request', (event, data) => {
-  protoParserFunc(data)
-    .then((result) => {
-      mainWindow.webContents.send('protoParserFunc-return', result);
-    })
-    .catch((err) => {
-      console.log('error in protoParserFunc-request:, ', err);
-      mainWindow.webContents.send('protoParserFunc-return', { error: err });
-    });
+ipcMain.on('protoParserFunc-request', async (event, data) => {
+  try {
+    console.log('data: ',data)
+    const result = await protoParserFunc(data)
+    console.log('result: ', result)
+    event.sender.send('protoParserFunc-return', JSON.stringify(result));
+  } catch (err) {
+    console.log('error in protoParserFunc-request:, ', err);
+    mainWindow.webContents.send('protoParserFunc-return', { error: err });
+  }
 });
 
 //====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//

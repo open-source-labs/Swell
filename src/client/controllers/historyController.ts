@@ -3,7 +3,7 @@ import db from '../db';
 import { ReqRes } from '../../types';
 
 import { appDispatch } from '../toolkit-refactor/store';
-import { historySet } from '../toolkit-refactor/history/historySlice';
+import { historySet } from '../toolkit-refactor/slices/historySlice';
 
 const historyController = {
   addHistoryToIndexedDb(reqRes: ReqRes): void {

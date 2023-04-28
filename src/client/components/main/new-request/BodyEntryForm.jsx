@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import WWWForm from './WWWForm.jsx';
-import BodyTypeSelect from './BodyTypeSelect.jsx';
-import JSONTextArea from './JSONTextArea.jsx';
-import RawBodyTypeSelect from './RawBodyTypeSelect.jsx';
-import JSONPrettify from './JSONPrettify.jsx';
-import TextCodeArea from './TextCodeArea.tsx';
+import WWWForm from './WWWForm';
+import BodyTypeSelect from './BodyTypeSelect';
+import JSONTextArea from './JSONTextArea';
+import RawBodyTypeSelect from './RawBodyTypeSelect';
+import JSONPrettify from './JSONPrettify';
+import TextCodeArea from './TextCodeArea';
 
 const BodyEntryForm = (props) => {
   const {

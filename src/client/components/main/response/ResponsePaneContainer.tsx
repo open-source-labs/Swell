@@ -4,7 +4,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setResponsePaneActiveTab } from '../../../toolkit-refactor/ui/uiSlice';
+import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
 
 import ReqResCtrl from '../../../controllers/reqResController';
 import { Box } from '@mui/material';

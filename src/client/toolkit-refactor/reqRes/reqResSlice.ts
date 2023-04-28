@@ -11,6 +11,7 @@ import { ReqRes } from '../../../types';
  * in theory currentResponse property is unnessecary as the last element in the
  * reqResArray is the current response but it is used throughout the app
  */
+
 type ReqResStore = {
   reqResArray: ReqRes[];
   currentResponse: ReqRes;

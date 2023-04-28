@@ -23,6 +23,7 @@ import '../../assets/style/App.scss';
 const { api } = window as unknown as WindowExt;
 
 const App = () => {
+  console.log('test')
   // currentWorkspace is the current Workspace's UUID. It is only altered in
   // WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
   const [currentWorkspaceId, setWorkspace] = useState('');

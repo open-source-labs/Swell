@@ -13,7 +13,7 @@ export default function WebRTCRequestContent({ content }) {
     <div className="p-3">
       <div className="is-size-7">Servers</div>
       <CodeMirror
-        value={jBeautify(JSON.stringify(iceConfiguration.iceServers))}
+        // value={jBeautify(JSON.stringify(iceConfiguration.iceServers))}
         theme={vscodeDark}
         readOnly="true"
         extensions={[javascript(), EditorView.lineWrapping]}

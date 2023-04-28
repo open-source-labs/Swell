@@ -191,7 +191,14 @@ const httpController = {
         reqResObj.connectionType = 'plain';
       }
 
-      // FIXME: There is something wrong with the logic below. First, it is checking if the headers have a 'content-length' or 'Content-Length' property. If it does not, it sets the responseSize to null. It it does, it checks if the headers have a 'content-length' property. If it does, it sets the contentLength to 'content-length' or 'Content-Length'. This does not make sense. I think it should be setting contentLength to headers['content-length'] or headers['Content-Length'].
+      // FIXME: There is something wrong with the logic below. 
+      // First, it is checking if the headers have a 'content-length' 
+      // or 'Content-Length' property. If it does not, it sets the 
+      // responseSize to null. It it does, it checks if the headers have 
+      // a 'content-length' property. If it does, it sets the contentLength 
+      // to 'content-length' or 'Content-Length'. This does not make sense. 
+      // I think it should be setting contentLength to headers['content-length'] 
+      // or headers['Content-Length'].
 
       // check if response comes with 'content-length' header
       if (!headers['content-length'] && !headers['Content-Length']) {
@@ -202,7 +209,14 @@ const httpController = {
           ? (contentLength = 'content-length')
           : (contentLength = 'Content-Length');
 
-        // FIXME: A previous group used a conversion figure of 1023.89427 to convert octets to bytes. This is incorrect because both an octet and byte are exactly 8 bits in modern computing. There could, however, be some ambiguity because "bytes" may have a different meaning in legacy systems. Check out this link for more info: https://en.wikipedia.org/wiki/Octet_(computing). If the desired responseSize is in bytes, it is enough to simply assign the value of the content-length header.
+        // FIXME: A previous group used a conversion figure of 1023.89427 to 
+        // convert octets to bytes. This is incorrect because both an octet 
+        // and byte are exactly 8 bits in modern computing. There could, however, 
+        // be some ambiguity because "bytes" may have a different meaning in legacy 
+        // systems. Check out this link for more info: https://en.wikipedia.org/wiki/Octet_(computing). 
+        // If the desired responseSize is in bytes, it is enough to simply assign the value 
+        // of the content-length header.
+        
         // Converting content length octets into bytes
         const conversionFigure = 1023.89427;
         const octetToByteConversion =

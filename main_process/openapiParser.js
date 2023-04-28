@@ -5,8 +5,9 @@ const YAML = require('yamljs');
  * it means to add validation and to refactor this to add support for callbacks?
  */
 const openapiParserFunc = (input) => {
-  if (input === undefined || input === null)
-    ReferenceError('OpenAPI Document not found.');
+  if (input === undefined || input === null) {
+    throw new ReferenceError('OpenAPI Document not found.');
+  }
   let doc;
   try {
     doc = JSON.parse(input);

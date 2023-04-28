@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
 
-import * as HistorySlice from '../../toolkit-refactor/history/historySlice';
-import { fieldsReplaced } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import * as HistorySlice from '../../toolkit-refactor/slices/historySlice';
+import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 import {
   newRequestCookiesSet,
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../toolkit-refactor/newRequest/newRequestSlice';
+} from '../../toolkit-refactor/slices/newRequestSlice';
 
 import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';

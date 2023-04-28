@@ -1,7 +1,14 @@
+/*
+ * NOT Actually Legacy!!! BUT SHOULD BE!! 
+ * 
+ * needs to be merged into WorkSpaceContainer 
+ * 
+ */
+
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReqResCtrl from '../../controllers/reqResController';
-import ReqResContainer from '../legacy-components/ReqResContainer';
+import ReqResContainer from '../../toolkit-refactor/reqRes/ReqResContainer';
 import SaveWorkspaceModal from './modals/SaveWorkspaceModal';
 // Import MUI components
 

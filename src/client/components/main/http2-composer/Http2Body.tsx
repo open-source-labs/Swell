@@ -8,7 +8,7 @@ import { $TSFixMeObject } from '../../../../types';
 import {
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+} from '../../../toolkit-refactor/slices/newRequestSlice';
 
 // Import local components
 import BodyTypeSelect from './BodyTypeSelect';

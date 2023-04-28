@@ -280,7 +280,7 @@ export interface TestResult {
   status: string;
 }
 
-/**@todo make sure all properties are correct and add any not listed yet*/
+/**@todo make sure all properties are correct and add properties not listed yet*/
 export interface ReqResResponse {
   cookies?: Cookie[];
   headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?

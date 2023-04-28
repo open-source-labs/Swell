@@ -6,7 +6,7 @@ import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice'
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
-} from '../../../toolkit-refactor/ui/uiSlice';
+} from '../../../toolkit-refactor/slices/uiSlice';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
@@ -16,7 +16,7 @@ import historyController from '../../../controllers/historyController';
  * @todo Refactor all of the below components to use MUI, place them in a new
  * "components" folder
  */
-import RestMethodAndEndpointEntryForm from '../new-request/RestMethodAndEndpointEntryForm';
+import RestMethodAndEndpointEntryForm from './RestMethodAndEndpointEntryForm';
 import HeaderEntryForm from '../new-request/HeaderEntryForm';
 import CookieEntryForm from '../new-request/CookieEntryForm';
 import SendRequestButton from '../new-request/SendRequestButton';
@@ -27,7 +27,7 @@ import TestEntryForm from '../new-request/TestEntryForm';
 import { Box, FormControlLabel, Switch } from '@mui/material';
 import { CookieOrHeader, ReqRes } from '../../../../types';
 
-import TestContainer from '../../workspace/TestContainer';
+import TestContainer from '../new-request/stressTest/TestContainer';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {

@@ -11,6 +11,8 @@ let mockDB = [];
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
 app.get('/clear', (req, res) => {
   mockDB = [];
   res.sendStatus(200);
@@ -67,6 +69,7 @@ app.delete('/book/:title', (req, res) => {
   });
   res.status(200).json(targetBook);
 });
+
 
 const httpApp = app.listen(PORT, () => {
   console.log(`HTTP Server listening on port: ${PORT}`);

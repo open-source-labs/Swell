@@ -3,10 +3,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { historyDeleted } from '../../toolkit-refactor/history/historySlice';
-import { setSidebarActiveTab } from '../../toolkit-refactor/ui/uiSlice';
+import { historyDeleted } from '../../toolkit-refactor/slices/historySlice';
+import { setSidebarActiveTab } from '../../toolkit-refactor/slices/uiSlice';
 
-import { newRequestSSESet } from '../../toolkit-refactor/newRequest/newRequestSlice';
+import { newRequestSSESet } from '../../toolkit-refactor/slices/newRequestSlice';
 
 import historyController from '../../controllers/historyController';
 

@@ -25,10 +25,19 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./main_process/*.ts",
-    "src/assets/**/*.ts"
+    "src/assets/**/*.ts",
+    "src/client/toolkit-refactor/reqRes/SingleReqResContainer.jsx",
+    "src/client/components/main/new-request/ContentReqRowComposer.tsx",
+    "src/client/components/main/new-request/HeaderEntryForm.jsx"
+, "src/client/components/main/GraphQL-composer/GraphQLBodyEntryForm.jsx"  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "mocks"
   ],
-
-  "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
-  "typeRoots": ["./node_modules/@types"]
+  "typeRoots": [
+    "./node_modules/@types"
+  ]
 }
-

@@ -1,7 +1,40 @@
+// import React, { useEffect, useState } from 'react';
+// import ContentReqRowComposer from './ContentReqRowComposer.tsx';
+
+
+// type HeaderEntryFormProps = {
+//   newRequestHeaders: {
+//     headersArr: {
+//       id: number,
+//       active: boolean,
+//       key: string,
+//       value: string,
+//     }[],
+//   },
+//   newRequestFields: {
+//     method: string,
+//   },
+//   newRequestBody: {
+//     bodyType: string,
+//     rawType: string,
+//   },
+//   newRequestBodySet: (body: { bodyType: string, rawType: string }) => void,
+//   newRequestHeadersSet: (headers: {
+//     headersArr: {
+//       id: number,
+//       active: boolean,
+//       key: string,
+//       value: string,
+//     }[],
+//     count: number,
+//     override?: boolean,
+//   }) => void,
+// }
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { Component } from 'react';
-import ContentReqRowComposer from './ContentReqRowComposer';
+import ContentReqRowComposer from './ContentReqRowComposer.tsx';
 
 class HeaderEntryForm extends Component {
   state = { show: true };
@@ -201,9 +234,8 @@ class HeaderEntryForm extends Component {
         <div className="is-flex is-align-content-center">
           <div className="composer-section-title">{headerName}</div>
           <button
-            className={`${
-              this.props.isDark ? 'is-dark-200' : ''
-            } button is-small add-header-gRPC-cookie-button ml-2`}
+            className={`${this.props.isDark ? 'is-dark-200' : ''
+              } button is-small add-header-gRPC-cookie-button ml-2`}
             id="add-header"
             style={{ height: '3px', width: '3px' }}
             onClick={() => this.addHeader()}

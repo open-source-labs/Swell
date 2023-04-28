@@ -43,6 +43,7 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
     defaults: true,
     oneofs: true,
   });
+
   // create client credentials
   const serverName = grpc.loadPackageDefinition(packageDefinition)[packageName];
   const client = new serverName[service](
@@ -269,7 +270,8 @@ grpcController.openGrpcConnection = (event, reqResObj) => {
 module.exports = () => {
   // creating our event listeners for IPC events
   ipcMain.on('open-grpc', (event, reqResObj) => {
-    // we pass the event object into these controller functions so that we can invoke event.sender.send when we need to make response to renderer process
+    // we pass the event object into these controller functions 
+    // so that we can invoke event.sender.send when we need to make response to renderer process
     grpcController.openGrpcConnection(event, reqResObj);
   });
 };

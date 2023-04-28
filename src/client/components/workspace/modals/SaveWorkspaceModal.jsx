@@ -10,7 +10,7 @@ import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
 import {
   collectionUpdated,
   collectionAdded,
-} from '../../../toolkit-refactor/collections/collectionsSlice';
+} from '../../../toolkit-refactor/slices/collectionsSlice';
 
 function SaveWorkspaceModal({ showModal, setShowModal, match }) {
   const dispatch = useDispatch();

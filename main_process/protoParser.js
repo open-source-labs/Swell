@@ -1,4 +1,5 @@
-// this file is being required into main. this function, protoParserFunc, should only be called inside main.
+// this file is being required into main. this function, protoParserFunc, 
+// should only be called inside main.
 
 const fs = require('fs');
 const grpc = require('@grpc/grpc-js');
