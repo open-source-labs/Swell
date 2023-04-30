@@ -33,6 +33,7 @@
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
+
 const { autoUpdater } = require('electron-updater');
 const {
   default: installExtension,
@@ -215,6 +216,8 @@ app.on('ready', () => {
     autoUpdater.checkForUpdates();
   }
 });
+
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -430,6 +433,141 @@ ipcMain.on('import-proto', (event) => {
     });
 });
 
+//////////////////////////////////////////////////////////////
+const hardCodedResult = {
+  protoMaster: 'syntax = "proto3";\n' +
+    '\n' +
+    'package helloworld;\n' +
+    'service Greeter {\n' +
+    '  rpc SayHello (HelloRequest) returns (HelloReply) {}\n' +
+    '  rpc SayHelloNested (HelloNestedRequest) returns (HelloNestedReply) {}\n' +
+    '  rpc SayHellosSs (HelloRequest) returns (stream HelloReply) {}\n' +
+    '  rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}\n' +
+    '  rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}\n' +
+    '}\n' +
+    '\n' +
+    'message HelloRequest {\n' +
+    '  string name = 1;\n' +
+    '}\n' +
+    '\n' +
+    'message HelloReply {\n' +
+    '  string message = 1;\n' +
+    '}\n' +
+    '\n' +
+    'message HelloNestedRequest {\n' +
+    '  HelloRequest firstPerson = 1;\n' +
+    '  HelloRequest secondPerson = 2; \n' +
+    '}\n' +
+    '\n' +
+    'message HelloNestedReply {\n' +
+    '  repeated HelloReply serverMessage = 1;\n' +
+    '  \n' +
+    '}\n' +
+    'message HelloHowOldRequest {\n' +
+    '  int32 age = 1;\n' +
+    '}\n' +
+    'message HelloAge {\n' +
+    '  int32 age = 1;\n' +
+    '}',
+  protoPath: '/Users/wjm/Desktop/Swell-v14/node_modules/electron/dist/Electron.app/Contents/Resources/protos/5879.proto',
+  // packageDefinition: {
+  //   'helloworld.Greeter': {
+  //     SayHello: [Object],
+  //     SayHelloNested: [Object],
+  //     SayHellosSs: [Object],
+  //     SayHelloCS: [Object],
+  //     SayHelloBidi: [Object]
+  //   },
+  //   'helloworld.HelloRequest': {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   'helloworld.HelloReply': {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   'helloworld.HelloNestedRequest': {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   'helloworld.HelloNestedReply': {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   'helloworld.HelloHowOldRequest': {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   'helloworld.HelloAge': {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   }
+  // },
+  // descriptor: {
+  //   helloworld: {
+  //     Greeter: [Function],
+  //     HelloRequest: [Object],
+  //     HelloReply: [Object],
+  //     HelloNestedRequest: [Object],
+  //     HelloNestedReply: [Object],
+  //     HelloHowOldRequest: [Object],
+  //     HelloAge: [Object]
+  //   }
+  // },
+  packageName: 'helloworld',
+  // descriptorDefinition: {
+  //   Greeter: [class ServiceClientImpl extends Client] {
+  //     service: [Object],
+  //     serviceName: 'Greeter'
+  //   },
+  //   HelloRequest: {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     // type: [Object],
+  //     // fileDescriptorProtos: [Array]
+  //   },
+  //   HelloReply: {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     // type: [Object],
+  //     // fileDescriptorProtos: [Array]
+  //   },
+  //   HelloNestedRequest: {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     // type: [Object],
+  //     // fileDescriptorProtos: [Array]
+  //   },
+  //   HelloNestedReply: {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   HelloHowOldRequest: {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   },
+  //   HelloAge: {
+  //     format: 'Protocol Buffer 3 DescriptorProto',
+  //     type: [Object],
+  //     fileDescriptorProtos: [Array]
+  //   }
+  // },
+  serviceArr: [
+    {
+      packageName: 'helloworld',
+      name: 'Greeter',
+      rpcs: [Array],
+      messages: [Array]
+    }
+  ]
+}
+/////////////////////////////////////////////////////////////
+
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', async (event, data) => {
@@ -437,7 +575,7 @@ ipcMain.on('protoParserFunc-request', async (event, data) => {
     console.log('data: ',data)
     const result = await protoParserFunc(data)
     console.log('result: ', result)
-    event.sender.send('protoParserFunc-return', JSON.stringify(result));
+    mainWindow.webContents.send('protoParserFunc-return', JSON.stringify(hardCodedResult));
   } catch (err) {
     console.log('error in protoParserFunc-request:, ', err);
     mainWindow.webContents.send('protoParserFunc-return', { error: err });
@@ -474,11 +612,13 @@ ipcMain.on('import-openapi', (event) => {
     });
 });
 
+
 // openapiParserFunc-request.
 // Runs the function and returns the value back to OpenAPIDocumentEntryForm
 ipcMain.on('openapiParserFunc-request', (event, data) => {
   openapiParserFunc(data)
     .then((result) => {
+      console.log(hardCodedResult)
       mainWindow.webContents.send('openapiParserFunc-return', result);
     })
     .catch((err) => {

@@ -271,7 +271,7 @@ export interface NewRequestStreams {
   initialQuery: unknown | null;
   queryArr: Record<string, unknown>[] | null;
   protoPath: unknown | null;
-  services: Record<string, unknown> | null;
+  services: Record<$TSFixMe, $TSFixMe> | null;
   protoContent: string;
 }
 

@@ -73,53 +73,53 @@ export default function WebhookComposer(props: $TSFixMe) {
     navigator.clipboard.writeText(whUrl);
   };
 
-  useEffect(() => {
-    socket.on('response', (event) => {
-      console.log('this is the event in webho', event.headers);
-      const protocol = 'I do not know what this is for?';
-      console.log('this is event.headers', event.headers['user-agent']);
-      // url = event.headers;
-      const url = event.headers['user-agent'];
-      const reqRes = {
-        id: uuid(),
-        created_at: new Date(),
-        protocol,
-        host: '',
-        path: '',
-        graphQL,
-        gRPC,
-        webrtc,
-        webhook,
-        url,
-        timeSent: null,
-        timeReceived: null,
-        connection: 'farts',
-        connectionType: null,
-        checkSelected: false,
-        request: {
-          method,
-          url,
-          event,
-          // messages: [],
-          // body: bodyContent || '',
-          // bodyType,
-          // bodyVariables: bodyVariables || '',
-          // rawType,
-          network,
-          // restUrl,
-          // webrtcUrl,
-        },
-        response: {
-          events: [event.body],
-          headers: event.headers,
-        },
-        checked: false,
-        minimized: false,
-        tab: currentTab,
-      };
-      reqResItemAdded(reqRes);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on('response', (event) => {
+  //     console.log('this is the event in webho', event.headers);
+  //     const protocol = 'I do not know what this is for?';
+  //     console.log('this is event.headers', event.headers['user-agent']);
+  //     // url = event.headers;
+  //     const url = event.headers['user-agent'];
+  //     const reqRes = {
+  //       id: uuid(),
+  //       created_at: new Date(),
+  //       protocol,
+  //       host: '',
+  //       path: '',
+  //       graphQL,
+  //       gRPC,
+  //       webrtc,
+  //       webhook,
+  //       url,
+  //       timeSent: null,
+  //       timeReceived: null,
+  //       connection: 'farts',
+  //       connectionType: null,
+  //       checkSelected: false,
+  //       request: {
+  //         method,
+  //         url,
+  //         event,
+  //         // messages: [],
+  //         // body: bodyContent || '',
+  //         // bodyType,
+  //         // bodyVariables: bodyVariables || '',
+  //         // rawType,
+  //         network,
+  //         // restUrl,
+  //         // webrtcUrl,
+  //       },
+  //       response: {
+  //         events: [event.body],
+  //         headers: event.headers,
+  //       },
+  //       checked: false,
+  //       minimized: false,
+  //       tab: currentTab,
+  //     };
+  //     reqResItemAdded(reqRes);
+  //   });
+  // }, []);
 
   const startServerButton = () => {
     if (!serverStatus) {

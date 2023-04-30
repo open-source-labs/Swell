@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from '../GRPC-composer/GRPCAutoInputForm.jsx';
 import TextCodeArea from '../new-request/TextCodeArea.tsx';
+import grpcController from '../../../controllers/grpcController.ts'
 
 const { api } = window;
 
@@ -9,41 +10,6 @@ const GRPCProtoEntryForm = (props) => {
   // const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
-
-  let test = 'test'
-  // Set up the listener when for parsed protos entered into textFieldArea
-  // api.removeAllListeners('protoParserFunc-return');
-
-  api.receive('protoParserFunc-return', (event, data) => {
-    test = 'no pass' //data ? data : 
-    if (data.error) {
-      showError('.proto parsing error: Please enter or import valid .proto');
-      saveChanges(false);
-      reject(data.error);
-    } else {
-      showError(null);
-      saveChanges(true);
-      const services = data.serviceArr ? data.serviceArr : null;
-      const protoPath = data.protoPath ? data.protoPath : null;
-      const streamsArr = [props.newRequestStreams.streamsArr[0]];
-      const streamContent = [''];
-
-      props.newRequestStreamsSet({
-        ...props.newRequestStreams,
-        selectedPackage: null,
-        selectedService: null,
-        selectedRequest: null,
-        selectedStreamingType: null,
-        selectedServiceObj: null,
-        services,
-        protoPath,
-        streamsArr,
-        streamContent,
-        count: 1,
-      });
-      resolve(data);
-    }
-  });
 
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
@@ -95,7 +61,8 @@ const GRPCProtoEntryForm = (props) => {
   const submitUpdatedProto = () => {
     //only update if changes aren't saved
     // if (!changesSaved) {
-      api.send('protoParserFunc-request', props.newRequestStreams.protoContent);
+      grpcController.protoParserReturn(props.newRequestStreams.protoContent)
+      // grpcController.protoParserRequest(props.newRequestStreams.protoContent)
     // }
     return
   };
@@ -114,7 +81,6 @@ const GRPCProtoEntryForm = (props) => {
 
   return (
     <div className="mt-5">
-      {test}
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>
