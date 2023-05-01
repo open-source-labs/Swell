@@ -9,7 +9,7 @@ import { newRequestFieldsByProtocol } from '../../toolkit-refactor/slices/newReq
 import { styled } from '@mui/system';
 import { Box, Divider } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
-import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+import ButtonUnstyled from '@mui/base/Button';
 import { useDispatch } from 'react-redux';
 import { SwellTooltip } from '../customMuiStyles/tooltip';
 
