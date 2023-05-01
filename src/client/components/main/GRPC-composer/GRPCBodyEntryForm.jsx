@@ -4,29 +4,10 @@ import GRPCBodyStream from './GRPCBodyStream.jsx';
 const GRPCBodyEntryForm = (props) => {
   const [show, toggleShow] = useState(true);
 
-  // when application first loads
-  useEffect(() => {
-    if (props.newRequestStreams.streamsArr.length === 0) {
-      const newStreamsArr = [
-        {
-          id: props.newRequestStreams.count,
-          query: '',
-        },
-      ];
-
-      // update state in the store
-      props.newRequestStreamsSet({
-        streamsArr: newStreamsArr,
-        count: newStreamsArr.length,
-        streamContent: props.newRequestStreams.streamContent,
-      });
-    }
-  }, []);
-
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   const addStream = () => {
-    const streamsArr = [...props.newRequestStreams.streamsArr];
-    const streamContent = [...props.newRequestStreams.streamContent];
+    const streamsArr = structuredClone(props.newRequestStreams.streamsArr); //[...props.newRequestStreams.streamsArr];
+    const streamContent = structuredClone(props.newRequestStreams.streamContent); //[...props.newRequestStreams.streamContent];
     // save query of initial stream body
     const firstBodyQuery = props.newRequestStreams.initialQuery;
     // construct new stream body obj & push into the streamsArr

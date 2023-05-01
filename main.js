@@ -33,6 +33,7 @@
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
+
 const { autoUpdater } = require('electron-updater');
 const {
   default: installExtension,
@@ -215,6 +216,8 @@ app.on('ready', () => {
     autoUpdater.checkForUpdates();
   }
 });
+
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -430,14 +433,13 @@ ipcMain.on('import-proto', (event) => {
     });
 });
 
+
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', async (event, data) => {
   try {
-    console.log('data: ',data)
     const result = await protoParserFunc(data)
-    console.log('result: ', result)
-    event.sender.send('protoParserFunc-return', JSON.stringify(result));
+    mainWindow.webContents.send('protoParserFunc-return', JSON.stringify(result));
   } catch (err) {
     console.log('error in protoParserFunc-request:, ', err);
     mainWindow.webContents.send('protoParserFunc-return', { error: err });
@@ -474,11 +476,13 @@ ipcMain.on('import-openapi', (event) => {
     });
 });
 
+
 // openapiParserFunc-request.
 // Runs the function and returns the value back to OpenAPIDocumentEntryForm
 ipcMain.on('openapiParserFunc-request', (event, data) => {
   openapiParserFunc(data)
     .then((result) => {
+      console.log(hardCodedResult)
       mainWindow.webContents.send('openapiParserFunc-return', result);
     })
     .catch((err) => {

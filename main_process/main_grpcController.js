@@ -4,7 +4,9 @@ const protoLoader = require('@grpc/proto-loader');
 
 const testingController = require('./main_testingController');
 
+
 const grpcController = {};
+
 
 grpcController.openGrpcConnection = (event, reqResObj) => {
   const { service, rpc, packageName, url, queryArr } = reqResObj;
