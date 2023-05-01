@@ -1,15 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
+
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
-
-import ReqResCtrl from '../../../controllers/reqResController';
 import { Box } from '@mui/material';
-
-// Import local components.
+import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
+import { RootState } from '../../../toolkit-refactor/store';
+import ReqResCtrl from '../../../controllers/reqResController';
 import EventsContainer from './EventsContainer';
 import HeadersContainer from './HeadersContainer';
 import TestsContainer from './TestsContainer';
@@ -17,9 +15,8 @@ import CookiesContainer from './CookiesContainer';
 import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
-import { RootState } from '../../../toolkit-refactor/store';
 
-const ResponsePaneContainer = () => {
+const ResponsePaneContainer: FC = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector(
     (store: RootState) => store.ui.responsePaneActiveTab
@@ -51,14 +48,14 @@ const ResponsePaneContainer = () => {
           className="hero is-primary is-flex is-flex-direction-row is-justify-content-center"
           style={{ padding: '10px', position: 'sticky' }}
         >
-          <ResponseTime currentResponse={currentResponse} />
+          <ResponseTime currentResponse={currentResponse as any} />
           {response?.responseSize && (
             <div className="response-size-placement">
               {`${response?.responseSize}kb`}
             </div>
           )}
           <h3>Responses</h3>
-          <StatusButtons currentResponse={currentResponse} />
+          <StatusButtons currentResponse={currentResponse as any} />
         </div>
         <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
           {/* TAB SELECTOR */}
@@ -123,10 +120,13 @@ const ResponsePaneContainer = () => {
           {/* RESPONSES CONTENT */}
           <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
             {activeTab === 'events' && (
-              <EventsContainer currentResponse={currentResponse} />
+               <EventsContainer currentResponse={currentResponse as any} />
+
             )}
             {activeTab === 'headers' && (
-              <HeadersContainer currentResponse={currentResponse} />
+              <HeadersContainer currentResponse={currentResponse as { response: { headers: Record<string, string> } }} />
+
+
             )}
             {activeTab === 'cookies' && (
               <CookiesContainer currentResponse={currentResponse} />

@@ -4,12 +4,19 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export default function CookieContainer({ cookie }) {
+interface CookieProps {
+  className?: string;
+  cookie: {
+    [key: string]: any;
+  };
+}
+
+export default function CookieContainer({ className, cookie }: CookieProps) {
   const [showCookie, setShowCookie] = useState(false);
-  const isDark = useSelector(state => state.ui.isDark);
+  const isDark = useSelector((state: any) => state.ui.isDark);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
-    if (!key || !value) return;
+    if (!key || !value) return null;
     if (showCookie === true && index > 1) {
       return (
         <tr key={index}>
@@ -26,11 +33,12 @@ export default function CookieContainer({ cookie }) {
         </tr>
       );
     }
+    return null;
   });
 
   return (
     <table
-      className={`cookie-container table ${isDark ? 'is-dark-200' : ''}`}
+      className={`cookie-container table ${isDark ? 'is-dark-200' : ''} ${className}`}
       onClick={() => {
         setShowCookie(showCookie === false);
       }}
@@ -45,3 +53,4 @@ export default function CookieContainer({ cookie }) {
     </table>
   );
 }
+

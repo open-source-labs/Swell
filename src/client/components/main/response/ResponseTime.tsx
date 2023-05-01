@@ -1,6 +1,19 @@
 import React from 'react';
 
-function ResponseTime({ currentResponse }) {
+interface Props {
+  currentResponse: {
+    timeReceived?: number;
+    timeSent?: number;
+    response?: {
+      messages?: any[];
+    };
+    request?: {
+      messages?: any[];
+    };
+  };
+}
+
+function ResponseTime({ currentResponse }: Props) {
   if (
     currentResponse &&
     currentResponse.timeReceived &&
@@ -17,6 +30,7 @@ function ResponseTime({ currentResponse }) {
     currentResponse &&
     currentResponse.response &&
     currentResponse.response.messages &&
+    currentResponse.request?.messages &&
     currentResponse.response.messages.length > 0 &&
     currentResponse.response.messages.length ===
       currentResponse.request.messages.length
@@ -33,4 +47,5 @@ function ResponseTime({ currentResponse }) {
 
   return null;
 }
+
 export default ResponseTime;
