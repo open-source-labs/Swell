@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 
 import React from 'react';
-import ContentReqRowComposer from './ContentReqRowComposer.tsx';
+import ContentReqRowComposer from './ContentReqRowComposer';
 import { useState, useEffect } from 'react';
 
 interface Header {
