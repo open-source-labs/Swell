@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Form } from 'react-router-dom';
 
 interface Props {
   newRequestBody: {
     bodyContent: string;
+    [key: string]: any;
   };
-  newRequestBodySet: (arg0: { bodyContent: string }) => void;
+  newRequestBodySet: (arg0: { bodyContent: string;[key: string]: any }) => void;
 }
 
 interface WWWField {
@@ -131,17 +133,17 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
       setWwwFields(wwwFieldsDeepCopy);
     }
   }
-  
+
   function isWwwFieldsEmpty() {
     if (wwwFields.length === 0) {
       return true;
     }
     return (
       wwwFields
-      .map((wwwField) => (wwwField.key === '' && wwwField.value === '' ? 1 : 0))
-      .reduce((acc, cur) => (acc === 0 ? cur : acc)) === 0
+        .map((wwwField) => (wwwField.key === '' && wwwField.value === '' ? 1 : 0))
+        .reduce((acc, cur) => (acc === 0 ? cur : acc)) === 0
     );
   }
 }
-  
+
 export default WWWForm;
