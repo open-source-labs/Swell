@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import PropTypes from 'prop-types';
+import ContentReqRowComposer from './ContentReqRowComposer.tsx';
 
 interface Props {
   newRequestBody: {
@@ -18,6 +21,7 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
   const [wwwFields, setWwwFields] = useState<WWWField[]>([]);
   const [rawString, setRawString] = useState('');
 
+
   useEffect(() => {
     const matches = newRequestBody.bodyContent.match(
       /(([^(&|\n)]+=[^(&|\n)]+)&?)+/g
@@ -36,6 +40,7 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     addFieldIfNeeded();
   }, []);
 
+
   useEffect(() => {
     if (newRequestBody.bodyContent !== rawString) {
       checkOldBody();
@@ -49,6 +54,7 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     }
   }, [newRequestBody.bodyContent]);
 
+  // create a Deep copy of WWWField
   function createWWWClone(): WWWField[] {
     return JSON.parse(JSON.stringify(wwwFields));
   }
@@ -142,6 +148,36 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
       .reduce((acc, cur) => (acc === 0 ? cur : acc)) === 0
     );
   }
+
+  function deleteWwwField(index: number) {
+    const newFields = wwwFields.slice();
+    newFields.splice(index, 1);
+    if (!newFields.length) {
+      newFields.push({
+        id: `id${wwwFields.length}`,
+        active: false,
+        key: '',
+        value: '',
+      });
+    }
+    setWwwFields(newFields);
+  }
+
+  const wwwFieldsReactArr = wwwFields.map((wwwField, index) => {
+    return (
+      <ContentReqRowComposer
+        index={index}
+        deleteItem={deleteWwwField}
+        data={wwwField}
+        changeHandler={updateWwwField}
+        key={`crrcwwwfield${index}`}
+      />
+    );
+  });
+
+  return (
+    <div className="composer_headers_container-open">{wwwFieldsReactArr}</div>
+  );
 }
   
 export default WWWForm;
