@@ -5,7 +5,7 @@ interface Props {
   newRequestBody: {
     bodyContent: string;
     [key: string]: any;
-  };
+  }
   newRequestBodySet: (arg0: { bodyContent: string;[key: string]: any }) => void;
 }
 
@@ -16,7 +16,7 @@ interface WWWField {
   value: string;
 }
 
-function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
+export default function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
   const [wwwFields, setWwwFields] = useState<WWWField[]>([]);
   const [rawString, setRawString] = useState('');
 
@@ -145,5 +145,3 @@ function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     );
   }
 }
-
-export default WWWForm;
