@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import GRPCAutoInputForm from '../GRPC-composer/GRPCAutoInputForm.jsx';
-import TextCodeArea from '../new-request/TextCodeArea.tsx';
-import grpcController from '../../../controllers/grpcController.ts'
+import GRPCAutoInputForm from './GRPCAutoInputForm';
+import TextCodeArea from '../new-request/TextCodeArea';
+import grpcController from '../../../controllers/grpcController'
+import store from '../../../toolkit-refactor/store';
+
 
 const { api } = window;
+
+// const mapStateToProps = (store) => {
+//   return {
+//     newRequestStreams: store.newRequest.newRequestStreams,
+//   };
+// };
+
+
+// newRequestStreamsSet: (requestStreamsObj) => {
+//   dispatch(newRequestStreamsSet(requestStreamsObj));
+// }
 
 const GRPCProtoEntryForm = (props) => {
   // const [show, toggleShow] = useState(true);
@@ -19,6 +32,7 @@ const GRPCProtoEntryForm = (props) => {
     const streamContent = [''];
     // reset streaming type next to the URL & reset Select Service dropdown to default option
     // reset selected package name, service, request, streaming type & protoContent
+
     if (props.newRequestStreams.protoContent !== null) {
       props.newRequestStreamsSet({
         ...props.newRequestStreams,
@@ -60,10 +74,17 @@ const GRPCProtoEntryForm = (props) => {
   // update protoContent state in the store after making changes to the proto file
   const submitUpdatedProto = () => {
     //only update if changes aren't saved
-    // if (!changesSaved) {
-      grpcController.protoParserReturn(props.newRequestStreams.protoContent)
-      // grpcController.protoParserRequest(props.newRequestStreams.protoContent)
-    // }
+    if (!changesSaved) {
+      try{ 
+        grpcController.sendParserData(props.newRequestStreams.protoContent);
+        grpcController.protoParserReturn(props.newRequestStreams);
+        saveChanges(true);
+        
+      } catch (err) {
+        console.log(err);
+        saveChanges(false);
+      }
+    }
     return
   };
 
@@ -81,6 +102,8 @@ const GRPCProtoEntryForm = (props) => {
 
   return (
     <div className="mt-5">
+      {JSON.stringify(props.newRequestStreams.streamsArr[0])}
+      {/* {JSON.stringify(store.getState().newRequest.newRequestStreams)} */}
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>
