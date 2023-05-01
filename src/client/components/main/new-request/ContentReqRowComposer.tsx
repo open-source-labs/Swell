@@ -4,6 +4,7 @@
 
 //contentReqRowComposer
 
+import { bool } from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -14,12 +15,11 @@ interface Props {
     key: string;
     value: string | number | boolean;
   };
-  changeHandler: (id: string, field: 'active' | 'key' | 'value', value: boolean | string | number) => any;
+  changeHandler: (id: string, field: string, value: boolean | string) => any;
   index: number;
   deleteItem: (index: number) => any;
-  type: string;
+  type?: string;
 }
-
 
 export default function ContentReqRowComposer({
   data,
