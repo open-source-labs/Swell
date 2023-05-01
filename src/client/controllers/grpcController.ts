@@ -17,7 +17,7 @@ import { newRequestStreamsSet } from '../toolkit-refactor/slices/newRequestSlice
 
 const grpcController: any = {
 
-    protoParserReturn(newRequestStreams: NewRequestStreams): Promise<any> {
+    protoParserReturn(newRequestStreams: NewRequestStreams): void {
         
         try {
             
@@ -27,9 +27,6 @@ const grpcController: any = {
             api.receive('protoParserFunc-return', async function parsedProtoRes(data: any) {
                 try{
                     const result: any = await JSON.parse(data)
-                    console.log(result.serviceArr)
-                    console.log(newRequestStreams.streamsArr[0])
-
                     const services = result.serviceArr ? result.serviceArr : null;
                     const protoPath = result.protoPath ? result.protoPath : null;
                     const streamsArr = [newRequestStreams.streamsArr[0]];

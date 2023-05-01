@@ -117,7 +117,7 @@ const GRPCAutoInputForm = (props) => {
       }
     }
     //shallow copy streamsArr and streamCopy to reassign in store
-    const streamsArrCopy = structuredClone(streamsArr); 
+    const streamsArrCopy = structuredClone(streamsArr); //[...streamsArr]; //
     const streamContentCopy = structuredClone(streamContent); 
 
     // push JSON formatted query in streamContent arr

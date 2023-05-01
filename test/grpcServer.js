@@ -101,6 +101,6 @@ function main(status) {
   }
 }
 
-main('open')
+// main('open')
 
 module.exports = main;

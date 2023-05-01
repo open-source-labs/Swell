@@ -438,9 +438,7 @@ ipcMain.on('import-proto', (event) => {
 // Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', async (event, data) => {
   try {
-    console.log('data: ',data)
     const result = await protoParserFunc(data)
-    console.log('result: ', result)
     mainWindow.webContents.send('protoParserFunc-return', JSON.stringify(result));
   } catch (err) {
     console.log('error in protoParserFunc-request:, ', err);

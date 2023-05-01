@@ -102,8 +102,6 @@ const GRPCProtoEntryForm = (props) => {
 
   return (
     <div className="mt-5">
-      {JSON.stringify(props.newRequestStreams.streamsArr[0])}
-      {/* {JSON.stringify(store.getState().newRequest.newRequestStreams)} */}
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Proto</div>
         <div>
