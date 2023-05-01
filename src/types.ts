@@ -253,6 +253,7 @@ export interface ReqRes {
   webrtc: boolean;
   frequency?: number;
   duration?: number;
+  classEventPreviewsName: string;
 }
 
 export interface SSERequest {
