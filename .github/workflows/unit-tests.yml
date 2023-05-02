@@ -4,14 +4,14 @@ on: [pull_request]
 
 jobs:
   tests:
-    runs-on: macos-latest
-
     strategy:
       matrix:
         node-version: [16]
-
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -19,4 +19,6 @@ jobs:
       - name: Install dependencies
         run: npm i && npm ci
       - name: Run unit tests
-        run: npm run test-jest
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: npm run test-jest
