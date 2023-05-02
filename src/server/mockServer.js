@@ -15,14 +15,14 @@ const LISTROUTES = '/list-routes';
 const createMockRoute = (method, endpoint, response) => {
   const property = method.toLowerCase();
   // verify that method exists on mockServer
-  if (mockServer.hasOwn(property)) {
-    const msProperty = mockServer[property];
-    if (typeof msProperty === 'function') {
-      msProperty(endpoint, (req, res) => {
-        // return sanitized response input to guard against XSS
-        res.send(escape(response));
-      });
-    }
+  if (
+    mockServer.hasOwnProperty(property) &&
+    typeof mockServer[property] === 'function'
+  ) {
+    mockServer[property](endpoint, (req, res) => {
+      // return sanitized response input to guard against XSS
+      res.send(escape(response));
+    });
   } else {
     console.log(`Invalid method: ${property}`);
     throw new Error(`Mock server does not have a ${property} method.`);
