@@ -1,9 +1,10 @@
 {
   "name": "swell",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
+  
   "scripts": {
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
     "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test process.env.TRAVIS_LOCAL_API=true nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --exit",
@@ -123,6 +124,7 @@
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",
     "dotenv": "^16.0.0",
+    "electron": "^18.3.5",
     "electron-devtools-installer": "^3.2.0",
     "electron-log": "^4.4.6",
     "electron-updater": "^5.3.0",
@@ -160,6 +162,7 @@
     "uuid": "^8.3.2",
     "vm2": "^3.9.16",
     "websocket": "^1.0.34",
+    "ws": "^8.13.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
@@ -197,7 +200,6 @@
     "cross-env": "^7.0.3",
     "csp-html-webpack-plugin": "^5.1.0",
     "css-loader": "^6.7.1",
-    "electron": "^18.3.5",
     "electron-builder": "^23.0.3",
     "electron-ipc-mock": "^0.0.3",
     "electron-react-devtools": "^0.5.3",
@@ -232,8 +234,7 @@
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1",
     "webpack-merge": "^5.8.0",
-    "webpack-node-externals": "^3.0.0",
-    "ws": "^8.13.0"
+    "webpack-node-externals": "^3.0.0"
   },
   "author": {
     "name": "Swell",

@@ -253,6 +253,7 @@ export interface ReqRes {
   webrtc: boolean;
   frequency?: number;
   duration?: number;
+  classEventPreviewsName: string;
 }
 
 export interface SSERequest {
@@ -271,7 +272,7 @@ export interface NewRequestStreams {
   initialQuery: unknown | null;
   queryArr: Record<string, unknown>[] | null;
   protoPath: unknown | null;
-  services: Record<string, unknown> | null;
+  services: Record<$TSFixMe, $TSFixMe> | null;
   protoContent: string;
 }
 

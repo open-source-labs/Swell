@@ -104,19 +104,19 @@ const SingleReqResContainer = (props) => {
       };
     }
 
-    // if (network === 'grpc') {
-    //   requestFieldObj = {
-    //     ...newRequestFields,
-    //     method: content.request.method || 'GET',
-    //     protocol: content.protocol || 'http://',
-    //     url: content.url,
-    //     grpcUrl: content.request.grpcUrl,
-    //     graphQL: content.graphQL || false,
-    //     gRPC: content.gRPC || false,
-    //     network,
-    //     testContent: content.request.testContent,
-    //   };
-    // }
+    if (network === 'grpc') {
+      requestFieldObj = {
+        ...newRequestFields,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
+        grpcUrl: content.request.grpcUrl,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        network,
+        testContent: content.request.testContent,
+      };
+    }
 
     let headerDeeperCopy;
 

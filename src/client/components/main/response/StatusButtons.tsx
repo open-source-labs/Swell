@@ -1,6 +1,18 @@
 import React from 'react';
 
-function StatusButtons({ currentResponse }) {
+interface Props {
+  currentResponse: {
+    error?: boolean;
+    graphQL?: boolean;
+    response?: {
+      headers?: {
+        [key: string]: string;
+      };
+    };
+  };
+}
+
+const StatusButtons: React.FC<Props> = ({ currentResponse }) => {
   if (currentResponse.error || !currentResponse) {
     return <div className="status-tag is-danger">Error</div>;
   }
@@ -27,6 +39,6 @@ function StatusButtons({ currentResponse }) {
   }
 
   return <div className="status-tag is-danger">{statusCode}</div>;
-}
+};
 
 export default StatusButtons;

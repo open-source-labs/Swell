@@ -33,6 +33,7 @@
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
+
 const { autoUpdater } = require('electron-updater');
 const {
   default: installExtension,
@@ -59,6 +60,7 @@ require('./main_process/main_graphqlController')();
 require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
+
 
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
@@ -215,6 +217,8 @@ app.on('ready', () => {
     autoUpdater.checkForUpdates();
   }
 });
+
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -386,7 +390,12 @@ ipcMain.on('import-collection', (event, args) => {
   });
 });
 
-// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// gRPC ///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION =============== //
+
 ipcMain.on('confirm-clear-history', (event) => {
   const opts = {
     type: 'warning',
@@ -430,19 +439,22 @@ ipcMain.on('import-proto', (event) => {
     });
 });
 
+
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', async (event, data) => {
   try {
-    console.log('data: ',data)
     const result = await protoParserFunc(data)
-    console.log('result: ', result)
-    event.sender.send('protoParserFunc-return', JSON.stringify(result));
+    mainWindow.webContents.send('protoParserFunc-return', JSON.stringify(result));
   } catch (err) {
     console.log('error in protoParserFunc-request:, ', err);
     mainWindow.webContents.send('protoParserFunc-return', { error: err });
   }
 });
+
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// OpenAPI //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 //====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//
 ipcMain.on('import-openapi', (event) => {
@@ -474,11 +486,13 @@ ipcMain.on('import-openapi', (event) => {
     });
 });
 
+
 // openapiParserFunc-request.
 // Runs the function and returns the value back to OpenAPIDocumentEntryForm
 ipcMain.on('openapiParserFunc-request', (event, data) => {
   openapiParserFunc(data)
     .then((result) => {
+      console.log(hardCodedResult)
       mainWindow.webContents.send('openapiParserFunc-return', result);
     })
     .catch((err) => {
@@ -487,7 +501,10 @@ ipcMain.on('openapiParserFunc-request', (event, data) => {
     });
 });
 
-//======================= MOCK SERVER =======================//
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// MOCK SERVER //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process

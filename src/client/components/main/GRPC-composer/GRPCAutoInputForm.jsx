@@ -36,6 +36,7 @@ const GRPCAutoInputForm = (props) => {
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
     let streamContent = [''];
     setRequestOption('Select Request');
+    
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.newRequestStreamsSet({
       ...props.newRequestStreams,
@@ -117,11 +118,12 @@ const GRPCAutoInputForm = (props) => {
       }
     }
     //shallow copy streamsArr and streamCopy to reassign in store
-    const streamsArrCopy = [...streamsArr];
-    const streamContentCopy = [...streamContent];
+    const streamsArrCopy = structuredClone(streamsArr); //[...streamsArr]; //
+    const streamContentCopy = structuredClone(streamContent); 
 
     // push JSON formatted query in streamContent arr
     const queryJSON = JSON.stringify(results, null, 4);
+  
     if (streamsArrCopy[0] !== '') {
       streamsArrCopy[0].query = queryJSON;
     }

@@ -11,7 +11,8 @@ import {
 
 import SingleReqResContainer from './SingleReqResContainer.jsx';
 import ReqResCtrl from '../../controllers/reqResController';
-import { RootState } from '../store';
+import { RootState, AppDispatch } from '../store';
+import { ReqRes, $TSFixMe } from '../../../types'
 
 /**@todo change to use hooks? */
 const mapStateToProps = (store: RootState) => ({
@@ -19,20 +20,20 @@ const mapStateToProps = (store: RootState) => ({
 });
 
 /**@todo change to use hooks? */
-const mapDispatchToProps = (dispatch) => ({
-  reqResItemDeleted: (reqRes) => {
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  reqResItemDeleted: (reqRes: ReqRes) => {
     dispatch(reqResItemDeleted(reqRes));
   },
-  reqResUpdated: (reqRes) => {
+  reqResUpdated: (reqRes: ReqRes) => {
     dispatch(reqResUpdated(reqRes));
   },
 });
 
-const ReqResContainer = (props) => {
+const ReqResContainer = (props: $TSFixMe) => {
   const { reqResArray, reqResItemDeleted, updated, displaySchedule } = props;
 
   /**@todo maybe access functions (last two) directly from container instead of passing through props? */
-  const reqResMapped = reqResArray.map((reqRes, index) => {
+  const reqResMapped = reqResArray.map((reqRes: ReqRes, index: $TSFixMe) => {
     return (
       <SingleReqResContainer
         className="reqResChild"
