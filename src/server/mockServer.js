@@ -61,8 +61,8 @@ mockServer.post(MOCK, (req, res) => {
 
   createMockRoute(method, endpoint, response);
 
-  // sends a confirmation back that the route has been created
-  res.send(`Mock route to ${endpoint} has been created.`);
+  // sends a sanitized confirmation back that the route has been created
+  res.send(`Mock route to ${escape(endpoint)} has been created.`);
 });
 
 // gets all the routes that have been created
