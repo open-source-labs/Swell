@@ -36,6 +36,7 @@ const GRPCAutoInputForm = (props) => {
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
     let streamContent = [''];
     setRequestOption('Select Request');
+    
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.newRequestStreamsSet({
       ...props.newRequestStreams,

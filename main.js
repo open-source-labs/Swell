@@ -61,6 +61,7 @@ require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
 
+
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
@@ -389,7 +390,12 @@ ipcMain.on('import-collection', (event, args) => {
   });
 });
 
-// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// gRPC ///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION =============== //
+
 ipcMain.on('confirm-clear-history', (event) => {
   const opts = {
     type: 'warning',
@@ -446,6 +452,10 @@ ipcMain.on('protoParserFunc-request', async (event, data) => {
   }
 });
 
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// OpenAPI //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 //====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//
 ipcMain.on('import-openapi', (event) => {
   let importedDocument;
@@ -491,7 +501,10 @@ ipcMain.on('openapiParserFunc-request', (event, data) => {
     });
 });
 
-//======================= MOCK SERVER =======================//
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// MOCK SERVER //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process

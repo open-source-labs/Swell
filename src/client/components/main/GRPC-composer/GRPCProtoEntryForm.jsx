@@ -3,27 +3,14 @@ import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../new-request/TextCodeArea';
 import grpcController from '../../../controllers/grpcController'
-import store from '../../../toolkit-refactor/store';
 
 
 const { api } = window;
-
-// const mapStateToProps = (store) => {
-//   return {
-//     newRequestStreams: store.newRequest.newRequestStreams,
-//   };
-// };
-
-
-// newRequestStreamsSet: (requestStreamsObj) => {
-//   dispatch(newRequestStreamsSet(requestStreamsObj));
-// }
 
 const GRPCProtoEntryForm = (props) => {
   // const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
-
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
