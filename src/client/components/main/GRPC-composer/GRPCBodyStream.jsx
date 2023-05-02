@@ -73,7 +73,7 @@ const GRPCBodyStream = (props) => {
       <div className="warningMessage">{showError}</div>
       <div>
         <div className="mt-1 is-flex is-align-items-center">
-          {deleteStreamBtn}
+          {/* {deleteStreamBtn} */}
           {streamNum}
         </div>
         {streamBody}

@@ -3,9 +3,16 @@ import { useSelector } from 'react-redux';
 
 import EmptyState from './EmptyState';
 
-function HeadersContainer({ currentResponse }) {
+interface Props {
+  currentResponse: {
+    response: {
+      headers: Record<string, string>;
+    };
+  };
+}
 
-  const isDark = useSelector(state => state.ui.isDark);
+function HeadersContainer({ currentResponse }: Props) {
+  const isDark = useSelector((state: { ui: { isDark: boolean } }) => state.ui.isDark);
 
   if (
     !currentResponse.response ||

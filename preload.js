@@ -60,7 +60,7 @@ const apiObj = {
   },
   removeAllListeners: (channel, cb) => {
     // allow list channels
-    const allowedChannels = ['reqResUpdate', 'reply-gql'];
+    const allowedChannels = ['reqResUpdate', 'reply-gql', 'protoParserFunc-return'];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
     } else {

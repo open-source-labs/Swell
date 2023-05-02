@@ -6,7 +6,37 @@ import RawBodyTypeSelect from './RawBodyTypeSelect';
 import JSONPrettify from './JSONPrettify';
 import TextCodeArea from './TextCodeArea';
 
-const BodyEntryForm = (props) => {
+import { NewRequestBody } from '../../../../types';
+// import { Interface } from 'readline';
+
+// import React, { useState, useEffect } from 'react';
+// import PropTypes from 'prop-types';
+// import ContentReqRowComposer from './ContentReqRowComposer.tsx';
+
+// import { useState, useEffect } from 'react';
+// import { Form } from 'react-router-dom';
+
+
+
+type BodyEntryFormProps = {
+  newRequestHeaders: {
+    headersArr: string[]
+    count: number
+  }
+  newRequestBody: NewRequestBody,
+  newRequestBodySet: any
+  newRequestHeadersSet: any
+  warningMessage: {
+    err?: string
+    uri?: string
+    body?: string
+    json?: string
+  }
+  isMockServer: boolean
+  placeholder?: string
+}
+
+const BodyEntryForm = (props: BodyEntryFormProps) => {
   const {
     newRequestBody,
     newRequestBodySet,
@@ -34,10 +64,12 @@ const BodyEntryForm = (props) => {
     //BodyType of XWWW... : display WWWForm entry
     if (newRequestBody.bodyType === 'x-www-form-urlencoded') {
       return (
+        <div>
         <WWWForm
           newRequestBodySet={newRequestBodySet}
           newRequestBody={newRequestBody}
         />
+        </div>
       );
     }
     //RawType of application/json : Text area box with error checking
@@ -111,9 +143,11 @@ const BodyEntryForm = (props) => {
   );
 };
 
-BodyEntryForm.defaultProps = {
-  isMockServer: false,
-  placeholder: 'Enter body here',
-}
+// BodyEntryForm.defaultProps = {
+//   isMockServer: false,
+//   placeholder: 'Enter body here',
+// }
 
 export default BodyEntryForm;
+
+

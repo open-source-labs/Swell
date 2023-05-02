@@ -30,8 +30,12 @@
     "src/client/toolkit-refactor/reqRes/SingleReqResContainer.jsx",
     "src/client/components/main/new-request/ContentReqRowComposer.tsx",
     "src/client/components/main/new-request/HeaderEntryForm.tsx",
-    "src/client/components/main/new-request/CookieEntryForm.tsx"
-, "src/client/components/main/new-request/RawBodyTypeSelect.tsx", "src/client/components/main/new-request/BodyEntryForm.jsx"  ],
+    "src/client/components/main/new-request/CookieEntryForm.tsx",
+    "src/client/components/main/new-request/RawBodyTypeSelect.tsx",
+    "src/client/components/main/new-request/BodyEntryForm.jsx",
+    "src/client/components/main/response/ResponsePaneContainer.tsx",
+    "src/client/components/main/new-request/BodyEntryForm.tsx"
+  ],
   "exclude": [
     "node_modules",
     "dist",
