@@ -1,4 +1,5 @@
 const path = require('path');
+const escape = require('escape-html');
 const express = require('express');
 const mockServer = express();
 
@@ -12,9 +13,20 @@ const LISTROUTES = '/list-routes';
 
 // this function gets called when the /mock endpoint is hit and is what sends the mock response
 const createMockRoute = (method, endpoint, response) => {
-  mockServer[method.toLowerCase()](endpoint, (req, res) => {
-    res.send(response);
-  });
+  const property = method.toLowerCase();
+  // verify that method exists on mockServer
+  if (
+    mockServer.hasOwn(property) &&
+    typeof mockServer[property] === 'function'
+  ) {
+    mockServer[property](endpoint, (req, res) => {
+      // return sanitized response input to guard against XSS
+      res.send(escape(response));
+    });
+  } else {
+    console.log(`Invalid method: ${property}`);
+    throw new Error(`Mock server does not have a ${property} method.`);
+  }
 };
 
 // returns an object where the keys are the method types and the values are an array of endpoints
@@ -28,7 +40,7 @@ const getAllExistingRoutes = () => {
 
       outputObj.hasOwnProperty(method)
         ? outputObj[method].push(path)
-        : outputObj[method] = [path];
+        : (outputObj[method] = [path]);
     }
 
     return outputObj;
@@ -61,3 +73,4 @@ mockServer.get(LISTROUTES, (req, res) => {
 module.exports = mockServer.listen(PORT, () =>
   console.log(`Listening on port ${PORT}`)
 );
+
