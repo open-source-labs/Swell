@@ -439,7 +439,6 @@ ipcMain.on('import-proto', (event) => {
     });
 });
 
-
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', async (event, data) => {

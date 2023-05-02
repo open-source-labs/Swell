@@ -22,6 +22,7 @@ const grpcController: $TSFixMe = {
             api.receive('protoParserFunc-return', async function parsedProtoRes(data: $TSFixMe) {
                 try{
                     const result: $TSFixMe = await JSON.parse(data)
+                    
                     const services = result.serviceArr ? result.serviceArr : null;
                     const protoPath = result.protoPath ? result.protoPath : null;
                     const streamsArr = [newRequestStreams.streamsArr[0]];
