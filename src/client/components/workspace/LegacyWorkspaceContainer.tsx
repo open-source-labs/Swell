@@ -12,9 +12,9 @@ import ReqResContainer from '../../toolkit-refactor/reqRes/ReqResContainer';
 import SaveWorkspaceModal from './modals/SaveWorkspaceModal';
 // Import MUI components
 
-function WorkspaceContainer(props) {
+export default function WorkspaceContainer<RootState>(props: RootState): JSX.Element {
   const [showModal, setShowModal] = useState(false);
-  const isDark = useSelector((store) => store.ui.isDark);
+  const isDark = useSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
 
   return (
     <div>
@@ -50,5 +50,3 @@ function WorkspaceContainer(props) {
     </div>
   );
 }
-
-export default WorkspaceContainer;

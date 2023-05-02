@@ -2,7 +2,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
-function SaveModalSavedWorkspaces({ name, inputID, updateCollection }) {
+interface Props {
+  name: string,
+  inputID: string,
+  updateCollection: (name: string, inputID: string) => void
+}
+
+function SaveModalSavedWorkspaces({ name, inputID, updateCollection }: Props) {
   return (
     <div>
       <div className="is-flex is-justify-content-space-between m-3">
