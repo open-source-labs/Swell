@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../../controllers/historyController';
@@ -14,10 +14,14 @@ import GRPCProtoEntryForm from './GRPCProtoEntryForm.jsx';
 import NewRequestButton from '../new-request/NewRequestButton';
 import TestEntryForm from '../new-request/TestEntryForm';
 
+import { $TSFixMe, ReqRes } from '../../../../types.js';
+
 // Import MUI components
 import { Box } from '@mui/material';
 
-export default function GRPCComposer(props) {
+export default function GRPCComposer(props: $TSFixMe) {
+
+  // destructure the props from mainContainer
   const {
     composerFieldsReset,
     fieldsReplaced,
@@ -66,6 +70,14 @@ export default function GRPCComposer(props) {
     setWorkspaceActiveTab,
   } = props;
 
+  // Initialize local state 
+
+  // used to set up boiler plate for StreamsArr
+  // is is initially -> []
+  // but needs to be -> [{id:0, "query": ""}]
+  const [streamsArrLength, setStreamsArrayLength] = useState(newRequestStreams.streamsArr.length);
+
+
   const requestValidationCheck = () => {
     interface ValidationMessage {
       uri?: string;
@@ -103,6 +115,7 @@ export default function GRPCComposer(props) {
     }
     // grabbing streaming type to set method in reqRes.request.method
     const grpcStream = document.getElementById('stream').innerText;
+
     // create reqres obj to be passed to controller for further actions/tasks
     const reqRes = {
       id: uuid(),
@@ -160,6 +173,11 @@ export default function GRPCComposer(props) {
     //reset for next request
     composerFieldsReset();
 
+    // triggers the reset for the boiler plate for streamsArr
+    // if not triggered, composerFieldsReset() breaks feature
+    // look at useEffect below
+    setStreamsArrayLength(0)
+  
     // GRPC REQUESTS
     newRequestBodySet({
       ...newRequestBody,
@@ -174,6 +192,29 @@ export default function GRPCComposer(props) {
 
     setWorkspaceActiveTab('workspace');
   };
+
+  // need this to make sure 
+  useEffect(() => {
+    if (streamsArrLength === 0) {
+
+      const newStreamsArr = [
+        {
+          id: newRequestStreams.count,
+          query: '',
+        },
+      ];
+
+      // reset the state
+      setStreamsArrayLength(newStreamsArr.length)
+
+      // update state in the store
+      newRequestStreamsSet({
+        streamsArr: newStreamsArr,
+        count: newStreamsArr.length,
+        streamContent: newRequestStreams.streamContent,
+      });
+    }
+  }, [streamsArrLength]);
 
   const HeaderEntryFormStyle = {
     //trying to change style to conditional created strange duplication effect when continuously changing protocol

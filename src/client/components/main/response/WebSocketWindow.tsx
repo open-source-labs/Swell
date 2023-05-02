@@ -59,8 +59,8 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
       <WebSocketMessage
         key={index}
         index={index}
-        source={message.source}
-        data={message.data}
+        source={message.source as 'server' | 'client'}
+        data={message.data as 'ArrayBuffer' | 'ArrayBufferView'}
         timeReceived={message.timeReceived}
       />
     ));

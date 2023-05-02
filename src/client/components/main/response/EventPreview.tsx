@@ -5,10 +5,15 @@ import { useSelector } from 'react-redux';
 import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
 import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
 
-const EventPreview = ({ contents }) => {
+interface Props {
+  contents: string;
+  className?: string;
+}
+
+const EventPreview: React.FC<Props> = ({ contents }) => {
   const [showPreview, setShowPreview] = useState(false);
   const handleShowPreview = () => setShowPreview(!showPreview);
-  const isDark = useSelector(state => state.ui.isDark);
+  const isDark = useSelector((state: any) => state.ui.isDark);
 
   return (
     <div>

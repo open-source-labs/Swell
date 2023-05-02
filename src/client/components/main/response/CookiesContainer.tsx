@@ -1,8 +1,18 @@
 import React from 'react';
-import CookieContainer from './CookieContainer';
 import EmptyState from './EmptyState';
+import CookieContainer from './CookieContainer';
 
-function CookiesContainer({ currentResponse }) {
+interface CookiesContainerProps {
+  currentResponse: {
+    response?: {
+      cookies?: Array<{
+        [key: string]: any;
+      }>;
+    };
+  };
+}
+
+export default function CookiesContainer({ currentResponse }: CookiesContainerProps) {
   if (
     !currentResponse.response ||
     !currentResponse.response.cookies ||
@@ -25,5 +35,3 @@ function CookiesContainer({ currentResponse }) {
 
   return <div className="mx-3">{responseCookies}</div>;
 }
-
-export default CookiesContainer;
