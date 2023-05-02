@@ -32,6 +32,8 @@
     "src/client/components/main/new-request/HeaderEntryForm.tsx",
     "src/client/components/main/new-request/CookieEntryForm.tsx",
     "src/client/components/main/new-request/RawBodyTypeSelect.tsx",
+    "src/client/components/main/new-request/BodyEntryForm.jsx",
+    "src/client/components/main/response/ResponsePaneContainer.tsx",
     "src/client/components/main/new-request/BodyEntryForm.tsx"
   ],
   "exclude": [

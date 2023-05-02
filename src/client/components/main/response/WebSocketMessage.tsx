@@ -2,11 +2,15 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable camelcase */
 import React from 'react';
-/** @todo Remove propTypes check when component is converted to TypeScript*/
-import PropTypes from 'prop-types';
 
-const WebSocketMessage = ({ source, timeReceived, data, index }) => {
-  // conditional classNames and id for messages for styling depending on source
+interface WebSocketMessageProps {
+  source: 'server' | 'client';
+  data: 'ArrayBuffer' | 'ArrayBufferView';
+  timeReceived: number;
+  index: number;
+}
+
+const WebSocketMessage = ({ source, timeReceived, data, index }: WebSocketMessageProps) => {
   const webSocketMessageClassNames =
     source === 'server'
       ? 'websocket_message websocket_message-server'
@@ -20,7 +24,6 @@ const WebSocketMessage = ({ source, timeReceived, data, index }) => {
     source === 'server' ? 'server-background' : 'client-background';
   const message_sender = source === 'server' ? 'server' : 'client';
 
-  // timestamp for messages
   const buildTime = (time: number): string => {
     const hours = new Date(time).getHours();
     const h = hours >= 10 ? `${hours}` : `0${JSON.stringify(hours)}`;
@@ -31,6 +34,8 @@ const WebSocketMessage = ({ source, timeReceived, data, index }) => {
     return `${h}:${m}:${s}`;
   };
 
+  const decodedData = typeof data === 'object' ? new TextDecoder('utf-8').decode(data) : data;
+
   return (
     <div>
       <div className={webSocketMessageClassNames} id={`ws-msg-${index}`}>
@@ -38,7 +43,7 @@ const WebSocketMessage = ({ source, timeReceived, data, index }) => {
           <div className="websocket_message-data">
             {typeof data === 'object' ? (
               // decode buffer to dataURI
-              <img src={new TextDecoder('utf-8').decode(data)} alt="img" />
+              <img src={decodedData} alt="img" />
             ) : (
               <div id={webSocketMessageIDNames}>{data}</div>
             )}
@@ -53,12 +58,4 @@ const WebSocketMessage = ({ source, timeReceived, data, index }) => {
   );
 };
 
-/** @todo Remove propTypes check when component is converted to TypeScript*/
-WebSocketMessage.propTypes = {
-  source: PropTypes.string.isRequired,
-  data: PropTypes.any.isRequired,
-  timeReceived: PropTypes.any.isRequired,
-};
-
 export default WebSocketMessage;
-

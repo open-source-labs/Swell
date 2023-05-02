@@ -7,8 +7,26 @@ import { EditorView } from '@codemirror/view';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { json } from '@codemirror/lang-json';
 
-function EventsContainer({ currentResponse }) {
-  const isDark = useSelector((state) => state.ui.isDark);
+interface EventsContainerProps {
+  currentResponse: {
+    connection: string;
+    request: {
+      method: string;
+      className?: object;
+      classEventPreviewsName: string;
+    };
+    response: {
+      events: any[];
+      headers?: {
+        'content-type'?: string;
+      };
+    };
+    graphQL?: boolean;
+  };
+}
+
+function EventsContainer({ currentResponse }: EventsContainerProps) {
+  const isDark = useSelector((state: any) => state.ui.isDark);
 
   const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
@@ -28,7 +46,7 @@ function EventsContainer({ currentResponse }) {
       eventType = 'Subscription';
     }
 
-    events.forEach((event, idx) => {
+    events.forEach((event: any, idx: number) => {
       const eventStr = JSON.stringify(event, null, 4);
       responseBody += `-------------${eventType} Event ${
         idx + 1
