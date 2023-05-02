@@ -283,7 +283,7 @@ export interface TestResult {
 /**@todo make sure all properties are correct and add properties not listed yet*/
 export interface ReqResResponse {
   cookies?: Cookie[];
-  headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
+  headers?: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
   events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
   tab?: string; //have not found this property mentioned yet should be removed for seperation of concerns
   timeSent?: number; //should be in 'times' property below instead??

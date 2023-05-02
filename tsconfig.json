@@ -31,7 +31,7 @@
     "src/client/components/main/new-request/ContentReqRowComposer.tsx",
     "src/client/components/main/new-request/HeaderEntryForm.tsx",
     "src/client/components/main/new-request/CookieEntryForm.tsx"
-, "src/client/components/main/new-request/RawBodyTypeSelect.tsx", "src/client/components/main/new-request/BodyEntryForm.jsx"  ],
+, "src/client/components/main/new-request/RawBodyTypeSelect.tsx", "src/client/components/main/new-request/BodyEntryForm.jsx", "src/client/components/workspace/modals/SaveWorkspaceModal.jsx"  ],
   "exclude": [
     "node_modules",
     "dist",

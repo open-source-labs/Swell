@@ -2,15 +2,22 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import historyController from '../../../controllers/historyController';
 
-// utilizing API we created in preload.js for node-free IPC communication
-const { api } = window;
+import { WindowExt, WindowAPI } from '../../../../types'
+import { RootState } from '../../../toolkit-refactor/store';
 
-const ClearHistoryBtn = (props) => {
+// utilizing API we created in preload.js for node-free IPC communication
+const { api } = window as any;
+
+interface Props {
+  historyCleared: () => void
+};
+
+const ClearHistoryBtn = (props: Props): JSX.Element => {
   const { historyCleared } = props;
 
   // cleanup api.receive event listener on dismount
   useEffect(() => {
-    api.receive('clear-history-response', (res) => {
+    api.receive('clear-history-response', (res: { response: number }) => {
       // a response of 0 from main means user has selected 'confirm'
       if (res.response === 0) {
         historyController.clearHistoryFromIndexedDb();
@@ -19,7 +26,7 @@ const ClearHistoryBtn = (props) => {
     });
   }, []);
 
-  const isDark = useSelector((state) => state.ui.isDark);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   const handleClick = () => {
     api.send('confirm-clear-history');
