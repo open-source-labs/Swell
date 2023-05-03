@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import GRPCBodyStream from './GRPCBodyStream.jsx';
+import GRPCBodyStream from './GRPCBodyStream';
+import { $TSFixMe, NewRequestStreams } from '../../../../types.js';
 
-const GRPCBodyEntryForm = (props) => {
-  const [show, toggleShow] = useState(true);
+interface Props {
+  newRequestStreams: NewRequestStreams;
+  newRequestStreamsSet: React.Dispatch<React.SetStateAction<NewRequestStreams>>;
+  selectedService: string | null;
+  selectedRequest: string | null;
+  selectedStreamingType: string | null;
+  history: $TSFixMe;
+}
+
+const GRPCBodyEntryForm: React.FC<Props> = (props) => {
+  const [show, toggleShow] = useState<boolean>(true);
 
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
-  const addStream = () => {
+  const addStream = (): void => {
     const streamsArr = structuredClone(props.newRequestStreams.streamsArr); //[...props.newRequestStreams.streamsArr];
     const streamContent = structuredClone(props.newRequestStreams.streamContent); //[...props.newRequestStreams.streamContent];
     // save query of initial stream body
-    const firstBodyQuery = props.newRequestStreams.initialQuery;
+    const firstBodyQuery: $TSFixMe = props.newRequestStreams.initialQuery;
     // construct new stream body obj & push into the streamsArr
-    const newStream = {};
+    const newStream: $TSFixMe  = {};
     newStream.id = props.newRequestStreams.count;
     newStream.query = firstBodyQuery;
     streamsArr.push(newStream);
@@ -27,7 +37,7 @@ const GRPCBodyEntryForm = (props) => {
   };
 
   // event handler that updates state in the store when typing into the stream query body
-  const onChangeUpdateStream = (streamID, value) => {
+  const onChangeUpdateStream = (streamID: $TSFixMe , value: $TSFixMe ) => {
     // props.saveChanges(false);
     const streamsArr = [...props.newRequestStreams.streamsArr];
     const streamContent = [...props.newRequestStreams.streamContent];
@@ -46,7 +56,7 @@ const GRPCBodyEntryForm = (props) => {
   };
 
   // for each stream body in the streamArr, render the GRPCBodyStream component
-  const streamArr = props.newRequestStreams.streamsArr.map((stream, index) => (
+  const streamArr = props.newRequestStreams.streamsArr.map((stream: $TSFixMe , index: $TSFixMe ) => (
     <GRPCBodyStream
       newRequestStreams={props.newRequestStreams}
       newRequestStreamsSet={props.newRequestStreamsSet}

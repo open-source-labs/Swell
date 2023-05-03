@@ -6,25 +6,32 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import collectionsController from '../../../controllers/collectionsController';
 import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
+import { ReqRes } from '../../../../../src/types'
+import { RootState } from '../../../toolkit-refactor/store';
 
 import {
   collectionUpdated,
   collectionAdded,
 } from '../../../toolkit-refactor/slices/collectionsSlice';
 
-function SaveWorkspaceModal({ showModal, setShowModal, match }) {
+interface modalSwitch {
+  showModal: boolean,
+  setShowModal: (showSwitch: boolean) => void
+};
+
+export default function SaveWorkspaceModal({ showModal, setShowModal }: modalSwitch): JSX.Element {
   const dispatch = useDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');
   const [collectionNameErrorStyles, setCollectionNameErrorStyles] =
     useState(false);
   // PULL elements FROM store
-  const reqResArray = useSelector((store) => store.reqRes.reqResArray);
-  const collections = useSelector((store) => store.collections);
+  const reqResArray = useSelector((store: RootState) => store.reqRes.reqResArray);
+  const collections = useSelector((store: RootState) => store.collections);
 
-  const saveCollection = (inputName) => {
+  const saveCollection = (inputName: string): void => {
     const clonedArray = JSON.parse(JSON.stringify(reqResArray));
-    clonedArray.forEach((reqRes) => {
+    clonedArray.forEach((reqRes: ReqRes) => {
       //reinitialize and minimize all things
       reqRes.checked = false;
       reqRes.minimized = true;
@@ -32,7 +39,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
       reqRes.timeReceived = null;
       reqRes.connection = 'uninitialized';
       if (reqRes.response.hasOwnProperty('headers'))
-        reqRes.response = { headers: null, events: null };
+        reqRes.response = { headers: undefined, events: undefined };
       else reqRes.response = { messages: [] };
     });
     const collection = {
@@ -47,9 +54,9 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     setCollectionNameErrorStyles(false);
   };
 
-  const updateCollection = (inputName, inputID) => {
+  const updateCollection = (inputName: string, inputID: string): void => {
     const clonedArray = JSON.parse(JSON.stringify(reqResArray));
-    clonedArray.forEach((reqRes) => {
+    clonedArray.forEach((reqRes: ReqRes) => {
       //reinitialize and minimize all things
       reqRes.checked = false;
       reqRes.minimized = true;
@@ -72,7 +79,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     setCollectionNameErrorStyles(false);
   };
 
-  const saveName = () => {
+  const saveName = (): void => {
     if (input.trim()) {
       collectionsController
         .collectionNameExists(input)
@@ -88,7 +95,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     }
   };
 
-  const workspaceComponents = collections.map((workspace, idx) => {
+  const workspaceComponents = collections.map((workspace, idx): JSX.Element => {
     return (
       <SaveModalSavedWorkspaces
         name={workspace.name}
@@ -123,7 +130,7 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
               <h1 className="m-3">Name your saved workspace</h1>
               <div className="is-flex m-3">
                 <input
-                  input={input}
+                  value={input}
                   type="text"
                   onChange={(e) => setInput(e.target.value)}
                   className="input"
@@ -158,5 +165,3 @@ function SaveWorkspaceModal({ showModal, setShowModal, match }) {
     </div>
   );
 }
-
-export default SaveWorkspaceModal;

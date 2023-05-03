@@ -2,8 +2,8 @@ import React from 'react';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { Button } from '@mui/material';
 
-export default function DeleteRequestButton(props) {
-  const handleDeleteRequest = (event) => {
+export default function DeleteRequestButton(props: any): JSX.Element {
+  const handleDeleteRequest = (event: any) => {
     console.log(event);
     return null;
   }

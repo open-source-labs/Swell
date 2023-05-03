@@ -3,27 +3,20 @@ import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../new-request/TextCodeArea';
 import grpcController from '../../../controllers/grpcController'
-import store from '../../../toolkit-refactor/store';
+import { NewRequestStreams, $TSFixMe, WindowExt } from '../../../../types';
+import { RootState } from '../../../toolkit-refactor/store';
 
+const { api } = window as unknown as WindowExt;
 
-const { api } = window;
+interface GRPCProtoEntryFormProps {
+  newRequestStreams: NewRequestStreams
+  newRequestStreamsSet: $TSFixMe
+}
 
-// const mapStateToProps = (store) => {
-//   return {
-//     newRequestStreams: store.newRequest.newRequestStreams,
-//   };
-// };
-
-
-// newRequestStreamsSet: (requestStreamsObj) => {
-//   dispatch(newRequestStreamsSet(requestStreamsObj));
-// }
-
-const GRPCProtoEntryForm = (props) => {
+const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
   // const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
-
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
@@ -47,9 +40,12 @@ const GRPCProtoEntryForm = (props) => {
         count: 1,
       });
     }
-
+    
     //listens for imported proto content from main process
-    api.receive('proto-info', (readProto, parsedProto) => {
+    api.receive('proto-info', async (proto, unparsedProtoObj) => {
+     try {
+      const readProto = await JSON.parse(proto);
+      const parsedProto = await JSON.parse(unparsedProtoObj)
       saveChanges(true);
       props.newRequestStreamsSet({
         ...props.newRequestStreams,
@@ -57,12 +53,15 @@ const GRPCProtoEntryForm = (props) => {
         services: parsedProto.serviceArr,
         protoPath: parsedProto.protoPath,
       });
+     } catch (err) {
+      throw new Error('Error receiving parsed uploaded proto');
+     }
     });
     api.send('import-proto');
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
-  const updateProtoBody = (value) => {
+  const updateProtoBody = (value: $TSFixMe) => {
     showError(null);
     props.newRequestStreamsSet({
       ...props.newRequestStreams,
@@ -88,7 +87,7 @@ const GRPCProtoEntryForm = (props) => {
     return
   };
 
-  const isDark = useSelector((state) => state.ui.isDark);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
 

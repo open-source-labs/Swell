@@ -61,6 +61,7 @@ require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
 
+
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
@@ -389,7 +390,12 @@ ipcMain.on('import-collection', (event, args) => {
   });
 });
 
-// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// gRPC ///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION =============== //
+
 ipcMain.on('confirm-clear-history', (event) => {
   const opts = {
     type: 'warning',
@@ -417,14 +423,14 @@ ipcMain.on('import-proto', (event) => {
     .then((filePaths) => {
       if (!filePaths) return undefined;
       // read uploaded proto file & save protoContent in the store
-      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, importedProto) => {
         // handle read error
         if (err) {
           return console.log('import-proto error reading file : ', err);
         }
-        importedProto = file;
+        
         protoParserFunc(importedProto).then((protoObj) => {
-          mainWindow.webContents.send('proto-info', importedProto, protoObj);
+          mainWindow.webContents.send('proto-info', JSON.stringify(importedProto), JSON.stringify(protoObj));
         });
       });
     })
@@ -432,7 +438,6 @@ ipcMain.on('import-proto', (event) => {
       console.log('error in import-proto', err);
     });
 });
-
 
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
@@ -445,6 +450,10 @@ ipcMain.on('protoParserFunc-request', async (event, data) => {
     mainWindow.webContents.send('protoParserFunc-return', { error: err });
   }
 });
+
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// OpenAPI //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 //====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//
 ipcMain.on('import-openapi', (event) => {
@@ -491,7 +500,10 @@ ipcMain.on('openapiParserFunc-request', (event, data) => {
     });
 });
 
-//======================= MOCK SERVER =======================//
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// MOCK SERVER //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process

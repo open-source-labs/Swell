@@ -6,6 +6,15 @@
 * for testing purposes.
 *
 * @todo This test is currently written in JS - to update to TS.
+* @todo For now, Jest is configured to ignore this file.
+* Without tests included here, Jest reports this file as failing because it expects it to have tests.
+* This file has been added to the testPathIgnorePatterns option in jest.config.js.
+* Remove this file from the testPathIgnorePatterns option when tests are added.
+* 
+* Log from github CI jest testing, when file has no tests and is not ignored:
+* FAIL test/__tests__/utils/reduxTestingUtils.tsx
+*  ● Test suite failed to run
+* Your test suite must contain at least one test.
 **/
 
 

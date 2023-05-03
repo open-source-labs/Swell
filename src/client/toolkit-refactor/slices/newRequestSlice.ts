@@ -44,7 +44,7 @@ const initialState: NewRequestStore = {
     bodyIsNew: false,
   },
   newRequestStreams: {
-    streamsArr: [],
+    streamsArr: [], 
     count: 0,
     streamContent: [],
     selectedPackage: null,

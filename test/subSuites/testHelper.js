@@ -161,6 +161,30 @@ const fillGQLRequest = async (
   }
 };
 
+const fillgRPC_Proto = async (page, proto) => {
+  try {
+    
+    // select Body, clear it, and type in query
+    const codeMirror = await page.locator('#grpcProtoEntryTextArea');
+    await codeMirror.click();
+    const gRPC_BodyCode = await codeMirror.locator('.cm-content');
+
+    try {
+      await gRPC_BodyCode.fill('');
+      await gRPC_BodyCode.fill(`${proto}`);
+      await page.locator('#save-proto').click();
+      await page.locator('#Select-Service-button').click();
+      await page.locator('.dropdown-menu >> a >> text=Greeter').click();
+      await page.locator('#Select-Request-button').click();
+    } catch (err) {
+      console.error(err);
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const addAndSend = async (page, n) => {
   try {
     await page.locator('button >> text=Add to Workspace').click();
@@ -202,5 +226,6 @@ module.exports = {
   fillGQLRequest,
   addAndSend,
   clearAndFillTestScriptArea,
+  fillgRPC_Proto,
 };
 

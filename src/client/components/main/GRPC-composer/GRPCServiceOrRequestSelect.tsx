@@ -1,9 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
+import { $TSFixMe } from '../../../../types';
 
-// const classNames = require('classnames');
 
-const GRPCServiceOrRequestSelect = (props) => {
+
+interface Props {
+  value: string;
+  items: string[];
+  onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  defaultTitle: string;
+  id: string;
+}
+
+
+const GRPCServiceOrRequestSelect: React.FC<Props> = (props) => {
   const { 
     value, 
     items, 
@@ -12,11 +22,11 @@ const GRPCServiceOrRequestSelect = (props) => {
     id 
   } = props;
 
-  const [dropdownIsActive, setDropdownIsActive] = useState();
-  const dropdownEl = useRef();
+  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
+  const dropdownEl = useRef<null | HTMLDivElement >(null);
 
   useEffect(() => {
-    const closeDropdown = (event) => {
+    const closeDropdown = (event: $TSFixMe) => {
       if (!dropdownEl.current.contains(event.target)) {
         setDropdownIsActive(false);
       }
@@ -25,7 +35,7 @@ const GRPCServiceOrRequestSelect = (props) => {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  const listItems = [];
+  const listItems: $TSFixMe[] = [];
   items.forEach((itemStr, index) => {
     if (value !== itemStr) {
       listItems.push(
