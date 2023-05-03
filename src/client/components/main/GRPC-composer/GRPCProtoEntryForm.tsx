@@ -42,7 +42,10 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
     }
     
     //listens for imported proto content from main process
-    api.receive('proto-info', (readProto, parsedProto) => {
+    api.receive('proto-info', async (proto, unparsedProtoObj) => {
+     try {
+      const readProto = await JSON.parse(proto);
+      const parsedProto = await JSON.parse(unparsedProtoObj)
       saveChanges(true);
       props.newRequestStreamsSet({
         ...props.newRequestStreams,
@@ -50,6 +53,9 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
         services: parsedProto.serviceArr,
         protoPath: parsedProto.protoPath,
       });
+     } catch (err) {
+      throw new Error('Error receiving parsed uploaded proto');
+     }
     });
     api.send('import-proto');
   };

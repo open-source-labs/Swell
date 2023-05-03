@@ -423,14 +423,14 @@ ipcMain.on('import-proto', (event) => {
     .then((filePaths) => {
       if (!filePaths) return undefined;
       // read uploaded proto file & save protoContent in the store
-      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, importedProto) => {
         // handle read error
         if (err) {
           return console.log('import-proto error reading file : ', err);
         }
-        importedProto = file;
+        
         protoParserFunc(importedProto).then((protoObj) => {
-          mainWindow.webContents.send('proto-info', importedProto, protoObj);
+          mainWindow.webContents.send('proto-info', JSON.stringify(importedProto), JSON.stringify(protoObj));
         });
       });
     })
