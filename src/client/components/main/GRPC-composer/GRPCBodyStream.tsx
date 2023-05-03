@@ -2,11 +2,24 @@
 import React, { useState, useEffect } from 'react';
 import TextCodeArea from '../new-request/TextCodeArea';
 
-const GRPCBodyStream = (props) => {
-  const [showError, setError] = useState(null);
+interface GRPCBodyStreamProps {
+  newRequestStreams: any;
+  newRequestStreamsSet: any;
+  selectedPackage: string | null;
+  selectedService: string | null;
+  selectedRequest: string | null;
+  selectedStreamingType: string | null;
+  changeHandler: (streamID: number, value: string) => void;
+  stream: any;
+  streamNum: number;
+  history: any;
+}
+
+const GRPCBodyStream: React.FC<GRPCBodyStreamProps>  = (props) => {
+  const [showError, setError] = useState<string | null>(null);
   // event handler that allows the client to delete a stream body
   // eslint-disable-next-line lines-between-class-members
-  const deleteStream = (id) => {
+  const deleteStream = (id: number) => {
     if (props.newRequestStreams.streamsArr.length === 1) {
       setError('Error: Must have at least one stream body');
       return;

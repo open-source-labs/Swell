@@ -1,12 +1,28 @@
 /* eslint-disable  */
 // Note: Do not enable eslint for this file because it will change the useEffect dependencies and break the tests.
 import React, { useState, useEffect } from 'react';
-import GRPCBodyEntryForm from './GRPCBodyEntryForm.jsx';
-import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect.jsx';
+import GRPCBodyEntryForm from './GRPCBodyEntryForm';
+import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect';
+import { $TSFixMe, NewRequestStreams } from '../../../../types.js';
 
-const GRPCAutoInputForm = (props) => {
-  //component state for toggling show/hide
-  const [show, toggleShow] = useState(true);
+interface Props {
+  newRequestStreams: {
+    selectedService: string | null;
+    selectedRequest: string | null;
+    services: any[];
+    streamsArr: any[];
+    streamContent: string[];
+    selectedPackage: string | null;
+    selectedStreamingType: string | null;
+    selectedServiceObj: any;
+    protoContent: string | null;
+    initialQuery: string;
+  };
+  newRequestStreamsSet: (arg: NewRequestStreams) => void;
+}
+
+const GRPCAutoInputForm: React.FC<Props> = (props) => {
+
   //component state for service and request dropdown
   const [serviceOption, setServiceOption] = useState('Select Service');
   const [requestOption, setRequestOption] = useState('Select Request');
@@ -84,15 +100,15 @@ const GRPCAutoInputForm = (props) => {
     if (!selectedRequest || !selectedServiceObj) return;
     //find rpc object that matches selectedRequest name
     const rpc = selectedServiceObj.rpcs.find(
-      (rpc) => rpc.name === selectedRequest
+      (rpc: $TSFixMe) => rpc.name === selectedRequest
     );
     //find message object that matches rpc request name
-    const message = selectedServiceObj.messages.find((msg) => {
+    const message = selectedServiceObj.messages.find((msg: $TSFixMe) => {
       if (msg && msg.name === rpc.req) return msg;
     });
 
     //declare empty results obj that will become the initial query
-    const results = {};
+    const results: $TSFixMe = {};
 
     if (message) {
       // push each key/value pair of the message definition into the results obj
@@ -102,7 +118,7 @@ const GRPCAutoInputForm = (props) => {
           for (const submess of selectedServiceObj.messages) {
             if (submess.name === message.def[key].dependent) {
               // define obj for the submessage definition
-              const subObj = {};
+              const subObj: $TSFixMe = {};
               for (const subKey in submess.def) {
                 subObj[subKey] = submess.def[subKey].type
                   .slice(5)
@@ -148,9 +164,9 @@ const GRPCAutoInputForm = (props) => {
 
   //default options shown for services and request dropdowns
   // const servicesList = ['UNARY', 'CLIENT STREAM', 'SERVER STREAM', 'BI-DIRECTIONAL'];
-  const servicesList = [];
+  const servicesList: string[] = [];
   // const rpcsList = ['UNARY', 'CLIENT STREAM', 'SERVER STREAM', 'BI-DIRECTIONAL'];
-  const rpcsList = [];
+  const rpcsList: string[] = [];
 
   // autopopulates the service dropdown list
   if (services) {
@@ -160,7 +176,7 @@ const GRPCAutoInputForm = (props) => {
   }
   // autopopulates the request dropdown list
   if (selectedServiceObj) {
-    for (let i = 0; i < selectedServiceObj.rpcs.length; i++) {
+    for (let i: number = 0; i < selectedServiceObj.rpcs.length; i++) {
       rpcsList.push(selectedServiceObj.rpcs[i].name);
     }
   }

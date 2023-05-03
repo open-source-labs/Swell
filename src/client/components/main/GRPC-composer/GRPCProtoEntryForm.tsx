@@ -3,11 +3,17 @@ import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../new-request/TextCodeArea';
 import grpcController from '../../../controllers/grpcController'
+import { NewRequestStreams, $TSFixMe, WindowExt } from '../../../../types';
+import { RootState } from '../../../toolkit-refactor/store';
 
+const { api } = window as unknown as WindowExt;
 
-const { api } = window;
+interface GRPCProtoEntryFormProps {
+  newRequestStreams: NewRequestStreams
+  newRequestStreamsSet: $TSFixMe
+}
 
-const GRPCProtoEntryForm = (props) => {
+const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
   // const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
@@ -34,7 +40,7 @@ const GRPCProtoEntryForm = (props) => {
         count: 1,
       });
     }
-
+    
     //listens for imported proto content from main process
     api.receive('proto-info', (readProto, parsedProto) => {
       saveChanges(true);
@@ -49,7 +55,7 @@ const GRPCProtoEntryForm = (props) => {
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
-  const updateProtoBody = (value) => {
+  const updateProtoBody = (value: $TSFixMe) => {
     showError(null);
     props.newRequestStreamsSet({
       ...props.newRequestStreams,
@@ -75,7 +81,7 @@ const GRPCProtoEntryForm = (props) => {
     return
   };
 
-  const isDark = useSelector((state) => state.ui.isDark);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
 

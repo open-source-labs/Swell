@@ -8,9 +8,10 @@ import historyController from '../../../controllers/historyController';
  * @todo Refactor all of the below components to use MUI, place them in a new
  * "components" folder
  */
-import GRPCTypeAndEndpointEntryForm from './GRPCTypeAndEndpointEntryForm.jsx';
+
+import GRPCTypeAndEndpointEntryForm from './GRPCTypeAndEndpointEntryForm';
 import HeaderEntryForm from '../new-request/HeaderEntryForm';
-import GRPCProtoEntryForm from './GRPCProtoEntryForm.jsx';
+import GRPCProtoEntryForm from './GRPCProtoEntryForm';
 import NewRequestButton from '../new-request/NewRequestButton';
 import TestEntryForm from '../new-request/TestEntryForm';
 
@@ -117,7 +118,7 @@ export default function GRPCComposer(props: $TSFixMe) {
     const grpcStream = document.getElementById('stream').innerText;
 
     // create reqres obj to be passed to controller for further actions/tasks
-    const reqRes = {
+    const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
       protocol: '',
