@@ -28,26 +28,22 @@ const TRPCMethodAndEndpointEntryForm = () => {
   }, []);
 
   const populateUrl = (request: string) => {
+    let PROTOCOL
     const urlAction: string = request;
+    
     if (urlAction === 'QUERY' || urlAction === 'MUTATE') {
-      dispatch(
-        fieldsReplaced({
-          ...requestFields,
-          url: requestFields.restUrl,
-          method: urlAction,
-          protocol: 'http://',
-        })
-      );
+      PROTOCOL = 'http://'
     } else if (urlAction === 'SUBSCRIPTION') {
-      dispatch(
-        fieldsReplaced({
-          ...requestFields,
-          url: requestFields.wsUrl,
-          method: urlAction,
-          protocol: 'ws://',
-        })
-      );
+      PROTOCOL = 'ws://'
     }
+    dispatch(
+      fieldsReplaced({
+        ...requestFields,
+        url: requestFields.restUrl,
+        method: urlAction,
+        protocol: PROTOCOL,
+      })
+    );
   };
 
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

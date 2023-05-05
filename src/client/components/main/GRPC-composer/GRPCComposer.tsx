@@ -10,10 +10,10 @@ import historyController from '../../../controllers/historyController';
  */
 
 import GRPCTypeAndEndpointEntryForm from './GRPCTypeAndEndpointEntryForm';
-import HeaderEntryForm from '../new-request/HeaderEntryForm';
+import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import GRPCProtoEntryForm from './GRPCProtoEntryForm';
-import NewRequestButton from '../new-request/NewRequestButton';
-import TestEntryForm from '../new-request/TestEntryForm';
+import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
+import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 
 import { $TSFixMe, ReqRes } from '../../../../types.js';
 

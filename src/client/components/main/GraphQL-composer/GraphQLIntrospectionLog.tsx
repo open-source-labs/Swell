@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { GraphQLSchema } from 'graphql';
 
 import graphQLController from '../../../controllers/graphQLController';
-import TextCodeArea from '../new-request/TextCodeArea';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 interface IntrospectionData {
   schemaSDL: string | null;

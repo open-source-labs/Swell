@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GRPCBodyStream from './GRPCBodyStream';
-import { $TSFixMe, NewRequestStreams } from '../../../../types.js';
+import { $TSFixMe, NewRequestStreams } from '../../../../types';
 
 interface Props {
   newRequestStreams: NewRequestStreams;

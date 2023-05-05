@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
 
-import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
+import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
 
 import {
   composerFieldsReset,
@@ -36,7 +36,7 @@ import OpenAPIComposer from './OpenAPI-composer/OpenAPIComposer';
 import WebhookComposer from './WebHook-composer/WebhookComposer';
 import TRPCComposer from './TRPC-composer/TRPCComposer';
 import MockServerComposer from './MockServer-composer/MockServerComposer';
-import ResponsePaneContainer from './response/ResponsePaneContainer';
+import ResponsePaneContainer from './response-composer/ResponsePaneContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';

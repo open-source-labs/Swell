@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../../controllers/historyController';
 // Import local components
+import { ReqRes, $TSFixMe } from '../../../../types';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -10,12 +11,12 @@ import historyController from '../../../controllers/historyController';
  */
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
-import NewRequestButton from '../new-request/NewRequestButton';
-import TestEntryForm from '../new-request/TestEntryForm';
+import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
+import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
 
-export default function WebRTCComposer(props) {
+export default function WebRTCComposer(props: $TSFixMe) {
   const {
     composerFieldsReset,
     fieldsReplaced,
@@ -50,7 +51,7 @@ export default function WebRTCComposer(props) {
   } = props;
 
   const addNewRequest = () => {
-    const reqRes = {
+    const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
       protocol,
@@ -75,7 +76,7 @@ export default function WebRTCComposer(props) {
         bodyType,
         bodyVariables: bodyVariables || '',
         rawType,
-        network: 'webrtc',
+        network: 'webRtc',
         restUrl,
         webrtcUrl,
       },

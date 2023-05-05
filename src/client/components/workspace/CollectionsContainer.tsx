@@ -7,12 +7,12 @@ import { connect, useSelector } from 'react-redux';
 import {
   reqResUpdated,
   reqResItemDeleted,
-} from './reqResSlice';
+} from '../../toolkit-refactor/slices/reqResSlice';
 
-import SingleReqResContainer from './SingleReqResContainer.jsx';
+import SingleReqResContainer from './CollectionElementContainer';
 import ReqResCtrl from '../../controllers/reqResController';
-import { RootState, AppDispatch } from '../store';
-import { ReqRes, $TSFixMe } from '../../../types'
+import { RootState, AppDispatch } from '../../toolkit-refactor/store';
+import { ReqRes, $TSFixMe  } from '../../../types';
 
 /**@todo change to use hooks? */
 const mapStateToProps = (store: RootState) => ({

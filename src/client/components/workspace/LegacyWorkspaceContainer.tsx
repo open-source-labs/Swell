@@ -8,7 +8,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReqResCtrl from '../../controllers/reqResController';
-import ReqResContainer from '../../toolkit-refactor/reqRes/ReqResContainer';
+import ReqResContainer from './CollectionsContainer';
 import SaveWorkspaceModal from './modals/SaveWorkspaceModal';
 // Import MUI components
 

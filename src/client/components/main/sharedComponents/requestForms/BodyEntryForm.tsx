@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import WWWForm from './WWWForm';
-import BodyTypeSelect from './BodyTypeSelect';
-import JSONTextArea from './JSONTextArea';
-import RawBodyTypeSelect from './RawBodyTypeSelect';
-import JSONPrettify from './JSONPrettify';
-import TextCodeArea from './TextCodeArea';
+import BodyTypeSelect from '../requestButtons/BodyTypeSelect';
+import JSONTextArea from '../JSONTextArea';
+import RawBodyTypeSelect from '../requestButtons/RawBodyTypeSelect';
+import JSONPrettify from '../requestButtons/JSONPrettifyButton';
+import TextCodeArea from '../TextCodeArea';
 
-import { NewRequestBody } from '../../../../types';
+import { NewRequestBody } from '../../../../../types';
 // import { Interface } from 'readline';
 
 // import React, { useState, useEffect } from 'react';
@@ -142,11 +142,6 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
     </div>
   );
 };
-
-// BodyEntryForm.defaultProps = {
-//   isMockServer: false,
-//   placeholder: 'Enter body here',
-// }
 
 export default BodyEntryForm;
 

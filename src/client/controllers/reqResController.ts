@@ -6,7 +6,7 @@ import {
   reqResUpdated,
   reqResReplaced,
   reqResCleared,
-} from '../toolkit-refactor/reqRes/reqResSlice';
+} from '../toolkit-refactor/slices/reqResSlice';
 import {
   groupCleared,
   graphCleared,

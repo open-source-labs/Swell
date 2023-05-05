@@ -7,25 +7,25 @@ import connectionController from '../../controllers/reqResController';
 import testSDPConnection from '../../controllers/webrtcPeerController';
 // import RestRequestContent from '../../components/legacy-components/display/RestRequestContent';
 // import GraphQLRequestContent from '../../components/legacy-components/display/GraphQLRequestContent';
-import WebRTCRequestContent from '../../components/legacy-components/display/WebRTCRequestContent';
+// import WebRTCRequestContent from '../../components/legacy-components/display/WebRTCRequestContent';
 // import GRPCRequestContent from '../../components/legacy-components/display/GRPCRequestContent';
 // import OpenAPIRequestContent from '../../components/legacy-components/display/OpenAPIRequestContent';
 
-import { responseDataSaved } from './reqResSlice';
-import { fieldsReplaced } from '../slices/newRequestFieldsSlice';
+import { responseDataSaved } from '../../toolkit-refactor/slices/reqResSlice';
+import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
 import {
   newRequestSSESet,
   newRequestCookiesSet,
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../slices/newRequestSlice';
+} from '../../toolkit-refactor/slices/newRequestSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
-} from '../slices/uiSlice';
+} from '../../toolkit-refactor/slices/uiSlice';
 
-import { useAppDispatch } from '../store';
+import { useAppDispatch } from '../../toolkit-refactor/store';
 console.log('test')
 const SingleReqResContainer = (props) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -82,10 +82,10 @@ const SingleReqResContainer = (props) => {
         method: content.request.method || 'GET',
         protocol: content.protocol || 'http://',
         url: content.url,
-        wsUrl: content.request.wsUrl,
         graphQL: content.graphQL || false,
         gRPC: content.gRPC || false,
         network,
+        wsUrl: content.request.wsUrl,
         webrtcData: content.webrtcData,
       };
     }
@@ -121,7 +121,7 @@ const SingleReqResContainer = (props) => {
     let headerDeeperCopy;
 
     if (content.request.headers) {
-      headerDeeperCopy = JSON.parse(JSON.stringify(content.request.headers));
+      headerDeeperCopy = structuredClone(content.request.headers)
       headerDeeperCopy.push({
         id: content.request.headers.length + 1,
         active: false,
@@ -133,7 +133,7 @@ const SingleReqResContainer = (props) => {
     let cookieDeeperCopy;
 
     if (content.request.cookies && !/ws/.test(protocol)) {
-      cookieDeeperCopy = JSON.parse(JSON.stringify(content.request.cookies));
+      cookieDeeperCopy = structuredClone(content.request.cookies)
       cookieDeeperCopy.push({
         id: content.request.cookies.length + 1,
         active: false,

@@ -9,15 +9,15 @@ import historyController from '../../../controllers/historyController';
  * @todo Refactor all of the below components to use MUI, place them in a new
  * "components" folder
  */
-import HeaderEntryForm from '../new-request/HeaderEntryForm';
+import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import GraphQLMethodAndEndpointEntryForm from './GraphQLMethodAndEndpointEntryForm';
-import CookieEntryForm from '../new-request/CookieEntryForm';
+import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
 import GraphQLBodyEntryForm from './GraphQLBodyEntryForm';
 import GraphQLVariableEntryForm from './GraphQLVariableEntryForm';
 import GraphQLIntrospectionLog from './GraphQLIntrospectionLog';
-import NewRequestButton from '../new-request/NewRequestButton';
-import TestEntryForm from '../new-request/TestEntryForm';
-import TestContainer from '../new-request/stressTest/TestContainer';
+import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
+import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';

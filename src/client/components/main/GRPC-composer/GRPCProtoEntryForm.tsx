@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
-import TextCodeArea from '../new-request/TextCodeArea';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 import grpcController from '../../../controllers/grpcController'
 import { NewRequestStreams, $TSFixMe, WindowExt } from '../../../../types';
 import { RootState } from '../../../toolkit-refactor/store';

@@ -6,7 +6,7 @@
 import PropTypes from 'prop-types';
 
 import React, { useState, useRef, useEffect } from 'react';
-import dropDownArrow from '../../../../assets/icons/caret-down.svg';
+import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
 
 interface RawBodyTypeSelectProps {
   newRequestBodySet: (value: any) => void;

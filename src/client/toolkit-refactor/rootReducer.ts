@@ -4,7 +4,7 @@ import UiReducer from './slices/uiSlice';
 import HistoryReducer from './slices/historySlice';
 import GraphPointsReducer from './slices/graphPointsSlice';
 import CollectionsReducer from './slices/collectionsSlice';
-import ReqResReducer from '../toolkit-refactor/reqRes/reqResSlice';
+import ReqResReducer from './slices/reqResSlice';
 import NewRequestReducer from './slices/newRequestSlice';
 import NewRequestFieldsReducer from './slices/newRequestFieldsSlice';
 import NewRequestOpenApiReducer from './slices/newRequestOpenApiSlice';
