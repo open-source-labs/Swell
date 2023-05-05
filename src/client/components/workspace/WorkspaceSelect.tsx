@@ -3,7 +3,7 @@ import { Collection, ReqRes, WorkspaceContainerProps } from '../../../types';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
 
 import {
   Box,

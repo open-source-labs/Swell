@@ -1,7 +1,7 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
-import SendRequestButton from '../new-request/SendRequestButton';
+import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 // Import local components
 import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 import TRPCBodyEntryForm from './TRPCBodyEntryForm';
@@ -9,7 +9,7 @@ import TRPCBodyEntryForm from './TRPCBodyEntryForm';
 import { useSelector, useDispatch } from 'react-redux';
 // Import Actions from RTK slice
 import { newRequestBodySet } from '../../../toolkit-refactor/slices/newRequestSlice';
-import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
 
 // Import MUI components
 import { Box } from '@mui/material';

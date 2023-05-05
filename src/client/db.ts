@@ -1,5 +1,3 @@
-// added to asana
-
 // Dexie is a library the makes your component mirror the data in real time
 
 /*

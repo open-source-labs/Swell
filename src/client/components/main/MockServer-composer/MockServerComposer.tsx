@@ -9,9 +9,9 @@ import { newRequestFieldsByProtocol } from '../../../toolkit-refactor/slices/new
 
 // forms
 import RestMethodAndEndpointEntryForm from '../http2-composer/RestMethodAndEndpointEntryForm';
-import HeaderEntryForm from '../new-request/HeaderEntryForm';
-import CookieEntryForm from '../new-request/CookieEntryForm';
-import BodyEntryForm from '../new-request/BodyEntryForm';
+import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
+import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
+import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 
 // mui
 import { Box, Button, Modal, Typography } from '@mui/material';

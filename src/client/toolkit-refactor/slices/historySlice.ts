@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { reqResItemAdded } from '../reqRes/reqResSlice';
+import { reqResItemAdded } from './reqResSlice';
 
 import { $NotUsed, ReqRes } from '../../../types';
 import { format, parseISO } from 'date-fns';

@@ -1,7 +1,7 @@
 import {
   reqResUpdated,
   responseDataSaved,
-} from '../toolkit-refactor/reqRes/reqResSlice';
+} from '../toolkit-refactor/slices/reqResSlice';
 import { appDispatch } from '../toolkit-refactor/store';
 
 // https://ourcodeworld.com/articles/read/1526/how-to-test-online-whether-a-stun-turn-server-is-working-properly-or-not

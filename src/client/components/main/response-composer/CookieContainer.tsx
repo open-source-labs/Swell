@@ -17,15 +17,7 @@ export default function CookieContainer({ className, cookie }: CookieProps) {
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
     if (!key || !value) return null;
-    if (showCookie === true && index > 1) {
-      return (
-        <tr key={index}>
-          <td>{key}</td>
-          <td className="table-value">{value.toString()}</td>
-        </tr>
-      );
-    }
-    if (index <= 1) {
+    if ((showCookie === true && index > 1) || (index <= 1)) {
       return (
         <tr key={index}>
           <td>{key}</td>

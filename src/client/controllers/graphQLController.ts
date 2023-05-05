@@ -22,7 +22,7 @@ import { introspectionDataChanged } from '../toolkit-refactor/slices/introspecti
 import {
   responseDataSaved,
   reqResUpdated,
-} from '../toolkit-refactor/reqRes/reqResSlice';
+} from '../toolkit-refactor/slices/reqResSlice';
 import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;

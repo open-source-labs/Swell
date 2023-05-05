@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import TextCodeArea from './TextCodeArea';
-import RestTestSnippets from './stressTest/RestTestSnippets';
-import WebsocketTestSnippets from './stressTest/WebsocketTestSnippets';
+import TextCodeArea from '../TextCodeArea';
+import RestTestSnippets from '../stressTest/RestTestSnippets';
+import WebsocketTestSnippets from '../stressTest/WebsocketTestSnippets';
 
 interface Props {
   isWebSocket: boolean;

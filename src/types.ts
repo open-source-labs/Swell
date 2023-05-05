@@ -132,7 +132,7 @@ export interface WebsocketMessages {
  * Not sure if this could cause things to break, though.
  */
 export type NewRequestFields = {
-  protocol: string;
+  protocol: string | undefined;
   restUrl: string;
   wsUrl: string;
   gqlUrl: string;

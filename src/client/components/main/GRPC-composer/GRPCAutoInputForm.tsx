@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import GRPCBodyEntryForm from './GRPCBodyEntryForm';
 import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect';
-import { $TSFixMe, NewRequestStreams } from '../../../../types.js';
+import { $TSFixMe, NewRequestStreams } from '../../../../types';
 
 interface Props {
   newRequestStreams: {

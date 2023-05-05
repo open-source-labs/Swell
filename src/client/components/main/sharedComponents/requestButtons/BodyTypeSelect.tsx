@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-/** @todo Remove propTypes check when component is converted to TypeScript*/
-import PropTypes from 'prop-types';
-import dropDownArrow from '../../../../assets/icons/caret-down.svg';
+import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
 
 interface Props {
   newRequestBodySet: (value: any) => void;
@@ -133,10 +131,5 @@ const BodyTypeSelect = (props: Props) => {
   );
 };
 
-/** @todo Remove propTypes check when component is converted to TypeScript*/
-// BodyTypeSelect.propTypes = {
-//   newRequestBody: PropTypes.object.isRequired,
-//   newRequestBodySet: PropTypes.func.isRequired,
-// };
 
 export default BodyTypeSelect;

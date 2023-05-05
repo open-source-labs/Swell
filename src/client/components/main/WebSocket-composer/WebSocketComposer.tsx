@@ -8,8 +8,8 @@ import historyController from '../../../controllers/historyController';
  * "components" folder
  */
 import WSEndpointEntryForm from './WSEndpointEntryForm';
-import NewRequestButton from '../new-request/NewRequestButton';
-import TestEntryForm from '../new-request/TestEntryForm';
+import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
+import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
 

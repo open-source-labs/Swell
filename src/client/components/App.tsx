@@ -7,7 +7,7 @@ import historyController from '../controllers/historyController';
 import collectionsController from '../controllers/collectionsController';
 
 // Local components
-import UpdatePopUpContainer from './legacy-components/UpdatePopUpContainer';
+// import UpdatePopUpContainer from './legacy-components/UpdatePopUpContainer';
 import HistoryOrWorkspaceContainer from './workspace/HistoryOrWorkspaceContainer';
 import NavBarContainer from './navbar/NavBarContainer';
 import MainContainer from './main/MainContainer';
@@ -67,7 +67,7 @@ const App = () => {
         </Split>
 
         <ErrorBoundary>
-          <UpdatePopUpContainer />
+          {/* <UpdatePopUpContainer /> */}
         </ErrorBoundary>
       </HashRouter>
     </div>

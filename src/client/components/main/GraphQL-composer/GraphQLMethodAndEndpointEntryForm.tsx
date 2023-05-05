@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { GraphQLSchema } from 'graphql';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import GraphQLBodyEntryForm from './GraphQLBodyEntryForm';
-import GraphQLIntrospectionLog from './GraphQLIntrospectionLog';
+// import GraphQLBodyEntryForm from './GraphQLBodyEntryForm';
+// import GraphQLIntrospectionLog from './GraphQLIntrospectionLog';
 
-import TextCodeArea from '../new-request/TextCodeArea';
+// import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 interface IntrospectionData {
   schemaSDL: string | null;

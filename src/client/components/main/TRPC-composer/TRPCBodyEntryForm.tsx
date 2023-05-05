@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
-import TextCodeArea from '../new-request/TextCodeArea';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 /**
  * renders entry form for TRPC request
  */
+
+
 const TRPCBodyEntryForm = (props: any) => {
   const { newRequestBodySet } = props;
   const dispatch = useDispatch();
