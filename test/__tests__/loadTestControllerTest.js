@@ -2,7 +2,7 @@ import store, { appDispatch } from '../../src/client/toolkit-refactor/store';
 import {
   responseDataSaved,
   reqResUpdated,
-} from '../../src/client/toolkit-refactor/reqRes/reqResSlice';
+} from '../../src/client/toolkit-refactor/slices/reqResSlice';
 // import { ReqRes } from '../../types';
 import { LoadTestController } from '../../src/client/controllers/LoadTestController';
 // import { LoadTestResult } from '../components/main/new-request/stressTest/LoadTest';
