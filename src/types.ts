@@ -103,7 +103,7 @@ export interface Message {
 }
 
 export interface NewRequestBody {
-  bodyContent: string;
+  bodyContent: string | undefined;
   bodyVariables: string;
   bodyType: string;
   rawType: string;
