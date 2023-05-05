@@ -67,7 +67,7 @@ const App = () => {
         </Split>
 
         <ErrorBoundary>
-          <UpdatePopUpContainer />
+          {/* <UpdatePopUpContainer /> */}
         </ErrorBoundary>
       </HashRouter>
     </div>
