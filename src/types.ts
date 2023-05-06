@@ -123,6 +123,20 @@ export interface WebsocketMessages {
   timeReceived: number;
 }
 
+interface NewRequestCookies {
+  cookiesArr: CookieOrHeader[];
+  count: number;
+};
+
+interface NewRequestHeaders {
+headersArr: CookieOrHeader[];
+count: number;
+};
+
+export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void
+export type NewRequestCookiesSet = (obj: NewRequestCookies) => void
+export type NewRequestBodySet = (obj: NewRequestBody) => void
+
 /**
  * Defines the type constract for the NewRequestFields state object.
  *

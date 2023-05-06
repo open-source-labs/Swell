@@ -5,7 +5,7 @@
 import React from 'react';
 
 // Local components
-import LegacyWorkspaceContainer from './LegacyWorkspaceContainer';
+import WorkspaceContainerButtons from './buttons/WorkspaceContainerButtons';
 import WorkspaceSelect from './WorkspaceSelect';
 import DeleteWorkspaceButton from './buttons/DeleteWorkspaceButton';
 import ImportExportWorkspaceButton from './buttons/ImportExportWorkspaceButton';
@@ -32,7 +32,7 @@ export default function WorkspaceContainer(props: WorkspaceContainerProps) {
       <Box className="collections-container">
         <Typography>Requests</Typography>
         <Divider orientation="horizontal" />
-        <LegacyWorkspaceContainer />
+        <WorkspaceContainerButtons />
       </Box>
     </Box>
   );

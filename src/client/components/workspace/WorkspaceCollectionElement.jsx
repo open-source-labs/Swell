@@ -21,7 +21,7 @@ import {
 
 import { useAppDispatch } from '../../toolkit-refactor/store';
 console.log('test')
-const SingleReqResContainer = (props) => {
+const WorkspaceCollectionElement = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -254,7 +254,7 @@ const SingleReqResContainer = (props) => {
               className="is-clickable is-primary-link mr-3"
               onClick={copyToComposer}
             >
-              Copy to Composer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              Copy to Composer
             </div>
           )}
         </div>
@@ -341,4 +341,4 @@ const SingleReqResContainer = (props) => {
     </div>
   );
 };
-export default SingleReqResContainer;
+export default WorkspaceCollectionElement;

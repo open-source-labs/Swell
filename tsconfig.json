@@ -27,7 +27,7 @@
     "./src/**/*.tsx",
     "./main_process/*.ts",
     "src/assets/**/*.ts",
-    "src/client/components/workspace/CollectionElementContainer.jsx",
+    "src/client/components/workspace/WorkspaceCollectionElement.jsx",
     "src/client/components/main/sharedComponents/requestForms/ContentReqRowComposer.tsx",
     "src/client/components/main/sharedComponents/requestForms/HeaderEntryForm.tsx",
     "src/client/components/main/sharedComponents/requestForms/CookieEntryForm.tsx",

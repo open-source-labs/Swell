@@ -9,7 +9,7 @@ import {
   reqResItemDeleted,
 } from '../../toolkit-refactor/slices/reqResSlice';
 
-import SingleReqResContainer from './CollectionElementContainer';
+import WorkspaceCollectionElement from './WorkspaceCollectionElement';
 import ReqResCtrl from '../../controllers/reqResController';
 import { RootState, AppDispatch } from '../../toolkit-refactor/store';
 import { ReqRes, $TSFixMe  } from '../../../types';
@@ -29,13 +29,13 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
 });
 
-const ReqResContainer = (props: $TSFixMe) => {
+const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
   const { reqResArray, reqResItemDeleted, updated, displaySchedule } = props;
 
   /**@todo maybe access functions (last two) directly from container instead of passing through props? */
   const reqResMapped = reqResArray.map((reqRes: ReqRes, index: $TSFixMe) => {
     return (
-      <SingleReqResContainer
+      <WorkspaceCollectionElement
         className="reqResChild"
         content={reqRes}
         key={index}
@@ -72,4 +72,4 @@ const ReqResContainer = (props: $TSFixMe) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReqResContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceCollectionsContainer);
