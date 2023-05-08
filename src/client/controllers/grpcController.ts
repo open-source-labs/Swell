@@ -19,7 +19,7 @@ const grpcController: $TSFixMe = {
             // Set up the listener when for parsed protos entered into textFieldArea
             api.removeAllListeners('protoParserFunc-return');
             
-            api.receive('protoParserFunc-return', async function parsedProtoRes(data: $TSFixMe) {
+            api.receive('protoParserFunc-return', async function parsedProtoRes(data: string) {
                 try{
                     const result: $TSFixMe = await JSON.parse(data)
                     

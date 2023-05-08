@@ -98,6 +98,7 @@ const newRequestOpenApiSlice = createSlice({
       _state: $NotUsed,
       action: PayloadAction<NewRequestOpenApi>
     ) {
+      console.log('OpenAPI slice Request Replaced',_state, action)
       return action.payload;
     },
 

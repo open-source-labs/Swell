@@ -7,9 +7,7 @@ export default function OpenAPIServerForm({
   openApiRequestsReplaced,
 }) {
   const onChangeUpdateHeader = (id, field, value) => {
-    const serversDeepCopy = JSON.parse(
-      JSON.stringify(newRequestsOpenAPI.openapiMetadata.serverUrls)
-    );
+    const serversDeepCopy = structuredClone(newRequestsOpenAPI.openapiMetadata.serverUrls);
     // find server to update
     let indexToBeUpdated;
     for (let i = 0; i < serversDeepCopy.length; i += 1) {
@@ -34,6 +32,8 @@ export default function OpenAPIServerForm({
 
   const serversArr = newRequestsOpenAPI?.openapiMetadata?.serverUrls?.map(
     (server, index) => {
+
+      console.log(' OpenApi Server form -> newRequestsOpenAPI',newRequestsOpenAPI)
       const contentTypeServer = {
         id: Math.random() * 1000000,
         active: true,

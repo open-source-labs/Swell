@@ -73,9 +73,7 @@ export default function WebhookComposer(props: $TSFixMe) {
   let socket: $TSFixMe
   if (serverStatus) {
     socket = io('http://localhost:3000');
-  } else if (!serverStatus) {
-    socket = undefined
-  }
+  } 
 
   const copyClick = () => {
     console.log('copying');
@@ -85,7 +83,7 @@ export default function WebhookComposer(props: $TSFixMe) {
   useEffect(() => {
     if (socket !== undefined) {
       socket.on('response', (event) => {
-        console.log('this is the event in webho', event.headers);
+        console.log('this is the event in webhook', event.headers);
         const protocol = 'I do not know what this is for?';
         console.log('this is event.headers', event.headers['user-agent']);
         // url = event.headers;
@@ -103,7 +101,7 @@ export default function WebhookComposer(props: $TSFixMe) {
           url,
           timeSent: null,
           timeReceived: null,
-          connection: 'farts',
+          // connection: 'farts',
           connectionType: null,
           checkSelected: false,
           request: {

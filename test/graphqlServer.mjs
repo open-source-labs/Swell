@@ -91,6 +91,7 @@ const resolvers = {
       }, // subscribe to changes in a topic
     },
   },
+  
   Link: {
     id: (parent) => parent.id,
     description: (parent) => parent.description,

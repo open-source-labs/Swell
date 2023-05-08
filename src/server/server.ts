@@ -2,6 +2,7 @@ import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
 import ngrok from 'ngrok';
 import dotenv from 'dotenv';
+import { $TSFixMe } from '../types';
 dotenv.config();
 
 const port: number = 3000;
@@ -32,10 +33,10 @@ const io = require('socket.io')(server, {
 // https://stackoverflow.com/questions/47249009/nodejs-socket-io-in-a-router-page
 app.set('socketio', io);
 
-io.on('connection', (client) => {
+io.on('connection', (client: $TSFixMe) => {
   console.log('established websocket connection');
 
-  client.on('message', (message) => {
+  client.on('message', (message: string) => {
     console.log('message received: ', message);
   });
 });
@@ -51,15 +52,15 @@ app.use(cors({ origin: 'http://localhost:8080' }));
 /** @todo previous groups decided to use ngrok to add live collaboration session but could not finished */
 app.post('/webhookServer', (req: Request, res: Response) => {
   console.log('Server Is On!');
-  ngrok
-    .connect({
-      proto: 'http',
-      addr: '3000',
-    })
-    .then((url) => {
-      console.log(`ngrok tunnel opened at: ${url}/webhook`);
-      return res.status(200).json(url);
-    });
+  // ngrok
+  //   .connect({
+  //     proto: 'http',
+  //     addr: '3000',
+  //   })
+  //   .then((url) => {
+  //     console.log(`ngrok tunnel opened at: ${url}/webhook`);
+  //     return res.status(200).json(url);
+  //   });
 });
 
 /** @todo webhook is not working on swell */
