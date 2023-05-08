@@ -6,12 +6,12 @@ import historyController from '../../../controllers/historyController';
 
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import OpenAPIEntryForm from './OpenAPIEntryForm';
-import OpenAPIDocumentEntryForm from './OpenAPIDocumentEntryForm.jsx';
-import OpenAPIMetadata from './OpenAPIMetadata.jsx';
-import OpenAPIServerForm from './OpenAPIServerForm.jsx';
+import OpenAPIDocumentEntryForm from './OpenAPIDocumentEntryForm';
+import OpenAPIMetadata from './OpenAPIMetadata';
+import OpenAPIServerForm from './OpenAPIServerForm';
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe, ReqRes } from '../../../../types.js';
+import { $TSFixMe, ReqRes } from '../../../../types';
 
 export default function OpenAPIComposer(props: $TSFixMe) {
   const {

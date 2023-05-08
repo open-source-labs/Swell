@@ -1,16 +1,26 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../../toolkit-refactor/store';
+import { OpenAPIRequest } from '../../../../types';
 
-const OpenAPIEntryForm = ({
+interface OpenAPIEntryFormProps {
+  warningMessage: {
+    uri?: string;
+  };
+  newRequestsOpenAPI: OpenAPIRequest
+}
+
+
+
+const OpenAPIEntryForm: React.FC<OpenAPIEntryFormProps> = ({
   warningMessage,
-
   newRequestsOpenAPI,
 }) => {
   const primaryServer = newRequestsOpenAPI?.openapiMetadata?.serverUrls[0];
 
   const openAPILabel = 'OpenAPI';
 
-  const isDark = useSelector(state => state.ui.isDark);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   return (
     <div className='ml-2 mr-2 is-flex is-justify-content-center'

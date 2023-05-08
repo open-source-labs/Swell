@@ -1,6 +1,12 @@
 import React from 'react';
+import { $TSFixMe, OpenAPIRequest } from '../../../../types';
 
-function OpenAPIMetaData({ newRequestsOpenAPI }) {
+interface Props {
+  newRequestsOpenAPI: OpenAPIRequest;
+}
+
+const OpenAPIMetaData: React.FC<Props> = (props: $TSFixMe) => {
+  const { newRequestsOpenAPI } = props;
   return (
     <div className="mt-2 mb-2">
       <div className="is-flex is-justify-content-space-between is-align-content-center mb-4">
