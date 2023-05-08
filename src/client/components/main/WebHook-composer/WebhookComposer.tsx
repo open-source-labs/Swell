@@ -7,7 +7,6 @@ import { io } from 'socket.io-client';
 import { Box } from '@mui/material';
 import { $TSFixMe } from '../../../../types';
 
-const socket = io('http://localhost:3000');
 
 export default function WebhookComposer(props: $TSFixMe) {
   /**
@@ -21,12 +20,12 @@ export default function WebhookComposer(props: $TSFixMe) {
   const isDark = false;
 
   const {
-    //composerFieldsReset,
+    // composerFieldsReset,
     // newRequestFields,
     newRequestFields: {
       gRPC,
       webrtc,
-      // url,
+      url,
       method,
       graphQL,
       // restUrl,
@@ -37,26 +36,26 @@ export default function WebhookComposer(props: $TSFixMe) {
       network,
       // testContent,
     },
-    //newTestContentSet,
-    //newRequestBodySet,
+    // newTestContentSet,
+    // newRequestBodySet,
     // newRequestBody,
-    // newRequestBody: {
-    //   JSONFormatted,
-    //   rawType,
-    //   bodyContent,
-    //   bodyVariables,
-    //   bodyType,
-    // },
-    //newRequestHeadersSet,
+    newRequestBody: {
+      // JSONFormatted,
+      // rawType,
+      // bodyContent,
+      // bodyVariables,
+      // bodyType,
+    },
+    // newRequestHeadersSet,
     // newRequestHeaders,
-    // newRequestHeaders: { headersArr },
-    //newRequestCookiesSet,
+    newRequestHeaders: { headersArr },
+    // newRequestCookiesSet,
     // newRequestCookies,
-    // newRequestCookies: { cookiesArr },
-    //newRequestStreamsSet,
+    newRequestCookies: { cookiesArr },
+    // newRequestStreamsSet,
     // newRequestStreams,
-    // newRequestStreams: { protoPath },
-    //newRequestSSE: { isSSE },
+    newRequestStreams: { protoPath },
+    newRequestSSE: { isSSE },
     currentTab,
     //introspectionData,
     //setWarningMessage,
@@ -68,60 +67,73 @@ export default function WebhookComposer(props: $TSFixMe) {
   const [whUrl, updateURL] = useState('');
   const [serverStatus, updateServerStatus] = useState(false);
 
+  // This stops the polling of the server.
+  // You get tons of errors in the browser console
+  // without this code block
+  let socket: $TSFixMe
+  if (serverStatus) {
+    socket = io('http://localhost:3000');
+  } else if (!serverStatus) {
+    socket = undefined
+  }
+
   const copyClick = () => {
     console.log('copying');
     navigator.clipboard.writeText(whUrl);
   };
 
-  // useEffect(() => {
-  //   socket.on('response', (event) => {
-  //     console.log('this is the event in webho', event.headers);
-  //     const protocol = 'I do not know what this is for?';
-  //     console.log('this is event.headers', event.headers['user-agent']);
-  //     // url = event.headers;
-  //     const url = event.headers['user-agent'];
-  //     const reqRes = {
-  //       id: uuid(),
-  //       created_at: new Date(),
-  //       protocol,
-  //       host: '',
-  //       path: '',
-  //       graphQL,
-  //       gRPC,
-  //       webrtc,
-  //       webhook,
-  //       url,
-  //       timeSent: null,
-  //       timeReceived: null,
-  //       connection: 'farts',
-  //       connectionType: null,
-  //       checkSelected: false,
-  //       request: {
-  //         method,
-  //         url,
-  //         event,
-  //         // messages: [],
-  //         // body: bodyContent || '',
-  //         // bodyType,
-  //         // bodyVariables: bodyVariables || '',
-  //         // rawType,
-  //         network,
-  //         // restUrl,
-  //         // webrtcUrl,
-  //       },
-  //       response: {
-  //         events: [event.body],
-  //         headers: event.headers,
-  //       },
-  //       checked: false,
-  //       minimized: false,
-  //       tab: currentTab,
-  //     };
-  //     reqResItemAdded(reqRes);
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (socket !== undefined) {
+      socket.on('response', (event) => {
+        console.log('this is the event in webho', event.headers);
+        const protocol = 'I do not know what this is for?';
+        console.log('this is event.headers', event.headers['user-agent']);
+        // url = event.headers;
+        const url = event.headers['user-agent'];
+        const reqRes = {
+          id: uuid(),
+          created_at: new Date(),
+          protocol,
+          host: '',
+          path: '',
+          graphQL,
+          gRPC,
+          webrtc,
+          webhook,
+          url,
+          timeSent: null,
+          timeReceived: null,
+          connection: 'farts',
+          connectionType: null,
+          checkSelected: false,
+          request: {
+            method,
+            url,
+            event,
+            // messages: [],
+            // body: bodyContent || '',
+            // bodyType,
+            // bodyVariables: bodyVariables || '',
+            // rawType,
+            network,
+            // restUrl,
+            // webrtcUrl,
+          },
+          response: {
+            events: [event.body],
+            headers: event.headers,
+          },
+          checked: false,
+          minimized: false,
+          tab: currentTab,
+        };
+        reqResItemAdded(reqRes);
+      });
+    }
+  }, []);
 
   const startServerButton = () => {
+    
     if (!serverStatus) {
       updateServerStatus(true);
 
@@ -129,7 +141,7 @@ export default function WebhookComposer(props: $TSFixMe) {
       // request server.js to generate and return a webhook URL
       fetch('/webhookServer', {
         method: 'POST',
-        // mode: 'no-cors',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
