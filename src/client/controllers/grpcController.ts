@@ -52,10 +52,8 @@ const grpcController: $TSFixMe = {
         }
     },
     sendParserData(data: any): Promise<any> {
-        return new Promise((resolve) => {
-            api.removeAllListeners('protoParserFunc-return')
-            api.send('protoParserFunc-request', data);
-        })
+        api.removeAllListeners('protoParserFunc-return')
+        api.send('protoParserFunc-request', data);
     }
 }
 

@@ -133,8 +133,8 @@ const GRPCAutoInputForm: React.FC<Props> = (props) => {
         }
       }
     }
-    //shallow copy streamsArr and streamCopy to reassign in store
-    const streamsArrCopy = structuredClone(streamsArr); //[...streamsArr]; //
+    //Deep copy streamsArr and streamCopy to reassign in store
+    const streamsArrCopy = structuredClone(streamsArr); 
     const streamContentCopy = structuredClone(streamContent); 
 
     // push JSON formatted query in streamContent arr
@@ -163,9 +163,9 @@ const GRPCAutoInputForm: React.FC<Props> = (props) => {
   }, [streamContent]);
 
   //default options shown for services and request dropdowns
-  // const servicesList = ['UNARY', 'CLIENT STREAM', 'SERVER STREAM', 'BI-DIRECTIONAL'];
+  // These are the arrays that hold the strings that will render in the
+  // request servive drop down menues
   const servicesList: string[] = [];
-  // const rpcsList = ['UNARY', 'CLIENT STREAM', 'SERVER STREAM', 'BI-DIRECTIONAL'];
   const rpcsList: string[] = [];
 
   // autopopulates the service dropdown list

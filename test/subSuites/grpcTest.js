@@ -16,7 +16,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const { fillgRPC_Proto } = require('./testHelper');
 
-const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/protos/hw2.proto'))
+const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/mock_protos/hw2.proto'))
 let electronApp, page, num;
 
 module.exports = () => {
@@ -175,6 +175,6 @@ module.exports = () => {
           console.error(err);
         }
       });
-    }).timeout(20000)
-  }).timeout(20000);
+    }).timeout(2000)
+  }).timeout(2000);
 };
