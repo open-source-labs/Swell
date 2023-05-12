@@ -5,11 +5,12 @@ const YAML = require('yamljs');
  * it means to add validation and to refactor this to add support for callbacks?
  */
 
-const openapiParserFunc = (input) => {
+const openapiParserFunc = async (input) => {
   if (input === undefined || input === null) {
     throw new ReferenceError('OpenAPI Document not found.');
   }
   // Parse the input into JSON or YAML
+  
   let doc;
   try {
     doc = JSON.parse(input);
@@ -20,7 +21,11 @@ const openapiParserFunc = (input) => {
   const { info, servers, tags, paths, components } = doc;
   
   info.openapi = doc.openapi;
-  const serverUrls = [...servers.map((server) => server.url)];
+
+  let serverUrls
+  if (servers) {
+    serverUrls = [...servers.map((server) => server.url)];
+  }
   let id = 0;
 
   const openapiReqArray = [];
@@ -56,8 +61,10 @@ const openapiParserFunc = (input) => {
       openapiReqArray.push(request);
     });
   });
+
   const openapiMetadata = { info, tags, serverUrls };
-  return { openapiMetadata, openapiReqArray };
+ 
+  return { openapiMetadata, openapiReqArray } || 'Entre a valid Open Api Format';
 };
 
 module.exports = openapiParserFunc;

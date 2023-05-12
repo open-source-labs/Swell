@@ -34,8 +34,8 @@
     "src/client/components/main/sharedComponents/requestButtons/RawBodyTypeSelect.tsx",
     "src/client/components/main/sharedComponents/BodyEntryForm.jsx",
     "src/client/components/main/response-composer/ResponsePaneContainer.tsx",
-    "src/client/components/main/sharedComponents/requestForms/BodyEntryForm.tsx"
-  ],
+    "src/client/components/main/sharedComponents/requestForms/BodyEntryForm.tsx", 
+    "src/client/components/main/OpenAPI-composer/OpenAPIMetadata.jsx"  ],
   "exclude": [
     "node_modules",
     "dist",

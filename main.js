@@ -66,8 +66,8 @@ require('./main_process/main_mockController.js')();
 const { touchBar } = require('./main_process/main_touchbar.js');
 
 // configure logging
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
 let mainWindow;
@@ -413,7 +413,6 @@ ipcMain.on('confirm-clear-history', (event) => {
 
 // =============== GRPCProtoEntryForm Calls that uses protoParserFunc ======= //
 ipcMain.on('import-proto', (event) => {
-  let importedProto;
   dialog
     .showOpenDialog({
       buttonLabel: 'Import Proto File',
@@ -457,7 +456,6 @@ ipcMain.on('protoParserFunc-request', async (event, data) => {
 
 //====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//
 ipcMain.on('import-openapi', (event) => {
-  let importedDocument;
   dialog
     .showOpenDialog({
       buttonLabel: 'Import OpenApi File',
@@ -466,18 +464,18 @@ ipcMain.on('import-openapi', (event) => {
     .then((filePaths) => {
       if (!filePaths) return undefined;
       // read uploaded document & save in the redux store
-      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+      fs.readFile(filePaths.filePaths[0], 'utf-8', async (err, importedFile) => {
         // handle read error
-        if (err) {
+        // if (err) {
+        //   return console.log('import-openapi error reading file : ', err);
+        // }
+
+        try {
+          const documentObj = await openapiParserFunc(importedFile)
+          mainWindow.webContents.send('openapi-info', importedFile, documentObj);
+        } catch (err) {
           return console.log('import-openapi error reading file : ', err);
         }
-        importedDocument = file;
-        const documentObj = openapiParserFunc(importedDocument);
-        mainWindow.webContents.send(
-          'openapi-info',
-          importedDocument,
-          documentObj
-        );
       });
     })
     .catch((err) => {
@@ -491,7 +489,6 @@ ipcMain.on('import-openapi', (event) => {
 ipcMain.on('openapiParserFunc-request', (event, data) => {
   openapiParserFunc(data)
     .then((result) => {
-      console.log(hardCodedResult)
       mainWindow.webContents.send('openapiParserFunc-return', result);
     })
     .catch((err) => {

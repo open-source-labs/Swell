@@ -1,6 +1,20 @@
 import React from 'react';
+import { $TSFixMe, OpenAPIRequest } from '../../../../types';
 
-function OpenAPIMetaData({ newRequestsOpenAPI }) {
+interface Props {
+  newRequestsOpenAPI: OpenAPIRequest;
+}
+
+const OpenAPIMetaData: React.FC<Props> = (props: $TSFixMe) => {
+  const { newRequestsOpenAPI } = props;
+
+  const conditionalChecker = (key: string) => {
+    if (newRequestsOpenAPI?.penAPIMetaData) {
+      return newRequestsOpenAPI.openapiMetadata.info[key] ? newRequestsOpenAPI.openapiMetadata.info[key] : ''
+    }
+    return ''
+  }
+  
   return (
     <div className="mt-2 mb-2">
       <div className="is-flex is-justify-content-space-between is-align-content-center mb-4">
@@ -8,27 +22,23 @@ function OpenAPIMetaData({ newRequestsOpenAPI }) {
       </div>
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">Title</div>
-        {newRequestsOpenAPI?.openapiMetadata?.info.title
-          ? newRequestsOpenAPI.openapiMetadata.info.title
-          : ''}
+        {conditionalChecker('title')}
       </div>
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">Info</div>
-        {newRequestsOpenAPI?.openapiMetadata?.info.description
-          ? newRequestsOpenAPI.openapiMetadata.info.description
-          : ''}
+        {conditionalChecker('description')}
+
       </div>
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">Version</div>
-        {newRequestsOpenAPI?.openapiMetadata?.info.version
-          ? newRequestsOpenAPI.openapiMetadata.info.version
-          : ''}
+        {conditionalChecker('version')}
       </div>
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">OpenAPI</div>
-        {newRequestsOpenAPI?.openapiMetadata?.info.openapi
+        {conditionalChecker('openapi')}
+        {/* {newRequestsOpenAPI?.openapiMetadata?.info.openapi
           ? newRequestsOpenAPI.openapiMetadata.info.openapi
-          : ''}
+          : ''} */}
       </div>
       <hr />
     </div>

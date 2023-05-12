@@ -4,19 +4,16 @@ import { v4 as uuid } from 'uuid';
 import historyController from '../../../controllers/historyController';
 // Import local components
 
-/**
- * @todo Refactor all of the below components to use MUI, place them in a new
- * "components" folder
- */
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import OpenAPIEntryForm from './OpenAPIEntryForm';
-import OpenAPIDocumentEntryForm from './OpenAPIDocumentEntryForm.jsx';
-import OpenAPIMetadata from './OpenAPIMetadata.jsx';
-import OpenAPIServerForm from './OpenAPIServerForm.jsx';
+import OpenAPIDocumentEntryForm from './OpenAPIDocumentEntryForm';
+import OpenAPIMetadata from './OpenAPIMetadata';
+import OpenAPIServerForm from './OpenAPIServerForm';
 // Import MUI components
 import { Box } from '@mui/material';
+import { $TSFixMe, ReqRes } from '../../../../types';
 
-export default function OpenAPIComposer(props) {
+export default function OpenAPIComposer(props: $TSFixMe) {
   const {
     composerFieldsReset,
     openApiRequestsReplaced,
@@ -61,12 +58,12 @@ export default function OpenAPIComposer(props) {
       return;
     }
 
-    newRequestsOpenAPI.openapiReqArray.forEach((req) => {
-      const reqRes = {
+    newRequestsOpenAPI.openapiReqArray.forEach((req: $TSFixMe) => {
+      const reqRes: ReqRes = {
         id: uuid(),
         createdAt: new Date(),
         host: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}`,
-        protocol: 'https://',
+        protocol: "http://",
         url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
         graphQL,
         gRPC,
@@ -78,7 +75,7 @@ export default function OpenAPIComposer(props) {
         checkSelected: false,
         request: {
           method: req.method,
-          headers: headersArr.filter((header) => header.active && !!header.key),
+          headers: headersArr.filter((header: $TSFixMe) => header.active && !!header.key),
           body: req.body,
           bodyType,
           rawType,
@@ -99,7 +96,7 @@ export default function OpenAPIComposer(props) {
         minimized: false,
         tab: currentTab,
       };
-
+      console.log('Open_API_COmposer-> reqRes',reqRes)
       // add request to history
       /** @todo Fix TS type error */
       historyController.addHistoryToIndexedDb(reqRes);

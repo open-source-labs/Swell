@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package helloworld;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {} // single unary stream
+  rpc SayHelloNested (HelloNestedRequest) returns (HelloNestedReply) {} // nested unary stream
+  rpc SayHellosSs (HelloRequest) returns (stream HelloReply) {}
+  rpc SayHelloCS (stream HelloRequest) returns (HelloReply) {}
+  rpc SayHelloBidi (stream HelloRequest) returns (stream HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+message HelloNestedRequest {
+  HelloRequest firstPerson = 1;
+  HelloRequest secondPerson = 2; 
+}
+
+message HelloNestedReply {
+  // create array of nested server response
+  repeated HelloReply serverMessage = 1;
+  
+}
+// The request message containing the user's name.
+message HelloHowOldRequest {
+  int32 age = 1;
+}
+message HelloAge {
+  int32 age = 1;
+}
