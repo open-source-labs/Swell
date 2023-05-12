@@ -13,13 +13,11 @@ const openApiController: $TSFixMe = {
     importDocument(): void {
         api.removeAllListeners('openapi-info');
         api.receive('openapi-info', async (data_in: $TSFixMe) => {
-            console.log('openAPIController', typeof data_in, data_in)
             try {
 
-                console.log('openMetaData',data_in.openapiMetadata)
-                
                 appDispatch(openApiRequestsReplaced(data_in));
             } catch (err) {
+                // If swell ever gets big enough, this needs to be built out
                 console.log('Error in openAPI Controller: ', err)
             }
         })

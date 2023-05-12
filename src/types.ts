@@ -203,7 +203,7 @@ export type IntrospectionData = {
 };
 
 export interface OpenAPIRequest {
-  openApiMetadata: Record<string, unknown>;
+  openapiMetadata: $TSFixMe//Record<string, unknown>;
   openApiReqArray: OpenAPIReqData[];
 }
 

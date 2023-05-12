@@ -38,13 +38,14 @@ const CookieEntryForm = (props: Props) => {
     const cookiesDeepCopy = createDeepCookieCopy();
     if (cookiesDeepCopy.length === 0) {
       addCookie([]);
-    } else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
+    } 
+    else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
       addCookie(cookiesDeepCopy);
     }
   });
 
   const createDeepCookieCopy = () => {
-    return JSON.parse(JSON.stringify(props.newRequestCookies.cookiesArr));
+    return structuredClone(props.newRequestCookies.cookiesArr);
   };
 
   const addCookie = (cookiesDeepCopy: Cookie[]) => {
