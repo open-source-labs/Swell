@@ -4,6 +4,7 @@ import { GraphQLSchema } from 'graphql';
 
 import graphQLController from '../../../controllers/graphQLController';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { RootState } from '../../../toolkit-refactor/store';
 
 interface IntrospectionData {
   schemaSDL: string | null;
@@ -12,18 +13,18 @@ interface IntrospectionData {
 
 const GraphQLIntrospectionLog: React.FC = () => {
   const headers = useSelector(
-    (store: any) => store.newRequest.newRequestHeaders.headersArr
+    (store: RootState) => store.newRequest.newRequestHeaders.headersArr
   );
   const cookies = useSelector(
-    (store: any) => store.newRequest.newRequestCookies.cookiesArr
+    (store: RootState) => store.newRequest.newRequestCookies.cookiesArr
   );
-  const introspectionData: IntrospectionData = useSelector(
-    (store: any) => store.introspectionData
+  const introspectionData: (IntrospectionData | string) = useSelector(
+    (store: RootState) => store.introspectionData
   );
   const url: string = useSelector(
-    (store: any) => store.newRequestFields.url
+    (store: RootState) => store.newRequestFields.url
   );
-  const isDark: boolean = useSelector((store: any) => store.ui.isDark);
+  const isDark: boolean = useSelector((store: RootState) => store.ui.isDark);
 
   return (
     <div>

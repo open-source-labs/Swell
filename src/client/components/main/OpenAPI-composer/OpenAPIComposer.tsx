@@ -1,23 +1,29 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
+import { RootState } from '../../../toolkit-refactor/store';
 // Import controllers
 import historyController from '../../../controllers/historyController';
-// Import local components
 
+// Import local components
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import OpenAPIEntryForm from './OpenAPIEntryForm';
 import OpenAPIDocumentEntryForm from './OpenAPIDocumentEntryForm';
 import OpenAPIMetadata from './OpenAPIMetadata';
 import OpenAPIServerForm from './OpenAPIServerForm';
+
 // Import MUI components
 import { Box } from '@mui/material';
 import { $TSFixMe, ReqRes } from '../../../../types';
 
 export default function OpenAPIComposer(props: $TSFixMe) {
+
+  // This is a better way to import what the components needs, not the mess of prop drilling
+  const newRequestsOpenAPI: $TSFixMe = useSelector((state: RootState) => state.newRequestOpenApi);
+
   const {
     composerFieldsReset,
     openApiRequestsReplaced,
-    newRequestsOpenAPI,
     fieldsReplaced,
     newRequestFields,
     newRequestFields: {
@@ -34,10 +40,10 @@ export default function OpenAPIComposer(props: $TSFixMe) {
     newRequestBodySet,
     newRequestBody,
     newRequestBody: { rawType, bodyType },
-    newRequestHeadersSet,
-    newRequestHeaders,
+    // newRequestHeadersSet,
+    // newRequestHeaders,
     newRequestHeaders: { headersArr },
-    newRequestCookiesSet,
+    // newRequestCookiesSet,
     currentTab,
     setWarningMessage,
     warningMessage,
@@ -110,6 +116,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
         bodyType: '',
         rawType: '',
       });
+
       fieldsReplaced({
         ...newRequestFields,
         url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
@@ -135,29 +142,29 @@ export default function OpenAPIComposer(props: $TSFixMe) {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        {/** @todo fix TS type error */}
+        {/* * @todo fix TS type error */}
         <OpenAPIEntryForm
-          newRequestFields={newRequestFields}
-          newRequestHeaders={newRequestHeaders}
-          newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestCookiesSet={newRequestCookiesSet}
+          // newRequestFields={newRequestFields}
+          // newRequestHeaders={newRequestHeaders}
+          // newRequestBody={newRequestBody}
+          // fieldsReplaced={fieldsReplaced}
+          // newRequestHeadersSet={newRequestHeadersSet}
+          // newRequestCookiesSet={newRequestCookiesSet}
           newRequestsOpenAPI={newRequestsOpenAPI}
-          openApiRequestsReplaced={openApiRequestsReplaced}
-          newRequestBodySet={newRequestBodySet}
+          // openApiRequestsReplaced={openApiRequestsReplaced}
+          // newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          setWarningMessage={setWarningMessage}
+          // setWarningMessage={setWarningMessage}
         />
 
         <OpenAPIDocumentEntryForm
-          newRequestFields={newRequestFields}
-          fieldsReplaced={fieldsReplaced}
-          newRequestHeaders={newRequestHeaders}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestCookiesSet={newRequestCookiesSet}
-          newRequestsOpenAPI={newRequestsOpenAPI}
-          openApiRequestsReplaced={openApiRequestsReplaced}
+          // newRequestFields={newRequestFields}
+          // fieldsReplaced={fieldsReplaced}
+          // newRequestHeaders={newRequestHeaders}
+          // newRequestHeadersSet={newRequestHeadersSet}
+          // newRequestCookiesSet={newRequestCookiesSet}
+          // newRequestsOpenAPI={newRequestsOpenAPI}
+          // openApiRequestsReplaced={openApiRequestsReplaced}
         />
         <OpenAPIMetadata newRequestsOpenAPI={newRequestsOpenAPI} />
         <OpenAPIServerForm

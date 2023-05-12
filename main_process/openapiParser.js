@@ -6,6 +6,7 @@ const YAML = require('yamljs');
  */
 
 const openapiParserFunc = async (input) => {
+
   if (input === undefined || input === null) {
     throw new ReferenceError('OpenAPI Document not found.');
   }

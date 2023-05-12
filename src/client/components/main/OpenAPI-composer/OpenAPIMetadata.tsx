@@ -1,18 +1,21 @@
 import React from 'react';
-import { $TSFixMe, OpenAPIRequest } from '../../../../types';
+import { $TSFixMe } from '../../../../types';
 
 interface Props {
-  newRequestsOpenAPI: OpenAPIRequest;
+  newRequestsOpenAPI: $TSFixMe;
 }
 
-const OpenAPIMetaData: React.FC<Props> = (props: $TSFixMe) => {
-  const { newRequestsOpenAPI } = props;
+// This component is working as intended, but need the TS tightened up
 
-  const conditionalChecker = (key: string) => {
-    if (newRequestsOpenAPI?.penAPIMetaData) {
-      return newRequestsOpenAPI.openapiMetadata.info[key] ? newRequestsOpenAPI.openapiMetadata.info[key] : ''
+const OpenAPIMetaData: React.FC<Props> = (props: Props) => {
+
+  const { newRequestsOpenAPI } = props
+
+  const conditionalChecker = (key: string) => { 
+    if (newRequestsOpenAPI.openapiMetadata) {
+      return newRequestsOpenAPI.openapiMetadata.info[key] ? newRequestsOpenAPI.openapiMetadata.info[key] : '';
     }
-    return ''
+    return '';
   }
   
   return (
@@ -20,25 +23,25 @@ const OpenAPIMetaData: React.FC<Props> = (props: $TSFixMe) => {
       <div className="is-flex is-justify-content-space-between is-align-content-center mb-4">
         <div className="composer-section-title">Metadata</div>
       </div>
+
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">Title</div>
         {conditionalChecker('title')}
       </div>
-      <div className="is-flex is-justify-content-space-between is-align-content-center">
-        <div className="mb-1">Info</div>
-        {conditionalChecker('description')}
 
+      <div className="is-flex is-justify-content-space-between is-align-content-center">
+        <div className="mb-1">Description</div>
+        {conditionalChecker('description')}
       </div>
+
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">Version</div>
         {conditionalChecker('version')}
       </div>
+
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="mb-1">OpenAPI</div>
         {conditionalChecker('openapi')}
-        {/* {newRequestsOpenAPI?.openapiMetadata?.info.openapi
-          ? newRequestsOpenAPI.openapiMetadata.info.openapi
-          : ''} */}
       </div>
       <hr />
     </div>

@@ -98,14 +98,13 @@ const newRequestOpenApiSlice = createSlice({
       _state: $NotUsed,
       action: PayloadAction<NewRequestOpenApi>
     ) {
-      console.log('OpenAPI slice Request Replaced',_state, action)
       return action.payload;
     },
 
     /**
-     * Before toolkit conversion was SET_OPENAPI_SERVERS_GLOBAL or setOpenAPIServersGlobal.
-     * The old name made it sound like that it was meant to handle new server
-     * URLs being added, but the logic only ever removed items.
+     * This is for removing servers from the openAPI composer. Specifically,
+     * the OpenAPIServerForm.tsx. It isn't working as intended, and would be 
+     * great to get up and running
      */
     serversRemovedByIndex(state, action: PayloadAction<number[]>) {
       const serverIndices = new Set(action.payload);
@@ -241,10 +240,11 @@ const newRequestOpenApiSlice = createSlice({
 });
 
 export const {
-  requestBodyUpdated,
   openApiRequestsReplaced,
-  newParameterAdded,
+  serversRemovedByIndex,
   newServerAdded,
+  newParameterAdded,
+  requestBodyUpdated,
 } = newRequestOpenApiSlice.actions;
 export default newRequestOpenApiSlice.reducer;
 

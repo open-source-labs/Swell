@@ -1,24 +1,22 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
-import { OpenAPIRequest } from '../../../../types';
+import { $TSFixMe } from '../../../../types';
 
-interface OpenAPIEntryFormProps {
+interface Props {
   warningMessage: {
     uri?: string;
   };
-  newRequestsOpenAPI: OpenAPIRequest
+  newRequestsOpenAPI: $TSFixMe 
 }
 
-
-
-const OpenAPIEntryForm: React.FC<OpenAPIEntryFormProps> = ({
+// This component is working as intended, thouhg needs to have the TS tightened up
+const OpenAPIEntryForm: React.FC<Props> = ({
   warningMessage,
   newRequestsOpenAPI,
 }) => {
-  const primaryServer = newRequestsOpenAPI?.openapiMetadata?.serverUrls[0];
-
-  const openAPILabel = 'OpenAPI';
+  // This loads the input field at the top of the page
+  const primaryServer =  newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || '';
 
   const isDark = useSelector((state: RootState) => state.ui.isDark);
 
@@ -26,13 +24,14 @@ const OpenAPIEntryForm: React.FC<OpenAPIEntryFormProps> = ({
     <div className='ml-2 mr-2 is-flex is-justify-content-center'
       style={{padding: '10px'}}>
       <button className="no-border-please button is-openapi">
-        <span>{openAPILabel}</span>
+        <span>OpenAPI</span>
       </button>
       <input
         className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
         type="text"
         placeholder="primary server loads here..."
         value={primaryServer}
+        onChange={() => {return 'testTest'}}
       />
       {warningMessage.uri && (
         <div className="warningMessage">{warningMessage.uri}</div>
