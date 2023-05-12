@@ -14,7 +14,7 @@ const { clearAndFillTestScriptArea,
         fillgRPC_Proto,
         addReqAndSend } = require('./testHelper.js');
 
-const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/protos/hw2.proto'));
+const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/mock_protos/hw2.proto'));
 let electronApp, page, num = 0;
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { OpenAPIRequest } from '../../../../types';
+import { $TSFixMe, OpenAPIRequest } from '../../../../types';
 import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer';
 import { RootState, useAppDispatch } from '../../../toolkit-refactor/store';
 import { NewRequestOpenApi } from '../../../toolkit-refactor/slices/newRequestOpenApiSlice';
@@ -51,7 +51,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
   };
 
   const serversArr = newRequestsOpenAPI?.openApiMetadata?.serverUrls?.map(
-    (server: string{}, index: number) => {
+    (server: $TSFixMe, index: number) => {
       console.log(' OpenApi Server form -> newRequestsOpenAPI', newRequestsOpenAPI);
       const contentTypeServer = {
         id: Math.random() * 1000000,
