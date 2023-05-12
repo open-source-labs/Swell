@@ -219,6 +219,34 @@ const clearAndFillTestScriptArea = async (page, script) => {
   }
 };
 
+const composerSetup = async () => {
+  try {
+    await page.locator('button>> text=GRPC').click();
+    await page.locator('#url-input').fill('0.0.0.0:30051');
+
+
+    const codeMirror = await page.locator('#grpcProtoEntryTextArea');
+    await codeMirror.click();
+    const grpcProto = await codeMirror.locator('.cm-content');
+    await grpcProto.fill(proto);
+
+    await page.locator('#save-proto').click();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const addReqAndSend = async (num) => {
+  try {
+    await page.locator('button >> text=Add to Workspace').click();
+    await page.locator(`#send-button-${num}`).click();
+    const res = await page.locator('#events-display').innerText();
+    return res;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = {
   isButtonDisabled,
   fillRestRequest,
@@ -227,5 +255,7 @@ module.exports = {
   addAndSend,
   clearAndFillTestScriptArea,
   fillgRPC_Proto,
+  composerSetup,
+  addReqAndSend
 };
 
