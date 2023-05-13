@@ -3,10 +3,8 @@ import { useSelector } from 'react-redux';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 import grpcController from '../../../controllers/grpcController'
-import { NewRequestStreams, $TSFixMe, WindowExt } from '../../../../types';
+import { NewRequestStreams, $TSFixMe } from '../../../../types';
 import { RootState } from '../../../toolkit-refactor/store';
-
-const { api } = window as unknown as WindowExt;
 
 interface GRPCProtoEntryFormProps {
   newRequestStreams: NewRequestStreams
@@ -14,7 +12,6 @@ interface GRPCProtoEntryFormProps {
 }
 
 const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
-  // const [show, toggleShow] = useState(true);
   const [protoError, showError] = useState(null);
   const [changesSaved, saveChanges] = useState(false);
 

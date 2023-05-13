@@ -4,7 +4,6 @@ import KeyValueTable from './KeyValueTable';
 import Http2Body from './Http2Body';
 // Import MUI components
 import { Box, Tabs, Tab } from '@mui/material';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 interface TabPanelProps {
   children?: React.ReactNode;
