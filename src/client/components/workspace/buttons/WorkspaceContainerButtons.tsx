@@ -1,18 +1,11 @@
-/*
- * NOT Actually Legacy!!! BUT SHOULD BE!! 
- * 
- * needs to be merged into WorkSpaceContainer 
- * 
- */
-
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import ReqResCtrl from '../../controllers/reqResController';
-import ReqResContainer from './CollectionsContainer';
-import SaveWorkspaceModal from './modals/SaveWorkspaceModal';
+import ReqResCtrl from '../../../controllers/reqResController';
+import WorkspaceCollectionsContainer from '../WorkspaceCollectionsContainer';
+import SaveWorkspaceModal from '../modals/SaveWorkspaceModal';
 // Import MUI components
 
-export default function WorkspaceContainer<RootState>(props: RootState): JSX.Element {
+export default function WorkspaceContainerButtons () {
   const [showModal, setShowModal] = useState(false);
   const isDark = useSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
 
@@ -46,7 +39,7 @@ export default function WorkspaceContainer<RootState>(props: RootState): JSX.Ele
 
       <SaveWorkspaceModal showModal={showModal} setShowModal={setShowModal}/>
       {/* REQUEST CARDS */}
-      <ReqResContainer displaySchedule />
+      <WorkspaceCollectionsContainer displaySchedule />
     </div>
   );
 }

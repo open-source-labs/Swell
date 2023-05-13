@@ -147,7 +147,7 @@ Some of the following features either have broken, or no E2E testing coverage in
 
 Future iteration should consider fix or add E2E testing coverage for these features.
 
-### _Broken Travis CI build_
+### _Broken Travis CI build_ (Actually Fixed!!!)
 
 The [Travis CI link](https://travis-ci.org/open-source-labs/Swell) is not functional. A broken CI/CD pipeline blocks the ability to automatically package and release new iterations of the application, so it would be great if we can rebuild CI/CD using alternative services like GitHub Actions.
 

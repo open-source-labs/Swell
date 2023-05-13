@@ -1,7 +1,7 @@
 /**
  * @todo - Refactor code for DRY principle
  * @todo - Check for possible edge cases
- * @todo - Look into branch coverage, currently sitting at 50%, but this may
+ * @todo - Look into branch coverage, currently sitting at ~50%, but this may
  * be due to the actual slice syntax using if statements without a default return case.
  */
 

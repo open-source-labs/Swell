@@ -11,7 +11,7 @@ import { SwellWrappedTooltip } from '../../../customMuiStyles/tooltip';
 /**
  * TestContainer component allows users to configure and perform load tests.
  * It contains inputs for the load test frequency and duration, as well as buttons
- * to start and stop the tests. The component also renders the ReqResContainer,
+ * to start and stop the tests. The component also renders the WorkspaceCollectionsContainer,
  * ScheduleReqResContainer, and StoppedContainer components to display the results
  * of the tests.
  */

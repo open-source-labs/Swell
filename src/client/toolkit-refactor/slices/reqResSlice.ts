@@ -95,5 +95,6 @@ export const {
   reqResUpdated,
   responseDataSaved,
 } = reqResSlice.actions;
+
 export default reqResSlice.reducer;
 

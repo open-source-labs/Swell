@@ -27,15 +27,15 @@
     "./src/**/*.tsx",
     "./main_process/*.ts",
     "src/assets/**/*.ts",
-    "src/client/components/workspace/CollectionElementContainer.jsx",
+    "src/client/components/workspace/WorkspaceCollectionElement.jsx",
     "src/client/components/main/sharedComponents/requestForms/ContentReqRowComposer.tsx",
     "src/client/components/main/sharedComponents/requestForms/HeaderEntryForm.tsx",
     "src/client/components/main/sharedComponents/requestForms/CookieEntryForm.tsx",
     "src/client/components/main/sharedComponents/requestButtons/RawBodyTypeSelect.tsx",
     "src/client/components/main/sharedComponents/BodyEntryForm.jsx",
     "src/client/components/main/response-composer/ResponsePaneContainer.tsx",
-    "src/client/components/main/sharedComponents/requestForms/BodyEntryForm.tsx"
-  ],
+    "src/client/components/main/sharedComponents/requestForms/BodyEntryForm.tsx", 
+    "src/client/components/main/OpenAPI-composer/OpenAPIMetadata.jsx"  ],
   "exclude": [
     "node_modules",
     "dist",

@@ -20,44 +20,7 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
-    // clear all stream bodies except first one upon clicking on import proto file
-    const streamsArr = [props.newRequestStreams.streamsArr[0]];
-    const streamContent = [''];
-    // reset streaming type next to the URL & reset Select Service dropdown to default option
-    // reset selected package name, service, request, streaming type & protoContent
-
-    if (props.newRequestStreams.protoContent !== null) {
-      props.newRequestStreamsSet({
-        ...props.newRequestStreams,
-        selectedPackage: null,
-        selectedService: null,
-        selectedRequest: null,
-        selectedStreamingType: null,
-        services: [],
-        protoContent: '',
-        streamsArr,
-        streamContent,
-        count: 1,
-      });
-    }
-    
-    //listens for imported proto content from main process
-    api.receive('proto-info', async (proto, unparsedProtoObj) => {
-     try {
-      const readProto = await JSON.parse(proto);
-      const parsedProto = await JSON.parse(unparsedProtoObj)
-      saveChanges(true);
-      props.newRequestStreamsSet({
-        ...props.newRequestStreams,
-        protoContent: readProto,
-        services: parsedProto.serviceArr,
-        protoPath: parsedProto.protoPath,
-      });
-     } catch (err) {
-      throw new Error('Error receiving parsed uploaded proto');
-     }
-    });
-    api.send('import-proto');
+    grpcController.importProto(props.newRequestStreams)
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy

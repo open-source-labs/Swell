@@ -1,33 +1,26 @@
 /** Also not legacy */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import connectionController from '../../controllers/reqResController';
 import testSDPConnection from '../../controllers/webrtcPeerController';
-// import RestRequestContent from '../../components/legacy-components/display/RestRequestContent';
-// import GraphQLRequestContent from '../../components/legacy-components/display/GraphQLRequestContent';
-// import WebRTCRequestContent from '../../components/legacy-components/display/WebRTCRequestContent';
-// import GRPCRequestContent from '../../components/legacy-components/display/GRPCRequestContent';
-// import OpenAPIRequestContent from '../../components/legacy-components/display/OpenAPIRequestContent';
-
 import { responseDataSaved } from '../../toolkit-refactor/slices/reqResSlice';
-import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
-import {
-  newRequestSSESet,
-  newRequestCookiesSet,
-  newRequestStreamsSet,
-  newRequestBodySet,
-  newRequestHeadersSet,
-} from '../../toolkit-refactor/slices/newRequestSlice';
+// import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
+// import {
+//   newRequestSSESet,
+//   newRequestCookiesSet,
+//   newRequestStreamsSet,
+//   newRequestBodySet,
+//   newRequestHeadersSet,
+// } from '../../toolkit-refactor/slices/newRequestSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
 } from '../../toolkit-refactor/slices/uiSlice';
 
 import { useAppDispatch } from '../../toolkit-refactor/store';
-console.log('test')
-const SingleReqResContainer = (props) => {
+const WorkspaceCollectionElement = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -45,156 +38,6 @@ const SingleReqResContainer = (props) => {
   const network = content.request.network;
   const method = content.request.method;
 
-  const copyToComposer = () => {
-    let requestFieldObj = {};
-
-    if (network === 'rest') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        restUrl: content.request.restUrl,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        webrtc: content.webrtc || false,
-        network,
-        testContent: content.request.testContent,
-      };
-    }
-
-    if (network === 'ws') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        wsUrl: content.request.wsUrl,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        network,
-      };
-    }
-
-    if (network === 'webrtc') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        network,
-        wsUrl: content.request.wsUrl,
-        webrtcData: content.webrtcData,
-      };
-    }
-
-    if (network === 'graphQL') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        gqlUrl: content.request.gqlUrl,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        network,
-        testContent: content.request.testContent,
-      };
-    }
-
-    if (network === 'grpc') {
-      requestFieldObj = {
-        ...newRequestFields,
-        method: content.request.method || 'GET',
-        protocol: content.protocol || 'http://',
-        url: content.url,
-        grpcUrl: content.request.grpcUrl,
-        graphQL: content.graphQL || false,
-        gRPC: content.gRPC || false,
-        network,
-        testContent: content.request.testContent,
-      };
-    }
-
-    let headerDeeperCopy;
-
-    if (content.request.headers) {
-      headerDeeperCopy = structuredClone(content.request.headers)
-      headerDeeperCopy.push({
-        id: content.request.headers.length + 1,
-        active: false,
-        key: '',
-        value: '',
-      });
-    }
-
-    let cookieDeeperCopy;
-
-    if (content.request.cookies && !/ws/.test(protocol)) {
-      cookieDeeperCopy = structuredClone(content.request.cookies)
-      cookieDeeperCopy.push({
-        id: content.request.cookies.length + 1,
-        active: false,
-        key: '',
-        value: '',
-      });
-    }
-
-    const requestHeadersObj = {
-      headersArr: headerDeeperCopy || [],
-      count: headerDeeperCopy ? headerDeeperCopy.length : 1,
-    };
-
-    const requestCookiesObj = {
-      cookiesArr: cookieDeeperCopy || [],
-      count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
-    };
-
-    const requestBodyObj = {
-      webrtcData: content.webrtcData,
-      bodyType: content.request.bodyType || 'raw',
-      bodyContent: content.request.body || '',
-      bodyVariables: content.request.bodyVariables || '',
-      rawType: content.request.rawType || 'text/plain',
-      JSONFormatted: true,
-      bodyIsNew: false,
-    };
-
-    dispatch(fieldsReplaced(requestBodyObj));
-    dispatch(newRequestHeadersSet(requestHeadersObj));
-    dispatch(newRequestCookiesSet(requestCookiesObj));
-    dispatch(newRequestBodySet(requestBodyObj));
-    dispatch(newRequestSSESet(content.request.isSSE));
-
-    // if (content && content.gRPC) {
-    //   const streamsDeepCopy = JSON.parse(JSON.stringify(content.streamsArr));
-    //   const contentsDeepCopy = JSON.parse(
-    //     JSON.stringify(content.streamContent)
-    //   );
-
-    //   // construct the streams obj from passed in history content & set state in store
-    //   const requestStreamsObj = {
-    //     streamsArr: streamsDeepCopy,
-    //     count: content.queryArr.length,
-    //     streamContent: contentsDeepCopy,
-    //     selectedPackage: content.packageName,
-    //     selectedRequest: content.rpc,
-    //     selectedService: content.service,
-    //     selectedStreamingType: content.request.method,
-    //     initialQuery: content.initialQuery,
-    //     queryArr: content.queryArr,
-    //     protoPath: content.protoPath,
-    //     services: content.servicesObj,
-    //     protoContent: content.protoContent,
-    //   };
-
-    //   dispatch(newRequestStreamsSet(requestStreamsObj));
-    // }
-
-    dispatch(setSidebarActiveTab('composer'));
-  };
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);
@@ -246,7 +89,7 @@ const SingleReqResContainer = (props) => {
         </div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
-      {network !== 'ws' && (
+      {/* {network !== 'ws' && (
         <div
           className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
           onClick={() => {
@@ -264,7 +107,7 @@ const SingleReqResContainer = (props) => {
             </div>
           )}
         </div>
-      )}
+      )} */}
       {/* REQUEST ELEMENTS */}
       {showDetails === true && (
         <div className="is-neutral-200-box">
@@ -277,13 +120,13 @@ const SingleReqResContainer = (props) => {
               isHTTP2={isHTTP2}
             />
           )}
-          {/* {network === 'grpc' && (
+          {network === 'grpc' && (
             <GRPCRequestContent
               request={content.request}
               rpc={content.rpc}
               service={content.service}
             />
-          )} */}
+          )}
           {network === 'graphQL' && (
             <GraphQLRequestContent request={content.request} />
           )}
@@ -347,4 +190,4 @@ const SingleReqResContainer = (props) => {
     </div>
   );
 };
-export default SingleReqResContainer;
+export default WorkspaceCollectionElement;
