@@ -31,7 +31,9 @@ module.exports = () => {
     after(async () => {
       await electronApp.close();
     });
-
+    
+    // this code captures a screenshot of the browser 
+    //window when a test case fails and saves it as a PNG image file.
     afterEach(async function () {
       if (this.currentTest.state === 'failed') {
         console.log(`Screenshotting failed test window`);

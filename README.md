@@ -133,6 +133,7 @@ Feel free to check out the `DEV-README.md` in the `docs` folder.
 
 ## Authors
 
+- **Akeem Smith** - [AkeemESmith](https://github.com/AkeemESmith)
 - **William Murphy** - [olsoninoslo](https://github.com/olsoninoslo)
 - **Chris Suzukida** - [csuzukida](https://github.com/csuzukida)
 - **Fred Kim** - [Fredkim21](https://https://github.com/Fredkim21)
