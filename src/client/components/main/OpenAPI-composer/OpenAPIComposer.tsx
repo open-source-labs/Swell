@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -53,8 +53,8 @@ export default function OpenAPIComposer(props: $TSFixMe) {
 
   // We are only ever sending a request to one server, this one.
   // you can toggle which is the primary server in the serverEntryForm
-  const [primaryServer, setPrimaryServer] = useState(newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || '')
-  
+  const [primaryServer, setPrimaryServer] = useState<string>(newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || '')
+
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions removing the need for url for now
@@ -123,7 +123,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
 
       fieldsReplaced({
         ...newRequestFields,
-        url: `${newRequestsOpenAPI.openapiMetadata.serverUrls[0]}${req.endpoint}`,
+        url: `${primaryServer}${req.endpoint}`,
         restUrl,
       });
     });
@@ -148,7 +148,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
       >
         {/* * @todo fix TS type error */}
         <OpenAPIEntryForm
-          setPrimaryServer={setPrimaryServer}
+          primaryServer={primaryServer}
           newRequestsOpenAPI={newRequestsOpenAPI}
           warningMessage={warningMessage}
         />
@@ -158,7 +158,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
         newRequestsOpenAPI={newRequestsOpenAPI} 
         />
         <OpenAPIServerForm
-          primaryServer={primaryServer}
+          setPrimaryServer={setPrimaryServer}
           newRequestsOpenAPI={newRequestsOpenAPI}
           openApiRequestsReplaced={openApiRequestsReplaced}
         />
