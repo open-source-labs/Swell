@@ -111,7 +111,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
       }
     }
   };
-
+// TODO Handle error when contentDataArr is empty
   const serversArr = contentDataArr.map(
     (server: string, index: number) => {
       return (
