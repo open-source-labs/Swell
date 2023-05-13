@@ -146,13 +146,10 @@ const newRequestOpenApiSlice = createSlice({
       const filteredById = state.openApiReqArray.filter(
         (entry) => entry.request.id === id
       );
-
-
       const latestRequest = filteredById.pop();
       if (!latestRequest) {
         return;
       }
-
       const appendEndpoint = (url: string) => `${url}${latestRequest.endpoint}`;
 
       switch (location) {

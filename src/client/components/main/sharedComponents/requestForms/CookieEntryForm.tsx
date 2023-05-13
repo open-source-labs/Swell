@@ -72,21 +72,19 @@ const CookieEntryForm = (props: Props) => {
 
     // find cookie to update
     let indexToBeUpdated: number = -1;
+
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
       if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
         break;
       }
     }
-
     // update
-
     cookiesDeepCopy[indexToBeUpdated][field] = value;
 
     // also switch checkbox if they are typing
     if (field === 'key' || field === 'value') {
       cookiesDeepCopy[indexToBeUpdated].active = true;
-
     }
 
     props.newRequestCookiesSet({

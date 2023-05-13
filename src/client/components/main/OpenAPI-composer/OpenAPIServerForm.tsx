@@ -1,46 +1,52 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
 import { useSelector } from 'react-redux';
 import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer';
 import { $TSFixMe, OpenAPIRequest } from '../../../../types';
-import { openApiRequestsReplaced } from '../../../toolkit-refactor/slices/newRequestOpenApiSlice';
-import { RootState, useAppDispatch } from '../../../toolkit-refactor/store';
+import { RootState } from '../../../toolkit-refactor/store';
 
-
-interface OpenAPIServerFormProps {
+interface Props {
   newRequestsOpenAPI: OpenAPIRequest;
   openApiRequestsReplaced: (data: OpenAPIRequest) => void;
+  primaryServer: string;
+  setPrimaryServer: React.Dispatch<any>;
 }
 
-interface NewServer {
-  index: number;
-  str: string
-}
-
-const OpenAPIServerForm: React.FC<OpenAPIServerFormProps> = ({
+const OpenAPIServerForm: React.FC<Props> = ({
   newRequestsOpenAPI,
-  openApiRequestsReplaced,
+  openApiRequestsReplaced, 
+  setPrimaryServer
 }) => {
 
+  // This holds onto state for the ContentReqRowComposer
   const [contentDataArr, setContentDataArr]: $TSFixMe = useState([])
+  const [trueIndex, setTrueIndex] = useState(0)
 
+  // populate the contentDataArr upon upload of yml/json openApi file
   useEffect(() => {
     if (newRequestsOpenAPI?.openapiMetadata?.serverUrls) {
+      
       const serverUrls: string[] = newRequestsOpenAPI.openapiMetadata.serverUrls
+      // 
+      // setToggleUrlsArr((oldArr: string[]) => [...oldArr, serverUrls])
       const updatedServers = serverUrls.map((server: string, index: number) => {
+        let checked: undefined | boolean
+        index == 0 ? checked = true : checked = false
         return {
           id: Math.floor(Math.random() * 1000000),
-          active: true,
+          active: checked,
           key: `Server ${index + 1}`,
           value: server,
         }
       })
       setContentDataArr(updatedServers || []);
+      // setUpdateRef(false)
     }
   }, [newRequestsOpenAPI])
 
 
   // Responsible for adding servers to the OpenAPI request
   const addServer = (url: string = '') => {
+    
     const newOpenApi = structuredClone(newRequestsOpenAPI);
 
     if (newOpenApi?.openapiMetadata?.serverUrls) {
@@ -62,23 +68,35 @@ const OpenAPIServerForm: React.FC<OpenAPIServerFormProps> = ({
       openApiRequestsReplaced({...newOpenApi})
     }
   };
-  
+
   // Responsible for changing/updating the input fields of the servers
   const onChangeUpdateHeader = (
     id: string, 
     field: 'key' | 'value' | 'active', 
     value: boolean | string | number
     ) => {
-    // const newOpenApi = structuredClone(newRequestsOpenAPI)
-    // const serversDeepCopy: string[] = newOpenApi.openapiMetadata.serverUrls;
+    
+      // make a copy to update the state upon change
     const updatedContentDataArr = [ ...contentDataArr ];
+    // intialize an object to tracked checker urls
+    // (only one urls should be checked)
+    const checkedUrls: $TSFixMe = {}
 
     // find server to update (update in component state)
     for (let i = 0; i < contentDataArr.length; i += 1) {
       if (contentDataArr[i].id === id) {
+        if (updatedContentDataArr[i].active = true) {
+          setTrueIndex(i)
+        }
         // check or uncheck the box
         if (field === 'active') {
           updatedContentDataArr[i].active = value
+
+          if (updatedContentDataArr[i].active == true) {
+            updatedContentDataArr[trueIndex].active = false
+            setPrimaryServer(contentDataArr[i].value)
+            setTrueIndex(i)
+          }
         }
         if (field === 'key') {
           console.log(contentDataArr[i].value)
@@ -87,9 +105,9 @@ const OpenAPIServerForm: React.FC<OpenAPIServerFormProps> = ({
         if (field === 'value') {
           console.log(contentDataArr[i].value)
           updatedContentDataArr[i].value = value
+          addServer(updatedContentDataArr[i].value)
         }
         setContentDataArr(updatedContentDataArr)
-        // openApiRequestsReplaced({...newOpenApi});
       }
     }
   };
@@ -114,6 +132,7 @@ const OpenAPIServerForm: React.FC<OpenAPIServerFormProps> = ({
   return (
     <div className="mt-2">
       {JSON.stringify(contentDataArr)}
+      {JSON.stringify(newRequestsOpenAPI?.openapiMetadata?.serverUrls)}
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Servers</div>
         <button
@@ -131,77 +150,3 @@ const OpenAPIServerForm: React.FC<OpenAPIServerFormProps> = ({
 };
 
 export default OpenAPIServerForm;
-
-// import React from 'react';
-// import { useSelector } from 'react-redux';
-// import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer.tsx';
-
-// export default function OpenAPIServerForm({
-//   newRequestsOpenAPI,
-//   openApiRequestsReplaced,
-// }) {
-
-  // const onChangeUpdateHeader = (id, field, value) => {
-  //   const serversDeepCopy = structuredClone(newRequestsOpenAPI.openapiMetadata.serverUrls);
-  //   // find server to update
-  //   let indexToBeUpdated;
-  //   for (let i = 0; i < serversDeepCopy.length; i += 1) {
-  //     if (serversDeepCopy[i].id === id) {
-  //       indexToBeUpdated = i;
-  //       break;
-  //     }
-  //   }
-
-  //   // update
-  //   serversDeepCopy[indexToBeUpdated][field] = value;
-
-  //   // also switch checkbox if they are typing
-  //   if (field === 'key' || field === 'value') {
-  //     serversDeepCopy[indexToBeUpdated].active = true;
-  //   }
-
-  //   openApiRequestsReplaced({
-  //     serverUrls: serversDeepCopy,
-  //   });
-  // };
-
-//   const serversArr = newRequestsOpenAPI?.openapiMetadata?.serverUrls?.map(
-//     (server, index) => {
-
-//       console.log(' OpenApi Server form -> newRequestsOpenAPI',newRequestsOpenAPI)
-//       const contentTypeServer = {
-//         id: Math.random() * 1000000,
-//         active: true,
-//         key: `Server ${index + 1}`,
-//         value: server,
-//       };
-//       return (
-//         <ContentReqRowComposer
-//           data={contentTypeServer}
-//           index={index}
-//           type="header-row"
-//           changeHandler={onChangeUpdateHeader}
-//           key={index}
-//         />
-//       );
-//     }
-//   );
-
-//   const isDark = useSelector((state) => state.ui.isDark);
-
-//   return (
-//     <div className="mt-2">
-//       <div className="is-flex is-justify-content-space-between is-align-content-center">
-//         <div className="composer-section-title">Servers</div>
-//         <button
-//           className={`${
-//             isDark ? 'is-dark-300' : ''
-//           } button is-small add-header-or-cookie-button`}
-//         >
-//           + Server
-//         </button>
-//       </div>
-//       <div>{serversArr && serversArr}</div>
-//     </div>
-//   );
-// }
