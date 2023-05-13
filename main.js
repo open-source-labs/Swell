@@ -466,16 +466,18 @@ ipcMain.on('import-openapi', (event) => {
       // read uploaded document & save in the redux store
       fs.readFile(filePaths.filePaths[0], 'utf-8', async (err, importedFile) => {
         // handle read error
-        // if (err) {
-        //   return console.log('import-openapi error reading file : ', err);
-        // }
+        if (err) {
+          return console.log('import-openapi error reading file : ', err);
+        }
 
         try {
-          const documentObj = await openapiParserFunc(importedFile)
-          mainWindow.webContents.send('openapi-info', importedFile, documentObj);
+          const documentObj = await openapiParserFunc(importedFile);
+          // console.log('Main.js - Working here!',documentObj);
+          mainWindow.webContents.send('openapi-info', documentObj);
         } catch (err) {
           return console.log('import-openapi error reading file : ', err);
         }
+
       });
     })
     .catch((err) => {
@@ -483,19 +485,6 @@ ipcMain.on('import-openapi', (event) => {
     });
 });
 
-
-// openapiParserFunc-request.
-// Runs the function and returns the value back to OpenAPIDocumentEntryForm
-ipcMain.on('openapiParserFunc-request', (event, data) => {
-  openapiParserFunc(data)
-    .then((result) => {
-      mainWindow.webContents.send('openapiParserFunc-return', result);
-    })
-    .catch((err) => {
-      console.log('error in openapiParserFunc-request:, ', err);
-      mainWindow.webContents.send('openapiParserFunc-return', { error: err });
-    });
-});
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// MOCK SERVER //////////////////////////////////////

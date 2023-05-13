@@ -38,13 +38,14 @@ const CookieEntryForm = (props: Props) => {
     const cookiesDeepCopy = createDeepCookieCopy();
     if (cookiesDeepCopy.length === 0) {
       addCookie([]);
-    } else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
+    } 
+    else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
       addCookie(cookiesDeepCopy);
     }
   });
 
   const createDeepCookieCopy = () => {
-    return JSON.parse(JSON.stringify(props.newRequestCookies.cookiesArr));
+    return structuredClone(props.newRequestCookies.cookiesArr);
   };
 
   const addCookie = (cookiesDeepCopy: Cookie[]) => {
@@ -71,21 +72,19 @@ const CookieEntryForm = (props: Props) => {
 
     // find cookie to update
     let indexToBeUpdated: number = -1;
+
     for (let i = 0; i < cookiesDeepCopy.length; i++) {
       if (cookiesDeepCopy[i].id === id) {
         indexToBeUpdated = i;
         break;
       }
     }
-
     // update
-
     cookiesDeepCopy[indexToBeUpdated][field] = value;
 
     // also switch checkbox if they are typing
     if (field === 'key' || field === 'value') {
       cookiesDeepCopy[indexToBeUpdated].active = true;
-
     }
 
     props.newRequestCookiesSet({

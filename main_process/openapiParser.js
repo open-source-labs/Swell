@@ -6,6 +6,7 @@ const YAML = require('yamljs');
  */
 
 const openapiParserFunc = async (input) => {
+
   if (input === undefined || input === null) {
     throw new ReferenceError('OpenAPI Document not found.');
   }
@@ -63,8 +64,8 @@ const openapiParserFunc = async (input) => {
   });
 
   const openapiMetadata = { info, tags, serverUrls };
- 
-  return { openapiMetadata, openapiReqArray } || 'Entre a valid Open Api Format';
+  
+  return { openapiMetadata, openapiReqArray } || 'Enter a valid Open API Format';
 };
 
 module.exports = openapiParserFunc;

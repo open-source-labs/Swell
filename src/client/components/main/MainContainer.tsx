@@ -20,6 +20,7 @@ import {
   setWorkspaceActiveTab,
   /*, setComposerDisplay */
 } from '../../toolkit-refactor/slices/uiSlice';
+
 import {
   fieldsReplaced,
   newTestContentSet,
@@ -51,7 +52,7 @@ const mapStateToProps = (store: RootState) => {
     newRequestHeaders: store.newRequest.newRequestHeaders,
     newRequestStreams: store.newRequest.newRequestStreams,
     newRequestBody: store.newRequest.newRequestBody,
-    newRequestOpenAPI: store.newRequestOpenApi,
+    // newRequestOpenAPI: store.newRequestOpenApi,
     newRequestCookies: store.newRequest.newRequestCookies,
     newRequestSSE: store.newRequest.newRequestSSE,
     warningMessage: store.warningMessage,
@@ -102,7 +103,10 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
 });
 
+
 function MainContainer(props: $TSFixMeObject) {
+
+
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>

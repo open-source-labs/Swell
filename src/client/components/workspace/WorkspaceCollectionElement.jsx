@@ -20,7 +20,6 @@ import {
 } from '../../toolkit-refactor/slices/uiSlice';
 
 import { useAppDispatch } from '../../toolkit-refactor/store';
-console.log('test')
 const WorkspaceCollectionElement = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useAppDispatch();
