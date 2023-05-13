@@ -7,16 +7,17 @@ interface Props {
   warningMessage: {
     uri?: string;
   };
-  newRequestsOpenAPI: $TSFixMe 
+  newRequestsOpenAPI: $TSFixMe
+  primaryServer: string
 }
 
 // This component is working as intended, thouhg needs to have the TS tightened up
 const OpenAPIEntryForm: React.FC<Props> = ({
   warningMessage,
   newRequestsOpenAPI,
+  primaryServer
 }) => {
   // This loads the input field at the top of the page
-  const primaryServer =  newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || '';
 
   const isDark = useSelector((state: RootState) => state.ui.isDark);
 

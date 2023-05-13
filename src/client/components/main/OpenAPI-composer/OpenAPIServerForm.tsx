@@ -7,8 +7,7 @@ import { RootState } from '../../../toolkit-refactor/store';
 interface Props {
   newRequestsOpenAPI: OpenAPIRequest;
   openApiRequestsReplaced: (data: OpenAPIRequest) => void;
-  primaryServer: string;
-  setPrimaryServer: React.Dispatch<any>;
+  setPrimaryServer: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const OpenAPIServerForm: React.FC<Props> = ({
