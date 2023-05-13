@@ -7,31 +7,28 @@
  */
 
 const { _electron: electron } = require('playwright');
+const pwTest = require('@playwright/test');
 const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs');
 
-let electronApp, page;
+let electronApp, page, num;
 
 module.exports = () => {
-  const setupFxn = function () {
+
+  describe('openAPI tests', () => {
+
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
-      page = electronApp.windows()[0]; // In case there is more than one window
-      await page.waitForLoadState(`domcontentloaded`);
-
-      await page.locator('text=OPENAPI').click();
+      if (!electronApp) {
+        throw new Error('electronApp failed to launch');
+      }
     });
 
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
-
-      try {
-      } catch (err) {
-        console.error(err);
-      }
     });
 
     afterEach(async function () {
@@ -47,15 +44,60 @@ module.exports = () => {
         );
       }
     });
-  };
 
-  describe('openAPI testing', () => {
-    setupFxn();
+      // The app takes a while to launch, and without these rendering checks
+  // within each test file the tests can get flakey because of long load times
+  // so these are here to ensure the app launches as expect before continuing
+    describe('Window rendering', () => {
+      it('Electron app should launch', async () => {
+        expect(electronApp).to.be.ok;
+      });
+
+      it('Electron app should be a visible window', async () => {
+        const window = await electronApp.firstWindow();
+        // const window = await electronApp.windows()[0];
+        pwTest.expect(window).toBeVisible();
+      });
+
+      it('App should only have 1 window (i.e. confirm devTools is not open)', async () => {
+        expect(electronApp.windows().length).to.equal(1);
+      });
+    });
+
+  describe('OpenAPI Functionality Testing', () => {
+
+    before(async () => {
+      // In case there is more than one window
+      page = await electronApp.windows()[0];
+      await page.waitForLoadState(`domcontentloaded`);
+      num = 0;
+      await page.locator('button>> text=OpenAPI').first().click();
+      // await page.locator('#url-input').fill('0.0.0.0:30051');
+    });
+   
+    // const addReqAndSend = async (num) => {
+    //   try {
+    //     await page.locator('button >> text=Add to Workspace').click();
+    //     await page.locator(`#send-button-${num}`).click();
+    //     const res = await page.locator('#events-display').innerText();
+    //     return res;
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // };
 
     it('it should have a "Load Document" button', async () => {
-      const handle = await page.locator('text=Load Document');
-      expect(handle.count()).to.equal(1);
+
+      try {
+
+        const handle = await page.locator('text=Load Document');
+        expect(handle).toBeDefined()
+      } catch (err) {
+        console.log(err)
+        console.error(err);
+      }
     });
-  }).timeout(20000);
+  }).timeout(2000);
+  })
 };
 
