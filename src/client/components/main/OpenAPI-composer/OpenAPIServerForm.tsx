@@ -23,7 +23,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
   // populate the contentDataArr upon upload of yml/json openApi file
   useEffect(() => {
     if (newRequestsOpenAPI?.openapiMetadata?.serverUrls) {
-      
+      setPrimaryServer(newRequestsOpenAPI.openapiMetadata.serverUrls[0])
       const serverUrls: string[] = newRequestsOpenAPI.openapiMetadata.serverUrls
       // 
       // setToggleUrlsArr((oldArr: string[]) => [...oldArr, serverUrls])
@@ -44,16 +44,19 @@ const OpenAPIServerForm: React.FC<Props> = ({
 
 
   // Responsible for adding servers to the OpenAPI request
-  const addServer = (url: string = '') => {
+  const addServer = (url: string = '', i?: number) => {
     
     const newOpenApi = structuredClone(newRequestsOpenAPI);
 
     if (newOpenApi?.openapiMetadata?.serverUrls) {
-      const index = newOpenApi.openapiMetadata.serverUrls.length;
-      const str = url
-      newOpenApi.openapiMetadata.serverUrls.push({index: str});
+      if (url === '') {
+        const index = newOpenApi.openapiMetadata.serverUrls.length;
+        newOpenApi.openapiMetadata.serverUrls.push({index: url});
 
       openApiRequestsReplaced({...newOpenApi})
+      } else if (i != undefined) {
+        newOpenApi.openapiMetadata.serverUrls[i] = {i: url};
+      }
     }
   };
 
@@ -77,9 +80,6 @@ const OpenAPIServerForm: React.FC<Props> = ({
     
       // make a copy to update the state upon change
     const updatedContentDataArr = [ ...contentDataArr ];
-    // intialize an object to tracked checker urls
-    // (only one urls should be checked)
-    const checkedUrls: $TSFixMe = {}
 
     // find server to update (update in component state)
     for (let i = 0; i < contentDataArr.length; i += 1) {
@@ -98,13 +98,14 @@ const OpenAPIServerForm: React.FC<Props> = ({
           }
         }
         if (field === 'key') {
-          console.log(contentDataArr[i].value)
           updatedContentDataArr[i].key = value
         }
         if (field === 'value') {
-          console.log(contentDataArr[i].value)
           updatedContentDataArr[i].value = value
-          addServer(updatedContentDataArr[i].value)
+          addServer(updatedContentDataArr[i].value, i)
+          if (updatedContentDataArr[i].active == true) {
+            setPrimaryServer(contentDataArr[i].value)
+          }
         }
         setContentDataArr(updatedContentDataArr)
       }
@@ -130,8 +131,6 @@ const OpenAPIServerForm: React.FC<Props> = ({
 
   return (
     <div className="mt-2">
-      {JSON.stringify(contentDataArr)}
-      {JSON.stringify(newRequestsOpenAPI?.openapiMetadata?.serverUrls)}
       <div className="is-flex is-justify-content-space-between is-align-content-center">
         <div className="composer-section-title">Servers</div>
         <button

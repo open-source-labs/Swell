@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -54,7 +54,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
   // We are only ever sending a request to one server, this one.
   // you can toggle which is the primary server in the serverEntryForm
   const [primaryServer, setPrimaryServer] = useState<string>(newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || '')
-  
+
   const requestValidationCheck = () => {
     const validationMessage = {};
     //Error conditions removing the need for url for now

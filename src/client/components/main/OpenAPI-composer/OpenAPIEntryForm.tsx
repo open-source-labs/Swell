@@ -18,7 +18,6 @@ const OpenAPIEntryForm: React.FC<Props> = ({
   primaryServer
 }) => {
   // This loads the input field at the top of the page
-
   const isDark = useSelector((state: RootState) => state.ui.isDark);
 
   return (
