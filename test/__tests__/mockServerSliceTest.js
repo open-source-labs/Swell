@@ -1,5 +1,8 @@
 /** 
  * @file Test to determine if the mockServerSlice reducer switches work.
+ * @todo - Check for possible edge cases
+ * Covereage is all at 100%, so possibly no need to update testing
+ * unless the slice itself was updated/edge cases found.
  * **/
 
 import mockServerReducer, 

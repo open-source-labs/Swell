@@ -1,3 +1,9 @@
+/**
+ * @todo - Refactor code for DRY principle
+ * @todo - Check for possible edge cases
+ * @todo - Look into increasing testing coverage across the board to 100%
+ */
+
 import historySliceReducer, {
   historyCleared,
   historySet,
