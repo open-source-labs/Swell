@@ -1,4 +1,7 @@
-// Confirm testing of request/response works for grpc
+/** 
+ * @file Confirm testing of request/response works for grpc
+ * @file This testing is completed
+ * */
 
 const grpcServer = require('../grpcServer.js');
 
