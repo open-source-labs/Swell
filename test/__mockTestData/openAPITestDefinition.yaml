@@ -4,16 +4,16 @@ info:
   description: Test file for debugging Swell's openAPI feature
   version: 0.1.9
 servers:
-  - url: http://api.example.com/v1
+  - url: http://www.example.com/v1
     description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
+  - url: http://www.example.com/v2
     description: Optional server description, e.g. Internal staging server for testing
 paths:
-  /users/{userId}:
+  /users/1:
     get:
       summary: Returns a user by ID.
       parameters:
-        - name: userId
+        - name: 1
           in: path
           required: true
           description: The ID of the user to return.
@@ -42,3 +42,4 @@ paths:
           description: A user with the specified ID was not found.
         default:
           description: Unexpected error
+

@@ -7,7 +7,7 @@
   "scripts": {
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
     "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --exit",
-    "server-sse": "node ./test/fakeSSEServer.js",
+    "server-sse": "node ./test/SSE_HTTP1_Server.js",
     "server-gql": "node ./test/graphqlServer.mjs",
     "server-grpc": "node ./test/grpcServer.js",
     "server-http": "node ./test/httpServer.js",

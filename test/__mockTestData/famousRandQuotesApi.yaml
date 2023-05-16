@@ -24,8 +24,7 @@ paths:
                     author:
                       type: string
       security:
-        - RapidAPIKeyHeader: ['SIGN-UP-FOR-KEY']
-          RapidAPIKeyHeader: ['andruxnet-random-famous-quotes.p.rapidapi.com']
+        - RapidAPIKeyHeader: ['andruxnet-random-famous-quotes.p.rapidapi.com']
 components:
   securitySchemes:
     RapidAPIKeyHeader:
@@ -38,3 +37,4 @@ components:
       name: X-RapidAPI-Host
       in: header
       description: RapidAPI Host
+
