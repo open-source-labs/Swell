@@ -152,7 +152,22 @@ Some of the following features either have broken, incomplete, or no E2E testing
 
 Future iteration should consider fix or add E2E testing coverage for these features.
 
-## How can I package and release the application without a functional CI/CD pipeline?
+### _CD pipeline is incomplete_
+
+Continuous Integration has been implemented using GitHub Actions. If you would like to edit workflows or add new ones to the pipeline, here is the process that we employed to test new workflows before using them on critical branches like main and dev:
+
+- Create two test branches (ex: ci-draft and ci-main)
+- Define a workflow in a yaml file and test its execution by pushing it to ci-draft and/or opening a pull request to merge ci-draft into ci-main depending on the triggers you have defined in the workflow
+- Make any necessary adjustments to the workflow and continue testing it on ci-draft and ci-main until the workflow is functioning as intended
+- Finally, open a pull request to merge the new workflow into the dev and/or main branches
+
+The idea is to troubleshoot new workflows before applying them to the dev or main branches. 
+
+A Continuous Deployment pipeline would be an advantageous addition, as its absence blocks the ability to automatically package and release new iterations of the application. The groundwork for it is there (see the “scripts” and “build” properties in package.json) but packaging for Linux will need some attention, as outlined in the next section.
+
+---
+
+## How can I package and release the application without a functional CD pipeline?
 
 There are a few options to package an electron app for production. Some of the most popular options are electron forge and electron builder, and Swell uses electron builder currently.
 
@@ -162,7 +177,7 @@ While electron builder supports [multi-platform build](https://www.electron.buil
 
 For Mac users, running `npm run package-mac` and `npm run package-win` (as defined in `package.json`) would allow you to package the Swell app for Mac and Windows environment. If you try to package for the linux environment (i.e. `npm run package-all`, `npm run package-linux`, `npm run gh-publish`), you will run into issues requiring `snapcraft` and `multipass` to create a linux virtual machine in order to package the application. You can try to install `snapcraft` and `multipass` via `brew` per instructions, but there has not been much success locally.
 
-The only remaining option to build a linux package for MacOS users is via a CI/CD tool like Travis CI or GitHub Actions but the pipeline is not functional in the Swell repository. **To work around this limitation without building a new CI/CD pipeline, we recommend you ask a developer with a WSL or Linux environment to help you package the application.**
+The only remaining option to build a Linux package for MacOS users is via the CI/CD pipeline but the CD portion is not yet implemented in the Swell repository. **To work around this limitation without building a CD pipeline, we recommend you ask a developer with a WSL or Linux environment to help you package the application.**
 
 - Ask the developer to clone the project into their local WSL/Linux environment. **The user does not need the ability to open the electron application.**
 - run `npm install && npm run package-linux`
