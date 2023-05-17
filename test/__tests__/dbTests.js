@@ -23,6 +23,8 @@ db.version(1).stores({
   history: 'id, createdAt',
 });
 
+//delete
+const thisIsForTest = "test";
 // now we have db.history and db.collections
 
 // for setup and teardown tasks that are asynchronous, take care to RETURN the promise
