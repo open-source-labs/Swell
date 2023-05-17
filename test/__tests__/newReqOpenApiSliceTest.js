@@ -1,3 +1,8 @@
+/**
+ * @todo - Check for possible edge cases
+ * @todo - Look into increasing testing coverage to 100% across the board. The last test needs to be fixed as well.
+ */
+
 import newRequestOpenApiReducer, 
   { newServerAdded, 
     newParameterAdded,
@@ -62,6 +67,7 @@ describe('newRequestOpenApiSlice', () => {
 
   describe('serversRemovedByIndex', () => {
     it('deletes a server given the appropriate request', () => {
+      //Here just in case, but dont' believe the below initialState and actionPayloadTest are needed for this test
         // const initialState = {
         //   openApiMetadata: {
         //     info: {},

@@ -89,7 +89,7 @@ const WorkspaceCollectionElement = (props) => {
         </div>
       </div>
       {/* VIEW REQUEST DETAILS / MINIMIZE */}
-      {/* {network !== 'ws' && (
+      {network !== 'ws' && (
         <div
           className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
           onClick={() => {
@@ -107,7 +107,7 @@ const WorkspaceCollectionElement = (props) => {
             </div>
           )}
         </div>
-      )} */}
+      )}
       {/* REQUEST ELEMENTS */}
       {showDetails === true && (
         <div className="is-neutral-200-box">

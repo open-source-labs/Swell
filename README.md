@@ -41,8 +41,9 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _WebSockets (WS)_: Swell enables connecting directly to WebSocket servers with an HTTP handshake, with developers able to send messages to the connected WS server directly. All outgoing and incoming messages are displayed in real time.
   <img src="./ReadMeGifs/Gifs/Websockets.gif" style="display: block; margin: 10px auto 30px;" />
 
-- _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream. ()
-  <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
+- _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
+  <!-- -TODO --- This needs to be updated -->
+    <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
 
 ## Additional features
 

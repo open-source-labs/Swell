@@ -4,11 +4,6 @@ import { v4 as uuid } from 'uuid';
 import historyController from '../../../controllers/historyController';
 // Import local components
 
-/**
- * @todo Refactor all of the below components to use MUI, place them in a new
- * "components" folder
- */
-
 import GRPCTypeAndEndpointEntryForm from './GRPCTypeAndEndpointEntryForm';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import GRPCProtoEntryForm from './GRPCProtoEntryForm';

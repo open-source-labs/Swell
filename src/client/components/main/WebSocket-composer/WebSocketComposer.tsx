@@ -3,10 +3,6 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../../controllers/historyController';
 // Import local components
-/**
- * @todo Refactor all of the below components to use MUI, place them in a new
- * "components" folder
- */
 import WSEndpointEntryForm from './WSEndpointEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
@@ -129,7 +125,7 @@ export default function WebSocketComposer(props) {
           />
         </div>
         <TestEntryForm
-          isWebSocket="true"
+          isWebSocket={true}
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />

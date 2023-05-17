@@ -400,11 +400,13 @@ const httpController = {
       }
     });
 
-    cookies.forEach((cookie) => {
-      const cookieString = `${cookie.key}=${cookie.value}`;
-      // attach to formattedHeaders so options object includes this
-      formattedHeaders.cookie = cookieString;
-    });
+    if (cookies) {
+      cookies.forEach((cookie) => {
+        const cookieString = `${cookie.key}=${cookie.value}`;
+        // attach to formattedHeaders so options object includes this
+        formattedHeaders.cookie = cookieString;
+      });
+    }
 
     const outputObj = {
       method,

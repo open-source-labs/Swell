@@ -1,8 +1,8 @@
 /*
 This Component is used to auto update the app, but it doesn't really work.
 When migrating to gitHub Actions, it was disabled, but we didn't want to delete
-it if it turned out to be useful for future iterators. That being said, if the 
-app has solved the update task, this comp and the code in main.js ought to be 
+it if it turnes out to be useful for future iterators. That being said, if the 
+app has solved the update task without it, this comp and the code in main.js ought to be 
 deleted. 
 */
 

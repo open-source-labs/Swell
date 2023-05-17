@@ -12,10 +12,6 @@ import {
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
 
-/**
- * @todo Refactor all of the below components to use MUI, place them in a new
- * "components" folder
- */
 import RestMethodAndEndpointEntryForm from './RestMethodAndEndpointEntryForm';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';

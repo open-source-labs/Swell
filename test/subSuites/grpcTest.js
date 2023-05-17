@@ -50,7 +50,6 @@ module.exports = () => {
       }
     });
 
-    
     // The app takes a while to launch, and without these rendering checks
     // within each test file the tests can get flakey because of long load times
     // so these are here to ensure the app launches as expect before continuing
@@ -72,7 +71,6 @@ module.exports = () => {
     describe('Functionality Testing', () => {
 
       before(async () => {
-
         page = await electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
         num = 0;

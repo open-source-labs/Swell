@@ -1,9 +1,6 @@
 const YAML = require('yamljs');
 
-/**
- * @todo The previous todo just said "Validation, Callbacks". That's it. Maybe
- * it means to add validation and to refactor this to add support for callbacks?
- */
+// TODO The security keys need to be implmented into the OpenApi request
 
 const openapiParserFunc = (input) => {
 
@@ -17,7 +14,7 @@ const openapiParserFunc = (input) => {
   } catch (SyntaxError) {
     doc = YAML.parse(input);
   }
-
+ 
   const { info, servers, tags, paths, components } = doc;
   
   info.openapi = doc.openapi;
@@ -65,7 +62,7 @@ const openapiParserFunc = (input) => {
   });
 
   const openapiMetadata = { info, tags, serverUrls };
-  
+
   return { openapiMetadata, openapiReqArray } || 'Enter a valid Open API Format';
 };
 

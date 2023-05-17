@@ -1,3 +1,9 @@
+/**
+ * @todo - Refactor code for DRY principle
+ * @todo - Check for possible edge cases
+ * @todo - Look into increasing test coverage across the boad to 100%
+ */
+
 import newRequestFieldsReducer, 
     { fieldsReplaced,
         newTestContentSet,
@@ -55,6 +61,7 @@ describe('newRequestFieldsSlice', () => {
         });
     });
 
+    //The below test syntax can be updated for DRY.
     describe('newRequestFieldsByProtocol', () => {
         it('should update the request fields based on given protocol', () => {
             let expected = {

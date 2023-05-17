@@ -4,10 +4,6 @@ import { GraphQLSchema } from 'graphql';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 import { NewRequestFields, NewRequestBody } from '../../../../types';
-// import GraphQLBodyEntryForm from './GraphQLBodyEntryForm';
-// import GraphQLIntrospectionLog from './GraphQLIntrospectionLog';
-
-// import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 interface IntrospectionData {
   schemaSDL: string | null;
