@@ -43,7 +43,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
   <!-- -TODO --- This needs to be updated -->
-    <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
+    <img src="./ReadMeGifs/Gifs/gRPC.gif" style="display: block;  margin: 10px auto 30px;" />
 
 ## Additional features
 

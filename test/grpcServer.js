@@ -7,6 +7,7 @@ const protoLoader = require('@grpc/proto-loader');
 const PROTO_PATH = path.resolve(__dirname, './hw2.proto');
 const PORT = '0.0.0.0:30051';
 
+
 // Service method to be used on unary test
 const SayHello = (call, callback) => {
   callback(null, { message: `Hello ${call.request.name}` });
