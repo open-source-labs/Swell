@@ -7,11 +7,12 @@
   "scripts": {
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
     "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --exit",
-    "server-sse": "node ./test/SSE_HTTP1_Server.js",
+    "server-sse": "node ./test/SSE_HTTP1_server.js",
     "server-gql": "node ./test/graphqlServer.mjs",
     "server-grpc": "node ./test/grpcServer.js",
     "server-http": "node ./test/httpServer.js",
     "server-http2": "node ./test/HTTP2_server.js",
+    "server-trpc": "ts-node ./test/tRPC_Test_Servers/Express_Test_Server/server/api.ts",
     "server-websocket": "node ./test/websocketServer.js",
     "server-webrtc": "node ./test/webrtcWSServer.js",
     "test-jest": "jest",
@@ -163,7 +164,8 @@
     "vm2": "^3.9.16",
     "websocket": "^1.0.34",
     "ws": "^8.13.0",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
@@ -228,6 +230,7 @@
     "source-map-loader": "^3.0.1",
     "style-loader": "^3.3.1",
     "ts-migrate": "^0.1.28",
+    "ts-node": "^10.9.1",
     "typescript": "^4.6.3",
     "url-loader": "^4.1.1",
     "webpack": "^5.72.0",
