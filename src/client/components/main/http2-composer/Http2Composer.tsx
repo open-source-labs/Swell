@@ -2,32 +2,28 @@ import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { useDispatch } from 'react-redux';
 
-import { responseDataSaved } from '../../../toolkit-refactor/reqRes/reqResSlice';
+import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
-} from '../../../toolkit-refactor/ui/uiSlice';
+} from '../../../toolkit-refactor/slices/uiSlice';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
 import historyController from '../../../controllers/historyController';
 
-/**
- * @todo Refactor all of the below components to use MUI, place them in a new
- * "components" folder
- */
-import RestMethodAndEndpointEntryForm from '../new-request/RestMethodAndEndpointEntryForm';
-import HeaderEntryForm from '../new-request/HeaderEntryForm';
-import CookieEntryForm from '../new-request/CookieEntryForm';
-import SendRequestButton from '../new-request/SendRequestButton';
-import NewRequestButton from '../new-request/NewRequestButton';
-import BodyEntryForm from '../new-request/BodyEntryForm';
-import TestEntryForm from '../new-request/TestEntryForm';
+import RestMethodAndEndpointEntryForm from './RestMethodAndEndpointEntryForm';
+import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
+import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
+import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
+import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
+import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
+import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
 import { CookieOrHeader, ReqRes } from '../../../../types';
 
-import TestContainer from '../../workspace/TestContainer';
+import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {

@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Test file for debugging Swell's openAPI feature
+  version: 0.1.9
+servers:
+  - url: http://www.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+  - url: http://www.example.com/v2
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /users/1:
+    get:
+      summary: Returns a user by ID.
+      parameters:
+        - name: 1
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A user object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+                  name:
+                    type: string
+                    example: Jessica Smith
+        '400':
+          description: The specified user ID is invalid (not a number).
+        '404':
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+

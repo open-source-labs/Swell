@@ -41,6 +41,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _WebSockets (WS)_: Swell enables connecting directly to WebSocket servers with an HTTP handshake, with developers able to send messages to the connected WS server directly. All outgoing and incoming messages are displayed in real time.
   <img src="./ReadMeGifs/Gifs/Websockets.gif" style="display: block; margin: 10px auto 30px;" />
 
+- _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
+  <!-- -TODO --- This needs to be updated -->
+    <img src="./ReadMeGifs/Gifs/gRPC.gif" style="display: block;  margin: 10px auto 30px;" />
+
 ## Additional features
 
 - _Stress testing for HTTP/2 and GraphQL_: Test your server backend with Swell's stress testing feature to ensure your server can manage expected and unexpected loads accordingly
@@ -66,12 +70,9 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
   <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
 
-- _gRPC_: Swell includes full support for all four streaming types of gRPC - unary, client stream, server stream, bidirectional stream.
-  <img src="./ReadMeGifs/Gifs/gRPC-responses.gif" style="display: block;  margin: 10px auto 30px;" />
-
 - _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations.
-  <img src="./ReadMeGifs/Gifs/tRPC-query.gif" style="display: block; margin: 10px auto 30px;" />
-  <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" />
+  <img src="./ReadMeGifs/Gifs/tRPC.gif" style="display: block; margin: 10px auto 30px;" />
+  <!-- <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" /> -->
 
   Calls are currently being made using Swell's own TRPCProxyClient generated from the URL provided by the user.
   Batch requests must be entered one request per line. Swell will treat each line of code entered into the editor as a separate request before batching and returning responses.
@@ -133,6 +134,10 @@ Feel free to check out the `DEV-README.md` in the `docs` folder.
 
 ## Authors
 
+- **Timmy Zhu** - [timzhu15](https://github.com/timzhu15)
+- **Christina Walton** - [CElizOwens](https://github.com/CElizOwens)
+- **Akeem Smith** - [AkeemESmith](https://github.com/AkeemESmith)
+- **William Murphy** - [olsoninoslo](https://github.com/olsoninoslo)
 - **Chris Suzukida** - [csuzukida](https://github.com/csuzukida)
 - **Fred Kim** - [Fredkim21](https://https://github.com/Fredkim21)
 - **Jason Huang** - [jjhuang3](https://https://github.com/jjhuang3)

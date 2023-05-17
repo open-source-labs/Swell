@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // Import actions so that the navbar can interact with the Redux store.
-import { newRequestContentByProtocol } from '../../toolkit-refactor/newRequest/newRequestSlice';
-import { newRequestFieldsByProtocol } from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
+import { newRequestContentByProtocol } from '../../toolkit-refactor/slices/newRequestSlice';
+import { newRequestFieldsByProtocol } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';
 import { Box, Divider } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
-import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+import ButtonUnstyled from '@mui/base/Button';
 import { useDispatch } from 'react-redux';
 import { SwellTooltip } from '../customMuiStyles/tooltip';
 
@@ -71,11 +71,11 @@ const pages: page[] = [
   { name: HTTP_NAME, route: '/', value: HTTP_VALUE },
   { name: 'GraphQL', route: '/graphql', value: 'graphQL' },
   { name: 'WebSocket', route: '/websocket', value: 'ws' },
+  { name: 'gRPC', route: '/grpc', value: 'grpc' },
 ];
 
 const experimentalPages: page[] = [
   { name: 'Mock', route: '/mockserver', value: 'mockserver' },
-  { name: 'gRPC', route: '/grpc', value: 'grpc' },
   { name: 'tRPC', route: '/trpc', value: 'tRPC' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
   { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },

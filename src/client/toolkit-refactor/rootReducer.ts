@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
 
-import UiReducer from '../toolkit-refactor/ui/uiSlice';
-import HistoryReducer from '../toolkit-refactor/history/historySlice';
-import GraphPointsReducer from '../toolkit-refactor/graphPoints/graphPointsSlice';
-import CollectionsReducer from '../toolkit-refactor/collections/collectionsSlice';
-import ReqResReducer from '../toolkit-refactor/reqRes/reqResSlice';
-import NewRequestReducer from '../toolkit-refactor/newRequest/newRequestSlice';
-import NewRequestFieldsReducer from '../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
-import NewRequestOpenApiReducer from '../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
-import IntrospectionDataReducer from '../toolkit-refactor/introspectionData/introspectionDataSlice';
-import WarningMessageReducer from '../toolkit-refactor/warningMessage/warningMessageSlice';
-import MockServerReducer from '../toolkit-refactor/mockServer/mockServerSlice';
+import UiReducer from './slices/uiSlice';
+import HistoryReducer from './slices/historySlice';
+import GraphPointsReducer from './slices/graphPointsSlice';
+import CollectionsReducer from './slices/collectionsSlice';
+import ReqResReducer from './slices/reqResSlice';
+import NewRequestReducer from './slices/newRequestSlice';
+import NewRequestFieldsReducer from './slices/newRequestFieldsSlice';
+import NewRequestOpenApiReducer from './slices/newRequestOpenApiSlice';
+import IntrospectionDataReducer from './slices/introspectionDataSlice';
+import WarningMessageReducer from './slices/warningMessageSlice';
+import MockServerReducer from './slices/mockServerSlice';
 
 // Note: There was previously a currentTab prop in the Redux store; it wasn't
 // used anywhere, and there was no info about it other than it was a string. We

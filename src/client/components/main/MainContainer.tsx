@@ -3,7 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
 
-import * as ReqResSlice from '../../toolkit-refactor/reqRes/reqResSlice';
+import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
+
 import {
   composerFieldsReset,
   newRequestSSESet,
@@ -11,34 +12,38 @@ import {
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../toolkit-refactor/newRequest/newRequestSlice';
-import { openApiRequestsReplaced } from '../../toolkit-refactor/newRequestOpenApi/newRequestOpenApiSlice';
+} from '../../toolkit-refactor/slices/newRequestSlice';
+
+import { openApiRequestsReplaced } from '../../toolkit-refactor/slices/newRequestOpenApiSlice';
+
 import {
   setWorkspaceActiveTab,
   /*, setComposerDisplay */
-} from '../../toolkit-refactor/ui/uiSlice';
+} from '../../toolkit-refactor/slices/uiSlice';
+
 import {
   fieldsReplaced,
   newTestContentSet,
-} from '../../toolkit-refactor/newRequestFields/newRequestFieldsSlice';
-import { setWarningMessage } from '../../toolkit-refactor/warningMessage/warningMessageSlice';
+} from '../../toolkit-refactor/slices/newRequestFieldsSlice';
+import { setWarningMessage } from '../../toolkit-refactor/slices/warningMessageSlice';
 
 // Import local components.
 import Http2Composer from './http2-composer/Http2Composer';
-import GraphQLComposer from './GraphQLComposer';
-import GRPCComposer from './GRPCComposer';
-import WebSocketComposer from './WebSocketComposer';
-import WebRTCComposer from './WebRTCComposer';
-import OpenAPIComposer from './OpenAPIComposer';
-import WebhookComposer from './WebhookComposer';
-import TRPCComposer from './TRPCComposer';
-import MockServerComposer from './MockServerComposer';
-import ResponsePaneContainer from './response/ResponsePaneContainer';
+import GraphQLComposer from './GraphQL-composer/GraphQLComposer';
+import GRPCComposer from './GRPC-composer/GRPCComposer';
+import WebSocketComposer from './WebSocket-composer/WebSocketComposer';
+import WebRTCComposer from './WebRTC-composer/WebRTCComposer';
+import OpenAPIComposer from './OpenAPI-composer/OpenAPIComposer';
+import WebhookComposer from './WebHook-composer/WebhookComposer';
+import TRPCComposer from './TRPC-composer/TRPCComposer';
+import MockServerComposer from './MockServer-composer/MockServerComposer';
+import ResponsePaneContainer from './response-composer/ResponsePaneContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
 import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 import Split from 'react-split';
+
 /**@todo switch to hooks? */
 const mapStateToProps = (store: RootState) => {
   return {
@@ -47,7 +52,7 @@ const mapStateToProps = (store: RootState) => {
     newRequestHeaders: store.newRequest.newRequestHeaders,
     newRequestStreams: store.newRequest.newRequestStreams,
     newRequestBody: store.newRequest.newRequestBody,
-    newRequestOpenAPI: store.newRequestOpenApi,
+    // newRequestOpenAPI: store.newRequestOpenApi,
     newRequestCookies: store.newRequest.newRequestCookies,
     newRequestSSE: store.newRequest.newRequestSSE,
     warningMessage: store.warningMessage,
@@ -98,7 +103,10 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
 });
 
+
 function MainContainer(props: $TSFixMeObject) {
+
+
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
@@ -107,10 +115,7 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/" element={<Http2Composer {...props} />} />
             <Route path="/graphql" element={<GraphQLComposer {...props} />} />
             <Route path="/grpc" element={<GRPCComposer {...props} />} />
-            <Route
-              path="/websocket"
-              element={<WebSocketComposer {...props} />}
-            />
+            <Route path="/websocket" element={<WebSocketComposer {...props} />} />
             <Route path="/webrtc" element={<WebRTCComposer {...props} />} />
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
             <Route path="/webhook" element={<WebhookComposer {...props} />} />
@@ -128,3 +133,4 @@ function MainContainer(props: $TSFixMeObject) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
+

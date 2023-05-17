@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
 // Import local components
 import KeyValueForm from './KeyValueForm';
 // Import MUI components
 import { Box, Button } from '@mui/material';
-import { STATUS_CODES } from 'http';
-import { truncate } from 'fs-extra';
 
 export default function KeyValueTable({ type, state, setState }) {
   console.log(`${type} state`, state)

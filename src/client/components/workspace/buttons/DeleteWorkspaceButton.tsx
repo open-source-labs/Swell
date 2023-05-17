@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { collectionDeleted } from '../../../toolkit-refactor/collections/collectionsSlice';
+import { collectionDeleted } from '../../../toolkit-refactor/slices/collectionsSlice';
 
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import collectionsController from '../../../controllers/collectionsController';

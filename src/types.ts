@@ -103,7 +103,7 @@ export interface Message {
 }
 
 export interface NewRequestBody {
-  bodyContent: string;
+  bodyContent: string | undefined;
   bodyVariables: string;
   bodyType: string;
   rawType: string;
@@ -123,6 +123,20 @@ export interface WebsocketMessages {
   timeReceived: number;
 }
 
+interface NewRequestCookies {
+  cookiesArr: CookieOrHeader[];
+  count: number;
+};
+
+interface NewRequestHeaders {
+headersArr: CookieOrHeader[];
+count: number;
+};
+
+export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void
+export type NewRequestCookiesSet = (obj: NewRequestCookies) => void
+export type NewRequestBodySet = (obj: NewRequestBody) => void
+
 /**
  * Defines the type constract for the NewRequestFields state object.
  *
@@ -132,7 +146,7 @@ export interface WebsocketMessages {
  * Not sure if this could cause things to break, though.
  */
 export type NewRequestFields = {
-  protocol: string;
+  protocol: string | undefined;
   restUrl: string;
   wsUrl: string;
   gqlUrl: string;
@@ -189,7 +203,7 @@ export type IntrospectionData = {
 };
 
 export interface OpenAPIRequest {
-  openApiMetadata: Record<string, unknown>;
+  openapiMetadata: $TSFixMe//Record<string, unknown>;
   openApiReqArray: OpenAPIReqData[];
 }
 
@@ -253,6 +267,7 @@ export interface ReqRes {
   webrtc: boolean;
   frequency?: number;
   duration?: number;
+  classEventPreviewsName: string;
 }
 
 export interface SSERequest {
@@ -271,7 +286,7 @@ export interface NewRequestStreams {
   initialQuery: unknown | null;
   queryArr: Record<string, unknown>[] | null;
   protoPath: unknown | null;
-  services: Record<string, unknown> | null;
+  services: Record<$TSFixMe, $TSFixMe> | null;
   protoContent: string;
 }
 
@@ -280,10 +295,10 @@ export interface TestResult {
   status: string;
 }
 
-/**@todo make sure all properties are correct and add any not listed yet*/
+/**@todo make sure all properties are correct and add properties not listed yet*/
 export interface ReqResResponse {
   cookies?: Cookie[];
-  headers: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
+  headers?: Record<string, unknown>; //*HAS 'headers' property that is an object - has 'date' property?
   events: Record<string, unknown>[]; // is this the correct type? //*HAS 'events' property that IS an array
   tab?: string; //have not found this property mentioned yet should be removed for seperation of concerns
   timeSent?: number; //should be in 'times' property below instead??

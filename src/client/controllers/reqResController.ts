@@ -6,17 +6,19 @@ import {
   reqResUpdated,
   reqResReplaced,
   reqResCleared,
-} from '../toolkit-refactor/reqRes/reqResSlice';
+} from '../toolkit-refactor/slices/reqResSlice';
 import {
   groupCleared,
   graphCleared,
   graphUpdated,
-} from '../toolkit-refactor/graphPoints/graphPointsSlice';
+} from '../toolkit-refactor/slices/graphPointsSlice';
 
 import graphQLController from './graphQLController';
 import { ReqRes, WindowExt } from '../../types';
 
 const { api } = window as unknown as WindowExt;
+
+// This handles all connections
 const connectionController = {
   openConnectionArray: [] as number[] | number[],
 
@@ -31,6 +33,7 @@ const connectionController = {
     }
     appDispatch(reqResReplaced(reqResArray));
   },
+
   // listens for reqResUpdate event from main process telling it to update reqResObj REST EVENTS
   openReqRes(id: number | string): void {
     // remove all previous listeners for 'reqResUpdate' before starting to listen for 'reqResUpdate' again
@@ -40,10 +43,8 @@ const connectionController = {
       if (
         (reqResObj.connection === 'closed' ||
           reqResObj.connection === 'error') &&
-        reqResObj.timeSent &&
-        reqResObj.timeReceived &&
-        reqResObj.response.events &&
-        reqResObj.response.events.length > 0
+        reqResObj.timeSent && reqResObj.timeReceived &&
+        reqResObj.response.events && reqResObj.response.events.length > 0
       ) {
         appDispatch(graphUpdated(reqResObj));
       }
@@ -75,10 +76,12 @@ const connectionController = {
     else if (reqResObj.gRPC) {
       api.send('open-grpc', reqResObj);
       // Standard HTTP?
+      // TODO (look for TODO tree)
     } else if (reqResObj.openapi) {
       console.log('got an open api request to fill');
       //console.log(reqResObj);
     } else {
+      console.log('we\'re sending http')
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },

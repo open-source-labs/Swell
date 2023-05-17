@@ -88,7 +88,7 @@ export default function HistoryOrWorkspaceContainer(
         <WorkspaceContainer {...props} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <HistoryContainer />
+        <HistoryContainer {...props}/>
       </TabPanel>
     </Box>
   );

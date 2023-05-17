@@ -1,5 +1,6 @@
 // Base React and React Router scaffolding
 import React, { useState, useEffect } from 'react';
+import Split from 'react-split';
 import { HashRouter } from 'react-router-dom';
 
 // Controllers
@@ -7,13 +8,14 @@ import historyController from '../controllers/historyController';
 import collectionsController from '../controllers/collectionsController';
 
 // Local components
-import UpdatePopUpContainer from './legacy-components/UpdatePopUpContainer';
+// import UpdatePopUpContainer from './legacy-components/UpdatePopUpContainer';
 import HistoryOrWorkspaceContainer from './workspace/HistoryOrWorkspaceContainer';
 import NavBarContainer from './navbar/NavBarContainer';
 import MainContainer from './main/MainContainer';
+
+// Types
 import { WindowExt } from '../../types';
 
-import Split from 'react-split';
 // Error handling
 import ErrorBoundary from './utilities/ErrorBoundary/ErrorBoundary';
 
@@ -66,7 +68,7 @@ const App = () => {
         </Split>
 
         <ErrorBoundary>
-          <UpdatePopUpContainer />
+          {/* <UpdatePopUpContainer /> */}
         </ErrorBoundary>
       </HashRouter>
     </div>

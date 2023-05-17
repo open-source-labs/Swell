@@ -1,57 +1,65 @@
-import React, { useEffect, useState } from 'react';
+/*
+This Component is used to auto update the app, but it doesn't really work.
+When migrating to gitHub Actions, it was disabled, but we didn't want to delete
+it if it turnes out to be useful for future iterators. That being said, if the 
+app has solved the update task without it, this comp and the code in main.js ought to be 
+deleted. 
+*/
 
-const { api } = window;
+// import React, { useEffect, useState } from 'react';
 
-const UpdatePopUpContainer = () => {
-  // Used to toggle the "update" pop-up.
-  const [message, setMessage] = useState(null);
+// const { api } = window;
 
-  useEffect(() => {
-    api.receive('message', (e, text) => {
-      console.log('AUTO-UPDATER STATUS: ' + e);
-      if (text) setMessage(text);
-    });
-  });
+// const UpdatePopUpContainer = () => {
+//   // Used to toggle the "update" pop-up.
+//   const [message, setMessage] = useState(null);
 
-  if (!message) {
-    return null;
-  }
+//   useEffect(() => {
+//     api.receive('message', (e, text) => {
+//       console.log('AUTO-UPDATER STATUS: ' + e);
+//       if (text) setMessage(text);
+//     });
+//   });
 
-  const handleUpdateClick = () => {
-    api.send('quit-and-install');
-    setMessage(null);
-  };
+//   if (!message) {
+//     return null;
+//   }
 
-  return (
-    <div id="update-modal">
-      <span>{message}</span>
+//   const handleUpdateClick = () => {
+//     api.send('quit-and-install');
+//     setMessage(null);
+//   };
 
-      {message === 'Update downloaded.' && (
-        <>
-          <span className="updateMessage">
-            Do you want to restart and install now? (If not, will auto-install
-            on restart.)
-          </span>
-        </>
-      )}
+//   return (
+//     <div id="update-modal">
+//       <span>{message}</span>
 
-      <button
-        className="button is-small modal-button"
-        onClick={() => setMessage(null)}
-      >
-        Dismiss
-      </button>
+//       {message === 'Update downloaded.' && (
+//         <>
+//           <span className="updateMessage">
+//             Do you want to restart and install now? (If not, will auto-install
+//             on restart.)
+//           </span>
+//         </>
+//       )}
 
-      {message === 'Update downloaded.' && (
-        <button
-          className="button is-small is-full-width modal-button-update"
-          onClick={handleUpdateClick}
-        >
-          Update
-        </button>
-      )}
-    </div>
-  );
-};
+//       <button
+//         className="button is-small modal-button"
+//         onClick={() => setMessage(null)}
+//       >
+//         Dismiss
+//       </button>
 
-export default UpdatePopUpContainer;
+//       {message === 'Update downloaded.' && (
+//         <button
+//           className="button is-small is-full-width modal-button-update"
+//           onClick={handleUpdateClick}
+//         >
+//           Update
+//         </button>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default UpdatePopUpContainer;

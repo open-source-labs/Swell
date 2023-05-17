@@ -161,6 +161,30 @@ const fillGQLRequest = async (
   }
 };
 
+const fillgRPC_Proto = async (page, proto) => {
+  try {
+    
+    // select Body, clear it, and type in query
+    const codeMirror = await page.locator('#grpcProtoEntryTextArea');
+    await codeMirror.click();
+    const gRPC_BodyCode = await codeMirror.locator('.cm-content');
+
+    try {
+      await gRPC_BodyCode.fill('');
+      await gRPC_BodyCode.fill(`${proto}`);
+      await page.locator('#save-proto').click();
+      await page.locator('#Select-Service-button').click();
+      await page.locator('.dropdown-menu >> a >> text=Greeter').click();
+      await page.locator('#Select-Request-button').click();
+    } catch (err) {
+      console.error(err);
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const addAndSend = async (page, n) => {
   try {
     await page.locator('button >> text=Add to Workspace').click();
@@ -195,6 +219,34 @@ const clearAndFillTestScriptArea = async (page, script) => {
   }
 };
 
+const composerSetup = async () => {
+  try {
+    await page.locator('button>> text=GRPC').click();
+    await page.locator('#url-input').fill('0.0.0.0:30051');
+
+
+    const codeMirror = await page.locator('#grpcProtoEntryTextArea');
+    await codeMirror.click();
+    const grpcProto = await codeMirror.locator('.cm-content');
+    await grpcProto.fill(proto);
+
+    await page.locator('#save-proto').click();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const addReqAndSend = async (num) => {
+  try {
+    await page.locator('button >> text=Add to Workspace').click();
+    await page.locator(`#send-button-${num}`).click();
+    const res = await page.locator('#events-display').innerText();
+    return res;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = {
   isButtonDisabled,
   fillRestRequest,
@@ -202,5 +254,8 @@ module.exports = {
   fillGQLRequest,
   addAndSend,
   clearAndFillTestScriptArea,
+  fillgRPC_Proto,
+  composerSetup,
+  addReqAndSend
 };
 

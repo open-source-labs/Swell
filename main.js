@@ -33,6 +33,7 @@
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
+
 const { autoUpdater } = require('electron-updater');
 const {
   default: installExtension,
@@ -60,12 +61,13 @@ require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
 
+
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
 // configure logging
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
 let mainWindow;
@@ -216,6 +218,8 @@ app.on('ready', () => {
   }
 });
 
+
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   if (mockServerProcess) {
@@ -224,68 +228,68 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-// Auto Updating Functionality
-const sendStatusToWindow = (text) => {
-  log.info(text);
-  if (mainWindow) {
-    mainWindow.webContents.send('message', text);
-  }
-};
+// ----------------------Auto Updating Functionality--------------------
+// const sendStatusToWindow = (text) => {
+//   log.info(text);
+//   if (mainWindow) {
+//     mainWindow.webContents.send('message', text);
+//   }
+// };
 
-ipcMain.on('check-for-update', () => {
-  // listens to ipcRenderer in UpdatePopUpContainer.jsx
-  console.log('check for update');
-  if (!isDev) {
-    autoUpdater.checkForUpdates();
-  }
-});
-autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('Checking for update...');
-});
-autoUpdater.on('update-available', (info) => {
-  sendStatusToWindow('Update available.');
-});
-autoUpdater.on('update-not-available', (info) => {
-  sendStatusToWindow('Update not available.');
-});
-autoUpdater.on('error', (err) => {
-  console.error('autoUpdater error -> ', err);
-  sendStatusToWindow(`Error in auto-updater`);
-});
-autoUpdater.on('download-progress', (progressObj) => {
-  sendStatusToWindow(
-    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-  );
-});
-autoUpdater.on('update-downloaded', (info) => {
-  sendStatusToWindow('Update downloaded.');
-});
+// ipcMain.on('check-for-update', () => {
+//   // listens to ipcRenderer in UpdatePopUpContainer.jsx
+//   console.log('check for update');
+//   if (!isDev) {
+//     autoUpdater.checkForUpdates();
+//   }
+// });
+// autoUpdater.on('checking-for-update', () => {
+//   sendStatusToWindow('Checking for update...');
+// });
+// autoUpdater.on('update-available', (info) => {
+//   sendStatusToWindow('Update available.');
+// });
+// autoUpdater.on('update-not-available', (info) => {
+//   sendStatusToWindow('Update not available.');
+// });
+// autoUpdater.on('error', (err) => {
+//   console.error('autoUpdater error -> ', err);
+//   sendStatusToWindow(`Error in auto-updater`);
+// });
+// autoUpdater.on('download-progress', (progressObj) => {
+//   sendStatusToWindow(
+//     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+//   );
+// });
+// autoUpdater.on('update-downloaded', (info) => {
+//   sendStatusToWindow('Update downloaded.');
+// });
 
-autoUpdater.on('update-downloaded', (info) => {
-  // Wait 5 seconds, then quit and install
-  // In your application, you don't need to wait 500 ms.
-  // You could call autoUpdater.quitAndInstall(); immediately
-  autoUpdater.quitAndInstall();
-});
-ipcMain.on('quit-and-install', () => {
-  autoUpdater.quitAndInstall();
-});
-// App page reloads when user selects "Refresh" from pop-up dialog
-ipcMain.on('fatalError', () => {
-  console.log('received fatal error');
-  mainWindow.reload();
-});
-ipcMain.on('uncaughtException', () => {
-  console.log('received uncaught fatal error');
-});
+// autoUpdater.on('update-downloaded', (info) => {
+//   // Wait 5 seconds, then quit and install
+//   // In your application, you don't need to wait 500 ms.
+//   // You could call autoUpdater.quitAndInstall(); immediately
+//   autoUpdater.quitAndInstall();
+// });
+// ipcMain.on('quit-and-install', () => {
+//   autoUpdater.quitAndInstall();
+// });
+// // App page reloads when user selects "Refresh" from pop-up dialog
+// ipcMain.on('fatalError', () => {
+//   console.log('received fatal error');
+//   mainWindow.reload();
+// });
+// ipcMain.on('uncaughtException', () => {
+//   console.log('received uncaught fatal error');
+// });
 
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+// app.on('activate', () => {
+//   // On macOS it's common to re-create a window in the app when the
+//   // dock icon is clicked and there are no other windows open.
+//   if (mainWindow === null) {
+//     createWindow();
+//   }
+// });
 
 // ============ IMPORT / EXPORT FROM FILES ===============
 
@@ -386,7 +390,12 @@ ipcMain.on('import-collection', (event, args) => {
   });
 });
 
-// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION ===============
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// gRPC ///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+// ============ CONFIRM CLEAR HISTORY / RESPONSE COMMUNICATION =============== //
+
 ipcMain.on('confirm-clear-history', (event) => {
   const opts = {
     type: 'warning',
@@ -404,7 +413,6 @@ ipcMain.on('confirm-clear-history', (event) => {
 
 // =============== GRPCProtoEntryForm Calls that uses protoParserFunc ======= //
 ipcMain.on('import-proto', (event) => {
-  let importedProto;
   dialog
     .showOpenDialog({
       buttonLabel: 'Import Proto File',
@@ -414,14 +422,14 @@ ipcMain.on('import-proto', (event) => {
     .then((filePaths) => {
       if (!filePaths) return undefined;
       // read uploaded proto file & save protoContent in the store
-      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, importedProto) => {
         // handle read error
         if (err) {
           return console.log('import-proto error reading file : ', err);
         }
-        importedProto = file;
+        
         protoParserFunc(importedProto).then((protoObj) => {
-          mainWindow.webContents.send('proto-info', importedProto, protoObj);
+          mainWindow.webContents.send('proto-info', JSON.stringify(importedProto), JSON.stringify(protoObj));
         });
       });
     })
@@ -432,20 +440,22 @@ ipcMain.on('import-proto', (event) => {
 
 // protoParserFunc-request
 // Runs the function and returns the value back to GRPCProtoEntryForm
-ipcMain.on('protoParserFunc-request', (event, data) => {
-  protoParserFunc(data)
-    .then((result) => {
-      mainWindow.webContents.send('protoParserFunc-return', result);
-    })
-    .catch((err) => {
-      console.log('error in protoParserFunc-request:, ', err);
-      mainWindow.webContents.send('protoParserFunc-return', { error: err });
-    });
+ipcMain.on('protoParserFunc-request', async (event, data) => {
+  try {
+    const result = await protoParserFunc(data)
+    mainWindow.webContents.send('protoParserFunc-return', JSON.stringify(result));
+  } catch (err) {
+    console.log('error in protoParserFunc-request:, ', err);
+    mainWindow.webContents.send('protoParserFunc-return', { error: err });
+  }
 });
+
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// OpenAPI //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 //====== Loading and parsing an OpenAPI Document with openapiParserFunc ======//
 ipcMain.on('import-openapi', (event) => {
-  let importedDocument;
   dialog
     .showOpenDialog({
       buttonLabel: 'Import OpenApi File',
@@ -454,18 +464,20 @@ ipcMain.on('import-openapi', (event) => {
     .then((filePaths) => {
       if (!filePaths) return undefined;
       // read uploaded document & save in the redux store
-      fs.readFile(filePaths.filePaths[0], 'utf-8', (err, file) => {
+      fs.readFile(filePaths.filePaths[0], 'utf-8', async (err, importedFile) => {
         // handle read error
         if (err) {
           return console.log('import-openapi error reading file : ', err);
         }
-        importedDocument = file;
-        const documentObj = openapiParserFunc(importedDocument);
-        mainWindow.webContents.send(
-          'openapi-info',
-          importedDocument,
-          documentObj
-        );
+
+        try {
+          const documentObj = await openapiParserFunc(importedFile);
+          // console.log('Main.js - Working here!',documentObj);
+          mainWindow.webContents.send('openapi-info', documentObj);
+        } catch (err) {
+          return console.log('import-openapi error reading file : ', err);
+        }
+
       });
     })
     .catch((err) => {
@@ -473,20 +485,11 @@ ipcMain.on('import-openapi', (event) => {
     });
 });
 
-// openapiParserFunc-request.
-// Runs the function and returns the value back to OpenAPIDocumentEntryForm
-ipcMain.on('openapiParserFunc-request', (event, data) => {
-  openapiParserFunc(data)
-    .then((result) => {
-      mainWindow.webContents.send('openapiParserFunc-return', result);
-    })
-    .catch((err) => {
-      console.log('error in openapiParserFunc-request:, ', err);
-      mainWindow.webContents.send('openapiParserFunc-return', { error: err });
-    });
-});
 
-//======================= MOCK SERVER =======================//
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// MOCK SERVER //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process

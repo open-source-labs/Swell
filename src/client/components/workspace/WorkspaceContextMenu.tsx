@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
-import { reqResReplaced } from '../../toolkit-refactor/reqRes/reqResSlice';
+import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
 
 export default function WorkspaceContextMenu({ id, name, reqResArray }) {
   const dispatch = useDispatch();

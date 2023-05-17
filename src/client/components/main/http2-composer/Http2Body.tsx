@@ -8,15 +8,15 @@ import { $TSFixMeObject } from '../../../../types';
 import {
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+} from '../../../toolkit-refactor/slices/newRequestSlice';
 
 // Import local components
 import BodyTypeSelect from './BodyTypeSelect';
 // Import MUI components
 import { Box } from '@mui/material';
-import WWWForm from '../../../components/main/new-request/WWWForm';
-import JSONTextArea from '../../../components/main/new-request/JSONTextArea';
-import TextCodeArea from '../../../components/main/new-request/TextCodeArea';
+import WWWForm from '../sharedComponents/requestForms/WWWForm';
+import JSONTextArea from '../sharedComponents/JSONTextArea';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 /**@todo switch to hooks? */
 const mapStateToProps = (store: RootState) => {

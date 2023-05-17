@@ -6,7 +6,7 @@ import { RootState } from '../../../toolkit-refactor/store';
 import {
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../../toolkit-refactor/newRequest/newRequestSlice';
+} from '../../../toolkit-refactor/slices/newRequestSlice';
 
 import {
   Box,

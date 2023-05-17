@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import db from '../db';
 
 import { appDispatch } from '../toolkit-refactor/store';
-import { collectionsReplaced } from '../toolkit-refactor/collections/collectionsSlice';
+import { collectionsReplaced } from '../toolkit-refactor/slices/collectionsSlice';
 
 import { Collection, WindowAPI, WindowExt } from '../../types';
 

@@ -6,11 +6,13 @@ const protoLoader = require('@grpc/proto-loader');
 
 const PROTO_PATH = path.resolve(__dirname, './hw2.proto');
 const PORT = '0.0.0.0:30051';
-// console.log("not working");
+
+
 // Service method to be used on unary test
 const SayHello = (call, callback) => {
   callback(null, { message: `Hello ${call.request.name}` });
 };
+// client.users.byId.query("1");
 
 // Service method to be used on nested unary test
 const SayHelloNested = (call, callback) => {
@@ -69,6 +71,26 @@ const sayHelloBidi = (call, callback) => {
   });
 };
 
+const routeChat = (call) => {
+  call.on('data', function(note) {
+    var key = pointKey(note.location);
+    /* For each note sent, respond with all previous notes that correspond to
+     * the same point */
+    if (route_notes.hasOwnProperty(key)) {
+      _.each(route_notes[key], function(note) {
+        call.write(note);
+      });
+    } else {
+      route_notes[key] = [];
+    }
+    // Then add the new note to the list
+    route_notes[key].push(JSON.parse(JSON.stringify(note)));
+  });
+  call.on('end', function() {
+    call.end();
+  });
+}
+
 // function for starting a gRPC test server
 function main(status) {
   // load proto file
@@ -101,4 +123,5 @@ function main(status) {
   }
 }
 
+// main('open')
 module.exports = main;

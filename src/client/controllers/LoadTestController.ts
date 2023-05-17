@@ -9,10 +9,10 @@ import { appDispatch } from '../toolkit-refactor/store';
 import {
   responseDataSaved,
   reqResUpdated,
-} from '../toolkit-refactor/reqRes/reqResSlice';
+} from '../toolkit-refactor/slices/reqResSlice';
 import { ReqRes, WindowExt } from '../../types';
-import { LoadTestResult } from '../components/main/loadTest/LoadTest';
-import { graphUpdated } from '../toolkit-refactor/graphPoints/graphPointsSlice';
+import { LoadTestResult } from '../components/main/sharedComponents/stressTest/LoadTest';
+import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;
 

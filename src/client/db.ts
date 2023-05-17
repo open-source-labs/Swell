@@ -1,3 +1,10 @@
+// Dexie is a library the makes your component mirror the data in real time
+
+/*
+We have to keep the 'SwellDB' as a class component - this is because it extends Dexie.
+Dexie is a wrapper library used to dynamically update table formatted data.
+For more info: https://dexie.org/docs/Tutorial/React
+*/
 import Dexie, { Table } from 'dexie';
 
 interface History {

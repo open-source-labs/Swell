@@ -18,12 +18,12 @@ import {
 
 import Store from '../toolkit-refactor/store';
 import { appDispatch } from '../toolkit-refactor/store';
-import { introspectionDataChanged } from '../toolkit-refactor/introspectionData/introspectionDataSlice';
+import { introspectionDataChanged } from '../toolkit-refactor/slices/introspectionDataSlice';
 import {
   responseDataSaved,
   reqResUpdated,
-} from '../toolkit-refactor/reqRes/reqResSlice';
-import { graphUpdated } from '../toolkit-refactor/graphPoints/graphPointsSlice';
+} from '../toolkit-refactor/slices/reqResSlice';
+import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;
 
