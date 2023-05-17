@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: Random Famous Quotes API
+  version: 1.0.0
+  description: API for retrieving random famous quotes
+servers:
+  - url: 'https://andruxnet-random-famous-quotes.p.rapidapi.com/'
+paths:
+  /:
+    get:
+      summary: Get random famous quotes
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    quote:
+                      type: string
+                    author:
+                      type: string
+      security:
+        - RapidAPIKeyHeader: ['andruxnet-random-famous-quotes.p.rapidapi.com']
+components:
+  securitySchemes:
+    RapidAPIKeyHeader:
+      type: apiKey
+      name: X-RapidAPI-Key
+      in: header
+      description: RapidAPI Key
+    RapidAPIHostHeader:
+      type: apiKey
+      name: X-RapidAPI-Host
+      in: header
+      description: RapidAPI Host
+

@@ -1,5 +1,6 @@
 // Base React and React Router scaffolding
 import React, { useState, useEffect } from 'react';
+import Split from 'react-split';
 import { HashRouter } from 'react-router-dom';
 
 // Controllers
@@ -11,9 +12,10 @@ import collectionsController from '../controllers/collectionsController';
 import HistoryOrWorkspaceContainer from './workspace/HistoryOrWorkspaceContainer';
 import NavBarContainer from './navbar/NavBarContainer';
 import MainContainer from './main/MainContainer';
+
+// Types
 import { WindowExt } from '../../types';
 
-import Split from 'react-split';
 // Error handling
 import ErrorBoundary from './utilities/ErrorBoundary/ErrorBoundary';
 
@@ -23,7 +25,6 @@ import '../../assets/style/App.scss';
 const { api } = window as unknown as WindowExt;
 
 const App = () => {
-  console.log('test')
   // currentWorkspace is the current Workspace's UUID. It is only altered in
   // WorkspaceSelect.tsx, which is rendered by CurrentWorskpaceDisplay.tsx
   const [currentWorkspaceId, setWorkspace] = useState('');

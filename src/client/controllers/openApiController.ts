@@ -11,30 +11,20 @@ import { openApiRequestsReplaced } from '../toolkit-refactor/slices/newRequestOp
 const openApiController: $TSFixMe = {
 
     importDocument(): void {
-        // console.log('importing document');
-        //listens for imported openapi document from main process
-        api.receive('openapi-info', async function receiveOpenAPI(data1: any, data2: any) {
+        api.removeAllListeners('openapi-info');
+        api.receive('openapi-info', async (data_in: $TSFixMe) => {
             try {
-                console.log('received openapi-info data_1', typeof data1, YAML.parse(data1));
-                console.log('received openapi-info data_2', typeof data2)
-              
-                const data = YAML.parse(data1)
-                const testObj: any = {openApiMetadata: {
-                    info: data.info,
-                    tags: data.tags,
-                    serverUrls: data.serverUrls,
-                    openApiReqArr: data.openApiReqArr
-                }}
 
-                console.log('Test Object',testObj)
-                
-                appDispatch(openApiRequestsReplaced(testObj));
+                appDispatch(openApiRequestsReplaced(data_in));
             } catch (err) {
+                // If swell ever gets big enough, this needs to be built out
                 console.log('Error in openAPI Controller: ', err)
             }
         })
+    },
+    sendDocument(): void {
         api.send('import-openapi');
-        },
+    },
 }
 
 export default openApiController;

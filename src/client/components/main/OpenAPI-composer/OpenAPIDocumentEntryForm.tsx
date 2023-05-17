@@ -1,10 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../../toolkit-refactor/store';
+import openApiController from '../../../controllers/openApiController';
 
-import openApiController from '../../../controllers/openApiController'
-const OpenAPIDocumentEntryForm = (props) => {
+// this component is working as intened
 
-  const isDark = useSelector((state) => state.ui.isDark);
+const OpenAPIDocumentEntryForm: React.FC = () => {
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
+
+  const importDoc = (): void => {
+    openApiController.sendDocument();
+    openApiController.importDocument();
+  }
 
   return (
     <div className="mt-3">
@@ -13,7 +20,7 @@ const OpenAPIDocumentEntryForm = (props) => {
           className={`${
             isDark ? 'is-dark-300' : ''
           } button is-small add-header-or-cookie-button mr-1`}
-          onClick={() => openApiController.importDocument()}
+          onClick={() => importDoc()}
         >
           Load Document
         </button>

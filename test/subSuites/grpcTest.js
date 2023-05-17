@@ -16,7 +16,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const { fillgRPC_Proto } = require('./testHelper');
 
-const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/protos/hw2.proto'))
+const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/mock_protos/hw2.proto'))
 let electronApp, page, num;
 
 module.exports = () => {
@@ -50,7 +50,6 @@ module.exports = () => {
       }
     });
 
-    
     // The app takes a while to launch, and without these rendering checks
     // within each test file the tests can get flakey because of long load times
     // so these are here to ensure the app launches as expect before continuing
@@ -72,7 +71,6 @@ module.exports = () => {
     describe('Functionality Testing', () => {
 
       before(async () => {
-
         page = await electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
         num = 0;
@@ -175,6 +173,6 @@ module.exports = () => {
           console.error(err);
         }
       });
-    }).timeout(20000)
-  }).timeout(20000);
+    }).timeout(2000)
+  }).timeout(2000);
 };

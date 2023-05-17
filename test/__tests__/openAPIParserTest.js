@@ -10,9 +10,7 @@ describe('openAPI Parser tests', () => {
   );
 
   it('should be able to parse a yaml file', () => {
-    const { openapiMetadata, openapiReqArray } = openapiParserFunc(
-      String(file)
-    );
+    const { openapiMetadata, openapiReqArray } = openapiParserFunc(String(file));
     expect(openapiMetadata).toBeDefined();
     expect(openapiReqArray).toBeDefined();
   });

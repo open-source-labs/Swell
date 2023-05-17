@@ -16,8 +16,8 @@ const GRPCBodyEntryForm: React.FC<Props> = (props) => {
 
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   const addStream = (): void => {
-    const streamsArr = structuredClone(props.newRequestStreams.streamsArr); //[...props.newRequestStreams.streamsArr];
-    const streamContent = structuredClone(props.newRequestStreams.streamContent); //[...props.newRequestStreams.streamContent];
+    const streamsArr = structuredClone(props.newRequestStreams.streamsArr); 
+    const streamContent = structuredClone(props.newRequestStreams.streamContent); 
     // save query of initial stream body
     const firstBodyQuery: $TSFixMe = props.newRequestStreams.initialQuery;
     // construct new stream body obj & push into the streamsArr

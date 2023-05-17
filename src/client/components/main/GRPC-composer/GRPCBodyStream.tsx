@@ -18,7 +18,6 @@ interface GRPCBodyStreamProps {
 const GRPCBodyStream: React.FC<GRPCBodyStreamProps>  = (props) => {
   const [showError, setError] = useState<string | null>(null);
   // event handler that allows the client to delete a stream body
-  // eslint-disable-next-line lines-between-class-members
   const deleteStream = (id: number) => {
     if (props.newRequestStreams.streamsArr.length === 1) {
       setError('Error: Must have at least one stream body');

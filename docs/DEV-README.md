@@ -14,6 +14,7 @@ If you are considering contributing to Swell in the context of a group or medium
 - Express
 - Webpack
 - Client-side storage (IndexedDB)
+- GitHub Actions (CI/CD)
 - Testing
   - Unit testing with Jest
   - End-to-end (E2E) testing with Playwright and Mocha
@@ -28,8 +29,6 @@ If you are considering contributing to Swell in the context of a group or medium
     - WebRTC
     - OpenAPI
 
----
-
 ## How to download and test the application locally?
 
 1. Fork and/or clone the repository into your local machine
@@ -38,7 +37,7 @@ If you are considering contributing to Swell in the context of a group or medium
    - `npm run dev`
 3. Wait for the electron application to start up (it may take a bit)
 
-There is E2E testing available via `npm run test`. Note that not all tests in the E2E test suite work currently. Please refer to `./test/testSuite.js` for more details.
+There is E2E testing available via `npm run test`. Note that not all tests in the E2E test suite work currently. Please refer to `./test/testSuite.js` and `./test/subSuites` for more details.
 
 ---
 
@@ -71,11 +70,11 @@ From a functionality standpoint:
 - GraphQL stress testing with `Query`
 - Mock server for HTTP/2 (`Express`)
 - Ability to store historical requests and create/delete workspaces
+- Frontend conversion to TypeScript
+- From a codebase standpoint:
 
-From a codebase standpoint:
-
-- Partial conversion to TypeScript
-- Conversion to Redux toolkit _almost_ complete
+- Increase quality of TypeScript and continue converstion
+- Conversion to Redux toolkit _almost_ complete (need to implement hooks like useSelector and useAppDispatch)
 - Most working E2E testing (more details in `./test/testSuite.js`)
 
 ---
@@ -85,15 +84,21 @@ From a codebase standpoint:
 ### _Continue reducing the size and complexity of the codebase_
 
 This codebase has an interesting combination of over-modularization and code de-centralization/duplication occurring at the same time. For example - each type of API endpoint composer window (top right section of the app) is its own module/file, but a lot of the code inside is duplicated (see `Http2Composer.tsx` and `GraphQLComposer.tsx`).
-
+The reason many iteration groups have stayed away is becuase one would need to craft a function/component that is flexible enough to handle the population of the reqRes object and dispatch of the state to the vairous slices. This is not an easy task, and may take the entire iteration time allotted. It would be a worthy
 The impacts to the product are:
 
 - The codebase can be incredibly difficult to navigate if you are not familiar with the structure
+  - That being said, the file structure has been extensively modified to make the navigation much easier.
+    The most challenging aspects are the understanding how state flows through the application, from the front-end to main_process, controllers, etc.
+    This is the most important thnig to understant when iterating on Swell
 - The app is slow to load in all environments (production, development, test)
+  - Adding multiple entry points to for the build process would greatly improve this, but be careful because you can end up makiing performance much worse in the process
 
 **Some of us have found [ReacTree](https://reactree.dev/) VS Code extension incredibly helpful in visualizing the UI components. Utilizing the extension could be your entry into understanding the structure of the codebase.**
 
-As you iterate the product, keep in mind the footprint your new feature could add to the codebase. Could you re-use some of the existing modules? Can you even refactor and/or remove the obsolete code to help maintain the health of the codebase?
+As you iterate the product, keep in mind the footprint your new feature(s) could add to the codebase. Could you re-use some of the existing modules? Can you even refactor and/or remove the obsolete code to help maintain the health of the codebase?
+
+There are many parts of the codebase that break DRY principles, and with a such a large application, really keep in mind that when you add features it is completely necessary. Past iterators added an experimental feature(s) without it fully working and the next team(s) would add there own experiemental feature. Fixing features the past teams couldn't get to not only is a great way to learn these technologies, but is a great thing to talk to in interviews. " I fixed the webRTC feature that has been stagnant for 5 years", "I addressed the technical debt and reoganized the state...", or "Increasesed the quality of typeScript". These all show maturity as a developer and will allow to focus the entire time of OSP on the 20% problems.
 
 ### _Ensure consistent redux state management_
 
@@ -103,7 +108,8 @@ The redux state initiation and management for various API endpoints in this code
 
 For the following technologies - if you reference the gifs in `readme` and try to replicate the steps in the application you may not get the same result:
 
-- gRPC
+<!-- - gRPC -->
+
 - tRPC
 - OpenAPI
 
@@ -117,11 +123,13 @@ Moreover, the application lacks instructions on how to utilize some of the more 
 
 Lastly, when making the app smaller on windows desktop or using a computer with smaller screen size, some of the buttons are partially cut out. It would be great to establish a minimum size for each section and/or input field so the application can auto-resize elegantly.
 
-### _Continue conversion to TypeScript, Material UI and Redux toolkit_
+You will notice that there are a few places where MUI is used. Material UI is a huge component library that is popular, though figuring out how to lessen Swells depence on it would go a long way to reducing it's bloat.
 
-Conversion to Material UI allows a more consistent component style and promotes semantic HTML language throughout the application. TypeScript provides strong typing to improve code quality, maintainability and reduce runtime errors. Redux toolkit reduces the amount of boilerplate requires to use Redux within the application and provide a centralized environment for state initialization and management.
+### _Continue conversion to TypeScript and Redux toolkit_
 
-### _Enhance HTTP/2 Mock server functionality; expand feature to GraphQL_
+TypeScript provides strong typing to improve code quality, maintainability and reduce runtime errors. Redux toolkit reduces the amount of boilerplate requires to use Redux within the application and provide a centralized environment for state initialization and management.
+
+### _Enhance HTTP/2 Mock server functionality_
 
 Currently, the HTTP/2 mock server has the ability to create a server that is accessible outside of the application, and create any endpoint that the user chooses. There could be a lot of potential to enhance the current mock server to include features such as:
 
@@ -130,17 +138,14 @@ Currently, the HTTP/2 mock server has the ability to create a server that is acc
 - the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
 - Connect the headers and cookies to the mock endpoint creation
 
-Moreover, the mock server functionality can be extended to GraphQL as well so that is something that can be considered in the future.
-
 ### _WebRTC STUN/TURN server input is read-only_
 
 The `RTCConfiguration` format required for WebRTC STUN/TURN server is an object with `iceServers` as the key and an array of objects as the value. With the current input format on the application, it is very difficult and error-prone to attempt to format the user input correctly. Based on research it seems like many other alternatives that test STUN/TURN servers separate each key/value into its input text box (similar to how key/value pairs for headers are done for HTTP/2 in Swell). Our assumption is that this way the application can have better control formatting `RTCConfiguration`. If anyone is considering advancing the current WebRTC functionalities in the future, this should be a priority so we can fully enable the ability to test any STUN/TURN servers using Swell.
 
 ### _Incomplete E2E testing coverage_
 
-Some of the following features either have broken, or no E2E testing coverage in the repository:
+Some of the following features either have broken, incomplete, or no E2E testing coverage in the repository:
 
-- gRPC
 - tRPC
 - OpenAPI
 - Mock server
