@@ -11,6 +11,7 @@ const PORT = '0.0.0.0:30051';
 const SayHello = (call, callback) => {
   callback(null, { message: `Hello ${call.request.name}` });
 };
+// client.users.byId.query("1");
 
 // Service method to be used on nested unary test
 const SayHelloNested = (call, callback) => {
