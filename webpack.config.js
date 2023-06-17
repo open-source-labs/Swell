@@ -111,7 +111,7 @@ module.exports = {
     // options here: https://github.com/webpack-contrib/webpack-bundle-analyzer
     // set to true to display bundle breakdown
     new BundleAnalyzerPlugin({
-      openAnalyzer: false,
+      openAnalyzer: true,
       analyzerMode: 'static',
     }),
     new webpack.ProvidePlugin({
