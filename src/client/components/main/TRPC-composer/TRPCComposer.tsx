@@ -23,6 +23,8 @@ import {
   wsLink,
 } from '@trpc/client';
 
+import Store from '../../../toolkit-refactor/store';
+
 /**
  *
  */
@@ -32,6 +34,8 @@ export default function TRPCComposer() {
   const requestBody = useSelector(
     (state: RootState) => state.newRequest.newRequestBody
   );
+
+  console.log(Store.getState());
 
   /** newRequestFields slice from redux store, contains general request info*/
   const requestFields = useSelector(
