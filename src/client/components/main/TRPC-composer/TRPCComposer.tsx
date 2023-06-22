@@ -14,6 +14,7 @@ import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice'
 // Import MUI components
 import { Box } from '@mui/material';
 import { RootState } from '../../../toolkit-refactor/store';
+import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 
 // import tRPC client Module
 import {
@@ -28,15 +29,22 @@ import Store from '../../../toolkit-refactor/store';
 /**
  *
  */
-export default function TRPCComposer() {
+export default function TRPCComposer(props) {
   const dispatch = useDispatch();
   /** newRequestBody slice from redux store, contains specific request info */
   const requestBody = useSelector(
     (state: RootState) => state.newRequest.newRequestBody
   );
 
+  const {
+    newRequestHeadersSet,
+    newRequestStreamsSet,
+    newRequestFields,
+    newRequestHeaders,
+    newRequestBody,
+    newRequestStreams,
+  } = props;
   console.log(Store.getState());
-
   /** newRequestFields slice from redux store, contains general request info*/
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
@@ -170,6 +178,15 @@ export default function TRPCComposer() {
         style={{ overflowX: 'hidden' }}
       >
         <TRPCMethodAndEndpointEntryForm />
+        <HeaderEntryForm
+          newRequestHeaders={newRequestHeaders}
+          newRequestStreams={newRequestStreams}
+          newRequestBody={newRequestBody}
+          newRequestFields={newRequestFields}
+          newRequestHeadersSet={newRequestHeadersSet}
+          newRequestStreamsSet={newRequestStreamsSet}
+        />
+
         <TRPCBodyEntryForm newRequestBodySet={newRequestBodySet} />
         <div
           className="is-3rem-footer is-clickable is-margin-top-auto"
