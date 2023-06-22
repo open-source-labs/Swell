@@ -24,7 +24,7 @@ import { Box, FormControlLabel, Switch } from '@mui/material';
 import { CookieOrHeader, ReqRes } from '../../../../types';
 
 import TestContainer from '../sharedComponents/stressTest/TestContainer';
-
+import Store from '../../../toolkit-refactor/store';
 // Translated from RestContainer.jsx
 export default function Http2Composer(props) {
   const dispatch = useDispatch();

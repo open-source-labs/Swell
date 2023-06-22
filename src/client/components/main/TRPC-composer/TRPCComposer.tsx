@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
@@ -7,8 +7,10 @@ import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 // Import Actions from RTK slice
-import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
-import { useState } from 'react';
+import {
+  reqResItemAdded,
+  responseDataSaved,
+} from '../../../toolkit-refactor/slices/reqResSlice';
 
 // Import MUI components
 import { Box } from '@mui/material';
@@ -31,10 +33,52 @@ import Store from '../../../toolkit-refactor/store';
  */
 
 const PROCEDURE_DEFAULT = {
-  procedureMethod: 'QUERRY',
+  method: 'QUERY',
   endpoint: '',
   variable: '',
 };
+
+// {type:"",payload:{index,value}}
+function reducer(procedures, action) {
+  if (action.type === 'METHOD') {
+    const proceduresCopy = [...procedures];
+    const procedure = proceduresCopy[action.payload.index];
+    const newState = {
+      ...procedure,
+      method: action.payload.value,
+    };
+    proceduresCopy[action.payload.index] = newState;
+    return proceduresCopy;
+  } else if (action.type === 'ENDPOINT') {
+    const proceduresCopy = [...procedures];
+    const procedure = proceduresCopy[action.payload.index];
+    const newState = {
+      ...procedure,
+      endpoint: action.payload.value,
+    };
+    proceduresCopy[action.payload.index] = newState;
+    return proceduresCopy;
+  } else if (action.type === 'VARIABLE') {
+    const proceduresCopy = [...procedures];
+    const procedure = proceduresCopy[action.payload.index];
+    const newState = {
+      ...procedure,
+      variable: action.payload.value,
+    };
+    proceduresCopy[action.payload.index] = newState;
+    return proceduresCopy;
+  } else if (action.type === 'ADD') {
+    const proceduresCopy = [...procedures];
+    proceduresCopy.push(PROCEDURE_DEFAULT);
+    return proceduresCopy;
+  } else if (action.type === 'DELETE') {
+    const proceduresCopy = [...procedures];
+    proceduresCopy.splice(action.payload.index, 1);
+    return proceduresCopy;
+  }
+  return procedures;
+}
+
 export default function TRPCComposer(props) {
   const dispatch = useDispatch();
   /** newRequestBody slice from redux store, contains specific request info */
@@ -42,18 +86,22 @@ export default function TRPCComposer(props) {
     (state: RootState) => state.newRequest.newRequestBody
   );
 
-  const [procedures, setProcedures] = useState([{ PROCEDURE_DEFAULT }]);
+  const [procedures, proceduresDipatch] = useReducer(reducer, [
+    PROCEDURE_DEFAULT,
+  ]);
+  // const [procedures, setProcedures] = useState([{ PROCEDURE_DEFAULT }]);
 
   const {
+    currentTab,
     newRequestHeadersSet,
     newRequestStreamsSet,
     newRequestFields,
     newRequestHeaders,
     newRequestBody,
     newRequestStreams,
+    reqResItemAdded,
   } = props;
 
-  console.log(Store.getState());
   /** newRequestFields slice from redux store, contains general request info*/
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
@@ -61,15 +109,13 @@ export default function TRPCComposer(props) {
 
   /** reqRes slice from redux store, contains request and response data */
   const newRequest = useSelector((state: RootState) => state.newRequest);
-  // const headers = requestStuff.newRequestHeaders.headersArr.filter(
+  // const headers = newRequest.newRequestHeaders.headersArr.filter(
   //   (x) => x.active
   // );
 
   let subscription: any;
   const addProcedures = () => {
-    setProcedures((prev) => {
-      return [...prev, { ...PROCEDURE_DEFAULT }];
-    });
+    proceduresDipatch({ type: 'ADD' });
   };
   // const sendRequest = () => {
   //   let isWebsocket = false;
@@ -173,12 +219,130 @@ export default function TRPCComposer(props) {
   //       };
 
   //       //dispatch response to it's slice, to update the state
-  //       dispatch(responseDataSaved(newCurrentResponse));
+  //       dispatch(responseDataSarved(newCurrentResponse));
   //     });
   //   }
   // };
 
-  const sendRequest = () => {};
+  function parseString(str) {
+    if (str === 'true') {
+      return true;
+    }
+
+    if (str === 'false') {
+      return false;
+    }
+
+    if (!isNaN(str)) {
+      return parseFloat(str);
+    }
+
+    try {
+      const parsedJson = JSON.parse(str);
+
+      if (typeof parsedJson === 'object' && parsedJson !== null) {
+        return parsedJson;
+      }
+    } catch (error) {
+      return str;
+    }
+  }
+
+  const sendRequest = async () => {
+    const links = [];
+    const batchConfigureObject = {};
+    batchConfigureObject.url = requestFields.url;
+    const headers = newRequest.newRequestHeaders.headersArr
+      .filter((x) => x.active)
+      .reduce((acc, curr) => {
+        acc[curr.key] = curr.value;
+        return acc;
+      }, {});
+    if (headers) {
+      batchConfigureObject.headers = headers;
+    }
+    links.push(httpBatchLink(batchConfigureObject));
+    // const clientURL: string = requestFields.url; //grabbing url
+
+    const client = createTRPCProxyClient({ links });
+    Promise.all(
+      procedures.map((procedure) => {
+        let endpoint = procedure.endpoint;
+        const method = procedure.method.toLowerCase();
+        if (procedure.variable) {
+          console.log('SHOULD NOT HI');
+          let arg = parseString(procedure.variable.replace(/\s/g, ''));
+          const tempArg = procedure.variable.replace(/\s/g, '');
+          const e = `client.${endpoint}.${method}(${tempArg})`;
+          return eval(e);
+        } else {
+          return eval(`client.${endpoint}.${method}()`);
+        }
+      })
+    ).then((res) => {
+      // const fakeRes = {
+      //   id: uuid(),
+      //   createdAt: new Date(),
+      //   protocol: 'http://',
+      //   url: 'google.com',
+      //   timeSent: null,
+      //   timeReceived: null,
+      //   connection: 'uninitialized',
+      //   connectionType: null,
+      //   checkSelected: false,
+      //   request: {
+      //     method: 'Get',
+      //   },
+      //   response: {
+      //     headers: {},
+      //     events: [],
+      //   },
+      //   checked: false,
+      //   minimized: false,
+      //   tab: currentTab,
+      // };
+      const newCurrentResponse: any = {
+        checkSelected: false,
+        checked: false,
+        connection: 'closed',
+        connectionType: 'plain',
+        createdAt: new Date(),
+        gRPC: false,
+        graphQL: false,
+        host: requestFields.url,
+        id: uuid(),
+        minimized: false,
+        path: '/',
+        protoPath: undefined,
+        protocol: 'http://',
+        request: { ...newRequest },
+        tab: undefined,
+        timeReceived: null,
+        timeSent: null,
+        url: requestFields.url,
+        webrtc: false,
+        response: {
+          events: [res],
+        },
+      };
+
+      //dispatch response to it's slice, to update the state
+      // reqResItemAdded(fakeRes);
+      dispatch(responseDataSaved(newCurrentResponse));
+    });
+
+    // const arg = JSON.parse(currProc.variable.replace(/\s/g, ''));
+
+    // const res = await client[endpoint][method](arg);
+    // console.log(res);
+    // console.log((procedures.variable = procedures.variable.replace(/\s/g, '')));
+
+    // const res = await client.update.mutate({
+    //   userId: '1',
+    //   name: 'nguyen',
+    // });
+    // console.log(res);
+  };
   return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
@@ -201,7 +365,7 @@ export default function TRPCComposer(props) {
 
         <TRPCProceduresContainer
           procedures={procedures}
-          addProcedures={addProcedures}
+          proceduresDipatch={proceduresDipatch}
         />
         <button
           className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"

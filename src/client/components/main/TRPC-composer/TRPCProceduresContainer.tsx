@@ -3,7 +3,14 @@ import TRPCProcedure from './TRPCProcedure';
 
 export default function TRPCProceduresContainer(props) {
   const proceduresJSX = props.procedures.map((procedure, index) => {
-    return <TRPCProcedure key={index}></TRPCProcedure>;
+    return (
+      <TRPCProcedure
+        proceduresDipatch={props.proceduresDipatch}
+        index={index}
+        key={index}
+        procedureData={procedure}
+      ></TRPCProcedure>
+    );
   });
   return (
     <div>

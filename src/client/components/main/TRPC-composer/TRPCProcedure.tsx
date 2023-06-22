@@ -2,24 +2,20 @@ import React, { useState } from 'react';
 import TRPCVariableForm from './TRPCVariableForm';
 import TRPCPrceduresEndPoint from './TRPCPrceduresEndPoint';
 
-export default function TRPCProcedure() {
-  const [procedureType, setProcedureType] = useState('QUERRY');
-  const [endpoint, setEndpoint] = useState('');
-  const setProcedureTypeHandler = (type) => {
-    setProcedureType(type);
-  };
-  const endPointChangeHandler = (userEndpoint) => {
-    setEndpoint(endpoint);
-  };
+export default function TRPCProcedure(props) {
   return (
     <div style={container}>
       <TRPCPrceduresEndPoint
-        procedureType={procedureType}
-        setProcedureTypeHandler={setProcedureTypeHandler}
-        endpoint={endpoint}
-        endPointChangeHandler={endPointChangeHandler}
+        procedureData={props.procedureData}
+        proceduresDipatch={props.proceduresDipatch}
+        index={props.index}
       ></TRPCPrceduresEndPoint>
-      <TRPCVariableForm></TRPCVariableForm>
+
+      <TRPCVariableForm
+        procedureData={props.procedureData}
+        proceduresDipatch={props.proceduresDipatch}
+        index={props.index}
+      ></TRPCVariableForm>
     </div>
   );
 }

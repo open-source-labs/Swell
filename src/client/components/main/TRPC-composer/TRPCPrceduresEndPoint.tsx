@@ -12,10 +12,6 @@ import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestField
 const TRPCPrceduresEndPoint = (props) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
-  const requestFields = useSelector(
-    (state: RootState) => state.newRequestFields
-  );
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const closeDropdown = (event: MouseEvent) => {
@@ -27,13 +23,24 @@ const TRPCPrceduresEndPoint = (props) => {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
-  const populateUrl = (request: string) => {
-    props.setProcedureTypeHandler(request);
+  const methodHandler = (method) => {
+    props.proceduresDipatch({
+      type: 'METHOD',
+      payload: { index: props.index, value: method },
+    });
   };
   const onChangeHandler = (e) => {
-    props.endPointChangeHandler(e.target.value);
+    props.proceduresDipatch({
+      type: 'ENDPOINT',
+      payload: { index: props.index, value: e.target.value },
+    });
   };
-
+  const onDeleteHandler = (e) => {
+    props.proceduresDipatch({
+      type: 'DELETE',
+      payload: { index: props.index },
+    });
+  };
   const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   return (
@@ -53,7 +60,7 @@ const TRPCPrceduresEndPoint = (props) => {
             aria-controls="dropdown-menu"
             onClick={() => setDropdownIsActive(!dropdownIsActive)}
           >
-            <span>{props.procedureType}</span>
+            <span>{props.procedureData.method}</span>
             <span className="icon is-small">
               <img
                 src={dropDownArrow}
@@ -67,33 +74,33 @@ const TRPCPrceduresEndPoint = (props) => {
 
         <div className="dropdown-menu" id="dropdown-menu">
           <ul className="dropdown-content">
-            {props.procedureType !== 'QUERY' && (
+            {props.procedureData.method !== 'QUERY' && (
               <a
                 onClick={(e) => {
                   setDropdownIsActive(false);
-                  populateUrl('QUERY');
+                  methodHandler('QUERY');
                 }}
                 className="dropdown-item"
               >
                 QUERY
               </a>
             )}
-            {props.procedureType !== 'MUTATE' && (
+            {props.procedureData.method !== 'MUTATE' && (
               <a
                 onClick={(e) => {
                   setDropdownIsActive(false);
-                  populateUrl('MUTATE');
+                  methodHandler('MUTATE');
                 }}
                 className="dropdown-item"
               >
                 MUTATE
               </a>
             )}
-            {props.procedureType !== 'SUBSCRIPTION' && (
+            {props.procedureData.method !== 'SUBSCRIPTION' && (
               <a
                 onClick={(e) => {
                   setDropdownIsActive(false);
-                  populateUrl('SUBSCRIPTION');
+                  methodHandler('SUBSCRIPTION');
                 }}
                 className="dropdown-item"
               >
@@ -110,8 +117,13 @@ const TRPCPrceduresEndPoint = (props) => {
           type="text"
           id="url-input"
           placeholder="Enter endpoint"
+          value={props.procedureData.endpoint}
           onChange={onChangeHandler}
         />
+
+        <div className="is-flex is-justify-content-center is-align-items-center ml-4">
+          <div className="delete m-auto" onClick={onDeleteHandler} />
+        </div>
       </div>
     </div>
   );
