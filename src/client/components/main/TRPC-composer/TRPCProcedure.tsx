@@ -9,10 +9,10 @@ export default function TRPCProcedure() {
     setProcedureType(type);
   };
   const endPointChangeHandler = (userEndpoint) => {
-    setEndpoint(userEndpoint);
+    setEndpoint(endpoint);
   };
   return (
-    <div>
+    <div style={container}>
       <TRPCPrceduresEndPoint
         procedureType={procedureType}
         setProcedureTypeHandler={setProcedureTypeHandler}
@@ -23,3 +23,8 @@ export default function TRPCProcedure() {
     </div>
   );
 }
+
+const container = {
+  border: '1px solid black',
+  padding: '10px 0px',
+};

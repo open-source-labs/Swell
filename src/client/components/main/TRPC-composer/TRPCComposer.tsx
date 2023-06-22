@@ -1,5 +1,7 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
+// Import controllers
+import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 // Import local components
 import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 // Import Redux hooks
@@ -40,9 +42,7 @@ export default function TRPCComposer(props) {
     (state: RootState) => state.newRequest.newRequestBody
   );
 
-  const [procedures, setProcedures] = useState([
-    { method: 'QUERRY', endpoint: '.user', variable: '{hello:World}' },
-  ]);
+  const [procedures, setProcedures] = useState([{ PROCEDURE_DEFAULT }]);
 
   const {
     newRequestHeadersSet,
@@ -53,6 +53,7 @@ export default function TRPCComposer(props) {
     newRequestStreams,
   } = props;
 
+  console.log(Store.getState());
   /** newRequestFields slice from redux store, contains general request info*/
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
@@ -65,7 +66,11 @@ export default function TRPCComposer(props) {
   // );
 
   let subscription: any;
-
+  const addProcedures = () => {
+    setProcedures((prev) => {
+      return [...prev, { ...PROCEDURE_DEFAULT }];
+    });
+  };
   // const sendRequest = () => {
   //   let isWebsocket = false;
   //   const links = [];
@@ -196,9 +201,17 @@ export default function TRPCComposer(props) {
 
         <TRPCProceduresContainer
           procedures={procedures}
-          sendRequest={sendRequest}
+          addProcedures={addProcedures}
         />
-
+        <button
+          className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
+          type="button"
+          style={{ margin: '10px' }}
+          onClick={addProcedures}
+        >
+          Add Procedure
+        </button>
+        <SendRequestButton onClick={sendRequest} />
         {/* {requestFields.method === 'SUBSCRIPTION' && ( ////for subscription
           <SendRequestButton
             onClick={() => subscription.unsubscribe()}

@@ -112,9 +112,6 @@ const TRPCPrceduresEndPoint = (props) => {
           placeholder="Enter endpoint"
           onChange={onChangeHandler}
         />
-        <div id="tRPCButton" className="no-border-please button is-webrtc">
-          <span> Add Procedure</span>
-        </div>
       </div>
     </div>
   );
