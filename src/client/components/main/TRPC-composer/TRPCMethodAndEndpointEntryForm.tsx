@@ -10,31 +10,19 @@ import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 const TRPCMethodAndEndpointEntryForm = () => {
-  const [dropdownIsActive, setDropdownIsActive] = useState(false);
-  const dropdownEl = useRef();
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
   );
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const closeDropdown = (event: MouseEvent) => {
-      if (!dropdownEl.current.contains(event.target)) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
-
   const populateUrl = (request: string) => {
-    let PROTOCOL
+    let PROTOCOL;
     const urlAction: string = request;
-    
+
     if (urlAction === 'QUERY' || urlAction === 'MUTATE') {
-      PROTOCOL = 'http://'
+      PROTOCOL = 'http://';
     } else if (urlAction === 'SUBSCRIPTION') {
-      PROTOCOL = 'ws://'
+      PROTOCOL = 'ws://';
     }
     dispatch(
       fieldsReplaced({
@@ -60,85 +48,22 @@ const TRPCMethodAndEndpointEntryForm = () => {
   const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   return (
-    <div>
-      <div
-        ref={dropdownEl}
-        className={`is-flex is-justify-content-center dropdown ${
-          dropdownIsActive ? 'is-active' : ''
-        }`}
-        style={{ padding: '10px' }}
-      >
-        <div className="dropdown-trigger">
-          <button
-            className="no-border-please button is-graphQL"
-            id="graphql-method"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
-            onClick={() => setDropdownIsActive(!dropdownIsActive)}
-          >
-            <span>{requestFields.method}</span>
-            <span className="icon is-small">
-              <img
-                src={dropDownArrow}
-                className="is-awesome-icon"
-                aria-hidden="true"
-                alt="dropdown arrow"
-              />
-            </span>
-          </button>
-        </div>
-
-        <div className="dropdown-menu" id="dropdown-menu">
-          <ul className="dropdown-content">
-            {requestFields.method !== 'QUERY' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  populateUrl('QUERY');
-                }}
-                className="dropdown-item"
-              >
-                QUERY
-              </a>
-            )}
-            {requestFields.method !== 'MUTATE' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  populateUrl('MUTATE');
-                }}
-                className="dropdown-item"
-              >
-                MUTATE
-              </a>
-            )}
-            {requestFields.method !== 'SUBSCRIPTION' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  populateUrl('SUBSCRIPTION');
-                }}
-                className="dropdown-item"
-              >
-                SUBSCRIPTION
-              </a>
-            )}
-          </ul>
-        </div>
-
-        <input
-          className={`${
-            isDark ? 'is-dark-300' : ''
-          } ml-1 input input-is-medium is-info`}
-          type="text"
-          id="url-input"
-          placeholder="Enter endpoint"
-          value={requestFields.url}
-          onChange={(e) => {
-            urlChangeHandler(e);
-          }}
-        />
+    <div
+      className="is-flex is-justify-content-center"
+      style={{ padding: '10px' }}
+    >
+      <div id="tRPCButton" className="no-border-please button is-webrtc">
+        <span>tRPC</span>
       </div>
+      <input
+        className="ml-1 input input-is-medium is-info"
+        type="text"
+        value={requestFields.url}
+        placeholder="No url needed"
+        onChange={(e) => {
+          urlChangeHandler(e);
+        }}
+      />
     </div>
   );
 };
