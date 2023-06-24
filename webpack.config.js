@@ -73,7 +73,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif|avif)$/,
         use: 'url-loader',
       },
     ],

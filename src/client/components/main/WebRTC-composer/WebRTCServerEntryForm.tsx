@@ -5,8 +5,7 @@ import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
-
-const jBeautify = require('js-beautify').js;
+// const jBeautify = require('js-beautify').js;
 
 interface Props {
   warningMessage: {
@@ -15,7 +14,9 @@ interface Props {
 }
 
 const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
-  const requestBody = useSelector((state: any) => state.newRequest.newRequestBody);
+  const requestBody = useSelector(
+    (state: any) => state.newRequest.newRequestBody
+  );
   const { bodyIsNew } = requestBody;
   const [cmValue, setValue] = useState<string>('');
   const isDark = useSelector((state: any) => state.ui.isDark);
@@ -28,14 +29,14 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
       /**
        * @todo This code randomly causes parts of the app to crash. As in, it
        * will randomly decide to start or stop working without you changing
-       * anything. Need to investigate 
-       * 
+       * anything. Need to investigate
+       *
        * (OR needs to be re-built....
        *          - another iteration group)
        */
-      setValue(
-        jBeautify(JSON.stringify(bodyContent?.iceConfiguration?.iceServers))
-      );
+      // setValue(
+      //   jBeautify(JSON.stringify(bodyContent?.iceConfiguration?.iceServers))
+      // );
     }
   }, [bodyContent, bodyIsNew]);
 
@@ -63,7 +64,6 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
 };
 
 export default WebRTCServerEntryForm;
-
 
 // const WebRTCServerEntryForm = (props) => {
 //   const { warningMessage } = props;
