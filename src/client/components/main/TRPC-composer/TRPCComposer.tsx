@@ -89,7 +89,6 @@ export default function TRPCComposer(props) {
   const [procedures, proceduresDipatch] = useReducer(reducer, [
     PROCEDURE_DEFAULT,
   ]);
-  // const [procedures, setProcedures] = useState([{ PROCEDURE_DEFAULT }]);
 
   const {
     currentTab,
@@ -109,120 +108,11 @@ export default function TRPCComposer(props) {
 
   /** reqRes slice from redux store, contains request and response data */
   const newRequest = useSelector((state: RootState) => state.newRequest);
-  // const headers = newRequest.newRequestHeaders.headersArr.filter(
-  //   (x) => x.active
-  // );
 
   let subscription: any;
   const addProcedures = () => {
     proceduresDipatch({ type: 'ADD' });
   };
-  // const sendRequest = () => {
-  //   let isWebsocket = false;
-  //   const links = [];
-  //   const clientURL: string = requestFields.url; //grabbing url
-  //   const request = requestBody.bodyContent;
-  //   const httpRegex =
-  //     /^http:\/\/([a-zA-Z0-9-]+\.[a-zA-Z]{2,}|localhost)(:[0-9]+)?(\/.*)?$/; // trpc doesn't accept https requests to my knowledge otherwise https?
-  //   const wsRegex =
-  //     /^(ws|wss):\/\/(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|localhost)(:[0-9]+)?(\/.*)?$/;
-
-  //   //checks if URL is to WebSocket or standard HTTP
-  //   if (wsRegex.test(clientURL)) {
-  //     // setup links array with ws
-  //     isWebsocket = true;
-
-  //     //instantiates a WebSocket
-  //     const wsClient = createWSClient({ url: clientURL });
-  //     links.push(wsLink({ client: wsClient }));
-
-  //     //grabs the WebSocket from tRPC's wsClient
-  //     const ws = wsClient.getConnection();
-  //     const persistentData: Array<any> = [];
-
-  //     //current WebSocket is listening for anytime an event is sent back to client
-  //     ws.onmessage = (event) => {
-  //       persistentData.push(JSON.parse(event.data));
-  //       const newCurrentResponse: any = {
-  //         checkSelected: false,
-  //         checked: false,
-  //         connection: 'closed',
-  //         connectionType: 'plain',
-  //         createdAt: new Date(),
-  //         gRPC: false,
-  //         graphQL: false,
-  //         host: clientURL,
-  //         id: uuid(),
-  //         minimized: false,
-  //         path: '/',
-  //         protoPath: undefined,
-  //         protocol: 'ws://',
-  //         request: { ...requestStuff },
-  //         tab: undefined,
-  //         timeReceived: 1676146914257,
-  //         timeSent: 1676146914244,
-  //         url: clientURL,
-  //         webrtc: false,
-  //         response: {
-  //           events: [],
-  //         },
-  //       };
-  //       newCurrentResponse.response.events.push([...persistentData]);
-  //       dispatch(responseDataSaved(newCurrentResponse));
-  //     };
-  //   } else if (httpRegex.test(clientURL)) {
-  //     // setup links array with http
-  //     links.push(httpBatchLink({ url: clientURL }));
-  //   } else {
-  //     console.log('error in url');
-  //   }
-
-  //   const client = createTRPCProxyClient({ links: links });
-
-  //   //if the request is to a WebSocket server + is a subscription, execute request
-  //   if (isWebsocket) {
-  //     //replacing user's client name to what app is expecting
-  //     const editedRequest = request.replace(/^[^.]*./, 'client.');
-  //     subscription = eval(editedRequest);
-  //   } else {
-  //     //if request is not from Websocket server + is query/mutation, execute request
-  //     //this handles batch queries + mutations
-  //     const reqArray = request.split('\n').map((el) => {
-  //       el = el.replace(/^[^.]*./, 'client.');
-  //       return el;
-  //     });
-
-  //     Promise.all(reqArray.map((el) => eval(el))).then((res: any) => {
-  //       const newCurrentResponse: any = {
-  //         checkSelected: false,
-  //         checked: false,
-  //         connection: 'closed',
-  //         connectionType: 'plain',
-  //         createdAt: new Date(),
-  //         gRPC: false,
-  //         graphQL: false,
-  //         host: clientURL,
-  //         id: uuid(),
-  //         minimized: false,
-  //         path: '/',
-  //         protoPath: undefined,
-  //         protocol: 'http://',
-  //         request: { ...requestStuff },
-  //         tab: undefined,
-  //         timeReceived: null,
-  //         timeSent: null,
-  //         url: clientURL,
-  //         webrtc: false,
-  //         response: {
-  //           events: [res],
-  //         },
-  //       };
-
-  //       //dispatch response to it's slice, to update the state
-  //       dispatch(responseDataSarved(newCurrentResponse));
-  //     });
-  //   }
-  // };
 
   function parseString(str) {
     if (str === 'true') {
@@ -248,6 +138,35 @@ export default function TRPCComposer(props) {
     }
   }
 
+  const dispatchTRPCResponse = (tRPCResponse) => {
+      
+    const newCurrentResponse: any = {
+      checkSelected: false,
+      checked: false,
+      connection: 'closed',
+      connectionType: 'plain',
+      createdAt: new Date(),
+      gRPC: false,
+      graphQL: false,
+      host: requestFields.url,
+      id: uuid(),
+      minimized: false,
+      path: '/',
+      protoPath: undefined,
+      protocol: 'http://',
+      request: { ...newRequest },
+      tab: undefined,
+      timeReceived: null,
+      timeSent: null,
+      url: requestFields.url,
+      webrtc: false,
+      response: {
+        events: [tRPCResponse],
+      },
+    };
+    dispatch(responseDataSaved(newCurrentResponse));
+  }
+
   const sendRequest = async () => {
     const links = [];
     const batchConfigureObject = {};
@@ -262,87 +181,41 @@ export default function TRPCComposer(props) {
       batchConfigureObject.headers = headers;
     }
     links.push(httpBatchLink(batchConfigureObject));
-    // const clientURL: string = requestFields.url; //grabbing url
-
+    
     const client = createTRPCProxyClient({ links });
+     
+    // processes the request variables, sends the request to the tRPC endpoint, and handles any errors
     Promise.all(
+     
       procedures.map((procedure) => {
         let endpoint = procedure.endpoint;
         const method = procedure.method.toLowerCase();
+        let tempArg = '';
+
         if (procedure.variable) {
-          console.log('SHOULD NOT HI');
           let arg = parseString(procedure.variable.replace(/\s/g, ''));
-          const tempArg = procedure.variable.replace(/\s/g, '');
-          const e = `client.${endpoint}.${method}(${tempArg})`;
-          return eval(e);
-        } else {
-          return eval(`client.${endpoint}.${method}()`);
+          tempArg = procedure.variable.replace(/\s/g, '');
         }
+        const e = `client.${endpoint}.${method}(${tempArg})`;
+        
+        new Promise((resolve, reject) => {
+          try {
+            const result = eval(e);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        })
+          .then(res => {
+            dispatchTRPCResponse(res);
+        })
+          .catch(error => {
+          dispatchTRPCResponse(error);
+          })
       })
-    ).then((res) => {
-      // const fakeRes = {
-      //   id: uuid(),
-      //   createdAt: new Date(),
-      //   protocol: 'http://',
-      //   url: 'google.com',
-      //   timeSent: null,
-      //   timeReceived: null,
-      //   connection: 'uninitialized',
-      //   connectionType: null,
-      //   checkSelected: false,
-      //   request: {
-      //     method: 'Get',
-      //   },
-      //   response: {
-      //     headers: {},
-      //     events: [],
-      //   },
-      //   checked: false,
-      //   minimized: false,
-      //   tab: currentTab,
-      // };
-      const newCurrentResponse: any = {
-        checkSelected: false,
-        checked: false,
-        connection: 'closed',
-        connectionType: 'plain',
-        createdAt: new Date(),
-        gRPC: false,
-        graphQL: false,
-        host: requestFields.url,
-        id: uuid(),
-        minimized: false,
-        path: '/',
-        protoPath: undefined,
-        protocol: 'http://',
-        request: { ...newRequest },
-        tab: undefined,
-        timeReceived: null,
-        timeSent: null,
-        url: requestFields.url,
-        webrtc: false,
-        response: {
-          events: [res],
-        },
-      };
+    )
+  }
 
-      //dispatch response to it's slice, to update the state
-      // reqResItemAdded(fakeRes);
-      dispatch(responseDataSaved(newCurrentResponse));
-    });
-
-    // const arg = JSON.parse(currProc.variable.replace(/\s/g, ''));
-
-    // const res = await client[endpoint][method](arg);
-    // console.log(res);
-    // console.log((procedures.variable = procedures.variable.replace(/\s/g, '')));
-
-    // const res = await client.update.mutate({
-    //   userId: '1',
-    //   name: 'nguyen',
-    // });
-    // console.log(res);
-  };
   return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
@@ -376,12 +249,7 @@ export default function TRPCComposer(props) {
           Add Procedure
         </button>
         <SendRequestButton onClick={sendRequest} />
-        {/* {requestFields.method === 'SUBSCRIPTION' && ( ////for subscription
-          <SendRequestButton
-            onClick={() => subscription.unsubscribe()}
-            buttonText="Close Subscription"
-          ></SendRequestButton>
-        )} */}
+        
       </div>
     </Box>
   );
