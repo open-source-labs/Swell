@@ -24,10 +24,12 @@ import {
   httpBatchLink,
   createWSClient,
   wsLink,
+  httpLink,
+  splitLink
 } from '@trpc/client';
+import ws from 'ws';
 
-import Store from '../../../toolkit-refactor/store';
-
+globalThis.WebSocket = ws as any;
 /**
  *
  */
@@ -182,8 +184,26 @@ export default function TRPCComposer(props) {
     }
     links.push(httpBatchLink(batchConfigureObject));
     
-    const client = createTRPCProxyClient({ links });
-     
+    const wsClient = createWSClient({ url: `ws://localhost:2022`});
+    
+    const trpc = createTRPCProxyClient<AppRouter>({
+      links: [
+        // call subscriptions through websockets and the rest over http
+        splitLink({
+          condition(op) {
+            return op.type === 'subscription';
+          },
+          true: wsLink({
+            client: wsClient,
+          }),
+          false: httpLink({
+            url: `http://localhost:2022`,
+          }),
+        }),
+      ],
+    });
+    
+    
     // processes the request variables, sends the request to the tRPC endpoint, and handles any errors
     Promise.all(
      
@@ -197,7 +217,7 @@ export default function TRPCComposer(props) {
           tempArg = procedure.variable.replace(/\s/g, '');
         }
         const e = `client.${endpoint}.${method}(${tempArg})`;
-        
+        console.log(e);
         new Promise((resolve, reject) => {
           try {
             const result = eval(e);
