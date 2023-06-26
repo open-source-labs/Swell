@@ -138,6 +138,35 @@ export default function TRPCComposer(props) {
     }
   }
 
+  const dispatchTRPCResponse = (tRPCResponse) => {
+      
+    const newCurrentResponse: any = {
+      checkSelected: false,
+      checked: false,
+      connection: 'closed',
+      connectionType: 'plain',
+      createdAt: new Date(),
+      gRPC: false,
+      graphQL: false,
+      host: requestFields.url,
+      id: uuid(),
+      minimized: false,
+      path: '/',
+      protoPath: undefined,
+      protocol: 'http://',
+      request: { ...newRequest },
+      tab: undefined,
+      timeReceived: null,
+      timeSent: null,
+      url: requestFields.url,
+      webrtc: false,
+      response: {
+        events: [tRPCResponse],
+      },
+    };
+    dispatch(responseDataSaved(newCurrentResponse));
+  }
+
   const sendRequest = async () => {
     const links = [];
     const batchConfigureObject = {};
@@ -154,81 +183,39 @@ export default function TRPCComposer(props) {
     links.push(httpBatchLink(batchConfigureObject));
     
     const client = createTRPCProxyClient({ links });
-        
-    const dispatchTRPCResponse = (tRPCResponse) => {
-      
-      const newCurrentResponse: any = {
-        checkSelected: false,
-        checked: false,
-        connection: 'closed',
-        connectionType: 'plain',
-        createdAt: new Date(),
-        gRPC: false,
-        graphQL: false,
-        host: requestFields.url,
-        id: uuid(),
-        minimized: false,
-        path: '/',
-        protoPath: undefined,
-        protocol: 'http://',
-        request: { ...newRequest },
-        tab: undefined,
-        timeReceived: null,
-        timeSent: null,
-        url: requestFields.url,
-        webrtc: false,
-        response: {
-          events: [tRPCResponse],
-        },
-      };
-      dispatch(responseDataSaved(newCurrentResponse));
-    }
-    
+     
+    // processes the request variables, sends the request to the tRPC endpoint, and handles any errors
     Promise.all(
      
       procedures.map((procedure) => {
         let endpoint = procedure.endpoint;
         const method = procedure.method.toLowerCase();
-        
+        let tempArg = '';
+
         if (procedure.variable) {
           let arg = parseString(procedure.variable.replace(/\s/g, ''));
-          const tempArg = procedure.variable.replace(/\s/g, '');
-          const e = `client.${endpoint}.${method}(${tempArg})`;
-          
-          new Promise((resolve, reject) => {
-            try {
-              const result = eval(e);
-              resolve(result);
-            } catch (error) {
-              reject(error);
-            }
-          }).then(res => {
-            dispatchTRPCResponse(res);
-          }).catch(error =>  {
-            dispatchTRPCResponse(error);
-          })
-      
-        
-        } else {
-          
-          new Promise((resolve, reject) => {
-            try {
-              const result = eval(`client.${endpoint}.${method}()`);
-              resolve(result);
-            } catch (error) {
-              reject(error);
-            }
-          }).then(res => {
-            dispatchTRPCResponse(res);
-          }).catch(error =>  {
-            dispatchTRPCResponse(error);
-          })
-      
-          
+          tempArg = procedure.variable.replace(/\s/g, '');
         }
+        const e = `client.${endpoint}.${method}(${tempArg})`;
+        
+        new Promise((resolve, reject) => {
+          try {
+            const result = eval(e);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        })
+          .then(res => {
+            dispatchTRPCResponse(res);
+        })
+          .catch(error => {
+          dispatchTRPCResponse(error);
+          })
       })
-    
-    )}
+    )
+  }
+
   return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
