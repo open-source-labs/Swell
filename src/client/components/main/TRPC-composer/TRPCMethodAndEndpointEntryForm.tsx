@@ -9,7 +9,7 @@ import dropDownArrow from './../../../../assets/icons/arrow_drop_down_white_192x
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
-const TRPCMethodAndEndpointEntryForm = () => {
+const TRPCMethodAndEndpointEntryForm = (props) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
   const requestFields = useSelector(
@@ -33,8 +33,10 @@ const TRPCMethodAndEndpointEntryForm = () => {
 
     if (urlAction === 'Query/Mutate') {
       PROTOCOL = 'http://';
+      props.proceduresDipatch({ type: 'HTTP' });
     } else if (urlAction === 'SUBSCRIPTION') {
       PROTOCOL = 'ws://';
+      props.proceduresDipatch({ type: 'SUBSCRIPTION' });
     }
     dispatch(
       fieldsReplaced({

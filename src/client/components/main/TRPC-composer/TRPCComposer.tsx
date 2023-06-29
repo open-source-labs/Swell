@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
@@ -24,9 +24,11 @@ import {
   httpBatchLink,
   createWSClient,
   wsLink,
+  splitLink,
 } from '@trpc/client';
 
 import Store from '../../../toolkit-refactor/store';
+import TRPCSubscriptionContainer from './TRPCSubscriptionContainer';
 
 /**
  *
@@ -39,6 +41,7 @@ const PROCEDURE_DEFAULT = {
 };
 
 // {type:"",payload:{index,value}}
+
 function reducer(procedures, action) {
   if (action.type === 'METHOD') {
     const proceduresCopy = [...procedures];
@@ -75,6 +78,10 @@ function reducer(procedures, action) {
     const proceduresCopy = [...procedures];
     proceduresCopy.splice(action.payload.index, 1);
     return proceduresCopy;
+  } else if (action.type === 'SUBSCRIPTION') {
+    return [{ ...PROCEDURE_DEFAULT, method: 'SUBSCRIPTION' }];
+  } else if (action.type === 'HTTP') {
+    return [{ ...PROCEDURE_DEFAULT }];
   }
   return procedures;
 }
@@ -90,7 +97,7 @@ export default function TRPCComposer(props) {
     PROCEDURE_DEFAULT,
   ]);
   // const [procedures, setProcedures] = useState([{ PROCEDURE_DEFAULT }]);
-
+  console.log(procedures);
   const {
     currentTab,
     newRequestHeadersSet,
@@ -107,6 +114,7 @@ export default function TRPCComposer(props) {
     (state: RootState) => state.newRequestFields
   );
 
+  // console.log(requestFields);
   /** reqRes slice from redux store, contains request and response data */
   const newRequest = useSelector((state: RootState) => state.newRequest);
   // const headers = newRequest.newRequestHeaders.headersArr.filter(
@@ -254,94 +262,123 @@ export default function TRPCComposer(props) {
     return getPath(obj[properties.shift()], properties.join('.'), args);
   }
 
-  // const sendRequest = async () => {
-  //   const links = [];
-  //   const batchConfigureObject = {};
-  //   batchConfigureObject.url = requestFields.url;
-  //   const headers = newRequest.newRequestHeaders.headersArr
-  //     .filter((x) => x.active)
-  //     .reduce((acc, curr) => {
-  //       acc[curr.key] = curr.value;
-  //       return acc;
-  //     }, {});
-  //   if (headers) {
-  //     batchConfigureObject.headers = headers;
-  //   }
-  //   links.push(httpBatchLink(batchConfigureObject));
-  //   // const clientURL: string = requestFields.url; //grabbing url
-  //   const client = createTRPCProxyClient({ links });
-  //   const newCurrentResponse: any = {
-  //     checkSelected: false,
-  //     checked: false,
-  //     connection: 'closed',
-  //     connectionType: 'plain',
-  //     createdAt: new Date(),
-  //     gRPC: false,
-  //     graphQL: false,
-  //     host: requestFields.url,
-  //     id: uuid(),
-  //     minimized: false,
-  //     path: '/',
-  //     protoPath: undefined,
-  //     protocol: 'http://',
-  //     request: { ...newRequest },
-  //     tab: undefined,
-  //     timeReceived: null,
-  //     timeSent: null,
-  //     url: requestFields.url,
-  //     webrtc: false,
-  //     response: {
-  //       events: [],
-  //     },
-  //   };
-  //   Promise.all(
-  //     procedures.map((procedure) => {
-  //       const endpoint = procedure.endpoint;
-  //       const method = procedure.method.toLowerCase();
-  //       const endpointAndMethod = `${endpoint}.${method}`;
-  //       if (procedure.variable) {
-  //         let arg = parseString(procedure.variable.replace(/\s/g, ''));
-  //         return getPath(client, endpointAndMethod, arg);
-  //       } else {
-  //         return getPath(client, endpointAndMethod);
-  //       }
-  //     })
-  //   )
-  //     .then((res) => {
-  //       // const fakeRes = {
-  //       //   id: uuid(),
-  //       //   createdAt: new Date(),
-  //       //   protocol: 'http://',
-  //       //   url: 'google.com',
-  //       //   timeSent: null,
-  //       //   timeReceived: null,
-  //       //   connection: 'uninitialized',
-  //       //   connectionType: null,
-  //       //   checkSelected: false,
-  //       //   request: {
-  //       //     method: 'Get',
-  //       //   },
-  //       //   response: {
-  //       //     headers: {},
-  //       //     events: [res],
-  //       //   },
-  //       //   checked: false,
-  //       //   minimized: false,
-  //       //   tab: currentTab,
-  //       // };
-  //       newCurrentResponse.response.events.push(res);
-  //       //dispatch response to it's slice, to update the state
-  //       // reqResItemAdded(newCurrentResponse);
-  //       dispatch(responseDataSaved(newCurrentResponse));
-  //     })
-  //     .catch((e) => {
-  //       newCurrentResponse.response.events.push(e);
-  //       dispatch(responseDataSaved(newCurrentResponse));
-  //     });
-  // };
-
   const sendRequest = async () => {
-    console.log('HELLO');
+    const links = [];
+    const batchConfigureObject = {};
+    batchConfigureObject.url = requestFields.url;
+    const headers = newRequest.newRequestHeaders.headersArr
+      .filter((x) => x.active)
+      .reduce((acc, curr) => {
+        acc[curr.key] = curr.value;
+        return acc;
+      }, {});
+    if (headers) {
+      batchConfigureObject.headers = headers;
+    }
+    links.push(httpBatchLink(batchConfigureObject));
+    // const clientURL: string = requestFields.url; //grabbing url
+    const client = createTRPCProxyClient({ links });
+    const newCurrentResponse: any = {
+      checkSelected: false,
+      checked: false,
+      connection: 'closed',
+      connectionType: 'plain',
+      createdAt: new Date(),
+      gRPC: false,
+      graphQL: false,
+      host: requestFields.url,
+      id: uuid(),
+      minimized: false,
+      path: '/',
+      protoPath: undefined,
+      protocol: 'http://',
+      request: { ...newRequest },
+      tab: undefined,
+      timeReceived: null,
+      timeSent: null,
+      url: requestFields.url,
+      webrtc: false,
+      response: {
+        events: [],
+      },
+    };
+    Promise.all(
+      procedures.map((procedure) => {
+        const endpoint = procedure.endpoint;
+        const method = procedure.method.toLowerCase();
+        const endpointAndMethod = `${endpoint}.${method}`;
+        if (procedure.variable) {
+          let arg = parseString(procedure.variable.replace(/\s/g, ''));
+          return getPath(client, endpointAndMethod, arg);
+        } else {
+          return getPath(client, endpointAndMethod);
+        }
+      })
+    )
+      .then((res) => {
+        // const fakeRes = {
+        //   id: uuid(),
+        //   createdAt: new Date(),
+        //   protocol: 'http://',
+        //   url: 'google.com',
+        //   timeSent: null,
+        //   timeReceived: null,
+        //   connection: 'uninitialized',
+        //   connectionType: null,
+        //   checkSelected: false,
+        //   request: {
+        //     method: 'Get',
+        //   },
+        //   response: {
+        //     headers: {},
+        //     events: [res],
+        //   },
+        //   checked: false,
+        //   minimized: false,
+        //   tab: currentTab,
+        // };
+        newCurrentResponse.response.events.push(res);
+        //dispatch response to it's slice, to update the state
+        // reqResItemAdded(newCurrentResponse);
+        dispatch(responseDataSaved(newCurrentResponse));
+      })
+      .catch((e) => {
+        newCurrentResponse.response.events.push(e);
+        dispatch(responseDataSaved(newCurrentResponse));
+      });
+  };
+  let sub;
+  const startSubscription = async () => {
+    const wsClient = createWSClient({
+      url: requestFields.url,
+    });
+
+    const client = createTRPCProxyClient({
+      links: [
+        splitLink({
+          condition: (op) => {
+            return op.type === 'subscription';
+          },
+          true: wsLink({
+            client: wsClient,
+          }),
+          false: httpBatchLink({
+            url: 'http://localhost:3000/trpc',
+          }),
+        }),
+      ],
+    });
+    const endpoint = procedures[0].endpoint;
+
+    sub = client[endpoint].subscribe(undefined, {
+      onData: (message) => {
+        console.log(message);
+      },
+    });
+  };
+
+  const endSubscription = () => {
+    sub.unsubscribe();
   };
   return (
     <Box
@@ -353,7 +390,7 @@ export default function TRPCComposer(props) {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        <TRPCMethodAndEndpointEntryForm />
+        <TRPCMethodAndEndpointEntryForm proceduresDipatch={proceduresDipatch} />
         <HeaderEntryForm
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
@@ -363,25 +400,44 @@ export default function TRPCComposer(props) {
           newRequestStreamsSet={newRequestStreamsSet}
         />
 
-        <TRPCProceduresContainer
-          procedures={procedures}
-          proceduresDipatch={proceduresDipatch}
-        />
-        <button
-          className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
-          type="button"
-          style={{ margin: '10px' }}
-          onClick={addProcedures}
-        >
-          Add Procedure
-        </button>
-        <SendRequestButton onClick={sendRequest} />
-        {/* {requestFields.method === 'SUBSCRIPTION' && ( ////for subscription
+        {requestFields.protocol === 'ws://' ? (
+          <div>
+            <TRPCSubscriptionContainer
+              procedures={procedures}
+              proceduresDipatch={proceduresDipatch}
+            ></TRPCSubscriptionContainer>
+            <SendRequestButton
+              onClick={startSubscription}
+              buttonText="Start Subscription"
+            />
+            <SendRequestButton
+              onClick={endSubscription}
+              buttonText="Stop Subscription"
+            />
+          </div>
+        ) : (
+          <div>
+            <TRPCProceduresContainer
+              procedures={procedures}
+              proceduresDipatch={proceduresDipatch}
+            />
+            <button
+              className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
+              type="button"
+              style={{ margin: '10px' }}
+              onClick={addProcedures}
+            >
+              Add Procedure
+            </button>
+            <SendRequestButton onClick={sendRequest} />
+            {/* {requestFields.method === 'SUBSCRIPTION' && ( ////for subscription
           <SendRequestButton
             onClick={() => subscription.unsubscribe()}
             buttonText="Close Subscription"
           ></SendRequestButton>
         )} */}
+          </div>
+        )}
       </div>
     </Box>
   );
