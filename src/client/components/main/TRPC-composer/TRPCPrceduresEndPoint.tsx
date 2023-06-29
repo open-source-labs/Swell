@@ -96,17 +96,6 @@ const TRPCPrceduresEndPoint = (props) => {
                 MUTATE
               </a>
             )}
-            {props.procedureData.method !== 'SUBSCRIPTION' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  methodHandler('SUBSCRIPTION');
-                }}
-                className="dropdown-item"
-              >
-                SUBSCRIPTION
-              </a>
-            )}
           </ul>
         </div>
 

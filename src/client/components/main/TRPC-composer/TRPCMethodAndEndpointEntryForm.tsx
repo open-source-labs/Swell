@@ -10,16 +10,28 @@ import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 const TRPCMethodAndEndpointEntryForm = () => {
+  const [dropdownIsActive, setDropdownIsActive] = useState(false);
+  const dropdownEl = useRef();
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const closeDropdown = (event: MouseEvent) => {
+      if (!dropdownEl.current.contains(event.target)) {
+        setDropdownIsActive(false);
+      }
+    };
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, []);
+
   const populateUrl = (request: string) => {
     let PROTOCOL;
     const urlAction: string = request;
 
-    if (urlAction === 'QUERY' || urlAction === 'MUTATE') {
+    if (urlAction === 'Query/Mutate') {
       PROTOCOL = 'http://';
     } else if (urlAction === 'SUBSCRIPTION') {
       PROTOCOL = 'ws://';
@@ -27,7 +39,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
     dispatch(
       fieldsReplaced({
         ...requestFields,
-        url: requestFields.restUrl,
+        url: PROTOCOL,
         method: urlAction,
         protocol: PROTOCOL,
       })
@@ -48,22 +60,74 @@ const TRPCMethodAndEndpointEntryForm = () => {
   const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   return (
-    <div
-      className="is-flex is-justify-content-center"
-      style={{ padding: '10px' }}
-    >
-      <div id="tRPCButton" className="no-border-please button is-webrtc">
-        <span>tRPC</span>
+    <div>
+      <div
+        ref={dropdownEl}
+        className={`is-flex is-justify-content-center dropdown ${
+          dropdownIsActive ? 'is-active' : ''
+        }`}
+        style={{ padding: '10px' }}
+      >
+        <div className="dropdown-trigger">
+          <button
+            className="no-border-please button is-graphQL"
+            id="graphql-method"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+            onClick={() => setDropdownIsActive(!dropdownIsActive)}
+          >
+            <span>{requestFields.method}</span>
+            <span className="icon is-small">
+              <img
+                src={dropDownArrow}
+                className="is-awesome-icon"
+                aria-hidden="true"
+                alt="dropdown arrow"
+              />
+            </span>
+          </button>
+        </div>
+
+        <div className="dropdown-menu" id="dropdown-menu">
+          <ul className="dropdown-content">
+            {requestFields.method !== 'Query/Mutate' && (
+              <a
+                onClick={(e) => {
+                  setDropdownIsActive(false);
+                  populateUrl('Query/Mutate');
+                }}
+                className="dropdown-item"
+              >
+                Query/Mutate
+              </a>
+            )}
+            {requestFields.method !== 'SUBSCRIPTION' && (
+              <a
+                onClick={(e) => {
+                  setDropdownIsActive(false);
+                  populateUrl('SUBSCRIPTION');
+                }}
+                className="dropdown-item"
+              >
+                SUBSCRIPTION
+              </a>
+            )}
+          </ul>
+        </div>
+
+        <input
+          className={`${
+            isDark ? 'is-dark-300' : ''
+          } ml-1 input input-is-medium is-info`}
+          type="text"
+          id="url-input"
+          placeholder="Enter endpoint"
+          value={requestFields.url}
+          onChange={(e) => {
+            urlChangeHandler(e);
+          }}
+        />
       </div>
-      <input
-        className="ml-1 input input-is-medium is-info"
-        type="text"
-        value={requestFields.url}
-        placeholder="No url needed"
-        onChange={(e) => {
-          urlChangeHandler(e);
-        }}
-      />
     </div>
   );
 };

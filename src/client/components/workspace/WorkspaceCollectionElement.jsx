@@ -34,10 +34,8 @@ const WorkspaceCollectionElement = (props) => {
     reqResItemDeleted,
     index,
   } = props;
-
   const network = content.request.network;
   const method = content.request.method;
-
 
   const removeReqRes = () => {
     connectionController.closeReqRes(content);

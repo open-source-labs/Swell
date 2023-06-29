@@ -43,8 +43,10 @@ const connectionController = {
       if (
         (reqResObj.connection === 'closed' ||
           reqResObj.connection === 'error') &&
-        reqResObj.timeSent && reqResObj.timeReceived &&
-        reqResObj.response.events && reqResObj.response.events.length > 0
+        reqResObj.timeSent &&
+        reqResObj.timeReceived &&
+        reqResObj.response.events &&
+        reqResObj.response.events.length > 0
       ) {
         appDispatch(graphUpdated(reqResObj));
       }
@@ -70,6 +72,8 @@ const connectionController = {
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
+      console.log(reqResObj);
+      console.log('HELLO');
       api.send('open-ws', reqResObj, this.openConnectionArray);
     }
     // gRPC connection
@@ -81,7 +85,7 @@ const connectionController = {
       console.log('got an open api request to fill');
       //console.log(reqResObj);
     } else {
-      console.log('we\'re sending http')
+      console.log("we're sending http");
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },

@@ -248,100 +248,100 @@ export default function TRPCComposer(props) {
     }
   }
 
+  function getPath(obj, path, args) {
+    if (!path) return obj(args);
+    const properties = path.split('.');
+    return getPath(obj[properties.shift()], properties.join('.'), args);
+  }
+
+  // const sendRequest = async () => {
+  //   const links = [];
+  //   const batchConfigureObject = {};
+  //   batchConfigureObject.url = requestFields.url;
+  //   const headers = newRequest.newRequestHeaders.headersArr
+  //     .filter((x) => x.active)
+  //     .reduce((acc, curr) => {
+  //       acc[curr.key] = curr.value;
+  //       return acc;
+  //     }, {});
+  //   if (headers) {
+  //     batchConfigureObject.headers = headers;
+  //   }
+  //   links.push(httpBatchLink(batchConfigureObject));
+  //   // const clientURL: string = requestFields.url; //grabbing url
+  //   const client = createTRPCProxyClient({ links });
+  //   const newCurrentResponse: any = {
+  //     checkSelected: false,
+  //     checked: false,
+  //     connection: 'closed',
+  //     connectionType: 'plain',
+  //     createdAt: new Date(),
+  //     gRPC: false,
+  //     graphQL: false,
+  //     host: requestFields.url,
+  //     id: uuid(),
+  //     minimized: false,
+  //     path: '/',
+  //     protoPath: undefined,
+  //     protocol: 'http://',
+  //     request: { ...newRequest },
+  //     tab: undefined,
+  //     timeReceived: null,
+  //     timeSent: null,
+  //     url: requestFields.url,
+  //     webrtc: false,
+  //     response: {
+  //       events: [],
+  //     },
+  //   };
+  //   Promise.all(
+  //     procedures.map((procedure) => {
+  //       const endpoint = procedure.endpoint;
+  //       const method = procedure.method.toLowerCase();
+  //       const endpointAndMethod = `${endpoint}.${method}`;
+  //       if (procedure.variable) {
+  //         let arg = parseString(procedure.variable.replace(/\s/g, ''));
+  //         return getPath(client, endpointAndMethod, arg);
+  //       } else {
+  //         return getPath(client, endpointAndMethod);
+  //       }
+  //     })
+  //   )
+  //     .then((res) => {
+  //       // const fakeRes = {
+  //       //   id: uuid(),
+  //       //   createdAt: new Date(),
+  //       //   protocol: 'http://',
+  //       //   url: 'google.com',
+  //       //   timeSent: null,
+  //       //   timeReceived: null,
+  //       //   connection: 'uninitialized',
+  //       //   connectionType: null,
+  //       //   checkSelected: false,
+  //       //   request: {
+  //       //     method: 'Get',
+  //       //   },
+  //       //   response: {
+  //       //     headers: {},
+  //       //     events: [res],
+  //       //   },
+  //       //   checked: false,
+  //       //   minimized: false,
+  //       //   tab: currentTab,
+  //       // };
+  //       newCurrentResponse.response.events.push(res);
+  //       //dispatch response to it's slice, to update the state
+  //       // reqResItemAdded(newCurrentResponse);
+  //       dispatch(responseDataSaved(newCurrentResponse));
+  //     })
+  //     .catch((e) => {
+  //       newCurrentResponse.response.events.push(e);
+  //       dispatch(responseDataSaved(newCurrentResponse));
+  //     });
+  // };
+
   const sendRequest = async () => {
-    const links = [];
-    const batchConfigureObject = {};
-    batchConfigureObject.url = requestFields.url;
-    const headers = newRequest.newRequestHeaders.headersArr
-      .filter((x) => x.active)
-      .reduce((acc, curr) => {
-        acc[curr.key] = curr.value;
-        return acc;
-      }, {});
-    if (headers) {
-      batchConfigureObject.headers = headers;
-    }
-    links.push(httpBatchLink(batchConfigureObject));
-    // const clientURL: string = requestFields.url; //grabbing url
-
-    const client = createTRPCProxyClient({ links });
-    Promise.all(
-      procedures.map((procedure) => {
-        let endpoint = procedure.endpoint;
-        const method = procedure.method.toLowerCase();
-        if (procedure.variable) {
-          console.log('SHOULD NOT HI');
-          let arg = parseString(procedure.variable.replace(/\s/g, ''));
-          const tempArg = procedure.variable.replace(/\s/g, '');
-          const e = `client.${endpoint}.${method}(${tempArg})`;
-          return eval(e);
-        } else {
-          return eval(`client.${endpoint}.${method}()`);
-        }
-      })
-    ).then((res) => {
-      // const fakeRes = {
-      //   id: uuid(),
-      //   createdAt: new Date(),
-      //   protocol: 'http://',
-      //   url: 'google.com',
-      //   timeSent: null,
-      //   timeReceived: null,
-      //   connection: 'uninitialized',
-      //   connectionType: null,
-      //   checkSelected: false,
-      //   request: {
-      //     method: 'Get',
-      //   },
-      //   response: {
-      //     headers: {},
-      //     events: [],
-      //   },
-      //   checked: false,
-      //   minimized: false,
-      //   tab: currentTab,
-      // };
-      const newCurrentResponse: any = {
-        checkSelected: false,
-        checked: false,
-        connection: 'closed',
-        connectionType: 'plain',
-        createdAt: new Date(),
-        gRPC: false,
-        graphQL: false,
-        host: requestFields.url,
-        id: uuid(),
-        minimized: false,
-        path: '/',
-        protoPath: undefined,
-        protocol: 'http://',
-        request: { ...newRequest },
-        tab: undefined,
-        timeReceived: null,
-        timeSent: null,
-        url: requestFields.url,
-        webrtc: false,
-        response: {
-          events: [res],
-        },
-      };
-
-      //dispatch response to it's slice, to update the state
-      // reqResItemAdded(fakeRes);
-      dispatch(responseDataSaved(newCurrentResponse));
-    });
-
-    // const arg = JSON.parse(currProc.variable.replace(/\s/g, ''));
-
-    // const res = await client[endpoint][method](arg);
-    // console.log(res);
-    // console.log((procedures.variable = procedures.variable.replace(/\s/g, '')));
-
-    // const res = await client.update.mutate({
-    //   userId: '1',
-    //   name: 'nguyen',
-    // });
-    // console.log(res);
+    console.log('HELLO');
   };
   return (
     <Box
