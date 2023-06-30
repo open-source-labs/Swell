@@ -29,6 +29,7 @@ import {
 
 import Store from '../../../toolkit-refactor/store';
 import TRPCSubscriptionContainer from './TRPCSubscriptionContainer';
+import { error } from 'console';
 
 /**
  *
@@ -246,13 +247,15 @@ export default function TRPCComposer(props) {
     }
 
     try {
-      const parsedJson = JSON.parse(str);
-
+      const parsedJson = JSON.parse(str.replace(/\s/g, ''));
+      console.log(parsedJson);
       if (typeof parsedJson === 'object' && parsedJson !== null) {
         return parsedJson;
+      } else {
+        throw 'is String';
       }
     } catch (error) {
-      return str;
+      return JSON.parse(str);
     }
   }
 
@@ -308,7 +311,8 @@ export default function TRPCComposer(props) {
         const method = procedure.method.toLowerCase();
         const endpointAndMethod = `${endpoint}.${method}`;
         if (procedure.variable) {
-          let arg = parseString(procedure.variable.replace(/\s/g, ''));
+          let arg = parseString(procedure.variable);
+
           return getPath(client, endpointAndMethod, arg);
         } else {
           return getPath(client, endpointAndMethod);
