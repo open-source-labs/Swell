@@ -24,6 +24,14 @@ const TRPCMethodAndEndpointEntryForm = (props) => {
       }
     };
     document.addEventListener('click', closeDropdown);
+    dispatch(
+      fieldsReplaced({
+        ...requestFields,
+        url: 'http://',
+        method: 'Query/Mutate',
+        protocol: 'http://',
+      })
+    );
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 

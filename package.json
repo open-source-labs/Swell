@@ -20,7 +20,7 @@
     "format": "prettier --write \"**/*.+(js|jsx| tsx| json|css|md)\"",
     "lint": "eslint .",
     "lint:fix": "eslint --fix . ",
-    "dev": "concurrently --success first \"webpack-dev-server --mode=development --config ./webpack.development.js\" \"nodemon ./src/server/server.js\"",
+    "dev": "concurrently --success first \"webpack-dev-server --mode=development --config ./webpack.development.js\" \"nodemon --legacy-watch ./src/server/server.js\"",
     "build": "concurrently --success first \"webpack --mode=production --config ./webpack.production.js\"",
     "prod": "concurrently --success first \"webpack --mode=production --config ./webpack.production.js && electron .\"",
     "package-mac": "webpack --mode=production --config ./webpack.production.js && electron-builder build --x64 --mac",
@@ -215,7 +215,7 @@
     "jest": "26.0.1",
     "mini-css-extract-plugin": "^2.6.0",
     "mocha": "^9.2.2",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.22",
     "nyc": "^15.1.0",
     "playwright": "^1.21.1",
     "postcss-cssnext": "^3.1.0",
@@ -509,3 +509,4 @@
     }
   ]
 }
+

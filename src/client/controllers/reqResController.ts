@@ -56,6 +56,7 @@ const connectionController = {
       /** @todo Find where id should be */
       const currentID = Store.getState().reqRes.currentResponse.id;
       if (currentID === reqResObj.id) {
+        console.log('AFTER UPDATED: ', reqResObj);
         appDispatch(responseDataSaved(reqResObj));
       }
     });
@@ -66,14 +67,14 @@ const connectionController = {
       return;
     }
 
-    if (reqResObj.request.method === 'SUBSCRIPTION')
+    if (reqResObj.trpc) {
+      console.log(reqResObj.request.procedures);
+    } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
     } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
-      console.log(reqResObj);
-      console.log('HELLO');
       api.send('open-ws', reqResObj, this.openConnectionArray);
     }
     // gRPC connection
@@ -86,6 +87,7 @@ const connectionController = {
       //console.log(reqResObj);
     } else {
       console.log("we're sending http");
+      console.log('BEFORE UPDATED: ', reqResObj);
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
@@ -7,29 +7,21 @@ import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 // Import Actions from RTK slice
-import {
-  reqResItemAdded,
-  responseDataSaved,
-} from '../../../toolkit-refactor/slices/reqResSlice';
+
+import trpcController from '../../../controllers/trpcController';
+import historyController from '../../../controllers/historyController';
 
 // Import MUI components
 import { Box } from '@mui/material';
 import { RootState } from '../../../toolkit-refactor/store';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
+import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
 import TRPCProceduresContainer from './TRPCProceduresContainer';
-
-// import tRPC client Module
-import {
-  createTRPCProxyClient,
-  httpBatchLink,
-  createWSClient,
-  wsLink,
-  splitLink,
-} from '@trpc/client';
 
 import Store from '../../../toolkit-refactor/store';
 import TRPCSubscriptionContainer from './TRPCSubscriptionContainer';
 import { error } from 'console';
+import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
 
 /**
  *
@@ -89,25 +81,48 @@ function reducer(procedures, action) {
 
 export default function TRPCComposer(props) {
   const dispatch = useDispatch();
-  /** newRequestBody slice from redux store, contains specific request info */
-  const requestBody = useSelector(
-    (state: RootState) => state.newRequest.newRequestBody
-  );
+  // /** newRequestBody slice from redux store, contains specific request info */
+  // const requestBody = useSelector(
+  //   (state: RootState) => state.newRequest.newRequestBody
+  // );
 
   const [procedures, proceduresDipatch] = useReducer(reducer, [
     PROCEDURE_DEFAULT,
   ]);
-  // const [procedures, setProcedures] = useState([{ PROCEDURE_DEFAULT }]);
-  console.log(procedures);
+  ////////////////////GET STATE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@////////////
+  // console.log(Store.getState());
+  ////////////////////GET STATE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@////////////
   const {
-    currentTab,
-    newRequestHeadersSet,
-    newRequestStreamsSet,
+    composerFieldsReset,
+    fieldsReplaced,
     newRequestFields,
-    newRequestHeaders,
+    newRequestFields: {
+      gRPC,
+      url,
+      webrtc,
+      protocol,
+      graphQL,
+      restUrl,
+      wsUrl,
+      gqlUrl,
+      network,
+      method,
+    },
+    newRequestBodySet,
     newRequestBody,
+    newRequestBody: { rawType, bodyType },
+    newRequestHeadersSet,
+    newRequestHeaders,
+    newRequestCookies,
+    newRequestCookiesSet,
+    newRequestCookies: { cookiesArr },
+    newRequestStreamsSet,
     newRequestStreams,
+    currentTab,
+    setWarningMessage,
+    warningMessage,
     reqResItemAdded,
+    setWorkspaceActiveTab,
   } = props;
 
   /** newRequestFields slice from redux store, contains general request info*/
@@ -233,157 +248,169 @@ export default function TRPCComposer(props) {
   //   }
   // };
 
-  function parseString(str) {
-    if (str === 'true') {
-      return true;
-    }
+  // function getPath(obj, path, args) {
+  //   if (!path) return obj(args);
+  //   const properties = path.split('.');
+  //   return getPath(obj[properties.shift()], properties.join('.'), args);
+  // }
 
-    if (str === 'false') {
-      return false;
-    }
-
-    if (!isNaN(str)) {
-      return parseFloat(str);
-    }
-
-    try {
-      const parsedJson = JSON.parse(str.replace(/\s/g, ''));
-      console.log(parsedJson);
-      if (typeof parsedJson === 'object' && parsedJson !== null) {
-        return parsedJson;
-      } else {
-        throw 'is String';
-      }
-    } catch (error) {
-      return JSON.parse(str);
-    }
-  }
-
-  function getPath(obj, path, args) {
-    if (!path) return obj(args);
-    const properties = path.split('.');
-    return getPath(obj[properties.shift()], properties.join('.'), args);
-  }
-
+  const cache = [
+    {
+      method: 'MUTATE',
+      endpoint: 'update',
+      variable: '{\n    "userId": "1",\n    "name": "nguyen"\n  }',
+    },
+    { method: 'QUERY', endpoint: 'sayHi', variable: '' },
+    {
+      method: 'MUTATE',
+      endpoint: 'user.update',
+      variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
+    },
+    { method: 'QUERY', endpoint: 'message', variable: 'hello world' },
+  ];
+  const cookiCache = [
+    { id: 'cookie0', active: true, key: 'cookie1', value: 'cookie1Val' },
+    { id: 'cookie1', active: true, key: 'cookie2', value: 'cookie2Val' },
+  ];
+  const headerCache = [
+    { id: 351217.45631817693, active: true, key: 'auth1', value: 'auth2' },
+    { id: 87384.65282544694, active: true, key: 'auth3', value: 'auth4' },
+  ];
   const sendRequest = async () => {
-    const links = [];
-    const batchConfigureObject = {};
-    batchConfigureObject.url = requestFields.url;
-    const headers = newRequest.newRequestHeaders.headersArr
-      .filter((x) => x.active)
-      .reduce((acc, curr) => {
-        acc[curr.key] = curr.value;
-        return acc;
-      }, {});
-    if (headers) {
-      batchConfigureObject.headers = headers;
-    }
-    links.push(httpBatchLink(batchConfigureObject));
-    // const clientURL: string = requestFields.url; //grabbing url
-    const client = createTRPCProxyClient({ links });
-    const newCurrentResponse: any = {
-      checkSelected: false,
-      checked: false,
-      connection: 'closed',
-      connectionType: 'plain',
+    const id = uuid();
+    // const headers = newRequest.newRequestHeaders.headersArr.filter(
+    //   (x) => x.active
+    // );
+
+    const cookie = cookiesArr.filter((x) => x.active);
+
+    const reqRes = {
+      id,
       createdAt: new Date(),
-      gRPC: false,
-      graphQL: false,
-      host: requestFields.url,
-      id: uuid(),
-      minimized: false,
-      path: '/',
-      protoPath: undefined,
-      protocol: 'http://',
-      request: { ...newRequest },
-      tab: undefined,
-      timeReceived: null,
+      protocol,
+      trpc: true,
+      url: 'http://localhost:3000/trpc',
+      graphQL,
+      gRPC,
+      webrtc,
       timeSent: null,
-      url: requestFields.url,
-      webrtc: false,
+      timeReceived: null,
+      connection: 'uninitialized',
+      connectionType: null,
+      checkSelected: false,
+      request: {
+        method,
+        headers: headerCache,
+        procedures: cache,
+        bodyType,
+        rawType,
+        network,
+        restUrl,
+        wsUrl,
+        gqlUrl,
+        cookies: cookiCache,
+      },
       response: {
+        cookies: [],
+        headers: {},
+        stream: null,
         events: [],
       },
+      checked: false,
+      minimized: false,
+      tab: currentTab,
     };
-    Promise.all(
-      procedures.map((procedure) => {
-        const endpoint = procedure.endpoint;
-        const method = procedure.method.toLowerCase();
-        const endpointAndMethod = `${endpoint}.${method}`;
-        if (procedure.variable) {
-          let arg = parseString(procedure.variable);
 
-          return getPath(client, endpointAndMethod, arg);
-        } else {
-          return getPath(client, endpointAndMethod);
-        }
-      })
-    )
-      .then((res) => {
-        // const fakeRes = {
-        //   id: uuid(),
-        //   createdAt: new Date(),
-        //   protocol: 'http://',
-        //   url: 'google.com',
-        //   timeSent: null,
-        //   timeReceived: null,
-        //   connection: 'uninitialized',
-        //   connectionType: null,
-        //   checkSelected: false,
-        //   request: {
-        //     method: 'Get',
-        //   },
-        //   response: {
-        //     headers: {},
-        //     events: [res],
-        //   },
-        //   checked: false,
-        //   minimized: false,
-        //   tab: currentTab,
-        // };
-        newCurrentResponse.response.events.push(res);
-        //dispatch response to it's slice, to update the state
-        // reqResItemAdded(newCurrentResponse);
-        dispatch(responseDataSaved(newCurrentResponse));
-      })
-      .catch((e) => {
-        newCurrentResponse.response.events.push(e);
-        dispatch(responseDataSaved(newCurrentResponse));
-      });
+    // add request to history
+    historyController.addHistoryToIndexedDb(reqRes);
+    reqResItemAdded(reqRes);
+
+    //reset for next request
+    composerFieldsReset();
+    trpcController.sendRequest(reqRes);
+
+    // const links = [];
+    // const batchConfigureObject = {};
+    // batchConfigureObject.url = requestFields.url;
+
+    // if (headers) {
+    //   batchConfigureObject.headers = headers;
+    // }
+    // links.push(httpBatchLink(batchConfigureObject));
+    // // const clientURL: string = requestFields.url; //grabbing url
+    // const client = createTRPCProxyClient({ links });
+    // const newCurrentResponse: any = {
+    //   checkSelected: false,
+    //   checked: false,
+    //   connection: 'closed',
+    //   connectionType: 'plain',
+    //   createdAt: new Date(),
+    //   gRPC: false,
+    //   graphQL: false,
+    //   host: requestFields.url,
+    //   id: uuid(),
+    //   minimized: false,
+    //   path: '/',
+    //   protoPath: undefined,
+    //   protocol: 'http://',
+    //   request: { ...newRequest },
+    //   tab: undefined,
+    //   timeReceived: null,
+    //   timeSent: null,
+    //   url: requestFields.url,
+    //   webrtc: false,
+    //   response: {
+    //     events: [],
+    //   },
+    // };
+    // console.log(procedures);
+    // Promise.all(
+    //   procedures.map((procedure) => {
+    //     const endpoint = procedure.endpoint;
+    //     const method = procedure.method.toLowerCase();
+    //     const endpointAndMethod = `${endpoint}.${method}`;
+    //     if (procedure.variable) {
+    //       let arg = parseString(procedure.variable);
+
+    //       return getPath(client, endpointAndMethod, arg);
+    //     } else {
+    //       return getPath(client, endpointAndMethod);
+    //     }
+    //   })
+    // )
+    //   .then((res) => {
+    //     // const fakeRes = {
+    //     //   id: uuid(),
+    //     //   createdAt: new Date(),
+    //     //   protocol: 'http://',
+    //     //   url: 'google.com',
+    //     //   timeSent: null,
+    //     //   timeReceived: null,
+    //     //   connection: 'uninitialized',
+    //     //   connectionType: null,
+    //     //   checkSelected: false,
+    //     //   request: {
+    //     //     method: 'Get',
+    //     //   },
+    //     //   response: {
+    //     //     headers: {},
+    //     //     events: [res],
+    //     //   },
+    //     //   checked: false,
+    //     //   minimized: false,
+    //     //   tab: currentTab,
+    //     // };
+    //     newCurrentResponse.response.events.push(res);
+    //     //dispatch response to it's slice, to update the state
+    //     // reqResItemAdded(newCurrentResponse);
+    //     dispatch(responseDataSaved(newCurrentResponse));
+    //   })
+    //   .catch((e) => {
+    //     newCurrentResponse.response.events.push(e);
+    //     dispatch(responseDataSaved(newCurrentResponse));
+    //   });
   };
-  let sub;
-  const startSubscription = async () => {
-    const wsClient = createWSClient({
-      url: requestFields.url,
-    });
 
-    const client = createTRPCProxyClient({
-      links: [
-        splitLink({
-          condition: (op) => {
-            return op.type === 'subscription';
-          },
-          true: wsLink({
-            client: wsClient,
-          }),
-          false: httpBatchLink({
-            url: 'http://localhost:3000/trpc',
-          }),
-        }),
-      ],
-    });
-    const endpoint = procedures[0].endpoint;
-
-    sub = client[endpoint].subscribe(undefined, {
-      onData: (message) => {
-        console.log(message);
-      },
-    });
-  };
-
-  const endSubscription = () => {
-    sub.unsubscribe();
-  };
   return (
     <Box
       className="is-flex is-flex-direction-column is-justify-content-space-between"
@@ -395,32 +422,30 @@ export default function TRPCComposer(props) {
         style={{ overflowX: 'hidden' }}
       >
         <TRPCMethodAndEndpointEntryForm proceduresDipatch={proceduresDipatch} />
-        <HeaderEntryForm
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
-          newRequestFields={newRequestFields}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-        />
 
         {requestFields.protocol === 'ws://' ? (
           <div>
             <TRPCSubscriptionContainer
               procedures={procedures}
               proceduresDipatch={proceduresDipatch}
+              requestFields={requestFields}
             ></TRPCSubscriptionContainer>
-            <SendRequestButton
-              onClick={startSubscription}
-              buttonText="Start Subscription"
-            />
-            <SendRequestButton
-              onClick={endSubscription}
-              buttonText="Stop Subscription"
-            />
           </div>
         ) : (
           <div>
+            <HeaderEntryForm
+              newRequestHeaders={newRequestHeaders}
+              newRequestStreams={newRequestStreams}
+              newRequestBody={newRequestBody}
+              newRequestFields={newRequestFields}
+              newRequestHeadersSet={newRequestHeadersSet}
+              newRequestStreamsSet={newRequestStreamsSet}
+            />
+            <CookieEntryForm
+              newRequestCookies={newRequestCookies}
+              newRequestBody={newRequestBody}
+              newRequestCookiesSet={newRequestCookiesSet}
+            />
             <TRPCProceduresContainer
               procedures={procedures}
               proceduresDipatch={proceduresDipatch}
