@@ -1,39 +1,23 @@
 const trpcController = {
-  makeFetch: async (args, event, reqResObj) => {
-    try {
-      const { method, headers, body } = args.options;
-      const response = await fetch(headers.url, { method, headers, body });
-      const headersResponse = response.headers.raw();
-      event.sender.send('console', 'WHATS UP');
-      if (headersResponse['content-type'][0].includes('stream')) {
-        return {
-          headers: headersResponse,
-          body: { error: 'This Is An SSE endpoint' },
-        };
-      }
-
-      headersResponse[':status'] = response.status;
-      const receivedCookie = headersResponse['set-cookie'];
-      headersResponse.cookies = receivedCookie;
-
-      const contentType = response.headers.get('content-type');
-      const contents = /json/.test(contentType)
-        ? await response.json()
-        : await response.text();
-
-      return {
-        headers: headersResponse,
-        body: contents,
-      };
-    } catch (error) {
-      reqResObj.connection = 'error';
-      reqResObj.error = error;
-      reqResObj.response.events.push(error);
-      event.sender.send('reqResUpdate', reqResObj);
-      throw error;
-    }
+  makeFetch: async (reqRes, get, post) => {
+    const { cache, headers, method, redirect, referrer, url } = get;
+    console.log(get, post);
+    const getRes = await fetch(url, {
+      cache,
+      headers,
+      method,
+      redirect,
+      referrer,
+    });
+    const getData = await getRes.json();
+    console.log(getData);
+    const resHeader = {};
+    getRes.headers.forEach((value, key) => {
+      resHeader[key] = value;
+    });
+    console.log(resHeader);
   },
-  parseOptionForFetch(reqResObject, method, postProcedure) {
+  parseOptionForFetch(reqResObject, method, procedures) {
     function parseString(str) {
       if (str === 'true') {
         return true;
@@ -49,7 +33,7 @@ const trpcController = {
 
       try {
         const parsedJson = JSON.parse(str.replace(/\s/g, ''));
-        console.log(parsedJson);
+
         if (typeof parsedJson === 'object' && parsedJson !== null) {
           return parsedJson;
         } else {
@@ -59,18 +43,16 @@ const trpcController = {
         return JSON.parse(str);
       }
     }
-    const { headers, cookies } = reqResObject.request;
+    const { headers, cookie } = reqResObject.request;
 
-    const formattedHeaders = {
-      url: reqResObject.url,
-    };
+    const formattedHeaders = {};
     headers.forEach((head) => {
       if (head.active) {
         formattedHeaders[head.key] = head.value;
       }
     });
-    if (cookies) {
-      cookies.forEach((cookie) => {
+    if (cookie) {
+      cookie.forEach((cookie) => {
         const cookieString = `${cookie.key}=${cookie.value}`;
         // attach to formattedHeaders so options object includes this
 
@@ -89,30 +71,32 @@ const trpcController = {
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
     };
-    let endPoint = '';
+    let url = '';
+    const body = {};
+    procedures.forEach((procedure, index) => {
+      if (procedure.variable) {
+        body[index] = parseString(procedure.variable);
+      } else {
+        body[index] = {};
+      }
+      url = url ? url + ',' + procedure.endpoint : procedure.endpoint;
+    });
     if (method === 'POST') {
-      const body = {};
-
-      postProcedure.forEach((procedure, index) => {
-        if (procedure.variable) {
-          body[index] = parseString(procedure.variable);
-        } else {
-          body[index] = {};
-        }
-        endPoint = endPoint
-          ? endPoint + ',' + procedure.endpoint
-          : procedure.endpoint;
-      });
+      url = reqResObject.url + '/' + url + '?batch=1';
       outputObj.body = body;
     } else {
-      const input = '';
+      url =
+        reqResObject.url +
+        '/' +
+        url +
+        '?batch=1' +
+        `&input=${encodeURIComponent(JSON.stringify(body))}`;
     }
-    outputObj.endPoint = endPoint;
+    outputObj.url = url;
     return outputObj;
   },
 
-  sendRequest: function (reqRes) {
-    console.log(reqRes);
+  sendRequest: async function (reqRes) {
     const procedures = reqRes.request.procedures;
     const getReq = procedures.filter(
       (procedure) => procedure.method === 'QUERY'
@@ -120,11 +104,29 @@ const trpcController = {
     const postReq = procedures.filter(
       (procedure) => procedure.method === 'MUTATE'
     );
-    console.log(getReq);
-    const getOption = this.parseOptionForFetch(reqRes, 'GET', getReq);
-    const postOption = this.parseOptionForFetch(reqRes, 'POST', postReq);
 
-    console.log(getOption, postOption);
+    const getOption = getReq.length
+      ? this.parseOptionForFetch(reqRes, 'GET', getReq)
+      : false;
+    const postOption = postReq.length
+      ? this.parseOptionForFetch(reqRes, 'POST', postReq)
+      : false;
+
+    const updatedReqRes = await this.makeFetch(reqRes, getOption, postOption);
+    // const data = await fetch(reqRes.url + '/' + getOption.endPoint);
+    // const res = await data.json();
+    // const resHeader = {};
+    // data.headers.forEach((value, key) => {
+    //   resHeader[key] = value;
+    // });
+    // console.log(header);
+
+    // const postData = await fetch(reqRes.url + '/' + postOption.endPoint, {
+    //   method: 'POST',
+    //   body: JSON.stringify(postOption.body),
+    // });
+    // const postRes = await postData.json();
+    // console.log(res, postRes);
   },
 };
 

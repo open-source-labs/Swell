@@ -295,7 +295,6 @@ const httpController = {
       const { method, headers, body } = args.options;
       const response = await fetch(headers.url, { method, headers, body });
       const headersResponse = response.headers.raw();
-      event.sender.send('console', 'WHATS UP');
       if (headersResponse['content-type'][0].includes('stream')) {
         return {
           headers: headersResponse,

@@ -254,36 +254,79 @@ export default function TRPCComposer(props) {
   //   return getPath(obj[properties.shift()], properties.join('.'), args);
   // }
 
-  const cache = [
-    {
-      method: 'MUTATE',
-      endpoint: 'update',
-      variable: '{\n    "userId": "1",\n    "name": "nguyen"\n  }',
-    },
-    { method: 'QUERY', endpoint: 'sayHi', variable: '' },
-    {
-      method: 'MUTATE',
-      endpoint: 'user.update',
-      variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
-    },
-    { method: 'QUERY', endpoint: 'message', variable: 'hello world' },
-  ];
-  const cookiCache = [
-    { id: 'cookie0', active: true, key: 'cookie1', value: 'cookie1Val' },
-    { id: 'cookie1', active: true, key: 'cookie2', value: 'cookie2Val' },
-  ];
-  const headerCache = [
-    { id: 351217.45631817693, active: true, key: 'auth1', value: 'auth2' },
-    { id: 87384.65282544694, active: true, key: 'auth3', value: 'auth4' },
-  ];
   const sendRequest = async () => {
     const id = uuid();
+
     // const headers = newRequest.newRequestHeaders.headersArr.filter(
     //   (x) => x.active
     // );
 
-    const cookie = cookiesArr.filter((x) => x.active);
+    // const cookie = cookiesArr.filter((x) => x.active);
 
+    // const reqRes = {
+    //   id,
+    //   createdAt: new Date(),
+    //   protocol,
+    //   trpc: true,
+    //   url: 'http://localhost:3000/trpc',
+    //   graphQL,
+    //   gRPC,
+    //   webrtc,
+    //   timeSent: null,
+    //   timeReceived: null,
+    //   connection: 'uninitialized',
+    //   connectionType: null,
+    //   checkSelected: false,
+    //   request: {
+    //     method,
+    //     headers,
+    //     procedures,
+    //     bodyType,
+    //     rawType,
+    //     network,
+    //     restUrl,
+    //     wsUrl,
+    //     gqlUrl,
+    //     cookie,
+    //   },
+    //   response: {
+    //     cookies: [],
+    //     headers: {},
+    //     stream: null,
+    //     events: [],
+    //   },
+    //   checked: false,
+    //   minimized: false,
+    //   tab: currentTab,
+    // };
+
+    const cache = [
+      {
+        method: 'MUTATE',
+        endpoint: 'update',
+        variable: '{\n    "userId": "1",\n    "name": "nguyen"\n  }',
+      },
+      { method: 'QUERY', endpoint: 'sayHi', variable: '' },
+      {
+        method: 'MUTATE',
+        endpoint: 'user.update',
+        variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
+      },
+      {
+        method: 'QUERY',
+        endpoint: 'secretData',
+        variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
+      },
+    ];
+
+    const cookiCache = [
+      { id: 'cookie0', active: true, key: 'cookie1', value: 'cookie1Val' },
+      { id: 'cookie1', active: true, key: 'cookie2', value: 'cookie2Val' },
+    ];
+    const headerCache = [
+      { id: 351217.45631817693, active: true, key: 'auth1', value: 'auth2' },
+      { id: 87384.65282544694, active: true, key: 'auth3', value: 'auth4' },
+    ];
     const reqRes = {
       id,
       createdAt: new Date(),
@@ -308,7 +351,7 @@ export default function TRPCComposer(props) {
         restUrl,
         wsUrl,
         gqlUrl,
-        cookies: cookiCache,
+        cookie: cookiCache,
       },
       response: {
         cookies: [],
@@ -320,14 +363,13 @@ export default function TRPCComposer(props) {
       minimized: false,
       tab: currentTab,
     };
-
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 
     //reset for next request
-    composerFieldsReset();
-    trpcController.sendRequest(reqRes);
+    // composerFieldsReset();
+    const updatedReqRes = await trpcController.sendRequest(reqRes);
 
     // const links = [];
     // const batchConfigureObject = {};
