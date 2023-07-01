@@ -22,6 +22,8 @@ import {
   Network,
   ReqResRequest,
   ReqResResponse } from '../../../types.js';
+import { request } from 'http';
+import { graphql } from 'graphql';
 
   interface NewRequestCookiesSet {
     cookiesArr: CookieOrHeader[];
@@ -117,45 +119,76 @@ interface Props {
 }
 
 const History = (props: Props)=> {
+  
   const {
-    newRequestFields,
-    newRequestsOpenAPI,
     content,
-    connectContent,
     fieldsReplaced,
     newRequestHeadersSet,
     newRequestCookiesSet,
     newRequestBodySet,
     newRequestStreamsSet,
-    network,
-    isSSE,
-    url,
-    restUrl,
-    wsUrl,
-    gqlUrl,
-    webrtcUrl,
-    grpcUrl,
-    method
+    newRequestFields
   } = props;
-  
+  //console.log('History props', props);
+
+  const {
+    gRPC,
+    graphQL,
+    protoPath,
+    protocol,
+    request,
+    response,
+    tab,
+    timeReceived,
+    timeSent,
+    url,
+    webrtc
+  } = content;
+  console.log('content url', url)
+  const {
+    body,
+    bodyType,
+    bodyVariables,
+    cookies,
+    grpcUrl,
+    isSSE,
+    headers,
+    method,
+    messages,
+    network,
+    rawType,
+    restUrl,
+    testContent,
+    testResults,
+    webRtc,
+    webRtcUrl,
+    ws,
+    wsUrl,
+  } = request;
+
+  //console.log('History content', content);
   const dispatch = useDispatch();
   const setSidebarTab = (tabName: string) => dispatch(setSidebarActiveTab(tabName));
   const setNewRequestSSE = (bool: boolean) => dispatch(newRequestSSESet(bool));
 
   const addHistoryToNewRequest = () => {
+    
+    
+    //console.log('add History to new request button clicked')
+    console.log('history content', content)
     let requestFieldObj = {};
     if (network === 'rest') {
       requestFieldObj = {
         ...newRequestFields,
-        isSSE: isSSE || false,
-        method: connectContent.request.method || 'GET',
-        protocol: connectContent.protocol || 'http://',
-        url,
-        restUrl,
-        graphQL: connectContent.graphQL || false,
-        gRPC: connectContent.gRPC || false,
-        webrtc: connectContent.webrtc || false,
-        network,
+        isSSE: request.isSSE,
+        method: request.method,
+        protocol: content.protocol,
+        url: url,
+        restUrl: request.restUrl,
+        graphQL: content.graphQL,
+        gRPC: content.gRPC,
+        webrtc: content.webrtc,
+        network: request.network,
         testContent: content.request.testContent,
       };
     }
@@ -170,47 +203,47 @@ const History = (props: Props)=> {
         restUrl,
         graphQL: connectContent.graphQL || false,
         gRPC: connectContent.gRPC || false,
-        webrtc: connectContent.webrtc || false,
+        webrtc: content.webrtc,
         network,
       };
     }
     if (network === 'ws') {
       requestFieldObj = {
         ...newRequestFields,
-        method: connectContent.request.method || 'GET',
-        protocol: connectContent.protocol || 'http://',
-        url,
+        method: request.method || 'GET',
+        protocol: protocol || 'http://',
+        url: content.url,
         wsUrl,
-        graphQL: connectContent.graphQL || false,
-        gRPC: connectContent.gRPC || false,
-        webrtc: connectContent.webrtc || false,
+        graphQL: graphql || false,
+        gRPC: gRPC || false,
+        webrtc: webrtc || false,
         network,
       };
     }
     if (network === 'graphQL') {
       requestFieldObj = {
         ...newRequestFields,
-        method: connectContent.request.method || 'GET',
-        protocol: connectContent.protocol || 'http://',
-        url,
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
+        url: content.url,
         gqlUrl,
-        graphQL: connectContent.graphQL || false,
-        gRPC: connectContent.gRPC || false,
-        webrtc: connectContent.webrtc || false,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        webrtc: content.webrtc || false,
         network,
       };
     }
     if (network === 'webRtc') {
       requestFieldObj = {
         ...newRequestFields,
-        method: connectContent.request.method || 'GET',
-        protocol: connectContent.protocol || 'http://',
+        method: content.request.method || 'GET',
+        protocol: content.protocol || 'http://',
         url,
         webrtcUrl,
         grpcUrl,
-        graphQL: connectContent.graphQL || false,
-        gRPC: connectContent.gRPC || false,
-        webrtc: connectContent.webrtc || false,
+        graphQL: content.graphQL || false,
+        gRPC: content.gRPC || false,
+        webrtc: content.webrtc || false,
         network,
       };
     }
@@ -227,20 +260,20 @@ const History = (props: Props)=> {
       };
     }
     let headerDeeperCopy;
-    if (connectContent.request.headers) {
-      headerDeeperCopy = JSON.parse(JSON.stringify(connectContent.request.headers));
+    if (content?.request?.headers) {
+      headerDeeperCopy = JSON.parse(JSON.stringify(content.request.headers));
       headerDeeperCopy.push({
-        id: headers.length + 1,
+        id: request.headers.length + 1,
         active: false,
         key: '',
         value: '',
       });
     }
     let cookieDeeperCopy;
-    if (connectContent.request.cookies && !/ws/.test(connectContent.protocol)) {
-      cookieDeeperCopy = JSON.parse(JSON.stringify(connectContent.request.cookies));
+    if (request.cookies && !/ws/.test(content.protocol)) {
+      cookieDeeperCopy = JSON.parse(JSON.stringify(content.request.cookies));
       cookieDeeperCopy.push({
-        id: cookies.length + 1,
+        id: request.cookies.length + 1,
         active: false,
         key: '',
         value: '',
@@ -255,11 +288,11 @@ const History = (props: Props)=> {
       count: cookieDeeperCopy ? cookieDeeperCopy.length : 1,
     };
     const requestBodyObj = {
-      bodyType: bodyType || 'raw',
-      bodyContent: body || '',
-      bodyVariables: bodyVariables || '',
-      rawType: rawType || 'text/plain',
-      JSONFormatted: JSONFormatted || true,
+      bodyType: request.bodyType,
+      bodyContent: request.body,
+      bodyVariables: request.bodyVariables,
+      rawType: rawType,
+      JSONFormatted: request.JSONFormatted,
       bodyIsNew: false,
     };
     fieldsReplaced(requestFieldObj);
@@ -289,9 +322,11 @@ const History = (props: Props)=> {
       newRequestStreamsSet(requestStreamsObj);
     }
     setSidebarTab('composer');
+    console.log('requestFieldObj: ',requestFieldObj)
   };
 
   let colorClass;
+
   switch (network) {
     case 'gRpc':
       colorClass = 'is-grpc-color';
@@ -300,12 +335,12 @@ const History = (props: Props)=> {
       colorClass = 'is-rest-color';
       break;
     case 'graphQL':
-      colorClass = 'is-graphQL-color';
+      colorClass = 'is -graphQL-color';
       break;
     case 'ws':
       colorClass = 'is-ws-color';
       break;
-    case 'openApi':
+    case 'openApi':;
       colorClass = 'is-openapi-color';
       break;
     case 'webRtc':
@@ -318,7 +353,7 @@ const History = (props: Props)=> {
     historyController.deleteHistoryFromIndexedDb(event.target.id);
   };
 
-  const urlDisplay = url && url.length > 32 ? url.slice(0, 32) + '...' : url;
+  const urlDisplay = content.url && content.url.length > 32 ? content.url.slice(0, 32) + '...' : content.url;
 
   return (
     <div className="history-container is-flex is-justify-content-space-between m-3">
@@ -326,7 +361,7 @@ const History = (props: Props)=> {
         className="is-clickable is-primary-link is-flex"
         onClick={() => addHistoryToNewRequest()}
       >
-        <div className={`history-method mr-2 ${colorClass}`}> {method} </div>
+        <div className={`history-method mr-2 ${colorClass}`}> {content.request.method} </div>
         <div className="history-url"> {urlDisplay || '-'} </div>
       </div>
       <div className="history-delete-container">
