@@ -1,21 +1,72 @@
+const { api } = window;
+import { appDispatch } from '../toolkit-refactor/store';
+import Store from '../toolkit-refactor/store';
+import {
+  responseDataSaved,
+  reqResUpdated,
+} from '../toolkit-refactor/slices/reqResSlice';
+import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
 const trpcController = {
-  makeFetch: async (reqRes, get, post) => {
-    const { cache, headers, method, redirect, referrer, url } = get;
-    console.log(get, post);
-    const getRes = await fetch(url, {
-      cache,
-      headers,
-      method,
-      redirect,
-      referrer,
+  makeFetch: async function (reqRes, get, post) {
+    reqRes.timeSent = Date.now();
+    //[{name:"cookie"}]
+    const cookies = [
+      { name: 'POSTCOOKIE', value: 'POSTCOOKIEVAL' },
+      { name: 'GETCOOKIE', value: 'GETCOOKIEVAL' },
+    ];
+    const getHeaders = {};
+    const postHeaders = {};
+    const events = [];
+
+    const reqArr = [get, post];
+    const resArr = await Promise.all(
+      reqArr.map((req) => {
+        if (req) {
+          return fetch(req.url, {
+            // credentials: req.credentials,
+            // mode: req.mode,
+            cache: req.cache,
+            headers: req.headers,
+            method: req.method,
+            redirect: req.redirect,
+            referrer: req.referrer,
+            ...(req.body && { body: JSON.stringify(req.body) }),
+          });
+        } else {
+          return Promise.resolve(false);
+        }
+      })
+    );
+    reqRes.timeReceived = Date.now();
+
+    resArr.forEach((res, index) => {
+      if (res) {
+        if (index === 0) {
+          //combine cookie
+
+          //comebine header
+          res.headers.forEach((value, key) => {
+            getHeaders[key] = value;
+          });
+        } else {
+          res.headers.forEach((value, key) => {
+            postHeaders[key] = value;
+          });
+        }
+      }
     });
-    const getData = await getRes.json();
-    console.log(getData);
-    const resHeader = {};
-    getRes.headers.forEach((value, key) => {
-      resHeader[key] = value;
-    });
-    console.log(resHeader);
+    const resData = await Promise.all(
+      resArr.map((res) => {
+        return res ? res.json() : res;
+      })
+    );
+    resData.forEach((res) => events.push(res));
+    reqRes.response.cookies = cookies;
+    reqRes.response.events = events;
+    reqRes.response.headers = [getHeaders, postHeaders];
+    reqRes.connection = 'closed';
+    reqRes.connectionType = 'plain';
+    this.testReq(reqRes);
   },
   parseOptionForFetch(reqResObject, method, procedures) {
     function parseString(str) {
@@ -96,7 +147,9 @@ const trpcController = {
     return outputObj;
   },
 
-  sendRequest: async function (reqRes) {
+  sendRequest: async function (reqResOriginal) {
+    const reqRes = Object.assign({}, reqResOriginal);
+    reqRes.response = Object.assign({}, reqRes.response);
     const procedures = reqRes.request.procedures;
     const getReq = procedures.filter(
       (procedure) => procedure.method === 'QUERY'
@@ -113,20 +166,43 @@ const trpcController = {
       : false;
 
     const updatedReqRes = await this.makeFetch(reqRes, getOption, postOption);
-    // const data = await fetch(reqRes.url + '/' + getOption.endPoint);
-    // const res = await data.json();
-    // const resHeader = {};
-    // data.headers.forEach((value, key) => {
-    //   resHeader[key] = value;
-    // });
-    // console.log(header);
+  },
+  cookieFormatter(cookieArray) {
+    return cookieArray.map((eachCookie) => {
+      const cookieFormat = {
+        name: eachCookie.name,
+        value: eachCookie.value,
+        domain: eachCookie.domain,
+        hostOnly: eachCookie.hostOnly ? eachCookie.hostOnly : false,
+        path: eachCookie.path,
+        secure: eachCookie.secure ? eachCookie.secure : false,
+        httpOnly: eachCookie.httpOnly ? eachCookie.httpOnly : false,
+        session: eachCookie.session ? eachCookie.session : false,
+        expirationDate: eachCookie.expires ? eachCookie.expires : '',
+      };
+      return cookieFormat;
+    });
+  },
+  testReq: (reqResObj) => {
+    if (
+      (reqResObj.connection === 'closed' || reqResObj.connection === 'error') &&
+      reqResObj.timeSent &&
+      reqResObj.timeReceived &&
+      reqResObj.response.events &&
+      reqResObj.response.events.length > 0 &&
+      !reqResObj.trpc
+    ) {
+      appDispatch(graphUpdated(reqResObj));
+    }
+    appDispatch(reqResUpdated(reqResObj));
+    // If current selected response equals reqResObj received, update current response
 
-    // const postData = await fetch(reqRes.url + '/' + postOption.endPoint, {
-    //   method: 'POST',
-    //   body: JSON.stringify(postOption.body),
-    // });
-    // const postRes = await postData.json();
-    // console.log(res, postRes);
+    /** @todo Find where id should be */
+    const currentID = Store.getState().reqRes.currentResponse.id;
+    if (currentID === reqResObj.id) {
+      console.log('AFTER UPDATED: ', reqResObj);
+      appDispatch(responseDataSaved(reqResObj));
+    }
   },
 };
 

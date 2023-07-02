@@ -305,7 +305,7 @@ const httpController = {
       headersResponse[':status'] = response.status;
       const receivedCookie = headersResponse['set-cookie'];
       headersResponse.cookies = receivedCookie;
-
+      console.log(receivedCookie);
       const contentType = response.headers.get('content-type');
       const contents = /json/.test(contentType)
         ? await response.json()
@@ -405,7 +405,6 @@ const httpController = {
         formattedHeaders.cookie = formattedHeaders.cookie + ';' + cookieString;
       });
     }
-    console.log(formattedHeaders);
 
     const outputObj = {
       method,

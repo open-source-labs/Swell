@@ -68,7 +68,7 @@ const connectionController = {
     }
 
     if (reqResObj.trpc) {
-      console.log(reqResObj.request.procedures);
+      console.log("CAN NOW USE api.receive('reqResUpdate')");
     } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
@@ -87,7 +87,6 @@ const connectionController = {
       //console.log(reqResObj);
     } else {
       console.log("we're sending http");
-      console.log('BEFORE UPDATED: ', reqResObj);
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },
