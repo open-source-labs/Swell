@@ -59,6 +59,7 @@ require('./main_process/main_graphqlController')();
 require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
+require('./main_process/main_trpcController.js')();
 
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');

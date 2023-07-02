@@ -61,15 +61,19 @@ function HeadersContainer({ currentResponse }: Props) {
       }
     });
   } else {
-    responseHeaders = Object.entries(currentResponse.response.headers).map(
-      ([key, value], index) => {
-        return (
-          <tr key={index}>
-            <td>{key}</td>
-            <td className="table-value">{value}</td>
-          </tr>
-        );
-      }
+    responseHeaders = (
+      <tbody>
+        {Object.entries(currentResponse.response.headers).map(
+          ([key, value], index) => {
+            return (
+              <tr key={index}>
+                <td>{key}</td>
+                <td className="table-value">{value}</td>
+              </tr>
+            );
+          }
+        )}
+      </tbody>
     );
   }
   return (

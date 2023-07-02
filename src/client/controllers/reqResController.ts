@@ -68,7 +68,8 @@ const connectionController = {
     }
 
     if (reqResObj.trpc) {
-      console.log("CAN NOW USE api.receive('reqResUpdate')");
+      console.log(reqResObj);
+      api.send('open-trpc', reqResObj);
     } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
