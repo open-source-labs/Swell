@@ -124,6 +124,34 @@ export default function TRPCComposer(props) {
     proceduresDipatch({ type: 'ADD' });
   };
 
+  const dispatchTRPCResponse = (tRPCResponse) => {
+    const newCurrentResponse: any = {
+      checkSelected: false,
+      checked: false,
+      connection: 'closed',
+      connectionType: 'plain',
+      createdAt: new Date(),
+      gRPC: false,
+      graphQL: false,
+      host: requestFields.url,
+      id: uuid(),
+      minimized: false,
+      path: '/',
+      protoPath: undefined,
+      protocol: 'http://',
+      request: { ...newRequest },
+      tab: undefined,
+      timeReceived: null,
+      timeSent: null,
+      url: requestFields.url,
+      webrtc: false,
+      response: {
+        events: [tRPCResponse],
+      },
+    };
+    dispatch(responseDataSaved(newCurrentResponse));
+  };
+
   const sendRequest = async () => {
     const id = uuid();
     const headers = newRequest.newRequestHeaders.headersArr.filter(
