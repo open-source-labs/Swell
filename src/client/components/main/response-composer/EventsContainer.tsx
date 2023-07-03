@@ -34,9 +34,18 @@ function EventsContainer({ currentResponse }: EventsContainerProps) {
   }
   const { events, headers } = response;
   let responseBody = '';
-
+  if (currentResponse.trpc) {
+    events.forEach((event: any, idx: number) => {
+      if (event) {
+        const eventStr = JSON.stringify(event, null, 4);
+        responseBody += `-------------${
+          idx ? 'Mutate Result' : 'Query result'
+        }-------------\n${eventStr}\n\n`;
+      }
+    });
+  }
   // If it's a stream or graphQL subscription
-  if (
+  else if (
     (events && events.length > 1) ||
     (headers?.['content-type'] && headers['content-type'].includes('stream')) ||
     (currentResponse.graphQL && request.method === 'SUBSCRIPTION')

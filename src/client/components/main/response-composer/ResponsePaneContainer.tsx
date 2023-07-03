@@ -15,6 +15,7 @@ import CookiesContainer from './CookiesContainer';
 import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
+import State from '../../../toolkit-refactor/store';
 
 const ResponsePaneContainer: FC = () => {
   const dispatch = useDispatch();
@@ -120,13 +121,16 @@ const ResponsePaneContainer: FC = () => {
           {/* RESPONSES CONTENT */}
           <div className="is-flex-grow-3 add-vertical-scroll is-flex is-flex-direction-column">
             {activeTab === 'events' && (
-               <EventsContainer currentResponse={currentResponse as any} />
-
+              <EventsContainer currentResponse={currentResponse as any} />
             )}
             {activeTab === 'headers' && (
-              <HeadersContainer currentResponse={currentResponse as { response: { headers: Record<string, string> } }} />
-
-
+              <HeadersContainer
+                currentResponse={
+                  currentResponse as {
+                    response: { headers: Record<string, string> };
+                  }
+                }
+              />
             )}
             {activeTab === 'cookies' && (
               <CookiesContainer currentResponse={currentResponse} />

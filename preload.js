@@ -29,6 +29,8 @@ const apiObj = {
       'start-mock-server',
       'stop-mock-server',
       'submit-mock-request',
+      'open-trpc',
+      'error',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);
@@ -60,7 +62,12 @@ const apiObj = {
   },
   removeAllListeners: (channel, cb) => {
     // allow list channels
-    const allowedChannels = ['reqResUpdate', 'reply-gql', 'protoParserFunc-return', 'openapi-info'];
+    const allowedChannels = [
+      'reqResUpdate',
+      'reply-gql',
+      'protoParserFunc-return',
+      'openapi-info',
+    ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel, (event, ...args) => cb(...args));
     } else {
@@ -69,9 +76,9 @@ const apiObj = {
   },
 };
 
-// this is because we need to have context isolation to be false for spectron 
+// this is because we need to have context isolation to be false for spectron
 // tests to run, but context bridge only runs if context isolation is true
-// basically we are assigning certain node functionality (require, ipcRenderer) 
+// basically we are assigning certain node functionality (require, ipcRenderer)
 // to the window object in an UN-isolated context only for testing
 // security is reduced for testing, but remains sturdy otherwise
 
