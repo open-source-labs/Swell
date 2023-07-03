@@ -19,9 +19,7 @@ import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
 import TRPCProceduresContainer from './TRPCProceduresContainer';
 
-import Store from '../../../toolkit-refactor/store';
 import TRPCSubscriptionContainer from './TRPCSubscriptionContainer';
-import { error } from 'console';
 import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
 
 /**
@@ -78,10 +76,7 @@ function reducer(procedures, action) {
 
 export default function TRPCComposer(props) {
   const dispatch = useDispatch();
-  // /** newRequestBody slice from redux store, contains specific request info */
-  // const requestBody = useSelector(
-  //   (state: RootState) => state.newRequest.newRequestBody
-  // );
+
   const [showSubscription, setShowSubscription] = useState(false);
   const subscriptionHandler = (bool) => {
     setShowSubscription(bool);
@@ -89,9 +84,8 @@ export default function TRPCComposer(props) {
   const [procedures, proceduresDipatch] = useReducer(reducer, [
     PROCEDURE_DEFAULT,
   ]);
+
   const {
-    composerFieldsReset,
-    fieldsReplaced,
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -105,7 +99,6 @@ export default function TRPCComposer(props) {
       network,
       method,
     },
-    newRequestBodySet,
     newRequestBody,
     newRequestBody: { rawType, bodyType },
     newRequestHeadersSet,
@@ -117,9 +110,7 @@ export default function TRPCComposer(props) {
     newRequestStreams,
     currentTab,
     setWarningMessage,
-    warningMessage,
     reqResItemAdded,
-    setWorkspaceActiveTab,
   } = props;
 
   /** newRequestFields slice from redux store, contains general request info*/
@@ -177,75 +168,6 @@ export default function TRPCComposer(props) {
       tab: currentTab,
     };
 
-    // const cache = [
-    //   {
-    //     method: 'MUTATE',
-    //     endpoint: 'update',
-    //     variable: '{\n    "userId": "1",\n    "name": "nguyen"\n  }',
-    //   },
-    //   { method: 'QUERY', endpoint: 'sayHi', variable: '' },
-    //   {
-    //     method: 'MUTATE',
-    //     endpoint: 'log',
-    //     variable: '"HELLO WORLD"',
-    //   },
-    //   {
-    //     method: 'QUERY',
-    //     endpoint: 'secretData',
-    //     variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
-    //   },
-    //   {
-    //     method: 'QUERY',
-    //     endpoint: 'BLAHBLAH.BLAH',
-    //     variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
-    //   },
-    // ];
-
-    // const cookiCache = [
-    //   { id: 'cookie0', active: true, key: 'cookie1', value: 'cookie1Val' },
-    //   { id: 'cookie1', active: true, key: 'cookie2', value: 'cookie2Val' },
-    // ];
-    // const headerCache = [
-    //   { id: 351217.45631817693, active: true, key: 'auth1', value: 'auth2' },
-    //   { id: 87384.65282544694, active: true, key: 'auth3', value: 'auth4' },
-    // ];
-    // const reqRes = {
-    //   id,
-    //   createdAt: new Date(),
-    //   protocol,
-    //   trpc: true,
-    //   url: 'http://localhost:3000/trpc',
-    //   graphQL,
-    //   gRPC,
-    //   webrtc,
-    //   timeSent: null,
-    //   timeReceived: null,
-    //   connection: 'uninitialized',
-    //   connectionType: null,
-    //   checkSelected: false,
-    //   host: 'http://localhost:3000',
-    //   request: {
-    //     method,
-    //     headers: headerCache,
-    //     procedures: cache,
-    //     bodyType,
-    //     rawType,
-    //     network,
-    //     restUrl,
-    //     wsUrl,
-    //     gqlUrl,
-    //     cookie: cookiCache,
-    //   },
-    //   response: {
-    //     cookies: [],
-    //     headers: [],
-    //     stream: null,
-    //     events: [],
-    //   },
-    //   checked: false,
-    //   minimized: false,
-    //   tab: currentTab,
-    // };
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
@@ -254,7 +176,7 @@ export default function TRPCComposer(props) {
     // composerFieldsReset();
     // connectionController.openReqRes(reqRes.id);
     dispatch(responseDataSaved(reqRes));
-    trpcController.sendRequest(reqRes);
+    connectionController.openReqRes(reqRes.id);
   };
 
   return (
