@@ -8,7 +8,6 @@ import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 import { useSelector, useDispatch } from 'react-redux';
 // Import Actions from RTK slice
 
-import trpcController from '../../../controllers/trpcController';
 import historyController from '../../../controllers/historyController';
 import connectionController from '../../../controllers/reqResController';
 
