@@ -167,11 +167,12 @@ export type NewRequestFields = {
   openapiReqObj: Record<string, $TSFixMe>;
 };
 
-export interface ReqResRequest {
   // Currently, the body for WebRTC connection is an object
   // and typescript does not support union between string and object very well
   // Ideally we should move the WebRTC body information to a new key value
   // to fully resolve the issue
+
+export interface ReqResRequest {
   body: string;
   bodyType: string;
   bodyVariables: string;
