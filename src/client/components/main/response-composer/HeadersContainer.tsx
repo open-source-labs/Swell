@@ -24,19 +24,8 @@ function HeadersContainer({ currentResponse }: Props) {
     return <EmptyState />;
   }
 
-  console.log('CURRENT RES ', currentResponse);
   let responseHeaders;
 
-  {
-    /* <tbody>{Object.entries(req).map(([key, value], index) => {
-        return (
-          <tr key={index}>
-            <td>{key}</td>
-            <td className="table-value">{value}</td>
-          </tr>
-        );
-      })}</tbody> */
-  }
   if (currentResponse.trpc) {
     responseHeaders = currentResponse.response.headers.map((req, reqMethod) => {
       const typeHeader = reqMethod === 0 ? 'QUERY HEADER' : 'MUTATE HEADER';

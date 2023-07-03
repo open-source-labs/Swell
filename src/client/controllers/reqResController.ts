@@ -56,7 +56,6 @@ const connectionController = {
       /** @todo Find where id should be */
       const currentID = Store.getState().reqRes.currentResponse.id;
       if (currentID === reqResObj.id) {
-        console.log('AFTER UPDATED: ', reqResObj);
         appDispatch(responseDataSaved(reqResObj));
       }
     });
@@ -68,7 +67,6 @@ const connectionController = {
     }
 
     if (reqResObj.trpc) {
-      console.log(reqResObj);
       api.send('open-trpc', reqResObj);
     } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);

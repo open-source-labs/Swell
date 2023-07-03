@@ -257,80 +257,10 @@ export default function TRPCComposer(props) {
 
   const sendRequest = async () => {
     const id = uuid();
-    // const headers = newRequest.newRequestHeaders.headersArr.filter(
-    //   (x) => x.active
-    // );
-    // const cookie = cookiesArr.filter((x) => x.active);
-    // const reqRes = {
-    //   id,
-    //   createdAt: new Date(),
-    //   protocol,
-    //   trpc: true,
-    //   url: 'http://localhost:3000/trpc',
-    //   graphQL,
-    //   gRPC,
-    //   webrtc,
-    //   timeSent: null,
-    //   timeReceived: null,
-    //   connection: 'uninitialized',
-    //   connectionType: null,
-    //   checkSelected: false,
-    //   host: 'http://localhost:3000',
-    //   request: {
-    //     method,
-    //     headers,
-    //     procedures,
-    //     bodyType,
-    //     rawType,
-    //     network,
-    //     restUrl,
-    //     wsUrl,
-    //     gqlUrl,
-    //     cookie,
-    //   },
-    //   response: {
-    //     cookies: [],
-    //     headers: {},
-    //     stream: null,
-    //     events: [],
-    //   },
-    //   checked: false,
-    //   minimized: false,
-    //   tab: currentTab,
-    // };
-
-    const cache = [
-      {
-        method: 'MUTATE',
-        endpoint: 'update',
-        variable: '{\n    "userId": "1",\n    "name": "nguyen"\n  }',
-      },
-      { method: 'QUERY', endpoint: 'sayHi', variable: '' },
-      {
-        method: 'MUTATE',
-        endpoint: 'log',
-        variable: '"HELLO WORLD"',
-      },
-      {
-        method: 'QUERY',
-        endpoint: 'secretData',
-        variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
-      },
-      {
-        method: 'QUERY',
-        endpoint: 'BLAHBLAH.BLAH',
-        variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
-      },
-    ];
-
-    const cookiCache = [
-      { id: 'cookie0', active: true, key: 'cookie1', value: 'cookie1Val' },
-      { id: 'cookie1', active: true, key: 'cookie2', value: 'cookie2Val' },
-    ];
-    const headerCache = [
-      { id: 351217.45631817693, active: true, key: 'auth1', value: 'auth2' },
-      { id: 87384.65282544694, active: true, key: 'auth3', value: 'auth4' },
-    ];
+    const headers = newRequest.newRequestHeaders.headersArr.filter(
+      (x) => x.active
+    );
+    const cookie = cookiesArr.filter((x) => x.active);
     const reqRes = {
       id,
       createdAt: new Date(),
@@ -348,19 +278,19 @@ export default function TRPCComposer(props) {
       host: 'http://localhost:3000',
       request: {
         method,
-        headers: headerCache,
-        procedures: cache,
+        headers,
+        procedures,
         bodyType,
         rawType,
         network,
         restUrl,
         wsUrl,
         gqlUrl,
-        cookie: cookiCache,
+        cookie,
       },
       response: {
         cookies: [],
-        headers: [],
+        headers: {},
         stream: null,
         events: [],
       },
@@ -368,6 +298,76 @@ export default function TRPCComposer(props) {
       minimized: false,
       tab: currentTab,
     };
+
+    // const cache = [
+    //   {
+    //     method: 'MUTATE',
+    //     endpoint: 'update',
+    //     variable: '{\n    "userId": "1",\n    "name": "nguyen"\n  }',
+    //   },
+    //   { method: 'QUERY', endpoint: 'sayHi', variable: '' },
+    //   {
+    //     method: 'MUTATE',
+    //     endpoint: 'log',
+    //     variable: '"HELLO WORLD"',
+    //   },
+    //   {
+    //     method: 'QUERY',
+    //     endpoint: 'secretData',
+    //     variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
+    //   },
+    //   {
+    //     method: 'QUERY',
+    //     endpoint: 'BLAHBLAH.BLAH',
+    //     variable: '{\n    "userId": "1",\n    "name": "justin"\n  }',
+    //   },
+    // ];
+
+    // const cookiCache = [
+    //   { id: 'cookie0', active: true, key: 'cookie1', value: 'cookie1Val' },
+    //   { id: 'cookie1', active: true, key: 'cookie2', value: 'cookie2Val' },
+    // ];
+    // const headerCache = [
+    //   { id: 351217.45631817693, active: true, key: 'auth1', value: 'auth2' },
+    //   { id: 87384.65282544694, active: true, key: 'auth3', value: 'auth4' },
+    // ];
+    // const reqRes = {
+    //   id,
+    //   createdAt: new Date(),
+    //   protocol,
+    //   trpc: true,
+    //   url: 'http://localhost:3000/trpc',
+    //   graphQL,
+    //   gRPC,
+    //   webrtc,
+    //   timeSent: null,
+    //   timeReceived: null,
+    //   connection: 'uninitialized',
+    //   connectionType: null,
+    //   checkSelected: false,
+    //   host: 'http://localhost:3000',
+    //   request: {
+    //     method,
+    //     headers: headerCache,
+    //     procedures: cache,
+    //     bodyType,
+    //     rawType,
+    //     network,
+    //     restUrl,
+    //     wsUrl,
+    //     gqlUrl,
+    //     cookie: cookiCache,
+    //   },
+    //   response: {
+    //     cookies: [],
+    //     headers: [],
+    //     stream: null,
+    //     events: [],
+    //   },
+    //   checked: false,
+    //   minimized: false,
+    //   tab: currentTab,
+    // };
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
