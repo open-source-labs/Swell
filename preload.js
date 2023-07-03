@@ -30,6 +30,7 @@ const apiObj = {
       'stop-mock-server',
       'submit-mock-request',
       'open-trpc',
+      'error',
     ];
     if (allowedChannels.includes(channel)) {
       ipcRenderer.send(channel, ...data);

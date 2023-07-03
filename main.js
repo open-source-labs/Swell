@@ -519,3 +519,8 @@ ipcMain.on('stop-mock-server', () => {
     console.log('No mock server to kill');
   }
 });
+
+ipcMain.on('error', (event, errorMessage) => {
+  console.log(errorMessage);
+  dialog.showErrorBox('Title', errorMessage);
+});

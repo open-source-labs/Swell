@@ -4,72 +4,74 @@ const { ipcMain } = require('electron');
 
 const trpcController = {
   makeFetch: async function (event, reqRes, get, post) {
-    reqRes.timeSent = Date.now();
-    //[{name:"cookie"}]
-    // const cookies = [
-    //   { name: "POSTCOOKIE", value: "POSTCOOKIEVAL" },
-    //   { name: "GETCOOKIE", value: "GETCOOKIEVAL" },
-    // ];
-    const cookies = [];
-    const getHeaders = {};
-    const postHeaders = {};
-    const events = [];
+    try {
+      reqRes.timeSent = Date.now();
+      const cookies = [];
+      const getHeaders = {};
+      const postHeaders = {};
+      const events = [];
 
-    const reqArr = [get, post];
-    const resArr = await Promise.all(
-      reqArr.map((req) => {
-        if (req) {
-          return fetch(req.url, {
-            // credentials: req.credentials,
-            // mode: req.mode,
-            cache: req.cache,
-            headers: req.headers,
-            method: req.method,
-            redirect: req.redirect,
-            referrer: req.referrer,
-            ...(req.body && { body: JSON.stringify(req.body) }),
-          });
-        } else {
-          return Promise.resolve(false);
+      const reqArr = [get, post];
+      const resArr = await Promise.all(
+        reqArr.map((req) => {
+          if (req) {
+            return fetch(req.url, {
+              // credentials: req.credentials,
+              // mode: req.mode,
+              cache: req.cache,
+              headers: req.headers,
+              method: req.method,
+              redirect: req.redirect,
+              referrer: req.referrer,
+              ...(req.body && { body: JSON.stringify(req.body) }),
+            });
+          } else {
+            return Promise.resolve(false);
+          }
+        })
+      );
+      reqRes.timeReceived = Date.now();
+      resArr.forEach((res, index) => {
+        if (res) {
+          const headersResponse = res.headers.raw();
+          if (headersResponse['set-cookie']) {
+            cookies.push(
+              ...this.cookieFormatter(
+                setCookie.parse(headersResponse['set-cookie'])
+              )
+            );
+          }
+          if (index === 0) {
+            res.headers.forEach((value, key) => {
+              getHeaders[key] = value;
+            });
+          } else {
+            res.headers.forEach((value, key) => {
+              postHeaders[key] = value;
+            });
+          }
         }
-      })
-    );
-    reqRes.timeReceived = Date.now();
-    resArr.forEach((res, index) => {
-      if (res) {
-        const headersResponse = res.headers.raw();
-        if (headersResponse['set-cookie']) {
-          cookies.push(
-            ...this.cookieFormatter(
-              setCookie.parse(headersResponse['set-cookie'])
-            )
-          );
-        }
-        if (index === 0) {
-          res.headers.forEach((value, key) => {
-            getHeaders[key] = value;
-          });
-        } else {
-          res.headers.forEach((value, key) => {
-            postHeaders[key] = value;
-          });
-        }
-      }
-    });
+      });
 
-    const resData = await Promise.all(
-      resArr.map((res) => {
-        return res ? res.json() : res;
-      })
-    );
-    console.dir(resData, { depth: null });
-    resData.forEach((res) => events.push(res));
-    reqRes.response.cookies = cookies;
-    reqRes.response.events = events;
-    reqRes.response.headers = [getHeaders, postHeaders];
-    reqRes.connection = 'closed';
-    reqRes.connectionType = 'plain';
-    event.sender.send('reqResUpdate', reqRes);
+      const resData = await Promise.all(
+        resArr.map((res) => {
+          return res ? res.json() : res;
+        })
+      );
+      console.dir(resData, { depth: null });
+      resData.forEach((res) => events.push(res));
+      reqRes.response.cookies = cookies;
+      reqRes.response.events = events;
+      reqRes.response.headers = [getHeaders, postHeaders];
+      reqRes.connection = 'closed';
+      reqRes.connectionType = 'plain';
+      event.sender.send('reqResUpdate', reqRes);
+    } catch (error) {
+      reqRes.connection = 'error';
+      reqRes.error = error;
+      reqRes.response.events.push(error);
+      event.sender.send('reqResUpdate', reqRes);
+    }
   },
   parseOptionForFetch(reqResObject, method, procedures) {
     function parseString(str) {
