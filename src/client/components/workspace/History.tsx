@@ -119,7 +119,7 @@ interface Props {
 }
 
 const History = (props: Props)=> {
-  
+  //destructuring props
   const {
     content,
     fieldsReplaced,
@@ -129,8 +129,8 @@ const History = (props: Props)=> {
     newRequestStreamsSet,
     newRequestFields
   } = props;
-  //console.log('History props', props);
 
+  //destructuring nested props within content
   const {
     gRPC,
     graphQL,
@@ -144,7 +144,8 @@ const History = (props: Props)=> {
     url,
     webrtc
   } = content;
-  console.log('content url', url)
+  
+  //destructuring nested props within content.request
   const {
     body,
     bodyType,
@@ -166,16 +167,12 @@ const History = (props: Props)=> {
     wsUrl,
   } = request;
 
-  //console.log('History content', content);
   const dispatch = useDispatch();
   const setSidebarTab = (tabName: string) => dispatch(setSidebarActiveTab(tabName));
   const setNewRequestSSE = (bool: boolean) => dispatch(newRequestSSESet(bool));
 
   const addHistoryToNewRequest = () => {
-    
-    
-    //console.log('add History to new request button clicked')
-    console.log('history content', content)
+
     let requestFieldObj = {};
     if (network === 'rest') {
       requestFieldObj = {
@@ -295,6 +292,8 @@ const History = (props: Props)=> {
       JSONFormatted: request.JSONFormatted,
       bodyIsNew: false,
     };
+    //call newRequestFieldsByProtocol to update protocol field to match history item selected before populating request
+    //newRequestFieldsByProtocol(state, action)
     fieldsReplaced(requestFieldObj);
     newRequestHeadersSet(requestHeadersObj);
     newRequestCookiesSet(requestCookiesObj);
@@ -349,7 +348,7 @@ const History = (props: Props)=> {
   }
 
   const deleteHistory = (event: any) => {
-    dispatch(historyDeleted(props.content));
+    dispatch(historyDeleted(content));
     historyController.deleteHistoryFromIndexedDb(event.target.id);
   };
 
