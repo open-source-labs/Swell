@@ -22,6 +22,7 @@ const TRPCPrceduresEndPoint = (props) => {
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
 
+  /// these functions exists to dispatch function to the reducer function inside of main trpc composer file.
   const methodHandler = (method) => {
     props.proceduresDipatch({
       type: 'METHOD',
@@ -116,3 +117,4 @@ const TRPCPrceduresEndPoint = (props) => {
 };
 
 export default TRPCPrceduresEndPoint;
+

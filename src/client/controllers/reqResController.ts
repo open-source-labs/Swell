@@ -85,7 +85,6 @@ const connectionController = {
       console.log('got an open api request to fill');
       //console.log(reqResObj);
     } else {
-      console.log("we're sending http");
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },

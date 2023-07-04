@@ -4,8 +4,10 @@ import { useSelector } from 'react-redux';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 export default function TRPCVariableForm(props) {
+  // input for for user to attach argument with their procedures
   const isDark = useSelector((store: any) => store.ui.isDark);
   const onChangeHandler = (string) => {
+    // this function dispatch action to the main reducer function inside of trpc composer
     props.proceduresDipatch({
       type: 'VARIABLE',
       payload: { index: props.index, value: string },
@@ -25,3 +27,4 @@ export default function TRPCVariableForm(props) {
     </div>
   );
 }
+

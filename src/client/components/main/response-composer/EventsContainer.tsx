@@ -34,6 +34,7 @@ function EventsContainer({ currentResponse }: EventsContainerProps) {
   }
   const { events, headers } = response;
   let responseBody = '';
+  //check if its a trpc response
   if (currentResponse.trpc) {
     events.forEach((event: any, idx: number) => {
       if (event) {

@@ -14,6 +14,7 @@ const TRPCMethodAndEndpointEntryForm = () => {
   const dispatch = useDispatch();
 
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //update global redux store everytime user make changes to url
     const url: string = e.target.value;
 
     dispatch(
