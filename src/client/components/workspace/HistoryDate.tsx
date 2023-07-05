@@ -65,10 +65,8 @@ export default function HistoryDate(props: Props) {
   const histArray = current.history.map((history: [], i: number) => {
     return (
       <History
+        key={i}  
         content={history}
-        key={i}
-        focusOnForm={focusOnForm}
-        historyDeleted={historyDeleted}
         fieldsReplaced={fieldsReplaced}
         newRequestHeadersSet={newRequestHeadersSet}
         newRequestCookiesSet={newRequestCookiesSet}
