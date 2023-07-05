@@ -43,8 +43,10 @@ const connectionController = {
       if (
         (reqResObj.connection === 'closed' ||
           reqResObj.connection === 'error') &&
-        reqResObj.timeSent && reqResObj.timeReceived &&
-        reqResObj.response.events && reqResObj.response.events.length > 0
+        reqResObj.timeSent &&
+        reqResObj.timeReceived &&
+        reqResObj.response.events &&
+        reqResObj.response.events.length > 0
       ) {
         appDispatch(graphUpdated(reqResObj));
       }
@@ -64,7 +66,9 @@ const connectionController = {
       return;
     }
 
-    if (reqResObj.request.method === 'SUBSCRIPTION')
+    if (reqResObj.trpc) {
+      api.send('open-trpc', reqResObj);
+    } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
@@ -81,7 +85,7 @@ const connectionController = {
       console.log('got an open api request to fill');
       //console.log(reqResObj);
     } else {
-      console.log('we\'re sending http')
+      console.log("we're sending http");
       api.send('open-http', reqResObj, this.openConnectionArray);
     }
   },

@@ -12,7 +12,9 @@ interface Props {
 }
 
 function HeadersContainer({ currentResponse }: Props) {
-  const isDark = useSelector((state: { ui: { isDark: boolean } }) => state.ui.isDark);
+  const isDark = useSelector(
+    (state: { ui: { isDark: boolean } }) => state.ui.isDark
+  );
 
   if (
     !currentResponse.response ||
@@ -22,17 +24,47 @@ function HeadersContainer({ currentResponse }: Props) {
     return <EmptyState />;
   }
 
-  const responseHeaders = Object.entries(currentResponse.response.headers).map(
-    ([key, value], index) => {
-      return (
-        <tr key={index}>
-          <td>{key}</td>
-          <td className="table-value">{value}</td>
-        </tr>
-      );
-    }
-  );
+  let responseHeaders;
 
+  if (currentResponse.trpc) {
+    responseHeaders = currentResponse.response.headers.map((req, reqMethod) => {
+      const typeHeader = reqMethod === 0 ? 'QUERY HEADER' : 'MUTATE HEADER';
+      if (!(Object.keys(req).length === 0)) {
+        return (
+          <tbody key={typeHeader} className="is-size-7">
+            <tr>
+              <td style={{ color: 'white', backgroundColor: 'rgb(72,84,108)' }}>
+                {typeHeader}
+              </td>
+            </tr>
+            {Object.entries(req).map(([key, value], index) => {
+              return (
+                <tr key={index}>
+                  <td>{key}</td>
+                  <td className="table-value">{value}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        );
+      }
+    });
+  } else {
+    responseHeaders = (
+      <tbody>
+        {Object.entries(currentResponse.response.headers).map(
+          ([key, value], index) => {
+            return (
+              <tr key={index}>
+                <td>{key}</td>
+                <td className="table-value">{value}</td>
+              </tr>
+            );
+          }
+        )}
+      </tbody>
+    );
+  }
   return (
     <div>
       <div>
@@ -44,7 +76,7 @@ function HeadersContainer({ currentResponse }: Props) {
                 <th>Value</th>
               </tr>
             </thead>
-            <tbody className="is-size-7">{responseHeaders}</tbody>
+            {responseHeaders}
           </table>
         </div>
       </div>

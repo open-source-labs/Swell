@@ -4,8 +4,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import dropDownArrow from './../../../../assets/icons/arrow_drop_down_white_192x192.png';
-
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
@@ -14,25 +12,6 @@ const TRPCMethodAndEndpointEntryForm = () => {
     (state: RootState) => state.newRequestFields
   );
   const dispatch = useDispatch();
-
-  const populateUrl = (request: string) => {
-    let PROTOCOL;
-    const urlAction: string = request;
-
-    if (urlAction === 'QUERY' || urlAction === 'MUTATE') {
-      PROTOCOL = 'http://';
-    } else if (urlAction === 'SUBSCRIPTION') {
-      PROTOCOL = 'ws://';
-    }
-    dispatch(
-      fieldsReplaced({
-        ...requestFields,
-        url: requestFields.restUrl,
-        method: urlAction,
-        protocol: PROTOCOL,
-      })
-    );
-  };
 
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url: string = e.target.value;
@@ -44,8 +23,6 @@ const TRPCMethodAndEndpointEntryForm = () => {
       })
     );
   };
-
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   return (
     <div
