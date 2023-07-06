@@ -71,7 +71,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
 
 - _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations.
-  <img src="./ReadMeGifs/Gifs/tRPC.gif" style="display: block; margin: 10px auto 30px;" />
+  <img src="./ReadMeGifs/Videos/Short%20Feature%20Videos/720-MP4s/TRPC.mp4" style="display: block; margin: 10px auto 30px;" />
   <!-- <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" /> -->
 
   Calls are currently being made using Swell's own TRPCProxyClient generated from the URL provided by the user.
