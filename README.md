@@ -45,6 +45,24 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   <!-- -TODO --- This needs to be updated -->
     <img src="./ReadMeGifs/Gifs/gRPC.gif" style="display: block;  margin: 10px auto 30px;" />
 
+- _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations as well as subscription
+  <img src="./ReadMeGifs/Gifs/trpc.gif" style="display: block; margin: 10px auto 30px;" />
+  <!-- <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" /> -->
+
+  Calls are currently being made using by using http get and post request using TRPC's http RPC specification (See [RPC docs](https://trpc.io/docs/rpc)). TLDR- inputs for query procedures will be turn into uri-encoded json string and send as query param while inputs for mutate procedures will be store inside of the body.
+
+  Batch requests can be made by adding multiple procedures before sending out the request, all query procedures will get batch together into one singular get request and all mutate procedures will get batch together into one singular put request, if there are mixture of query and mutate procedures call in one request, the app will send out both a post and get request concurrently and combine the response into one response.
+
+  Nested endpoint must follow the general format parentEndpoint.childEndpoint.grandchildEndpoint. For example:
+
+  ```js
+  client.user.update.mutate({ userId: '1', name: 'Luke' });
+  ```
+
+  A request to the above endpoint must have the mutate option selected from the drop down menu, must have an endpoint of .user.update and a input body of {"userId": "1","name": "Luke"}
+
+  See [tRPC docs](https://trpc.io/docs/) for more information on sending tRPC requests or setting up a tRPC server.
+
 ## Additional features
 
 - _Stress testing for HTTP/2 and GraphQL_: Test your server backend with Swell's stress testing feature to ensure your server can manage expected and unexpected loads accordingly
@@ -69,20 +87,6 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
   <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
-
-- _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations.
-  <img src="./ReadMeGifs/Gifs/tRPC.gif" style="display: block; margin: 10px auto 30px;" />
-  <!-- <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" /> -->
-
-  Calls are currently being made using Swell's own TRPCProxyClient generated from the URL provided by the user.
-  Batch requests must be entered one request per line. Swell will treat each line of code entered into the editor as a separate request before batching and returning responses.
-  Each request must follow the general format client.procedure.querytype(). For example:
-
-  ```js
-  client.getUser.query({ name: 'Luke Skywalker' });
-  ```
-
-  See [tRPC docs](https://trpc.io/docs/) for more information on sending tRPC requests or setting up a tRPC server.
 
 - _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
   <img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />

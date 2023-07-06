@@ -33,7 +33,6 @@
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
-
 const { autoUpdater } = require('electron-updater');
 const {
   default: installExtension,
@@ -60,7 +59,7 @@ require('./main_process/main_graphqlController')();
 require('./main_process/main_grpcController.js')();
 require('./main_process/main_wsController.js')();
 require('./main_process/main_mockController.js')();
-
+require('./main_process/main_trpcController.js')();
 
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
@@ -217,8 +216,6 @@ app.on('ready', () => {
     autoUpdater.checkForUpdates();
   }
 });
-
-
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -427,9 +424,13 @@ ipcMain.on('import-proto', (event) => {
         if (err) {
           return console.log('import-proto error reading file : ', err);
         }
-        
+
         protoParserFunc(importedProto).then((protoObj) => {
-          mainWindow.webContents.send('proto-info', JSON.stringify(importedProto), JSON.stringify(protoObj));
+          mainWindow.webContents.send(
+            'proto-info',
+            JSON.stringify(importedProto),
+            JSON.stringify(protoObj)
+          );
         });
       });
     })
@@ -442,8 +443,11 @@ ipcMain.on('import-proto', (event) => {
 // Runs the function and returns the value back to GRPCProtoEntryForm
 ipcMain.on('protoParserFunc-request', async (event, data) => {
   try {
-    const result = await protoParserFunc(data)
-    mainWindow.webContents.send('protoParserFunc-return', JSON.stringify(result));
+    const result = await protoParserFunc(data);
+    mainWindow.webContents.send(
+      'protoParserFunc-return',
+      JSON.stringify(result)
+    );
   } catch (err) {
     console.log('error in protoParserFunc-request:, ', err);
     mainWindow.webContents.send('protoParserFunc-return', { error: err });
@@ -464,27 +468,29 @@ ipcMain.on('import-openapi', (event) => {
     .then((filePaths) => {
       if (!filePaths) return undefined;
       // read uploaded document & save in the redux store
-      fs.readFile(filePaths.filePaths[0], 'utf-8', async (err, importedFile) => {
-        // handle read error
-        if (err) {
-          return console.log('import-openapi error reading file : ', err);
-        }
+      fs.readFile(
+        filePaths.filePaths[0],
+        'utf-8',
+        async (err, importedFile) => {
+          // handle read error
+          if (err) {
+            return console.log('import-openapi error reading file : ', err);
+          }
 
-        try {
-          const documentObj = await openapiParserFunc(importedFile);
-          // console.log('Main.js - Working here!',documentObj);
-          mainWindow.webContents.send('openapi-info', documentObj);
-        } catch (err) {
-          return console.log('import-openapi error reading file : ', err);
+          try {
+            const documentObj = await openapiParserFunc(importedFile);
+            // console.log('Main.js - Working here!',documentObj);
+            mainWindow.webContents.send('openapi-info', documentObj);
+          } catch (err) {
+            return console.log('import-openapi error reading file : ', err);
+          }
         }
-
-      });
+      );
     })
     .catch((err) => {
       console.log('error in import-openapi', err);
     });
 });
-
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// MOCK SERVER //////////////////////////////////////

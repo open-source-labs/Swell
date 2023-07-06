@@ -4,49 +4,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import dropDownArrow from './../../../../assets/icons/arrow_drop_down_white_192x192.png';
-
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
-const TRPCMethodAndEndpointEntryForm = () => {
-  const [dropdownIsActive, setDropdownIsActive] = useState(false);
-  const dropdownEl = useRef();
+const TRPCMethodAndEndpointEntryForm = (props) => {
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const closeDropdown = (event: MouseEvent) => {
-      if (!dropdownEl.current.contains(event.target)) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
-
-  const populateUrl = (request: string) => {
-    let PROTOCOL
-    const urlAction: string = request;
-    
-    if (urlAction === 'QUERY' || urlAction === 'MUTATE') {
-      PROTOCOL = 'http://'
-    } else if (urlAction === 'SUBSCRIPTION') {
-      PROTOCOL = 'ws://'
-    }
-    dispatch(
-      fieldsReplaced({
-        ...requestFields,
-        url: requestFields.restUrl,
-        method: urlAction,
-        protocol: PROTOCOL,
-      })
-    );
+  const clearWarningIfApplicable = () => {
+    if (props.warningMessage.uri) props.setWarningMessage({});
   };
-
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    clearWarningIfApplicable();
+    //update global redux store everytime user make changes to url
     const url: string = e.target.value;
 
     dispatch(
@@ -56,90 +27,29 @@ const TRPCMethodAndEndpointEntryForm = () => {
       })
     );
   };
-
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
-
   return (
-    <div>
+    <>
       <div
-        ref={dropdownEl}
-        className={`is-flex is-justify-content-center dropdown ${
-          dropdownIsActive ? 'is-active' : ''
-        }`}
+        className="is-flex is-justify-content-center"
         style={{ padding: '10px' }}
       >
-        <div className="dropdown-trigger">
-          <button
-            className="no-border-please button is-graphQL"
-            id="graphql-method"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
-            onClick={() => setDropdownIsActive(!dropdownIsActive)}
-          >
-            <span>{requestFields.method}</span>
-            <span className="icon is-small">
-              <img
-                src={dropDownArrow}
-                className="is-awesome-icon"
-                aria-hidden="true"
-                alt="dropdown arrow"
-              />
-            </span>
-          </button>
+        <div id="tRPCButton" className="no-border-please button is-webrtc">
+          <span>tRPC</span>
         </div>
-
-        <div className="dropdown-menu" id="dropdown-menu">
-          <ul className="dropdown-content">
-            {requestFields.method !== 'QUERY' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  populateUrl('QUERY');
-                }}
-                className="dropdown-item"
-              >
-                QUERY
-              </a>
-            )}
-            {requestFields.method !== 'MUTATE' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  populateUrl('MUTATE');
-                }}
-                className="dropdown-item"
-              >
-                MUTATE
-              </a>
-            )}
-            {requestFields.method !== 'SUBSCRIPTION' && (
-              <a
-                onClick={(e) => {
-                  setDropdownIsActive(false);
-                  populateUrl('SUBSCRIPTION');
-                }}
-                className="dropdown-item"
-              >
-                SUBSCRIPTION
-              </a>
-            )}
-          </ul>
-        </div>
-
         <input
-          className={`${
-            isDark ? 'is-dark-300' : ''
-          } ml-1 input input-is-medium is-info`}
+          className="ml-1 input input-is-medium is-info"
           type="text"
-          id="url-input"
-          placeholder="Enter endpoint"
           value={requestFields.url}
+          placeholder="Enter your url here"
           onChange={(e) => {
             urlChangeHandler(e);
           }}
         />
       </div>
-    </div>
+      {props.warningMessage.uri && (
+        <div className="warningMessage">{props.warningMessage.uri}</div>
+      )}
+    </>
   );
 };
 

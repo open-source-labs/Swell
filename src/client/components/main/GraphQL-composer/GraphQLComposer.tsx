@@ -5,7 +5,6 @@ import { v4 as uuid } from 'uuid';
 import historyController from '../../../controllers/historyController';
 // Import local components
 
-
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import GraphQLMethodAndEndpointEntryForm from './GraphQLMethodAndEndpointEntryForm';
 import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
@@ -122,7 +121,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
       .splice(1)
       .join('/')
       .replace(/\/{2,}/g, '/')}`;
-      
+
     if (path.charAt(path.length - 1) === '/' && path.length > 1) {
       path = path.substring(0, path.length - 1);
     }

@@ -70,7 +70,7 @@ const newRequestFieldsSlice = createSlice({
           return {
             ...initialState,
             url: initialState.restUrl,
-            method: 'QUERY',
+            method: 'Query/Mutate',
             tRPC: true,
           };
         }

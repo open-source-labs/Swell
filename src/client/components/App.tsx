@@ -35,7 +35,6 @@ const App = () => {
     historyController.getHistory();
     collectionsController.getCollections();
   }, []);
-
   /**
    * All of the main components are rendered from here. Excluding the update pop
    * up, there are only 3 main containers for this application.
@@ -67,9 +66,7 @@ const App = () => {
           </ErrorBoundary>
         </Split>
 
-        <ErrorBoundary>
-          {/* <UpdatePopUpContainer /> */}
-        </ErrorBoundary>
+        <ErrorBoundary>{/* <UpdatePopUpContainer /> */}</ErrorBoundary>
       </HashRouter>
     </div>
   );
