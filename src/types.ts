@@ -126,16 +126,16 @@ export interface WebsocketMessages {
 interface NewRequestCookies {
   cookiesArr: CookieOrHeader[];
   count: number;
-};
+}
 
 interface NewRequestHeaders {
-headersArr: CookieOrHeader[];
-count: number;
-};
+  headersArr: CookieOrHeader[];
+  count: number;
+}
 
-export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void
-export type NewRequestCookiesSet = (obj: NewRequestCookies) => void
-export type NewRequestBodySet = (obj: NewRequestBody) => void
+export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
+export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
+export type NewRequestBodySet = (obj: NewRequestBody) => void;
 
 /**
  * Defines the type constract for the NewRequestFields state object.
@@ -167,12 +167,11 @@ export type NewRequestFields = {
   openapiReqObj: Record<string, $TSFixMe>;
 };
 
+export interface ReqResRequest {
   // Currently, the body for WebRTC connection is an object
   // and typescript does not support union between string and object very well
   // Ideally we should move the WebRTC body information to a new key value
   // to fully resolve the issue
-
-export interface ReqResRequest {
   body: string;
   bodyType: string;
   bodyVariables: string;
@@ -204,7 +203,7 @@ export type IntrospectionData = {
 };
 
 export interface OpenAPIRequest {
-  openapiMetadata: $TSFixMe//Record<string, unknown>;
+  openapiMetadata: $TSFixMe; //Record<string, unknown>;
   openApiReqArray: OpenAPIReqData[];
 }
 
@@ -240,6 +239,7 @@ export interface OpenAPIReqData {
  * exist in the request or response properties
  */
 export interface ReqRes {
+  trpc: any;
   checked: boolean;
   checkSelected: boolean;
   closeCode?: number;
