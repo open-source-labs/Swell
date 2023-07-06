@@ -2,6 +2,7 @@ import React from 'react';
 import TRPCProcedure from './TRPCProcedure';
 
 export default function TRPCProceduresContainer(props) {
+  //renders all of the procedures inside the procedures array
   const proceduresJSX = props.procedures.map((procedure, index) => {
     return (
       <TRPCProcedure
@@ -25,3 +26,4 @@ const h3Styles = {
   fontSize: '1.17em',
   fontWeight: 'bold',
 };
+

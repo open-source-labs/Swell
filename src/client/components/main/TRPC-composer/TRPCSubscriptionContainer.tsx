@@ -25,6 +25,7 @@ export default function TRPCSubscriptionContainer(props) {
   };
   let sub;
   const startSubscription = async () => {
+    setsubscriptionStarted(true);
     try {
       const wsClient = createWSClient({
         url: link,
@@ -58,11 +59,10 @@ export default function TRPCSubscriptionContainer(props) {
           });
         },
       });
-      setsubscriptionStarted(true);
+
       setResponseBody(`Subscription at ${endpoint} started`);
     } catch (e) {
-      console.log(e);
-      api.send('error', JSON.stringify(e));
+      setResponseBody(JSON.stringify(e));
     }
   };
   const endSubscription = () => {
@@ -138,3 +138,4 @@ const h3Styles = {
   fontSize: '1.17em',
   fontWeight: 'bold',
 };
+

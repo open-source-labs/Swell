@@ -3,6 +3,7 @@ import TRPCVariableForm from './TRPCVariableForm';
 import TRPCPrceduresEndPoint from './TRPCPrceduresEndPoint';
 
 export default function TRPCProcedure(props) {
+  //renders each procedure
   return (
     <div style={container}>
       <TRPCPrceduresEndPoint
@@ -24,3 +25,4 @@ const container = {
   border: '1px solid black',
   padding: '10px 0px',
 };
+

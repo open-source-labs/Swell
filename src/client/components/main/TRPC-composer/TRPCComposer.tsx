@@ -6,8 +6,8 @@ import SendRequestButton from '../sharedComponents/requestButtons/SendRequestBut
 import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
-// Import Actions from RTK slice
 
+// Import Actions from RTK slice
 import historyController from '../../../controllers/historyController';
 import connectionController from '../../../controllers/reqResController';
 
@@ -26,15 +26,23 @@ import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice'
  */
 
 const PROCEDURE_DEFAULT = {
-  method: 'QUERY',
-  endpoint: '',
-  variable: '',
+  //the default format for whenever a new prcedure get add
+  method: 'QUERY', // the type of method either query or mutate
+  endpoint: '', // endpoint for this specific procedure
+  variable: '', // argument that is to be attach to this procedure
 };
 
-// {type:"",payload:{index,value}}
+//************** reducer function******************** */
+//  this function is used to manage the main state of this component which is an array of procedures [{method,endpoint,variable}]
+//  it will take in the old state (array of procedures) as well as an action object where the type will dictate which action will get trigger
+// The action object wil also contain the index as well as the new value for the procedure that is being manipulated (all inside of action.payload)
+// after its done manipulating the state it will return the updated array that will be use as the new procedures state
+
+//********************************** */
 
 function reducer(procedures, action) {
   if (action.type === 'METHOD') {
+    //
     const proceduresCopy = [...procedures];
     const procedure = proceduresCopy[action.payload.index];
     const newState = {
@@ -74,17 +82,20 @@ function reducer(procedures, action) {
 }
 
 export default function TRPCComposer(props) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // dispatch for main redux store
 
-  const [showSubscription, setShowSubscription] = useState(false);
+  const [showSubscription, setShowSubscription] = useState(false); // manage subscription component
   const subscriptionHandler = (bool) => {
     setShowSubscription(bool);
   };
+
   const [procedures, proceduresDipatch] = useReducer(reducer, [
+    //userReducer hook to manage the main state (the array of procedures)
     PROCEDURE_DEFAULT,
   ]);
 
   const {
+    //grabbing all neccessary information to build a new reqRes object from the main redux store through props drilling
     newRequestFields,
     newRequestFields: {
       gRPC,
@@ -121,38 +132,12 @@ export default function TRPCComposer(props) {
   const newRequest = useSelector((state: RootState) => state.newRequest);
 
   const addProcedures = () => {
+    // reducer dispatch for adding a new procedure to the procedures array
     proceduresDipatch({ type: 'ADD' });
   };
 
-  const dispatchTRPCResponse = (tRPCResponse) => {
-    const newCurrentResponse: any = {
-      checkSelected: false,
-      checked: false,
-      connection: 'closed',
-      connectionType: 'plain',
-      createdAt: new Date(),
-      gRPC: false,
-      graphQL: false,
-      host: requestFields.url,
-      id: uuid(),
-      minimized: false,
-      path: '/',
-      protoPath: undefined,
-      protocol: 'http://',
-      request: { ...newRequest },
-      tab: undefined,
-      timeReceived: null,
-      timeSent: null,
-      url: requestFields.url,
-      webrtc: false,
-      response: {
-        events: [tRPCResponse],
-      },
-    };
-    dispatch(responseDataSaved(newCurrentResponse));
-  };
-
   const sendRequest = async () => {
+    // THE MAIN FUNCTION to both compose the main reqRes object as well as sending it to the back end
     const id = uuid();
     const headers = newRequest.newRequestHeaders.headersArr.filter(
       (x) => x.active
@@ -199,11 +184,9 @@ export default function TRPCComposer(props) {
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 
-    //reset for next request
-    // composerFieldsReset();
-    // connectionController.openReqRes(reqRes.id);
+    // saving the reqRes object to the array of reqRes managed by the redux store
     dispatch(responseDataSaved(reqRes));
-    connectionController.openReqRes(reqRes.id);
+    connectionController.openReqRes(reqRes.id); // passing the reqRes object to the connectionController inside of reqRes controller
   };
 
   return (

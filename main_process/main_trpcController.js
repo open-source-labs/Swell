@@ -5,16 +5,19 @@ const { ipcMain } = require('electron');
 const trpcController = {
   makeFetch: async function (event, reqRes, get, post) {
     try {
+      // wrap it in a try catch block so if anything goes wrong we can just send the error  to the front end instead of having no response
       reqRes.timeSent = Date.now();
+      //these will contain data about the response that we will get back from our get/post request
       const cookies = [];
       const getHeaders = {};
       const postHeaders = {};
       const events = [];
 
-      const reqArr = [get, post];
+      const reqArr = [get, post]; // our array of request, put into an array in order to use promise.all easier
       const resArr = await Promise.all(
         reqArr.map((req) => {
           if (req) {
+            // only make a request if it exists
             return fetch(req.url, {
               // credentials: req.credentials,
               // mode: req.mode,
@@ -26,12 +29,14 @@ const trpcController = {
               ...(req.body && { body: JSON.stringify(req.body) }),
             });
           } else {
-            return Promise.resolve(false);
+            return Promise.resolve(false); //if it doesnt exist we can simply return false
           }
         })
       );
       reqRes.timeReceived = Date.now();
       resArr.forEach((res, index) => {
+        // here we will combine cookies recieved from both request into one array, however we will seperate out the header by post/get request
+        // was sleep-deprived should have also seperate cookie into get/post cookie
         if (res) {
           const headersResponse = res.headers.raw();
           if (headersResponse['set-cookie']) {
@@ -54,27 +59,31 @@ const trpcController = {
       });
 
       const resData = await Promise.all(
+        //if there was a response we will parse it if not we will just return it (which is just the value of false)
         resArr.map((res) => {
           return res ? res.json() : res;
         })
       );
-      console.dir(resData, { depth: null });
+      //attach meta data about the response onto the reqRes object to send back to front end
       resData.forEach((res) => events.push(res));
       reqRes.response.cookies = cookies;
       reqRes.response.events = events;
       reqRes.response.headers = [getHeaders, postHeaders];
       reqRes.connection = 'closed';
       reqRes.connectionType = 'plain';
-      event.sender.send('reqResUpdate', reqRes);
+      event.sender.send('reqResUpdate', reqRes); //send object back to front end
     } catch (error) {
+      //if error we will push the error into event to be display
       reqRes.connection = 'error';
       reqRes.error = error;
       reqRes.response.events.push(error);
-      event.sender.send('reqResUpdate', reqRes);
+      event.sender.send('reqResUpdate', reqRes); // send updated object back to front end
     }
   },
   parseOptionForFetch(reqResObject, method, procedures) {
+    // this method using the data attach to the response property to construct an object that we could use to easily make the neccessary request
     function parseString(str) {
+      //this function is use to parse user inputted argument from json into javascript
       if (str === 'true') {
         return true;
       }
@@ -99,34 +108,27 @@ const trpcController = {
         return JSON.parse(str);
       }
     }
-    const { headers, cookie } = reqResObject.request;
+    const { headers, cookie } = reqResObject.request; //grab the headers and cookie inputted by user
 
-    const formattedHeaders = {};
+    const formattedHeaders = {}; //header object
     headers.forEach((head) => {
       if (head.active) {
         formattedHeaders[head.key] = head.value;
       }
     });
     if (cookie) {
+      //parses cookie data to attach to option object
       cookie.forEach((cookie) => {
         const cookieString = `${cookie.key}=${cookie.value}`;
         // attach to formattedHeaders so options object includes this
-
         formattedHeaders.cookie = formattedHeaders.cookie
           ? formattedHeaders.cookie + ';' + cookieString
           : cookieString;
       });
     }
 
-    const outputObj = {
-      method,
-      mode: 'cors', // no-cors, cors, *same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'include', // include, *same-origin, omit
-      headers: formattedHeaders,
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // no-referrer, *client
-    };
+    // here we will construct the url and the body using data inside the reqRes obj
+    // because a user could batch procedures together/ we need to account for the request object to contain data for both a get request and a post request
     let url = '';
     const body = {};
     procedures.forEach((procedure, index) => {
@@ -148,14 +150,27 @@ const trpcController = {
         '?batch=1' +
         `&input=${encodeURIComponent(JSON.stringify(body))}`;
     }
-    outputObj.url = url;
+
+    const outputObj = {
+      // the main object that will get returned
+      url,
+      method,
+      mode: 'cors', // no-cors, cors, *same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'include', // include, *same-origin, omit
+      headers: formattedHeaders,
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer', // no-referrer, *client
+    };
     return outputObj;
   },
 
   openRequest: async function (event, reqRes) {
-    // const reqRes = Object.assign({}, reqResOriginal);
-    // reqRes.response = Object.assign({}, reqRes.response);
-    const procedures = reqRes.request.procedures;
+    const procedures = reqRes.request.procedures; // grabbing all of the procedures out of the reqRes object
+
+    //filter the procedures into either query or mutate in order to make the appropriate http request for each procedure
+    // all query procedure will be made with a get request
+    // all mutation procedure will be made with a post request
     const getReq = procedures.filter(
       (procedure) => procedure.method === 'QUERY'
     );
@@ -163,6 +178,7 @@ const trpcController = {
       (procedure) => procedure.method === 'MUTATE'
     );
 
+    // parsing data from the reqRes object to construct either a get/post option object that contains everything we need to make our get/post http request
     const getOption = getReq.length
       ? this.parseOptionForFetch(reqRes, 'GET', getReq)
       : false;
@@ -170,12 +186,7 @@ const trpcController = {
       ? this.parseOptionForFetch(reqRes, 'POST', postReq)
       : false;
 
-    const updatedReqRes = await this.makeFetch(
-      event,
-      reqRes,
-      getOption,
-      postOption
-    );
+    this.makeFetch(event, reqRes, getOption, postOption); // where we will finally make the request inside of makeFetch
   },
   cookieFormatter(cookieArray) {
     return cookieArray.map((eachCookie) => {
@@ -201,3 +212,4 @@ module.exports = () => {
     trpcController.openRequest(event, reqResObj);
   });
 };
+
