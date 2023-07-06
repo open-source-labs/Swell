@@ -18,7 +18,7 @@ export default function TRPCVariableForm(props) {
       <div id="gql-var-entry">
         <TextCodeArea
           mode="application/json"
-          placeholder="Variable/s for this procedure(objects must be passed in as json format)"
+          placeholder="Variable/s for this procedure(objects must be passed in as json format string)"
           height="50px"
           value={props.procedureData.variable}
           onChange={onChangeHandler}

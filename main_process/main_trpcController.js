@@ -105,64 +105,75 @@ const trpcController = {
           throw 'is String';
         }
       } catch (error) {
-        return JSON.parse(str);
+        if (error === 'is String') {
+          return JSON.parse(str);
+        } else {
+          return { error };
+        }
       }
     }
-    const { headers, cookie } = reqResObject.request; //grab the headers and cookie inputted by user
+    try {
+      const { headers, cookie } = reqResObject.request; //grab the headers and cookie inputted by user
 
-    const formattedHeaders = {}; //header object
-    headers.forEach((head) => {
-      if (head.active) {
-        formattedHeaders[head.key] = head.value;
-      }
-    });
-    if (cookie) {
-      //parses cookie data to attach to option object
-      cookie.forEach((cookie) => {
-        const cookieString = `${cookie.key}=${cookie.value}`;
-        // attach to formattedHeaders so options object includes this
-        formattedHeaders.cookie = formattedHeaders.cookie
-          ? formattedHeaders.cookie + ';' + cookieString
-          : cookieString;
+      const formattedHeaders = {}; //header object
+      headers.forEach((head) => {
+        if (head.active) {
+          formattedHeaders[head.key] = head.value;
+        }
       });
-    }
-
-    // here we will construct the url and the body using data inside the reqRes obj
-    // because a user could batch procedures together/ we need to account for the request object to contain data for both a get request and a post request
-    let url = '';
-    const body = {};
-    procedures.forEach((procedure, index) => {
-      if (procedure.variable) {
-        body[index] = parseString(procedure.variable);
-      } else {
-        body[index] = {};
+      if (cookie) {
+        //parses cookie data to attach to option object
+        cookie.forEach((cookie) => {
+          const cookieString = `${cookie.key}=${cookie.value}`;
+          // attach to formattedHeaders so options object includes this
+          formattedHeaders.cookie = formattedHeaders.cookie
+            ? formattedHeaders.cookie + ';' + cookieString
+            : cookieString;
+        });
       }
-      url = url ? url + ',' + procedure.endpoint : procedure.endpoint;
-    });
-    if (method === 'POST') {
-      url = reqResObject.url + '/' + url + '?batch=1';
-      outputObj.body = body;
-    } else {
-      url =
-        reqResObject.url +
-        '/' +
-        url +
-        '?batch=1' +
-        `&input=${encodeURIComponent(JSON.stringify(body))}`;
-    }
 
-    const outputObj = {
-      // the main object that will get returned
-      url,
-      method,
-      mode: 'cors', // no-cors, cors, *same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'include', // include, *same-origin, omit
-      headers: formattedHeaders,
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // no-referrer, *client
-    };
-    return outputObj;
+      const outputObj = {
+        // the main object that will get returned
+        method,
+        mode: 'cors', // no-cors, cors, *same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'include', // include, *same-origin, omit
+        headers: formattedHeaders,
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // no-referrer, *client
+      };
+      // here we will construct the url and the body using data inside the reqRes obj
+      // because a user could batch procedures together/ we need to account for the request object to contain data for both a get request and a post request
+      let url = '';
+      const body = {};
+      procedures.forEach((procedure, index) => {
+        if (procedure.variable) {
+          body[index] = parseString(procedure.variable);
+          if (body[index].error) {
+            throw "Invalid variable input: Please check all procedure's input to be in json string format";
+          }
+        } else {
+          body[index] = {};
+        }
+        url = url ? url + ',' + procedure.endpoint : procedure.endpoint;
+      });
+      if (method === 'POST') {
+        url = reqResObject.url + '/' + url + '?batch=1';
+        outputObj.body = body;
+      } else {
+        url =
+          reqResObject.url +
+          '/' +
+          url +
+          '?batch=1' +
+          `&input=${encodeURIComponent(JSON.stringify(body))}`;
+      }
+      outputObj.url = url;
+
+      return outputObj;
+    } catch (error) {
+      return { error };
+    }
   },
 
   openRequest: async function (event, reqRes) {
@@ -171,23 +182,35 @@ const trpcController = {
     //filter the procedures into either query or mutate in order to make the appropriate http request for each procedure
     // all query procedure will be made with a get request
     // all mutation procedure will be made with a post request
-    const getReq = procedures.filter(
-      (procedure) => procedure.method === 'QUERY'
-    );
-    const postReq = procedures.filter(
-      (procedure) => procedure.method === 'MUTATE'
-    );
+    try {
+      const getReq = procedures.filter(
+        (procedure) => procedure.method === 'QUERY'
+      );
+      const postReq = procedures.filter(
+        (procedure) => procedure.method === 'MUTATE'
+      );
 
-    // parsing data from the reqRes object to construct either a get/post option object that contains everything we need to make our get/post http request
-    const getOption = getReq.length
-      ? this.parseOptionForFetch(reqRes, 'GET', getReq)
-      : false;
-    const postOption = postReq.length
-      ? this.parseOptionForFetch(reqRes, 'POST', postReq)
-      : false;
-
-    this.makeFetch(event, reqRes, getOption, postOption); // where we will finally make the request inside of makeFetch
+      // parsing data from the reqRes object to construct either a get/post option object that contains everything we need to make our get/post http request
+      const getOption = getReq.length
+        ? this.parseOptionForFetch(reqRes, 'GET', getReq)
+        : false;
+      const postOption = postReq.length
+        ? this.parseOptionForFetch(reqRes, 'POST', postReq)
+        : false;
+      if (getOption.error || postOption.error) {
+        throw getOption.error ? getOption.error : postOption.error;
+      } else {
+        this.makeFetch(event, reqRes, getOption, postOption); // where we will finally make the request inside of makeFetch
+      }
+    } catch (error) {
+      //if error we will push the error into event to be display
+      reqRes.connection = 'error';
+      reqRes.error = error;
+      reqRes.response.events.push(error);
+      event.sender.send('reqResUpdate', reqRes); // send updated object back to front end
+    }
   },
+
   cookieFormatter(cookieArray) {
     return cookieArray.map((eachCookie) => {
       const cookieFormat = {

@@ -36,14 +36,19 @@ function EventsContainer({ currentResponse }: EventsContainerProps) {
   let responseBody = '';
   //check if its a trpc response
   if (currentResponse.trpc) {
-    events.forEach((event: any, idx: number) => {
-      if (event) {
-        const eventStr = JSON.stringify(event, null, 4);
-        responseBody += `-------------${
-          idx ? 'Mutate Result' : 'Query result'
-        }-------------\n${eventStr}\n\n`;
-      }
-    });
+    if (currentResponse.connection === 'error') {
+      const eventStr = JSON.stringify(currentResponse.error, null, 4);
+      responseBody += `-------------'ERROR'-------------\n${eventStr}\n\n`;
+    } else {
+      events.forEach((event: any, idx: number) => {
+        if (event) {
+          const eventStr = JSON.stringify(event, null, 4);
+          responseBody += `-------------${
+            idx ? 'Mutate Result' : 'Query result'
+          }-------------\n${eventStr}\n\n`;
+        }
+      });
+    }
   }
   // If it's a stream or graphQL subscription
   else if (

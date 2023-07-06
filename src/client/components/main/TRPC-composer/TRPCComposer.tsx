@@ -89,6 +89,24 @@ export default function TRPCComposer(props) {
     setShowSubscription(bool);
   };
 
+  const requestValidationCheck = () => {
+    interface ValidationMessage {
+      uri?: string;
+      json?: string;
+    }
+    const validationMessage: ValidationMessage = {};
+    // Error conditions...
+    if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
+      //if url is only http/https/ws/wss://
+      validationMessage.uri = 'Enter a valid URI';
+    }
+    if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
+      //if url doesn't have http/https/ws/wss://
+      validationMessage.uri = 'Enter a valid URI';
+    }
+    return validationMessage;
+  };
+
   const [procedures, proceduresDipatch] = useReducer(reducer, [
     //userReducer hook to manage the main state (the array of procedures)
     PROCEDURE_DEFAULT,
@@ -120,6 +138,7 @@ export default function TRPCComposer(props) {
     newRequestStreams,
     currentTab,
     setWarningMessage,
+    warningMessage,
     reqResItemAdded,
   } = props;
 
@@ -137,6 +156,11 @@ export default function TRPCComposer(props) {
   };
 
   const sendRequest = async () => {
+    const warnings = requestValidationCheck();
+    if (Object.keys(warnings).length > 0) {
+      setWarningMessage(warnings);
+      return;
+    }
     // THE MAIN FUNCTION to both compose the main reqRes object as well as sending it to the back end
     const id = uuid();
     const headers = newRequest.newRequestHeaders.headersArr.filter(
@@ -200,7 +224,8 @@ export default function TRPCComposer(props) {
         style={{ overflowX: 'hidden' }}
       >
         <TRPCMethodAndEndpointEntryForm
-          subscriptionHandler={subscriptionHandler}
+          setWarningMessage={setWarningMessage}
+          warningMessage={warningMessage}
         />
 
         <HeaderEntryForm

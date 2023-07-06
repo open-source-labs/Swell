@@ -7,13 +7,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
-const TRPCMethodAndEndpointEntryForm = () => {
+const TRPCMethodAndEndpointEntryForm = (props) => {
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
   );
   const dispatch = useDispatch();
-
+  const clearWarningIfApplicable = () => {
+    if (props.warningMessage.uri) props.setWarningMessage({});
+  };
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    clearWarningIfApplicable();
     //update global redux store everytime user make changes to url
     const url: string = e.target.value;
 
@@ -24,25 +27,29 @@ const TRPCMethodAndEndpointEntryForm = () => {
       })
     );
   };
-
   return (
-    <div
-      className="is-flex is-justify-content-center"
-      style={{ padding: '10px' }}
-    >
-      <div id="tRPCButton" className="no-border-please button is-webrtc">
-        <span>tRPC</span>
+    <>
+      <div
+        className="is-flex is-justify-content-center"
+        style={{ padding: '10px' }}
+      >
+        <div id="tRPCButton" className="no-border-please button is-webrtc">
+          <span>tRPC</span>
+        </div>
+        <input
+          className="ml-1 input input-is-medium is-info"
+          type="text"
+          value={requestFields.url}
+          placeholder="Enter your url here"
+          onChange={(e) => {
+            urlChangeHandler(e);
+          }}
+        />
       </div>
-      <input
-        className="ml-1 input input-is-medium is-info"
-        type="text"
-        value={requestFields.url}
-        placeholder="No url needed"
-        onChange={(e) => {
-          urlChangeHandler(e);
-        }}
-      />
-    </div>
+      {props.warningMessage.uri && (
+        <div className="warningMessage">{props.warningMessage.uri}</div>
+      )}
+    </>
   );
 };
 
