@@ -66,6 +66,7 @@ From a functionality standpoint:
 - Consistent UI/UX styling and color palette
 - Make requests via HTTP/2
 - Query, Mutation, Subscribe/unsubscribe to GraphQL endpoints
+- Query, Mutation, Subscribe/unsubscribe to tRPC endpoints
 - HTTP/2 stress testing with `GET` requests
 - GraphQL stress testing with `Query`
 - Mock server for HTTP/2 (`Express`)
@@ -110,7 +111,8 @@ For the following technologies - if you reference the gifs in `readme` and try t
 
 <!-- - gRPC -->
 
-- tRPC
+<!-- - tRPC -->
+
 - OpenAPI
 
 If future groups have a desire to iteration on the above features, please ensure the basic functionality works as expected, update E2E testing in `./test/testSuite.js` before adding new features.
@@ -161,7 +163,7 @@ Continuous Integration has been implemented using GitHub Actions. If you would l
 - Make any necessary adjustments to the workflow and continue testing it on ci-draft and ci-main until the workflow is functioning as intended
 - Finally, open a pull request to merge the new workflow into the dev and/or main branches
 
-The idea is to troubleshoot new workflows before applying them to the dev or main branches. 
+The idea is to troubleshoot new workflows before applying them to the dev or main branches.
 
 A Continuous Deployment pipeline would be an advantageous addition, as its absence blocks the ability to automatically package and release new iterations of the application. The groundwork for it is there (see the “scripts” and “build” properties in package.json) but packaging for Linux will need some attention, as outlined in the next section.
 

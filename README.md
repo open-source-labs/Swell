@@ -45,17 +45,21 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   <!-- -TODO --- This needs to be updated -->
     <img src="./ReadMeGifs/Gifs/gRPC.gif" style="display: block;  margin: 10px auto 30px;" />
 
-- _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations.
+- _tRPC_: Swell includes full support for all methods of TypeScript Remote Procedure Calls including batch call support for queries and mutations as well as subscription
   <img src="./ReadMeGifs/Gifs/trpc.gif" style="display: block; margin: 10px auto 30px;" />
   <!-- <img src="./ReadMeGifs/Gifs/tRPC-subscription.gif" style="display: block; margin: 10px auto 30px;" /> -->
 
-  Calls are currently being made using Swell's own TRPCProxyClient generated from the URL provided by the user.
-  Batch requests must be entered one request per line. Swell will treat each line of code entered into the editor as a separate request before batching and returning responses.
-  Each request must follow the general format client.procedure.querytype(). For example:
+  Calls are currently being made using by using http get and post request using TRPC's http RPC specification (See [RPC docs](https://trpc.io/docs/rpc)). TLDR- inputs for query procedures will be turn into uri-encoded json string and send as query param while inputs for mutate procedures will be store inside of the body.
+
+  Batch requests can be made by adding multiple procedures before sending out the request, all query procedures will get batch together into one singular get request and all mutate procedures will get batch together into one singular put request, if there are mixture of query and mutate procedures call in one request, the app will send out both a post and get request concurrently and combine the response into one response.
+
+  Nested endpoint must follow the general format parentEndpoint.childEndpoint.grandchildEndpoint. For example:
 
   ```js
-  client.getUser.query({ name: 'Luke Skywalker' });
+  client.user.update.mutate({ userId: '1', name: 'Luke' });
   ```
+
+  A request to the above endpoint must have the mutate option selected from the drop down menu, must have an endpoint of .user.update and a input body of {"userId": "1","name": "Luke"}
 
   See [tRPC docs](https://trpc.io/docs/) for more information on sending tRPC requests or setting up a tRPC server.
 
