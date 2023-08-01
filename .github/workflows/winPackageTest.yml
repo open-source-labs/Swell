@@ -46,7 +46,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/Swell Setup 1.15.0.exe # Replace with the path to your packaged application
+          asset_path: ./release/Swell Setup 1.16.0.exe # Replace with the path to your packaged application
           asset_name: Swell Setup 1.15.0.exe # Replace with the desired name for the asset
           asset_content_type: application/octet-stream
 
@@ -57,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/Swell Setup 1.15.0.exe.blockmap
+          asset_path: ./release/Swell Setup 1.16.0.exe.blockmap
           asset_name: Swell 1.15.0.exe.blockmap
           asset_content_type: application/octet-stream
 
