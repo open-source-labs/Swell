@@ -1,0 +1,35 @@
+name: Build and Package for Windows
+
+on:
+  push:
+    branches:
+      - test-dev-alec
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.15'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build and Package for Windows
+        run: npm run package-windows
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-app
+          path: release/Swell-1.15.0.dmg
+
