@@ -38,10 +38,6 @@ jobs:
           draft: true
           body: |
             Release notes and description for the release
-      - name: List Contents of release Folder
-        run: |
-          Set-Location -Path ./release
-          Get-ChildItem
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -50,7 +46,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/win-unpacked/Swell.exe # Replace with the path to your packaged application
-          asset_name: Swell.exe # Replace with the desired name for the asset
+          asset_path: ./release/Swell Setup 1.15.0.exe # Replace with the path to your packaged application
+          asset_name: Swell Setup 1.15.0.exe # Replace with the desired name for the asset
+          asset_content_type: application/octet-stream
+
+      - name: Upload Swell exe.blockmap
+        id: upload_blockmap
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/Swell Setup 1.15.0.exe.blockmap
+          asset_name: Swell 1.15.0.exe.blockmap
           asset_content_type: application/octet-stream
 
