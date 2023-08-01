@@ -32,4 +32,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: mac-app
-        path: release/Swell-1.15.0.dmg
+        path: release/Swell-1.16.0.dmg
