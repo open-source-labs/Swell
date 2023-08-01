@@ -82,7 +82,7 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "open-source-labs",
+      "owner": "oslabs-beta",
       "repo": "Swell",
       "private": false
     }
