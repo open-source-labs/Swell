@@ -33,8 +33,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: v1.15.0 # Replace with your desired tag or version number
-          release_name: Release test v1.0.0 # Replace with your desired release name
+          tag_name: v1.16.0 # Replace with your desired tag or version number
+          release_name: Release v1.16.0 # Replace with your desired release name
+          draft: true
           body: |
             Release notes and description for the release
 
