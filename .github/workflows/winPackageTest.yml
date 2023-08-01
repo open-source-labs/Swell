@@ -37,7 +37,7 @@ jobs:
           release_name: Release v1.16.0 # Replace with your desired release name
           draft: true
           body: |
-            Release notes and description for the release
+            Fully implemented CI/CD pipeline for windows, mac, and linux.
 
       - name: Upload Release Asset
         id: upload-release-asset
