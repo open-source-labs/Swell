@@ -33,8 +33,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: v1.16.0 # Replace with your desired tag or version number
-          release_name: Release v1.16.0 # Replace with your desired release name
+          tag_name: v1.15.0 # Replace with your desired tag or version number
+          release_name: Release v1.15.0 # Replace with your desired release name
           draft: true
           body: |
             Fully implemented CI/CD pipeline for windows, mac, and linux.
