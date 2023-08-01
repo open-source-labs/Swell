@@ -3,7 +3,7 @@ name: Build and Package for Linux
 on:
   push:
     branches:
-      - test-nitesh # You can modify this to your main development branch
+      - test-linux-nitesh # You can modify this to your main development branch
 
 jobs:
   build:
