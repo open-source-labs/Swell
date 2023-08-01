@@ -80,17 +80,14 @@ module.exports = () => {
     it('Basic testing functionality should work.', async () => {
       await fillgRPC_Proto(page, proto);
       try {
-        await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHello')
-        .scrollIntoViewIfNeeded()
-        .click();
+        await page.getByText('SayHello', { exact: true }).click();
         const script = "assert.strictEqual(3, 3, 'Expect correct types.');";
-        await clearAndFillTestScriptArea(script);
-        await addReqAndSend(num);
+        await clearAndFillTestScriptArea(page, script);
+        await addReqAndSend(page, num);
         await page.locator('a >> text=Tests').click();
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
-        // await electronApp.close()
-        // await page.locator('button >> text=Remove').click();
+        await page.locator('button >> text=Remove').click();
       }  catch(err) {
         console.error(err);
       };
@@ -99,16 +96,15 @@ module.exports = () => {
     it('Testing functionality for expects should pass.', async () => {
       await fillgRPC_Proto(page, proto);
       try {
-        await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHello')
-        .scrollIntoViewIfNeeded()
-        .click();
+        await page.getByText('SayHello', { exact: true }).click();
+
         const script = "expect([1, 2]).to.be.an('array').that.does.not.include(3);";
-        await clearAndFillTestScriptArea(script);
-        await addReqAndSend(num);
+        await clearAndFillTestScriptArea(page, script);
+        await addReqAndSend(page, num);
         await page.locator('a >> text=Tests').click();
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
-        // await page.locator('button >> text=Remove').click();
+        await page.locator('button >> text=Remove').click();
       }  catch(err) {
         console.error(err);
       };
@@ -118,16 +114,14 @@ module.exports = () => {
       // Dot notation does not work with hyphenated names.
       await fillgRPC_Proto(page, proto);
       try {
-        await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHello')
-        .scrollIntoViewIfNeeded()
-        .click();
+        await page.getByText('SayHello', { exact: true }).click();
         const script = "assert.strictEqual(response.headers['content-type'], 'application/grpc+proto');";
-        await clearAndFillTestScriptArea(script);
-        await addReqAndSend(num);
+        await clearAndFillTestScriptArea(page, script);
+        await addReqAndSend(page, num);
         await page.locator('a >> text=Tests').click();
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
-        // await page.locator('button >> text=Remove').click();
+        await page.locator('button >> text=Remove').click();
       }  catch(err) {
         console.error(err);
       };
@@ -137,16 +131,14 @@ module.exports = () => {
         // Dot notation does not work with hyphenated names.
         await fillgRPC_Proto(page, proto);
         try {
-          await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHello')
-          .scrollIntoViewIfNeeded()
-          .click();
+          await page.getByText('SayHello', { exact: true }).click();
           const script = `assert.strictEqual(response.events[0].message, "Hello string");`;
-          await clearAndFillTestScriptArea(script);
-          await addReqAndSend(num);
+          await clearAndFillTestScriptArea(page, script);
+          await addReqAndSend(page, num);
           await page.locator('a >> text=Tests').click();
           const testStatus = await page.locator('#TestResult-0-status').innerText();
           expect(testStatus).to.equal('PASS');
-          // await page.locator('button >> text=Remove').click();
+          await page.locator('button >> text=Remove').click();
         }  catch(err) {
           console.error(err);
         };
@@ -155,17 +147,16 @@ module.exports = () => {
     it('Should handle multiple variable declarations and newlines.', async () => {
       await fillgRPC_Proto(page, proto);
       try {
-        await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHello')
-        .scrollIntoViewIfNeeded()
-        .click();
-        const script = `const grpcTestVariable = "Hello string"; \nassert.strictEqual(response.events[0].message, grpcTestVariable)`;
-        await clearAndFillTestScriptArea(script);
-        await addReqAndSend(num);
+        await page.getByText('SayHello', { exact: true }).click();
+        const script = `const grpcTestVariable = "Hello string"; \nassert.strictEqual(response.events[0].message, grpcTestVariable)`
+        await clearAndFillTestScriptArea(page, script);
+        await addReqAndSend(page, num);
         await page.locator('a >> text=Tests').click();
         const testStatus = await page.locator('#TestResult-0-status').innerText();
         expect(testStatus).to.equal('PASS');
-        // await page.locator('button >> text=Remove').click();
+        await page.locator('button >> text=Remove').click();
       }  catch(err) {
+        console.log('Now in the catch-block');
         console.error(err);
       };
     });

@@ -124,5 +124,5 @@ function main(status) {
 }
 
 // uncomment this line of code if you want to run the server
-// main('open')
+main('open')
 module.exports = main;

@@ -236,10 +236,18 @@ const composerSetup = async () => {
   }
 };
 
-const addReqAndSend = async (num) => {
+const addReqAndSend = async (page, num) => {
   try {
-    await page.locator('button >> text=Add to Workspace').click();
-    await page.locator(`#send-button-${num}`).click();
+    // await page.locator('button >> text=Add to Workspace').click();
+    // await page.locator(`#send-button-${num}`).click();
+
+    let addToWorkspaceButton = await page.getByRole('button').getByText('Add to Workspace')
+    
+    // console.log('addToWorkspaceButton', addToWorkspaceButton)
+    addToWorkspaceButton.click();
+    let sendButton = await page.locator(`#send-button-${num}`).click();
+    // let sendButton = await page.getByRole('button', {name: 'Send'}).click()
+    // console.log('sendButton', sendButton)
     const res = await page.locator('#events-display').innerText();
     return res;
   } catch (err) {

@@ -82,11 +82,12 @@ module.exports = () => {
       beforeEach(() => (num = 0));
      
   
-      const addReqAndSend = async (num) => {
+      const addReqAndSend = async (page, num) => {
         try {
           await page.locator('button >> text=Add to Workspace').click();
           await page.locator(`#send-button-${num}`).click();
           const res = await page.locator('#events-display').innerText();
+          console.log('res: ', res)
           return res;
         } catch (err) {
           console.error(err);
@@ -142,6 +143,7 @@ module.exports = () => {
           const jsonPretty = await addReqAndSend();
           expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
           expect(jsonPretty).to.include('hello!!! string');
+          await page.locator('button >> text=Remove').click();
         } catch (err) {
           console.error(err);
         }
@@ -150,11 +152,13 @@ module.exports = () => {
       it('it should work on a client stream', async () => {
         await fillgRPC_Proto(page, proto)
         try {
-          await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloCS')
-            .scrollIntoViewIfNeeded()
-            .click();
-          const jsonPretty = await addReqAndSend();
+          await page.getByText('SayHelloCS', { exact: true }).click();
+          // await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloCS')
+          //   .scrollIntoViewIfNeeded()
+          //   .click();
+          const jsonPretty = await addReqAndSend(page, num);
           expect(jsonPretty).to.include('"message": "received 1 messages"');
+          await page.locator('button >> text=Remove').click();
         } catch (err) {
           console.error(err);
         }
@@ -163,12 +167,14 @@ module.exports = () => {
       it('it should work on a bidirectional stream', async () => {
         await fillgRPC_Proto(page, proto)
         try {
-          await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloBidi')
-            .scrollIntoViewIfNeeded()
-            .click()
+          await page.getByText('SayHelloBidi', { exact: true }).click();
+          // await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloBidi')
+          //   .scrollIntoViewIfNeeded()
+          //   .click()
 
-          const jsonPretty = await addReqAndSend();
+          const jsonPretty = await addReqAndSend(page, num);
           expect(jsonPretty).to.include('"message": "bidi stream: string"');
+          await page.locator('button >> text=Remove').click();
         } catch (err) {
           console.error(err);
         }
