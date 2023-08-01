@@ -1,4 +1,4 @@
-name: Build and Package for Windows
+name: Build and Publish for Windows
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - test-dev-alec
 
 jobs:
-  build:
+  build_and_publish:
     runs-on: windows-latest
 
     env:
@@ -25,11 +25,27 @@ jobs:
         run: npm install
 
       - name: Build and Package for Windows
-        run: npm run package-win
+        run: npm run package-windows
 
-      - name: Upload DMG
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          name: windows-app
-          path: release/Swell-1.15.0.dmg
+          tag_name: v1.15.0 # Replace with your desired tag or version number
+          release_name: Release test v1.0.0 # Replace with your desired release name
+          body: |
+            Release notes and description for the release
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/Swell-1.15.0.dmg # Replace with the path to your packaged application
+          asset_name: Swell-1.15.0.dmg # Replace with the desired name for the asset
+          asset_content_type: application/octet-stream
 
