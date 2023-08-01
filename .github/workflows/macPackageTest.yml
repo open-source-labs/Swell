@@ -1,0 +1,41 @@
+name: Build and Package for Mac
+
+
+on:
+  push:
+    branches:
+      - test-nitesh # You can modify this to your main development branch
+
+
+jobs:
+  build:
+
+
+    runs-on: macOS-latest
+
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.15' # Use the specific version of Node that your project requires
+
+
+    - name: Install Dependencies
+      run: npm install
+
+
+    - name: Build and Package for Mac
+      run: npm run package-mac
+
+
+    # Optional step to upload the DMG as an artifact
+    - name: Upload DMG
+      uses: actions/upload-artifact@v2
+      with:
+        name: mac-app
+        path: release/Swell-1.14.0.dmg
