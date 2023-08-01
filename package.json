@@ -84,7 +84,9 @@
       "provider": "github",
       "owner": "oslabs-beta",
       "repo": "Swell",
-      "private": false
+      "private": false,
+      "releaseType": "draft", 
+      "publish": "always"
     }
   },
   "license": "MIT",
