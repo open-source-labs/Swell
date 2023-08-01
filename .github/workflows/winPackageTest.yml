@@ -38,6 +38,8 @@ jobs:
           draft: true
           body: |
             Release notes and description for the release
+      - name: List Contents of release Folder
+        run: ls -al ./release
 
       - name: Upload Release Asset
         id: upload-release-asset
