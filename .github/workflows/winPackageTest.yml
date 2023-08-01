@@ -39,7 +39,9 @@ jobs:
           body: |
             Release notes and description for the release
       - name: List Contents of release Folder
-        run: ls -al ./release
+        run: |
+          Set-Location -Path ./release
+          Get-ChildItem
 
       - name: Upload Release Asset
         id: upload-release-asset
