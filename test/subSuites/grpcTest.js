@@ -16,13 +16,13 @@ const path = require('path');
 const fs = require('fs-extra');
 const { fillgRPC_Proto } = require('./testHelper');
 
-const proto = fs.readFileSync(path.resolve(__dirname, '../grpc_mockData/mock_protos/hw2.proto'))
+const proto = fs.readFileSync(
+  path.resolve(__dirname, '../grpc_mockData/mock_protos/hw2.proto')
+);
 let electronApp, page, num;
 
 module.exports = () => {
-
   describe('gRPC requests', () => {
-
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       if (!electronApp) {
@@ -30,7 +30,7 @@ module.exports = () => {
       }
       grpcServer('open');
     });
-  
+
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
@@ -69,7 +69,6 @@ module.exports = () => {
     });
 
     describe('Functionality Testing', () => {
-
       before(async () => {
         page = await electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
@@ -80,105 +79,83 @@ module.exports = () => {
       });
 
       beforeEach(() => (num = 0));
-     
-  
+
+      afterEach(async () => {
+        await page.locator('button >> text=Remove').click();
+      });
+
       const addReqAndSend = async (page, num) => {
         try {
           await page.locator('button >> text=Add to Workspace').click();
           await page.locator(`#send-button-${num}`).click();
-          const res = await page.locator('#events-display').innerText();
-          console.log('res: ', res)
+          const res = await page.locator('#events-display').textContent();
+
+          console.log('res', res);
+
           return res;
         } catch (err) {
           console.error(err);
         }
       };
-  
+
       it('it should work on a unary request', async () => {
-        await fillgRPC_Proto(page, proto)
-        try {
-          await page.waitForTimeout(1000);
-          await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHello')
-            .scrollIntoViewIfNeeded()
-            .click()
-    
-          const jsonPretty = await addReqAndSend();
-          await new Promise((resolve) =>
-            setTimeout(() => {
-              expect(jsonPretty).to.include(`"message": "Hello string"`);
-              resolve();
-            }, 800)
-          );
-        } catch (err) {
-          console.error(err);
-        }
-      }, 20000);
-  
-      
+        await fillgRPC_Proto(page, proto);
+        await page.getByText('SayHello', { exact: true }).click();
+        const jsonPretty = await addReqAndSend(page, num);
+        expect(jsonPretty).to.include(`"message": "Hello string"`);
+      });
+
       it('it should work on a nested unary request', async () => {
-        await fillgRPC_Proto(page, proto)
-        try {
-          await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloNested')
-            .scrollIntoViewIfNeeded()
-            .click()
-      
-          const jsonPretty = await addReqAndSend();
-          expect(jsonPretty).to.include('"serverMessage":');
-          expect(jsonPretty).to.include('"message": "Hello! string"');
-          const helloStrArray = jsonPretty.match(/"message": "Hello! string"/g);
-          expect(helloStrArray).to.have.lengthOf(2);
-        } catch (err) {
-          console.log(err)
-          console.error(err);
-        }
+        await fillgRPC_Proto(page, proto);
+        // try {
+        await page.getByText('SayHelloNested', { exact: true }).click();
+        const jsonPretty = await addReqAndSend(page, num);
+        expect(jsonPretty).to.include('"serverMessage":');
+        expect(jsonPretty).to.include('"message": "Hello! string"');
+        const helloStrArray = jsonPretty.match(/"message": "Hello! string"/g);
+        expect(helloStrArray).to.have.lengthOf(2);
+        // } catch (err) {
+        //   console.error(err);
+        // }
       });
-  
+
       it('it should work on a server stream', async () => {
-        await fillgRPC_Proto(page, proto)
-        try {
-          await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHellosSs')
-            .scrollIntoViewIfNeeded()
-            .click()
-
-          const jsonPretty = await addReqAndSend();
-          expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
-          expect(jsonPretty).to.include('hello!!! string');
-          await page.locator('button >> text=Remove').click();
-        } catch (err) {
-          console.error(err);
-        }
+        await fillgRPC_Proto(page, proto);
+        // try {
+        await page.getByText('SayHellosSs', { exact: true }).click();
+        const jsonPretty = await addReqAndSend(page, num);
+        expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
+        expect(jsonPretty).to.include('hello!!! string');
+        // } catch (err) {
+        //   console.error(err);
+        // }
       });
-  
+
       it('it should work on a client stream', async () => {
-        await fillgRPC_Proto(page, proto)
-        try {
-          await page.getByText('SayHelloCS', { exact: true }).click();
-          // await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloCS')
-          //   .scrollIntoViewIfNeeded()
-          //   .click();
-          const jsonPretty = await addReqAndSend(page, num);
-          expect(jsonPretty).to.include('"message": "received 1 messages"');
-          await page.locator('button >> text=Remove').click();
-        } catch (err) {
-          console.error(err);
-        }
+        await fillgRPC_Proto(page, proto);
+        // try {
+        await page.getByText('SayHelloCS', { exact: true }).click();
+        const jsonPretty = await addReqAndSend(page, num);
+        // console.log('jsonPretty CS', jsonPretty)
+        // console.log('jsonPretty CS after', jsonPretty)
+        expect(jsonPretty).to.include('"message": "received 1 messages"');
+        // await page.locator('button >> text=Remove').click()
+        // } catch (err) {
+        //   console.error(err);
+        // }
       });
-  
-      it('it should work on a bidirectional stream', async () => {
-        await fillgRPC_Proto(page, proto)
-        try {
-          await page.getByText('SayHelloBidi', { exact: true }).click();
-          // await page.locator('.mt-1 mb- dropdown is-active >> a >> text=SayHelloBidi')
-          //   .scrollIntoViewIfNeeded()
-          //   .click()
 
-          const jsonPretty = await addReqAndSend(page, num);
-          expect(jsonPretty).to.include('"message": "bidi stream: string"');
-          await page.locator('button >> text=Remove').click();
-        } catch (err) {
-          console.error(err);
-        }
+      it('it should work on a bidirectional stream', async () => {
+        await fillgRPC_Proto(page, proto);
+        // try {
+        await page.getByText('SayHelloBidi', { exact: true }).click();
+        const jsonPretty = await addReqAndSend(page, num);
+        expect(jsonPretty).to.include('"message": "bidi stream: string"');
+        // await page.locator('button >> text=Remove').click();
+        // } catch (err) {
+        //   console.error(err);
+        // }
       });
-    }).timeout(2000)
-  }).timeout(2000);
+    }).timeout(20000);
+  }).timeout(20000);
 };

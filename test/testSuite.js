@@ -9,7 +9,7 @@
  * test.
  *
  * Please note many of these tests are written contingent on each other, and
- * there is room for better optimization of end-to-end testing.
+ * there is room for better optimizatilson of end-to-end testing.
  *
  * @todo As of v.13, all tests should be passing EXCEPT:
  * - gRPCtest()
