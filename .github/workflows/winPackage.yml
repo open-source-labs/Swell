@@ -69,13 +69,13 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           token: ${{ secrets.GH_TOKEN }}
-          workflow: macPackage.yml
+          workflow: .github/workflows/macPackage.yml
           ref: ${{ github.ref }}
 
       - name: Trigger Linux
         uses: benc-uk/workflow-dispatch@v1
         with:
           token: ${{ secrets.GH_TOKEN }}
-          workflow: linuxPackage.yml
+          workflow: .github/workflows/linuxPackage.yml
           ref: ${{ github.ref }}
 
