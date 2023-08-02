@@ -1,13 +1,17 @@
 name: Build and Publish for Windows
 
 on:
-  push:
+  pull_request:
     branches:
-      - test-dev-alec
+      - dev
+    types:
+      - closed
 
 jobs:
   build_and_publish:
     runs-on: windows-latest
+
+    if: github.event.pull_request.merged == true
 
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -60,4 +64,18 @@ jobs:
           asset_path: ./release/Swell Setup 1.16.0.exe.blockmap
           asset_name: Swell 1.16.0.exe.blockmap
           asset_content_type: application/octet-stream
+
+      - name: Trigger Mac
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          workflow: macPackage.yml
+          ref: ${{ github.ref }}
+
+      - name: Trigger Linux
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          workflow: linuxPackage.yml
+          ref: ${{ github.ref }}
 
