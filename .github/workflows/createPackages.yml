@@ -1,0 +1,110 @@
+name: Master Workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+    types:
+      - closed
+
+jobs:
+  create_release:
+    runs-on: windows-latest
+
+    if: github.event.pull_request.merged == true
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.15'
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: v1.16.0 # Replace with your desired tag or version number
+          release_name: Release v1.16.0 # Replace with your desired release name
+          draft: true
+          body: |
+            Fully implemented CI/CD pipeline for windows, mac, and linux.
+
+  windows:
+    needs: create_release
+    runs-on: windows-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.15'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build and Package for Windows
+        run: npm run package-win
+
+  linux:
+    needs: create_release
+    runs-on: ubuntu-latest # Using a Linux runner
+
+    env: # Adding the environment variable for the GH_TOKEN
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.15' # Use the specific version of Node that your project requires
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build and Package for Linux
+        run: npm run package-linux
+
+      # Optional step to upload the Linux package as an artifact
+      - name: Upload Linux Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-app
+          path: release/Swell-1.15.0.AppImage # Change the path according to your Linux build output
+
+  mac:
+    needs: create_release
+    runs-on: macOS-latest
+
+    env: # Adding the environment variable for the GH_TOKEN
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.15' # Use the specific version of Node that your project requires
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build and Package for Mac
+        run: npm run package-mac
