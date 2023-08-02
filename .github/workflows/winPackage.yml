@@ -66,6 +66,7 @@ jobs:
 #           asset_content_type: application/octet-stream
 
       - name: Trigger Mac Workflow
+        shell: bash
         run: |
           curl -X POST \
           -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
@@ -74,6 +75,7 @@ jobs:
           -d '{"ref":"${{ github.ref }}"}'
 
       - name: Trigger Linux Workflow
+        shell: bash
         run: |
           curl -X POST \
           -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
