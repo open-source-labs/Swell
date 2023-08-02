@@ -32,14 +32,45 @@ jobs:
           body: |
             Fully implemented CI/CD pipeline for windows, mac, and linux.
 
-  # windows:
-  #   needs: create_release
-  #   runs-on: windows-latest
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
-  #   - name: Trigger Windows Workflow
-  #     run: echo "Running Windows job..."
+  windows:
+    needs: create_release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.15'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build and Package for Windows
+        run: npm run package-win
+      
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/Swell Setup 1.16.0.exe # Replace with the path to your packaged application
+          asset_name: Swell Setup 1.16.0.exe # Replace with the desired name for the asset
+          asset_content_type: application/octet-stream
+
+      - name: Upload Swell exe.blockmap
+        id: upload_blockmap
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/Swell Setup 1.16.0.exe.blockmap
+          asset_name: Swell 1.16.0.exe.blockmap
+          asset_content_type: application/octet-stream
 
   linux:
     needs: create_release
@@ -70,9 +101,8 @@ jobs:
           name: linux-app
           path: release/Swell-1.15.0.AppImage # Change the path according to your Linux build output
 
-
-
   mac:
+    needs: create_release
     runs-on: macOS-latest
 
     env: # Adding the environment variable for the GH_TOKEN
