@@ -45,13 +45,15 @@ wsServer.on('request', (request) => {
     return;
   }
   const connection = request.accept(null, request.origin);
-
-  console.log(`${new Date()} Connection accepted.`);
+  
+  console.log(
+    `Websocket Test Server: connection accepted on ${new Date()}`
+  );
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
 
       console.log(
-        `Websocket Test Server: received message ${message.utf8Data}`
+        `Websocket Test Server: received message "${message.utf8Data}"`
       );
 
       connection.sendUTF(message.utf8Data);
