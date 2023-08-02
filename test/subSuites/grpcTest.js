@@ -73,7 +73,6 @@ module.exports = () => {
         page = await electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
         num = 0;
-
         await page.locator('button>> text=GRPC').click();
         await page.locator('#url-input').fill('0.0.0.0:30051');
       });
@@ -88,10 +87,9 @@ module.exports = () => {
         try {
           await page.locator('button >> text=Add to Workspace').click();
           await page.locator(`#send-button-${num}`).click();
+          // await page.waitForTimeout(1000); //change to waitfor() method from locator page
+          await page.waitForLoadState();
           const res = await page.locator('#events-display').textContent();
-
-          console.log('res', res);
-
           return res;
         } catch (err) {
           console.error(err);
@@ -107,54 +105,37 @@ module.exports = () => {
 
       it('it should work on a nested unary request', async () => {
         await fillgRPC_Proto(page, proto);
-        // try {
+
         await page.getByText('SayHelloNested', { exact: true }).click();
         const jsonPretty = await addReqAndSend(page, num);
         expect(jsonPretty).to.include('"serverMessage":');
         expect(jsonPretty).to.include('"message": "Hello! string"');
         const helloStrArray = jsonPretty.match(/"message": "Hello! string"/g);
         expect(helloStrArray).to.have.lengthOf(2);
-        // } catch (err) {
-        //   console.error(err);
-        // }
+
       });
 
       it('it should work on a server stream', async () => {
         await fillgRPC_Proto(page, proto);
-        // try {
         await page.getByText('SayHellosSs', { exact: true }).click();
         const jsonPretty = await addReqAndSend(page, num);
         expect(jsonPretty.match(/"message"/g)).to.have.lengthOf(5);
         expect(jsonPretty).to.include('hello!!! string');
-        // } catch (err) {
-        //   console.error(err);
-        // }
       });
 
       it('it should work on a client stream', async () => {
         await fillgRPC_Proto(page, proto);
-        // try {
         await page.getByText('SayHelloCS', { exact: true }).click();
         const jsonPretty = await addReqAndSend(page, num);
-        // console.log('jsonPretty CS', jsonPretty)
-        // console.log('jsonPretty CS after', jsonPretty)
         expect(jsonPretty).to.include('"message": "received 1 messages"');
-        // await page.locator('button >> text=Remove').click()
-        // } catch (err) {
-        //   console.error(err);
-        // }
+
       });
 
       it('it should work on a bidirectional stream', async () => {
         await fillgRPC_Proto(page, proto);
-        // try {
         await page.getByText('SayHelloBidi', { exact: true }).click();
         const jsonPretty = await addReqAndSend(page, num);
         expect(jsonPretty).to.include('"message": "bidi stream: string"');
-        // await page.locator('button >> text=Remove').click();
-        // } catch (err) {
-        //   console.error(err);
-        // }
       });
     }).timeout(20000);
   }).timeout(20000);
