@@ -65,17 +65,19 @@ jobs:
           asset_name: Swell 1.16.0.exe.blockmap
           asset_content_type: application/octet-stream
 
-      - name: Trigger Mac
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          workflow: .github/workflows/macPackage.yml
-          ref: ${{ github.ref }}
+      - name: Trigger Mac Workflow
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/oslabs-beta/Swell/actions/workflows/macPackage.yml/dispatches \
+          -d '{"ref":"${{ github.ref }}"}'
 
-      - name: Trigger Linux
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          workflow: .github/workflows/linuxPackage.yml
-          ref: ${{ github.ref }}
+      - name: Trigger Linux Workflow
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/oslabs-beta/Swell/actions/workflows/linuxPackage.yml/dispatches \
+          -d '{"ref":"${{ github.ref }}"}'
 
