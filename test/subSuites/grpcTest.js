@@ -14,7 +14,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
-const { fillgRPC_Proto } = require('./testHelper');
+const { fillgRPC_Proto, addReqAndSend } = require('./testHelper');
 
 const proto = fs.readFileSync(
   path.resolve(__dirname, '../grpc_mockData/mock_protos/hw2.proto')
@@ -82,19 +82,6 @@ module.exports = () => {
       afterEach(async () => {
         await page.locator('button >> text=Remove').click();
       });
-
-      const addReqAndSend = async (page, num) => {
-        try {
-          await page.locator('button >> text=Add to Workspace').click();
-          await page.locator(`#send-button-${num}`).click();
-          // await page.waitForTimeout(1000); //change to waitfor() method from locator page
-          await page.waitForLoadState();
-          const res = await page.locator('#events-display').textContent();
-          return res;
-        } catch (err) {
-          console.error(err);
-        }
-      };
 
       it('it should work on a unary request', async () => {
         await fillgRPC_Proto(page, proto);
