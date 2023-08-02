@@ -118,7 +118,7 @@ function main(status) {
     // bind specific port to the server and start the server
     server.bindAsync(PORT, grpc.ServerCredentials.createInsecure(), (port) => {
       server.start();
-      console.log(`grpc server running on port ${PORT}`);
+      console.log(`gRPC Test Server: listening on PORT ${PORT}`);
     });
   }
 }

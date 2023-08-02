@@ -16,9 +16,7 @@ const fs = require('fs');
 let electronApp, page, num;
 
 module.exports = () => {
-
   describe('openAPI tests', () => {
-
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] });
       if (!electronApp) {
@@ -45,9 +43,9 @@ module.exports = () => {
       }
     });
 
-      // The app takes a while to launch, and without these rendering checks
-  // within each test file the tests can get flakey because of long load times
-  // so these are here to ensure the app launches as expect before continuing
+    // The app takes a while to launch, and without these rendering checks
+    // within each test file the tests can get flakey because of long load times
+    // so these are here to ensure the app launches as expect before continuing
     describe('Window rendering', () => {
       it('Electron app should launch', async () => {
         expect(electronApp).to.be.ok;
@@ -64,40 +62,32 @@ module.exports = () => {
       });
     });
 
-  describe('OpenAPI Functionality Testing', () => {
+    describe('OpenAPI Functionality Testing', () => {
+      before(async () => {
+        // In case there is more than one window
+        page = await electronApp.windows()[0];
+        await page.waitForLoadState(`domcontentloaded`);
+        num = 0;
+        await page.locator('button>> text=OpenAPI').first().click();
+        // await page.locator('#url-input').fill('0.0.0.0:30051');
+      });
 
-    before(async () => {
-      // In case there is more than one window
-      page = await electronApp.windows()[0];
-      await page.waitForLoadState(`domcontentloaded`);
-      num = 0;
-      await page.locator('button>> text=OpenAPI').first().click();
-      // await page.locator('#url-input').fill('0.0.0.0:30051');
-    });
-   
-    // const addReqAndSend = async (num) => {
-    //   try {
-    //     await page.locator('button >> text=Add to Workspace').click();
-    //     await page.locator(`#send-button-${num}`).click();
-    //     const res = await page.locator('#events-display').innerText();
-    //     return res;
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // };
+      // const addReqAndSend = async (num) => {
+      //   try {
+      //     await page.locator('button >> text=Add to Workspace').click();
+      //     await page.locator(`#send-button-${num}`).click();
+      //     const res = await page.locator('#events-display').innerText();
+      //     return res;
+      //   } catch (err) {
+      //     console.error(err);
+      //   }
+      // };
 
-    it('it should have a "Load Document" button', async () => {
-
-      try {
-
+      it('it should have a "Load Document" button', async () => {
         const handle = await page.locator('text=Load Document');
-        expect(handle).toBeDefined()
-      } catch (err) {
-        console.log(err)
-        console.error(err);
-      }
-    });
-  }).timeout(2000);
-  })
+        pwTest.expect(handle).toBeVisible();
+      });
+    }).timeout(20000);
+  });
 };
 

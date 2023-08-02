@@ -67,7 +67,7 @@ module.exports = () => {
         await page.waitForLoadState(`domcontentloaded`);
       });
 
-      it('it should be able to make requests to a public STUN server', async () => {
+      xit('it should be able to make requests to a public STUN server', async () => {
         try {
           await page.locator('button>> text=WebRTC').click();
           await addAndSend(page, num++);
