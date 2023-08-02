@@ -1,13 +1,17 @@
 name: Master Workflow
 
 on:
-  push:
+  pull_request:
     branches:
-      - dev-test2
+      - dev
+    types:
+      - closed
 
 jobs:
   create_release:
     runs-on: windows-latest
+
+    if: github.event.pull_request.merged == true
 
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -53,28 +57,6 @@ jobs:
 
       - name: Build and Package for Windows
         run: npm run package-win
-      
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/Swell Setup 1.16.0.exe # Replace with the path to your packaged application
-          asset_name: Swell Setup 1.16.0.exe # Replace with the desired name for the asset
-          asset_content_type: application/octet-stream
-
-      - name: Upload Swell exe.blockmap
-        id: upload_blockmap
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/Swell Setup 1.16.0.exe.blockmap
-          asset_name: Swell 1.16.0.exe.blockmap
-          asset_content_type: application/octet-stream
 
   linux:
     needs: create_release
