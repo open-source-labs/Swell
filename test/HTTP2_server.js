@@ -1,6 +1,7 @@
 const http2 = require('http2');
 const fs = require('fs');
 const path = require('path');
+const PORT = 8443;
 
 const CERT_PATH = path.join(__dirname, '/HTTP2_cert.pem');
 const PRIV_PATH = path.join(__dirname, 'HTTP2_private.pem');
@@ -73,4 +74,6 @@ const sendStreamToClient = (stream, body) => {
   sendEvent(stream);
 };
 
-server.listen(8443, () => console.log('server up on 8443'));
+server.listen(PORT, () =>
+  console.log(`HTTP2 Test Server: listening on PORT ${PORT}`)
+);

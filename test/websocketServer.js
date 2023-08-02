@@ -1,16 +1,24 @@
 const WebSocketServer = require('websocket').server;
 var http = require('http');
+let PORT = 5001;
 
-var server = http.createServer(function(request, response) {
-    console.log((new Date()) + ' Received request for ' + request.url);
-    response.writeHead(404);
-    response.end();
+var server = http.createServer(function (request, response) {
+  console.log(
+    `Websocket Test Server: received request for ${
+      request.url
+    } on ${new Date()}`
+  );
+
+  response.writeHead(404);
+  response.end();
 });
-server.listen(5001, function() {
-    console.log((new Date()) + ' Server is listening on port 5001');
+server.listen(PORT, function () {
+  console.log(
+    `Websocket Test Server: listening on PORT ${PORT} on ${new Date()}`
+  );
 });
 
-wsServer = new WebSocketServer({
+let wsServer = new WebSocketServer({
   httpServer: server,
   // You should not use autoAcceptConnections for production
   // applications, as it defeats all standard cross-origin protection
@@ -30,7 +38,9 @@ wsServer.on('request', (request) => {
     // Make sure we only accept requests from an allowed origin
     request.reject();
     console.log(
-      `${new Date()} Connection from origin ${request.origin} rejected.`
+      `Websocket Test Server: connection from origin ${
+        request.url
+      } rejected on ${new Date()}`
     );
     return;
   }
@@ -39,16 +49,22 @@ wsServer.on('request', (request) => {
   console.log(`${new Date()} Connection accepted.`);
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
-      console.log(`Received Message: ${message.utf8Data}`);
+
+      console.log(
+        `Websocket Test Server: received message ${message.utf8Data}`
+      );
+
       connection.sendUTF(message.utf8Data);
     } else if (message.type === 'binary') {
       console.log(
-        `Received Binary Message of ${message.binaryData.length} bytes`
+        `Websocket Test Server: received binary message of ${message.binaryData.length} bytes`
       );
       connection.sendBytes(message.binaryData);
     }
   });
   connection.on('close', (reasonCode, description) => {
-    console.log(`${new Date()} Peer ${connection.remoteAddress} disconnected.`);
+    console.log(
+      `Websocket Test Server: peer ${connection.remoteAddress} disconnected`
+    );
   });
 });
