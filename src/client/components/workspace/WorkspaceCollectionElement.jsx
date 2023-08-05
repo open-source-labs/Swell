@@ -86,13 +86,16 @@ const WorkspaceCollectionElement = (props) => {
           </div>
         </div>
       </div>
-      {/* VIEW REQUEST DETAILS / MINIMIZE */}
+      {/* VIEW REQUEST DETAILS / MINIMIZE
+        - copyToComposer is not defined
+        - commenting out Click functionality because everything connected to this is broken
+      */}
       {network !== 'ws' && (
         <div
           className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
-          onClick={() => {
-            setShowDetails(showDetails === false);
-          }}
+          // onClick={() => {
+          //   setShowDetails(showDetails === false);
+          // }}
         >
           {showDetails === true && 'Hide Request Details'}
           {showDetails === false && 'View Request Details'}
@@ -106,7 +109,9 @@ const WorkspaceCollectionElement = (props) => {
           )}
         </div>
       )}
-      {/* REQUEST ELEMENTS */}
+      {/* REQUEST ELEMENTS 
+          - none of the Request Elements are defined ex.  <RestRequestContent /> <GraphQLRequestContent /> so this will crash the app
+          - because the onClick for VIEW REQUEST DETAILS is currently disabled, this code will not be reached */}
       {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === 'rest' && (
@@ -128,6 +133,7 @@ const WorkspaceCollectionElement = (props) => {
           {network === 'graphQL' && (
             <GraphQLRequestContent request={content.request} />
           )}
+ 
           {network === 'webrtc' && <WebRTCRequestContent content={content} />}
         </div>
       )}
