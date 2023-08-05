@@ -86,16 +86,18 @@ const WorkspaceCollectionElement = (props) => {
           </div>
         </div>
       </div>
-      {/* VIEW REQUEST DETAILS / MINIMIZE
+
+      {/* VIEW REQUEST DETAILS / MINIMIZE - THIS FEATURE IS NOT IMPLEMENTED YET. STRUCTURE IS THERE BUT FUNCTIONS ARE NOT DEFINED OR CONNECTED
         - copyToComposer is not defined
         - commenting out Click functionality because everything connected to this is broken
       */}
-      {network !== 'ws' && (
+
+      {/* {network !== 'ws' && (
         <div
           className="is-neutral-300 is-size-7 cards-dropdown minimize-card pl-3 is-flex is-align-items-center is-justify-content-space-between"
-          // onClick={() => {
-          //   setShowDetails(showDetails === false);
-          // }}
+          onClick={() => {
+            setShowDetails(showDetails === false);
+          }}
         >
           {showDetails === true && 'Hide Request Details'}
           {showDetails === false && 'View Request Details'}
@@ -108,11 +110,13 @@ const WorkspaceCollectionElement = (props) => {
             </div>
           )}
         </div>
-      )}
+      )} */}
+
       {/* REQUEST ELEMENTS 
           - none of the Request Elements are defined ex.  <RestRequestContent /> <GraphQLRequestContent /> so this will crash the app
           - because the onClick for VIEW REQUEST DETAILS is currently disabled, this code will not be reached */}
-      {showDetails === true && (
+
+      {/* {showDetails === true && (
         <div className="is-neutral-200-box">
           {network === 'rest' && (
             <RestRequestContent request={content.request} isHTTP2={isHTTP2} />
@@ -136,7 +140,8 @@ const WorkspaceCollectionElement = (props) => {
  
           {network === 'webrtc' && <WebRTCRequestContent content={content} />}
         </div>
-      )}
+      )} */}
+      
       {/* REMOVE / SEND BUTTONS */}
       <div className="is-flex">
         <button
