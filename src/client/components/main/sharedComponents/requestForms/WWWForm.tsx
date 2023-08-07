@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import ContentReqRowComposer from './ContentReqRowComposer';
+import { NewRequestBody, NewRequestBodySet } from '../../../../../types';
 
 interface Props {
-  newRequestBody: {
-    bodyContent: string;
-    [key: string]: any;
-  }
-  newRequestBodySet: (arg0: { bodyContent: string;[key: string]: any }) => void;
+  newRequestBody: NewRequestBody
+  newRequestBodySet: NewRequestBodySet
 }
 
 interface WWWField {

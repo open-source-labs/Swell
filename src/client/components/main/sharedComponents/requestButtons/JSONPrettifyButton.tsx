@@ -1,8 +1,9 @@
 import React from 'react';
+import { NewRequestBody, NewRequestBodySet } from '../../../../../types';
 
 interface Props {
-  newRequestBodySet: (body: { bodyContent: string }) => void;
-  newRequestBody: { bodyContent: string };
+  newRequestBodySet: NewRequestBodySet
+  newRequestBody: NewRequestBody
 }
 
 function JSONPrettify({ newRequestBodySet, newRequestBody }: Props) {

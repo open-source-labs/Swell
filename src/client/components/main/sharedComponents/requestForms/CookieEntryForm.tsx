@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import ContentReqRowComposer from './ContentReqRowComposer';
-import { NewRequestBody } from '../../../../../types';
+import { NewRequestBody, NewRequestCookiesSet } from '../../../../../types';
 
 interface Cookie {
   id: string;
@@ -18,11 +18,7 @@ interface Props {
     cookiesArr: Cookie[];
     count: number;
   };
-  newRequestCookiesSet: (obj: {
-    cookiesArr: Cookie[];
-    override?: boolean;
-    count: number;
-  }) => string;
+  newRequestCookiesSet: NewRequestCookiesSet;
   isDark?: boolean;
 }
 
