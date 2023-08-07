@@ -32,7 +32,6 @@
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
-const contextMenu = require('electron-context-menu')
 
 const { autoUpdater } = require('electron-updater');
 const {
@@ -45,6 +44,8 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const log = require('electron-log');
+
+
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
@@ -66,6 +67,7 @@ require('./main_process/main_trpcController.js')();
 const { touchBar } = require('./main_process/main_touchbar.js');
 
 // right-click menu for cut / copy / paste / Inspect Element
+const contextMenu = require('electron-context-menu')
 contextMenu()
 
 // configure logging
