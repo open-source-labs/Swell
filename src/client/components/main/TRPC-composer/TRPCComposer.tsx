@@ -171,7 +171,7 @@ export default function TRPCComposer(props) {
       id,
       createdAt: new Date(),
       protocol,
-      trpc: true,
+      tRPC: true,
       url,
       graphQL,
       gRPC,

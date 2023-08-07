@@ -88,6 +88,39 @@ export interface Cookie {
   expires: string | number;
 }
 
+export interface ValidationMessage {
+  uri?: string;
+  json?: string;
+}
+
+export interface MainContainerProps {
+    // state
+    currentTab?: string;
+    reqResArray: ReqRes[];
+    newRequestFields: NewRequestFields;
+    newRequestHeaders: NewRequestHeaders;
+    newRequestStreams: NewRequestStreams,
+    newRequestBody: NewRequestBody;
+    newRequestCookies: NewRequestCookies;
+    newRequestSSE: NewRequestSSE,
+    warningMessage: any;
+    introspectionData: IntrospectionData;
+    
+    // reducers
+    reqResItemAdded: (reqRes: ReqRes) => any;
+    setWarningMessage: (message: ValidationMessage) => any;
+    newRequestHeadersSet: () => any;
+    newRequestStreamsSet: () => any;
+    fieldsReplaced: () => any;
+    newRequestBodySet: () => any;
+    newTestContentSet: () => any;
+    newRequestCookiesSet: () => any;
+    newRequestSSESet: (arg: boolean) => any;
+    openApiRequestsReplaced: () => any;
+    composerFieldsReset: () => any;
+    setWorkspaceActiveTab: (arg: string) => any;
+}
+
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 
@@ -128,7 +161,7 @@ interface NewRequestCookies {
   count: number;
 }
 
-interface NewRequestHeaders {
+export interface NewRequestHeaders {
   headersArr: CookieOrHeader[];
   count: number;
 }
@@ -161,7 +194,7 @@ export type NewRequestFields = {
   openapi: boolean;
   webrtc: boolean;
   webhook: boolean;
-  network: string;
+  network: Network;
   testContent: string;
   testResults: $TSFixMe[];
   openapiReqObj: Record<string, $TSFixMe>;
@@ -239,7 +272,7 @@ export interface OpenAPIReqData {
  * exist in the request or response properties
  */
 export interface ReqRes {
-  trpc: any;
+  tRPC: any;
   checked: boolean;
   checkSelected: boolean;
   closeCode?: number;
@@ -261,17 +294,17 @@ export interface ReqRes {
   response: ReqResResponse;
   rpc?: string;
   service?: string;
-  tab: string;
+  tab?: string;
   timeReceived: Date | number | null;
   timeSent: number | null;
   url: string;
   webrtc: boolean;
   frequency?: number;
   duration?: number;
-  classEventPreviewsName: string;
+  // classEventPreviewsName?: string;
 }
 
-export interface SSERequest {
+export interface NewRequestSSE {
   isSSE: boolean;
 }
 
@@ -286,7 +319,7 @@ export interface NewRequestStreams {
   selectedStreamingType: string | null;
   initialQuery: unknown | null;
   queryArr: Record<string, unknown>[] | null;
-  protoPath: unknown | null;
+  protoPath: string;
   services: Record<$TSFixMe, $TSFixMe> | null;
   protoContent: string;
 }
