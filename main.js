@@ -32,6 +32,7 @@
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 // ** Entry point for Electron **
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const contextMenu = require('electron-context-menu')
 
 const { autoUpdater } = require('electron-updater');
 const {
@@ -63,6 +64,10 @@ require('./main_process/main_trpcController.js')();
 
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
+
+// 
+contextMenu()
+
 
 // configure logging
 // autoUpdater.logger = log;
