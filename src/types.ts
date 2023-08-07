@@ -88,6 +88,11 @@ export interface Cookie {
   expires: string | number;
 }
 
+export interface ValidationMessage {
+  uri?: string;
+  json?: string;
+}
+
 export interface MainContainerProps {
     // state
     currentTab?: string;
@@ -103,7 +108,7 @@ export interface MainContainerProps {
     
     // reducers
     reqResItemAdded: (reqRes: ReqRes) => any;
-    setWarningMessage: (message: $TSFixMe) => any;
+    setWarningMessage: (message: ValidationMessage) => any;
     newRequestHeadersSet: () => any;
     newRequestStreamsSet: () => any;
     fieldsReplaced: () => any;

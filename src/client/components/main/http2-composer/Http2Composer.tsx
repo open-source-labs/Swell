@@ -21,16 +21,12 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { CookieOrHeader, ReqRes, MainContainerProps } from '../../../../types';
+import { CookieOrHeader, ReqRes, MainContainerProps, ValidationMessage } from '../../../../types';
 
 import TestContainer from '../sharedComponents/stressTest/TestContainer';
 import Store from '../../../toolkit-refactor/store';
 import { type } from 'os';
 
-interface ValidationMessage {
-  uri?: string;
-  json?: string;
-}
 // Translated from RestContainer.jsx
 export default function Http2Composer(props: MainContainerProps) {
   const dispatch = useDispatch();
