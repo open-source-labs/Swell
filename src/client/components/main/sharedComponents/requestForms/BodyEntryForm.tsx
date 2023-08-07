@@ -6,7 +6,7 @@ import RawBodyTypeSelect from '../requestButtons/RawBodyTypeSelect';
 import JSONPrettify from '../requestButtons/JSONPrettifyButton';
 import TextCodeArea from '../TextCodeArea';
 
-import { NewRequestBody } from '../../../../../types';
+import { NewRequestBody, NewRequestBodySet, NewRequestHeaders, NewRequestHeadersSet} from '../../../../../types';
 // import { Interface } from 'readline';
 
 // import React, { useState, useEffect } from 'react';
@@ -19,20 +19,17 @@ import { NewRequestBody } from '../../../../../types';
 
 
 type BodyEntryFormProps = {
-  newRequestHeaders: {
-    headersArr: string[]
-    count: number
-  }
+  newRequestHeaders: NewRequestHeaders,
   newRequestBody: NewRequestBody,
-  newRequestBodySet: any
-  newRequestHeadersSet: any
+  newRequestBodySet: NewRequestBodySet,
+  newRequestHeadersSet: NewRequestHeadersSet,
   warningMessage: {
     err?: string
     uri?: string
     body?: string
     json?: string
   }
-  isMockServer: boolean
+  isMockServer?: boolean
   placeholder?: string
 }
 
@@ -101,6 +98,8 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
     <div className="mt-1">
       <div className="composer-section-title">Body</div>
       <div className="is-flex is-align-items-center is-justify-content-space-between">
+        
+        {/* Div that contains both drop down menus for 'raw' and 'application/json */}
         <span className="is-flex is-align-items-center">
           <BodyTypeSelect
             newRequestBodySet={newRequestBodySet}
