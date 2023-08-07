@@ -35,6 +35,7 @@ export default function WebRTCComposer(props: $TSFixMe) {
     },
     newTestContentSet,
     newRequestBodySet,
+
     newRequestBody,
     newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
     newRequestHeadersSet,
@@ -60,6 +61,7 @@ export default function WebRTCComposer(props: $TSFixMe) {
       graphQL,
       gRPC,
       webrtc: true,
+
       url,
       timeSent: null,
       timeReceived: null,
@@ -69,7 +71,6 @@ export default function WebRTCComposer(props: $TSFixMe) {
       webrtcData,
       request: {
         method,
-        webrtcData,
         url,
         messages: [],
         body: bodyContent || '',
@@ -89,12 +90,10 @@ export default function WebRTCComposer(props: $TSFixMe) {
       tab: currentTab,
     };
 
-    // add request to history
     /** @todo Fix this TS type error  */
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 
-    //reset for next request
     composerFieldsReset();
 
     newRequestBodySet({
