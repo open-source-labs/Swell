@@ -19,7 +19,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
         placeholder="No url needed"
         // disabled
       />
-      {warningMessage.uri && 
+      {warningMessage.uri && (
         <div className="warningMessage">{warningMessage.uri}</div>
       )}
     </div>
