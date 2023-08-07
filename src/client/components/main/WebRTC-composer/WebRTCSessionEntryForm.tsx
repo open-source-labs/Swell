@@ -6,7 +6,10 @@ interface Props {
 
 const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
   return (
-    <div className="is-flex is-justify-content-center" style={{ padding: '10px' }}>
+    <div
+      className="is-flex is-justify-content-center"
+      style={{ padding: '10px' }}
+    >
       <div id="webRTButton" className="no-border-please button is-webrtc">
         <span>SDP</span>
       </div>
@@ -14,16 +17,16 @@ const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
         className="ml-1 input input-is-medium is-info"
         type="text"
         placeholder="No url needed"
-        disabled
+        // disabled
       />
-      {warningMessage.uri && <div className="warningMessage">{warningMessage.uri}</div>}
+      {warningMessage.uri && (
+        <div className="warningMessage">{warningMessage.uri}</div>
+      )}
     </div>
   );
 };
 
 export default WebRTCSessionEntryForm;
-
-
 
 // import React from 'react';
 
