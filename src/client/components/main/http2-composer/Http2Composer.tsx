@@ -26,12 +26,17 @@ import { CookieOrHeader, ReqRes, MainContainerProps } from '../../../../types';
 import TestContainer from '../sharedComponents/stressTest/TestContainer';
 import Store from '../../../toolkit-refactor/store';
 import { type } from 'os';
+
+interface ValidationMessage {
+  uri?: string;
+  json?: string;
+}
 // Translated from RestContainer.jsx
 export default function Http2Composer(props: MainContainerProps) {
   const dispatch = useDispatch();
   // Destructuring store props.
   const {
-    // currentTab, 
+    // currentTab,
     newRequestFields,
     newRequestHeaders,
     newRequestBody,
@@ -73,7 +78,7 @@ export default function Http2Composer(props: MainContainerProps) {
     setWorkspaceActiveTab,
     reqResItemAdded,
   } = props;
- 
+
   const { protoPath } = newRequestStreams;
   const { headersArr } = newRequestHeaders;
   const { cookiesArr } = newRequestCookies;
@@ -83,11 +88,7 @@ export default function Http2Composer(props: MainContainerProps) {
    * Validates the request before it is sent.
    * @returns ValidationMessage
    */
-  const requestValidationCheck = () => {
-    interface ValidationMessage {
-      uri?: string;
-      json?: string;
-    }
+  const requestValidationCheck = (): ValidationMessage => {
     const validationMessage: ValidationMessage = {};
     // Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
@@ -104,8 +105,11 @@ export default function Http2Composer(props: MainContainerProps) {
     return validationMessage;
   };
 
+  // Returns a new ReqRes object based on user inputs
   const composeReqRes = (): ReqRes => {
-    const protocol: ReqRes['protocol'] = url.match(/(https?:\/\/)/)![0] as ReqRes['protocol'] // used non-null assertion operator '!'
+    const protocol: ReqRes['protocol'] = url.match(
+      /(https?:\/\/)/
+    )![0] as ReqRes['protocol']; // used non-null assertion operator '!'
     const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
     const host: string = protocol + URIWithoutProtocol.split('/')[0];
     let path: string = `/${URIWithoutProtocol.split('/')
@@ -163,13 +167,20 @@ export default function Http2Composer(props: MainContainerProps) {
     };
   };
 
-  /** @todo Figure out what this function does */
-  const sendNewRequest = () => {
+  /*  
+      This function is invoked when 'Send Request' is clicked. It validates input, 
+      saves the reqRes information, clears current inputs, and finally dispatches
+      the reqRes object.
+  */
+  const sendNewRequest = () : void => {
+    // checks to see if input URL is empty or only contains http. If that is the case, return.
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setWarningMessage(warnings);
       return;
     }
+
+    // creates a new reqRes object from user inputs and settings
     const reqRes: ReqRes = composeReqRes();
 
     // add request to history
@@ -185,8 +196,16 @@ export default function Http2Composer(props: MainContainerProps) {
     dispatch(responseDataSaved(reqRes));
   };
 
-  /** @todo Figure out what this function does */
-  const addNewRequest = () => {
+  /*  
+      This function is invoked when 'Add to Workspace' is clicked. Similarly to 
+      sendNewReqnest(), it validates input, 
+      saves the reqRes information, clears current inputs, and finally dispatches
+      the reqRes object.
+
+      NOTE: we probably do not need both addNewRequest and sendNewRequest, because
+      sendNewRequest will also add to workspace. 
+  */
+  const addNewRequest = (): void => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setWarningMessage(warnings);
@@ -196,6 +215,8 @@ export default function Http2Composer(props: MainContainerProps) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
+    
+    // dispatches reqRes object
     reqResItemAdded(reqRes);
 
     //reset for next request
