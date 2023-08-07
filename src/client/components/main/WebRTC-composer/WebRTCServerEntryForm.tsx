@@ -45,12 +45,12 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
       {warningMessage ? <div>{warningMessage.body}</div> : null}
       <div className="composer-section-title">
         TURN or STUN Servers (Currently read only)
-      </div>
+       </div>
       <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
         {/*
          * The WebRTC architecture in Swell does not support updating the STUN/TURN server info
          * to avoid confusion, we will set the `readOnly` flag to `true`
-         */}
+        */}
         <CodeMirror
           value={cmValue}
           theme={vscodeDark}
@@ -58,7 +58,7 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
           height="100px"
           readOnly={true}
         />
-      </div>
+       </div> 
     </div>
   );
 };
