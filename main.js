@@ -65,9 +65,8 @@ require('./main_process/main_trpcController.js')();
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
-// 
+// right-click menu for cut / copy / paste / Inspect Element
 contextMenu()
-
 
 // configure logging
 // autoUpdater.logger = log;
