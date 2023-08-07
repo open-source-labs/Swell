@@ -127,7 +127,7 @@ function MainContainer(props: $TSFixMeObject) {
           </Routes>
         </Box>
         <ResponsePaneContainer />
-      </Split>dfefgv
+      </Split>
     </Box>
   );
 }
