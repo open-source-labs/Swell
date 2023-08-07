@@ -8,6 +8,7 @@ interface Props {
 
 function JSONPrettify({ newRequestBodySet, newRequestBody }: Props) {
   const prettyPrintJSON = () => {
+    if (!newRequestBody.bodyContent) return;
     const prettyString = JSON.stringify(
       JSON.parse(newRequestBody.bodyContent),
       null,

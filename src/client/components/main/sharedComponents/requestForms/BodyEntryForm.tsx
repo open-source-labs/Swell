@@ -98,6 +98,8 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
     <div className="mt-1">
       <div className="composer-section-title">Body</div>
       <div className="is-flex is-align-items-center is-justify-content-space-between">
+        
+        {/* Div that contains both drop down menus for 'raw' and 'application/json */}
         <span className="is-flex is-align-items-center">
           <BodyTypeSelect
             newRequestBodySet={newRequestBodySet}
