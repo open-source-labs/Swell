@@ -56,7 +56,7 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
           theme={vscodeDark}
           extensions={[javascript(), EditorView.lineWrapping]}
           height="100px"
-          readOnly={true}
+          readOnly={false}
         />
       </div>
     </div>
