@@ -21,16 +21,17 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { CookieOrHeader, ReqRes } from '../../../../types';
+import { CookieOrHeader, ReqRes, MainContainerProps } from '../../../../types';
 
 import TestContainer from '../sharedComponents/stressTest/TestContainer';
 import Store from '../../../toolkit-refactor/store';
+import { type } from 'os';
 // Translated from RestContainer.jsx
-export default function Http2Composer(props) {
+export default function Http2Composer(props: MainContainerProps) {
   const dispatch = useDispatch();
   // Destructuring store props.
   const {
-    currentTab,
+    // currentTab, 
     newRequestFields,
     newRequestHeaders,
     newRequestBody,
@@ -52,6 +53,7 @@ export default function Http2Composer(props) {
     grpcUrl,
     network,
     testContent,
+    tRPC,
   } = newRequestFields;
 
   const { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType } =
@@ -71,8 +73,8 @@ export default function Http2Composer(props) {
     setWorkspaceActiveTab,
     reqResItemAdded,
   } = props;
-
-  const { protoPath } = newRequestSSE;
+ 
+  const { protoPath } = newRequestStreams;
   const { headersArr } = newRequestHeaders;
   const { cookiesArr } = newRequestCookies;
   const { isSSE } = newRequestSSE;
@@ -90,11 +92,11 @@ export default function Http2Composer(props) {
     // Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
-      validationMessage.uri = 'Enter a valid URI';
+      validationMessage.uri = 'Enter a valid URL';
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = 'Enter a valid URI';
+      validationMessage.uri = 'Enter a valid URL';
     }
     if (!JSONFormatted && rawType === 'application/json') {
       validationMessage.json = 'Please fix JSON body formatting errors';
@@ -103,7 +105,7 @@ export default function Http2Composer(props) {
   };
 
   const composeReqRes = (): ReqRes => {
-    const protocol: string = url.match(/(https?:\/\/)/)[0];
+    const protocol: ReqRes['protocol'] = url.match(/(https?:\/\/)/)![0] as ReqRes['protocol'] // used non-null assertion operator '!'
     const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
     const host: string = protocol + URIWithoutProtocol.split('/')[0];
     let path: string = `/${URIWithoutProtocol.split('/')
@@ -117,13 +119,14 @@ export default function Http2Composer(props) {
     return {
       id: uuid(),
       createdAt: new Date(),
-      protocol: url.match(/https?:\/\//)[0],
+      protocol: protocol,
       host,
       path,
       url,
       webrtc,
       graphQL,
       gRPC,
+      tRPC,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
@@ -156,9 +159,10 @@ export default function Http2Composer(props) {
       },
       checked: false,
       minimized: false,
-      tab: currentTab,
+      // tab: currentTab,
     };
   };
+
   /** @todo Figure out what this function does */
   const sendNewRequest = () => {
     const warnings = requestValidationCheck();
@@ -323,6 +327,7 @@ export default function Http2Composer(props) {
         )}
         <TestContainer />
         <TestEntryForm
+          isWebSocket={false}
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />

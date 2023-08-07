@@ -29,10 +29,12 @@ interface Headers {
 }
 
 interface HeaderEntryFormProps {
-  isDark: boolean;
+  isDark?: boolean;
   newRequestFields: RequestFields;
   newRequestBody: RequestBody;
   newRequestHeaders: Headers;
+  newRequestStreams: any;
+  newRequestStreamsSet: any;
   newRequestHeadersSet: (headers: Headers) => void;
 }
 

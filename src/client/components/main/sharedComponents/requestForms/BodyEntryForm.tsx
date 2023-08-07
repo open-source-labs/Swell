@@ -6,7 +6,7 @@ import RawBodyTypeSelect from '../requestButtons/RawBodyTypeSelect';
 import JSONPrettify from '../requestButtons/JSONPrettifyButton';
 import TextCodeArea from '../TextCodeArea';
 
-import { NewRequestBody } from '../../../../../types';
+import { NewRequestBody, NewRequestHeaders} from '../../../../../types';
 // import { Interface } from 'readline';
 
 // import React, { useState, useEffect } from 'react';
@@ -19,10 +19,7 @@ import { NewRequestBody } from '../../../../../types';
 
 
 type BodyEntryFormProps = {
-  newRequestHeaders: {
-    headersArr: string[]
-    count: number
-  }
+  newRequestHeaders: NewRequestHeaders,
   newRequestBody: NewRequestBody,
   newRequestBodySet: any
   newRequestHeadersSet: any
@@ -32,7 +29,7 @@ type BodyEntryFormProps = {
     body?: string
     json?: string
   }
-  isMockServer: boolean
+  isMockServe?: boolean
   placeholder?: string
 }
 

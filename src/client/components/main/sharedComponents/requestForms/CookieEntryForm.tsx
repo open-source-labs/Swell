@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import ContentReqRowComposer from './ContentReqRowComposer';
+import { NewRequestBody } from '../../../../../types';
 
 interface Cookie {
   id: string;
@@ -12,6 +13,7 @@ interface Cookie {
 }
 
 interface Props {
+  newRequestBody: NewRequestBody;
   newRequestCookies: {
     cookiesArr: Cookie[];
     count: number;
@@ -21,7 +23,7 @@ interface Props {
     override?: boolean;
     count: number;
   }) => string;
-  isDark: boolean;
+  isDark?: boolean;
 }
 
 const CookieEntryForm = (props: Props) => {
@@ -38,8 +40,7 @@ const CookieEntryForm = (props: Props) => {
     const cookiesDeepCopy = createDeepCookieCopy();
     if (cookiesDeepCopy.length === 0) {
       addCookie([]);
-    } 
-    else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
+    } else if (cookiesDeepCopy[cookiesDeepCopy.length - 1]?.key !== '') {
       addCookie(cookiesDeepCopy);
     }
   });
@@ -66,7 +67,7 @@ const CookieEntryForm = (props: Props) => {
   const onChangeUpdateCookie = (
     id: string,
     field: 'key' | 'value' | 'active',
-    value: boolean | string | number,
+    value: boolean | string | number
   ) => {
     const cookiesDeepCopy = createDeepCookieCopy();
 
@@ -91,7 +92,6 @@ const CookieEntryForm = (props: Props) => {
       cookiesArr: cookiesDeepCopy,
       count: cookiesDeepCopy.length,
     });
-
   };
 
   const deleteCookie = (index: number) => {
@@ -124,8 +124,9 @@ const CookieEntryForm = (props: Props) => {
       <div className="is-flex is-align-content-center">
         <div className="composer-section-title">Cookies</div>
         <button
-          className={`${props.isDark ? 'is-dark-200' : ''
-            } button add-header-gRPC-cookie-button ml-2`}
+          className={`${
+            props.isDark ? 'is-dark-200' : ''
+          } button add-header-gRPC-cookie-button ml-2`}
           id="add-cookie"
           onClick={() => addCookie(createDeepCookieCopy())}
           style={{ height: '3px', width: '3px' }}
@@ -136,8 +137,6 @@ const CookieEntryForm = (props: Props) => {
       <div>{cookiesArr}</div>
     </div>
   );
-}
+};
 
 export default CookieEntryForm;
-
-
