@@ -1,7 +1,9 @@
 import React from 'react';
+import { $TSFixMe, NewRequestFields } from '../../../../types';
 
 interface Props {
-  warningMessage: { uri: string };
+  newRequestFields: NewRequestFields;
+  // warningMessage: { uri: string };
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {

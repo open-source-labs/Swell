@@ -105,6 +105,7 @@ export interface MainContainerProps {
     newRequestSSE: NewRequestSSE,
     warningMessage: any;
     introspectionData: IntrospectionData;
+    newRequestWebRTC: any;
     
     // reducers
     reqResItemAdded: (reqRes: ReqRes) => any;
@@ -119,6 +120,7 @@ export interface MainContainerProps {
     openApiRequestsReplaced: () => any;
     composerFieldsReset: () => any;
     setWorkspaceActiveTab: (arg: string) => any;
+    newRequestWebRTCSet: () => void;
 }
 
 export interface GraphQLResponse {
@@ -227,6 +229,15 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
+export interface ReqResWebRTC {
+  webRTCEntryMode: 'manual' | 'ws';
+  webRTCDataChannel: 'audio' | 'video' | 'text';
+  webRTCWebsocketServer: string | null;
+  webRTCOffer: string | null;
+  webRTCAnswer: string | null;
+  webRTCpeerConnection: any;
+}
+
 /**
  * Describes the results of calling built-in introspection functions in GraphQL.
  */
@@ -264,15 +275,16 @@ export interface OpenAPIReqData {
  *
  * ReqRes {
  *  id: number;
- *  request: ReqResReqest;
+ *  request: ReqResRequest;
  *  response: ReqResResponse;
  * }
  *
  * as well as any additional metadata needed as properties that doesn't already
  * exist in the request or response properties
  */
+
 export interface ReqRes {
-  tRPC: any;
+  tRPC?: any;
   checked: boolean;
   checkSelected: boolean;
   closeCode?: number;
@@ -287,21 +299,34 @@ export interface ReqRes {
   isHTTP2?: boolean;
   minimized: boolean;
   openapi?: boolean;
-  protocol: Protocol;
-  protoPath: string;
+  protocol?: Protocol;
+  protoPath?: string;
   path: string;
-  request: ReqResRequest;
-  response: ReqResResponse;
+  request: ReqResRequest | RequestWebRTC;
+  response: ReqResResponse | ResponseWebRTC;
   rpc?: string;
   service?: string;
   tab?: string;
   timeReceived: Date | number | null;
   timeSent: number | null;
   url: string;
-  webrtc: boolean;
+  webrtc?: boolean;
   frequency?: number;
   duration?: number;
   // classEventPreviewsName?: string;
+} ;
+
+export interface ResponseWebRTC {
+
+}
+
+export interface RequestWebRTC {
+  webRTCEntryMode: 'manual' | 'ws';
+  webRTCDataChannel: 'audio' | 'video' | 'text';
+  webRTCWebsocketServer: string | null;
+  webRTCOffer: string | null;
+  webRTCAnswer: string | null;
+  webRTCpeerConnection: any;
 }
 
 export interface NewRequestSSE {

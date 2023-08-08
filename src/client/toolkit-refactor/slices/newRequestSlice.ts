@@ -28,6 +28,8 @@ type NewRequestStore = {
   };
   newRequestBody: NewRequestBody;
   newRequestSSE: NewRequestSSE;
+  newRequestWebRTC: unknown;
+
 };
 
 const initialState: NewRequestStore = {
@@ -54,7 +56,7 @@ const initialState: NewRequestStore = {
     selectedStreamingType: null,
     initialQuery: null,
     queryArr: null,
-    protoPath: null,
+    protoPath: '',
     services: null,
     protoContent: '',
   },
@@ -65,6 +67,10 @@ const initialState: NewRequestStore = {
   newRequestSSE: {
     isSSE: false,
   },
+  newRequestWebRTC: {
+    webRTCOffer: null,
+    webRTCAnswer: null,
+  }
 };
 
 const newRequestSlice = createSlice({
@@ -82,6 +88,10 @@ const newRequestSlice = createSlice({
     //Before toolkit conversion was SET_NEW_REQUEST_BODY or setNewRequestBody
     newRequestBodySet: (state, action: PayloadAction<NewRequestBody>) => {
       state.newRequestBody = action.payload;
+    },
+
+    newRequestWebRTCSet: (state, action: PayloadAction<NewRequestBody>) => {
+      state.newRequestWebRTC = action.payload;
     },
 
     //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
@@ -184,6 +194,7 @@ export const {
   newRequestStreamsSet,
   composerFieldsReset,
   newRequestContentByProtocol,
+  newRequestWebRTCSet,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 
