@@ -142,11 +142,11 @@ export default function WebRTCComposer(props: $TSFixMe) {
           newRequestBodySet={newRequestBodySet}
         />
 
-        <TestEntryForm
+        {/* <TestEntryForm
           newTestContentSet={newTestContentSet}
           testContent={testContent}
           isWebSocket={false}
-        />
+        /> */}
         <div className="is-3rem-footer is-clickable is-margin-top-auto">
           <NewRequestButton onClick={addNewRequest} />
         </div>
