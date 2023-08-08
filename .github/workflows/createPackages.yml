@@ -1,17 +1,22 @@
 name: Master Workflow
 
+# on:
+#   pull_request:
+#     branches:
+#       - dev
+#     types:
+#       - closed
+
 on:
-  pull_request:
+  push:
     branches:
-      - dev
-    types:
-      - closed
+      - cdfix
 
 jobs:
   create_release:
     runs-on: windows-latest
 
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
 
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -86,17 +91,6 @@ jobs:
         with:
           name: linux-app
           path: release/Swell-1.15.0.AppImage # Change the path according to your Linux build output
-          
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./release/Swell-1.16.0.AppImage # Replace with the package file path
-          asset_name: Swell-1.16.0.AppImage # Replace with the package file name
-          asset_content_type: application/octet-stream
 
   mac:
     needs: create_release
