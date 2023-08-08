@@ -4,6 +4,8 @@ import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { $TSFixMe, NewRequestWebRTCSet } from '../../../../types';
 
 // const jBeautify = require('js-beautify').js;
@@ -44,15 +46,24 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
 
   return (
     <div className="mt-3">
-      {warningMessage ? <div>{warningMessage.body}</div> : null}
-      <div className="composer-section-title">
-        TURN or STUN Servers (Currently read only)
-      </div>
+      <Select 
+      className="button is-normal is-primary-100 add-request-button  no-border-please"
+      style={{ width : "aut", marginLeft : "3vw", marginTop : "5px", marginBottom : "5px" }}
+      id="method-select"
+        // value={http2Method}
+        // onChange={handleMethodSelect}
+    >
+        <MenuItem value="Video">Video</MenuItem>
+        <MenuItem value="Audio">Audio</MenuItem>
+        <MenuItem value="Text">Text</MenuItem>
+      </Select>
+      {/* <button className="button is-normal is-primary-100 add-request-button  no-border-please dropbtn"style={{ width : "12vw", marginLeft : "3vw", marginBottom : "5px"}}>SPECIFY CHANNEL</button>
+      <div className="dropdown-content">
+        <a href="#">Video</a>
+        <a href="#">Audio</a>
+        <a href="#">Text</a>
+    </div> */}
       <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
-        {/*
-         * The WebRTC architecture in Swell does not support updating the STUN/TURN server info
-         * to avoid confusion, we will set the `readOnly` flag to `true`
-         */}
         <CodeMirror
           value={cmValue}
           theme={vscodeDark}
@@ -60,8 +71,27 @@ const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
           height="100px"
           readOnly={false}
         />
-      </div>
-    </div>
+      </div> 
+     <div>
+      <button  
+      className="button is-normal is-primary-100 add-request-button  no-border-please"
+      style={{ width : "6vw", marginLeft : "3vw", marginTop : "5px", marginBottom : "5px" }}>get offer</button>
+     </div>
+     <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
+        <CodeMirror
+          value={cmValue}
+          theme={vscodeDark}
+          extensions={[javascript(), EditorView.lineWrapping]}
+          height="100px"
+          readOnly={false}
+        />
+     </div> 
+      <button 
+      id="webRTButton" 
+      className="button is-normal is-primary-100 add-request-button  no-border-please"
+      style={{ width : "6vw", marginLeft : "3vw", marginTop : "5px" }}>get   answer</button>
+      {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+  </div>
   );
 };
 

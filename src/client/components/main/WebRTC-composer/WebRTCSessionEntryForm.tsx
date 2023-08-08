@@ -2,30 +2,34 @@ import React from 'react';
 import { $TSFixMe, NewRequestFields } from '../../../../types';
 
 interface Props {
-  fieldsReplaced: $TSFixMe
+  fieldsReplaced: $TSFixMe;
   newRequestFields: NewRequestFields;
   warningMessage: { uri: string };
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props) => {
   return (
-    <div
-      className="is-flex is-justify-content-center"
-      style={{ padding: '10px' }}
-    >
-      <div id="webRTButton" className="no-border-please button is-webrtc">
-        <span>SDP</span>
+    <>
+      <div
+        className="is-flex is-justify-content-center"
+        style={{ padding: '10px' }}
+      >
+        <div>
+          <button
+            id="webRTButton"
+            className="no-border-please button is-webrtc"
+            style={{ width: '5vw' }}
+          >
+            WS
+          </button>
+        </div>
+        <input
+          className="ml-1 input input-is-medium is-info"
+          type="text"
+          placeholder="Enter WS Server"
+        />
       </div>
-      <input
-        className="ml-1 input input-is-medium is-info"
-        type="text"
-        placeholder="No url needed"
-        // disabled
-      />
-      {props.warningMessage.uri && (
-        <div className="warningMessage">{props.warningMessage.uri}</div>
-      )}
-    </div>
+    </>
   );
 };
 

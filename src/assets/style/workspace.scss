@@ -243,3 +243,27 @@
   float: right;
 }
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #6d6969;
+  float: none;
+  width: 100%;
+  overflow: auto;
+  z-index: 1;
+}
+
+.dropdown-content a:hover {
+  background-color: #8e1212;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
