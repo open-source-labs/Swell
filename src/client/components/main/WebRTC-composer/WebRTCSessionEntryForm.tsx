@@ -6,10 +6,12 @@ interface Props {
 
 const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
   return (
+
     <>
       <div className="is-flex is-justify-content-center" style={{ padding: '10px' }}>
       <div>
        <button id="webRTButton" className="no-border-please button is-webrtc" style={{ width : "5vw" }}>WS</button>
+
       </div>
         <input
           className="ml-1 input input-is-medium is-info"
@@ -50,8 +52,6 @@ const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
 };
 
 export default WebRTCSessionEntryForm;
-
-
 
 // import React from 'react';
 

@@ -109,12 +109,12 @@ export interface MainContainerProps {
     // reducers
     reqResItemAdded: (reqRes: ReqRes) => any;
     setWarningMessage: (message: ValidationMessage) => any;
-    newRequestHeadersSet: () => any;
+    newRequestHeadersSet: NewRequestHeadersSet;
     newRequestStreamsSet: () => any;
     fieldsReplaced: () => any;
-    newRequestBodySet: () => any;
+    newRequestBodySet: NewRequestBodySet;
     newTestContentSet: () => any;
-    newRequestCookiesSet: () => any;
+    newRequestCookiesSet: NewRequestCookiesSet;
     newRequestSSESet: (arg: boolean) => any;
     openApiRequestsReplaced: () => any;
     composerFieldsReset: () => any;
@@ -136,7 +136,7 @@ export interface Message {
 }
 
 export interface NewRequestBody {
-  bodyContent: string | undefined;
+  bodyContent: string ;
   bodyVariables: string;
   bodyType: string;
   rawType: string;
