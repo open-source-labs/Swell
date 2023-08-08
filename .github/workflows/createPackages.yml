@@ -1,22 +1,22 @@
 name: Master Workflow
 
-# on:
-#   pull_request:
-#     branches:
-#       - dev
-#     types:
-#       - closed
-
 on:
-  push:
+  pull_request:
     branches:
-      - nitesh-cdFix
+      - nitesh-cdFix-pullRequest
+    types:
+      - closed
+
+# on:
+#   push:
+#     branches:
+#       - nitesh-cdFix
 
 jobs:
   create_release:
     runs-on: windows-latest
 
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
 
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
