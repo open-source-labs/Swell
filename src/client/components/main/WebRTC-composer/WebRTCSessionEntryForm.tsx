@@ -7,26 +7,31 @@ interface Props {
 const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
   return (
     <>
-    <div className="is-flex is-justify-content-center" style={{ padding: '10px' }}>
+      <div className="is-flex is-justify-content-center" style={{ padding: '10px' }}>
       <div>
-       <button id="webRTButton" className="no-border-please button is-webrtc">WS</button>
+       <button id="webRTButton" className="no-border-please button is-webrtc" style={{ width : "5vw" }}>WS</button>
       </div>
-      <input
-        className="ml-1 input input-is-medium is-info"
-        type="text"
-        placeholder="Enter WS Server"
+        <input
+          className="ml-1 input input-is-medium is-info"
+          type="text"
+          placeholder="Enter WS Server"
         />
+      </div>
+    <div className="dropdown">
+      <button className="button is-normal is-primary-100 add-request-button  no-border-please dropbtn"style={{ width : "12vw", marginLeft : "3vw", marginBottom : "5px"}}>SPECIFY CHANNEL</button>
+      <div className="dropdown-content">
+        <a href="#">Video</a>
+        <a href="#">Audio</a>
+        <a href="#">Text</a>
+      </div>
     </div>
-    <div>
-      <button id="webRTButton" className="no-border-please button is-webrtc clickDrop"style={{ height : "3.5vh", marginLeft : "3vw"}}>SPECIFY CHANNEL</button>
-     </div>
       <input
         className="ml-1 input input-is-medium is-info"
         type="text"
         placeholder="TEXT AREA"
        />
      <div>
-      <button className="no-border-please button is-webrtc"style={{ height : "3.5vh", marginLeft : "3vw" }}>get offer</button>
+      <button  className="button is-normal is-primary-100 add-request-button  no-border-please"style={{ width : "6vw", marginLeft : "3vw", marginTop : "5px", marginBottom : "5px" }}>get offer</button>
      </div>
      <div>
      <input
@@ -36,8 +41,8 @@ const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
        />
      </div>
      <div>
-      <button id="webRTButton" className="no-border-please button is-webrtc"style={{ height : "3.5vh", marginLeft : "3vw" }}>get   answer</button>
-      <button id="webRTButton" className="no-border-please button is-webrtc"style={{ height : "3.5vh", marginLeft : "40vw" }}>add to wkspce</button>
+      <button id="webRTButton" className="button is-normal is-primary-100 add-request-button  no-border-please"style={{ width : "6vw", marginLeft : "3vw", marginTop : "5px" }}>get   answer</button>
+      {/* <button id="webRTButton"  className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"style={{ marginLeft : "40vw" }}>add to wkspce</button> */}
      </div>
       {/* {warningMessage.uri && <div className="warningMessage">{warningMessage.uri}</div>} */}
     </>
