@@ -200,8 +200,7 @@ export type NewRequestFields = {
   openapiReqObj: Record<string, $TSFixMe>;
 };
 
-//& DOnt think this is really being used anymore?
-//& ACTUALLY look below at ReqRes and seems to be assigned to key 'request'
+
 export interface ReqResRequest {
   // Currently, the body for WebRTC connection is an object
   // and typescript does not support union between string and object very well
