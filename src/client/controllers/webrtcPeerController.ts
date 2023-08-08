@@ -25,10 +25,9 @@ class Peer {
     const configuration: RTCConfiguration = {
       iceServers,
     };
-
+    //returning a new RTCPeer connection object with the appropriate configuration
     return new RTCPeerConnection(configuration);
   }
-
   async establishSDP() {
     this.connection.createDataChannel('test');
     this.connection
@@ -37,7 +36,6 @@ class Peer {
         this.connection.setLocalDescription(offer)
       );
   }
-
   async establishAnswer(offer: RTCSessionDescriptionInit) {
     const remoteOffer = new RTCSessionDescription(offer);
     await this.connection.setRemoteDescription(remoteOffer);

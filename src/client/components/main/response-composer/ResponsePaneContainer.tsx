@@ -55,7 +55,7 @@ const ResponsePaneContainer: FC = () => {
               {`${response?.responseSize}kb`}
             </div>
           )}
-          <h3>Responses</h3>
+          <h3>Nothing</h3>
           <StatusButtons currentResponse={currentResponse as any} />
         </div>
         <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
