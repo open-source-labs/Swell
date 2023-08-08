@@ -21,16 +21,18 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { CookieOrHeader, ReqRes } from '../../../../types';
+import { CookieOrHeader, ReqRes, MainContainerProps, ValidationMessage } from '../../../../types';
 
 import TestContainer from '../sharedComponents/stressTest/TestContainer';
 import Store from '../../../toolkit-refactor/store';
+import { type } from 'os';
+
 // Translated from RestContainer.jsx
-export default function Http2Composer(props) {
+export default function Http2Composer(props: MainContainerProps) {
   const dispatch = useDispatch();
   // Destructuring store props.
   const {
-    currentTab,
+    // currentTab,
     newRequestFields,
     newRequestHeaders,
     newRequestBody,
@@ -52,6 +54,7 @@ export default function Http2Composer(props) {
     grpcUrl,
     network,
     testContent,
+    tRPC,
   } = newRequestFields;
 
   const { JSONFormatted, rawType, bodyContent, bodyVariables, bodyType } =
@@ -72,7 +75,7 @@ export default function Http2Composer(props) {
     reqResItemAdded,
   } = props;
 
-  const { protoPath } = newRequestSSE;
+  const { protoPath } = newRequestStreams;
   const { headersArr } = newRequestHeaders;
   const { cookiesArr } = newRequestCookies;
   const { isSSE } = newRequestSSE;
@@ -81,20 +84,16 @@ export default function Http2Composer(props) {
    * Validates the request before it is sent.
    * @returns ValidationMessage
    */
-  const requestValidationCheck = () => {
-    interface ValidationMessage {
-      uri?: string;
-      json?: string;
-    }
+  const requestValidationCheck = (): ValidationMessage => {
     const validationMessage: ValidationMessage = {};
     // Error conditions...
     if (/https?:\/\/$|wss?:\/\/$/.test(url)) {
       //if url is only http/https/ws/wss://
-      validationMessage.uri = 'Enter a valid URI';
+      validationMessage.uri = 'Enter a valid URL';
     }
     if (!/(https?:\/\/)|(wss?:\/\/)/.test(url)) {
       //if url doesn't have http/https/ws/wss://
-      validationMessage.uri = 'Enter a valid URI';
+      validationMessage.uri = 'Enter a valid URL';
     }
     if (!JSONFormatted && rawType === 'application/json') {
       validationMessage.json = 'Please fix JSON body formatting errors';
@@ -102,8 +101,11 @@ export default function Http2Composer(props) {
     return validationMessage;
   };
 
+  // Returns a new ReqRes object based on user inputs
   const composeReqRes = (): ReqRes => {
-    const protocol: string = url.match(/(https?:\/\/)/)[0];
+    const protocol: ReqRes['protocol'] = url.match(
+      /(https?:\/\/)/
+    )![0] as ReqRes['protocol']; // used non-null assertion operator '!'
     const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
     const host: string = protocol + URIWithoutProtocol.split('/')[0];
     let path: string = `/${URIWithoutProtocol.split('/')
@@ -117,13 +119,14 @@ export default function Http2Composer(props) {
     return {
       id: uuid(),
       createdAt: new Date(),
-      protocol: url.match(/https?:\/\//)[0],
+      protocol: protocol,
       host,
       path,
       url,
       webrtc,
       graphQL,
       gRPC,
+      tRPC,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
@@ -156,16 +159,24 @@ export default function Http2Composer(props) {
       },
       checked: false,
       minimized: false,
-      tab: currentTab,
+      // tab: currentTab,
     };
   };
-  /** @todo Figure out what this function does */
-  const sendNewRequest = () => {
+
+  /*  
+      This function is invoked when 'Send Request' is clicked. It validates input, 
+      saves the reqRes information, clears current inputs, and finally dispatches
+      the reqRes object.
+  */
+  const sendNewRequest = () : void => {
+    // checks to see if input URL is empty or only contains http. If that is the case, return.
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setWarningMessage(warnings);
       return;
     }
+
+    // creates a new reqRes object from user inputs and settings
     const reqRes: ReqRes = composeReqRes();
 
     // add request to history
@@ -181,8 +192,16 @@ export default function Http2Composer(props) {
     dispatch(responseDataSaved(reqRes));
   };
 
-  /** @todo Figure out what this function does */
-  const addNewRequest = () => {
+  /*  
+      This function is invoked when 'Add to Workspace' is clicked. Similarly to 
+      sendNewReqnest(), it validates input, 
+      saves the reqRes information, clears current inputs, and finally dispatches
+      the reqRes object.
+
+      NOTE: we probably do not need both addNewRequest and sendNewRequest, because
+      sendNewRequest will also add to workspace. 
+  */
+  const addNewRequest = (): void => {
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
       setWarningMessage(warnings);
@@ -192,6 +211,8 @@ export default function Http2Composer(props) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
+    
+    // dispatches reqRes object
     reqResItemAdded(reqRes);
 
     //reset for next request
@@ -323,6 +344,7 @@ export default function Http2Composer(props) {
         )}
         <TestContainer />
         <TestEntryForm
+          isWebSocket={false}
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />

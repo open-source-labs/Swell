@@ -1,12 +1,14 @@
 import React from 'react';
+import { NewRequestBody, NewRequestBodySet } from '../../../../../types';
 
 interface Props {
-  newRequestBodySet: (body: { bodyContent: string }) => void;
-  newRequestBody: { bodyContent: string };
+  newRequestBodySet: NewRequestBodySet
+  newRequestBody: NewRequestBody
 }
 
 function JSONPrettify({ newRequestBodySet, newRequestBody }: Props) {
   const prettyPrintJSON = () => {
+    if (!newRequestBody.bodyContent) return;
     const prettyString = JSON.stringify(
       JSON.parse(newRequestBody.bodyContent),
       null,

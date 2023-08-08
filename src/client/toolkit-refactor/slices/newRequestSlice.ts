@@ -12,7 +12,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   NewRequestStreams,
   NewRequestBody,
-  SSERequest,
+  NewRequestSSE,
   CookieOrHeader,
 } from '../../../types';
 
@@ -27,7 +27,7 @@ type NewRequestStore = {
     count: number;
   };
   newRequestBody: NewRequestBody;
-  newRequestSSE: SSERequest;
+  newRequestSSE: NewRequestSSE;
 };
 
 const initialState: NewRequestStore = {
