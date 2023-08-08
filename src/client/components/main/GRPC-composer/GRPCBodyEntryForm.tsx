@@ -41,10 +41,9 @@ const GRPCBodyEntryForm: React.FC<Props> = (props) => {
     // props.saveChanges(false);
     const streamsArr = [...props.newRequestStreams.streamsArr];
     const streamContent = [...props.newRequestStreams.streamContent];
-
     for (let i = 0; i < streamsArr.length; i++) {
       if (streamsArr[i].id === streamID) {
-        streamsArr[streamID].query = value;
+        streamsArr[streamID] = { ...streamsArr[streamID], query: value };
         streamContent[streamID] = value;
         props.newRequestStreamsSet({
           ...props.newRequestStreams,

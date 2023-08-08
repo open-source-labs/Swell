@@ -1,17 +1,13 @@
 name: Master Workflow
 
 on:
-  pull_request:
+  push:
     branches:
       - dev
-    types:
-      - closed
 
 jobs:
   create_release:
     runs-on: windows-latest
-
-    if: github.event.pull_request.merged == true
 
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
