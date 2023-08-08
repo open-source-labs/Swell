@@ -12,9 +12,7 @@
  * there is room for better optimizatilson of end-to-end testing.
  *
  * @todo As of v.13, all tests should be passing EXCEPT:
- * - gRPCtest()
  * - openAPITest()
- * - gRPCTestingTest()
  *
  *  Above tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
@@ -47,11 +45,11 @@ const fs = require('fs-extra');
 fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 // Testing suite
-describe('Electron UI Rendering', function () {
+describe('Electron UI Rendering', function () { // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
   appOpensTests();
 }).timeout(20000);
 
-describe('Protocol selection and usage', function () {
+describe('Protocol selection and usage', function () { //group of tests that focuses on how application handles different protocols
   reqInputTests();
   httpTest();
   graphqlTest();
