@@ -4,10 +4,12 @@ import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { $TSFixMe, NewRequestWebRTCSet } from '../../../../types';
 
 // const jBeautify = require('js-beautify').js;
 
 interface Props {
+  newRequestWebRTCSet: NewRequestWebRTCSet;
   warningMessage: {
     body: string;
   } | null;

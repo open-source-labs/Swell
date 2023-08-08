@@ -2,11 +2,12 @@ import React from 'react';
 import { $TSFixMe, NewRequestFields } from '../../../../types';
 
 interface Props {
+  fieldsReplaced: $TSFixMe
   newRequestFields: NewRequestFields;
-  // warningMessage: { uri: string };
+  warningMessage: { uri: string };
 }
 
-const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
+const WebRTCSessionEntryForm: React.FC<Props> = (props) => {
   return (
     <div
       className="is-flex is-justify-content-center"
@@ -21,8 +22,8 @@ const WebRTCSessionEntryForm: React.FC<Props> = ({ warningMessage }) => {
         placeholder="No url needed"
         // disabled
       />
-      {warningMessage.uri && (
-        <div className="warningMessage">{warningMessage.uri}</div>
+      {props.warningMessage.uri && (
+        <div className="warningMessage">{props.warningMessage.uri}</div>
       )}
     </div>
   );

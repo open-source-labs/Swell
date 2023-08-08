@@ -136,7 +136,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
           // newRequestHeaders={newRequestHeaders}
           // newRequestStreams={newRequestStreams}
           // newRequestBody={newRequestBody}
-          // fieldsReplaced={fieldsReplaced}
+          fieldsReplaced={fieldsReplaced}
           // newRequestHeadersSet={newRequestHeadersSet}
           // newRequestStreamsSet={newRequestStreamsSet}
           // newRequestCookiesSet={newRequestCookiesSet}
