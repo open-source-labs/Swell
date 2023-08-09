@@ -57,6 +57,7 @@ head.appendChild(meta);
 const container = document.getElementById('root');
 const rt = createRoot(container);
 
+// Created this method to allow Redux State to be accessible in Integration testing
 window.getReduxState = () => store.getState();
 
 
