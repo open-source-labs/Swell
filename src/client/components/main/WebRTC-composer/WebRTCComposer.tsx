@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../../controllers/historyController';
 // Import local components
-import { ReqRes, $TSFixMe } from '../../../../types';
+import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -12,11 +12,11 @@ import { ReqRes, $TSFixMe } from '../../../../types';
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+// import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
 
-export default function WebRTCComposer(props: $TSFixMe) {
+export default function WebRTCComposer(props: MainContainerProps) {
   const {
     composerFieldsReset,
     fieldsReplaced,
@@ -35,11 +35,11 @@ export default function WebRTCComposer(props: $TSFixMe) {
     },
     newTestContentSet,
     newRequestBodySet,
-
+    newRequestWebRTCSet,
     newRequestBody,
     newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
     newRequestHeadersSet,
-    webrtcData,
+    // webrtcData,
     newRequestHeaders,
     newRequestCookiesSet,
     newRequestStreamsSet,
@@ -49,38 +49,42 @@ export default function WebRTCComposer(props: $TSFixMe) {
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
+    newRequestWebRTC, // state.newRequest.newRequestWebRTC
   } = props;
 
-  const addNewRequest = () => {
+  /* 
+  newRequestWebRTCSet(...newRequestWebRTC, )
+  */
+  
+
+  // Builds ReqRes object from properties in NewRequest
+  const composeReqRes = (): ReqRes => {
+    const requestWebRTC: RequestWebRTC = {
+      webRTCEntryMode: 'Manual',
+      webRTCDataChannel: 'Video',
+      webRTCWebsocketServer: null,
+      webRTCOffer: newRequestWebRTC.webRTCOffer,
+      webRTCAnswer: newRequestWebRTC.webRTCAnswer,
+      webRTCpeerConnection: null,
+    }
+
     const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
-      protocol,
+      // protocol,
       host: '',
       path: '',
       graphQL,
       gRPC,
       webrtc: true,
-
       url,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
-      webrtcData,
-      request: {
-        method,
-        url,
-        messages: [],
-        body: bodyContent || '',
-        bodyType,
-        bodyVariables: bodyVariables || '',
-        rawType,
-        network: 'webRtc',
-        restUrl,
-        webrtcUrl,
-      },
+      // webrtcData,
+      request: requestWebRTC,
       response: {
         headers: null,
         events: [],
@@ -90,23 +94,27 @@ export default function WebRTCComposer(props: $TSFixMe) {
       tab: currentTab,
     };
 
-    /** @todo Fix this TS type error  */
+    return reqRes;
+  }
+
+  // Saves ReqRes object into history and ReqResArray
+  const addNewRequest = (): void => {
+    const reqRes: ReqRes = composeReqRes()
+
     historyController.addHistoryToIndexedDb(reqRes);
+
     reqResItemAdded(reqRes);
-
     composerFieldsReset();
-
-    newRequestBodySet({
-      ...newRequestBody,
-      bodyType: 'stun-ice',
-      rawType: '',
-    });
-    fieldsReplaced({
-      ...newRequestFields,
-      url,
-      webrtcUrl,
-    });
-
+    // newRequestBodySet({
+    //   ...newRequestBody,
+    //   bodyType: 'stun-ice',
+    //   rawType: '',
+    // });
+    // fieldsReplaced({
+    //   ...newRequestFields,
+    //   url,
+    //   webrtcUrl,
+    // });
     setWorkspaceActiveTab('workspace');
   };
 
@@ -123,23 +131,27 @@ export default function WebRTCComposer(props: $TSFixMe) {
         {/** @todo Fix TSX type error */}
         <WebRTCSessionEntryForm
           newRequestFields={newRequestFields}
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-          newRequestCookiesSet={newRequestCookiesSet}
-          newRequestBodySet={newRequestBodySet}
+          newRequestWebRTC={newRequestWebRTC}
+          newRequestWebRTCSet={newRequestWebRTCSet}
+          // newRequestHeaders={newRequestHeaders}
+          // newRequestStreams={newRequestStreams}
+          // newRequestBody={newRequestBody}
+          fieldsReplaced={fieldsReplaced} 
+          // newRequestHeadersSet={newRequestHeadersSet}
+          // newRequestStreamsSet={newRequestStreamsSet}
+          // newRequestCookiesSet={newRequestCookiesSet}
+          // newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          setWarningMessage={setWarningMessage}
-          newTestContentSet={newTestContentSet}
+          // setWarningMessage={setWarningMessage}
+          // newTestContentSet={newTestContentSet}
         />
 
         <WebRTCServerEntryForm
+          newRequestWebRTC={newRequestWebRTC}
+          newRequestWebRTCSet={newRequestWebRTCSet}
           warningMessage={warningMessage}
-          newRequestBody={newRequestBody}
-          newRequestBodySet={newRequestBodySet}
+          // newRequestBody={newRequestBody}
+          // newRequestBodySet={newRequestBodySet}
         />
 
         {/* <TestEntryForm

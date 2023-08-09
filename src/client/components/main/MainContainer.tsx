@@ -12,6 +12,7 @@ import {
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
+  newRequestWebRTCSet,
 } from '../../toolkit-refactor/slices/newRequestSlice';
 
 import { openApiRequestsReplaced } from '../../toolkit-refactor/slices/newRequestOpenApiSlice';
@@ -57,6 +58,7 @@ const mapStateToProps = (store: RootState) => {
     newRequestSSE: store.newRequest.newRequestSSE,
     warningMessage: store.warningMessage,
     introspectionData: store.introspectionData,
+    newRequestWebRTC: store.newRequest.newRequestWebRTC,
   };
 };
 
@@ -83,6 +85,9 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
     dispatch(newRequestBodySet(requestBodyObj));
   },
+  newRequestWebRTCSet: (newReqtWebRTCObj: $TSFixMeObject) => {
+    dispatch(newRequestWebRTCSet(newReqtWebRTCObj));
+  },
   newTestContentSet: (testContent: $TSFixMe) => {
     dispatch(newTestContentSet(testContent));
   },
@@ -101,6 +106,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setWorkspaceActiveTab: (tabName: $TSFixMe) => {
     dispatch(setWorkspaceActiveTab(tabName));
   },
+
 });
 
 
