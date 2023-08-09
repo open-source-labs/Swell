@@ -17,7 +17,7 @@ interface Props {
   } | null;
 }
 
-const WebRTCServerEntryForm: React.FC<Props> = (props) => {
+const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const requestBody = useSelector(
     (state: any) => state.newRequest.newRequestBody
   );
@@ -28,31 +28,36 @@ const WebRTCServerEntryForm: React.FC<Props> = (props) => {
   const bodyContent = useSelector(
     (state: any) => state.newRequest.newRequestBody.bodyContent
   );
-  useEffect(() => {
-    if (!bodyIsNew) {
-      /**
-       * @todo This code randomly causes parts of the app to crash. As in, it
-       * will randomly decide to start or stop working without you changing
-       * anything. Need to investigate
-       *
-       * (OR needs to be re-built....
-       *          - another iteration group)
-       */
-      // setValue(
-      //   jBeautify(JSON.stringify(bodyContent?.iceConfiguration?.iceServers))
-      // );
-    }
-  }, [bodyContent, bodyIsNew]);
+  // useEffect(() => {
+  //   if (!bodyIsNew) {
+  //     /**
+  //      * @todo This code randomly causes parts of the app to crash. As in, it
+  //      * will randomly decide to start or stop working without you changing
+  //      * anything. Need to investigate
+  //      *
+  //      * (OR needs to be re-built....
+  //      *          - another iteration group)
+  //      */
+  //     // setValue(
+  //     //   jBeautify(JSON.stringify(bodyContent?.iceConfiguration?.iceServers))
+  //     // );
+  //   }
+  // }, [bodyContent, bodyIsNew]);
 
   return (
     <div className="mt-3">
-      <Select 
-      className="button is-normal is-primary-100 add-request-button  no-border-please"
-      style={{ width : "aut", marginLeft : "3vw", marginTop : "5px", marginBottom : "5px" }}
-      id="method-select"
+      <Select
+        className="button is-normal is-primary-100 add-request-button  no-border-please"
+        style={{
+          width: 'aut',
+          marginLeft: '3vw',
+          marginTop: '5px',
+          marginBottom: '5px',
+        }}
+        id="method-select"
         // value={http2Method}
         // onChange={handleMethodSelect}
-    >
+      >
         <MenuItem value="Video">Video</MenuItem>
         <MenuItem value="Audio">Audio</MenuItem>
         <MenuItem value="Text">Text</MenuItem>
@@ -71,13 +76,16 @@ const WebRTCServerEntryForm: React.FC<Props> = (props) => {
           height="100px"
           readOnly={false}
         />
-      </div> 
-     <div>
-      <button  
-      className="button is-normal is-primary-100 add-request-button  no-border-please"
-      style={{ width : "6vw", marginLeft : "3vw", marginTop : "5px", marginBottom : "5px" }}>get offer</button>
-     </div>
-     <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
+      </div>
+      <div>
+        <button
+          className="button is-normal is-primary-100 add-request-button  no-border-please"
+          style={{ margin: '10px' }}
+        >
+          Get Offer
+        </button>
+      </div>
+      <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
         <CodeMirror
           value={cmValue}
           theme={vscodeDark}
@@ -85,13 +93,16 @@ const WebRTCServerEntryForm: React.FC<Props> = (props) => {
           height="100px"
           readOnly={false}
         />
-     </div> 
-      <button 
-      id="webRTButton" 
-      className="button is-normal is-primary-100 add-request-button  no-border-please"
-      style={{ width : "6vw", marginLeft : "3vw", marginTop : "5px" }}>get   answer</button>
+      </div>
+      <button
+        id="webRTButton"
+        className="button is-normal is-primary-100 add-request-button  no-border-please"
+        style={{ margin: '10px' }}
+      >
+        Get Answer
+      </button>
       {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
-  </div>
+    </div>
   );
 };
 
