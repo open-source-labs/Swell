@@ -65,6 +65,8 @@ require('./main_process/main_trpcController.js')();
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
+
+
 const contextMenu = require('electron-context-menu')
 contextMenu()
 
