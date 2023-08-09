@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
@@ -25,6 +26,7 @@ interface Props {
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   let { newRequestWebRTC, newRequestWebRTCSet } = props;
+  let [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] = useState(false);
 
   const requestBody = useSelector(
     (state: any) => state.newRequest.newRequestBody
@@ -63,34 +65,99 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
       ],
     };
     let peerConnection = new RTCPeerConnection(servers);
-    newRequestWebRTCSet({...newRequestWebRTC, webRTCpeerConnection: peerConnection})
+    newRequestWebRTCSet({
+      ...newRequestWebRTC,
+      webRTCpeerConnection: peerConnection,
+    });
   }, []);
 
   const createOffer = async () => {
-
-    const { webRTCpeerConnection } = newRequestWebRTC
+    const { webRTCpeerConnection } = newRequestWebRTC;
     let offer = await webRTCpeerConnection.createOffer();
-    newRequestWebRTCSet({...newRequestWebRTC, webRTCOffer: JSON.stringify(offer)})
-  }
+    newRequestWebRTCSet({
+      ...newRequestWebRTC,
+      webRTCOffer: JSON.stringify(offer),
+    });
+  };
 
   return (
     <div className="mt-3">
-      <Select
-        className="button is-normal is-primary-100 add-request-button  no-border-please"
-        style={{
-          width: 'aut',
-          marginLeft: '3vw',
-          marginTop: '5px',
-          marginBottom: '5px',
-        }}
-        id="method-select"
-        // value={http2Method}
-        // onChange={handleMethodSelect}
+      <div
+        className={` is-flex dropdown ${
+          dataTypeDropdownIsActive ? 'is-active' : ''
+        }`}
+        style={{ padding: '10px' }}
       >
-        <MenuItem value="Video">Video</MenuItem>
-        <MenuItem value="Audio">Audio</MenuItem>
-        <MenuItem value="Text">Text</MenuItem>
-      </Select>
+        <div className="dropdown-trigger">
+          <button
+            className="is-rest button no-border-please"
+            id="rest-method"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+            onClick={() =>
+              setDataTypeDropdownIsActive(!dataTypeDropdownIsActive)
+            }
+          >
+            <span>{newRequestWebRTC.webRTCDataChannel}</span>
+            <span className="icon is-medium">
+              <img
+                src={dropDownArrow}
+                className="arrow-drop-down is-awesome-icon"
+                aria-hidden="true"
+                alt="dropdown arrow"
+              />
+            </span>
+          </button>
+        </div>
+
+        <div className="dropdown-menu" id="dropdown-menu">
+          <ul className="dropdown-content">
+            {newRequestWebRTC.webRTCDataChannel !== 'Audio' && (
+              <a
+                onClick={() => {
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCDataChannel: 'Audio',
+                  });
+                  setDataTypeDropdownIsActive(false);
+                }}
+                className="dropdown-item"
+              >
+                Audio
+              </a>
+            )}
+            {newRequestWebRTC.webRTCDataChannel !== 'Video' && (
+              <a
+                onClick={() => {
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCDataChannel: 'Video',
+                  });
+                  setDataTypeDropdownIsActive(false);
+                }}
+                className="dropdown-item"
+              >
+                Video
+              </a>
+            )}
+            {newRequestWebRTC.webRTCDataChannel !== 'Text' && (
+              <a
+                onClick={() => {
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCDataChannel: 'Text',
+                  });
+                  setDataTypeDropdownIsActive(false);
+                }}
+                className="dropdown-item"
+              >
+                Text
+              </a>
+            )}
+          </ul>
+        </div>
+      </div>
+
       <TextCodeArea
         mode={'application/json'}
         value={newRequestWebRTC.webRTCOffer || ''}

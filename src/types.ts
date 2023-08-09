@@ -231,14 +231,14 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
-export interface ReqResWebRTC {
-  webRTCEntryMode: 'manual' | 'ws';
-  webRTCDataChannel: 'audio' | 'video' | 'text';
-  webRTCWebsocketServer: string | null;
-  webRTCOffer: string | null;
-  webRTCAnswer: string | null;
-  webRTCpeerConnection: any;
-}
+// export interface ReqResWebRTC {
+//   webRTCEntryMode: 'Manual' | 'WS';
+//   webRTCDataChannel: 'Audio' | 'Video' | 'Text';
+//   webRTCWebsocketServer: string | null;
+//   webRTCOffer: string | null;
+//   webRTCAnswer: string | null;
+//   webRTCpeerConnection: any;
+// }
 
 /**
  * Describes the results of calling built-in introspection functions in GraphQL.
@@ -323,8 +323,8 @@ export interface ResponseWebRTC {
 }
 
 export interface RequestWebRTC {
-  webRTCEntryMode: 'manual' | 'ws';
-  webRTCDataChannel: 'audio' | 'video' | 'text';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Audio' | 'Video' | 'Text';
   webRTCWebsocketServer: string | null;
   webRTCOffer: string | null;
   webRTCAnswer: string | null;

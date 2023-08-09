@@ -29,7 +29,7 @@ type NewRequestStore = {
   };
   newRequestBody: NewRequestBody;
   newRequestSSE: NewRequestSSE;
-  newRequestWebRTC: unknown;
+  newRequestWebRTC: RequestWebRTC;
 
 };
 
@@ -69,8 +69,12 @@ const initialState: NewRequestStore = {
     isSSE: false,
   },
   newRequestWebRTC: {
+    webRTCEntryMode: 'Manual',
+    webRTCDataChannel: 'Video',
+    webRTCWebsocketServer: null,
     webRTCOffer: null,
     webRTCAnswer: null,
+    webRTCpeerConnection: null,
   }
 };
 

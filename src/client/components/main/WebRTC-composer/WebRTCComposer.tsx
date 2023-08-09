@@ -60,8 +60,8 @@ export default function WebRTCComposer(props: MainContainerProps) {
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
     const requestWebRTC: RequestWebRTC = {
-      webRTCEntryMode: 'manual',
-      webRTCDataChannel: 'video',
+      webRTCEntryMode: 'Manual',
+      webRTCDataChannel: 'Video',
       webRTCWebsocketServer: null,
       webRTCOffer: newRequestWebRTC.webRTCOffer,
       webRTCAnswer: newRequestWebRTC.webRTCAnswer,
@@ -131,6 +131,8 @@ export default function WebRTCComposer(props: MainContainerProps) {
         {/** @todo Fix TSX type error */}
         <WebRTCSessionEntryForm
           newRequestFields={newRequestFields}
+          newRequestWebRTC={newRequestWebRTC}
+          newRequestWebRTCSet={newRequestWebRTCSet}
           // newRequestHeaders={newRequestHeaders}
           // newRequestStreams={newRequestStreams}
           // newRequestBody={newRequestBody}
