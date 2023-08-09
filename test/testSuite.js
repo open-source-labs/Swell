@@ -37,6 +37,9 @@ const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
 const webRTCTest = require('./subSuites/webRTCTest');
 
+//& new integration tests
+const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests')
+
 // Package requirements
 const path = require('path');
 const fs = require('fs-extra');
@@ -64,3 +67,7 @@ describe('Request/response testing functionality', function () {
   grpcTestingTest();
   graphqlTestingTest();
 }).timeout(20000);
+
+describe('Integration testing', function() {
+  httpIntegrationTests()
+}).timeout(20000)
