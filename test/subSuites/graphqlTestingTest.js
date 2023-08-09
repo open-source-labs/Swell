@@ -73,7 +73,7 @@ module.exports = () => {
     });
 
     describe('GraphQL Testing Controller', () => {
-      before('Eatablish page', async () => {
+      before('Establish page', async () => {
         page = electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
       });
