@@ -56,6 +56,10 @@ head.appendChild(meta);
 // Render the app
 const container = document.getElementById('root');
 const rt = createRoot(container);
+
+window.getReduxState = () => store.getState();
+
+
 rt.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
