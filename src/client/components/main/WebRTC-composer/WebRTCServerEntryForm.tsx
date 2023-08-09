@@ -12,6 +12,7 @@ import {
   RequestWebRTC,
 } from '../../../../types';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 // const jBeautify = require('js-beautify').js;
 
@@ -76,19 +77,14 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         <a href="#">Audio</a>
         <a href="#">Text</a>
     </div> */}
-      <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
-        {/* Code box for Offer */}
-        <CodeMirror
-          value={cmValue}
-          theme={vscodeDark}
-          extensions={[javascript(), EditorView.lineWrapping]}
-          height="100px"
-          readOnly={false}
-          onChange={(value, viewUpdate) => {
-            newRequestWebRTCSet({...newRequestWebRTC, webRTCOffer: value })
-          }}
-        />
-      </div>
+      <TextCodeArea
+        mode={'application/json'}
+        value={''}
+        onChange={(value, viewUpdate) => {
+          newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value });
+        }}
+        placeholder={'Offer here'}
+      />
       <div>
         <button
           className="button is-normal is-primary-100 add-request-button  no-border-please"
@@ -97,9 +93,17 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           Get Offer
         </button>
       </div>
-      <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
-        {/* Code box for Answer */}
-        <CodeMirror
+      {/* <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}> */}
+      {/* Code box for Answer */}
+      <TextCodeArea
+        mode={'application/json'}
+        value={''}
+        onChange={(value, viewUpdate) => {
+          newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value });
+        }}
+        placeholder={'Answer here'}
+      />
+      {/* <CodeMirror
           value={cmValue}
           theme={vscodeDark}
           extensions={[javascript(), EditorView.lineWrapping]}
@@ -108,8 +112,8 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           onChange={(value, viewUpdate) => {
             newRequestWebRTCSet({...newRequestWebRTC, webRTCAnswer: value })
           }}
-        />
-      </div>
+        /> */}
+      {/* </div> */}
       <button
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
