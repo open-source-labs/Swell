@@ -84,7 +84,8 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
         <input
           className="ml-1 input input-is-medium is-info"
           type="text"
-          placeholder="Enter WS Server"
+          placeholder={newRequestWebRTC.webRTCEntryMode === 'Manual' ? 'No Server Required' : 'Enter WS Server'}
+          disabled={newRequestWebRTC.webRTCEntryMode === 'Manual' && true}
         />
       </div>
       {/* <div>

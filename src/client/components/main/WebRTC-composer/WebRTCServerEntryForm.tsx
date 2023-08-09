@@ -166,6 +166,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value });
         }}
         placeholder={'Offer here'}
+        readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
       />
       <button
         className="button is-normal is-primary-100 add-request-button  no-border-please"
@@ -183,6 +184,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value });
         }}
         placeholder={'Answer here'}
+        readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
       />
       <button
         id="webRTButton"
