@@ -33,9 +33,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const [cmValue, setValue] = useState<string>('');
   const isDark = useSelector((state: any) => state.ui.isDark);
 
-  const bodyContent = useSelector(
-    (state: any) => state.newRequest.newRequestBody.bodyContent
-  );
+  // const bodyContent = useSelector(
+  //   (state: any) => state.newRequest.newRequestBody.bodyContent
+  // );
   // useEffect(() => {
   //   if (!bodyIsNew) {
   //     /**
@@ -51,6 +51,27 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   //     // );
   //   }
   // }, [bodyContent, bodyIsNew]);
+  useEffect(() => {
+    let servers = {
+      iceServers: [
+        {
+          urls: [
+            'stun:stun1.1.google.com:19302',
+            'stun:stun2.1.google.com:19302',
+          ],
+        },
+      ],
+    };
+    let peerConnection = new RTCPeerConnection(servers);
+    newRequestWebRTCSet({...newRequestWebRTC, webRTCpeerConnection: peerConnection})
+  }, []);
+
+  const createOffer = async () => {
+
+    const { webRTCpeerConnection } = newRequestWebRTC
+    let offer = await webRTCpeerConnection.createOffer();
+    newRequestWebRTCSet({...newRequestWebRTC, webRTCOffer: JSON.stringify(offer)})
+  }
 
   return (
     <div className="mt-3">
@@ -79,18 +100,13 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         }}
         placeholder={'Offer here'}
       />
-      <div>
-        <button
-          className="button is-normal is-primary-100 add-request-button  no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: "offer generated..." });
-          }}
-        >
-          Get Offer
-        </button>
-      </div>
-      {/* <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}> */}
+      <button
+        className="button is-normal is-primary-100 add-request-button  no-border-please"
+        style={{ margin: '10px' }}
+        onClick={createOffer}
+      >
+        Get Offer
+      </button>
       {/* Code box for Answer */}
       <TextCodeArea
         mode={'application/json'}
@@ -101,23 +117,15 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         }}
         placeholder={'Answer here'}
       />
-      {/* <CodeMirror
-          value={cmValue}
-          theme={vscodeDark}
-          extensions={[javascript(), EditorView.lineWrapping]}
-          height="100px"
-          readOnly={false}
-          onChange={(value, viewUpdate) => {
-            newRequestWebRTCSet({...newRequestWebRTC, webRTCAnswer: value })
-          }}
-        /> */}
-      {/* </div> */}
       <button
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
         onClick={() => {
-          newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: "answer generated..." });
+          newRequestWebRTCSet({
+            ...newRequestWebRTC,
+            webRTCAnswer: 'answer generated...',
+          });
         }}
       >
         Get Answer
