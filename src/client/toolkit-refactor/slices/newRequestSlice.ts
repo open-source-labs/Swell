@@ -14,6 +14,7 @@ import {
   NewRequestBody,
   NewRequestSSE,
   CookieOrHeader,
+  RequestWebRTC,
 } from '../../../types';
 
 type NewRequestStore = {
@@ -90,7 +91,7 @@ const newRequestSlice = createSlice({
       state.newRequestBody = action.payload;
     },
 
-    newRequestWebRTCSet: (state, action: PayloadAction<NewRequestBody>) => {
+    newRequestWebRTCSet: (state, action: PayloadAction<RequestWebRTC>) => {
       state.newRequestWebRTC = action.payload;
     },
 

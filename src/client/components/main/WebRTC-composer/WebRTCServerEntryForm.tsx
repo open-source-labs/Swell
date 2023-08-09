@@ -6,11 +6,17 @@ import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { $TSFixMe, NewRequestWebRTCSet } from '../../../../types';
+import {
+  $TSFixMe,
+  NewRequestWebRTCSet,
+  RequestWebRTC,
+} from '../../../../types';
+import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 
 // const jBeautify = require('js-beautify').js;
 
 interface Props {
+  newRequestWebRTC: RequestWebRTC;
   newRequestWebRTCSet: NewRequestWebRTCSet;
   warningMessage: {
     body: string;
@@ -18,6 +24,8 @@ interface Props {
 }
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
+  let { newRequestWebRTC, newRequestWebRTCSet } = props;
+
   const requestBody = useSelector(
     (state: any) => state.newRequest.newRequestBody
   );
@@ -69,12 +77,16 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         <a href="#">Text</a>
     </div> */}
       <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
+        {/* Code box for Offer */}
         <CodeMirror
           value={cmValue}
           theme={vscodeDark}
           extensions={[javascript(), EditorView.lineWrapping]}
           height="100px"
           readOnly={false}
+          onChange={(value, viewUpdate) => {
+            newRequestWebRTCSet({...newRequestWebRTC, webRTCOffer: value })
+          }}
         />
       </div>
       <div>
@@ -86,12 +98,16 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         </button>
       </div>
       <div className={`${isDark ? 'is-dark-400' : ''} is-neutral-200-box p-3`}>
+        {/* Code box for Answer */}
         <CodeMirror
           value={cmValue}
           theme={vscodeDark}
           extensions={[javascript(), EditorView.lineWrapping]}
           height="100px"
           readOnly={false}
+          onChange={(value, viewUpdate) => {
+            newRequestWebRTCSet({...newRequestWebRTC, webRTCAnswer: value })
+          }}
         />
       </div>
       <button

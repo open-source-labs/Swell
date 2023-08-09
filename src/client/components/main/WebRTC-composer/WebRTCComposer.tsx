@@ -145,6 +145,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
         />
 
         <WebRTCServerEntryForm
+          newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
           warningMessage={warningMessage}
           // newRequestBody={newRequestBody}
