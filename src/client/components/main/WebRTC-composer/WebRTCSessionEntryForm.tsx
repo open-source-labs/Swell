@@ -9,7 +9,6 @@ interface Props {
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props) => {
   return (
-    <>
       <div
         className="is-flex is-justify-content-center"
         style={{ padding: '10px' }}
@@ -29,7 +28,6 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props) => {
           placeholder="Enter WS Server"
         />
       </div>
-    </>
   );
 };
 

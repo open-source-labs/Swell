@@ -17,7 +17,7 @@ interface Props {
   } | null;
 }
 
-const WebRTCServerEntryForm: React.FC<Props> = ({ warningMessage }) => {
+const WebRTCServerEntryForm: React.FC<Props> = (props) => {
   const requestBody = useSelector(
     (state: any) => state.newRequest.newRequestBody
   );

@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../../controllers/historyController';
 // Import local components
-import { ReqRes, $TSFixMe, RequestWebRTC, MainContainerProps } from '../../../../types';
+import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -12,7 +12,7 @@ import { ReqRes, $TSFixMe, RequestWebRTC, MainContainerProps } from '../../../..
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+// import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
 
@@ -54,8 +54,8 @@ export default function WebRTCComposer(props: MainContainerProps) {
 
   /* 
   newRequestWebRTCSet(...newRequestWebRTC, )
-
   */
+  
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
@@ -101,7 +101,6 @@ export default function WebRTCComposer(props: MainContainerProps) {
   const addNewRequest = (): void => {
     const reqRes: ReqRes = composeReqRes()
 
-    /** @todo Fix this TS type error  */
     historyController.addHistoryToIndexedDb(reqRes);
 
     reqResItemAdded(reqRes);
@@ -116,7 +115,6 @@ export default function WebRTCComposer(props: MainContainerProps) {
     //   url,
     //   webrtcUrl,
     // });
-
     setWorkspaceActiveTab('workspace');
   };
 
@@ -136,7 +134,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
           // newRequestHeaders={newRequestHeaders}
           // newRequestStreams={newRequestStreams}
           // newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced}
+          fieldsReplaced={fieldsReplaced} 
           // newRequestHeadersSet={newRequestHeadersSet}
           // newRequestStreamsSet={newRequestStreamsSet}
           // newRequestCookiesSet={newRequestCookiesSet}
