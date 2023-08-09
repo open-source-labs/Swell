@@ -11,7 +11,6 @@ import {
   NewRequestWebRTCSet,
   RequestWebRTC,
 } from '../../../../types';
-import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 // const jBeautify = require('js-beautify').js;
@@ -71,15 +70,10 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         <MenuItem value="Audio">Audio</MenuItem>
         <MenuItem value="Text">Text</MenuItem>
       </Select>
-      {/* <button className="button is-normal is-primary-100 add-request-button  no-border-please dropbtn"style={{ width : "12vw", marginLeft : "3vw", marginBottom : "5px"}}>SPECIFY CHANNEL</button>
-      <div className="dropdown-content">
-        <a href="#">Video</a>
-        <a href="#">Audio</a>
-        <a href="#">Text</a>
-    </div> */}
       <TextCodeArea
         mode={'application/json'}
-        value={''}
+        value={newRequestWebRTC.webRTCOffer || ''}
+        height={'80px'}
         onChange={(value, viewUpdate) => {
           newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value });
         }}
@@ -89,6 +83,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         <button
           className="button is-normal is-primary-100 add-request-button  no-border-please"
           style={{ margin: '10px' }}
+          onClick={() => {
+            newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: "offer generated..." });
+          }}
         >
           Get Offer
         </button>
@@ -97,7 +94,8 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
       {/* Code box for Answer */}
       <TextCodeArea
         mode={'application/json'}
-        value={''}
+        value={newRequestWebRTC.webRTCAnswer || ''}
+        height={'80px'}
         onChange={(value, viewUpdate) => {
           newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value });
         }}
@@ -118,6 +116,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
+        onClick={() => {
+          newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: "answer generated..." });
+        }}
       >
         Get Answer
       </button>
