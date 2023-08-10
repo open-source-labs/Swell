@@ -174,7 +174,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
           <NewRequestButton onClick={addNewRequest} />
         </div>
         <div id="videos" style={{height: 'fit-content', width: 'fit-content', backgroundColor: 'transparent', }}>
-          <video className="video-player" id="user-1" autoPlay playsInline style={{width:'100%', height: '100%', border: 'solid black'}}></video>
+          <video className="video-player" id="user-1" autoPlay playsInline style={{width:'100%', height: '100%'}}></video>
         </div>
       </div>
     </Box>
