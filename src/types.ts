@@ -317,7 +317,6 @@ export interface ReqRes {
   url?: string;
   frequency?: number;
   duration?: number;
-  // classEventPreviewsName?: string;
 } ;
 
 export interface ResponseWebRTC {
