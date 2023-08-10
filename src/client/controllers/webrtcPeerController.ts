@@ -4,20 +4,7 @@ import {
   newRequestWebRTCOfferSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
 
-import Store from '../toolkit-refactor/store';
 import { RequestWebRTC } from '../../types';
-
-// THIS IS WHAT REQUESTWEBRTC LOOKS LIKE
-// export interface RequestWebRTC {
-//   webRTCEntryMode: 'Manual' | 'WS';
-//   webRTCDataChannel: 'Audio' | 'Video' | 'Text';
-//   webRTCWebsocketServer: string | null;
-//   webRTCOffer: string | null;
-//   webRTCAnswer: string | null;
-//   webRTCpeerConnection: RTCPeerConnection | null;
-// webRTCLocalStream: null,
-// webRTCRemoteStream: null,
-// }
 
 const webrtcPeerController = {
   createPeerConnection: async (
@@ -33,25 +20,9 @@ const webrtcPeerController = {
         },
       ],
     };
-    //   type VideoProps = VideoHTMLAttributes<HTMLVideoElement> & {
-    //   srcObject: MediaStream;
-    // };
-
-    // export const Video = ({ srcObject, ...props }: VideoProps) => {
-    //   const refVideo = useCallback(
-    //     (node: HTMLVideoElement) => {
-    //       if (node) node.srcObject = srcObject;
-    //     },
-    //     [srcObject],
-    //   );
-
-    //   return <video ref={refVideo} {...props} />;
-    // };
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
       let peerConnection = new RTCPeerConnection(servers);
-
-      // set localStream to user's camera stream
       let localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
@@ -60,7 +31,6 @@ const webrtcPeerController = {
       let localVideoStream: HTMLVideoElement = <HTMLVideoElement>document.getElementById('user-1')
       localVideoStream.srcObject = localStream;
 
-      // function is invoked when track is received on localStream
       localStream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, localStream);
       });
@@ -85,7 +55,6 @@ const webrtcPeerController = {
         event: RTCPeerConnectionIceEvent
       ): Promise<void> => {
         if (event.candidate) {
-          //appDispatch storing in state the updated copy of state
           appDispatch(
             newRequestWebRTCOfferSet(
               JSON.stringify(peerConnection.localDescription)
@@ -95,7 +64,7 @@ const webrtcPeerController = {
       };
     }
   },
-  //create a offer SDP (peerConection already established)
+
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
     let { webRTCpeerConnection } = newRequestWebRTC;
@@ -110,9 +79,8 @@ const webrtcPeerController = {
         })
       );
     }
-
-    // peerConnection.createDataChannel('')
   },
+
   // work-in-progress
   createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     let { webRTCpeerConnection, webRTCOffer } = newRequestWebRTC;
