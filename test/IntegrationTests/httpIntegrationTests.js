@@ -137,7 +137,6 @@ module.exports = () => {
         await page.waitForLoadState();
         // await new Promise(resolve => setTimeout(resolve, 1000));
         const reduxState = await page.evaluate(() => window.getReduxState());
-        console.log(reduxState)
         const result = {
           "title": "HarryPotter",
           "author": "JK Rowling",
@@ -148,7 +147,7 @@ module.exports = () => {
 
         // Check if Status updated in reqRes
         const reqResArray = reduxState.reqRes.reqResArray;
-        console.log(reqResArray[0].response) //! delete after
+        // console.log(reqResArray[0].response) //! delete after
         expect(reqResArray[reqResArray.length - 1].response.status).to.equal(200)
 
       });
