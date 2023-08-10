@@ -166,8 +166,10 @@ const WorkspaceCollectionElement = (props) => {
                 dispatch(responseDataSaved(content));
                 webrtcPeerController.addAnswer(content.request)
                 setTimeout(() => {
-                  document.getElementById('user-2').srcObject = content.request.webRTCRemoteStream;
-                }, 2000)
+                  if (content.request.webRTCDataChannel === 'Video') {
+                    document.getElementById('user-2').srcObject = content.request.webRTCRemoteStream;
+                  } 
+                }, 1000)
               // if (network === 'webrtc') {
                 // testSDPConnection(content);
               } else if (content.graphQL && request.method === 'SUBSCRIPTION') {

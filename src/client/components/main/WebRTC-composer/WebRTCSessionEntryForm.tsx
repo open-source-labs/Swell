@@ -13,7 +13,7 @@ interface Props {
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
   const { newRequestWebRTC, newRequestWebRTCSet, setPeerConnectionOn } = props;
-  const [entryTypeDropdownStatus, setEntryTypeDropdownStatus] = useState(false);
+  const [entryTypeDropdownIsActive, setEntryTypeDropdownIsActive] = useState(false);
   const [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] =
     useState(false);
 
@@ -21,8 +21,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
     <div>
       <div
         className={` is-flex is-justify-content-center dropdown ${
-          entryTypeDropdownStatus ? 'is-active' : ''
-        }`}
+          entryTypeDropdownIsActive && 'is-active'}`}
         style={{ padding: '10px' }}
       >
         <div className="dropdown-trigger">
@@ -31,7 +30,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             id="rest-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
-            onClick={() => setEntryTypeDropdownStatus(!entryTypeDropdownStatus)}
+            onClick={() => setEntryTypeDropdownIsActive(!entryTypeDropdownIsActive)}
           >
             <span>{newRequestWebRTC.webRTCEntryMode}</span>
             <span className="icon is-medium">
@@ -54,7 +53,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     ...newRequestWebRTC,
                     webRTCEntryMode: 'Manual',
                   });
-                  setEntryTypeDropdownStatus(false);
+                  setEntryTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
               >
@@ -69,7 +68,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     ...newRequestWebRTC,
                     webRTCEntryMode: 'WS',
                   });
-                  setEntryTypeDropdownStatus(false);
+                  setEntryTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
               >
@@ -86,13 +85,12 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
               ? 'No Server Required'
               : 'Enter WS Server'
           }
-          disabled={newRequestWebRTC.webRTCEntryMode === 'Manual' && true}
+          disabled={newRequestWebRTC.webRTCEntryMode === 'Manual'}
         />
       </div>
       <div
         className={` is-flex dropdown ${
-          dataTypeDropdownIsActive ? 'is-active' : ''
-        }`}
+          dataTypeDropdownIsActive && 'is-active'}`}
         style={{ padding: '10px' }}
       >
         <div className="dropdown-trigger">
