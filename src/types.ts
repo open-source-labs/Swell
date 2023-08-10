@@ -297,9 +297,9 @@ export interface ReqRes {
   connectionType: string | null;
   createdAt: Date;
   error?: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  host: string;
+  graphQL?: boolean;
+  gRPC?: boolean;
+  host?: string;
   id: string;
   isHTTP2?: boolean;
   minimized: boolean;
@@ -314,15 +314,14 @@ export interface ReqRes {
   tab?: string;
   timeReceived: Date | number | null;
   timeSent: number | null;
-  url: string;
-  webrtc?: boolean;
+  url?: string;
   frequency?: number;
   duration?: number;
   // classEventPreviewsName?: string;
 } ;
 
 export interface ResponseWebRTC {
-
+  webRTC: true
 }
 
 export interface RequestWebRTC {

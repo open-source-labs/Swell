@@ -20,15 +20,17 @@ const webrtcPeerController = {
         },
       ],
     };
+    let peerConnection = new RTCPeerConnection(servers);
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
-      let peerConnection = new RTCPeerConnection(servers);
       let localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
       });
 
-      let localVideoStream: HTMLVideoElement = <HTMLVideoElement>document.getElementById('user-1')
+      let localVideoStream: HTMLVideoElement = <HTMLVideoElement>(
+        document.getElementById('user-1')
+      );
       localVideoStream.srcObject = localStream;
 
       localStream.getTracks().forEach((track) => {

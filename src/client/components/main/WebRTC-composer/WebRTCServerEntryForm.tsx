@@ -35,54 +35,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const requestBody = useSelector(
     (state: any) => state.newRequest.newRequestBody
   );
-  const { bodyIsNew } = requestBody;
-  const [cmValue, setValue] = useState<string>('');
+
   const isDark = useSelector((state: any) => state.ui.isDark);
 
-  // const bodyContent = useSelector(
-  //   (state: any) => state.newRequest.newRequestBody.bodyContent
-  // );
-  // useEffect(() => {
-  //   if (!bodyIsNew) {
-  //     /**
-  //      * @todo This code randomly causes parts of the app to crash. As in, it
-  //      * will randomly decide to start or stop working without you changing
-  //      * anything. Need to investigate
-  //      *
-  //      * (OR needs to be re-built....
-  //      *          - another iteration group)
-  //      */
-  //     // setValue(
-  //     //   jBeautify(JSON.stringify(bodyContent?.iceConfiguration?.iceServers))
-  //     // );
-  //   }
-  // }, [bodyContent, bodyIsNew]);
-  // useEffect(() => {
-  //   let servers = {
-  //     iceServers: [
-  //       {
-  //         urls: [
-  //           'stun:stun1.1.google.com:19302',
-  //           'stun:stun2.1.google.com:19302',
-  //         ],
-  //       },
-  //     ],
-  //   };
-  //   let peerConnection = new RTCPeerConnection(servers);
-  //   newRequestWebRTCSet({
-  //     ...newRequestWebRTC,
-  //     webRTCpeerConnection: peerConnection,
-  //   });
-  // }, []);
-
-  // const createOffer = async () => {
-  //   const { webRTCpeerConnection } = newRequestWebRTC;
-  //   let offer = await webRTCpeerConnection.createOffer();
-  //   newRequestWebRTCSet({
-  //     ...newRequestWebRTC,
-  //     webRTCOffer: JSON.stringify(offer),
-  //   });
-  // };
 
   return (
     <div className="mt-3">

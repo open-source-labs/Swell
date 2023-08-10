@@ -10,7 +10,6 @@ import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-// import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
@@ -18,14 +17,12 @@ import { Box } from '@mui/material';
 export default function WebRTCComposer(props: MainContainerProps) {
   const {
     composerFieldsReset,
-    fieldsReplaced,
+    newRequestWebRTC,
     newRequestWebRTCSet,
-    newRequestWebRTCOfferSet,
     currentTab,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
-    newRequestWebRTC,
   } = props;
 
   useEffect(() => {
@@ -49,23 +46,15 @@ export default function WebRTCComposer(props: MainContainerProps) {
     const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
-      // protocol,
-      host: '',
       path: '',
-      graphQL,
-      gRPC,
-      webrtc: true,
-      url,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
-      // webrtcData,
       request: requestWebRTC,
       response: {
-        headers: null,
-        events: [],
+        webRTC: true
       },
       checked: false,
       minimized: false,
@@ -75,24 +64,14 @@ export default function WebRTCComposer(props: MainContainerProps) {
     return reqRes;
   };
 
-  // Saves ReqRes object into history and ReqResArray
   const addNewRequest = (): void => {
     const reqRes: ReqRes = composeReqRes();
 
+    // addHistory removed because RTCPeerConnection objects cant typically be cloned 
     // historyController.addHistoryToIndexedDb(reqRes);
 
     reqResItemAdded(reqRes);
     composerFieldsReset();
-    // newRequestBodySet({
-    //   ...newRequestBody,
-    //   bodyType: 'stun-ice',
-    //   rawType: '',
-    // });
-    // fieldsReplaced({
-    //   ...newRequestFields,
-    //   url,
-    //   webrtcUrl,
-    // });
     setWorkspaceActiveTab('workspace');
   };
 
@@ -106,33 +85,17 @@ export default function WebRTCComposer(props: MainContainerProps) {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        {/** @todo Fix TSX type error */}
         <WebRTCSessionEntryForm
-          // newRequestFields={newRequestFields}
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
-          // newRequestHeaders={newRequestHeaders}
-          // newRequestStreams={newRequestStreams}
-          // newRequestBody={newRequestBody}
-          // fieldsReplaced={fieldsReplaced}
-          // newRequestHeadersSet={newRequestHeadersSet}
-          // newRequestStreamsSet={newRequestStreamsSet}
-          // newRequestCookiesSet={newRequestCookiesSet}
-          // newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
-          // setWarningMessage={setWarningMessage}
-          // newTestContentSet={newTestContentSet}
         />
-
         <WebRTCServerEntryForm
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
-          newRequestWebRTCOfferSet={newRequestWebRTCOfferSet}
           createOffer={webrtcPeerController.createOffer}
           createAnswer={webrtcPeerController.createAnswer}
           warningMessage={warningMessage}
-          // newRequestBody={newRequestBody}
-          // newRequestBodySet={newRequestBodySet}
         />
 
         {/* <TestEntryForm
