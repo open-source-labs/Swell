@@ -30,7 +30,6 @@ const ResponsePaneContainer: FC = () => {
   const currentResponse = useSelector(
     (store: RootState) => store.reqRes.currentResponse
   );
-  console.log(currentResponse);
   const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
 
   return (

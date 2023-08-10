@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-// Import controllers
-import historyController from '../../../controllers/historyController';
-// Import local components
+
 import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 
 /**
@@ -21,42 +19,14 @@ export default function WebRTCComposer(props: MainContainerProps) {
   const {
     composerFieldsReset,
     fieldsReplaced,
-    newRequestFields,
-    newRequestFields: {
-      gRPC,
-      url,
-      method,
-      protocol,
-      graphQL,
-      restUrl,
-      webrtc,
-      webrtcUrl,
-      network,
-      testContent,
-    },
-    newTestContentSet,
-    newRequestBodySet,
     newRequestWebRTCSet,
     newRequestWebRTCOfferSet,
-    newRequestBody,
-    newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
-    newRequestHeadersSet,
-    // webrtcData,
-    newRequestHeaders,
-    newRequestCookiesSet,
-    newRequestStreamsSet,
-    newRequestStreams,
     currentTab,
-    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
     newRequestWebRTC,
   } = props;
-
-  /* 
-  newRequestWebRTCSet(...newRequestWebRTC, )
-  */
 
   useEffect(() => {
     webrtcPeerController.createPeerConnection(newRequestWebRTC);
@@ -138,13 +108,13 @@ export default function WebRTCComposer(props: MainContainerProps) {
       >
         {/** @todo Fix TSX type error */}
         <WebRTCSessionEntryForm
-          newRequestFields={newRequestFields}
+          // newRequestFields={newRequestFields}
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
           // newRequestHeaders={newRequestHeaders}
           // newRequestStreams={newRequestStreams}
           // newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced}
+          // fieldsReplaced={fieldsReplaced}
           // newRequestHeadersSet={newRequestHeadersSet}
           // newRequestStreamsSet={newRequestStreamsSet}
           // newRequestCookiesSet={newRequestCookiesSet}
@@ -173,9 +143,24 @@ export default function WebRTCComposer(props: MainContainerProps) {
         <div className="is-3rem-footer is-clickable is-margin-top-auto">
           <NewRequestButton onClick={addNewRequest} />
         </div>
-        <div id="videos" style={{height: 'fit-content', width: 'fit-content', backgroundColor: 'transparent', }}>
-          <video className="video-player" id="user-1" autoPlay playsInline style={{width:'100%', height: '100%'}}></video>
-        </div>
+        {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+          <div
+            id="videos"
+            style={{
+              height: 'fit-content',
+              width: 'fit-content',
+              backgroundColor: 'transparent',
+            }}
+          >
+            <video
+              className="video-player"
+              id="user-1"
+              autoPlay
+              playsInline
+              style={{ width: '100%', height: '100%' }}
+            ></video>
+          </div>
+        )}
       </div>
     </Box>
   );
