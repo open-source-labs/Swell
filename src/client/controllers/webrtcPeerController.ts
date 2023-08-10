@@ -57,13 +57,13 @@ const webrtcPeerController = {
         audio: false,
       });
 
-      document.getElementById('user-1')!.srcObject = localStream;
+      let localVideoStream: HTMLVideoElement = <HTMLVideoElement>document.getElementById('user-1')
+      localVideoStream.srcObject = localStream;
 
       // function is invoked when track is received on localStream
       localStream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, localStream);
       });
-      -0;
 
       let remoteStream = new MediaStream();
       peerConnection.ontrack = async (event) => {
