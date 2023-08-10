@@ -234,9 +234,6 @@ module.exports = () => {
         await new Promise(resolve => setTimeout(resolve, 1500));
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(reduxState.reqRes.currentResponse.response.events[0].totalSent).to.equal(10);
-        // this.timeout(0)
-        // await new Promise(resolve => { });
-        // expect(1).to.equal(2)
       });
     });
     // // Template
