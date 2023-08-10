@@ -119,7 +119,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
                   style={{ width: '100%', height: '100%'}}
                 ></video>
               </div>
-            )}{' '}
+            )}
           </>
         )}
       </div>

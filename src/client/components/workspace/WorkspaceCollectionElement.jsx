@@ -63,7 +63,7 @@ const WorkspaceCollectionElement = (props) => {
         <div
           className={`is-flex-grow-1 is-${network} is-flex-basis-0 is-flex is-justify-content-center is-align-items-center has-text-weight-medium`}
         >
-          {request.method}
+          {network === 'webrtc' ? 'WEBRTC' : request.method}
         </div>
         <div className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between">
           <div className="is-flex is-align-items-center ml-2">{url}</div>

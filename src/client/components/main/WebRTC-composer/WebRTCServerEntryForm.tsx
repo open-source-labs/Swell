@@ -68,7 +68,8 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         placeholder={'Answer here'}
         readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
       />
-      <button
+      {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
+      {/* <button
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
@@ -77,7 +78,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         }}
       >
         Get Answer
-      </button>
+      </button> */}
       {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
     </div>
   );
