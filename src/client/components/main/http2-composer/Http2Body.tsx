@@ -1,6 +1,6 @@
 import React from 'react';
 // Http2Body needs access to the Redux store.
-import { connect } from 'react-redux';Nothing
+import { connect } from 'react-redux';
 
 import { AppDispatch, RootState } from '../../../toolkit-refactor/store';
 import { $TSFixMeObject } from '../../../../types';
