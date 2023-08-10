@@ -121,6 +121,8 @@ export interface MainContainerProps {
     composerFieldsReset: () => any;
     setWorkspaceActiveTab: (arg: string) => any;
     newRequestWebRTCSet: () => void;
+    newRequestWebRTCOfferSet: () => void;
+    
 }
 
 export interface GraphQLResponse {
@@ -295,9 +297,9 @@ export interface ReqRes {
   connectionType: string | null;
   createdAt: Date;
   error?: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  host: string;
+  graphQL?: boolean;
+  gRPC?: boolean;
+  host?: string;
   id: string;
   isHTTP2?: boolean;
   minimized: boolean;
@@ -312,24 +314,25 @@ export interface ReqRes {
   tab?: string;
   timeReceived: Date | number | null;
   timeSent: number | null;
-  url: string;
-  webrtc?: boolean;
+  url?: string;
   frequency?: number;
   duration?: number;
-  // classEventPreviewsName?: string;
 } ;
 
 export interface ResponseWebRTC {
-
+  webRTC: true
 }
 
 export interface RequestWebRTC {
+  network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Audio' | 'Video' | 'Text';
   webRTCWebsocketServer: string | null;
   webRTCOffer: string | null;
   webRTCAnswer: string | null;
-  webRTCpeerConnection: any;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: MediaStream | RTCDataChannel | null;
+  webRTCRemoteStream: MediaStream | RTCDataChannel | null;
 }
 
 export interface NewRequestSSE {

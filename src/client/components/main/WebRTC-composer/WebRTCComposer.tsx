@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-// Import controllers
-import historyController from '../../../controllers/historyController';
-// Import local components
+
 import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 
 /**
@@ -12,82 +10,49 @@ import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-// import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
 
 export default function WebRTCComposer(props: MainContainerProps) {
   const {
     composerFieldsReset,
-    fieldsReplaced,
-    newRequestFields,
-    newRequestFields: {
-      gRPC,
-      url,
-      method,
-      protocol,
-      graphQL,
-      restUrl,
-      webrtc,
-      webrtcUrl,
-      network,
-      testContent,
-    },
-    newTestContentSet,
-    newRequestBodySet,
+    newRequestWebRTC,
     newRequestWebRTCSet,
-    newRequestBody,
-    newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
-    newRequestHeadersSet,
-    // webrtcData,
-    newRequestHeaders,
-    newRequestCookiesSet,
-    newRequestStreamsSet,
-    newRequestStreams,
     currentTab,
-    setWarningMessage,
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
-    newRequestWebRTC, // state.newRequest.newRequestWebRTC
   } = props;
 
-  /* 
-  newRequestWebRTCSet(...newRequestWebRTC, )
-  */
-  
+  const [peerConnectionOn, setPeerConnectionOn] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
     const requestWebRTC: RequestWebRTC = {
-      webRTCEntryMode: 'Manual',
-      webRTCDataChannel: 'Video',
+      network: newRequestWebRTC.network,
+      webRTCEntryMode: newRequestWebRTC.webRTCEntryMode,
+      webRTCDataChannel: newRequestWebRTC.webRTCDataChannel,
       webRTCWebsocketServer: null,
       webRTCOffer: newRequestWebRTC.webRTCOffer,
       webRTCAnswer: newRequestWebRTC.webRTCAnswer,
-      webRTCpeerConnection: null,
-    }
+      webRTCpeerConnection: newRequestWebRTC.webRTCpeerConnection,
+      webRTCLocalStream: newRequestWebRTC.webRTCLocalStream,
+      webRTCRemoteStream: newRequestWebRTC.webRTCRemoteStream,
+    };
 
     const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
-      // protocol,
-      host: '',
       path: '',
-      graphQL,
-      gRPC,
-      webrtc: true,
-      url,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
-      // webrtcData,
       request: requestWebRTC,
       response: {
-        headers: null,
-        events: [],
+        webRTC: true,
       },
       checked: false,
       minimized: false,
@@ -95,26 +60,16 @@ export default function WebRTCComposer(props: MainContainerProps) {
     };
 
     return reqRes;
-  }
+  };
 
-  // Saves ReqRes object into history and ReqResArray
   const addNewRequest = (): void => {
-    const reqRes: ReqRes = composeReqRes()
+    const reqRes: ReqRes = composeReqRes();
 
-    historyController.addHistoryToIndexedDb(reqRes);
+    // addHistory removed because RTCPeerConnection objects cant typically be cloned
+    // historyController.addHistoryToIndexedDb(reqRes);
 
     reqResItemAdded(reqRes);
     composerFieldsReset();
-    // newRequestBodySet({
-    //   ...newRequestBody,
-    //   bodyType: 'stun-ice',
-    //   rawType: '',
-    // });
-    // fieldsReplaced({
-    //   ...newRequestFields,
-    //   url,
-    //   webrtcUrl,
-    // });
     setWorkspaceActiveTab('workspace');
   };
 
@@ -128,40 +83,45 @@ export default function WebRTCComposer(props: MainContainerProps) {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        {/** @todo Fix TSX type error */}
         <WebRTCSessionEntryForm
-          newRequestFields={newRequestFields}
-          newRequestWebRTC={newRequestWebRTC}
-          newRequestWebRTCSet={newRequestWebRTCSet}
-          // newRequestHeaders={newRequestHeaders}
-          // newRequestStreams={newRequestStreams}
-          // newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced} 
-          // newRequestHeadersSet={newRequestHeadersSet}
-          // newRequestStreamsSet={newRequestStreamsSet}
-          // newRequestCookiesSet={newRequestCookiesSet}
-          // newRequestBodySet={newRequestBodySet}
-          warningMessage={warningMessage}
-          // setWarningMessage={setWarningMessage}
-          // newTestContentSet={newTestContentSet}
-        />
-
-        <WebRTCServerEntryForm
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
           warningMessage={warningMessage}
-          // newRequestBody={newRequestBody}
-          // newRequestBodySet={newRequestBodySet}
+          setPeerConnectionOn = {setPeerConnectionOn}
         />
 
-        {/* <TestEntryForm
-          newTestContentSet={newTestContentSet}
-          testContent={testContent}
-          isWebSocket={false}
-        /> */}
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+        {peerConnectionOn && (
+          <>
+            <WebRTCServerEntryForm
+              newRequestWebRTC={newRequestWebRTC}
+              newRequestWebRTCSet={newRequestWebRTCSet}
+              createOffer={webrtcPeerController.createOffer}
+              createAnswer={webrtcPeerController.createAnswer}
+              warningMessage={warningMessage}
+            />
+            <div className="is-3rem-footer is-clickable is-margin-top-auto">
+              <NewRequestButton onClick={addNewRequest} />
+            </div>
+            {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+              <div
+                id="videos"
+                style={{
+                  height: 'fit-content',
+                  width: 'fit-content',
+                  backgroundColor: 'transparent',
+                }}
+              >
+                <video
+                  className="video-player"
+                  id="user-1"
+                  autoPlay
+                  playsInline
+                  style={{ width: '100%', height: '100%'}}
+                ></video>
+              </div>
+            )}{' '}
+          </>
+        )}
       </div>
     </Box>
   );

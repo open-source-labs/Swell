@@ -1,23 +1,21 @@
 import React, { useState, useRef } from 'react';
-import {
-  $TSFixMe,
-  NewRequestFields,
-  NewRequestWebRTCSet,
-  RequestWebRTC,
-} from '../../../../types';
+import { NewRequestWebRTCSet, RequestWebRTC } from '../../../../types';
+import webrtcPeerController from '../../../controllers/webrtcPeerController';
+
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
 interface Props {
-  fieldsReplaced: $TSFixMe;
   newRequestWebRTC: RequestWebRTC;
-  newRequestFields: NewRequestFields;
-  warningMessage: { uri: string };
   newRequestWebRTCSet: NewRequestWebRTCSet;
+  setPeerConnectionOn: (val: boolean) => any;
+  warningMessage: { uri: string };
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
-  const { newRequestWebRTC, newRequestWebRTCSet } = props;
+  const { newRequestWebRTC, newRequestWebRTCSet, setPeerConnectionOn } = props;
   const [entryTypeDropdownStatus, setEntryTypeDropdownStatus] = useState(false);
+  const [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] =
+    useState(false);
 
   return (
     <div>
@@ -80,54 +78,107 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             )}
           </ul>
         </div>
-
         <input
           className="ml-1 input input-is-medium is-info"
           type="text"
-          placeholder={newRequestWebRTC.webRTCEntryMode === 'Manual' ? 'No Server Required' : 'Enter WS Server'}
+          placeholder={
+            newRequestWebRTC.webRTCEntryMode === 'Manual'
+              ? 'No Server Required'
+              : 'Enter WS Server'
+          }
           disabled={newRequestWebRTC.webRTCEntryMode === 'Manual' && true}
         />
       </div>
-      {/* <div>
-        <button
-          id="webRTButton"
-          className="no-border-please button is-webrtc"
-          style={{ width: '5vw' }}
-        >
-          Manual
-        </button>
+      <div
+        className={` is-flex dropdown ${
+          dataTypeDropdownIsActive ? 'is-active' : ''
+        }`}
+        style={{ padding: '10px' }}
+      >
+        <div className="dropdown-trigger">
+          <button
+            className="is-rest button no-border-please"
+            id="rest-method"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+            onClick={() => {
+              setDataTypeDropdownIsActive(!dataTypeDropdownIsActive);
+            }}
+          >
+            <span>{newRequestWebRTC.webRTCDataChannel}</span>
+            <span className="icon is-medium">
+              <img
+                src={dropDownArrow}
+                className="arrow-drop-down is-awesome-icon"
+                aria-hidden="true"
+                alt="dropdown arrow"
+              />
+            </span>
+          </button>
+        </div>
+
+        <div className="dropdown-menu" id="dropdown-menu">
+          <ul className="dropdown-content">
+            {newRequestWebRTC.webRTCDataChannel !== 'Audio' && (
+              <a
+                onClick={() => {
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCDataChannel: 'Audio',
+                  });
+                  setPeerConnectionOn(false);
+                  setDataTypeDropdownIsActive(false);
+                }}
+                className="dropdown-item"
+              >
+                Audio
+              </a>
+            )}
+            {newRequestWebRTC.webRTCDataChannel !== 'Video' && (
+              <a
+                onClick={() => {
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCDataChannel: 'Video',
+                  });
+                  setPeerConnectionOn(false);
+                  setDataTypeDropdownIsActive(false);
+                }}
+                className="dropdown-item"
+              >
+                Video
+              </a>
+            )}
+            {newRequestWebRTC.webRTCDataChannel !== 'Text' && (
+              <a
+                onClick={() => {
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCDataChannel: 'Text',
+                  });
+                  setPeerConnectionOn(false);
+                  setDataTypeDropdownIsActive(false);
+                }}
+                className="dropdown-item"
+              >
+                Text
+              </a>
+            )}
+          </ul>
+        </div>
       </div>
-      <input
-        className="ml-1 input input-is-medium is-info"
-        type="text"
-        placeholder="Enter WS Server"
-      /> */}
+
+      <button
+        className="is-rest button no-border-please"
+        onClick={() => {
+          setPeerConnectionOn(true);
+          webrtcPeerController.createPeerConnection(newRequestWebRTC);
+        }}
+      >
+        Connect
+      </button>
     </div>
   );
 };
 
 export default WebRTCSessionEntryForm;
-
-// import React from 'react';
-
-// const WebRTCSessionEntryForm = ({ warningMessage }) => {
-//   return (
-//     <div className="is-flex is-justify-content-center"
-//     style={{padding: '10px'}}>
-//       <div id="webRTButton" className="no-border-please button is-webrtc">
-//         <span>SDP</span>
-//       </div>
-//       <input
-//         className="ml-1 input input-is-medium is-info"
-//         type="text"
-//         placeholder="No url needed"
-//         disabled
-//       />
-//       {warningMessage.uri && (
-//         <div className="warningMessage">{warningMessage.uri}</div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default WebRTCSessionEntryForm;
