@@ -13,6 +13,7 @@ interface Props {
   newRequestFields: NewRequestFields;
   warningMessage: { uri: string };
   newRequestWebRTCSet: NewRequestWebRTCSet;
+  // createOffer: (newRequestWebRTC: RequestWebRTC) => void;
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {

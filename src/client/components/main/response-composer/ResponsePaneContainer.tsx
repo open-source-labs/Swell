@@ -30,6 +30,7 @@ const ResponsePaneContainer: FC = () => {
   const currentResponse = useSelector(
     (store: RootState) => store.reqRes.currentResponse
   );
+  console.log(currentResponse);
   const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
 
   return (
@@ -55,7 +56,7 @@ const ResponsePaneContainer: FC = () => {
               {`${response?.responseSize}kb`}
             </div>
           )}
-          <h3>Nothing</h3>
+          <h3>Response</h3>
           <StatusButtons currentResponse={currentResponse as any} />
         </div>
         <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
@@ -64,7 +65,7 @@ const ResponsePaneContainer: FC = () => {
             <ul
               className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}
             >
-              {request?.network === 'ws' ? (
+              {request?.network === 'ws' && (
                 <li
                   className={`column ${
                     activeTab === 'wsWindow' ? 'is-active' : ''
@@ -74,24 +75,34 @@ const ResponsePaneContainer: FC = () => {
                     Send Data
                   </a>
                 </li>
-              ) : (
+              )}
+              {request?.network === 'webrtc' && (
                 <li
                   className={`column ${
-                    activeTab === 'events' ? 'is-active' : ''
+                    activeTab === 'webrtc' ? 'is-active' : ''
                   }`}
                 >
-                  <a
-                    onClick={() => {
-                      setActiveTab('events');
-                    }}
-                  >
-                    Events
+                  <a id="wsSendData" onClick={() => setActiveTab('webrtc')}>
+                    WebRTC
                   </a>
                 </li>
               )}
               {/* IF NOT WEBSOCKETS */}
-              {request?.network !== 'ws' && (
+              {request?.network !== ('ws' || 'webrtc') && (
                 <>
+                  <li
+                    className={`column ${
+                      activeTab === 'events' ? 'is-active' : ''
+                    }`}
+                  >
+                    <a
+                      onClick={() => {
+                        setActiveTab('events');
+                      }}
+                    >
+                      Events
+                    </a>
+                  </li>
                   <li
                     className={`column ${
                       activeTab === 'headers' ? 'is-active' : ''
@@ -141,6 +152,28 @@ const ResponsePaneContainer: FC = () => {
             {/* currentResponse.request?.network === "ws" */}
             {activeTab === 'wsWindow' && (
               <WebSocketWindow key={0} content={currentResponse} />
+            )}
+            {activeTab === 'webrtc' && (
+              <div
+                id="videos"
+                style={{
+                  height: 'fit-content',
+                  width: 'fit-content',
+                  backgroundColor: 'transparent',
+                }}
+              >
+                <video
+                  className="video-player"
+                  id="user-2"
+                  autoPlay
+                  playsInline
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'solid black',
+                  }}
+                ></video>
+              </div>
             )}
           </div>
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}

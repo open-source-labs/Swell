@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
+import { ReqRes, $TSFixMe, $TSFixMeObject, RequestWebRTC } from '../../../types';
 
 import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
 
@@ -13,6 +13,7 @@ import {
   newRequestBodySet,
   newRequestHeadersSet,
   newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
 } from '../../toolkit-refactor/slices/newRequestSlice';
 
 import { openApiRequestsReplaced } from '../../toolkit-refactor/slices/newRequestOpenApiSlice';
@@ -85,8 +86,11 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
     dispatch(newRequestBodySet(requestBodyObj));
   },
-  newRequestWebRTCSet: (newReqtWebRTCObj: $TSFixMeObject) => {
+  newRequestWebRTCSet: (newReqtWebRTCObj: RequestWebRTC) => {
     dispatch(newRequestWebRTCSet(newReqtWebRTCObj));
+  },
+  newRequestWebRTCOfferSet: (newReqtWebRTCOffer: string) => {
+    dispatch(newRequestWebRTCOfferSet(newReqtWebRTCOffer));
   },
   newTestContentSet: (testContent: $TSFixMe) => {
     dispatch(newTestContentSet(testContent));

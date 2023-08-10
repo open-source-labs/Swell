@@ -69,12 +69,15 @@ const initialState: NewRequestStore = {
     isSSE: false,
   },
   newRequestWebRTC: {
+    network: 'webrtc',
     webRTCEntryMode: 'Manual',
     webRTCDataChannel: 'Video',
     webRTCWebsocketServer: null,
     webRTCOffer: null,
     webRTCAnswer: null,
     webRTCpeerConnection: null,
+    webRTCLocalStream: null,
+    webRTCRemoteStream: null,
   }
 };
 
@@ -98,6 +101,10 @@ const newRequestSlice = createSlice({
     newRequestWebRTCSet: (state, action: PayloadAction<RequestWebRTC>) => {
       state.newRequestWebRTC = action.payload;
     },
+    newRequestWebRTCOfferSet: (state, action: PayloadAction<string>) => {
+      state.newRequestWebRTC.webRTCOffer = action.payload;
+    },
+
 
     //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
     newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
@@ -200,6 +207,7 @@ export const {
   composerFieldsReset,
   newRequestContentByProtocol,
   newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 

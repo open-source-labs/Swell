@@ -121,6 +121,8 @@ export interface MainContainerProps {
     composerFieldsReset: () => any;
     setWorkspaceActiveTab: (arg: string) => any;
     newRequestWebRTCSet: () => void;
+    newRequestWebRTCOfferSet: () => void;
+    
 }
 
 export interface GraphQLResponse {
@@ -324,12 +326,15 @@ export interface ResponseWebRTC {
 }
 
 export interface RequestWebRTC {
+  network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Audio' | 'Video' | 'Text';
   webRTCWebsocketServer: string | null;
   webRTCOffer: string | null;
   webRTCAnswer: string | null;
-  webRTCpeerConnection: any;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: MediaStream | null;
+  webRTCRemoteStream: MediaStream | null;
 }
 
 export interface NewRequestSSE {

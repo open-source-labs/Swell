@@ -19,13 +19,17 @@ import TextCodeArea from '../sharedComponents/TextCodeArea';
 interface Props {
   newRequestWebRTC: RequestWebRTC;
   newRequestWebRTCSet: NewRequestWebRTCSet;
+  createOffer: (newRequestWebRTC: RequestWebRTC) => void;
+  createAnswer: (newRequestWebRTC: RequestWebRTC) => void;
+  
   warningMessage: {
     body: string;
   } | null;
 }
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
-  let { newRequestWebRTC, newRequestWebRTCSet } = props;
+  let { newRequestWebRTC, newRequestWebRTCSet, createOffer, createAnswer } =
+    props;
   let [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] = useState(false);
 
   const requestBody = useSelector(
@@ -53,32 +57,32 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   //     // );
   //   }
   // }, [bodyContent, bodyIsNew]);
-  useEffect(() => {
-    let servers = {
-      iceServers: [
-        {
-          urls: [
-            'stun:stun1.1.google.com:19302',
-            'stun:stun2.1.google.com:19302',
-          ],
-        },
-      ],
-    };
-    let peerConnection = new RTCPeerConnection(servers);
-    newRequestWebRTCSet({
-      ...newRequestWebRTC,
-      webRTCpeerConnection: peerConnection,
-    });
-  }, []);
+  // useEffect(() => {
+  //   let servers = {
+  //     iceServers: [
+  //       {
+  //         urls: [
+  //           'stun:stun1.1.google.com:19302',
+  //           'stun:stun2.1.google.com:19302',
+  //         ],
+  //       },
+  //     ],
+  //   };
+  //   let peerConnection = new RTCPeerConnection(servers);
+  //   newRequestWebRTCSet({
+  //     ...newRequestWebRTC,
+  //     webRTCpeerConnection: peerConnection,
+  //   });
+  // }, []);
 
-  const createOffer = async () => {
-    const { webRTCpeerConnection } = newRequestWebRTC;
-    let offer = await webRTCpeerConnection.createOffer();
-    newRequestWebRTCSet({
-      ...newRequestWebRTC,
-      webRTCOffer: JSON.stringify(offer),
-    });
-  };
+  // const createOffer = async () => {
+  //   const { webRTCpeerConnection } = newRequestWebRTC;
+  //   let offer = await webRTCpeerConnection.createOffer();
+  //   newRequestWebRTCSet({
+  //     ...newRequestWebRTC,
+  //     webRTCOffer: JSON.stringify(offer),
+  //   });
+  // };
 
   return (
     <div className="mt-3">
@@ -171,7 +175,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
       <button
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
-        onClick={createOffer}
+        onClick={() => {
+          createOffer(newRequestWebRTC);
+        }}
       >
         Get Offer
       </button>
@@ -191,10 +197,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
         onClick={() => {
-          newRequestWebRTCSet({
-            ...newRequestWebRTC,
-            webRTCAnswer: 'answer generated...',
-          });
+          createAnswer(newRequestWebRTC);
         }}
       >
         Get Answer

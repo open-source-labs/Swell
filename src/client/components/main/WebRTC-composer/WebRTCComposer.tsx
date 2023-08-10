@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 // Import controllers
 import historyController from '../../../controllers/historyController';
@@ -13,6 +13,7 @@ import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 // import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
 
@@ -36,6 +37,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
     newTestContentSet,
     newRequestBodySet,
     newRequestWebRTCSet,
+    newRequestWebRTCOfferSet,
     newRequestBody,
     newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
     newRequestHeadersSet,
@@ -49,24 +51,30 @@ export default function WebRTCComposer(props: MainContainerProps) {
     warningMessage,
     reqResItemAdded,
     setWorkspaceActiveTab,
-    newRequestWebRTC, // state.newRequest.newRequestWebRTC
+    newRequestWebRTC,
   } = props;
 
   /* 
   newRequestWebRTCSet(...newRequestWebRTC, )
   */
-  
+
+  useEffect(() => {
+    webrtcPeerController.createPeerConnection(newRequestWebRTC);
+  }, []);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
     const requestWebRTC: RequestWebRTC = {
-      webRTCEntryMode: 'Manual',
-      webRTCDataChannel: 'Video',
+      network: newRequestWebRTC.network,
+      webRTCEntryMode: newRequestWebRTC.webRTCEntryMode,
+      webRTCDataChannel: newRequestWebRTC.webRTCDataChannel,
       webRTCWebsocketServer: null,
       webRTCOffer: newRequestWebRTC.webRTCOffer,
       webRTCAnswer: newRequestWebRTC.webRTCAnswer,
-      webRTCpeerConnection: null,
-    }
+      webRTCpeerConnection: newRequestWebRTC.webRTCpeerConnection,
+      webRTCLocalStream: newRequestWebRTC.webRTCLocalStream,
+      webRTCRemoteStream: newRequestWebRTC.webRTCRemoteStream,
+    };
 
     const reqRes: ReqRes = {
       id: uuid(),
@@ -95,13 +103,13 @@ export default function WebRTCComposer(props: MainContainerProps) {
     };
 
     return reqRes;
-  }
+  };
 
   // Saves ReqRes object into history and ReqResArray
   const addNewRequest = (): void => {
-    const reqRes: ReqRes = composeReqRes()
+    const reqRes: ReqRes = composeReqRes();
 
-    historyController.addHistoryToIndexedDb(reqRes);
+    // historyController.addHistoryToIndexedDb(reqRes);
 
     reqResItemAdded(reqRes);
     composerFieldsReset();
@@ -136,7 +144,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
           // newRequestHeaders={newRequestHeaders}
           // newRequestStreams={newRequestStreams}
           // newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced} 
+          fieldsReplaced={fieldsReplaced}
           // newRequestHeadersSet={newRequestHeadersSet}
           // newRequestStreamsSet={newRequestStreamsSet}
           // newRequestCookiesSet={newRequestCookiesSet}
@@ -149,6 +157,9 @@ export default function WebRTCComposer(props: MainContainerProps) {
         <WebRTCServerEntryForm
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
+          newRequestWebRTCOfferSet={newRequestWebRTCOfferSet}
+          createOffer={webrtcPeerController.createOffer}
+          createAnswer={webrtcPeerController.createAnswer}
           warningMessage={warningMessage}
           // newRequestBody={newRequestBody}
           // newRequestBodySet={newRequestBodySet}
@@ -161,6 +172,9 @@ export default function WebRTCComposer(props: MainContainerProps) {
         /> */}
         <div className="is-3rem-footer is-clickable is-margin-top-auto">
           <NewRequestButton onClick={addNewRequest} />
+        </div>
+        <div id="videos" style={{height: 'fit-content', width: 'fit-content', backgroundColor: 'transparent', }}>
+          <video className="video-player" id="user-1" autoPlay playsInline style={{width:'100%', height: '100%', border: 'solid black'}}></video>
         </div>
       </div>
     </Box>
