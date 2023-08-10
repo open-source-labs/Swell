@@ -14,7 +14,10 @@ let electronApp,
 
 const projectPath = path.resolve(__dirname, '..', '..', 'main.js');
 
+
+
 module.exports = () => {
+
   describe('HTTP Integration Tests', function () {
     // this.timeout(0); //! use this to pause electron app when needed delete after
     // place below method where ever you want to pause the app
@@ -40,6 +43,9 @@ module.exports = () => {
             else resolve(res);
           });
       });
+      const response = await fetch('http://localhost:3004/book')
+      const data = await response.json()
+      console.log(data)
 
     });
 
@@ -63,6 +69,8 @@ module.exports = () => {
       if (page) await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
     });
+
+
 
     describe('Check if the process for an HTTP method is properly handling state in the backend', async () => {
       url = 'http://localhost:3004/book';
@@ -110,13 +118,13 @@ module.exports = () => {
         expect(reqResArray[reqResArray.length - 1].url).to.equal(url);
         expect(reqResArray[reqResArray.length - 1].request.method).to.equal(method);
 
-        
+
       });
 
 
       it('Resets fields in request form and resets their respective states', async () => {
         const reduxState = await page.evaluate(() => window.getReduxState());
-        
+
         // Resets bodyContent in newRequestBody
         expect(reduxState.newRequest.newRequestBody.bodyContent).to.equal('');
         // Resets headersArr in newRequesetHeaders
@@ -127,7 +135,7 @@ module.exports = () => {
         expect(reduxState.newRequestFields.url).to.equal('http://');
         expect(reduxState.newRequestFields.restUrl).to.equal('http://');
 
-        
+
       });
 
       // Run request, make sure proper states are updated
@@ -147,19 +155,93 @@ module.exports = () => {
 
         // Check if Status updated in reqRes
         const reqResArray = reduxState.reqRes.reqResArray;
-        // console.log(reqResArray[0].response) //! delete after
         expect(reqResArray[reqResArray.length - 1].response.status).to.equal(200)
-
-      });
-
-      // Template
-      it('template', async () => {
-
       });
     });
 
+    describe('Check if changing between HTTP methods will properly change state', async () => {
+      it('Default state method is GET', async () => {
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        expect(reduxState.newRequestFields.method).to.equal('GET')
+      });
 
-    //~ HTTP GET REQUEST
+      it('Changes method state as the HTTP methods are changed', async () => {
+        const methodList = ['POST', 'PUT', 'PATCH', 'DELETE'];
+        for (let i = 0; i < methodList.length; i++) {
+          method = methodList[i]
+          await page.locator('button#rest-method').click();
+          await page.locator(`div[id^="composer"] >> a >> text=${method}`).click();
+          const reduxState = await page.evaluate(() => window.getReduxState());
+          expect(reduxState.newRequestFields.method).to.equal(method)
+        }
+      });
+    });
 
+    describe('Check if sending a request directly will correctly alter state', async () => {
+      //& Note to self: 1) use different variables names (not glboals) 2) make sure awaits are in a 'before' or 'it'
+      const url2 = 'http://localhost:3004/book';
+      const method2 = 'POST';
+      const body2 = '{"title": "Geronimo", "author": "Elisabetta Dami", "pages": 100}';
+      const result = {
+        "title": "Geronimo",
+        "author": "Elisabetta Dami",
+        "pages": 100
+      }
+
+      before(async function () {
+        // Clear DB
+        // ... (your DB clearing code)
+
+        // Set up the request in the UI
+        await page.locator('#url-input').fill(url2);
+        await page.locator('button#rest-method').click();
+        await page.locator(`div[id^="composer"] >> a >> text=${method2}`).click();
+        const codeMirror = await page.locator('#body-entry-select');
+        await codeMirror.click();
+        const restBody = await codeMirror.locator('.cm-content');
+        await restBody.fill(body2);
+        await page.locator('#raw-body-type').click();
+        await page.locator('.dropdown-item >> text=application/json').click();
+      });
+
+      it('Changes currentResponse state directly when selecting Send Request button', async () => {
+        // await page.locator('button >> text=Send Request').click();
+        await page.locator('button#send-request').click();
+        await page.waitForLoadState();
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        expect(reduxState.reqRes.currentResponse.response.events[0]).to.deep.equal(result)
+      });
+    });
+
+    describe('Check if stress tests probably changes state', async () => {
+      before( async function(){
+        // Clear workspace
+        await page.locator('button >> text=Clear Workspace').click();
+        // Add GET request
+        const method2 = 'GET';
+        const url2 = 'https://pokeapi.co/api/v2/pokemon/ditto';
+        await page.locator('#url-input').fill(url2);
+        await page.locator('button >> text=Add to Workspace').click();
+        //hide-stress-test
+        // Set Freq to 10
+        await page.locator('span#view-stress-test').click();
+        await page.locator('#frequency-input').fill('10');
+        await page.locator('#duration-input').fill('1');
+      });
+      
+      it('Changes currentResponse state to the response back from the stress tests', async () => {
+        await page.locator('button#stress-test-run-button').click();
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        expect(reduxState.reqRes.currentResponse.response.events[0].totalSent).to.equal(10);
+        // this.timeout(0)
+        // await new Promise(resolve => { });
+        // expect(1).to.equal(2)
+      });
+    });
+    // // Template
+    // it('template', async () => {
+
+    // });
   }).timeout(20000);
 };
