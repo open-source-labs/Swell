@@ -331,8 +331,8 @@ export interface RequestWebRTC {
   webRTCOffer: string | null;
   webRTCAnswer: string | null;
   webRTCpeerConnection: RTCPeerConnection | null;
-  webRTCLocalStream: MediaStream | null;
-  webRTCRemoteStream: MediaStream | null;
+  webRTCLocalStream: MediaStream | RTCDataChannel | null;
+  webRTCRemoteStream: MediaStream | RTCDataChannel | null;
 }
 
 export interface NewRequestSSE {

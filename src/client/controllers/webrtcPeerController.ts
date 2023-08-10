@@ -64,6 +64,30 @@ const webrtcPeerController = {
           );
         }
       };
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      let localStream = peerConnection.createDataChannel('textChannel');
+      localStream.onmessage = (e) => console.log('just got a message')
+      localStream.onopen = (e) => console.log('connection')
+
+      appDispatch(
+        newRequestWebRTCSet({
+          ...newRequestWebRTC,
+          webRTCpeerConnection: peerConnection,
+          webRTCLocalStream: localStream,
+        })
+      );
+
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (event.candidate) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
+      };
     }
   },
 
@@ -118,3 +142,4 @@ const webrtcPeerController = {
 };
 
 export default webrtcPeerController;
+

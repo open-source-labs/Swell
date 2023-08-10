@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
@@ -25,9 +25,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
     setWorkspaceActiveTab,
   } = props;
 
-  useEffect(() => {
-    webrtcPeerController.createPeerConnection(newRequestWebRTC);
-  }, []);
+  const [peerConnectionOn, setPeerConnectionOn] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
@@ -54,7 +52,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
       checkSelected: false,
       request: requestWebRTC,
       response: {
-        webRTC: true
+        webRTC: true,
       },
       checked: false,
       minimized: false,
@@ -67,7 +65,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
   const addNewRequest = (): void => {
     const reqRes: ReqRes = composeReqRes();
 
-    // addHistory removed because RTCPeerConnection objects cant typically be cloned 
+    // addHistory removed because RTCPeerConnection objects cant typically be cloned
     // historyController.addHistoryToIndexedDb(reqRes);
 
     reqResItemAdded(reqRes);
@@ -89,40 +87,40 @@ export default function WebRTCComposer(props: MainContainerProps) {
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
           warningMessage={warningMessage}
-        />
-        <WebRTCServerEntryForm
-          newRequestWebRTC={newRequestWebRTC}
-          newRequestWebRTCSet={newRequestWebRTCSet}
-          createOffer={webrtcPeerController.createOffer}
-          createAnswer={webrtcPeerController.createAnswer}
-          warningMessage={warningMessage}
+          setPeerConnectionOn = {setPeerConnectionOn}
         />
 
-        {/* <TestEntryForm
-          newTestContentSet={newTestContentSet}
-          testContent={testContent}
-          isWebSocket={false}
-        /> */}
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
-        {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-          <div
-            id="videos"
-            style={{
-              height: 'fit-content',
-              width: 'fit-content',
-              backgroundColor: 'transparent',
-            }}
-          >
-            <video
-              className="video-player"
-              id="user-1"
-              autoPlay
-              playsInline
-              style={{ width: '100%', height: '100%' }}
-            ></video>
-          </div>
+        {peerConnectionOn && (
+          <>
+            <WebRTCServerEntryForm
+              newRequestWebRTC={newRequestWebRTC}
+              newRequestWebRTCSet={newRequestWebRTCSet}
+              createOffer={webrtcPeerController.createOffer}
+              createAnswer={webrtcPeerController.createAnswer}
+              warningMessage={warningMessage}
+            />
+            <div className="is-3rem-footer is-clickable is-margin-top-auto">
+              <NewRequestButton onClick={addNewRequest} />
+            </div>
+            {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+              <div
+                id="videos"
+                style={{
+                  height: 'fit-content',
+                  width: 'fit-content',
+                  backgroundColor: 'transparent',
+                }}
+              >
+                <video
+                  className="video-player"
+                  id="user-1"
+                  autoPlay
+                  playsInline
+                  style={{ width: '100%', height: '100%'}}
+                ></video>
+              </div>
+            )}{' '}
+          </>
         )}
       </div>
     </Box>

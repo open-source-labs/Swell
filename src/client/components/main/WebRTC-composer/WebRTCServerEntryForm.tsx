@@ -30,8 +30,6 @@ interface Props {
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   let { newRequestWebRTC, newRequestWebRTCSet, createOffer, createAnswer } =
     props;
-  let [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] = useState(false);
-
   const requestBody = useSelector(
     (state: any) => state.newRequest.newRequestBody
   );
@@ -40,82 +38,6 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="mt-3">
-      <div
-        className={` is-flex dropdown ${
-          dataTypeDropdownIsActive ? 'is-active' : ''
-        }`}
-        style={{ padding: '10px' }}
-      >
-        <div className="dropdown-trigger">
-          <button
-            className="is-rest button no-border-please"
-            id="rest-method"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
-            onClick={() =>
-              setDataTypeDropdownIsActive(!dataTypeDropdownIsActive)
-            }
-          >
-            <span>{newRequestWebRTC.webRTCDataChannel}</span>
-            <span className="icon is-medium">
-              <img
-                src={dropDownArrow}
-                className="arrow-drop-down is-awesome-icon"
-                aria-hidden="true"
-                alt="dropdown arrow"
-              />
-            </span>
-          </button>
-        </div>
-
-        <div className="dropdown-menu" id="dropdown-menu">
-          <ul className="dropdown-content">
-            {newRequestWebRTC.webRTCDataChannel !== 'Audio' && (
-              <a
-                onClick={() => {
-                  newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCDataChannel: 'Audio',
-                  });
-                  setDataTypeDropdownIsActive(false);
-                }}
-                className="dropdown-item"
-              >
-                Audio
-              </a>
-            )}
-            {newRequestWebRTC.webRTCDataChannel !== 'Video' && (
-              <a
-                onClick={() => {
-                  newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCDataChannel: 'Video',
-                  });
-                  setDataTypeDropdownIsActive(false);
-                }}
-                className="dropdown-item"
-              >
-                Video
-              </a>
-            )}
-            {newRequestWebRTC.webRTCDataChannel !== 'Text' && (
-              <a
-                onClick={() => {
-                  newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCDataChannel: 'Text',
-                  });
-                  setDataTypeDropdownIsActive(false);
-                }}
-                className="dropdown-item"
-              >
-                Text
-              </a>
-            )}
-          </ul>
-        </div>
-      </div>
-
       <TextCodeArea
         mode={'application/json'}
         value={newRequestWebRTC.webRTCOffer || ''}
