@@ -87,7 +87,7 @@ const ResponsePaneContainer: FC = () => {
                 </li>
               )}
               {/* IF NOT WEBSOCKETS */}
-              {request?.network !== ('ws' || 'webrtc') && (
+              {request?.network !== ('ws' && 'webrtc') && (
                 <>
                   <li
                     className={`column ${
