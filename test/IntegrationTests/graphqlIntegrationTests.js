@@ -47,9 +47,10 @@ module.exports = () => {
           imageBuffer
         );
       }
+
     });
 
-    describe('GraphQL Query to API', () => {
+    describe('Check to see if GraphQL functionality properly interacts with back-end', async () => {
       it('')
     });
 
