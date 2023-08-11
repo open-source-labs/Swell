@@ -71,6 +71,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
     reqResItemAdded(reqRes);
     composerFieldsReset();
     setWorkspaceActiveTab('workspace');
+
   };
 
   return (

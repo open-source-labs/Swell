@@ -31,7 +31,6 @@ const ResponsePaneContainer: FC = () => {
     (store: RootState) => store.reqRes.currentResponse
   );
   const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
-  console.log(currentResponse);
 
   return (
     <Box id="responses">
@@ -177,7 +176,7 @@ const ResponsePaneContainer: FC = () => {
               )}
             {activeTab === 'webrtc' &&
               currentResponse.request.webRTCDataChannel === 'Text' && (
-                <div id="textFeed">text feed</div>
+                <div id="textFeed" style={{fontSize: '30px'}}></div>
               )}
           </div>
 

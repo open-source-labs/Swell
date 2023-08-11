@@ -69,7 +69,7 @@ const webrtcPeerController = {
       localStream.onmessage = (e) => {
         console.log('just got a message');
       };
-      localStream.onopen = (e) => console.log('connection');
+      localStream.onopen = (e) => console.log('data channel connected');
 
       appDispatch(
         newRequestWebRTCSet({
@@ -140,7 +140,8 @@ const webrtcPeerController = {
       };
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       webRTCLocalStream.onmessage = (e) => {
-        document.getElementById("textFeed").innerText += e.data;
+        let newString = e.data.slice(1, -1)
+        document.getElementById("textFeed").innerText += newString + '\n';
       };
     }
   },
