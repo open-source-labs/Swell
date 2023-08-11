@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
@@ -71,6 +71,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
     reqResItemAdded(reqRes);
     composerFieldsReset();
     setWorkspaceActiveTab('workspace');
+
   };
 
   return (
@@ -119,7 +120,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
                   style={{ width: '100%', height: '100%'}}
                 ></video>
               </div>
-            )}{' '}
+            )}
           </>
         )}
       </div>

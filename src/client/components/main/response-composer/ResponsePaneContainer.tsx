@@ -152,28 +152,34 @@ const ResponsePaneContainer: FC = () => {
             {activeTab === 'wsWindow' && (
               <WebSocketWindow key={0} content={currentResponse} />
             )}
-            {activeTab === 'webrtc' && (
-              <div
-                id="videos"
-                style={{
-                  height: 'fit-content',
-                  width: 'fit-content',
-                  backgroundColor: 'transparent',
-                }}
-              >
-                <video
-                  className="video-player"
-                  id="user-2"
-                  autoPlay
-                  playsInline
+            {activeTab === 'webrtc' &&
+              currentResponse.request.webRTCDataChannel === 'Video' && (
+                <div
+                  id="videos"
                   style={{
-                    width: '100%',
-                    height: '100%',
+                    height: 'fit-content',
+                    width: 'fit-content',
+                    backgroundColor: 'transparent',
                   }}
-                ></video>
-              </div>
-            )}
+                >
+                  <video
+                    className="video-player"
+                    id="user-2"
+                    autoPlay
+                    playsInline
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  ></video>
+                </div>
+              )}
+            {activeTab === 'webrtc' &&
+              currentResponse.request.webRTCDataChannel === 'Text' && (
+                <div id="textFeed" style={{fontSize: '30px'}}></div>
+              )}
           </div>
+
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
           {id &&
             request?.method !== 'WS' &&
