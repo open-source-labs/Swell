@@ -85,8 +85,31 @@ module.exports = () => {
       });
 
       it('Adding mutation to workspace appropriately changes reqRes state', async() => {
-        
-      })
+        await page.locator('button >> "Add to Workspace"').click();
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        const reqResArray = reduxState.reqRes.reqResArray;
+        expect(reqResArray[reqResArray.length - 1].url).to.equal(url);
+        expect(reqResArray[reqResArray.length - 1].request.method).to.equal("MUTATION");
+      });
+
+      it('Sending mutation request from workspace updates reqRes state and connects to server', async() => {
+        await page.locator('#send-button-1').click();
+        await page.waitForLoadState();
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        const currRes = reduxState.currentResponse
+        const expectedRes = {
+          "post": {
+            "url": "www.(newsite).com",
+            "description": "newdesc",
+            "__typename": "Link"
+          }
+        };
+        console.log('hello?')
+        console.log(currRes);
+        console.log(currRes.response.events[0])
+        console.log(expectedRes)
+        expect(currRes.response.events[0]).to.equal(expectedRes);
+      });
     });
   });
 };
