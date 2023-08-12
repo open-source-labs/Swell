@@ -13,6 +13,7 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
+import WebRTCVideoBox from './WebRTCVideoBox';
 
 export default function WebRTCComposer(props: MainContainerProps) {
   const {
@@ -104,22 +105,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
               <NewRequestButton onClick={addNewRequest} />
             </div>
             {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-              <div
-                id="videos"
-                style={{
-                  height: 'fit-content',
-                  width: 'fit-content',
-                  backgroundColor: 'transparent',
-                }}
-              >
-                <video
-                  className="video-player"
-                  id="user-1"
-                  autoPlay
-                  playsInline
-                  style={{ width: '100%', height: '100%'}}
-                ></video>
-              </div>
+              <WebRTCVideoBox streamType='localstream' />
             )}
           </>
         )}

@@ -29,11 +29,6 @@ interface Props {
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   let { newRequestWebRTC, newRequestWebRTCSet, createOffer, createAnswer } =
     props;
-  const requestBody = useSelector(
-    (state: any) => state.newRequest.newRequestBody
-  );
-
-  const isDark = useSelector((state: any) => state.ui.isDark);
 
   return (
     <div className="mt-3">
@@ -44,7 +39,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         onChange={(value, viewUpdate) => {
           newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value });
         }}
-        placeholder={'Offer here'}
+        placeholder={'Click "Get Offer" or paste in Offer SDP'}
         readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
       />
       <button

@@ -28,10 +28,13 @@ const webrtcPeerController = {
         audio: false,
       });
 
-      let localVideoStream: HTMLVideoElement = <HTMLVideoElement>(
-        document.getElementById('user-1')
-      );
-      localVideoStream.srcObject = localStream;
+      if (document.getElementById('localstream')) {
+        let localVideoStream: HTMLVideoElement = <HTMLVideoElement>(
+          document.getElementById('localstream')
+        );
+        localVideoStream.srcObject = localStream;
+      }
+
 
       localStream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, localStream);
@@ -139,7 +142,7 @@ const webrtcPeerController = {
         });
       };
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      webRTCLocalStream.onmessage = (e) => {
+      webRTCLocalStream!.onmessage = (e) => {
         let newString = e.data.slice(1, -1)
         document.getElementById("textFeed").innerText += newString + '\n';
       };
