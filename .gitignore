@@ -71,6 +71,9 @@ protos/
 test/subSuites/*.png
 test/failedTests/*
 .nyc_output
+# //! DELETE AFTER DONE, THESE ARENT PERMANENT
+test/testSuite.js
+
 
 
 # db #
