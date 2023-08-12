@@ -28,10 +28,10 @@ const webrtcPeerController = {
         audio: false,
       });
 
-      let localVideoStream: HTMLVideoElement = <HTMLVideoElement>(
-        document.getElementById('user-1')
-      );
-      localVideoStream.srcObject = localStream;
+      if (document.getElementById('localstream')) {
+        (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+          localStream;
+      }
 
       localStream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, localStream);
@@ -138,10 +138,26 @@ const webrtcPeerController = {
           newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
         });
       };
+
+      // this waits for HTML elements localstream and remotestream to render before connecting the srcObject. Should be refactored into better implementation
+      setTimeout(() => {
+        if (
+          !document.getElementById('remotestream') ||
+          !document.getElementById('localstream')
+        ) {
+          alert('error');
+        } else {
+          (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+            newRequestWebRTC.webRTCLocalStream;
+          (<HTMLVideoElement>(
+            document.getElementById('remotestream')
+          )).srcObject = newRequestWebRTC.webRTCRemoteStream;
+        }
+      }, 500);
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      webRTCLocalStream.onmessage = (e) => {
-        let newString = e.data.slice(1, -1)
-        document.getElementById("textFeed").innerText += newString + '\n';
+      webRTCLocalStream!.onmessage = (e) => {
+        let newString = e.data.slice(1, -1);
+        document.getElementById('textFeed').innerText += newString + '\n';
       };
     }
   },

@@ -7,12 +7,12 @@ import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x19
 interface Props {
   newRequestWebRTC: RequestWebRTC;
   newRequestWebRTCSet: NewRequestWebRTCSet;
-  setPeerConnectionOn: (val: boolean) => any;
+  setShowRTCEntryForms: (val: boolean) => any;
   warningMessage: { uri: string };
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
-  const { newRequestWebRTC, newRequestWebRTCSet, setPeerConnectionOn } = props;
+  const { newRequestWebRTC, newRequestWebRTCSet, setShowRTCEntryForms } = props;
   const [entryTypeDropdownIsActive, setEntryTypeDropdownIsActive] = useState(false);
   const [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] =
     useState(false);
@@ -116,7 +116,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
           <button
             className="ml-1 is-rest button no-border-please"
             onClick={() => {
-              setPeerConnectionOn(true);
+              setShowRTCEntryForms(true);
               webrtcPeerController.createPeerConnection(newRequestWebRTC);
             }}
           >
@@ -125,21 +125,22 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
         </div>
         <div className="dropdown-menu" id="dropdown-menu">
           <ul className="dropdown-content">
-            {newRequestWebRTC.webRTCDataChannel !== 'Audio' && (
+            {/* AUDIO RTC Channel is Work-In-Progress */}
+            {/* {newRequestWebRTC.webRTCDataChannel !== 'Audio' && (
               <a
                 onClick={() => {
                   newRequestWebRTCSet({
                     ...newRequestWebRTC,
                     webRTCDataChannel: 'Audio',
                   });
-                  setPeerConnectionOn(false);
+                  setShowRTCEntryForms(false);
                   setDataTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
               >
                 Audio
               </a>
-            )}
+            )} */}
             {newRequestWebRTC.webRTCDataChannel !== 'Video' && (
               <a
                 onClick={() => {
@@ -147,7 +148,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     ...newRequestWebRTC,
                     webRTCDataChannel: 'Video',
                   });
-                  setPeerConnectionOn(false);
+                  setShowRTCEntryForms(false);
                   setDataTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
@@ -162,7 +163,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     ...newRequestWebRTC,
                     webRTCDataChannel: 'Text',
                   });
-                  setPeerConnectionOn(false);
+                  setShowRTCEntryForms(false);
                   setDataTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
@@ -171,7 +172,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
               </a>
             )}
           </ul>
-        </div>
+        </div>   
       </div>
     </div>
   );
