@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import CodeMirror from '@uiw/react-codemirror';
-import { EditorView } from '@codemirror/view';
-import { javascript } from '@codemirror/lang-javascript';
-import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+// import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+// import CodeMirror from '@uiw/react-codemirror';
+// import { EditorView } from '@codemirror/view';
+// import { javascript } from '@codemirror/lang-javascript';
+// import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+// import Select from '@mui/material/Select';
+// import MenuItem from '@mui/material/MenuItem';
 import {
-  $TSFixMe,
   NewRequestWebRTCSet,
   RequestWebRTC,
 } from '../../../../types';
@@ -30,11 +29,6 @@ interface Props {
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   let { newRequestWebRTC, newRequestWebRTCSet, createOffer, createAnswer } =
     props;
-  const requestBody = useSelector(
-    (state: any) => state.newRequest.newRequestBody
-  );
-
-  const isDark = useSelector((state: any) => state.ui.isDark);
 
   return (
     <div className="mt-3">
@@ -45,7 +39,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         onChange={(value, viewUpdate) => {
           newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value });
         }}
-        placeholder={'Offer here'}
+        placeholder={'Click "Get Offer" or paste in Offer SDP'}
         readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
       />
       <button
@@ -68,7 +62,8 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         placeholder={'Answer here'}
         readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
       />
-      <button
+      {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
+      {/* <button
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
@@ -77,7 +72,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         }}
       >
         Get Answer
-      </button>
+      </button> */}
       {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
     </div>
   );

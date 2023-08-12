@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
@@ -13,6 +13,7 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
+import WebRTCVideoBox from './WebRTCVideoBox';
 
 export default function WebRTCComposer(props: MainContainerProps) {
   const {
@@ -25,7 +26,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
     setWorkspaceActiveTab,
   } = props;
 
-  const [peerConnectionOn, setPeerConnectionOn] = useState(false);
+  const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
@@ -70,6 +71,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
 
     reqResItemAdded(reqRes);
     composerFieldsReset();
+    setShowRTCEntryForms(false)
     setWorkspaceActiveTab('workspace');
   };
 
@@ -87,10 +89,10 @@ export default function WebRTCComposer(props: MainContainerProps) {
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
           warningMessage={warningMessage}
-          setPeerConnectionOn = {setPeerConnectionOn}
+          setShowRTCEntryForms={setShowRTCEntryForms}
         />
 
-        {peerConnectionOn && (
+        {showRTCEntryForms && (
           <>
             <WebRTCServerEntryForm
               newRequestWebRTC={newRequestWebRTC}
@@ -103,23 +105,10 @@ export default function WebRTCComposer(props: MainContainerProps) {
               <NewRequestButton onClick={addNewRequest} />
             </div>
             {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-              <div
-                id="videos"
-                style={{
-                  height: 'fit-content',
-                  width: 'fit-content',
-                  backgroundColor: 'transparent',
-                }}
-              >
-                <video
-                  className="video-player"
-                  id="user-1"
-                  autoPlay
-                  playsInline
-                  style={{ width: '100%', height: '100%'}}
-                ></video>
+              <div className='box is-rest-invert'>
+                <WebRTCVideoBox streamType="localstream" />
               </div>
-            )}{' '}
+            )}
           </>
         )}
       </div>

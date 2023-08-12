@@ -28,10 +28,10 @@ const webrtcPeerController = {
         audio: false,
       });
 
-      let localVideoStream: HTMLVideoElement = <HTMLVideoElement>(
-        document.getElementById('user-1')
-      );
-      localVideoStream.srcObject = localStream;
+      if (document.getElementById('localstream')) {
+        (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+          localStream;
+      }
 
       localStream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, localStream);
@@ -66,8 +66,10 @@ const webrtcPeerController = {
       };
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       let localStream = peerConnection.createDataChannel('textChannel');
-      localStream.onmessage = (e) => console.log('just got a message')
-      localStream.onopen = (e) => console.log('connection')
+      localStream.onmessage = (e) => {
+        console.log('just got a message');
+      };
+      localStream.onopen = (e) => console.log('data channel connected');
 
       appDispatch(
         newRequestWebRTCSet({
@@ -94,17 +96,14 @@ const webrtcPeerController = {
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
     let { webRTCpeerConnection } = newRequestWebRTC;
-
-    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
-      let offer = await webRTCpeerConnection!.createOffer();
-      await webRTCpeerConnection!.setLocalDescription(offer);
-      appDispatch(
-        newRequestWebRTCSet({
-          ...newRequestWebRTC,
-          webRTCOffer: JSON.stringify(offer),
-        })
-      );
-    }
+    let offer = await webRTCpeerConnection!.createOffer();
+    await webRTCpeerConnection!.setLocalDescription(offer);
+    appDispatch(
+      newRequestWebRTCSet({
+        ...newRequestWebRTC,
+        webRTCOffer: JSON.stringify(offer),
+      })
+    );
   },
 
   // work-in-progress
@@ -127,17 +126,40 @@ const webrtcPeerController = {
     );
   },
   addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
-    let { webRTCpeerConnection } = newRequestWebRTC;
+    let { webRTCpeerConnection, webRTCLocalStream } = newRequestWebRTC;
 
     let answer = newRequestWebRTC.webRTCAnswer;
     if (!answer) return alert('Retrieve answer from peer first...');
     webRTCpeerConnection!.setRemoteDescription(JSON.parse(answer));
 
-    webRTCpeerConnection!.ontrack = async (event) => {
-      event.streams[0].getTracks().forEach((track) => {
-        newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
-      });
-    };
+    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
+      webRTCpeerConnection!.ontrack = async (event) => {
+        event.streams[0].getTracks().forEach((track) => {
+          newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
+        });
+      };
+
+      // this waits for HTML elements localstream and remotestream to render before connecting the srcObject. Should be refactored into better implementation
+      setTimeout(() => {
+        if (
+          !document.getElementById('remotestream') ||
+          !document.getElementById('localstream')
+        ) {
+          alert('error');
+        } else {
+          (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+            newRequestWebRTC.webRTCLocalStream;
+          (<HTMLVideoElement>(
+            document.getElementById('remotestream')
+          )).srcObject = newRequestWebRTC.webRTCRemoteStream;
+        }
+      }, 500);
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      webRTCLocalStream!.onmessage = (e) => {
+        let newString = e.data.slice(1, -1);
+        document.getElementById('textFeed').innerText += newString + '\n';
+      };
+    }
   },
 };
 
