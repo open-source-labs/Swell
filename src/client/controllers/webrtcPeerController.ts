@@ -1,118 +1,167 @@
-import {
-  reqResUpdated, //understand how these are being used and what is happening to state as it is passed into
-  responseDataSaved,
-} from '../toolkit-refactor/slices/reqResSlice';
 import { appDispatch } from '../toolkit-refactor/store';
+import {
+  newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
+} from '../toolkit-refactor/slices/newRequestSlice';
 
-// https://ourcodeworld.com/articles/read/1526/how-to-test-online-whether-a-stun-turn-server-is-working-properly-or-not
-class Peer {
-  config: RTCConfiguration;
-  connection: RTCPeerConnection;
+import { RequestWebRTC } from '../../types';
 
-  constructor(config: RTCConfiguration, iceServerUrl: string[]) {
-    this.config = config;
-    this.connection = this.createConnection(iceServerUrl);
-    this.connection.onicecandidateerror = (e: Event) => {
-      console.error(e);
+const webrtcPeerController = {
+  createPeerConnection: async (
+    newRequestWebRTC: RequestWebRTC
+  ): Promise<void> => {
+    let servers = {
+      iceServers: [
+        {
+          urls: [
+            'stun:stun1.1.google.com:19302',
+            'stun:stun2.1.google.com:19302',
+          ],
+        },
+      ],
     };
-  }
+    let peerConnection = new RTCPeerConnection(servers);
 
-  createConnection(iceServerUrl: string[]): RTCPeerConnection {
-    // createConnection accepts a iceServerUrl with a type of an array of strings, the function is of type RTCPeerConnection (necessary object)
-    const iceServers: RTCIceServer[] = iceServerUrl.map((url) => ({
-      urls: url,
-    })); //const iceServers has a type of RTCIceServer[] mapping every url in the array to the RTCIceServer urls property
-    const configuration: RTCConfiguration = {
-      iceServers,
-    };
+    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
+      let localStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
 
-    return new RTCPeerConnection(configuration);
-  }
+      if (document.getElementById('localstream')) {
+        (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+          localStream;
+      }
 
-  async establishSDP() {
-    this.connection.createDataChannel('test');
-    this.connection
-      .createOffer()
-      .then((offer: RTCSessionDescriptionInit) =>
-        this.connection.setLocalDescription(offer)
+      localStream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, localStream);
+      });
+
+      let remoteStream = new MediaStream();
+      peerConnection.ontrack = async (event) => {
+        event.streams[0].getTracks().forEach((track) => {
+          remoteStream.addTrack(track);
+        });
+      };
+
+      appDispatch(
+        newRequestWebRTCSet({
+          ...newRequestWebRTC,
+          webRTCpeerConnection: peerConnection,
+          webRTCLocalStream: localStream,
+          webRTCRemoteStream: remoteStream,
+        })
       );
-  }
 
-  async establishAnswer(offer: RTCSessionDescriptionInit) {
-    const remoteOffer = new RTCSessionDescription(offer);
-    await this.connection.setRemoteDescription(remoteOffer);
-
-    const answer = await this.connection.createAnswer();
-    await this.connection.setLocalDescription(answer);
-  }
-}
-//replaced with a function that responds with the SDP answer after clicking send
-//content should already contain offer/answer string
-//inside the function use those strings to create connection
-//Answer SDP should be contained in ReqRes obj
-// `ReqRes` type need to be fixed consistently across the board
-// To make the type for `content` work properly
-
-//Ideally creating the answer here not sure what testSDP connection is testing if there is no generated answer already
-
-export default async function testSDPConnection(content) {
-  const { iceConfiguration, offer } = content.request.body;
-  // Technically, setting the connection status as 'closed' right away
-  // is not entirely accurated. Since we are closing the server a second
-  // after it is opened to avoid timeout issue anyway, this is as good
-  // as a 'closed' connection.
-  // Also, the current setup only works with one iceServer. To expand
-  // this feature we need to get the relevant `ReqRes` from `Store.getState()`
-  // and add the response there. See `graphQLController.openSubscription()` for example
-  const iceServerUrl: string[] = [
-    'stun:stun1.1.google.com:19302',
-    'stun:stun2.1.google.com:19302',
-  ];
-  const newReqRes = { ...content, connection: 'closed' };
-  const pc = new Peer(iceConfiguration, iceServerUrl);
-  pc.connection.onicecandidate = (e) => {
-    if (!e.candidate) return;
-
-    const { type, address } = e.candidate;
-    if (type === 'srflx') {
-      newReqRes.response = {
-        ...newReqRes.response,
-        events: [
-          ...newReqRes.response.events,
-          {
-            serverType: 'STUN',
-            publicIpAddress: address,
-            eventCandidate: e.candidate,
-          },
-        ],
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (event.candidate) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
       };
-      appDispatch(responseDataSaved(newReqRes));
-      appDispatch(reqResUpdated(newReqRes));
-      console.log('STUN Server is reachable!');
-      console.log('Public IP Address: ', address);
-    }
-
-    if (type === 'relay') {
-      newReqRes.response = {
-        ...newReqRes.response,
-        events: [
-          ...newReqRes.response.events,
-          {
-            serverType: 'TURN',
-            publicIpAddress: address,
-            eventCandidate: e.candidate,
-          },
-        ],
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      let localStream = peerConnection.createDataChannel('textChannel');
+      localStream.onmessage = (e) => {
+        console.log('just got a message');
       };
-      appDispatch(responseDataSaved(newReqRes));
-      appDispatch(reqResUpdated(newReqRes));
-      console.log('TURN Server is reachable!');
-    }
-  };
-  await pc.establishAnswer(offer); //Generate/set the answer based on the provided offer
-  const answer = pc.connection.localDescription; //get the generated answer
+      localStream.onopen = (e) => console.log('data channel connected');
 
-  pc.connection.close(); //close the connection
-  return answer; //Return the SDP answer => send to the UI to be displayed
-}
+      appDispatch(
+        newRequestWebRTCSet({
+          ...newRequestWebRTC,
+          webRTCpeerConnection: peerConnection,
+          webRTCLocalStream: localStream,
+        })
+      );
+
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (event.candidate) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
+      };
+    }
+  },
+
+  createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+    //grab the peer connection off the state to manipulate further
+    let { webRTCpeerConnection } = newRequestWebRTC;
+    let offer = await webRTCpeerConnection!.createOffer();
+    await webRTCpeerConnection!.setLocalDescription(offer);
+    appDispatch(
+      newRequestWebRTCSet({
+        ...newRequestWebRTC,
+        webRTCOffer: JSON.stringify(offer),
+      })
+    );
+  },
+
+  // work-in-progress
+  createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+    let { webRTCpeerConnection, webRTCOffer } = newRequestWebRTC;
+
+    if (!webRTCOffer || !webRTCpeerConnection) return;
+
+    let offer = JSON.parse(webRTCOffer);
+    await webRTCpeerConnection.setRemoteDescription(offer);
+
+    let answer = await webRTCpeerConnection.createAnswer();
+    await webRTCpeerConnection.setLocalDescription(answer);
+
+    appDispatch(
+      newRequestWebRTCSet({
+        ...newRequestWebRTC,
+        webRTCAnswer: JSON.stringify(answer),
+      })
+    );
+  },
+  addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+    let { webRTCpeerConnection, webRTCLocalStream } = newRequestWebRTC;
+
+    let answer = newRequestWebRTC.webRTCAnswer;
+    if (!answer) return alert('Retrieve answer from peer first...');
+    webRTCpeerConnection!.setRemoteDescription(JSON.parse(answer));
+
+    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
+      webRTCpeerConnection!.ontrack = async (event) => {
+        event.streams[0].getTracks().forEach((track) => {
+          newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
+        });
+      };
+
+      // this waits for HTML elements localstream and remotestream to render before connecting the srcObject. Should be refactored into better implementation
+      setTimeout(() => {
+        if (
+          !document.getElementById('remotestream') ||
+          !document.getElementById('localstream')
+        ) {
+          alert('error');
+        } else {
+          (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+            newRequestWebRTC.webRTCLocalStream;
+          (<HTMLVideoElement>(
+            document.getElementById('remotestream')
+          )).srcObject = newRequestWebRTC.webRTCRemoteStream;
+        }
+      }, 500);
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      webRTCLocalStream!.onmessage = (e) => {
+        let newString = e.data.slice(1, -1);
+        document.getElementById('textFeed').innerText += newString + '\n';
+      };
+    }
+  },
+};
+
+export default webrtcPeerController;
 
