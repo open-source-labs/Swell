@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import connectionController from '../../controllers/reqResController';
-import testSDPConnection from '../../controllers/webrtcPeerController';
+import webrtcPeerController from '../../controllers/webrtcPeerController';
 import { responseDataSaved } from '../../toolkit-refactor/slices/reqResSlice';
 // import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
 // import {
@@ -63,7 +63,7 @@ const WorkspaceCollectionElement = (props) => {
         <div
           className={`is-flex-grow-1 is-${network} is-flex-basis-0 is-flex is-justify-content-center is-align-items-center has-text-weight-medium`}
         >
-          {request.method}
+          {network === 'webrtc' ? 'WEBRTC' : request.method}
         </div>
         <div className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between">
           <div className="is-flex is-align-items-center ml-2">{url}</div>
@@ -146,7 +146,7 @@ const WorkspaceCollectionElement = (props) => {
       <div className="is-flex">
         <button
           className="is-flex-basis-0 is-flex-grow-1 button is-neutral-100 is-size-7 border-curve"
-          id={request.method.split(' ').join('-')}
+          id={request.method ? request.method.split(' ').join('-') : 'webrtc'}
           onClick={() => {
             removeReqRes();
             dispatch(responseDataSaved({}));
@@ -160,8 +160,18 @@ const WorkspaceCollectionElement = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 border-curve"
             id={`send-button-${index}`}
             onClick={() => {
-              if (network === 'webrtc') {
-                testSDPConnection(content);
+              if (content.request.webRTCDataChannel){
+                // function to update currentResponse
+                dispatch(setResponsePaneActiveTab('webrtc'))
+                dispatch(responseDataSaved(content));
+                webrtcPeerController.addAnswer(content.request)
+                setTimeout(() => {
+                  if (content.request.webRTCDataChannel === 'Video') {
+                    document.getElementById('user-2').srcObject = content.request.webRTCRemoteStream;
+                  } 
+                }, 1000)
+              // if (network === 'webrtc') {
+                // testSDPConnection(content);
               } else if (content.graphQL && request.method === 'SUBSCRIPTION') {
                 // For GraphQL subscriptions, `GraphQLController::openSubscription` will take care of
                 // updating state, and we do not want to overwrite response data here
