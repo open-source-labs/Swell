@@ -323,16 +323,29 @@ export interface ResponseWebRTC {
   webRTC: true
 }
 
-export interface RequestWebRTC {
+export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText
+
+export interface RequestWebRTCVideo {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
-  webRTCDataChannel: 'Audio' | 'Video' | 'Text';
+  webRTCDataChannel: 'Video';
   webRTCWebsocketServer: string | null;
   webRTCOffer: string | null;
   webRTCAnswer: string | null;
   webRTCpeerConnection: RTCPeerConnection | null;
-  webRTCLocalStream: MediaStream | RTCDataChannel | null;
-  webRTCRemoteStream: MediaStream | RTCDataChannel | null;
+  webRTCLocalStream: MediaStream | null;
+  webRTCRemoteStream: MediaStream | null;
+}
+
+export interface RequestWebRTCText {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Text';
+  webRTCWebsocketServer: string | null;
+  webRTCOffer: string | null;
+  webRTCAnswer: string | null;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: RTCDataChannel | null;
 }
 
 export interface NewRequestSSE {

@@ -160,18 +160,10 @@ const WorkspaceCollectionElement = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 border-curve"
             id={`send-button-${index}`}
             onClick={() => {
-              if (content.request.webRTCDataChannel){
-                // function to update currentResponse
+              if (content.request.network === 'webrtc'){
                 dispatch(setResponsePaneActiveTab('webrtc'))
                 dispatch(responseDataSaved(content));
                 webrtcPeerController.addAnswer(content.request)
-                setTimeout(() => {
-                  if (content.request.webRTCDataChannel === 'Video') {
-                    document.getElementById('user-2').srcObject = content.request.webRTCRemoteStream;
-                  } 
-                }, 1000)
-              // if (network === 'webrtc') {
-                // testSDPConnection(content);
               } else if (content.graphQL && request.method === 'SUBSCRIPTION') {
                 // For GraphQL subscriptions, `GraphQLController::openSubscription` will take care of
                 // updating state, and we do not want to overwrite response data here

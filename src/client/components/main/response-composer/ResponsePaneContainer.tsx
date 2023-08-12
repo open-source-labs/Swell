@@ -16,6 +16,7 @@ import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
 import State from '../../../toolkit-refactor/store';
+import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
 
 const ResponsePaneContainer: FC = () => {
   const dispatch = useDispatch();
@@ -154,29 +155,14 @@ const ResponsePaneContainer: FC = () => {
             )}
             {activeTab === 'webrtc' &&
               currentResponse.request.webRTCDataChannel === 'Video' && (
-                <div
-                  id="videos"
-                  style={{
-                    height: 'fit-content',
-                    width: 'fit-content',
-                    backgroundColor: 'transparent',
-                  }}
-                >
-                  <video
-                    className="video-player"
-                    id="user-2"
-                    autoPlay
-                    playsInline
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  ></video>
+                <div className="box is-flex">
+                  <WebRTCVideoBox streamType={'localstream'} />
+                  <WebRTCVideoBox streamType={'remotestream'} />
                 </div>
               )}
             {activeTab === 'webrtc' &&
               currentResponse.request.webRTCDataChannel === 'Text' && (
-                <div id="textFeed" style={{fontSize: '30px'}}></div>
+                <div id="textFeed" style={{ fontSize: '30px' }}></div>
               )}
           </div>
 

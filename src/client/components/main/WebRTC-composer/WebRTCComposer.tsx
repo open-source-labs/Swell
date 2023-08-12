@@ -26,7 +26,7 @@ export default function WebRTCComposer(props: MainContainerProps) {
     setWorkspaceActiveTab,
   } = props;
 
-  const [peerConnectionOn, setPeerConnectionOn] = useState(false);
+  const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
@@ -71,8 +71,8 @@ export default function WebRTCComposer(props: MainContainerProps) {
 
     reqResItemAdded(reqRes);
     composerFieldsReset();
+    setShowRTCEntryForms(false)
     setWorkspaceActiveTab('workspace');
-
   };
 
   return (
@@ -89,10 +89,10 @@ export default function WebRTCComposer(props: MainContainerProps) {
           newRequestWebRTC={newRequestWebRTC}
           newRequestWebRTCSet={newRequestWebRTCSet}
           warningMessage={warningMessage}
-          setPeerConnectionOn = {setPeerConnectionOn}
+          setShowRTCEntryForms={setShowRTCEntryForms}
         />
 
-        {peerConnectionOn && (
+        {showRTCEntryForms && (
           <>
             <WebRTCServerEntryForm
               newRequestWebRTC={newRequestWebRTC}
@@ -105,7 +105,9 @@ export default function WebRTCComposer(props: MainContainerProps) {
               <NewRequestButton onClick={addNewRequest} />
             </div>
             {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-              <WebRTCVideoBox streamType='localstream' />
+              <div className='box is-rest-invert'>
+                <WebRTCVideoBox streamType="localstream" />
+              </div>
             )}
           </>
         )}

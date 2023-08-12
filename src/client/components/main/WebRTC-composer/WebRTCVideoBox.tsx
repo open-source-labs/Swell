@@ -7,8 +7,8 @@ const WebRTCVideoBox: React.FC<Props> = (props: Props) => {
     const { streamType } = props
   return (
     <div
-      className='box is-flex'
-      style={{width: '500px', height: '500px'}}
+    className='m-1'
+      style={{maxWidth: '350px', position: 'relative'}}
     >
       <video
         id={`${streamType}`}
@@ -16,6 +16,7 @@ const WebRTCVideoBox: React.FC<Props> = (props: Props) => {
         playsInline
         style={{ width: '100%', height: '100%' }}
       ></video>
+      <a className='is-rest-invert pl-2 pr-2 p-1 mb-2 mr-2' style={{position: 'absolute', bottom: '10px', right: '10px'}}>{streamType}</a>
     </div>
   );
 };
