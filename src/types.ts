@@ -105,7 +105,6 @@ export interface MainContainerProps {
     newRequestSSE: NewRequestSSE,
     warningMessage: any;
     introspectionData: IntrospectionData;
-    newRequestWebRTC: any;
     
     // reducers
     reqResItemAdded: (reqRes: ReqRes) => any;
@@ -120,9 +119,6 @@ export interface MainContainerProps {
     openApiRequestsReplaced: () => any;
     composerFieldsReset: () => any;
     setWorkspaceActiveTab: (arg: string) => any;
-    newRequestWebRTCSet: () => void;
-    newRequestWebRTCOfferSet: () => void;
-    
 }
 
 export interface GraphQLResponse {

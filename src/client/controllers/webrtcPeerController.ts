@@ -3,8 +3,8 @@ import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
+import { RequestWebRTC } from '../../types';
 
-import  RequestWebRTC  from '../../types';
 
 const webrtcPeerController = {
   createPeerConnection: async (
@@ -134,8 +134,8 @@ const webrtcPeerController = {
     webRTCpeerConnection!.setRemoteDescription(JSON.parse(answer));
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
-      webRTCpeerConnection!.ontrack = async (event) => {
-        event.streams[0].getTracks().forEach((track) => {
+      webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
+        event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
           newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
         });
       };
@@ -157,9 +157,12 @@ const webrtcPeerController = {
       }, 500);
     }
     if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      webRTCLocalStream.onmessage = (e) => {
-        let newString = e.data.slice(1, -1);
-        document.getElementById('textFeed').innerText += newString + '\n';
+      webRTCLocalStream.onmessage = (event: MessageEvent) => {
+        let newString = event.data.slice(1, -1);
+        let textFeed = document.getElementById('textFeed')
+        if (textFeed) {
+          textFeed.innerText += newString + '\n';
+        }
       };
     }
   },

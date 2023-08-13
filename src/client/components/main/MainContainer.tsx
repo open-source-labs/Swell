@@ -12,8 +12,6 @@ import {
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-  newRequestWebRTCSet,
-  newRequestWebRTCOfferSet,
 } from '../../toolkit-refactor/slices/newRequestSlice';
 
 import { openApiRequestsReplaced } from '../../toolkit-refactor/slices/newRequestOpenApiSlice';
@@ -59,7 +57,6 @@ const mapStateToProps = (store: RootState) => {
     newRequestSSE: store.newRequest.newRequestSSE,
     warningMessage: store.warningMessage,
     introspectionData: store.introspectionData,
-    newRequestWebRTC: store.newRequest.newRequestWebRTC,
   };
 };
 
@@ -85,12 +82,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
   newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
     dispatch(newRequestBodySet(requestBodyObj));
-  },
-  newRequestWebRTCSet: (newReqtWebRTCObj: RequestWebRTC) => {
-    dispatch(newRequestWebRTCSet(newReqtWebRTCObj));
-  },
-  newRequestWebRTCOfferSet: (newReqtWebRTCOffer: string) => {
-    dispatch(newRequestWebRTCOfferSet(newReqtWebRTCOffer));
   },
   newTestContentSet: (testContent: $TSFixMe) => {
     dispatch(newTestContentSet(testContent));
