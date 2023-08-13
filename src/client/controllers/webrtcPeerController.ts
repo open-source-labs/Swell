@@ -3,7 +3,7 @@ import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
-import { RequestWebRTC } from '../../types';
+import { RequestWebRTC, RequestWebRTCText } from '../../types';
 
 
 const webrtcPeerController = {
@@ -157,7 +157,7 @@ const webrtcPeerController = {
       }, 500);
     }
     if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      webRTCLocalStream.onmessage = (event: MessageEvent) => {
+      (<RequestWebRTCText>newRequestWebRTC).webRTCLocalStream!.onmessage = (event: MessageEvent) => {
         let newString = event.data.slice(1, -1);
         let textFeed = document.getElementById('textFeed')
         if (textFeed) {
