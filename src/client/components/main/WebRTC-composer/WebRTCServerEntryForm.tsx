@@ -7,28 +7,27 @@ import { useSelector } from 'react-redux';
 // import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 // import Select from '@mui/material/Select';
 // import MenuItem from '@mui/material/MenuItem';
-import {
-  NewRequestWebRTCSet,
-  RequestWebRTC,
-} from '../../../../types';
+import { RequestWebRTC } from '../../../../types';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { useDispatch } from 'react-redux';
+import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
+import webrtcPeerController from '../../../controllers/webrtcPeerController';
+import { RootState } from '../../../toolkit-refactor/store';
 
 // const jBeautify = require('js-beautify').js;
 
 interface Props {
-  newRequestWebRTC: RequestWebRTC;
-  newRequestWebRTCSet: NewRequestWebRTCSet;
-  createOffer: (newRequestWebRTC: RequestWebRTC) => void;
-  createAnswer: (newRequestWebRTC: RequestWebRTC) => void;
-  
-  warningMessage: {
-    body: string;
-  } | null;
+  // newRequestWebRTC: RequestWebRTC;
+  // warningMessage: {
+  //   body: string;
+  // } | null;
 }
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
-  let { newRequestWebRTC, newRequestWebRTCSet, createOffer, createAnswer } =
-    props;
+  const dispatch = useDispatch();
+  const newRequestWebRTC: RequestWebRTC = useSelector(
+    (store: RootState) => store.newRequest.newRequestWebRTC
+  );
 
   return (
     <div className="mt-3">
@@ -37,7 +36,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         value={newRequestWebRTC.webRTCOffer || ''}
         height={'80px'}
         onChange={(value, viewUpdate) => {
-          newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value });
+          dispatch(
+            newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
+          );
         }}
         placeholder={'Click "Get Offer" or paste in Offer SDP'}
         readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
@@ -46,7 +47,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
         onClick={() => {
-          createOffer(newRequestWebRTC);
+          webrtcPeerController.createOffer(newRequestWebRTC);
         }}
       >
         Get Offer
@@ -57,7 +58,9 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         value={newRequestWebRTC.webRTCAnswer || ''}
         height={'80px'}
         onChange={(value, viewUpdate) => {
-          newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value });
+          dispatch(
+            newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })
+          );
         }}
         placeholder={'Answer here'}
         readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}

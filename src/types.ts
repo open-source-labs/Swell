@@ -173,7 +173,7 @@ export interface NewRequestHeaders {
 export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
 export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
 export type NewRequestBodySet = (obj: NewRequestBody) => void;
-export type NewRequestWebRTCSet = (obj: $TSFixMe) => void;
+export type NewRequestWebRTCSet = (obj: RequestWebRTC) => void;
 
 
 /**
@@ -234,14 +234,6 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
-// export interface ReqResWebRTC {
-//   webRTCEntryMode: 'Manual' | 'WS';
-//   webRTCDataChannel: 'Audio' | 'Video' | 'Text';
-//   webRTCWebsocketServer: string | null;
-//   webRTCOffer: string | null;
-//   webRTCAnswer: string | null;
-//   webRTCpeerConnection: any;
-// }
 
 /**
  * Describes the results of calling built-in introspection functions in GraphQL.
@@ -346,6 +338,7 @@ export interface RequestWebRTCText {
   webRTCAnswer: string | null;
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: RTCDataChannel | null;
+  webRTCRemoteStream: RTCDataChannel | null;
 }
 
 export interface NewRequestSSE {

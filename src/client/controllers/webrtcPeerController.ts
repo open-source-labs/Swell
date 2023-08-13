@@ -4,7 +4,7 @@ import {
   newRequestWebRTCOfferSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
 
-import { RequestWebRTC } from '../../types';
+import  RequestWebRTC  from '../../types';
 
 const webrtcPeerController = {
   createPeerConnection: async (
@@ -130,6 +130,7 @@ const webrtcPeerController = {
 
     let answer = newRequestWebRTC.webRTCAnswer;
     if (!answer) return alert('Retrieve answer from peer first...');
+
     webRTCpeerConnection!.setRemoteDescription(JSON.parse(answer));
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
@@ -154,8 +155,9 @@ const webrtcPeerController = {
           )).srcObject = newRequestWebRTC.webRTCRemoteStream;
         }
       }, 500);
-    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      webRTCLocalStream!.onmessage = (e) => {
+    }
+    if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      webRTCLocalStream.onmessage = (e) => {
         let newString = e.data.slice(1, -1);
         document.getElementById('textFeed').innerText += newString + '\n';
       };

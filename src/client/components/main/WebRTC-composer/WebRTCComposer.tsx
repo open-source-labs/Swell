@@ -10,7 +10,6 @@ import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
@@ -19,7 +18,6 @@ export default function WebRTCComposer(props: MainContainerProps) {
   const {
     composerFieldsReset,
     newRequestWebRTC,
-    newRequestWebRTCSet,
     currentTab,
     warningMessage,
     reqResItemAdded,
@@ -86,20 +84,15 @@ export default function WebRTCComposer(props: MainContainerProps) {
         style={{ overflowX: 'hidden' }}
       >
         <WebRTCSessionEntryForm
-          newRequestWebRTC={newRequestWebRTC}
-          newRequestWebRTCSet={newRequestWebRTCSet}
-          warningMessage={warningMessage}
+          // newRequestWebRTC={newRequestWebRTC}
+          // warningMessage={warningMessage}
           setShowRTCEntryForms={setShowRTCEntryForms}
         />
 
         {showRTCEntryForms && (
           <>
             <WebRTCServerEntryForm
-              newRequestWebRTC={newRequestWebRTC}
-              newRequestWebRTCSet={newRequestWebRTCSet}
-              createOffer={webrtcPeerController.createOffer}
-              createAnswer={webrtcPeerController.createAnswer}
-              warningMessage={warningMessage}
+              // warningMessage={warningMessage}
             />
             <div className="is-3rem-footer is-clickable is-margin-top-auto">
               <NewRequestButton onClick={addNewRequest} />
