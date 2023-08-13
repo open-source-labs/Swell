@@ -8,10 +8,7 @@ import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequest
 import { RootState } from '../../../toolkit-refactor/store';
 
 interface Props {
-  // newRequestWebRTC: RequestWebRTC;
-  // newRequestWebRTCSet: NewRequestWebRTCSet;
   setShowRTCEntryForms: (val: boolean) => any;
-  // warningMessage: { uri: string };
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {

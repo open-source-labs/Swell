@@ -13,34 +13,24 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../toolkit-refactor/store';
+import { useDispatch } from 'react-redux';
+import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
+import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
+import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
-export default function WebRTCComposer(props: MainContainerProps) {
-  const {
-    composerFieldsReset,
-    newRequestWebRTC,
-    currentTab,
-    warningMessage,
-    reqResItemAdded,
-    setWorkspaceActiveTab,
-  } = props;
+export default function WebRTCComposer() {
+  const dispatch = useDispatch();
+  const newRequestWebRTC: RequestWebRTC = useSelector(
+    (store: RootState) => store.newRequest.newRequestWebRTC
+  );
 
   const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
-    const requestWebRTC: RequestWebRTC = {
-      network: newRequestWebRTC.network,
-      webRTCEntryMode: newRequestWebRTC.webRTCEntryMode,
-      webRTCDataChannel: newRequestWebRTC.webRTCDataChannel,
-      webRTCWebsocketServer: null,
-      webRTCOffer: newRequestWebRTC.webRTCOffer,
-      webRTCAnswer: newRequestWebRTC.webRTCAnswer,
-      webRTCpeerConnection: newRequestWebRTC.webRTCpeerConnection,
-      webRTCLocalStream: newRequestWebRTC.webRTCLocalStream,
-      webRTCRemoteStream: newRequestWebRTC.webRTCRemoteStream,
-    };
-
-    const reqRes: ReqRes = {
+    return {
       id: uuid(),
       createdAt: new Date(),
       path: '',
@@ -49,16 +39,13 @@ export default function WebRTCComposer(props: MainContainerProps) {
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
-      request: requestWebRTC,
+      request: newRequestWebRTC,
       response: {
         webRTC: true,
       },
       checked: false,
       minimized: false,
-      tab: currentTab,
     };
-
-    return reqRes;
   };
 
   const addNewRequest = (): void => {
@@ -67,10 +54,10 @@ export default function WebRTCComposer(props: MainContainerProps) {
     // addHistory removed because RTCPeerConnection objects cant typically be cloned
     // historyController.addHistoryToIndexedDb(reqRes);
 
-    reqResItemAdded(reqRes);
-    composerFieldsReset();
-    setShowRTCEntryForms(false)
-    setWorkspaceActiveTab('workspace');
+    dispatch(reqResItemAdded(reqRes));
+    dispatch(composerFieldsReset());
+    setShowRTCEntryForms(false);
+    dispatch(setWorkspaceActiveTab('workspace'));
   };
 
   return (
@@ -88,17 +75,16 @@ export default function WebRTCComposer(props: MainContainerProps) {
           // warningMessage={warningMessage}
           setShowRTCEntryForms={setShowRTCEntryForms}
         />
-
         {showRTCEntryForms && (
           <>
             <WebRTCServerEntryForm
-              // warningMessage={warningMessage}
+            // warningMessage={warningMessage}
             />
             <div className="is-3rem-footer is-clickable is-margin-top-auto">
               <NewRequestButton onClick={addNewRequest} />
             </div>
             {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-              <div className='box is-rest-invert'>
+              <div className="box is-rest-invert">
                 <WebRTCVideoBox streamType="localstream" />
               </div>
             )}
