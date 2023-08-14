@@ -169,6 +169,8 @@ export interface NewRequestHeaders {
 export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
 export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
 export type NewRequestBodySet = (obj: NewRequestBody) => void;
+export type NewRequestWebRTCSet = (obj: RequestWebRTC) => void;
+
 
 /**
  * Defines the type constract for the NewRequestFields state object.
@@ -228,6 +230,7 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
+
 /**
  * Describes the results of calling built-in introspection functions in GraphQL.
  */
@@ -265,15 +268,16 @@ export interface OpenAPIReqData {
  *
  * ReqRes {
  *  id: number;
- *  request: ReqResReqest;
+ *  request: ReqResRequest;
  *  response: ReqResResponse;
  * }
  *
  * as well as any additional metadata needed as properties that doesn't already
  * exist in the request or response properties
  */
+
 export interface ReqRes {
-  tRPC: any;
+  tRPC?: any;
   checked: boolean;
   checkSelected: boolean;
   closeCode?: number;
@@ -281,28 +285,56 @@ export interface ReqRes {
   connectionType: string | null;
   createdAt: Date;
   error?: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  host: string;
+  graphQL?: boolean;
+  gRPC?: boolean;
+  host?: string;
   id: string;
   isHTTP2?: boolean;
   minimized: boolean;
   openapi?: boolean;
-  protocol: Protocol;
-  protoPath: string;
+  protocol?: Protocol;
+  protoPath?: string;
   path: string;
-  request: ReqResRequest;
-  response: ReqResResponse;
+  request: ReqResRequest | RequestWebRTC;
+  response: ReqResResponse | ResponseWebRTC;
   rpc?: string;
   service?: string;
   tab?: string;
   timeReceived: Date | number | null;
   timeSent: number | null;
-  url: string;
-  webrtc: boolean;
+  url?: string;
   frequency?: number;
   duration?: number;
-  // classEventPreviewsName?: string;
+} ;
+
+export interface ResponseWebRTC {
+  webRTC: true
+}
+
+export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText
+
+export interface RequestWebRTCVideo {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Video';
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: MediaStream | null;
+  webRTCRemoteStream: MediaStream | null;
+}
+
+export interface RequestWebRTCText {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Text';
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: RTCDataChannel | null;
+  webRTCRemoteStream: RTCDataChannel | null;
 }
 
 export interface NewRequestSSE {

@@ -100,6 +100,10 @@ module.exports = () => {
       expect(reduxState.reqRes.currentResponse.response.events[0]).to.deep.equal(response);
     });
 
+    it('State is being handled ', () => {
+      console.log('first test')
+    });
+
     it('test 123', () => {
       console.log('first test')
     });

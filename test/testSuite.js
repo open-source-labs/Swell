@@ -40,6 +40,7 @@ const webRTCTest = require('./subSuites/webRTCTest');
 //& new integration tests
 const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
 const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests')
+const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTests');
 
 // Package requirements
 const path = require('path');
@@ -71,5 +72,6 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 describe('Integration testing', function() {
   // httpIntegrationTests()
-  grpcIntegrationTests()
+  // grpcIntegrationTests()
+  graphQLIntegrationTests();
 }).timeout(20000)
