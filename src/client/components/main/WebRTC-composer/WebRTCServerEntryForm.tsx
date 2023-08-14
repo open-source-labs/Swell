@@ -46,7 +46,12 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         />
         <button
           className="button is-small is-rest-invert"
-          style={{ position: 'absolute', top: '20px', right: '20px' }}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            width: '58px',
+          }}
           onClick={() => {
             navigator.clipboard.writeText(newRequestWebRTC.webRTCOffer);
           }}
@@ -55,24 +60,27 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         </button>
         <button
           className="button is-small is-rest-invert"
-          style={{ position: 'absolute', top: '60px', right: '20px' }}
+          style={{
+            position: 'absolute',
+            top: '60px',
+            right: '20px',
+            width: '58px',
+          }}
           onClick={() => {
-            navigator.clipboard
-              .readText()
-              .then((text) =>
-                dispatch(
-                  newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCOffer: text,
-                  })
-                )
-              );
+            navigator.clipboard.readText().then((text) =>
+              dispatch(
+                newRequestWebRTCSet({
+                  ...newRequestWebRTC,
+                  webRTCOffer: text,
+                })
+              )
+            );
           }}
         >
           Paste
         </button>
         <button
-          className="button is-normal is-primary-100 add-request-button  no-border-please"
+          className="button is-normal is-primary-100 add-request-button no-border-please"
           style={{ margin: '10px' }}
           onClick={() => {
             webrtcPeerController.createOffer(newRequestWebRTC);
@@ -97,7 +105,12 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         />
         <button
           className="button is-small is-rest-invert"
-          style={{ position: 'absolute', top: '20px', right: '20px' }}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            width: '58px',
+          }}
           onClick={() => {
             navigator.clipboard.writeText(newRequestWebRTC.webRTCAnswer);
           }}
@@ -106,18 +119,21 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         </button>
         <button
           className="button is-small is-rest-invert"
-          style={{ position: 'absolute', top: '60px', right: '20px' }}
+          style={{
+            position: 'absolute',
+            top: '60px',
+            right: '20px',
+            width: '58px',
+          }}
           onClick={() => {
-            navigator.clipboard
-              .readText()
-              .then((text) =>
-                dispatch(
-                  newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCAnswer: text,
-                  })
-                )
-              );
+            navigator.clipboard.readText().then((text) =>
+              dispatch(
+                newRequestWebRTCSet({
+                  ...newRequestWebRTC,
+                  webRTCAnswer: text,
+                })
+              )
+            );
           }}
         >
           Paste

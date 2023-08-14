@@ -14,7 +14,7 @@ import {
 } from '../toolkit-refactor/slices/graphPointsSlice';
 
 import graphQLController from './graphQLController';
-import { ReqRes, WindowExt } from '../../types';
+import { Protocol, ReqRes, WindowExt } from '../../types';
 
 const { api } = window as unknown as WindowExt;
 
@@ -165,12 +165,12 @@ const connectionController = {
   },
 
   closeReqRes(reqResObj: ReqRes): void {
+    let protocol: Protocol | undefined = reqResObj.protocol
     if (reqResObj.graphQL && reqResObj.request?.method === 'SUBSCRIPTION') {
       graphQLController.closeSubscription(reqResObj);
-    } else if (reqResObj.protocol.includes('http')) {
-      api.send('close-http', reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
-      api.send('close-ws');
+    } else if (protocol) {
+      if(protocol.includes('http'))  api.send('close-http', reqResObj);
+      if(/wss?:\/\//.test(protocol)) api.send('close-ws');    
     }
 
     const { id } = reqResObj;
