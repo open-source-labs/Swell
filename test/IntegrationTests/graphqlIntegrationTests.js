@@ -238,6 +238,7 @@ module.exports = () => {
             // it results in 0 totalReceived, and 3 totalMissed.
             // expect(reduxResEvents[0].totalReceived).to.equal(3);
             resolve();
+            // new comment
           }, 6000);
         })
       });
