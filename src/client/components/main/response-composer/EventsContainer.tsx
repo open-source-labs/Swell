@@ -6,15 +6,12 @@ import EventPreview from './EventPreview';
 import { EditorView } from '@codemirror/view';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { json } from '@codemirror/lang-json';
+import { ReqResRequest, RequestWebRTC } from '../../../../types';
 
 interface EventsContainerProps {
   currentResponse: {
     connection: string;
-    request: {
-      method: string;
-      className?: object;
-      classEventPreviewsName: string;
-    };
+    request: RequestWebRTC | ReqResRequest;
     response: {
       events: any[];
       headers?: {
@@ -25,9 +22,9 @@ interface EventsContainerProps {
   };
 }
 
-function EventsContainer({ currentResponse }: EventsContainerProps) {
+function EventsContainer(props: any) {
+  const { currentResponse } = props;
   const isDark = useSelector((state: any) => state.ui.isDark);
-
   const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;
@@ -78,6 +75,24 @@ function EventsContainer({ currentResponse }: EventsContainerProps) {
       className="tab_content-response overflow-event-parent-container"
       id="events-display"
     >
+      {request.webRTCDataChannel && (
+        <div
+          id="videos"
+          style={{
+            height: 'fit-content',
+            width: 'fit-content',
+            backgroundColor: 'transparent',
+          }}
+        >
+          <video
+            className="video-player"
+            id="user-2"
+            autoPlay
+            playsInline
+            style={{ width: '100%', height: '100%', border: 'solid black' }}
+          ></video>
+        </div>
+      )}
       {request.method === 'GET' && (
         <EventPreview
           className={`${

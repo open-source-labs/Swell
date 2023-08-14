@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
-// Import controllers
-import historyController from '../../../controllers/historyController';
-// Import local components
-import { ReqRes, $TSFixMe } from '../../../../types';
+
+import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -12,103 +10,71 @@ import { ReqRes, $TSFixMe } from '../../../../types';
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
+import WebRTCVideoBox from './WebRTCVideoBox';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../toolkit-refactor/store';
+import { useDispatch } from 'react-redux';
+import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
+import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
+import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
-export default function WebRTCComposer(props: $TSFixMe) {
-  const {
-    composerFieldsReset,
-    fieldsReplaced,
-    newRequestFields,
-    newRequestFields: {
-      gRPC,
-      url,
-      method,
-      protocol,
-      graphQL,
-      restUrl,
-      webrtc,
-      webrtcUrl,
-      network,
-      testContent,
-    },
-    newTestContentSet,
-    newRequestBodySet,
-    newRequestBody,
-    newRequestBody: { rawType, bodyContent, bodyVariables, bodyType },
-    newRequestHeadersSet,
-    webrtcData,
-    newRequestHeaders,
-    newRequestCookiesSet,
-    newRequestStreamsSet,
-    newRequestStreams,
-    currentTab,
-    setWarningMessage,
-    warningMessage,
-    reqResItemAdded,
-    setWorkspaceActiveTab,
-  } = props;
+export default function WebRTCComposer() {
+  const dispatch = useDispatch();
+  const newRequestWebRTC: RequestWebRTC = useSelector(
+    (store: RootState) => store.newRequest.newRequestWebRTC
+  );
 
-  const addNewRequest = () => {
-    const reqRes: ReqRes = {
+  const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
+
+  // Builds ReqRes object from properties in NewRequest
+  const composeReqRes = (): ReqRes => {
+    return {
       id: uuid(),
       createdAt: new Date(),
-      protocol,
-      host: '',
       path: '',
-      graphQL,
-      gRPC,
-      webrtc: true,
-      url,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
-      webrtcData,
-      request: {
-        method,
-        webrtcData,
-        url,
-        messages: [],
-        body: bodyContent || '',
-        bodyType,
-        bodyVariables: bodyVariables || '',
-        rawType,
-        network: 'webRtc',
-        restUrl,
-        webrtcUrl,
-      },
+      request: newRequestWebRTC,
       response: {
-        headers: null,
-        events: [],
+        webRTC: true,
       },
       checked: false,
       minimized: false,
-      tab: currentTab,
     };
+  };
 
-    // add request to history
-    /** @todo Fix this TS type error  */
-    historyController.addHistoryToIndexedDb(reqRes);
-    reqResItemAdded(reqRes);
+  const checkValidSDP = (sdp: string) => {
+    try {
+      let sdpParsed: object = JSON.parse(sdp);
+      if (
+        Object.keys(sdpParsed)[0] === 'type' &&
+        Object.keys(sdpParsed)[1] === 'sdp'
+      )
+        return true;
+    } catch {
+      return false
+    }
+    return false;
+  }
 
-    //reset for next request
-    composerFieldsReset();
+  const addNewRequest = (): void => {
+    if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
+      return alert('Invalid offer or answer SDP')
+    }
+    const reqRes: ReqRes = composeReqRes();
 
-    newRequestBodySet({
-      ...newRequestBody,
-      bodyType: 'stun-ice',
-      rawType: '',
-    });
-    fieldsReplaced({
-      ...newRequestFields,
-      url,
-      webrtcUrl,
-    });
+    // addHistory removed because RTCPeerConnection objects cant typically be cloned
+    // historyController.addHistoryToIndexedDb(reqRes);
 
-    setWorkspaceActiveTab('workspace');
+    dispatch(reqResItemAdded(reqRes));
+    dispatch(composerFieldsReset());
+    setShowRTCEntryForms(false);
+    dispatch(setWorkspaceActiveTab('workspace'));
   };
 
   return (
@@ -121,36 +87,20 @@ export default function WebRTCComposer(props: $TSFixMe) {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        {/** @todo Fix TSX type error */}
-        <WebRTCSessionEntryForm
-          newRequestFields={newRequestFields}
-          newRequestHeaders={newRequestHeaders}
-          newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
-          fieldsReplaced={fieldsReplaced}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-          newRequestCookiesSet={newRequestCookiesSet}
-          newRequestBodySet={newRequestBodySet}
-          warningMessage={warningMessage}
-          setWarningMessage={setWarningMessage}
-          newTestContentSet={newTestContentSet}
-        />
-
-        <WebRTCServerEntryForm
-          warningMessage={warningMessage}
-          newRequestBody={newRequestBody}
-          newRequestBodySet={newRequestBodySet}
-        />
-
-        <TestEntryForm
-          newTestContentSet={newTestContentSet}
-          testContent={testContent}
-          isWebSocket={false}
-        />
-        <div className="is-3rem-footer is-clickable is-margin-top-auto">
-          <NewRequestButton onClick={addNewRequest} />
-        </div>
+        <WebRTCSessionEntryForm setShowRTCEntryForms={setShowRTCEntryForms} />
+        {showRTCEntryForms && (
+          <>
+            <WebRTCServerEntryForm />
+            <div className="is-3rem-footer is-clickable is-margin-top-auto">
+              <NewRequestButton onClick={addNewRequest} />
+            </div>
+            {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+              <div className="box is-rest-invert">
+                <WebRTCVideoBox streamType="localstream" />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </Box>
   );
