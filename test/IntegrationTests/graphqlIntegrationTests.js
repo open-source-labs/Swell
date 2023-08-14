@@ -225,13 +225,10 @@ module.exports = () => {
           .fill(stressTestDuration.toString());
         await page.locator('button>> text=Run').click();
         //set timeout for 5 seconds, load tests take min of 4 seconds
-        console.log('waiting for stress test to finish')
         await new Promise(resolve => {
           setTimeout(async () => {
-            console.log('stress test finished')
             const reduxState = await page.evaluate(() => window.getReduxState());
             const reduxResEvents = reduxState.reqRes.currentResponse.response.events;
-            console.log(reduxResEvents);
             //only used totalSent within reqRes state to check if stress test interacts with state, which it does
             expect(reduxResEvents[0].totalSent).to.equal(3);
             // for some reason totalReceived in the app with the same sequence is 3, but for mocha test
@@ -239,7 +236,7 @@ module.exports = () => {
             // expect(reduxResEvents[0].totalReceived).to.equal(3);
             resolve();
             // new comment
-          }, 6000);
+          }, 5000);
         })
       });
     });
