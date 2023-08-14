@@ -214,7 +214,7 @@ module.exports = () => {
     });
 
     describe('Check if stress tests probably changes state', async () => {
-      before( async function(){
+      before(async function () {
         // Clear workspace
         await page.locator('button >> text=Clear Workspace').click();
         // Add GET request
@@ -228,12 +228,14 @@ module.exports = () => {
         await page.locator('#frequency-input').fill('10');
         await page.locator('#duration-input').fill('1');
       });
-      
+
       it('Changes currentResponse state to the response back from the stress tests', async () => {
         await page.locator('button#stress-test-run-button').click();
         await new Promise(resolve => setTimeout(resolve, 1500));
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(reduxState.reqRes.currentResponse.response.events[0].totalSent).to.equal(10);
+        // this.timeout(0)
+        // await new Promise(resolve => {});
       });
     });
     // // Template
