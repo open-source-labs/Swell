@@ -105,7 +105,6 @@ export interface MainContainerProps {
     newRequestSSE: NewRequestSSE,
     warningMessage: any;
     introspectionData: IntrospectionData;
-    newRequestWebRTC: any;
     
     // reducers
     reqResItemAdded: (reqRes: ReqRes) => any;
@@ -120,9 +119,6 @@ export interface MainContainerProps {
     openApiRequestsReplaced: () => any;
     composerFieldsReset: () => any;
     setWorkspaceActiveTab: (arg: string) => any;
-    newRequestWebRTCSet: () => void;
-    newRequestWebRTCOfferSet: () => void;
-    
 }
 
 export interface GraphQLResponse {
@@ -173,7 +169,7 @@ export interface NewRequestHeaders {
 export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
 export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
 export type NewRequestBodySet = (obj: NewRequestBody) => void;
-export type NewRequestWebRTCSet = (obj: $TSFixMe) => void;
+export type NewRequestWebRTCSet = (obj: RequestWebRTC) => void;
 
 
 /**
@@ -234,14 +230,6 @@ export interface ReqResRequest {
   wsUrl?: string;
 }
 
-// export interface ReqResWebRTC {
-//   webRTCEntryMode: 'Manual' | 'WS';
-//   webRTCDataChannel: 'Audio' | 'Video' | 'Text';
-//   webRTCWebsocketServer: string | null;
-//   webRTCOffer: string | null;
-//   webRTCAnswer: string | null;
-//   webRTCpeerConnection: any;
-// }
 
 /**
  * Describes the results of calling built-in introspection functions in GraphQL.
@@ -329,9 +317,9 @@ export interface RequestWebRTCVideo {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Video';
-  webRTCWebsocketServer: string | null;
-  webRTCOffer: string | null;
-  webRTCAnswer: string | null;
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: MediaStream | null;
   webRTCRemoteStream: MediaStream | null;
@@ -341,11 +329,12 @@ export interface RequestWebRTCText {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Text';
-  webRTCWebsocketServer: string | null;
-  webRTCOffer: string | null;
-  webRTCAnswer: string | null;
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: RTCDataChannel | null;
+  webRTCRemoteStream: RTCDataChannel | null;
 }
 
 export interface NewRequestSSE {

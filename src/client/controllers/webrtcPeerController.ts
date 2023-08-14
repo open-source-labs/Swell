@@ -3,8 +3,7 @@ import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
-
-import { RequestWebRTC } from '../../types';
+import { RequestWebRTC, RequestWebRTCText } from '../../types';
 
 const webrtcPeerController = {
   createPeerConnection: async (
@@ -66,11 +65,7 @@ const webrtcPeerController = {
       };
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       let localStream = peerConnection.createDataChannel('textChannel');
-      localStream.onmessage = (e) => {
-        console.log('just got a message');
-      };
-      localStream.onopen = (e) => console.log('data channel connected');
-
+      localStream.onopen = () => console.log('data channel opened');
       appDispatch(
         newRequestWebRTCSet({
           ...newRequestWebRTC,
@@ -125,16 +120,16 @@ const webrtcPeerController = {
       })
     );
   },
-  addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
-    let { webRTCpeerConnection, webRTCLocalStream } = newRequestWebRTC;
 
-    let answer = newRequestWebRTC.webRTCAnswer;
-    if (!answer) return alert('Retrieve answer from peer first...');
-    webRTCpeerConnection!.setRemoteDescription(JSON.parse(answer));
+  addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+
+    let { webRTCpeerConnection, webRTCLocalStream } = newRequestWebRTC;
+    
+    webRTCpeerConnection!.setRemoteDescription(JSON.parse(newRequestWebRTC.webRTCAnswer));
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
-      webRTCpeerConnection!.ontrack = async (event) => {
-        event.streams[0].getTracks().forEach((track) => {
+      webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
+        event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
           newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
         });
       };
@@ -154,13 +149,21 @@ const webrtcPeerController = {
           )).srcObject = newRequestWebRTC.webRTCRemoteStream;
         }
       }, 500);
-    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      webRTCLocalStream!.onmessage = (e) => {
-        let newString = e.data.slice(1, -1);
-        document.getElementById('textFeed').innerText += newString + '\n';
+    }
+    if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      (<RequestWebRTCText>newRequestWebRTC).webRTCLocalStream!.onmessage = (
+        event: MessageEvent
+      ) => {
+        let newString = event.data.slice(1, -1);
+        let textFeed = document.getElementById('textFeed');
+        if (textFeed) {
+          textFeed.innerText += newString + '\n';
+        }
       };
     }
   },
+
+
 };
 
 export default webrtcPeerController;

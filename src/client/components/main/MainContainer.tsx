@@ -12,8 +12,6 @@ import {
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-  newRequestWebRTCSet,
-  newRequestWebRTCOfferSet,
 } from '../../toolkit-refactor/slices/newRequestSlice';
 
 import { openApiRequestsReplaced } from '../../toolkit-refactor/slices/newRequestOpenApiSlice';
@@ -59,7 +57,6 @@ const mapStateToProps = (store: RootState) => {
     newRequestSSE: store.newRequest.newRequestSSE,
     warningMessage: store.warningMessage,
     introspectionData: store.introspectionData,
-    newRequestWebRTC: store.newRequest.newRequestWebRTC,
   };
 };
 
@@ -86,12 +83,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
     dispatch(newRequestBodySet(requestBodyObj));
   },
-  newRequestWebRTCSet: (newReqtWebRTCObj: RequestWebRTC) => {
-    dispatch(newRequestWebRTCSet(newReqtWebRTCObj));
-  },
-  newRequestWebRTCOfferSet: (newReqtWebRTCOffer: string) => {
-    dispatch(newRequestWebRTCOfferSet(newReqtWebRTCOffer));
-  },
   newTestContentSet: (testContent: $TSFixMe) => {
     dispatch(newTestContentSet(testContent));
   },
@@ -115,8 +106,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 
 function MainContainer(props: $TSFixMeObject) {
-
-
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
@@ -126,7 +115,8 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/graphql" element={<GraphQLComposer {...props} />} />
             <Route path="/grpc" element={<GRPCComposer {...props} />} />
             <Route path="/websocket" element={<WebSocketComposer {...props} />} />
-            <Route path="/webrtc" element={<WebRTCComposer {...props} />} />
+            {/* WebRTC has been completely refactored to hooks - no props needed */}
+            <Route path="/webrtc" element={<WebRTCComposer />} />
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
             <Route path="/webhook" element={<WebhookComposer {...props} />} />
             <Route path="/trpc" element={<TRPCComposer {...props} />} />

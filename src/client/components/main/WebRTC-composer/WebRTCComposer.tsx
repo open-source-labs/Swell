@@ -10,39 +10,27 @@ import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 import WebRTCSessionEntryForm from './WebRTCSessionEntryForm';
 import WebRTCServerEntryForm from './WebRTCServerEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
-import webrtcPeerController from '../../../controllers/webrtcPeerController';
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../toolkit-refactor/store';
+import { useDispatch } from 'react-redux';
+import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
+import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
+import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
-export default function WebRTCComposer(props: MainContainerProps) {
-  const {
-    composerFieldsReset,
-    newRequestWebRTC,
-    newRequestWebRTCSet,
-    currentTab,
-    warningMessage,
-    reqResItemAdded,
-    setWorkspaceActiveTab,
-  } = props;
+export default function WebRTCComposer() {
+  const dispatch = useDispatch();
+  const newRequestWebRTC: RequestWebRTC = useSelector(
+    (store: RootState) => store.newRequest.newRequestWebRTC
+  );
 
   const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
   const composeReqRes = (): ReqRes => {
-    const requestWebRTC: RequestWebRTC = {
-      network: newRequestWebRTC.network,
-      webRTCEntryMode: newRequestWebRTC.webRTCEntryMode,
-      webRTCDataChannel: newRequestWebRTC.webRTCDataChannel,
-      webRTCWebsocketServer: null,
-      webRTCOffer: newRequestWebRTC.webRTCOffer,
-      webRTCAnswer: newRequestWebRTC.webRTCAnswer,
-      webRTCpeerConnection: newRequestWebRTC.webRTCpeerConnection,
-      webRTCLocalStream: newRequestWebRTC.webRTCLocalStream,
-      webRTCRemoteStream: newRequestWebRTC.webRTCRemoteStream,
-    };
-
-    const reqRes: ReqRes = {
+    return {
       id: uuid(),
       createdAt: new Date(),
       path: '',
@@ -51,28 +39,42 @@ export default function WebRTCComposer(props: MainContainerProps) {
       connection: 'uninitialized',
       connectionType: null,
       checkSelected: false,
-      request: requestWebRTC,
+      request: newRequestWebRTC,
       response: {
         webRTC: true,
       },
       checked: false,
       minimized: false,
-      tab: currentTab,
     };
-
-    return reqRes;
   };
 
+  const checkValidSDP = (sdp: string) => {
+    try {
+      let sdpParsed: object = JSON.parse(sdp);
+      if (
+        Object.keys(sdpParsed)[0] === 'type' &&
+        Object.keys(sdpParsed)[1] === 'sdp'
+      )
+        return true;
+    } catch {
+      return false
+    }
+    return false;
+  }
+
   const addNewRequest = (): void => {
+    if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
+      return alert('Invalid offer or answer SDP')
+    }
     const reqRes: ReqRes = composeReqRes();
 
     // addHistory removed because RTCPeerConnection objects cant typically be cloned
     // historyController.addHistoryToIndexedDb(reqRes);
 
-    reqResItemAdded(reqRes);
-    composerFieldsReset();
-    setShowRTCEntryForms(false)
-    setWorkspaceActiveTab('workspace');
+    dispatch(reqResItemAdded(reqRes));
+    dispatch(composerFieldsReset());
+    setShowRTCEntryForms(false);
+    dispatch(setWorkspaceActiveTab('workspace'));
   };
 
   return (
@@ -85,27 +87,15 @@ export default function WebRTCComposer(props: MainContainerProps) {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        <WebRTCSessionEntryForm
-          newRequestWebRTC={newRequestWebRTC}
-          newRequestWebRTCSet={newRequestWebRTCSet}
-          warningMessage={warningMessage}
-          setShowRTCEntryForms={setShowRTCEntryForms}
-        />
-
+        <WebRTCSessionEntryForm setShowRTCEntryForms={setShowRTCEntryForms} />
         {showRTCEntryForms && (
           <>
-            <WebRTCServerEntryForm
-              newRequestWebRTC={newRequestWebRTC}
-              newRequestWebRTCSet={newRequestWebRTCSet}
-              createOffer={webrtcPeerController.createOffer}
-              createAnswer={webrtcPeerController.createAnswer}
-              warningMessage={warningMessage}
-            />
+            <WebRTCServerEntryForm />
             <div className="is-3rem-footer is-clickable is-margin-top-auto">
               <NewRequestButton onClick={addNewRequest} />
             </div>
             {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-              <div className='box is-rest-invert'>
+              <div className="box is-rest-invert">
                 <WebRTCVideoBox streamType="localstream" />
               </div>
             )}
