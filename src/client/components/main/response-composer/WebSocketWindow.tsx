@@ -5,7 +5,7 @@ import {
   ReqRes,
   ReqResRequest,
   ReqResResponse,
-  WebsocketMessages,
+  WebMessages,
   WindowExt,
 } from '../../../../types';
 import EmptyState from './EmptyState';
@@ -32,8 +32,8 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
   ) {
     return <EmptyState connection={connection} />;
   }
-  const outgoingMessages = request.messages as WebsocketMessages[];
-  const incomingMessages = response.messages as WebsocketMessages[];
+  const outgoingMessages = request.messages as WebMessages[];
+  const incomingMessages = response.messages as WebMessages[];
   const [inputMessage, setInputMessage] = useState('');
 
   // updates the outgoing message when it changes
@@ -54,11 +54,11 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
   };
   // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
-    .map((message: WebsocketMessages) => {
+    .map((message: WebMessages) => {
       return { ...message, source: 'client' };
     })
     .concat(
-      incomingMessages.map((message: WebsocketMessages) => {
+      incomingMessages.map((message: WebMessages) => {
         return { ...message, source: 'server' };
       })
     )
