@@ -98,10 +98,6 @@ module.exports = () => {
       expect(reduxState.reqRes.currentResponse.gRPC).to.equal(true);
       expect(reduxState.reqRes.reqResArray[0].response.events[0]).to.deep.equal(response);
       expect(reduxState.reqRes.currentResponse.response.events[0]).to.deep.equal(response);
-
-
-
-
     });
 
     it('test 123', () => {
