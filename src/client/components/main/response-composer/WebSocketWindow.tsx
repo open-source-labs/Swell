@@ -102,7 +102,7 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
         </button>
       </div>
 
-      <div className="websocket_message_container m-3">
+      <div className="websocket_message_container">
         {combinedMessagesReactArr}
       </div>
 

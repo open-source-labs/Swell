@@ -27,14 +27,12 @@ const WebRTCTextItem = (props: $TSFixMe) => {
   };
 
   return (
-    <div>
-      <div className={webSocketMessageClassNames}>
-        <div className={message_background}>
-          <div id={webSocketMessageIDNames}>{data}</div>
-          {buildTime(timeReceived)}
-        </div>
+    <div className={webSocketMessageClassNames}>
+      <div className={message_background}>
+        <div id={webSocketMessageIDNames}>{data}</div>
+        {buildTime(timeReceived)}
       </div>
-      <div className={message_sender}>{message_sender}</div>
+      <div className={message_sender} style={{color:'rgba(0, 0, 0, 0.6)'}}>{message_sender}</div>
     </div>
   );
 };

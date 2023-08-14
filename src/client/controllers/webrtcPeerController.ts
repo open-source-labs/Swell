@@ -177,21 +177,16 @@ const webrtcPeerController = {
             (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
               messageObject
             );
-          console.log('newWebRTCMessages', newWebRTCMessages);
-
+          let request = state.reqRes.currentResponse.request
           appDispatch(
             responseDataSaved({
               ...reqRes,
+              request,
               response: {
                 webRTCMessages: newWebRTCMessages,
               },
             })
           );
-        }
-
-        let textFeed = document.getElementById('textFeed');
-        if (textFeed) {
-          textFeed.innerText += newString + '\n';
         }
       };
     }
