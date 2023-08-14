@@ -8,6 +8,7 @@ import {
   RequestWebRTC,
   RequestWebRTCText,
   ResponseWebRTC,
+  ResponseWebRTCText,
 } from '../../types';
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
 
@@ -170,12 +171,14 @@ const webrtcPeerController = {
           timeReceived: Date.now(),
         };
 
-        let state = store.getState()
-        if (state.reqRes.currentResponse.response) {  
-  
-          let newWebRTCMessages = state.reqRes.currentResponse.response.webRTCMessages.concat(messageObject);
+        let state = store.getState();
+        if (state.reqRes.currentResponse.response) {
+          let newWebRTCMessages =
+            (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
+              messageObject
+            );
           console.log('newWebRTCMessages', newWebRTCMessages);
-  
+
           appDispatch(
             responseDataSaved({
               ...reqRes,
@@ -184,7 +187,6 @@ const webrtcPeerController = {
               },
             })
           );
-
         }
 
         let textFeed = document.getElementById('textFeed');
