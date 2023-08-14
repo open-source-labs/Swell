@@ -10,7 +10,7 @@ import {
 } from '../../../../../types';
 import WebRTCTextItem from './WebRTCTextItem';
 
-const WebRTCTextLog = () => {
+const WebRTCTextContainer = () => {
   const currentRequestWebRTCText = useSelector(
     (store: RootState) => store.reqRes.currentResponse.request
   ) as RequestWebRTCText;
@@ -21,11 +21,11 @@ const WebRTCTextLog = () => {
 
   const messagesArr = currentRequestWebRTCText.webRTCMessages
     .map((message: WebMessages) => {
-      return { ...message, source: 'request' };
+      return { ...message, source: 'local' };
     })
     .concat(
       currentResponseWebRTCText.webRTCMessages.map((message: WebMessages) => {
-        return { ...message, source: 'response' };
+        return { ...message, source: 'remote' };
       })
     )
     .sort((a, b) => a.timeReceived - b.timeReceived)
@@ -35,7 +35,7 @@ const WebRTCTextLog = () => {
           key={index}
           index={index}
           source={message.source as 'server' | 'client'}
-          data={message.data as 'ArrayBuffer' | 'ArrayBufferView'}
+          data={message.data}
           timeReceived={message.timeReceived}
         />
       );
@@ -65,5 +65,5 @@ const WebRTCTextLog = () => {
   );
 };
 
-export default WebRTCTextLog;
+export default WebRTCTextContainer;
 

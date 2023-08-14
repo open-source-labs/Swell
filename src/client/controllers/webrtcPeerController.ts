@@ -1,9 +1,15 @@
-import { appDispatch } from '../toolkit-refactor/store';
+import store, { appDispatch } from '../toolkit-refactor/store';
 import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
-import { RequestWebRTC, RequestWebRTCText } from '../../types';
+import {
+  ReqRes,
+  RequestWebRTC,
+  RequestWebRTCText,
+  ResponseWebRTC,
+} from '../../types';
+import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
 
 const webrtcPeerController = {
   createPeerConnection: async (
@@ -121,16 +127,20 @@ const webrtcPeerController = {
     );
   },
 
-  addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+  addAnswer: async (reqRes: ReqRes): Promise<void> => {
+    let { request, response } = reqRes as {
+      request: RequestWebRTC;
+      response: ResponseWebRTC;
+    };
 
-    let { webRTCpeerConnection, webRTCLocalStream } = newRequestWebRTC;
-    
-    webRTCpeerConnection!.setRemoteDescription(JSON.parse(newRequestWebRTC.webRTCAnswer));
+    request.webRTCpeerConnection!.setRemoteDescription(
+      JSON.parse(request.webRTCAnswer)
+    );
 
-    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
-      webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
+    if (request.webRTCDataChannel === 'Video') {
+      request.webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
         event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
-          newRequestWebRTC.webRTCRemoteStream!.addTrack(track);
+          (<MediaStream>request.webRTCRemoteStream!).addTrack(track);
         });
       };
 
@@ -143,18 +153,40 @@ const webrtcPeerController = {
           alert('error');
         } else {
           (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
-            newRequestWebRTC.webRTCLocalStream;
+            request.webRTCLocalStream as MediaStream;
           (<HTMLVideoElement>(
             document.getElementById('remotestream')
-          )).srcObject = newRequestWebRTC.webRTCRemoteStream;
+          )).srcObject = request.webRTCRemoteStream as MediaStream;
         }
       }, 500);
     }
-    if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      (<RequestWebRTCText>newRequestWebRTC).webRTCLocalStream!.onmessage = (
+    if (request.webRTCDataChannel === 'Text') {
+      (<RequestWebRTCText>request).webRTCLocalStream!.onmessage = (
         event: MessageEvent
       ) => {
         let newString = event.data.slice(1, -1);
+        let messageObject = {
+          data: newString,
+          timeReceived: Date.now(),
+        };
+
+        let state = store.getState()
+        if (state.reqRes.currentResponse.response) {  
+  
+          let newWebRTCMessages = state.reqRes.currentResponse.response.webRTCMessages.concat(messageObject);
+          console.log('newWebRTCMessages', newWebRTCMessages);
+  
+          appDispatch(
+            responseDataSaved({
+              ...reqRes,
+              response: {
+                webRTCMessages: newWebRTCMessages,
+              },
+            })
+          );
+
+        }
+
         let textFeed = document.getElementById('textFeed');
         if (textFeed) {
           textFeed.innerText += newString + '\n';
@@ -162,8 +194,6 @@ const webrtcPeerController = {
       };
     }
   },
-
-
 };
 
 export default webrtcPeerController;

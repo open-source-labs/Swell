@@ -163,7 +163,7 @@ const WorkspaceCollectionElement = (props) => {
               if (content.request.network === 'webrtc'){
                 dispatch(setResponsePaneActiveTab('webrtc'))
                 dispatch(responseDataSaved(content));
-                webrtcPeerController.addAnswer(content.request)
+                webrtcPeerController.addAnswer(content, currentResponse)
               } else if (content.graphQL && request.method === 'SUBSCRIPTION') {
                 // For GraphQL subscriptions, `GraphQLController::openSubscription` will take care of
                 // updating state, and we do not want to overwrite response data here

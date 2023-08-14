@@ -78,6 +78,7 @@ const initialState: NewRequestStore = {
     webRTCpeerConnection: null,
     webRTCLocalStream: null,
     webRTCRemoteStream: null,
+    webRTCMessages: [],
   }
 };
 
