@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import WebSocketMessage from './WebSocketMessage';
-import { ReqRes, WebsocketMessages, WindowExt } from '../../../../types';
+import {
+  ConnectionStatus,
+  ReqRes,
+  ReqResRequest,
+  ReqResResponse,
+  WebsocketMessages,
+  WindowExt,
+} from '../../../../types';
 import EmptyState from './EmptyState';
 
 const { api } = window as unknown as WindowExt;
@@ -11,7 +18,11 @@ const { api } = window as unknown as WindowExt;
  */
 
 const WebSocketWindow = ({ content }: { content: ReqRes }) => {
-  const { request, response, connection } = content;
+  const { request, response, connection } = content as {
+    request: ReqResRequest;
+    response: ReqResResponse;
+    connection: ConnectionStatus;
+  };
   if (
     !response ||
     !request ||
