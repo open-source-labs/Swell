@@ -31,42 +31,99 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="mt-3">
-      <TextCodeArea
-        mode={'application/json'}
-        value={newRequestWebRTC.webRTCOffer || ''}
-        height={'80px'}
-        onChange={(value, viewUpdate) => {
-          dispatch(
-            newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
-          );
-        }}
-        placeholder={'Click "Get Offer" or paste in Offer SDP'}
-        readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
-      />
-      <button
-        className="button is-normal is-primary-100 add-request-button  no-border-please"
-        style={{ margin: '10px' }}
-        onClick={() => {
-          webrtcPeerController.createOffer(newRequestWebRTC);
-        }}
-      >
-        Get Offer
-      </button>
+      <div style={{ position: 'relative' }}>
+        <TextCodeArea
+          mode={'application/json'}
+          value={newRequestWebRTC.webRTCOffer || ''}
+          height={'85px'}
+          onChange={(value, viewUpdate) => {
+            dispatch(
+              newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
+            );
+          }}
+          placeholder={'Click "Get Offer" or paste in Offer SDP'}
+          readOnly={true}
+        />
+        <button
+          className="button is-small is-rest-invert"
+          style={{ position: 'absolute', top: '20px', right: '20px' }}
+          onClick={() => {
+            navigator.clipboard.writeText(newRequestWebRTC.webRTCOffer);
+          }}
+        >
+          Copy
+        </button>
+        <button
+          className="button is-small is-rest-invert"
+          style={{ position: 'absolute', top: '60px', right: '20px' }}
+          onClick={() => {
+            navigator.clipboard
+              .readText()
+              .then((text) =>
+                dispatch(
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCOffer: text,
+                  })
+                )
+              );
+          }}
+        >
+          Paste
+        </button>
+        <button
+          className="button is-normal is-primary-100 add-request-button  no-border-please"
+          style={{ margin: '10px' }}
+          onClick={() => {
+            webrtcPeerController.createOffer(newRequestWebRTC);
+          }}
+        >
+          Get Offer
+        </button>
+      </div>
       {/* Code box for Answer */}
-      <TextCodeArea
-        mode={'application/json'}
-        value={newRequestWebRTC.webRTCAnswer || ''}
-        height={'80px'}
-        onChange={(value, viewUpdate) => {
-          dispatch(
-            newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })
-          );
-        }}
-        placeholder={'Answer here'}
-        readOnly={newRequestWebRTC.webRTCEntryMode === 'WS'}
-      />
-      {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
-      {/* <button
+      <div style={{ position: 'relative' }}>
+        <TextCodeArea
+          mode={'application/json'}
+          value={newRequestWebRTC.webRTCAnswer || ''}
+          height={'85px'}
+          onChange={(value, viewUpdate) => {
+            dispatch(
+              newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })
+            );
+          }}
+          placeholder={'Answer here'}
+          readOnly={true}
+        />
+        <button
+          className="button is-small is-rest-invert"
+          style={{ position: 'absolute', top: '20px', right: '20px' }}
+          onClick={() => {
+            navigator.clipboard.writeText(newRequestWebRTC.webRTCAnswer);
+          }}
+        >
+          Copy
+        </button>
+        <button
+          className="button is-small is-rest-invert"
+          style={{ position: 'absolute', top: '60px', right: '20px' }}
+          onClick={() => {
+            navigator.clipboard
+              .readText()
+              .then((text) =>
+                dispatch(
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCAnswer: text,
+                  })
+                )
+              );
+          }}
+        >
+          Paste
+        </button>
+        {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
+        {/* <button
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
@@ -76,7 +133,8 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
       >
         Get Answer
       </button> */}
-      {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+        {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+      </div>
     </div>
   );
 };

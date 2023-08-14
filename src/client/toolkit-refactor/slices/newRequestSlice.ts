@@ -71,7 +71,7 @@ const initialState: NewRequestStore = {
   newRequestWebRTC: {
     network: 'webrtc',
     webRTCEntryMode: 'Manual',
-    webRTCDataChannel: 'Video',
+    webRTCDataChannel: 'Text',
     webRTCWebsocketServer: '',
     webRTCOffer: '',
     webRTCAnswer: '',
