@@ -48,7 +48,24 @@ export default function WebRTCComposer() {
     };
   };
 
+  const checkValidSDP = (sdp: string) => {
+    try {
+      let sdpParsed: object = JSON.parse(sdp);
+      if (
+        Object.keys(sdpParsed)[0] === 'type' &&
+        Object.keys(sdpParsed)[1] === 'sdp'
+      )
+        return true;
+    } catch {
+      return false
+    }
+    return false;
+  }
+
   const addNewRequest = (): void => {
+    if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
+      return alert('Invalid offer or answer SDP')
+    }
     const reqRes: ReqRes = composeReqRes();
 
     // addHistory removed because RTCPeerConnection objects cant typically be cloned
@@ -70,16 +87,10 @@ export default function WebRTCComposer() {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        <WebRTCSessionEntryForm
-          // newRequestWebRTC={newRequestWebRTC}
-          // warningMessage={warningMessage}
-          setShowRTCEntryForms={setShowRTCEntryForms}
-        />
+        <WebRTCSessionEntryForm setShowRTCEntryForms={setShowRTCEntryForms} />
         {showRTCEntryForms && (
           <>
-            <WebRTCServerEntryForm
-            // warningMessage={warningMessage}
-            />
+            <WebRTCServerEntryForm />
             <div className="is-3rem-footer is-clickable is-margin-top-auto">
               <NewRequestButton onClick={addNewRequest} />
             </div>

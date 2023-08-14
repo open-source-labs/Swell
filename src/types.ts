@@ -317,9 +317,9 @@ export interface RequestWebRTCVideo {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Video';
-  webRTCWebsocketServer: string | null;
-  webRTCOffer: string | null;
-  webRTCAnswer: string | null;
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: MediaStream | null;
   webRTCRemoteStream: MediaStream | null;
@@ -329,9 +329,9 @@ export interface RequestWebRTCText {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Text';
-  webRTCWebsocketServer: string | null;
-  webRTCOffer: string | null;
-  webRTCAnswer: string | null;
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: RTCDataChannel | null;
   webRTCRemoteStream: RTCDataChannel | null;
