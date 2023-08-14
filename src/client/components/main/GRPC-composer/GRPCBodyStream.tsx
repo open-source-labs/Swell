@@ -81,7 +81,7 @@ const GRPCBodyStream: React.FC<GRPCBodyStreamProps>  = (props) => {
   // pseudocode for the return section:
   // renders the stream body (and the stream number if for client or bidirectional stream)
   return (
-    <div>
+    <div id='grpcBodyEntryTextArea'>
       <div className="warningMessage">{showError}</div>
       <div>
         <div className="mt-1 is-flex is-align-items-center">
