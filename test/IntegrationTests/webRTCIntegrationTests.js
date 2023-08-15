@@ -17,7 +17,7 @@ const projectPath = path.resolve(__dirname, '..', '..', 'main.js');
 module.exports = () => {
   describe('WebRTC integration testing', function () {
     //launch app and select webRTC for current workspace
-    before(async () => {
+    beforeEach(async () => {
       electronApp = await electron.launch({ args: [projectPath] });
       //awaiting the intilialization of electron
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -47,6 +47,28 @@ module.exports = () => {
           imageBuffer
         );
       }
+    });
+
+    describe('Check if webRTC is selected if both newRequestFieldsByProtocol and newRequestContentByProtocol are being ran in conjuction with each other', async () => {
+      xit('Should change the newRequestFields properties to WebRTC reflect the webRTC required fields', async () => {
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        expect(reduxState.newRequestFields.method).to.equal('WebRTC');
+        expect(reduxState.newRequestFields.url).to.equal('');
+        expect(reduxState.newRequestFields.webrtc).to.equal(true);
+        expect(reduxState.newRequest.newRequestHeaders.count).to.equal(0);
+        expect(reduxState.newRequest.newRequestBody.bodyType).to.equal(
+          'stun-ice'
+        );
+        expect(reduxState.newRequest.newRequestCookies.count).to.equal(0);
+      });
+
+      xit('Should initialize WebRTC state values', async () => {
+        await page.locator('button >> text=Connect').click();
+        await page.locator('.is-neutral-200-box.p-3');
+        await page.locater('#');
+        const reduxState = await page.evaluate(() => window.getReduxState());
+        expect(reduxState);
+      });
     });
   });
 };
