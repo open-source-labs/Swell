@@ -94,31 +94,31 @@ export interface ValidationMessage {
 }
 
 export interface MainContainerProps {
-    // state
-    currentTab?: string;
-    reqResArray: ReqRes[];
-    newRequestFields: NewRequestFields;
-    newRequestHeaders: NewRequestHeaders;
-    newRequestStreams: NewRequestStreams,
-    newRequestBody: NewRequestBody;
-    newRequestCookies: NewRequestCookies;
-    newRequestSSE: NewRequestSSE,
-    warningMessage: any;
-    introspectionData: IntrospectionData;
-    
-    // reducers
-    reqResItemAdded: (reqRes: ReqRes) => any;
-    setWarningMessage: (message: ValidationMessage) => any;
-    newRequestHeadersSet: NewRequestHeadersSet;
-    newRequestStreamsSet: () => any;
-    fieldsReplaced: () => any;
-    newRequestBodySet: NewRequestBodySet;
-    newTestContentSet: () => any;
-    newRequestCookiesSet: NewRequestCookiesSet;
-    newRequestSSESet: (arg: boolean) => any;
-    openApiRequestsReplaced: () => any;
-    composerFieldsReset: () => any;
-    setWorkspaceActiveTab: (arg: string) => any;
+  // state
+  currentTab?: string;
+  reqResArray: ReqRes[];
+  newRequestFields: NewRequestFields;
+  newRequestHeaders: NewRequestHeaders;
+  newRequestStreams: NewRequestStreams;
+  newRequestBody: NewRequestBody;
+  newRequestCookies: NewRequestCookies;
+  newRequestSSE: NewRequestSSE;
+  warningMessage: any;
+  introspectionData: IntrospectionData;
+
+  // reducers
+  reqResItemAdded: (reqRes: ReqRes) => any;
+  setWarningMessage: (message: ValidationMessage) => any;
+  newRequestHeadersSet: NewRequestHeadersSet;
+  newRequestStreamsSet: () => any;
+  fieldsReplaced: () => any;
+  newRequestBodySet: NewRequestBodySet;
+  newTestContentSet: () => any;
+  newRequestCookiesSet: NewRequestCookiesSet;
+  newRequestSSESet: (arg: boolean) => any;
+  openApiRequestsReplaced: () => any;
+  composerFieldsReset: () => any;
+  setWorkspaceActiveTab: (arg: string) => any;
 }
 
 export interface GraphQLResponse {
@@ -136,7 +136,7 @@ export interface Message {
 }
 
 export interface NewRequestBody {
-  bodyContent: string ;
+  bodyContent: string;
   bodyVariables: string;
   bodyType: string;
   rawType: string;
@@ -151,7 +151,7 @@ export interface CookieOrHeader {
   value: string;
 }
 
-export interface WebsocketMessages {
+export interface WebMessages {
   data: string;
   timeReceived: number;
 }
@@ -170,7 +170,6 @@ export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
 export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
 export type NewRequestBodySet = (obj: NewRequestBody) => void;
 export type NewRequestWebRTCSet = (obj: RequestWebRTC) => void;
-
 
 /**
  * Defines the type constract for the NewRequestFields state object.
@@ -202,7 +201,6 @@ export type NewRequestFields = {
   openapiReqObj: Record<string, $TSFixMe>;
 };
 
-
 export interface ReqResRequest {
   // Currently, the body for WebRTC connection is an object
   // and typescript does not support union between string and object very well
@@ -217,7 +215,7 @@ export interface ReqResRequest {
   isSSE?: boolean;
   headers: CookieOrHeader[];
   method?: string;
-  messages?: WebsocketMessages[];
+  messages?: WebMessages[];
   network: Network;
   rawType: string;
   restUrl?: string;
@@ -229,7 +227,6 @@ export interface ReqResRequest {
   ws?: boolean;
   wsUrl?: string;
 }
-
 
 /**
  * Describes the results of calling built-in introspection functions in GraphQL.
@@ -305,13 +302,15 @@ export interface ReqRes {
   url?: string;
   frequency?: number;
   duration?: number;
-} ;
-
-export interface ResponseWebRTC {
-  webRTC: true
 }
 
-export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText
+export type ResponseWebRTC = ResponseWebRTCText;
+
+export interface ResponseWebRTCText {
+  webRTCMessages: WebMessages[];
+}
+
+export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText;
 
 export interface RequestWebRTCVideo {
   network: 'webrtc';
@@ -335,6 +334,7 @@ export interface RequestWebRTCText {
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: RTCDataChannel | null;
   webRTCRemoteStream: RTCDataChannel | null;
+  webRTCMessages: WebMessages[];
 }
 
 export interface NewRequestSSE {
@@ -376,7 +376,7 @@ export interface ReqResResponse {
   testResult?: TestResult[];
   responseSize?: number; //mainprocess main_httpController line 196ish
   status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
-  messages?: WebsocketMessages[];
+  messages?: WebMessages[];
   connection?: string; //main_wsController
 }
 

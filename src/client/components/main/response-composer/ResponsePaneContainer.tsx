@@ -17,6 +17,7 @@ import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
 import State from '../../../toolkit-refactor/store';
 import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
+import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer';
 
 const ResponsePaneContainer: FC = () => {
   const dispatch = useDispatch();
@@ -162,7 +163,7 @@ const ResponsePaneContainer: FC = () => {
               )}
             {activeTab === 'webrtc' &&
               currentResponse.request.webRTCDataChannel === 'Text' && (
-                <div id="textFeed" style={{ fontSize: '30px' }}></div>
+                <WebRTCTextContainer />
               )}
           </div>
 

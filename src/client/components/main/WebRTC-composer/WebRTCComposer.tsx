@@ -41,7 +41,7 @@ export default function WebRTCComposer() {
       checkSelected: false,
       request: newRequestWebRTC,
       response: {
-        webRTC: true,
+        webRTCMessages: []
       },
       checked: false,
       minimized: false,
