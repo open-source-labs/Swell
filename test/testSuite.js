@@ -71,7 +71,7 @@ describe('Request/response testing functionality', function () {
 }).timeout(20000);
 
 describe('Integration testing', function() {
-  httpIntegrationTests()
-  grpcIntegrationTests()
-  // graphQLIntegrationTests();
+  httpIntegrationTests();
+  grpcIntegrationTests();
+  graphQLIntegrationTests();
 }).timeout(20000)
