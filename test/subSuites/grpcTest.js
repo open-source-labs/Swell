@@ -34,6 +34,7 @@ module.exports = () => {
     // close Electron app when complete
     after(async () => {
       await electronApp.close();
+      grpcServer('close');
     });
 
     afterEach(async function () {

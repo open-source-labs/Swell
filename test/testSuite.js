@@ -49,29 +49,29 @@ const fs = require('fs-extra');
 // Remove all files from "failedTests" directory on launching the tests, we want only the most recent test screenshots
 fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
-// // Testing suite
-// describe('Electron UI Rendering', function () { // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
-//   appOpensTests();
-// }).timeout(20000);
+// Testing suite
+describe('Electron UI Rendering', function () { // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
+  appOpensTests();
+}).timeout(20000);
 
-// describe('Protocol selection and usage', function () { //group of tests that focuses on how application handles different protocols
-//   reqInputTests();
-//   httpTest();
-//   graphqlTest();
-//   websocketTest();
-//   grpcTest();
-//   webRTCTest();
-//   openAPITest();
-// }).timeout(20000);
+describe('Protocol selection and usage', function () { //group of tests that focuses on how application handles different protocols
+  reqInputTests();
+  httpTest();
+  graphqlTest();
+  websocketTest();
+  grpcTest();
+  webRTCTest();
+  openAPITest();
+}).timeout(20000);
 
-// describe('Request/response testing functionality', function () {
-//   httpTestingTest();
-//   grpcTestingTest();
-//   graphqlTestingTest();
-// }).timeout(20000);
+describe('Request/response testing functionality', function () {
+  httpTestingTest();
+  grpcTestingTest();
+  graphqlTestingTest();
+}).timeout(20000);
 
 describe('Integration testing', function() {
-  // httpIntegrationTests()
-  // grpcIntegrationTests()
+  httpIntegrationTests();
+  grpcIntegrationTests();
   graphQLIntegrationTests();
 }).timeout(20000)
