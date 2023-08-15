@@ -45,7 +45,6 @@ module.exports = () => {
       });
       const response = await fetch('http://localhost:3004/book')
       const data = await response.json()
-      console.log(data)
 
     });
 
