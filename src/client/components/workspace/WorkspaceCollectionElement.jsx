@@ -65,7 +65,7 @@ const WorkspaceCollectionElement = (props) => {
         >
           {network === 'webrtc' ? 'WebRTC' : request.method}
         </div>
-        <div className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between">
+        <div className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between" style={{overflow: 'hidden', whiteSpace:'nowrap'}}>
           <div className="is-flex is-align-items-center ml-2">
             {url ? url : request.webRTCDataChannel + ' Channel'}
           </div>
