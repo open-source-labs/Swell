@@ -66,13 +66,13 @@ const connectionController = {
       return;
     }
 
-    if (reqResObj.trpc) {
+    if (reqResObj.tRPC) {
       api.send('open-trpc', reqResObj);
     } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
+    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
     }
