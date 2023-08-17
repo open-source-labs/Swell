@@ -97,6 +97,9 @@ The impacts to the product are:
 
 **Some of us have found [ReacTree](https://reactree.dev/) VS Code extension incredibly helpful in visualizing the UI components. Utilizing the extension could be your entry into understanding the structure of the codebase.**
 
+**Some of us have found Redux Dev Tools incredibly helpful when trying to understand the flow of state and actions. Redux Dev Tools is installed when running in development mode and can be accessed as the right-most tab in your developer console panel in Electron.**
+
+
 As you iterate the product, keep in mind the footprint your new feature(s) could add to the codebase. Could you re-use some of the existing modules? Can you even refactor and/or remove the obsolete code to help maintain the health of the codebase?
 
 There are many parts of the codebase that break DRY principles, and with a such a large application, really keep in mind that when you add features it is completely necessary. Past iterators added an experimental feature(s) without it fully working and the next team(s) would add there own experiemental feature. Fixing features the past teams couldn't get to not only is a great way to learn these technologies, but is a great thing to talk to in interviews. " I fixed the webRTC feature that has been stagnant for 5 years", "I addressed the technical debt and reoganized the state...", or "Increasesed the quality of typeScript". These all show maturity as a developer and will allow to focus the entire time of OSP on the 20% problems.
@@ -140,9 +143,13 @@ Currently, the HTTP/2 mock server has the ability to create a server that is acc
 - the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
 - Connect the headers and cookies to the mock endpoint creation
 
-### _WebRTC STUN/TURN server input is read-only_
+### _WebRTC features are there but buggy when interacting with other parts of the app_
 
-The `RTCConfiguration` format required for WebRTC STUN/TURN server is an object with `iceServers` as the key and an array of objects as the value. With the current input format on the application, it is very difficult and error-prone to attempt to format the user input correctly. Based on research it seems like many other alternatives that test STUN/TURN servers separate each key/value into its input text box (similar to how key/value pairs for headers are done for HTTP/2 in Swell). Our assumption is that this way the application can have better control formatting `RTCConfiguration`. If anyone is considering advancing the current WebRTC functionalities in the future, this should be a priority so we can fully enable the ability to test any STUN/TURN servers using Swell.
+In the latest iteration, the WebRTC feature was changed from STUN Server testing to Client RTC Connection testing, allowing Swell to test if another client is able to create an RTC connection to transmit text and video data. Because the RTCPeerConnection has to be initiated before we generate the SDP, this connection is set up differently from the other networks. Other networks purely need the primitive strings as input, and the response is created on click of `Send` (in the workspace panel). For WebRTC, the connection object is created as an input and when the user clicks `Send` then the data transmitted data allowed to be displayed (although data is being transmitted thru the connection even before `Send` is clicked). This means the WebRTC ReqRes cant really be saved in history or re-connected beyond the first connection. 
+
+Areas for improvement:
+- Currently our WebRTC only works as the connection initiator. A next step would be the `Add Answer` button which allows Swell to be on the receiver end of the connection.
+
 
 ### _Incomplete E2E testing coverage_
 
