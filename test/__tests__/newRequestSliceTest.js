@@ -13,6 +13,8 @@ import newRequestReducer, {
   newRequestSSESet,
   composerFieldsReset,
   newRequestContentByProtocol,
+  newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
 } from '../../src/client/toolkit-refactor/slices/newRequestSlice';
 
 describe('newRequestSlice', () => {
@@ -202,4 +204,34 @@ describe('newRequestSlice', () => {
       expect(result).toEqual(expected);
     });
   });
+
+  describe('newRequestWebRTCSet', () => {
+    it('should set new WebRTC request', () => {
+      const newWebRTCRequest = {
+        network: 'webrtc',
+        webRTCEntryMode: 'Manual',
+        webRTCDataChannel: 'Video',
+        webRTCWebsocketServer: '',
+        webRTCOffer: 'offerSDP',
+        webRTCAnswer: 'answerSDP',
+        webRTCpeerConnection: null,
+        webRTCLocalStream: null,
+        webRTCRemoteStream: null,
+        webRTCMessages: [],
+      }
+      const action = newRequestWebRTCSet(newWebRTCRequest)
+      const newState = newRequestReducer(initialState, action);
+      expect(newState.newRequestWebRTC).toBe(newWebRTCRequest);
+    })
+
+  })
+
+  describe('newRequestWebRTCOfferSet', () => {
+    it('should set new WebRTC offer', () => {
+      const offerString = 'newOfferSDP'
+      const action = newRequestWebRTCOfferSet(offerString)
+      const newState = newRequestReducer(initialState, action);
+      expect(newState.newRequestWebRTC.webRTCOffer).toBe(offerString);
+    })
+  })
 });
