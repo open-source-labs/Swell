@@ -195,11 +195,18 @@ describe('newRequestSlice', () => {
         newRequestContentByProtocol('grpc')
       );
       expect(result).toEqual(expected);
-
-      expected.newRequestBody.bodyType = 'raw';
+      
+      expected.newRequestBody.bodyType = 'none';
       result = newRequestReducer(
         initialState,
-        newRequestContentByProtocol('webrtc')
+        newRequestContentByProtocol('ws')
+      );
+      expect(result).toEqual(expected);
+
+      expected.newRequestBody.bodyType = 'none';
+      result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('webhook')
       );
       expect(result).toEqual(expected);
     });
@@ -223,7 +230,6 @@ describe('newRequestSlice', () => {
       const newState = newRequestReducer(initialState, action);
       expect(newState.newRequestWebRTC).toBe(newWebRTCRequest);
     })
-
   })
 
   describe('newRequestWebRTCOfferSet', () => {
