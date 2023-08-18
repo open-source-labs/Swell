@@ -1,31 +1,3 @@
-# name: Run Tests Before Deployment
-
-# on:
-#   push:
-#     branches:
-#       - dev
-
-# jobs:
-#   tests:
-#     strategy:
-#       matrix:
-#         node-version: [16]
-#         os: [macos-latest, ubuntu-latest, windows-latest]
-#     runs-on: ${{ matrix.os }}
-#     steps:
-#       - name: Checkout repo
-#         uses: actions/checkout@v3
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#       - name: Install dependencies
-#         run: npm i && npm ci
-#       - name: Run unit tests
-#         uses: coactions/setup-xvfb@v1
-#         with:
-#           run: npm run test-jest
-
 name: Master Workflow
 
 on:
@@ -153,3 +125,4 @@ jobs:
 
       - name: Build and Package for Mac
         run: npm run package-mac
+
