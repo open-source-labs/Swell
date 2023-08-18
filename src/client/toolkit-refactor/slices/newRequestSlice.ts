@@ -165,27 +165,6 @@ const newRequestSlice = createSlice({
         case 'ws': {
           return composeNewRequestStore('none');
         }
-        case 'webrtc': {
-          return {
-            ...initialState,
-            newRequestBody: {
-              ...initialState.newRequestBody,
-              bodyType: 'stun-ice',
-              // Note that webrtc is an experimental feature not built out.
-              //'bodyContent' does not match the 'string' type in types.ts. Will
-              //need to look into refactoring code with 'bodyContent' type, or modularize the code more.
-              // bodyContent: {
-              //   iceConfiguration: {
-              //     iceServers: [
-              //       {
-              //         urls: 'stun:stun1.l.google.com:19302',
-              //       },
-              //     ],
-              //   },
-              // },
-            },
-          };
-        }
         case 'webhook': {
           return composeNewRequestStore('none');
         }

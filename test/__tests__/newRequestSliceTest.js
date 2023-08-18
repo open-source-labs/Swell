@@ -5,15 +5,17 @@
  * hard code.
  */
 
-import newRequestReducer, 
-{ newRequestHeadersSet,
-    newRequestBodySet,
-    newRequestStreamsSet,
-    newRequestCookiesSet,
-    newRequestSSESet,
-    composerFieldsReset,
-    newRequestContentByProtocol } from '../../src/client/toolkit-refactor/slices/newRequestSlice';
-
+import newRequestReducer, {
+  newRequestHeadersSet,
+  newRequestBodySet,
+  newRequestStreamsSet,
+  newRequestCookiesSet,
+  newRequestSSESet,
+  composerFieldsReset,
+  newRequestContentByProtocol,
+  newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
+} from '../../src/client/toolkit-refactor/slices/newRequestSlice';
 
 describe('newRequestSlice', () => {
   let initialState;
@@ -43,7 +45,7 @@ describe('newRequestSlice', () => {
         selectedStreamingType: null,
         initialQuery: null,
         queryArr: null,
-        protoPath: null,
+        protoPath: '',
         services: null,
         protoContent: '',
       },
@@ -54,15 +56,30 @@ describe('newRequestSlice', () => {
       newRequestSSE: {
         isSSE: false,
       },
+      newRequestWebRTC: {
+        network: 'webrtc',
+        webRTCEntryMode: 'Manual',
+        webRTCDataChannel: 'Text',
+        webRTCWebsocketServer: '',
+        webRTCOffer: '',
+        webRTCAnswer: '',
+        webRTCpeerConnection: null,
+        webRTCLocalStream: null,
+        webRTCRemoteStream: null,
+        webRTCMessages: [],
+      },
     };
   });
 
   describe('newRequestHeadersSet', () => {
     it('should set new request headers', () => {
-      const headers = { headersArr: [{ key: 'Content-Type', value: 'application/json' }], count: 1 };
+      const headers = {
+        headersArr: [{ key: 'Content-Type', value: 'application/json' }],
+        count: 1,
+      };
       const action = newRequestHeadersSet(headers);
       const newState = newRequestReducer(initialState, action);
-  
+
       expect(newState.newRequestHeaders).toEqual(headers);
     });
   });
@@ -77,20 +94,6 @@ describe('newRequestSlice', () => {
         JSONFormatted: true,
         bodyIsNew: true,
       };
-
-      //Below possibly not needed for testing purposes
-      // const testBody = {
-      //   ...initialState,
-      //   newRequestBody: {
-      //     bodyContent: 'this is the test body',
-      //     bodyVariables: 'testVariable',
-      //     bodyType: 'raw',
-      //     rawType: 'text/plain',
-      //     JSONFormatted: true,
-      //     bodyIsNew: true,
-      //   },
-      // };
-
       const action = newRequestBodySet(testBody);
       const newState = newRequestReducer(initialState, action);
       expect(newState.newRequestBody).toBe(testBody);
@@ -142,99 +145,28 @@ describe('newRequestSlice', () => {
     });
   });
 
-  // Needs to be updated to new WebRTC state
-  xdescribe('composerFieldsReset', () => {
+  describe('composerFieldsReset', () => {
     it('should reset composer fields', () => {
       const newState = newRequestReducer(initialState, composerFieldsReset());
       expect(newState).toEqual(initialState);
     });
   });
-  
-  // Needs to be updated to new WebRTC state
-  xdescribe('newRequestContentByProtocol', () => {
+
+  describe('newRequestContentByProtocol', () => {
     it('should return initial state for unknown protocol', () => {
-      // const initialState = {
-      //   newRequestHeaders: {
-      //     headersArr: [],
-      //     count: 0,
-      //   },
-      //   newRequestBody: {
-      //     bodyContent: '',
-      //     bodyVariables: '',
-      //     bodyType: 'raw',
-      //     rawType: 'text/plain',
-      //     JSONFormatted: true,
-      //     bodyIsNew: false,
-      //   },
-      //   newRequestStreams: {
-      //     streamsArr: [],
-      //     count: 0,
-      //     streamContent: [],
-      //     selectedPackage: null,
-      //     selectedRequest: null,
-      //     selectedService: null,
-      //     selectedServiceObj: null,
-      //     selectedStreamingType: null,
-      //     initialQuery: null,
-      //     queryArr: null,
-      //     protoPath: null,
-      //     services: null,
-      //     protoContent: '',
-      //   },
-      //   newRequestCookies: {
-      //     cookiesArr: [],
-      //     count: 0,
-      //   },
-      //   newRequestSSE: {
-      //     isSSE: false,
-      //   },
-      // };
-      const result = newRequestReducer(initialState, newRequestContentByProtocol('unknown'));
+      const result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('unknown')
+      );
       expect(result).toEqual(initialState);
     });
-  
+
     /**
      * @todo - Modularize the below test as it only has 1 Jest "it" statement.
      * Also to note, in the newRequestSlice itself there are many other features still under WIP.
      * Below test is currently written for the features that have some functionality.
      */
     it('should compose a new request store for a known protocol', () => {
-      // const initialState = {
-      //   newRequestHeaders: {
-      //     headersArr: [],
-      //     count: 0,
-      //   },
-      //   newRequestBody: {
-      //     bodyContent: '',
-      //     bodyVariables: '',
-      //     bodyType: 'raw',
-      //     rawType: 'text/plain',
-      //     JSONFormatted: true,
-      //     bodyIsNew: false,
-      //   },
-      //   newRequestStreams: {
-      //     streamsArr: [],
-      //     count: 0,
-      //     streamContent: [],
-      //     selectedPackage: null,
-      //     selectedRequest: null,
-      //     selectedService: null,
-      //     selectedServiceObj: null,
-      //     selectedStreamingType: null,
-      //     initialQuery: null,
-      //     queryArr: null,
-      //     protoPath: null,
-      //     services: null,
-      //     protoContent: '',
-      //   },
-      //   newRequestCookies: {
-      //     cookiesArr: [],
-      //     count: 0,
-      //   },
-      //   newRequestSSE: {
-      //     isSSE: false,
-      //   },
-      // };
       let expected = {
         ...initialState,
         newRequestBody: {
@@ -244,20 +176,68 @@ describe('newRequestSlice', () => {
         },
       };
 
-      let result = newRequestReducer(initialState, newRequestContentByProtocol('tRPC'));
+      let result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('tRPC')
+      );
       expect(result).toEqual(expected);
 
       expected.newRequestBody.bodyType = 'GQL';
-      result = newRequestReducer(initialState, newRequestContentByProtocol('graphQL'));
+      result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('graphQL')
+      );
       expect(result).toEqual(expected);
 
       expected.newRequestBody.bodyType = 'GRPC';
-      result = newRequestReducer(initialState, newRequestContentByProtocol('grpc'));
+      result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('grpc')
+      );
+      expect(result).toEqual(expected);
+      
+      expected.newRequestBody.bodyType = 'none';
+      result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('ws')
+      );
       expect(result).toEqual(expected);
 
-      expected.newRequestBody.bodyType = 'stun-ice';
-      result = newRequestReducer(initialState, newRequestContentByProtocol('webrtc'));
+      expected.newRequestBody.bodyType = 'none';
+      result = newRequestReducer(
+        initialState,
+        newRequestContentByProtocol('webhook')
+      );
       expect(result).toEqual(expected);
     });
   });
+
+  describe('newRequestWebRTCSet', () => {
+    it('should set new WebRTC request', () => {
+      const newWebRTCRequest = {
+        network: 'webrtc',
+        webRTCEntryMode: 'Manual',
+        webRTCDataChannel: 'Video',
+        webRTCWebsocketServer: '',
+        webRTCOffer: 'offerSDP',
+        webRTCAnswer: 'answerSDP',
+        webRTCpeerConnection: null,
+        webRTCLocalStream: null,
+        webRTCRemoteStream: null,
+        webRTCMessages: [],
+      }
+      const action = newRequestWebRTCSet(newWebRTCRequest)
+      const newState = newRequestReducer(initialState, action);
+      expect(newState.newRequestWebRTC).toBe(newWebRTCRequest);
+    })
+  })
+
+  describe('newRequestWebRTCOfferSet', () => {
+    it('should set new WebRTC offer', () => {
+      const offerString = 'newOfferSDP'
+      const action = newRequestWebRTCOfferSet(offerString)
+      const newState = newRequestReducer(initialState, action);
+      expect(newState.newRequestWebRTC.webRTCOffer).toBe(offerString);
+    })
+  })
 });
