@@ -112,7 +112,7 @@ const webrtcPeerController = {
   createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     let { webRTCpeerConnection, webRTCOffer } = newRequestWebRTC;
 
-    if (!webRTCOffer || !webRTCpeerConnection) return;
+    if (!webRTCOffer || !webRTCpeerConnection) return alert('Invalid Offer');
 
     let offer = JSON.parse(webRTCOffer);
     await webRTCpeerConnection.setRemoteDescription(offer);

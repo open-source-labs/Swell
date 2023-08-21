@@ -33,12 +33,15 @@ module.exports = () => {
       if (!electronApp) {
         throw new Error('electronApp failed t launch');
       }
+      grpcServer('open');
+
     });
 
     // close Electron app when complete
     after(async () => {
       await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
+      grpcServer('close');
     });
 
     afterEach(async function () {
