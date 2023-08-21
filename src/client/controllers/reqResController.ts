@@ -165,12 +165,19 @@ const connectionController = {
   },
 
   closeReqRes(reqResObj: ReqRes): void {
-    let protocol: Protocol | undefined = reqResObj.protocol
+    if (reqResObj.request.network === 'webrtc') {
+      if (reqResObj.request.webRTCDataChannel === 'Text') {
+        reqResObj.request.webRTCLocalStream!.close();
+      } else if (reqResObj.request.webRTCDataChannel === 'Video') {
+        reqResObj.request.webRTCpeerConnection?.close();
+      }
+    }
+    let protocol: Protocol | undefined = reqResObj.protocol;
     if (reqResObj.graphQL && reqResObj.request?.method === 'SUBSCRIPTION') {
       graphQLController.closeSubscription(reqResObj);
     } else if (protocol) {
-      if(protocol.includes('http'))  api.send('close-http', reqResObj);
-      if(/wss?:\/\//.test(protocol)) api.send('close-ws');    
+      if (protocol.includes('http')) api.send('close-http', reqResObj);
+      if (/wss?:\/\//.test(protocol)) api.send('close-ws');
     }
 
     const { id } = reqResObj;
