@@ -1,8 +1,8 @@
 const WebSocketServer = require('websocket').server;
-var http = require('http');
-let PORT = 5001;
+const http = require('http');
+const PORT = 5001;
 
-var server = http.createServer(function (request, response) {
+const server = http.createServer(function (request, response) {
   console.log(
     `Websocket Test Server: received request for ${
       request.url
@@ -18,7 +18,7 @@ server.listen(PORT, function () {
   );
 });
 
-let wsServer = new WebSocketServer({
+const wsServer = new WebSocketServer({
   httpServer: server,
   // You should not use autoAcceptConnections for production
   // applications, as it defeats all standard cross-origin protection

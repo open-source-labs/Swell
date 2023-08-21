@@ -1,13 +1,11 @@
 const { _electron: electron } = require('playwright');
-const pwTest = require('@playwright/test');
 const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs');
 
 let electronApp,
-  page,
-  num = 0;
+  page
 
   const projectPath = path.resolve(__dirname, '..', '..', 'main.js');
 
