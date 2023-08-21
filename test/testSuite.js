@@ -69,11 +69,11 @@ describe('Request/response testing functionality', function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();
-  websocketIntegrationTests();
 }).timeout(20000);
 
 describe('Integration testing', function() {
   httpIntegrationTests();
   grpcIntegrationTests();
   graphQLIntegrationTests();
+  websocketIntegrationTests();
 }).timeout(20000)
