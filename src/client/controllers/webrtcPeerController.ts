@@ -11,8 +11,6 @@ import {
   ResponseWebRTCText,
 } from '../../types';
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
-import { PersonRemoveRounded } from '@mui/icons-material';
-
 const webrtcPeerController = {
   createPeerConnection: async (
     newRequestWebRTC: RequestWebRTC
