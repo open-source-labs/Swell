@@ -165,6 +165,9 @@ const connectionController = {
   },
 
   closeReqRes(reqResObj: ReqRes): void {
+    if (reqResObj.request.network === 'webrtc') {
+      reqResObj.request.webRTCLocalStream!.close()
+    }
     let protocol: Protocol | undefined = reqResObj.protocol
     if (reqResObj.graphQL && reqResObj.request?.method === 'SUBSCRIPTION') {
       graphQLController.closeSubscription(reqResObj);
