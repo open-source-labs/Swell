@@ -11,7 +11,6 @@ import {
   ResponseWebRTCText,
 } from '../../types';
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
-
 const webrtcPeerController = {
   createPeerConnection: async (
     newRequestWebRTC: RequestWebRTC
@@ -73,6 +72,8 @@ const webrtcPeerController = {
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       let localStream = peerConnection.createDataChannel('textChannel');
       localStream.onopen = () => console.log('data channel opened');
+      localStream.onclose = () => console.log('data channel closed')
+
       appDispatch(
         newRequestWebRTCSet({
           ...newRequestWebRTC,
