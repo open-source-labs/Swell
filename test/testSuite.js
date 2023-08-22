@@ -39,8 +39,9 @@ const webRTCTest = require('./subSuites/webRTCTest');
 
 //& new integration tests
 const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
-const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests')
+const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests');
 const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTests');
+const webRTCIntegrationTests = require('./IntegrationTests/webRTCIntegrationTests');
 
 // Package requirements
 const path = require('path');
@@ -50,11 +51,13 @@ const fs = require('fs-extra');
 fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 // Testing suite
-describe('Electron UI Rendering', function () { // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
+describe('Electron UI Rendering', function () {
+  // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
   appOpensTests();
 }).timeout(20000);
 
-describe('Protocol selection and usage', function () { //group of tests that focuses on how application handles different protocols
+describe('Protocol selection and usage', function () {
+  //group of tests that focuses on how application handles different protocols
   reqInputTests();
   httpTest();
   graphqlTest();
@@ -70,8 +73,9 @@ describe('Request/response testing functionality', function () {
   graphqlTestingTest();
 }).timeout(20000);
 
-describe('Integration testing', function() {
+describe('Integration testing', function () {
   httpIntegrationTests();
   grpcIntegrationTests();
   graphQLIntegrationTests();
-}).timeout(20000)
+  webRTCIntegrationTests();
+}).timeout(20000);

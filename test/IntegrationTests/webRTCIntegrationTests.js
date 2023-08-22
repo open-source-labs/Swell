@@ -8,30 +8,31 @@ const fs = require('fs');
 
 let electronApp,
   page,
-  method,
-  url,
   num = 0;
 
 const projectPath = path.resolve(__dirname, '..', '..', 'main.js');
 
 module.exports = () => {
-  describe('WebRTC integration testing', function () {
+  describe('WebRTC integration testing', () => {
     //launch app and select webRTC for current workspace
-    beforeEach(async () => {
+    before(async () => {
       electronApp = await electron.launch({ args: [projectPath] });
       //awaiting the intilialization of electron
       await new Promise((resolve) => setTimeout(resolve, 1000));
       //define a page variable as the current window of the electron app
-      page = await electronApp.windows[0];
+      page = await electronApp.windows()[0];
       await page.waitForLoadState('domcontentloaded');
-      //clear workspace
-      const webRTCPath = 'button >> text=WebRTC';
-      await page.locator(webRTCPath).click();
+      webRTCServer('open');
+    });
+
+    beforeEach(async () => {
+      await page.locatore('button >> text=Clear Workspace').click();
     });
     //close Electron app when complete
     after(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      if (page) await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
+      webRTCServer('close');
     });
 
     //captures screenshot of browser when test case fails
@@ -50,7 +51,7 @@ module.exports = () => {
     });
 
     describe('Check if webRTC is selected if both newRequestFieldsByProtocol and newRequestContentByProtocol are being ran in conjuction with each other', async () => {
-      xit('Should change the newRequestFields properties to WebRTC reflect the webRTC required fields', async () => {
+      it('Should change the newRequestFields properties to WebRTC reflect the webRTC required fields', async () => {
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(reduxState.newRequestFields.method).to.equal('WebRTC');
         expect(reduxState.newRequestFields.url).to.equal('');
@@ -62,7 +63,7 @@ module.exports = () => {
         expect(reduxState.newRequest.newRequestCookies.count).to.equal(0);
       });
 
-      xit('Should initialize WebRTC state values', async () => {
+      it('Should initialize WebRTC state values', async () => {
         await page.locator('button >> text=Connect').click();
         await page.locator('.is-neutral-200-box.p-3');
         await page.locater('#');
