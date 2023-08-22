@@ -89,10 +89,9 @@ Swell is a one-stop shop for sending and monitoring your API requests:
   <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
 
 - _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
-  <img src="./ReadMeGifs/Gifs/Webhook.gif" style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" />
 
-- _WebRTC_: Swell makes it easy to test external client connectivity for WebRTC applications. Currently Swell supports manual entry of SDPs. 
-  <img src="./ReadMeGifs/Gifs/WebRTC.gif" style="display: block; margin: 10px auto 30px; " />
+- _WebRTC_: Swell makes it easy to test WebRTC applications for both video and text channels. Currently Swell supports manual entry of SDPs. 
+  <img src="./ReadMeGifs/Gifs/webrtc.gif" style="display: block; margin: 10px auto 30px; " />
 
 - _OpenAPI_: Swell supports the enumeration and execution of REST and RPC API requests as defined in a user-provided OpenAPI document.
   <img src="./ReadMeGifs/Gifs/openapi.gif" style="display: block; margin: 10px auto 30px;" />
@@ -126,7 +125,7 @@ Feel free to check out the `DEV-README.md` in the `docs` folder.
 - **Kevin Li** - [myttins](https://github.com/myttins)
 - **Tommy Huynh** - [tthcodes](https://github.com/tthcodes)
 - **Nitesh Manem** - [NManem](https://github.com/NManem)
-- **Chad DeGrange** - [cdegange](https://github.com/cdegange)
+- **Chad DeGange** - [cdegange](https://github.com/cdegange)
 - **Timmy Zhu** - [timzhu15](https://github.com/timzhu15)
 - **Christina Walton** - [CElizOwens](https://github.com/CElizOwens)
 - **Akeem Smith** - [AkeemESmith](https://github.com/AkeemESmith)
