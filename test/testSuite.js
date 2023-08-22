@@ -41,6 +41,7 @@ const webRTCTest = require('./subSuites/webRTCTest');
 const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
 const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests')
 const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTests');
+const websocketIntegrationTests = require('./IntegrationTests/websocketIntegrationTests');
 
 // Package requirements
 const path = require('path');
@@ -74,4 +75,5 @@ describe('Integration testing', function() {
   httpIntegrationTests();
   grpcIntegrationTests();
   graphQLIntegrationTests();
+  websocketIntegrationTests();
 }).timeout(20000)
