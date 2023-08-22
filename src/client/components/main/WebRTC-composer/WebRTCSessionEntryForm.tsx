@@ -106,7 +106,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
         <div className="dropdown-trigger">
           <button
             className="is-rest button no-border-please"
-            id="rest-method"
+            id="input-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             onClick={() => {
