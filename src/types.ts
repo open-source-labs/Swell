@@ -88,6 +88,39 @@ export interface Cookie {
   expires: string | number;
 }
 
+export interface ValidationMessage {
+  uri?: string;
+  json?: string;
+}
+
+export interface MainContainerProps {
+  // state
+  currentTab?: string;
+  reqResArray: ReqRes[];
+  newRequestFields: NewRequestFields;
+  newRequestHeaders: NewRequestHeaders;
+  newRequestStreams: NewRequestStreams;
+  newRequestBody: NewRequestBody;
+  newRequestCookies: NewRequestCookies;
+  newRequestSSE: NewRequestSSE;
+  warningMessage: any;
+  introspectionData: IntrospectionData;
+
+  // reducers
+  reqResItemAdded: (reqRes: ReqRes) => any;
+  setWarningMessage: (message: ValidationMessage) => any;
+  newRequestHeadersSet: NewRequestHeadersSet;
+  newRequestStreamsSet: () => any;
+  fieldsReplaced: () => any;
+  newRequestBodySet: NewRequestBodySet;
+  newTestContentSet: () => any;
+  newRequestCookiesSet: NewRequestCookiesSet;
+  newRequestSSESet: (arg: boolean) => any;
+  openApiRequestsReplaced: () => any;
+  composerFieldsReset: () => any;
+  setWorkspaceActiveTab: (arg: string) => any;
+}
+
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 
@@ -103,7 +136,7 @@ export interface Message {
 }
 
 export interface NewRequestBody {
-  bodyContent: string | undefined;
+  bodyContent: string;
   bodyVariables: string;
   bodyType: string;
   rawType: string;
@@ -118,7 +151,7 @@ export interface CookieOrHeader {
   value: string;
 }
 
-export interface WebsocketMessages {
+export interface WebMessages {
   data: string;
   timeReceived: number;
 }
@@ -128,7 +161,7 @@ interface NewRequestCookies {
   count: number;
 }
 
-interface NewRequestHeaders {
+export interface NewRequestHeaders {
   headersArr: CookieOrHeader[];
   count: number;
 }
@@ -136,6 +169,7 @@ interface NewRequestHeaders {
 export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
 export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
 export type NewRequestBodySet = (obj: NewRequestBody) => void;
+export type NewRequestWebRTCSet = (obj: RequestWebRTC) => void;
 
 /**
  * Defines the type constract for the NewRequestFields state object.
@@ -161,7 +195,7 @@ export type NewRequestFields = {
   openapi: boolean;
   webrtc: boolean;
   webhook: boolean;
-  network: string;
+  network: Network;
   testContent: string;
   testResults: $TSFixMe[];
   openapiReqObj: Record<string, $TSFixMe>;
@@ -181,7 +215,7 @@ export interface ReqResRequest {
   isSSE?: boolean;
   headers: CookieOrHeader[];
   method?: string;
-  messages?: WebsocketMessages[];
+  messages?: WebMessages[];
   network: Network;
   rawType: string;
   restUrl?: string;
@@ -231,15 +265,16 @@ export interface OpenAPIReqData {
  *
  * ReqRes {
  *  id: number;
- *  request: ReqResReqest;
+ *  request: ReqResRequest;
  *  response: ReqResResponse;
  * }
  *
  * as well as any additional metadata needed as properties that doesn't already
  * exist in the request or response properties
  */
+
 export interface ReqRes {
-  trpc: any;
+  tRPC?: any;
   checked: boolean;
   checkSelected: boolean;
   closeCode?: number;
@@ -247,31 +282,62 @@ export interface ReqRes {
   connectionType: string | null;
   createdAt: Date;
   error?: string;
-  graphQL: boolean;
-  gRPC: boolean;
-  host: string;
+  graphQL?: boolean;
+  gRPC?: boolean;
+  host?: string;
   id: string;
   isHTTP2?: boolean;
   minimized: boolean;
   openapi?: boolean;
-  protocol: Protocol;
-  protoPath: string;
+  protocol?: Protocol;
+  protoPath?: string;
   path: string;
-  request: ReqResRequest;
-  response: ReqResResponse;
+  request: ReqResRequest | RequestWebRTC;
+  response: ReqResResponse | ResponseWebRTC;
   rpc?: string;
   service?: string;
-  tab: string;
+  tab?: string;
   timeReceived: Date | number | null;
   timeSent: number | null;
-  url: string;
-  webrtc: boolean;
+  url?: string;
   frequency?: number;
   duration?: number;
-  classEventPreviewsName: string;
 }
 
-export interface SSERequest {
+export type ResponseWebRTC = ResponseWebRTCText;
+
+export interface ResponseWebRTCText {
+  webRTCMessages: WebMessages[];
+}
+
+export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText;
+
+export interface RequestWebRTCVideo {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Video';
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: MediaStream | null;
+  webRTCRemoteStream: MediaStream | null;
+}
+
+export interface RequestWebRTCText {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Text';
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: RTCDataChannel | null;
+  webRTCRemoteStream: RTCDataChannel | null;
+  webRTCMessages: WebMessages[];
+}
+
+export interface NewRequestSSE {
   isSSE: boolean;
 }
 
@@ -286,7 +352,7 @@ export interface NewRequestStreams {
   selectedStreamingType: string | null;
   initialQuery: unknown | null;
   queryArr: Record<string, unknown>[] | null;
-  protoPath: unknown | null;
+  protoPath: string;
   services: Record<$TSFixMe, $TSFixMe> | null;
   protoContent: string;
 }
@@ -310,7 +376,7 @@ export interface ReqResResponse {
   testResult?: TestResult[];
   responseSize?: number; //mainprocess main_httpController line 196ish
   status?: $TSFixMeObject; //?? not sure if object, main_httpController line 353ish
-  messages?: WebsocketMessages[];
+  messages?: WebMessages[];
   connection?: string; //main_wsController
 }
 

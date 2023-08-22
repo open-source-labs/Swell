@@ -10,7 +10,7 @@ import {
   responseDataSaved,
   reqResUpdated,
 } from '../toolkit-refactor/slices/reqResSlice';
-import { ReqRes, WindowExt } from '../../types';
+import { ReqRes, ReqResResponse, WindowExt } from '../../types';
 import { LoadTestResult } from '../components/main/sharedComponents/stressTest/LoadTest';
 import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
 
@@ -30,7 +30,10 @@ const LoadTestController = {
   processLoadTestResults(id: string | number, results: LoadTestResult): void {
     const reqResArray: ReqRes[] = store.getState().reqRes.reqResArray;
 
-    const reqResObj: ReqRes = reqResArray.find((el: ReqRes) => el.id === id);
+    const reqResObj: ReqRes | undefined = reqResArray.find(
+      (el: ReqRes) => el.id === id
+    );
+    if (!reqResObj) return;
     const newReqRes: ReqRes = {
       ...reqResObj,
       response: {
@@ -44,9 +47,8 @@ const LoadTestController = {
       (reqResObj.connection === 'closed' || reqResObj.connection === 'error') &&
       reqResObj.timeSent &&
       reqResObj.timeReceived &&
-      reqResObj.response.events.length > 0
+      (<ReqResResponse>reqResObj.response).events.length > 0
     ) {
-
       appDispatch(graphUpdated(newReqRes));
       appDispatch(reqResUpdated(newReqRes));
       appDispatch(responseDataSaved(newReqRes));

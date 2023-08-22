@@ -1,17 +1,10 @@
 import React, { useEffect } from 'react';
 import TextCodeArea from './TextCodeArea';
+import { NewRequestBody, NewRequestBodySet } from '../../../../types';
 
 interface JSONTextAreaProps {
-  newRequestBody: {
-    bodyContent: string;
-    JSONFormatted: boolean;
-    rawType: string;
-  };
-  newRequestBodySet: (value: {
-    bodyContent: string;
-    JSONFormatted: boolean;
-    rawType: string;
-  }) => void;
+  newRequestBody: NewRequestBody
+  newRequestBodySet: NewRequestBodySet
 }
 
 export default function JSONTextArea({

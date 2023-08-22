@@ -14,7 +14,7 @@ const timeInterval = 3000;
 const sendStream = () => {
   // if listeners are gone, connection is closed
   if (sse.listenerCount('data') < 1) {
-    console.log('connection closed by client');
+    console.log(`HTTP1 SSE Server: closed by client`);
     return;
   }
 
@@ -41,5 +41,5 @@ const dispatchStreamOrHeaders = (req, res, next) => {
 app.get('/', dispatchStreamOrHeaders, sse.init);
 
 app.listen(PORT, () => {
-  console.log(`HTTP1 SSE Server listening on port: ${PORT}`);
+  console.log(`HTTP1 SSE Server: listening on PORT ${PORT}`);
 });

@@ -67,11 +67,11 @@ describe('newRequestFieldsSlice', () => {
             let expected = {
                 ...initialState,
                 url: initialState.restUrl,
-                method: 'QUERY',
                 tRPC: true,
               };
 
             //Testing tRPC
+            expected.method = 'Query/Mutate';
             let result = newRequestFieldsReducer(initialState, newRequestFieldsByProtocol('tRPC'));
             expect(result).toEqual(expected);
 
@@ -79,6 +79,7 @@ describe('newRequestFieldsSlice', () => {
             expected.url = initialState.gqlUrl;
             expected.tRPC = false;
             expected.graphQL = true;
+            expected.method = 'QUERY';
             result = newRequestFieldsReducer(initialState, newRequestFieldsByProtocol('graphQL'));
             expect(result).toEqual(expected);
 

@@ -74,7 +74,6 @@ const resolvers = {
         description: args.description,
         url: args.url,
       };
-      console.log(link);
       links.push(link);
       pubsub.publish('NEW_LINK', { newLink: link });
       return link;
@@ -86,7 +85,6 @@ const resolvers = {
     newLink: {
       // create a subscription resolver function
       subscribe: () => {
-        console.log('subscribed');
         return pubsub.asyncIterator('NEW_LINK');
       }, // subscribe to changes in a topic
     },
@@ -141,5 +139,5 @@ app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server));
 
 // Now that our HTTP server is fully set up, we can listen to it.
 httpServer.listen(PORT, () => {
-  console.log(`Server is now running on http://localhost:${PORT}/graphql`);
+  console.log(`GraphQL Test Server: listening on PORT ${PORT}`);
 });

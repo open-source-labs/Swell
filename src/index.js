@@ -56,6 +56,11 @@ head.appendChild(meta);
 // Render the app
 const container = document.getElementById('root');
 const rt = createRoot(container);
+
+// Created this method to allow Redux State to be accessible in Integration testing
+window.getReduxState = () => store.getState();
+
+
 rt.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />

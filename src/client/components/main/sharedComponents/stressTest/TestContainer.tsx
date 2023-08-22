@@ -93,13 +93,13 @@ const TestContainer: React.FC<TestContainerProps> = ({
       >
         {showLoadTest === true && (
           <>
-            <span>Hide Stress Test</span>
+            <span id='hide-stress-test' >Hide Stress Test</span>
           </>
         )}
 
         {showLoadTest === false && (
           <>
-            <span>View Stress Test</span>
+            <span id='view-stress-test'>View Stress Test</span>
           </>
         )}
       </div>
@@ -117,6 +117,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     isDark ? 'is-dark-200' : ''
                   } ml-1 input input-is-medium is-info`}
                   style={{ width: '65px' }}
+                  id="frequency-input"
                   type="number"
                   placeholder="Calls/sec"
                   value={callsPerSecond}
@@ -135,6 +136,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     isDark ? 'is-dark-200' : ''
                   } ml-1 input input-is-medium is-info`}
                   style={{ width: '65px' }}
+                  id="duration-input"
                   type="number"
                   placeholder="Duration"
                   value={totalTime}
@@ -177,6 +179,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       }}
                       disabled={disabled}
                       style={disabled ? { pointerEvents: 'none' } : {}}
+                      id='stress-test-run-button'
                     >
                       Run
                     </button>

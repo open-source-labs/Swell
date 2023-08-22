@@ -14,7 +14,7 @@ import {
 } from '../toolkit-refactor/slices/graphPointsSlice';
 
 import graphQLController from './graphQLController';
-import { ReqRes, WindowExt } from '../../types';
+import { Protocol, ReqRes, WindowExt } from '../../types';
 
 const { api } = window as unknown as WindowExt;
 
@@ -66,13 +66,13 @@ const connectionController = {
       return;
     }
 
-    if (reqResObj.trpc) {
+    if (reqResObj.tRPC) {
       api.send('open-trpc', reqResObj);
     } else if (reqResObj.request.method === 'SUBSCRIPTION')
       graphQLController.openSubscription(reqResObj);
     else if (reqResObj.graphQL) {
       graphQLController.openGraphQLConnection(reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol) && !reqResObj.webrtc) {
+    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
       // create context bridge to wsController in node process to open connection, send the reqResObj and connection array
       api.send('open-ws', reqResObj, this.openConnectionArray);
     }
@@ -165,12 +165,19 @@ const connectionController = {
   },
 
   closeReqRes(reqResObj: ReqRes): void {
+    if (reqResObj.request.network === 'webrtc') {
+      if (reqResObj.request.webRTCDataChannel === 'Text') {
+        reqResObj.request.webRTCLocalStream!.close();
+      } else if (reqResObj.request.webRTCDataChannel === 'Video') {
+        reqResObj.request.webRTCpeerConnection?.close();
+      }
+    }
+    let protocol: Protocol | undefined = reqResObj.protocol;
     if (reqResObj.graphQL && reqResObj.request?.method === 'SUBSCRIPTION') {
       graphQLController.closeSubscription(reqResObj);
-    } else if (reqResObj.protocol.includes('http')) {
-      api.send('close-http', reqResObj);
-    } else if (/wss?:\/\//.test(reqResObj.protocol)) {
-      api.send('close-ws');
+    } else if (protocol) {
+      if (protocol.includes('http')) api.send('close-http', reqResObj);
+      if (/wss?:\/\//.test(protocol)) api.send('close-ws');
     }
 
     const { id } = reqResObj;

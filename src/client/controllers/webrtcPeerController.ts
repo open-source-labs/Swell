@@ -1,92 +1,198 @@
+import store, { appDispatch } from '../toolkit-refactor/store';
 import {
-  reqResUpdated,
-  responseDataSaved,
-} from '../toolkit-refactor/slices/reqResSlice';
-import { appDispatch } from '../toolkit-refactor/store';
-
-// https://ourcodeworld.com/articles/read/1526/how-to-test-online-whether-a-stun-turn-server-is-working-properly-or-not
-class Peer {
-  config: RTCConfiguration;
-  connection: RTCPeerConnection;
-
-  constructor(config: RTCConfiguration) {
-    this.config = config;
-    this.connection = this.createConnection();
-    this.connection.onicecandidateerror = (e: Event) => {
-      console.error(e);
+  newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
+} from '../toolkit-refactor/slices/newRequestSlice';
+import {
+  ReqRes,
+  RequestWebRTC,
+  RequestWebRTCText,
+  ResponseWebRTC,
+  ResponseWebRTCText,
+} from '../../types';
+import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
+const webrtcPeerController = {
+  createPeerConnection: async (
+    newRequestWebRTC: RequestWebRTC
+  ): Promise<void> => {
+    let servers = {
+      iceServers: [
+        {
+          urls: [
+            'stun:stun1.1.google.com:19302',
+            'stun:stun2.1.google.com:19302',
+          ],
+        },
+      ],
     };
-  }
+    let peerConnection = new RTCPeerConnection(servers);
 
-  createConnection(): RTCPeerConnection {
-    return new RTCPeerConnection(this.config);
-  }
+    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
+      let localStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
 
-  async establishSDP() {
-    this.connection.createDataChannel('test');
-    this.connection
-      .createOffer()
-      .then((offer: RTCSessionDescriptionInit) =>
-        this.connection.setLocalDescription(offer)
+      if (document.getElementById('localstream')) {
+        (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+          localStream;
+      }
+
+      localStream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, localStream);
+      });
+
+      let remoteStream = new MediaStream();
+      peerConnection.ontrack = async (event) => {
+        event.streams[0].getTracks().forEach((track) => {
+          remoteStream.addTrack(track);
+        });
+      };
+
+      appDispatch(
+        newRequestWebRTCSet({
+          ...newRequestWebRTC,
+          webRTCpeerConnection: peerConnection,
+          webRTCLocalStream: localStream,
+          webRTCRemoteStream: remoteStream,
+        })
       );
-  }
-}
 
-// `ReqRes` type need to be fixed consistently across the board
-// To make the type for `content` work properly
-export default async function testSDPConnection(content) {
-  const { iceConfiguration } = content.request.body;
-  // Technically, setting the connection status as 'closed' right away
-  // is not entirely accurated. Since we are closing the server a second
-  // after it is opened to avoid timeout issue anyway, this is as good
-  // as a 'closed' connection.
-  // Also, the current setup only works with one iceServer. To expand
-  // this feature we need to get the relevant `ReqRes` from `Store.getState()`
-  // and add the response there. See `graphQLController.openSubscription()` for example
-  const newReqRes = { ...content, connection: 'closed' };
-  const pc = new Peer(iceConfiguration);
-  pc.connection.onicecandidate = (e) => {
-    if (!e.candidate) return;
-
-    const { type, address } = e.candidate;
-    if (type === 'srflx') {
-      newReqRes.response = {
-        ...newReqRes.response,
-        events: [
-          ...newReqRes.response.events,
-          {
-            serverType: 'STUN',
-            publicIpAddress: address,
-            eventCandidate: e.candidate,
-          },
-        ],
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (event.candidate) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
       };
-      appDispatch(responseDataSaved(newReqRes));
-      appDispatch(reqResUpdated(newReqRes));
-      console.log('STUN Server is reachable!');
-      console.log('Public IP Address: ', address);
-    }
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      let localStream = peerConnection.createDataChannel('textChannel');
+      localStream.onopen = () => console.log('data channel opened');
+      localStream.onclose = () => console.log('data channel closed')
 
-    if (type === 'relay') {
-      newReqRes.response = {
-        ...newReqRes.response,
-        events: [
-          ...newReqRes.response.events,
-          {
-            serverType: 'TURN',
-            publicIpAddress: address,
-            eventCandidate: e.candidate,
-          },
-        ],
+      appDispatch(
+        newRequestWebRTCSet({
+          ...newRequestWebRTC,
+          webRTCpeerConnection: peerConnection,
+          webRTCLocalStream: localStream,
+        })
+      );
+
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (event.candidate) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
       };
-      appDispatch(responseDataSaved(newReqRes));
-      appDispatch(reqResUpdated(newReqRes));
-      console.log('TURN Server is reachable!');
     }
-  };
-  pc.establishSDP();
-  setTimeout(() => {
-    pc.connection.close();
-    console.log('WebRTC connection closed.');
-  }, 1000);
-}
+  },
+
+  createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+    //grab the peer connection off the state to manipulate further
+    let { webRTCpeerConnection } = newRequestWebRTC;
+    let offer = await webRTCpeerConnection!.createOffer();
+    await webRTCpeerConnection!.setLocalDescription(offer);
+    appDispatch(
+      newRequestWebRTCSet({
+        ...newRequestWebRTC,
+        webRTCOffer: JSON.stringify(offer),
+      })
+    );
+  },
+
+  // work-in-progress
+  createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+    let { webRTCpeerConnection, webRTCOffer } = newRequestWebRTC;
+
+    if (!webRTCOffer || !webRTCpeerConnection) return alert('Invalid Offer');
+
+    let offer = JSON.parse(webRTCOffer);
+    await webRTCpeerConnection.setRemoteDescription(offer);
+
+    let answer = await webRTCpeerConnection.createAnswer();
+    await webRTCpeerConnection.setLocalDescription(answer);
+
+    appDispatch(
+      newRequestWebRTCSet({
+        ...newRequestWebRTC,
+        webRTCAnswer: JSON.stringify(answer),
+      })
+    );
+  },
+
+  addAnswer: async (reqRes: ReqRes): Promise<void> => {
+    let { request, response } = reqRes as {
+      request: RequestWebRTC;
+      response: ResponseWebRTC;
+    };
+
+    request.webRTCpeerConnection!.setRemoteDescription(
+      JSON.parse(request.webRTCAnswer)
+    );
+
+    if (request.webRTCDataChannel === 'Video') {
+      request.webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
+        event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
+          (<MediaStream>request.webRTCRemoteStream!).addTrack(track);
+        });
+      };
+
+      // this waits for HTML elements localstream and remotestream to render before connecting the srcObject. Should be refactored into better implementation
+      setTimeout(() => {
+        if (
+          !document.getElementById('remotestream') ||
+          !document.getElementById('localstream')
+        ) {
+          alert('error');
+        } else {
+          (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+            request.webRTCLocalStream as MediaStream;
+          (<HTMLVideoElement>(
+            document.getElementById('remotestream')
+          )).srcObject = request.webRTCRemoteStream as MediaStream;
+        }
+      }, 500);
+    }
+    if (request.webRTCDataChannel === 'Text') {
+      (<RequestWebRTCText>request).webRTCLocalStream!.onmessage = (
+        event: MessageEvent
+      ) => {
+        let newString = event.data.slice(1, -1);
+        let messageObject = {
+          data: newString,
+          timeReceived: Date.now(),
+        };
+
+        let state = store.getState();
+        if (state.reqRes.currentResponse.response) {
+          let newWebRTCMessages =
+            (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
+              messageObject
+            );
+          let request = state.reqRes.currentResponse.request
+          appDispatch(
+            responseDataSaved({
+              ...reqRes,
+              request,
+              response: {
+                webRTCMessages: newWebRTCMessages,
+              },
+            })
+          );
+        }
+      };
+    }
+  },
+};
+
+export default webrtcPeerController;
 

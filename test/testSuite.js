@@ -9,12 +9,10 @@
  * test.
  *
  * Please note many of these tests are written contingent on each other, and
- * there is room for better optimization of end-to-end testing.
+ * there is room for better optimizatilson of end-to-end testing.
  *
  * @todo As of v.13, all tests should be passing EXCEPT:
- * - gRPCtest()
  * - openAPITest()
- * - gRPCTestingTest()
  *
  *  Above tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
@@ -39,6 +37,13 @@ const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
 const webRTCTest = require('./subSuites/webRTCTest');
 
+//& new integration tests
+const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
+const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests');
+const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTests');
+const webRTCIntegrationTests = require('./IntegrationTests/webRTCIntegrationTests');
+const websocketIntegrationTests = require('./IntegrationTests/websocketIntegrationTests');
+
 // Package requirements
 const path = require('path');
 const fs = require('fs-extra');
@@ -48,10 +53,12 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 
 // Testing suite
 describe('Electron UI Rendering', function () {
+  // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
   appOpensTests();
 }).timeout(20000);
 
 describe('Protocol selection and usage', function () {
+  //group of tests that focuses on how application handles different protocols
   reqInputTests();
   httpTest();
   graphqlTest();
@@ -66,3 +73,11 @@ describe('Request/response testing functionality', function () {
   grpcTestingTest();
   graphqlTestingTest();
 }).timeout(20000);
+
+describe('Integration testing', function () {
+  httpIntegrationTests();
+  grpcIntegrationTests();
+  graphQLIntegrationTests();
+  webRTCIntegrationTests();
+  websocketIntegrationTests();
+}).timeout(20000)
