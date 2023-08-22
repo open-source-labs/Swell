@@ -45,6 +45,7 @@ const url = require('url');
 const fs = require('fs');
 const log = require('electron-log');
 
+
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
 
@@ -63,6 +64,11 @@ require('./main_process/main_trpcController.js')();
 
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
+
+
+
+const contextMenu = require('electron-context-menu')
+contextMenu()
 
 // configure logging
 // autoUpdater.logger = log;

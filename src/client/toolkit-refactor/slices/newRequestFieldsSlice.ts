@@ -12,6 +12,7 @@ import { NewRequestFields } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { composerFieldsReset } from './newRequestSlice';
 
+//initial state containing all network types url and props set to boolean for false/true
 const initialState: NewRequestFields = {
   protocol: '',
   method: 'GET',

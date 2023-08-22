@@ -6,7 +6,7 @@ const protoLoader = require('@grpc/proto-loader');
 
 const PROTO_PATH = path.resolve(__dirname, './hw2.proto');
 const PORT = '0.0.0.0:30051';
-
+let server;
 
 // Service method to be used on unary test
 const SayHello = (call, callback) => {
@@ -104,7 +104,7 @@ function main(status) {
   const pkg = grpc.loadPackageDefinition(proto);
   if (status === 'open') {
     // create new instance of grpc server
-    const server = new grpc.Server();
+    server = new grpc.Server();
 
     // add service and methods to the server
     server.addService(pkg.helloworld.Greeter.service, {
@@ -118,9 +118,15 @@ function main(status) {
     // bind specific port to the server and start the server
     server.bindAsync(PORT, grpc.ServerCredentials.createInsecure(), (port) => {
       server.start();
-      console.log(`grpc server running on port ${PORT}`);
+      console.log(`gRPC Test Server: listening on PORT ${PORT}`);
     });
   }
+  else if (status === 'close' && server) {
+    server.tryShutdown(() => {
+      console.log('gRPC Test Server has been shut down.');
+    });
+  }
+
 }
 
 // uncomment this line of code if you want to run the server

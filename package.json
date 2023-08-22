@@ -1,12 +1,12 @@
 {
   "name": "swell",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "description": "Swell",
   "main": "main.js",
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
-    "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --exit",
+    "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --timeout 3000 --exit",
     "server-sse": "node ./test/SSE_HTTP1_server.js",
     "server-gql": "node ./test/graphqlServer.mjs",
     "server-grpc": "node ./test/grpcServer.js",
@@ -16,7 +16,8 @@
     "server-websocket": "node ./test/websocketServer.js",
     "server-webrtc": "node ./test/webrtcWSServer.js",
     "test-jest": "jest",
-    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --exit",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 3000 --exit",
+    "test-mocha-zero": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 0 --exit",
     "format": "prettier --write \"**/*.+(js|jsx| tsx| json|css|md)\"",
     "lint": "eslint .",
     "lint:fix": "eslint --fix . ",
@@ -82,7 +83,7 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "open-source-labs",
+      "owner": "oslabs-beta",
       "repo": "Swell",
       "private": false
     }
@@ -112,6 +113,7 @@
     "@uiw/codemirror-theme-vscode": "^4.19.9",
     "@uiw/react-codemirror": "^4.19.9",
     "body-parser": "^1.20.0",
+    "buffer": "^6.0.3",
     "bulma": "^0.9.3",
     "bulma-checkradio": "^2.1.3",
     "bulma-switch": "^2.0.4",
@@ -124,6 +126,7 @@
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",
     "dotenv": "^16.0.0",
+    "electron-context-menu": "^3.6.1",
     "electron-devtools-installer": "^3.2.0",
     "electron-log": "^4.4.6",
     "electron-updater": "^5.3.0",
@@ -175,8 +178,8 @@
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.17.9",
     "@mui/icons-material": "^5.6.2",
-    "@mui/lab": "^5.0.0-alpha.80",
-    "@mui/material": "^5.6.4",
+    "@mui/lab": "5.0.0-alpha.137",
+    "@mui/material": "5.14.2",
     "@playwright/test": "^1.21.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@types/cookie": "^0.5.1",
@@ -522,4 +525,3 @@
     }
   ]
 }
-

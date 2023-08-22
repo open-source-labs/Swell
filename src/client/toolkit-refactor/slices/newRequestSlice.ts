@@ -12,8 +12,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   NewRequestStreams,
   NewRequestBody,
-  SSERequest,
+  NewRequestSSE,
   CookieOrHeader,
+  RequestWebRTC,
 } from '../../../types';
 
 type NewRequestStore = {
@@ -27,7 +28,9 @@ type NewRequestStore = {
     count: number;
   };
   newRequestBody: NewRequestBody;
-  newRequestSSE: SSERequest;
+  newRequestSSE: NewRequestSSE;
+  newRequestWebRTC: RequestWebRTC;
+
 };
 
 const initialState: NewRequestStore = {
@@ -54,7 +57,7 @@ const initialState: NewRequestStore = {
     selectedStreamingType: null,
     initialQuery: null,
     queryArr: null,
-    protoPath: null,
+    protoPath: '',
     services: null,
     protoContent: '',
   },
@@ -65,6 +68,18 @@ const initialState: NewRequestStore = {
   newRequestSSE: {
     isSSE: false,
   },
+  newRequestWebRTC: {
+    network: 'webrtc',
+    webRTCEntryMode: 'Manual',
+    webRTCDataChannel: 'Text',
+    webRTCWebsocketServer: '',
+    webRTCOffer: '',
+    webRTCAnswer: '',
+    webRTCpeerConnection: null,
+    webRTCLocalStream: null,
+    webRTCRemoteStream: null,
+    webRTCMessages: [],
+  }
 };
 
 const newRequestSlice = createSlice({
@@ -83,6 +98,14 @@ const newRequestSlice = createSlice({
     newRequestBodySet: (state, action: PayloadAction<NewRequestBody>) => {
       state.newRequestBody = action.payload;
     },
+
+    newRequestWebRTCSet: (state, action: PayloadAction<RequestWebRTC>) => {
+      state.newRequestWebRTC = action.payload;
+    },
+    newRequestWebRTCOfferSet: (state, action: PayloadAction<string>) => {
+      state.newRequestWebRTC.webRTCOffer = action.payload;
+    },
+
 
     //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
     newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
@@ -142,27 +165,6 @@ const newRequestSlice = createSlice({
         case 'ws': {
           return composeNewRequestStore('none');
         }
-        case 'webrtc': {
-          return {
-            ...initialState,
-            newRequestBody: {
-              ...initialState.newRequestBody,
-              bodyType: 'stun-ice',
-              // Note that webrtc is an experimental feature not built out.
-              //'bodyContent' does not match the 'string' type in types.ts. Will
-              //need to look into refactoring code with 'bodyContent' type, or modularize the code more.
-              // bodyContent: {
-              //   iceConfiguration: {
-              //     iceServers: [
-              //       {
-              //         urls: 'stun:stun1.l.google.com:19302',
-              //       },
-              //     ],
-              //   },
-              // },
-            },
-          };
-        }
         case 'webhook': {
           return composeNewRequestStore('none');
         }
@@ -184,6 +186,8 @@ export const {
   newRequestStreamsSet,
   composerFieldsReset,
   newRequestContentByProtocol,
+  newRequestWebRTCSet,
+  newRequestWebRTCOfferSet,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 

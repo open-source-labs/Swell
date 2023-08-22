@@ -72,7 +72,7 @@ app.delete('/book/:title', (req, res) => {
 
 
 const httpApp = app.listen(PORT, () => {
-  console.log(`HTTP Server listening on port: ${PORT}`);
+  console.log(`HTTP Test Server: listening on PORT ${PORT}`);
 });
 
 module.exports = httpApp;

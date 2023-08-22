@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import WebSocketMessage from './WebSocketMessage';
-import { ReqRes, WebsocketMessages, WindowExt } from '../../../../types';
+import {
+  ConnectionStatus,
+  ReqRes,
+  ReqResRequest,
+  ReqResResponse,
+  WebMessages,
+  WindowExt,
+} from '../../../../types';
 import EmptyState from './EmptyState';
 
 const { api } = window as unknown as WindowExt;
@@ -11,7 +18,11 @@ const { api } = window as unknown as WindowExt;
  */
 
 const WebSocketWindow = ({ content }: { content: ReqRes }) => {
-  const { request, response, connection } = content;
+  const { request, response, connection } = content as {
+    request: ReqResRequest;
+    response: ReqResResponse;
+    connection: ConnectionStatus;
+  };
   if (
     !response ||
     !request ||
@@ -21,8 +32,8 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
   ) {
     return <EmptyState connection={connection} />;
   }
-  const outgoingMessages = request.messages as WebsocketMessages[];
-  const incomingMessages = response.messages as WebsocketMessages[];
+  const outgoingMessages = request.messages as WebMessages[];
+  const incomingMessages = response.messages as WebMessages[];
   const [inputMessage, setInputMessage] = useState('');
 
   // updates the outgoing message when it changes
@@ -43,11 +54,11 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
   };
   // maps the messages to view in chronological order and by whom - self/server
   const combinedMessagesReactArr = outgoingMessages
-    .map((message: WebsocketMessages) => {
+    .map((message: WebMessages) => {
       return { ...message, source: 'client' };
     })
     .concat(
-      incomingMessages.map((message: WebsocketMessages) => {
+      incomingMessages.map((message: WebMessages) => {
         return { ...message, source: 'server' };
       })
     )
@@ -91,7 +102,7 @@ const WebSocketWindow = ({ content }: { content: ReqRes }) => {
         </button>
       </div>
 
-      <div className="websocket_message_container m-3">
+      <div className="websocket_message_container">
         {combinedMessagesReactArr}
       </div>
 

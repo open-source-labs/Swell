@@ -16,6 +16,8 @@ import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
 import State from '../../../toolkit-refactor/store';
+import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
+import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer';
 
 const ResponsePaneContainer: FC = () => {
   const dispatch = useDispatch();
@@ -55,7 +57,7 @@ const ResponsePaneContainer: FC = () => {
               {`${response?.responseSize}kb`}
             </div>
           )}
-          <h3>Responses</h3>
+          <h3>Response</h3>
           <StatusButtons currentResponse={currentResponse as any} />
         </div>
         <div className="is-flex is-flex-direction-column is-not-2-5-rem-tall">
@@ -64,7 +66,7 @@ const ResponsePaneContainer: FC = () => {
             <ul
               className={`columns is-gapless ${isDark ? 'dark-divider' : ''}`}
             >
-              {request?.network === 'ws' ? (
+              {request?.network === 'ws' && (
                 <li
                   className={`column ${
                     activeTab === 'wsWindow' ? 'is-active' : ''
@@ -74,24 +76,34 @@ const ResponsePaneContainer: FC = () => {
                     Send Data
                   </a>
                 </li>
-              ) : (
+              )}
+              {request?.network === 'webrtc' && (
                 <li
                   className={`column ${
-                    activeTab === 'events' ? 'is-active' : ''
+                    activeTab === 'webrtc' ? 'is-active' : ''
                   }`}
                 >
-                  <a
-                    onClick={() => {
-                      setActiveTab('events');
-                    }}
-                  >
-                    Events
+                  <a id="wsSendData" onClick={() => setActiveTab('webrtc')}>
+                    WebRTC
                   </a>
                 </li>
               )}
               {/* IF NOT WEBSOCKETS */}
-              {request?.network !== 'ws' && (
+              {request?.network !== ('ws' && 'webrtc') && (
                 <>
+                  <li
+                    className={`column ${
+                      activeTab === 'events' ? 'is-active' : ''
+                    }`}
+                  >
+                    <a
+                      onClick={() => {
+                        setActiveTab('events');
+                      }}
+                    >
+                      Events
+                    </a>
+                  </li>
                   <li
                     className={`column ${
                       activeTab === 'headers' ? 'is-active' : ''
@@ -142,7 +154,19 @@ const ResponsePaneContainer: FC = () => {
             {activeTab === 'wsWindow' && (
               <WebSocketWindow key={0} content={currentResponse} />
             )}
+            {activeTab === 'webrtc' &&
+              currentResponse.request.webRTCDataChannel === 'Video' && (
+                <div className="box is-flex">
+                  <WebRTCVideoBox streamType={'localstream'} />
+                  <WebRTCVideoBox streamType={'remotestream'} />
+                </div>
+              )}
+            {activeTab === 'webrtc' &&
+              currentResponse.request.webRTCDataChannel === 'Text' && (
+                <WebRTCTextContainer />
+              )}
           </div>
+
           {/* RENDER RE-SEND REQUEST BUTTON ONLY FOR NOT WEB SOCKETS / SUBSCRIPTIONS */}
           {id &&
             request?.method !== 'WS' &&

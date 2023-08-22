@@ -4,6 +4,7 @@
 import React from 'react';
 import ContentReqRowComposer from './ContentReqRowComposer';
 import { useState, useEffect } from 'react';
+import { NewRequestHeadersSet } from '../../../../../types';
 
 interface Header {
   id: string | number;
@@ -29,11 +30,13 @@ interface Headers {
 }
 
 interface HeaderEntryFormProps {
-  isDark: boolean;
+  isDark?: boolean;
   newRequestFields: RequestFields;
   newRequestBody: RequestBody;
   newRequestHeaders: Headers;
-  newRequestHeadersSet: (headers: Headers) => void;
+  newRequestStreams: any;
+  newRequestStreamsSet: any;
+  newRequestHeadersSet: NewRequestHeadersSet;
 }
 
 const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {

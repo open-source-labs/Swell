@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ReqRes, $TSFixMe, $TSFixMeObject } from '../../../types';
+import { ReqRes, $TSFixMe, $TSFixMeObject, RequestWebRTC } from '../../../types';
 
 import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
 
@@ -101,12 +101,11 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setWorkspaceActiveTab: (tabName: $TSFixMe) => {
     dispatch(setWorkspaceActiveTab(tabName));
   },
+
 });
 
 
 function MainContainer(props: $TSFixMeObject) {
-
-
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
@@ -116,7 +115,8 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/graphql" element={<GraphQLComposer {...props} />} />
             <Route path="/grpc" element={<GRPCComposer {...props} />} />
             <Route path="/websocket" element={<WebSocketComposer {...props} />} />
-            <Route path="/webrtc" element={<WebRTCComposer {...props} />} />
+            {/* WebRTC has been completely refactored to hooks - no props needed */}
+            <Route path="/webrtc" element={<WebRTCComposer />} />
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
             <Route path="/webhook" element={<WebhookComposer {...props} />} />
             <Route path="/trpc" element={<TRPCComposer {...props} />} />
