@@ -166,9 +166,23 @@ Some of the following features either have broken, incomplete, or no E2E testing
 
 Future iteration should consider fix or add E2E testing coverage for these features.
 
-### _CD pipeline is incomplete_
+### _CI/CD Pipeline_
 
-Continuous Integration has been implemented using GitHub Actions. If you would like to edit workflows or add new ones to the pipeline, here is the process that we employed to test new workflows before using them on critical branches like main and dev:
+Continuous Integration and Continuous Development have been implemented using GitHub Actions. Here are some things to keep in mind regarding the process:
+
+- CI tests will automatically run on any pull request
+- CD packages will deploy on a successful merge request to the master branch. This will automatically deploy the packages in the Github Releases tab. It will create the release based on the verison number so make sure the version number is correct in the codebase.
+- Currently, only the Unit Tests are implemented for the CI pipeline. The integration and E2E tests use the playwright library and an electron window in order to emulate the front end user inputs. This has been causing issues with Github Actions so we did not add these tests to the CI pipeline. There may be an alternative solution to implement it through Github Actions or even through other tools such as Docker.
+
+In order to successfully enable the Continuous Development pipeline, do the following:
+1. Create a personal Github Token (User Settings -> Developer Settings  -> Tokens)
+2. Ensure the following are selected for the token: repo (All), workflow, write:packages, user:email
+3. Copy the personal token generated
+4. Add the token to your repos secrets (Settings -> Secrets and Variables -> Actions -> Repository Secret)
+After following these steps, Github Actions should have the proper permissions to write to Github Releases. This should create a draft of the release with the necessary files.
+The file for the CD workflow is createPackages.yml. Currently it is set to run on pushing to 'master' branch. I recommend changing this to 'dev' for testing purposes and changing it back to 'master' once the testing is complete.
+
+The following is an alternative approach to testing new workflows before using them on critical branches like main and dev:
 
 - Create two test branches (ex: ci-draft and ci-main)
 - Define a workflow in a yaml file and test its execution by pushing it to ci-draft and/or opening a pull request to merge ci-draft into ci-main depending on the triggers you have defined in the workflow
@@ -177,11 +191,10 @@ Continuous Integration has been implemented using GitHub Actions. If you would l
 
 The idea is to troubleshoot new workflows before applying them to the dev or main branches.
 
-A Continuous Deployment pipeline would be an advantageous addition, as its absence blocks the ability to automatically package and release new iterations of the application. The groundwork for it is there (see the “scripts” and “build” properties in package.json) but packaging for Linux will need some attention, as outlined in the next section.
 
----
+### _How can I package and release the application without a functional CD pipeline?_
 
-## How can I package and release the application without a functional CD pipeline?
+Before the CD workflow was implemented, the packages were manually bundled and deployed for each Operating System. The following section describes how to manually package and deploy the application.
 
 There are a few options to package an electron app for production. Some of the most popular options are electron forge and electron builder, and Swell uses electron builder currently.
 
@@ -191,7 +204,7 @@ While electron builder supports [multi-platform build](https://www.electron.buil
 
 For Mac users, running `npm run package-mac` and `npm run package-win` (as defined in `package.json`) would allow you to package the Swell app for Mac and Windows environment. If you try to package for the linux environment (i.e. `npm run package-all`, `npm run package-linux`, `npm run gh-publish`), you will run into issues requiring `snapcraft` and `multipass` to create a linux virtual machine in order to package the application. You can try to install `snapcraft` and `multipass` via `brew` per instructions, but there has not been much success locally.
 
-The only remaining option to build a Linux package for MacOS users is via the CI/CD pipeline but the CD portion is not yet implemented in the Swell repository. **To work around this limitation without building a CD pipeline, we recommend you ask a developer with a WSL or Linux environment to help you package the application.**
+The only remaining option to build a Linux package for MacOS users is via the CI/CD pipeline or though asking a devloper with WSL or Linux enviornment to package the application.
 
 - Ask the developer to clone the project into their local WSL/Linux environment. **The user does not need the ability to open the electron application.**
 - run `npm install && npm run package-linux`
@@ -209,7 +222,6 @@ All releases should be done in GitHub. There are many resources on how to create
 See [Swell's release page](https://github.com/open-source-labs/Swell/releases) for examples.
 
 ---
-
 ## How can I update [Swell's website](https://getswell.io/) after the iteration?
 
 The website is hosted on AWS, which means you will need credentials to access the files (in S3 buckets) for the latest version of the website. You will need to contact OS Labs for the credentials, or if you are iterating the product as part of a Codesmith program they should have access to the information needed.
