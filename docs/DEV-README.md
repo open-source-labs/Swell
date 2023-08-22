@@ -174,12 +174,16 @@ Continuous Integration and Continuous Development have been implemented using Gi
 - CD packages will deploy on a successful merge request to the master branch. This will automatically deploy the packages in the Github Releases tab. It will create the release based on the verison number so make sure the version number is correct in the codebase.
 - Currently, only the Unit Tests are implemented for the CI pipeline. The integration and E2E tests use the playwright library and an electron window in order to emulate the front end user inputs. This has been causing issues with Github Actions so we did not add these tests to the CI pipeline. There may be an alternative solution to implement it through Github Actions or even through other tools such as Docker.
 
+
 In order to successfully enable the Continuous Development pipeline, do the following:
 1. Create a personal Github Token (User Settings -> Developer Settings  -> Tokens)
 2. Ensure the following are selected for the token: repo (All), workflow, write:packages, user:email
 3. Copy the personal token generated
 4. Add the token to your repos secrets (Settings -> Secrets and Variables -> Actions -> Repository Secret)
 After following these steps, Github Actions should have the proper permissions to write to Github Releases. This should create a draft of the release with the necessary files.
+
+You also ensure the repo information is correct in package.json. Look at the section "publish" and ensure that information is correct.
+
 The file for the CD workflow is createPackages.yml. Currently it is set to run on pushing to 'master' branch. I recommend changing this to 'dev' for testing purposes and changing it back to 'master' once the testing is complete.
 
 The following is an alternative approach to testing new workflows before using them on critical branches like main and dev:
