@@ -138,6 +138,10 @@ Feel free to check out the `DEV-README.md` in the `docs` folder.
 
 ## Authors
 
+- **Alec Derritt** - [Blast61](https://github.com/Blast61)
+- **Kevin Li** - [myttins](https://github.com/myttins)
+- **Tommy Huynh** - [tthcodes](https://github.com/tthcodes)
+- **Nitesh Manem** - [NManem](https://github.com/NManem)
 - **Timmy Zhu** - [timzhu15](https://github.com/timzhu15)
 - **Christina Walton** - [CElizOwens](https://github.com/CElizOwens)
 - **Akeem Smith** - [AkeemESmith](https://github.com/AkeemESmith)
