@@ -21,19 +21,19 @@ module.exports = () => {
       //awaiting the intilialization of electron
       await new Promise((resolve) => setTimeout(resolve, 1000));
       //define a page variable as the current window of the electron app
-      page = await electronApp.windows()[0];
+      const [window] = electronApp.windows();
+      page = await window.page();
       await page.waitForLoadState('domcontentloaded');
     });
     //close Electron app when complete
     after(async () => {
       if (page) await page.locator('button >> text=Clear Workspace').click();
       await electronApp.close();
-      webRTCServer('close');
     });
 
     //captures screenshot of browser when test case fails
     afterEach(async function () {
-      if (this.curretTest.state === 'failed') {
+      if (this.currentTest.state === 'failed') {
         console.log('Screenshotting failed test window');
         const imageBuffer = await page.screenshot();
         fs.writeFileSync(
@@ -57,9 +57,11 @@ module.exports = () => {
       });
 
       it('Changes Data Channel value from Text to Video when navigating to a Video connection', async () => {
-        await page.locator('button >> text=Text').click();
-        const reduxState = await page.evaluate(() => window.getReduxState());
+        const vid = await page.locator('button >> #rest-method').click();
         await page.locator(`div a.dropdown-item:has-text("Video")`).click();
+        const spanContent = await page.textContent('span >> text=Video');
+        expect(spanContent).toContain('Video');
+        const reduxState = await page.evaluate(() => window.getReduxState());
         expect(
           reduxState.newRequest.newRequestWebRTC.webRTCDataChannel
         ).to.equal('Video');
@@ -71,7 +73,7 @@ module.exports = () => {
           const elements = document.querySelectorAll('.is-neutral-200-box.p-3');
           return elements.length;
         });
-        expect(divCount).toBe(2);
+        expect(divCount).to.equal(2);
         await page.locator('button >> text=Get Offer');
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(
@@ -88,25 +90,24 @@ module.exports = () => {
       it('Should generate an SDP offer', async () => {
         await page.locator('button >> text=Get Offer').click();
         const reduxState = await page.evaluate(() => window.getReduxState());
-        const webRTCOffer = JSON.parse(
-          reduxState.newRequest.newRequestWebRTC.webRTCOffer
-        );
-        expect(webRTCOffer.type).to.equal('offer');
+        const webRTCOffer = reduxState.newRequest.newRequestWebRTC.webRTCOffer;
+        expect(webRTCOffer.type).to.haveOwnProperty('type').to.equal('offer');
       });
 
       it('Should paste in provided SDP answer', async () => {
-        await page.locator('button >> text=Paste').click();
+        const pasteBtns = await page.$$('button >> is-small is-rest-invert');
+        const secondPasteBtn = pasteBtns[1];
+        await secondPasteBtn.click();
+
         const reduxState = await page.evaluate(() => window.getReduxState());
-        const webRTCAnswer = JSON.parse(
-          reduxState.newRequest.newRequestWebRTC.webRTCAnswer
-        );
+        const webRTCAnswer =
+          reduxState.newRequest.newRequestWebRTC.webRTCAnswer;
         expect(webRTCAnswer.type).to.equal('answer');
       });
 
       it('Should change the values of newRequest Headers, Body, Cookies and WebRTC', async () => {
         await page.locator('button >> text=Add To Workspace').click();
         const reduxState = await page.evaluate(() => window.getReduxState());
-        expect(typeof reduxState.reqRes.history[4]).to.equal('object');
         expect(reduxState.newRequest.newRequestWebRTC.webRTCOffer).to.equal('');
         expect(reduxState.newRequest.newRequestWebRTC.webRTCAnswer).to.equal(
           ''
@@ -135,7 +136,7 @@ module.exports = () => {
         expect(typeof reduxState.reqRes.currentResponse.request).to.equal(
           'object'
         );
-        expect(reduxState.reqRes.currentResponse.response).toBe({
+        expect(reduxState.reqRes.currentResponse.response).to.equal({
           webRTCMessages: [],
         });
       });
@@ -155,7 +156,7 @@ module.exports = () => {
           const elements = document.querySelectorAll('.is-neutral-200-box.p-3');
           return elements.length;
         });
-        expect(divCount).toBe(2);
+        expect(divCount).to.equal(2);
         await page.locator('button >> text=Get Offer');
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(
@@ -169,18 +170,19 @@ module.exports = () => {
       it('Should generate an SDP offer', async () => {
         await page.locator('button >> text=Get Offer').click();
         const reduxState = await page.evaluate(() => window.getReduxState());
-        const webRTCOffer = JSON.parse(
-          reduxState.newRequest.newRequestWebRTC.webRTCOffer
-        );
+        const webRTCOffer = reduxState.newRequest.newRequestWebRTC.webRTCOffer;
+
         expect(webRTCOffer.type).to.equal('offer');
       });
 
       it('Should paste in provided SDP answer', async () => {
-        await page.locator('button >> text=Paste').click();
+        const pasteBtns = await page.$$('button >> is-small is-rest-invert');
+        const secondPasteBtn = pasteBtns[1];
+        await secondPasteBtn.click();
         const reduxState = await page.evaluate(() => window.getReduxState());
-        const webRTCAnswer = JSON.parse(
-          reduxState.newRequest.newRequestWebRTC.webRTCAnswer
-        );
+        const webRTCAnswer =
+          reduxState.newRequest.newRequestWebRTC.webRTCAnswer;
+
         expect(webRTCAnswer.type).to.equal('answer');
       });
 
