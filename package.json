@@ -83,7 +83,7 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "oslabs-beta",
+      "owner": "open-source-labs",
       "repo": "Swell",
       "private": false
     }
@@ -522,6 +522,22 @@
     {
       "name": "Elisa Aigamaua",
       "url": "https://github.com/eaaigama"
+    },
+    {
+      "name": "Tommy Huynh",
+      "url": "https://github.com/tthcodes"
+    },
+    {
+      "name": "Kevin Li",
+      "url": "https://github.com/myttins"
+    },
+    {
+      "name": "Alec Derritt",
+      "url": "https://github.com/Blast61"
+    },
+    {
+      "name": "Nitesh Manem",
+      "url": "https://github.com/NManem"
     }
   ]
 }
