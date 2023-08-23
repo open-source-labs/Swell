@@ -51,7 +51,7 @@ jobs:
           release_name: Release v1.16.0 # Replace with your desired release name
           draft: true
           body: |
-            Fully implemented CI/CD pipeline for windows, mac, and linux.
+            <Temporary Body for Github Release>
 
   windows:
     needs: create_release
