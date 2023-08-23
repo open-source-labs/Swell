@@ -1,12 +1,18 @@
-import path from 'path';
-import express, { Request, Response, NextFunction } from 'express';
-import ngrok from 'ngrok';
-import dotenv from 'dotenv';
-import { $TSFixMe } from '../types';
+// import path from 'path';
+
+// import express, { Request, Response, NextFunction } from 'express';
+// import ngrok from 'ngrok';
+// import dotenv from 'dotenv';
+// import { $TSFixMe } from '../types';
+
+const path = require('path')
+const express = require('express')
+const ngrok = require('ngrok')
+const dotenv = require('dotenv')
 dotenv.config();
 
-const port: number = 3000;
-const app: express.Application = express();
+const port = 3000;
+const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -33,15 +39,15 @@ const io = require('socket.io')(server, {
 // https://stackoverflow.com/questions/47249009/nodejs-socket-io-in-a-router-page
 app.set('socketio', io);
 
-io.on('connection', (client: $TSFixMe) => {
+io.on('connection', (client) => {
   console.log('established websocket connection');
 
-  client.on('message', (message: string) => {
+  client.on('message', (message) => {
     console.log('message received: ', message);
   });
 });
 
-app.get('/', (_, res: Response) => res.send('Hello World!'));
+app.get('/', (_, res) => res.send('Hello World!'));
 
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
@@ -50,7 +56,7 @@ app.use(express.json());
 app.use(cors({ origin: 'http://localhost:8080' }));
 
 /** @todo previous groups decided to use ngrok to add live collaboration session but could not finished */
-app.post('/webhookServer', (req: Request, res: Response) => {
+app.post('/webhookServer', (req, res) => {
   console.log('Server Is On!');
   // ngrok
   //   .connect({
@@ -64,29 +70,29 @@ app.post('/webhookServer', (req: Request, res: Response) => {
 });
 
 /** @todo webhook is not working on swell */
-app.delete('/webhookServer', (req: Request, res: Response) => {
+app.delete('/webhookServer', (req, res) => {
   console.log('Server Is Off!');
   ngrok.kill();
   return res.status(200).json('the server has been deleted');
 });
 
-app.post('/webhook', (req: Request, res: Response) => {
+app.post('/webhook', (req, res) => {
   const data = { headers: req.headers, body: req.body };
   io.emit('response', data);
   return res.status(200).json(req.body);
 });
 
-app.get('/api/import', (_: Request, res: Response) => {
+app.get('/api/import', (_, res) => {
   return res.status(200).send(res.locals.swellFile);
 });
 
 //inital error handler, needs work
-app.use('*', (_: Request, res: Response) => {
+app.use('*', (_, res) => {
   res.status(404).send('Not Found');
 });
 
 // Global Handler, needs work
-app.use((err: any, _1: Request, res: Response, _2: NextFunction) => {
+app.use((err, _1, res, _2) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
