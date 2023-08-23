@@ -174,15 +174,18 @@ Additionally, with GraphQL, the specific test that verifies Stress Test function
 
 Finally, if future iterators would like to completely cover the list of API-testing protocols with integration testing - there is still HTTP/2 and tRPC integration testing to be made. 
 
-### _CI/CD Pipeline_
+---
+
+## CI/CD Pipeline
+
+### _How it works_
 
 Continuous Integration and Continuous Development have been implemented using GitHub Actions. Here are some things to keep in mind regarding the process:
 
 - CI tests will automatically run on any pull request
 - CD packages will deploy on a successful merge request to the master branch. This will automatically deploy the packages in the GitHub Releases tab. It will create the release based on the version number so make sure the version number is correct in the codebase.
-- Currently, only the Unit Tests are implemented for the CI pipeline. The integration and E2E tests use the playwright library and an electron window in order to emulate the front-end user inputs. This has been causing issues with GitHub Actions so we did not add these tests to the CI pipeline. There may be an alternative solution to implement it through Github Actions or even through other tools such as Docker.
-
-
+- CD packages will deploy on EACH merge request to the master branch. Changes made to the master branch should be the final changes. However if multiple merge requests are accept to the master branch, it will create multiple releases. Please keep this in mind and delete the extra releases that are created.
+  
 In order to successfully enable the Continuous Development pipeline, do the following:
 1. Create a personal GitHub Token (User Settings -> Developer Settings  -> Tokens)
 2. Ensure the following are selected for the token: repo (All), workflow, write:packages, user:email
@@ -190,7 +193,7 @@ In order to successfully enable the Continuous Development pipeline, do the foll
 4. Add the token to your repos secrets (Settings -> Secrets and Variables -> Actions -> Repository Secret)
 After following these steps, Github Actions should have the proper permissions to write to Github Releases. This should create a draft of the release with the necessary files.
 
-You also ensure the repo information is correct in package.json. Look at the section "publish" and ensure that the information is correct.
+You should also ensure the repo information is correct in package.json. Look at the section "publish" and ensure that the information is correct.
 
 The file for the CD workflow is createPackages.yml. Currently, it is set to run on pushing to the 'master' branch. I recommend changing this to 'dev' for testing purposes and changing it back to 'master' once the testing is complete.
 
@@ -203,6 +206,10 @@ The following is an alternative approach to testing new workflows before using t
 
 The idea is to troubleshoot new workflows before applying them to the dev or main branches.
 
+### _Improvements to the CI/CD pipeline_
+
+- Currently, only the Unit Tests are implemented for the CI pipeline. The integration and E2E tests use the playwright library and an electron window in order to emulate the front-end user inputs. This has been causing issues with GitHub Actions so we did not add these tests to the CI pipeline. There may be an alternative solution to implement it through Github Actions or even through other tools such as Docker.
+- As previously stated, each successful merge request to the master branch. Multiple of these will cause multiple releases to deployed. A future iteration could look into this so rather than creating a new release each time, it would update an existing draft if one exists.
 
 ### _How can I package and release the application without a functional CD pipeline?_
 
