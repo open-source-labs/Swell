@@ -243,7 +243,30 @@ See [Swell's release page](https://github.com/open-source-labs/Swell/releases) f
 ---
 ## How can I update [Swell's website](https://getswell.io/) after the iteration?
 
-The website is hosted on AWS, which means you will need credentials to access the files (in S3 buckets) for the latest version of the website. You will need to contact OS Labs for the credentials, or if you are iterating the product as part of a Codesmith program they should have access to the information needed.
+The website is hosted on AWS, which means you will need credentials to access the files (in S3 buckets) for the latest version of the website. You will need to contact OS Labs for the credentials, or if you are iterating the product as part of a Codesmith program they should have access to the information needed. You also will need to invalidate the previous distribution to ensure your modifications are properly deployed. See gifs below on how to accomplish this.
+
+
+1. Uploading a new index.html file
+ [Modifying the index.zip](https://github.com/open-source-labs/Swell/files/12423736/Modifying.the.index.zip)
+
+- Ensure you repeat this process for both getswell.io and www.getswell.io as both are public access points to the website.
+- It might be easier to create a new index.html file on your own code editor, download the current index.html file and transfer the entire document to your newly created index.html file and continue to modify as needed.
+- You do not need to delete the old versions of the index.html file it will automatically update to your newly modified file.
+
+
+2. Uploading Contributor Images on S3 Bucket
+[Updating images.zip](https://github.com/open-source-labs/Swell/files/12423737/Updating.images.zip)
+
+- Ensure you repeat this process for both getswell.io and www.getswell.io buckets as both are viable public access points
+- Ensure matching file types and names between the /img/SwellTeamPics/<your_img> and the index.html src attribute.
+
+3. Invalidate previous distribution
+[Invalidation Workflow.zip](https://github.com/open-source-labs/Swell/files/12423739/Invalidation.Workflow.zip)
+
+- This process should be done after you have finalized all your modifications
+
+   
+
 
 Things to consider updating:
 
@@ -258,5 +281,5 @@ Things to consider updating:
 
 This should serve as an entry point for any developers who wish to iterate on Swell and therefore, should be kept as up-to-date as possible. **At the end of your iteration, you are strongly encouraged to update this document for future developers.**
 
-Thank you for your consideration and let's work on making Swell one of the best open-source products to contribute!
+Thank you for your consideration and let's work on making Swell one of the best open-source products to contribute![UpdateContImgs.gif.zip]
 
