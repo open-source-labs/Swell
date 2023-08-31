@@ -18,7 +18,8 @@
     "test-jest": "jest",
     "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 3000 --exit",
     "test-mocha-zero": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 0 --exit",
-    "format": "prettier --write \"**/*.+(js|jsx| tsx| json|css|md)\"",
+    "format:check": "prettier . --check --ignore-path .gitignore",
+    "format:fix": "prettier . --write --ignore-path .gitignore",
     "lint": "eslint .",
     "lint:fix": "eslint --fix . ",
     "dev": "concurrently --success first \"webpack-dev-server --mode=development --config ./webpack.development.js\" \"nodemon --legacy-watch ./src/server/server.js\"",
@@ -541,3 +542,4 @@
     }
   ]
 }
+
