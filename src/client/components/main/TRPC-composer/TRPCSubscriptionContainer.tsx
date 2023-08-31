@@ -12,7 +12,11 @@ import {
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
-export default function TRPCSubscriptionContainer(props) {
+type Props = {
+  onClose: () => void;
+} & Record<string, any>;
+
+export default function TRPCSubscriptionContainer(props: Props) {
   const [endPoint, setEndpoint] = useState('');
   const [link, setLink] = useState('');
   const [responseBody, setResponseBody] = useState('');
@@ -90,12 +94,7 @@ export default function TRPCSubscriptionContainer(props) {
           }}
         />
         <div className="is-flex is-justify-content-center is-align-items-center ml-4">
-          <div
-            className="delete m-auto"
-            onClick={() => {
-              props.subscriptionHandler(false);
-            }}
-          />
+          <div className="delete m-auto" onClick={props.onClose} />
         </div>
       </div>
       <input

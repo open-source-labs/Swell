@@ -17,69 +17,86 @@ import connectionController from '~/controllers/reqResController';
 import { Box } from '@mui/material';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 
-const PROCEDURE_DEFAULT = {
-  //the default format for whenever a new prcedure get add
-  method: 'QUERY', // the type of method either query or mutate
-  endpoint: '', // endpoint for this specific procedure
-  variable: '', // argument that is to be attach to this procedure
+/**
+ * @todo 2023-08-30 - Decided to refactor a useReducer implementation for
+ * clarity. Redux doesn't make useReducer unnecessary – it can be great for
+ * handling complex state that only belongs to one component.
+ *
+ * The problem is that the whole implementation was left half-finished in the
+ * component itself, so I don't know where this was meant to go.
+ *
+ * Logic-wise, nothing has changed. Just need to figure out if this is even
+ * necessary, or if the Redux reducer can fulfill a similar purpose. It's
+ * possible that the procedure should be using types defined elsewhere, too
+ */
+type Procedure = Readonly<{
+  // Because the default procedure is initialized to the value QUERY, I don't
+  // know if the method is meant to be any arbitrary string, or if it should be
+  // a union of discrete values (e.g., QUERY | TYPE_A | TYPE_B)
+  method: string;
+  endpoint: string;
+  variable: string;
+}>;
+
+const defaultProcedure: Procedure = {
+  method: 'QUERY',
+  endpoint: '',
+  variable: '',
 };
 
-//************** reducer function******************** */
-//  this function is used to manage the main state of this component which is an array of procedures [{method,endpoint,variable}]
-//  it will take in the old state (array of procedures) as well as an action object where the type will dictate which action will get trigger
-// The action object wil also contain the index as well as the new value for the procedure that is being manipulated (all inside of action.payload)
-// after its done manipulating the state it will return the updated array that will be use as the new procedures state
+const initialProcedures: readonly Procedure[] = [defaultProcedure];
 
-//********************************** */
+type ProcedureAction =
+  | {
+      type: 'procedureUpdated';
+      payload: {
+        procedureIndex: number;
+        key: keyof Procedure;
+        newValue: string;
+      };
+    }
+  | { type: 'procedureAdded'; payload: { newProcedure: Procedure } }
+  | { type: 'procedureDeleted'; payload: { procedureIndex: number } };
 
-function reducer(procedures, action) {
-  if (action.type === 'METHOD') {
-    //
-    const proceduresCopy = [...procedures];
-    const procedure = proceduresCopy[action.payload.index];
-    const newState = {
-      ...procedure,
-      method: action.payload.value,
-    };
-    proceduresCopy[action.payload.index] = newState;
-    return proceduresCopy;
-  } else if (action.type === 'ENDPOINT') {
-    const proceduresCopy = [...procedures];
-    const procedure = proceduresCopy[action.payload.index];
-    const newState = {
-      ...procedure,
-      endpoint: action.payload.value,
-    };
-    proceduresCopy[action.payload.index] = newState;
-    return proceduresCopy;
-  } else if (action.type === 'VARIABLE') {
-    const proceduresCopy = [...procedures];
-    const procedure = proceduresCopy[action.payload.index];
-    const newState = {
-      ...procedure,
-      variable: action.payload.value,
-    };
-    proceduresCopy[action.payload.index] = newState;
-    return proceduresCopy;
-  } else if (action.type === 'ADD') {
-    const proceduresCopy = [...procedures];
-    proceduresCopy.push(PROCEDURE_DEFAULT);
-    return proceduresCopy;
-  } else if (action.type === 'DELETE') {
-    const proceduresCopy = [...procedures];
-    proceduresCopy.splice(action.payload.index, 1);
-    return proceduresCopy;
+function reduceProcedures(
+  procedures: readonly Procedure[],
+  action: ProcedureAction
+): readonly Procedure[] {
+  switch (action.type) {
+    case 'procedureUpdated': {
+      const { newValue, key, procedureIndex } = action.payload;
+
+      return procedures.map((procedure, i) => {
+        if (i !== procedureIndex) return procedure;
+        return { ...procedure, [key]: newValue };
+      });
+    }
+
+    case 'procedureAdded': {
+      return [...procedures, action.payload.newProcedure];
+    }
+
+    case 'procedureDeleted': {
+      const { procedureIndex } = action.payload;
+      return procedures.filter((_, i) => i !== procedureIndex);
+    }
+
+    default: {
+      const invalidAction: never = action;
+      throw new Error(
+        `Received unknown action ${JSON.stringify(invalidAction)}`
+      );
+    }
   }
-  return procedures;
 }
 
 export default function TRPCComposer(props) {
-  const dispatch = useAppDispatch();
-
-  const [showSubscription, setShowSubscription] = useState(false); // manage subscription component
-  const subscriptionHandler = (bool) => {
-    setShowSubscription(bool);
-  };
+  const reduxDispatch = useAppDispatch();
+  const [showSubscription, setShowSubscription] = useState(false);
+  const [procedures, proceduresDispatch] = useReducer(
+    reduceProcedures,
+    initialProcedures
+  );
 
   const requestValidationCheck = () => {
     interface ValidationMessage {
@@ -98,11 +115,6 @@ export default function TRPCComposer(props) {
     }
     return validationMessage;
   };
-
-  const [procedures, proceduresDipatch] = useReducer(reducer, [
-    //userReducer hook to manage the main state (the array of procedures)
-    PROCEDURE_DEFAULT,
-  ]);
 
   const {
     //grabbing all neccessary information to build a new reqRes object from the main redux store through props drilling
@@ -138,8 +150,10 @@ export default function TRPCComposer(props) {
   const newRequest = useAppSelector((store) => store.newRequest);
 
   const addProcedures = () => {
-    // reducer dispatch for adding a new procedure to the procedures array
-    proceduresDipatch({ type: 'ADD' });
+    /**
+     * @todo Where did they expect the new procedure values to come from?
+     */
+    proceduresDispatch({ type: 'procedureAdded' });
   };
 
   const sendRequest = async () => {
@@ -196,7 +210,7 @@ export default function TRPCComposer(props) {
     reqResItemAdded(reqRes);
 
     // saving the reqRes object to the array of reqRes managed by the redux store
-    dispatch(responseDataSaved(reqRes));
+    reduxDispatch(responseDataSaved(reqRes));
     connectionController.openReqRes(reqRes.id); // passing the reqRes object to the connectionController inside of reqRes controller
   };
 
@@ -230,7 +244,7 @@ export default function TRPCComposer(props) {
         />
         <TRPCProceduresContainer
           procedures={procedures}
-          proceduresDipatch={proceduresDipatch}
+          proceduresDipatch={proceduresDispatch}
         />
         <button
           className="button is-normal is-primary-100 add-request-button is-vertical-align-center is-justify-content-center no-border-please"
@@ -257,10 +271,10 @@ export default function TRPCComposer(props) {
         {showSubscription && (
           <div>
             <TRPCSubscriptionContainer
-              subscriptionHandler={subscriptionHandler}
+              onClose={() => setShowSubscription(false)}
               setWarningMessage={setWarningMessage}
               procedures={procedures}
-              proceduresDipatch={proceduresDipatch}
+              proceduresDipatch={proceduresDispatch}
               requestFields={requestFields}
             ></TRPCSubscriptionContainer>
           </div>
