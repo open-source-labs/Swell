@@ -1,26 +1,28 @@
 /* eslint-disable default-case */
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { $TSFixMe, NewRequestFields, NewRequestStreams } from '../../../../types';
-import { RootState } from '../../../toolkit-refactor/store';
+import { useAppSelector } from '~/toolkit/store';
+import {
+  $TSFixMe,
+  NewRequestFields,
+  NewRequestStreams,
+} from '../../../../types';
 
 interface Props {
   warningMessage: $TSFixMe; // This is a
   setWarningMessage: (warningMessage: $TSFixMe) => void;
   fieldsReplaced: (fields: NewRequestFields) => void;
-  newRequestFields: NewRequestFields ;
+  newRequestFields: NewRequestFields;
   newRequestStreams: NewRequestStreams;
 }
 
 const GRPCTypeAndEndpointEntryForm: React.FC<Props> = (props) => {
-
   const {
     warningMessage,
     setWarningMessage,
     fieldsReplaced,
     newRequestFields,
     newRequestStreams,
-  } = props
+  } = props;
 
   const warningCheck = (): void => {
     if (warningMessage.uri) {
@@ -44,7 +46,7 @@ const GRPCTypeAndEndpointEntryForm: React.FC<Props> = (props) => {
   // change this to be initial state instead
   const grpcStreamLabel = newRequestStreams.selectedStreamingType || 'STREAM';
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   return (
     <div

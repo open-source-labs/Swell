@@ -1,10 +1,11 @@
-
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 
 interface Props {
   warningMessage: Record<string, string>;
-  setWarningMessage: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  setWarningMessage: React.Dispatch<
+    React.SetStateAction<Record<string, string>>
+  >;
   fieldsReplaced: (newFields: Record<string, string>) => void;
   newRequestFields: Record<string, string>;
 }
@@ -33,7 +34,7 @@ const WSEndpointEntryForm: React.FC<Props> = ({
     });
   };
 
-  const isDark = useSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   return (
     <div

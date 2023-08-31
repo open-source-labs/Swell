@@ -2,15 +2,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-
-import dropDownArrow from './../../../../assets/icons/arrow_drop_down_white_192x192.png';
-
-import { RootState } from '../../../toolkit-refactor/store';
+import { useAppSelector } from '~/toolkit/store';
+import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';
 
 const TRPCPrceduresEndPoint = (props) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
-  const dropdownEl = useRef();
+  const dropdownEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const closeDropdown = (event: MouseEvent) => {
@@ -41,7 +38,7 @@ const TRPCPrceduresEndPoint = (props) => {
       payload: { index: props.index },
     });
   };
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   return (
     <div

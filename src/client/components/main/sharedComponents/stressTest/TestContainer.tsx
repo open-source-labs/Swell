@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 import { LoadTest, LoadTestResult } from './LoadTest';
 import LoadTestController from '../../../../controllers/LoadTestController';
 import { connect } from 'react-redux';
@@ -35,7 +35,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
   const [totalTime, setTotalTime] = useState<number>(10);
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   const handleShowLoadTest = () => {
     setShowLoadTest(!showLoadTest);
@@ -93,13 +93,13 @@ const TestContainer: React.FC<TestContainerProps> = ({
       >
         {showLoadTest === true && (
           <>
-            <span id='hide-stress-test' >Hide Stress Test</span>
+            <span id="hide-stress-test">Hide Stress Test</span>
           </>
         )}
 
         {showLoadTest === false && (
           <>
-            <span id='view-stress-test'>View Stress Test</span>
+            <span id="view-stress-test">View Stress Test</span>
           </>
         )}
       </div>
@@ -179,7 +179,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                       }}
                       disabled={disabled}
                       style={disabled ? { pointerEvents: 'none' } : {}}
-                      id='stress-test-run-button'
+                      id="stress-test-run-button"
                     >
                       Run
                     </button>

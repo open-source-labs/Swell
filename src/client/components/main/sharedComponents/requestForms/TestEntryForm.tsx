@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 import TextCodeArea from '../TextCodeArea';
 import RestTestSnippets from '../stressTest/RestTestSnippets';
 import WebsocketTestSnippets from '../stressTest/WebsocketTestSnippets';
@@ -15,7 +15,7 @@ const TestEntryForm: React.FC<Props> = ({
   testContent,
   newTestContentSet,
 }) => {
-  const isDark = useSelector((store: any) => store.ui.isDark) as boolean;
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   const [showTests, setShowTests] = useState(false);
   const handleShowTests = () => setShowTests(!showTests);

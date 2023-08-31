@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useAppSelector } from '~/toolkit/store';
+
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
@@ -7,7 +8,6 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import collectionsController from '../../../../controllers/collectionsController';
-import { RootState } from '../../../../toolkit-refactor/store';
 
 const style = {
   display: 'flex',
@@ -25,8 +25,8 @@ const style = {
 };
 
 export default function ExportWorkspaceModal({ open, handleClose }) {
-  const localWorkspaces = useSelector((store: RootState) => store.collections);
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+  const localWorkspaces = useAppSelector((store) => store.collections);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   return (
     <Modal

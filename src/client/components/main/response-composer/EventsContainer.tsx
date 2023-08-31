@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 import CodeMirror from '@uiw/react-codemirror';
 import EmptyState from './EmptyState';
 import EventPreview from './EventPreview';
@@ -24,7 +24,7 @@ interface EventsContainerProps {
 
 function EventsContainer(props: any) {
   const { currentResponse } = props;
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
   const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;

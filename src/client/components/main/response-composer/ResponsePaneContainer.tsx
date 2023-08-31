@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React, { FC } from 'react';
+import { useAppSelector } from '~/toolkit/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
 import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
@@ -21,10 +22,10 @@ import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer'
 
 const ResponsePaneContainer: FC = () => {
   const dispatch = useDispatch();
+  const isDark = useAppSelector((state) => state.ui.isDark);
   const activeTab = useSelector(
     (store: RootState) => store.ui.responsePaneActiveTab
   );
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
 
   const setActiveTab = (tabName: string) =>
     dispatch(setResponsePaneActiveTab(tabName));

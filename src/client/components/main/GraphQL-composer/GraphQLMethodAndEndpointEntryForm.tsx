@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 import { GraphQLSchema } from 'graphql';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
@@ -61,24 +61,25 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
   const methodChangeHandler = (value: string) => {
     clearWarningIfApplicable();
 
-    let methodReplaceRegexType: string | undefined
+    let methodReplaceRegexType: string | undefined;
 
     const methodReplaceRegex = new RegExp(`${newRequestFields.method}`, 'mi');
     // GraphQL features
     if (value === 'QUERY' || 'MUTATION' || 'SUBSCRIPTION') {
       if (value === 'QUERY') {
-        methodReplaceRegexType = 'query'
-      } 
-      else if (value === 'MUTATION') {
-        methodReplaceRegexType = 'mutation'
-      } 
-      else if (value === 'SUBSCRIPTION') {
-        methodReplaceRegexType = 'subscription'
+        methodReplaceRegexType = 'query';
+      } else if (value === 'MUTATION') {
+        methodReplaceRegexType = 'mutation';
+      } else if (value === 'SUBSCRIPTION') {
+        methodReplaceRegexType = 'subscription';
       }
 
       const newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
-      ? newRequestBody.bodyContent.replace(methodReplaceRegex, methodReplaceRegexType)
-      : `${newRequestBody.bodyContent}`;
+        ? newRequestBody.bodyContent.replace(
+            methodReplaceRegex,
+            methodReplaceRegexType
+          )
+        : `${newRequestBody.bodyContent}`;
 
       newRequestBodySet({
         ...newRequestBody,
@@ -94,8 +95,7 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
     });
   };
 
-
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const isDark = useAppSelector((store) => store.ui.isDark);
 
   return (
     <div>
@@ -186,4 +186,3 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
 };
 
 export default GraphQLMethodAndEndpointEntryForm;
-

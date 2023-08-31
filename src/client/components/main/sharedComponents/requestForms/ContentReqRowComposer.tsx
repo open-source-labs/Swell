@@ -4,9 +4,8 @@
 
 //contentReqRowComposer
 
-import { bool } from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 
 interface Props {
   data: {
@@ -15,7 +14,11 @@ interface Props {
     key: string;
     value: string | number | boolean;
   };
-  changeHandler: (id: string, field: 'key' | 'value' | 'active', value: boolean | string) => void;
+  changeHandler: (
+    id: string,
+    field: 'key' | 'value' | 'active',
+    value: boolean | string
+  ) => void;
   index: number;
   deleteItem: (index: number) => any;
   type?: string;
@@ -28,8 +31,7 @@ export default function ContentReqRowComposer({
   deleteItem,
   type,
 }: Props) {
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => (store as any).ui.isDark);
-
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   return (
     <div className={`is-flex mt-1 ${type}`} id={`${type}${index}`}>
@@ -55,7 +57,11 @@ export default function ContentReqRowComposer({
         placeholder="Value"
         type="text"
         style={{ marginLeft: '20px', width: '30vw' }}
-        value={typeof data.value === 'string' || typeof data.value === 'number' ? data.value : []}
+        value={
+          typeof data.value === 'string' || typeof data.value === 'number'
+            ? data.value
+            : []
+        }
         className={`${isDark ? 'is-dark-300' : ''} p-1 value`}
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
       />
@@ -65,5 +71,3 @@ export default function ContentReqRowComposer({
     </div>
   );
 }
-
-

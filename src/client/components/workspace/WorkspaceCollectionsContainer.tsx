@@ -1,8 +1,9 @@
 // This is a legacy state management compoonent that need to
-// be migrated to the RTK slice?? 
+// be migrated to the RTK slice??
 
 import React from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 
 import {
   reqResUpdated,
@@ -12,7 +13,7 @@ import {
 import WorkspaceCollectionElement from './WorkspaceCollectionElement';
 import ReqResCtrl from '../../controllers/reqResController';
 import { RootState, AppDispatch } from '../../toolkit-refactor/store';
-import { ReqRes, $TSFixMe  } from '../../../types';
+import { ReqRes, $TSFixMe } from '../../../types';
 
 /**@todo change to use hooks? */
 const mapStateToProps = (store: RootState) => ({
@@ -49,7 +50,8 @@ const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   return (
     <div>
@@ -72,4 +74,7 @@ const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceCollectionsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WorkspaceCollectionsContainer);

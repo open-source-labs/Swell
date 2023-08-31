@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 
 import * as HistorySlice from '../../toolkit-refactor/slices/historySlice';
 import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
@@ -15,36 +16,38 @@ import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';
 import { Dispatch } from 'redux';
 
-import { $TSFixMe, 
-  ReqRes, 
-  NewRequestBody, 
-  CookieOrHeader, 
-  NewRequestStreams, 
-  NewRequestFields } from '../../../types'
+import {
+  $TSFixMe,
+  ReqRes,
+  NewRequestBody,
+  CookieOrHeader,
+  NewRequestStreams,
+  NewRequestFields,
+} from '../../../types';
 
 import { RootState } from '../../toolkit-refactor/store';
 
 interface NewRequestCookiesSet {
-    cookiesArr: CookieOrHeader[];
-    count: number;
+  cookiesArr: CookieOrHeader[];
+  count: number;
 }
 
 interface NewRequestHeadersSet {
   headersArr: CookieOrHeader[];
   count: number;
-};;
+}
 
 interface Props {
-  history: [],
-  historyCleared: () => void,
-  historyDeleted: string,
-  fieldsReplaced: (obj: {}) => void,
-  newRequestHeadersSet: (obj: NewRequestHeadersSet) => void,
-  newRequestCookiesSet: (obj: NewRequestCookiesSet) => void,
-  newRequestBodySet: (obj: NewRequestBody) => void,
-  newRequestStreamsSet: NewRequestStreams,
-  className: string
-};
+  history: [];
+  historyCleared: () => void;
+  historyDeleted: string;
+  fieldsReplaced: (obj: {}) => void;
+  newRequestHeadersSet: (obj: NewRequestHeadersSet) => void;
+  newRequestCookiesSet: (obj: NewRequestCookiesSet) => void;
+  newRequestBodySet: (obj: NewRequestBody) => void;
+  newRequestStreamsSet: NewRequestStreams;
+  className: string;
+}
 
 /**@todo switch to hooks? */
 const mapStateToProps = (store: RootState) => ({
@@ -90,23 +93,25 @@ const HistoryContainer = (props: Props) => {
     newRequestStreamsSet,
   } = props;
 
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   // history is already sorted by created_at from getHistory
-  const historyDates = history.map((date: Date, index: number): JSX.Element => (
-    <HistoryDate
-      className='historyDate'
-      content={date}
-      key={index}
-      history={props.history}
-      historyDeleted={historyDeleted}
-      fieldsReplaced={fieldsReplaced}
-      newRequestHeadersSet={newRequestHeadersSet}
-      newRequestCookiesSet={newRequestCookiesSet}
-      newRequestBodySet={newRequestBodySet}
-      newRequestStreamsSet={newRequestStreamsSet}
-    />
-  ));
+  const historyDates = history.map(
+    (date: Date, index: number): JSX.Element => (
+      <HistoryDate
+        className="historyDate"
+        content={date}
+        key={index}
+        history={props.history}
+        historyDeleted={historyDeleted}
+        fieldsReplaced={fieldsReplaced}
+        newRequestHeadersSet={newRequestHeadersSet}
+        newRequestCookiesSet={newRequestCookiesSet}
+        newRequestBodySet={newRequestBodySet}
+        newRequestStreamsSet={newRequestStreamsSet}
+      />
+    )
+  );
 
   return (
     <span

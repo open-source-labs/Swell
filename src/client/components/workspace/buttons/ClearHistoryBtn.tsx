@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 import historyController from '../../../controllers/historyController';
-
-import { WindowExt, WindowAPI } from '../../../../types'
-import { RootState } from '../../../toolkit-refactor/store';
+import { WindowExt, WindowAPI } from '../../../../types';
 
 // utilizing API we created in preload.js for node-free IPC communication
 const { api } = window as any;
 
 interface Props {
-  historyCleared: () => void
-};
+  historyCleared: () => void;
+}
 
 const ClearHistoryBtn = (props: Props): JSX.Element => {
   const { historyCleared } = props;
@@ -26,7 +24,7 @@ const ClearHistoryBtn = (props: Props): JSX.Element => {
     });
   }, []);
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   const handleClick = () => {
     api.send('confirm-clear-history');

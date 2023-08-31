@@ -2,22 +2,20 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 
 interface CookieProps {
   className?: string;
-  cookie: {
-    [key: string]: any;
-  };
+  cookie: Record<string, any>;
 }
 
 export default function CookieContainer({ className, cookie }: CookieProps) {
   const [showCookie, setShowCookie] = useState(false);
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
     if (!key || !value) return null;
-    if ((showCookie === true && index > 1) || (index <= 1)) {
+    if ((showCookie === true && index > 1) || index <= 1) {
       return (
         <tr key={index}>
           <td>{key}</td>
@@ -30,7 +28,9 @@ export default function CookieContainer({ className, cookie }: CookieProps) {
 
   return (
     <table
-      className={`cookie-container table ${isDark ? 'is-dark-200' : ''} ${className}`}
+      className={`cookie-container table ${
+        isDark ? 'is-dark-200' : ''
+      } ${className}`}
       onClick={() => {
         setShowCookie(showCookie === false);
       }}
@@ -45,4 +45,3 @@ export default function CookieContainer({ className, cookie }: CookieProps) {
     </table>
   );
 }
-
