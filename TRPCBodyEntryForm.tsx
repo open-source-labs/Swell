@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './src/client/toolkit-refactor/store';
+/**
+ * @file Renders entry form for an incoming tRPC request
+ */
+import React from 'react';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
 import TextCodeArea from './src/client/components/main/sharedComponents/TextCodeArea';
 
-/**
- * renders entry form for TRPC request
- */
-
-const TRPCBodyEntryForm = (props: any) => {
-  const { newRequestBodySet } = props;
-  const dispatch = useDispatch();
-  const newRequestBody = useSelector(
-    (store: RootState) => store.newRequest.newRequestBody
-  );
-  const { bodyContent } = newRequestBody;
-
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
-  const [cmValue, setValue] = useState(bodyContent);
+const TRPCBodyEntryForm = () => {
+  const isDark = useAppSelector((store) => store.ui.isDark);
+  const newBody = useAppSelector((store) => store.newRequest.newRequestBody);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="mt-3">
@@ -24,12 +17,12 @@ const TRPCBodyEntryForm = (props: any) => {
       <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}`}>
         <TextCodeArea
           mode="application/json"
-          value={cmValue}
-          onChange={(value: string) => {
+          value={newBody.bodyContent}
+          onChange={(bodyContent) => {
             dispatch(
               newRequestBodySet({
-                ...newRequestBody,
-                bodyContent: value,
+                ...newBody,
+                bodyContent,
                 bodyIsNew: true,
               })
             );
