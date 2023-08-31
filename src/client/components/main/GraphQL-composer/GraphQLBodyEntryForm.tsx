@@ -1,55 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
-interface Props {
-  newRequestBody: {
-    bodyContent: string;
-    bodyIsNew: boolean;
-  };
-  newRequestBodySet: (newRequestBody: {
-    bodyContent: string;
-    bodyIsNew: boolean;
-  }) => void;
+type Props = {
   warningMessage: { body: string } | null;
   introspectionData: Record<string, any> | null;
-}
+};
 
-const GraphQLBodyEntryForm: React.FC<Props> = (props) => {
-  const {
-    newRequestBody,
-    newRequestBody: { bodyContent, bodyIsNew },
-    newRequestBodySet,
-    warningMessage,
-    introspectionData,
-  } = props;
+const GraphQLBodyEntryForm = ({ warningMessage, introspectionData }: Props) => {
+  const newBody = useAppSelector((store) => store.newRequest.newRequestBody);
+  const isDark = useAppSelector((store) => store.ui.isDark);
+  const dispatch = useAppDispatch();
 
-  const [cmValue, setValue] = useState<string>(bodyContent);
-
-  // set a new value for codemirror only if loading from history or changing query type
+  /**
+   * @todo useEffect should not be used for syncing different state values that
+   * all exist inside React. This useEffect call should be removed in favor of
+   * another approach (render keys, no state at all, etc.)
+   */
+  const [codeMirrorValue, setCodeMirrorValue] = useState(newBody.bodyContent);
   useEffect(() => {
-    if (!bodyIsNew) setValue(bodyContent);
-  }, [bodyContent, bodyIsNew]);
-
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+    if (!newBody.bodyIsNew) {
+      setCodeMirrorValue(newBody.bodyContent);
+    }
+  }, [newBody]);
 
   return (
     <div className="mt-3">
-      {
-        // conditionally render warning message
-        warningMessage ? <div>{warningMessage.body}</div> : null
-      }
+      {warningMessage !== null && <div>{warningMessage.body}</div>}
+
       <div className="composer-section-title">Body</div>
       <div id="gql-body-entry" className={`${isDark ? 'is-dark-400' : ''}`}>
         <TextCodeArea
           mode="application/json"
-          value={cmValue}
-          onChange={(value) => {
-            newRequestBodySet({
-              ...newRequestBody,
-              bodyContent: value,
-              bodyIsNew: true,
-            });
+          value={codeMirrorValue}
+          onChange={(bodyContent) => {
+            dispatch(
+              newRequestBodySet({
+                ...newBody,
+                bodyContent,
+                bodyIsNew: true,
+              })
+            );
           }}
         />
       </div>
