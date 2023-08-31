@@ -1,8 +1,19 @@
 /**
  * @file Defines a collection of types that are meant to be used through the
- * TypeScript application. Not all types need to be here, especially if some
- * type information only makes sense for internal implementations, but most of
- * them should be here.
+ * TypeScript application.
+ *
+ * Warning to new developers: having every single type in one file is a very bad
+ * anti-pattern. Types should be co-located as closely to where they're used as
+ * possible. For example, if a type is most relevant for only a specific Slice
+ * in a Redux store, that type should be defined there, and exported if
+ * necessary.
+ *
+ * That way, everything related to each other is in one file, and if you ever
+ * need to delete a feature, you can safely delete that one file without
+ * needing to hunt anything down.
+ *
+ * @todo Start breaking this file up and put the types where they're used. As of
+ * 2023-08-30, this file is 400+ lines long; it is impossible to read.
  */
 
 import { GraphQLSchema } from 'graphql';
