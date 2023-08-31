@@ -1,34 +1,42 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { isYesterday, isToday, parseISO, parse, format } from 'date-fns';
 import History from './History.tsx';
 
 import {
-  NewRequestBody, 
-  CookieOrHeader, 
-  NewRequestStreams, 
+  NewRequestStreams,
   NewRequestFields,
   NewRequestBodySet,
   NewRequestHeadersSet,
   NewRequestCookiesSet,
-  FieldsReplaced
-} from '../../../types'
-
+  ReqRes,
+} from '~/types';
+import { type HistoryItem } from '~/toolkit/slices/historySlice.ts';
 
 interface Props {
-  history: object[],
-  historyCleared: () => void,
-  historyDeleted: string,
-  fieldsReplaced: FieldsReplaced,
-  newRequestHeadersSet: NewRequestHeadersSet,
-  newRequestCookiesSet: NewRequestCookiesSet,
-  newRequestBodySet: NewRequestBodySet,
-  newRequestStreamsSet: NewRequestStreams,
-  newRequestFields: NewRequestFields,
-  className: string,
-  content: {
-    date: Date
-  },
-};
+  history: HistoryItem[];
+  historyCleared: () => void;
+  historyDeleted: (reqRes: ReqRes) => void;
+  fieldsReplaced: (newField: NewRequestFields) => void;
+  newRequestHeadersSet: NewRequestHeadersSet;
+  newRequestCookiesSet: NewRequestCookiesSet;
+  newRequestBodySet: NewRequestBodySet;
+  newRequestStreamsSet: (newStream: NewRequestStreams) => void;
+  newRequestFields: NewRequestFields;
+  className: string;
+  content: HistoryItem;
+}
+
+function calculateDateString(item: HistoryItem): string {
+  const date = parse(item.date, 'MM/dd/yyyy', new Date());
+
+  if (isToday(date)) {
+    return 'Today';
+  } else if (isYesterday(date)) {
+    return 'Yesterday';
+  } else {
+    return format(date, 'MMM d, yyyy');
+  }
+}
 
 export default function HistoryDate(props: Props) {
   const {
@@ -40,49 +48,32 @@ export default function HistoryDate(props: Props) {
     newRequestBodySet,
     newRequestStreamsSet,
     newRequestFields,
-    content
+    content,
   } = props;
 
-  function focusOnForm(event: any) {
-    const composerUrlField: any = document.querySelector('.composer_url_input');
-    composerUrlField.focus();
-  }
-
-  const current: any = history.find(
-    (a: any) => a.date === content.date
-  );
-  let date: any = parse(current.date, 'MM/dd/yyyy', new Date());
-  // let date = parseISO(current.date)
-  if (isToday(date)) {
-    date = 'Today';
-  } // If the date matches todays date render the word "Today"
-  else if (isYesterday(date)) {
-    date = 'Yesterday';
-  } else {
-      date = format(date, 'MMM d, yyyy');
-  }
-
-  const histArray = current.history.map((history: [], i: number) => {
-    return (
-      <History
-        key={i}  
-        content={history}
-        fieldsReplaced={fieldsReplaced}
-        newRequestHeadersSet={newRequestHeadersSet}
-        newRequestCookiesSet={newRequestCookiesSet}
-        newRequestBodySet={newRequestBodySet}
-        newRequestStreamsSet={newRequestStreamsSet}
-        newRequestFields={newRequestFields}
-      />
-    );
-  });
+  const current = history.find((a) => a.date === content.date);
+  const date = current !== undefined ? calculateDateString(current) : null;
 
   return (
     <div>
       <h5 className="history-date" aria-label="queryDate">
         {date}
       </h5>
-      {histArray}
+
+      {current?.history.map((history, i) => {
+        return (
+          <History
+            key={i}
+            content={history}
+            fieldsReplaced={fieldsReplaced}
+            newRequestHeadersSet={newRequestHeadersSet}
+            newRequestCookiesSet={newRequestCookiesSet}
+            newRequestBodySet={newRequestBodySet}
+            newRequestStreamsSet={newRequestStreamsSet}
+            newRequestFields={newRequestFields}
+          />
+        );
+      })}
       <hr />
     </div>
   );

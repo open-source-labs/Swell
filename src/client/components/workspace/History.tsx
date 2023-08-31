@@ -39,6 +39,13 @@ interface NewRequestHeadersSet {
 interface Props {
   newRequestFields: NewRequestFields;
   newRequestsOpenAPI: OpenAPIRequest;
+
+  /**
+   * @todo 2023-08-31 - The type definition for this is probably meant to be
+   * ReqRes from the types.ts file (judging by the closeCode property), but
+   * when I swap that in, the component lights up with errors like a Christmas
+   * tree.
+   */
   content: {
     checked: boolean;
     checkSelected: boolean;

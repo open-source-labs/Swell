@@ -2,56 +2,29 @@
 // be migrated to the RTK slice??
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { useAppSelector } from '~/toolkit/store';
-
-import {
-  reqResUpdated,
-  reqResItemDeleted,
-} from '../../toolkit-refactor/slices/reqResSlice';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { reqResItemDeleted } from '~/toolkit/slices/reqResSlice';
 
 import WorkspaceCollectionElement from './WorkspaceCollectionElement';
-import ReqResCtrl from '../../controllers/reqResController';
-import { RootState, AppDispatch } from '../../toolkit-refactor/store';
-import { ReqRes, $TSFixMe } from '../../../types';
+import ReqResCtrl from '~/controllers/reqResController';
+import { ReqRes } from '~/types';
 
-/**@todo change to use hooks? */
-const mapStateToProps = (store: RootState) => ({
-  reqResArray: store.reqRes.reqResArray,
-});
+type Props = {
+  displaySchedule: boolean;
+};
 
-/**@todo change to use hooks? */
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  reqResItemDeleted: (reqRes: ReqRes) => {
-    dispatch(reqResItemDeleted(reqRes));
-  },
-  reqResUpdated: (reqRes: ReqRes) => {
-    dispatch(reqResUpdated(reqRes));
-  },
-});
-
-const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
-  const { reqResArray, reqResItemDeleted, updated, displaySchedule } = props;
-
-  /**@todo maybe access functions (last two) directly from container instead of passing through props? */
-  const reqResMapped = reqResArray.map((reqRes: ReqRes, index: $TSFixMe) => {
-    return (
-      <WorkspaceCollectionElement
-        className="reqResChild"
-        content={reqRes}
-        key={index}
-        index={index}
-        reqResItemDeleted={reqResItemDeleted}
-        updated={updated}
-      />
-    );
-  });
+const WorkspaceCollectionsContainer = ({ displaySchedule }: Props) => {
+  const reqResArray = useAppSelector((store) => store.reqRes.reqResArray);
+  const isDark = useAppSelector((store) => store.ui.isDark);
+  const dispatch = useAppDispatch();
 
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
 
-  const isDark = useAppSelector((state) => state.ui.isDark);
+  const deleteReqRes = (reqRes: ReqRes) => {
+    dispatch(reqResItemDeleted(reqRes));
+  };
 
   return (
     <div>
@@ -69,12 +42,21 @@ const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
         </div>
       )}
 
-      <div>{reqResMapped.reverse()}</div>
+      <div>
+        {reqResArray
+          .map((reqRes, index) => (
+            <WorkspaceCollectionElement
+              key={index}
+              className="reqResChild"
+              content={reqRes}
+              index={index}
+              reqResItemDeleted={deleteReqRes}
+            />
+          ))
+          .reverse()}
+      </div>
     </div>
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WorkspaceCollectionsContainer);
+export default WorkspaceCollectionsContainer;

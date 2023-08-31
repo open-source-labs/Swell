@@ -3,10 +3,8 @@ import { reqResItemAdded } from './reqResSlice';
 
 import { $NotUsed, ReqRes } from '../../../types';
 import { format, parseISO } from 'date-fns';
-import { WritableDraft } from 'immer/dist/internal';
-import produce from 'immer';
 
-type HistoryItem = {
+export type HistoryItem = {
   /**
    * A date for a specific history item. Stored as string so that value is fully
    * JSON-serializable; format seems to be MM/dd/yyyy

@@ -1,134 +1,92 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { type ReqRes } from '~/types';
 
-import * as HistorySlice from '../../toolkit-refactor/slices/historySlice';
-import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
-
+import * as HistorySlice from '~/toolkit/slices/historySlice';
+import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
 import {
   newRequestCookiesSet,
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../toolkit-refactor/slices/newRequestSlice';
+} from '~/toolkit/slices/newRequestSlice';
 
 import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';
-import { Dispatch } from 'redux';
 
-import {
-  $TSFixMe,
-  ReqRes,
-  NewRequestBody,
-  CookieOrHeader,
-  NewRequestStreams,
-  NewRequestFields,
-} from '../../../types';
-
-import { RootState } from '../../toolkit-refactor/store';
-
-interface NewRequestCookiesSet {
-  cookiesArr: CookieOrHeader[];
-  count: number;
-}
-
-interface NewRequestHeadersSet {
-  headersArr: CookieOrHeader[];
-  count: number;
-}
-
-interface Props {
-  history: [];
-  historyCleared: () => void;
-  historyDeleted: string;
-  fieldsReplaced: (obj: {}) => void;
-  newRequestHeadersSet: (obj: NewRequestHeadersSet) => void;
-  newRequestCookiesSet: (obj: NewRequestCookiesSet) => void;
-  newRequestBodySet: (obj: NewRequestBody) => void;
-  newRequestStreamsSet: NewRequestStreams;
-  className: string;
-}
-
-/**@todo switch to hooks? */
-const mapStateToProps = (store: RootState) => ({
-  history: store.history,
-  newRequestFields: store.newRequestFields,
-  newRequestStreams: store.newRequest.newRequestStreams,
-});
-
-/**@todo switch to hooks? */
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  historyCleared: () => {
-    dispatch(HistorySlice.historyCleared());
-  },
-  historyDeleted: (reqRes: ReqRes) => {
-    dispatch(HistorySlice.historyDeleted(reqRes));
-  },
-  newRequestHeadersSet: (requestHeadersObj: $TSFixMe) => {
-    dispatch(newRequestHeadersSet(requestHeadersObj));
-  },
-  fieldsReplaced: (requestFields: $TSFixMe) => {
-    dispatch(fieldsReplaced(requestFields));
-  },
-  newRequestBodySet: (requestBodyObj: $TSFixMe) => {
-    dispatch(newRequestBodySet(requestBodyObj));
-  },
-  newRequestCookiesSet: (requestCookiesObj: $TSFixMe) => {
-    dispatch(newRequestCookiesSet(requestCookiesObj));
-  },
-  newRequestStreamsSet: (requestStreamsObj: $TSFixMe) => {
-    dispatch(newRequestStreamsSet(requestStreamsObj));
-  },
-});
-
-const HistoryContainer = (props: Props) => {
-  const {
-    history,
-    historyCleared,
-    historyDeleted,
-    fieldsReplaced,
-    newRequestHeadersSet,
-    newRequestCookiesSet,
-    newRequestBodySet,
-    newRequestStreamsSet,
-  } = props;
-
-  const isDark = useAppSelector((state) => state.ui.isDark);
-
-  // history is already sorted by created_at from getHistory
-  const historyDates = history.map(
-    (date: Date, index: number): JSX.Element => (
-      <HistoryDate
-        className="historyDate"
-        content={date}
-        key={index}
-        history={props.history}
-        historyDeleted={historyDeleted}
-        fieldsReplaced={fieldsReplaced}
-        newRequestHeadersSet={newRequestHeadersSet}
-        newRequestCookiesSet={newRequestCookiesSet}
-        newRequestBodySet={newRequestBodySet}
-        newRequestStreamsSet={newRequestStreamsSet}
-      />
-    )
-  );
+const HistoryContainer = () => {
+  const history = useAppSelector((store) => store.history);
+  const newFields = useAppSelector((store) => store.newRequestFields);
+  const isDark = useAppSelector((store) => store.ui.isDark);
+  const dispatch = useAppDispatch();
 
   return (
     <span
+      id="history-container"
       className={`p-3 is-flex is-flex-direction-column is-tall-not-1rem ${
         isDark ? 'is-dark-400' : ''
       }`}
-      id="history-container"
     >
       <span
         id="history-container"
         className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3"
       >
-        <ClearHistoryBtn historyCleared={historyCleared} />
+        <ClearHistoryBtn
+          historyCleared={() => {
+            dispatch(HistorySlice.historyCleared());
+          }}
+        />
       </span>
-      <div className="add-vertical-scroll">{historyDates}</div>
+
+      <div className="add-vertical-scroll">
+        {history.map((item, i) => (
+          /**
+           * Previous comment: History is already sorted by created_at from
+           * getHistory.
+           *
+           * ---
+           *
+           * @todo 2023-08-31 - This is almost certainly a bad component design,
+           * but no time to redesign it.
+           *
+           * HistoryDate can call useAppDispatch, and then wire up any callbacks
+           * it needs itself. On the flipside of lifting state up, you should
+           * also "tamp" state down as far down as you can, to avoid needless
+           * re-renders and make sure any useEffect calls in downstream
+           * components don't run way more than intended
+           */
+          <HistoryDate
+            key={i}
+            className="historyDate"
+            newRequestFields={newFields}
+            content={item}
+            history={history}
+            historyCleared={() => {
+              dispatch(HistorySlice.historyCleared());
+            }}
+            historyDeleted={(r: ReqRes) => {
+              dispatch(HistorySlice.historyDeleted(r));
+            }}
+            fieldsReplaced={(requestFields) => {
+              dispatch(fieldsReplaced(requestFields));
+            }}
+            newRequestHeadersSet={(requestHeadersObj) => {
+              dispatch(newRequestHeadersSet(requestHeadersObj));
+            }}
+            newRequestCookiesSet={(requestCookiesObj) => {
+              dispatch(newRequestCookiesSet(requestCookiesObj));
+            }}
+            newRequestBodySet={(requestBodyObj) => {
+              dispatch(newRequestBodySet(requestBodyObj));
+            }}
+            newRequestStreamsSet={(stream) => {
+              dispatch(newRequestStreamsSet(stream));
+            }}
+          />
+        ))}
+      </div>
     </span>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryContainer);
+export default HistoryContainer;

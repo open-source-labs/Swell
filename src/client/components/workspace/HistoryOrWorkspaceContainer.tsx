@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 // Import local components
 import WorkspaceContainer from './WorkspaceContainer';
@@ -6,26 +6,33 @@ import HistoryContainer from './HistoryContainer';
 // Import MUI components and icons
 import { Box, Tabs, Tab, Button } from '@mui/material';
 import { AccessTime, Work } from '@mui/icons-material';
-import { WorkspaceContainerProps } from '../../../types';
+import { $NotUsed, WorkspaceContainerProps } from '../../../types';
 
-interface TabPanelProps {
+/**
+ * Not sure if this is overkill, but the previous implementation had support for
+ * passing in extra props for the div. Went ahead and typed it super-precisely
+ */
+type TabPanelProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> & {
   children?: React.ReactNode;
   index: number;
-  value: number;
-}
+  activeIndex: number;
+};
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
+function TabPanel({
+  children,
+  activeIndex,
+  index,
+  ...delegatedProps
+}: TabPanelProps) {
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      hidden={activeIndex !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
+      {...delegatedProps}
     >
-      {value === index && (
+      {activeIndex === index && (
         <Box sx={{ p: 1 }}>
           <Box>{children}</Box>
         </Box>
@@ -38,16 +45,19 @@ function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
-  };
+  } as const;
 }
 
 export default function HistoryOrWorkspaceContainer(
   props: WorkspaceContainerProps
 ) {
-  const [value, setValue] = React.useState(0);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  // According to MUI, the second argument will default to type number when
+  // possible; skeeves me out that they don't support type parameters for this,
+  // and you have to cast newValue from "any" to "number" yourself
+  const onMuiTabIndexChange = (_: $NotUsed, newValue: number) => {
+    setActiveTabIndex(newValue);
   };
 
   return (
@@ -60,8 +70,8 @@ export default function HistoryOrWorkspaceContainer(
     >
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={activeTabIndex}
+          onChange={onMuiTabIndexChange}
           aria-label="basic tabs example"
         >
           <Tab
@@ -73,6 +83,7 @@ export default function HistoryOrWorkspaceContainer(
               width: '50%',
             }}
           />
+
           <Tab
             icon={<AccessTime fontSize="small" />}
             {...a11yProps(1)}
@@ -84,11 +95,13 @@ export default function HistoryOrWorkspaceContainer(
           />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+
+      <TabPanel activeIndex={activeTabIndex} index={0}>
         <WorkspaceContainer {...props} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        <HistoryContainer {...props} />
+
+      <TabPanel activeIndex={activeTabIndex} index={1}>
+        <HistoryContainer />
       </TabPanel>
     </Box>
   );
