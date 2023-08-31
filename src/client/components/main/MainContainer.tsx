@@ -62,7 +62,7 @@ import { Box } from '@mui/material';
 import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 import Split from 'react-split';
 
-/**@todo switch to hooks? */
+/**@todo Switch to hooks */
 const mapStateToProps = (store: RootState) => {
   return {
     reqResArray: store.reqRes.reqResArray,
@@ -78,7 +78,7 @@ const mapStateToProps = (store: RootState) => {
   };
 };
 
-/**@todo switch to hooks? */
+/**@todo Switch to hooks */
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   reqResItemAdded: (reqRes: ReqRes) => {
     dispatch(ReqResSlice.reqResItemAdded(reqRes));
@@ -130,15 +130,15 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/" element={<Http2Composer {...props} />} />
             <Route path="/graphql" element={<GraphQLComposer {...props} />} />
             <Route path="/grpc" element={<GRPCComposer {...props} />} />
-            <Route
-              path="/websocket"
-              element={<WebSocketComposer {...props} />}
-            />
             {/* WebRTC has been completely refactored to hooks - no props needed */}
             <Route path="/webrtc" element={<WebRTCComposer />} />
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
             <Route path="/webhook" element={<WebhookComposer {...props} />} />
             <Route path="/trpc" element={<TRPCComposer {...props} />} />
+            <Route
+              path="/websocket"
+              element={<WebSocketComposer {...props} />}
+            />
             <Route
               path="/mockserver"
               element={<MockServerComposer {...props} />}
