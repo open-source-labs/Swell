@@ -104,34 +104,6 @@ export interface ValidationMessage {
   json?: string;
 }
 
-export interface MainContainerProps {
-  // state
-  currentTab?: string;
-  reqResArray: ReqRes[];
-  newRequestFields: NewRequestFields;
-  newRequestHeaders: NewRequestHeaders;
-  newRequestStreams: NewRequestStreams;
-  newRequestBody: NewRequestBody;
-  newRequestCookies: NewRequestCookies;
-  newRequestSSE: NewRequestSSE;
-  warningMessage: any;
-  introspectionData: IntrospectionData;
-
-  // reducers
-  reqResItemAdded: (reqRes: ReqRes) => any;
-  setWarningMessage: (message: ValidationMessage) => any;
-  newRequestHeadersSet: NewRequestHeadersSet;
-  newRequestStreamsSet: () => any;
-  fieldsReplaced: () => any;
-  newRequestBodySet: NewRequestBodySet;
-  newTestContentSet: () => any;
-  newRequestCookiesSet: NewRequestCookiesSet;
-  newRequestSSESet: (arg: boolean) => any;
-  openApiRequestsReplaced: () => any;
-  composerFieldsReset: () => any;
-  setWorkspaceActiveTab: (arg: string) => any;
-}
-
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 

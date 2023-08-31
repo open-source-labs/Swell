@@ -16,6 +16,7 @@ import connectionController from '~/controllers/reqResController';
 
 import { Box } from '@mui/material';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
+import { ConnectRouterProps } from '../MainContainer';
 
 /**
  * @todo 2023-08-30 - Decided to refactor a useReducer implementation for
@@ -90,7 +91,7 @@ function reduceProcedures(
   }
 }
 
-export default function TRPCComposer(props) {
+export default function TRPCComposer(props: ConnectRouterProps) {
   const reduxDispatch = useAppDispatch();
   const [showSubscription, setShowSubscription] = useState(false);
   const [procedures, proceduresDispatch] = useReducer(

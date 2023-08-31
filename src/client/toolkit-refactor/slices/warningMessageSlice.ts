@@ -5,16 +5,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { $NotUsed } from '../../../types';
 
-//define type for warning message object
-
-// //from test file
-// const fakeWarningMessage = {
-//     err: `you can't do this to me`,
-//   };
-// if (warningMessage.uri) { //so warning message obj has uri property??
-// {warningMessage ? <div>{warningMessage.body}</div> : null} //has body property??
-
-type WarningMessage = Partial<{
+export type WarningMessage = Partial<{
   err: string;
   uri: string;
   body: string;

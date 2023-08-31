@@ -12,10 +12,6 @@ import IntrospectionDataReducer from './slices/introspectionDataSlice';
 import WarningMessageReducer from './slices/warningMessageSlice';
 import MockServerReducer from './slices/mockServerSlice';
 
-// Note: There was previously a currentTab prop in the Redux store; it wasn't
-// used anywhere, and there was no info about it other than it was a string. We
-// dropped it from the store, but it might make sense to add it back at some
-// point
 const rootReducer = combineReducers({
   history: HistoryReducer,
   newRequest: NewRequestReducer,

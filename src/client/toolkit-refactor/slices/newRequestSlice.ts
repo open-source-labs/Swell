@@ -17,7 +17,7 @@ import {
   RequestWebRTC,
 } from '~/types';
 
-type NewRequestState = {
+export type NewRequestState = {
   newRequestHeaders: {
     headersArr: CookieOrHeader[];
     count: number;

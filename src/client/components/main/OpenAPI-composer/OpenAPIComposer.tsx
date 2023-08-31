@@ -15,8 +15,9 @@ import OpenAPIServerForm from './OpenAPIServerForm';
 // Import MUI components
 import { Box } from '@mui/material';
 import { $TSFixMe, ReqRes } from '../../../../types';
+import { ConnectRouterProps } from '../MainContainer';
 
-export default function OpenAPIComposer(props: $TSFixMe) {
+export default function OpenAPIComposer(props: ConnectRouterProps) {
   const newRequestsOpenAPI = useAppSelector((store) => store.newRequestOpenApi);
 
   const {
@@ -52,7 +53,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
   // We are only ever sending a request to one server, this one.
   // you can toggle which is the primary server in the serverEntryForm
   const [primaryServer, setPrimaryServer] = useState<string>(
-    newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || ''
+    newRequestsOpenAPI.openApiMetadata.serverUrls[0] || ''
   );
 
   const requestValidationCheck = () => {
@@ -68,7 +69,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
       return;
     }
 
-    newRequestsOpenAPI.openapiReqArray.forEach((req: $TSFixMe) => {
+    newRequestsOpenAPI.openApiReqArray.forEach((req: $TSFixMe) => {
       const reqRes: ReqRes = {
         id: uuid(),
         createdAt: new Date(),

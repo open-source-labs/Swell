@@ -8,8 +8,9 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
+import { type ConnectRouterProps } from '../MainContainer';
 
-export default function WebSocketComposer(props) {
+export default function WebSocketComposer(props: ConnectRouterProps) {
   const {
     newTestContentSet,
     fieldsReplaced,

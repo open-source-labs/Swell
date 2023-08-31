@@ -5,8 +5,14 @@ import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
 } from '~/toolkit/slices/uiSlice';
-
 import { v4 as uuid } from 'uuid';
+
+import { type ConnectRouterProps } from '../MainContainer';
+import {
+  type CookieOrHeader,
+  type ReqRes,
+  type ValidationMessage,
+} from '../../../../types';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
@@ -19,25 +25,19 @@ import SendRequestButton from '../sharedComponents/requestButtons/SendRequestBut
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+import TestContainer from '../sharedComponents/stressTest/TestContainer';
+
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import {
-  CookieOrHeader,
-  ReqRes,
-  MainContainerProps,
-  ValidationMessage,
-} from '../../../../types';
 
-import TestContainer from '../sharedComponents/stressTest/TestContainer';
 import { type } from 'os';
 
 // Translated from RestContainer.jsx
-export default function Http2Composer(props: MainContainerProps) {
+export default function Http2Composer(props: ConnectRouterProps) {
   const dispatch = useAppDispatch();
 
   // Destructuring store props.
   const {
-    // currentTab,
     newRequestFields,
     newRequestHeaders,
     newRequestBody,
@@ -45,6 +45,7 @@ export default function Http2Composer(props: MainContainerProps) {
     newRequestStreams,
     newRequestSSE,
     warningMessage,
+    currentTab,
   } = props;
 
   const {
@@ -164,7 +165,7 @@ export default function Http2Composer(props: MainContainerProps) {
       },
       checked: false,
       minimized: false,
-      // tab: currentTab,
+      tab: currentTab,
     };
   };
 

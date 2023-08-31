@@ -12,6 +12,7 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 
 // mui
 import { Box, Button, Modal, Typography } from '@mui/material';
+import { ConnectRouterProps } from '../MainContainer';
 
 /**
  * grab context from Electron window
@@ -42,13 +43,7 @@ const style = {
   p: 4,
 };
 
-const MockServerComposer = (
-  /**
-   * @todo Update all of MockServerComposer's children to use useAppSelector,
-   * and then remove the props here.
-   */
-  props
-) => {
+const MockServerComposer = (props: ConnectRouterProps) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
 

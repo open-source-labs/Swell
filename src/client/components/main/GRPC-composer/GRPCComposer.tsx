@@ -10,13 +10,13 @@ import GRPCProtoEntryForm from './GRPCProtoEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 
-import { $TSFixMe, ReqRes } from '../../../../types.js';
+import { ReqRes } from '../../../../types.js';
+import { type ConnectRouterProps } from '../MainContainer.js';
 
 // Import MUI components
 import { Box } from '@mui/material';
 
-export default function GRPCComposer(props: $TSFixMe) {
-
+export default function GRPCComposer(props: ConnectRouterProps) {
   // destructure the props from mainContainer
   const {
     composerFieldsReset,
@@ -66,13 +66,14 @@ export default function GRPCComposer(props: $TSFixMe) {
     setWorkspaceActiveTab,
   } = props;
 
-  // Initialize local state 
+  // Initialize local state
 
   // used to set up boiler plate for StreamsArr
   // is is initially -> []
   // but needs to be -> [{id:0, "query": ""}]
-  const [streamsArrLength, setStreamsArrayLength] = useState(newRequestStreams.streamsArr.length);
-
+  const [streamsArrLength, setStreamsArrayLength] = useState(
+    newRequestStreams.streamsArr.length
+  );
 
   const requestValidationCheck = () => {
     interface ValidationMessage {
@@ -172,8 +173,8 @@ export default function GRPCComposer(props: $TSFixMe) {
     // triggers the reset for the boiler plate for streamsArr
     // if not triggered, composerFieldsReset() breaks feature
     // look at useEffect below
-    setStreamsArrayLength(0)
-  
+    setStreamsArrayLength(0);
+
     // GRPC REQUESTS
     newRequestBodySet({
       ...newRequestBody,
@@ -189,10 +190,9 @@ export default function GRPCComposer(props: $TSFixMe) {
     setWorkspaceActiveTab('workspace');
   };
 
-  // need this to make sure 
+  // need this to make sure
   useEffect(() => {
     if (streamsArrLength === 0) {
-
       const newStreamsArr = [
         {
           id: newRequestStreams.count,
@@ -201,7 +201,7 @@ export default function GRPCComposer(props: $TSFixMe) {
       ];
 
       // reset the state
-      setStreamsArrayLength(newStreamsArr.length)
+      setStreamsArrayLength(newStreamsArr.length);
 
       // update state in the store
       newRequestStreamsSet({

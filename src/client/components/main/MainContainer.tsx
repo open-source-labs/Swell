@@ -18,32 +18,44 @@
  */
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { ReqRes, $TSFixMe, $TSFixMeObject, RequestWebRTC } from '~/types';
-
-import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
 
 import {
+  type ReqRes,
+  type NewRequestStreams,
+  type NewRequestFields,
+  type NewRequestBody,
+  type RequestWebRTC,
+} from '~/types';
+
+import { type ConnectedProps, connect } from 'react-redux';
+import { AppDispatch, type RootState } from '~/toolkit/store';
+import { reqResItemAdded } from '~/toolkit/slices/reqResSlice';
+import {
+  NewRequestOpenApi,
+  openApiRequestsReplaced,
+} from '~/toolkit/slices/newRequestOpenApiSlice';
+
+import {
+  type NewRequestState,
   composerFieldsReset,
   newRequestSSESet,
   newRequestCookiesSet,
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '../../toolkit-refactor/slices/newRequestSlice';
+} from '~/toolkit/slices/newRequestSlice';
 
-import { openApiRequestsReplaced } from '../../toolkit-refactor/slices/newRequestOpenApiSlice';
-
-import {
-  setWorkspaceActiveTab,
-  /*, setComposerDisplay */
-} from '../../toolkit-refactor/slices/uiSlice';
+import { setWorkspaceActiveTab } from '~/toolkit/slices/uiSlice';
 
 import {
   fieldsReplaced,
   newTestContentSet,
-} from '../../toolkit-refactor/slices/newRequestFieldsSlice';
-import { setWarningMessage } from '../../toolkit-refactor/slices/warningMessageSlice';
+} from '~/toolkit/slices/newRequestFieldsSlice';
+
+import {
+  type WarningMessage,
+  setWarningMessage,
+} from '~/toolkit/slices/warningMessageSlice';
 
 // Import local components.
 import Http2Composer from './http2-composer/Http2Composer';
@@ -59,18 +71,19 @@ import ResponsePaneContainer from './response-composer/ResponsePaneContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { AppDispatch, RootState } from '../../toolkit-refactor/store';
+
 import Split from 'react-split';
 
 /**@todo Switch to hooks */
 const mapStateToProps = (store: RootState) => {
   return {
+    currentTab: store.ui.workspaceActiveTab,
     reqResArray: store.reqRes.reqResArray,
     newRequestFields: store.newRequestFields,
     newRequestHeaders: store.newRequest.newRequestHeaders,
     newRequestStreams: store.newRequest.newRequestStreams,
     newRequestBody: store.newRequest.newRequestBody,
-    // newRequestOpenAPI: store.newRequestOpenApi,
+    newRequestOpenAPI: store.newRequestOpenApi,
     newRequestCookies: store.newRequest.newRequestCookies,
     newRequestSSE: store.newRequest.newRequestSSE,
     warningMessage: store.warningMessage,
@@ -81,50 +94,82 @@ const mapStateToProps = (store: RootState) => {
 /**@todo Switch to hooks */
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   reqResItemAdded: (reqRes: ReqRes) => {
-    dispatch(ReqResSlice.reqResItemAdded(reqRes));
+    dispatch(reqResItemAdded(reqRes));
   },
-  setWarningMessage: (message: $TSFixMe) => {
+
+  setWarningMessage: (message: WarningMessage) => {
     dispatch(setWarningMessage(message));
   },
-  // setComposerDisplay: (composerDisplay) => {
-  //   dispatch(setComposerDisplay(composerDisplay));
-  // },
-  newRequestHeadersSet: (requestHeadersObj: $TSFixMeObject) => {
-    dispatch(newRequestHeadersSet(requestHeadersObj));
+
+  newRequestHeadersSet: (headers: NewRequestState['newRequestHeaders']) => {
+    dispatch(newRequestHeadersSet(headers));
   },
-  newRequestStreamsSet: (requestStreamsObj: $TSFixMeObject) => {
+
+  newRequestStreamsSet: (requestStreamsObj: NewRequestStreams) => {
     dispatch(newRequestStreamsSet(requestStreamsObj));
   },
-  fieldsReplaced: (requestFields: $TSFixMe) => {
+
+  fieldsReplaced: (requestFields: NewRequestFields) => {
     dispatch(fieldsReplaced(requestFields));
   },
-  newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
+
+  newRequestBodySet: (requestBodyObj: NewRequestBody) => {
     dispatch(newRequestBodySet(requestBodyObj));
   },
-  newTestContentSet: (testContent: $TSFixMe) => {
+
+  newTestContentSet: (testContent: NewRequestFields['testContent']) => {
     dispatch(newTestContentSet(testContent));
   },
-  newRequestCookiesSet: (requestCookiesObj: $TSFixMeObject) => {
+
+  newRequestCookiesSet: (
+    requestCookiesObj: NewRequestState['newRequestCookies']
+  ) => {
     dispatch(newRequestCookiesSet(requestCookiesObj));
   },
-  newRequestSSESet: (requestSSEBool: boolean) => {
-    dispatch(newRequestSSESet(requestSSEBool));
+
+  newRequestSSESet: (newValue: boolean) => {
+    dispatch(newRequestSSESet(newValue));
   },
-  openApiRequestsReplaced: (parsedDocument: $TSFixMe) => {
+
+  openApiRequestsReplaced: (parsedDocument: NewRequestOpenApi) => {
     dispatch(openApiRequestsReplaced(parsedDocument));
   },
+
   composerFieldsReset: () => {
     dispatch(composerFieldsReset());
   },
-  setWorkspaceActiveTab: (tabName: $TSFixMe) => {
+
+  setWorkspaceActiveTab: (tabName: string) => {
     dispatch(setWorkspaceActiveTab(tabName));
   },
 });
 
-export type BandaidRouterProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-function MainContainer(props: $TSFixMeObject) {
+/**
+ * @todo 2023-08-31 - This should be treated as a temporary type (insert quote
+ * about how everything long-standing was intended to be temporary).
+ *
+ * Once all of the Redux values provided via connect has been "tamped down" to
+ * their respective components, you can do the following:
+ * 1. Delete the ConnectedProps<typeof connector> part from the props
+ * 2. Delete connector, mapStateToProps, and mapDispatchToProps, and related
+ *    imports
+ *
+ * Please, PLEASE do not move this type into the global types file. That file
+ * needs to get smaller, not bigger.
+ *
+ * ---
+ *
+ * @todo part 2 - Because all of these components have been without any true
+ * type safety for so long, a lot of props are mismatched or missing. Need to
+ * figure out where the missing values should come from
+ */
+export type ConnectRouterProps = ConnectedProps<typeof connector> & {
+  currentWorkspaceId: string;
+};
+
+function MainContainer(props: ConnectRouterProps) {
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
@@ -154,4 +199,4 @@ function MainContainer(props: $TSFixMeObject) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
+export default connector(MainContainer);

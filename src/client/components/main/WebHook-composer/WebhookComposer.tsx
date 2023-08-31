@@ -4,9 +4,10 @@ import { io } from 'socket.io-client';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe } from '../../../../types';
+import { $TSFixMe } from '~/types';
+import { type ConnectRouterProps } from '../MainContainer';
 
-export default function WebhookComposer(props: $TSFixMe) {
+export default function WebhookComposer(props: ConnectRouterProps) {
   /**
    * @todo There was a previous todo with the text "A relic of the past... it
    * must be purged." We're 99% sure this refers to the isDark variable, rather

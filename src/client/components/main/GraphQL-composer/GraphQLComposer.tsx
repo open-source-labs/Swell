@@ -17,10 +17,11 @@ import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe, ReqRes } from '../../../../types';
+import { type ReqRes } from '../../../../types';
+import { type ConnectRouterProps } from '../MainContainer';
 
 // Translated from GraphQLContainer.jsx
-export default function GraphQLComposer(props: $TSFixMe) {
+export default function GraphQLComposer(props: ConnectRouterProps) {
   const {
     composerFieldsReset,
     fieldsReplaced,
@@ -148,12 +149,8 @@ export default function GraphQLComposer(props: $TSFixMe) {
       protoPath,
       request: {
         method,
-        headers: headersArr.filter(
-          (header: $TSFixMe) => header.active && !!header.key
-        ),
-        cookies: cookiesArr.filter(
-          (cookie: $TSFixMe) => cookie.active && !!cookie.key
-        ),
+        headers: headersArr.filter((header) => header.active && !!header.key),
+        cookies: cookiesArr.filter((cookie) => cookie.active && !!cookie.key),
         body: bodyContent || '',
         bodyType,
         bodyVariables: bodyVariables || '',
