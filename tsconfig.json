@@ -24,6 +24,7 @@
 
     // Sets up custom path aliases for shortening imports
     "paths": {
+      "~/types": ["./src/types"],
       "~/toolkit/*": ["./src/client/toolkit-refactor/*"]
     }
   },
