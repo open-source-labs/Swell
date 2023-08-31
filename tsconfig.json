@@ -32,6 +32,12 @@
       "~/types": ["./src/types"]
     }
   },
+
+  /**
+   * @todo 2023-08-31 - Don't have time to check why there are all these files
+   * manually added to the include path, but these should almost definitely be
+   * removed.
+   */
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
