@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
+import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
-interface GraphQLVariableEntryFormProps {
-  newRequestBody: {
-    bodyVariables: string;
-    bodyIsNew: boolean;
-  };
-  newRequestBodySet: (arg: { [key: string]: any }) => void;
-}
+const GraphQLVariableEntryForm = () => {
+  const newBody = useAppSelector((store) => store.newRequest.newRequestBody);
+  const isDark = useAppSelector((store) => store.ui.isDark);
 
-const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({
-  newRequestBody: { bodyVariables, bodyIsNew },
-  newRequestBody,
-  newRequestBodySet,
-}) => {
-  const [cmValue, setValue] = useState(bodyVariables);
-
-  // set a new value for codemirror only if loading from history or changing gQL type
+  /**
+   * @todo useEffect should not be used for syncing different state values that
+   * all exist inside React. This useEffect call should be removed in favor of
+   * another approach (render keys, no state at all, etc.)
+   */
+  const [codeMirrorValue, setCodeMirrorValue] = useState(newBody.bodyVariables);
   useEffect(() => {
-    if (!bodyIsNew) setValue(bodyVariables);
-  }, [bodyVariables, bodyIsNew]);
-
-  const isDark = useSelector((store: any) => store.ui.isDark);
+    if (!newBody.bodyIsNew) {
+      setCodeMirrorValue(newBody.bodyVariables);
+    }
+  }, [newBody]);
 
   return (
     <div>
@@ -30,14 +25,14 @@ const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({
       <div className={`${isDark ? 'is-dark-400' : ''}`} id="gql-var-entry">
         <TextCodeArea
           mode="application/json"
-          value={cmValue}
+          value={codeMirrorValue}
           placeholder="Variables must be JSON format"
           height="100px"
-          onChange={(value: string) => {
-            setValue(value);
+          onChange={(bodyVariables: string) => {
+            setCodeMirrorValue(bodyVariables);
             newRequestBodySet({
-              ...newRequestBody,
-              bodyVariables: value,
+              ...newBody,
+              bodyVariables,
               bodyIsNew: true,
             });
           }}
