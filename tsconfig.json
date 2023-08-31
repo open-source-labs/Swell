@@ -20,7 +20,12 @@
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     /* Advanced Options */
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+
+    // Sets up custom path aliases for shortening imports
+    "paths": {
+      "~/store": ["./src/client/toolkit-refactor/store.ts"]
+    }
   },
   "include": [
     "./src/**/*.ts",
@@ -41,3 +46,4 @@
   "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
   "typeRoots": ["./node_modules/@types"]
 }
+
