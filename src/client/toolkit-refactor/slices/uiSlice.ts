@@ -20,8 +20,13 @@ interface UiState {
 }
 
 const initialState: UiState = {
-  sidebarActiveTab: 'composer',
+  /**
+   * @todo 2023-08-31 - From a cursory glance, it seems that the value of this
+   * property will only ever be "workspace". Not sure if there was ever any
+   * intention to add support for other values, too.
+   */
   workspaceActiveTab: 'workspace',
+  sidebarActiveTab: 'composer',
   responsePaneActiveTab: 'events',
   isDark: false,
 };
