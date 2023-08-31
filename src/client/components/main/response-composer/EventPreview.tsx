@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { useAppSelector } from '~/toolkit/store';
-import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
-import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
+import dropDownArrow from '~/assets/icons/caret-down-tests.svg';
+import dropDownArrowUp from '~/assets/icons/caret-up-tests.svg';
 
 interface Props {
   contents: string;
