@@ -2,7 +2,7 @@
  * @file Slice for managing introspection data from GraphQL.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { $NotUsed, IntrospectionData } from '../../../types';
+import { $NotUsed, IntrospectionData } from '~/types';
 
 const initialState: IntrospectionData = {
   schemaSDL: null,
