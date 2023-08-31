@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
 const RestMethodAndEndpointEntryForm = ({
@@ -10,10 +10,10 @@ const RestMethodAndEndpointEntryForm = ({
   newRequestBodySet,
   newRequestBody,
   newTestContentSet,
-  placeholder='Enter URL or paste text here',
+  placeholder = 'Enter URL or paste text here',
   value,
 }) => {
-  const isDark = useSelector((state) => state.ui.isDark);
+  const isDark = useAppSelector((state) => state.ui.isDark);
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
   const dropdownEl = useRef();
 

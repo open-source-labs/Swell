@@ -1,7 +1,7 @@
 /** Also not legacy */
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
 
 import connectionController from '../../controllers/reqResController';
 import webrtcPeerController from '../../controllers/webrtcPeerController';
@@ -25,7 +25,9 @@ const WorkspaceCollectionElement = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useAppDispatch();
 
-  const currentResponse = useSelector((store) => store.reqRes.currentResponse);
+  const currentResponse = useAppSelector(
+    (store) => store.reqRes.currentResponse
+  );
 
   const {
     content,
@@ -65,7 +67,10 @@ const WorkspaceCollectionElement = (props) => {
         >
           {network === 'webrtc' ? 'WebRTC' : request.method}
         </div>
-        <div className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between" style={{overflow: 'hidden', whiteSpace:'nowrap'}}>
+        <div
+          className="is-flex-grow-2 is-size-7 is-flex-basis-0 is-flex is-align-items-center is-justify-content-space-between"
+          style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
+        >
           <div className="is-flex is-align-items-center ml-2">
             {url ? url : request.webRTCDataChannel + ' Channel'}
           </div>
@@ -191,7 +196,7 @@ const WorkspaceCollectionElement = (props) => {
           </button>
         )}
         {/* VIEW RESPONSE BUTTON */}
-        {(connection !== 'uninitialized') && (
+        {connection !== 'uninitialized' && (
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-50 is-size-7 border-curve"
             id={`view-button-${index}`}
@@ -203,7 +208,7 @@ const WorkspaceCollectionElement = (props) => {
             View Response
           </button>
         )}
-        {(webRTCSend) && (
+        {webRTCSend && (
           <button
             className="is-flex-basis-0 is-flex-grow-1 button is-neutral-50 is-size-7 border-curve"
             id={`view-button-${index}`}
