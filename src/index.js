@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './client/components/App';
 import store from './client/toolkit-refactor/store';
@@ -46,26 +46,37 @@ default-src 'self' http://localhost:3000 ws://localhost:3000 https://api.github.
   child-src 'none';
   `;
 
-  //<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-  const otherMeta = document.createElement('otherMeta')
-  otherMeta.content = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'">`
-  //meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-eval'"
+//<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+const otherMeta = document.createElement('otherMeta');
+otherMeta.content = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'">`;
+//meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-eval'"
 
 head.appendChild(meta);
 
 // Render the app
 const container = document.getElementById('root');
-const rt = createRoot(container);
+if (container === null) {
+  throw new Error('Missing root container');
+}
 
-// Created this method to allow Redux State to be accessible in Integration testing
+const root = createRoot(container);
+
+/**
+ * @todo This line is only needed for the integration testing, so it should be
+ * moved to those files. As a general tip, directly modifying the global scope
+ * is far less safer than accessing a value through a JS module, and has more
+ * security risks.
+ *
+ * Moving this into the files also gives Jest the chance to clean up this setup
+ * step afterwards (via beforeAll/afterAll).
+ */
 window.getReduxState = () => store.getState();
 
-
-rt.render(
+root.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <App />
-    </Provider>
+    </ReduxProvider>
   </ThemeProvider>
 );
