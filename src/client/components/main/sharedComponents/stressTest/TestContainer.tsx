@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useAppSelector } from '~/toolkit/store';
-import { LoadTest, LoadTestResult } from './LoadTest';
-import LoadTestController from '../../../../controllers/LoadTestController';
-import { connect } from 'react-redux';
-import { RootState } from '../../../../toolkit-refactor/store';
-import { ReqRes } from '../../../../../types';
+
+import LoadTestController from '~/controllers/LoadTestController';
+import { ReqRes } from '~/types';
+
 import { Box } from '@mui/material';
-import { SwellWrappedTooltip } from '../../../customMuiStyles/tooltip';
+import { LoadTest, LoadTestResult } from './LoadTest';
+import { SwellWrappedTooltip } from '~/components/customMuiStyles/tooltip';
 
 /**
  * TestContainer component allows users to configure and perform load tests.
@@ -16,32 +16,26 @@ import { SwellWrappedTooltip } from '../../../customMuiStyles/tooltip';
  * of the tests.
  */
 
-const mapStateToProps = (store: RootState) => ({
-  reqResArray: store.reqRes.reqResArray,
-  currentResponse: store.reqRes.currentResponse,
-});
+const TestContainer: React.FC = () => {
+  const isDark = useAppSelector((state) => state.ui.isDark);
+  const reqResArray = useAppSelector((store) => store.reqRes.reqResArray);
+  const currentResponse = useAppSelector(
+    (store) => store.reqRes.currentResponse
+  );
 
-interface TestContainerProps {
-  reqResArray: ReqRes[];
-  currentResponse: ReqRes;
-}
-
-const TestContainer: React.FC<TestContainerProps> = ({
-  reqResArray,
-  currentResponse,
-}) => {
   const [isTestRunning, setIsTestRunning] = useState<boolean>(false);
   const [callsPerSecond, setCallsPerSecond] = useState<number>(1);
   const [totalTime, setTotalTime] = useState<number>(10);
-  const [abortController, setAbortController] =
-    useState<AbortController | null>(null);
-  const isDark = useAppSelector((state) => state.ui.isDark);
+  const [showLoadTest, setShowLoadTest] = useState(false);
 
   const handleShowLoadTest = () => {
     setShowLoadTest(!showLoadTest);
   };
 
-  const [showLoadTest, setShowLoadTest] = useState(false);
+  const abortControllerRef = useRef<AbortController>(null!);
+  if (abortControllerRef.current === null) {
+    abortControllerRef.current = new AbortController();
+  }
 
   const reqResObj: ReqRes | null = currentResponse.url
     ? currentResponse
@@ -49,14 +43,15 @@ const TestContainer: React.FC<TestContainerProps> = ({
     ? reqResArray[reqResArray.length - 1]
     : null;
 
-  const isDisabledForHttp: boolean =
+  const isDisabledForHttp =
     reqResObj !== null &&
     !reqResObj.graphQL &&
-    reqResObj.request.method !== 'GET';
-  const isDisabledForGraphql: boolean =
+    reqResObj.request?.method !== 'GET';
+
+  const isDisabledForGraphql =
     reqResObj !== null &&
-    reqResObj.graphQL &&
-    reqResObj.request.method !== 'QUERY';
+    reqResObj.graphQL === true &&
+    reqResObj.request?.method !== 'QUERY';
 
   const disabled: boolean =
     isTestRunning ||
@@ -158,8 +153,6 @@ const TestContainer: React.FC<TestContainerProps> = ({
                         isDark ? '' : 'is-outlined'
                       } button-padding-vertical button-hover-color ml-3`}
                       onClick={async () => {
-                        const controller = new AbortController();
-                        setAbortController(controller);
                         setIsTestRunning(true);
 
                         if (reqResObj) {
@@ -167,7 +160,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                             reqResObj,
                             callsPerSecond,
                             totalTime,
-                            controller.signal
+                            abortControllerRef.current.signal
                           );
 
                           LoadTestController.processLoadTestResults(
@@ -190,10 +183,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
                     isDark ? '' : 'is-outlined'
                   } button-padding-vertical button-hover-color ml-3`}
                   onClick={() => {
-                    if (abortController) {
-                      abortController.abort();
-                      setAbortController(null);
-                    }
+                    abortControllerRef.current.abort();
                   }}
                 >
                   Stop
@@ -213,4 +203,4 @@ const TestContainer: React.FC<TestContainerProps> = ({
   );
 };
 
-export default connect(mapStateToProps)(TestContainer);
+export default TestContainer;

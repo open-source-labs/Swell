@@ -1,14 +1,8 @@
 import React from 'react';
-// Http2Body needs access to the Redux store.
-import { connect } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
 
-import { AppDispatch, RootState } from '../../../toolkit-refactor/store';
-import { $TSFixMeObject } from '../../../../types';
-
-import {
-  newRequestBodySet,
-  newRequestHeadersSet,
-} from '../../../toolkit-refactor/slices/newRequestSlice';
+import { NewRequestBody } from '~/types';
 
 // Import local components
 import BodyTypeSelect from './BodyTypeSelect';
@@ -18,51 +12,34 @@ import WWWForm from '../sharedComponents/requestForms/WWWForm';
 import JSONTextArea from '../sharedComponents/JSONTextArea';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
-/**@todo switch to hooks? */
-const mapStateToProps = (store: RootState) => {
-  return {
-    newRequestHeaders: store.newRequest.newRequestHeaders,
-    newRequestBody: store.newRequest.newRequestBody,
-    warningMessage: store.warningMessage,
+function Http2Body() {
+  const dispatch = useAppDispatch();
+  const newRequestBody = useAppSelector(
+    (store) => store.newRequest.newRequestBody
+  );
+
+  const setBody = (newBod: NewRequestBody) => {
+    dispatch(newRequestBodySet(newBod));
   };
-};
 
-/**@todo switch to hooks? */
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  newRequestHeadersSet: (requestHeadersObj: $TSFixMeObject) => {
-    dispatch(newRequestHeadersSet(requestHeadersObj));
-  },
-  newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
-    dispatch(newRequestBodySet(requestBodyObj));
-  },
-});
-
-function Http2Body({
-  newRequestHeaders,
-  newRequestBody,
-  warningMessage,
-  newRequestHeadersSet,
-  newRequestBodySet,
-}) {
-  const bodyEntryArea = () => {
+  const bodyEntryPicker = () => {
     //BodyType of none : display nothing
     if (newRequestBody.bodyType === 'none') {
-      return;
+      return null;
     }
+
     //BodyType of XWWW... : display WWWForm entry
     if (newRequestBody.bodyType === 'x-www-form-urlencoded') {
       return (
-        <WWWForm
-          newRequestBodySet={newRequestBodySet}
-          newRequestBody={newRequestBody}
-        />
+        <WWWForm newRequestBodySet={setBody} newRequestBody={newRequestBody} />
       );
     }
+
     //RawType of application/json : Text area box with error checking
     if (newRequestBody.rawType === 'application/json') {
       return (
         <JSONTextArea
-          newRequestBodySet={newRequestBodySet}
+          newRequestBodySet={setBody}
           newRequestBody={newRequestBody}
         />
       );
@@ -81,17 +58,13 @@ function Http2Body({
       />
     );
   };
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <BodyTypeSelect />
-      {bodyEntryArea()}
+      {bodyEntryPicker()}
     </Box>
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Http2Body);
+export default Http2Body;

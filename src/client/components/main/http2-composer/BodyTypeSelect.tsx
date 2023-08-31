@@ -1,58 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { connect } from 'react-redux';
-
-import { RootState } from '../../../toolkit-refactor/store';
-
-import {
-  newRequestBodySet,
-  newRequestHeadersSet,
-} from '../../../toolkit-refactor/slices/newRequestSlice';
+import React from 'react';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
 
 import {
+  type SelectChangeEvent,
   Box,
   Button,
   Select,
   MenuItem,
   FormControl,
-  SelectChangeEvent,
 } from '@mui/material';
 
-/**@todo switch to use hooks? */
-const mapStateToProps = (store: RootState) => {
-  return {
-    newRequestHeaders: store.newRequest.newRequestHeaders,
-    newRequestBody: store.newRequest.newRequestBody,
-  };
-};
+function BodyTypeSelect() {
+  const dispatch = useAppDispatch();
+  const newRequestBody = useAppSelector(
+    (store) => store.newRequest.newRequestBody
+  );
 
-/**@todo switch to use hooks? */
-const mapDispatchToProps = (dispatch) => ({
-  newRequestHeadersSet: (requestHeadersObj) => {
-    dispatch(newRequestHeadersSet(requestHeadersObj));
-  },
-  newRequestBodySet: (requestBodyObj) => {
-    dispatch(newRequestBodySet(requestBodyObj));
-  },
-});
-
-function BodyTypeSelect({
-  newRequestHeaders,
-  newRequestBody,
-  newRequestHeadersSet,
-  newRequestBodySet,
-}) {
   const handleBodyTypeSelect = (event: SelectChangeEvent) => {
-    newRequestBodySet({
-      ...newRequestBody,
-      bodyType: event.target.value,
-    });
+    dispatch(
+      newRequestBodySet({
+        ...newRequestBody,
+        bodyType: event.target.value,
+      })
+    );
   };
 
   const handleRawBodyTypeSelect = (event: SelectChangeEvent) => {
-    newRequestBodySet({
-      ...newRequestBody,
-      rawType: event.target.value,
-    });
+    dispatch(
+      newRequestBodySet({
+        ...newRequestBody,
+        rawType: event.target.value,
+      })
+    );
   };
 
   const prettifyJSON = () => {
@@ -133,4 +113,4 @@ function BodyTypeSelect({
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BodyTypeSelect);
+export default BodyTypeSelect;

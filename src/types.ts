@@ -305,6 +305,7 @@ export interface RequestWebRTCVideo {
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: MediaStream | null;
   webRTCRemoteStream: MediaStream | null;
+  method?: string;
 }
 
 export interface RequestWebRTCText {
@@ -318,6 +319,7 @@ export interface RequestWebRTCText {
   webRTCLocalStream: RTCDataChannel | null;
   webRTCRemoteStream: RTCDataChannel | null;
   webRTCMessages: WebMessages[];
+  method?: string;
 }
 
 export interface NewRequestSSE {
