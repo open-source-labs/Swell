@@ -24,6 +24,7 @@
 
     // Sets up custom path aliases for shortening imports
     "paths": {
+      "~/assets/*": ["./src/assets/*"],
       "~/components/*": ["./src/client/components/*"],
       "~/controllers/*": ["./src/client/controllers/*"],
       "~/toolkit/*": ["./src/client/toolkit-refactor/*"],
