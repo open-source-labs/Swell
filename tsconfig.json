@@ -24,7 +24,7 @@
 
     // Sets up custom path aliases for shortening imports
     "paths": {
-      "~/store": ["./src/client/toolkit-refactor/store.ts"]
+      "~/toolkit/*": ["./src/client/toolkit-refactor/*"]
     }
   },
   "include": [
