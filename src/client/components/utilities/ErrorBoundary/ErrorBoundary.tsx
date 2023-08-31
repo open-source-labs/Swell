@@ -4,26 +4,27 @@
  * catches an error, it gracefully breaks just a specific part of the app,
  * instead of the whole thing.
  *
- * As of 5/13/23, error boundaries can still only be implemented in class
- * components. A hooks version is in the works, but don't try to convert this
- * until that hook is actually available.
+ * As of 8/31/23, error boundaries can still only be implemented in class
+ * components. A non-class boundary version is in the works (whether that will
+ * use a hook or a custom component remains to be seen), but don't try to
+ * convert this until something is actually available.
  *
- * {@link https://reactjs.org/docs/error-boundaries.html}
+ * {@link https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary}
  */
 
-import React, { Component, ReactNode, ErrorInfo } from 'react';
+import React, { type ReactNode, type ErrorInfo, Component } from 'react';
 
-interface Props {
-  /** Component children. */
-  children?: ReactNode;
-}
+type Props = {
+  children: ReactNode;
+  fallback?: ReactNode;
+};
 
-interface State {
+type State = {
   /** Indicates whether the boundary has caught an error. */
   hasError: boolean;
-}
+};
 
-class ErrorBoundary extends Component<Props, State> {
+export default class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
 
   /**
@@ -45,13 +46,16 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('ErrorBoundary caught an error', error, info);
   }
 
-  /**
-   * Conditionally renders children based on whether the error boundary itself
-   * caught an error.
-   */
   render() {
-    if (!this.state.hasError) {
-      return this.props.children;
+    const { children, fallback } = this.props;
+    const { hasError } = this.state;
+
+    if (!hasError) {
+      return children;
+    }
+
+    if (fallback !== undefined) {
+      return fallback;
     }
 
     return (
@@ -61,6 +65,4 @@ class ErrorBoundary extends Component<Props, State> {
     );
   }
 }
-
-export default ErrorBoundary;
 
