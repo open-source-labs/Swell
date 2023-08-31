@@ -1,23 +1,25 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useAppDispatch } from '~/toolkit/store';
+
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
 import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
 
-export default function WorkspaceContextMenu({ id, name, reqResArray }) {
-  const dispatch = useDispatch();
+type MousePosition = {
+  mouseX: number;
+  mouseY: number;
+};
 
-  const [contextMenu, setContextMenu] = React.useState<{
-    mouseX: number;
-    mouseY: number;
-  } | null>(null);
+export default function WorkspaceContextMenu({ id, name, reqResArray }) {
+  const [menuPosition, setMenuPosition] = useState<MousePosition | null>(null);
+  const dispatch = useAppDispatch();
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
-    setContextMenu(
-      contextMenu === null
+    setMenuPosition(
+      menuPosition === null
         ? {
             mouseX: event.clientX + 2,
             mouseY: event.clientY - 6,
@@ -30,7 +32,7 @@ export default function WorkspaceContextMenu({ id, name, reqResArray }) {
   };
 
   const handleClose = () => {
-    setContextMenu(null);
+    setMenuPosition(null);
   };
 
   // <MenuItem
@@ -53,12 +55,12 @@ export default function WorkspaceContextMenu({ id, name, reqResArray }) {
       >
         <Typography>{name}</Typography>
         <Menu
-          open={contextMenu !== null}
+          open={menuPosition !== null}
           onClose={handleClose}
           anchorReference="anchorPosition"
           anchorPosition={
-            contextMenu !== null
-              ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            menuPosition !== null
+              ? { top: menuPosition.mouseY, left: menuPosition.mouseX }
               : undefined
           }
         >

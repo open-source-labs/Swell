@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-// Import actions so that the navbar can interact with the Redux store.
-import { newRequestContentByProtocol } from '../../toolkit-refactor/slices/newRequestSlice';
-import { newRequestFieldsByProtocol } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
+import { useAppDispatch } from '~/toolkit/store';
+import { newRequestContentByProtocol } from '~/toolkit/slices/newRequestSlice';
+import { newRequestFieldsByProtocol } from '~/toolkit/slices/newRequestFieldsSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';
 import { Box, Divider } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import ButtonUnstyled from '@mui/base/Button';
-import { useDispatch } from 'react-redux';
 import { SwellTooltip } from '../customMuiStyles/tooltip';
 
 interface color {
@@ -91,7 +90,7 @@ const experimentalTooltipText: string =
  * Click a protocol button -> Alter the Redux store accordingly -> Route to the appropriate "main" container
  */
 function ProtocolSelect() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const currPath = location.pathname;
   /**

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '~/toolkit/store.js';
 import { historyDeleted } from '../../toolkit-refactor/slices/historySlice';
 import { setSidebarActiveTab } from '../../toolkit-refactor/slices/uiSlice';
 
@@ -10,7 +10,7 @@ import { newRequestSSESet } from '../../toolkit-refactor/slices/newRequestSlice'
 
 import historyController from '../../controllers/historyController';
 
-import { 
+import {
   NewRequestFields,
   OpenAPIRequest,
   NewRequestBody,
@@ -21,23 +21,24 @@ import {
   Methods,
   Network,
   ReqResRequest,
-  ReqResResponse } from '../../../types.js';
+  ReqResResponse,
+} from '../../../types.js';
 import { request } from 'http';
 import { graphql } from 'graphql';
 
-  interface NewRequestCookiesSet {
-    cookiesArr: CookieOrHeader[];
-    count: number;
-  };
-  
-  interface NewRequestHeadersSet {
+interface NewRequestCookiesSet {
+  cookiesArr: CookieOrHeader[];
+  count: number;
+}
+
+interface NewRequestHeadersSet {
   headersArr: CookieOrHeader[];
   count: number;
-  };
+}
 
 interface Props {
-  newRequestFields: NewRequestFields,
-  newRequestsOpenAPI: OpenAPIRequest,
+  newRequestFields: NewRequestFields;
+  newRequestsOpenAPI: OpenAPIRequest;
   content: {
     checked: boolean;
     checkSelected: boolean;
@@ -67,58 +68,58 @@ interface Props {
     webrtc: boolean;
     frequency?: number;
     duration?: number;
-  },
+  };
   connectContent: {
     request: {
-      method: Methods,
-      isSSE: boolean,
-      headers: CookieOrHeader,
-      cookies: CookieOrHeader,
-      bodyType: string,
-      body: string,
-      bodyVariables: string,
-      rawType: string,
-      JSONFormatted: boolean,
-      network: Network,
-      restUrl: string
-      wsUrl: string,
-      gqlUrl: string,
-      grpcUrl: string
-    },
-    protocol: Protocol
-    url: string,
-    webrtcUrl: string,
-    graphQL: boolean,
-    gRPC: boolean,
-    webrtc: boolean,
-    streamsArr: Record<string, unknown>[],
-    streamContent: Record<string, unknown>[],
-    queryArr: Record<string, unknown>[] | null,
-    packageName: string | null,
-    rpc: string,
-    service: string | null,
-    initialQuery: unknown | null,
-    protoPath: unknown | null,
-    servicesObj: any | null,
-    protoContent: string
-  },
-  fieldsReplaced: (obj: {}) => void,
-  newRequestHeadersSet: (obj: NewRequestHeadersSet) => void,
-  newRequestCookiesSet: (obj: NewRequestCookiesSet) => void,
-  newRequestBodySet: (obj: NewRequestBody) => void,
-  newRequestStreamsSet: NewRequestStreams,
-  network: Network,
-  isSSE: boolean
-  url: string,
-  restUrl: string,
-  wsUrl: string,
-  gqlUrl: string,
-  webrtcUrl: string,
-  grpcUrl: string
-  method: Methods
+      method: Methods;
+      isSSE: boolean;
+      headers: CookieOrHeader;
+      cookies: CookieOrHeader;
+      bodyType: string;
+      body: string;
+      bodyVariables: string;
+      rawType: string;
+      JSONFormatted: boolean;
+      network: Network;
+      restUrl: string;
+      wsUrl: string;
+      gqlUrl: string;
+      grpcUrl: string;
+    };
+    protocol: Protocol;
+    url: string;
+    webrtcUrl: string;
+    graphQL: boolean;
+    gRPC: boolean;
+    webrtc: boolean;
+    streamsArr: Record<string, unknown>[];
+    streamContent: Record<string, unknown>[];
+    queryArr: Record<string, unknown>[] | null;
+    packageName: string | null;
+    rpc: string;
+    service: string | null;
+    initialQuery: unknown | null;
+    protoPath: unknown | null;
+    servicesObj: any | null;
+    protoContent: string;
+  };
+  fieldsReplaced: (obj: {}) => void;
+  newRequestHeadersSet: (obj: NewRequestHeadersSet) => void;
+  newRequestCookiesSet: (obj: NewRequestCookiesSet) => void;
+  newRequestBodySet: (obj: NewRequestBody) => void;
+  newRequestStreamsSet: NewRequestStreams;
+  network: Network;
+  isSSE: boolean;
+  url: string;
+  restUrl: string;
+  wsUrl: string;
+  gqlUrl: string;
+  webrtcUrl: string;
+  grpcUrl: string;
+  method: Methods;
 }
 
-const History = (props: Props)=> {
+const History = (props: Props) => {
   //destructuring props
   const {
     content,
@@ -127,7 +128,7 @@ const History = (props: Props)=> {
     newRequestCookiesSet,
     newRequestBodySet,
     newRequestStreamsSet,
-    newRequestFields
+    newRequestFields,
   } = props;
 
   //destructuring nested props within content
@@ -142,9 +143,9 @@ const History = (props: Props)=> {
     timeReceived,
     timeSent,
     url,
-    webrtc
+    webrtc,
   } = content;
-  
+
   //destructuring nested props within content.request
   const {
     body,
@@ -167,12 +168,14 @@ const History = (props: Props)=> {
     wsUrl,
   } = request;
 
-  const dispatch = useDispatch();
-  const setSidebarTab = (tabName: string) => dispatch(setSidebarActiveTab(tabName));
+  const dispatch = useAppDispatch();
+  const setSidebarTab = (tabName: string) => {
+    dispatch(setSidebarActiveTab(tabName));
+  };
+
   const setNewRequestSSE = (bool: boolean) => dispatch(newRequestSSESet(bool));
 
   const addHistoryToNewRequest = () => {
-
     let requestFieldObj = {};
     if (network === 'rest') {
       requestFieldObj = {
@@ -321,7 +324,7 @@ const History = (props: Props)=> {
       newRequestStreamsSet(requestStreamsObj);
     }
     setSidebarTab('composer');
-    console.log('requestFieldObj: ',requestFieldObj)
+    console.log('requestFieldObj: ', requestFieldObj);
   };
 
   let colorClass;
@@ -339,7 +342,7 @@ const History = (props: Props)=> {
     case 'ws':
       colorClass = 'is-ws-color';
       break;
-    case 'openApi':;
+    case 'openApi':
       colorClass = 'is-openapi-color';
       break;
     case 'webRtc':
@@ -352,7 +355,10 @@ const History = (props: Props)=> {
     historyController.deleteHistoryFromIndexedDb(event.target.id);
   };
 
-  const urlDisplay = content.url && content.url.length > 32 ? content.url.slice(0, 32) + '...' : content.url;
+  const urlDisplay =
+    content.url && content.url.length > 32
+      ? content.url.slice(0, 32) + '...'
+      : content.url;
 
   return (
     <div className="history-container is-flex is-justify-content-space-between m-3">
@@ -360,7 +366,10 @@ const History = (props: Props)=> {
         className="is-clickable is-primary-link is-flex"
         onClick={() => addHistoryToNewRequest()}
       >
-        <div className={`history-method mr-2 ${colorClass}`}> {content.request.method} </div>
+        <div className={`history-method mr-2 ${colorClass}`}>
+          {' '}
+          {content.request.method}{' '}
+        </div>
         <div className="history-url"> {urlDisplay || '-'} </div>
       </div>
       <div className="history-delete-container">

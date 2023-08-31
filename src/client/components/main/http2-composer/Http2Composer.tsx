@@ -1,12 +1,12 @@
 import React from 'react';
-import { v4 as uuid } from 'uuid';
-import { useDispatch } from 'react-redux';
-
-import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
+import { useAppDispatch } from '~/toolkit/store';
+import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
-} from '../../../toolkit-refactor/slices/uiSlice';
+} from '~/toolkit/slices/uiSlice';
+
+import { v4 as uuid } from 'uuid';
 
 // Import controllers
 import connectionController from '../../../controllers/reqResController';
@@ -21,15 +21,20 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { CookieOrHeader, ReqRes, MainContainerProps, ValidationMessage } from '../../../../types';
+import {
+  CookieOrHeader,
+  ReqRes,
+  MainContainerProps,
+  ValidationMessage,
+} from '../../../../types';
 
 import TestContainer from '../sharedComponents/stressTest/TestContainer';
-import Store from '../../../toolkit-refactor/store';
 import { type } from 'os';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props: MainContainerProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   // Destructuring store props.
   const {
     // currentTab,
@@ -168,7 +173,7 @@ export default function Http2Composer(props: MainContainerProps) {
       saves the reqRes information, clears current inputs, and finally dispatches
       the reqRes object.
   */
-  const sendNewRequest = () : void => {
+  const sendNewRequest = (): void => {
     // checks to see if input URL is empty or only contains http. If that is the case, return.
     const warnings = requestValidationCheck();
     if (Object.keys(warnings).length > 0) {
@@ -211,7 +216,7 @@ export default function Http2Composer(props: MainContainerProps) {
 
     // add request to history
     historyController.addHistoryToIndexedDb(reqRes);
-    
+
     // dispatches reqRes object
     reqResItemAdded(reqRes);
 
