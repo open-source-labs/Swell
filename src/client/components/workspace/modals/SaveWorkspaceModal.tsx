@@ -2,32 +2,34 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { v4 as uuid } from 'uuid';
-import collectionsController from '../../../controllers/collectionsController';
-import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
-import { ReqRes } from '../../../../../src/types'
-import { RootState } from '../../../toolkit-refactor/store';
-
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 import {
   collectionUpdated,
   collectionAdded,
-} from '../../../toolkit-refactor/slices/collectionsSlice';
+} from '~/toolkit/slices/collectionsSlice';
+
+import { v4 as uuid } from 'uuid';
+import collectionsController from '../../../controllers/collectionsController';
+import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
+import { ReqRes } from '../../../../../src/types';
 
 interface modalSwitch {
-  showModal: boolean,
-  setShowModal: (showSwitch: boolean) => void
-};
+  showModal: boolean;
+  setShowModal: (showSwitch: boolean) => void;
+}
 
-export default function SaveWorkspaceModal({ showModal, setShowModal }: modalSwitch): JSX.Element {
-  const dispatch = useDispatch();
+export default function SaveWorkspaceModal({
+  showModal,
+  setShowModal,
+}: modalSwitch): JSX.Element {
+  const dispatch = useAppDispatch();
   // LOCAL STATE HOOKS
   const [input, setInput] = useState('');
   const [collectionNameErrorStyles, setCollectionNameErrorStyles] =
     useState(false);
-  // PULL elements FROM store
-  const reqResArray = useSelector((store: RootState) => store.reqRes.reqResArray);
-  const collections = useSelector((store: RootState) => store.collections);
+
+  const reqResArray = useAppSelector((store) => store.reqRes.reqResArray);
+  const collections = useAppSelector((store) => store.collections);
 
   const saveCollection = (inputName: string): void => {
     const clonedArray = JSON.parse(JSON.stringify(reqResArray));

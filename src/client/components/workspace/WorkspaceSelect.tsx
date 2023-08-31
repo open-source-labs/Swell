@@ -1,7 +1,7 @@
 import React from 'react';
-import { Collection, ReqRes, WorkspaceContainerProps } from '../../../types';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { Collection, ReqRes, WorkspaceContainerProps } from '../../../types';
 
 import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
 
@@ -13,13 +13,12 @@ import {
   FormHelperText,
   SelectChangeEvent,
 } from '@mui/material';
-import { RootState } from '../../toolkit-refactor/store';
 
 export default function WorkspaceSelect({
   currentWorkspaceId,
   setWorkspace,
 }: WorkspaceContainerProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
@@ -29,9 +28,7 @@ export default function WorkspaceSelect({
     dispatch(reqResReplaced(reqResArray));
   };
 
-  const workspaces: Collection[] = useSelector(
-    (store: RootState) => store.collections
-  );
+  const workspaces = useAppSelector((store) => store.collections);
 
   const menuItems =
     workspaces.length > 0

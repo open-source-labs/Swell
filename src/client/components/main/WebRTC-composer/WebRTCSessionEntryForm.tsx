@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+
 import { NewRequestWebRTCSet, RequestWebRTC } from '../../../../types';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import { useDispatch, useSelector } from 'react-redux';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
-import { RootState } from '../../../toolkit-refactor/store';
 
 interface Props {
   setShowRTCEntryForms: (val: boolean) => any;
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
-  const newRequestWebRTC: RequestWebRTC = useSelector(
-    (store: RootState) => store.newRequest.newRequestWebRTC
+  const dispatch = useAppDispatch();
+  const newRequestWebRTC = useAppSelector(
+    (store) => store.newRequest.newRequestWebRTC
   );
 
   const { setShowRTCEntryForms } = props;
@@ -58,10 +58,12 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             {newRequestWebRTC.webRTCEntryMode !== 'Manual' && (
               <a
                 onClick={() => {
-                  dispatch(newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCEntryMode: 'Manual',
-                  }));
+                  dispatch(
+                    newRequestWebRTCSet({
+                      ...newRequestWebRTC,
+                      webRTCEntryMode: 'Manual',
+                    })
+                  );
                   setEntryTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
@@ -73,10 +75,12 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             {newRequestWebRTC.webRTCEntryMode !== 'WS' && (
               <a
                 onClick={() => {
-                  dispatch(newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCEntryMode: 'WS',
-                  }));
+                  dispatch(
+                    newRequestWebRTCSet({
+                      ...newRequestWebRTC,
+                      webRTCEntryMode: 'WS',
+                    })
+                  );
                   setEntryTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
@@ -171,10 +175,12 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             {newRequestWebRTC.webRTCDataChannel !== 'Text' && (
               <a
                 onClick={() => {
-                  dispatch(newRequestWebRTCSet({
-                    ...newRequestWebRTC,
-                    webRTCDataChannel: 'Text',
-                  } as RequestWebRTC));
+                  dispatch(
+                    newRequestWebRTCSet({
+                      ...newRequestWebRTC,
+                      webRTCDataChannel: 'Text',
+                    } as RequestWebRTC)
+                  );
                   setShowRTCEntryForms(false);
                   setDataTypeDropdownIsActive(false);
                 }}

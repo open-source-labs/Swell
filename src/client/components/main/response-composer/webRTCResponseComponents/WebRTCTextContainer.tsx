@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../toolkit-refactor/store';
+import { useAppSelector } from '~/toolkit/store';
 import { stepperClasses } from '@mui/material';
 import {
   $TSFixMe,
@@ -17,10 +17,7 @@ const WebRTCTextContainer = () => {
   const dispatch = useDispatch();
   const [messageInput, setMessageInput] = useState('');
 
-  const currentReqRes = useSelector(
-    (store: RootState) => store.reqRes.currentResponse
-  ) as ReqRes;
-
+  const currentReqRes = useAppSelector((store) => store.reqRes.currentResponse);
   const { request, response } = currentReqRes as {
     request: RequestWebRTCText;
     response: ResponseWebRTCText;

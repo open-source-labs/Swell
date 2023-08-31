@@ -1,29 +1,21 @@
 import React, { useReducer, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+
 import { v4 as uuid } from 'uuid';
-// Import controllers
+
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
-// Import local components
-import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
-// Import Redux hooks
-import { useSelector, useDispatch } from 'react-redux';
-
-// Import Actions from RTK slice
-import historyController from '../../../controllers/historyController';
-import connectionController from '../../../controllers/reqResController';
-
-// Import MUI components
-import { Box } from '@mui/material';
-import { RootState } from '../../../toolkit-refactor/store';
-import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
+
 import TRPCProceduresContainer from './TRPCProceduresContainer';
-
 import TRPCSubscriptionContainer from './TRPCSubscriptionContainer';
-import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
+import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 
-/**
- *
- */
+import historyController from '~/controllers/historyController';
+import connectionController from '~/controllers/reqResController';
+
+import { Box } from '@mui/material';
+import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 
 const PROCEDURE_DEFAULT = {
   //the default format for whenever a new prcedure get add
@@ -82,7 +74,7 @@ function reducer(procedures, action) {
 }
 
 export default function TRPCComposer(props) {
-  const dispatch = useDispatch(); // dispatch for main redux store
+  const dispatch = useAppDispatch();
 
   const [showSubscription, setShowSubscription] = useState(false); // manage subscription component
   const subscriptionHandler = (bool) => {
@@ -142,13 +134,8 @@ export default function TRPCComposer(props) {
     reqResItemAdded,
   } = props;
 
-  /** newRequestFields slice from redux store, contains general request info*/
-  const requestFields = useSelector(
-    (state: RootState) => state.newRequestFields
-  );
-
-  /** reqRes slice from redux store, contains request and response data */
-  const newRequest = useSelector((state: RootState) => state.newRequest);
+  const requestFields = useAppSelector((store) => store.newRequestFields);
+  const newRequest = useAppSelector((store) => store.newRequest);
 
   const addProcedures = () => {
     // reducer dispatch for adding a new procedure to the procedures array

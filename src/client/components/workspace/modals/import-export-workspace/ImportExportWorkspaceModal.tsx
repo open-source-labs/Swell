@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useAppSelector } from '~/toolkit/store';
+
 import { Box, Backdrop } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -18,19 +19,16 @@ import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadR
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { RootState } from '../../../../toolkit-refactor/store';
 
 export default function ImportExportWorkspaceModal({ open, handleClose }) {
-  const [exportToLocalFilesList, setExportToLocalFilesList] =
-    React.useState(false);
+  const [exportToLocalFilesList, setExportToLocalFilesList] = useState(false);
 
   const handleExportToFilesClick = () => {
     setExportToLocalFilesList(!exportToLocalFilesList);
   };
 
-  let workspaces = useLiveQuery(() => db.collections.toArray());
-
-  const localWorkspaces = useSelector((store: RootState) => store.collections);
+  const localWorkspaces = useAppSelector((store) => store.collections);
+  const workspaces = useLiveQuery(() => db.collections.toArray());
 
   const importFileClick = () => {
     collectionsController.importCollection(localWorkspaces);

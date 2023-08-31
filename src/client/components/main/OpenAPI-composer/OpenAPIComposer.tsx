@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/toolkit/store';
+
 import { v4 as uuid } from 'uuid';
-import { RootState } from '../../../toolkit-refactor/store';
 // Import controllers
 import historyController from '../../../controllers/historyController';
 
@@ -17,10 +17,8 @@ import { Box } from '@mui/material';
 import { $TSFixMe, ReqRes } from '../../../../types';
 
 export default function OpenAPIComposer(props: $TSFixMe) {
+  const newRequestsOpenAPI = useAppSelector((store) => store.newRequestOpenApi);
 
-  // This is a better way to import what the components needs, not the mess of prop drilling
-  const newRequestsOpenAPI: $TSFixMe = useSelector((state: RootState) => state.newRequestOpenApi);
-  
   const {
     composerFieldsReset,
     openApiRequestsReplaced,
@@ -53,7 +51,9 @@ export default function OpenAPIComposer(props: $TSFixMe) {
 
   // We are only ever sending a request to one server, this one.
   // you can toggle which is the primary server in the serverEntryForm
-  const [primaryServer, setPrimaryServer] = useState<string>(newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || '')
+  const [primaryServer, setPrimaryServer] = useState<string>(
+    newRequestsOpenAPI?.openapiMetadata?.serverUrls[0] || ''
+  );
 
   const requestValidationCheck = () => {
     const validationMessage = {};
@@ -73,7 +73,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
         id: uuid(),
         createdAt: new Date(),
         host: `${primaryServer}`,
-        protocol: "http://",
+        protocol: 'http://',
         url: `${primaryServer}${req.endpoint}`,
         graphQL,
         gRPC,
@@ -85,7 +85,9 @@ export default function OpenAPIComposer(props: $TSFixMe) {
         checkSelected: false,
         request: {
           method: req.method,
-          headers: headersArr.filter((header: $TSFixMe) => header.active && !!header.key),
+          headers: headersArr.filter(
+            (header: $TSFixMe) => header.active && !!header.key
+          ),
           body: req.body,
           bodyType,
           rawType,
@@ -106,7 +108,7 @@ export default function OpenAPIComposer(props: $TSFixMe) {
         minimized: false,
         tab: currentTab,
       };
-      console.log('Open_API_COmposer-> reqRes',reqRes)
+      console.log('Open_API_COmposer-> reqRes', reqRes);
       // add request to history
       /** @todo Fix TS type error */
       historyController.addHistoryToIndexedDb(reqRes);
@@ -153,10 +155,8 @@ export default function OpenAPIComposer(props: $TSFixMe) {
           warningMessage={warningMessage}
         />
 
-        <OpenAPIDocumentEntryForm/>
-        <OpenAPIMetadata 
-        newRequestsOpenAPI={newRequestsOpenAPI} 
-        />
+        <OpenAPIDocumentEntryForm />
+        <OpenAPIMetadata newRequestsOpenAPI={newRequestsOpenAPI} />
         <OpenAPIServerForm
           setPrimaryServer={setPrimaryServer}
           newRequestsOpenAPI={newRequestsOpenAPI}

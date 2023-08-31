@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 
+import { v4 as uuid } from 'uuid';
 import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
 
 /**
@@ -13,17 +14,15 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../toolkit-refactor/store';
-import { useDispatch } from 'react-redux';
+
 import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
 import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
 import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
 export default function WebRTCComposer() {
-  const dispatch = useDispatch();
-  const newRequestWebRTC: RequestWebRTC = useSelector(
-    (store: RootState) => store.newRequest.newRequestWebRTC
+  const dispatch = useAppDispatch();
+  const newRequestWebRTC = useAppSelector(
+    (store) => store.newRequest.newRequestWebRTC
   );
 
   const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
@@ -41,7 +40,7 @@ export default function WebRTCComposer() {
       checkSelected: false,
       request: newRequestWebRTC,
       response: {
-        webRTCMessages: []
+        webRTCMessages: [],
       },
       checked: false,
       minimized: false,
@@ -57,14 +56,19 @@ export default function WebRTCComposer() {
       )
         return true;
     } catch {
-      return false
+      return false;
     }
     return false;
-  }
+  };
 
   const addNewRequest = (): void => {
-    if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
-      return alert('Invalid offer or answer SDP')
+    if (
+      !(
+        checkValidSDP(newRequestWebRTC.webRTCOffer) &&
+        checkValidSDP(newRequestWebRTC.webRTCAnswer)
+      )
+    ) {
+      return alert('Invalid offer or answer SDP');
     }
     const reqRes: ReqRes = composeReqRes();
 

@@ -8,7 +8,7 @@ import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 const TRPCMethodAndEndpointEntryForm = (props) => {
-  const requestFields = useSelector(
+  const requestFields = 
     (state: RootState) => state.newRequestFields
   );
   const dispatch = useDispatch();

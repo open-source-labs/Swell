@@ -1,32 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-// import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-// import CodeMirror from '@uiw/react-codemirror';
-// import { EditorView } from '@codemirror/view';
-// import { javascript } from '@codemirror/lang-javascript';
-// import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-// import Select from '@mui/material/Select';
-// import MenuItem from '@mui/material/MenuItem';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+
 import { RequestWebRTC } from '../../../../types';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useDispatch } from 'react-redux';
+
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
-import { RootState } from '../../../toolkit-refactor/store';
 
-// const jBeautify = require('js-beautify').js;
-
-interface Props {
-  // newRequestWebRTC: RequestWebRTC;
-  // warningMessage: {
-  //   body: string;
-  // } | null;
-}
-
-const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
-  const newRequestWebRTC: RequestWebRTC = useSelector(
-    (store: RootState) => store.newRequest.newRequestWebRTC
+const WebRTCServerEntryForm: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const newRequestWebRTC = useAppSelector(
+    (store) => store.newRequest.newRequestWebRTC
   );
 
   return (

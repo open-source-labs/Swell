@@ -3,11 +3,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React, { FC } from 'react';
-import { useAppSelector } from '~/toolkit/store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { setResponsePaneActiveTab } from '~/toolkit/slices/uiSlice';
+
 import { Box } from '@mui/material';
-import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
-import { RootState } from '../../../toolkit-refactor/store';
 import ReqResCtrl from '../../../controllers/reqResController';
 import EventsContainer from './EventsContainer';
 import HeadersContainer from './HeadersContainer';
@@ -16,23 +15,22 @@ import CookiesContainer from './CookiesContainer';
 import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
-import State from '../../../toolkit-refactor/store';
 import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
 import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer';
 
 const ResponsePaneContainer: FC = () => {
-  const dispatch = useDispatch();
   const isDark = useAppSelector((state) => state.ui.isDark);
-  const activeTab = useSelector(
-    (store: RootState) => store.ui.responsePaneActiveTab
+  const activeTab = useAppSelector((store) => store.ui.responsePaneActiveTab);
+  const currentResponse = useAppSelector(
+    (store) => store.reqRes.currentResponse
   );
 
-  const setActiveTab = (tabName: string) =>
+  const dispatch = useAppDispatch();
+
+  const setActiveTab = (tabName: string) => {
     dispatch(setResponsePaneActiveTab(tabName));
+  };
 
-  const currentResponse = useSelector(
-    (store: RootState) => store.reqRes.currentResponse
-  );
   const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
 
   return (
