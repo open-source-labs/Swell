@@ -20,7 +20,6 @@ type Props = {
 };
 
 type State = {
-  /** Indicates whether the boundary has caught an error. */
   hasError: boolean;
 };
 

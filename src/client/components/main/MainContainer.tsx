@@ -121,6 +121,9 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
 });
 
+export type BandaidRouterProps = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
+
 function MainContainer(props: $TSFixMeObject) {
   return (
     <Box sx={{ width: '75%' }}>
