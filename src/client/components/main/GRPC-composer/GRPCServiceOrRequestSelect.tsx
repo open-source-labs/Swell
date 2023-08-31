@@ -1,62 +1,29 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
-import { $TSFixMe } from '../../../../types';
-
-
+import useDropdownState from '~/hooks/useDropdownState';
 
 interface Props {
   value: string;
   items: string[];
-  onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   defaultTitle: string;
   id: string;
 }
 
-
-const GRPCServiceOrRequestSelect: React.FC<Props> = (props) => {
-  const { 
-    value, 
-    items, 
-    onClick, 
-    defaultTitle, 
-    id 
-  } = props;
-
-  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
-  const dropdownEl = useRef<null | HTMLDivElement >(null);
-
-  useEffect(() => {
-    const closeDropdown = (event: $TSFixMe) => {
-      if (!dropdownEl.current.contains(event.target)) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
-
-  const listItems: $TSFixMe[] = [];
-  items.forEach((itemStr, index) => {
-    if (value !== itemStr) {
-      listItems.push(
-        <a
-          onClick={(e) => {
-            setDropdownIsActive(false);
-            onClick(e);
-          }}
-          key={`listItem${index}`}
-          className="dropdown-item"
-        >
-          {itemStr}
-        </a>
-      );
-    }
-  });
+const GRPCServiceOrRequestSelect: React.FC<Props> = ({
+  value,
+  items,
+  onClick,
+  defaultTitle,
+  id,
+}) => {
+  const { dropdownIsOpen, dropdownRef, toggleDropdown, closeDropdown } =
+    useDropdownState();
 
   return (
     <div
-      ref={dropdownEl}
-      className={`mt-1 mb- dropdown ${dropdownIsActive ? 'is-active' : ''}`}
+      ref={dropdownRef}
+      className={`mt-1 mb- dropdown ${dropdownIsOpen ? 'is-active' : ''}`}
     >
       <div className="dropdown-trigger">
         <button
@@ -64,7 +31,7 @@ const GRPCServiceOrRequestSelect: React.FC<Props> = (props) => {
           className="button is-small is-outlined is-primary mr-3"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
-          onClick={() => setDropdownIsActive(!dropdownIsActive)}
+          onClick={toggleDropdown}
         >
           <span>{value}</span>
           <span className="icon is-small">
@@ -76,9 +43,36 @@ const GRPCServiceOrRequestSelect: React.FC<Props> = (props) => {
           </span>
         </button>
       </div>
+
       <div className="dropdown-menu">
         <ul className="dropdown-content">
-          {listItems}
+          {/**
+           * @todo 2023-08-31 - This markup needs love and care. Originally this
+           * was a list of <a> elements, even though onClick isn't valid on it.
+           * I changed it to <button> (adding type="button" to avoid any
+           * possible weird interactions with <form> elements higher up), but
+           * this still probably isn't right.
+           *
+           * I'm wondering if this should be a radio button or one of the other
+           * <input> elements, in which case, onClick should become onChange.
+           *
+           * Also, because this is inside a <ul>, the markup should include
+           * <li> elements around each main item element. Didn't do that because
+           * I didn't have time to verify whether that would break any CSS.
+           */}
+          {items.map((itemText, i) => (
+            <button
+              key={i}
+              type="button"
+              className="dropdown-item"
+              onClick={(e) => {
+                closeDropdown();
+                onClick(e);
+              }}
+            >
+              {itemText}
+            </button>
+          ))}
         </ul>
       </div>
     </div>

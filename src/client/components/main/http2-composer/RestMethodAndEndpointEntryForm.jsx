@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
+import useDropdownState from '~/hooks/useDropdownState';
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
 const RestMethodAndEndpointEntryForm = ({
@@ -14,18 +15,8 @@ const RestMethodAndEndpointEntryForm = ({
   value,
 }) => {
   const isDark = useAppSelector((state) => state.ui.isDark);
-  const [dropdownIsActive, setDropdownIsActive] = useState(false);
-  const dropdownEl = useRef();
-
-  useEffect(() => {
-    const closeDropdown = (event) => {
-      if (!dropdownEl.current.contains(event.target)) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
+  const { dropdownIsOpen, dropdownRef, toggleDropdown, closeDropdown } =
+    useDropdownState();
 
   const clearWarningIfApplicable = () => {
     if (warningMessage.uri) setWarningMessage({});
@@ -63,9 +54,9 @@ const RestMethodAndEndpointEntryForm = ({
   return (
     <div>
       <div
-        ref={dropdownEl}
+        ref={dropdownRef}
         className={` is-flex is-justify-content-center dropdown ${
-          dropdownIsActive ? 'is-active' : ''
+          dropdownIsOpen ? 'is-active' : ''
         }`}
         style={{ padding: '10px' }}
       >
@@ -75,7 +66,7 @@ const RestMethodAndEndpointEntryForm = ({
             id="rest-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
-            onClick={() => setDropdownIsActive(!dropdownIsActive)}
+            onClick={toggleDropdown}
           >
             <span>{newRequestFields.method}</span>
             <span className="icon is-medium">
@@ -94,7 +85,7 @@ const RestMethodAndEndpointEntryForm = ({
             {newRequestFields.method !== 'GET' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('GET');
                 }}
                 className="dropdown-item"
@@ -106,7 +97,7 @@ const RestMethodAndEndpointEntryForm = ({
             {newRequestFields.method !== 'POST' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('POST');
                 }}
                 className="dropdown-item"
@@ -117,7 +108,7 @@ const RestMethodAndEndpointEntryForm = ({
             {newRequestFields.method !== 'PUT' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('PUT');
                 }}
                 className="dropdown-item"
@@ -128,7 +119,7 @@ const RestMethodAndEndpointEntryForm = ({
             {newRequestFields.method !== 'PATCH' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('PATCH');
                 }}
                 className="dropdown-item"
@@ -139,7 +130,7 @@ const RestMethodAndEndpointEntryForm = ({
             {newRequestFields.method !== 'DELETE' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('DELETE');
                 }}
                 className="dropdown-item"

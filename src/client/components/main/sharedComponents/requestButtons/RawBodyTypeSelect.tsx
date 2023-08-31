@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
+import useDropdownState from '~/hooks/useDropdownState';
 
 interface RawBodyTypeSelectProps {
   newRequestBodySet: (value: any) => void;
@@ -22,20 +23,14 @@ interface RequestHeader {
   value: string;
 }
 
-const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
-  const { newRequestBodySet, newRequestBody, newRequestHeadersSet, newRequestHeaders } = props;
-  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
-  const dropdownEl = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const closeDropdown = (event: MouseEvent) => {
-      if (dropdownEl.current && !dropdownEl.current.contains(event.target as Node)) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
+const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = ({
+  newRequestBodySet,
+  newRequestBody,
+  newRequestHeadersSet,
+  newRequestHeaders,
+}) => {
+  const { dropdownIsOpen, dropdownRef, closeDropdown, toggleDropdown } =
+    useDropdownState();
 
   const setNewRawBodyType = (rawTypeStr: string) => {
     newRequestBodySet({
@@ -56,8 +51,8 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
 
   return (
     <div
-      ref={dropdownEl}
-      className={`mt-1  mr-3 dropdown ${dropdownIsActive ? 'is-active' : ''}`}
+      ref={dropdownRef}
+      className={`mt-1  mr-3 dropdown ${dropdownIsOpen ? 'is-active' : ''}`}
     >
       <div className="dropdown-trigger">
         <button
@@ -65,7 +60,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           id="raw-body-type"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
-          onClick={() => setDropdownIsActive(!dropdownIsActive)}
+          onClick={toggleDropdown}
         >
           <span>{newRequestBody.rawType}</span>
           <span className="icon is-small">
@@ -84,7 +79,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           {newRequestBody.rawType !== 'text/plain' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewRawBodyType('text/plain');
               }}
               className="dropdown-item"
@@ -95,7 +90,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           {newRequestBody.rawType !== 'application/json' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewRawBodyType('application/json');
               }}
               className="dropdown-item"
@@ -106,7 +101,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           {newRequestBody.rawType !== 'application/javascript' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewRawBodyType('application/javascript');
               }}
               className="dropdown-item"
@@ -117,7 +112,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           {newRequestBody.rawType !== 'application/xml' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewRawBodyType('application/xml');
               }}
               className="dropdown-item"
@@ -128,7 +123,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           {newRequestBody.rawType !== 'text/xml' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewRawBodyType('text/xml');
               }}
               className="dropdown-item"
@@ -139,7 +134,7 @@ const RawBodyTypeSelect: React.FC<RawBodyTypeSelectProps> = (props) => {
           {newRequestBody.rawType !== 'text/html' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewRawBodyType('text/html');
               }}
               className="dropdown-item"

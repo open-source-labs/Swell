@@ -1,50 +1,57 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { type ChangeEvent } from 'react';
 import { useAppSelector } from '~/toolkit/store';
+import useDropdownState from '~/hooks/useDropdownState';
 import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';
+import { type ProcedureAction } from './TRPCComposer';
 
-const TRPCPrceduresEndPoint = (props) => {
-  const [dropdownIsActive, setDropdownIsActive] = useState(false);
-  const dropdownEl = useRef<HTMLDivElement>(null);
+type Props = {
+  index: number;
+  procedureData: { method: string; endpoint: string };
+  proceduresDispatch: React.Dispatch<ProcedureAction>;
+};
 
-  useEffect(() => {
-    const closeDropdown = (event: MouseEvent) => {
-      if (!dropdownEl.current.contains(event.target)) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
-
-  /// these functions exists to dispatch function to the reducer function inside of main trpc composer file.
-  const methodHandler = (method) => {
-    props.proceduresDipatch({
-      type: 'METHOD',
-      payload: { index: props.index, value: method },
-    });
-  };
-  const onChangeHandler = (e) => {
-    props.proceduresDipatch({
-      type: 'ENDPOINT',
-      payload: { index: props.index, value: e.target.value },
-    });
-  };
-  const onDeleteHandler = (e) => {
-    props.proceduresDipatch({
-      type: 'DELETE',
-      payload: { index: props.index },
-    });
-  };
+const TRPCProceduresEndPoint = ({
+  procedureData,
+  index,
+  proceduresDispatch,
+}: Props) => {
   const isDark = useAppSelector((state) => state.ui.isDark);
+  const { dropdownIsOpen, dropdownRef, toggleDropdown, closeDropdown } =
+    useDropdownState();
+
+  const methodHandler = (method: 'QUERY' | 'MUTATE') => {
+    proceduresDispatch({
+      type: 'procedureUpdated',
+      payload: { procedureIndex: index, key: 'method', newValue: method },
+    });
+  };
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    proceduresDispatch({
+      type: 'procedureUpdated',
+      payload: {
+        procedureIndex: index,
+        key: 'endpoint',
+        newValue: e.target.value,
+      },
+    });
+  };
+
+  const onDeleteHandler = () => {
+    proceduresDispatch({
+      type: 'procedureDeleted',
+      payload: { procedureIndex: index },
+    });
+  };
 
   return (
     <div
-      ref={dropdownEl}
+      ref={dropdownRef}
       className={`is-flex is-justify-content-center dropdown ${
-        dropdownIsActive ? 'is-active' : ''
+        dropdownIsOpen ? 'is-active' : ''
       }`}
       style={{ padding: '10px' }}
     >
@@ -54,9 +61,9 @@ const TRPCPrceduresEndPoint = (props) => {
           id="graphql-method"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
-          onClick={() => setDropdownIsActive(!dropdownIsActive)}
+          onClick={toggleDropdown}
         >
-          <span>{props.procedureData.method}</span>
+          <span>{procedureData.method}</span>
           <span className="icon is-small">
             <img
               src={dropDownArrow}
@@ -70,27 +77,28 @@ const TRPCPrceduresEndPoint = (props) => {
 
       <div className="dropdown-menu" id="dropdown-menu">
         <ul className="dropdown-content">
-          {props.procedureData.method !== 'QUERY' && (
-            <a
-              onClick={(e) => {
-                setDropdownIsActive(false);
+          {procedureData.method !== 'QUERY' && (
+            <button
+              onClick={() => {
+                closeDropdown();
                 methodHandler('QUERY');
               }}
               className="dropdown-item"
             >
               QUERY
-            </a>
+            </button>
           )}
-          {props.procedureData.method !== 'MUTATE' && (
-            <a
-              onClick={(e) => {
-                setDropdownIsActive(false);
+
+          {procedureData.method !== 'MUTATE' && (
+            <button
+              onClick={() => {
+                closeDropdown();
                 methodHandler('MUTATE');
               }}
               className="dropdown-item"
             >
               MUTATE
-            </a>
+            </button>
           )}
         </ul>
       </div>
@@ -102,7 +110,7 @@ const TRPCPrceduresEndPoint = (props) => {
         type="text"
         id="url-input"
         placeholder="Enter endpoint"
-        value={props.procedureData.endpoint}
+        value={procedureData.endpoint}
         onChange={onChangeHandler}
       />
 
@@ -113,5 +121,5 @@ const TRPCPrceduresEndPoint = (props) => {
   );
 };
 
-export default TRPCPrceduresEndPoint;
+export default TRPCProceduresEndPoint;
 

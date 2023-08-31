@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
+import useDropdownState from '~/hooks/useDropdownState';
 
 interface Props {
   newRequestBodySet: (value: any) => void;
@@ -8,33 +9,18 @@ interface Props {
   newRequestHeaders: any;
 }
 
-const BodyTypeSelect = (props: Props) => {
-  const {
-    newRequestBodySet,
-    newRequestBody,
-    newRequestHeadersSet,
-    newRequestHeaders,
-  } = props;
-
-  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>();
-  const dropdownEl = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const closeDropdown = (event: MouseEvent) => {
-      if (
-        dropdownEl.current &&
-        !dropdownEl.current.contains(event.target as Node)
-      ) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener("click", closeDropdown);
-    return () => document.removeEventListener("click", closeDropdown);
-  }, []);
+const BodyTypeSelect = ({
+  newRequestBodySet,
+  newRequestBody,
+  newRequestHeadersSet,
+  newRequestHeaders,
+}: Props) => {
+  const { dropdownIsOpen, dropdownRef, toggleDropdown, closeDropdown } =
+    useDropdownState();
 
   const removeContentTypeHeader = () => {
     const filtered = newRequestHeaders.headersArr.filter(
-      (header: any) => header.key.toLowerCase() !== "content-type"
+      (header: any) => header.key.toLowerCase() !== 'content-type'
     );
     newRequestHeadersSet({
       headersArr: filtered,
@@ -54,7 +40,7 @@ const BodyTypeSelect = (props: Props) => {
     headersCopy.headersArr[0] = {
       id: Math.random() * 1000000,
       active: true,
-      key: "Content-type",
+      key: 'Content-type',
       value: newBodyType,
     };
     newRequestHeadersSet({
@@ -64,8 +50,8 @@ const BodyTypeSelect = (props: Props) => {
 
   return (
     <div
-      ref={dropdownEl}
-      className={`mt-1 mb- dropdown ${dropdownIsActive ? "is-active" : ""}`}
+      ref={dropdownRef}
+      className={`mt-1 mb- dropdown ${dropdownIsOpen ? 'is-active' : ''}`}
     >
       <div className="dropdown-trigger">
         <button
@@ -73,7 +59,7 @@ const BodyTypeSelect = (props: Props) => {
           id="body-type-select"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
-          onClick={() => setDropdownIsActive(!dropdownIsActive)}
+          onClick={toggleDropdown}
         >
           <span>{newRequestBody.bodyType}</span>
           <span className="icon is-small">
@@ -92,7 +78,7 @@ const BodyTypeSelect = (props: Props) => {
           {newRequestBody.bodyType !== 'raw' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewBodyType('raw');
                 setContentTypeHeader('text/plain');
               }}
@@ -104,7 +90,7 @@ const BodyTypeSelect = (props: Props) => {
           {newRequestBody.bodyType !== 'x-www-form-urlencoded' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setContentTypeHeader('x-www-form-urlencoded');
                 setNewBodyType('x-www-form-urlencoded');
               }}
@@ -116,7 +102,7 @@ const BodyTypeSelect = (props: Props) => {
           {newRequestBody.bodyType !== 'none' && (
             <a
               onClick={() => {
-                setDropdownIsActive(false);
+                closeDropdown();
                 setNewBodyType('none');
                 removeContentTypeHeader();
               }}
@@ -130,6 +116,5 @@ const BodyTypeSelect = (props: Props) => {
     </div>
   );
 };
-
 
 export default BodyTypeSelect;

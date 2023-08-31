@@ -1,33 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { newRequestWebRTCSet } from '~/toolkit/slices/newRequestSlice';
+import useDropdownState from '~/hooks/useDropdownState';
 
-import { NewRequestWebRTCSet, RequestWebRTC } from '../../../../types';
-import webrtcPeerController from '../../../controllers/webrtcPeerController';
-
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
+import { type NewRequestWebRTCSet, type RequestWebRTC } from '~/types';
+import webrtcPeerController from '~/controllers/webrtcPeerController';
+import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';
 
 interface Props {
-  setShowRTCEntryForms: (val: boolean) => any;
+  setShowRTCEntryForms: (val: boolean) => void;
 }
 
-const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
+const WebRTCSessionEntryForm: React.FC<Props> = ({ setShowRTCEntryForms }) => {
   const dispatch = useAppDispatch();
   const newRequestWebRTC = useAppSelector(
     (store) => store.newRequest.newRequestWebRTC
   );
 
-  const { setShowRTCEntryForms } = props;
-  const [entryTypeDropdownIsActive, setEntryTypeDropdownIsActive] =
-    useState(false);
-  const [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] =
-    useState(false);
+  /**
+   * @todo 2023-08-31 - This seems like a huge code smell. I think that one of
+   * the later iterators on the project tried building the dropdowns from
+   * scratch, without realizing that there was already code in place in a few
+   * other places for doing that.
+   *
+   * Ended up using the useDropdownState hook to clean up the implementations,
+   * but several properties from the hook still aren't being used, even though
+   * they may still need to be.
+   */
+  const entryDropdownState = useDropdownState();
+  const dataDropdownState = useDropdownState();
 
   return (
     <div>
       <div
         className={` is-flex is-justify-content-center dropdown ${
-          entryTypeDropdownIsActive && 'is-active'
+          entryDropdownState.dropdownIsOpen && 'is-active'
         }`}
         style={{ padding: '10px' }}
       >
@@ -37,9 +44,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             id="rest-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
-            onClick={() =>
-              setEntryTypeDropdownIsActive(!entryTypeDropdownIsActive)
-            }
+            onClick={entryDropdownState.toggleDropdown}
           >
             <span>{newRequestWebRTC.webRTCEntryMode}</span>
             <span className="icon is-medium">
@@ -58,13 +63,13 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             {newRequestWebRTC.webRTCEntryMode !== 'Manual' && (
               <a
                 onClick={() => {
+                  entryDropdownState.closeDropdown();
                   dispatch(
                     newRequestWebRTCSet({
                       ...newRequestWebRTC,
                       webRTCEntryMode: 'Manual',
                     })
                   );
-                  setEntryTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
               >
@@ -75,13 +80,13 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             {newRequestWebRTC.webRTCEntryMode !== 'WS' && (
               <a
                 onClick={() => {
+                  entryDropdownState.closeDropdown();
                   dispatch(
                     newRequestWebRTCSet({
                       ...newRequestWebRTC,
                       webRTCEntryMode: 'WS',
                     })
                   );
-                  setEntryTypeDropdownIsActive(false);
                 }}
                 className="dropdown-item"
               >
@@ -90,6 +95,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             )}
           </ul>
         </div>
+
         <input
           className="ml-1 input input-is-medium is-info"
           type="text"
@@ -101,9 +107,10 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
           disabled={newRequestWebRTC.webRTCEntryMode === 'Manual'}
         />
       </div>
+
       <div
         className={` is-flex dropdown ${
-          dataTypeDropdownIsActive && 'is-active'
+          dataDropdownState.dropdownIsOpen && 'is-active'
         }`}
         style={{ padding: '10px' }}
       >
@@ -113,9 +120,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             id="input-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
-            onClick={() => {
-              setDataTypeDropdownIsActive(!dataTypeDropdownIsActive);
-            }}
+            onClick={dataDropdownState.toggleDropdown}
           >
             <span>{newRequestWebRTC.webRTCDataChannel}</span>
             <span className="icon is-medium">
@@ -148,7 +153,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     webRTCDataChannel: 'Audio',
                   });
                   setShowRTCEntryForms(false);
-                  setDataTypeDropdownIsActive(false);
+                  dataDropdownState.closeDropdown();
                 }}
                 className="dropdown-item"
               >
@@ -165,7 +170,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     } as RequestWebRTC)
                   );
                   setShowRTCEntryForms(false);
-                  setDataTypeDropdownIsActive(false);
+                  dataDropdownState.closeDropdown();
                 }}
                 className="dropdown-item"
               >
@@ -182,7 +187,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     } as RequestWebRTC)
                   );
                   setShowRTCEntryForms(false);
-                  setDataTypeDropdownIsActive(false);
+                  dataDropdownState.closeDropdown();
                 }}
                 className="dropdown-item"
               >

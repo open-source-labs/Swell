@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
 import { GraphQLSchema } from 'graphql';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 import { NewRequestFields, NewRequestBody } from '../../../../types';
+import useDropdownState from '~/hooks/useDropdownState';
 
 interface IntrospectionData {
   schemaSDL: string | null;
@@ -27,21 +28,8 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
   newRequestBodySet,
   newRequestBody,
 }) => {
-  const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
-  const dropdownEl = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const closeDropdown = (event: MouseEvent) => {
-      if (
-        dropdownEl.current &&
-        !dropdownEl.current.contains(event.target as Node)
-      ) {
-        setDropdownIsActive(false);
-      }
-    };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
-  }, []);
+  const { dropdownIsOpen, dropdownRef, closeDropdown, toggleDropdown } =
+    useDropdownState();
 
   const clearWarningIfApplicable = () => {
     if (warningMessage.uri) setWarningMessage({});
@@ -100,9 +88,9 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
   return (
     <div>
       <div
-        ref={dropdownEl}
+        ref={dropdownRef}
         className={`is-flex is-justify-content-center dropdown ${
-          dropdownIsActive ? 'is-active' : ''
+          dropdownIsOpen ? 'is-active' : ''
         }`}
         style={{ padding: '10px' }}
       >
@@ -112,7 +100,7 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
             id="graphql-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
-            onClick={() => setDropdownIsActive(!dropdownIsActive)}
+            onClick={toggleDropdown}
           >
             <span>{newRequestFields.method}</span>
             <span className="icon is-small">
@@ -131,7 +119,7 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
             {newRequestFields.method !== 'QUERY' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('QUERY');
                 }}
                 className="dropdown-item"
@@ -142,7 +130,7 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
             {newRequestFields.method !== 'MUTATION' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('MUTATION');
                 }}
                 className="dropdown-item"
@@ -153,7 +141,7 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
             {newRequestFields.method !== 'SUBSCRIPTION' && (
               <a
                 onClick={() => {
-                  setDropdownIsActive(false);
+                  closeDropdown();
                   methodChangeHandler('SUBSCRIPTION');
                 }}
                 className="dropdown-item"

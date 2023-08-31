@@ -22,11 +22,12 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
 
-    // Sets up custom path aliases for shortening imports
+    // Sets up custom path aliases for creating shorter, absolute import paths
     "paths": {
       "~/assets/*": ["./src/assets/*"],
       "~/components/*": ["./src/client/components/*"],
       "~/controllers/*": ["./src/client/controllers/*"],
+      "~/hooks/*": ["./src/client/hooks/*"],
       "~/toolkit/*": ["./src/client/toolkit-refactor/*"],
       "~/types": ["./src/types"]
     }

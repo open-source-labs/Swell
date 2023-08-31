@@ -47,7 +47,19 @@ const defaultProcedure: Procedure = {
 
 const initialProcedures: readonly Procedure[] = [defaultProcedure];
 
-type ProcedureAction =
+/**
+ * @todo 2023-08-31 - Hate that I have to leak out an implementation detail
+ * type, but it was the fastest way of making some child components type-safe.
+ *
+ * This whole set of tRPC components should be redesigned so that the children
+ * don't receive a direct dispatch, and don't have to be aware that this
+ * component is using useReducer under the hood.
+ *
+ * Please do not move this to types.ts. Once the tRPC components have been
+ * redesigned, this type should stop being exported, so it can go back to just
+ * being an implementation detail.
+ */
+export type ProcedureAction =
   | {
       type: 'procedureUpdated';
       payload: {
