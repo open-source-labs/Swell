@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+
 import { stepperClasses } from '@mui/material';
 import {
   $TSFixMe,
@@ -10,11 +10,10 @@ import {
   WebMessages,
 } from '../../../../../types';
 import WebRTCTextItem from './WebRTCTextItem';
-import { useDispatch } from 'react-redux';
 import { responseDataSaved } from '../../../../toolkit-refactor/slices/reqResSlice';
 
 const WebRTCTextContainer = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [messageInput, setMessageInput] = useState('');
 
   const currentReqRes = useAppSelector((store) => store.reqRes.currentResponse);

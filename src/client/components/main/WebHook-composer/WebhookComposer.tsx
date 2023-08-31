@@ -1,12 +1,10 @@
 import React, { useState, useEffect, FC } from 'react';
-import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { io } from 'socket.io-client';
 
 // Import MUI components
 import { Box } from '@mui/material';
 import { $TSFixMe } from '../../../../types';
-
 
 export default function WebhookComposer(props: $TSFixMe) {
   /**
@@ -70,10 +68,10 @@ export default function WebhookComposer(props: $TSFixMe) {
   // This stops the polling of the server.
   // You get tons of errors in the browser console
   // without this code block
-  let socket: $TSFixMe
+  let socket: $TSFixMe;
   if (serverStatus) {
     socket = io('http://localhost:3000');
-  } 
+  }
 
   const copyClick = () => {
     console.log('copying');
@@ -131,7 +129,6 @@ export default function WebhookComposer(props: $TSFixMe) {
   }, []);
 
   const startServerButton = () => {
-    
     if (!serverStatus) {
       updateServerStatus(true);
 

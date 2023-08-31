@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+
 // Import local components
 import WorkspaceContainer from './WorkspaceContainer';
 import HistoryContainer from './HistoryContainer';
@@ -88,7 +88,7 @@ export default function HistoryOrWorkspaceContainer(
         <WorkspaceContainer {...props} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <HistoryContainer {...props}/>
+        <HistoryContainer {...props} />
       </TabPanel>
     </Box>
   );
