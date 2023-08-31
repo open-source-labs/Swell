@@ -1,11 +1,8 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  startServer,
-  stopServer,
-} from '../../../toolkit-refactor/slices/mockServerSlice';
-import { newRequestFieldsByProtocol } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { startServer, stopServer } from '~/toolkit/slices/mockServerSlice';
+import { newRequestFieldsByProtocol } from '~/toolkit/slices/newRequestFieldsSlice';
 
 // forms
 import RestMethodAndEndpointEntryForm from '../http2-composer/RestMethodAndEndpointEntryForm';
@@ -22,11 +19,15 @@ import { Box, Button, Modal, Typography } from '@mui/material';
  */
 const { api } = window as any;
 
-// TODO: add typing to the props object
-// TODO: add an option to see the list of existing routes that shows up in the response window
-// TODO: add endpoint validation
-// TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
-// TODO: hook up the headers and cookies to the mock endpoint creation
+/**
+ * Formatted todo's from Chris Suzukida (2023-04-11)
+ * @todo Add an option to see the list of existing routes that shows up in the
+ *       response window
+ * @todo Add endpoint validation
+ * @todo Add the ability to mock HTML responses (or remove the HTML option from
+ *       the BodyEntryForm component)
+ * @todo Hook up the headers and cookies to the mock endpoint creation
+ */
 
 // styling for the mui box modal component
 const style = {
@@ -41,15 +42,23 @@ const style = {
   p: 4,
 };
 
-const MockServerComposer = (props) => {
+const MockServerComposer = (
+  /**
+   * @todo Update all of MockServerComposer's children to use useAppSelector,
+   * and then remove the props here.
+   */
+  props
+) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
-  const dispatch = useDispatch();
 
-  // grab the isServerStarted state from the Redux store
-  let isServerStarted = useSelector(
-    (state: any) => state.mockServer.isServerStarted
+  const requestFields = useAppSelector((store) => store.newRequestFields);
+  const reqBody = useAppSelector((store) => store.newRequest.newRequestBody);
+  const isServerStarted = useAppSelector(
+    (store) => store.mockServer.isServerStarted
   );
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(newRequestFieldsByProtocol('mock'));
@@ -69,7 +78,11 @@ const MockServerComposer = (props) => {
 
   // toggles the mock server on and off
   const handleServerButtonClick = () => {
-    isServerStarted ? stopMockServer() : startMockServer();
+    if (isServerStarted) {
+      stopMockServer();
+    } else {
+      startMockServer();
+    }
   };
 
   // triggers when the user clicks the submit button
@@ -78,24 +91,22 @@ const MockServerComposer = (props) => {
     if (isServerStarted) {
       // check if endpoint starts with a forward slash
       const parsedUserDefinedEndpoint =
-        props.newRequestFields.restUrl[0] === '/'
-          ? props.newRequestFields.restUrl
-          : `/${props.newRequestFields.restUrl}`;
+        requestFields.restUrl[0] === '/'
+          ? requestFields.restUrl
+          : `/${requestFields.restUrl}`;
 
       // grab the method type from the RestMethodAndEndpointEntryForm component
-      const methodType = props.newRequestFields.method;
+      const methodType = requestFields.method;
 
       // check if the body is parsable JSON
       try {
-        JSON.parse(props.newRequestBody.bodyContent);
+        JSON.parse(reqBody.bodyContent);
       } catch (err) {
         alert('Please enter a JSON parsable body');
       }
 
       // parse the response from the BodyEntryForm component because it is a stringified JSON object in props
-      const parsedCodeMirrorBodyContent = JSON.parse(
-        props.newRequestBody.bodyContent
-      );
+      const parsedCodeMirrorBodyContent = JSON.parse(reqBody.bodyContent);
 
       // create an object that contains the method, endpoint, and response
       const postData = {
@@ -154,7 +165,7 @@ const MockServerComposer = (props) => {
           <div className="is-flex-grow-1">
             <RestMethodAndEndpointEntryForm
               {...props}
-              method={props.newRequestFields.method}
+              method={requestFields.method}
               placeholder="/Enter mock endpoint"
               style={{ width: '100%' }}
             />
