@@ -1,10 +1,10 @@
 /**
- * @file Defines the slice for the new requests
+ * @file Defines the Redux slice for processing new requests (e.g., request
+ * body and header information).
  *
- * slice contains request body and header information
- *
- * @todo should be combined with new Request fields slice as the data related to constructing
- * each request is associated
+ * @todo This should probably be combined with the Request fields slice, as all
+ * the data is highly interrelated. The fields slice has a Redux extra reducer
+ * set up to listen for changes here, too.
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -15,9 +15,9 @@ import {
   NewRequestSSE,
   CookieOrHeader,
   RequestWebRTC,
-} from '../../../types';
+} from '~/types';
 
-type NewRequestStore = {
+type NewRequestState = {
   newRequestHeaders: {
     headersArr: CookieOrHeader[];
     count: number;
@@ -30,10 +30,9 @@ type NewRequestStore = {
   newRequestBody: NewRequestBody;
   newRequestSSE: NewRequestSSE;
   newRequestWebRTC: RequestWebRTC;
-
 };
 
-const initialState: NewRequestStore = {
+const initialState: NewRequestState = {
   newRequestHeaders: {
     headersArr: [],
     count: 0,
@@ -47,7 +46,7 @@ const initialState: NewRequestStore = {
     bodyIsNew: false,
   },
   newRequestStreams: {
-    streamsArr: [], 
+    streamsArr: [],
     count: 0,
     streamContent: [],
     selectedPackage: null,
@@ -79,7 +78,7 @@ const initialState: NewRequestStore = {
     webRTCLocalStream: null,
     webRTCRemoteStream: null,
     webRTCMessages: [],
-  }
+  },
 };
 
 const newRequestSlice = createSlice({
@@ -89,7 +88,7 @@ const newRequestSlice = createSlice({
     //Before toolkit conversion was SET_NEW_REQUEST_HEADERS or setNewRequestHeaders
     newRequestHeadersSet: (
       state,
-      action: PayloadAction<NewRequestStore['newRequestHeaders']>
+      action: PayloadAction<NewRequestState['newRequestHeaders']>
     ) => {
       state.newRequestHeaders = action.payload;
     },
@@ -106,7 +105,6 @@ const newRequestSlice = createSlice({
       state.newRequestWebRTC.webRTCOffer = action.payload;
     },
 
-
     //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
     newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
       state.newRequestStreams = action.payload;
@@ -115,7 +113,7 @@ const newRequestSlice = createSlice({
     //Before toolkit conversion was SET_NEW_REQUEST_COOKIES or setNewRequestCookies
     newRequestCookiesSet: (
       state,
-      action: PayloadAction<NewRequestStore['newRequestCookies']>
+      action: PayloadAction<NewRequestState['newRequestCookies']>
     ) => {
       state.newRequestCookies = action.payload;
     },
@@ -134,8 +132,8 @@ const newRequestSlice = createSlice({
     newRequestContentByProtocol: (
       state,
       action: PayloadAction<string>
-    ): NewRequestStore => {
-      const composeNewRequestStore = (bodyType: string): NewRequestStore => {
+    ): NewRequestState => {
+      const composeNewRequestStore = (bodyType: string): NewRequestState => {
         return {
           ...initialState,
           newRequestBody: {
