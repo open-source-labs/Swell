@@ -1,7 +1,25 @@
+/**
+ * @file This defines the top-level router used for navigating between different
+ * tabs in the application.
+ *
+ * @todo This file uses the old React-Redux connect API. The main component sets
+ * up subscriptions to the Redux store for every single state value and dispatch
+ * that every child component could ever need, rolls them up into a single
+ * props object, and then passes that one object down to every single component.
+ *
+ * This makes the code harder to maintain, and potentially makes the app's
+ * performance worse, because any one of the subscribed values could cause all
+ * children to re-render at any time, even if a child doesn't care about the
+ * value that changed.
+ *
+ * The connect API should be removed in favor of moving the state further down
+ * to their relevant components, where the subscriptions can be set up with
+ * useAppSelector and useAppDispatch.
+ */
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ReqRes, $TSFixMe, $TSFixMeObject, RequestWebRTC } from '../../../types';
+import { ReqRes, $TSFixMe, $TSFixMeObject, RequestWebRTC } from '~/types';
 
 import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
 
@@ -101,9 +119,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setWorkspaceActiveTab: (tabName: $TSFixMe) => {
     dispatch(setWorkspaceActiveTab(tabName));
   },
-
 });
-
 
 function MainContainer(props: $TSFixMeObject) {
   return (
@@ -114,7 +130,10 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/" element={<Http2Composer {...props} />} />
             <Route path="/graphql" element={<GraphQLComposer {...props} />} />
             <Route path="/grpc" element={<GRPCComposer {...props} />} />
-            <Route path="/websocket" element={<WebSocketComposer {...props} />} />
+            <Route
+              path="/websocket"
+              element={<WebSocketComposer {...props} />}
+            />
             {/* WebRTC has been completely refactored to hooks - no props needed */}
             <Route path="/webrtc" element={<WebRTCComposer />} />
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
@@ -133,4 +152,3 @@ function MainContainer(props: $TSFixMeObject) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
-
