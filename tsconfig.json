@@ -29,6 +29,7 @@
       "~/components/*": ["./src/client/components/*"],
       "~/controllers/*": ["./src/client/controllers/*"],
       "~/hooks/*": ["./src/client/hooks/*"],
+      "~/server/*": ["./src/server/*"],
       "~/toolkit/*": ["./src/client/rtk/*"],
 
       // Import paths for single files

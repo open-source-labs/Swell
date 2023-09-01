@@ -1,3 +1,12 @@
+/**
+ * @file Defines the main entry point for the whole Electron app.
+ *
+ * @todo 2023-09-01 - Even if you don't convert this to a TS file, and just opt
+ * into the @ts-check comment, this file lights up with a lot of type errors.
+ * The code all seems to be working, but this will be one of the more involved
+ * conversions in the project.
+ */
+
 // https://github.com/electron/electron/issues/10257
 // Code fix to support NODE_EXTRA_CA_CERTS env. There is currently no other fixes to the NODE_TLS_REJECT_UNAUTHORIZED at the moment.
 
@@ -45,7 +54,6 @@ const url = require('url');
 const fs = require('fs');
 const log = require('electron-log');
 
-
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
 
@@ -65,10 +73,8 @@ require('./main_process/main_trpcController.js')();
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
-
-
-const contextMenu = require('electron-context-menu')
-contextMenu()
+const contextMenu = require('electron-context-menu');
+contextMenu();
 
 // configure logging
 // autoUpdater.logger = log;
@@ -216,6 +222,11 @@ app.on('ready', () => {
      * this is crucial code, and while VS Code will flag it as not being used, it
      * should not be removed. The servers must be required upon app startup (especially in
      * packaged versions) or else the packaged app would not recognize the servers at all.
+     *
+     * 2023-09-01 - Decided not to update these paths to use custom aliases,
+     * because require isn't able to recognize them. You can't Ctrl+Click to
+     * jump to the source file definition. If this file ever gets converted to a
+     * .ts file, though, you should be able to update these import pathss
      */
     const express = require('./src/server/server');
     const mockServer = require('./src/server/mockServer.js');

@@ -17,13 +17,29 @@ const title = name.charAt(0).toUpperCase() + name.slice(1);
 module.exports = {
   target: 'web',
   resolve: {
+    /**
+     * Defines the custom path aliases for importing files from absolute paths.
+     * If you decide to add another path, you must be sure to update tsconfig
+     * as well, and keep it and this file in lockstep.
+     *
+     * In short:
+     * 1. Updating the paths here allows Webpack to make the imports happen at
+     *    runtime. That's important, but that's basically it.
+     * 2. Updating the tsconfig file makes TypeScript aware of these paths at
+     *    compile time, so that it will give you auto-complete and type-safety.
+     *    If you only updated tsconfig, you'd be able to do your imports no
+     *    problem, but the app would immediately crash when booting up
+     */
     alias: {
       '~/assets': path.resolve(__dirname, '/src/assets/'),
-      '~/db': path.resolve(__dirname, '/src/client/db'),
       '~/components': path.resolve(__dirname, '/src/client/components/'),
       '~/controllers': path.resolve(__dirname, '/src/client/controllers/'),
       '~/hooks': path.resolve(__dirname, '/src/client/hooks/'),
+      '~/server': path.resolve(__dirname, '/src/server/'),
       '~/toolkit': path.resolve(__dirname, '/src/client/rtk/'),
+
+      // Imports meant only for single files
+      '~/db': path.resolve(__dirname, '/src/client/db'),
       '~/types': path.resolve(__dirname, '/src/types'),
     },
 
