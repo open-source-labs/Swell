@@ -22,7 +22,8 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
 
-    // Sets up custom path aliases for creating shorter, absolute import paths
+    // Sets up custom path aliases for creating shorter, absolute import paths;
+    // if you add any more, be sure to update Webpack, too
     "paths": {
       "~/assets/*": ["./src/assets/*"],
       "~/components/*": ["./src/client/components/*"],
@@ -35,8 +36,8 @@
 
   /**
    * @todo 2023-08-31 - Don't have time to check why there are all these files
-   * manually added to the include path, but these should almost definitely be
-   * removed.
+   * manually added to the include path, but anything that isn't glob-based
+   * (as in, anything without stars) should almost definitely be removed.
    */
   "include": [
     "./src/**/*.ts",
