@@ -1,3 +1,4 @@
+// @ts-check
 const merge = require('webpack-merge').merge;
 const base = require('./webpack.config');
 const { spawn } = require('child_process');
@@ -27,6 +28,7 @@ module.exports = merge(base, {
         secure: false,
       },
     },
+
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');

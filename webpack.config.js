@@ -1,3 +1,4 @@
+// @ts-check
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -12,9 +13,19 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { name } = require('./package.json');
 const title = name.charAt(0).toUpperCase() + name.slice(1);
 
+/** @type {import("webpack").Configuration} */
 module.exports = {
   target: 'web',
   resolve: {
+    alias: {
+      '~/assets': path.resolve(__dirname, '/src/assets/'),
+      '~/components': path.resolve(__dirname, '/src/client/components/'),
+      '~/controllers': path.resolve(__dirname, '/src/client/controllers/'),
+      '~/hooks': path.resolve(__dirname, '/src/client/hooks/'),
+      '~/toolkit': path.resolve(__dirname, '/src/client/toolkit-refactor/'),
+      '~/types': path.resolve(__dirname, '/src/types'),
+    },
+
     fallback: {
       buffer: require.resolve('buffer'),
       fs: false,
@@ -28,17 +39,20 @@ module.exports = {
       crypto: false,
     },
   },
+
   entry: ['./src/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/',
   },
+
   module: {
     rules: [
       {
         test: /\.(ts|js|mjs)x?$/,
         include: [path.resolve(__dirname, 'src')],
+
         use: {
           loader: 'babel-loader',
           options: {

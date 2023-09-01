@@ -1,3 +1,4 @@
+// @ts-check
 const path = require('path');
 const merge = require('webpack-merge').merge;
 const base = require('./webpack.config');
