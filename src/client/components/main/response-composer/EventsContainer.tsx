@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import { type ReqResRequest, type RequestWebRTC } from '~/types';
 
 import CodeMirror from '@uiw/react-codemirror';

@@ -4,7 +4,7 @@ import { appDispatch } from '~/toolkit/store';
 import { historySet } from '~/toolkit/slices/historySlice';
 
 jest.mock('../../src/client/db');
-jest.mock('../../src/client/toolkit-refactor/store');
+jest.mock('../../src/client/rtk/store');
 
 describe('historyController', () => {
   beforeEach(() => {

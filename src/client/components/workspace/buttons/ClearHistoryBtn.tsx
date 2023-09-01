@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import historyController from '~/controllers/historyController';
 import { type WindowExt } from '~/types';
 

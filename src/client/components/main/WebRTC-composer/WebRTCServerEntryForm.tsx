@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
 
-import { newRequestWebRTCSet } from '~/toolkit/slices/newRequestSlice';
+import { newRequestWebRTCSet } from '../../../rtk/slices/newRequestSlice';
 import webrtcPeerController from '~/controllers/webrtcPeerController';
 
 import TextCodeArea from '../sharedComponents/TextCodeArea';

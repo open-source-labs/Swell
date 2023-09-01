@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 
 import { type $TSFixMe, type ReqRes } from '~/types';
 import { type ConnectRouterProps } from '~/components/main/MainContainer';

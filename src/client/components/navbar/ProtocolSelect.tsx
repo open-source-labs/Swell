@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useAppDispatch } from '~/toolkit/store';
-import { newRequestContentByProtocol } from '~/toolkit/slices/newRequestSlice';
-import { newRequestFieldsByProtocol } from '~/toolkit/slices/newRequestFieldsSlice';
+import { useAppDispatch } from '../../rtk/store';
+import { newRequestContentByProtocol } from '../../rtk/slices/newRequestSlice';
+import { newRequestFieldsByProtocol } from '../../rtk/slices/newRequestFieldsSlice';
 
 // Import MUI components.
 import { styled } from '@mui/system';

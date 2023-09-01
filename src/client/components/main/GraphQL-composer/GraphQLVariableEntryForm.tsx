@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '~/toolkit/store';
-import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
+import { useAppSelector } from '../../../rtk/store';
+import { newRequestBodySet } from '../../../rtk/slices/newRequestSlice';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 const GraphQLVariableEntryForm = () => {

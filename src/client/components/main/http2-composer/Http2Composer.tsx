@@ -1,12 +1,12 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { useAppDispatch } from '~/toolkit/store';
-import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+import { useAppDispatch } from '../../../rtk/store';
+import { responseDataSaved } from '../../../rtk/slices/reqResSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
-} from '~/toolkit/slices/uiSlice';
+} from '../../../rtk/slices/uiSlice';
 
 import { type ConnectRouterProps } from '~/components/main/MainContainer';
 import {

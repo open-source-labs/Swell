@@ -2,8 +2,8 @@
  * @file Renders entry form for an incoming tRPC request
  */
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
+import { useAppSelector, useAppDispatch } from './src/client/rtk/store';
+import { newRequestBodySet } from './src/client/rtk/slices/newRequestSlice';
 import TextCodeArea from './src/client/components/main/sharedComponents/TextCodeArea';
 
 const TRPCBodyEntryForm = () => {

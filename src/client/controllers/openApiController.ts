@@ -1,6 +1,6 @@
 import { type WindowExt, type $TSFixMe } from '~/types';
-import { appDispatch } from '~/toolkit/store';
-import { openApiRequestsReplaced } from '~/toolkit/slices/newRequestOpenApiSlice';
+import { appDispatch } from '../rtk/store';
+import { openApiRequestsReplaced } from '../rtk/slices/newRequestOpenApiSlice';
 
 const { api } = window as unknown as WindowExt;
 

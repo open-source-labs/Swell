@@ -5,8 +5,8 @@
 import React, { type FC } from 'react';
 import ReqResCtrl from '~/controllers/reqResController';
 
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
-import { setResponsePaneActiveTab } from '~/toolkit/slices/uiSlice';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
+import { setResponsePaneActiveTab } from '../../../rtk/slices/uiSlice';
 
 import { Box } from '@mui/material';
 import EventsContainer from './EventsContainer';

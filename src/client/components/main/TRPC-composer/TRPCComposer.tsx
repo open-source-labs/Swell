@@ -1,8 +1,8 @@
 import React, { useReducer, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
-import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
+import { responseDataSaved } from '../../../rtk/slices/reqResSlice';
 
 import { type ConnectRouterProps } from '~/components/main/MainContainer';
 

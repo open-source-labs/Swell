@@ -3,10 +3,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 
-import { useAppDispatch } from '~/toolkit/store';
-import { historyDeleted } from '~/toolkit/slices/historySlice';
-import { setSidebarActiveTab } from '~/toolkit/slices/uiSlice';
-import { newRequestSSESet } from '~/toolkit/slices/newRequestSlice';
+import { useAppDispatch } from '../../rtk/store';
+import { historyDeleted } from '../../rtk/slices/historySlice';
+import { setSidebarActiveTab } from '../../rtk/slices/uiSlice';
+import { newRequestSSESet } from '../../rtk/slices/newRequestSlice';
 
 import historyController from '~/controllers/historyController';
 import { request } from 'http';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../../rtk/store';
 import collectionsController from '~/controllers/collectionsController';
 import db from '~/db';
 

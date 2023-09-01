@@ -1,17 +1,17 @@
 import { format, parse } from 'date-fns';
 import db from '~/db';
 
-import { appDispatch } from '~/toolkit/store';
-import { historySet } from '~/toolkit/slices/historySlice';
-import { setSidebarActiveTab } from '~/toolkit/slices/uiSlice';
-import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
+import { appDispatch } from '../rtk/store';
+import { historySet } from '../rtk/slices/historySlice';
+import { setSidebarActiveTab } from '../rtk/slices/uiSlice';
+import { fieldsReplaced } from '../rtk/slices/newRequestFieldsSlice';
 import {
   newRequestSSESet,
   newRequestCookiesSet,
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '~/toolkit/slices/newRequestSlice';
+} from '../rtk/slices/newRequestSlice';
 
 import { type ReqRes, type $TSFixMe } from '~/types';
 

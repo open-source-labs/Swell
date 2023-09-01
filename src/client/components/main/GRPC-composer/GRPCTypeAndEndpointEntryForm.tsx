@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import {
   type $TSFixMe,
   type NewRequestFields,

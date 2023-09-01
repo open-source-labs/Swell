@@ -1,6 +1,6 @@
 import React from 'react';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 
 export default function TRPCVariableForm(props) {
   // input for for user to attach argument with their procedures

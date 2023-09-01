@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { type ChangeEvent } from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import useDropdownState from '~/hooks/useDropdownState';
 import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';
 import { type ProcedureAction } from './TRPCComposer';

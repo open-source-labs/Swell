@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
-import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
+import { newRequestBodySet } from '../../../rtk/slices/newRequestSlice';
 
 import { type NewRequestBody } from '~/types';
 

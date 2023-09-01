@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../../rtk/store';
 import collectionsController from '~/controllers/collectionsController';
 
 import Backdrop from '@mui/material/Backdrop';

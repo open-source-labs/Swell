@@ -23,7 +23,7 @@ module.exports = {
       '~/components': path.resolve(__dirname, '/src/client/components/'),
       '~/controllers': path.resolve(__dirname, '/src/client/controllers/'),
       '~/hooks': path.resolve(__dirname, '/src/client/hooks/'),
-      '~/toolkit': path.resolve(__dirname, '/src/client/toolkit-refactor/'),
+      '~/toolkit': path.resolve(__dirname, '/src/client/rtk/'),
       '~/types': path.resolve(__dirname, '/src/types'),
     },
 

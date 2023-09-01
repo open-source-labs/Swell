@@ -16,10 +16,10 @@ import {
   type WindowExt,
 } from '~/types';
 
-import Store, { appDispatch } from '~/toolkit/store';
-import { introspectionDataChanged } from '~/toolkit/slices/introspectionDataSlice';
-import { responseDataSaved, reqResUpdated } from '~/toolkit/slices/reqResSlice';
-import { graphUpdated } from '~/toolkit/slices/graphPointsSlice';
+import Store, { appDispatch } from '../rtk/store';
+import { introspectionDataChanged } from '../rtk/slices/introspectionDataSlice';
+import { responseDataSaved, reqResUpdated } from '../rtk/slices/reqResSlice';
+import { graphUpdated } from '../rtk/slices/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;
 

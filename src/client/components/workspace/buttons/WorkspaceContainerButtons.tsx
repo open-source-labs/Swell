@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import ReqResCtrl from '~/controllers/reqResController';
 
 import WorkspaceCollectionsContainer from '../WorkspaceCollectionsContainer';

@@ -28,12 +28,12 @@ import {
 } from '~/types';
 
 import { type ConnectedProps, connect } from 'react-redux';
-import { AppDispatch, type RootState } from '~/toolkit/store';
-import { reqResItemAdded } from '~/toolkit/slices/reqResSlice';
+import { AppDispatch, type RootState } from '../../rtk/store';
+import { reqResItemAdded } from '../../rtk/slices/reqResSlice';
 import {
   NewRequestOpenApi,
   openApiRequestsReplaced,
-} from '~/toolkit/slices/newRequestOpenApiSlice';
+} from '../../rtk/slices/newRequestOpenApiSlice';
 
 import {
   type NewRequestState,
@@ -43,19 +43,19 @@ import {
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '~/toolkit/slices/newRequestSlice';
+} from '../../rtk/slices/newRequestSlice';
 
-import { setWorkspaceActiveTab } from '~/toolkit/slices/uiSlice';
+import { setWorkspaceActiveTab } from '../../rtk/slices/uiSlice';
 
 import {
   fieldsReplaced,
   newTestContentSet,
-} from '~/toolkit/slices/newRequestFieldsSlice';
+} from '../../rtk/slices/newRequestFieldsSlice';
 
 import {
   type WarningMessage,
   setWarningMessage,
-} from '~/toolkit/slices/warningMessageSlice';
+} from '../../rtk/slices/warningMessageSlice';
 
 // Import local components.
 import Http2Composer from './http2-composer/Http2Composer';

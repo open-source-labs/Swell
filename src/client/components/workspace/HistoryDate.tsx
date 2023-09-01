@@ -10,7 +10,7 @@ import {
   NewRequestCookiesSet,
   ReqRes,
 } from '~/types';
-import { type HistoryItem } from '~/toolkit/slices/historySlice.ts';
+import { type HistoryItem } from '../../rtk/slices/historySlice';
 
 interface Props {
   history: HistoryItem[];

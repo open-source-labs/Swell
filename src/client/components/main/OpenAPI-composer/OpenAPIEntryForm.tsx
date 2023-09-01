@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import { type $TSFixMe } from '~/types';
 
 interface Props {

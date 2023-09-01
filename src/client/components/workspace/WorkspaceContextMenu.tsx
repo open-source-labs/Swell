@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { useAppDispatch } from '~/toolkit/store';
-import { reqResReplaced } from '~/toolkit/slices/reqResSlice';
+import { useAppDispatch } from '../../rtk/store';
+import { reqResReplaced } from '../../rtk/slices/reqResSlice';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';

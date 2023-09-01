@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { type ConnectRouterProps } from '~/components/main/MainContainer';
 
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import { startServer, stopServer } from '~/toolkit/slices/mockServerSlice';
-import { newRequestFieldsByProtocol } from '~/toolkit/slices/newRequestFieldsSlice';
+import { useAppSelector, useAppDispatch } from '../../../rtk/store';
+import { startServer, stopServer } from '../../../rtk/slices/mockServerSlice';
+import { newRequestFieldsByProtocol } from '../../../rtk/slices/newRequestFieldsSlice';
 
 // forms
 import RestMethodAndEndpointEntryForm from '../http2-composer/RestMethodAndEndpointEntryForm';

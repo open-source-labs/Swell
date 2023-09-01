@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
+import { useAppSelector, useAppDispatch } from '../../../rtk/store';
+import { newRequestBodySet } from '../../../rtk/slices/newRequestSlice';
 
 import {
   type SelectChangeEvent,

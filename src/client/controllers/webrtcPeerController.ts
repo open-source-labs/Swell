@@ -1,9 +1,9 @@
-import store, { appDispatch } from '~/toolkit/store';
-import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+import store, { appDispatch } from '../rtk/store';
+import { responseDataSaved } from '../rtk/slices/reqResSlice';
 import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
-} from '~/toolkit/slices/newRequestSlice';
+} from '../rtk/slices/newRequestSlice';
 
 import {
   type ReqRes,

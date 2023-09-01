@@ -1,7 +1,7 @@
 import { type WindowExt, type NewRequestStreams, type $TSFixMe } from '~/types';
 
-import { appDispatch } from '~/toolkit/store';
-import { newRequestStreamsSet } from '~/toolkit/slices/newRequestSlice';
+import { appDispatch } from '../rtk/store';
+import { newRequestStreamsSet } from '../rtk/slices/newRequestSlice';
 
 const { api } = window as unknown as WindowExt;
 

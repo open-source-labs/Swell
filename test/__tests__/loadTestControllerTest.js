@@ -6,7 +6,7 @@ import { LoadTestController } from '~/controllers/LoadTestController';
 import { LoadTestResult } from '../components/main/new-request/stressTest/LoadTest';
 
 // mock the store
-jest.mock('../../src/client/toolkit-refactor/store');
+jest.mock('../../src/client/rtk/store');
 
 describe('LoadTestController', () => {
   // make sure to clear the mock before each test

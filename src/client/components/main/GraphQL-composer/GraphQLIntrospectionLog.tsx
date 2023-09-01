@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import graphQLController from '~/controllers/graphQLController';
 import TextCodeArea from '~/components/main/sharedComponents/TextCodeArea';
 

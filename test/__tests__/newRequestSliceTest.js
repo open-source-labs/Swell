@@ -15,7 +15,7 @@ import newRequestReducer, {
   newRequestContentByProtocol,
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
-} from '../../src/client/toolkit-refactor/slices/newRequestSlice';
+} from '../../src/client/rtk/slices/newRequestSlice';
 
 describe('newRequestSlice', () => {
   let initialState;
@@ -195,7 +195,7 @@ describe('newRequestSlice', () => {
         newRequestContentByProtocol('grpc')
       );
       expect(result).toEqual(expected);
-      
+
       expected.newRequestBody.bodyType = 'none';
       result = newRequestReducer(
         initialState,
@@ -225,19 +225,20 @@ describe('newRequestSlice', () => {
         webRTCLocalStream: null,
         webRTCRemoteStream: null,
         webRTCMessages: [],
-      }
-      const action = newRequestWebRTCSet(newWebRTCRequest)
+      };
+      const action = newRequestWebRTCSet(newWebRTCRequest);
       const newState = newRequestReducer(initialState, action);
       expect(newState.newRequestWebRTC).toBe(newWebRTCRequest);
-    })
-  })
+    });
+  });
 
   describe('newRequestWebRTCOfferSet', () => {
     it('should set new WebRTC offer', () => {
-      const offerString = 'newOfferSDP'
-      const action = newRequestWebRTCOfferSet(offerString)
+      const offerString = 'newOfferSDP';
+      const action = newRequestWebRTCOfferSet(offerString);
       const newState = newRequestReducer(initialState, action);
       expect(newState.newRequestWebRTC.webRTCOffer).toBe(offerString);
-    })
-  })
+    });
+  });
 });
+

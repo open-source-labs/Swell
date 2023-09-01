@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
+import { useAppSelector, useAppDispatch } from '../../../rtk/store';
+import { fieldsReplaced } from '../../../rtk/slices/newRequestFieldsSlice';
 
 const TRPCMethodAndEndpointEntryForm = (props) => {
   const requestFields = useAppSelector((state) => state.newRequestFields);

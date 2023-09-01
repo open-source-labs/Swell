@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
-import { newRequestWebRTCSet } from '~/toolkit/slices/newRequestSlice';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
+import { newRequestWebRTCSet } from '../../../rtk/slices/newRequestSlice';
 import useDropdownState from '~/hooks/useDropdownState';
 
 import { type NewRequestWebRTCSet, type RequestWebRTC } from '~/types';

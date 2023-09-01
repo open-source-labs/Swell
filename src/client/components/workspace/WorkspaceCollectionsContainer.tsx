@@ -2,8 +2,8 @@
 // be migrated to the RTK slice??
 
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
-import { reqResItemDeleted } from '~/toolkit/slices/reqResSlice';
+import { useAppDispatch, useAppSelector } from '../../rtk/store';
+import { reqResItemDeleted } from '../../rtk/slices/reqResSlice';
 
 import WorkspaceCollectionElement from './WorkspaceCollectionElement';
 import ReqResCtrl from '~/controllers/reqResController';

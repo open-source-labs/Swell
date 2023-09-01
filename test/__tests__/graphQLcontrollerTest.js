@@ -61,10 +61,10 @@ describe('graphQLController', () => {
 
   describe('introspect', () => {
     // mock the store
-    jest.mock('../../src/client/toolkit-refactor/store');
+    jest.mock('../../src/client/rtk/store');
 
     // mock the get
-    jest.mock('../../src/client/toolkit-refactor/store', () => ({
+    jest.mock('../../src/client/rtk/store', () => ({
       appDispatch: jest.fn(),
     }));
 

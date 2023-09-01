@@ -1,15 +1,15 @@
 import React from 'react';
 import { type ReqRes } from '~/types';
 
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import * as HistorySlice from '~/toolkit/slices/historySlice';
-import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
+import { useAppSelector, useAppDispatch } from '../../rtk/store';
+import * as HistorySlice from '../../rtk/slices/historySlice';
+import { fieldsReplaced } from '../../rtk/slices/newRequestFieldsSlice';
 import {
   newRequestCookiesSet,
   newRequestStreamsSet,
   newRequestBodySet,
   newRequestHeadersSet,
-} from '~/toolkit/slices/newRequestSlice';
+} from '../../rtk/slices/newRequestSlice';
 
 import HistoryDate from './HistoryDate';
 import ClearHistoryBtn from './buttons/ClearHistoryBtn';

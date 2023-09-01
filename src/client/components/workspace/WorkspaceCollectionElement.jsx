@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+import { useAppSelector, useAppDispatch } from '../../rtk/store';
+import { responseDataSaved } from '../../rtk/slices/reqResSlice';
 // import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
-} from '~/toolkit/slices/uiSlice';
+} from '../../rtk/slices/uiSlice';
 // import {
 //   newRequestSSESet,
 //   newRequestCookiesSet,

@@ -2,7 +2,7 @@ import store from '~/toolkit/store';
 import { reqResReplaced } from '~/toolkit/slices/reqResSlice';
 import connectionController from '~/toolkit/controllers/reqResController';
 
-jest.mock('../../src/client/toolkit-refactor/store', () => ({
+jest.mock('../../src/client/rtk/store', () => ({
   __esModule: true,
   default: {
     getState: jest.fn(),
@@ -11,7 +11,7 @@ jest.mock('../../src/client/toolkit-refactor/store', () => ({
   appDispatch: jest.fn(),
 }));
 
-jest.mock('../../src/client/toolkit-refactor/slices/reqResSlice', () => ({
+jest.mock('../../src/client/rtk/slices/reqResSlice', () => ({
   __esModule: true,
   reqResReplaced: jest.fn(),
 }));

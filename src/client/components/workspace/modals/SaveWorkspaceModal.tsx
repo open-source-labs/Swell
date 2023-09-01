@@ -4,11 +4,11 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
 import {
   collectionUpdated,
   collectionAdded,
-} from '~/toolkit/slices/collectionsSlice';
+} from '../../../rtk/slices/collectionsSlice';
 
 import { type ReqRes } from '~/types';
 import collectionsController from '~/controllers/collectionsController';

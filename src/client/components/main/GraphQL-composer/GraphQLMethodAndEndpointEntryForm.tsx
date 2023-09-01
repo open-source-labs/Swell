@@ -2,7 +2,7 @@ import React from 'react';
 import { GraphQLSchema } from 'graphql';
 
 import useDropdownState from '~/hooks/useDropdownState';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import { type NewRequestFields, type NewRequestBody } from '~/types';
 
 import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';

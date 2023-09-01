@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import db from '~/db';
 
-import { appDispatch } from '~/toolkit/store';
-import { collectionsReplaced } from '~/toolkit/slices/collectionsSlice';
+import { appDispatch } from '../rtk/store';
+import { collectionsReplaced } from '../rtk/slices/collectionsSlice';
 import { type Collection, type WindowAPI, type WindowExt } from '~/types';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;

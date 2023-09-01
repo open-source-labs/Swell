@@ -1,17 +1,17 @@
-import Store, { appDispatch } from '~/toolkit/store';
+import Store, { appDispatch } from '../rtk/store';
 
 import {
   responseDataSaved,
   reqResUpdated,
   reqResReplaced,
   reqResCleared,
-} from '~/toolkit/slices/reqResSlice';
+} from '../rtk/slices/reqResSlice';
 
 import {
   groupCleared,
   graphCleared,
   graphUpdated,
-} from '~/toolkit/slices/graphPointsSlice';
+} from '../rtk/slices/graphPointsSlice';
 
 import graphQLController from './graphQLController';
 import { type Protocol, type ReqRes, type WindowExt } from '~/types';

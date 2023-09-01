@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
-import { collectionDeleted } from '~/toolkit/slices/collectionsSlice';
+import { useAppSelector, useAppDispatch } from '../../../rtk/store';
+import { collectionDeleted } from '../../../rtk/slices/collectionsSlice';
 
 import { type Collection, type WorkspaceContainerProps } from '~/types';
 import collectionsController from '~/controllers/collectionsController';

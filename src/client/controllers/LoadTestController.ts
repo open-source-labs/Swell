@@ -4,9 +4,9 @@
  * as well as updating the application state (store) with the processed results.
  */
 
-import store, { appDispatch } from '~/toolkit/store';
-import { responseDataSaved, reqResUpdated } from '~/toolkit/slices/reqResSlice';
-import { graphUpdated } from '~/toolkit/slices/graphPointsSlice';
+import store, { appDispatch } from '../rtk/store';
+import { responseDataSaved, reqResUpdated } from '../rtk/slices/reqResSlice';
+import { graphUpdated } from '../rtk/slices/graphPointsSlice';
 
 import { type ReqRes, type ReqResResponse, type WindowExt } from '~/types';
 import { LoadTestResult } from '../components/main/sharedComponents/stressTest/LoadTest';

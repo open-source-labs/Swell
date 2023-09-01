@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../rtk/store';
 import { type $TSFixMe, type OpenAPIRequest } from '~/types';
 
 import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer';

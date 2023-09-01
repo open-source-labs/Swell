@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../../rtk/store';
 import TextCodeArea from '../TextCodeArea';
 import RestTestSnippets from '../stressTest/RestTestSnippets';
 import WebsocketTestSnippets from '../stressTest/WebsocketTestSnippets';

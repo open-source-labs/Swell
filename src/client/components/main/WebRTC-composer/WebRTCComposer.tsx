@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '~/toolkit/store';
-import { composerFieldsReset } from '~/toolkit/slices/newRequestSlice';
-import { setWorkspaceActiveTab } from '~/toolkit/slices/uiSlice';
-import { reqResItemAdded } from '~/toolkit/slices/reqResSlice';
+import { useAppDispatch, useAppSelector } from '../../../rtk/store';
+import { composerFieldsReset } from '../../../rtk/slices/newRequestSlice';
+import { setWorkspaceActiveTab } from '../../../rtk/slices/uiSlice';
+import { reqResItemAdded } from '../../../rtk/slices/reqResSlice';
 
 import { v4 as uuid } from 'uuid';
 import { type ReqRes, type RequestWebRTC } from '~/types';

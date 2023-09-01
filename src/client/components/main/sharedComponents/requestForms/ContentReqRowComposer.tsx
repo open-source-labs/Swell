@@ -5,7 +5,7 @@
 //contentReqRowComposer
 
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
+import { useAppSelector } from '../../../../rtk/store';
 
 interface Props {
   data: {
