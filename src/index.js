@@ -59,7 +59,7 @@ if (container === null) {
   throw new Error('Missing root container');
 }
 
-const root = createRoot(container);
+const reactRoot = createRoot(container);
 
 /**
  * @todo This line is only needed for the integration testing, so it should be
@@ -72,7 +72,7 @@ const root = createRoot(container);
  */
 window.getReduxState = () => store.getState();
 
-root.render(
+reactRoot.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <ReduxProvider store={store}>
