@@ -1,12 +1,9 @@
-import store, { appDispatch } from '../../src/client/toolkit-refactor/store';
-import {
-  responseDataSaved,
-  reqResUpdated,
-} from '../../src/client/toolkit-refactor/slices/reqResSlice';
-// import { ReqRes } from '../../types';
-import { LoadTestController } from '../../src/client/controllers/LoadTestController';
-// import { LoadTestResult } from '../components/main/new-request/stressTest/LoadTest';
-import { graphUpdated } from '../../src/client/toolkit-refactor/slices/graphPointsSlice';
+import store, { appDispatch } from '~/toolkit/store';
+import { responseDataSaved, reqResUpdated } from '~/toolkit/slices/reqResSlice';
+import { graphUpdated } from '~/toolkit/slices/graphPointsSlice';
+
+import { LoadTestController } from '~/controllers/LoadTestController';
+import { LoadTestResult } from '../components/main/new-request/stressTest/LoadTest';
 
 // mock the store
 jest.mock('../../src/client/toolkit-refactor/store');
@@ -92,3 +89,4 @@ describe('LoadTestController', () => {
     });
   });
 });
+

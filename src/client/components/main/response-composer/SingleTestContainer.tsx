@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, List, ListItem, Stack } from '@mui/material';
-import { ReqRes, TestResult } from '../../../../types';
+import { type ReqRes, type TestResult } from '~/types';
 
 export default function SingleTestContainer({
   currentResponse,

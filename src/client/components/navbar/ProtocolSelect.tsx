@@ -10,7 +10,7 @@ import { styled } from '@mui/system';
 import { Box, Divider } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import ButtonUnstyled from '@mui/base/Button';
-import { SwellTooltip } from '../customMuiStyles/tooltip';
+import { SwellTooltip } from '~/components/customMuiStyles/tooltip';
 
 interface color {
   [key: number]: string;

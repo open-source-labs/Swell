@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import TestSnippetsButton from './TestSnippetsButton';
-import { AppDispatch } from '../../../../toolkit-refactor/store';
+import { AppDispatch } from '~/toolkit/store';
 
 export default function RestTestSnippets({
   setShowTests,

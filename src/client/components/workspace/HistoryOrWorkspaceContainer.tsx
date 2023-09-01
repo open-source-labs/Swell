@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 // Import local components
 import WorkspaceContainer from './WorkspaceContainer';
 import HistoryContainer from './HistoryContainer';
+
 // Import MUI components and icons
-import { Box, Tabs, Tab, Button } from '@mui/material';
+import { Box, Tabs, Tab } from '@mui/material';
 import { AccessTime, Work } from '@mui/icons-material';
-import { $NotUsed, WorkspaceContainerProps } from '../../../types';
+import { type $NotUsed, type WorkspaceContainerProps } from '~/types';
 
 /**
  * Not sure if this is overkill, but the previous implementation had support for

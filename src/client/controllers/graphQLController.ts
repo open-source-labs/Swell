@@ -9,21 +9,17 @@ import { createClient } from 'graphql-ws';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 
 import {
-  ReqRes,
-  GraphQLResponse,
-  Cookie,
-  CookieOrHeader,
-  WindowExt,
-} from '../../types';
+  type ReqRes,
+  type GraphQLResponse,
+  type Cookie,
+  type CookieOrHeader,
+  type WindowExt,
+} from '~/types';
 
-import Store from '../toolkit-refactor/store';
-import { appDispatch } from '../toolkit-refactor/store';
-import { introspectionDataChanged } from '../toolkit-refactor/slices/introspectionDataSlice';
-import {
-  responseDataSaved,
-  reqResUpdated,
-} from '../toolkit-refactor/slices/reqResSlice';
-import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
+import Store, { appDispatch } from '~/toolkit/store';
+import { introspectionDataChanged } from '~/toolkit/slices/introspectionDataSlice';
+import { responseDataSaved, reqResUpdated } from '~/toolkit/slices/reqResSlice';
+import { graphUpdated } from '~/toolkit/slices/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;
 

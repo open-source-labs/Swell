@@ -1,10 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-duplicate-props */
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { type NewRequestHeadersSet } from '~/types';
 import ContentReqRowComposer from './ContentReqRowComposer';
-import { useState, useEffect } from 'react';
-import { NewRequestHeadersSet } from '../../../../../types';
 
 interface Header {
   id: string | number;
@@ -43,9 +41,14 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
   const [show, setShow] = useState<boolean>(true);
 
   useEffect(() => {
-    const headersDeepCopy = JSON.parse(JSON.stringify(props.newRequestHeaders.headersArr));
+    const headersDeepCopy = JSON.parse(
+      JSON.stringify(props.newRequestHeaders.headersArr)
+    );
     const lastHeader = headersDeepCopy[headersDeepCopy.length - 1];
-    if (lastHeader?.key !== '' && lastHeader?.key.toLowerCase() !== 'content-type') {
+    if (
+      lastHeader?.key !== '' &&
+      lastHeader?.key.toLowerCase() !== 'content-type'
+    ) {
       addHeader();
     }
     checkContentTypeHeaderUpdate();
@@ -95,7 +98,7 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
       // keeping this else if lets the user do what they want, it's fine, updateContentTypeHeader and removeContentTypeHeader will fix it later
     }
   };
-    // 3. if there is a contentTypeHeader, needs to update
+  // 3. if there is a contentTypeHeader, needs to update
   //     // else if (
   //     //   foundHeader &&
   //     //   foundHeader.value !== contentType &&
@@ -139,16 +142,17 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
     });
 
     props.newRequestHeadersSet({
-        headersArr: headersDeepCopy,
-        override: false,
-        count: headersDeepCopy.length,
-      });
-    }
-  
-    // Must be arrow function
-  const onChangeUpdateHeader = (id: string,
+      headersArr: headersDeepCopy,
+      override: false,
+      count: headersDeepCopy.length,
+    });
+  };
+
+  // Must be arrow function
+  const onChangeUpdateHeader = (
+    id: string,
     field: 'key' | 'value' | 'active',
-    value: boolean | string | number,
+    value: boolean | string | number
   ) => {
     const headersDeepCopy = JSON.parse(
       JSON.stringify(props.newRequestHeaders.headersArr)
@@ -165,16 +169,15 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
     // if it's the content-type header, just exit
     const isFirst = indexToBeUpdated === 0;
     // if (isFirst) return;
-  
-      headersDeepCopy[indexToBeUpdated][field] = value;
+
+    headersDeepCopy[indexToBeUpdated][field] = value;
 
     // also switch checkbox if they are typing
-      if (field === 'key' || field === 'value') {
-        headersDeepCopy[indexToBeUpdated].active = true;
-      }
-    
+    if (field === 'key' || field === 'value') {
+      headersDeepCopy[indexToBeUpdated].active = true;
+    }
+
     // update
-    
 
     props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
@@ -197,45 +200,43 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
     });
   };
 
-    let headerName = 'Headers';
-    let addHeaderName = '+';
-    // let headerClass = 'composer_submit http'
-    if (props.newRequestFields.gRPC) {
-      headerName = 'Metadata';
-      addHeaderName = '+';
-    }
+  let headerName = 'Headers';
+  let addHeaderName = '+';
+  // let headerClass = 'composer_submit http'
+  if (props.newRequestFields.gRPC) {
+    headerName = 'Metadata';
+    addHeaderName = '+';
+  }
 
-    const headersArr = props.newRequestHeaders.headersArr.map(
-      (header, index) => (
-        <ContentReqRowComposer
-          data={header}
-          index={index}
-          type="header-row"
-          deleteItem={deleteHeader}
-          changeHandler={onChangeUpdateHeader}
-          key={index} //key
-        />
-      )
-    );
+  const headersArr = props.newRequestHeaders.headersArr.map((header, index) => (
+    <ContentReqRowComposer
+      data={header}
+      index={index}
+      type="header-row"
+      deleteItem={deleteHeader}
+      changeHandler={onChangeUpdateHeader}
+      key={index} //key
+    />
+  ));
 
-    return (
-      <div className="mt-2" style={{ margin: '10px' }}>
-        <div className="is-flex is-align-content-center">
-          <div className="composer-section-title">{headerName}</div>
-          <button
-            className={`${
-              props.isDark ? 'is-dark-200' : ''
-            } button is-small add-header-gRPC-cookie-button ml-2`}
-            id="add-header"
-            style={{ height: '3px', width: '3px' }}
-            onClick={() => addHeader()}
-          >
-            {addHeaderName}
-          </button>
-        </div>
-        <div>{headersArr}</div>
+  return (
+    <div className="mt-2" style={{ margin: '10px' }}>
+      <div className="is-flex is-align-content-center">
+        <div className="composer-section-title">{headerName}</div>
+        <button
+          className={`${
+            props.isDark ? 'is-dark-200' : ''
+          } button is-small add-header-gRPC-cookie-button ml-2`}
+          id="add-header"
+          style={{ height: '3px', width: '3px' }}
+          onClick={() => addHeader()}
+        >
+          {addHeaderName}
+        </button>
       </div>
-    );
-}
+      <div>{headersArr}</div>
+    </div>
+  );
+};
 
 export default HeaderEntryForm;

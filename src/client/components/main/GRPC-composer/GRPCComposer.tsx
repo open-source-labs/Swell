@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-// Import controllers
-import historyController from '../../../controllers/historyController';
-// Import local components
 
+import { type ReqRes } from '~/types';
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
+
+// Import controllers
+import historyController from '~/controllers/historyController';
+
+// Import local components
 import GRPCTypeAndEndpointEntryForm from './GRPCTypeAndEndpointEntryForm';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import GRPCProtoEntryForm from './GRPCProtoEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
-
-import { ReqRes } from '../../../../types.js';
-import { type ConnectRouterProps } from '../MainContainer.js';
 
 // Import MUI components
 import { Box } from '@mui/material';

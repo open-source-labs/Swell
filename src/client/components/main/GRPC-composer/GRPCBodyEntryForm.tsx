@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { type $TSFixMe, type NewRequestStreams } from '~/types';
 import GRPCBodyStream from './GRPCBodyStream';
-import { $TSFixMe, NewRequestStreams } from '../../../../types';
 
 interface Props {
   newRequestStreams: NewRequestStreams;
@@ -16,12 +16,14 @@ const GRPCBodyEntryForm: React.FC<Props> = (props) => {
 
   // add additional streams only for CLIENT or BIDIRECTIONAL streaming
   const addStream = (): void => {
-    const streamsArr = structuredClone(props.newRequestStreams.streamsArr); 
-    const streamContent = structuredClone(props.newRequestStreams.streamContent); 
+    const streamsArr = structuredClone(props.newRequestStreams.streamsArr);
+    const streamContent = structuredClone(
+      props.newRequestStreams.streamContent
+    );
     // save query of initial stream body
     const firstBodyQuery: $TSFixMe = props.newRequestStreams.initialQuery;
     // construct new stream body obj & push into the streamsArr
-    const newStream: $TSFixMe  = {};
+    const newStream: $TSFixMe = {};
     newStream.id = props.newRequestStreams.count;
     newStream.query = firstBodyQuery;
     streamsArr.push(newStream);
@@ -37,7 +39,7 @@ const GRPCBodyEntryForm: React.FC<Props> = (props) => {
   };
 
   // event handler that updates state in the store when typing into the stream query body
-  const onChangeUpdateStream = (streamID: $TSFixMe , value: $TSFixMe ) => {
+  const onChangeUpdateStream = (streamID: $TSFixMe, value: $TSFixMe) => {
     // props.saveChanges(false);
     const streamsArr = [...props.newRequestStreams.streamsArr];
     const streamContent = [...props.newRequestStreams.streamContent];
@@ -55,21 +57,23 @@ const GRPCBodyEntryForm: React.FC<Props> = (props) => {
   };
 
   // for each stream body in the streamArr, render the GRPCBodyStream component
-  const streamArr = props.newRequestStreams.streamsArr.map((stream: $TSFixMe , index: $TSFixMe ) => (
-    <GRPCBodyStream
-      newRequestStreams={props.newRequestStreams}
-      newRequestStreamsSet={props.newRequestStreamsSet}
-      selectedPackage={props.newRequestStreams.selectedPackage}
-      selectedService={props.selectedService}
-      selectedRequest={props.selectedRequest}
-      selectedStreamingType={props.selectedStreamingType}
-      changeHandler={onChangeUpdateStream}
-      stream={stream}
-      key={index}
-      streamNum={index}
-      history={props.history}
-    />
-  ));
+  const streamArr = props.newRequestStreams.streamsArr.map(
+    (stream: $TSFixMe, index: $TSFixMe) => (
+      <GRPCBodyStream
+        newRequestStreams={props.newRequestStreams}
+        newRequestStreamsSet={props.newRequestStreamsSet}
+        selectedPackage={props.newRequestStreams.selectedPackage}
+        selectedService={props.selectedService}
+        selectedRequest={props.selectedRequest}
+        selectedStreamingType={props.selectedStreamingType}
+        changeHandler={onChangeUpdateStream}
+        stream={stream}
+        key={index}
+        streamNum={index}
+        history={props.history}
+      />
+    )
+  );
 
   //if client stream or bidirectional, the add stream btn will be rendered below the stream bodies
   let addStreamBtn;

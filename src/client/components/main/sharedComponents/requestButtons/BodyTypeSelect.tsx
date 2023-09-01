@@ -1,5 +1,5 @@
 import React from 'react';
-import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
+import dropDownArrow from '~/assets/icons/caret-down.svg';
 import useDropdownState from '~/hooks/useDropdownState';
 
 interface Props {

@@ -2,29 +2,29 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
+
 import { useAppDispatch } from '~/toolkit/store';
-import { historyDeleted } from '../../toolkit-refactor/slices/historySlice';
-import { setSidebarActiveTab } from '../../toolkit-refactor/slices/uiSlice';
+import { historyDeleted } from '~/toolkit/slices/historySlice';
+import { setSidebarActiveTab } from '~/toolkit/slices/uiSlice';
+import { newRequestSSESet } from '~/toolkit/slices/newRequestSlice';
 
-import { newRequestSSESet } from '../../toolkit-refactor/slices/newRequestSlice';
-
-import historyController from '../../controllers/historyController';
-
-import {
-  NewRequestFields,
-  OpenAPIRequest,
-  NewRequestBody,
-  NewRequestStreams,
-  CookieOrHeader,
-  ConnectionStatus,
-  Protocol,
-  Methods,
-  Network,
-  ReqResRequest,
-  ReqResResponse,
-} from '../../../types.js';
+import historyController from '~/controllers/historyController';
 import { request } from 'http';
 import { graphql } from 'graphql';
+
+import {
+  type NewRequestFields,
+  type OpenAPIRequest,
+  type NewRequestBody,
+  type NewRequestStreams,
+  type CookieOrHeader,
+  type ConnectionStatus,
+  type Protocol,
+  type Methods,
+  type Network,
+  type ReqResRequest,
+  type ReqResResponse,
+} from '~/types';
 
 interface NewRequestCookiesSet {
   cookiesArr: CookieOrHeader[];

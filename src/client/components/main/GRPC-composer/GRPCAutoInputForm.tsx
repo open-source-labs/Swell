@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import GRPCBodyEntryForm from './GRPCBodyEntryForm';
 import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect';
-import { $TSFixMe, NewRequestStreams } from '../../../../types';
+import { type $TSFixMe, type NewRequestStreams } from '~/types';
 
 interface Props {
   newRequestStreams: {
@@ -22,7 +22,6 @@ interface Props {
 }
 
 const GRPCAutoInputForm: React.FC<Props> = (props) => {
-
   //component state for service and request dropdown
   const [serviceOption, setServiceOption] = useState('Select Service');
   const [requestOption, setRequestOption] = useState('Select Request');
@@ -52,7 +51,7 @@ const GRPCAutoInputForm: React.FC<Props> = (props) => {
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
     let streamContent = [''];
     setRequestOption('Select Request');
-    
+
     // the selected service name is saved in state of the store, mostly everything else is reset
     props.newRequestStreamsSet({
       ...props.newRequestStreams,
@@ -134,12 +133,12 @@ const GRPCAutoInputForm: React.FC<Props> = (props) => {
       }
     }
     //Deep copy streamsArr and streamCopy to reassign in store
-    const streamsArrCopy = structuredClone(streamsArr); 
-    const streamContentCopy = structuredClone(streamContent); 
+    const streamsArrCopy = structuredClone(streamsArr);
+    const streamContentCopy = structuredClone(streamContent);
 
     // push JSON formatted query in streamContent arr
     const queryJSON = JSON.stringify(results, null, 4);
-  
+
     if (streamsArrCopy[0] !== '') {
       streamsArrCopy[0].query = queryJSON;
     }

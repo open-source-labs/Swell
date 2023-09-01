@@ -1,20 +1,20 @@
-import Store from '../toolkit-refactor/store';
-import { appDispatch } from '../toolkit-refactor/store';
+import Store, { appDispatch } from '~/toolkit/store';
 
 import {
   responseDataSaved,
   reqResUpdated,
   reqResReplaced,
   reqResCleared,
-} from '../toolkit-refactor/slices/reqResSlice';
+} from '~/toolkit/slices/reqResSlice';
+
 import {
   groupCleared,
   graphCleared,
   graphUpdated,
-} from '../toolkit-refactor/slices/graphPointsSlice';
+} from '~/toolkit/slices/graphPointsSlice';
 
 import graphQLController from './graphQLController';
-import { Protocol, ReqRes, WindowExt } from '../../types';
+import { type Protocol, type ReqRes, type WindowExt } from '~/types';
 
 const { api } = window as unknown as WindowExt;
 

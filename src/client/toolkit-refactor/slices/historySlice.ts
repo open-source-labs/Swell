@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reqResItemAdded } from './reqResSlice';
 
-import { $NotUsed, ReqRes } from '../../../types';
+import { type $NotUsed, type ReqRes } from '~/types';
 import { format, parseISO } from 'date-fns';
 
 export type HistoryItem = {

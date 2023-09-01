@@ -4,23 +4,22 @@ import Split from 'react-split';
 import { HashRouter } from 'react-router-dom';
 
 // Controllers
-import historyController from '../controllers/historyController';
-import collectionsController from '../controllers/collectionsController';
+import historyController from '~/controllers/historyController';
+import collectionsController from '~/controllers/collectionsController';
 
 // Local components
-// import UpdatePopUpContainer from './legacy-components/UpdatePopUpContainer';
-import HistoryOrWorkspaceContainer from './workspace/HistoryOrWorkspaceContainer';
-import NavBarContainer from './navbar/NavBarContainer';
-import MainContainer from './main/MainContainer';
+import HistoryOrWorkspaceContainer from '~/components/workspace/HistoryOrWorkspaceContainer';
+import NavBarContainer from '~/components/navbar/NavBarContainer';
+import MainContainer from '~/components/main/MainContainer';
 
 // Types
-import { WindowExt } from '../../types';
+import { WindowExt } from '~/types';
 
 // Error handling
-import ErrorBoundary from './utilities/ErrorBoundary/ErrorBoundary';
+import ErrorBoundary from '~/components/utilities/ErrorBoundary/ErrorBoundary';
 
 // Import styling
-import '../../assets/style/App.scss';
+import '~/assets/style/App.scss';
 
 const { api } = window as unknown as WindowExt;
 

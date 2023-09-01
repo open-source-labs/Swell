@@ -1,12 +1,13 @@
 import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
+import { type ReqResRequest, type RequestWebRTC } from '~/types';
+
 import CodeMirror from '@uiw/react-codemirror';
 import EmptyState from './EmptyState';
 import EventPreview from './EventPreview';
 import { EditorView } from '@codemirror/view';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { json } from '@codemirror/lang-json';
-import { ReqResRequest, RequestWebRTC } from '../../../../types';
 
 interface EventsContainerProps {
   currentResponse: {

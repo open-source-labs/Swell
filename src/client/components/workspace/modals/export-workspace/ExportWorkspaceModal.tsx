@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
+import collectionsController from '~/controllers/collectionsController';
 
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
@@ -7,7 +8,6 @@ import { Button } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
-import collectionsController from '../../../../controllers/collectionsController';
 
 const style = {
   display: 'flex',

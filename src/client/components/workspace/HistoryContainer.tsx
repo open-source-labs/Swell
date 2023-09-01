@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '~/toolkit/store';
 import { type ReqRes } from '~/types';
 
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
 import * as HistorySlice from '~/toolkit/slices/historySlice';
 import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
 import {

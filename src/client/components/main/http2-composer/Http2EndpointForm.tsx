@@ -1,8 +1,22 @@
 import React from 'react';
-// Import MUI components
-import { Box, Button, MenuItem, FormControl, Select, SelectChangeEvent, TextField } from '@mui/material'
 
-export default function Http2EndpointForm({ http2Method, setHttp2Method, http2Uri, setHttp2Uri }) {
+// Import MUI components
+import {
+  Box,
+  Button,
+  MenuItem,
+  FormControl,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from '@mui/material';
+
+export default function Http2EndpointForm({
+  http2Method,
+  setHttp2Method,
+  http2Uri,
+  setHttp2Uri,
+}) {
   // const [method, setMethod] = React.useState('get');
   const handleMethodSelect = (event: SelectChangeEvent) => {
     setHttp2Method(event.target.value as string);
@@ -11,15 +25,16 @@ export default function Http2EndpointForm({ http2Method, setHttp2Method, http2Ur
   const handleUriInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHttp2Uri(event.target.value as string);
   };
-  return(
-    <Box className="http2-endpoint-form"
+  return (
+    <Box
+      className="http2-endpoint-form"
       sx={{
         display: 'flex',
       }}
     >
       <FormControl
         sx={{
-          width: '15%'
+          width: '15%',
         }}
         color="warning"
       >
@@ -38,17 +53,14 @@ export default function Http2EndpointForm({ http2Method, setHttp2Method, http2Ur
       <TextField
         sx={{
           width: '85%',
-          px: 1
+          px: 1,
         }}
         value={http2Uri}
         onChange={handleUriInput}
       />
-      <Button
-        variant='outlined'
-        color="success"
-      >
+      <Button variant="outlined" color="success">
         Send
       </Button>
     </Box>
-  )
+  );
 }

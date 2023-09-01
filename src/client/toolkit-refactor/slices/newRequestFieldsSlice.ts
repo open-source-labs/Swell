@@ -8,7 +8,7 @@
  *
  * @todo refactor request type state into a single state with descrete options
  */
-import { NewRequestFields } from '../../../types';
+import { type NewRequestFields } from '~/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { composerFieldsReset } from './newRequestSlice';
 

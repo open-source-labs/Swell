@@ -2,10 +2,10 @@
 import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
 import {
-  $TSFixMe,
-  NewRequestFields,
-  NewRequestStreams,
-} from '../../../../types';
+  type $TSFixMe,
+  type NewRequestFields,
+  type NewRequestStreams,
+} from '~/types';
 
 interface Props {
   warningMessage: $TSFixMe; // This is a

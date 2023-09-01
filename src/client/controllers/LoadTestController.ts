@@ -4,15 +4,12 @@
  * as well as updating the application state (store) with the processed results.
  */
 
-import store from '../toolkit-refactor/store';
-import { appDispatch } from '../toolkit-refactor/store';
-import {
-  responseDataSaved,
-  reqResUpdated,
-} from '../toolkit-refactor/slices/reqResSlice';
-import { ReqRes, ReqResResponse, WindowExt } from '../../types';
+import store, { appDispatch } from '~/toolkit/store';
+import { responseDataSaved, reqResUpdated } from '~/toolkit/slices/reqResSlice';
+import { graphUpdated } from '~/toolkit/slices/graphPointsSlice';
+
+import { type ReqRes, type ReqResResponse, type WindowExt } from '~/types';
 import { LoadTestResult } from '../components/main/sharedComponents/stressTest/LoadTest';
-import { graphUpdated } from '../toolkit-refactor/slices/graphPointsSlice';
 
 const { api } = window as unknown as WindowExt;
 

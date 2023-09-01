@@ -1,5 +1,7 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
+
 import { useAppSelector, useAppDispatch } from '~/toolkit/store';
 import { startServer, stopServer } from '~/toolkit/slices/mockServerSlice';
 import { newRequestFieldsByProtocol } from '~/toolkit/slices/newRequestFieldsSlice';
@@ -12,7 +14,6 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 
 // mui
 import { Box, Button, Modal, Typography } from '@mui/material';
-import { ConnectRouterProps } from '../MainContainer';
 
 /**
  * grab context from Electron window

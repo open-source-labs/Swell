@@ -1,9 +1,8 @@
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { reqResReplaced } from '~/toolkit/slices/reqResSlice';
 
-import { Collection, ReqRes, WorkspaceContainerProps } from '../../../types';
-
-import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
+import { type ReqRes, type WorkspaceContainerProps } from '~/types';
 
 import {
   Box,

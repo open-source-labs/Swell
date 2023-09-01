@@ -1,7 +1,7 @@
 import React from 'react';
 import EmptyState from './EmptyState';
 import SingleTestContainer from './SingleTestContainer';
-import { ReqRes, TestResult } from '../../../../types';
+import { type ReqRes, TestResult } from '~/types';
 
 interface Props {
   currentResponse: ReqRes;

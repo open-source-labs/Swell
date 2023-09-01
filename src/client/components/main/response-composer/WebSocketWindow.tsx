@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import WebSocketMessage from './WebSocketMessage';
-import {
-  ConnectionStatus,
-  ReqRes,
-  ReqResRequest,
-  ReqResResponse,
-  WebMessages,
-  WindowExt,
-} from '../../../../types';
 import EmptyState from './EmptyState';
+
+import {
+  type ConnectionStatus,
+  type ReqRes,
+  type ReqResRequest,
+  type ReqResResponse,
+  type WebMessages,
+  type WindowExt,
+} from '~/types';
 
 const { api } = window as unknown as WindowExt;
 

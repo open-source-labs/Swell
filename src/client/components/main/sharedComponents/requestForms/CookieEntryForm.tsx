@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import ContentReqRowComposer from './ContentReqRowComposer';
-import { NewRequestBody, NewRequestCookiesSet } from '../../../../../types';
+import { type NewRequestBody, type NewRequestCookiesSet } from '~/types';
 
 interface Cookie {
   id: string;

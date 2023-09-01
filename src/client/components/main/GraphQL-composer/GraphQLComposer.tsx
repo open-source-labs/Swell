@@ -1,10 +1,14 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { v4 as uuid } from 'uuid';
-// Import controllers
-import historyController from '../../../controllers/historyController';
-// Import local components
 
+import { type ReqRes } from '~/types';
+import { type ConnectRouterProps } from '../MainContainer';
+
+// Import controllers
+import historyController from '~/controllers/historyController';
+
+// Import local components
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
 import GraphQLMethodAndEndpointEntryForm from './GraphQLMethodAndEndpointEntryForm';
 import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
@@ -17,8 +21,6 @@ import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { type ReqRes } from '../../../../types';
-import { type ConnectRouterProps } from '../MainContainer';
 
 // Translated from GraphQLContainer.jsx
 export default function GraphQLComposer(props: ConnectRouterProps) {

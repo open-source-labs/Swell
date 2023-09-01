@@ -1,5 +1,5 @@
 import React from 'react';
-import { $TSFixMe } from '../../../../../types';
+import { type $TSFixMe } from '~/types';
 
 const WebRTCTextItem = (props: $TSFixMe) => {
   const { source, timeReceived, data } = props;
@@ -32,7 +32,9 @@ const WebRTCTextItem = (props: $TSFixMe) => {
         <div id={webSocketMessageIDNames}>{data}</div>
         {buildTime(timeReceived)}
       </div>
-      <div className={message_sender} style={{color:'rgba(0, 0, 0, 0.6)'}}>{message_sender}</div>
+      <div className={message_sender} style={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+        {message_sender}
+      </div>
     </div>
   );
 };

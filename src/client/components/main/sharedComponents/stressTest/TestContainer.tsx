@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useAppSelector } from '~/toolkit/store';
 
 import LoadTestController from '~/controllers/LoadTestController';
-import { ReqRes } from '~/types';
+import { type ReqRes } from '~/types';
 
 import { Box } from '@mui/material';
 import { LoadTest, LoadTestResult } from './LoadTest';

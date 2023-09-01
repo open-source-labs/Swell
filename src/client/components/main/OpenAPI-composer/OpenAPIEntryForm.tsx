@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
-import { $TSFixMe } from '../../../../types';
+import { type $TSFixMe } from '~/types';
 
 interface Props {
   warningMessage: {

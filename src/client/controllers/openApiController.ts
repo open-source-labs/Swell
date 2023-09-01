@@ -1,30 +1,25 @@
-const YAML = require('yamljs');
-import {
-    WindowExt,
-    $TSFixMe
-  } from '../../types';
+import { type WindowExt, type $TSFixMe } from '~/types';
+import { appDispatch } from '~/toolkit/store';
+import { openApiRequestsReplaced } from '~/toolkit/slices/newRequestOpenApiSlice';
 
-import { appDispatch } from '../toolkit-refactor/store';
 const { api } = window as unknown as WindowExt;
-import { openApiRequestsReplaced } from '../toolkit-refactor/slices/newRequestOpenApiSlice'
 
 const openApiController: $TSFixMe = {
-
-    importDocument(): void {
-        api.removeAllListeners('openapi-info');
-        api.receive('openapi-info', async (data_in: $TSFixMe) => {
-            try {
-
-                appDispatch(openApiRequestsReplaced(data_in));
-            } catch (err) {
-                // If swell ever gets big enough, this needs to be built out
-                console.log('Error in openAPI Controller: ', err)
-            }
-        })
-    },
-    sendDocument(): void {
-        api.send('import-openapi');
-    },
-}
+  importDocument(): void {
+    api.removeAllListeners('openapi-info');
+    api.receive('openapi-info', async (data_in: $TSFixMe) => {
+      try {
+        appDispatch(openApiRequestsReplaced(data_in));
+      } catch (err) {
+        // If swell ever gets big enough, this needs to be built out
+        console.log('Error in openAPI Controller: ', err);
+      }
+    });
+  },
+  sendDocument(): void {
+    api.send('import-openapi');
+  },
+};
 
 export default openApiController;
+

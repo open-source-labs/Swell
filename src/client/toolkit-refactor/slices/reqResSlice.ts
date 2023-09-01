@@ -3,9 +3,9 @@
  * arrays and associated values.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes } from '../../../types';
+import { type ReqRes } from '~/types';
 
-/** 
+/**
  * @todo based on current useage type def is innaccurate or incomplete
  * currentReponse stores the last returned ReqRes type
  * in theory currentResponse property is unnessecary as the last element in the

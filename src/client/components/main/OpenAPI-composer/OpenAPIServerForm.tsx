@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '~/toolkit/store';
+import { type $TSFixMe, type OpenAPIRequest } from '~/types';
+
 import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer';
-import { $TSFixMe, OpenAPIRequest } from '../../../../types';
 
 interface Props {
   newRequestsOpenAPI: OpenAPIRequest;

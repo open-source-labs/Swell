@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+
 import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+
+import {
+  type RequestWebRTCText,
+  type ResponseWebRTCText,
+  type WebMessages,
+} from '~/types';
 
 import { stepperClasses } from '@mui/material';
-import {
-  $TSFixMe,
-  ReqRes,
-  RequestWebRTCText,
-  ResponseWebRTCText,
-  WebMessages,
-} from '../../../../../types';
 import WebRTCTextItem from './WebRTCTextItem';
-import { responseDataSaved } from '../../../../toolkit-refactor/slices/reqResSlice';
 
 const WebRTCTextContainer = () => {
   const dispatch = useAppDispatch();

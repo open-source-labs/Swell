@@ -6,7 +6,13 @@ import RawBodyTypeSelect from '../requestButtons/RawBodyTypeSelect';
 import JSONPrettify from '../requestButtons/JSONPrettifyButton';
 import TextCodeArea from '../TextCodeArea';
 
-import { NewRequestBody, NewRequestBodySet, NewRequestHeaders, NewRequestHeadersSet} from '../../../../../types';
+import {
+  type NewRequestBody,
+  type NewRequestBodySet,
+  type NewRequestHeaders,
+  type NewRequestHeadersSet,
+} from '~/types';
+
 // import { Interface } from 'readline';
 
 // import React, { useState, useEffect } from 'react';
@@ -16,22 +22,20 @@ import { NewRequestBody, NewRequestBodySet, NewRequestHeaders, NewRequestHeaders
 // import { useState, useEffect } from 'react';
 // import { Form } from 'react-router-dom';
 
-
-
 type BodyEntryFormProps = {
-  newRequestHeaders: NewRequestHeaders,
-  newRequestBody: NewRequestBody,
-  newRequestBodySet: NewRequestBodySet,
-  newRequestHeadersSet: NewRequestHeadersSet,
+  newRequestHeaders: NewRequestHeaders;
+  newRequestBody: NewRequestBody;
+  newRequestBodySet: NewRequestBodySet;
+  newRequestHeadersSet: NewRequestHeadersSet;
   warningMessage: {
-    err?: string
-    uri?: string
-    body?: string
-    json?: string
-  }
-  isMockServer?: boolean
-  placeholder?: string
-}
+    err?: string;
+    uri?: string;
+    body?: string;
+    json?: string;
+  };
+  isMockServer?: boolean;
+  placeholder?: string;
+};
 
 const BodyEntryForm = (props: BodyEntryFormProps) => {
   const {
@@ -40,7 +44,7 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
     newRequestHeaders,
     newRequestHeadersSet,
     warningMessage,
-    isMockServer
+    isMockServer,
   } = props;
 
   useEffect(() => {
@@ -62,10 +66,10 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
     if (newRequestBody.bodyType === 'x-www-form-urlencoded') {
       return (
         <div>
-        <WWWForm
-          newRequestBodySet={newRequestBodySet}
-          newRequestBody={newRequestBody}
-        />
+          <WWWForm
+            newRequestBodySet={newRequestBodySet}
+            newRequestBody={newRequestBody}
+          />
         </div>
       );
     }
@@ -98,7 +102,6 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
     <div className="mt-1">
       <div className="composer-section-title">Body</div>
       <div className="is-flex is-align-items-center is-justify-content-space-between">
-        
         {/* Div that contains both drop down menus for 'raw' and 'application/json */}
         <span className="is-flex is-align-items-center">
           <BodyTypeSelect
@@ -143,5 +146,3 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
 };
 
 export default BodyEntryForm;
-
-

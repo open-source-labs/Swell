@@ -1,22 +1,23 @@
 import React from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { useAppDispatch } from '~/toolkit/store';
 import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
 import {
   setResponsePaneActiveTab,
   setSidebarActiveTab,
 } from '~/toolkit/slices/uiSlice';
-import { v4 as uuid } from 'uuid';
 
-import { type ConnectRouterProps } from '../MainContainer';
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
 import {
   type CookieOrHeader,
   type ReqRes,
   type ValidationMessage,
-} from '../../../../types';
+} from '~/types';
 
 // Import controllers
-import connectionController from '../../../controllers/reqResController';
-import historyController from '../../../controllers/historyController';
+import connectionController from '~/controllers/reqResController';
+import historyController from '~/controllers/historyController';
 
 import RestMethodAndEndpointEntryForm from './RestMethodAndEndpointEntryForm';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';

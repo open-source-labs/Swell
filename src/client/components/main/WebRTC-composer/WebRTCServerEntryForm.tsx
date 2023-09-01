@@ -1,11 +1,10 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 
-import { RequestWebRTC } from '../../../../types';
-import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { newRequestWebRTCSet } from '~/toolkit/slices/newRequestSlice';
+import webrtcPeerController from '~/controllers/webrtcPeerController';
 
-import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
-import webrtcPeerController from '../../../controllers/webrtcPeerController';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 const WebRTCServerEntryForm: React.FC = () => {
   const dispatch = useAppDispatch();

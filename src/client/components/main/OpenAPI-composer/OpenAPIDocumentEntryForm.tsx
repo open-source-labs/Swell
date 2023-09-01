@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
-import openApiController from '../../../controllers/openApiController';
+import openApiController from '~/controllers/openApiController';
 
 // this component is working as intened
 

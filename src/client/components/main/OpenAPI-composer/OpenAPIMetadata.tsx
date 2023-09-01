@@ -1,5 +1,5 @@
 import React from 'react';
-import { $TSFixMe } from '../../../../types';
+import { type $TSFixMe } from '~/types';
 
 interface Props {
   newRequestsOpenAPI: $TSFixMe;
@@ -8,16 +8,17 @@ interface Props {
 // This component is working as intended, but need the TS tightened up
 
 const OpenAPIMetaData: React.FC<Props> = (props: Props) => {
+  const { newRequestsOpenAPI } = props;
 
-  const { newRequestsOpenAPI } = props
-
-  const conditionalChecker = (key: string) => { 
+  const conditionalChecker = (key: string) => {
     if (newRequestsOpenAPI.openapiMetadata) {
-      return newRequestsOpenAPI.openapiMetadata.info[key] ? newRequestsOpenAPI.openapiMetadata.info[key] : '';
+      return newRequestsOpenAPI.openapiMetadata.info[key]
+        ? newRequestsOpenAPI.openapiMetadata.info[key]
+        : '';
     }
     return '';
-  }
-  
+  };
+
   return (
     <div className="mt-2 mb-2">
       <div className="is-flex is-justify-content-space-between is-align-content-center mb-4">
@@ -46,6 +47,6 @@ const OpenAPIMetaData: React.FC<Props> = (props: Props) => {
       <hr />
     </div>
   );
-}
+};
 
 export default OpenAPIMetaData;

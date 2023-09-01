@@ -1,13 +1,13 @@
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { collectionDeleted } from '~/toolkit/slices/collectionsSlice';
 
-import { collectionDeleted } from '../../../toolkit-refactor/slices/collectionsSlice';
+import { type Collection, type WorkspaceContainerProps } from '~/types';
+import collectionsController from '~/controllers/collectionsController';
 
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import collectionsController from '../../../controllers/collectionsController';
 import { Button } from '@mui/material';
-import { SwellTooltip } from '../../customMuiStyles/tooltip';
-import { Collection, WorkspaceContainerProps } from '../../../../types';
+import { SwellTooltip } from '~/components/customMuiStyles/tooltip';
 
 export default function DeleteRequestButton({
   currentWorkspaceId,

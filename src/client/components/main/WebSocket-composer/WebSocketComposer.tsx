@@ -1,14 +1,18 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
+
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
+
 // Import controllers
-import historyController from '../../../controllers/historyController';
+import historyController from '~/controllers/historyController';
+
 // Import local components
 import WSEndpointEntryForm from './WSEndpointEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
+
 // Import MUI components
 import { Box } from '@mui/material';
-import { type ConnectRouterProps } from '../MainContainer';
 
 export default function WebSocketComposer(props: ConnectRouterProps) {
   const {

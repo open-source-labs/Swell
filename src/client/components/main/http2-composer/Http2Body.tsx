@@ -2,10 +2,11 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
 
-import { NewRequestBody } from '~/types';
+import { type NewRequestBody } from '~/types';
 
 // Import local components
 import BodyTypeSelect from './BodyTypeSelect';
+
 // Import MUI components
 import { Box } from '@mui/material';
 import WWWForm from '../sharedComponents/requestForms/WWWForm';

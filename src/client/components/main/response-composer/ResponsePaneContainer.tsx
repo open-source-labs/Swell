@@ -2,12 +2,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
+import ReqResCtrl from '~/controllers/reqResController';
+
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 import { setResponsePaneActiveTab } from '~/toolkit/slices/uiSlice';
 
 import { Box } from '@mui/material';
-import ReqResCtrl from '../../../controllers/reqResController';
 import EventsContainer from './EventsContainer';
 import HeadersContainer from './HeadersContainer';
 import TestsContainer from './TestsContainer';

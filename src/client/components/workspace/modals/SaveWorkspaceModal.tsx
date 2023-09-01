@@ -2,16 +2,18 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 import {
   collectionUpdated,
   collectionAdded,
 } from '~/toolkit/slices/collectionsSlice';
 
-import { v4 as uuid } from 'uuid';
-import collectionsController from '../../../controllers/collectionsController';
+import { type ReqRes } from '~/types';
+import collectionsController from '~/controllers/collectionsController';
+
 import SaveModalSavedWorkspaces from './SaveModalSavedWorkspaces';
-import { ReqRes } from '../../../../../src/types';
 
 interface modalSwitch {
   showModal: boolean;

@@ -6,7 +6,7 @@
  * cause elements to be skipped.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Collection, $NotUsed } from '../../../types';
+import { type Collection, type $NotUsed } from '~/types';
 
 const initialState: Collection[] = [];
 

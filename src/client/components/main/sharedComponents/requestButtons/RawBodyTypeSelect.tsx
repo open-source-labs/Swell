@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React from 'react';
-import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
+import dropDownArrow from '~/assets/icons/caret-down.svg';
 import useDropdownState from '~/hooks/useDropdownState';
 
 interface RawBodyTypeSelectProps {

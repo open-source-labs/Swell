@@ -1,16 +1,18 @@
-import store, { appDispatch } from '../toolkit-refactor/store';
+import store, { appDispatch } from '~/toolkit/store';
+import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
 import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
-} from '../toolkit-refactor/slices/newRequestSlice';
+} from '~/toolkit/slices/newRequestSlice';
+
 import {
-  ReqRes,
-  RequestWebRTC,
-  RequestWebRTCText,
-  ResponseWebRTC,
-  ResponseWebRTCText,
-} from '../../types';
-import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
+  type ReqRes,
+  type RequestWebRTC,
+  type RequestWebRTCText,
+  type ResponseWebRTC,
+  type ResponseWebRTCText,
+} from '~/types';
+
 const webrtcPeerController = {
   createPeerConnection: async (
     newRequestWebRTC: RequestWebRTC
@@ -72,7 +74,7 @@ const webrtcPeerController = {
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       let localStream = peerConnection.createDataChannel('textChannel');
       localStream.onopen = () => console.log('data channel opened');
-      localStream.onclose = () => console.log('data channel closed')
+      localStream.onclose = () => console.log('data channel closed');
 
       appDispatch(
         newRequestWebRTCSet({
@@ -174,11 +176,10 @@ const webrtcPeerController = {
 
         let state = store.getState();
         if (state.reqRes.currentResponse.response) {
-          let newWebRTCMessages =
-            (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
-              messageObject
-            );
-          let request = state.reqRes.currentResponse.request
+          let newWebRTCMessages = (<ResponseWebRTCText>(
+            state.reqRes.currentResponse.response
+          )).webRTCMessages.concat(messageObject);
+          let request = state.reqRes.currentResponse.request;
           appDispatch(
             responseDataSaved({
               ...reqRes,

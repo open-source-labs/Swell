@@ -1,10 +1,11 @@
 import React from 'react';
-import { useAppSelector } from '~/toolkit/store';
 import { GraphQLSchema } from 'graphql';
 
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import { NewRequestFields, NewRequestBody } from '../../../../types';
 import useDropdownState from '~/hooks/useDropdownState';
+import { useAppSelector } from '~/toolkit/store';
+import { type NewRequestFields, type NewRequestBody } from '~/types';
+
+import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';
 
 interface IntrospectionData {
   schemaSDL: string | null;

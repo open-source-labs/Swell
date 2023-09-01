@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAppSelector } from '~/toolkit/store';
-import ReqResCtrl from '../../../controllers/reqResController';
+import ReqResCtrl from '~/controllers/reqResController';
+
 import WorkspaceCollectionsContainer from '../WorkspaceCollectionsContainer';
-import SaveWorkspaceModal from '../modals/SaveWorkspaceModal';
-// Import MUI components
+import SaveWorkspaceModal from '~/components/workspace/modals/SaveWorkspaceModal';
 
 export default function WorkspaceContainerButtons() {
   const [showModal, setShowModal] = useState(false);

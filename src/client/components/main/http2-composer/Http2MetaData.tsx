@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+
 // Import local components
 import KeyValueTable from './KeyValueTable';
 import Http2Body from './Http2Body';
+
 // Import MUI components
 import { Box, Tabs, Tab } from '@mui/material';
 

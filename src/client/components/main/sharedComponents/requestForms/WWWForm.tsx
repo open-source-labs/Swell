@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
-import PropTypes from 'prop-types';
+import { type NewRequestBody, type NewRequestBodySet } from '~/types';
 import ContentReqRowComposer from './ContentReqRowComposer';
-import { NewRequestBody, NewRequestBodySet } from '../../../../../types';
 
 interface Props {
-  newRequestBody: NewRequestBody
-  newRequestBodySet: NewRequestBodySet
+  newRequestBody: NewRequestBody;
+  newRequestBodySet: NewRequestBodySet;
 }
 
 interface WWWField {
@@ -19,7 +17,6 @@ interface WWWField {
 export default function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
   const [wwwFields, setWwwFields] = useState<WWWField[]>([]);
   const [rawString, setRawString] = useState('');
-
 
   useEffect(() => {
     const matches = newRequestBody.bodyContent.match(
@@ -38,7 +35,6 @@ export default function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     }
     addFieldIfNeeded();
   }, []);
-
 
   useEffect(() => {
     if (newRequestBody.bodyContent !== rawString) {
@@ -102,11 +98,7 @@ export default function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     setWwwFields(wwwFieldsDeepCopy);
   }
 
-  function updateWwwField(
-    id: string,
-    field: string,
-    value: boolean | string
-  ) {
+  function updateWwwField(id: string, field: string, value: boolean | string) {
     const wwwFieldsDeepCopy = createWWWClone();
     let indexToBeUpdated: number = -1;
     for (let i = 0; i < wwwFieldsDeepCopy.length; i++) {
@@ -143,7 +135,9 @@ export default function WWWForm({ newRequestBody, newRequestBodySet }: Props) {
     }
     return (
       wwwFields
-        .map((wwwField) => (wwwField.key === '' && wwwField.value === '' ? 1 : 0))
+        .map((wwwField) =>
+          wwwField.key === '' && wwwField.value === '' ? 1 : 0
+        )
         .reduce((acc, cur) => (acc === 0 ? cur : acc)) === 0
     );
   }

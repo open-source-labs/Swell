@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 import { newRequestBodySet } from '~/toolkit/slices/newRequestSlice';
-import TextCodeArea from '../sharedComponents/TextCodeArea';
+import TextCodeArea from '~/components/main/sharedComponents/TextCodeArea';
 
 type Props = {
   warningMessage: { body: string } | null;

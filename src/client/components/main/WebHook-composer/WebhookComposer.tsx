@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 // Import MUI components
 import { Box } from '@mui/material';
 import { $TSFixMe } from '~/types';
-import { type ConnectRouterProps } from '../MainContainer';
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
 
 export default function WebhookComposer(props: ConnectRouterProps) {
   /**

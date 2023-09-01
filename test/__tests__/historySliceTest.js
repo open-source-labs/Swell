@@ -8,7 +8,7 @@ import historySliceReducer, {
   historyCleared,
   historySet,
   historyDeleted,
-} from '../../src/client/toolkit-refactor/slices/historySlice';
+} from '~/toolkit/slices/historySlice';
 
 describe('HistorySlice', () => {
   let initialState;
@@ -60,15 +60,23 @@ describe('HistorySlice', () => {
 
   describe('historyDeleted', () => {
     xit('should delete the specified item from the history', () => {
-      const action = { payload: { id: 1, createdAt: '2022-01-01T00:00:00.000Z' } };
-      const newState = historySliceReducer(initialState, historyDeleted(action.payload));
+      const action = {
+        payload: { id: 1, createdAt: '2022-01-01T00:00:00.000Z' },
+      };
+      const newState = historySliceReducer(
+        initialState,
+        historyDeleted(action.payload)
+      );
       const expectedState = [];
       expect(newState).toEqual(expectedState);
     });
 
     it('should update the history when an item is deleted', () => {
       const action = { payload: historyItem };
-      const newState = historySliceReducer(initialState, historyDeleted(action.payload));
+      const newState = historySliceReducer(
+        initialState,
+        historyDeleted(action.payload)
+      );
       const expectedState = [
         {
           date: '01/01/2022',
@@ -108,30 +116,30 @@ describe('HistorySlice', () => {
     });
 
     it('should add a new item to an existing history', () => {
-        const newItem = {
-          id: 3,
-          createdAt: '2022-01-01T00:00:00.000Z',
-        };
-  
-        const action = { payload: newItem };
-        const newState = historySliceReducer(initialState, action);
-        const expectedState = [
-          {
-            date: '01/01/2022',
-            history: [
-                {
-                  id: 3,
-                  createdAt: '2022-01-01T00:00:00.000Z',
-                },
-                {
-                  id: 1,
-                  createdAt: '2022-01-01T00:00:00.000Z',
-                },
-              ],
+      const newItem = {
+        id: 3,
+        createdAt: '2022-01-01T00:00:00.000Z',
+      };
+
+      const action = { payload: newItem };
+      const newState = historySliceReducer(initialState, action);
+      const expectedState = [
+        {
+          date: '01/01/2022',
+          history: [
+            {
+              id: 3,
+              createdAt: '2022-01-01T00:00:00.000Z',
             },
-          ];
-    
-          expect(newState).toEqual(expectedState);
-        });
-      });
+            {
+              id: 1,
+              createdAt: '2022-01-01T00:00:00.000Z',
+            },
+          ],
+        },
+      ];
+
+      expect(newState).toEqual(expectedState);
     });
+  });
+});

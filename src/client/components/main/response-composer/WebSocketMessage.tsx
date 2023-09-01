@@ -10,7 +10,12 @@ interface WebSocketMessageProps {
   index: number;
 }
 
-const WebSocketMessage = ({ source, timeReceived, data, index }: WebSocketMessageProps) => {
+const WebSocketMessage = ({
+  source,
+  timeReceived,
+  data,
+  index,
+}: WebSocketMessageProps) => {
   const webSocketMessageClassNames =
     source === 'server'
       ? 'websocket_message websocket_message-server'
@@ -34,7 +39,8 @@ const WebSocketMessage = ({ source, timeReceived, data, index }: WebSocketMessag
     return `${h}:${m}:${s}`;
   };
 
-  const decodedData = typeof data === 'object' ? new TextDecoder('utf-8').decode(data) : data;
+  const decodedData =
+    typeof data === 'object' ? new TextDecoder('utf-8').decode(data) : data;
 
   return (
     <div>
@@ -59,3 +65,4 @@ const WebSocketMessage = ({ source, timeReceived, data, index }: WebSocketMessag
 };
 
 export default WebSocketMessage;
+

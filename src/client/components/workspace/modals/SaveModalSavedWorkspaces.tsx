@@ -3,9 +3,9 @@
 import React from 'react';
 
 interface Props {
-  name: string,
-  inputID: string,
-  updateCollection: (name: string, inputID: string) => void
+  name: string;
+  inputID: string;
+  updateCollection: (name: string, inputID: string) => void;
 }
 
 function SaveModalSavedWorkspaces({ name, inputID, updateCollection }: Props) {

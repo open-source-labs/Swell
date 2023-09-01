@@ -1,25 +1,25 @@
 /** Also not legacy */
 
 import React, { useState } from 'react';
-import { useAppSelector } from '~/toolkit/store';
 
-import connectionController from '../../controllers/reqResController';
-import webrtcPeerController from '../../controllers/webrtcPeerController';
-import { responseDataSaved } from '../../toolkit-refactor/slices/reqResSlice';
-// import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
+import { useAppSelector, useAppDispatch } from '~/toolkit/store';
+import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
+// import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
+import {
+  setResponsePaneActiveTab,
+  setSidebarActiveTab,
+} from '~/toolkit/slices/uiSlice';
 // import {
 //   newRequestSSESet,
 //   newRequestCookiesSet,
 //   newRequestStreamsSet,
 //   newRequestBodySet,
 //   newRequestHeadersSet,
-// } from '../../toolkit-refactor/slices/newRequestSlice';
-import {
-  setResponsePaneActiveTab,
-  setSidebarActiveTab,
-} from '../../toolkit-refactor/slices/uiSlice';
+// } from '~/toolkit/slices/newRequestSlice';
 
-import { useAppDispatch } from '../../toolkit-refactor/store';
+import connectionController from '~/controllers/reqResController';
+import webrtcPeerController from '~/controllers/webrtcPeerController';
+
 const WorkspaceCollectionElement = (props) => {
   const [webRTCSend, setWebRTCSend] = useState(false);
   const [showDetails, setShowDetails] = useState(false);

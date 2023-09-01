@@ -1,7 +1,7 @@
-import db from '../../src/client/db';
-import historyController from '../../src/client/controllers/historyController';
-import { appDispatch } from '../../src/client/toolkit-refactor/store';
-import { historySet } from '../../src/client/toolkit-refactor/slices/historySlice';
+import db from '~/db';
+import historyController from '~/controllers/historyController';
+import { appDispatch } from '~/toolkit/store';
+import { historySet } from '~/toolkit/slices/historySlice';
 
 jest.mock('../../src/client/db');
 jest.mock('../../src/client/toolkit-refactor/store');
@@ -13,7 +13,12 @@ describe('historyController', () => {
 
   describe('addHistoryToIndexedDb', () => {
     it('adds a req/res to the db', () => {
-      const reqRes = { id: '1', request: {}, response: {}, createdAt: new Date() };
+      const reqRes = {
+        id: '1',
+        request: {},
+        response: {},
+        createdAt: new Date(),
+      };
 
       db.table.mockReturnValue({
         put: jest.fn().mockResolvedValue(null),
@@ -56,7 +61,12 @@ describe('historyController', () => {
 
   describe('getHistory', () => {
     xit('gets req/res history from the db and dispatches them to the store', async () => {
-      const reqRes = { id: '1', request: {}, response: {}, createdAt: new Date() };
+      const reqRes = {
+        id: '1',
+        request: {},
+        response: {},
+        createdAt: new Date(),
+      };
       const history = [reqRes];
 
       db.table.mockReturnValue({
@@ -87,7 +97,11 @@ describe('historyController', () => {
 
       await historyController.getHistory();
 
-      expect(console.error).toHaveBeenCalledWith('Error in getHistory', 'error');
+      expect(console.error).toHaveBeenCalledWith(
+        'Error in getHistory',
+        'error'
+      );
     });
   });
 });
+

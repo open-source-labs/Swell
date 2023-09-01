@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '~/toolkit/store';
 import useDropdownState from '~/hooks/useDropdownState';
-import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
+import dropDownArrow from '~/assets/icons/arrow_drop_down_white_192x192.png';
 
 const RestMethodAndEndpointEntryForm = ({
   warningMessage,

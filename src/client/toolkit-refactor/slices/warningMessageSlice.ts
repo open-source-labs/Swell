@@ -3,7 +3,7 @@
  * object and associated values.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { $NotUsed } from '../../../types';
+import { type $NotUsed } from '~/types';
 
 export type WarningMessage = Partial<{
   err: string;

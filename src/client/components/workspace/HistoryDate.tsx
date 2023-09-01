@@ -1,6 +1,6 @@
 import React from 'react';
 import { isYesterday, isToday, parseISO, parse, format } from 'date-fns';
-import History from './History.tsx';
+import History from './History';
 
 import {
   NewRequestStreams,

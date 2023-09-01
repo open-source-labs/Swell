@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '~/toolkit/store';
+
+import { type $TSFixMe, type ReqRes } from '~/types';
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
 
 import { v4 as uuid } from 'uuid';
 // Import controllers
-import historyController from '../../../controllers/historyController';
+import historyController from '~/controllers/historyController';
 
 // Import local components
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
@@ -14,8 +17,6 @@ import OpenAPIServerForm from './OpenAPIServerForm';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe, ReqRes } from '../../../../types';
-import { ConnectRouterProps } from '../MainContainer';
 
 export default function OpenAPIComposer(props: ConnectRouterProps) {
   const newRequestsOpenAPI = useAppSelector((store) => store.newRequestOpenApi);

@@ -147,14 +147,20 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 /**
- * @todo 2023-08-31 - This should be treated as a temporary type (insert quote
- * about how everything long-standing was intended to be temporary).
+ * This defines the top-level props defined at the app's router root, which are
+ * then passed to basically every single component
+ *
+ * @todo 2023-08-31 - This should be treated as a temporary type. The goal
+ * should be to get all the components redesigned to receive values through
+ * the custom Redux hooks, and then delete this for good.
  *
  * Once all of the Redux values provided via connect has been "tamped down" to
  * their respective components, you can do the following:
  * 1. Delete the ConnectedProps<typeof connector> part from the props
  * 2. Delete connector, mapStateToProps, and mapDispatchToProps, and related
  *    imports
+ * 3. Remove the export from the type, so that it can go back to being an
+ *    internal implementation detail.
  *
  * Please, PLEASE do not move this type into the global types file. That file
  * needs to get smaller, not bigger.

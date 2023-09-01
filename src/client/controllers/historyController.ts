@@ -1,18 +1,19 @@
 import { format, parse } from 'date-fns';
-import db from '../db';
+import db from '~/db';
 
-import { appDispatch } from '../toolkit-refactor/store';
-import { historySet } from '../toolkit-refactor/slices/historySlice';
-import { setSidebarActiveTab } from '../toolkit-refactor/slices/uiSlice';
-import { fieldsReplaced } from '../toolkit-refactor/slices/newRequestFieldsSlice';
+import { appDispatch } from '~/toolkit/store';
+import { historySet } from '~/toolkit/slices/historySlice';
+import { setSidebarActiveTab } from '~/toolkit/slices/uiSlice';
+import { fieldsReplaced } from '~/toolkit/slices/newRequestFieldsSlice';
 import {
-  newRequestSSESet, newRequestCookiesSet,
-  newRequestStreamsSet, newRequestBodySet,
-  newRequestHeadersSet
-} from '../toolkit-refactor/slices/newRequestSlice';
+  newRequestSSESet,
+  newRequestCookiesSet,
+  newRequestStreamsSet,
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '~/toolkit/slices/newRequestSlice';
 
-import { ReqRes, $TSFixMe } from '../../types';
-
+import { type ReqRes, type $TSFixMe } from '~/types';
 
 const historyController = {
   addHistoryToIndexedDb(reqRes: ReqRes): void {
@@ -144,7 +145,7 @@ const historyController = {
     let headerDeeperCopy;
 
     if (content.request.headers) {
-      headerDeeperCopy = structuredClone(content.request.headers)
+      headerDeeperCopy = structuredClone(content.request.headers);
       headerDeeperCopy.push({
         id: content.request.headers.length + 1,
         active: false,
@@ -156,7 +157,7 @@ const historyController = {
     let cookieDeeperCopy;
 
     if (content.request.cookies && !/ws/.test(content.protocol)) {
-      cookieDeeperCopy = structuredClone(content.request.cookies)
+      cookieDeeperCopy = structuredClone(content.request.cookies);
       cookieDeeperCopy.push({
         id: content.request.cookies.length + 1,
         active: false,
@@ -192,8 +193,8 @@ const historyController = {
     appDispatch(newRequestSSESet(content.request.isSSE));
 
     if (content && content.gRPC) {
-      const streamsDeepCopy = structuredClone(content.streamsArr)//JSON.parse(JSON.stringify(content.streamsArr));
-      const contentsDeepCopy = structuredClone(content.streamsContent)//JSON.parse(JSON.stringify(content.streamContent));
+      const streamsDeepCopy = structuredClone(content.streamsArr); //JSON.parse(JSON.stringify(content.streamsArr));
+      const contentsDeepCopy = structuredClone(content.streamsContent); //JSON.parse(JSON.stringify(content.streamContent));
 
       // construct the streams obj from passed in history content & set state in store
       const requestStreamsObj = {
@@ -215,7 +216,7 @@ const historyController = {
     }
 
     appDispatch(setSidebarActiveTab('composer'));
-  }
+  },
 };
 
 export default historyController;

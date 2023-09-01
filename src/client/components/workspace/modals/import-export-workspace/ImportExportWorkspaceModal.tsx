@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+
 import { useAppSelector } from '~/toolkit/store';
+import collectionsController from '~/controllers/collectionsController';
+import db from '~/db';
 
 import { Box, Backdrop } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import collectionsController from '../../../../controllers/collectionsController';
-import db from '../../../../db';
-import { useLiveQuery } from 'dexie-react-hooks';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -15,7 +16,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import SnippetFolderRoundedIcon from '@mui/icons-material/SnippetFolderRounded';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
-
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';

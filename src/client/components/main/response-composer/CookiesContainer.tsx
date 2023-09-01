@@ -12,7 +12,9 @@ interface CookiesContainerProps {
   };
 }
 
-export default function CookiesContainer({ currentResponse }: CookiesContainerProps) {
+export default function CookiesContainer({
+  currentResponse,
+}: CookiesContainerProps) {
   if (
     !currentResponse.response ||
     !currentResponse.response.cookies ||

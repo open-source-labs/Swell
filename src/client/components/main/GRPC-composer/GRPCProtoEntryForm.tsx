@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useAppSelector } from '~/toolkit/store';
+
+import { type NewRequestStreams, type $TSFixMe } from '~/types';
+import grpcController from '~/controllers/grpcController';
+
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import grpcController from '../../../controllers/grpcController';
-import { NewRequestStreams, $TSFixMe } from '../../../../types';
 
 interface GRPCProtoEntryFormProps {
   newRequestStreams: NewRequestStreams;

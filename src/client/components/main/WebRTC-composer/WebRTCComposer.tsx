@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
+import { composerFieldsReset } from '~/toolkit/slices/newRequestSlice';
+import { setWorkspaceActiveTab } from '~/toolkit/slices/uiSlice';
+import { reqResItemAdded } from '~/toolkit/slices/reqResSlice';
 
 import { v4 as uuid } from 'uuid';
-import { ReqRes, RequestWebRTC, MainContainerProps } from '../../../../types';
+import { type ReqRes, type RequestWebRTC } from '~/types';
 
 /**
  * @todo Refactor all of the below components to use MUI, place them in a new
@@ -14,10 +18,6 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
-
-import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
-import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
-import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
 export default function WebRTCComposer() {
   const dispatch = useAppDispatch();

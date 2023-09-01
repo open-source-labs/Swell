@@ -5,14 +5,14 @@
 import React from 'react';
 
 // Local components
-import WorkspaceContainerButtons from './buttons/WorkspaceContainerButtons';
+import WorkspaceContainerButtons from '~/components/workspace/buttons/WorkspaceContainerButtons';
 import WorkspaceSelect from './WorkspaceSelect';
 import DeleteWorkspaceButton from './buttons/DeleteWorkspaceButton';
 import ImportExportWorkspaceButton from './buttons/ImportExportWorkspaceButton';
 
 // MUI components and SVG icons
 import { Box, Typography, Divider } from '@mui/material';
-import { WorkspaceContainerProps } from '../../../types';
+import { type WorkspaceContainerProps } from '~/types';
 
 export default function WorkspaceContainer(props: WorkspaceContainerProps) {
   return (
@@ -29,6 +29,7 @@ export default function WorkspaceContainer(props: WorkspaceContainerProps) {
         <DeleteWorkspaceButton {...props} />
         <ImportExportWorkspaceButton />
       </Box>
+
       <Box className="collections-container">
         <Typography>Requests</Typography>
         <Divider orientation="horizontal" />

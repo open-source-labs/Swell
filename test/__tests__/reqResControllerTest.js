@@ -1,11 +1,6 @@
-import store from '../../src/client/toolkit-refactor/store';
-
-import {
-  reqResReplaced,
-} from '../../src/client/toolkit-refactor/slices/reqResSlice';
-
-import connectionController from '../../src/client/controllers/reqResController';
-
+import store from '~/toolkit/store';
+import { reqResReplaced } from '~/toolkit/slices/reqResSlice';
+import connectionController from '~/toolkit/controllers/reqResController';
 
 jest.mock('../../src/client/toolkit-refactor/store', () => ({
   __esModule: true,
@@ -15,7 +10,6 @@ jest.mock('../../src/client/toolkit-refactor/store', () => ({
   },
   appDispatch: jest.fn(),
 }));
-
 
 jest.mock('../../src/client/toolkit-refactor/slices/reqResSlice', () => ({
   __esModule: true,
@@ -27,7 +21,7 @@ describe('connectionController', () => {
   describe('toggleSelectAll', () => {
     it('should toggle all the checked values for to true if starting at false', () => {
       // Set up the initial state of the reqResArray
-      // there is something 
+      // there is something
       const initialState = {
         reqRes: {
           reqResArray: [
@@ -48,12 +42,14 @@ describe('connectionController', () => {
       expect(initialState.reqRes.reqResArray[2].checked).toBe(true);
 
       // Assert that the reqResReplaced action was called with the modified reqResArray
-      expect(reqResReplaced).toHaveBeenCalledWith(initialState.reqRes.reqResArray);
+      expect(reqResReplaced).toHaveBeenCalledWith(
+        initialState.reqRes.reqResArray
+      );
     });
 
     it('should toggle all the checked values for to false if starting at false', () => {
       // Set up the initial state of the reqResArray
-      // there is something 
+      // there is something
       const initialState = {
         reqRes: {
           reqResArray: [
@@ -74,13 +70,10 @@ describe('connectionController', () => {
       expect(initialState.reqRes.reqResArray[2].checked).toBe(false);
 
       // Assert that the reqResReplaced action was called with the modified reqResArray
-      expect(reqResReplaced).toHaveBeenCalledWith(initialState.reqRes.reqResArray);
+      expect(reqResReplaced).toHaveBeenCalledWith(
+        initialState.reqRes.reqResArray
+      );
     });
   });
-
 });
-
-
-
-
 

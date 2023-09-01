@@ -1,5 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+
 import { useAppSelector } from '~/toolkit/store';
+import collectionsController from '~/controllers/collectionsController';
+import db from '~/db';
 
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
@@ -7,9 +11,6 @@ import { Button } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
-import collectionsController from '../../../../controllers/collectionsController';
-import db from '../../../../db';
-import { useLiveQuery } from 'dexie-react-hooks';
 
 const style = {
   display: 'flex',

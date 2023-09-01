@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReqRes } from '../../../types';
+import { type ReqRes } from '~/types';
 
 /**
  * Keeps track of the current color to use with UI_SAFE_COLORS

@@ -1,8 +1,10 @@
 import React, { useReducer, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { useAppDispatch, useAppSelector } from '~/toolkit/store';
 import { responseDataSaved } from '~/toolkit/slices/reqResSlice';
 
-import { v4 as uuid } from 'uuid';
+import { type ConnectRouterProps } from '~/components/main/MainContainer';
 
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 import CookieEntryForm from '../sharedComponents/requestForms/CookieEntryForm';
@@ -16,7 +18,6 @@ import connectionController from '~/controllers/reqResController';
 
 import { Box } from '@mui/material';
 import HeaderEntryForm from '../sharedComponents/requestForms/HeaderEntryForm';
-import { ConnectRouterProps } from '../MainContainer';
 
 /**
  * @todo 2023-08-30 - Decided to refactor a useReducer implementation for

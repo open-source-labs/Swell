@@ -10,7 +10,7 @@
 import { assertTypeExhaustion } from '../../../helpers';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { compose } from 'redux';
-import { $NotUsed, $TSFixMe } from '../../../types';
+import { type $NotUsed, type $TSFixMe } from '~/types';
 
 /**
  * Describes a single element within the NewRequestOpenApi type's array of
@@ -103,7 +103,7 @@ const newRequestOpenApiSlice = createSlice({
 
     /**
      * This is for removing servers from the openAPI composer. Specifically,
-     * the OpenAPIServerForm.tsx. It isn't working as intended, and would be 
+     * the OpenAPIServerForm.tsx. It isn't working as intended, and would be
      * great to get up and running
      */
     serversRemovedByIndex(state, action: PayloadAction<number[]>) {

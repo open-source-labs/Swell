@@ -1,5 +1,5 @@
 import React from 'react';
-import logofaded from '../../../../assets/img/swell-logo-faded.avif';
+import logofaded from '~/assets/img/swell-logo-faded.png';
 
 interface EmptyStateProps {
   connection?: any;
