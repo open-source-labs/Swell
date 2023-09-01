@@ -19,6 +19,7 @@ module.exports = {
   resolve: {
     alias: {
       '~/assets': path.resolve(__dirname, '/src/assets/'),
+      '~/db': path.resolve(__dirname, '/src/client/db'),
       '~/components': path.resolve(__dirname, '/src/client/components/'),
       '~/controllers': path.resolve(__dirname, '/src/client/controllers/'),
       '~/hooks': path.resolve(__dirname, '/src/client/hooks/'),

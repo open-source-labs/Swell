@@ -30,6 +30,9 @@
       "~/controllers/*": ["./src/client/controllers/*"],
       "~/hooks/*": ["./src/client/hooks/*"],
       "~/toolkit/*": ["./src/client/toolkit-refactor/*"],
+
+      // Import paths for single files
+      "~/db": ["./src/client/db"],
       "~/types": ["./src/types"]
     }
   },
