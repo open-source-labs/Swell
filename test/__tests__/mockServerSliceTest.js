@@ -9,7 +9,7 @@ import mockServerReducer, {
   initialState,
   startServer,
   stopServer,
-} from '~/toolkit/slices/mockServerSlice';
+} from '../../src/client/rtk/slices/mockServerSlice';
 
 describe('mockServerSlice', () => {
   it('state should be updated on server start', () => {

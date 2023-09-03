@@ -1,7 +1,7 @@
-import db from '~/db';
-import historyController from '~/controllers/historyController';
-import { appDispatch } from '~/toolkit/store';
-import { historySet } from '~/toolkit/slices/historySlice';
+import db from '../../src/client/db';
+import historyController from '../../src/client/controllers/historyController';
+import { appDispatch } from '../../src/client/rtk/store';
+import { historySet } from '../../src/client/rtk/slices/historySlice';
 
 jest.mock('../../src/client/db');
 jest.mock('../../src/client/rtk/store');

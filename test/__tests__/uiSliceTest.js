@@ -12,7 +12,7 @@ import uiSliceReducer, {
   setWorkspaceActiveTab,
   setResponsePaneActiveTab,
   toggleDarkMode,
-} from '~/toolkit/slices/uiSlice';
+} from '../../src/client/rtk/slices/uiSlice';
 
 describe('uiSlice', () => {
   it('sidebar active window should be updated when changed', () => {

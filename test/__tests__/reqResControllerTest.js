@@ -1,6 +1,6 @@
-import store from '~/toolkit/store';
-import { reqResReplaced } from '~/toolkit/slices/reqResSlice';
-import connectionController from '~/toolkit/controllers/reqResController';
+import store from '../../src/client/rtk/store';
+import { reqResReplaced } from '../../src/client/rtk/slices/reqResSlice';
+import connectionController from '../../src/client/controllers/reqResController';
 
 jest.mock('../../src/client/rtk/store', () => ({
   __esModule: true,

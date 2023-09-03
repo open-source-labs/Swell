@@ -8,7 +8,7 @@ import historySliceReducer, {
   historyCleared,
   historySet,
   historyDeleted,
-} from '~/toolkit/slices/historySlice';
+} from '../../src/client/rtk/slices/historySlice';
 
 describe('HistorySlice', () => {
   let initialState;
@@ -143,3 +143,4 @@ describe('HistorySlice', () => {
     });
   });
 });
+

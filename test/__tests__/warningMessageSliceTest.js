@@ -6,7 +6,7 @@
 import warningMessageReducer, {
   initialState,
   setWarningMessage,
-} from '~/toolkit/slices/warningMessageSlice';
+} from '../../src/client/rtk/slices/warningMessageSlice';
 
 describe('warningMessageSlice', () => {
   it('state should be updated on server start', () => {
@@ -22,3 +22,4 @@ describe('warningMessageSlice', () => {
     expect(sliceNewState).toBe(warningMessageExample);
   });
 });
+

@@ -10,7 +10,7 @@ import collectionsSliceReducer, {
   collectionDeleted,
   collectionAdded,
   collectionUpdated,
-} from '~/toolkit/slices/collectionsSlice';
+} from '../../src/client/rtk/slices/collectionsSlice';
 
 describe('collectionsSliceReducer', () => {
   let initialState;
@@ -157,3 +157,4 @@ describe('collectionsSliceReducer', () => {
     });
   });
 });
+

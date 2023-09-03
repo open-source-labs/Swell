@@ -1,8 +1,11 @@
-import store, { appDispatch } from '~/toolkit/store';
-import { responseDataSaved, reqResUpdated } from '~/toolkit/slices/reqResSlice';
-import { graphUpdated } from '~/toolkit/slices/graphPointsSlice';
+import store, { appDispatch } from '../../src/client/rtk/store';
+import { graphUpdated } from '../../src/client/rtk/slices/graphPointsSlice';
+import {
+  responseDataSaved,
+  reqResUpdated,
+} from '../../src/client/rtk/slices/reqResSlice';
 
-import { LoadTestController } from '~/controllers/LoadTestController';
+import LoadTestController from '../../src/client/controllers/LoadTestController';
 import { LoadTestResult } from '../components/main/new-request/stressTest/LoadTest';
 
 // mock the store

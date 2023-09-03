@@ -8,7 +8,7 @@ import newRequestFieldsReducer, {
   fieldsReplaced,
   newTestContentSet,
   newRequestFieldsByProtocol,
-} from '~/toolkit/slices/newRequestFieldsSlice';
+} from '../../src/client/rtk/slices/newRequestFieldsSlice';
 
 describe('newRequestFieldsSlice', () => {
   let initialState;
@@ -170,3 +170,4 @@ describe('newRequestFieldsSlice', () => {
     });
   });
 });
+
