@@ -129,7 +129,7 @@ describe('newRequestOpenApiSlice', () => {
         id: 1,
         location: 'header',
         name: 'testHeaderParameter',
-        value: 333
+        value: '333'
       };
 
       let action = newParameterAdded(newParams);

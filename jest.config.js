@@ -1,12 +1,13 @@
 module.exports = {
   verbose: true,
-  runner: '@jest-runner/electron', // deprecated?
-  testEnvironment: '@jest-runner/electron/environment',
+  // runner: "@kayahr/jest-electron-runner", // deprecated?
+  testEnvironment: 'jsdom',//'@kayahr/jest-electron-runner/environment',
   moduleNameMapper: {
     // "collectCoverage": true,
     electron: '<rootDir>/__mocks__/electronMock.js',
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/styleMocks.js',
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/__mocks__/fileMock.js',
+    '^dexie$': '<rootDir>/node_modules/dexie'
   },
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
