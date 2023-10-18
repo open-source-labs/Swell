@@ -1,6 +1,6 @@
 module.exports = {
   verbose: true,
-  // runner: "@kayahr/jest-electron-runner", // deprecated?
+  // runner: "@kayahr/jest-electron-runner/main", // deprecated?
   testEnvironment: 'jsdom',//'@kayahr/jest-electron-runner/environment',
   moduleNameMapper: {
     // "collectCoverage": true,

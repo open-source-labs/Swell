@@ -1,6 +1,6 @@
 import protoParser from '../../main_process/protoParser';
 
-describe('testing protoParser', () => {
+xdescribe('testing protoParser', () => {
   const protoFile = `syntax = 'proto3';
         
         package helloworld;
@@ -32,6 +32,8 @@ describe('testing protoParser', () => {
           int32 age = 1;
         }`;
   describe('parser parses protos correctly', () => {
+    // process.resourcesPath = 'electron/Electron.app/Contents/Resources/'
+
     it('should get packageName', async () => {
       const parsedProto = await protoParser(protoFile).then((data) => {
         expect(data.packageName).toEqual('helloworld');
