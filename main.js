@@ -31,7 +31,8 @@
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 // ** Entry point for Electron **
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron');
+const os = require('node:os');
 
 const { autoUpdater } = require('electron-updater');
 const {
@@ -44,6 +45,12 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const log = require('electron-log');
+
+const reactDevToolsPath = path.join(
+  os.homedir(),
+  '/Downloads/ReactDevTools'
+)
+
 
 
 // proto-parser func for parsing .proto files
@@ -151,10 +158,15 @@ function createWindow() {
     // dev mode title
     mainWindow.setTitle('Swell (devMode)');
 
-    // if we are in developer mode Add React & Redux DevTools to Electron App
-    installExtension(REACT_DEVELOPER_TOOLS)
+    // { allowFileAccess: true }
+    session.defaultSession.loadExtension(reactDevToolsPath)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
+
+    // if we are in developer mode Add React & Redux DevTools to Electron App
+    // installExtension(REACT_DEVELOPER_TOOLS)
+    //   .then((name) => console.log(`Added Extension:  ${name}`))
+    //   .catch((err) => console.log('An error occurred: ', err));
 
     installExtension(REDUX_DEVTOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
