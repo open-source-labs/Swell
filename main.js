@@ -31,7 +31,8 @@
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 // ** Entry point for Electron **
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron');
+const os = require('node:os');
 
 const { autoUpdater } = require('electron-updater');
 const {
@@ -45,6 +46,10 @@ const url = require('url');
 const fs = require('fs');
 const log = require('electron-log');
 
+// React dev tools current version 28 is not compatible with electron because it relys on
+// scripts, this may be fixed in the future but for now this gives us the 27 version of the
+// extension and loads in manually NOT as part of electron-devtools-installer
+const reactDevToolsPath = path.join(__dirname, 'ReactDevToolsWebExtDep');
 
 // proto-parser func for parsing .proto files
 const protoParserFunc = require('./main_process/protoParser.js');
@@ -150,11 +155,18 @@ function createWindow() {
 
     // dev mode title
     mainWindow.setTitle('Swell (devMode)');
-
+     
     // if we are in developer mode Add React & Redux DevTools to Electron App
-    installExtension(REACT_DEVELOPER_TOOLS)
+
+
+    // this manually installs the depricated dev tools that are compatible with electron
+    session.defaultSession.loadExtension(reactDevToolsPath)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
+    // ****** if current react dev tools version did work with electron we would use the below commented code ****
+    // installExtension(REACT_DEVELOPER_TOOLS)
+    //   .then((name) => console.log(`Added Extension:  ${name}`))
+    //   .catch((err) => console.log('An error occurred: ', err));
 
     installExtension(REDUX_DEVTOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
