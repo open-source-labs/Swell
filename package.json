@@ -102,8 +102,6 @@
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.9",
-    "@jest-runner/electron": "^3.0.1",
-    "@kayahr/jest-electron-runner": "^29.9.0",
     "@mui/styled-engine": "^5.13.2",
     "@redux-devtools/extension": "^3.2.2",
     "@reduxjs/toolkit": "^1.8.1",
