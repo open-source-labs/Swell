@@ -26,14 +26,14 @@
   "web_accessible_resources": [
     "main.html",
     "panel.html",
-    "build/react_devtools_backend.js",
-    "build/proxy.js",
-    "build/renderer.js",
-    "build/installHook.js"
+    "rbuild/react_devtools_backend.js",
+    "rbuild/proxy.js",
+    "rbuild/renderer.js",
+    "rbuild/installHook.js"
   ],
   "background": {
     "scripts": [
-      "build/background.js"
+      "rbuild/background.js"
     ]
   },
   "permissions": [
@@ -47,7 +47,7 @@
         "<all_urls>"
       ],
       "js": [
-        "build/prepareInjection.js"
+        "rbuild/prepareInjection.js"
       ],
       "run_at": "document_start"
     }
