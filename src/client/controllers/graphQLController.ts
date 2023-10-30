@@ -71,6 +71,7 @@ const graphQLController: GqlController = {
       .catch((err) => console.log('error in sendGqlToMain', err));
   },
 
+  
   openGraphQLConnectionAndRunCollection(reqResArray: ReqRes[]): void {
     // initialize response data
     let index = 0;
@@ -102,7 +103,7 @@ const graphQLController: GqlController = {
     });
 
     const runSingleGraphQLRequest = (reqResObj: ReqRes) => {
-      reqResObj.response.headers = {};
+      reqResObj.response.headers = {};  
       reqResObj.response.events = [];
       reqResObj.response.cookies = [];
       reqResObj.connection = 'open';

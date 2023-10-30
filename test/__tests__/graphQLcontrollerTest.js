@@ -72,7 +72,8 @@ describe('graphQLController', () => {
       jest.resetAllMocks();
     });
 
-    xit('should call api.send and api.receive with the correct arguments', () => {
+    // this test was previously commented out and fails 
+    it('should call api.send and api.receive with the correct arguments', () => {
       const url = 'https://example.com/graphql';
       const headers = [{ key: 'Content-Type', value: 'application/json' }];
       const cookies = [{ key: 'session_id', value: '1234' }];
@@ -123,7 +124,8 @@ describe('graphQLController', () => {
       );
     });
 
-    xit('should dispatch an action with the error message if the introspection query returns an error', () => {
+    // this test was previously commented out and fails 
+    it('should dispatch an action with the error message if the introspection query returns an error', () => {
       const url = 'https://example.com/graphql';
       const headers = [{ key: 'Content-Type', value: 'application/json' }];
       const cookies = [{ key: 'session_id', value: '1234' }];
@@ -154,27 +156,28 @@ describe('graphQLController', () => {
       );
     });
 
-    // it('should send introspection query and dispatch introspectionDataChanged action', () => {
-    //   const url = 'http://localhost:4000/graphql';
-    //   const headers = [{ key: 'Authorization', value: 'Bearer <token>' }];
-    //   const cookies = [];
+    // this test was previously commented out and fails 
+    it('should send introspection query and dispatch introspectionDataChanged action', () => {
+      const url = 'http://localhost:4000/graphql';
+      const headers = [{ key: 'Authorization', value: 'Bearer <token>' }];
+      const cookies = [];
 
-    //   const expectedData = { schemaSDL: 'schema sdl', clientSchema: 'client schema' };
-    //   const mockIntrospectionQuery = { __schema: { types: [] } };
-    //   // jest.spyOn(graphQLController, 'buildClientSchema').mockReturnValueOnce('client schema');
-    //   jest.spyOn(graphQLController, 'printSchema').mockReturnValueOnce('schema sdl');
-    //   jest.spyOn(graphQLController, 'introspectionDataChanged').mockReturnValueOnce('introspectionDataChanged action');
-    //   jest.spyOn(api, 'receive').mockImplementationOnce((eventName, callback) => callback(mockIntrospectionQuery));
+      const expectedData = { schemaSDL: 'schema sdl', clientSchema: 'client schema' };
+      const mockIntrospectionQuery = { __schema: { types: [] } };
+      jest.spyOn(graphQLController, 'buildClientSchema').mockReturnValueOnce('client schema');
+      jest.spyOn(graphQLController, 'printSchema').mockReturnValueOnce('schema sdl');
+      jest.spyOn(graphQLController, 'introspectionDataChanged').mockReturnValueOnce('introspectionDataChanged action');
+      jest.spyOn(api, 'receive').mockImplementationOnce((eventName, callback) => callback(mockIntrospectionQuery));
 
-    //   graphQLController.introspect(url, headers, cookies);
+      graphQLController.introspect(url, headers, cookies);
 
-    //   expect(api.send).toHaveBeenCalledWith('introspect', JSON.stringify({ url, headers, cookies }));
-    //   // expect(graphQLController.buildClientSchema).toHaveBeenCalledWith(mockIntrospectionQuery);
-    //   expect(graphQLController.buildClientSchema).toHaveBeenCalledWithTimes(1);
-    //   // expect(graphQLController.printSchema).toHaveBeenCalledWith('client schema');
-    //   expect(graphQLController.printSchema).toHaveBeenCalledTimes(1);
-    //   expect(appDispatch).toHaveBeenCalledWith(introspectionDataChanged(expectedData));
-    // });
+      expect(api.send).toHaveBeenCalledWith('introspect', JSON.stringify({ url, headers, cookies }));
+      expect(graphQLController.buildClientSchema).toHaveBeenCalledWith(mockIntrospectionQuery);
+      expect(graphQLController.buildClientSchema).toHaveBeenCalledWithTimes(1);
+      expect(graphQLController.printSchema).toHaveBeenCalledWith('client schema');
+      expect(graphQLController.printSchema).toHaveBeenCalledTimes(1);
+      expect(appDispatch).toHaveBeenCalledWith(introspectionDataChanged(expectedData));
+    });
   });
 
   // Test cases for openGraphQLConnection
@@ -189,7 +192,7 @@ describe('graphQLController', () => {
       timeSent: Date.now(),
     };
 
-    xit('should initialize response data correctly', async () => {
+    it('should initialize response data correctly', async () => {
       await graphQLController.openGraphQLConnection(reqResObj);
 
       expect(reqResObj.response.headers).toEqual({});
@@ -240,7 +243,7 @@ describe('graphQLController', () => {
       /* create an array of ReqRes objects */
     ];
 
-    xit('should call runSingleGraphQLRequest with the first object in the array', async () => {
+    it('should call runSingleGraphQLRequest with the first object in the array', async () => {
       const runSingleGraphQLRequestSpy = jest.spyOn(
         graphQLController,
         'runSingleGraphQLRequest'
@@ -251,17 +254,18 @@ describe('graphQLController', () => {
       expect(runSingleGraphQLRequestSpy).toHaveBeenCalledWith(reqResArray[0]);
     });
 
-    // it('should call runSingleGraphQLRequest with the next object in the array after the first object has received a response', async () => {
-    //   const response = { /* create a GraphQLResponse object */ };
-    //   const sendGqlToMainSpy = jest.spyOn(graphQLController, 'sendGqlToMain')
-    //     .mockResolvedValue({ data: response, reqResObj: reqResArray[0] });
+    // this test was previously commented out and fails 
+    it('should call runSingleGraphQLRequest with the next object in the array after the first object has received a response', async () => {
+      const response = { /* create a GraphQLResponse object */ };
+      const sendGqlToMainSpy = jest.spyOn(graphQLController, 'sendGqlToMain')
+        .mockResolvedValue({ data: response, reqResObj: reqResArray[0] });
 
-    //   const runSingleGraphQLRequestSpy = jest.spyOn(graphQLController, 'runSingleGraphQLRequest');
+      const runSingleGraphQLRequestSpy = jest.spyOn(graphQLController, 'runSingleGraphQLRequest');
 
-    //   await graphQLController.openGraphQLConnectionAndRunCollection(reqResArray);
+      await graphQLController.openGraphQLConnectionAndRunCollection(reqResArray);
 
-    //   expect(runSingleGraphQLRequestSpy).toHaveBeenCalledWith(reqResArray[1]);
-    // });
+      expect(runSingleGraphQLRequestSpy).toHaveBeenCalledWith(reqResArray[1]);
+    });
   });
 });
 
