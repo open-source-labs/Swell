@@ -89,6 +89,7 @@ const connectionController = {
     }
   },
 
+  /* this functionality seems to be broken - Brooke */ 
   runCollectionTest(reqResArray: ReqRes[]): void {
     api.removeAllListeners('reqResUpdate');
     let index = 0;
