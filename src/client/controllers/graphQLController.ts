@@ -64,8 +64,10 @@ const graphQLController: GqlController = {
     // send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
-        if (response.error)
+        if (response.error) {
           this.handleError(response.reqResObj.error, response.reqResObj);
+        }
+  
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log('error in sendGqlToMain', err));
