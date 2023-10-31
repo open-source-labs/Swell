@@ -297,7 +297,7 @@ const graphQLController: GqlController = {
     };
     api.send('introspect', JSON.stringify(introspectionObject));
     api.receive('introspect-reply', (data: IntrospectionQuery) => {
-      console.log(data);
+     // console.log(data);
       if (data !== 'Error: Please enter a valid GraphQL API URI') {
         // formatted for Codemirror hint and lint
         const clientSchema = buildClientSchema(data);
