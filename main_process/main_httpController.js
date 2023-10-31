@@ -229,6 +229,7 @@ const httpController = {
       reqResObj.isHTTP2 = true;
       reqResObj.timeReceived = Date.now();
       response.headers = headers;
+      response.status = headers[':status'];
 
       // if cookie exists, parse the cookie(s)
       if (headers['set-cookie']) {
@@ -284,6 +285,16 @@ const httpController = {
       }
 
       reqResObj.response.events.push(dataEvent);
+
+
+      console.log('this is reqresobj respons right beforetest', reqResObj.response);
+      // check if there is a test script to run
+      if (reqResObj.request.testContent) {
+         reqResObj.response.testResult = testingController.runTest(
+           reqResObj.request.testContent,
+           reqResObj
+         );
+      }
 
       event.sender.send('reqResUpdate', reqResObj);
     });
