@@ -2,6 +2,10 @@ const path = require('path');
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
+///////***** Attention *****///////
+//uncomment main('open') at the bottom of the file to start server
+////////////////////////////////////
+
 // change PROTO_PATH to load a different mock proto file
 
 const PROTO_PATH = path.resolve(__dirname, './hw2.proto');
