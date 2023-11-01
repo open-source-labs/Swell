@@ -26,8 +26,8 @@ export default function GeneralInfo() {
         data-show-count="true"
         aria-label="Star open-source-labs/Swell on GitHub"
       >
-        Star
       </GitHubButton>
+
     </Box>
   );
 }

@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
-const TRPCMethodAndEndpointEntryForm = (props) => {
+const TRPCMethodAndEndpointEntryForm = (props: any) => {
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
   );
