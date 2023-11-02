@@ -244,6 +244,7 @@ app.on('window-all-closed', () => {
 });
 
 // ----------------------Auto Updating Functionality--------------------
+// a new comment to know if ur github actions are working
 // const sendStatusToWindow = (text) => {
 //   log.info(text);
 //   if (mainWindow) {
