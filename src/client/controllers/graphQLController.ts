@@ -64,13 +64,16 @@ const graphQLController: GqlController = {
     // send reqRes object to main process through context bridge
     this.sendGqlToMain({ reqResObj })
       .then((response) => {
-        if (response.error)
+        if (response.error) {
           this.handleError(response.reqResObj.error, response.reqResObj);
+        }
+  
         else this.handleResponse(response.data, response.reqResObj);
       })
       .catch((err) => console.log('error in sendGqlToMain', err));
   },
 
+  
   openGraphQLConnectionAndRunCollection(reqResArray: ReqRes[]): void {
     // initialize response data
     let index = 0;
@@ -102,7 +105,7 @@ const graphQLController: GqlController = {
     });
 
     const runSingleGraphQLRequest = (reqResObj: ReqRes) => {
-      reqResObj.response.headers = {};
+      reqResObj.response.headers = {};  
       reqResObj.response.events = [];
       reqResObj.response.cookies = [];
       reqResObj.connection = 'open';
@@ -294,7 +297,7 @@ const graphQLController: GqlController = {
     };
     api.send('introspect', JSON.stringify(introspectionObject));
     api.receive('introspect-reply', (data: IntrospectionQuery) => {
-      console.log(data);
+     // console.log(data);
       if (data !== 'Error: Please enter a valid GraphQL API URI') {
         // formatted for Codemirror hint and lint
         const clientSchema = buildClientSchema(data);

@@ -4,6 +4,9 @@ If you are considering contributing to Swell in the context of a group or medium
 
 NOTE: Here is a super useful excalidraw that describes the processes of the application in detail: https://excalidraw.com/#room=18f1f977e8cd6361eaa1,4vr1DznwcnD-uKM_X7ZhiA
 
+here is on redux and interprocess communication in electron
+https://excalidraw.com/#json=814-HNYqTvOb6ukLgWjye,QhmJCXv8x3-BC_oSH2gjCQ
+
 ---
 
 ## As a developer, what experience can you get out of contributing to Swell?

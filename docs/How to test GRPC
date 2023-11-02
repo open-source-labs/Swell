@@ -1,0 +1,13 @@
+To use GRPC with a local express server on port 30051:
+1. Ensure all dependencies are installed (npm install)
+2. Uncomment line 133 in test/grpcServer.js
+3. npm run dev
+4. npm run server-grpc
+5. In Swell (dev) app, select the GRPC composer
+6. Enter Stream: 0.0.0.0:30051
+7. Load test proto: swell/test/hw2.proto
+8. Select a service below. All of them should work.
+9. Click add to workspace
+10. Send! You should receive an appropriate response
+
+Note: from my research, GRPC is mainly used between shared backend microservices so I think it would be difficult to test outside of this environment. 

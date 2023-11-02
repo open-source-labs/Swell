@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 const { NodeVM } = require('vm2');
 const chai = require('chai');
+const { status } = require('@grpc/grpc-js');
 
 const testHttpController = {};
 
@@ -12,6 +13,13 @@ testHttpController.runTest = (
 ) => {
   const { request } = reqResObj;
   let { response } = reqResObj;
+
+  console.log('this is response in backend', response);
+  console.log('HSOULD BE HEADERS', response.headers);
+  console.log('is status acessable', response.status);
+  console.log('TRYING WITH BRackets', response.headers[':status']);
+  // console.log('TRYING WITH just colon', response.headers:status);
+
   // final test result objects will be stored in this array
   const testResults = [];
 
@@ -70,9 +78,9 @@ testHttpController.runTest = (
 
       addOneResult({
         message: errObj.message,
-        status: 'FAIL',
+        status: 'FAILhi',
         expected: errObj.expected,
-        actual: errObj.actual,
+        actual: err,
       });
     }
     `;
@@ -90,6 +98,7 @@ testHttpController.runTest = (
     vm.run(testScript, 'main.js');
     // deep clone the testResults array since sending functions, DOM elements, and non-cloneable
     // JS objects is not supported IPC channels past Electron 9
+    // console.log('this is test results from back end', testResults);
     return JSON.parse(JSON.stringify(testResults));
   } catch (err) {
     console.log(

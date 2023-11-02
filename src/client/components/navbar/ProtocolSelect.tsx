@@ -46,7 +46,7 @@ const CustomButton = styled(ButtonUnstyled)`
   transition: all 150ms ease;
   cursor: pointer;
   border: none;
-  width: 8vw;
+  width: 15vw;
 
   &:hover,
   &:active {
@@ -154,20 +154,27 @@ function ProtocolSelect() {
     });
   };
 
+  /*EXPERIMENTAL BUTTONS ARE COMMENTED OUT BELOW:
+   We did this because having partially working features accessible to all seemed counter-intuitive
+    to having a fully functional application for any user to download and use. Some experimentals
+    are closer to fully-functional more than others and if they do get fleshed out they can be added
+    to the other set of functional features*/
+  
   return (
     <Box
       key="page-selector"
       sx={{
         flexGrow: 1,
         display: { xs: 'none', md: 'flex' },
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
       }}
     >
       {createButtons(pages)}
-      <Divider sx={{ ml: 1 }} orientation="vertical" flexItem />
-      <SwellTooltip title={experimentalTooltipText}>
-        <ScienceRoundedIcon
+
+      {/* <Divider sx={{ ml: 1 }} orientation="vertical" flexItem /> */}
+      {/* <SwellTooltip title={experimentalTooltipText}> */}
+        {/* <ScienceRoundedIcon
           sx={{
             ml: 1.5,
             mr: 1,
@@ -175,8 +182,8 @@ function ProtocolSelect() {
             '&:hover': { color: '#58a4b0' },
           }}
         />
-      </SwellTooltip>
-      {createButtons(experimentalPages)}
+      </SwellTooltip> */}
+      {/* {createButtons(experimentalPages)} */}
     </Box>
   );
 }

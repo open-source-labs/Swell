@@ -25,8 +25,10 @@
  */
 
 // Import various tests
+
 const appOpensTests = require('./subSuites/appOpens');
 const reqInputTests = require('./subSuites/reqInputTests');
+const collectionTest = require('./subSuites/collectionTest');
 const httpTest = require('./subSuites/httpTest');
 const websocketTest = require('./subSuites/websocketTest');
 const grpcTest = require('./subSuites/grpcTest');
@@ -66,6 +68,7 @@ describe('Protocol selection and usage', function () {
   grpcTest();
   webRTCTest();
   openAPITest();
+  // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
 }).timeout(20000);
 
 describe('Request/response testing functionality', function () {
