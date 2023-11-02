@@ -120,7 +120,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 Feel free to check out the `DEV-README.md` in the `docs` folder.
 
 ## Authors
-
+- **Aaron Cruz** - [AArCruz](https://github.com/AArCruz)
+- **Katya Villano** - [k-villano](https://github.com/k-villano)
+- **Brooke Sauro** - [bhsauro](https://github.com/bhsauro)
+- **Jeff Levin** - [levinjn01](https://github.com/levinjn01)
 - **Alec Derritt** - [Blast61](https://github.com/Blast61)
 - **Kevin Li** - [myttins](https://github.com/myttins)
 - **Tommy Huynh** - [tthcodes](https://github.com/tthcodes)
