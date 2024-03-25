@@ -95,7 +95,7 @@ const newRequestFieldsSlice = createSlice({
             ...initialState,
             url: '',
             method: 'GET',
-            network: 'openapi',
+            network: 'openApi',
           };
         }
         case 'grpc': {
