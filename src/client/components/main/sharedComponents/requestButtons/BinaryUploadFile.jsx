@@ -24,7 +24,7 @@ const BinaryUploadFile = () => {
 
     // Convert the binary string to binary data
     const data = textEncoder.encode(binaryData);
-    console.log(data);
+    console.log(`The data is ${data.byteLength/1000}kb`);
   };
 
   return (
