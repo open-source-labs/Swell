@@ -5,6 +5,7 @@ import JSONTextArea from '../JSONTextArea';
 import RawBodyTypeSelect from '../requestButtons/RawBodyTypeSelect';
 import JSONPrettify from '../requestButtons/JSONPrettifyButton';
 import TextCodeArea from '../TextCodeArea';
+import BinaryUploadFile from '../requestButtons/BinaryUploadFile';
 
 import { NewRequestBody, NewRequestBodySet, NewRequestHeaders, NewRequestHeadersSet} from '../../../../../types';
 // import { Interface } from 'readline';
@@ -116,6 +117,17 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
               newRequestHeadersSet={newRequestHeadersSet}
               newRequestHeaders={newRequestHeaders}
             />
+          )}
+          {/* BINARY FILE UPLOAD */}  
+          {newRequestBody.bodyType === 'binary' && (
+            <BinaryUploadFile
+              newRequestBody={newRequestBody}
+            />
+            // <form action="/">
+            //   <input type="file" id="myFile" name="filename"/>
+            //   <input type="submit" value='Upload File'/>
+            // </form>
+
           )}
         </span>
         {newRequestBody.bodyType === 'raw' &&
