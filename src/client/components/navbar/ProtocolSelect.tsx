@@ -46,7 +46,7 @@ const CustomButton = styled(ButtonUnstyled)`
   transition: all 150ms ease;
   cursor: pointer;
   border: none;
-  width: 15vw;
+  width: 8vw;
 
   &:hover,
   &:active {
@@ -172,9 +172,9 @@ function ProtocolSelect() {
     >
       {createButtons(pages)}
 
-      {/* <Divider sx={{ ml: 1 }} orientation="vertical" flexItem /> */}
-      {/* <SwellTooltip title={experimentalTooltipText}> */}
-        {/* <ScienceRoundedIcon
+      <Divider sx={{ ml: 1 }} orientation="vertical" flexItem />
+      <SwellTooltip title={experimentalTooltipText}>
+        <ScienceRoundedIcon
           sx={{
             ml: 1.5,
             mr: 1,
@@ -182,8 +182,8 @@ function ProtocolSelect() {
             '&:hover': { color: '#58a4b0' },
           }}
         />
-      </SwellTooltip> */}
-      {/* {createButtons(experimentalPages)} */}
+      </SwellTooltip>
+      {createButtons(experimentalPages)}
     </Box>
   );
 }
