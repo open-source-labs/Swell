@@ -170,24 +170,5 @@ describe('REST API Requests', () => {
 
 
 
-//    // Add a new describe block for BinaryUploadFile component tests
-//   describe('BinaryUploadFile component', () => {
-//   it('should handle file upload and submit', async () => {
-//     const { getByLabelText, getByText } = render(<BinaryUploadFile />);
 
-//     // Simulate selecting a file
-//     const fileInput = getByLabelText('Upload File');
-//     const file = new File(['file content'], 'test.txt', { type: 'text/plain' });
-//     fireEvent.change(fileInput, { target: { files: [file] } });
-
-//     // Simulate form submission
-//     const submitButton = getByText('Upload File');
-//     fireEvent.click(submitButton);
-
-//     // You might want to add assertions here to verify that the file was processed correctly.
-//     // For example, you could check if the console.log in handleSubmit was called with the expected data.
-//     // However, testing console.log directly is not straightforward. Instead, you could refactor your component
-//     // to use a callback function for handling the file upload, which you can then mock in your test.
-//   });
-// });
 });

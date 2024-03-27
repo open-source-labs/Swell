@@ -55,8 +55,8 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
   }, [isMockServer]);
 
   const bodyEntryArea = () => {
-    //BodyType of none : display nothing
-    if (newRequestBody.bodyType === 'none') {
+    //BodyType of none or binary: display nothing
+    if (newRequestBody.bodyType === 'none' || newRequestBody.bodyType === 'binary') {
       return;
     }
     //BodyType of XWWW... : display WWWForm entry
@@ -121,13 +121,11 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
           {/* BINARY FILE UPLOAD */}  
           {newRequestBody.bodyType === 'binary' && (
             <BinaryUploadFile
-              newRequestBody={newRequestBody}
+            newRequestBodySet={newRequestBodySet}
+            newRequestBody={newRequestBody}
+            newRequestHeadersSet={newRequestHeadersSet}
+            newRequestHeaders={newRequestHeaders}
             />
-            // <form action="/">
-            //   <input type="file" id="myFile" name="filename"/>
-            //   <input type="submit" value='Upload File'/>
-            // </form>
-
           )}
         </span>
         {newRequestBody.bodyType === 'raw' &&

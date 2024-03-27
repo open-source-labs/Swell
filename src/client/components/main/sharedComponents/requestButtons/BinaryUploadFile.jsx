@@ -1,11 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import fs from 'fs'
+import style from '../../../../../assets/style/App.scss'
 // interface 
 
 
-const BinaryUploadFile = () => {
+const BinaryUploadFile = (props) => {
   const [binaryData, setBinaryData] = useState(null);
 
+  const {
+    newRequestBodySet,
+    newRequestBody,
+    newRequestHeadersSet,
+    newRequestHeaders,
+  } = props;
+
+  // handleFileChange reads file uploaded, converts to binary, and stores in state
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -13,24 +22,28 @@ const BinaryUploadFile = () => {
       reader.onload = () => {
         setBinaryData(reader.result); // Store binary data in state
       };
-      reader.readAsBinaryString(file); // Read file as binary string
+      
+      reader.readAsArrayBuffer(file) // Read file as Buffer
     }
+
+
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Create a TextEncoder instance
-    const textEncoder = new TextEncoder();
-
-    // Convert the binary string to binary data
-    const data = textEncoder.encode(binaryData);
-    console.log(`The data is ${data.byteLength/1024}kb`);
+    newRequestBodySet({
+      ...newRequestBody,
+      bodyContent: binaryData,
+      bodyType: 'binary',
+      rawType: '',
+      JSONFormatted: false
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" onChange={handleFileChange} />
-      <input type="submit" value="Upload File" />
+    <form style ={{marginTop:'3px'}} onSubmit={handleSubmit}>
+      <input type="file" id="uploadFileBinary" className='button no-border-please is-small is-outlined is-primary mr-3' onChange={handleFileChange} />
+      <input type="submit" className='button is-small is-primary-100 add-request-button no-border-please' value="Upload File" />
     </form>
   );
 };

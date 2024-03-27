@@ -264,6 +264,26 @@ module.exports = () => {
           input
         );
       });
+
+      it('selecting binary file upload displays ', async() => {
+        await page.locator('div[id^="composer"] >> a >> text=POST').click();
+        const rawDropdown = await page.locator('span>> text=raw').count();
+        expect(rawDropdown).to.equal(1)
+
+
+
+        // await page.locator('button>> text=GET').click()
+        // await page.locator('button>> text=POST').click()
+        // await page.locator('button>> text=raw').click()
+        // await page.locator('button>> text=binary').click()
+
+        // const uploadFileButtonCount = await page.locator('input#uploadFileBinary').count()
+        
+        // expect(uploadFileButtonCount).to.equal(1)
+      })
+
+
+
     });
   }).timeout(20000);
 };
