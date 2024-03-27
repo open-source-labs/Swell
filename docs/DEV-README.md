@@ -48,19 +48,48 @@ There is E2E testing available via `npm run test`. Note that not all tests in th
 
 ## What is the way to render an electron app during development for WSL users?
 
-WSL and Electron do not work well together - the application won't load when using `npm run dev`. We have a few solutions you can try, but it is not by any means the only way or even guaranteed method.
+WSL and Electron do not work well together without some additional steps - the application won't load when using `npm run dev`. We have a few solutions you can try, but it is not by any means the only way or even guaranteed method.
 
 - One solution suggestion is to download the repo directly on your Windows machine and not use WSL.
-  - You can right-click on the bottom-left of your VSCode and uncheck the remote host so that you still get the command-line functionalities.
 - Another solution is to use `Xserver` (graphical interface for Linux) to render things from Linux onto your Windows.
-  - [This article](https://www.beekeeperstudio.io/blog/building-electron-windows-ubuntu-wsl2) was really helpful in getting things to work
-  - There is another article [here](https://skeptric.com/wsl2-xserver/) that you may want to check out. The two differences that diverge from the article instructions on the WSL Config step with `.bashrc` file and the `VcsXsrv` config step 3
-    - inside of your `.bashrc` File:
-      - You should add the following script instead of what they put: `export DISPLAY=$(/sbin/ip route | awk '/default/ { print $3 }'):0`
-    - `VcsXsrv`: check Disable access control as well.
-  - After these steps, you will have to enable WSL to access `Xserver` on Windows Firewall(refer to the [skeptric](https://skeptric.com/wsl2-xserver/) article)
-  - If `x11 calc` is able to pop up, it means everything is working well.
-- There is a long load time when running the server, it may take a few minutes.
+  - The following below is a streamlined and hopefully beginner friendly step-by-step that may work for most people with additional references below in case you encounter issues.
+    - **We highly recommend reviewing all the steps first BEFORE proceeding (and ideally the references as well) to have a good understanding before proceeding**
+    - **Also verify you are using WSL2 and not WSL1, run `wsl --version` within powershell if you are not sure**
+      - If you need to upgrade from WSL1 to WSL2, you can run `wsl --set-default-version 2` within powershell.
+
+1. You will need to install the electron dependencies inside of your WSL to make sure electron has all the necessary components (If you want to be cautious, now would be a good time to make a backup of your linux subsystem but it is not essential). Once you are ready, run the following command in you Linux terminal:
+   - `sudo apt install libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev`
+2. In your WSL system's `.bashrc` file, typically located in you user folder `\\wsl.localhost\<distro-name>\home\<username>\`, add the following line to the end of the file:
+   - ``export DISPLAY="`sed -n 's/nameserver //p' /etc/resolv.conf`:0"``
+   - **PLEASE NOTE: Any time you make changes to the main WSL files like `.bashrc` or `.profile` (especially if troubleshooting later), you will need to restart you entire WSL (Not just shutdown VSCode) in order for the changes to take effect. Save your work/changes, close VSCode, open a windows terminal and type in `wsl --shutdown`. You should then be able to boot up as you normally do with the new settings applied.**
+3. Install XServer, specifically VcsXsrv:
+   - If you have chocolatey installed on Windows, you can run the following command from the Windows command line or from PowerShell `choco install vcxsrv`
+     - See [here](https://community.chocolatey.org/packages/vcxsrv) for the link on more information about this package. Other repo management tools for Windows are perfectly fine as well (i.e `scoop.sh` or such).
+     - See [this link](https://chocolatey.org/install) if you don't have a package manager for Windows to get started using Chocolatey.
+     - Once installed open VcsXsrv (should be listed and searchable as `XLaunch` in Windows) and it’ll guide you through three config screens. Here’s what to pick on each one:
+       - Choose Multiple Windows
+       ![alt text](vcxsrv_display_settings.png)
+       - Choose ‘Start no client’
+       ![alt text](vcxsrv_client_startup.png)
+       - Choose Clipboard, OpenGL integration, and Disable access control
+       ![alt text](vcxsrv_disable_access_control.png)
+       - Alternatively: you can also choose Clipboard and OpenGL integration, plus provide -ac as additional parameters
+       ![alt text](vcxsrv_alt_disable_access_control.png)
+       - Save your config in any folder that's for easy to reach for launching (as this will be the one you use to actually start-up Xserver), then start the server by double clicking on it. You’ll now see the little X logo in your system tray. We’re ready to go.
+         - If you make any mistakes in creating your config, you can always open `XLaunch` again and create a new config file to replace the old one or create a different one for testing.
+4. You should now be able to run `npm run dev` from the terminal as you would normally to boot up the software. Links will open in your browser as it loads, be patient. It may take up to a few minutes to complete, but eventually you should see a new window pop-up with Swell running.
+   - Please note there may be several errors that pop up in your terminal that may reference outdated packages or be in reference to other components as well. This is normal depending on the state of the software and any changes you've made, but it's worth reviewing if you encounter issues.
+5. **Potentially Necessary** After these steps, if it is still not working, you may have to enable WSL to access `Xserver` on Windows Firewall
+   - If so, refer to this [skeptric](https://skeptric.com/wsl2-xserver/) article
+
+
+Here are the articles we used as reference, we suggest reading through these for any troubleshooting and for a better understanding overall.
+- **NOTE: There are some discrepancies between the two articles and user experiences on where to place the additional lines of code, whether inside of your `.bashrc` file or your `.profile` file. We suggest trying to use ONLY the single line shown in step 2 above in your `.bashrc` file, unless it doesn't work for you**
+- **Additionally, there are further variances on what specific lines of code to add the ones outlined above should suffice, but if the do not then please try the steps outlined in these articles. Just remember to restart WSL if changing any code in the `.bashrc` or `.profile` files.**
+   - [This article](https://www.beekeeperstudio.io/blog/building-electron-windows-ubuntu-wsl2) was really for getting things to work and understanding the larger picture.
+   - There is another article [here](https://skeptric.com/wsl2-xserver/) that you may want to check out as well and some of us found more helpful and explains how to set up Windows Firewall as referenced in Step 5.
+     - If following the second article, others have suggested yet another script instead of what they put: `export DISPLAY=$(/sbin/ip route | awk '/default/ { print $3 }'):0`
+     - Some additional alternatives are `export DISPLAY=$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0`
 
 ---
 
@@ -100,7 +129,7 @@ The impacts to the product are:
 - The app is slow to load in all environments (production, development, test)
   - Adding multiple entry points to the build process would greatly improve this, but be careful because you can end up making performance much worse in the process
 
-**Some of us have found [ReacTree](https://reactree.dev/) VS Code extension incredibly helpful in visualizing the UI components. Utilizing the extension could be your entry into understanding the structure of the codebase.**
+**Some of us have found [ReacTree](https://reactree.dev/) VS Code extension or [Sapling](https://marketplace.visualstudio.com/publishers/team-sapling) VS Code extension incredibly helpful in visualizing the UI components. Utilizing the extension could be your entry into understanding the structure of the codebase.**
 
 **Some of us have found Redux Dev Tools incredibly helpful when trying to understand the flow of state and actions. Redux Dev Tools is installed when running in development mode and can be accessed as the right-most tab in your developer console panel in Electron.**
 
