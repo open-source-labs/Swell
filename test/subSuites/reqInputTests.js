@@ -266,17 +266,20 @@ module.exports = () => {
         );
       });
 
-      it('selecting binary from dropdown renders file upload input field', async() => {
+      it('selecting binary renders choose-file and upload-file fields', async() => {
 
-        let count = await page.locator('input#uploadFileBinary').count()
-        expect(count).to.equal(0)
+        let chooseCount = await page.locator('input#chooseFileBinary').count()
+        let uploadCount = await page.locator('input#uploadFileBinary').count()
+        expect(chooseCount).to.equal(0)
+        expect(uploadCount).to.equal(0)
 
         await page.locator('button#body-type-select').click();
         await page.locator('div[id^="composer"] >> a >> text=binary').click();
-        count = await page.locator('input#uploadFileBinary').count()
+        chooseCount = await page.locator('input#chooseFileBinary').count()
+        uploadCount = await page.locator('input#uploadFileBinary').count()
         
-        expect(count).to.equal(1)
-
+        expect(chooseCount).to.equal(1)
+        expect(uploadCount).to.equal(1)
       })
 
 

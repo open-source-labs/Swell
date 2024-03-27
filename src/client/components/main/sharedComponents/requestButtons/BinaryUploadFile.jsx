@@ -42,8 +42,8 @@ const BinaryUploadFile = (props) => {
 
   return (
     <form style ={{marginTop:'3px'}} onSubmit={handleSubmit}>
-      <input type="file" id="uploadFileBinary" className='button no-border-please is-small is-outlined is-primary mr-3' onChange={handleFileChange} />
-      <input type="submit" className='button is-small is-primary-100 add-request-button no-border-please' value="Upload File" />
+      <input type="file" id="chooseFileBinary" className='button no-border-please is-small is-outlined is-primary mr-3' onChange={handleFileChange} />
+      <input type="submit" id="uploadFileBinary" className='button is-small is-primary-100 add-request-button no-border-please' value="Upload File" />
     </form>
   );
 };

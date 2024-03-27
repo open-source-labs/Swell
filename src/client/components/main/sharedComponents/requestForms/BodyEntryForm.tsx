@@ -118,6 +118,7 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
               newRequestHeaders={newRequestHeaders}
             />
           )}
+          
           {/* BINARY FILE UPLOAD */}  
           {newRequestBody.bodyType === 'binary' && (
             <BinaryUploadFile
