@@ -19,7 +19,7 @@ import {
   setSidebarActiveTab,
 } from '../../toolkit-refactor/slices/uiSlice';
 
-import { useAppDispatch } from '../../toolkit-refactor/store';
+import { useAppDispatch } from '../../toolkit-refactor/hooks';
 const WorkspaceCollectionElement = (props) => {
   const [webRTCSend, setWebRTCSend] = useState(false);
   const [showDetails, setShowDetails] = useState(false);

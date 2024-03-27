@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 import {
   ReqRes,
   $TSFixMe,
@@ -50,8 +51,8 @@ import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 import Split from 'react-split';
 
 function MainContainer2() {
-  const resReqArray = useSelector(
-    (state: RootState) => state.reqRes.reqResArray
+  const resReqArray = useAppSelector(
+    (state) => state.reqRes.reqResArray
   );
   const newRequestFields = useSelector(
     (state: RootState) => state.newRequestFields
@@ -81,15 +82,18 @@ function MainContainer2() {
     (state: RootState) => state.introspectionData
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const dispatchReqResItemAdded = (reqRes: ReqRes, dispatch: AppDispatch) => {
+  const dispatchReqResItemAdded = (reqRes: ReqRes) => {
     dispatch(ReqResSlice.reqResItemAdded(reqRes));
   };
-  const dispatchWarningMessage = (message: $TSFixMe, dispatch: AppDispatch) => {
+  const dispatchSetWarningMessage = (message: $TSFixMe) => {
     dispatch(setWarningMessage(message));
+  };
+  //pre-refactor had a setComposerDisplay dispatch that was imported from uiSlice and commented out, must be a relic that was unused but leaving this comment for future groups that may look for it
+  const dispatchNewRequestHeadersSet = (requestHeadersObj: $TSFixMeObject) => {
+    dispatch(newRequestHeadersSet(requestHeadersObj));
   }
-
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
