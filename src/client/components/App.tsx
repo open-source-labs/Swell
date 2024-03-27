@@ -62,7 +62,7 @@ const App = () => {
             />
           </ErrorBoundary>
 
-          {/* Main container. Contains the composer and response panes. */}
+          {/* Main container, Contains the composer and response panes. */}
           <ErrorBoundary>
             {/* <MainContainer currentWorkspaceId={currentWorkspaceId} /> */}
             <MainContainer2 />
