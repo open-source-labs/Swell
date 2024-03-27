@@ -51,12 +51,8 @@ import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 import Split from 'react-split';
 
 function MainContainer2() {
-  const resReqArray = useAppSelector(
-    (state) => state.reqRes.reqResArray
-  );
-  const newRequestFields = useAppSelector(
-    (state) => state.newRequestFields
-  );
+  const resReqArray = useAppSelector((state) => state.reqRes.reqResArray);
+  const newRequestFields = useAppSelector((state) => state.newRequestFields);
   const newRequestHeaders = useAppSelector(
     (state) => state.newRequest.newRequestHeaders
   );
@@ -75,14 +71,10 @@ function MainContainer2() {
   const newRequestSSE = useAppSelector(
     (state) => state.newRequest.newRequestSSE
   );
-  const warningMessage = useAppSelector(
-    (state) => state.warningMessage
-  );
-  const introspectionData = useAppSelector(
-    (state) => state.introspectionData
-  );
+  const warningMessage = useAppSelector((state) => state.warningMessage);
+  const introspectionData = useAppSelector((state) => state.introspectionData);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const dispatchReqResItemAdded = (reqRes: ReqRes) => {
     dispatch(ReqResSlice.reqResItemAdded(reqRes));
@@ -90,17 +82,56 @@ function MainContainer2() {
   const dispatchSetWarningMessage = (message: $TSFixMe) => {
     dispatch(setWarningMessage(message));
   };
-  //pre-refactor had a setComposerDisplay dispatch that was imported from uiSlice and commented out, must be a relic that was unused but leaving this comment for future groups that may look for it
+  //pre-refactor there was a setComposerDisplay dispatch that was imported from uiSlice and commented out, must be a relic that was unused but leaving this comment for future groups that may look for it
   const dispatchNewRequestHeadersSet = (requestHeadersObj: $TSFixMeObject) => {
     dispatch(newRequestHeadersSet(requestHeadersObj));
-  }
-  
+  };
+  const dispatchNewRequestStreamsSet = (requestStreamsObj: $TSFixMeObject) => {
+    dispatch(newRequestStreamsSet(requestStreamsObj));
+  };
+  const dispatchFieldsReplaced = (requestFields: $TSFixMe) => {
+    dispatch(fieldsReplaced(requestFields));
+  };
+  const dispatchNewRequestBodySet = (requestBodyObj: $TSFixMeObject) => {
+    dispatch(newRequestBodySet(requestBodyObj));
+  };
+  const dispatchNewTestContentSet = (testContent: $TSFixMe) => {
+    dispatch(newTestContentSet(testContent));
+  };
+  const dispatchNewRequestCookiesSet = (requestCookiesObj: $TSFixMeObject) => {
+    dispatch(newRequestCookiesSet(requestCookiesObj));
+  };
+  const dispatchNewRequestSSESet = (requestSSEBool: boolean) => {
+    dispatch(newRequestSSESet(requestSSEBool));
+  };
+  const dispatchOpenApiRequestsReplaced = (parsedDocument: $TSFixMe) => {
+    dispatch(openApiRequestsReplaced(parsedDocument));
+  };
+  const dispatchComposerFieldsReset = () => {
+    dispatch(composerFieldsReset());
+  };
+  const dispatchSetWorkspaceActiveTab = (tabName: $TSFixMe) => {
+    dispatch(setWorkspaceActiveTab(tabName));
+  };
+
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
         <Box sx={{ display: 'flex' }}>
           <Routes>
+            {/* <Route path="/" element={<Http2Composer {...props} />} />
+            <Route path="/graphql" element={<GraphQLComposer {...props} />} />
+            <Route path="/grpc" element={<GRPCComposer {...props} />} />
+            <Route path="/websocket" element={<WebSocketComposer {...props} />} /> */}
+            {/* WebRTC has been completely refactored to hooks - no props needed */}
             <Route path="/webrtc" element={<WebRTCComposer />} />
+            {/* <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
+            <Route path="/webhook" element={<WebhookComposer {...props} />} />
+            <Route path="/trpc" element={<TRPCComposer {...props} />} />
+            <Route
+              path="/mockserver"
+              element={<MockServerComposer {...props} />}
+            /> */}
           </Routes>
         </Box>
         <ResponsePaneContainer />
