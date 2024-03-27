@@ -7,5 +7,5 @@ import type { RootState, AppDispatch } from './store';
 // Separated hooks from store.ts in -- Below are Type safe hooks to use
 
 // export const useAppDispatch : () => AppDispatch = useDispatch;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
+export const useAppSelector = useSelector.withTypes<RootState>()

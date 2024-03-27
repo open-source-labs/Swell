@@ -54,35 +54,35 @@ function MainContainer2() {
   const resReqArray = useAppSelector(
     (state) => state.reqRes.reqResArray
   );
-  const newRequestFields = useSelector(
-    (state: RootState) => state.newRequestFields
+  const newRequestFields = useAppSelector(
+    (state) => state.newRequestFields
   );
-  const newRequestHeaders = useSelector(
-    (state: RootState) => state.newRequest.newRequestHeaders
+  const newRequestHeaders = useAppSelector(
+    (state) => state.newRequest.newRequestHeaders
   );
-  const newRequestStreams = useSelector(
-    (state: RootState) => state.newRequest.newRequestStreams
+  const newRequestStreams = useAppSelector(
+    (state) => state.newRequest.newRequestStreams
   );
-  const newRequestBody = useSelector(
-    (state: RootState) => state.newRequest.newRequestBody
+  const newRequestBody = useAppSelector(
+    (state) => state.newRequest.newRequestBody
   );
   //   const newRequestOpenAPI = useSelector(
   //     (state: RootState) => state.newRequestOpenApi
   //   );
-  const newRequestCookies = useSelector(
-    (state: RootState) => state.newRequest.newRequestCookies
+  const newRequestCookies = useAppSelector(
+    (state) => state.newRequest.newRequestCookies
   );
-  const newRequestSSE = useSelector(
-    (state: RootState) => state.newRequest.newRequestSSE
+  const newRequestSSE = useAppSelector(
+    (state) => state.newRequest.newRequestSSE
   );
-  const warningMessage = useSelector(
-    (state: RootState) => state.warningMessage
+  const warningMessage = useAppSelector(
+    (state) => state.warningMessage
   );
-  const introspectionData = useSelector(
-    (state: RootState) => state.introspectionData
+  const introspectionData = useAppSelector(
+    (state) => state.introspectionData
   );
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const dispatchReqResItemAdded = (reqRes: ReqRes) => {
     dispatch(ReqResSlice.reqResItemAdded(reqRes));
