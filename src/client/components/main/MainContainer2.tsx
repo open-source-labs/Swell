@@ -94,6 +94,7 @@ function MainContainer2() {
   const dispatchNewRequestHeadersSet = (requestHeadersObj: $TSFixMeObject) => {
     dispatch(newRequestHeadersSet(requestHeadersObj));
   }
+  
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
