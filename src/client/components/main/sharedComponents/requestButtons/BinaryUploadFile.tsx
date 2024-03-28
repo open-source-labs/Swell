@@ -1,11 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import fs from 'fs'
 import style from '../../../../../assets/style/App.scss'
+import { NewRequestBody } from '../../../../../types';
+import { NewRequestHeaders } from '../../../../../types';
+import { any } from 'prop-types';
 // interface 
 
 
-const BinaryUploadFile = (props) => {
-  const [binaryData, setBinaryData] = useState(null);
+interface Props {
+  newRequestBodySet: (value: any) => void;
+  newRequestBody: NewRequestBody;
+  newRequestHeadersSet: (value: any) => void;
+  newRequestHeaders: NewRequestHeaders;
+}
+
+const BinaryUploadFile = (props: Props)  => {
+  const [binaryData, setBinaryData] = useState<ArrayBuffer | null>(null);
 
   const {
     newRequestBodySet,
@@ -15,12 +25,12 @@ const BinaryUploadFile = (props) => {
   } = props;
 
   // handleFileChange reads file uploaded, converts to binary, and stores in state
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setBinaryData(reader.result); // Store binary data in state
+        setBinaryData(reader.result as ArrayBuffer); // Store binary data in state
       };
       
       reader.readAsArrayBuffer(file) // Read file as Buffer
@@ -29,7 +39,7 @@ const BinaryUploadFile = (props) => {
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     newRequestBodySet({
       ...newRequestBody,
