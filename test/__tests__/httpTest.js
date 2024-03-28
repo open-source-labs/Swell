@@ -1,6 +1,5 @@
 import ReqResCtrl from '../../src/client/controllers/reqResController';
-// import { render, fireEvent } from '@testing-library/react';
-// import BinaryUploadFile from '../../src/client/components/main/sharedComponents/requestButtons/'
+
 /**
  * @todo Integration tests with the actual API. The controller calls api.send
  * and api.recieve without attachement to the API, the tests in this file don't
@@ -167,8 +166,4 @@ describe('REST API Requests', () => {
       expect(ReqResCtrl.toggleSelectAll()).not.toThrowError;
     });
   });
-
-
-
-
 });

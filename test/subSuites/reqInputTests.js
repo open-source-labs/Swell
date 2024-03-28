@@ -7,7 +7,6 @@ const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
-const { raw } = require('express');
 
 let electronApp, page;
 
