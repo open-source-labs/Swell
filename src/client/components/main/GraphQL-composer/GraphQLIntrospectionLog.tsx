@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { GraphQLSchema } from 'graphql';
 
 import graphQLController from '../../../controllers/graphQLController';
@@ -12,19 +12,19 @@ interface IntrospectionData {
 }
 
 const GraphQLIntrospectionLog: React.FC = () => {
-  const headers = useSelector(
+  const headers = useAppSelector(
     (store: RootState) => store.newRequest.newRequestHeaders.headersArr
   );
-  const cookies = useSelector(
+  const cookies = useAppSelector(
     (store: RootState) => store.newRequest.newRequestCookies.cookiesArr
   );
-  const introspectionData: (IntrospectionData | string) = useSelector(
+  const introspectionData: (IntrospectionData | string) = useAppSelector(
     (store: RootState) => store.introspectionData
   );
-  const url: string = useSelector(
+  const url: string = useAppSelector(
     (store: RootState) => store.newRequestFields.url
   );
-  const isDark: boolean = useSelector((store: RootState) => store.ui.isDark);
+  const isDark: boolean = useAppSelector((store: RootState) => store.ui.isDark);
 
   return (
     <div>

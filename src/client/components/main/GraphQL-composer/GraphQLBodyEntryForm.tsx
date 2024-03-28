@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 interface Props {
@@ -31,7 +31,7 @@ const GraphQLBodyEntryForm: React.FC<Props> = (props) => {
     if (!bodyIsNew) setValue(bodyContent);
   }, [bodyContent, bodyIsNew]);
 
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div className="mt-3">
