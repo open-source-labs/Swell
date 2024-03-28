@@ -8,6 +8,8 @@ import { Collection, WindowAPI, WindowExt } from '../../types';
 
 const { api }: { api: WindowAPI } = window as unknown as WindowExt;
 
+
+
 api.receive('add-collections', (collectionArr: Collection[]) => {
   // Add parsed text file to db
   collectionsController.addCollectionToIndexedDb(collectionArr);
