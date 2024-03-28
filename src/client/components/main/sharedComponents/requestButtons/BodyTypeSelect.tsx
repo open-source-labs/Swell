@@ -113,6 +113,18 @@ const BodyTypeSelect = (props: Props) => {
               x-www-form-urlencoded
             </a>
           )}
+          {newRequestBody.bodyType !== 'binary' && (
+            <a
+              onClick={() => {
+                setDropdownIsActive(false);
+                setNewBodyType('binary');
+                setContentTypeHeader('application/binary');
+              }}
+              className="dropdown-item"
+            >
+              binary
+            </a>
+          )}
           {newRequestBody.bodyType !== 'none' && (
             <a
               onClick={() => {
