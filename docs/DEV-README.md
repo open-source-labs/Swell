@@ -67,13 +67,13 @@ WSL and Electron do not work well together without some additional steps - the a
      - See [here](https://community.chocolatey.org/packages/vcxsrv) for the link on more information about this package. Other repo management tools for Windows are perfectly fine as well (i.e `scoop.sh` or such).
      - See [this link](https://chocolatey.org/install) if you don't have a package manager for Windows to get started using Chocolatey.
      - Once installed open VcsXsrv (should be listed and searchable as `XLaunch` in Windows) and it’ll guide you through three config screens. Here’s what to pick on each one:
-       - Choose Multiple Windows
+       - Choose Multiple Windows  
        ![alt text](vcxsrv_display_settings.png)
-       - Choose ‘Start no client’
+       - Choose ‘Start no client’  
        ![alt text](vcxsrv_client_startup.png)
-       - Choose Clipboard, OpenGL integration, and Disable access control
+       - Choose Clipboard, OpenGL integration, and Disable access control  
        ![alt text](vcxsrv_disable_access_control.png)
-       - Alternatively: you can also choose Clipboard and OpenGL integration, plus provide -ac as additional parameters
+       - Alternatively: you can also choose Clipboard and OpenGL integration, plus provide -ac as additional parameters  
        ![alt text](vcxsrv_alt_disable_access_control.png)
        - Save your config in any folder that's for easy to reach for launching (as this will be the one you use to actually start-up Xserver), then start the server by double clicking on it. You’ll now see the little X logo in your system tray. We’re ready to go.
          - If you make any mistakes in creating your config, you can always open `XLaunch` again and create a new config file to replace the old one or create a different one for testing.
