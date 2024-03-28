@@ -62,14 +62,12 @@ describe('Electron UI Rendering', function () {
 describe('Protocol selection and usage', function () {
   //group of tests that focuses on how application handles different protocols
   reqInputTests();
-
   httpTest();
   graphqlTest();
   websocketTest();
   grpcTest();
   webRTCTest();
   openAPITest();
-
   // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
 }).timeout(20000);
 
