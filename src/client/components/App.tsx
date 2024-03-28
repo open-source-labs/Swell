@@ -11,9 +11,7 @@ import collectionsController from '../controllers/collectionsController';
 // import UpdatePopUpContainer from './legacy-components/UpdatePopUpContainer';
 import HistoryOrWorkspaceContainer from './workspace/HistoryOrWorkspaceContainer';
 import NavBarContainer from './navbar/NavBarContainer';
-// import MainContainer from './main/MainContainer';
-
-import MainContainer2 from './main/MainContainer2';
+import MainContainer from './main/MainContainer';
 
 // Types
 import { WindowExt } from '../../types';
@@ -62,10 +60,9 @@ const App = () => {
             />
           </ErrorBoundary>
 
-          {/* Main container. Contains the composer and response panes. */}
+          {/* Main container, Contains the composer and response panes. */}
           <ErrorBoundary>
-            {/* <MainContainer currentWorkspaceId={currentWorkspaceId} /> */}
-            <MainContainer2 />
+            <MainContainer currentWorkspaceId={currentWorkspaceId} />
           </ErrorBoundary>
         </Split>
 
