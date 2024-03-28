@@ -120,7 +120,8 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
       key: 'Content-Type',
       value: contentType,
     };
-    headersDeepCopy.unshift(contentTypeHeader);
+    // headersDeepCopy.unshift(contentTypeHeader);
+    headersDeepCopy[0] = contentTypeHeader
     props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
