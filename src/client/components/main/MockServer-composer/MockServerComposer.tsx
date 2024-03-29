@@ -1,6 +1,6 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import {
   startServer,
   stopServer,
@@ -44,10 +44,10 @@ const style = {
 const MockServerComposer = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // grab the isServerStarted state from the Redux store
-  let isServerStarted = useSelector(
+  let isServerStarted = useAppSelector(
     (state: any) => state.mockServer.isServerStarted
   );
 
