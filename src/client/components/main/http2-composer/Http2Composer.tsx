@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 import { responseDataSaved } from '../../../toolkit-refactor/slices/reqResSlice';
 import {
@@ -29,7 +29,7 @@ import { type } from 'os';
 
 // Translated from RestContainer.jsx
 export default function Http2Composer(props: MainContainerProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // Destructuring store props.
   const {
     // currentTab,
