@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer';
 import { $TSFixMe, OpenAPIRequest } from '../../../../types';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -127,7 +127,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
     }
   );
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
 
   return (
     <div className="mt-2">
