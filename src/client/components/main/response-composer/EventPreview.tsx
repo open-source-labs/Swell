@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
 import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
 
@@ -13,7 +13,7 @@ interface Props {
 const EventPreview: React.FC<Props> = ({ contents }) => {
   const [showPreview, setShowPreview] = useState(false);
   const handleShowPreview = () => setShowPreview(!showPreview);
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((state: any) => state.ui.isDark);
 
   return (
     <div>

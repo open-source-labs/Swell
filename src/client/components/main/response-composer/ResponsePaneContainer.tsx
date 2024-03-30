@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React, { FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { Box } from '@mui/material';
 import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -20,16 +20,16 @@ import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
 import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer';
 
 const ResponsePaneContainer: FC = () => {
-  const dispatch = useDispatch();
-  const activeTab = useSelector(
+  const dispatch = useAppDispatch();
+  const activeTab = useAppSelector(
     (store: RootState) => store.ui.responsePaneActiveTab
   );
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
 
   const setActiveTab = (tabName: string) =>
     dispatch(setResponsePaneActiveTab(tabName));
 
-  const currentResponse = useSelector(
+  const currentResponse = useAppSelector(
     (store: RootState) => store.reqRes.currentResponse
   );
   const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
