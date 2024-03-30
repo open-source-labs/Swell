@@ -40,7 +40,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
+//TODO : props has an implicit any, should be typed properly
 const MockServerComposer = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
