@@ -54,7 +54,7 @@ const BodyTypeSelect = (props: Props) => {
     headersCopy.headersArr[0] = {
       id: Math.random() * 1000000,
       active: true,
-      key: "Content-type",
+      key: "Content-Type",
       value: newBodyType,
     };
     newRequestHeadersSet({
