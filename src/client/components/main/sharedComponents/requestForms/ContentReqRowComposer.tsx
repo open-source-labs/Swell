@@ -60,7 +60,11 @@ export default function ContentReqRowComposer({
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
       />
       <div className="is-flex is-justify-content-center is-align-items-center ml-4">
+        {index === 0 ? 
+        <div className="delete m-auto" style={{opacity:'0'}} />
+        :
         <div className="delete m-auto" onClick={() => deleteItem(index)} />
+        }
       </div>
     </div>
   );
