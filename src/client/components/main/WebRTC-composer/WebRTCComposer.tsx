@@ -15,13 +15,13 @@ import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
 import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
 import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
 export default function WebRTCComposer() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const newRequestWebRTC: RequestWebRTC = useSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
