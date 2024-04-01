@@ -124,8 +124,11 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
       value: contentType,
     };
     headersDeepCopy.unshift(contentTypeHeader);
+    // added the splice line below to prevent 
+    // creating a new empty header row when 
+    // backspacing "Content-Type"
     headersDeepCopy.splice(1,1);
-    // headersDeepCopy[0] = contentTypeHeader
+    
     props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
       count: headersDeepCopy.length,
