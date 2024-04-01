@@ -8,8 +8,11 @@ import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './client/components/App';
 import store from './client/toolkit-refactor/store';
+import { createCache } from '@emotion/react';
 
 import { CssBaseline } from '@mui/material';
+
+__webpack_nonce__ = 'c29tZSBjb29sIHN0cmluZyB3aWxsIHBvcCB1cCAxMjM=';
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our
 // own root node in the body element before rendering into it <--
@@ -56,6 +59,12 @@ const theme = createTheme({
 
 // head.appendChild(meta);
 
+const cache = createCache({
+  key: 'my-prefix-key',
+  nonce: __webpack_nonce__,
+  prepend: true,
+});
+
 // Render the app
 const container = document.getElementById('root');
 const rt = createRoot(container);
@@ -64,10 +73,12 @@ const rt = createRoot(container);
 window.getReduxState = () => store.getState();
 
 rt.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </ThemeProvider>
+  <CacheProvider value={cache}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
+  </CacheProvider>
 );
