@@ -126,7 +126,7 @@ function MainContainer() {
     composerFieldsReset: composerFieldsResetAction,
     setWorkspaceActiveTab: setWorkspaceActiveTabAction,
   };
-
+  //TODO: type errors on Http2Composer (possibly all) related to props typing after conversion to hooks
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
