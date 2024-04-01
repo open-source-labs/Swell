@@ -92,12 +92,12 @@ module.exports = {
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
-          'script-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
+          'script-src': ["'self'", "'unsafe-eval'"],
           'style-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
         },
         hashEnabled: {
-          'script-src': true,
-          'style-src': true,
+          'script-src': false,
+          'style-src': false,
         },
         nonceEnabled: {
           'script-src': true,
@@ -116,12 +116,16 @@ module.exports = {
        */
 
       // Injects nonce value into template parameter, which can be accessed in HTML template
-      templateParameters: (compilation, assets, assetTag, options) => {
-        // Assuming you have a way to pass the nonce from your server to the webpack build process
-        // For example, you could use an environment variable or a global variable set by your server
-        const nonce = process.env.NONCE || 'default-nonce';
+      templateParameters: (compilation, assets, assetTags, options) => {
         return {
-          nonce: nonce,
+          compilation,
+          webpackConfig: compilation.options,
+          htmlWebpackPlugin: {
+            tags: assetTags,
+            files: assets,
+            options,
+          },
+          nonce: CspHtmlWebpackPlugin.nonce,
         };
       },
     }),
@@ -130,16 +134,15 @@ module.exports = {
       'base-uri': ["'self'"],
       'object-src': ["'none'"],
       'script-src': [
-        "'unsafe-inline'",
         "'self'",
         "'unsafe-eval'",
-        `nonce-${process.env.NONCE}`,
+        (_, nonce) => `'nonce-${nonce}'`,
       ],
       'style-src': [
         "'unsafe-inline'",
         "'self'",
         "'unsafe-eval'",
-        // `nonce-${process.env.NONCE}`,
+        (_, nonce) => `'nonce-${nonce}'`,
       ],
     }),
     // options here: https://github.com/webpack-contrib/webpack-bundle-analyzer
