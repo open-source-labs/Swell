@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4'; // Icon for light mode
 import Brightness7Icon from '@mui/icons-material/Brightness7'; // Icon for dark mode
-import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks'; // Adjust the import path as necessary
-import { toggleDarkMode } from '../../toolkit-refactor/slices/uiSlice'; // Adjust the import path as necessary
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
+import { toggleDarkMode } from '../../toolkit-refactor/slices/uiSlice';
 
 export default function DarkModeToggle() {
  const dispatch = useAppDispatch();
