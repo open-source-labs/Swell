@@ -2,16 +2,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 import { RootState } from '../../../toolkit-refactor/store';
 import { fieldsReplaced } from '../../../toolkit-refactor/slices/newRequestFieldsSlice';
 
 const TRPCMethodAndEndpointEntryForm = (props: any) => {
-  const requestFields = useSelector(
+  const requestFields = useAppSelector(
     (state: RootState) => state.newRequestFields
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const clearWarningIfApplicable = () => {
     if (props.warningMessage.uri) props.setWarningMessage({});
   };

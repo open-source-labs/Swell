@@ -11,7 +11,7 @@ import {
 } from '@trpc/client';
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-
+//TODO: implicit any used throughout this file
 export default function TRPCSubscriptionContainer(props) {
   const [endPoint, setEndpoint] = useState('');
   const [link, setLink] = useState('');

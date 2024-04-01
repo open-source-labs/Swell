@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 interface GraphQLVariableEntryFormProps {
@@ -22,7 +22,7 @@ const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({
     if (!bodyIsNew) setValue(bodyVariables);
   }, [bodyVariables, bodyIsNew]);
 
-  const isDark = useSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((store: any) => store.ui.isDark);
 
   return (
     <div>

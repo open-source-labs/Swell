@@ -1,13 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
 import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
-
+//TODO: fix implicit any props
 export default function WorkspaceContextMenu({ id, name, reqResArray }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [contextMenu, setContextMenu] = React.useState<{
     mouseX: number;

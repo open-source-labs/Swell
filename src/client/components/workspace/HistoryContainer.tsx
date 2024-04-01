@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 
 import * as HistorySlice from '../../toolkit-refactor/slices/historySlice';
 import { fieldsReplaced } from '../../toolkit-refactor/slices/newRequestFieldsSlice';
@@ -90,7 +91,7 @@ const HistoryContainer = (props: Props) => {
     newRequestStreamsSet,
   } = props;
 
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   // history is already sorted by created_at from getHistory
   const historyDates = history.map((date: Date, index: number): JSX.Element => (

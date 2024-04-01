@@ -1,12 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { RootState } from '../../../toolkit-refactor/store';
 import openApiController from '../../../controllers/openApiController';
 
 // this component is working as intened
 
 const OpenAPIDocumentEntryForm: React.FC = () => {
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
 
   const importDoc = (): void => {
     openApiController.sendDocument();

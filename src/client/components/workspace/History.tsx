@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 import { historyDeleted } from '../../toolkit-refactor/slices/historySlice';
 import { setSidebarActiveTab } from '../../toolkit-refactor/slices/uiSlice';
 
@@ -167,7 +167,7 @@ const History = (props: Props)=> {
     wsUrl,
   } = request;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const setSidebarTab = (tabName: string) => dispatch(setSidebarActiveTab(tabName));
   const setNewRequestSSE = (bool: boolean) => dispatch(newRequestSSESet(bool));
 

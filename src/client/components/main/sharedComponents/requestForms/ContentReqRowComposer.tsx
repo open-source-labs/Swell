@@ -3,10 +3,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 //contentReqRowComposer
-
-import { bool } from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
 
 interface Props {
   data: {
@@ -28,7 +26,7 @@ export default function ContentReqRowComposer({
   deleteItem,
   type,
 }: Props) {
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => (store as any).ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => (store as any).ui.isDark);
 
 
   return (
