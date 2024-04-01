@@ -1,7 +1,7 @@
 /** Also not legacy */
 
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 
 import connectionController from '../../controllers/reqResController';
 import webrtcPeerController from '../../controllers/webrtcPeerController';
