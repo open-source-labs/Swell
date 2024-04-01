@@ -82,6 +82,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
+      template: './index-csp.html',
       filename: 'index.html',
       title: title,
 
