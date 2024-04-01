@@ -13,7 +13,6 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../../toolkit-refactor/store';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
@@ -22,7 +21,7 @@ import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
 
 export default function WebRTCComposer() {
   const dispatch = useAppDispatch();
-  const newRequestWebRTC: RequestWebRTC = useSelector(
+  const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
 
