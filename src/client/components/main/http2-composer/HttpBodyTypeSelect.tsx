@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-function BodyTypeSelect({
+function HttpBodyTypeSelect({
   newRequestHeaders,
   newRequestBody,
   newRequestHeadersSet,
@@ -133,4 +133,4 @@ function BodyTypeSelect({
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BodyTypeSelect);
+export default connect(mapStateToProps, mapDispatchToProps)(HttpBodyTypeSelect);
