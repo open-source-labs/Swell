@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import ReqResCtrl from '../../../controllers/reqResController';
 import WorkspaceCollectionsContainer from '../WorkspaceCollectionsContainer';
 import SaveWorkspaceModal from '../modals/SaveWorkspaceModal';
@@ -7,7 +7,7 @@ import SaveWorkspaceModal from '../modals/SaveWorkspaceModal';
 
 export default function WorkspaceContainerButtons () {
   const [showModal, setShowModal] = useState(false);
-  const isDark = useSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
 
   return (
     <div>
