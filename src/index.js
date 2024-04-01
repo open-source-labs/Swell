@@ -40,21 +40,24 @@ const lightTheme = createTheme({
   },
 });
 
+
+
+
 // Dark theme
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#aeaeae', // Assuming this is the primary color for dark mode
+      main: '#51819b',
     },
     secondary: {
-      main: '#1f282e', // Assuming this is the secondary color for dark mode
+      main: '#f0f6fa',
     },
     background: {
-      default: '#434343', // This is the neutral-500 color from your SCSS
+      default: '#1f282e', // This is the neutral-400 color from darkMode.scss
     },
     text: {
-      primary: '#00000099', // This is the text color from your SCSS
+      primary: '#FFFFFF', // This is the text color from darkMode.scss
     },
   },
 });

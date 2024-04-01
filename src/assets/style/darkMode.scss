@@ -5,6 +5,7 @@ $neutral-400: #1f282e;
 $neutral-500: #434343;
 $neutral-600: #000000;
 $text: #00000099;
+$text-dark: #3edba7;
 
 .is-dark-mode {
   background-color: $neutral-500 !important;
@@ -42,7 +43,7 @@ $text: #00000099;
 }
 
 .dark-protocol-text {
-  color: $text !important;
+  color: $text-dark !important;
 }
 .dark-address-input {
   background-color: $neutral-300 !important;

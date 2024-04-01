@@ -92,7 +92,7 @@ const ResponsePaneContainer: FC = () => {
               {request?.network !== ('ws' && 'webrtc') && (
                 <>
                   <li
-                    className={`column ${
+                    className={`column ${isDark ? 'is-dark-200' : ''} ${
                       activeTab === 'events' ? 'is-active' : ''
                     }`}
                   >
@@ -105,7 +105,7 @@ const ResponsePaneContainer: FC = () => {
                     </a>
                   </li>
                   <li
-                    className={`column ${
+                    className={`column ${isDark ? 'is-dark-200' : ''} ${
                       activeTab === 'headers' ? 'is-active' : ''
                     }`}
                   >
@@ -115,7 +115,7 @@ const ResponsePaneContainer: FC = () => {
                   </li>
 
                   <li
-                    className={`column ${
+                    className={`column ${isDark ? 'is-dark-200' : ''} ${
                       activeTab === 'cookies' ? 'is-active' : ''
                     }`}
                   >
@@ -124,7 +124,9 @@ const ResponsePaneContainer: FC = () => {
                 </>
               )}
               <li
-                className={`column ${activeTab === 'tests' ? 'is-active' : ''}`}
+                className={`column ${isDark ? 'is-dark-200' : ''} ${
+                  activeTab === 'tests' ? 'is-active' : ''
+                }`}
               >
                 <a onClick={() => setActiveTab('tests')}>Tests</a>
               </li>
