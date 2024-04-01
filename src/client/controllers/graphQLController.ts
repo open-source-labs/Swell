@@ -43,7 +43,7 @@ interface GqlController {
     cookies: CookieOrHeader[]
   ) => void;
 }
-
+//TODO: type errors abound
 const graphQLController: GqlController = {
   subscriptions: {},
 
