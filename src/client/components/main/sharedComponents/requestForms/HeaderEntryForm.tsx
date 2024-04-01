@@ -72,6 +72,8 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
       contentType = '';
     } else if (props.newRequestBody.bodyType === 'x-www-form-urlencoded') {
       contentType = 'x-www-form-urlencoded';
+    } else if (props.newRequestBody.bodyType === 'binary') {
+      contentType = 'application/binary';
     } else if (
       props.newRequestBody.bodyType === 'GQL' ||
       props.newRequestBody.bodyType === 'GQLvariables'
@@ -141,6 +143,7 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
       value: '',
     });
 
+    
     props.newRequestHeadersSet({
         headersArr: headersDeepCopy,
         override: false,
@@ -177,7 +180,7 @@ const HeaderEntryForm = (props: HeaderEntryFormProps): JSX.Element => {
       }
     
     // update
-    
+
 
     props.newRequestHeadersSet({
       headersArr: headersDeepCopy,
