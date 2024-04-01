@@ -1,7 +1,7 @@
 /** Also not legacy */
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 import connectionController from '../../controllers/reqResController';
 import webrtcPeerController from '../../controllers/webrtcPeerController';
@@ -19,13 +19,12 @@ import {
   setSidebarActiveTab,
 } from '../../toolkit-refactor/slices/uiSlice';
 
-import { useAppDispatch } from '../../toolkit-refactor/hooks';
 const WorkspaceCollectionElement = (props) => {
   const [webRTCSend, setWebRTCSend] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useAppDispatch();
 
-  const currentResponse = useSelector((store) => store.reqRes.currentResponse);
+  const currentResponse = useAppSelector((store) => store.reqRes.currentResponse);
 
   const {
     content,

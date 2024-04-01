@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collection, ReqRes, WorkspaceContainerProps } from '../../../types';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 
 import { reqResReplaced } from '../../toolkit-refactor/slices/reqResSlice';
 
@@ -19,7 +19,7 @@ export default function WorkspaceSelect({
   currentWorkspaceId,
   setWorkspace,
 }: WorkspaceContainerProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleWorkspaceChange = (event: SelectChangeEvent) => {
     setWorkspace(event.target.value as string);
@@ -29,7 +29,7 @@ export default function WorkspaceSelect({
     dispatch(reqResReplaced(reqResArray));
   };
 
-  const workspaces: Collection[] = useSelector(
+  const workspaces: Collection[] = useAppSelector(
     (store: RootState) => store.collections
   );
 
