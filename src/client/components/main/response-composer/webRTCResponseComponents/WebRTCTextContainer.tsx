@@ -10,11 +10,10 @@ import {
   WebMessages,
 } from '../../../../../types';
 import WebRTCTextItem from './WebRTCTextItem';
-import { useDispatch } from 'react-redux';
 import { responseDataSaved } from '../../../../toolkit-refactor/slices/reqResSlice';
 
 const WebRTCTextContainer = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [messageInput, setMessageInput] = useState('');
 
   const currentReqRes = useAppSelector(
