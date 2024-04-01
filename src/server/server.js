@@ -5,16 +5,17 @@
 // import dotenv from 'dotenv';
 // import { $TSFixMe } from '../types';
 
-const path = require('path')
-const express = require('express')
-const ngrok = require('ngrok')
-const dotenv = require('dotenv')
+const path = require('path');
+const express = require('express');
+const ngrok = require('ngrok');
+const dotenv = require('dotenv');
 dotenv.config();
 
 const port = 3000;
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const crypto = require('crypto');
 
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
@@ -22,6 +23,19 @@ app.use(express.json());
 app.use(cors({ origin: '*' }));
 
 app.use(cookieParser());
+
+// Generate a new nonce for each request
+app.use((req, res, next) => {
+  const nonce = crypto.randomBytes(16).toString('base64');
+  console.log(nonce);
+  process.env.NONCE = nonce;
+  res.locals.nonce = nonce; // keeping this in res.locals in case needed for other middleware
+  // res.setHeader(
+  //   'Content-Security-Policy',
+  //   `style-src 'self' 'nonce-${nonce}';`
+  // );
+  return next();
+});
 
 /** @todo Figure out why previous groups decided to use socket.io */
 // https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
@@ -104,11 +118,6 @@ app.use((err, _1, res, _2) => {
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
-
-
-
-
-
 
 // const path = require('path');
 // const express = require('express');

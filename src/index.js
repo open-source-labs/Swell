@@ -17,8 +17,6 @@ import { CssBaseline } from '@mui/material';
 // Generate a nonce (https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)
 // for CSP
 
-const nonce = Math.random().toString(36).substring(2);
-
 // Sets up Material UI theme
 const theme = createTheme({
   palette: {

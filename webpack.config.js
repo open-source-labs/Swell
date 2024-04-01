@@ -85,30 +85,63 @@ module.exports = {
       template: './index-csp.html',
       filename: 'index.html',
       title: title,
-
-      /**
-       * @todo Update CSP (Content Security Policy) with "nonce" inline styling.
-       * Refactor code to be more secure (do not use 'unsafe-inline')
-       */
+      // inject: 'body',
+      // scriptLoading: 'blocking',
       cspPlugin: {
         enabled: true,
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
-          'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
-          'style-src': "'self' 'unsafe-inline'",
+          'script-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
+          'style-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
         },
         hashEnabled: {
-          'script-src': false,
-          'style-src': false,
+          'script-src': true,
+          'style-src': true,
         },
         nonceEnabled: {
-          'script-src': false,
+          'script-src': true,
           'style-src': false,
         },
       },
+      /**
+       * @todo Update CSP (Content Security Policy) with "nonce" inline styling.
+       * Refactor code to be more secure (do not use 'unsafe-inline')
+
+       */
+      /** templateParameters:
+       *Using templateParameters and __webpack_nonce__
+       * https://webpack.js.org/guides/csp/#enabling-csp
+       * https://github.com/jantimon/html-webpack-plugin?tab=readme-ov-file#options
+       */
+
+      // Injects nonce value into template parameter, which can be accessed in HTML template
+      templateParameters: (compilation, assets, assetTag, options) => {
+        // Assuming you have a way to pass the nonce from your server to the webpack build process
+        // For example, you could use an environment variable or a global variable set by your server
+        const nonce = process.env.NONCE || 'default-nonce';
+        return {
+          nonce: nonce,
+        };
+      },
     }),
-    new CspHtmlWebpackPlugin(),
+    new CspHtmlWebpackPlugin({
+      //
+      'base-uri': ["'self'"],
+      'object-src': ["'none'"],
+      'script-src': [
+        "'unsafe-inline'",
+        "'self'",
+        "'unsafe-eval'",
+        `nonce-${process.env.NONCE}`,
+      ],
+      'style-src': [
+        "'unsafe-inline'",
+        "'self'",
+        "'unsafe-eval'",
+        // `nonce-${process.env.NONCE}`,
+      ],
+    }),
     // options here: https://github.com/webpack-contrib/webpack-bundle-analyzer
     // set to true to display bundle breakdown
     new BundleAnalyzerPlugin({
