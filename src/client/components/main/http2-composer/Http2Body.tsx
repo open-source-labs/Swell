@@ -11,7 +11,7 @@ import {
 } from '../../../toolkit-refactor/slices/newRequestSlice';
 
 // Import local components
-import BodyTypeSelect from './BodyTypeSelect';
+import BodyTypeSelect from './HttpBodyTypeSelect';
 // Import MUI components
 import { Box } from '@mui/material';
 import WWWForm from '../sharedComponents/requestForms/WWWForm';
