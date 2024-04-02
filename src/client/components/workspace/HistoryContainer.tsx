@@ -38,59 +38,6 @@ interface NewRequestHeadersSet {
   count: number;
 }
 
-// interface Props {
-//   history: [];
-//   historyCleared: () => void;
-//   historyDeleted: string;
-//   fieldsReplaced: (obj: {}) => void;
-//   newRequestHeadersSet: (obj: NewRequestHeadersSet) => void;
-//   newRequestCookiesSet: (obj: NewRequestCookiesSet) => void;
-//   newRequestBodySet: (obj: NewRequestBody) => void;
-//   newRequestStreamsSet: NewRequestStreams;
-//   className: string;
-// }
-
-// /**@todo switch to hooks? */
-// const mapStateToProps = (store: RootState) => ({
-//   history: store.history,
-//   newRequestFields: store.newRequestFields,
-//   newRequestStreams: store.newRequest.newRequestStreams,
-// });
-
-// /**@todo switch to hooks? */
-// const mapDispatchToProps = (dispatch: Dispatch) => ({
-//   historyCleared: () => {
-//     dispatch(HistorySlice.historyCleared());
-//   },
-//   historyDeleted: (reqRes: ReqRes) => {
-//     dispatch(HistorySlice.historyDeleted(reqRes));
-//   },
-//   newRequestHeadersSet: (requestHeadersObj: $TSFixMe) => {
-//     dispatch(newRequestHeadersSet(requestHeadersObj));
-//   },
-//   fieldsReplaced: (requestFields: $TSFixMe) => {
-//     dispatch(fieldsReplaced(requestFields));
-//   },
-//   newRequestBodySet: (requestBodyObj: $TSFixMe) => {
-//     dispatch(newRequestBodySet(requestBodyObj));
-//   },
-//   newRequestCookiesSet: (requestCookiesObj: $TSFixMe) => {
-//     dispatch(newRequestCookiesSet(requestCookiesObj));
-//   },
-//   newRequestStreamsSet: (requestStreamsObj: $TSFixMe) => {
-//     dispatch(newRequestStreamsSet(requestStreamsObj));
-//   },
-// });
-// const {
-//   history,
-//   historyCleared,
-//   historyDeleted,
-//   fieldsReplaced,
-//   newRequestHeadersSet,
-//   newRequestCookiesSet,
-//   newRequestBodySet,
-//   newRequestStreamsSet,
-// } = props;
 
 const HistoryContainer = () => {
   const dispatch = useAppDispatch();
@@ -123,7 +70,6 @@ const HistoryContainer = () => {
   );
 
   // history is already sorted by created_at from getHistory
-  // (date: Date, index: number): JSX.Element => (
   const historyDates = history.map((date: any, index: any): any => (
     <HistoryDate
       className="historyDate"
