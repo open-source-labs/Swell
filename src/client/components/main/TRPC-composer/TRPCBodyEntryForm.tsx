@@ -15,7 +15,7 @@ const TRPCBodyEntryForm = (props: any) => {
   );
   const { bodyContent } = newRequestBody;
 
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   const [cmValue, setValue] = useState(bodyContent);
 
   return (

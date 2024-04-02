@@ -50,16 +50,14 @@ const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div>
       {reqResArray.length > 0 && displaySchedule && (
         <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
           <button
-            className={`${
-              isDark ? 'is-dark-200' : ''
-            } button is-small is-rest-invert is-outlined button-padding-vertical button-hover-color`}
+            className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals mr-3`}
             type="button"
             onClick={runCollectionTest}
           >

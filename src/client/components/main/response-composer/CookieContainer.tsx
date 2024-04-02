@@ -13,7 +13,7 @@ interface CookieProps {
 
 export default function CookieContainer({ className, cookie }: CookieProps) {
   const [showCookie, setShowCookie] = useState(false);
-  const isDark = useAppSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
     if (!key || !value) return null;
