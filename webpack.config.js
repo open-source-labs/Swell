@@ -80,34 +80,80 @@ module.exports = {
   },
 
   plugins: [
-    new MiniCssExtractPlugin({}),
+    new MiniCssExtractPlugin({
+      // Potentially adding ?%%NONCE%% for replacement
+      filename: 'main.css',
+    }),
     new HtmlWebpackPlugin({
+      template: './index-csp.html',
       filename: 'index.html',
       title: title,
-
-      /**
-       * @todo Update CSP (Content Security Policy) with "nonce" inline styling.
-       * Refactor code to be more secure (do not use 'unsafe-inline')
-       */
       cspPlugin: {
         enabled: true,
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
-          'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
-          'style-src': "'self' 'unsafe-inline'",
+          'script-src': ["'self'"],
+          'style-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
         },
         hashEnabled: {
           'script-src': false,
           'style-src': false,
         },
         nonceEnabled: {
-          'script-src': false,
-          'style-src': false,
+          'script-src': true,
+          'style-src': false, // * Disabled for dynamic styling from Material UI
         },
       },
+      /** templateParameters:
+       *Using templateParameters
+       * https://webpack.js.org/guides/csp/#enabling-csp
+       * https://github.com/jantimon/html-webpack-plugin?tab=readme-ov-file#options
+       */
+
+      // Injects nonce value into template parameter, which can be accessed in HTML template
+      templateParameters: (compilation, assets, assetTags, options) => {
+        return {
+          compilation,
+          webpackConfig: compilation.options,
+          htmlWebpackPlugin: {
+            tags: assetTags,
+            files: assets,
+            options,
+          },
+          nonce: CspHtmlWebpackPlugin.nonce,
+        };
+      },
     }),
-    new CspHtmlWebpackPlugin(),
+    new CspHtmlWebpackPlugin({
+      'base-uri': ["'self'"],
+      'default-src': [
+        "'self'",
+        'http://localhost:3000',
+        'ws://localhost:3000',
+        'https://api.github.com',
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        '*',
+        'blob:',
+        'data:',
+        'gap:',
+      ],
+      'img-src': ["'self'", 'data:', 'https://avatars.githubusercontent.com/'],
+      'child-src': ["'none'"],
+      'object-src': ["'none'"],
+      'script-src': [
+        "'self'",
+        "'unsafe-eval'",
+        (_, nonce) => `'nonce-${nonce}'`,
+      ],
+      'style-src': [
+        "'unsafe-inline'",
+        "'self'",
+        "'unsafe-eval'",
+        (_, nonce) => `'nonce-${nonce}'`,
+      ],
+    }),
     // options here: https://github.com/webpack-contrib/webpack-bundle-analyzer
     // set to true to display bundle breakdown
     new BundleAnalyzerPlugin({

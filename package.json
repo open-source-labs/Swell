@@ -97,8 +97,9 @@
   "dependencies": {
     "@apollo/client": "^3.5.0",
     "@apollo/server": "^4.6.0",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@graphql-tools/schema": "^8.3.10",
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.9",
