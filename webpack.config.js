@@ -127,6 +127,19 @@ module.exports = {
     }),
     new CspHtmlWebpackPlugin({
       'base-uri': ["'self'"],
+      'default-src': [
+        "'self'",
+        'http://localhost:3000',
+        'ws://localhost:3000',
+        'https://api.github.com',
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        '*',
+        'blob:',
+        'data:',
+        'gap:',
+      ],
+      'img-src': ["'self'", 'data:', 'https://avatars.githubusercontent.com/'],
       'object-src': ["'none'"],
       'script-src': [
         "'self'",
