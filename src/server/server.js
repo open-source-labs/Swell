@@ -15,7 +15,6 @@ const port = 3000;
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const crypto = require('crypto');
 
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
@@ -25,12 +24,9 @@ app.use(cors({ origin: '*' }));
 app.use(cookieParser());
 
 // Generate a new nonce for each request -- Temp
-
 // ? Keeping this for the time being / Research possible backend nonce generation for Electron.js
 // app.use((req, res, next) => {
 //   const nonce = crypto.randomBytes(16).toString('base64');
-//   console.log(nonce);
-//   process.env.NONCE = nonce;
 //   res.locals.nonce = nonce;
 //   res.setHeader(
 //     'Content-Security-Policy',
