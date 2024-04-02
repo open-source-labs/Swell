@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="csp-nonce" content="c29tZSBjb29sIHN0cmluZyB3aWxsIHBvcCB1cCAxMjM=" />
+  <meta property="csp-nonce" content=`<%=htmlWebpackPlugin.options.nonce %>` />
   <script nonce="<%= htmlWebpackPlugin.options.nonce %>">
     // Inline script code for nonce as necessary
   </script>

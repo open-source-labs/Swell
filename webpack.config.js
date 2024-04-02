@@ -101,7 +101,7 @@ module.exports = {
         },
         nonceEnabled: {
           'script-src': true,
-          'style-src': false,
+          'style-src': true,
         },
       },
       /**

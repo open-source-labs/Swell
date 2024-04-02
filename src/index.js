@@ -8,11 +8,10 @@ import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './client/components/App';
 import store from './client/toolkit-refactor/store';
-import { createCache } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
 
 import { CssBaseline } from '@mui/material';
-
-__webpack_nonce__ = 'c29tZSBjb29sIHN0cmluZyB3aWxsIHBvcCB1cCAxMjM=';
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our
 // own root node in the body element before rendering into it <--
@@ -58,11 +57,14 @@ const theme = createTheme({
 // //meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-eval'"
 
 // head.appendChild(meta);
+const nonce = document
+  .querySelector('meta[property="csp-nonce"]')
+  .getAttribute('content');
 
 const cache = createCache({
-  key: 'my-prefix-key',
-  nonce: __webpack_nonce__,
-  prepend: true,
+  key: 'swell-mui',
+  nonce: nonce,
+  prepend: false,
 });
 
 // Render the app
