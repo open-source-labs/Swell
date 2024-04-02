@@ -62,3 +62,34 @@ app.use(express.static(path.resolve(__dirname, '../../build')));
 
 app.use(cors({ origin: 'http://localhost:8080' }));
 
+/** @todo previous groups decided to use ngrok to add live collaboration session but could not finished */
+app.post('/webhookServer', (req: Request, res: Response) => {
+  console.log('Server Is On!');
+  // ngrok
+  //   .connect({
+  //     proto: 'http',
+  //     addr: '3000',
+  //   })
+  //   .then((url) => {
+  //     console.log(`ngrok tunnel opened at: ${url}/webhook`);
+  //     return res.status(200).json(url);
+  //   });
+});
+
+/** @todo webhook is not working on swell */
+app.delete('/webhookServer', (req: Request, res: Response) => {
+  console.log('Server Is Off!');
+  ngrok.kill();
+  return res.status(200).json('the server has been deleted');
+});
+
+app.post('/webhook', (req: Request, res: Response) => {
+  const data = { headers: req.headers, body: req.body };
+  io.emit('response', data);
+  return res.status(200).json(req.body);
+});
+
+app.get('/api/import', (_, res: Response) => {
+  return res.status(200).send(res.locals.swellFile);
+});
+
