@@ -17,10 +17,10 @@ import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe, ReqRes } from '../../../../types';
+import { $TSFixMe, ReqRes, GraphQlComposerProps, Protocol } from '../../../../types';
 
 // Translated from GraphQLContainer.jsx
-export default function GraphQLComposer(props: $TSFixMe) {
+export default function GraphQLComposer(props: GraphQlComposerProps) {
   const {
     composerFieldsReset,
     fieldsReplaced,
@@ -113,8 +113,11 @@ export default function GraphQLComposer(props: $TSFixMe) {
       setWarningMessage(warnings);
       return;
     }
-
-    const protocol: string = url.match(/(https?:\/\/)|(wss?:\/\/)/)[0];
+    //the ! asserts here that protocol will not be null for the TS compiler
+    //also asserting that the result of match will be of type Protocol
+    //this is safe because requestValidationCheck is run above which handles errors if the protocol is invalid
+    const protocol: Protocol = url.match(/(https?:\/\/)|(wss?:\/\/)/)![0] as Protocol;
+    if(protocol === null) throw new Error('Invalid Protocol');
     const URIWithoutProtocol: string = `${url.split(protocol)[1]}/`;
     const host: string = protocol + URIWithoutProtocol.split('/')[0];
     let path: string = `/${URIWithoutProtocol.split('/')
@@ -133,7 +136,7 @@ export default function GraphQLComposer(props: $TSFixMe) {
       createdAt: new Date(),
       protocol: /wss?:\/\//.test(protocol)
         ? 'ws://'
-        : url.match(/https?:\/\//)[0],
+        : url.match(/https?:\/\//)![0] as Protocol, //see above comment where we can see this type assertion is safe
       host,
       path,
       url,

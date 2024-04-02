@@ -121,6 +121,11 @@ export interface MainContainerProps {
   setWorkspaceActiveTab: (arg: string) => any;
 }
 
+export interface GraphQlComposerProps extends MainContainerProps {
+  //functionally the same as MainContainerProps
+  //leaving in place for future iterations that may want to move away from prop drilling down from main container
+}
+
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 
