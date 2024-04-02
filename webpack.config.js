@@ -140,6 +140,7 @@ module.exports = {
         'gap:',
       ],
       'img-src': ["'self'", 'data:', 'https://avatars.githubusercontent.com/'],
+      'child-src': ["'none'"],
       'object-src': ["'none'"],
       'script-src': [
         "'self'",
