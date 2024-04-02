@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import historyController from '../../../controllers/historyController';
 
 import { WindowExt, WindowAPI } from '../../../../types'
@@ -26,7 +26,7 @@ const ClearHistoryBtn = (props: Props): JSX.Element => {
     });
   }, []);
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
 
   const handleClick = () => {
     api.send('confirm-clear-history');

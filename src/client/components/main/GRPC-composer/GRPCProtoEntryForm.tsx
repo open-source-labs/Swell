@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 import grpcController from '../../../controllers/grpcController'
@@ -47,7 +47,7 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
     return
   };
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
 

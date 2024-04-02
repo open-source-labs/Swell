@@ -10,7 +10,7 @@ import { styled } from '@mui/system';
 import { Box, Divider } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import ButtonUnstyled from '@mui/base/Button';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 import { SwellTooltip } from '../customMuiStyles/tooltip';
 
 interface color {
@@ -91,7 +91,7 @@ const experimentalTooltipText: string =
  * Click a protocol button -> Alter the Redux store accordingly -> Route to the appropriate "main" container
  */
 function ProtocolSelect() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const currPath = location.pathname;
   /**

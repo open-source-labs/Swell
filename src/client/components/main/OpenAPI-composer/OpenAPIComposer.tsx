@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '../../../toolkit-refactor/store';
 // Import controllers
@@ -19,7 +19,7 @@ import { $TSFixMe, ReqRes } from '../../../../types';
 export default function OpenAPIComposer(props: $TSFixMe) {
 
   // This is a better way to import what the components needs, not the mess of prop drilling
-  const newRequestsOpenAPI: $TSFixMe = useSelector((state: RootState) => state.newRequestOpenApi);
+  const newRequestsOpenAPI: $TSFixMe = useAppSelector((state: RootState) => state.newRequestOpenApi);
   
   const {
     composerFieldsReset,

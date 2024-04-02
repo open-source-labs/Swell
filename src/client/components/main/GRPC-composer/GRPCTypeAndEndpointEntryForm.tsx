@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { $TSFixMe, NewRequestFields, NewRequestStreams } from '../../../../types';
 import { RootState } from '../../../toolkit-refactor/store';
 
@@ -44,7 +44,7 @@ const GRPCTypeAndEndpointEntryForm: React.FC<Props> = (props) => {
   // change this to be initial state instead
   const grpcStreamLabel = newRequestStreams.selectedStreamingType || 'STREAM';
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
 
   return (
     <div

@@ -11,8 +11,8 @@ import {
 } from '@trpc/client';
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useSelector } from 'react-redux';
-
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
+//TODO: implicit any used throughout this file
 export default function TRPCSubscriptionContainer(props) {
   const isDark = useSelector((store: any) => store.ui.isDark);
   const [endPoint, setEndpoint] = useState('');

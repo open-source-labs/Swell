@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 import { collectionDeleted } from '../../../toolkit-refactor/slices/collectionsSlice';
 
@@ -14,9 +14,9 @@ export default function DeleteRequestButton({
   currentWorkspaceId,
   setWorkspace,
 }: WorkspaceContainerProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // Grab all of the workspaces from the Redux store. Hopefully this is O(1)...
-  const allWorkspaces = useSelector((store: RootState) => store.collections);
+  const allWorkspaces = useAppSelector((store: RootState) => store.collections);
 
   const currentWorkspace = (): Collection => {
     const workspace: Collection | undefined = allWorkspaces.find(

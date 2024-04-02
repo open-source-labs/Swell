@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './src/client/toolkit-refactor/store';
-import TextCodeArea from './src/client/components/main/sharedComponents/TextCodeArea';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
+import { RootState } from '../../../toolkit-refactor/store';
+import TextCodeArea from '../sharedComponents/TextCodeArea';
 
 /**
  * renders entry form for TRPC request
@@ -9,13 +9,13 @@ import TextCodeArea from './src/client/components/main/sharedComponents/TextCode
 
 const TRPCBodyEntryForm = (props: any) => {
   const { newRequestBodySet } = props;
-  const dispatch = useDispatch();
-  const newRequestBody = useSelector(
+  const dispatch = useAppDispatch();
+  const newRequestBody = useAppSelector(
     (store: RootState) => store.newRequest.newRequestBody
   );
   const { bodyContent } = newRequestBody;
 
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
   const [cmValue, setValue] = useState(bodyContent);
 
   return (

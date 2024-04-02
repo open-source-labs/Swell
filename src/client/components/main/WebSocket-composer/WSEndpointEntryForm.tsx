@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 interface Props {
   warningMessage: Record<string, string>;
@@ -33,7 +33,7 @@ const WSEndpointEntryForm: React.FC<Props> = ({
     });
   };
 
-  const isDark = useSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((store: any) => store.ui.isDark);
 
   return (
     <div

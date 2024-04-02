@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { RootState } from '../../../toolkit-refactor/store';
 import { $TSFixMe } from '../../../../types';
 
@@ -18,7 +18,7 @@ const OpenAPIEntryForm: React.FC<Props> = ({
   primaryServer
 }) => {
   // This loads the input field at the top of the page
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
 
   return (
     <div className='ml-2 mr-2 is-flex is-justify-content-center'

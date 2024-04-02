@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 // Import local components
 import WorkspaceContainer from './WorkspaceContainer';
 import HistoryContainer from './HistoryContainer';

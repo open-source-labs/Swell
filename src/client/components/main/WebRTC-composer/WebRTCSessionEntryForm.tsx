@@ -3,7 +3,7 @@ import { NewRequestWebRTCSet, RequestWebRTC } from '../../../../types';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import { RootState } from '../../../toolkit-refactor/store';
 
@@ -12,8 +12,8 @@ interface Props {
 }
 
 const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
-  const newRequestWebRTC: RequestWebRTC = useSelector(
+  const dispatch = useAppDispatch();
+  const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
 
