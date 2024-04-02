@@ -14,7 +14,7 @@ import TextCodeArea from '../sharedComponents/TextCodeArea';
 import { useAppSelector } from '../../../toolkit-refactor/hooks';
 //TODO: implicit any used throughout this file
 export default function TRPCSubscriptionContainer(props) {
-  const isDark = useAppSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   const [endPoint, setEndpoint] = useState('');
   const [link, setLink] = useState('');
   const [responseBody, setResponseBody] = useState('');

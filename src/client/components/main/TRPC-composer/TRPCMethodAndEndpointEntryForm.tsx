@@ -12,7 +12,7 @@ const TRPCMethodAndEndpointEntryForm = (props: any) => {
     (state: RootState) => state.newRequestFields
   );
   
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const dispatch = useAppDispatch();
   const clearWarningIfApplicable = () => {

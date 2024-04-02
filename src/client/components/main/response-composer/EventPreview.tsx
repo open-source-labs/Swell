@@ -13,7 +13,7 @@ interface Props {
 const EventPreview: React.FC<Props> = ({ contents }) => {
   const [showPreview, setShowPreview] = useState(false);
   const handleShowPreview = () => setShowPreview(!showPreview);
-  const isDark = useAppSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   
   // Added modification to make the text white when dark mode is selected
   const modifiedContents = isDark

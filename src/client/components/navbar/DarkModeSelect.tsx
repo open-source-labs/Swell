@@ -8,7 +8,7 @@ import { toggleDarkMode } from '../../toolkit-refactor/slices/uiSlice';
 
 export default function DarkModeToggle() {
  const dispatch = useAppDispatch();
- const isDark = useAppSelector((state) => state.ui.isDark);
+ const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
  const handleToggleDarkMode = () => {
     dispatch(toggleDarkMode(!isDark));

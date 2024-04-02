@@ -2,7 +2,6 @@ import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import ContentReqRowComposer from '../sharedComponents/requestForms/ContentReqRowComposer';
 import { $TSFixMe, OpenAPIRequest } from '../../../../types';
-import { RootState } from '../../../toolkit-refactor/store';
 
 interface Props {
   newRequestsOpenAPI: OpenAPIRequest;
@@ -127,7 +126,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
     }
   );
 
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div className="mt-2">

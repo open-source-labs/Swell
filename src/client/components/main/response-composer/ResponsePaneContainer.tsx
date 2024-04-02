@@ -15,7 +15,6 @@ import CookiesContainer from './CookiesContainer';
 import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
-import State from '../../../toolkit-refactor/store';
 import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
 import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer';
 
@@ -24,7 +23,7 @@ const ResponsePaneContainer: FC = () => {
   const activeTab = useAppSelector(
     (store: RootState) => store.ui.responsePaneActiveTab
   );
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const setActiveTab = (tabName: string) =>
     dispatch(setResponsePaneActiveTab(tabName));

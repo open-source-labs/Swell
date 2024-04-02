@@ -17,7 +17,7 @@ export default function WebhookComposer(props: $TSFixMe) {
    * This seems to have been put in place before the dedicated UI slice had a
    * chance to be created.
    */
-  const isDark = useAppSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
 
   const {

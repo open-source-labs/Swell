@@ -26,7 +26,7 @@ export default function ContentReqRowComposer({
   deleteItem,
   type,
 }: Props) {
-  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => (store as any).ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
 
   return (

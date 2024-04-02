@@ -1,14 +1,13 @@
 import React from 'react';
 import logofaded from '../../../../assets/img/swell-logo-faded.avif';
 import { useAppSelector } from '../../../toolkit-refactor/hooks';
-import { RootState } from '../../../toolkit-refactor/store';
 
 interface EmptyStateProps {
   connection?: any;
 }
 
 export default function EmptyState({ connection }: EmptyStateProps) {
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div className="empty-state-wrapper">

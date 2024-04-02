@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
-import { RootState } from '../../../toolkit-refactor/store';
 import { $TSFixMe } from '../../../../types';
 
 interface Props {
@@ -11,14 +10,14 @@ interface Props {
   primaryServer: string
 }
 
-// This component is working as intended, thouhg needs to have the TS tightened up
+// This component is working as intended, though needs to have the TS tightened up
 const OpenAPIEntryForm: React.FC<Props> = ({
   warningMessage,
   newRequestsOpenAPI,
   primaryServer
 }) => {
   // This loads the input field at the top of the page
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div className='ml-2 mr-2 is-flex is-justify-content-center'

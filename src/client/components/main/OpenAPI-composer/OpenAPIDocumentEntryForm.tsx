@@ -1,12 +1,11 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
-import { RootState } from '../../../toolkit-refactor/store';
 import openApiController from '../../../controllers/openApiController';
 
-// this component is working as intened
+// this component is working as intended
 
 const OpenAPIDocumentEntryForm: React.FC = () => {
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const importDoc = (): void => {
     openApiController.sendDocument();

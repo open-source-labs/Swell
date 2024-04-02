@@ -50,7 +50,7 @@ const WorkspaceCollectionsContainer = (props: $TSFixMe) => {
   const runCollectionTest = () => {
     ReqResCtrl.runCollectionTest(reqResArray);
   };
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div>

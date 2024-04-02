@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '../../../toolkit-refactor/hooks';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 import grpcController from '../../../controllers/grpcController';
 import { NewRequestStreams, $TSFixMe } from '../../../../types';
-import { RootState } from '../../../toolkit-refactor/store';
 
 interface GRPCProtoEntryFormProps {
   newRequestStreams: NewRequestStreams;
@@ -49,7 +45,7 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
     return;
   };
 
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
 

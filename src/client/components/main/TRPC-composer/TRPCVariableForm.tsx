@@ -5,7 +5,7 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 //TODO: implicit and literal any used in this file
 export default function TRPCVariableForm(props) {
   // input for for user to attach argument with their procedures
-  const isDark = useAppSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   const onChangeHandler = (string: string) => {
     // this function dispatch action to the main reducer function inside of trpc composer
     props.proceduresDipatch({

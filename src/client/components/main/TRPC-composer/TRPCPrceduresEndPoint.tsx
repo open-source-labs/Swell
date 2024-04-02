@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks'
 
 import dropDownArrow from './../../../../assets/icons/arrow_drop_down_white_192x192.png';
 
-import { RootState } from '../../../toolkit-refactor/store';
 //TODO: implicit any used throughout this file
 const TRPCPrceduresEndPoint = (props) => {
   const [dropdownIsActive, setDropdownIsActive] = useState(false);
@@ -41,7 +40,7 @@ const TRPCPrceduresEndPoint = (props) => {
       payload: { index: props.index },
     });
   };
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div
