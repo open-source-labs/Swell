@@ -124,7 +124,7 @@ const HistoryContainer = () => {
 
   // history is already sorted by created_at from getHistory
   // (date: Date, index: number): JSX.Element => (
-  const historyDates = history.map((date: Date, index: number): JSX.Element => (
+  const historyDates = history.map((date: any, index: any): any => (
     <HistoryDate
       className="historyDate"
       content={date}
