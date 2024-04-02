@@ -17,7 +17,8 @@ export default function WebhookComposer(props: $TSFixMe) {
    * This seems to have been put in place before the dedicated UI slice had a
    * chance to be created.
    */
-  const isDark = false;
+  const isDark = useSelector((store: any) => store.ui.isDark);
+
 
   const {
     // composerFieldsReset,
@@ -191,6 +192,7 @@ export default function WebhookComposer(props: $TSFixMe) {
           isDark ? 'dark-address-input' : ''
         } ml-2 input input-is-medium is-info`}
         type="text"
+        placeholder="Server URL"
         value={whUrl}
         readOnly //solved react error dev console
       />

@@ -103,7 +103,7 @@ function EventsContainer(props: any) {
       )}
       <div
         className={`${
-          isDark ? 'is-dark-200' : ''
+          isDark ? 'is-dark-400' : ''
         } overflow-event-parent-container`}
       >
         <CodeMirror

@@ -11,6 +11,9 @@ const TRPCMethodAndEndpointEntryForm = (props: any) => {
   const requestFields = useSelector(
     (state: RootState) => state.newRequestFields
   );
+  
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
+
   const dispatch = useDispatch();
   const clearWarningIfApplicable = () => {
     if (props.warningMessage.uri) props.setWarningMessage({});
@@ -37,7 +40,9 @@ const TRPCMethodAndEndpointEntryForm = (props: any) => {
           <span>tRPC</span>
         </div>
         <input
-          className="ml-1 input input-is-medium is-info"
+          className={`${
+            isDark ? 'dark-address-input' : ''
+          } ml-1 input input-is-medium is-info`}
           type="text"
           value={requestFields.url}
           placeholder="Enter your url here"

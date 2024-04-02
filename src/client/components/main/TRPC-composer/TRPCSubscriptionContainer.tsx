@@ -11,8 +11,10 @@ import {
 } from '@trpc/client';
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { useSelector } from 'react-redux';
 
 export default function TRPCSubscriptionContainer(props) {
+  const isDark = useSelector((store: any) => store.ui.isDark);
   const [endPoint, setEndpoint] = useState('');
   const [link, setLink] = useState('');
   const [responseBody, setResponseBody] = useState('');
@@ -81,7 +83,9 @@ export default function TRPCSubscriptionContainer(props) {
           <span>Subscription</span>
         </div>
         <input
-          className="ml-1 input input-is-medium is-info"
+          className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
           type="text"
           placeholder="Enter your WS url"
           value={link}
@@ -99,7 +103,9 @@ export default function TRPCSubscriptionContainer(props) {
         </div>
       </div>
       <input
-        className="ml-1 input input-is-medium is-info"
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
         type="text"
         placeholder="Endpoint"
         value={endPoint}

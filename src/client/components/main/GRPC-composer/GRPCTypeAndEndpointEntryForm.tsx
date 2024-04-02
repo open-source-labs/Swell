@@ -57,7 +57,7 @@ const GRPCTypeAndEndpointEntryForm: React.FC<Props> = (props) => {
       </button>
       <input
         className={`${
-          isDark ? 'is-dark-300' : ''
+          isDark ? 'dark-address-input' : ''
         } ml-1 input input-is-medium is-info`}
         type="text"
         id="url-input"

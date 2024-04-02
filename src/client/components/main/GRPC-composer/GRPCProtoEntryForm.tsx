@@ -67,7 +67,7 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
           <button
             className={`${
               isDark ? 'is-dark-300' : ''
-            } button is-small add-header-or-cookie-button mr-1`}
+            } button is-small is-primary mr-1`}
             onClick={importProtos}
           >
             Load Proto
@@ -75,7 +75,7 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
           <button
             className={`${
               isDark ? 'is-dark-300' : ''
-            } button is-small add-header-or-cookie-button`}
+            } button is-small is-primary`}
             id="save-proto"
             onClick={submitUpdatedProto}
           >

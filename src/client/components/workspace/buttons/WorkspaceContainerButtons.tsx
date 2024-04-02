@@ -26,7 +26,7 @@ export default function WorkspaceContainerButtons () {
         </button>
 
         <button
-          className={`button is-small is-primary ${isDark ? 'is-dark-300' : 'is-outlined'} button-padding-verticals mr-3`}
+          className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals button-hover-color mr-3`}
           style={{ minWidth: '4vw' }}
           type="button"
           onClick={() => {

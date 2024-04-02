@@ -137,7 +137,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
           onClick={() => addServer()}
           className={`${
             isDark ? 'is-dark-300' : ''
-          } button is-small add-header-or-cookie-button`}
+          } button is-small is-primary`}
         >
           + Server
         </button>

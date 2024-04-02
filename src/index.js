@@ -14,6 +14,7 @@ import { CssBaseline } from '@mui/material';
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our
 // own root node in the body element before rendering into it
 
+// This was the original theme before DarkMode Toggling was added
 // // Sets up Material UI theme
 // const theme = createTheme({
 //   palette: {
@@ -40,9 +41,6 @@ const lightTheme = createTheme({
   },
 });
 
-
-
-
 // Dark theme
 const darkTheme = createTheme({
   palette: {
@@ -63,20 +61,19 @@ const darkTheme = createTheme({
 });
 
 function ThemedApp() {
- // Access the isDark state from the Redux store
- const isDark = useSelector((state) => state.ui.isDark);
+  // Access the isDark state from the Redux store
+  const isDark = useSelector((state) => state.ui.isDark);
 
- // Determine the theme based on the isDark state
- const theme = isDark ? darkTheme : lightTheme;
+  // Determine the theme based on the isDark state
+  const theme = isDark ? darkTheme : lightTheme;
 
- return (
+  return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <App />
     </ThemeProvider>
- );
+  );
 }
-
 
 /**
  * Adds Content Security Policy
@@ -112,7 +109,7 @@ const rt = createRoot(container);
 window.getReduxState = () => store.getState();
 
 rt.render(
- <Provider store={store}>
+  <Provider store={store}>
     <ThemedApp />
- </Provider>
+  </Provider>
 );

@@ -18,7 +18,7 @@ const GraphQLIntrospectionLog: React.FC = () => {
   const cookies = useSelector(
     (store: RootState) => store.newRequest.newRequestCookies.cookiesArr
   );
-  const introspectionData: (IntrospectionData | string) = useSelector(
+  const introspectionData: IntrospectionData | string = useSelector(
     (store: RootState) => store.introspectionData
   );
   const url: string = useSelector(
@@ -29,13 +29,14 @@ const GraphQLIntrospectionLog: React.FC = () => {
   return (
     <div>
       <button
-        className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
+        className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary`}
         onClick={() => graphQLController.introspect(url, headers, cookies)}
       >
         Introspect
       </button>
       <div id="gql-introspection">
-        {introspectionData === 'Error: Please enter a valid GraphQL API URI' && (
+        {introspectionData ===
+          'Error: Please enter a valid GraphQL API URI' && (
           <div>{introspectionData}</div>
         )}
         {!!introspectionData.schemaSDL && (
@@ -52,15 +53,6 @@ const GraphQLIntrospectionLog: React.FC = () => {
 };
 
 export default GraphQLIntrospectionLog;
-
-
-
-
-
-
-
-
-
 
 // import React from 'react';
 // import { useSelector } from 'react-redux';

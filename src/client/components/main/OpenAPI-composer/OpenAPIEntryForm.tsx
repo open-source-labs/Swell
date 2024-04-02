@@ -27,7 +27,9 @@ const OpenAPIEntryForm: React.FC<Props> = ({
         <span>OpenAPI</span>
       </button>
       <input
-        className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
         type="text"
         placeholder="primary server loads here..."
         value={primaryServer}

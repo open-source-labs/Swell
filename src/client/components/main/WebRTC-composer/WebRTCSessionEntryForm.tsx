@@ -17,6 +17,8 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
 
+  const isDark = useSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
+
   const { setShowRTCEntryForms } = props;
   const [entryTypeDropdownIsActive, setEntryTypeDropdownIsActive] =
     useState(false);
@@ -87,7 +89,9 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
           </ul>
         </div>
         <input
-          className="ml-1 input input-is-medium is-info"
+          className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
           type="text"
           placeholder={
             newRequestWebRTC.webRTCEntryMode === 'Manual'

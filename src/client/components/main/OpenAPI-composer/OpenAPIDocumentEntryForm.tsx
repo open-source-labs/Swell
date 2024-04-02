@@ -19,7 +19,7 @@ const OpenAPIDocumentEntryForm: React.FC = () => {
         <button
           className={`${
             isDark ? 'is-dark-300' : ''
-          } button is-small add-header-or-cookie-button mr-1`}
+          } button is-small is-primary mr-1`}
           onClick={() => importDoc()}
         >
           Load Document

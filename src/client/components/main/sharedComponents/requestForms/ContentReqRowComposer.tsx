@@ -48,7 +48,9 @@ export default function ContentReqRowComposer({
         type="text"
         style={{ marginLeft: '15px', width: '20vw' }}
         value={data.key}
-        className={`${isDark ? 'is-dark-300' : ''} p-1 key`}
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } p-1 key`}
         onChange={(e) => changeHandler(data.id, 'key', e.target.value)}
       />
       <input
@@ -56,7 +58,9 @@ export default function ContentReqRowComposer({
         type="text"
         style={{ marginLeft: '20px', width: '30vw' }}
         value={typeof data.value === 'string' || typeof data.value === 'number' ? data.value : []}
-        className={`${isDark ? 'is-dark-300' : ''} p-1 value`}
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } p-1 value`}
         onChange={(e) => changeHandler(data.id, 'value', e.target.value)}
       />
       <div className="is-flex is-justify-content-center is-align-items-center ml-4">
