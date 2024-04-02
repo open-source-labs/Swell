@@ -156,7 +156,7 @@ export interface WebMessages {
   timeReceived: number;
 }
 
-interface NewRequestCookies {
+export interface NewRequestCookies {
   cookiesArr: CookieOrHeader[];
   count: number;
 }

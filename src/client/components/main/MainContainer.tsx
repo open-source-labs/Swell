@@ -3,14 +3,15 @@ import { Routes, Route } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 import {
   ReqRes,
-  $TSFixMe,
-  $TSFixMeObject,
   RequestWebRTC,
   ValidationMessage,
   MainContainerProps,
   NewRequestHeaders,
   NewRequestStreams,
   NewRequestFields,
+  NewRequestBody,
+  NewRequestCookies,
+  NewRequestOpenApi,
 } from '../../../types';
 
 import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
@@ -94,16 +95,16 @@ function MainContainer() {
     dispatch(newRequestStreamsSet(requestStreamsObj));
   const fieldsReplacedAction = (requestFields: NewRequestFields) =>
     dispatch(fieldsReplaced(requestFields));
-  const newRequestBodySetAction = (requestBodyObj: $TSFixMeObject) =>
+  const newRequestBodySetAction = (requestBodyObj: NewRequestBody) =>
     dispatch(newRequestBodySet(requestBodyObj));
-  const newTestContentSetAction = (testContent: $TSFixMe) =>
+  const newTestContentSetAction = (testContent: string) =>
     dispatch(newTestContentSet(testContent));
-  const newRequestCookiesSetAction = (requestCookiesObj: $TSFixMeObject) =>
+  const newRequestCookiesSetAction = (requestCookiesObj: NewRequestCookies) =>
     dispatch(newRequestCookiesSet(requestCookiesObj));
   const newRequestSSESetAction = (requestSSEBool: boolean) =>
     dispatch(newRequestSSESet(requestSSEBool));
-  const openApiRequestsReplacedAction = (parsedDocument: $TSFixMe) =>
-    dispatch(openApiRequestsReplaced(parsedDocument));
+  const openApiRequestsReplacedAction = (request: NewRequestOpenApi) =>
+    dispatch(openApiRequestsReplaced(request));
   const composerFieldsResetAction = () => dispatch(composerFieldsReset());
   const setWorkspaceActiveTabAction = (tabName: string) =>
     dispatch(setWorkspaceActiveTab(tabName));
