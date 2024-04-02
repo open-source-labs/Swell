@@ -52,7 +52,7 @@ const newRequestFieldsSlice = createSlice({
 
   reducers: {
     //Before toolkit conversion was SET_NEW_REQUEST_FIELDS or setNewRequestFields
-    fieldsReplaced: (_, action: PayloadAction<NewRequestFields>) => {
+    fieldsReplaced: (state, action: PayloadAction<NewRequestFields>) => {
       return action.payload;
     },
 
