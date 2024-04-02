@@ -17,7 +17,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
 
-  const isDark = useSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
 
   const { setShowRTCEntryForms } = props;
   const [entryTypeDropdownIsActive, setEntryTypeDropdownIsActive] =

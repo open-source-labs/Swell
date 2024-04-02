@@ -135,9 +135,7 @@ const OpenAPIServerForm: React.FC<Props> = ({
         <div className="composer-section-title">Servers</div>
         <button
           onClick={() => addServer()}
-          className={`${
-            isDark ? 'is-dark-300' : ''
-          } button is-small is-primary`}
+          className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals button-hover-color mr-1`}
         >
           + Server
         </button>

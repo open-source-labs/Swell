@@ -11,10 +11,10 @@ import {
 } from '@trpc/client';
 import SendRequestButton from '../sharedComponents/requestButtons/SendRequestButton';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
+import { useAppSelector } from '../../../toolkit-refactor/hooks';
 //TODO: implicit any used throughout this file
 export default function TRPCSubscriptionContainer(props) {
-  const isDark = useSelector((store: any) => store.ui.isDark);
+  const isDark = useAppSelector((store: any) => store.ui.isDark);
   const [endPoint, setEndpoint] = useState('');
   const [link, setLink] = useState('');
   const [responseBody, setResponseBody] = useState('');
@@ -74,7 +74,7 @@ export default function TRPCSubscriptionContainer(props) {
 
   return (
     <div>
-      <h3 style={h3Styles}>Your subscription</h3>
+      <h3 style={h3Styles}>Your Subscription</h3>
       <div
         className="is-flex is-justify-content-center"
         style={{ padding: '10px' }}
@@ -102,10 +102,11 @@ export default function TRPCSubscriptionContainer(props) {
           />
         </div>
       </div>
+      <div className="is-flex is-justify-content-center is-align-items-center ml-2">
       <input
         className={`${
           isDark ? 'dark-address-input' : ''
-        } ml-1 input input-is-medium is-info`}
+        } input input-is-medium is-info`}
         type="text"
         placeholder="Endpoint"
         value={endPoint}
@@ -113,6 +114,7 @@ export default function TRPCSubscriptionContainer(props) {
           endpointHandler(e);
         }}
       />
+      </div>
       {subscriptionStarted && (
         <div>
           Log will appear down here

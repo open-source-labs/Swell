@@ -17,9 +17,7 @@ const OpenAPIDocumentEntryForm: React.FC = () => {
     <div className="mt-3">
       <div className="is-flex is-justify-content-flex-end is-align-content-center">
         <button
-          className={`${
-            isDark ? 'is-dark-300' : ''
-          } button is-small is-primary mr-1`}
+          className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals button-hover-color mr-1`}
           onClick={() => importDoc()}
         >
           Load Document
