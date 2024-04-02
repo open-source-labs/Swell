@@ -80,19 +80,20 @@ module.exports = {
   },
 
   plugins: [
-    new MiniCssExtractPlugin({}),
+    new MiniCssExtractPlugin({
+      // Potentially adding ?%%NONCE%% for replacement
+      filename: 'main.css',
+    }),
     new HtmlWebpackPlugin({
       template: './index-csp.html',
       filename: 'index.html',
       title: title,
-      // inject: 'body',
-      // scriptLoading: 'blocking',
       cspPlugin: {
         enabled: true,
         policy: {
           'base-uri': "'self'",
           'object-src': "'none'",
-          'script-src': ["'self'", "'unsafe-eval'"],
+          'script-src': ["'self'"],
           'style-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
         },
         hashEnabled: {
@@ -101,16 +102,11 @@ module.exports = {
         },
         nonceEnabled: {
           'script-src': true,
-          'style-src': true,
+          'style-src': false, // * Disabled for dynamic styling from Material UI
         },
       },
-      /**
-       * @todo Update CSP (Content Security Policy) with "nonce" inline styling.
-       * Refactor code to be more secure (do not use 'unsafe-inline')
-
-       */
       /** templateParameters:
-       *Using templateParameters and __webpack_nonce__
+       *Using templateParameters
        * https://webpack.js.org/guides/csp/#enabling-csp
        * https://github.com/jantimon/html-webpack-plugin?tab=readme-ov-file#options
        */
@@ -130,7 +126,6 @@ module.exports = {
       },
     }),
     new CspHtmlWebpackPlugin({
-      //
       'base-uri': ["'self'"],
       'object-src': ["'none'"],
       'script-src': [

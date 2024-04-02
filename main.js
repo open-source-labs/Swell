@@ -31,7 +31,14 @@
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 // ** Entry point for Electron **
-const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  shell,
+  session,
+} = require('electron');
 const os = require('node:os');
 
 const { autoUpdater } = require('electron-updater');
@@ -70,10 +77,8 @@ require('./main_process/main_trpcController.js')();
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
-
-
-const contextMenu = require('electron-context-menu')
-contextMenu()
+const contextMenu = require('electron-context-menu');
+contextMenu();
 
 // configure logging
 // autoUpdater.logger = log;
@@ -155,12 +160,12 @@ function createWindow() {
 
     // dev mode title
     mainWindow.setTitle('Swell (devMode)');
-     
+
     // if we are in developer mode Add React & Redux DevTools to Electron App
 
-
     // this manually installs the depricated dev tools that are compatible with electron
-    session.defaultSession.loadExtension(reactDevToolsPath)
+    session.defaultSession
+      .loadExtension(reactDevToolsPath)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
     // ****** if current react dev tools version did work with electron we would use the below commented code ****
