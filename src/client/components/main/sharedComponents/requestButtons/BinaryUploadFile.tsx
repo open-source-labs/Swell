@@ -54,28 +54,26 @@ const BinaryUploadFile = (props: Props)  => {
     newRequestBodySet({
       ...newRequestBody,
       bodyContent: binaryData,
-      bodyType: 'binary',
-      rawType: '',
-      JSONFormatted: false
+      bodyType: 'binary'
     });
   };
 
   return (
     <div style ={{display:'flex'}}>
-      <form style ={{marginTop:'4px'}} onSubmit={handleSubmit}>
-        <input type="file" style = {{ padding:'4px'}} id="chooseFileBinary" className='button is-small is-outlined is-primary mr-3' onChange={handleFileChange} />
+      <form style ={{marginTop:'7px'}} onSubmit={handleSubmit}>
+        <input type="file" style = {{ padding:'4px 5px 6px 5px'}} id="chooseFileBinary" className='button is-small is-outlined is-primary mr-3' onChange={handleFileChange} />
         <input type="submit" id="uploadFileBinary" className='button is-small is-outlined is-primary' value="Upload File" />
       </form>
-      <div id='isUploaded' style={{margin:'0px 0px 0px 15px', padding:'9px 5px 9px 5px'}}>
+      <div id='isUploaded' style={{margin:'2px 0px 0px 15px', padding:'9px 5px 9px 5px'}}>
         {isUploaded
         ?
           isChosen 
           ?
-            <h1>Uploaded ✅</h1>
+            <h1>File Uploaded ✅</h1>
           :
-            <h1>Choose File ⏸️</h1>
+            <h1>Must Choose File ⏸️</h1>
         :
-          <h1>Upload File ❌</h1>
+          <h1>File Not Uploaded ❌</h1>
         }
       </div>
     </div>
