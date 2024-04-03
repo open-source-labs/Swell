@@ -1,6 +1,9 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../toolkit-refactor/hooks';
 import {
   startServer,
   stopServer,
@@ -15,6 +18,14 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 
 // mui
 import { Box, Button, Modal, Typography } from '@mui/material';
+
+// Import types for props type and define props on RestMethodAndEndpointEntryFormProps
+import { MockServerComposerProps } from '../../../../types';
+import { METHODS } from 'http';
+import { placeholder } from '@uiw/react-codemirror';
+interface RestMethodAndEndpointEntryFormProps {
+  method: string;
+}
 
 /**
  * grab context from Electron window
@@ -41,7 +52,7 @@ const style = {
   p: 4,
 };
 //TODO : props has an implicit any, should be typed properly
-const MockServerComposer = (props) => {
+const MockServerComposer = (props: MockServerComposerProps) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
   const dispatch = useAppDispatch();
@@ -127,6 +138,8 @@ const MockServerComposer = (props) => {
   3. Enter an endpoint and a response to mock
   4. Click the submit button 
   `;
+
+  // Defined props for the RestMethodAndEndpointEntryForm
 
   return (
     <Box

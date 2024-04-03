@@ -126,6 +126,11 @@ export interface GraphQlComposerProps extends MainContainerProps {
   //leaving in place for future iterations that may want to move away from prop drilling down from main container
 }
 
+export interface MockServerComposerProps extends MainContainerProps {
+  //functionally the same as MockServer
+  //leaving in place for future iterations that may want to move away from prop drilling down from main container
+}
+
 export interface GraphQLResponse {
   reqResObj: ReqRes;
 
@@ -454,3 +459,4 @@ export type OpenApiRequest = {
   mediaType: string | $TSFixMe;
   rawType: string | $TSFixMe;
 };
+
