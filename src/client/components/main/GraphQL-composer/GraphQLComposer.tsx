@@ -17,7 +17,7 @@ import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe, ReqRes, GraphQlComposerProps, Protocol, ReqResRequest } from '../../../../types';
+import { $TSFixMe, ReqRes, GraphQlComposerProps, Protocol, ReqResRequest, CookieOrHeader } from '../../../../types';
 
 // Translated from GraphQLContainer.jsx
 export default function GraphQLComposer(props: GraphQlComposerProps) {
@@ -151,10 +151,10 @@ export default function GraphQLComposer(props: GraphQlComposerProps) {
       request: {
         method,
         headers: headersArr.filter(
-          (header: $TSFixMe) => header.active && !!header.key
+          (header: CookieOrHeader) => header.active && !!header.key
         ),
         cookies: cookiesArr.filter(
-          (cookie: $TSFixMe) => cookie.active && !!cookie.key
+          (cookie: CookieOrHeader) => cookie.active && !!cookie.key
         ),
         body: bodyContent || '',
         bodyType,
@@ -250,6 +250,7 @@ export default function GraphQLComposer(props: GraphQlComposerProps) {
         />
         <TestContainer />
         <TestEntryForm
+          isWebSocket={false}
           newTestContentSet={newTestContentSet}
           testContent={testContent}
         />

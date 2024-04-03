@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks'
 import { GraphQLSchema } from 'graphql';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import { NewRequestFields, NewRequestBody } from '../../../../types';
+import { NewRequestFields, NewRequestBody, NewRequestBodySet } from '../../../../types';
 
 interface IntrospectionData {
   schemaSDL: string | null;
@@ -15,7 +15,7 @@ interface Props {
   setWarningMessage: (message: { uri?: string }) => void;
   fieldsReplaced: (fields: NewRequestFields) => void;
   newRequestFields: NewRequestFields;
-  newRequestBodySet: (body: { [key: string]: any }) => void;
+  newRequestBodySet: NewRequestBodySet;
   newRequestBody: NewRequestBody;
 }
 

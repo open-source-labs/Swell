@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { NewRequestBodySet } from '../../../../types';
 
 interface Props {
   newRequestBody: {
     bodyContent: string;
     bodyIsNew: boolean;
   };
-  newRequestBodySet: (newRequestBody: {
-    bodyContent: string;
-    bodyIsNew: boolean;
-  }) => void;
+  newRequestBodySet: NewRequestBodySet;
   warningMessage: { body: string } | null;
   introspectionData: Record<string, any> | null;
 }
