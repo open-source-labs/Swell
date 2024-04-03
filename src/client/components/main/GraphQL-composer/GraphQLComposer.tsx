@@ -17,7 +17,7 @@ import TestContainer from '../sharedComponents/stressTest/TestContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { $TSFixMe, ReqRes, GraphQlComposerProps, Protocol } from '../../../../types';
+import { $TSFixMe, ReqRes, GraphQlComposerProps, Protocol, ReqResRequest } from '../../../../types';
 
 // Translated from GraphQLContainer.jsx
 export default function GraphQLComposer(props: GraphQlComposerProps) {
@@ -142,7 +142,6 @@ export default function GraphQLComposer(props: GraphQlComposerProps) {
       url,
       graphQL,
       gRPC,
-      webrtc,
       timeSent: null,
       timeReceived: null,
       connection: 'uninitialized',
