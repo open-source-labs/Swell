@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { Socket } from 'socket.io-client';
 
 const path = require('path');
@@ -13,6 +13,12 @@ dotenv.config();
 
 const port: number = 3000;
 const app = express();
+
+interface ServerError {
+  log: string;
+  status: number;
+  message: { err: string };
+}
 
 app.use(express.static(path.resolve(__dirname, '../../build')));
 app.use(express.urlencoded({ extended: true }));
@@ -56,7 +62,7 @@ io.on('connection', (client: Socket) => {
   });
 });
 
-app.get('/', (_, res: Response) => res.send('Hello World!'));
+app.get('/', (_: Request, res: Response) => res.send('Hello World!'));
 
 app.use(express.static(path.resolve(__dirname, '../../build')));
 
@@ -89,7 +95,29 @@ app.post('/webhook', (req: Request, res: Response) => {
   return res.status(200).json(req.body);
 });
 
-app.get('/api/import', (_, res: Response) => {
+app.get('/api/import', (_: Request, res: Response) => {
   return res.status(200).send(res.locals.swellFile);
 });
+
+// Unknown route handler
+app.use((_: Request, res: Response) => {
+  res.status(404).send('Not Found');
+});
+
+// Global error handler
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  const defaultErr: ServerError = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 500,
+    message: { err: 'An error occurred' },
+  };
+  const errorObj: ServerError = {
+    ...defaultErr,
+    ...(typeof err === 'object' ? err : {}),
+  };
+  console.log(errorObj.log);
+  res.status(errorObj.status).json(errorObj.message);
+});
+
+server.listen(port, (): void => console.log(`Listening on port ${port}`));
 

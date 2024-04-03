@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     "sourceMap": true, // allow sourcemap support
     "module": "es6", // specify module code generation
     "jsx": "react", // use typescript to transpile jsx to js
@@ -36,8 +36,8 @@
     "src/client/components/main/response-composer/ResponsePaneContainer.tsx",
     "src/client/components/main/sharedComponents/requestForms/BodyEntryForm.tsx",
     "src/client/components/main/OpenAPI-composer/OpenAPIMetadata.jsx",
-    "TRPCBodyEntryForm.tsx"
-, "src/client/components/main/sharedComponents/requestButtons/BinaryUploadFile.tsx"  ],
+    "TRPCBodyEntryForm.tsx", 
+    "src/client/components/main/sharedComponents/requestButtons/BinaryUploadFile.tsx" ],
   "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
   "typeRoots": ["./node_modules/@types"]
 }
