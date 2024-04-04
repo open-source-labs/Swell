@@ -23,11 +23,11 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import { MockServerComposerProps } from '../../../../types';
 import { METHODS } from 'http';
 import { placeholder } from '@uiw/react-codemirror';
-interface RestMethodAndEndpointEntryFormProps {
-  method: string;
-  placeholder: string;
-  style: React.CSSProperties;
-}
+// interface RestMethodAndEndpointEntryFormProps {
+//   method: string;
+//   placeholder: string;
+//   style: React.CSSProperties;
+// }
 
 /**
  * grab context from Electron window
