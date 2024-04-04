@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { io } from 'socket.io-client';
+import { useAppSelector } from '../../../toolkit-refactor/hooks';
 
 // Import MUI components
 import { Box } from '@mui/material';
@@ -16,7 +17,8 @@ export default function WebhookComposer(props: $TSFixMe) {
    * This seems to have been put in place before the dedicated UI slice had a
    * chance to be created.
    */
-  const isDark = false;
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+
 
   const {
     // composerFieldsReset,
@@ -190,6 +192,7 @@ export default function WebhookComposer(props: $TSFixMe) {
           isDark ? 'dark-address-input' : ''
         } ml-2 input input-is-medium is-info`}
         type="text"
+        placeholder="Server URL"
         value={whUrl}
         readOnly //solved react error dev console
       />

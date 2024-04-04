@@ -20,8 +20,7 @@ const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({
     if (!bodyIsNew) setValue(bodyVariables);
   }, [bodyVariables, bodyIsNew]);
 
-  const isDark = useAppSelector((store: any) => store.ui.isDark);
-
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   return (
     <div>
       <div className="composer-section-title">Variables</div>

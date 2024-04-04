@@ -26,7 +26,7 @@ const style = {
 //TODO: fix implicit any props and look at exportCollection method
 export default function ExportWorkspaceModal({ open, handleClose }) {
   const localWorkspaces = useAppSelector((store: RootState) => store.collections);
-  const isDark = useAppSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <Modal

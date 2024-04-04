@@ -137,6 +137,8 @@ As you iterate the product, keep in mind the footprint your new feature(s) could
 
 There are many parts of the codebase that break DRY principles, and with such a large application, really keep in mind that when you add features it is completely necessary. Past iterators added an experimental feature(s) without it fully working and the next team(s) would add their own experimental feature. Fixing features the past teams couldn't get to not only is a great way to learn these technologies but is also a great thing to talk about in interviews. " I fixed the webRTC feature that has been stagnant for 5 years", "I addressed the technical debt and reorganized the state...", or "Increased the quality of typeScript". These all show maturity as a developer and will allow us to focus the entire time of OSP on the 20% problems.
 
+Legacy Components - As a part of a clean up effort, all files that are no longer being used have been moved to the legacy component folder.  Examples of these files come from the migration to shared components. The original location of the components is mentioned in the comments of the relocated files. 
+
 ### _Ensure consistent redux state management_
 
 The redux state initiation and management for various API endpoints in this codebase are inconsistent. If you cross reference the state initialization, transition/update, and clean up in various modules with `types.ts`, you will notice many TypeScript typing errors due to inconsistent state management. This will need to be cleaned up bit by bit to ensure a state that works across all types of APIs in this application.

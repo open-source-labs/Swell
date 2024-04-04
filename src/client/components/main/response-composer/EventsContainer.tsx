@@ -24,7 +24,7 @@ interface EventsContainerProps {
 
 function EventsContainer(props: any) {
   const { currentResponse } = props;
-  const isDark = useAppSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;
@@ -103,7 +103,7 @@ function EventsContainer(props: any) {
       )}
       <div
         className={`${
-          isDark ? 'is-dark-200' : ''
+          isDark ? 'is-dark-400' : ''
         } overflow-event-parent-container`}
       >
         <CodeMirror

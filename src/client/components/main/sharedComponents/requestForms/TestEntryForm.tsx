@@ -15,7 +15,7 @@ const TestEntryForm: React.FC<Props> = ({
   testContent,
   newTestContentSet,
 }) => {
-  const isDark = useAppSelector((store: any) => store.ui.isDark) as boolean;
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const [showTests, setShowTests] = useState(false);
   const handleShowTests = () => setShowTests(!showTests);
