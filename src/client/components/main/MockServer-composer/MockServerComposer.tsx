@@ -25,6 +25,8 @@ import { METHODS } from 'http';
 import { placeholder } from '@uiw/react-codemirror';
 interface RestMethodAndEndpointEntryFormProps {
   method: string;
+  placeholder: string;
+  style: React.CSSProperties;
 }
 
 /**
@@ -52,7 +54,7 @@ const style = {
   p: 4,
 };
 //TODO : props has an implicit any, should be typed properly
-const MockServerComposer = (props: MockServerComposerProps) => {
+const MockServerComposer = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
   const dispatch = useAppDispatch();
@@ -140,6 +142,18 @@ const MockServerComposer = (props: MockServerComposerProps) => {
   `;
 
   // Defined props for the RestMethodAndEndpointEntryForm
+  // const RestMethodAndEndpointEntryForm = (
+  //   props: RestMethodAndEndpointEntryFormProps
+  // ) => {
+  //   return (
+  //     <RestMethodAndEndpointEntryForm
+  //       {...props}
+  //       method={props.newRequestFields.method}
+  //       placeholder="/Enter mock endpoint"
+  //       style={{ width: '100%' }}
+  //     />
+  //   );
+  // };
 
   return (
     <Box
