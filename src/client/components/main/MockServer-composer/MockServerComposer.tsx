@@ -30,7 +30,6 @@ import { placeholder } from '@uiw/react-codemirror';
  */
 const { api } = window as any;
 
-// TODO: add typing to the props object
 // TODO: add an option to see the list of existing routes that shows up in the response window
 // TODO: add endpoint validation
 // TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
@@ -48,7 +47,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-//TODO : props has an implicit any, should be typed properly
+
 const MockServerComposer = (props: MockServerComposerProps) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
@@ -135,20 +134,6 @@ const MockServerComposer = (props: MockServerComposerProps) => {
   3. Enter an endpoint and a response to mock
   4. Click the submit button 
   `;
-
-  // Defined props for the RestMethodAndEndpointEntryForm
-  // const RestMethodAndEndpointEntryForm = (
-  //   props: RestMethodAndEndpointEntryFormProps
-  // ) => {
-  //   return (
-  //     <RestMethodAndEndpointEntryForm
-  //       {...props}
-  //       method={props.newRequestFields.method}
-  //       placeholder="/Enter mock endpoint"
-  //       style={{ width: '100%' }}
-  //     />
-  //   );
-  // };
 
   return (
     <Box
