@@ -29,14 +29,15 @@ const GraphQLIntrospectionLog: React.FC = () => {
   return (
     <div>
       <button
-        className={`${isDark ? 'is-dark-200' : ''} button is-small add-header-or-cookie-button`}
+        className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary`}
         onClick={() => graphQLController.introspect(url, headers, cookies)}
       >
         Introspect
       </button>
       <div id="gql-introspection">
-        {introspectionData === 'Error: Please enter a valid GraphQL API URI' && (
-          <div>{introspectionData}</div>
+      {/* added the .schemaSDL and toString() below to fix type errors. Not sure the intent of the original engineer */}
+        {introspectionData.schemaSDL === 'Error: Please enter a valid GraphQL API URI' && (
+          <div>{introspectionData.toString()}</div>
         )}
         {!!introspectionData.schemaSDL && (
           <TextCodeArea
