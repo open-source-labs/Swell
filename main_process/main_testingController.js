@@ -78,7 +78,7 @@ testHttpController.runTest = (
 
       addOneResult({
         message: errObj.message,
-        status: 'FAILhi',
+        status: 'FAIL',
         expected: errObj.expected,
         actual: err,
       });
