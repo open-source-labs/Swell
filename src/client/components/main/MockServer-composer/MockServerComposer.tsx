@@ -23,11 +23,6 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import { MockServerComposerProps } from '../../../../types';
 import { METHODS } from 'http';
 import { placeholder } from '@uiw/react-codemirror';
-// interface RestMethodAndEndpointEntryFormProps {
-//   method: string;
-//   placeholder: string;
-//   style: React.CSSProperties;
-// }
 
 /**
  * grab context from Electron window
@@ -54,7 +49,7 @@ const style = {
   p: 4,
 };
 //TODO : props has an implicit any, should be typed properly
-const MockServerComposer = (props) => {
+const MockServerComposer = (props: MockServerComposerProps) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
   const dispatch = useAppDispatch();
