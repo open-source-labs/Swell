@@ -38,7 +38,7 @@
     "src/client/components/main/OpenAPI-composer/OpenAPIMetadata.jsx",
     "TRPCBodyEntryForm.tsx",
     "src/client/components/main/sharedComponents/requestButtons/BinaryUploadFile.tsx",
-    "src/client/components/Versions.jsx"
+    "src/client/components/Versions.tsx"
   ],
   "exclude": ["node_modules", "dist", "build", "coverage", "mocks"],
   "typeRoots": ["./node_modules/@types"]
