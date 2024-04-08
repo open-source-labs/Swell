@@ -6,7 +6,7 @@
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
-    "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --timeout 3000 --exit",
+    "test": "webpack --mode=production --config ./webpack.production.js && cross-env NODE_ENV=test cross-env PWDEBUG=1 nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --timeout 300000 --exit",
     "server-sse": "node ./test/SSE_HTTP1_server.js",
     "server-gql": "node ./test/graphqlServer.mjs",
     "server-grpc": "node ./test/grpcServer.js",

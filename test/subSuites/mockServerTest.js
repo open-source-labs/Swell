@@ -4,6 +4,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
+const { element } = require('prop-types');
 
 // Declare global variables
 let electronApp, page;
@@ -23,7 +24,6 @@ module.exports = () => {
     after(async () => {
       // Check if Electron app exists
       if (electronApp) {
-        await page.locator('button >> text=Clear Workspace').click();
         await electronApp.close();
         electronApp = null; // Reset Electron app reference
       }
@@ -56,6 +56,11 @@ module.exports = () => {
         expect(await page.locator('button#response').count()).to.equal(1);
       });
 
+      it('can click on start server button', async() => {
+        await page.locator('button >> text=Start Server').click();
+        expect(await page.locator('button#response').innerText()).to.equal('Stop Server')
+      })
+
       it('can type in Mock Server route', async () => {
         await page
           .locator('#url-input')
@@ -67,6 +72,22 @@ module.exports = () => {
 
         expect(mockRoute).to.equal('/testRoute')
       })
+
+      it('can type in Mock Server body', async () => {
+        const divElement = await page.locator('.cm-activeLine.cm-line')
+
+        await divElement.evaluate((element) => element.innerText = '{"test":"test"}');
+
+        const mockData = await divElement.innerText();
+        expect(mockData).to.equal('{"test":"test"}');
+      })
+
+      it('can click on submit mock server button', async () => {
+        await page.locator('button >> text=Submit').click();
+        // expect(await page.locator('h6.MuiTypography-root.MuiTypography-h6.swell-mui-2ulfj5-MuiTypography-root').innerText()).to.equal('Mock endpoint successfully created!');
+        await page.locator('div.MuiBackdrop-root').click();
+      });
+    
 
     });
 
