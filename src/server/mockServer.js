@@ -11,6 +11,8 @@ const LISTROUTES = '/list-routes';
 // TODO: move these functions to a middleware file?
 // TODO: create a function and endpoint to delete a mock route
 
+console.log(__dirname);
+
 // this function gets called when the /mock endpoint is hit and is what sends the mock response
 const createMockRoute = (method, endpoint, response) => {
   const property = method.toLowerCase();

@@ -235,7 +235,7 @@ app.on('ready', () => {
      * packaged versions) or else the packaged app would not recognize the servers at all.
      */
     const express = require('./src/server/server');
-    const mockServer = require('./src/server/mockServer.js');
+    const mockServer = require('./src/server/mockServer');
     autoUpdater.checkForUpdates();
   }
 });
