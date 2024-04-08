@@ -10,7 +10,7 @@ import GRPCProtoEntryForm from './GRPCProtoEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 
-import { $TSFixMe, ReqRes } from '../../../../types.js';
+import { $TSFixMe, CookieOrHeader, ReqRes } from '../../../../types.js';
 
 // Import MUI components
 import { Box } from '@mui/material';
@@ -116,7 +116,7 @@ export default function GRPCComposer(props: $TSFixMe) {
     const reqRes: ReqRes = {
       id: uuid(),
       createdAt: new Date(),
-      protocol: '',
+      protocol,
       url,
       graphQL,
       gRPC,
@@ -128,7 +128,7 @@ export default function GRPCComposer(props: $TSFixMe) {
       checkSelected: false,
       request: {
         method: grpcStream,
-        headers: headersArr.filter((header) => header.active && !!header.key),
+        headers: headersArr.filter((header: CookieOrHeader) => header.active && !!header.key),
         body: streamQueries,
         bodyType,
         rawType,
@@ -235,19 +235,19 @@ export default function GRPCComposer(props: $TSFixMe) {
         {/**@todo Fix TSX typing errors */}
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
-          newRequestHeaders={newRequestHeaders}
+          // newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
-          newRequestBody={newRequestBody}
+          // newRequestBody={newRequestBody}
           fieldsReplaced={fieldsReplaced}
-          newRequestHeadersSet={newRequestHeadersSet}
-          newRequestStreamsSet={newRequestStreamsSet}
-          newRequestCookiesSet={newRequestCookiesSet}
-          newRequestBodySet={newRequestBodySet}
+          // newRequestHeadersSet={newRequestHeadersSet}
+          // newRequestStreamsSet={newRequestStreamsSet}
+          // newRequestCookiesSet={newRequestCookiesSet}
+          // newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
         />
         <HeaderEntryForm
-          stylesObj={HeaderEntryFormStyle}
+          // stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
