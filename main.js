@@ -524,7 +524,7 @@ const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process
 ipcMain.on('start-mock-server', () => {
-  mockServerProcess = fork('node', ['./src/server/mockServer.js']);
+  mockServerProcess = fork('./src/server/mockServer.js');
   mockServerProcess.on('error', (err) => {
     console.log('Error starting mock server', err);
   });
