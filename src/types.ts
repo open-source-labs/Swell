@@ -127,7 +127,12 @@ export interface GraphQlComposerProps extends MainContainerProps {
 }
 
 export interface MockServerComposerProps extends MainContainerProps {
-  //functionally the same as MockServer
+  //functionally the same as MainContainerProps
+  //leaving in place for future iterations that may want to move away from prop drilling down from main container
+}
+
+export interface GRPCComposerProps extends MainContainerProps {
+  //functionally the same as MainContainerProps
   //leaving in place for future iterations that may want to move away from prop drilling down from main container
 }
 

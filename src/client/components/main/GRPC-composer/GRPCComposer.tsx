@@ -10,12 +10,12 @@ import GRPCProtoEntryForm from './GRPCProtoEntryForm';
 import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButton';
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 
-import { $TSFixMe, CookieOrHeader, ReqRes } from '../../../../types.js';
+import { CookieOrHeader, GRPCComposerProps, ReqRes } from '../../../../types.js';
 
 // Import MUI components
 import { Box } from '@mui/material';
 
-export default function GRPCComposer(props: $TSFixMe) {
+export default function GRPCComposer(props: GRPCComposerProps) {
 
   // destructure the props from mainContainer
   const {
@@ -50,7 +50,6 @@ export default function GRPCComposer(props: $TSFixMe) {
       selectedService,
       selectedRequest,
       selectedPackage,
-      streamingType,
       initialQuery,
       streamsArr,
       streamContent,
@@ -73,7 +72,6 @@ export default function GRPCComposer(props: $TSFixMe) {
   // but needs to be -> [{id:0, "query": ""}]
   const [streamsArrLength, setStreamsArrayLength] = useState(newRequestStreams.streamsArr.length);
 
-
   const requestValidationCheck = () => {
     interface ValidationMessage {
       uri?: string;
@@ -87,7 +85,7 @@ export default function GRPCComposer(props: $TSFixMe) {
 
   const addNewRequest = () => {
     const warnings = requestValidationCheck();
-    if (Object.keys(warnings).length > 0) {
+    if (warnings !== true) {
       setWarningMessage(warnings);
       return;
     }
@@ -110,7 +108,7 @@ export default function GRPCComposer(props: $TSFixMe) {
       queryArr.push(JSON.parse(query));
     }
     // grabbing streaming type to set method in reqRes.request.method
-    const grpcStream = document.getElementById('stream').innerText;
+    const grpcStream = document.getElementById('stream')!.innerText;
 
     // create reqres obj to be passed to controller for further actions/tasks
     const reqRes: ReqRes = {
@@ -151,7 +149,6 @@ export default function GRPCComposer(props: $TSFixMe) {
       service: selectedService,
       rpc: selectedRequest,
       packageName: selectedPackage,
-      streamingType,
       queryArr,
       initialQuery,
       streamsArr,
@@ -162,7 +159,6 @@ export default function GRPCComposer(props: $TSFixMe) {
     };
 
     // add request to history
-    /** @todo Fix TS error */
     historyController.addHistoryToIndexedDb(reqRes);
     reqResItemAdded(reqRes);
 
@@ -205,6 +201,7 @@ export default function GRPCComposer(props: $TSFixMe) {
 
       // update state in the store
       newRequestStreamsSet({
+        ...newRequestStreams,
         streamsArr: newStreamsArr,
         count: newStreamsArr.length,
         streamContent: newRequestStreams.streamContent,
@@ -212,10 +209,10 @@ export default function GRPCComposer(props: $TSFixMe) {
     }
   }, [streamsArrLength]);
 
-  const HeaderEntryFormStyle = {
-    //trying to change style to conditional created strange duplication effect when continuously changing protocol
-    display: !/wss?:\/\//.test(protocol) ? 'block' : 'none',
-  };
+  // const HeaderEntryFormStyle = {
+  //   //trying to change style to conditional created strange duplication effect when continuously changing protocol
+  //   display: !/wss?:\/\//.test(protocol) ? 'block' : 'none',
+  // };
 
   return (
     <Box
@@ -235,19 +232,12 @@ export default function GRPCComposer(props: $TSFixMe) {
         {/**@todo Fix TSX typing errors */}
         <GRPCTypeAndEndpointEntryForm
           newRequestFields={newRequestFields}
-          // newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
-          // newRequestBody={newRequestBody}
           fieldsReplaced={fieldsReplaced}
-          // newRequestHeadersSet={newRequestHeadersSet}
-          // newRequestStreamsSet={newRequestStreamsSet}
-          // newRequestCookiesSet={newRequestCookiesSet}
-          // newRequestBodySet={newRequestBodySet}
           warningMessage={warningMessage}
           setWarningMessage={setWarningMessage}
         />
         <HeaderEntryForm
-          // stylesObj={HeaderEntryFormStyle}
           newRequestHeaders={newRequestHeaders}
           newRequestStreams={newRequestStreams}
           newRequestBody={newRequestBody}
