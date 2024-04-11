@@ -84,8 +84,7 @@ module.exports = () => {
 
       it('can click on submit mock server button', async () => {
         await page.locator('button >> text=Submit').click();
-        // expect(await page.locator('h6.MuiTypography-root.MuiTypography-h6.swell-mui-2ulfj5-MuiTypography-root').innerText()).to.equal('Mock endpoint successfully created!');
-        await page.locator('div.MuiBackdrop-root').click();
+        await page.locator('button >> text=Close').click();
       });
     
 

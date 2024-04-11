@@ -56,33 +56,33 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 // Testing suite
 describe('Electron UI Rendering', function () {
   // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
-  // appOpensTests();
+  appOpensTests();
 }).timeout(20000);
 
 describe('Protocol selection and usage', function () {
   //group of tests that focuses on how application handles different protocols
+  reqInputTests();
+  httpTest();
+  graphqlTest();
+  websocketTest();
+  grpcTest();
+  webRTCTest();
+  openAPITest();
   mockServerTest();
-  // reqInputTests();
-  // httpTest();
-  // graphqlTest();
-  // websocketTest();
-  // grpcTest();
-  // webRTCTest();
-  // openAPITest();
   // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
 }).timeout(20000);
 
 describe('Request/response testing functionality', function () {
-  // httpTestingTest();
-  // grpcTestingTest();
-  // graphqlTestingTest();
+  httpTestingTest();
+  grpcTestingTest();
+  graphqlTestingTest();
 }).timeout(20000);
 
 describe('Integration testing', function () {
-  // httpIntegrationTests();
-  // grpcIntegrationTests();
-  // graphQLIntegrationTests();
-  // webRTCIntegrationTests();
-  // websocketIntegrationTests();
+  httpIntegrationTests();
+  grpcIntegrationTests();
+  graphQLIntegrationTests();
+  webRTCIntegrationTests();
+  websocketIntegrationTests();
 }).timeout(20000)
 
