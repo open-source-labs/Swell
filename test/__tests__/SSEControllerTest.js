@@ -3,6 +3,9 @@ const assert = require('chai').assert;
 const SSEController = require('../../main_process/SSEController'); // File being tested
 const SSE = require('express-sse');
 const EventSource = require('eventsource');
+Object.defineProperty(window, 'EventSource', {
+  value: EventSource,
+});
 
 //mock http and EventSource module
 jest.mock('http');
@@ -36,16 +39,16 @@ describe('SSEController', () => {
     });
 
     it('should successfully create a stream', () => {
+      const mockResponse = {
+        headers: { 'Content-Type': 'text/event-stream' },
+        on: jest.fn().mockImplementation((event, listener) => {
+          if (event === 'data') {
+            listener('mock data');
+          }
+        }),
+        destroy: jest.fn(),
+      };
       http.get.mockImplementation((url, callback) => {
-        const mockResponse = {
-          headers: { 'Content-Type': 'text/event-stream' },
-          on: jest.fn().mockImplementation((event, listener) => {
-            if (event === 'data') {
-              listener('mock data');
-            }
-          }),
-          destroy: jest.fn(),
-        };
         callback(mockResponse);
         return {
           on: jest.fn(),
@@ -58,6 +61,7 @@ describe('SSEController', () => {
       expect(reqResObj.connection).toBe('open');
       expect(reqResObj.connectionType).toBe('SSE');
       expect(event.sender.send).toHaveBeenCalledWith('reqResUpdate', reqResObj);
+      expect(mockResponse.destroy).toHaveBeenCalled();
     });
 
     it('should handle http.get error response correctly', () => {
