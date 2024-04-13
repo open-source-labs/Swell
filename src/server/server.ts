@@ -1,3 +1,9 @@
+/**
+ *  * Converted server.js into TypeScript, however currently due to the difference using require/import in
+ *  * CommonJS and ESM this file isn't implemented -- due to TypeScript needing to use import.
+ *  TODO: Conversion into TypeScript and fix other files using 'require'
+ */
+
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { Socket } from 'socket.io-client';
 
