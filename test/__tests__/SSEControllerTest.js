@@ -14,7 +14,7 @@ describe('SSEController', () => {
     response: { events: [] },
     url: 'www.fakeurl.com',
   };
-  const options = {headers: {}};
+  const options = { headers: {} };
   const event = {
     sender: {
       send: jest.fn(),
@@ -32,6 +32,49 @@ describe('SSEController', () => {
 
       expect(reqResObj.connection).toBe('error');
       expect(reqResObj.response.events.length).toBe(1);
+      expect(event.sender.send).toHaveBeenCalledWith('reqResUpdate', reqResObj);
+    });
+
+    it('should successfully create a stream', () => {
+      http.get.mockImplementation((url, callback) => {
+        const mockResponse = {
+          headers: { 'Content-Type': 'text/event-stream' },
+          on: jest.fn().mockImplementation((event, listener) => {
+            if (event === 'data') {
+              listener('mock data');
+            }
+          }),
+          destroy: jest.fn(),
+        };
+        callback(mockResponse);
+        return {
+          on: jest.fn(),
+        };
+      });
+
+      SSEController.createStream(reqResObj, options, event);
+
+      // Assertions
+      expect(reqResObj.connection).toBe('open');
+      expect(reqResObj.connectionType).toBe('SSE');
+      expect(event.sender.send).toHaveBeenCalledWith('reqResUpdate', reqResObj);
+    });
+
+    it('should handle http.get error response correctly', () => {
+      // Mock the http.get method to simulate an error response
+      http.get.mockImplementation((url, callback) => {
+        const error = new Error('Network Error');
+        callback(error);
+        return {
+          on: jest.fn(),
+        };
+      });
+
+      // Call the function under test
+      SSEController.createStream(reqResObj, options, event);
+
+      // Assertions
+      expect(reqResObj.connection).toBe('error');
       expect(event.sender.send).toHaveBeenCalledWith('reqResUpdate', reqResObj);
     });
   });
