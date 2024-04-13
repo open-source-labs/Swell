@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import GRPCAutoInputForm from './GRPCAutoInputForm';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import grpcController from '../../../controllers/grpcController'
+import grpcController from '../../../controllers/grpcController';
 import { NewRequestStreams, $TSFixMe } from '../../../../types';
-import { RootState } from '../../../toolkit-refactor/store';
 
 interface GRPCProtoEntryFormProps {
-  newRequestStreams: NewRequestStreams
-  newRequestStreamsSet: $TSFixMe
+  newRequestStreams: NewRequestStreams;
+  newRequestStreamsSet: $TSFixMe;
 }
 
 const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
@@ -17,7 +16,7 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
 
   // import proto file via electron file import dialog and have it displayed in proto textarea box
   const importProtos = () => {
-    grpcController.importProto(props.newRequestStreams)
+    grpcController.importProto(props.newRequestStreams);
   };
 
   // saves protoContent in the store whenever client make changes to proto file or pastes a copy
@@ -29,25 +28,24 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
     });
     saveChanges(false);
   };
-  
+
   // update protoContent state in the store after making changes to the proto file
   const submitUpdatedProto = () => {
     //only update if changes aren't saved
     if (!changesSaved) {
-      try{ 
+      try {
         grpcController.sendParserData(props.newRequestStreams.protoContent);
         grpcController.protoParserReturn(props.newRequestStreams);
         saveChanges(true);
-        
       } catch (err) {
         console.log(err);
         saveChanges(false);
       }
     }
-    return
+    return;
   };
 
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const saveChangesBtnText = changesSaved ? 'Changes Saved' : 'Save Changes';
 
@@ -65,17 +63,13 @@ const GRPCProtoEntryForm: React.FC<GRPCProtoEntryFormProps> = (props) => {
         <div className="composer-section-title">Proto</div>
         <div>
           <button
-            className={`${
-              isDark ? 'is-dark-300' : ''
-            } button is-small add-header-or-cookie-button mr-1`}
+            className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals button-hover-color mr-3`}
             onClick={importProtos}
           >
             Load Proto
           </button>
           <button
-            className={`${
-              isDark ? 'is-dark-300' : ''
-            } button is-small add-header-or-cookie-button`}
+            className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals button-hover-color mr-1`}
             id="save-proto"
             onClick={submitUpdatedProto}
           >

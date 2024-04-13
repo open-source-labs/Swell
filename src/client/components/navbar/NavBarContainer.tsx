@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 // Import local components.
 import ProtocolSelect from './ProtocolSelect';
 import GeneralInfo from './GeneralInfo';
+import DarkMode from './DarkModeSelect';
 
 export default function NavBarContainer() {
   return (
@@ -15,6 +16,7 @@ export default function NavBarContainer() {
       <ProtocolSelect />
       {/* General information about Swell. */}
       <GeneralInfo />
+      <DarkMode />
     </Box>
   );
 }

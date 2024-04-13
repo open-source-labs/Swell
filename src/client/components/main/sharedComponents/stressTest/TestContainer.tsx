@@ -35,7 +35,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
   const [totalTime, setTotalTime] = useState<number>(10);
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
-  const isDark = useAppSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const handleShowLoadTest = () => {
     setShowLoadTest(!showLoadTest);

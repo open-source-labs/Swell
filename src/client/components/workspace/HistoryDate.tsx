@@ -3,32 +3,31 @@ import { isYesterday, isToday, parseISO, parse, format } from 'date-fns';
 import History from './History.tsx';
 
 import {
-  NewRequestBody, 
-  CookieOrHeader, 
-  NewRequestStreams, 
+  NewRequestBody,
+  CookieOrHeader,
+  NewRequestStreams,
   NewRequestFields,
   NewRequestBodySet,
   NewRequestHeadersSet,
   NewRequestCookiesSet,
-  FieldsReplaced
-} from '../../../types'
-
+  FieldsReplaced,
+} from '../../../types';
 
 interface Props {
-  history: object[],
-  historyCleared: () => void,
-  historyDeleted: string,
-  fieldsReplaced: FieldsReplaced,
-  newRequestHeadersSet: NewRequestHeadersSet,
-  newRequestCookiesSet: NewRequestCookiesSet,
-  newRequestBodySet: NewRequestBodySet,
-  newRequestStreamsSet: NewRequestStreams,
-  newRequestFields: NewRequestFields,
-  className: string,
+  history: object[];
+  historyCleared: () => void;
+  historyDeleted: string;
+  fieldsReplaced: FieldsReplaced;
+  newRequestHeadersSet: NewRequestHeadersSet;
+  newRequestCookiesSet: NewRequestCookiesSet;
+  newRequestBodySet: NewRequestBodySet;
+  newRequestStreamsSet: NewRequestStreams;
+  newRequestFields: NewRequestFields;
+  className: string;
   content: {
-    date: Date
-  },
-};
+    date: Date;
+  };
+}
 
 export default function HistoryDate(props: Props) {
   const {
@@ -40,7 +39,7 @@ export default function HistoryDate(props: Props) {
     newRequestBodySet,
     newRequestStreamsSet,
     newRequestFields,
-    content
+    content,
   } = props;
 
   function focusOnForm(event: any) {
@@ -48,9 +47,7 @@ export default function HistoryDate(props: Props) {
     composerUrlField.focus();
   }
 
-  const current: any = history.find(
-    (a: any) => a.date === content.date
-  );
+  const current: any = history.find((a: any) => a.date === content.date);
   let date: any = parse(current.date, 'MM/dd/yyyy', new Date());
   // let date = parseISO(current.date)
   if (isToday(date)) {
@@ -59,13 +56,13 @@ export default function HistoryDate(props: Props) {
   else if (isYesterday(date)) {
     date = 'Yesterday';
   } else {
-      date = format(date, 'MMM d, yyyy');
+    date = format(date, 'MMM d, yyyy');
   }
 
   const histArray = current.history.map((history: [], i: number) => {
     return (
       <History
-        key={i}  
+        key={i}
         content={history}
         fieldsReplaced={fieldsReplaced}
         newRequestHeadersSet={newRequestHeadersSet}

@@ -31,7 +31,7 @@ export default function ImportWorkspaceModal({ open, handleClose }): JSX.Element
   console.log(files);
 
   const localWorkspaces = useAppSelector((store: RootState) => store.collections);
-  const isDark = useAppSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const swellReposContent = (files ?? []).map((file) => (
     <Box>{file.repository.full_name}</Box>
