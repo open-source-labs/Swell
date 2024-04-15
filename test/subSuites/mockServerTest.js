@@ -5,6 +5,7 @@ const expect = chai.expect;
 const path = require('path');
 const fs = require('fs-extra');
 const { element } = require('prop-types');
+const { parseConfigFileTextToJson } = require('typescript');
 
 // Declare global variables
 let electronApp, page;
@@ -14,19 +15,13 @@ module.exports = () => {
   describe('App opens and renders a page', () => {
     // Launch Electron app before all tests
     before(async () => {
-      // Check if Electron app is already running
-      if (!electronApp) {
         electronApp = await electron.launch({ args: ['main.js'] });
-      }
     });
 
     // Close Electron app after all tests
     after(async () => {
       // Check if Electron app exists
-      if (electronApp) {
         await electronApp.close();
-        electronApp = null; // Reset Electron app reference
-      }
     });
 
     // If a test fails, take a screenshot
@@ -86,6 +81,11 @@ module.exports = () => {
         await page.locator('button >> text=Submit').click();
         await page.locator('button >> text=Close').click();
       });
+
+      it('can click on stop server button', async() => {
+        await page.locator('button >> text=Stop Server').click();
+        expect(await page.locator('button#response').innerText()).to.equal('Start Server');
+      })
     
 
     });
