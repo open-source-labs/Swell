@@ -76,7 +76,7 @@ describe('Request/response testing functionality', function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();
-}).timeout(20000);
+}).timeout(20000)
 
 describe('Integration testing', function () {
   httpIntegrationTests();

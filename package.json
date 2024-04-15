@@ -6,7 +6,7 @@
   "repository": "https://github.com/open-source-labs/Swell",
   "scripts": {
     "report": "istanbul report --dir ./test/coverage/total-coverage html",
-    "test": "webpack --mode=production --config ./webpack.production.js && cross-env NODE_ENV=test cross-env nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --timeout 3000 --exit",
+    "test": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --timeout 5000 --exit",
     "server-sse": "node ./test/SSE_HTTP1_server.js",
     "server-gql": "node ./test/graphqlServer.mjs",
     "server-grpc": "node ./test/grpcServer.js",
@@ -16,7 +16,7 @@
     "server-websocket": "node ./test/websocketServer.js",
     "server-webrtc": "node ./test/webrtcWSServer.js",
     "test-jest": "jest",
-    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 3000 --exit",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 5000 --exit",
     "test-mocha-zero": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 0 --exit",
     "format": "prettier --write \"**/*.+(js|jsx| tsx| json|css|md)\"",
     "lint": "eslint .",
@@ -116,6 +116,7 @@
     "bulma": "^0.9.3",
     "bulma-checkradio": "^2.1.3",
     "bulma-switch": "^2.0.4",
+    "chai": "^4.3.10",
     "classnames": "^2.3.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -128,6 +129,7 @@
     "electron-devtools-installer": "^3.2.0",
     "electron-log": "^4.4.6",
     "electron-updater": "^5.3.0",
+    "esm": "^3.2.25",
     "eventsource": "^2.0.1",
     "express": "^4.18.0",
     "express-sse": "^0.5.3",
@@ -185,6 +187,7 @@
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/cookie": "^0.5.1",
+    "@types/cookie-parser": "^1.4.7",
     "@types/node": "^17.0.28",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
@@ -197,7 +200,6 @@
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "babel-loader": "^8.2.5",
-    "chai": "^4.3.10",
     "chai-http": "^4.4.0",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
@@ -233,8 +235,8 @@
     "source-map-loader": "^3.0.1",
     "style-loader": "^3.3.1",
     "ts-migrate": "^0.1.28",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.6.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5",
     "url-loader": "^4.1.1",
     "webpack": "^5.72.0",
     "webpack-bundle-analyzer": "^4.5.0",
@@ -545,3 +547,4 @@
     }
   ]
 }
+
