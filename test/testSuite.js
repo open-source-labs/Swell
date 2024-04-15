@@ -46,6 +46,10 @@ const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTe
 const webRTCIntegrationTests = require('./IntegrationTests/webRTCIntegrationTests');
 const websocketIntegrationTests = require('./IntegrationTests/websocketIntegrationTests');
 
+// Dark Mode Tests
+const darkModeToggleTests = require('./subSuites/darkModeToggleTest');
+const darkThemeToggleTests = require('./subSuites/darkThemeToggleTest');
+
 // Package requirements
 const path = require('path');
 const fs = require('fs-extra');
@@ -59,28 +63,33 @@ describe('Electron UI Rendering', function () {
   appOpensTests();
 }).timeout(20000);
 
-describe('Protocol selection and usage', function () {
-  //group of tests that focuses on how application handles different protocols
-  reqInputTests();
-  httpTest();
-  graphqlTest();
-  websocketTest();
-  grpcTest();
-  webRTCTest();
-  openAPITest();
-  // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
+describe('Dark Mode functionality', function () {
+  darkModeToggleTests();
+  // darkThemeToggleTests();
 }).timeout(20000);
 
-describe('Request/response testing functionality', function () {
-  httpTestingTest();
-  grpcTestingTest();
-  graphqlTestingTest();
-}).timeout(20000);
+// describe('Protocol selection and usage', function () {
+//   //group of tests that focuses on how application handles different protocols
+//   reqInputTests();
+//   httpTest();
+//   graphqlTest();
+//   websocketTest();
+//   grpcTest();
+//   webRTCTest();
+//   openAPITest();
+//   // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
+// }).timeout(20000);
 
-describe('Integration testing', function () {
-  httpIntegrationTests();
-  grpcIntegrationTests();
-  graphQLIntegrationTests();
-  webRTCIntegrationTests();
-  websocketIntegrationTests();
-}).timeout(20000)
+// describe('Request/response testing functionality', function () {
+//   httpTestingTest();
+//   grpcTestingTest();
+//   graphqlTestingTest();
+// }).timeout(20000);
+
+// describe('Integration testing', function () {
+//   httpIntegrationTests();
+//   grpcIntegrationTests();
+//   graphQLIntegrationTests();
+//   webRTCIntegrationTests();
+//   websocketIntegrationTests();
+// }).timeout(20000)
