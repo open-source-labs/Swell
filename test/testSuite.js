@@ -38,7 +38,6 @@ const httpTestingTest = require('./subSuites/httpTestingTest');
 const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
 const webRTCTest = require('./subSuites/webRTCTest');
-const SSEControllerTest = require('./__tests__/SSEControllerTest')
 
 //& new integration tests
 const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
@@ -76,8 +75,7 @@ describe('Request/response testing functionality', function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();
-  SSEControllerTest();
-}).timeout(20000);
+}).timeout(20000)
 
 describe('Integration testing', function () {
   httpIntegrationTests();
