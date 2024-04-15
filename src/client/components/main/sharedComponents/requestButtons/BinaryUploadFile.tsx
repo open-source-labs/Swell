@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { NewRequestBody, NewRequestHeaders, NewRequestHeadersSet } from '../../../../../types';
+//interface essentially overwrites the existing bodyContent property on NewRequestBody with the possible ArrayBuffer
 interface BinaryRequestBody extends Omit<NewRequestBody, 'bodyContent'> {
   bodyContent: ArrayBuffer | null
 }
+//new type of newRequestBodySet that uses BinaryRequestBody instead
 type BinaryRequestBodySet = (obj: BinaryRequestBody) => void;
 interface Props {
   newRequestBodySet: BinaryRequestBodySet;
