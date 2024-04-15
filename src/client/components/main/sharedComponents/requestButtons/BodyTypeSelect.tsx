@@ -11,7 +11,7 @@ import {
   newRequestHeadersSet,
 } from '../../../../toolkit-refactor/slices/newRequestSlice';
 
-const BodyTypeSelect = () => {
+const BodyTypeSelect = ({isMockServer}) => {
   const dispatch = useAppDispatch();
 
   // Selectors
@@ -22,6 +22,10 @@ const BodyTypeSelect = () => {
   const newRequestHeaders = useAppSelector(
     (state) => state.newRequest.newRequestHeaders
   );
+
+  const mockServerStarted = useAppSelector(
+    (state) => state.mockServer.isServerStarted
+  )
 
   // Dispatchers
   
@@ -78,7 +82,7 @@ const BodyTypeSelect = () => {
       headersArr: headersCopy.headersArr,
     })
   };
-  
+
   return (
     <div
       ref={dropdownEl}
@@ -130,7 +134,7 @@ const BodyTypeSelect = () => {
               x-www-form-urlencoded
             </a>
           )}
-          {newRequestBody.bodyType !== 'binary' && (
+          {newRequestBody.bodyType !== 'binary' && !isMockServer && (
             <a
               onClick={() => {
                 setDropdownIsActive(false);
