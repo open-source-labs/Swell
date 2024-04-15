@@ -234,7 +234,7 @@ app.on('ready', () => {
      * should not be removed. The servers must be required upon app startup (especially in
      * packaged versions) or else the packaged app would not recognize the servers at all.
      */
-    const express = require('./src/server/server');
+    const express = require('./src/server/server.js');
     const mockServer = require('./src/server/mockServer.js');
     autoUpdater.checkForUpdates();
   }
