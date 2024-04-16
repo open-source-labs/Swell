@@ -16,7 +16,7 @@
     "server-websocket": "node ./test/websocketServer.js",
     "server-webrtc": "node ./test/webrtcWSServer.js",
     "test-jest": "jest",
-    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 10000 --exit",
+    "test-mocha": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test nyc --report-dir ./test/coverage/mocha-coverage --reporter json --reporter text --reporter html mocha --timeout 10000 --exit",
     "test-mocha-zero": "webpack --mode=production --config ./webpack.production.js && cross-env process.env.NODE_ENV=test mocha --timeout 0 --exit",
     "format": "prettier --write \"**/*.+(js|jsx| tsx| json|css|md)\"",
     "lint": "eslint .",
