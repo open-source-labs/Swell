@@ -107,6 +107,7 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
             newRequestBody={newRequestBody}
             newRequestHeadersSet={newRequestHeadersSet}
             newRequestHeaders={newRequestHeaders}
+            isMockServer = {isMockServer}
           />
 
           {/* DROP DOWN MENU FOR SELECTING RAW TEXT TYPE */}
@@ -126,6 +127,7 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
             newRequestBody={newRequestBody}
             newRequestHeadersSet={newRequestHeadersSet}
             newRequestHeaders={newRequestHeaders}
+            
             />
           )}
         </span>
