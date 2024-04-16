@@ -24,7 +24,7 @@ module.exports = () => {
     before(async () => {
       try {
         electronApp = await electron.launch({ args: [projectPath] });
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         page = await electronApp.windows()[0]; // In case there is more than one window
         await page.waitForLoadState(`domcontentloaded`);
         grpcServer('open');

@@ -29,7 +29,7 @@ module.exports = () => {
     before(async () => {
       electronApp = await electron.launch({ args: [projectPath] });
       //awaiting the intilialization of electron
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       //define a page variable as the current window of the electron app
       // const [window] = electronApp.windows();
       // page = await window.page();
