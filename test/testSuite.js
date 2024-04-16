@@ -69,7 +69,7 @@ describe('Protocol selection and usage', function () {
   webRTCTest();
   openAPITest();
   mockServerTest();
-  // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
+  collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
 }).timeout(20000);
 
 describe('Request/response testing functionality', function () {

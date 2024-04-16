@@ -1,16 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
-import fs from 'fs'
-import style from '../../../../../assets/style/App.scss'
-import { NewRequestBody } from '../../../../../types';
-import { NewRequestHeaders } from '../../../../../types';
-import { any } from 'prop-types';
-// interface 
-
-
+import React, { useState } from 'react';
+import { NewRequestBody, NewRequestHeaders, NewRequestHeadersSet } from '../../../../../types';
+//interface essentially overwrites the existing bodyContent property on NewRequestBody with the possible ArrayBuffer
+interface BinaryRequestBody extends Omit<NewRequestBody, 'bodyContent'> {
+  bodyContent: ArrayBuffer | null
+}
+//new type of newRequestBodySet that uses BinaryRequestBody instead
+type BinaryRequestBodySet = (obj: BinaryRequestBody) => void;
 interface Props {
-  newRequestBodySet: (value: any) => void;
-  newRequestBody: NewRequestBody;
-  newRequestHeadersSet: (value: any) => void;
+  newRequestBodySet: BinaryRequestBodySet;
+  newRequestBody: BinaryRequestBody;
+  newRequestHeadersSet: NewRequestHeadersSet;
   newRequestHeaders: NewRequestHeaders;
 }
 
@@ -24,8 +23,6 @@ const BinaryUploadFile = (props: Props)  => {
   const {
     newRequestBodySet,
     newRequestBody,
-    newRequestHeadersSet,
-    newRequestHeaders,
   } = props;
 
   // handleFileChange reads file uploaded, converts to binary, and stores in state
