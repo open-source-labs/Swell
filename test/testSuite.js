@@ -38,7 +38,7 @@ const httpTestingTest = require('./subSuites/httpTestingTest');
 const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
 const webRTCTest = require('./subSuites/webRTCTest');
-
+const mockServerTest = require('./subSuites/mockServerTest');
 //& new integration tests
 const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
 const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests');
@@ -68,6 +68,7 @@ describe('Protocol selection and usage', function () {
   grpcTest();
   webRTCTest();
   openAPITest();
+  mockServerTest();
   // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
 }).timeout(20000);
 
@@ -84,3 +85,4 @@ describe('Integration testing', function () {
   webRTCIntegrationTests();
   websocketIntegrationTests();
 }).timeout(20000)
+

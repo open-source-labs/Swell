@@ -74,6 +74,7 @@ const apiObj = {
       console.log('Channel not allowed: ', channel);
     }
   },
+  versions: process.versions,
 };
 
 // this is because we need to have context isolation to be false for spectron
