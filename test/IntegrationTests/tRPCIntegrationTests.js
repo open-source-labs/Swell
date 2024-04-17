@@ -1,3 +1,7 @@
+//this file needs further work. currently it only opens the app with playwright, clicks the tRPC button, and tests that the right components render
+//TODO: add integration testing that uses the existing tRPC test server(s) to get a successful response
+//the goal was to increase the test coverage in main_trpcController
+
 const { _electron: electron } = require('playwright');
 const chai = require('chai');
 const expect = chai.expect;
