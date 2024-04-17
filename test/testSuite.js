@@ -11,9 +11,6 @@
  * Please note many of these tests are written contingent on each other, and
  * there is room for better optimizatilson of end-to-end testing.
  *
- * @todo As of v.13, all tests should be passing EXCEPT:
- * - openAPITest()
- *
  *  Above tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
  * - Functionality in the app simply is not working as intended
@@ -76,7 +73,7 @@ describe('Request/response testing functionality', function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();
-}).timeout(20000)
+}).timeout(20000);
 
 describe('Integration testing', function () {
   httpIntegrationTests();
@@ -84,5 +81,4 @@ describe('Integration testing', function () {
   graphQLIntegrationTests();
   webRTCIntegrationTests();
   websocketIntegrationTests();
-}).timeout(20000)
-
+}).timeout(20000);
