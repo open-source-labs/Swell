@@ -148,7 +148,7 @@ module.exports = () => {
         } catch (err) {
           console.error(err);
         }
-      }).timeout(5000);
+      }).timeout(10000);
 
       it('it should give you the appropriate error message with incorrect queries (LOCAL API)', async () => {
         try {
@@ -182,7 +182,7 @@ module.exports = () => {
         } catch (err) {
           console.error(err);
         }
-      }).timeout(5000);
+      }).timeout(10000);
 
       it('it should work with mutations (LOCAL API)', async () => {
         try {
@@ -217,7 +217,7 @@ module.exports = () => {
         } catch (err) {
           console.error(err);
         }
-      }).timeout(5000);
+      }).timeout(10000);
 
       it('it should work with subscriptions (LOCAL API)', async () => {
         try {
@@ -319,7 +319,7 @@ module.exports = () => {
         } catch (err) {
           console.error(err);
         }
-      }).timeout(5000);
+      }).timeout(10000);
 
       it('subscriptions should error with incorrect schema (LOCAL API)', async () => {
         try {

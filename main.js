@@ -234,7 +234,7 @@ app.on('ready', () => {
      * should not be removed. The servers must be required upon app startup (especially in
      * packaged versions) or else the packaged app would not recognize the servers at all.
      */
-    const express = require('./src/server/server');
+    const express = require('./src/server/server.js');
     const mockServer = require('./src/server/mockServer.js');
     autoUpdater.checkForUpdates();
   }
@@ -524,7 +524,7 @@ const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process
 ipcMain.on('start-mock-server', () => {
-  mockServerProcess = fork('node', ['./src/server/mockServer.js']);
+  mockServerProcess = fork('./src/server/mockServer.js');
   mockServerProcess.on('error', (err) => {
     console.log('Error starting mock server', err);
   });

@@ -32,7 +32,6 @@ import {
   /*, setComposerDisplay */
 } from '../../toolkit-refactor/slices/uiSlice';
 
-
 import {
   fieldsReplaced,
   newTestContentSet,

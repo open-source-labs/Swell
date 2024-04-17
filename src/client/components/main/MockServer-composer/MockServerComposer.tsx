@@ -71,7 +71,7 @@ const MockServerComposer = (props: MockServerComposerProps) => {
   const stopMockServer = () => {
     api.send('stop-mock-server');
     dispatch(stopServer());
-    alert('Mock server stopped');
+    console.log('server stopped')
   };
 
   // toggles the mock server on and off

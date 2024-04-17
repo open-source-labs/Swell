@@ -1,3 +1,12 @@
+/**
+ * @file This file is for testing the webrtc integration, it was erroring out on full testing suite, fixed it so
+ * teh tests were running. Certain tests are expecting information from newRequestSlice.ts, however
+ * the assertion doesn't seem to be passing properly, perhaps due to webRTC features being incomplete. Some of the tests
+ * are currently bypassed due to that reason.
+ *
+ * ? Check to see if webRTC actually properly functions, if not fix webRTC
+ * TODO: Once webRTC feature is completed, implement the rest of the test coverage
+ */
 const { _electron: electron } = require('playwright');
 const chai = require('chai');
 const expect = chai.expect;
@@ -6,6 +15,7 @@ chai.use(chaiHttp);
 const path = require('path');
 const fs = require('fs');
 const { inputAdornmentClasses } = require('@mui/material');
+const { Done } = require('@mui/icons-material');
 
 let electronApp,
   page,
@@ -19,7 +29,7 @@ module.exports = () => {
     before(async () => {
       electronApp = await electron.launch({ args: [projectPath] });
       //awaiting the intilialization of electron
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       //define a page variable as the current window of the electron app
       // const [window] = electronApp.windows();
       // page = await window.page();
@@ -48,7 +58,7 @@ module.exports = () => {
     });
 
     describe('Check if webRTC peer connection is properly updating state throughout life span of video peer connection', async () => {
-      xit('Should change the newRequestFields properties to WebRTC reflect the webRTC required fields', async () => {
+      it('Should change the newRequestFields properties to WebRTC reflect the webRTC required fields', async () => {
         const webRTCPath = 'button >> text=WebRTC';
         await page.locator(webRTCPath).click();
         const reduxState = await page.evaluate(() => window.getReduxState());
@@ -57,24 +67,23 @@ module.exports = () => {
         expect(reduxState.newRequestFields.webrtc).to.equal(true);
       });
 
-      xit('Changes Data Channel value from Text to Video when navigating to a Video connection', async () => {
+      it('Changes Data Channel value from Text to Video when navigating to a Video connection', async () => {
         await page.locator('button#input-method').click();
-        console.log('parta')
+        console.log('parta');
         await page.locator(`div a.dropdown-item:has-text("Video")`).click();
-        console.log('partb')
+        console.log('partb');
         const spanContent = await page.textContent('span >> text=Video');
-        expect(spanContent).toContain('Video');
+        expect(spanContent).to.contain('Video');
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(
           reduxState.newRequest.newRequestWebRTC.webRTCDataChannel
         ).to.equal('Video');
-        console.log('done') //! delete after
-
       });
 
       xit('Should initialize WebRTC state values', async () => {
-        console.log('test3') //! delete after
+        console.log('test3'); //! delete after
         await page.locator('button >> text=Connect').click();
+        await page.waitForTimeout(1000);
         const divCount = await page.evaluate(() => {
           const elements = document.querySelectorAll('.is-neutral-200-box.p-3');
           return elements.length;
@@ -84,13 +93,13 @@ module.exports = () => {
         const reduxState = await page.evaluate(() => window.getReduxState());
         expect(
           reduxState.newRequest.newRequestWebRTC.webRTCpeerConnection
-        ).to.equal({});
+        ).to.equal(null);
         expect(
           reduxState.newRequest.newRequestWebRTC.webRTClocalStream
-        ).to.equal({});
+        ).to.equal(null);
         expect(
           reduxState.newRequest.newRequestWebRTC.webRTCRemoteStream
-        ).to.equal({});
+        ).to.equal(null);
       });
 
       xit('Should generate an SDP offer', async () => {

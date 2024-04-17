@@ -150,7 +150,7 @@ export interface Message {
   data: string;
 }
 
-export interface NewRequestBody {
+export interface  NewRequestBody {
   bodyContent: string;
   bodyVariables: string;
   bodyType: string;
