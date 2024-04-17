@@ -46,7 +46,6 @@ const tRPCIntegrationTests = require('./IntegrationTests/tRPCIntegrationTests')
 
 // Dark Mode Tests
 const darkModeToggleTests = require('./subSuites/darkModeToggleTest');
-const darkThemeToggleTests = require('./subSuites/darkThemeToggleTest');
 
 // Package requirements
 const path = require('path');
