@@ -39,6 +39,7 @@ const App = () => {
    * All of the main components are rendered from here. Excluding the update pop
    * up, there are only 3 main containers for this application.
    */
+
   return (
     <div id="app" className="is-tall">
       <HashRouter>

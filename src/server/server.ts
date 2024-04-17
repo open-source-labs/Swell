@@ -1,37 +1,36 @@
-const express = require('express');
+/**
+ *  * Converted server.js into TypeScript, however currently due to the difference using require/import in
+ *  * CommonJS and ESM this file isn't implemented -- due to TypeScript needing to use import.
+ *  TODO: Conversion into TypeScript and fix other files using 'require'
+ */
+
+import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { Socket } from 'socket.io-client';
+
 const path = require('path');
 const ngrok = require('ngrok');
 const dotenv = require('dotenv');
+const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
+
 dotenv.config();
 
-const port = 3000;
+const port: number = 3000;
 const app = express();
-const cors = require('cors');
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.json());
-app.use(cors({ origin: '*' }));
 
-// * Previous teams added two cors for localhost and all, commented out localhost and kept * for all origins for potential API testing(?)
-// app.use(cors({ origin: 'http://localhost:8080' }));
+interface ServerError {
+  log: string;
+  status: number;
+  message: { err: string };
+}
 
 app.use(express.static(path.resolve(__dirname, '../../build')));
-
-app.get('/', (_, res) => res.send('Hello World!'));
-
-// Generate a new nonce for each request -- Temp
-// ? Keeping this for the time being / Research possible backend nonce generation for Electron.js
-// app.use((req, res, next) => {
-//   const nonce = crypto.randomBytes(16).toString('base64');
-//   res.locals.nonce = nonce;
-//   res.setHeader(
-//     'Content-Security-Policy',
-//     `style-src 'self' 'nonce-${nonce}';`
-//   );
-//   return next();
-// });
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors({ origin: '*' }));
+app.use(cookieParser());
 
 //  TODO: Figure out why previous groups decided to use socket.io
 // https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
@@ -45,20 +44,38 @@ const io = require('socket.io')(server, {
   },
 });
 
+// Generate a new nonce for each request -- Temp
+// ? Keeping this for the time being / Research possible backend nonce generation for Electron.js
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//   const nonce = crypto.randomBytes(16).toString('base64');
+//   res.locals.nonce = nonce;
+//   res.setHeader(
+//     'Content-Security-Policy',
+//     `style-src 'self' 'nonce-${nonce}';`
+//   );
+//   return next();
+// });
+
 // if u want to use routers, set socket io then google the rest
 // https://stackoverflow.com/questions/47249009/nodejs-socket-io-in-a-router-page
 app.set('socketio', io);
 
-io.on('connection', (client) => {
+io.on('connection', (client: Socket) => {
   console.log('established websocket connection');
 
-  client.on('message', (message) => {
+  client.on('message', (message: string) => {
     console.log('message received: ', message);
   });
 });
 
+app.get('/', (_: Request, res: Response) => res.send('Hello World!'));
+
+app.use(express.static(path.resolve(__dirname, '../../build')));
+
+app.use(cors({ origin: 'http://localhost:8080' }));
+
 /** @todo previous groups decided to use ngrok to add live collaboration session but could not finished */
-app.post('/webhookServer', (req, res) => {
+app.post('/webhookServer', (req: Request, res: Response) => {
   console.log('Server Is On!');
   // ngrok
   //   .connect({
@@ -72,41 +89,41 @@ app.post('/webhookServer', (req, res) => {
 });
 
 /** @todo webhook is not working on swell */
-app.delete('/webhookServer', (req, res) => {
+app.delete('/webhookServer', (req: Request, res: Response) => {
   console.log('Server Is Off!');
   ngrok.kill();
   return res.status(200).json('the server has been deleted');
 });
 
-app.post('/webhook', (req, res) => {
+app.post('/webhook', (req: Request, res: Response) => {
   const data = { headers: req.headers, body: req.body };
   io.emit('response', data);
   return res.status(200).json(req.body);
 });
 
-app.get('/api/import', (_, res) => {
+app.get('/api/import', (_: Request, res: Response) => {
   return res.status(200).send(res.locals.swellFile);
 });
 
 // Unknown route handler
-app.use((_, res) => {
+app.use((_: Request, res: Response) => {
   res.status(404).send('Not Found');
 });
 
-// Global Error Handler
-app.use((err, _req, res, _next) => {
-  const defaultErr = {
+// Global error handler
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  const defaultErr: ServerError = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
     message: { err: 'An error occurred' },
   };
-  const errorObj = {
+  const errorObj: ServerError = {
     ...defaultErr,
-    ...err,
+    ...(typeof err === 'object' ? err : {}),
   };
   console.log(errorObj.log);
   res.status(errorObj.status).json(errorObj.message);
 });
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, (): void => console.log(`Listening on port ${port}`));
 

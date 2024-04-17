@@ -10,7 +10,9 @@ describe('openAPI Parser tests', () => {
   );
 
   it('should be able to parse a yaml file', () => {
-    const { openapiMetadata, openapiReqArray } = openapiParserFunc(String(file));
+    const { openapiMetadata, openapiReqArray } = openapiParserFunc(
+      String(file)
+    );
     expect(openapiMetadata).toBeDefined();
     expect(openapiReqArray).toBeDefined();
   });
@@ -19,4 +21,20 @@ describe('openAPI Parser tests', () => {
     expect(() => openapiParserFunc(null)).toThrow(ReferenceError);
     expect(() => openapiParserFunc(undefined)).toThrow(ReferenceError);
   });
+
+  it('should parse the openAPI document correctly', () => {
+    const { openapiMetadata, openapiReqArray } = openapiParserFunc(
+      String(file)
+    );
+
+    // Check if the metadata is parsed correctly
+    expect(openapiMetadata.info.title).toBe('Sample API');
+    expect(openapiMetadata.info.version).toBe('0.1.9');
+
+    // Check if the requests are parsed correctly
+    expect(openapiReqArray.length).toBe(1);
+    expect(openapiReqArray[0].method).toBe('GET');
+    expect(openapiReqArray[0].endpoint).toBe('/users/1');
+  });
 });
+
