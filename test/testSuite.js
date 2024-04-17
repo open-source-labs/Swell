@@ -11,9 +11,6 @@
  * Please note many of these tests are written contingent on each other, and
  * there is room for better optimizatilson of end-to-end testing.
  *
- * @todo As of v.13, all tests should be passing EXCEPT:
- * - openAPITest()
- *
  *  Above tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
  * - Functionality in the app simply is not working as intended
@@ -45,6 +42,10 @@ const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests');
 const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTests');
 const webRTCIntegrationTests = require('./IntegrationTests/webRTCIntegrationTests');
 const websocketIntegrationTests = require('./IntegrationTests/websocketIntegrationTests');
+const tRPCIntegrationTests = require('./IntegrationTests/tRPCIntegrationTests')
+
+// Dark Mode Tests
+const darkModeToggleTests = require('./subSuites/darkModeToggleTest');
 
 // Package requirements
 const path = require('path');
@@ -57,6 +58,10 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 describe('Electron UI Rendering', function () {
   // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
   appOpensTests();
+}).timeout(20000);
+
+describe('Dark Mode functionality', function () {
+  darkModeToggleTests();
 }).timeout(20000);
 
 describe('Protocol selection and usage', function () {
@@ -76,13 +81,13 @@ describe('Request/response testing functionality', function () {
   httpTestingTest();
   grpcTestingTest();
   graphqlTestingTest();
-}).timeout(20000)
+}).timeout(20000);
 
 describe('Integration testing', function () {
+  tRPCIntegrationTests();
   httpIntegrationTests();
   grpcIntegrationTests();
   graphQLIntegrationTests();
   webRTCIntegrationTests();
   websocketIntegrationTests();
-}).timeout(20000)
-
+}).timeout(20000);

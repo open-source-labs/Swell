@@ -27,6 +27,7 @@ export default function DarkModeToggle() {
     >
       <IconButton
         onClick={handleToggleDarkMode}
+        data-testid="dark-mode-toggle-button"
       >
         {/* Conditionally render the icon based on the isDark state */}
         {isDark ? <Brightness7Icon /> : <Brightness4Icon />}

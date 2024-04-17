@@ -1,6 +1,9 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../toolkit-refactor/hooks';
 import {
   startServer,
   stopServer,
@@ -16,13 +19,17 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 // mui
 import { Box, Button, Modal, Typography } from '@mui/material';
 
+// Import types for props type and define props on RestMethodAndEndpointEntryFormProps
+import { MockServerComposerProps } from '../../../../types';
+import { METHODS } from 'http';
+import { placeholder } from '@uiw/react-codemirror';
+
 /**
  * grab context from Electron window
  * note: api is the ipcRenderer object (see preload.js)
  */
 const { api } = window as any;
 
-// TODO: add typing to the props object
 // TODO: add an option to see the list of existing routes that shows up in the response window
 // TODO: add endpoint validation
 // TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
@@ -40,8 +47,8 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-//TODO : props has an implicit any, should be typed properly
-const MockServerComposer = (props) => {
+
+const MockServerComposer = (props: MockServerComposerProps) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
   const dispatch = useAppDispatch();

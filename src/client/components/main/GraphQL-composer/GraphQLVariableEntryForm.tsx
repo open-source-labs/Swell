@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { NewRequestBody, NewRequestBodySet } from '../../../../types';
 
 interface GraphQLVariableEntryFormProps {
-  newRequestBody: {
-    bodyVariables: string;
-    bodyIsNew: boolean;
-  };
-  newRequestBodySet: (arg: { [key: string]: any }) => void;
+  newRequestBody: NewRequestBody;
+  newRequestBodySet: NewRequestBodySet;
 }
 
 const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({

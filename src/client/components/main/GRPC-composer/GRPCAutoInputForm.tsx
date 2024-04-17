@@ -6,18 +6,7 @@ import GRPCServiceOrRequestSelect from './GRPCServiceOrRequestSelect';
 import { $TSFixMe, NewRequestStreams } from '../../../../types';
 
 interface Props {
-  newRequestStreams: {
-    selectedService: string | null;
-    selectedRequest: string | null;
-    services: any[];
-    streamsArr: any[];
-    streamContent: string[];
-    selectedPackage: string | null;
-    selectedStreamingType: string | null;
-    selectedServiceObj: any;
-    protoContent: string | null;
-    initialQuery: string;
-  };
+  newRequestStreams: NewRequestStreams
   newRequestStreamsSet: (arg: NewRequestStreams) => void;
 }
 
@@ -41,12 +30,12 @@ const GRPCAutoInputForm: React.FC<Props> = (props) => {
   } = props.newRequestStreams;
 
   // event handler for changes made to the Select Services dropdown list
-  const setService = (e) => {
-    setServiceOption(e.target.textContent);
+  const setService = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setServiceOption(e.target.textContent!);
     const serviceName =
       e.target.textContent !== 'Select Service' ? e.target.textContent : null;
-    const serviceObj = services.find(
-      (ser) => ser.name === e.target.textContent
+    const serviceObj = services!.find(
+      (ser: Record<any, any>) => ser.name === e.target.textContent
     );
     // clears all stream query bodies except the first one
     let streamsArr = [props.newRequestStreams.streamsArr[0]];
@@ -67,9 +56,9 @@ const GRPCAutoInputForm: React.FC<Props> = (props) => {
   };
 
   // event handler for changes made to the Select Requests dropdown list
-  const setRequest = (e) => {
+  const setRequest = (e: React.ChangeEvent<HTMLSelectElement>) => {
     //update component state
-    setRequestOption(e.target.textContent);
+    setRequestOption(e.target.textContent!);
     //clear streams array and content except first index
     const newStreamsArr = [streamsArr[0]];
     const newStreamContent = [streamContent[0]];
