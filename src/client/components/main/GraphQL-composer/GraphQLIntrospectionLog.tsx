@@ -35,9 +35,9 @@ const GraphQLIntrospectionLog: React.FC = () => {
         Introspect
       </button>
       <div id="gql-introspection">
-        {introspectionData ===
-          'Error: Please enter a valid GraphQL API URI' && (
-          <div>{introspectionData}</div>
+      {/* added the .schemaSDL and toString() below to fix type errors. Not sure the intent of the original engineer */}
+        {introspectionData.schemaSDL === 'Error: Please enter a valid GraphQL API URI' && (
+          <div>{introspectionData.toString()}</div>
         )}
         {!!introspectionData.schemaSDL && (
           <TextCodeArea

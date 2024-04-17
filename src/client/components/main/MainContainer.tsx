@@ -3,9 +3,15 @@ import { Routes, Route } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
 import {
   ReqRes,
-  $TSFixMe,
-  $TSFixMeObject,
   RequestWebRTC,
+  ValidationMessage,
+  MainContainerProps,
+  NewRequestHeaders,
+  NewRequestStreams,
+  NewRequestFields,
+  NewRequestBody,
+  NewRequestCookies,
+  NewRequestOpenApi,
 } from '../../../types';
 
 import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
@@ -46,14 +52,14 @@ import ResponsePaneContainer from './response-composer/ResponsePaneContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 import Split from 'react-split';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 function MainContainer() {
   const dispatch = useAppDispatch();
 
   // Hooks conversion while keeping Prop drilling for core functionality
-  // Accessing state from redux store
+  // Accessing state from redux store, types inferred
   const reqResArray = useAppSelector((state) => state.reqRes.reqResArray);
   const newRequestFields = useAppSelector((state) => state.newRequestFields);
   const newRequestHeaders = useAppSelector(
@@ -78,31 +84,31 @@ function MainContainer() {
   // Dispatching actions
   const reqResItemAdded = (reqRes: ReqRes) =>
     dispatch(ReqResSlice.reqResItemAdded(reqRes));
-  const setWarningMessageAction = (message: $TSFixMe) =>
+  const setWarningMessageAction = (message: ValidationMessage) =>
     dispatch(setWarningMessage(message));
   //   const setComposerDisplay = (composerDisplay) =>
   //     dispatch(setComposerDisplay(composerDisplay)); // Kept this in from old MainContainer for posterity
-  const newRequestHeadersSetAction = (requestHeadersObj: $TSFixMeObject) =>
+  const newRequestHeadersSetAction = (requestHeadersObj: NewRequestHeaders) =>
     dispatch(newRequestHeadersSet(requestHeadersObj));
-  const newRequestStreamsSetAction = (requestStreamsObj: $TSFixMeObject) =>
+  const newRequestStreamsSetAction = (requestStreamsObj: NewRequestStreams) =>
     dispatch(newRequestStreamsSet(requestStreamsObj));
-  const fieldsReplacedAction = (requestFields: $TSFixMe) =>
+  const fieldsReplacedAction = (requestFields: NewRequestFields) =>
     dispatch(fieldsReplaced(requestFields));
-  const newRequestBodySetAction = (requestBodyObj: $TSFixMeObject) =>
+  const newRequestBodySetAction = (requestBodyObj: NewRequestBody) =>
     dispatch(newRequestBodySet(requestBodyObj));
-  const newTestContentSetAction = (testContent: $TSFixMe) =>
+  const newTestContentSetAction = (testContent: string) =>
     dispatch(newTestContentSet(testContent));
-  const newRequestCookiesSetAction = (requestCookiesObj: $TSFixMeObject) =>
+  const newRequestCookiesSetAction = (requestCookiesObj: NewRequestCookies) =>
     dispatch(newRequestCookiesSet(requestCookiesObj));
   const newRequestSSESetAction = (requestSSEBool: boolean) =>
     dispatch(newRequestSSESet(requestSSEBool));
-  const openApiRequestsReplacedAction = (parsedDocument: $TSFixMe) =>
-    dispatch(openApiRequestsReplaced(parsedDocument));
+  const openApiRequestsReplacedAction = (request: NewRequestOpenApi) =>
+    dispatch(openApiRequestsReplaced(request));
   const composerFieldsResetAction = () => dispatch(composerFieldsReset());
-  const setWorkspaceActiveTabAction = (tabName: $TSFixMe) =>
+  const setWorkspaceActiveTabAction = (tabName: string) =>
     dispatch(setWorkspaceActiveTab(tabName));
 
-  const props = {
+  const props: MainContainerProps = {
     reqResArray,
     newRequestFields,
     newRequestHeaders,
@@ -125,8 +131,6 @@ function MainContainer() {
     composerFieldsReset: composerFieldsResetAction,
     setWorkspaceActiveTab: setWorkspaceActiveTabAction,
   };
-
-  //TODO: type errors on Http2Composer (possibly all) related to props typing after conversion to hooks
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>

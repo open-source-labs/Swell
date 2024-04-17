@@ -5,7 +5,7 @@ import RestTestSnippets from '../stressTest/RestTestSnippets';
 import WebsocketTestSnippets from '../stressTest/WebsocketTestSnippets';
 
 interface Props {
-  isWebSocket: boolean;
+  isWebSocket?: boolean;
   testContent: string;
   newTestContentSet: (value: string) => void;
 }

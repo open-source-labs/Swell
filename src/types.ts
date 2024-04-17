@@ -110,15 +110,30 @@ export interface MainContainerProps {
   reqResItemAdded: (reqRes: ReqRes) => any;
   setWarningMessage: (message: ValidationMessage) => any;
   newRequestHeadersSet: NewRequestHeadersSet;
-  newRequestStreamsSet: () => any;
-  fieldsReplaced: () => any;
+  newRequestStreamsSet: newRequestStreamsSet;
+  fieldsReplaced: (requestFields: NewRequestFields) => any;
   newRequestBodySet: NewRequestBodySet;
-  newTestContentSet: () => any;
+  newTestContentSet: (testContent: string) => any;
   newRequestCookiesSet: NewRequestCookiesSet;
   newRequestSSESet: (arg: boolean) => any;
-  openApiRequestsReplaced: () => any;
+  openApiRequestsReplaced: (request: NewRequestOpenApi) => any;
   composerFieldsReset: () => any;
   setWorkspaceActiveTab: (arg: string) => any;
+}
+
+export interface GraphQlComposerProps extends MainContainerProps {
+  //functionally the same as MainContainerProps
+  //leaving in place for future iterations that may want to move away from prop drilling down from main container
+}
+
+export interface MockServerComposerProps extends MainContainerProps {
+  //functionally the same as MainContainerProps
+  //leaving in place for future iterations that may want to move away from prop drilling down from main container
+}
+
+export interface GRPCComposerProps extends MainContainerProps {
+  //functionally the same as MainContainerProps
+  //leaving in place for future iterations that may want to move away from prop drilling down from main container
 }
 
 export interface GraphQLResponse {
@@ -156,7 +171,7 @@ export interface WebMessages {
   timeReceived: number;
 }
 
-interface NewRequestCookies {
+export interface NewRequestCookies {
   cookiesArr: CookieOrHeader[];
   count: number;
 }
@@ -170,7 +185,7 @@ export type NewRequestHeadersSet = (obj: NewRequestHeaders) => void;
 export type NewRequestCookiesSet = (obj: NewRequestCookies) => void;
 export type NewRequestBodySet = (obj: NewRequestBody) => void;
 export type NewRequestWebRTCSet = (obj: RequestWebRTC) => void;
-
+export type newRequestStreamsSet = (obj: NewRequestStreams) => void;
 /**
  * Defines the type constract for the NewRequestFields state object.
  *
@@ -408,4 +423,45 @@ export interface WorkspaceContainerProps {
   currentWorkspaceId: string;
   setWorkspace: React.Dispatch<React.SetStateAction<string>>;
 }
+
+/**
+ * Describes an object for keeping track of all OpenAPI request information.
+ */
+export type NewRequestOpenApi = {
+  openApiMetadata: {
+    info: Record<string, $TSFixMe>;
+    tags: $TSFixMe[];
+    serverUrls: $TSFixMe[];
+  };
+
+  openApiReqArray: OpenApiRequest[];
+};
+
+/**
+ * Describes a single element within the NewRequestOpenApi type's array of
+ * requests.
+ */
+export type OpenApiRequest = {
+  request: {
+    id: number;
+  };
+
+  // No idea why headers is an array of single-property objects, instead of just
+  // strings;
+  headers: { name: string }[];
+
+  urls: string[];
+  endpoint: string;
+  reqServers: string[];
+  serverIds: number[];
+  cookies: string;
+  method: string;
+
+  // Below types should probably be strings, but who knows, really? Types united
+  // with $TSFixMe to "temporarily" turn off type-checking (with how this
+  // project tends to go, these types might be stuck like this for months/years)
+  body: string | $TSFixMe;
+  mediaType: string | $TSFixMe;
+  rawType: string | $TSFixMe;
+};
 
