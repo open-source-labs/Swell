@@ -31,7 +31,7 @@ module.exports = () => {
     before(async () => {
       electronApp = await electron.launch({ args: ['main.js'] }); //Launches electron app
       if (!electronApp) {
-        throw new Error('electronApp failed t launch');
+        throw new Error('electronApp failed at launch');
       }
       grpcServer('open');
 

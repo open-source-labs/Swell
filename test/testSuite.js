@@ -44,6 +44,9 @@ const webRTCIntegrationTests = require('./IntegrationTests/webRTCIntegrationTest
 const websocketIntegrationTests = require('./IntegrationTests/websocketIntegrationTests');
 const tRPCIntegrationTests = require('./IntegrationTests/tRPCIntegrationTests')
 
+// Dark Mode Tests
+const darkModeToggleTests = require('./subSuites/darkModeToggleTest');
+
 // Package requirements
 const path = require('path');
 const fs = require('fs-extra');
@@ -55,6 +58,10 @@ fs.emptyDirSync(path.resolve(__dirname + '/failedTests'));
 describe('Electron UI Rendering', function () {
   // group of tests that focuses on how app renders its UI + handles screenshots for failed tests
   appOpensTests();
+}).timeout(20000);
+
+describe('Dark Mode functionality', function () {
+  darkModeToggleTests();
 }).timeout(20000);
 
 describe('Protocol selection and usage', function () {
