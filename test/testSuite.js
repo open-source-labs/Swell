@@ -65,31 +65,30 @@ describe('Electron UI Rendering', function () {
 
 describe('Dark Mode functionality', function () {
   darkModeToggleTests();
-  // darkThemeToggleTests();
 }).timeout(20000);
 
-// describe('Protocol selection and usage', function () {
-//   //group of tests that focuses on how application handles different protocols
-//   reqInputTests();
-//   httpTest();
-//   graphqlTest();
-//   websocketTest();
-//   grpcTest();
-//   webRTCTest();
-//   openAPITest();
-//   // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
-// }).timeout(20000);
+describe('Protocol selection and usage', function () {
+  //group of tests that focuses on how application handles different protocols
+  reqInputTests();
+  httpTest();
+  graphqlTest();
+  websocketTest();
+  grpcTest();
+  webRTCTest();
+  openAPITest();
+  // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
+}).timeout(20000);
 
-// describe('Request/response testing functionality', function () {
-//   httpTestingTest();
-//   grpcTestingTest();
-//   graphqlTestingTest();
-// }).timeout(20000);
+describe('Request/response testing functionality', function () {
+  httpTestingTest();
+  grpcTestingTest();
+  graphqlTestingTest();
+}).timeout(20000);
 
-// describe('Integration testing', function () {
-//   httpIntegrationTests();
-//   grpcIntegrationTests();
-//   graphQLIntegrationTests();
-//   webRTCIntegrationTests();
-//   websocketIntegrationTests();
-// }).timeout(20000)
+describe('Integration testing', function () {
+  httpIntegrationTests();
+  grpcIntegrationTests();
+  graphQLIntegrationTests();
+  webRTCIntegrationTests();
+  websocketIntegrationTests();
+}).timeout(20000)
