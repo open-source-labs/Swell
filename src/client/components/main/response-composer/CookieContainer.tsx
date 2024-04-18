@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 interface CookieProps {
   className?: string;
@@ -13,7 +13,7 @@ interface CookieProps {
 
 export default function CookieContainer({ className, cookie }: CookieProps) {
   const [showCookie, setShowCookie] = useState(false);
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const cookies = Object.entries(cookie).map(([key, value], index) => {
     if (!key || !value) return null;

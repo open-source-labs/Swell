@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
 import TextCodeArea from '../TextCodeArea';
 import RestTestSnippets from '../stressTest/RestTestSnippets';
 import WebsocketTestSnippets from '../stressTest/WebsocketTestSnippets';
 
 interface Props {
-  isWebSocket: boolean;
+  isWebSocket?: boolean;
   testContent: string;
   newTestContentSet: (value: string) => void;
 }
@@ -15,7 +15,7 @@ const TestEntryForm: React.FC<Props> = ({
   testContent,
   newTestContentSet,
 }) => {
-  const isDark = useSelector((store: any) => store.ui.isDark) as boolean;
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const [showTests, setShowTests] = useState(false);
   const handleShowTests = () => setShowTests(!showTests);

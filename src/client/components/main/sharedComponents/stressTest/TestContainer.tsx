@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
 import { LoadTest, LoadTestResult } from './LoadTest';
 import LoadTestController from '../../../../controllers/LoadTestController';
 import { connect } from 'react-redux';
@@ -35,7 +35,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
   const [totalTime, setTotalTime] = useState<number>(10);
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const handleShowLoadTest = () => {
     setShowLoadTest(!showLoadTest);

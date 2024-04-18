@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../assets/icons/caret-down.svg';
 import { $TSFixMe } from '../../../../types';
-
+import { useAppSelector } from '../../../toolkit-refactor/hooks';
 
 
 interface Props {
@@ -14,6 +14,8 @@ interface Props {
 
 
 const GRPCServiceOrRequestSelect: React.FC<Props> = (props) => {
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+
   const { 
     value, 
     items, 
@@ -61,7 +63,7 @@ const GRPCServiceOrRequestSelect: React.FC<Props> = (props) => {
       <div className="dropdown-trigger">
         <button
           id={id}
-          className="button is-small is-outlined is-primary mr-3"
+          className={`button is-small is-outlined is-primary button-padding-verticals button-hover-color mr-3`}
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => setDropdownIsActive(!dropdownIsActive)}

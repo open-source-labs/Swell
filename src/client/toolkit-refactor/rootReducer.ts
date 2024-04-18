@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 
 import UiReducer from './slices/uiSlice';
 import HistoryReducer from './slices/historySlice';

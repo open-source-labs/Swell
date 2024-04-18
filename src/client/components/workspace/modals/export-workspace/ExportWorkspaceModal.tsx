@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
@@ -23,10 +23,10 @@ const style = {
   p: 1,
   justifyContent: 'space-around',
 };
-
+//TODO: fix implicit any props and look at exportCollection method
 export default function ExportWorkspaceModal({ open, handleClose }) {
-  const localWorkspaces = useSelector((store: RootState) => store.collections);
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+  const localWorkspaces = useAppSelector((store: RootState) => store.collections);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <Modal

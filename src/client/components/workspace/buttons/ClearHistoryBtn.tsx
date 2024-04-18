@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import historyController from '../../../controllers/historyController';
 
 import { WindowExt, WindowAPI } from '../../../../types'
-import { RootState } from '../../../toolkit-refactor/store';
 
 // utilizing API we created in preload.js for node-free IPC communication
 const { api } = window as any;
@@ -26,16 +25,14 @@ const ClearHistoryBtn = (props: Props): JSX.Element => {
     });
   }, []);
 
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const handleClick = () => {
     api.send('confirm-clear-history');
   };
   return (
     <button
-      className={`ml-0 mt-3 mb-3 button is-small is-primary ${
-        isDark ? '' : 'is-outlined'
-      } button-padding-verticals`}
+      className={`ml-0 mt-3 mb-3 button is-small is-primary ${isDark ? 'is-dark-300' : 'is-outlined'} button-padding-verticals`}
       onClick={handleClick}
     >
       Clear History

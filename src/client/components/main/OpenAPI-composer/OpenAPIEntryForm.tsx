@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../toolkit-refactor/store';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { $TSFixMe } from '../../../../types';
 
 interface Props {
@@ -11,14 +10,14 @@ interface Props {
   primaryServer: string
 }
 
-// This component is working as intended, thouhg needs to have the TS tightened up
+// This component is working as intended, though needs to have the TS tightened up
 const OpenAPIEntryForm: React.FC<Props> = ({
   warningMessage,
   newRequestsOpenAPI,
   primaryServer
 }) => {
   // This loads the input field at the top of the page
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div className='ml-2 mr-2 is-flex is-justify-content-center'
@@ -27,7 +26,9 @@ const OpenAPIEntryForm: React.FC<Props> = ({
         <span>OpenAPI</span>
       </button>
       <input
-        className={`${isDark ? 'is-dark-300' : ''} ml-1 input input-is-medium is-info`}
+        className={`${
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
         type="text"
         placeholder="primary server loads here..."
         value={primaryServer}

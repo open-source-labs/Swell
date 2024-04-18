@@ -5,6 +5,7 @@ import JSONTextArea from '../JSONTextArea';
 import RawBodyTypeSelect from '../requestButtons/RawBodyTypeSelect';
 import JSONPrettify from '../requestButtons/JSONPrettifyButton';
 import TextCodeArea from '../TextCodeArea';
+import BinaryUploadFile from '../requestButtons/BinaryUploadFile';
 
 import { NewRequestBody, NewRequestBodySet, NewRequestHeaders, NewRequestHeadersSet} from '../../../../../types';
 // import { Interface } from 'readline';
@@ -54,8 +55,8 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
   }, [isMockServer]);
 
   const bodyEntryArea = () => {
-    //BodyType of none : display nothing
-    if (newRequestBody.bodyType === 'none') {
+    //BodyType of none or binary: display nothing
+    if (newRequestBody.bodyType === 'none' || newRequestBody.bodyType === 'binary') {
       return;
     }
     //BodyType of XWWW... : display WWWForm entry
@@ -106,6 +107,7 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
             newRequestBody={newRequestBody}
             newRequestHeadersSet={newRequestHeadersSet}
             newRequestHeaders={newRequestHeaders}
+            isMockServer = {isMockServer}
           />
 
           {/* DROP DOWN MENU FOR SELECTING RAW TEXT TYPE */}
@@ -115,6 +117,17 @@ const BodyEntryForm = (props: BodyEntryFormProps) => {
               newRequestBody={newRequestBody}
               newRequestHeadersSet={newRequestHeadersSet}
               newRequestHeaders={newRequestHeaders}
+            />
+          )}
+          
+          {/* BINARY FILE UPLOAD */}  
+          {newRequestBody.bodyType === 'binary' && (
+            <BinaryUploadFile
+            newRequestBodySet={newRequestBodySet}
+            newRequestBody={newRequestBody}
+            newRequestHeadersSet={newRequestHeadersSet}
+            newRequestHeaders={newRequestHeaders}
+            
             />
           )}
         </span>

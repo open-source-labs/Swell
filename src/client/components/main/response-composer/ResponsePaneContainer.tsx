@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React, { FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { Box } from '@mui/material';
 import { setResponsePaneActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -15,21 +15,20 @@ import CookiesContainer from './CookiesContainer';
 import StatusButtons from './StatusButtons';
 import ResponseTime from './ResponseTime';
 import WebSocketWindow from './WebSocketWindow';
-import State from '../../../toolkit-refactor/store';
 import WebRTCVideoBox from '../WebRTC-composer/WebRTCVideoBox';
 import WebRTCTextContainer from './webRTCResponseComponents/WebRTCTextContainer';
 
 const ResponsePaneContainer: FC = () => {
-  const dispatch = useDispatch();
-  const activeTab = useSelector(
+  const dispatch = useAppDispatch();
+  const activeTab = useAppSelector(
     (store: RootState) => store.ui.responsePaneActiveTab
   );
-  const isDark = useSelector((store: RootState) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   const setActiveTab = (tabName: string) =>
     dispatch(setResponsePaneActiveTab(tabName));
 
-  const currentResponse = useSelector(
+  const currentResponse = useAppSelector(
     (store: RootState) => store.reqRes.currentResponse
   );
   const { id, connection, request, response, isHTTP2, gRPC } = currentResponse;
@@ -92,7 +91,7 @@ const ResponsePaneContainer: FC = () => {
               {request?.network !== ('ws' && 'webrtc') && (
                 <>
                   <li
-                    className={`column ${
+                    className={`column ${isDark ? 'is-dark-200' : ''} ${
                       activeTab === 'events' ? 'is-active' : ''
                     }`}
                   >
@@ -105,7 +104,7 @@ const ResponsePaneContainer: FC = () => {
                     </a>
                   </li>
                   <li
-                    className={`column ${
+                    className={`column ${isDark ? 'is-dark-200' : ''} ${
                       activeTab === 'headers' ? 'is-active' : ''
                     }`}
                   >
@@ -115,7 +114,7 @@ const ResponsePaneContainer: FC = () => {
                   </li>
 
                   <li
-                    className={`column ${
+                    className={`column ${isDark ? 'is-dark-200' : ''} ${
                       activeTab === 'cookies' ? 'is-active' : ''
                     }`}
                   >
@@ -124,7 +123,9 @@ const ResponsePaneContainer: FC = () => {
                 </>
               )}
               <li
-                className={`column ${activeTab === 'tests' ? 'is-active' : ''}`}
+                className={`column ${isDark ? 'is-dark-200' : ''} ${
+                  activeTab === 'tests' ? 'is-active' : ''
+                }`}
               >
                 <a onClick={() => setActiveTab('tests')}>Tests</a>
               </li>

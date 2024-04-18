@@ -11,9 +11,6 @@
  * Please note many of these tests are written contingent on each other, and
  * there is room for better optimizatilson of end-to-end testing.
  *
- * @todo As of v.13, all tests should be passing EXCEPT:
- * - openAPITest()
- *
  *  Above tests are failing due to one of the following:
  * - Test-cases are no longer up-to-date with how the current UI functions
  * - Functionality in the app simply is not working as intended
@@ -38,13 +35,17 @@ const httpTestingTest = require('./subSuites/httpTestingTest');
 const graphqlTestingTest = require('./subSuites/graphqlTestingTest');
 const grpcTestingTest = require('./subSuites/grpcTestingTest');
 const webRTCTest = require('./subSuites/webRTCTest');
-
+const mockServerTest = require('./subSuites/mockServerTest');
 //& new integration tests
 const httpIntegrationTests = require('./IntegrationTests/httpIntegrationTests');
 const grpcIntegrationTests = require('./IntegrationTests/grpcIntegrationTests');
 const graphQLIntegrationTests = require('./IntegrationTests/graphqlIntegrationTests');
 const webRTCIntegrationTests = require('./IntegrationTests/webRTCIntegrationTests');
 const websocketIntegrationTests = require('./IntegrationTests/websocketIntegrationTests');
+const tRPCIntegrationTests = require('./IntegrationTests/tRPCIntegrationTests')
+
+// Dark Mode Tests
+const darkModeToggleTests = require('./subSuites/darkModeToggleTest');
 
 // Package requirements
 const path = require('path');
@@ -59,6 +60,10 @@ describe('Electron UI Rendering', function () {
   appOpensTests();
 }).timeout(20000);
 
+describe('Dark Mode functionality', function () {
+  darkModeToggleTests();
+}).timeout(20000);
+
 describe('Protocol selection and usage', function () {
   //group of tests that focuses on how application handles different protocols
   reqInputTests();
@@ -68,7 +73,8 @@ describe('Protocol selection and usage', function () {
   grpcTest();
   webRTCTest();
   openAPITest();
-  // collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
+  mockServerTest();
+  collectionTest(); // new test suite to check Send Collection functionality, see test file for more info
 }).timeout(20000);
 
 describe('Request/response testing functionality', function () {
@@ -78,9 +84,10 @@ describe('Request/response testing functionality', function () {
 }).timeout(20000);
 
 describe('Integration testing', function () {
+  tRPCIntegrationTests();
   httpIntegrationTests();
   grpcIntegrationTests();
   graphQLIntegrationTests();
   webRTCIntegrationTests();
   websocketIntegrationTests();
-}).timeout(20000)
+}).timeout(20000);

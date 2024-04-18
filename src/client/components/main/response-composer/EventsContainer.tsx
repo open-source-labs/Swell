@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import CodeMirror from '@uiw/react-codemirror';
 import EmptyState from './EmptyState';
 import EventPreview from './EventPreview';
@@ -24,7 +24,7 @@ interface EventsContainerProps {
 
 function EventsContainer(props: any) {
   const { currentResponse } = props;
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   const { request, response } = currentResponse;
   if (!response || !response.events || response.events.length < 1) {
     return <EmptyState connection={currentResponse.connection} />;
@@ -103,7 +103,7 @@ function EventsContainer(props: any) {
       )}
       <div
         className={`${
-          isDark ? 'is-dark-200' : ''
+          isDark ? 'is-dark-400' : ''
         } overflow-event-parent-container`}
       >
         <CodeMirror

@@ -22,7 +22,6 @@ export default function TRPCProcedure(props) {
 }
 
 const container = {
-  border: '1px solid black',
   padding: '10px 0px',
 };
 

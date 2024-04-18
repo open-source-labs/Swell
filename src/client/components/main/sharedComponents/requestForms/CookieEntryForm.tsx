@@ -1,4 +1,3 @@
-// Refactored to function components
 // cookieentryform
 
 import React, { useState, useEffect } from 'react';

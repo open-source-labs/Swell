@@ -53,10 +53,6 @@ SSEController.readStream = (reqResObj, event, timeDiff) => {
   const sse = new EventSource(reqResObj.url);
   SSEController.sseOpenConnections[reqResObj.id] = sse;
 
-  sse.onopen = () => {
-    // console.log(`SSE at ${reqResObj.url} opened!`);
-  };
-
   sse.onmessage = (message) => {
     // message is not a javascript object, so we spread its contents into one
     const newMessage = { ...message };

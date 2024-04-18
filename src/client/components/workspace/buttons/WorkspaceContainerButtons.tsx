@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import ReqResCtrl from '../../../controllers/reqResController';
 import WorkspaceCollectionsContainer from '../WorkspaceCollectionsContainer';
 import SaveWorkspaceModal from '../modals/SaveWorkspaceModal';
@@ -7,14 +7,14 @@ import SaveWorkspaceModal from '../modals/SaveWorkspaceModal';
 
 export default function WorkspaceContainerButtons () {
   const [showModal, setShowModal] = useState(false);
-  const isDark = useSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean }}) => store.ui.isDark);
 
   return (
     <div>
       {/* NAV BAR */}
       <div className="is-flex is-flex-direction-row is-justify-content-space-around is-align-items-center mt-3">
         <button
-          className={`button is-small is-danger ${isDark ? '' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
+          className={`button is-small is-danger ${isDark ? 'is-dark-300' : 'is-outlined'} button-padding-vertical button-hover-color ml-3`}
           style={{ minWidth: '4vw' }}
           type="button"
           onClick={() => {
@@ -26,7 +26,7 @@ export default function WorkspaceContainerButtons () {
         </button>
 
         <button
-          className={`button is-small is-primary ${isDark ? '' : 'is-outlined'} button-padding-verticals mr-3`}
+          className={`button is-small ${isDark ? 'is-dark-300' : 'is-outlined'} is-primary button-padding-verticals button-hover-color mr-3`}
           style={{ minWidth: '4vw' }}
           type="button"
           onClick={() => {

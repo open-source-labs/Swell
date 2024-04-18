@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { NewRequestBody, NewRequestBodySet } from '../../../../types';
 
 interface GraphQLVariableEntryFormProps {
-  newRequestBody: {
-    bodyVariables: string;
-    bodyIsNew: boolean;
-  };
-  newRequestBodySet: (arg: { [key: string]: any }) => void;
+  newRequestBody: NewRequestBody;
+  newRequestBodySet: NewRequestBodySet;
 }
 
 const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({
@@ -22,8 +20,7 @@ const GraphQLVariableEntryForm: React.FC<GraphQLVariableEntryFormProps> = ({
     if (!bodyIsNew) setValue(bodyVariables);
   }, [bodyVariables, bodyIsNew]);
 
-  const isDark = useSelector((store: any) => store.ui.isDark);
-
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
   return (
     <div>
       <div className="composer-section-title">Variables</div>
