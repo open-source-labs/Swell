@@ -1,6 +1,9 @@
 // react-redux
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../toolkit-refactor/hooks';
 import {
   startServer,
   stopServer,
@@ -16,13 +19,17 @@ import BodyEntryForm from '../sharedComponents/requestForms/BodyEntryForm';
 // mui
 import { Box, Button, Modal, Typography } from '@mui/material';
 
+// Import types for props type and define props on RestMethodAndEndpointEntryFormProps
+import { MockServerComposerProps } from '../../../../types';
+import { METHODS } from 'http';
+import { placeholder } from '@uiw/react-codemirror';
+
 /**
  * grab context from Electron window
  * note: api is the ipcRenderer object (see preload.js)
  */
 const { api } = window as any;
 
-// TODO: add typing to the props object
 // TODO: add an option to see the list of existing routes that shows up in the response window
 // TODO: add endpoint validation
 // TODO: add the ability to mock HTML responses (or remove the HTML option from the BodyEntryForm component)
@@ -41,13 +48,13 @@ const style = {
   p: 4,
 };
 
-const MockServerComposer = (props) => {
+const MockServerComposer = (props: MockServerComposerProps) => {
   const [showModal, setShowModal] = useState(false);
   const [userDefinedEndpoint, setUserDefinedEndpoint] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // grab the isServerStarted state from the Redux store
-  let isServerStarted = useSelector(
+  let isServerStarted = useAppSelector(
     (state: any) => state.mockServer.isServerStarted
   );
 
@@ -64,7 +71,7 @@ const MockServerComposer = (props) => {
   const stopMockServer = () => {
     api.send('stop-mock-server');
     dispatch(stopServer());
-    alert('Mock server stopped');
+    console.log('server stopped')
   };
 
   // toggles the mock server on and off

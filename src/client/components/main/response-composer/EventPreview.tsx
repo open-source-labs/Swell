@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import dropDownArrow from '../../../../assets/icons/caret-down-tests.svg';
 import dropDownArrowUp from '../../../../assets/icons/caret-up-tests.svg';
 
@@ -13,12 +13,19 @@ interface Props {
 const EventPreview: React.FC<Props> = ({ contents }) => {
   const [showPreview, setShowPreview] = useState(false);
   const handleShowPreview = () => setShowPreview(!showPreview);
-  const isDark = useSelector((state: any) => state.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  
+  // Added modification to make the text white when dark mode is selected
+  const modifiedContents = isDark
+    ? `<style>body { color: white; }</style>${JSON.parse(contents)}`
+    : JSON.parse(contents);
 
   return (
     <div>
       <div
-        className={`${isDark ? 'is-dark-500' : ''} is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
+        className={`${
+          isDark ? 'is-dark-200' : ''
+        } is-rest-invert show-hide-event cards-dropdown minimize-card is-flex is-align-items-center is-justify-content-center`}
         onClick={() => {
           handleShowPreview();
         }}
@@ -51,9 +58,12 @@ const EventPreview: React.FC<Props> = ({ contents }) => {
         )}
       </div>
       {showPreview === true && (
-        <div style={{ height: '100vh' }} className={`${isDark ? 'is-dark-500' : ''} is-full`}>
+        <div
+          style={{ height: '100vh' }}
+          className={`${isDark ? 'is-dark-400' : ''} is-full`}
+        >
           <iframe
-            srcDoc={JSON.parse(contents)}
+            srcDoc={modifiedContents}
             title="output"
             width="100%"
             height="100%"

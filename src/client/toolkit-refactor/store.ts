@@ -16,7 +16,6 @@
  * and will keep yelling at you in the console until all the Dates are replaced.
  */
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import rootReducer from './rootReducer';
 
 /**
@@ -36,14 +35,15 @@ const store = configureStore({
     }),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
 
 /**
  * A type-safe version of React-Redux's useDispatch hook.
- */
-export const useAppDispatch: () => AppDispatch = useDispatch;
-
+ * Moved to hooks.ts
+*/
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
 /**
  * The Redux store's dispatch function, exposed directly; needed for files that
  * are not React functional components.

@@ -31,7 +31,14 @@
 // app - Control your application's event lifecycle
 // ipcMain - Communicate asynchronously from the main process to renderer processes
 // ** Entry point for Electron **
-const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  shell,
+  session,
+} = require('electron');
 const os = require('node:os');
 
 const { autoUpdater } = require('electron-updater');
@@ -70,10 +77,8 @@ require('./main_process/main_trpcController.js')();
 // require mac touchbar
 const { touchBar } = require('./main_process/main_touchbar.js');
 
-
-
-const contextMenu = require('electron-context-menu')
-contextMenu()
+const contextMenu = require('electron-context-menu');
+contextMenu();
 
 // configure logging
 // autoUpdater.logger = log;
@@ -155,12 +160,12 @@ function createWindow() {
 
     // dev mode title
     mainWindow.setTitle('Swell (devMode)');
-     
+
     // if we are in developer mode Add React & Redux DevTools to Electron App
 
-
     // this manually installs the depricated dev tools that are compatible with electron
-    session.defaultSession.loadExtension(reactDevToolsPath)
+    session.defaultSession
+      .loadExtension(reactDevToolsPath)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
     // ****** if current react dev tools version did work with electron we would use the below commented code ****
@@ -229,7 +234,7 @@ app.on('ready', () => {
      * should not be removed. The servers must be required upon app startup (especially in
      * packaged versions) or else the packaged app would not recognize the servers at all.
      */
-    const express = require('./src/server/server');
+    const express = require('./src/server/server.js');
     const mockServer = require('./src/server/mockServer.js');
     autoUpdater.checkForUpdates();
   }
@@ -519,7 +524,7 @@ const { fork } = require('child_process');
 
 // starts the mock server by forking a Node child process
 ipcMain.on('start-mock-server', () => {
-  mockServerProcess = fork('node', ['./src/server/mockServer.js']);
+  mockServerProcess = fork('./src/server/mockServer.js');
   mockServerProcess.on('error', (err) => {
     console.log('Error starting mock server', err);
   });

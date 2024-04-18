@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import EmptyState from './EmptyState';
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 }
 
 function HeadersContainer({ currentResponse }: Props) {
-  const isDark = useSelector(
+  const isDark = useAppSelector(
     (state: { ui: { isDark: boolean } }) => state.ui.isDark
   );
 

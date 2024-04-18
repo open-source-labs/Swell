@@ -1,7 +1,18 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { ReqRes, $TSFixMe, $TSFixMeObject, RequestWebRTC } from '../../../types';
+import { useAppDispatch, useAppSelector } from '../../toolkit-refactor/hooks';
+import {
+  ReqRes,
+  RequestWebRTC,
+  ValidationMessage,
+  MainContainerProps,
+  NewRequestHeaders,
+  NewRequestStreams,
+  NewRequestFields,
+  NewRequestBody,
+  NewRequestCookies,
+  NewRequestOpenApi,
+} from '../../../types';
 
 import * as ReqResSlice from '../../toolkit-refactor/slices/reqResSlice';
 
@@ -41,71 +52,85 @@ import ResponsePaneContainer from './response-composer/ResponsePaneContainer';
 
 // Import MUI components
 import { Box } from '@mui/material';
-import { AppDispatch, RootState } from '../../toolkit-refactor/store';
 import Split from 'react-split';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-/**@todo switch to hooks? */
-const mapStateToProps = (store: RootState) => {
-  return {
-    reqResArray: store.reqRes.reqResArray,
-    newRequestFields: store.newRequestFields,
-    newRequestHeaders: store.newRequest.newRequestHeaders,
-    newRequestStreams: store.newRequest.newRequestStreams,
-    newRequestBody: store.newRequest.newRequestBody,
-    // newRequestOpenAPI: store.newRequestOpenApi,
-    newRequestCookies: store.newRequest.newRequestCookies,
-    newRequestSSE: store.newRequest.newRequestSSE,
-    warningMessage: store.warningMessage,
-    introspectionData: store.introspectionData,
-  };
-};
+function MainContainer() {
+  const dispatch = useAppDispatch();
 
-/**@todo switch to hooks? */
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  reqResItemAdded: (reqRes: ReqRes) => {
+  // Hooks conversion while keeping Prop drilling for core functionality
+  // Accessing state from redux store, types inferred
+  const reqResArray = useAppSelector((state) => state.reqRes.reqResArray);
+  const newRequestFields = useAppSelector((state) => state.newRequestFields);
+  const newRequestHeaders = useAppSelector(
+    (state) => state.newRequest.newRequestHeaders
+  );
+  const newRequestStreams = useAppSelector(
+    (state) => state.newRequest.newRequestStreams
+  );
+  const newRequestBody = useAppSelector(
+    (state) => state.newRequest.newRequestBody
+  );
+  //   const newRequestOpenAPI = useAppSelector((state) => state.newRequestOpenApi); // Commented out in original MainContainer before hooks conversion (?)
+  const newRequestCookies = useAppSelector(
+    (state) => state.newRequest.newRequestCookies
+  );
+  const newRequestSSE = useAppSelector(
+    (state) => state.newRequest.newRequestSSE
+  );
+  const warningMessage = useAppSelector((state) => state.warningMessage);
+  const introspectionData = useAppSelector((state) => state.introspectionData);
+
+  // Dispatching actions
+  const reqResItemAdded = (reqRes: ReqRes) =>
     dispatch(ReqResSlice.reqResItemAdded(reqRes));
-  },
-  setWarningMessage: (message: $TSFixMe) => {
+  const setWarningMessageAction = (message: ValidationMessage) =>
     dispatch(setWarningMessage(message));
-  },
-  // setComposerDisplay: (composerDisplay) => {
-  //   dispatch(setComposerDisplay(composerDisplay));
-  // },
-  newRequestHeadersSet: (requestHeadersObj: $TSFixMeObject) => {
+  //   const setComposerDisplay = (composerDisplay) =>
+  //     dispatch(setComposerDisplay(composerDisplay)); // Kept this in from old MainContainer for posterity
+  const newRequestHeadersSetAction = (requestHeadersObj: NewRequestHeaders) =>
     dispatch(newRequestHeadersSet(requestHeadersObj));
-  },
-  newRequestStreamsSet: (requestStreamsObj: $TSFixMeObject) => {
+  const newRequestStreamsSetAction = (requestStreamsObj: NewRequestStreams) =>
     dispatch(newRequestStreamsSet(requestStreamsObj));
-  },
-  fieldsReplaced: (requestFields: $TSFixMe) => {
+  const fieldsReplacedAction = (requestFields: NewRequestFields) =>
     dispatch(fieldsReplaced(requestFields));
-  },
-  newRequestBodySet: (requestBodyObj: $TSFixMeObject) => {
+  const newRequestBodySetAction = (requestBodyObj: NewRequestBody) =>
     dispatch(newRequestBodySet(requestBodyObj));
-  },
-  newTestContentSet: (testContent: $TSFixMe) => {
+  const newTestContentSetAction = (testContent: string) =>
     dispatch(newTestContentSet(testContent));
-  },
-  newRequestCookiesSet: (requestCookiesObj: $TSFixMeObject) => {
+  const newRequestCookiesSetAction = (requestCookiesObj: NewRequestCookies) =>
     dispatch(newRequestCookiesSet(requestCookiesObj));
-  },
-  newRequestSSESet: (requestSSEBool: boolean) => {
+  const newRequestSSESetAction = (requestSSEBool: boolean) =>
     dispatch(newRequestSSESet(requestSSEBool));
-  },
-  openApiRequestsReplaced: (parsedDocument: $TSFixMe) => {
-    dispatch(openApiRequestsReplaced(parsedDocument));
-  },
-  composerFieldsReset: () => {
-    dispatch(composerFieldsReset());
-  },
-  setWorkspaceActiveTab: (tabName: $TSFixMe) => {
+  const openApiRequestsReplacedAction = (request: NewRequestOpenApi) =>
+    dispatch(openApiRequestsReplaced(request));
+  const composerFieldsResetAction = () => dispatch(composerFieldsReset());
+  const setWorkspaceActiveTabAction = (tabName: string) =>
     dispatch(setWorkspaceActiveTab(tabName));
-  },
 
-});
-
-
-function MainContainer(props: $TSFixMeObject) {
+  const props: MainContainerProps = {
+    reqResArray,
+    newRequestFields,
+    newRequestHeaders,
+    newRequestStreams,
+    newRequestBody,
+    newRequestCookies,
+    newRequestSSE,
+    warningMessage,
+    introspectionData,
+    reqResItemAdded,
+    setWarningMessage: setWarningMessageAction,
+    newRequestHeadersSet: newRequestHeadersSetAction,
+    newRequestStreamsSet: newRequestStreamsSetAction,
+    fieldsReplaced: fieldsReplacedAction,
+    newRequestBodySet: newRequestBodySetAction,
+    newTestContentSet: newTestContentSetAction,
+    newRequestCookiesSet: newRequestCookiesSetAction,
+    newRequestSSESet: newRequestSSESetAction,
+    openApiRequestsReplaced: openApiRequestsReplacedAction,
+    composerFieldsReset: composerFieldsResetAction,
+    setWorkspaceActiveTab: setWorkspaceActiveTabAction,
+  };
   return (
     <Box sx={{ width: '75%' }}>
       <Split direction="vertical" gutterSize={5} style={{ height: '100%' }}>
@@ -114,7 +139,10 @@ function MainContainer(props: $TSFixMeObject) {
             <Route path="/" element={<Http2Composer {...props} />} />
             <Route path="/graphql" element={<GraphQLComposer {...props} />} />
             <Route path="/grpc" element={<GRPCComposer {...props} />} />
-            <Route path="/websocket" element={<WebSocketComposer {...props} />} />
+            <Route
+              path="/websocket"
+              element={<WebSocketComposer {...props} />}
+            />
             {/* WebRTC has been completely refactored to hooks - no props needed */}
             <Route path="/webrtc" element={<WebRTCComposer />} />
             <Route path="/openapi" element={<OpenAPIComposer {...props} />} />
@@ -132,5 +160,5 @@ function MainContainer(props: $TSFixMeObject) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
+export default MainContainer;
 

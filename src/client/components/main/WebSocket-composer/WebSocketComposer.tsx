@@ -8,7 +8,7 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 import TestEntryForm from '../sharedComponents/requestForms/TestEntryForm';
 // Import MUI components
 import { Box } from '@mui/material';
-
+//TODO: type props object to avoid implicit any
 export default function WebSocketComposer(props) {
   const {
     newTestContentSet,

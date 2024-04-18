@@ -27,6 +27,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Import and export workspaces locally
 - Compose test suites in JavaScript with Chai-style TDD/BDD assertion syntax
 
+## Considering iterating Swell in the future?
+
+We highly encourage you to check out the `DEV-README.md` in the `docs` folder. We've included a comprehensive guide on the latest updates, which areas would benefit from future iterations, as well as details of core components.
+
 ## Core features
 
 - _HTTP2_: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, with the ability to revert to HTTP1.1 for legacy servers. Multiple concurrent streams are allowed for each connection.
@@ -83,6 +87,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one; instead each request will fire off in the order of staging.
 
+- _File Upload/Dark Mode_: If you click on the body drop down menu, you can select binary, which allows you to upload a file that can be sent along with any request to test backend file upload routes. Additionally, you can toggle dark mode via the button in the top right-hand corner.
+
+  <img src="./ReadMeGifs/Gifs/FileUploadAndDarkMode.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 ## Experimental Features
 
 - _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
@@ -115,11 +123,12 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Mocha
 - Playwright
 
-## Considering iterating Swell in the future?
-
-Feel free to check out the `DEV-README.md` in the `docs` folder.
-
 ## Authors
+- **Karol Krzywon** - [kkrzywon](https://github.com/kkrzywon)
+- **Howard Sun** - [howardCodeGit](https://github.com/howardCodeGit)
+- **Carter Sarkela** - [CarterSarkela](https://github.com/CarterSarkela)
+- **Adeeb Bayat** - [adeebbayat](https://github.com/adeebbayat)
+- **Michael Underbrink** - [MUnderbrink90](https://github.com/MUnderbrink90)
 - **Aaron Cruz** - [AArCruz](https://github.com/AArCruz)
 - **Katya Villano** - [k-villano](https://github.com/k-villano)
 - **Brooke Sauro** - [bhsauro](https://github.com/bhsauro)

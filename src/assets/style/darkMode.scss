@@ -1,10 +1,12 @@
 $neutral-100: #aeaeae;
-$neutral-200: #9f9f9f;
+$neutral-200: #9c9cb1;
 $neutral-300: #575757;
 $neutral-400: #1f282e;
 $neutral-500: #434343;
 $neutral-600: #000000;
-$text: #00000099;
+$text: #1e3163;
+$text-dark: #000000;
+$text-dark-placeholder: #558a78;
 
 .is-dark-mode {
   background-color: $neutral-500 !important;
@@ -41,12 +43,15 @@ $text: #00000099;
   color: white;
 }
 
-.dark-protocol-text {
-  color: $text !important;
+.dark-text {
+  color: $text-dark !important;
 }
 .dark-address-input {
   background-color: $neutral-300 !important;
   color: white !important;
+}
+.dark-address-input::placeholder {
+ color: $text-dark-placeholder !important;
 }
 .dark-divider {
   // this is the divider underneath tabs -Prince

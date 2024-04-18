@@ -1,21 +1,41 @@
 import React, { useState, useRef, useEffect } from 'react';
 import dropDownArrow from '../../../../../assets/icons/caret-down.svg';
+import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
 
-interface Props {
-  newRequestBodySet: (value: any) => void;
-  newRequestBody: any;
-  newRequestHeadersSet: (value: any) => void;
-  newRequestHeaders: any;
-}
+import {
+  $TSFixMeObject, CookieOrHeader,
+} from '../../../../../../src/types';
 
-const BodyTypeSelect = (props: Props) => {
-  const {
-    newRequestBodySet,
-    newRequestBody,
-    newRequestHeadersSet,
-    newRequestHeaders,
-  } = props;
+import {
+  newRequestBodySet,
+  newRequestHeadersSet,
+} from '../../../../toolkit-refactor/slices/newRequestSlice';
 
+const BodyTypeSelect = ({isMockServer}) => {
+  const dispatch = useAppDispatch();
+
+  // Selectors
+  const newRequestBody = useAppSelector(
+    (state) => state.newRequest.newRequestBody
+  );
+
+  const newRequestHeaders = useAppSelector(
+    (state) => state.newRequest.newRequestHeaders
+  );
+
+  const mockServerStarted = useAppSelector(
+    (state) => state.mockServer.isServerStarted
+  )
+
+  // Dispatchers
+  
+  const newRequestHeadersSetAction = (requestHeadersObj: $TSFixMeObject) =>
+  dispatch(newRequestHeadersSet(requestHeadersObj));
+
+  const newRequestBodySetAction = (requestBodyObj: $TSFixMeObject) =>
+    dispatch(newRequestBodySet(requestBodyObj));
+
+  // React state for this page
   const [dropdownIsActive, setDropdownIsActive] = useState<boolean>();
   const dropdownEl = useRef<HTMLDivElement>(null);
 
@@ -36,17 +56,18 @@ const BodyTypeSelect = (props: Props) => {
     const filtered = newRequestHeaders.headersArr.filter(
       (header: any) => header.key.toLowerCase() !== "content-type"
     );
-    newRequestHeadersSet({
+
+    newRequestHeadersSetAction({
       headersArr: filtered,
       count: filtered.length,
-    });
+    })
   };
 
   const setNewBodyType = (bodyTypeStr: string) => {
-    newRequestBodySet({
+    newRequestBodySetAction({
       ...newRequestBody,
       bodyType: bodyTypeStr,
-    });
+    })
   };
 
   const setContentTypeHeader = (newBodyType: string) => {
@@ -54,12 +75,12 @@ const BodyTypeSelect = (props: Props) => {
     headersCopy.headersArr[0] = {
       id: Math.random() * 1000000,
       active: true,
-      key: "Content-type",
+      key: "Content-Type",
       value: newBodyType,
     };
-    newRequestHeadersSet({
+    newRequestHeadersSetAction({
       headersArr: headersCopy.headersArr,
-    });
+    })
   };
 
   return (
@@ -113,6 +134,18 @@ const BodyTypeSelect = (props: Props) => {
               x-www-form-urlencoded
             </a>
           )}
+          {newRequestBody.bodyType !== 'binary' && !isMockServer && (
+            <a
+              onClick={() => {
+                setDropdownIsActive(false);
+                setNewBodyType('binary');
+                setContentTypeHeader('application/binary');
+              }}
+              className="dropdown-item"
+            >
+              binary
+            </a>
+          )}
           {newRequestBody.bodyType !== 'none' && (
             <a
               onClick={() => {
@@ -129,7 +162,6 @@ const BodyTypeSelect = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
-
-export default BodyTypeSelect;
+export default BodyTypeSelect

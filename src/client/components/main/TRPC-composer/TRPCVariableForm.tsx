@@ -1,12 +1,12 @@
 import React from 'react';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-
+//TODO: implicit and literal any used in this file
 export default function TRPCVariableForm(props) {
   // input for for user to attach argument with their procedures
-  const isDark = useSelector((store: any) => store.ui.isDark);
-  const onChangeHandler = (string) => {
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const onChangeHandler = (string: string) => {
     // this function dispatch action to the main reducer function inside of trpc composer
     props.proceduresDipatch({
       type: 'VARIABLE',

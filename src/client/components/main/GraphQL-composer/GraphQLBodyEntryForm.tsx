@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
+import { NewRequestBody, NewRequestBodySet } from '../../../../types';
 
 interface Props {
-  newRequestBody: {
-    bodyContent: string;
-    bodyIsNew: boolean;
-  };
-  newRequestBodySet: (newRequestBody: {
-    bodyContent: string;
-    bodyIsNew: boolean;
-  }) => void;
+  newRequestBody: NewRequestBody
+  newRequestBodySet: NewRequestBodySet;
   warningMessage: { body: string } | null;
   introspectionData: Record<string, any> | null;
 }
@@ -31,7 +26,7 @@ const GraphQLBodyEntryForm: React.FC<Props> = (props) => {
     if (!bodyIsNew) setValue(bodyContent);
   }, [bodyContent, bodyIsNew]);
 
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div className="mt-3">

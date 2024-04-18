@@ -5,7 +5,7 @@ import SendRequestButton from '../sharedComponents/requestButtons/SendRequestBut
 // Import local components
 import TRPCMethodAndEndpointEntryForm from './TRPCMethodAndEndpointEntryForm';
 // Import Redux hooks
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 
 // Import Actions from RTK slice
 import historyController from '../../../controllers/historyController';
@@ -39,7 +39,7 @@ const PROCEDURE_DEFAULT = {
 // after its done manipulating the state it will return the updated array that will be use as the new procedures state
 
 //********************************** */
-
+//TODO: Implicit any used throughout this file
 function reducer(procedures, action) {
   if (action.type === 'METHOD') {
     //
@@ -82,7 +82,7 @@ function reducer(procedures, action) {
 }
 
 export default function TRPCComposer(props) {
-  const dispatch = useDispatch(); // dispatch for main redux store
+  const dispatch = useAppDispatch(); // dispatch for main redux store
 
   const [showSubscription, setShowSubscription] = useState(false); // manage subscription component
   const subscriptionHandler = (bool) => {
@@ -143,12 +143,12 @@ export default function TRPCComposer(props) {
   } = props;
 
   /** newRequestFields slice from redux store, contains general request info*/
-  const requestFields = useSelector(
+  const requestFields = useAppSelector(
     (state: RootState) => state.newRequestFields
   );
 
   /** reqRes slice from redux store, contains request and response data */
-  const newRequest = useSelector((state: RootState) => state.newRequest);
+  const newRequest = useAppSelector((state: RootState) => state.newRequest);
 
   const addProcedures = () => {
     // reducer dispatch for adding a new procedure to the procedures array

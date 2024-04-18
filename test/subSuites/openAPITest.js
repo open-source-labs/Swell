@@ -4,6 +4,13 @@
  * @todo Test suite incomplete, currently only testing if the Load Document
  * button appears. Testing should be added to confirm openAPI works using the
  * provided YAML
+ *
+ * Append: Added testing for Load Documents -- however hangs at the Load Document due to
+ * GUI Loader -- Potential workaround: Add a filepath input to openAPITestDefinition.yaml
+ * and run tests OR implement jest.mock to mock th e module to test the parsing. Disabled for now
+ *
+ * Implemented additional tests of the openAPITestDefinition.yaml in openAPIParserTest
+ *
  */
 
 const { _electron: electron } = require('playwright');
@@ -87,6 +94,32 @@ module.exports = () => {
         const handle = await page.locator('text=Load Document');
         pwTest.expect(handle).toBeVisible();
       });
+
+      // it('should load the OpenAPI document and display requests', async () => {
+      //   await page.locator('text=load Document').click();
+
+      //   // wait for request to be loaded
+      //   await page.waitForSelector('.request-item');
+
+      //   // Check if the requests are displayed
+      //   const requestItems = await page.$$('.request-item');
+      //   expect(requestItems.length).toBeGreaterThan(0);
+      // });
+
+      // it('should send a request and receive a response', async () => {
+      //   // Click the first request item
+      //   await page.click('.request-item:first-child');
+
+      //   // Click the "Send Request" button
+      //   await page.locator('text=Send Request').click();
+
+      //   // Wait for the response to be received
+      //   await page.waitForSelector('.response-data');
+
+      //   // Check if the response data is displayed
+      //   const responseData = await page.textContent('.response-data');
+      //   expect(responseData).toBeDefined();
+      // });
     }).timeout(20000);
   });
 };

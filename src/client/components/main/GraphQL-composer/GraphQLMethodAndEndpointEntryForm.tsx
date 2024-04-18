@@ -1,21 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { GraphQLSchema } from 'graphql';
 
 import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
-import { NewRequestFields, NewRequestBody } from '../../../../types';
-
-interface IntrospectionData {
-  schemaSDL: string | null;
-  clientSchema: GraphQLSchema | null;
-}
+import { NewRequestFields, NewRequestBody, NewRequestBodySet } from '../../../../types';
 
 interface Props {
   warningMessage: { uri?: string };
   setWarningMessage: (message: { uri?: string }) => void;
   fieldsReplaced: (fields: NewRequestFields) => void;
   newRequestFields: NewRequestFields;
-  newRequestBodySet: (body: { [key: string]: any }) => void;
+  newRequestBodySet: NewRequestBodySet;
   newRequestBody: NewRequestBody;
 }
 
@@ -61,23 +56,11 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
   const methodChangeHandler = (value: string) => {
     clearWarningIfApplicable();
 
-    let methodReplaceRegexType: string | undefined
-
     const methodReplaceRegex = new RegExp(`${newRequestFields.method}`, 'mi');
     // GraphQL features
     if (value === 'QUERY' || 'MUTATION' || 'SUBSCRIPTION') {
-      if (value === 'QUERY') {
-        methodReplaceRegexType = 'query'
-      } 
-      else if (value === 'MUTATION') {
-        methodReplaceRegexType = 'mutation'
-      } 
-      else if (value === 'SUBSCRIPTION') {
-        methodReplaceRegexType = 'subscription'
-      }
-
       const newBody = methodReplaceRegex.test(newRequestBody.bodyContent)
-      ? newRequestBody.bodyContent.replace(methodReplaceRegex, methodReplaceRegexType)
+      ? newRequestBody.bodyContent.replace(methodReplaceRegex, value.toLowerCase())
       : `${newRequestBody.bodyContent}`;
 
       newRequestBodySet({
@@ -95,7 +78,7 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
   };
 
 
-  const isDark = useSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
+  const isDark = useAppSelector((store: { ui: { isDark: boolean } }) => store.ui.isDark);
 
   return (
     <div>
@@ -166,8 +149,8 @@ const GraphQLMethodAndEndpointEntryForm: React.FC<Props> = ({
 
         <input
           className={`${
-            isDark ? 'is-dark-300' : ''
-          } ml-1 input input-is-medium is-info`}
+          isDark ? 'dark-address-input' : ''
+        } ml-1 input input-is-medium is-info`}
           type="text"
           id="url-input"
           placeholder="Enter endpoint"

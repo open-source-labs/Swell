@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 // import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 // import CodeMirror from '@uiw/react-codemirror';
 // import { EditorView } from '@codemirror/view';
@@ -9,7 +8,7 @@ import { useSelector } from 'react-redux';
 // import MenuItem from '@mui/material/MenuItem';
 import { RequestWebRTC } from '../../../../types';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -24,8 +23,8 @@ interface Props {
 }
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
-  const newRequestWebRTC: RequestWebRTC = useSelector(
+  const dispatch = useAppDispatch();
+  const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
 
