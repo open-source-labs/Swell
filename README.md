@@ -27,6 +27,10 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Import and export workspaces locally
 - Compose test suites in JavaScript with Chai-style TDD/BDD assertion syntax
 
+## Considering iterating Swell in the future?
+
+We highly encourage you to check out the `DEV-README.md` in the `docs` folder. We've included a comprehensive guide on the latest updates, which areas would benefit from future iterations, as well as details of core components.
+
 ## Core features
 
 - _HTTP2_: Swell supports full HTTP2 multiplexing of requests and responses. HTTP requests to the same host will be sent over the same connection. Swell will attempt to initiate an HTTP2 connection for all HTTPS requests by default, with the ability to revert to HTTP1.1 for legacy servers. Multiple concurrent streams are allowed for each connection.
@@ -115,11 +119,12 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 - Mocha
 - Playwright
 
-## Considering iterating Swell in the future?
-
-Feel free to check out the `DEV-README.md` in the `docs` folder.
-
 ## Authors
+- **Karol Krzywon** - [kkrzywon](https://github.com/kkrzywon)
+- **Howard Sun** - [howardCodeGit](https://github.com/howardCodeGit)
+- **Carter Sarkela** - [CarterSarkela](https://github.com/CarterSarkela)
+- **Adeeb Bayat** - [adeebbayat](https://github.com/adeebbayat)
+- **Michael Underbrink** - [MUnderbrink90](https://github.com/MUnderbrink90)
 - **Aaron Cruz** - [AArCruz](https://github.com/AArCruz)
 - **Katya Villano** - [k-villano](https://github.com/k-villano)
 - **Brooke Sauro** - [bhsauro](https://github.com/bhsauro)
