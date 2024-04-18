@@ -87,6 +87,9 @@ We highly encourage you to check out the `DEV-README.md` in the `docs` folder. W
 
 - _Collection Runner_: You can also stage requests in the workspace and automate the process of sending off each one. No need to manually press send on each one; instead each request will fire off in the order of staging.
 
+- _File Upload/Dark Mode_: If you click on the body drop down menu, you can select binary, which allows you to upload a file that can be sent along with any request to test backend file upload routes. Additionally, you can toggle dark mode via the button in the top right-hand corner.
+  <img src="./ReadMeGifs/Gifs/FileUploadAndDarkMode.gif"
+       style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
 ## Experimental Features
 
 - _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
