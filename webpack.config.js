@@ -129,8 +129,8 @@ module.exports = {
       'base-uri': ["'self'"],
       'default-src': [
         "'self'",
-        'http://localhost:3000',
-        'ws://localhost:3000',
+        'http://localhost:3001',
+        'ws://localhost:3001',
         'https://api.github.com',
         "'unsafe-inline'",
         "'unsafe-eval'",

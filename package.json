@@ -31,7 +31,7 @@
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
     "check-types": "tsc",
-    "postinstall": "patch-package"
+    "postinstall": "NODE_OPTIONS=--no-node-snapshot patch-package"
   },
   "build": {
     "npmRebuild": false,
@@ -47,7 +47,7 @@
       "preload.js",
       "src/server/*"
     ],
-    "nodeVersion": "16.15.0",
+    "nodeVersion": "18.18.0",
     "nsis": {
       "createDesktopShortcut": "always"
     },
@@ -91,7 +91,7 @@
   "license": "MIT",
   "homepage": "http://www.getswell.io",
   "engines": {
-    "node": ">=16.15.0",
+    "node": ">=18.0.0",
     "npm": ">=7.0.0"
   },
   "dependencies": {
@@ -139,11 +139,12 @@
     "graphql-tag": "^2.12.6",
     "graphql-ws": "^5.8.1",
     "highland": "^2.13.5",
-    "isolated-vm": "^4.6.0",
+    "isolated-vm": "^5.0.3",
     "jest-environment-jsdom": "^29.7.0",
     "mali": "^0.46.1",
     "ngrok": "^4.3.1",
     "node-fetch": "^3.3.0",
+    "node-gyp": "^11.0.0",
     "npm": "^8.7.0",
     "patch-package": "^6.4.7",
     "path": "^0.12.7",
@@ -572,4 +573,3 @@
     }
   ]
 }
-

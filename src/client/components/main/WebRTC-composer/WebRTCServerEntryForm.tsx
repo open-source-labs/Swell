@@ -34,7 +34,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         <TextCodeArea
           mode={'application/json'}
           value={newRequestWebRTC.webRTCOffer || ''}
-          height={'85px'}
+          height={'85px'} 
           onChange={(value, viewUpdate) => {
             dispatch(
               newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
@@ -82,6 +82,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           className="button is-normal is-primary-100 add-request-button no-border-please"
           style={{ margin: '10px' }}
           onClick={() => {
+            console.log('newRequestWebRTCfromOclick:', newRequestWebRTC);
             webrtcPeerController.createOffer(newRequestWebRTC);
           }}
         >
@@ -138,16 +139,29 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           Paste
         </button>
         {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
-        {/* <button
+        <button
         id="webRTButton"
         className="button is-normal is-primary-100 add-request-button  no-border-please"
         style={{ margin: '10px' }}
         onClick={() => {
-          createAnswer(newRequestWebRTC);
+          console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
+          webrtcPeerController.createAnswer(newRequestWebRTC);
         }}
       >
         Get Answer
-      </button> */}
+      </button>
+
+      <button
+        id="webRTButton"
+        className="button is-normal is-primary-100 add-request-button  no-border-please"
+        style={{ margin: '10px' }}
+        onClick={() => {
+          console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
+         // webrtcPeerController.addAnswer(reqRes);
+        }}
+      >
+        Add Answer
+      </button>
         {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
       </div>
     </div>

@@ -16,11 +16,11 @@ const webrtcPeerController = {
     newRequestWebRTC: RequestWebRTC
   ): Promise<void> => {
     let servers = {
-      iceServers: [
+      iceServers: [ 
         {
           urls: [
-            'stun:stun1.1.google.com:19302',
-            'stun:stun2.1.google.com:19302',
+            'stun:stun.l.google.com:19302',
+            'stun:stun.l.google.com:5349',
           ],
         },
       ],
@@ -73,7 +73,9 @@ const webrtcPeerController = {
       let localStream = peerConnection.createDataChannel('textChannel');
       localStream.onopen = () => console.log('data channel opened');
       localStream.onclose = () => console.log('data channel closed')
-
+      console.log('peerConnection:', peerConnection)
+      console.log('localstream:', localStream)
+      console.log('newRequestWebRTCcheck:', newRequestWebRTC)
       appDispatch(
         newRequestWebRTCSet({
           ...newRequestWebRTC,
@@ -81,33 +83,52 @@ const webrtcPeerController = {
           webRTCLocalStream: localStream,
         })
       );
-
+  
       peerConnection.onicecandidate = async (
         event: RTCPeerConnectionIceEvent
       ): Promise<void> => {
+        console.log('event:', event)
         if (event.candidate) {
           appDispatch(
-            newRequestWebRTCOfferSet(
+            newRequestWebRTCOfferSet(      // newRequestWebRTCOfferSet mutates the newRequestWebRTC.webrtcOffer state 
               JSON.stringify(peerConnection.localDescription)
             )
           );
         }
+        console.log('newRequestWebRTCCheck4:', newRequestWebRTC)
       };
+
     }
   },
 
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
+    console.log('newRequestWebRTCCheck2:', newRequestWebRTC)
     let { webRTCpeerConnection } = newRequestWebRTC;
+    console.log('webRTCPeerConnect:', webRTCpeerConnection)
     let offer = await webRTCpeerConnection!.createOffer();
-    await webRTCpeerConnection!.setLocalDescription(offer);
+    console.log('offer:', offer)
+    await webRTCpeerConnection!.setLocalDescription(offer); //what is this line doing that is not already done?
+    console.log('webRTCaftersetofLocalDes:', webRTCpeerConnection)
     appDispatch(
       newRequestWebRTCSet({
         ...newRequestWebRTC,
         webRTCOffer: JSON.stringify(offer),
       })
     );
+    console.log('newRequestWebRTCCheck3:', newRequestWebRTC)
   },
+
+  // need to include methodology to send offer to other peer
+
+  // also need to send ice candidate to other peer
+
+  // Ability to receive offer and candidate from other peer (using websockets)
+
+  // peer should be able to accept offer and candidate
+  // peer should be able to set the offer received as the remote description
+
+
 
   // work-in-progress
   createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
@@ -121,12 +142,13 @@ const webrtcPeerController = {
     let answer = await webRTCpeerConnection.createAnswer();
     await webRTCpeerConnection.setLocalDescription(answer);
 
-    appDispatch(
+    appDispatch( 
       newRequestWebRTCSet({
         ...newRequestWebRTC,
         webRTCAnswer: JSON.stringify(answer),
       })
     );
+    console.log('newRequestWebRTCCheck5:', newRequestWebRTC)
   },
 
   addAnswer: async (reqRes: ReqRes): Promise<void> => {
