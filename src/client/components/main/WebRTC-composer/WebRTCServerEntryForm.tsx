@@ -88,6 +88,19 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         >
           Get Offer
         </button>
+        <button
+        id="webRTButton"
+        className="button is-normal is-primary-100 add-request-button  no-border-please"
+        style={{ margin: '10px' }}
+        onClick={() => {
+          console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
+          webrtcPeerController.createAnswer(newRequestWebRTC);
+        }}
+      >
+        Get Answer
+      </button>
+
+
       </div>
       {/* Code box for Answer */}
       <div style={{ position: 'relative' }}>
@@ -139,17 +152,6 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           Paste
         </button>
         {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
-        <button
-        id="webRTButton"
-        className="button is-normal is-primary-100 add-request-button  no-border-please"
-        style={{ margin: '10px' }}
-        onClick={() => {
-          console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
-          webrtcPeerController.createAnswer(newRequestWebRTC);
-        }}
-      >
-        Get Answer
-      </button>
 
       <button
         id="webRTButton"
@@ -157,7 +159,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         style={{ margin: '10px' }}
         onClick={() => {
           console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
-         // webrtcPeerController.addAnswer(reqRes);
+        // webrtcPeerController.addAnswer(newRequestWebRTC);
         }}
       >
         Add Answer

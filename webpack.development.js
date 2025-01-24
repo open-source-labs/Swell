@@ -31,7 +31,7 @@ module.exports = merge(base, {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
-      console.log('Setting up middlewares...:', middlewares);
+      // console.log('Setting up middlewares...:', middlewares);
       middlewares.unshift({
         // unshift does not work, ends in infinite calls to this function
         name: 'run-in-electron',

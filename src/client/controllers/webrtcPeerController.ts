@@ -130,7 +130,7 @@ const webrtcPeerController = {
 
 
 
-  // work-in-progress
+  // work-in-progress ,,, this function is for the situation you are peer 2 and you receive an offer from peer 1
   createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     let { webRTCpeerConnection, webRTCOffer } = newRequestWebRTC;
 
@@ -150,6 +150,8 @@ const webrtcPeerController = {
     );
     console.log('newRequestWebRTCCheck5:', newRequestWebRTC)
   },
+
+  
 
   addAnswer: async (reqRes: ReqRes): Promise<void> => {
     let { request, response } = reqRes as {

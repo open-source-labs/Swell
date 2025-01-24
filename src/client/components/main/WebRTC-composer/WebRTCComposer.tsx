@@ -63,6 +63,7 @@ export default function WebRTCComposer() {
   }
 
   const addNewRequest = (): void => {
+    console.log('newRequestWebRTCatANR:', newRequestWebRTC)
     if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
       return alert('Invalid offer or answer SDP')
     }
