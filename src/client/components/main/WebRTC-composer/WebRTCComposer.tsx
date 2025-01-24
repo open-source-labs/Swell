@@ -88,7 +88,7 @@ export default function WebRTCComposer() {
         className="is-flex-grow-3 add-vertical-scroll container-margin"
         style={{ overflowX: 'hidden' }}
       >
-        <WebRTCSessionEntryForm setShowRTCEntryForms={setShowRTCEntryForms} />
+        <WebRTCSessionEntryForm setShowRTCEntryForms={setShowRTCEntryForms}/>
 
         {showRTCEntryForms && (
           <>

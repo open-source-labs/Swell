@@ -159,7 +159,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         style={{ margin: '10px' }}
         onClick={() => {
           console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
-        // webrtcPeerController.addAnswer(newRequestWebRTC);
+        webrtcPeerController.addAnswer(reqRes);
         }}
       >
         Add Answer
