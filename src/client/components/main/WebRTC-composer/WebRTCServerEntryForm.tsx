@@ -6,12 +6,13 @@ import React from 'react';
 // import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 // import Select from '@mui/material/Select';
 // import MenuItem from '@mui/material/MenuItem';
-import { RequestWebRTC } from '../../../../types';
+import { ReqRes, RequestWebRTC } from '../../../../types';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
 import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
+import { compose } from 'redux';
 
 // const jBeautify = require('js-beautify').js;
 
@@ -36,6 +37,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           value={newRequestWebRTC.webRTCOffer || ''}
           height={'85px'} 
           onChange={(value, viewUpdate) => {
+            console.log('value:', value);
             dispatch(
               newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
             );
@@ -66,13 +68,14 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
             width: '58px',
           }}
           onClick={() => {
-            navigator.clipboard.readText().then((text) =>
+            navigator.clipboard.readText().then((text) =>{
+              console.log('text:', text);
               dispatch(
                 newRequestWebRTCSet({
                   ...newRequestWebRTC,
                   webRTCOffer: text,
                 })
-              )
+              )}
             );
           }}
         >
@@ -151,7 +154,6 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         >
           Paste
         </button>
-        {/* ANSWER BUTTON IS WORK-IN-PROGRESS */}
 
       <button
         id="webRTButton"
@@ -159,7 +161,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         style={{ margin: '10px' }}
         onClick={() => {
           console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
-        webrtcPeerController.addAnswer(reqRes);
+        webrtcPeerController.addAnswer(newRequestWebRTC);
         }}
       >
         Add Answer
