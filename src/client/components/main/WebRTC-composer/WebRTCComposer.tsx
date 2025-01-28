@@ -67,11 +67,18 @@ export default function WebRTCComposer() {
     if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
       return alert('Invalid offer or answer SDP')
     }
+    // let localStream = peerConnection.createDataChannel('textChannel');
+    //   // localStream.onopen = () => console.log('data channel opened');
+    //   // localStream.onclose = () => console.log('data channel closed')
+    //   localStream.addEventListener("open", (event) => {
+    //     beginTransmission(localStream);
+    //   });
+
     const reqRes: ReqRes = composeReqRes();
 
     // addHistory removed because RTCPeerConnection objects cant typically be cloned
     // historyController.addHistoryToIndexedDb(reqRes);
-
+    console.log('reqRes:', reqRes)
     dispatch(reqResItemAdded(reqRes));
     dispatch(composerFieldsReset());
     setShowRTCEntryForms(false);

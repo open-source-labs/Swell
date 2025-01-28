@@ -74,7 +74,7 @@ const webrtcPeerController = {
       localStream.onopen = () => console.log('data channel opened');
       localStream.onclose = () => console.log('data channel closed')
       console.log('peerConnection:', peerConnection)
-      console.log('localstream:', localStream)
+      // console.log('localstream:', localStream)
       console.log('newRequestWebRTCcheck:', newRequestWebRTC)
       appDispatch(
         newRequestWebRTCSet({
@@ -95,7 +95,7 @@ const webrtcPeerController = {
             )
           );
         }
-        console.log('newRequestWebRTCCheck4:', newRequestWebRTC)
+        console.log('newRequestWebRTConIceCandidate:', newRequestWebRTC)
       };
 
     }
@@ -153,69 +153,69 @@ const webrtcPeerController = {
 
 
 
-  // addAnswer: async (reqRes: ReqRes): Promise<void> => {
-  //   let { request, response } = reqRes as {
-  //     request: RequestWebRTC;
-  //     response: ResponseWebRTC;
-  //   };
+  dataStream: async (reqRes: ReqRes): Promise<void> => {
+    let { request, response } = reqRes as {
+      request: RequestWebRTC;
+      response: ResponseWebRTC;
+    };
 
-  //   request.webRTCpeerConnection!.setRemoteDescription(
-  //     JSON.parse(request.webRTCAnswer)
-  //   );
+    // request.webRTCpeerConnection!.setRemoteDescription(
+    //   JSON.parse(request.webRTCAnswer)
+    // );
 
-  //   if (request.webRTCDataChannel === 'Video') {
-  //     request.webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
-  //       event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
-  //         (<MediaStream>request.webRTCRemoteStream!).addTrack(track);
-  //       });
-  //     };
+    if (request.webRTCDataChannel === 'Video') {
+      request.webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {
+        event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
+          (<MediaStream>request.webRTCRemoteStream!).addTrack(track);
+        });
+      };
 
-  //     // this waits for HTML elements localstream and remotestream to render before connecting the srcObject. Should be refactored into better implementation
-  //     setTimeout(() => {
-  //       if (
-  //         !document.getElementById('remotestream') ||
-  //         !document.getElementById('localstream')
-  //       ) {
-  //         alert('error');
-  //       } else {
-  //         (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
-  //           request.webRTCLocalStream as MediaStream;
-  //         (<HTMLVideoElement>(
-  //           document.getElementById('remotestream')
-  //         )).srcObject = request.webRTCRemoteStream as MediaStream;
-  //       }
-  //     }, 500);
-  //   }
-  //   if (request.webRTCDataChannel === 'Text') {
-  //     (<RequestWebRTCText>request).webRTCLocalStream!.onmessage = (
-  //       event: MessageEvent
-  //     ) => {
-  //       let newString = event.data.slice(1, -1);
-  //       let messageObject = {
-  //         data: newString,
-  //         timeReceived: Date.now(),
-  //       };
+      // this waits for HTML elements localstream and remotestream to render before connecting the srcObject. Should be refactored into better implementation
+      setTimeout(() => {
+        if (
+          !document.getElementById('remotestream') ||
+          !document.getElementById('localstream')
+        ) {
+          alert('error');
+        } else {
+          (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+            request.webRTCLocalStream as MediaStream;
+          (<HTMLVideoElement>(
+            document.getElementById('remotestream')
+          )).srcObject = request.webRTCRemoteStream as MediaStream;
+        }
+      }, 500);
+    }
+    if (request.webRTCDataChannel === 'Text') {
+      (<RequestWebRTCText>request).webRTCLocalStream!.onmessage = (
+        event: MessageEvent
+      ) => {
+        let newString = event.data.slice(1, -1);
+        let messageObject = {
+          data: newString,
+          timeReceived: Date.now(),
+        };
 
-  //       let state = store.getState();
-  //       if (state.reqRes.currentResponse.response) {
-  //         let newWebRTCMessages =
-  //           (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
-  //             messageObject
-  //           );
-  //         let request = state.reqRes.currentResponse.request
-  //         appDispatch(
-  //           responseDataSaved({
-  //             ...reqRes,
-  //             request,
-  //             response: {
-  //               webRTCMessages: newWebRTCMessages,
-  //             },
-  //           })
-  //         );
-  //       }
-  //     };
-  //   }
-  // },
+        let state = store.getState();
+        if (state.reqRes.currentResponse.response) {
+          let newWebRTCMessages =
+            (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
+              messageObject
+            );
+          let request = state.reqRes.currentResponse.request
+          appDispatch(
+            responseDataSaved({
+              ...reqRes,
+              request,
+              response: {
+                webRTCMessages: newWebRTCMessages,
+              },
+            })
+          );
+        }
+      };
+    }
+  },
   addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     let { webRTCpeerConnection } = newRequestWebRTC;
     console.log('webRtcPeerConnect:', webRTCpeerConnection)
@@ -231,7 +231,7 @@ const webrtcPeerController = {
     //     webRTCAnswer: JSON.stringify(answer),
     //   })
     // );
-  }
+  },
 };
 
 export default webrtcPeerController;

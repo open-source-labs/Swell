@@ -133,7 +133,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             className="ml-1 is-rest button no-border-please"
             onClick={() => {
               setShowRTCEntryForms(true);
-              console.log('newRequestWebRTCFromCclick:', newRequestWebRTC);
+              console.log('newRequestWebRTCFromConnect:', newRequestWebRTC);
               webrtcPeerController.createPeerConnection(newRequestWebRTC);
             }}
           >
