@@ -12,8 +12,12 @@ import {
 } from '../../types';
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
 const webrtcPeerController = {
+  // peer 1 and peer 2 both need to create a peer connection
+  // but peer 1 needs to create a data channel
+  // and peer 2 needs to receive a data channel
   createPeerConnection: async (
-    newRequestWebRTC: RequestWebRTC
+    newRequestWebRTC: RequestWebRTC,
+    peer2: boolean = false
   ): Promise<void> => {
     let servers = {
       iceServers: [ 
@@ -27,7 +31,7 @@ const webrtcPeerController = {
     };
     let peerConnection = new RTCPeerConnection(servers);
 
-    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
+    if (newRequestWebRTC.webRTCDataChannel === 'Video' && !peer2) {
       let localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
@@ -69,12 +73,14 @@ const webrtcPeerController = {
           );
         }
       };
-    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text' && !peer2) {
+      // 
+
       let localStream = peerConnection.createDataChannel('textChannel');
-      localStream.onopen = () => console.log('data channel opened');
-      localStream.onclose = () => console.log('data channel closed')
+      localStream.onopen = () => console.log('data channel opened!!!');
+      localStream.onclose = () => console.log('data channel closed :(')
       console.log('peerConnection:', peerConnection)
-      // console.log('localstream:', localStream)
+      console.log('localstream:', localStream)
       console.log('newRequestWebRTCcheck:', newRequestWebRTC)
       appDispatch(
         newRequestWebRTCSet({
@@ -83,6 +89,7 @@ const webrtcPeerController = {
           webRTCLocalStream: localStream,
         })
       );
+     
   
       peerConnection.onicecandidate = async (
         event: RTCPeerConnectionIceEvent
@@ -99,8 +106,23 @@ const webrtcPeerController = {
       };
 
     }
+    else {
+      peerConnection.ondatachannel = (event: RTCDataChannelEvent) => {
+        let localStream = event.channel;
+        localStream.onopen = () => console.log('data channel opened');
+        localStream.onclose = () => console.log('data channel closed')
+        console.log('dataStream:', localStream)
+        appDispatch(
+          newRequestWebRTCSet({
+            ...newRequestWebRTC,
+            webRTCpeerConnection: peerConnection,
+            webRTCLocalStream: null,
+          })
+        );
+      };
+    }
   },
-
+  // what in create offer triggers the ice candidate to be sent?
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
     console.log('newRequestWebRTCCheck2:', newRequestWebRTC)

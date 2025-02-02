@@ -25,7 +25,8 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
   const [dataTypeDropdownIsActive, setDataTypeDropdownIsActive] =
     useState(false);
   
-  
+  // may have to have a connect button for peer 1 and a different one for peer 2
+  // this is because peer 2 does not need to create a data channel, rather they receive one from peer 1
 
   return (
     <div>
@@ -133,11 +134,22 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             className="ml-1 is-rest button no-border-please"
             onClick={() => {
               setShowRTCEntryForms(true);
-              console.log('newRequestWebRTCFromConnect:', newRequestWebRTC);
+              console.log('newRequestWebRTCFromConnect:', { newRequestWebRTC: newRequestWebRTC });
               webrtcPeerController.createPeerConnection(newRequestWebRTC);
             }}
           >
             Connect
+          </button>
+          <button
+            className="ml-1 is-rest button no-border-please"
+            onClick={() => {
+              setShowRTCEntryForms(true);
+              newRequestWebRTC.webRTCDataChannel === null;
+              console.log('newRequestWebRTCFromConnect:', newRequestWebRTC);
+              webrtcPeerController.createPeerConnection(newRequestWebRTC, true);
+            }}
+          >
+            Receive
           </button>
         </div>
         <div className="dropdown-menu" id="dropdown-menu">
