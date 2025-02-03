@@ -11,6 +11,7 @@ import {
 } from '../../../../../types';
 import WebRTCTextItem from './WebRTCTextItem';
 import { responseDataSaved } from '../../../../toolkit-refactor/slices/reqResSlice';
+import webrtcPeerController from '../../../../controllers/webrtcPeerController';
 
 const WebRTCTextContainer = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const WebRTCTextContainer = () => {
       data: messageInput,
       timeReceived: Date.now(),
     };
-
+    console.log('im here')
     dispatch(
       responseDataSaved({
         ...currentReqRes,
@@ -62,12 +63,15 @@ const WebRTCTextContainer = () => {
         } as RequestWebRTCText,
       })
     );
-
+    // console.log('request:', request);
+    // console.log('currentReqRes:', currentReqRes);
+    webrtcPeerController.sendMessages(currentReqRes, messageInput);
     (
       document.getElementById('webrtc-message-input') as HTMLInputElement
     ).value = '';
     if (request.webRTCLocalStream) {
       request.webRTCLocalStream.send(JSON.stringify(messageInput));
+      console.log('message input:', messageInput);
     }
   };
 

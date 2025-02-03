@@ -140,17 +140,6 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
           >
             Connect
           </button>
-          <button
-            className="ml-1 is-rest button no-border-please"
-            onClick={() => {
-              setShowRTCEntryForms(true);
-              newRequestWebRTC.webRTCDataChannel === null;
-              console.log('newRequestWebRTCFromConnect:', newRequestWebRTC);
-              webrtcPeerController.createPeerConnection(newRequestWebRTC, true);
-            }}
-          >
-            Receive
-          </button>
         </div>
         <div className="dropdown-menu" id="dropdown-menu">
           <ul className="dropdown-content">

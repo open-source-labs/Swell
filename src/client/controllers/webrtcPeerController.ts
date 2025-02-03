@@ -11,13 +11,13 @@ import {
   ResponseWebRTCText,
 } from '../../types';
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
+import { send } from 'process';
 const webrtcPeerController = {
   // peer 1 and peer 2 both need to create a peer connection
   // but peer 1 needs to create a data channel
   // and peer 2 needs to receive a data channel
   createPeerConnection: async (
-    newRequestWebRTC: RequestWebRTC,
-    peer2: boolean = false
+    newRequestWebRTC: RequestWebRTC
   ): Promise<void> => {
     let servers = {
       iceServers: [ 
@@ -31,12 +31,12 @@ const webrtcPeerController = {
     };
     let peerConnection = new RTCPeerConnection(servers);
 
-    if (newRequestWebRTC.webRTCDataChannel === 'Video' && !peer2) {
+    if (newRequestWebRTC.webRTCDataChannel === 'Video') {
       let localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
       });
-
+ 
       if (document.getElementById('localstream')) {
         (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
           localStream;
@@ -73,12 +73,13 @@ const webrtcPeerController = {
           );
         }
       };
-    } else if (newRequestWebRTC.webRTCDataChannel === 'Text' && !peer2) {
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       // 
 
       let localStream = peerConnection.createDataChannel('textChannel');
       localStream.onopen = () => console.log('data channel opened!!!');
       localStream.onclose = () => console.log('data channel closed :(')
+      localStream.onmessage = (event) => {console.log('message received:', event.data)};
       console.log('peerConnection:', peerConnection)
       console.log('localstream:', localStream)
       console.log('newRequestWebRTCcheck:', newRequestWebRTC)
@@ -97,35 +98,21 @@ const webrtcPeerController = {
         console.log('event:', event)
         if (event.candidate) {
           appDispatch(
-            newRequestWebRTCOfferSet(      // newRequestWebRTCOfferSet mutates the newRequestWebRTC.webrtcOffer state 
+            newRequestWebRTCOfferSet(
               JSON.stringify(peerConnection.localDescription)
             )
           );
+          // peerConnection.addIceCandidate(event.candidate)
+           console.log('eventIceCandidate:', event.candidate.candidate)
+           
         }
-        console.log('newRequestWebRTConIceCandidate:', newRequestWebRTC)
       };
 
-    }
-    else {
-      peerConnection.ondatachannel = (event: RTCDataChannelEvent) => {
-        let localStream = event.channel;
-        localStream.onopen = () => console.log('data channel opened');
-        localStream.onclose = () => console.log('data channel closed')
-        console.log('dataStream:', localStream)
-        appDispatch(
-          newRequestWebRTCSet({
-            ...newRequestWebRTC,
-            webRTCpeerConnection: peerConnection,
-            webRTCLocalStream: null,
-          })
-        );
-      };
     }
   },
   // what in create offer triggers the ice candidate to be sent?
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
-    console.log('newRequestWebRTCCheck2:', newRequestWebRTC)
     let { webRTCpeerConnection } = newRequestWebRTC;
     console.log('webRTCPeerConnect:', webRTCpeerConnection)
     let offer = await webRTCpeerConnection!.createOffer();
@@ -133,12 +120,12 @@ const webrtcPeerController = {
     await webRTCpeerConnection!.setLocalDescription(offer); //what is this line doing that is not already done?
     console.log('webRTCaftersetofLocalDes:', webRTCpeerConnection)
     appDispatch(
-      newRequestWebRTCSet({
+      newRequestWebRTCSet({           // newRequestWebRTCSet mutates the newRequestWebRTC state to have the offer
         ...newRequestWebRTC,
         webRTCOffer: JSON.stringify(offer),
       })
     );
-    console.log('newRequestWebRTCCheck3:', newRequestWebRTC)
+    console.log('newRequestWebRTCCheckAfterOffer:', newRequestWebRTC)
   },
 
   // need to include methodology to send offer to other peer
@@ -170,7 +157,31 @@ const webrtcPeerController = {
         webRTCAnswer: JSON.stringify(answer),
       })
     );
-    console.log('newRequestWebRTCCheck5:', newRequestWebRTC)
+  },
+
+  addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
+    let { webRTCpeerConnection } = newRequestWebRTC;
+    // console.log('webRtcPeerConnect:', webRTCpeerConnection)
+    // webRTCpeerConnection!.setRemoteDescription(
+    //       JSON.parse(webRTCpeerConnection.webRTCAnswer)
+    //     );
+    let answer = JSON.parse(newRequestWebRTC.webRTCAnswer);
+    await webRTCpeerConnection!.setRemoteDescription(answer);
+    // appDispatch( 
+    //   newRequestWebRTCSet({
+    //     ...newRequestWebRTC,
+    //     webRTCAnswer: JSON.stringify(answer),
+    //   })
+    // );
+  },
+
+  sendMessages: async (reqRes: ReqRes, messages: string): Promise<void> => {
+    let { request } = reqRes as { request: RequestWebRTCText };
+
+
+    await (<RequestWebRTCText>request).webRTCLocalStream!.send(
+      JSON.stringify({ data: messages })
+    );
   },
 
 
@@ -238,22 +249,15 @@ const webrtcPeerController = {
       };
     }
   },
-  addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
-    let { webRTCpeerConnection } = newRequestWebRTC;
-    console.log('webRtcPeerConnect:', webRTCpeerConnection)
-    // webRTCpeerConnection!.setRemoteDescription(
-    //       JSON.parse(webRTCpeerConnection.webRTCAnswer)
-    //     );
-    let answer = JSON.parse(newRequestWebRTC.webRTCAnswer);
-    await webRTCpeerConnection!.setRemoteDescription(answer);
-    console.log('newRequestWebRTCCheck6:', newRequestWebRTC);
-    // appDispatch( 
-    //   newRequestWebRTCSet({
-    //     ...newRequestWebRTC,
-    //     webRTCAnswer: JSON.stringify(answer),
-    //   })
+
+  sendText: async (reqRes: ReqRes): Promise<void> => {
+    // let { request } = reqRes as { request: RequestWebRTCText };
+    // let message = (<RequestWebRTCText>request).webRTCLocalStream!.send(
+    //   JSON.stringify({ data: 'hello' })
     // );
-  },
+
+  }
+  
 };
 
 export default webrtcPeerController;

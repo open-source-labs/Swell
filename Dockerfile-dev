@@ -1,0 +1,6 @@
+From node:18.20
+RUN npm install -g webpack
+Workdir /app
+Copy package*.json /app
+Run npm install
+Expose 8080
