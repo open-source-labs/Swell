@@ -2,6 +2,7 @@ import store, { appDispatch } from '../toolkit-refactor/store';
 import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
+  newRequestWebRTCAnswerSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
 import {
   ReqRes,
@@ -20,12 +21,9 @@ const webrtcPeerController = {
     newRequestWebRTC: RequestWebRTC
   ): Promise<void> => {
     let servers = {
-      iceServers: [ 
+      iceServers: [
         {
-          urls: [
-            'stun:stun.l.google.com:19302',
-            'stun:stun.l.google.com:5349',
-          ],
+          urls: ['stun:stun.l.google.com:19302', 'stun:stun.l.google.com:5349'],
         },
       ],
     };
@@ -36,7 +34,7 @@ const webrtcPeerController = {
         video: true,
         audio: false,
       });
- 
+
       if (document.getElementById('localstream')) {
         (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
           localStream;
@@ -65,24 +63,32 @@ const webrtcPeerController = {
       peerConnection.onicecandidate = async (
         event: RTCPeerConnectionIceEvent
       ): Promise<void> => {
-        if (event.candidate) {
+        if (event.candidate && peerConnection.localDescription!.type === 'offer') {
           appDispatch(
             newRequestWebRTCOfferSet(
-              JSON.stringify(peerConnection.localDescription)
+              JSON.stringify(peerConnection.localDescription) 
+            )
+          );
+        } else if (event.candidate && peerConnection.localDescription!.type === 'answer') {
+          appDispatch(
+            newRequestWebRTCAnswerSet(
+              JSON.stringify(peerConnection.localDescription) 
             )
           );
         }
       };
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      // 
+      //
 
       let localStream = peerConnection.createDataChannel('textChannel');
       localStream.onopen = () => console.log('data channel opened!!!');
-      localStream.onclose = () => console.log('data channel closed :(')
-      
+      localStream.onclose = () => console.log('data channel closed :(');
+
       peerConnection.ondatachannel = (event) => {
         const receiveChannel = event.channel;
-        receiveChannel.onmessage = (event) => {console.log('message received:', event.data)};
+        receiveChannel.onmessage = (event) => {
+          console.log('message received:', event.data);
+        };
       };
       // console.log('peerConnection:', peerConnection)
       // console.log('localstream:', localStream)
@@ -93,40 +99,44 @@ const webrtcPeerController = {
           webRTCLocalStream: localStream,
         })
       );
-     
-  
+
       peerConnection.onicecandidate = async (
         event: RTCPeerConnectionIceEvent
       ): Promise<void> => {
-        if (event.candidate) {
+        if (event.candidate && peerConnection.localDescription!.type === 'offer') { //debugged
           appDispatch(
             newRequestWebRTCOfferSet(
+              //should we be adding a ...peerConnection here spreading out the rest of the peerConnection object? also why isn't this updating the newWebRTCRequest object?
               JSON.stringify(peerConnection.localDescription)
             )
           );
-           console.log('eventIceCandidate:', event.candidate.candidate)
-           
+        } else if (event.candidate && peerConnection.localDescription!.type === 'answer') {//added this plus an answerSet reducer so the answer wasn't populating both the answer and offer text boxes (and being two different versions of the answer at that)
+          appDispatch(
+            newRequestWebRTCAnswerSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
         }
       };
-
     }
   },
   // what in create offer triggers the ice candidate to be sent?
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
     let { webRTCpeerConnection } = newRequestWebRTC;
-    console.log('webRTCPeerConnect:', webRTCpeerConnection)
+    console.log('webRTCPeerConnect:', webRTCpeerConnection);
     let offer = await webRTCpeerConnection!.createOffer();
-    console.log('offer:', offer)
+    console.log('offer:', offer);
     await webRTCpeerConnection!.setLocalDescription(offer); //what is this line doing that is not already done?
-    console.log('webRTCaftersetofLocalDes:', webRTCpeerConnection)
+    console.log('webRTCaftersetofLocalDes:', webRTCpeerConnection);
     appDispatch(
-      newRequestWebRTCSet({           // newRequestWebRTCSet mutates the newRequestWebRTC state to have the offer
+      newRequestWebRTCSet({
+        // newRequestWebRTCSet mutates the newRequestWebRTC state to have the offer
         ...newRequestWebRTC,
         webRTCOffer: JSON.stringify(offer),
       })
     );
-    console.log('newRequestWebRTCCheckAfterOffer:', newRequestWebRTC)
+    console.log('newRequestWebRTCCheckAfterOffer:', newRequestWebRTC);
   },
 
   createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
@@ -140,12 +150,13 @@ const webrtcPeerController = {
     let answer = await webRTCpeerConnection.createAnswer();
     await webRTCpeerConnection.setLocalDescription(answer);
 
-    appDispatch( 
+    appDispatch(
       newRequestWebRTCSet({
         ...newRequestWebRTC,
         webRTCAnswer: JSON.stringify(answer),
       })
     );
+    console.log('newRequestWebRTCCheckAfterAnswer:', newRequestWebRTC);
   },
 
   addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
@@ -158,13 +169,11 @@ const webrtcPeerController = {
     let { request } = reqRes as { request: RequestWebRTCText };
     console.log('im here too');
     console.log('request from mesaages :', request);
-    
+
     (<RequestWebRTCText>request).webRTCLocalStream!.send(
       JSON.stringify({ data: messages })
     );
   },
-
-
 
   dataStream: async (reqRes: ReqRes): Promise<void> => {
     let { request, response } = reqRes as {
@@ -211,11 +220,10 @@ const webrtcPeerController = {
 
         let state = store.getState();
         if (state.reqRes.currentResponse.response) {
-          let newWebRTCMessages =
-            (<ResponseWebRTCText>state.reqRes.currentResponse.response).webRTCMessages.concat(
-              messageObject
-            );
-          let request = state.reqRes.currentResponse.request
+          let newWebRTCMessages = (<ResponseWebRTCText>(
+            state.reqRes.currentResponse.response
+          )).webRTCMessages.concat(messageObject);
+          let request = state.reqRes.currentResponse.request;
           appDispatch(
             responseDataSaved({
               ...reqRes,
@@ -229,7 +237,6 @@ const webrtcPeerController = {
       };
     }
   },
-  
 };
 
 export default webrtcPeerController;
