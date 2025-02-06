@@ -8,7 +8,10 @@ import React from 'react';
 // import MenuItem from '@mui/material/MenuItem';
 import { ReqRes, RequestWebRTC } from '../../../../types';
 import TextCodeArea from '../sharedComponents/TextCodeArea';
-import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../toolkit-refactor/hooks';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -35,11 +38,15 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
         <TextCodeArea
           mode={'application/json'}
           value={newRequestWebRTC.webRTCOffer || ''}
-          height={'85px'} 
+          height={'85px'}
           onChange={(value, viewUpdate) => {
-            console.log('value:', value);
+            console.log('value before dispatch:', value);
             dispatch(
               newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
+            );
+            console.log(
+              'value after dispatch, Im assuming it is the same:',
+              value
             );
           }}
           placeholder={'Click "Get Offer" or paste in Offer SDP'}
@@ -68,15 +75,15 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
             width: '58px',
           }}
           onClick={() => {
-            navigator.clipboard.readText().then((text) =>{
+            navigator.clipboard.readText().then((text) => {
               console.log('text:', text);
               dispatch(
                 newRequestWebRTCSet({
                   ...newRequestWebRTC,
                   webRTCOffer: text,
                 })
-              )}
-            );
+              );
+            });
           }}
         >
           Paste
@@ -92,18 +99,16 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           Get Offer
         </button>
         <button
-        id="webRTButton"
-        className="button is-normal is-primary-100 add-request-button  no-border-please"
-        style={{ margin: '10px' }}
-        onClick={() => {
-          console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
-          webrtcPeerController.createAnswer(newRequestWebRTC);
-        }}
-      >
-        Get Answer
-      </button>
-
-
+          id="webRTButton"
+          className="button is-normal is-primary-100 add-request-button  no-border-please"
+          style={{ margin: '10px' }}
+          onClick={() => {
+            console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
+            webrtcPeerController.createAnswer(newRequestWebRTC);
+          }}
+        >
+          Get Answer
+        </button>
       </div>
       {/* Code box for Answer */}
       <div style={{ position: 'relative' }}>
@@ -114,6 +119,10 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           onChange={(value, viewUpdate) => {
             dispatch(
               newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })
+            );
+            console.log(
+              'newRequestWebRTC (though may not be updated bc async):',
+              newRequestWebRTC
             );
           }}
           placeholder={'Answer here'}
@@ -155,17 +164,17 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           Paste
         </button>
 
-      <button
-        id="webRTButton"
-        className="button is-normal is-primary-100 add-request-button  no-border-please"
-        style={{ margin: '10px' }}
-        onClick={() => {
-          console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
-        webrtcPeerController.addAnswer(newRequestWebRTC);
-        }}
-      >
-        Add Answer
-      </button>
+        <button
+          id="webRTButton"
+          className="button is-normal is-primary-100 add-request-button  no-border-please"
+          style={{ margin: '10px' }}
+          onClick={() => {
+            console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
+            webrtcPeerController.addAnswer(newRequestWebRTC);
+          }}
+        >
+          Add Answer
+        </button>
         {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
       </div>
     </div>
