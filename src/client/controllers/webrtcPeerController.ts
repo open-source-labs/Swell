@@ -2,6 +2,7 @@ import store, { appDispatch } from '../toolkit-refactor/store';
 import {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
+  newRequestWebRTCAnswerSet,
 } from '../toolkit-refactor/slices/newRequestSlice';
 import {
   ReqRes,
@@ -62,9 +63,21 @@ const webrtcPeerController = {
       peerConnection.onicecandidate = async (
         event: RTCPeerConnectionIceEvent
       ): Promise<void> => {
-        if (event.candidate) {
+        if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'offer'
+        ) {
           appDispatch(
             newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        } else if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'answer'
+        ) {
+          appDispatch(
+            newRequestWebRTCAnswerSet(
               JSON.stringify(peerConnection.localDescription)
             )
           );
@@ -96,9 +109,24 @@ const webrtcPeerController = {
       peerConnection.onicecandidate = async (
         event: RTCPeerConnectionIceEvent
       ): Promise<void> => {
-        if (event.candidate) {
+        if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'offer'
+        ) {
+          //debugged
           appDispatch(
             newRequestWebRTCOfferSet(
+              //should we be adding a ...peerConnection here spreading out the rest of the peerConnection object? also why isn't this updating the newWebRTCRequest object?
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        } else if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'answer'
+        ) {
+          //added this plus an answerSet reducer so the answer wasn't populating both the answer and offer text boxes (and being two different versions of the answer at that)
+          appDispatch(
+            newRequestWebRTCAnswerSet(
               JSON.stringify(peerConnection.localDescription)
             )
           );
@@ -114,6 +142,7 @@ const webrtcPeerController = {
     console.log('webRTCPeerConnect:', webRTCpeerConnection);
     let offer = await webRTCpeerConnection!.createOffer();
     console.log('offer:', offer);
+
     await webRTCpeerConnection!.setLocalDescription(offer); //what is this line doing that is not already done?
     console.log('webRTCaftersetofLocalDes:', webRTCpeerConnection);
     appDispatch(
@@ -144,6 +173,7 @@ const webrtcPeerController = {
         webRTCAnswer: JSON.stringify(answer),
       })
     );
+    console.log('newRequestWebRTCCheckAfterAnswer:', newRequestWebRTC);
   },
 
   addAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
@@ -155,7 +185,7 @@ const webrtcPeerController = {
   sendMessages: async (reqRes: ReqRes, messages: string): Promise<void> => {
     let { request } = reqRes as { request: RequestWebRTCText };
     console.log('im here too');
-    console.log('request from mesaages :', request);
+    console.log('request from messages :', request);
 
     (<RequestWebRTCText>request).webRTCLocalStream!.send(
       JSON.stringify({ data: messages })
