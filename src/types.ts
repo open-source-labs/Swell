@@ -150,7 +150,7 @@ export interface Message {
   data: string;
 }
 
-export interface  NewRequestBody {
+export interface NewRequestBody {
   bodyContent: string;
   bodyVariables: string;
   bodyType: string;
@@ -325,12 +325,27 @@ export interface ResponseWebRTCText {
   webRTCMessages: WebMessages[];
 }
 
-export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText;
+export type RequestWebRTC =
+  | RequestWebRTCVideo
+  | RequestWebRTCText
+  | RequestWebRTCAudio;
 
 export interface RequestWebRTCVideo {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
   webRTCDataChannel: 'Video';
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: MediaStream | null;
+  webRTCRemoteStream: MediaStream | null;
+}
+
+export interface RequestWebRTCAudio {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Audio';
   webRTCWebsocketServer: string;
   webRTCOffer: string;
   webRTCAnswer: string;

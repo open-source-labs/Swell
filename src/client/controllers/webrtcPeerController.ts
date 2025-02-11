@@ -14,11 +14,9 @@ import {
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
 import { send } from 'process';
 const webrtcPeerController = {
-  // peer 1 and peer 2 both need to create a peer connection
-  // but peer 1 needs to create a data channel
-  // and peer 2 needs to receive a data channel
   createPeerConnection: async (
-    newRequestWebRTC: RequestWebRTC
+    newRequestWebRTC: RequestWebRTC,
+    currentReqRes: ReqRes
   ): Promise<void> => {
     let servers = {
       iceServers: [
@@ -84,7 +82,10 @@ const webrtcPeerController = {
         }
       };
     } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
-      //
+      //     const { request, response } = currentReqRes as {
+      //   request: RequestWebRTCText;
+      //   response: ResponseWebRTCText;
+      // };
 
       let localStream = peerConnection.createDataChannel('textChannel');
       localStream.onopen = () => console.log('data channel opened!!!');
@@ -92,12 +93,35 @@ const webrtcPeerController = {
 
       peerConnection.ondatachannel = (event) => {
         const receiveChannel = event.channel;
-        receiveChannel.onmessage = (event) => {
-          console.log('message received:', event.data);
+        // receiveChannel.onmessage = (event) => {
+        //   console.log('message received:', event.data);
+
+        // };
+        receiveChannel.onmessage = (event: MessageEvent) => {
+          let newString = event.data.slice(1, -1);
+          let messageObject = {
+            data: newString,
+            timeReceived: Date.now(),
+          };
+
+          let state = store.getState();
+          if (state.reqRes.currentResponse.response) {
+            let newWebRTCMessages = (<ResponseWebRTCText>(
+              state.reqRes.currentResponse.response
+            )).webRTCMessages.concat(messageObject);
+            let request = state.reqRes.currentResponse.request;
+            appDispatch(
+              responseDataSaved({
+                ...currentReqRes,
+                request,
+                response: {
+                  webRTCMessages: newWebRTCMessages,
+                },
+              })
+            );
+          }
         };
       };
-      // console.log('peerConnection:', peerConnection)
-      // console.log('localstream:', localStream)
       appDispatch(
         newRequestWebRTCSet({
           ...newRequestWebRTC,
@@ -142,9 +166,7 @@ const webrtcPeerController = {
     console.log('webRTCPeerConnect:', webRTCpeerConnection);
     let offer = await webRTCpeerConnection!.createOffer();
     console.log('offer:', offer);
-
     await webRTCpeerConnection!.setLocalDescription(offer); //what is this line doing that is not already done?
-    console.log('webRTCaftersetofLocalDes:', webRTCpeerConnection);
     appDispatch(
       newRequestWebRTCSet({
         // newRequestWebRTCSet mutates the newRequestWebRTC state to have the offer
@@ -152,7 +174,6 @@ const webrtcPeerController = {
         webRTCOffer: JSON.stringify(offer),
       })
     );
-    console.log('newRequestWebRTCCheckAfterOffer:', newRequestWebRTC);
   },
 
   createAnswer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
@@ -185,7 +206,7 @@ const webrtcPeerController = {
   sendMessages: async (reqRes: ReqRes, messages: string): Promise<void> => {
     let { request } = reqRes as { request: RequestWebRTCText };
     console.log('im here too');
-    console.log('request from messages :', request);
+    console.log('request from mesaages :', request);
 
     (<RequestWebRTCText>request).webRTCLocalStream!.send(
       JSON.stringify({ data: messages })
@@ -197,10 +218,6 @@ const webrtcPeerController = {
       request: RequestWebRTC;
       response: ResponseWebRTC;
     };
-
-    // request.webRTCpeerConnection!.setRemoteDescription(
-    //   JSON.parse(request.webRTCAnswer)
-    // );
 
     if (request.webRTCDataChannel === 'Video') {
       request.webRTCpeerConnection!.ontrack = async (event: RTCTrackEvent) => {

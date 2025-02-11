@@ -155,6 +155,7 @@
     "react-dom": "^18.0.0",
     "react-dropzone": "^12.1.0",
     "react-github-btn": "^1.2.2",
+    "react-icons": "^5.4.0",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
     "react-split": "^2.0.14",

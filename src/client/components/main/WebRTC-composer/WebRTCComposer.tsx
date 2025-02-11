@@ -28,7 +28,6 @@ export default function WebRTCComposer() {
   const [showRTCEntryForms, setShowRTCEntryForms] = useState(false);
 
   // Builds ReqRes object from properties in NewRequest
-  
   const composeReqRes = (): ReqRes => {
     return {
       id: uuid(),

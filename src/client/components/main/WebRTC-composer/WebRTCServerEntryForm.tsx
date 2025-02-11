@@ -1,4 +1,10 @@
 import React from 'react';
+import { useState } from 'react';
+import { MdRefresh } from 'react-icons/md';
+
+// import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
+import '../../../../assets/style/WebRtc.css';
+
 // import dropDownArrow from '../../../../assets/icons/arrow_drop_down_white_192x192.png';
 // import CodeMirror from '@uiw/react-codemirror';
 // import { EditorView } from '@codemirror/view';
@@ -27,6 +33,8 @@ interface Props {
 }
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
+  const [isToggled, setIsToggled] = useState(false);
+
   const dispatch = useAppDispatch();
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
@@ -34,6 +42,31 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="mt-3">
+      <div className="toggle-refresh-container">
+        <div className="Audio-Toggle-Container">
+          <span
+            style={{
+              fontFamily: "'Source Sans Pro', sans-serif",
+              fontSize: '16px',
+            }}
+          >
+            Audio
+          </span>
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={isToggled}
+              onChange={() => setIsToggled(!isToggled)}
+            />
+            <span className="slider round"></span>
+          </label>
+        </div>
+        <div>
+          <button className="refresh-button">
+            <MdRefresh size={30} style={{ color: 'white' }} />{' '}
+          </button>
+        </div>
+      </div>
       <div style={{ position: 'relative' }}>
         <TextCodeArea
           mode={'application/json'}
@@ -116,6 +149,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           mode={'application/json'}
           value={newRequestWebRTC.webRTCAnswer || ''}
           height={'85px'}
+          width={'100%'}
           onChange={(value, viewUpdate) => {
             dispatch(
               newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })

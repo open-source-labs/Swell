@@ -53,7 +53,6 @@ const WebRTCTextContainer = () => {
       data: messageInput,
       timeReceived: Date.now(),
     };
-    console.log('im here')
     dispatch(
       responseDataSaved({
         ...currentReqRes,
