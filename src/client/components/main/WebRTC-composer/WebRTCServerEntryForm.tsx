@@ -18,8 +18,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../toolkit-refactor/hooks';
-import { resetWebRTCconnection } from '../../../toolkit-refactor/slices/newRequestSlice.ts';
-import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
+import { resetWebRTCconnection, newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
 import { compose } from 'redux';
@@ -40,35 +39,50 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
+  // const currentReqRes = {};
+
   const handleResetWebRTCconnection = () => {
     dispatch(resetWebRTCconnection());
     console.log('WebRTC connection reset to initial state:');
+    console.log('newRequestWebRTCFromConnect:', {
+      newRequestWebRTC: newRequestWebRTC, // This will be the empty reset state
+    });
+    webrtcPeerController.createPeerConnection(newRequestWebRTC, // fix this after tech talk
+      // currentReqRes
+    );
   }
 
   return (
     <div className="mt-3">
       <div className="toggle-refresh-container">
         <div className="Audio-Toggle-Container">
-          <span
-            style={{
-              fontFamily: "'Source Sans Pro', sans-serif",
-              fontSize: '16px',
-            }}
-          >
-            Audio
-          </span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isToggled}
-              onChange={() => setIsToggled(!isToggled)}
-            />
-            <span className="slider round"></span>
-          </label>
+          {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+            <>
+              <span
+                style={{
+                  fontFamily: "'Source Sans Pro', sans-serif",
+                  fontSize: '16px',
+                }}
+              >
+                Audio
+              </span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isToggled}
+                  onChange={() => setIsToggled(!isToggled)}
+                />
+                <span
+                  className={`slider round ${isToggled ? 'slider-on' : ''}`}
+                ></span>
+              </label>
+            </>
+          )}
         </div>
+
         <div>
           <button className="refresh-button" onClick={handleResetWebRTCconnection}>
-            <MdRefresh size={30} style={{ color: 'white' }} />{' '}
+            <MdRefresh size={30} style={{ color: 'white' }} />
           </button>
         </div>
       </div>
