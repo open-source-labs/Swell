@@ -186,6 +186,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                     dispatch(
                       newRequestWebRTCSet({
                         ...newRequestWebRTC,
+                        enableAudio: newRequestWebRTC.enableAudio ?? false,
                         webRTCDataChannel: 'Video',
                       } as RequestWebRTC)
                     );

@@ -18,11 +18,8 @@ const webrtcPeerController = {
   createPeerConnection: async (
     newRequestWebRTC: RequestWebRTC,
     currentReqRes: ReqRes
-  ): Promise<void> => {
-    const enableAudio =
-      newRequestWebRTC.webRTCDataChannel === 'Video'
-        ? newRequestWebRTC.enableAudio ?? false
-        : false;
+  ) => {
+    const enableAudio = newRequestWebRTC.enableAudio ?? false;
 
     let servers = {
       iceServers: [
