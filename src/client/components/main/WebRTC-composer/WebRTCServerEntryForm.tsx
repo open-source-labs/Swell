@@ -44,26 +44,33 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
     <div className="mt-3">
       <div className="toggle-refresh-container">
         <div className="Audio-Toggle-Container">
-          <span
-            style={{
-              fontFamily: "'Source Sans Pro', sans-serif",
-              fontSize: '16px',
-            }}
-          >
-            Audio
-          </span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isToggled}
-              onChange={() => setIsToggled(!isToggled)}
-            />
-            <span className="slider round"></span>
-          </label>
+          {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+            <>
+              <span
+                style={{
+                  fontFamily: "'Source Sans Pro', sans-serif",
+                  fontSize: '16px',
+                }}
+              >
+                Audio
+              </span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isToggled}
+                  onChange={() => setIsToggled(!isToggled)}
+                />
+                <span
+                  className={`slider round ${isToggled ? 'slider-on' : ''}`}
+                ></span>
+              </label>
+            </>
+          )}
         </div>
+
         <div>
           <button className="refresh-button">
-            <MdRefresh size={30} style={{ color: 'white' }} />{' '}
+            <MdRefresh size={30} style={{ color: 'white' }} />
           </button>
         </div>
       </div>
