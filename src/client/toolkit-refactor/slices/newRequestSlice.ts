@@ -109,7 +109,9 @@ const newRequestSlice = createSlice({
       state.newRequestWebRTC.webRTCAnswer = action.payload;
     },
 
-    //add one for answer
+    resetWebRTCconnection: () => {
+      return initialState;
+    },
 
     //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
     newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
@@ -193,6 +195,7 @@ export const {
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
   newRequestWebRTCAnswerSet,
+  resetWebRTCconnection,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 

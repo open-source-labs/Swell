@@ -18,6 +18,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../toolkit-refactor/hooks';
+import { resetWebRTCconnection } from '../../../toolkit-refactor/slices/newRequestSlice.ts';
 import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
@@ -39,6 +40,10 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
+  const handleResetWebRTCconnection = () => {
+    dispatch(resetWebRTCconnection());
+    console.log('WebRTC connection reset to initial state:');
+  }
 
   return (
     <div className="mt-3">
@@ -62,7 +67,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           </label>
         </div>
         <div>
-          <button className="refresh-button">
+          <button className="refresh-button" onClick={handleResetWebRTCconnection}>
             <MdRefresh size={30} style={{ color: 'white' }} />{' '}
           </button>
         </div>
