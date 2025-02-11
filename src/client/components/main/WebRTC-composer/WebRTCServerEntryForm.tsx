@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MdRefresh } from 'react-icons/md';
 
 // import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
@@ -32,13 +31,25 @@ interface Props {
   // } | null;
 }
 
-const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
-  const [isToggled, setIsToggled] = useState(false);
-
+const WebRTCServerEntryForm: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
+
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleToggleChange = () => {
+    const newToggleState = !isToggled;
+    setIsToggled(newToggleState);
+
+    dispatch(
+      newRequestWebRTCSet({
+        ...newRequestWebRTC,
+        enableAudio: newToggleState,
+      })
+    );
+  };
 
   return (
     <div className="mt-3">
@@ -58,7 +69,7 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
                 <input
                   type="checkbox"
                   checked={isToggled}
-                  onChange={() => setIsToggled(!isToggled)}
+                  onChange={handleToggleChange}
                 />
                 <span
                   className={`slider round ${isToggled ? 'slider-on' : ''}`}

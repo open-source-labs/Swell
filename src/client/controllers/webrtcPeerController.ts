@@ -13,11 +13,17 @@ import {
 } from '../../types';
 import { responseDataSaved } from '../toolkit-refactor/slices/reqResSlice';
 import { send } from 'process';
+
 const webrtcPeerController = {
   createPeerConnection: async (
     newRequestWebRTC: RequestWebRTC,
     currentReqRes: ReqRes
   ): Promise<void> => {
+    const enableAudio =
+      newRequestWebRTC.webRTCDataChannel === 'Video'
+        ? newRequestWebRTC.enableAudio ?? false
+        : false;
+
     let servers = {
       iceServers: [
         {
@@ -30,7 +36,7 @@ const webrtcPeerController = {
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
       let localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
-        audio: false,
+        audio: enableAudio,
       });
 
       if (document.getElementById('localstream')) {
@@ -55,6 +61,7 @@ const webrtcPeerController = {
           webRTCpeerConnection: peerConnection,
           webRTCLocalStream: localStream,
           webRTCRemoteStream: remoteStream,
+          enableAudio,
         })
       );
 
