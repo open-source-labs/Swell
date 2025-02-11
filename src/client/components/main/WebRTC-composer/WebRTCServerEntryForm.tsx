@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
 
 // import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
@@ -39,7 +39,12 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
-  // const currentReqRes = {};
+  const currentReqRes = useAppSelector(
+    (store: RootState) => store.reqRes.currentResponse
+  ) as ReqRes;
+
+  const hasResetRef = useRef(false);
+
 
   const handleResetWebRTCconnection = () => {
     dispatch(resetWebRTCconnection());
@@ -47,10 +52,16 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
     console.log('newRequestWebRTCFromConnect:', {
       newRequestWebRTC: newRequestWebRTC, // This will be the empty reset state
     });
-    webrtcPeerController.createPeerConnection(newRequestWebRTC, // fix this after tech talk
-      // currentReqRes
-    );
+    hasResetRef.current = true;
   }
+
+  useEffect(() => {// so we only trigger a new peer connection here for the reset if the offer has been cleared specifically via our reset function
+    if (hasResetRef.current && newRequestWebRTC.webRTCOffer === '') {
+      console.log('Creating a new Peer Connection with reset state');
+      webrtcPeerController.createPeerConnection(newRequestWebRTC, currentReqRes);
+      hasResetRef.current = false;
+    }
+  }, [newRequestWebRTC, currentReqRes]);
 
   return (
     <div className="mt-3">
