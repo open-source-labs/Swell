@@ -93,6 +93,8 @@ const webrtcPeerController = {
         newRequestWebRTCSet({
           // new state object is created to update redux state
           ...newRequestWebRTC, //copy properties from existing state object
+          webRTCpeerConnection: peerConnection,
+          webRTCLocalStream: localStream,
           webRTCRemoteStream: remoteStream, //remote stream overwritten
         })
       );
@@ -176,6 +178,12 @@ const webrtcPeerController = {
   // what in create offer triggers the ice candidate to be sent?
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
+    console.log('checking peer connection inside createOffer');
+    console.log(
+      'webRTCpeerConnection exists:',
+      !!newRequestWebRTC.webRTCpeerConnection
+    );
+
     let { webRTCpeerConnection } = newRequestWebRTC;
     if (!webRTCpeerConnection) return;
     console.log('webRTCPeerConnect:', webRTCpeerConnection);

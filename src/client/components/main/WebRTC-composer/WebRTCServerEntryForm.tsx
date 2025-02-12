@@ -163,6 +163,11 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
           style={{ margin: '10px' }}
           onClick={() => {
             console.log('newRequestWebRTCfromOclick:', newRequestWebRTC);
+            if (!newRequestWebRTC.webRTCpeerConnection) {
+              console.warn(
+                'webRTCpeerConnection is NULL! createPeerConnection may not have run.'
+              );
+            }
             webrtcPeerController.createOffer(newRequestWebRTC);
           }}
         >
