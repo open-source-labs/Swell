@@ -19,7 +19,7 @@ const webrtcPeerController = {
     newRequestWebRTC: RequestWebRTC,
     currentReqRes: ReqRes
   ) => {
-    const enableAudio = newRequestWebRTC.enableAudio ?? false;
+    const enableAudio = newRequestWebRTC.enableAudio ?? false; //if null set to false
 
     let servers = {
       iceServers: [
@@ -32,9 +32,10 @@ const webrtcPeerController = {
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
       let localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: enableAudio,
-      });
+        // request access to user camera
+        video: true, // request access to video
+        audio: enableAudio, //if enable audio is true request access to audio //not if false
+      }); // from
 
       if (document.getElementById('localstream')) {
         (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
@@ -61,31 +62,42 @@ const webrtcPeerController = {
           enableAudio,
         })
       );
+    }
+    if (newRequestWebRTC.webRTCDataChannel === 'Audio') {
+      let localStream = await navigator.mediaDevices.getUserMedia({
+        // accesses user audio
+        video: false,
+        audio: true,
+      });
 
-      peerConnection.onicecandidate = async (
-        event: RTCPeerConnectionIceEvent
-      ): Promise<void> => {
-        if (
-          event.candidate &&
-          peerConnection.localDescription!.type === 'offer'
-        ) {
-          appDispatch(
-            newRequestWebRTCOfferSet(
-              JSON.stringify(peerConnection.localDescription)
-            )
-          );
-        } else if (
-          event.candidate &&
-          peerConnection.localDescription!.type === 'answer'
-        ) {
-          appDispatch(
-            newRequestWebRTCAnswerSet(
-              JSON.stringify(peerConnection.localDescription)
-            )
-          );
-        }
+      console.log('Local Audio Tracks Captured:', localStream.getTracks());
+      localStream.getTracks().forEach((track) => {
+        // iterates over tracks in local stream
+        console.log(`adding track: ${track.kind}`);
+        peerConnection.addTrack(track, localStream); // adds them to the peer connection using add track
+      });
+
+      let remoteStream = new MediaStream(); // initialize new media stream object
+      //to hold audio tracks from remote peer
+      peerConnection.ontrack = async (event) => {
+        // sets up an event handler fro on track event of peer connection object
+        console.log(`recieved remote track: ${event.track.kind}`);
+        event.streams[0].getTracks().forEach((track) => {
+          // iterates over each track recieved to the remote stream object// returns array of tracks
+          remoteStream.addTrack(track);
+        });
       };
-    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+
+      appDispatch(
+        // update redux state
+        newRequestWebRTCSet({
+          // new state object is created to update redux state
+          ...newRequestWebRTC, //copy properties from existing state object
+          webRTCRemoteStream: remoteStream, //remote stream overwritten
+        })
+      );
+    }
+    if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       //     const { request, response } = currentReqRes as {
       //   request: RequestWebRTCText;
       //   response: ResponseWebRTCText;
@@ -133,40 +145,39 @@ const webrtcPeerController = {
           webRTCLocalStream: localStream,
         })
       );
-
-      peerConnection.onicecandidate = async (
-        event: RTCPeerConnectionIceEvent
-      ): Promise<void> => {
-        if (
-          event.candidate &&
-          peerConnection.localDescription!.type === 'offer'
-        ) {
-          //debugged
-          appDispatch(
-            newRequestWebRTCOfferSet(
-              //should we be adding a ...peerConnection here spreading out the rest of the peerConnection object? also why isn't this updating the newWebRTCRequest object?
-              JSON.stringify(peerConnection.localDescription)
-            )
-          );
-        } else if (
-          event.candidate &&
-          peerConnection.localDescription!.type === 'answer'
-        ) {
-          //added this plus an answerSet reducer so the answer wasn't populating both the answer and offer text boxes (and being two different versions of the answer at that)
-          appDispatch(
-            newRequestWebRTCAnswerSet(
-              JSON.stringify(peerConnection.localDescription)
-            )
-          );
-          console.log('eventIceCandidate:', event.candidate.candidate);
-        }
-      };
     }
+    peerConnection.onicecandidate = async (
+      event: RTCPeerConnectionIceEvent
+    ) => {
+      // sets up event handler for onice canditates
+      if (
+        event.candidate &&
+        peerConnection.localDescription!.type === 'offer'
+      ) {
+        // checks for canidate and if event type is offer
+        appDispatch(
+          newRequestWebRTCOfferSet(
+            JSON.stringify(peerConnection.localDescription)
+          )
+        ); // dispatches action to set a new WebRTC offer request
+      } else if (
+        event.candidate &&
+        peerConnection.localDescription!.type === 'answer'
+      ) {
+        // checks for canditate with description type answer
+        appDispatch(
+          newRequestWebRTCAnswerSet(
+            JSON.stringify(peerConnection.localDescription)
+          )
+        ); //dispatches action to create answer
+      }
+    };
   },
   // what in create offer triggers the ice candidate to be sent?
   createOffer: async (newRequestWebRTC: RequestWebRTC): Promise<void> => {
     //grab the peer connection off the state to manipulate further
     let { webRTCpeerConnection } = newRequestWebRTC;
+    if (!webRTCpeerConnection) return;
     console.log('webRTCPeerConnect:', webRTCpeerConnection);
     let offer = await webRTCpeerConnection!.createOffer();
     console.log('offer:', offer);

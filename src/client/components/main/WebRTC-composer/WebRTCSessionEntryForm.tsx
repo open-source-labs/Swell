@@ -164,10 +164,14 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
               <li>
                 <a
                   onClick={() => {
+                    // when audio is clicked
                     dispatch(
+                      // dispatches an action to the redux store
                       newRequestWebRTCSet({
-                        ...newRequestWebRTC,
-                        webRTCDataChannel: 'Audio',
+                        // creates action
+                        ...newRequestWebRTC, // copies properties from newrequest webrtc to a new object
+                        webRTCDataChannel: 'Audio', //updates data channel property audio
+                        enableAudio: true, //overwrites enable audio property on new object
                       } as RequestWebRTC)
                     );
                     setShowRTCEntryForms(false);
@@ -179,14 +183,16 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                 </a>
               </li>
             )}
-            {newRequestWebRTC.webRTCDataChannel !== 'Video' && (
+            {newRequestWebRTC.webRTCDataChannel !== 'Video' && ( //conditionally rendered video dropdown
+              //only displayed if current redux channel doesn equal weRTCDataChannel in redux store
               <li>
                 <a
                   onClick={() => {
+                    // when user selects the dropdown
                     dispatch(
                       newRequestWebRTCSet({
                         ...newRequestWebRTC,
-                        enableAudio: newRequestWebRTC.enableAudio ?? false,
+                        enableAudio: newRequestWebRTC.enableAudio ?? false, // sets audio to value in redux store or
                         webRTCDataChannel: 'Video',
                       } as RequestWebRTC)
                     );

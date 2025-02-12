@@ -323,6 +323,10 @@ export type ResponseWebRTC = ResponseWebRTCText;
 
 export interface ResponseWebRTCText {
   webRTCMessages: WebMessages[];
+
+  events?: any[];
+  headers?: Record<string, string>;
+  cookies?: any[];
 }
 //Defines web rtc request type that can be audio video or text
 //enable audio is a shared but optional property
