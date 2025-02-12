@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Joyride from 'react-joyride';
 import { useState } from 'react';
 import { MdRefresh } from 'react-icons/md';
 
@@ -34,11 +35,64 @@ interface Props {
 
 const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
   const [isToggled, setIsToggled] = useState(false);
-
+  const [run, setRun] = useState(true);
   const dispatch = useAppDispatch();
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
+
+  const steps = [
+    {
+      target: '.get-offer-button',
+      content: 'Caller: Generate an offer by clicking “Get Offer”.',
+      placement: 'bottom',
+    },
+    {
+      target: '.copy-offer-button', // Target the "Copy" button in the Offer code box
+      content:
+        'Caller: Copy to clipboard, paste and send to recipient (email recommended).',
+      placement: 'bottom',
+    },
+    {
+      target: '.offer-paste-button',
+      content: 'Recipient: Copy the offer received and paste into the top box',
+    },
+    {
+      target: '.get-answer-btn',
+      content: "Recipient: Click 'Get Answer' and copy it.",
+    },
+    // {
+    //   target: ".answer-input-box",
+    //   content: "Caller: Paste the answer here.",
+    // },
+    // {
+    //   target: ".add-answer-btn",
+    //   content: "Caller: Click 'Add Answer' to establish the connection.",
+    // },
+    // {
+    //   target: ".add-to-workspace-btn-caller",
+    //   content: "Caller: Click 'Add to Workspace'.",
+    // },
+    // {
+    //   target: ".add-to-workspace-btn-recipient",
+    //   content: "Recipient: Click 'Add to Workspace'.",
+    // },
+    // {
+    //   target: ".send-btn-caller",
+    //   content: "Caller: Click 'Send'.",
+    // },
+    // {
+    //   target: ".send-btn-recipient",
+    //   content: "Recipient: Click 'Send'.",
+    // },
+  ];
+  // Use useEffect to start the joyride after the component mounts
+  useEffect(() => {
+    // Delay the start of Joyride to ensure everything is rendered
+    const timer = setTimeout(() => setRun(true), 500);
+
+    return () => clearTimeout(timer); // Clear the timer on cleanup
+  }, []);
 
   return (
     <div className="mt-3">
@@ -85,63 +139,76 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
           placeholder={'Click "Get Offer" or paste in Offer SDP'}
           readOnly={true}
         />
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.writeText(newRequestWebRTC.webRTCOffer);
-          }}
-        >
-          Copy
-        </button>
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '60px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.readText().then((text) => {
-              console.log('text:', text);
-              dispatch(
-                newRequestWebRTCSet({
-                  ...newRequestWebRTC,
-                  webRTCOffer: text,
-                })
-              );
-            });
-          }}
-        >
-          Paste
-        </button>
-        <button
-          className="button is-normal is-primary-100 add-request-button no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            console.log('newRequestWebRTCfromOclick:', newRequestWebRTC);
-            webrtcPeerController.createOffer(newRequestWebRTC);
-          }}
-        >
-          Get Offer
-        </button>
-        <button
-          id="webRTButton"
-          className="button is-normal is-primary-100 add-request-button  no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
-            webrtcPeerController.createAnswer(newRequestWebRTC);
-          }}
-        >
-          Get Answer
-        </button>
+        <div>
+          <Joyride
+            steps={steps}
+            run={run}
+            continuous
+            showSkipButton
+            disableOverlayClose={true}
+            locale={{
+              close: 'Close',
+            }}
+          />
+          <button
+            className="button is-small  copy-offer-button is-rest-invert"
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(newRequestWebRTC.webRTCOffer);
+            }}
+          >
+            Copy
+          </button>
+          <button
+            className="button is-small is-rest-invert offer-paste-button"
+            style={{
+              position: 'absolute',
+              top: '60px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.readText().then((text) => {
+                console.log('text:', text);
+                dispatch(
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCOffer: text,
+                  })
+                );
+              });
+            }}
+          >
+            Paste
+          </button>
+          <button
+            className="button is-normal is-primary-100 add-request-button get-offer-button no-border-please"
+            style={{ margin: '10px' }}
+            onClick={() => {
+              console.log('newRequestWebRTCfromOclick:', newRequestWebRTC);
+              webrtcPeerController.createOffer(newRequestWebRTC);
+            }}
+          >
+            Get Offer
+          </button>
+
+          <button
+            id="webRTButton"
+            className="button is-normal is-primary-100 add-request-button get-answer-btn no-border-please"
+            style={{ margin: '10px' }}
+            onClick={() => {
+              console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
+              webrtcPeerController.createAnswer(newRequestWebRTC);
+            }}
+          >
+            Get Answer
+          </button>
+        </div>
       </div>
       {/* Code box for Answer */}
       <div style={{ position: 'relative' }}>
