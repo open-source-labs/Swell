@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Joyride from 'react-joyride';
 import { useState, useRef, useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
