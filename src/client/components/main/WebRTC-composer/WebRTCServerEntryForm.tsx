@@ -2,6 +2,8 @@ import React from 'react';
 import Joyride from 'react-joyride';
 import { useState, useRef, useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
+import { Placement } from 'react-joyride';
+
 
 // import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
 import '../../../../assets/style/WebRtc.css';
@@ -88,23 +90,23 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
     {
       target: '.get-offer-button',
       content: 'Caller: Generate an offer by clicking “Get Offer”.',
-      placement: 'bottom',
+      placement: 'bottom' as Placement,
     },
     {
       target: '.copy-offer-button', // Target the "Copy" button in the Offer code box
       content:
         'Caller: Copy to clipboard, paste and send to recipient (email recommended).',
-      placement: 'bottom',
+      placement: 'bottom' as Placement,
     },
     {
       target: '.offer-paste-button',
       content: 'Recipient: Copy the offer received and paste into the top box',
-      placement: 'bottom',
+      placement: 'bottom' as Placement,
     },
     {
       target: '.get-answer-btn',
       content: "Recipient: Click 'Get Answer' and copy it.",
-      placement: 'bottom',
+      placement: 'bottom' as Placement,
     },
     {
       target: '.answer-paste-button',

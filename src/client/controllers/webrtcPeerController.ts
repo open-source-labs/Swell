@@ -31,6 +31,33 @@ const webrtcPeerController = {
       ],
     };
     let peerConnection = new RTCPeerConnection(servers);
+    // ? if you want to attempt to build a websocket with a live connection through ngrok, 
+    // ? give it a shot - we attempted below, this may be helpful, probably isn't (-Isaac M)
+
+    // let wsIp = newRequestWebRTC.webRTCWebsocketServer;
+    // const socket = io('http://localhost:3000');
+
+    // socket.on('connect', async () => {
+    //       // try {
+    //       //   const url = await ngrok.connect({
+    //       //     proto: 'http',
+    //       //     addr: 3000,
+    //       //   });
+    //       //   console.log(`ngrok tunnel opened at: ${url}`);
+    //       //   // client.emit('ngrokUrl', url);
+    //       // } catch (err) {
+    //       //   console.error('Failed to create ngrok tunnel:', err);
+    //       // }
+    //   console.log('Connected to server');
+    // });
+
+    // socket.on('disconnect', () => {
+    //   console.log('Disconnected from server');
+    // });
+
+    // socket.on('message', (message: string) => {
+    //   console.log('Message:', message);
+    // });
 
     if (newRequestWebRTC.webRTCDataChannel === 'Video') {
       let localStream = await navigator.mediaDevices.getUserMedia({
@@ -204,6 +231,8 @@ const webrtcPeerController = {
         event.candidate &&
         peerConnection.localDescription!.type === 'offer'
       ) {
+        // ? more websocket hints below (-Isaac)
+        // ? // socket.emit('offer', JSON.stringify(peerConnection.localDescription));
         // checks for canidate and if event type is offer
         appDispatch(
           newRequestWebRTCOfferSet(
