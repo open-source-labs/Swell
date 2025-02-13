@@ -31,7 +31,7 @@
     "gh-publish-mac": "electron-builder build --x64 --mac -p always",
     "gh-publish": "electron-builder build -mwl -p always",
     "check-types": "tsc",
-    "postinstall": "NODE_OPTIONS=--no-node-snapshot patch-package"
+    "postinstall": "patch-package"
   },
   "build": {
     "npmRebuild": false,
