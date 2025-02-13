@@ -231,6 +231,8 @@ const webrtcPeerController = {
         event.candidate &&
         peerConnection.localDescription!.type === 'offer'
       ) {
+        // ? more websocket hints below (-Isaac)
+        // ? // socket.emit('offer', JSON.stringify(peerConnection.localDescription));
         // checks for canidate and if event type is offer
         appDispatch(
           newRequestWebRTCOfferSet(
