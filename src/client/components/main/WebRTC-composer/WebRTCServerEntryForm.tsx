@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Joyride from 'react-joyride';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
 
 // import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
@@ -19,7 +19,10 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../toolkit-refactor/hooks';
-import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
+import {
+  resetWebRTCconnection,
+  newRequestWebRTCSet,
+} from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
 import { compose } from 'redux';
@@ -84,31 +87,67 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
 
     return () => clearTimeout(timer); // Clear the timer on cleanup
   }, []);
+  const currentReqRes = useAppSelector(
+    (store: RootState) => store.reqRes.currentResponse
+  ) as ReqRes;
+
+  const hasResetRef = useRef(false);
+
+  const handleResetWebRTCconnection = () => {
+    dispatch(resetWebRTCconnection());
+    console.log('WebRTC connection reset to initial state:');
+    console.log('newRequestWebRTCFromConnect:', {
+      newRequestWebRTC: newRequestWebRTC, // This will be the empty reset state
+    });
+    hasResetRef.current = true;
+  };
+
+  useEffect(() => {
+    // so we only trigger a new peer connection here for the reset if the offer has been cleared specifically via our reset function
+    if (hasResetRef.current && newRequestWebRTC.webRTCOffer === '') {
+      console.log('Creating a new Peer Connection with reset state');
+      webrtcPeerController.createPeerConnection(
+        newRequestWebRTC,
+        currentReqRes
+      );
+      hasResetRef.current = false;
+    }
+  }, [newRequestWebRTC, currentReqRes]);
 
   return (
     <div className="mt-3">
       <div className="toggle-refresh-container">
         <div className="Audio-Toggle-Container">
-          <span
-            style={{
-              fontFamily: "'Source Sans Pro', sans-serif",
-              fontSize: '16px',
-            }}
-          >
-            Audio
-          </span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isToggled}
-              onChange={() => setIsToggled(!isToggled)}
-            />
-            <span className="slider round"></span>
-          </label>
+          {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+            <>
+              <span
+                style={{
+                  fontFamily: "'Source Sans Pro', sans-serif",
+                  fontSize: '16px',
+                }}
+              >
+                Audio
+              </span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isToggled}
+                  onChange={() => setIsToggled(!isToggled)}
+                />
+                <span
+                  className={`slider round ${isToggled ? 'slider-on' : ''}`}
+                ></span>
+              </label>
+            </>
+          )}
         </div>
+
         <div>
-          <button className="refresh-button">
-            <MdRefresh size={30} style={{ color: 'white' }} />{' '}
+          <button
+            className="refresh-button"
+            onClick={handleResetWebRTCconnection}
+          >
+            <MdRefresh size={30} style={{ color: 'white' }} />
           </button>
         </div>
       </div>

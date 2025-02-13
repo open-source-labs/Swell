@@ -19,7 +19,7 @@ Thank you for your consideration and let's work together on making Swell one of 
 
 - TypeScript + JavaScript
 - React
-- Redux
+- Redux Toolkit
 - SASS
 - Node
 - Express
@@ -111,6 +111,7 @@ From a functionality standpoint:
 - HTTP/2 stress testing with `GET` requests
 - GraphQL stress testing with `Query`
 - Mock server for HTTP/2 (`Express`)
+- WebRTC video/audio and text channel testing
 - Ability to store historical requests and create/delete workspaces
 - Frontend conversion to TypeScript
 - From a codebase standpoint:
@@ -140,9 +141,9 @@ endeavour. The impacts to the product are:
 
 As you iterate the product, keep in mind the footprint your new feature(s) could add to the codebase. Could you re-use some of the existing modules? Can you even refactor and/or remove the obsolete code to help maintain the health of the codebase?
 
-There are many parts of the codebase that break DRY principles, and with such a large application, really keep in mind that when you add features to ask if it is completely necessary. Past iterators added an experimental feature(s) without it fully working and the following team(s) would add their own experimental feature. Fixing features the past teams couldn't get to is not only a great way to learn these technologies but also a great thing to talk about in interviews. "I fixed the webRTC feature that has been stagnant for 5 years", "I addressed the technical debt and reorganized the state...", or "Increased the quality of typeScript". These all show maturity as a developer and will allow us to focus the entire time of OSP on the final 20% problems.
+There are many parts of the codebase that break DRY principles, and with such a large application, really keep in mind when you add features to ask if it is completely necessary. Past iterators added an experimental feature(s) without it fully working and the following team(s) would add their own experimental feature. Fixing features the past teams couldn't get to is not only a great way to learn these technologies but also a great thing to talk about in interviews. "I fixed the webRTC feature that has been stagnant for 5 years", "I addressed the technical debt and reorganized the state...", or "Increased the quality of typeScript". These all show maturity as a developer and will allow us to focus the entire time of OSP on the final 20% problems.
 
-Legacy Components - As a part of a clean up effort, all files that are no longer being used have been moved to the legacy component folder. Examples of these files come from the migration to shared components. The original location of the components is mentioned in the comments of the relocated files.
+Legacy Components - As a part of a cleanup effort, all files that are no longer being used have been moved to the legacy component folder. Examples of these files come from the migration to shared components. The original location of the components is mentioned in the comments of the relocated files.
 
 ### _Ensure consistent redux state management_
 
@@ -250,7 +251,7 @@ Finally, if future iterators would like to completely cover the list of API-test
 
 ---
 
-## Backlog from Iteration Group v1.18
+## Backlog from Iteration Groups v1.18 and v1.19
 
 - Fix/Update GitHub Actions for Unit Testing
 - Create a feature/function/endpoint to delete a mock route
@@ -267,7 +268,7 @@ Finally, if future iterators would like to completely cover the list of API-test
 - Convert WebRTCSessionEntryForm to MUI
 - Convert WebRTC components to all use material UI as per line 7 of WebRTCComposer.tsx
 - Combine newRequestSlice.ts and newRequestFieldSlice.ts
-- Update Excalidraw if necessary with new features/redux changes
+- Update Excalidraw as necessary with new features/redux changes
 - ErrorBoundary.tsx may not be functional or necessary (Leave for now)
 
 ---

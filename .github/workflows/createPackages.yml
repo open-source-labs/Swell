@@ -9,16 +9,16 @@ jobs:
   tests:
     strategy:
       matrix:
-        node-version: [16]
+        node-version: [18.20.6]
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 18.20.6 # this used to be dynamically updated, but kept pulling an old version number. you'll have to manually update these throughout this file to be safe.
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18.20.6
       - name: Install dependencies
         run: npm i && npm ci
       - name: Run unit tests
@@ -40,15 +40,15 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.15'
+          node-version: '18.20.6'
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: v1.16.0 # Replace with your desired tag or version number
-          release_name: Release v1.16.0 # Replace with your desired release name
+          tag_name: v1.19.0 # Replace with your desired tag or version number
+          release_name: Release v1.19.0 # Replace with your desired release name
           draft: true
           body: |
             <Temporary Body for Github Release>
@@ -67,7 +67,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.15'
+          node-version: '18.20.6'
 
       - name: Install Dependencies
         run: npm install
@@ -89,7 +89,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.15' # Use the specific version of Node that your project requires
+          node-version: '18.20.6' # Use the specific version of Node that your project requires
 
       - name: Install Dependencies
         run: npm install
@@ -118,7 +118,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.15' # Use the specific version of Node that your project requires
+          node-version: '18.20.6' # Use the specific version of Node that your project requires
 
       - name: Install Dependencies
         run: npm install
