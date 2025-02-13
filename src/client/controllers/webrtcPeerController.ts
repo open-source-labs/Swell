@@ -19,6 +19,8 @@ const webrtcPeerController = {
     newRequestWebRTC: RequestWebRTC,
     currentReqRes: ReqRes
   ) => {
+    // const enableAudio =
+    //   store.getState().newRequest.newRequestWebRTC.enableAudio ?? false;
     const enableAudio = newRequestWebRTC.enableAudio ?? false; //if null set to false
 
     let servers = {
@@ -35,7 +37,7 @@ const webrtcPeerController = {
         // request access to user camera
         video: true, // request access to video
         audio: enableAudio, //if enable audio is true request access to audio //not if false
-      }); // from
+      });
 
       if (document.getElementById('localstream')) {
         (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
@@ -62,28 +64,52 @@ const webrtcPeerController = {
           enableAudio,
         })
       );
-    }
-    if (newRequestWebRTC.webRTCDataChannel === 'Audio') {
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'offer'
+        ) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        } else if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'answer'
+        ) {
+          appDispatch(
+            newRequestWebRTCAnswerSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
+      };
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Audio') {
       let localStream = await navigator.mediaDevices.getUserMedia({
-        // accesses user audio
-        video: false,
-        audio: true,
-      });
+        // request access to user camera
+        video: false, // request access to video
+        audio: true, //if enable audio is true request access to audio //not if false
+      }); // from
 
-      console.log('Local Audio Tracks Captured:', localStream.getTracks());
+      if (document.getElementById('localstream')) {
+        (<HTMLVideoElement>document.getElementById('localstream')).srcObject =
+          localStream;
+      }
+
       localStream.getTracks().forEach((track) => {
         // iterates over tracks in local stream
-        console.log(`adding track: ${track.kind}`);
-        peerConnection.addTrack(track, localStream); // adds them to the peer connection using add track
-      });
+        peerConnection.addTrack(track, localStream);
+      }); // adds them to the peer connection using add track
 
-      let remoteStream = new MediaStream(); // initialize new media stream object
-      //to hold audio tracks from remote peer
+      let remoteStream = new MediaStream(); //initialize new media stream object
       peerConnection.ontrack = async (event) => {
-        // sets up an event handler fro on track event of peer connection object
-        console.log(`recieved remote track: ${event.track.kind}`);
+        // adds them to the peer connection using add track
         event.streams[0].getTracks().forEach((track) => {
-          // iterates over each track recieved to the remote stream object// returns array of tracks
+          // sets up an event handler for on track event of peer connection object
+          // returns array of tracks
           remoteStream.addTrack(track);
         });
       };
@@ -91,15 +117,37 @@ const webrtcPeerController = {
       appDispatch(
         // update redux state
         newRequestWebRTCSet({
-          // new state object is created to update redux state
-          ...newRequestWebRTC, //copy properties from existing state object
+          //new state object is created to update redux object
+          ...newRequestWebRTC, // copy properties from existing object
           webRTCpeerConnection: peerConnection,
           webRTCLocalStream: localStream,
-          webRTCRemoteStream: remoteStream, //remote stream overwritten
+          webRTCRemoteStream: remoteStream, // remote stream overwritten
         })
       );
-    }
-    if (newRequestWebRTC.webRTCDataChannel === 'Text') {
+      peerConnection.onicecandidate = async (
+        event: RTCPeerConnectionIceEvent
+      ): Promise<void> => {
+        if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'offer'
+        ) {
+          appDispatch(
+            newRequestWebRTCOfferSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        } else if (
+          event.candidate &&
+          peerConnection.localDescription!.type === 'answer'
+        ) {
+          appDispatch(
+            newRequestWebRTCAnswerSet(
+              JSON.stringify(peerConnection.localDescription)
+            )
+          );
+        }
+      };
+    } else if (newRequestWebRTC.webRTCDataChannel === 'Text') {
       //     const { request, response } = currentReqRes as {
       //   request: RequestWebRTCText;
       //   response: ResponseWebRTCText;

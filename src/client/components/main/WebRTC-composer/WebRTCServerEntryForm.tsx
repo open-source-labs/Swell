@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
 
 // import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
@@ -38,15 +38,22 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
   const [isToggled, setIsToggled] = useState(false);
+  const currentReqRes = useAppSelector(
+    (store: RootState) => store.reqRes.currentResponse
+  ) as ReqRes;
+
+  useEffect(() => {
+    setIsToggled(newRequestWebRTC.enableAudio as boolean);
+  }, [newRequestWebRTC.enableAudio]);
 
   const handleToggleChange = () => {
     // toggles state os is toggled
     const newToggleState = !isToggled;
     setIsToggled(newToggleState);
-    console.log(
-      'Dispatching newRequestWebRTCSet with enableAudio:',
-      newToggleState
-    );
+    // console.log(
+    //   'Dispatching newRequestWebRTCSet with enableAudio for handleToggleChange:',
+    //   newToggleState
+    // );
 
     dispatch(
       //sends action to redux store
@@ -57,12 +64,19 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
         enableAudio: newToggleState, //updates Enableaudio property in newRequestWebRTC to match toggle state
       }) //enable audio updated every time toggle state changes
     );
-    console.log(
-      'enableAudio Redux state just after dispatch:',
-      newRequestWebRTC.enableAudio
+
+    // console.log(
+    //   'enableAudio Redux state just after dispatch:',
+    //   newRequestWebRTC.enableAudio
+    // );
+    webrtcPeerController.createPeerConnection(
+      {
+        ...newRequestWebRTC,
+        enableAudio: newToggleState,
+      },
+      currentReqRes
     );
   };
-
   return (
     <div className="mt-3">
       <div className="toggle-refresh-container">
@@ -107,10 +121,10 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
             dispatch(
               newRequestWebRTCSet({ ...newRequestWebRTC, webRTCOffer: value })
             );
-            console.log(
-              'value after dispatch, Im assuming it is the same:',
-              value
-            );
+            // console.log(
+            //   'value after dispatch, Im assuming it is the same:',
+            //   value
+            // );
           }}
           placeholder={'Click "Get Offer" or paste in Offer SDP'}
           readOnly={true}

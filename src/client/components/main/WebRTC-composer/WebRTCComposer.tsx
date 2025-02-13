@@ -13,6 +13,7 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
+import WebRTCAudioBox from './WebRTCAudioBox';
 import { RootState } from '../../../toolkit-refactor/store';
 import {
   useAppDispatch,
@@ -109,12 +110,18 @@ export default function WebRTCComposer() {
             <WebRTCServerEntryForm />
             <div className="is-3rem-footer is-clickable is-margin-top-auto">
               <NewRequestButton onClick={addNewRequest} />
-              {newRequestWebRTC.webRTCDataChannel === 'Video' && (
-                <div className="box is-rest-invert">
-                  <WebRTCVideoBox streamType="localstream" />
-                </div>
-              )}
             </div>
+            {newRequestWebRTC.webRTCDataChannel === 'Video' && (
+              <div className="box is-rest-invert">
+                <WebRTCVideoBox streamType="localstream" />
+              </div>
+            )}
+
+            {newRequestWebRTC.webRTCDataChannel === 'Audio' && (
+              <div className="box is-rest-invert">
+                <WebRTCAudioBox streamType="localstream" />
+              </div>
+            )}
           </>
         )}
       </div>
