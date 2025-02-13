@@ -146,7 +146,7 @@
     "node-fetch": "^3.3.0",
     "node-gyp": "^11.0.0",
     "npm": "^8.7.0",
-    "patch-package": "^6.4.7",
+    "patch-package": "^6.5.1",
     "path": "^0.12.7",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
