@@ -49,19 +49,19 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
             id="rest-method"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
-            onClick={() =>
-              setEntryTypeDropdownIsActive(!entryTypeDropdownIsActive)
-            }
+            // onClick={() =>
+            //   setEntryTypeDropdownIsActive(!entryTypeDropdownIsActive)
+            // }
           >
             <span>{newRequestWebRTC.webRTCEntryMode}</span>
-            <span className="icon is-medium">
+            {/* <span className="icon is-medium">
               <img
                 src={dropDownArrow}
                 className="arrow-drop-down is-awesome-icon"
                 aria-hidden="true"
                 alt="dropdown arrow"
               />
-            </span>
+            </span> */}
           </button>
         </div>
 
