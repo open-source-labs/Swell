@@ -17,9 +17,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
+        run: npm i && npm ci
+      - name: Apply patches
         env:
           NODE_ENV: --no-node-snapshot
-        run: npm i && npm ci
+        run: npx patch-package
       - name: Run unit tests
         uses: coactions/setup-xvfb@v1
         with:
