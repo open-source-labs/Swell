@@ -286,6 +286,24 @@ Finally, if future iterators would like to completely cover the list of API-test
 
 ---
 
+## v1.19.0 changelog (WebRTC fixes and updates):
+
+- WebRTC has officially been moved from “experimental features” to “core features”!
+  - <u>Text channel improvements</u>:
+    - Added <b>“Add Answer” button and functionality</b> to be able to complete a channel connection
+    - <b>Completed functionality for two-way communication</b> via text channel
+    - <b>Debugged messaging in response window</b> - now the remote user’s incoming messages are visible
+  - <u>Video channel improvements</u>:
+    - Enabled audio on video calls
+    - Added an <b>audio toggle button</b> for turning audio on and off
+  - <u>Audio-only channel completed</u>
+    - Finished implementing an <b>audio channel</b> begun by a previous group
+- <b>Updated dependencies and versions</b> to un-deprecate the app and make it usable (see “How to download and test the application locally?”)
+- Added a React Joyride <b>tour to introduce users to the app</b> and ease their introduction to it
+- Added a <b>refresh button</b> to restart testing at any point with a new connection
+
+---
+
 ## Backlog from Iteration Groups v1.18 and v1.19
 
 - Fix/Update GitHub Actions for Unit Testing
