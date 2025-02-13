@@ -21,6 +21,7 @@ Swell is a one-stop shop for sending and monitoring your API requests:
 
 - Send and monitor streams over HTTP/2 (including SSEs) and WebSockets
 - Create GraphQL queries, introspections, mutations, and subscriptions
+- Test WebRTC applications over video, audio and text channels
 - Stress testing HTTP/2 and GraphQL endpoints
 - Create your own HTTP/2 mock server
 - Store workspaces of multiple requests for later use
@@ -67,6 +68,34 @@ We highly encourage you to check out the `DEV-README.md` in the `docs` folder. W
 
   See [tRPC docs](https://trpc.io/docs/) for more information on sending tRPC requests or setting up a tRPC server.
 
+
+- _WebRTC_: Swell makes it easy to test WebRTC applications for video, audio and text channels. Currently Swell supports manual entry of SDPs.
+
+  ### Walkthrough for setting up a text channel connection using the app's generated offer and answer:
+
+  - Step 1
+    Caller: Generate an offer by clicking “Get Offer.” Copy the offer to your computer's clipboard and send it to recipient (we recommend sending by email).
+  - Step 2
+    Recipient: Copy the offer you received from the caller and paste it into the offer box (the top text box)
+  - Step 3
+    Recipient: Click “Get answer” button, generate an answer and copy it to your computer's clipboard. Send it to caller (email recommended)
+  - Step 4
+    Caller: Copy answer to your computer's clipboard and paste it into the answer box (bottom text box).
+  - Step 5
+    Caller: Click the “add answer” button. Now the connection is open!
+  - Step 6
+    Caller: Click “add to workspace” button.
+  - Step 7
+    Recipient: Click “add to workspace” button.
+  - Step 8
+    Caller: Click "Send" button on the left-hand side of the app.
+  - Step 9
+    Recipient: Click "Send" button on the left-hand side of the app.
+  - Step 10
+    Send and receive text messages via the response panel at the bottom of the app.
+  <img src="./ReadMeGifs/Gifs/webrtc.gif" style="display: block; margin: 10px auto 30px; " />
+
+
 ## Additional features
 
 - _Stress testing for HTTP/2 and GraphQL_: Test your server backend with Swell's stress testing feature to ensure your server can manage expected and unexpected loads accordingly
@@ -91,15 +120,13 @@ We highly encourage you to check out the `DEV-README.md` in the `docs` folder. W
 
   <img src="./ReadMeGifs/Gifs/FileUploadAndDarkMode.gif"
        style="display: block; margin: 10px auto 30px; border: 1px solid black;" />
+
 ## Experimental Features
 
 - _Mock Server_: Swell allows you to create your own HTTP/2 mock server to facilitate front-end development without depending on a fully built backend server.
   <img src="./ReadMeGifs/Gifs/MockServer.gif" style="display: block;  margin: 10px auto 30px;" />
 
 - _Webhooks_: Swell includes user-defined HTTP callback connection testing designed to test other server's connection to the web and ability to send data. The test insures that when an event occurs, the source site makes an HTTP request to the URL configured for the webhook.
-
-- _WebRTC_: Swell makes it easy to test WebRTC applications for both video and text channels. Currently Swell supports manual entry of SDPs. 
-  <img src="./ReadMeGifs/Gifs/webrtc.gif" style="display: block; margin: 10px auto 30px; " />
 
 - _OpenAPI_: Swell supports the enumeration and execution of REST and RPC API requests as defined in a user-provided OpenAPI document.
   <img src="./ReadMeGifs/Gifs/openapi.gif" style="display: block; margin: 10px auto 30px;" />
@@ -110,7 +137,7 @@ We highly encourage you to check out the `DEV-README.md` in the `docs` folder. W
 - React
 - React Router
 - Material UI
-- Redux
+- Redux Toolkit
 - Apollo Client
 - Websockets
 - gRPC-js
@@ -124,6 +151,12 @@ We highly encourage you to check out the `DEV-README.md` in the `docs` folder. W
 - Playwright
 
 ## Authors
+
+- **Isaac Mbambo** - [IM236](https://github.com/IM236)
+- **Kiki Hunt** - [Iloveeverything](https://github.com/Iloveeverything)
+- **Ting Lee** - [tingEng](https://github.com/tingEng)
+- **Rachel Dean** - [rchldn](https://github.com/rchldn)
+- **Kadeem Reid** - [Kadeem929](https://github.com/Kadeem929)
 - **Karol Krzywon** - [kkrzywon](https://github.com/kkrzywon)
 - **Howard Sun** - [howardCodeGit](https://github.com/howardCodeGit)
 - **Carter Sarkela** - [CarterSarkela](https://github.com/CarterSarkela)

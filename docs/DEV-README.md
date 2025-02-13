@@ -43,10 +43,23 @@ Thank you for your consideration and let's work together on making Swell one of 
 ## How to download and test the application locally?
 
 1. Fork and/or clone the repository into your local machine
-2. In your terminal:
+2. Update dependencies
+  - <u>`isolated-vm` combined fix</u>: There is a problem with `vm2` (a sandbox); it has vulnerabilities and was discontinued.  An alternative is `isolated-vm` which uses the chromium browser's v8 engine. The prior version of `isolated-vm` on Swell's package.json was only compatible with Node 16. In order to upgrade to the latest version we ran the commands as
+  - We are using Node 18 instead of the most recent version of Node because of C++ compatibility with the Xcode command line.
+  - `node-gyp` is a tool for compiling native add-on modules for Node.js. It is often used when installing certain npm packages that require native code compilation.
+
+      1. If you have them, delete node modules, package-lock.json and dist folders
+      2. `cd` into User directory;
+      3. `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash` (installing nvm package so you can manage versions, and making it so you can run `nvm install` command inside of the terminal)
+      4. While still in user folder: `source ~/.bashrc  # or ~/.zshrc or ~/.bash_profile`
+      5. `vm install 18`
+      6. `nvm use 18`
+      7. `npm install -g node-gyp`
+
+3. In your terminal:
    - `npm install`, then
    - `npm run dev`
-3. Wait for the electron application to start up (it may take a bit)
+4. Wait for the electron application to start up (it may take a bit)
 
 There is E2E testing available via `npm run test`. Note that not all tests in the E2E test suite work currently. Please refer to `./test/testSuite.js` and `./test/subSuites` for more details.
 
@@ -111,7 +124,7 @@ From a functionality standpoint:
 - HTTP/2 stress testing with `GET` requests
 - GraphQL stress testing with `Query`
 - Mock server for HTTP/2 (`Express`)
-- WebRTC video/audio and text channel testing
+- WebRTC testing for text, video, and audio channel connections
 - Ability to store historical requests and create/delete workspaces
 - Frontend conversion to TypeScript
 - From a codebase standpoint:
@@ -213,12 +226,34 @@ Currently, the HTTP/2 mock server has the ability to create a server that is acc
 
 In a recent iteration, the WebRTC feature was changed from STUN Server testing to Client RTC Connection testing, allowing Swell to test if another client is able to create an RTC connection to transmit text and video data. Because the RTCPeerConnection has to be initiated before we generate the SDP, this connection is set up differently from the other networks. Other networks purely need the primitive strings as input, and the response is created on click of `Send` (in the workspace panel). For WebRTC, the connection object is created as an input, and when the user clicks `Send` then the data transmitted data is allowed to be displayed (although data is being transmitted through the connection even before `Send` is clicked). This means the WebRTC ReqRes can't really be saved in history or re-connected beyond the first connection.
 
-Areas for improvement:
+In the repo’s [excalidraw](https://excalidraw.com/#room=18f1f977e8cd6361eaa1,4vr1DznwcnD-uKM_X7ZhiA) are the following diagrams specific to WebRTC:
+- WebRTC Connectivity Diagram outlining the steps in a WebRTC connection and getting to media flow
+- Front-end Interface Components explaining each component
+- Flow of React/Redux (reacts to events in client to update store)
+- WebRTC Front-end Format Experiments
 
-- Currently, our WebRTC only works as the connection initiator. The next step would be the `Add Answer` button which allows Swell to be on the receiver end of the connection.
+
+
+
+#### Areas for improvement:
+
 - Currently, our WebRTC end-to-end testing is read-only from the previous implementation. It would be a highly valuable addition to modify the old testing to test the current implementation of webRTC. Integration testing has been started but needs to be finished. Relevant files include
   - End-to-End:'test/**tests**/subSuites/webRTCTest.js'
   - Integration: 'test/**tests**/IntegrationTests/webRTCIntegrationTests'
+- Front-end/UI improvements – see the excalidraw’s WebRTC Front-end Format Experiments diagram for ideas
+  Examples:
+  - Buttons could be named more intuitively and placed in more obvious places for the user to figure out the workflow
+  - Currently, when testing a video connection, users have to scroll all the way down in the server entry form container to see if their own camera is working. A redesign could help this be more clear
+  - Ability to rename an individual workspace once added to the left pane (switching between testing four different ‘text’ channels would be easier if you could rename each channel)
+  - The React Joyride tour could use slight improvement - the last few buttons are in different containers/files and harder for the tour to reach intuitively
+  - Improve styling for Joyride tour to be consistent with Swell colors and fonts
+- The current port is hardcoded - a group could modify this part of the code to test the application on ports other than the default to ensure proper functionality across different ports
+- The websocket feature of WebRTC is currently incomplete and commented out (both frontend and backend) and could be implemented
+- Currently our WebRTC testing feature is on par with or less robust than other WebRTC testing apps. A group could focus on making it more competitive by adding tracking of certain metrics (including jitter, packet loss, geographically-driven latency, differences across different browsers and devices, emulating losing a wifi connection and switching to mobile data, etc)
+- The electron app currently has a large file size not due to the code itself but the use of Electron. We briefly explored transitioning the app to Tauri or Neutralino but held off further research after rescoping. Transitioning to a new cross-platform desktop application framework would have a tangible benefit (even our iteration group members had storage issues while working on project)
+- A complete testing overhaul could be a great focus for a new group– many testing fixes were added in the process of developing new features but the quality and consistency of some of the testing may be questionable. Focusing just on testing could result in more purposeful and effective testing
+
+
 
 ---
 
@@ -368,6 +403,3 @@ Things to consider updating:
 - Any videos/screenshots that have been updated
 - Any new feature(s) you want to showcase
 - Add your names, headshots, and relevant information in the `contributors` section
-
----
-
