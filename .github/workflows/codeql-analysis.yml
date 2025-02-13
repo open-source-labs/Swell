@@ -30,6 +30,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Use Node.js 18 # Add this step
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.20.6 # Or your preferred 18.x version
       
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
