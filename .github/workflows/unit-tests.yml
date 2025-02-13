@@ -17,7 +17,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: npm i && npm ci
+        run: |
+          set NODE_OPTIONS=-no-node-snapshot
+          npm i && npm ci
       - name: Run unit tests
         uses: coactions/setup-xvfb@v1
         with:
