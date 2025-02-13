@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Use Node.js 18.20.6
+      - name: Use Node.js 18.20.6 # this used to be dynamically updated, but kept pulling an old version number. you'll have to manually update these throughout this file to be safe.
         uses: actions/setup-node@v3
         with:
           node-version: 18.20.6
