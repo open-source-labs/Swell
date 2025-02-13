@@ -13,16 +13,16 @@ module.exports = merge(base, {
     compress: true,
     proxy: {
       '/webhookServer': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
       },
       '/webhook': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
       },
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
         /**
          * @todo Change secure option to true, and refactor code to account for
-         * change
+         * change  // https://github.com/electron/electron/issues/19775 ??? maybe this is the solution
          */
         secure: false,
       },
@@ -31,6 +31,7 @@ module.exports = merge(base, {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
+      // console.log('Setting up middlewares...:', middlewares);
       middlewares.unshift({
         // unshift does not work, ends in infinite calls to this function
         name: 'run-in-electron',

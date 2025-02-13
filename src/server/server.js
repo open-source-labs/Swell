@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
 dotenv.config();
 
-const port = 3000;
+const port = 3001;
 const app = express();
 const cors = require('cors');
 app.use(express.urlencoded({ extended: true }));

@@ -30,7 +30,6 @@ type NewRequestStore = {
   newRequestBody: NewRequestBody;
   newRequestSSE: NewRequestSSE;
   newRequestWebRTC: RequestWebRTC;
-
 };
 
 const initialState: NewRequestStore = {
@@ -47,7 +46,7 @@ const initialState: NewRequestStore = {
     bodyIsNew: false,
   },
   newRequestStreams: {
-    streamsArr: [], 
+    streamsArr: [],
     count: 0,
     streamContent: [],
     selectedPackage: null,
@@ -79,7 +78,7 @@ const initialState: NewRequestStore = {
     webRTCLocalStream: null,
     webRTCRemoteStream: null,
     webRTCMessages: [],
-  }
+  },
 };
 
 const newRequestSlice = createSlice({
@@ -101,11 +100,18 @@ const newRequestSlice = createSlice({
 
     newRequestWebRTCSet: (state, action: PayloadAction<RequestWebRTC>) => {
       state.newRequestWebRTC = action.payload;
+      // console.log('newRequestWebRTCCheckAfterAnswerInReducer:', state.newRequestWebRTC.webRTCAnswer);
     },
     newRequestWebRTCOfferSet: (state, action: PayloadAction<string>) => {
       state.newRequestWebRTC.webRTCOffer = action.payload;
     },
+    newRequestWebRTCAnswerSet: (state, action: PayloadAction<string>) => {
+      state.newRequestWebRTC.webRTCAnswer = action.payload;
+    },
 
+    resetWebRTCconnection: () => {
+      return initialState;
+    },
 
     //Before toolkit conversion was SET_NEW_REQUEST_STREAMS or setNewRequestStreams
     newRequestStreamsSet: (state, action: PayloadAction<NewRequestStreams>) => {
@@ -188,6 +194,8 @@ export const {
   newRequestContentByProtocol,
   newRequestWebRTCSet,
   newRequestWebRTCOfferSet,
+  newRequestWebRTCAnswerSet,
+  resetWebRTCconnection,
 } = newRequestSlice.actions;
 export default newRequestSlice.reducer;
 

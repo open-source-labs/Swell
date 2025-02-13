@@ -1,6 +1,18 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+declare global {
+  interface Window {
+    api: {
+      versions: {
+        electron: string;
+        chrome: string;
+        node: string;
+      };
+    };
+  }
+}
+
 function Versions(): JSX.Element {
   const [versions] = useState(window.api.versions);
 

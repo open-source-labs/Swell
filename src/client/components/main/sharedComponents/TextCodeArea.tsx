@@ -13,6 +13,7 @@ interface TextCodeAreaProps {
   mode: string;
   onChange: (value: string, viewUpdate: ViewUpdate) => void;
   height?: string;
+  width?: string;
   placeholder?: string;
   readOnly?: boolean;
 }
@@ -38,6 +39,7 @@ export default function TextCodeArea({
   height = '200px',
   placeholder = 'Enter body here',
   readOnly = false,
+  width,
 }: TextCodeAreaProps) {
   const lang: string = mode.substring(mode.indexOf('/') + 1); // Grab language mode based on value passed in
   return (
@@ -45,6 +47,7 @@ export default function TextCodeArea({
       <CodeMirror
         value={value}
         height={height}
+        width={width}
         extensions={[langs[lang](), EditorView.lineWrapping]}
         placeholder={placeholder}
         theme={vscodeDark}

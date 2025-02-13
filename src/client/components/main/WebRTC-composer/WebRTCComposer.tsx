@@ -13,8 +13,12 @@ import NewRequestButton from '../sharedComponents/requestButtons/NewRequestButto
 // Import MUI components
 import { Box } from '@mui/material';
 import WebRTCVideoBox from './WebRTCVideoBox';
+import WebRTCAudioBox from './WebRTCAudioBox';
 import { RootState } from '../../../toolkit-refactor/store';
-import { useAppDispatch, useAppSelector } from '../../../toolkit-refactor/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../toolkit-refactor/hooks';
 import { composerFieldsReset } from '../../../toolkit-refactor/slices/newRequestSlice';
 import { setWorkspaceActiveTab } from '../../../toolkit-refactor/slices/uiSlice';
 import { reqResItemAdded } from '../../../toolkit-refactor/slices/reqResSlice';
@@ -40,7 +44,7 @@ export default function WebRTCComposer() {
       checkSelected: false,
       request: newRequestWebRTC,
       response: {
-        webRTCMessages: []
+        webRTCMessages: [],
       },
       checked: false,
       minimized: false,
@@ -56,20 +60,33 @@ export default function WebRTCComposer() {
       )
         return true;
     } catch {
-      return false
+      return false;
     }
     return false;
-  }
+  };
 
   const addNewRequest = (): void => {
-    if (!(checkValidSDP(newRequestWebRTC.webRTCOffer) && checkValidSDP(newRequestWebRTC.webRTCAnswer))){
-      return alert('Invalid offer or answer SDP')
+    console.log('newRequestWebRTCatANR:', newRequestWebRTC);
+    if (
+      !(
+        checkValidSDP(newRequestWebRTC.webRTCOffer) &&
+        checkValidSDP(newRequestWebRTC.webRTCAnswer)
+      )
+    ) {
+      return alert('Invalid offer or answer SDP');
     }
+    // let localStream = peerConnection.createDataChannel('textChannel');
+    //   // localStream.onopen = () => console.log('data channel opened');
+    //   // localStream.onclose = () => console.log('data channel closed')
+    //   localStream.addEventListener("open", (event) => {
+    //     beginTransmission(localStream);
+    //   });
+
     const reqRes: ReqRes = composeReqRes();
 
     // addHistory removed because RTCPeerConnection objects cant typically be cloned
     // historyController.addHistoryToIndexedDb(reqRes);
-
+    console.log('reqRes:', reqRes);
     dispatch(reqResItemAdded(reqRes));
     dispatch(composerFieldsReset());
     setShowRTCEntryForms(false);
@@ -87,6 +104,7 @@ export default function WebRTCComposer() {
         style={{ overflowX: 'hidden' }}
       >
         <WebRTCSessionEntryForm setShowRTCEntryForms={setShowRTCEntryForms} />
+
         {showRTCEntryForms && (
           <>
             <WebRTCServerEntryForm />
@@ -96,6 +114,12 @@ export default function WebRTCComposer() {
             {newRequestWebRTC.webRTCDataChannel === 'Video' && (
               <div className="box is-rest-invert">
                 <WebRTCVideoBox streamType="localstream" />
+              </div>
+            )}
+
+            {newRequestWebRTC.webRTCDataChannel === 'Audio' && (
+              <div className="box is-rest-invert">
+                <WebRTCAudioBox streamType="localstream" />
               </div>
             )}
           </>

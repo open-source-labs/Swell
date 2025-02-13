@@ -150,7 +150,7 @@ export interface Message {
   data: string;
 }
 
-export interface  NewRequestBody {
+export interface NewRequestBody {
   bodyContent: string;
   bodyVariables: string;
   bodyType: string;
@@ -323,10 +323,16 @@ export type ResponseWebRTC = ResponseWebRTCText;
 
 export interface ResponseWebRTCText {
   webRTCMessages: WebMessages[];
+
+  events?: any[];
+  headers?: Record<string, string>;
+  cookies?: any[];
 }
-
-export type RequestWebRTC = RequestWebRTCVideo | RequestWebRTCText;
-
+//Defines web rtc request type that can be audio video or text
+//enable audio is a shared but optional property
+export type RequestWebRTC = {
+  enableAudio?: boolean;
+} & (RequestWebRTCVideo | RequestWebRTCText | RequestWebRTCAudio);
 export interface RequestWebRTCVideo {
   network: 'webrtc';
   webRTCEntryMode: 'Manual' | 'WS';
@@ -337,6 +343,20 @@ export interface RequestWebRTCVideo {
   webRTCpeerConnection: RTCPeerConnection | null;
   webRTCLocalStream: MediaStream | null;
   webRTCRemoteStream: MediaStream | null;
+  enableAudio?: boolean;
+}
+
+export interface RequestWebRTCAudio {
+  network: 'webrtc';
+  webRTCEntryMode: 'Manual' | 'WS';
+  webRTCDataChannel: 'Audio';
+  webRTCWebsocketServer: string;
+  webRTCOffer: string;
+  webRTCAnswer: string;
+  webRTCpeerConnection: RTCPeerConnection | null;
+  webRTCLocalStream: MediaStream | null;
+  webRTCRemoteStream: MediaStream | null;
+  enableAudio?: boolean;
 }
 
 export interface RequestWebRTCText {

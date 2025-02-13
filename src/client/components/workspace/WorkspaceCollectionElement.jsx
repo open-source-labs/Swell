@@ -162,10 +162,12 @@ const WorkspaceCollectionElement = (props) => {
             className="is-flex-basis-0 is-flex-grow-1 button is-primary-100 is-size-7 border-curve"
             id={`send-button-${index}`}
             onClick={() => {
+              console.log('content:',content);
               if (content.request.network === 'webrtc') {
                 dispatch(setResponsePaneActiveTab('webrtc'));
                 dispatch(responseDataSaved(content));
-                webrtcPeerController.addAnswer(content, currentResponse);
+                console.log('currentResponse:',currentResponse);
+                webrtcPeerController.dataStream(content, currentResponse);
                 setWebRTCSend(true);
                 // connectionController.setReqResConnectionToClosed(content.id);
               } else if (content.graphQL && request.method === 'SUBSCRIPTION') {

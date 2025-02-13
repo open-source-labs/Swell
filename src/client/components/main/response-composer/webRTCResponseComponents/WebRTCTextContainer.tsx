@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../toolkit-refactor/hooks';
 import { RootState } from '../../../../toolkit-refactor/store';
 import { stepperClasses } from '@mui/material';
 import {
@@ -11,6 +14,7 @@ import {
 } from '../../../../../types';
 import WebRTCTextItem from './WebRTCTextItem';
 import { responseDataSaved } from '../../../../toolkit-refactor/slices/reqResSlice';
+import webrtcPeerController from '../../../../controllers/webrtcPeerController';
 
 const WebRTCTextContainer = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +56,6 @@ const WebRTCTextContainer = () => {
       data: messageInput,
       timeReceived: Date.now(),
     };
-
     dispatch(
       responseDataSaved({
         ...currentReqRes,
@@ -62,12 +65,15 @@ const WebRTCTextContainer = () => {
         } as RequestWebRTCText,
       })
     );
-
+    // console.log('request:', request);
+    // console.log('currentReqRes:', currentReqRes);
+    //webrtcPeerController.sendMessages(currentReqRes, messageInput);
     (
       document.getElementById('webrtc-message-input') as HTMLInputElement
     ).value = '';
     if (request.webRTCLocalStream) {
       request.webRTCLocalStream.send(JSON.stringify(messageInput));
+      console.log('message input:', messageInput);
     }
   };
 
@@ -98,6 +104,6 @@ const WebRTCTextContainer = () => {
     </div>
   );
 };
-
+// update
 export default WebRTCTextContainer;
 
