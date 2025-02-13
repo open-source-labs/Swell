@@ -56,35 +56,26 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
     {
       target: '.offer-paste-button',
       content: 'Recipient: Copy the offer received and paste into the top box',
+      placement: 'bottom',
     },
     {
       target: '.get-answer-btn',
       content: "Recipient: Click 'Get Answer' and copy it.",
+      placement: 'bottom',
     },
-    // {
-    //   target: ".answer-input-box",
-    //   content: "Caller: Paste the answer here.",
-    // },
-    // {
-    //   target: ".add-answer-btn",
-    //   content: "Caller: Click 'Add Answer' to establish the connection.",
-    // },
-    // {
-    //   target: ".add-to-workspace-btn-caller",
-    //   content: "Caller: Click 'Add to Workspace'.",
-    // },
-    // {
-    //   target: ".add-to-workspace-btn-recipient",
-    //   content: "Recipient: Click 'Add to Workspace'.",
-    // },
-    // {
-    //   target: ".send-btn-caller",
-    //   content: "Caller: Click 'Send'.",
-    // },
-    // {
-    //   target: ".send-btn-recipient",
-    //   content: "Recipient: Click 'Send'.",
-    // },
+    {
+      target: '.answer-paste-button',
+      content: 'Caller: Paste the answer here.',
+    },
+    {
+      target: '.add-answer-btn',
+      content:
+        "Caller: Click 'Add Answer' to establish the connection. Then click 'Add to Workspace' button below",
+    },
+    {
+      target: '.add-to-workspace-btn',
+      content: "Caller: Click 'Add to Workspace'.",
+    },
   ];
   // Use useEffect to start the joyride after the component mounts
   useEffect(() => {
@@ -209,74 +200,77 @@ const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
             Get Answer
           </button>
         </div>
-      </div>
-      {/* Code box for Answer */}
-      <div style={{ position: 'relative' }}>
-        <TextCodeArea
-          mode={'application/json'}
-          value={newRequestWebRTC.webRTCAnswer || ''}
-          height={'85px'}
-          width={'100%'}
-          onChange={(value, viewUpdate) => {
-            dispatch(
-              newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })
-            );
-            console.log(
-              'newRequestWebRTC (though may not be updated bc async):',
-              newRequestWebRTC
-            );
-          }}
-          placeholder={'Answer here'}
-          readOnly={true}
-        />
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.writeText(newRequestWebRTC.webRTCAnswer);
-          }}
-        >
-          Copy
-        </button>
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '60px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.readText().then((text) =>
+        {/* Code box for Answer */}
+        <div style={{ position: 'relative' }}>
+          <TextCodeArea
+            mode={'application/json'}
+            value={newRequestWebRTC.webRTCAnswer || ''}
+            height={'85px'}
+            width={'100%'}
+            onChange={(value, viewUpdate) => {
               dispatch(
                 newRequestWebRTCSet({
                   ...newRequestWebRTC,
-                  webRTCAnswer: text,
+                  webRTCAnswer: value,
                 })
-              )
-            );
-          }}
-        >
-          Paste
-        </button>
+              );
+              console.log(
+                'newRequestWebRTC (though may not be updated bc async):',
+                newRequestWebRTC
+              );
+            }}
+            placeholder={'Answer here'}
+            readOnly={true}
+          />
+          <button
+            className="button is-small is-rest-invert"
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(newRequestWebRTC.webRTCAnswer);
+            }}
+          >
+            Copy
+          </button>
+          <button
+            className="button is-small is-rest-invert answer-paste-button"
+            style={{
+              position: 'absolute',
+              top: '60px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.readText().then((text) =>
+                dispatch(
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCAnswer: text,
+                  })
+                )
+              );
+            }}
+          >
+            Paste
+          </button>
 
-        <button
-          id="webRTButton"
-          className="button is-normal is-primary-100 add-request-button  no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
-            webrtcPeerController.addAnswer(newRequestWebRTC);
-          }}
-        >
-          Add Answer
-        </button>
-        {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+          <button
+            id="webRTButton"
+            className="button is-normal is-primary-100 add-request-button  add-answer-btn no-border-please"
+            style={{ margin: '10px' }}
+            onClick={() => {
+              console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
+              webrtcPeerController.addAnswer(newRequestWebRTC);
+            }}
+          >
+            Add Answer
+          </button>
+          {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+        </div>
       </div>
     </div>
   );
