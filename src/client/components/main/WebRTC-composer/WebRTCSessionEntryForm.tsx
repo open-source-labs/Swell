@@ -83,7 +83,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
                 Manual
               </a>
             )}
-
+            {/* //use this if you want to enable websocket feature as signaling server
             {newRequestWebRTC.webRTCEntryMode !== 'WS' && (
               <a
                 onClick={() => {
@@ -99,7 +99,7 @@ const WebRTCSessionEntryForm: React.FC<Props> = (props: Props) => {
               >
                 WS
               </a>
-            )}
+            )} */}
           </ul>
         </div>
         <input

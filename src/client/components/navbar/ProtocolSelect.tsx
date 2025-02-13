@@ -73,12 +73,12 @@ const pages: page[] = [
   { name: 'WebSocket', route: '/websocket', value: 'ws' },
   { name: 'gRPC', route: '/grpc', value: 'grpc' },
   { name: 'tRPC', route: '/trpc', value: 'tRPC' },
+  { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
 ];
 
 const experimentalPages: page[] = [
   { name: 'Mock', route: '/mockserver', value: 'mockserver' },
   { name: 'Webhook', route: '/webhook', value: 'webhook' },
-  { name: 'WebRTC', route: '/webrtc', value: 'webrtc' },
   { name: 'OpenAPI', route: '/openapi', value: 'openapi' },
 ];
 
@@ -159,7 +159,7 @@ function ProtocolSelect() {
     to having a fully functional application for any user to download and use. Some experimentals
     are closer to fully-functional more than others and if they do get fleshed out they can be added
     to the other set of functional features*/
-  
+
   return (
     <Box
       key="page-selector"
