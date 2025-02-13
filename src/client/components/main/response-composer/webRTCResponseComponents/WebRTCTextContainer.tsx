@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../toolkit-refactor/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../toolkit-refactor/hooks';
 import { RootState } from '../../../../toolkit-refactor/store';
 import { stepperClasses } from '@mui/material';
 import {
@@ -64,7 +67,7 @@ const WebRTCTextContainer = () => {
     );
     // console.log('request:', request);
     // console.log('currentReqRes:', currentReqRes);
-    webrtcPeerController.sendMessages(currentReqRes, messageInput);
+    //webrtcPeerController.sendMessages(currentReqRes, messageInput);
     (
       document.getElementById('webrtc-message-input') as HTMLInputElement
     ).value = '';

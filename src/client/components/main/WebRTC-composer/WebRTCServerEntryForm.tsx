@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Joyride from 'react-joyride';
+import { useState, useRef, useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
 
 // import '/Users/katharinehunt/Swell/src/assets/style/WebRtcEntry.css';
@@ -17,7 +19,10 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../toolkit-refactor/hooks';
-import { newRequestWebRTCSet } from '../../../toolkit-refactor/slices/newRequestSlice';
+import {
+  resetWebRTCconnection,
+  newRequestWebRTCSet,
+} from '../../../toolkit-refactor/slices/newRequestSlice';
 import webrtcPeerController from '../../../controllers/webrtcPeerController';
 import { RootState } from '../../../toolkit-refactor/store';
 import { compose } from 'redux';
@@ -31,13 +36,15 @@ interface Props {
   // } | null;
 }
 
-const WebRTCServerEntryForm: React.FC<Props> = () => {
+const WebRTCServerEntryForm: React.FC<Props> = (props: Props) => {
+  const [isToggled, setIsToggled] = useState(false);
+
+  const [run, setRun] = useState(true);
   const dispatch = useAppDispatch();
 
   const newRequestWebRTC: RequestWebRTC = useAppSelector(
     (store: RootState) => store.newRequest.newRequestWebRTC
   );
-  const [isToggled, setIsToggled] = useState(false);
   const currentReqRes = useAppSelector(
     (store: RootState) => store.reqRes.currentResponse
   ) as ReqRes;
@@ -77,6 +84,73 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
       currentReqRes
     );
   };
+  const steps = [
+    {
+      target: '.get-offer-button',
+      content: 'Caller: Generate an offer by clicking “Get Offer”.',
+      placement: 'bottom',
+    },
+    {
+      target: '.copy-offer-button', // Target the "Copy" button in the Offer code box
+      content:
+        'Caller: Copy to clipboard, paste and send to recipient (email recommended).',
+      placement: 'bottom',
+    },
+    {
+      target: '.offer-paste-button',
+      content: 'Recipient: Copy the offer received and paste into the top box',
+      placement: 'bottom',
+    },
+    {
+      target: '.get-answer-btn',
+      content: "Recipient: Click 'Get Answer' and copy it.",
+      placement: 'bottom',
+    },
+    {
+      target: '.answer-paste-button',
+      content: 'Caller: Paste the answer here.',
+    },
+    {
+      target: '.add-answer-btn',
+      content:
+        "Caller: Click 'Add Answer' to establish the connection. Then click 'Add to Workspace' button below",
+    },
+    {
+      target: '.add-to-workspace-btn',
+      content: "Caller: Click 'Add to Workspace'.",
+    },
+  ];
+  // Use useEffect to start the joyride after the component mounts
+  useEffect(() => {
+    // Delay the start of Joyride to ensure everything is rendered
+    const timer = setTimeout(() => setRun(true), 500);
+
+    return () => clearTimeout(timer); // Clear the timer on cleanup
+  }, []);
+
+  const hasResetRef = useRef(false);
+
+  const handleResetWebRTCconnection = () => {
+    dispatch(resetWebRTCconnection());
+    console.log('WebRTC connection reset to initial state:');
+    console.log('newRequestWebRTCFromConnect:', {
+      newRequestWebRTC: newRequestWebRTC, // This will be the empty reset state
+    });
+    hasResetRef.current = true;
+  };
+
+  useEffect(() => {
+    // so we only trigger a new peer connection here for the reset if the offer has been cleared specifically via our reset function
+    if (hasResetRef.current && newRequestWebRTC.webRTCOffer === '') {
+      console.log('Creating a new Peer Connection with reset state');
+      webrtcPeerController.createPeerConnection(
+        newRequestWebRTC,
+        currentReqRes
+      );
+      hasResetRef.current = false;
+    }
+  }, [newRequestWebRTC, currentReqRes]);
+
   return (
     <div className="mt-3">
       <div className="toggle-refresh-container">
@@ -106,7 +180,10 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
         </div>
 
         <div>
-          <button className="refresh-button">
+          <button
+            className="refresh-button"
+            onClick={handleResetWebRTCconnection}
+          >
             <MdRefresh size={30} style={{ color: 'white' }} />
           </button>
         </div>
@@ -129,136 +206,152 @@ const WebRTCServerEntryForm: React.FC<Props> = () => {
           placeholder={'Click "Get Offer" or paste in Offer SDP'}
           readOnly={true}
         />
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.writeText(newRequestWebRTC.webRTCOffer);
-          }}
-        >
-          Copy
-        </button>
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '60px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.readText().then((text) => {
-              console.log('text:', text);
-              dispatch(
-                newRequestWebRTCSet({
-                  ...newRequestWebRTC,
-                  webRTCOffer: text,
-                })
-              );
-            });
-          }}
-        >
-          Paste
-        </button>
-        <button
-          className="button is-normal is-primary-100 add-request-button no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            console.log('newRequestWebRTCfromOclick:', newRequestWebRTC);
-            if (!newRequestWebRTC.webRTCpeerConnection) {
-              console.warn(
-                'webRTCpeerConnection is NULL! createPeerConnection may not have run.'
-              );
-            }
-            webrtcPeerController.createOffer(newRequestWebRTC);
-          }}
-        >
-          Get Offer
-        </button>
-        <button
-          id="webRTButton"
-          className="button is-normal is-primary-100 add-request-button  no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
-            webrtcPeerController.createAnswer(newRequestWebRTC);
-          }}
-        >
-          Get Answer
-        </button>
-      </div>
-      {/* Code box for Answer */}
-      <div style={{ position: 'relative' }}>
-        <TextCodeArea
-          mode={'application/json'}
-          value={newRequestWebRTC.webRTCAnswer || ''}
-          height={'85px'}
-          width={'100%'}
-          onChange={(value, viewUpdate) => {
-            dispatch(
-              newRequestWebRTCSet({ ...newRequestWebRTC, webRTCAnswer: value })
-            );
-            console.log(
-              'newRequestWebRTC (though may not be updated bc async):',
-              newRequestWebRTC
-            );
-          }}
-          placeholder={'Answer here'}
-          readOnly={true}
-        />
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.writeText(newRequestWebRTC.webRTCAnswer);
-          }}
-        >
-          Copy
-        </button>
-        <button
-          className="button is-small is-rest-invert"
-          style={{
-            position: 'absolute',
-            top: '60px',
-            right: '20px',
-            width: '58px',
-          }}
-          onClick={() => {
-            navigator.clipboard.readText().then((text) =>
-              dispatch(
-                newRequestWebRTCSet({
-                  ...newRequestWebRTC,
-                  webRTCAnswer: text,
-                })
-              )
-            );
-          }}
-        >
-          Paste
-        </button>
+        <div>
+          <Joyride
+            steps={steps}
+            run={run}
+            continuous
+            showSkipButton
+            disableOverlayClose={true}
+            locale={{
+              close: 'Close',
+            }}
+          />
+          <button
+            className="button is-small  copy-offer-button is-rest-invert"
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(newRequestWebRTC.webRTCOffer);
+            }}
+          >
+            Copy
+          </button>
+          <button
+            className="button is-small is-rest-invert offer-paste-button"
+            style={{
+              position: 'absolute',
+              top: '60px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.readText().then((text) => {
+                console.log('text:', text);
+                dispatch(
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCOffer: text,
+                  })
+                );
+              });
+            }}
+          >
+            Paste
+          </button>
+          <button
+            className="button is-normal is-primary-100 add-request-button get-offer-button no-border-please"
+            style={{ margin: '10px' }}
+            onClick={() => {
+              console.log('newRequestWebRTCfromOclick:', newRequestWebRTC);
+              if (!newRequestWebRTC.webRTCpeerConnection) {
+                console.warn(
+                  'webRTCpeerConnection is NULL! createPeerConnection may not have run.'
+                );
+              }
+              webrtcPeerController.createOffer(newRequestWebRTC);
+            }}
+          >
+            Get Offer
+          </button>
 
-        <button
-          id="webRTButton"
-          className="button is-normal is-primary-100 add-request-button  no-border-please"
-          style={{ margin: '10px' }}
-          onClick={() => {
-            console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
-            webrtcPeerController.addAnswer(newRequestWebRTC);
-          }}
-        >
-          Add Answer
-        </button>
-        {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+          <button
+            id="webRTButton"
+            className="button is-normal is-primary-100 add-request-button get-answer-btn no-border-please"
+            style={{ margin: '10px' }}
+            onClick={() => {
+              console.log('newRequestWebRTCfromGAclick:', newRequestWebRTC);
+              webrtcPeerController.createAnswer(newRequestWebRTC);
+            }}
+          >
+            Get Answer
+          </button>
+        </div>
+        {/* Code box for Answer */}
+        <div style={{ position: 'relative' }}>
+          <TextCodeArea
+            mode={'application/json'}
+            value={newRequestWebRTC.webRTCAnswer || ''}
+            height={'85px'}
+            width={'100%'}
+            onChange={(value, viewUpdate) => {
+              dispatch(
+                newRequestWebRTCSet({
+                  ...newRequestWebRTC,
+                  webRTCAnswer: value,
+                })
+              );
+              console.log(
+                'newRequestWebRTC (though may not be updated bc async):',
+                newRequestWebRTC
+              );
+            }}
+            placeholder={'Answer here'}
+            readOnly={true}
+          />
+          <button
+            className="button is-small is-rest-invert"
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(newRequestWebRTC.webRTCAnswer);
+            }}
+          >
+            Copy
+          </button>
+          <button
+            className="button is-small is-rest-invert answer-paste-button"
+            style={{
+              position: 'absolute',
+              top: '60px',
+              right: '20px',
+              width: '58px',
+            }}
+            onClick={() => {
+              navigator.clipboard.readText().then((text) =>
+                dispatch(
+                  newRequestWebRTCSet({
+                    ...newRequestWebRTC,
+                    webRTCAnswer: text,
+                  })
+                )
+              );
+            }}
+          >
+            Paste
+          </button>
+
+          <button
+            id="webRTButton"
+            className="button is-normal is-primary-100 add-request-button  add-answer-btn no-border-please"
+            style={{ margin: '10px' }}
+            onClick={() => {
+              console.log('newRequestWebRTCfromAAclick:', newRequestWebRTC);
+              webrtcPeerController.addAnswer(newRequestWebRTC);
+            }}
+          >
+            Add Answer
+          </button>
+          {/* {warningMessage ? <div>{warningMessage.body}</div> : null} */}
+        </div>
       </div>
     </div>
   );

@@ -30,6 +30,23 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Use Node.js 18 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.20.6 # Or your preferred 18.x version
+
+    - name: Print Node.js version
+      run: node -v
+
+    - name: Install dependencies
+      run: npm ci # Or npm install if you prefer
+
+    - name: Build project
+      run:  |
+        make boostrap
+        make release
+        npm run build
       
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -43,19 +60,15 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    # - name: Autobuild
+    #   uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
 
     # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
     #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
-
-    #- run: |
-    #   make bootstrap
-    #   make release
+    #    uses a compiled language (we moved the "below" lines up to 42 and edited them)
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
