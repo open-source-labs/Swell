@@ -101,7 +101,7 @@ jobs:
 
       # Optional step to upload the Linux package as an artifact
       - name: Upload Linux Package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: linux-app
           path: release/Swell-1.15.0.AppImage # Change the path according to your Linux build output
