@@ -202,7 +202,7 @@ We highly encourage you to check out the `DEV-README.md` in the `docs` folder. W
 - **Abby Chao** - [abbychao](https://github.com/abbychao)
 - **Amanda Flink** - [aflinky](https://github.com/aflinky)
 - **Kajol Thapa** - [kajolthapa](https://github.com/kajolthapa)
-- **Billy Tran** - [btctrl](https://github.com/btctrl)
+- **Billy Tran** - [b11e](https://github.com/b11e)
 - **Paul Rhee** - [prheee](https://github.com/prheee)
 - **Sam Parsons** - [sam-parsons](https://github.com/sam-parsons)
 - **Nancy Dao** - [nancyddao](https://github.com/nancyddao)
